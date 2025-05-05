@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute la suite de tests pour la solution d'organisation des scripts de maintenance.
+    ExÃ©cute la suite de tests pour la solution d'organisation des scripts de maintenance.
 .DESCRIPTION
-    Ce script est un wrapper qui exécute la suite de tests pour la solution d'organisation
+    Ce script est un wrapper qui exÃ©cute la suite de tests pour la solution d'organisation
     des scripts de maintenance. Il appelle les scripts de test dans le dossier test/.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de test.
 .PARAMETER GenerateHTML
-    Génère des rapports HTML en plus des rapports XML.
+    GÃ©nÃ¨re des rapports HTML en plus des rapports XML.
 .PARAMETER TestType
-    Type de tests à exécuter: All (tous les tests), Unit (tests unitaires),
-    Coverage (couverture de code), Integration (tests d'intégration).
+    Type de tests Ã  exÃ©cuter: All (tous les tests), Unit (tests unitaires),
+    Coverage (couverture de code), Integration (tests d'intÃ©gration).
 .EXAMPLE
     .\Run-Tests.ps1 -OutputPath ".\reports" -GenerateHTML
 .EXAMPLE
@@ -19,7 +19,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-10
+    Date de crÃ©ation: 2023-06-10
 #>
 
 [CmdletBinding()]
@@ -38,24 +38,24 @@ param (
 # Chemin du dossier de tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "test"
 
-# Vérifier si le dossier de tests existe
+# VÃ©rifier si le dossier de tests existe
 if (-not (Test-Path -Path $testDir)) {
     Write-Error "Le dossier de tests n'existe pas: $testDir"
     exit 1
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Host "Dossier de sortie créé: $OutputPath"
+    Write-Host "Dossier de sortie crÃ©Ã©: $OutputPath"
 }
 
-# Exécuter les tests en fonction du type spécifié
+# ExÃ©cuter les tests en fonction du type spÃ©cifiÃ©
 switch ($TestType) {
     "All" {
-        # Exécuter la suite complète de tests
+        # ExÃ©cuter la suite complÃ¨te de tests
         $testScript = Join-Path -Path $testDir -ChildPath "Run-TestSuite.ps1"
-        Write-Host "Exécution de la suite complète de tests..."
+        Write-Host "ExÃ©cution de la suite complÃ¨te de tests..."
         $params = @{
             OutputPath = $OutputPath
         }
@@ -65,9 +65,9 @@ switch ($TestType) {
         & $testScript @params
     }
     "Unit" {
-        # Exécuter uniquement les tests unitaires
+        # ExÃ©cuter uniquement les tests unitaires
         $testScript = Join-Path -Path $testDir -ChildPath "Run-AllTests.ps1"
-        Write-Host "Exécution des tests unitaires..."
+        Write-Host "ExÃ©cution des tests unitaires..."
         $params = @{
             OutputPath = $OutputPath
         }
@@ -77,9 +77,9 @@ switch ($TestType) {
         & $testScript @params
     }
     "Coverage" {
-        # Générer un rapport de couverture de code
+        # GÃ©nÃ©rer un rapport de couverture de code
         $testScript = Join-Path -Path $testDir -ChildPath "Get-CodeCoverage.ps1"
-        Write-Host "Génération de la couverture de code..."
+        Write-Host "GÃ©nÃ©ration de la couverture de code..."
         $params = @{
             OutputPath = $OutputPath
         }
@@ -89,12 +89,12 @@ switch ($TestType) {
         & $testScript @params
     }
     "Integration" {
-        # Exécuter les tests d'intégration
+        # ExÃ©cuter les tests d'intÃ©gration
         $testScript = Join-Path -Path $testDir -ChildPath "Test-Integration.ps1"
-        Write-Host "Exécution des tests d'intégration..."
+        Write-Host "ExÃ©cution des tests d'intÃ©gration..."
         & $testScript -OutputPath $OutputPath
     }
 }
 
 # Afficher un message de fin
-Write-Host "`nExécution des tests terminée. Consultez les rapports dans le dossier: $OutputPath"
+Write-Host "`nExÃ©cution des tests terminÃ©e. Consultez les rapports dans le dossier: $OutputPath"

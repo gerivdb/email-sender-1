@@ -1,34 +1,34 @@
-<#
+﻿<#
 .SYNOPSIS
-    Identifie les compétences communes à plusieurs améliorations.
+    Identifie les compÃ©tences communes Ã  plusieurs amÃ©liorations.
 
 .DESCRIPTION
-    Ce script analyse la liste des compétences extraites et identifie celles qui sont
-    communes à plusieurs améliorations, ce qui permet de déterminer les compétences
+    Ce script analyse la liste des compÃ©tences extraites et identifie celles qui sont
+    communes Ã  plusieurs amÃ©liorations, ce qui permet de dÃ©terminer les compÃ©tences
     les plus importantes et polyvalentes.
 
 .PARAMETER SkillsListPath
-    Chemin vers le fichier de la liste des compétences extraites.
+    Chemin vers le fichier de la liste des compÃ©tences extraites.
 
 .PARAMETER OutputPath
-    Chemin vers le fichier de sortie pour la liste des compétences communes.
+    Chemin vers le fichier de sortie pour la liste des compÃ©tences communes.
 
 .PARAMETER MinimumOccurrences
-    Nombre minimum d'occurrences pour qu'une compétence soit considérée comme commune.
-    Par défaut : 2
+    Nombre minimum d'occurrences pour qu'une compÃ©tence soit considÃ©rÃ©e comme commune.
+    Par dÃ©faut : 2
 
 .PARAMETER Format
     Format du fichier de sortie. Les valeurs possibles sont : JSON, CSV, Markdown.
-    Par défaut : Markdown
+    Par dÃ©faut : Markdown
 
 .EXAMPLE
     .\identify-common-skills.ps1 -SkillsListPath "data\planning\skills-list.md" -OutputPath "data\planning\common-skills.md"
-    Identifie les compétences communes à plusieurs améliorations et génère un fichier Markdown.
+    Identifie les compÃ©tences communes Ã  plusieurs amÃ©liorations et gÃ©nÃ¨re un fichier Markdown.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-10
+    Date de crÃ©ation: 2025-05-10
 #>
 [CmdletBinding()]
 param (
@@ -46,19 +46,19 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $SkillsListPath)) {
-    Write-Error "Le fichier de la liste des compétences n'existe pas : $SkillsListPath"
+    Write-Error "Le fichier de la liste des compÃ©tences n'existe pas : $SkillsListPath"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour extraire les compétences de la liste Markdown
+# Fonction pour extraire les compÃ©tences de la liste Markdown
 function Extract-SkillsFromList {
     [CmdletBinding()]
     param (
@@ -71,10 +71,10 @@ function Extract-SkillsFromList {
     $currentManager = $null
     $currentImprovement = $null
 
-    # Utiliser une expression régulière pour extraire les sections des gestionnaires
+    # Utiliser une expression rÃ©guliÃ¨re pour extraire les sections des gestionnaires
     $managerPattern = '## <a name=''([^'']+)''></a>([^\n]+)'
     $improvementPattern = '### ([^\n]+)'
-    $skillsTablePattern = '\| Catégorie \| Compétence \| Niveau \| Justification \|[\r\n]+\|[^\n]+\|[\r\n]+((?:\|[^\n]+\|[\r\n]+)+)'
+    $skillsTablePattern = '\| CatÃ©gorie \| CompÃ©tence \| Niveau \| Justification \|[\r\n]+\|[^\n]+\|[\r\n]+((?:\|[^\n]+\|[\r\n]+)+)'
     $skillRowPattern = '\| ([^|]+) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|'
 
     # Extraire les gestionnaires
@@ -90,24 +90,24 @@ function Extract-SkillsFromList {
             $managerContent = $managerContent.Substring(0, $managerMatch.Length + $nextManagerMatch.Index)
         }
         
-        # Extraire les améliorations
+        # Extraire les amÃ©liorations
         $improvementMatches = [regex]::Matches($managerContent, $improvementPattern)
         foreach ($improvementMatch in $improvementMatches) {
             $improvementName = $improvementMatch.Groups[1].Value.Trim()
             
-            # Extraire le contenu de la section de l'amélioration
+            # Extraire le contenu de la section de l'amÃ©lioration
             $improvementContent = $managerContent.Substring($improvementMatch.Index)
             $nextImprovementMatch = [regex]::Match($improvementContent.Substring($improvementMatch.Length), $improvementPattern)
             if ($nextImprovementMatch.Success) {
                 $improvementContent = $improvementContent.Substring(0, $improvementMatch.Length + $nextImprovementMatch.Index)
             }
             
-            # Extraire la table des compétences
+            # Extraire la table des compÃ©tences
             $skillsTableMatch = [regex]::Match($improvementContent, $skillsTablePattern)
             if ($skillsTableMatch.Success) {
                 $skillsTable = $skillsTableMatch.Groups[1].Value
                 
-                # Extraire les lignes de compétences
+                # Extraire les lignes de compÃ©tences
                 $skillRowMatches = [regex]::Matches($skillsTable, $skillRowPattern)
                 foreach ($skillRowMatch in $skillRowMatches) {
                     $category = $skillRowMatch.Groups[1].Value.Trim()
@@ -134,7 +134,7 @@ function Extract-SkillsFromList {
     }
 }
 
-# Fonction pour identifier les compétences communes
+# Fonction pour identifier les compÃ©tences communes
 function Identify-CommonSkills {
     [CmdletBinding()]
     param (
@@ -145,13 +145,13 @@ function Identify-CommonSkills {
         [int]$MinimumOccurrences
     )
 
-    # Regrouper les compétences par nom et compter les occurrences
+    # Regrouper les compÃ©tences par nom et compter les occurrences
     $skillOccurrences = $Skills | Group-Object -Property Skill | Sort-Object -Property Count -Descending
     
-    # Filtrer les compétences qui apparaissent au moins le nombre minimum de fois
+    # Filtrer les compÃ©tences qui apparaissent au moins le nombre minimum de fois
     $commonSkills = $skillOccurrences | Where-Object { $_.Count -ge $MinimumOccurrences }
     
-    # Pour chaque compétence commune, identifier les améliorations qui l'utilisent
+    # Pour chaque compÃ©tence commune, identifier les amÃ©liorations qui l'utilisent
     $commonSkillsDetails = $commonSkills | ForEach-Object {
         $skillName = $_.Name
         $occurrences = $_.Count
@@ -166,7 +166,7 @@ function Identify-CommonSkills {
             }
         }
         
-        # Regrouper par catégorie
+        # Regrouper par catÃ©gorie
         $categoryDistribution = $skillInstances | Group-Object -Property Category | ForEach-Object {
             [PSCustomObject]@{
                 Category = $_.Name
@@ -184,7 +184,7 @@ function Identify-CommonSkills {
             }
         }
         
-        # Identifier les améliorations qui utilisent cette compétence
+        # Identifier les amÃ©liorations qui utilisent cette compÃ©tence
         $improvements = $skillInstances | Select-Object -Property Manager, Improvement -Unique | ForEach-Object {
             [PSCustomObject]@{
                 Manager = $_.Manager
@@ -205,7 +205,7 @@ function Identify-CommonSkills {
     return $commonSkillsDetails
 }
 
-# Fonction pour générer le rapport au format Markdown
+# Fonction pour gÃ©nÃ©rer le rapport au format Markdown
 function Generate-MarkdownReport {
     [CmdletBinding()]
     param (
@@ -216,30 +216,30 @@ function Generate-MarkdownReport {
         [int]$MinimumOccurrences
     )
 
-    $markdown = "# Compétences Communes à Plusieurs Améliorations`n`n"
-    $markdown += "Ce document présente les compétences qui sont communes à plusieurs améliorations, ce qui permet de déterminer les compétences les plus importantes et polyvalentes.`n`n"
+    $markdown = "# CompÃ©tences Communes Ã  Plusieurs AmÃ©liorations`n`n"
+    $markdown += "Ce document prÃ©sente les compÃ©tences qui sont communes Ã  plusieurs amÃ©liorations, ce qui permet de dÃ©terminer les compÃ©tences les plus importantes et polyvalentes.`n`n"
     
-    $markdown += "## Critères d'Identification`n`n"
-    $markdown += "Une compétence est considérée comme commune si elle apparaît dans au moins $MinimumOccurrences améliorations différentes.`n`n"
+    $markdown += "## CritÃ¨res d'Identification`n`n"
+    $markdown += "Une compÃ©tence est considÃ©rÃ©e comme commune si elle apparaÃ®t dans au moins $MinimumOccurrences amÃ©liorations diffÃ©rentes.`n`n"
     
-    $markdown += "## Table des Matières`n`n"
-    $markdown += "- [Résumé](#résumé)`n"
-    $markdown += "- [Compétences Communes](#compétences-communes)`n"
+    $markdown += "## Table des MatiÃ¨res`n`n"
+    $markdown += "- [RÃ©sumÃ©](#rÃ©sumÃ©)`n"
+    $markdown += "- [CompÃ©tences Communes](#compÃ©tences-communes)`n"
     foreach ($skill in $CommonSkills) {
         $markdown += "  - [$($skill.Skill)](#$($skill.Skill.ToLower().Replace(' ', '-').Replace('/', '-').Replace('(', '').Replace(')', '').Replace('.', '')))`n"
     }
     
-    # Résumé
-    $markdown += "`n## <a name='résumé'></a>Résumé`n`n"
+    # RÃ©sumÃ©
+    $markdown += "`n## <a name='rÃ©sumÃ©'></a>RÃ©sumÃ©`n`n"
     
     $totalCommonSkills = $CommonSkills.Count
     $totalOccurrences = ($CommonSkills | Measure-Object -Property Occurrences -Sum).Sum
     
-    $markdown += "**Nombre total de compétences communes :** $totalCommonSkills`n`n"
+    $markdown += "**Nombre total de compÃ©tences communes :** $totalCommonSkills`n`n"
     $markdown += "**Nombre total d'occurrences :** $totalOccurrences`n`n"
     
-    $markdown += "### Compétences les Plus Communes`n`n"
-    $markdown += "| Compétence | Occurrences | Pourcentage |`n"
+    $markdown += "### CompÃ©tences les Plus Communes`n`n"
+    $markdown += "| CompÃ©tence | Occurrences | Pourcentage |`n"
     $markdown += "|------------|-------------|-------------|`n"
     
     foreach ($skill in $CommonSkills | Sort-Object -Property Occurrences -Descending | Select-Object -First 10) {
@@ -247,8 +247,8 @@ function Generate-MarkdownReport {
         $markdown += "| $($skill.Skill) | $($skill.Occurrences) | $percentage% |`n"
     }
     
-    # Compétences communes
-    $markdown += "`n## <a name='compétences-communes'></a>Compétences Communes`n`n"
+    # CompÃ©tences communes
+    $markdown += "`n## <a name='compÃ©tences-communes'></a>CompÃ©tences Communes`n`n"
     
     foreach ($skill in $CommonSkills) {
         $markdown += "### <a name='$($skill.Skill.ToLower().Replace(' ', '-').Replace('/', '-').Replace('(', '').Replace(')', '').Replace('.', ''))'></a>$($skill.Skill)`n`n"
@@ -262,8 +262,8 @@ function Generate-MarkdownReport {
             $markdown += "| $($level.Level) | $($level.Count) | $($level.Percentage)% |`n"
         }
         
-        $markdown += "`n#### Distribution par Catégorie`n`n"
-        $markdown += "| Catégorie | Occurrences | Pourcentage |`n"
+        $markdown += "`n#### Distribution par CatÃ©gorie`n`n"
+        $markdown += "| CatÃ©gorie | Occurrences | Pourcentage |`n"
         $markdown += "|-----------|-------------|-------------|`n"
         
         foreach ($category in $skill.CategoryDistribution | Sort-Object -Property Count -Descending) {
@@ -278,8 +278,8 @@ function Generate-MarkdownReport {
             $markdown += "| $($manager.Manager) | $($manager.Count) | $($manager.Percentage)% |`n"
         }
         
-        $markdown += "`n#### Améliorations Utilisant cette Compétence`n`n"
-        $markdown += "| Gestionnaire | Amélioration |`n"
+        $markdown += "`n#### AmÃ©liorations Utilisant cette CompÃ©tence`n`n"
+        $markdown += "| Gestionnaire | AmÃ©lioration |`n"
         $markdown += "|--------------|--------------|`n"
         
         foreach ($improvement in $skill.Improvements | Sort-Object -Property Manager, Improvement) {
@@ -290,17 +290,17 @@ function Generate-MarkdownReport {
     }
     
     $markdown += "## Implications pour la Planification des Ressources`n`n"
-    $markdown += "Les compétences communes identifiées dans ce document ont plusieurs implications importantes pour la planification des ressources humaines :`n`n"
-    $markdown += "1. **Priorité de formation** : Ces compétences devraient être prioritaires dans les programmes de formation, car elles sont nécessaires pour plusieurs améliorations.`n"
-    $markdown += "2. **Recrutement ciblé** : Lors du recrutement, il est judicieux de rechercher des candidats possédant ces compétences communes.`n"
-    $markdown += "3. **Allocation des ressources** : Les membres de l'équipe possédant ces compétences communes peuvent être alloués de manière plus flexible entre différentes améliorations.`n"
-    $markdown += "4. **Développement de l'expertise** : Il est stratégique de développer une expertise approfondie dans ces compétences communes au sein de l'équipe.`n"
-    $markdown += "5. **Gestion des connaissances** : Une documentation et un partage des connaissances solides devraient être mis en place pour ces compétences communes.`n"
+    $markdown += "Les compÃ©tences communes identifiÃ©es dans ce document ont plusieurs implications importantes pour la planification des ressources humaines :`n`n"
+    $markdown += "1. **PrioritÃ© de formation** : Ces compÃ©tences devraient Ãªtre prioritaires dans les programmes de formation, car elles sont nÃ©cessaires pour plusieurs amÃ©liorations.`n"
+    $markdown += "2. **Recrutement ciblÃ©** : Lors du recrutement, il est judicieux de rechercher des candidats possÃ©dant ces compÃ©tences communes.`n"
+    $markdown += "3. **Allocation des ressources** : Les membres de l'Ã©quipe possÃ©dant ces compÃ©tences communes peuvent Ãªtre allouÃ©s de maniÃ¨re plus flexible entre diffÃ©rentes amÃ©liorations.`n"
+    $markdown += "4. **DÃ©veloppement de l'expertise** : Il est stratÃ©gique de dÃ©velopper une expertise approfondie dans ces compÃ©tences communes au sein de l'Ã©quipe.`n"
+    $markdown += "5. **Gestion des connaissances** : Une documentation et un partage des connaissances solides devraient Ãªtre mis en place pour ces compÃ©tences communes.`n"
     
     return $markdown
 }
 
-# Fonction pour générer le rapport au format CSV
+# Fonction pour gÃ©nÃ©rer le rapport au format CSV
 function Generate-CsvReport {
     [CmdletBinding()]
     param (
@@ -325,7 +325,7 @@ function Generate-CsvReport {
     return $csv
 }
 
-# Fonction pour générer le rapport au format JSON
+# Fonction pour gÃ©nÃ©rer le rapport au format JSON
 function Generate-JsonReport {
     [CmdletBinding()]
     param (
@@ -362,17 +362,17 @@ function Generate-JsonReport {
     return $jsonData | ConvertTo-Json -Depth 10
 }
 
-# Lire le contenu de la liste des compétences
+# Lire le contenu de la liste des compÃ©tences
 $listContent = Get-Content -Path $SkillsListPath -Raw
 
-# Extraire les compétences de la liste
+# Extraire les compÃ©tences de la liste
 $extractionResult = Extract-SkillsFromList -MarkdownContent $listContent
 $skills = $extractionResult.Skills
 
-# Identifier les compétences communes
+# Identifier les compÃ©tences communes
 $commonSkills = Identify-CommonSkills -Skills $skills -MinimumOccurrences $MinimumOccurrences
 
-# Générer le rapport dans le format spécifié
+# GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $reportContent = Generate-MarkdownReport -CommonSkills $commonSkills -MinimumOccurrences $MinimumOccurrences
@@ -388,23 +388,23 @@ switch ($Format) {
 # Enregistrer le rapport
 try {
     $reportContent | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Compétences communes identifiées avec succès : $OutputPath"
+    Write-Host "CompÃ©tences communes identifiÃ©es avec succÃ¨s : $OutputPath"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du rapport : $_"
     exit 1
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'identification des compétences communes :"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'identification des compÃ©tences communes :"
 Write-Host "---------------------------------------------------"
 
 $totalCommonSkills = $commonSkills.Count
 $totalOccurrences = ($commonSkills | Measure-Object -Property Occurrences -Sum).Sum
 
-Write-Host "  Nombre total de compétences communes : $totalCommonSkills"
+Write-Host "  Nombre total de compÃ©tences communes : $totalCommonSkills"
 Write-Host "  Nombre total d'occurrences : $totalOccurrences"
 
-Write-Host "`nTop 5 des compétences les plus communes :"
+Write-Host "`nTop 5 des compÃ©tences les plus communes :"
 foreach ($skill in $commonSkills | Sort-Object -Property Occurrences -Descending | Select-Object -First 5) {
     $percentage = [Math]::Round(($skill.Occurrences / $totalOccurrences) * 100, 1)
     Write-Host "  $($skill.Skill) : $($skill.Occurrences) occurrences ($percentage%)"

@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fonctions auxiliaires pour la détection et l'analyse des formats de configuration.
+    Fonctions auxiliaires pour la dÃ©tection et l'analyse des formats de configuration.
 .DESCRIPTION
-    Ce fichier contient des fonctions privées utilisées pour détecter le format
+    Ce fichier contient des fonctions privÃ©es utilisÃ©es pour dÃ©tecter le format
     des fichiers de configuration et analyser leur structure.
 #>
 
@@ -48,7 +48,7 @@ function Test-YamlContent {
         [string]$Content
     )
 
-    # Vérifier si le contenu commence par des indicateurs YAML typiques
+    # VÃ©rifier si le contenu commence par des indicateurs YAML typiques
     if ($Content -match '^\s*---' -or
         $Content -match '^\s*[a-zA-Z0-9_-]+\s*:' -or
         $Content -match '^\s*-\s+[a-zA-Z0-9_-]+\s*:') {
@@ -60,7 +60,7 @@ function Test-YamlContent {
                 $null = ConvertFrom-Yaml -Yaml $Content -ErrorAction Stop
                 return $true
             } catch {
-                # Si l'analyse échoue, ce n'est probablement pas du YAML valide
+                # Si l'analyse Ã©choue, ce n'est probablement pas du YAML valide
                 return $false
             }
         }
@@ -94,8 +94,8 @@ function Test-IniContent {
         [string]$Content
     )
 
-    # Vérifier si le contenu correspond au format INI (sections entre crochets suivies de paires clé=valeur)
-    # Utiliser le multiline mode pour que ^ et $ correspondent au début et à la fin de chaque ligne
+    # VÃ©rifier si le contenu correspond au format INI (sections entre crochets suivies de paires clÃ©=valeur)
+    # Utiliser le multiline mode pour que ^ et $ correspondent au dÃ©but et Ã  la fin de chaque ligne
     return $Content -match '(?m)^\s*\[[^\]]+\]\s*$' -and $Content -match '(?m)^\s*[^=]+=.*$'
 }
 
@@ -106,7 +106,7 @@ function Test-Psd1Content {
         [string]$Content
     )
 
-    # Vérifier si le contenu ressemble à un fichier de données PowerShell
+    # VÃ©rifier si le contenu ressemble Ã  un fichier de donnÃ©es PowerShell
     return $Content -match '@\s*{' -and $Content -match '}'
 }
 
@@ -117,7 +117,7 @@ function Get-ContentFormat {
         [string]$Content
     )
 
-    # Tester chaque format dans l'ordre de priorité
+    # Tester chaque format dans l'ordre de prioritÃ©
     if (Test-JsonContent -Content $Content) {
         return "JSON"
     } elseif (Test-YamlContent -Content $Content) {
@@ -204,7 +204,7 @@ function ConvertTo-Hashtable {
         [object]$InputObject
     )
 
-    # Si l'objet est déjà un hashtable, le retourner tel quel
+    # Si l'objet est dÃ©jÃ  un hashtable, le retourner tel quel
     if ($InputObject -is [hashtable]) {
         return $InputObject
     }
@@ -218,7 +218,7 @@ function ConvertTo-Hashtable {
         return $hashtable
     }
 
-    # Si l'objet est un tableau, convertir chaque élément
+    # Si l'objet est un tableau, convertir chaque Ã©lÃ©ment
     if ($InputObject -is [System.Collections.IEnumerable] -and $InputObject -isnot [string]) {
         $array = @()
         foreach ($item in $InputObject) {
@@ -260,7 +260,7 @@ function ConvertFrom-Ini {
             continue
         }
 
-        # Traiter les paires clé=valeur
+        # Traiter les paires clÃ©=valeur
         if ($line -match '^\s*([^=]+?)\s*=\s*(.*?)\s*$') {
             $key = $matches[1].Trim()
             $value = $matches[2].Trim()

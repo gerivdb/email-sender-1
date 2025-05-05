@@ -1,22 +1,22 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute des tests de performance pour le script manager.
+    ExÃ©cute des tests de performance pour le script manager.
 .DESCRIPTION
-    Ce script exécute des tests de performance pour mesurer les performances
+    Ce script exÃ©cute des tests de performance pour mesurer les performances
     des fonctions critiques du script manager.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de tests.
 .PARAMETER Iterations
-    Nombre d'itérations pour chaque test de performance.
+    Nombre d'itÃ©rations pour chaque test de performance.
 .PARAMETER GenerateHTML
-    Génère un rapport HTML des résultats des tests.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests.
 .EXAMPLE
     .\Run-PerformanceTests.ps1 -OutputPath ".\reports\performance" -Iterations 10 -GenerateHTML
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -31,7 +31,7 @@ param (
     [switch]$GenerateHTML
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -56,10 +56,10 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
 # Fonction pour mesurer les performances d'une fonction
@@ -80,31 +80,31 @@ function Measure-FunctionPerformance {
     
     $results = @()
     for ($i = 1; $i -le $Iterations; $i++) {
-        Write-Log "  Itération $i/$Iterations..." -Level "INFO"
+        Write-Log "  ItÃ©ration $i/$Iterations..." -Level "INFO"
         
-        # Mesurer le temps d'exécution
+        # Mesurer le temps d'exÃ©cution
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         
-        # Exécuter la fonction
+        # ExÃ©cuter la fonction
         try {
             & $ScriptBlock
             $success = $true
         }
         catch {
-            Write-Log "Erreur lors de l'exécution de la fonction: $_" -Level "ERROR"
+            Write-Log "Erreur lors de l'exÃ©cution de la fonction: $_" -Level "ERROR"
             $success = $false
         }
         
         $stopwatch.Stop()
         $executionTime = $stopwatch.Elapsed
         
-        # Mesurer l'utilisation de la mémoire
+        # Mesurer l'utilisation de la mÃ©moire
         $memoryBefore = [System.GC]::GetTotalMemory($true)
         & $ScriptBlock
         $memoryAfter = [System.GC]::GetTotalMemory($true)
         $memoryUsage = $memoryAfter - $memoryBefore
         
-        # Ajouter les résultats
+        # Ajouter les rÃ©sultats
         $results += [PSCustomObject]@{
             Iteration = $i
             ExecutionTime = $executionTime
@@ -132,15 +132,15 @@ function Measure-FunctionPerformance {
     return $stats
 }
 
-# Charger les fonctions à tester
+# Charger les fonctions Ã  tester
 . "$PSScriptRoot/../organization/Organize-ManagerScripts.ps1"
 
-# Définir les tests de performance
+# DÃ©finir les tests de performance
 $performanceTests = @(
     @{
         Name = "Get-ScriptCategory"
         ScriptBlock = {
-            # Tester avec différents noms de fichiers
+            # Tester avec diffÃ©rents noms de fichiers
             $fileNames = @(
                 "Analyze-Scripts.ps1",
                 "Organize-Scripts.ps1",
@@ -164,11 +164,11 @@ $performanceTests = @(
     @{
         Name = "Backup-File"
         ScriptBlock = {
-            # Créer un fichier temporaire
+            # CrÃ©er un fichier temporaire
             $tempFile = [System.IO.Path]::GetTempFileName()
             "Test content" | Out-File -FilePath $tempFile -Encoding utf8
             
-            # Créer une sauvegarde
+            # CrÃ©er une sauvegarde
             Backup-File -FilePath $tempFile | Out-Null
             
             # Supprimer les fichiers
@@ -178,33 +178,33 @@ $performanceTests = @(
     }
 )
 
-# Exécuter les tests de performance
+# ExÃ©cuter les tests de performance
 $performanceResults = @()
 foreach ($test in $performanceTests) {
     $result = Measure-FunctionPerformance -Name $test.Name -ScriptBlock $test.ScriptBlock -Iterations $Iterations
     $performanceResults += $result
     
-    Write-Log "Résultats pour la fonction '$($result.Name)':" -Level "INFO"
-    Write-Log "  Temps d'exécution moyen: $([math]::Round($result.AverageExecutionTime, 2)) ms" -Level "INFO"
-    Write-Log "  Utilisation mémoire moyenne: $([math]::Round($result.AverageMemoryUsage, 2)) KB" -Level "INFO"
-    Write-Log "  Taux de réussite: $([math]::Round($result.SuccessRate, 2))%" -Level "INFO"
+    Write-Log "RÃ©sultats pour la fonction '$($result.Name)':" -Level "INFO"
+    Write-Log "  Temps d'exÃ©cution moyen: $([math]::Round($result.AverageExecutionTime, 2)) ms" -Level "INFO"
+    Write-Log "  Utilisation mÃ©moire moyenne: $([math]::Round($result.AverageMemoryUsage, 2)) KB" -Level "INFO"
+    Write-Log "  Taux de rÃ©ussite: $([math]::Round($result.SuccessRate, 2))%" -Level "INFO"
 }
 
-# Exporter les résultats au format JSON
+# Exporter les rÃ©sultats au format JSON
 $jsonPath = Join-Path -Path $OutputPath -ChildPath "PerformanceResults.json"
 $performanceResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $jsonPath -Encoding utf8
-Write-Log "Résultats exportés au format JSON: $jsonPath" -Level "SUCCESS"
+Write-Log "RÃ©sultats exportÃ©s au format JSON: $jsonPath" -Level "SUCCESS"
 
-# Exporter les résultats au format CSV
+# Exporter les rÃ©sultats au format CSV
 $csvPath = Join-Path -Path $OutputPath -ChildPath "PerformanceResults.csv"
 $performanceResults | Select-Object Name, Iterations, AverageExecutionTime, MinExecutionTime, MaxExecutionTime, AverageMemoryUsage, MinMemoryUsage, MaxMemoryUsage, SuccessRate | Export-Csv -Path $csvPath -NoTypeInformation -Encoding utf8
-Write-Log "Résultats exportés au format CSV: $csvPath" -Level "SUCCESS"
+Write-Log "RÃ©sultats exportÃ©s au format CSV: $csvPath" -Level "SUCCESS"
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "PerformanceResults.html"
     
-    # Créer un rapport HTML
+    # CrÃ©er un rapport HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -227,17 +227,17 @@ if ($GenerateHTML) {
 </head>
 <body>
     <h1>Rapport de performance du script manager</h1>
-    <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <table>
             <tr>
                 <th>Fonction</th>
-                <th>Itérations</th>
-                <th>Temps d'exécution moyen (ms)</th>
-                <th>Utilisation mémoire moyenne (KB)</th>
-                <th>Taux de réussite (%)</th>
+                <th>ItÃ©rations</th>
+                <th>Temps d'exÃ©cution moyen (ms)</th>
+                <th>Utilisation mÃ©moire moyenne (KB)</th>
+                <th>Taux de rÃ©ussite (%)</th>
             </tr>
 "@
 
@@ -267,7 +267,7 @@ if ($GenerateHTML) {
         <canvas id="memoryUsageChart"></canvas>
     </div>
     
-    <h2>Détails</h2>
+    <h2>DÃ©tails</h2>
 "@
 
     foreach ($result in $performanceResults) {
@@ -275,10 +275,10 @@ if ($GenerateHTML) {
     <h3>$($result.Name)</h3>
     <table>
         <tr>
-            <th>Itération</th>
-            <th>Temps d'exécution (ms)</th>
-            <th>Utilisation mémoire (KB)</th>
-            <th>Réussite</th>
+            <th>ItÃ©ration</th>
+            <th>Temps d'exÃ©cution (ms)</th>
+            <th>Utilisation mÃ©moire (KB)</th>
+            <th>RÃ©ussite</th>
         </tr>
 "@
 
@@ -301,19 +301,19 @@ if ($GenerateHTML) {
     $htmlContent += @"
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const functions = [$(($performanceResults | ForEach-Object { "'$($_.Name)'" }) -join ", ")];
         const executionTimes = [$(($performanceResults | ForEach-Object { $_.AverageExecutionTime }) -join ", ")];
         const memoryUsages = [$(($performanceResults | ForEach-Object { $_.AverageMemoryUsage }) -join ", ")];
         
-        // Graphique des temps d'exécution
+        // Graphique des temps d'exÃ©cution
         const executionTimeCtx = document.getElementById('executionTimeChart').getContext('2d');
         new Chart(executionTimeCtx, {
             type: 'bar',
             data: {
                 labels: functions,
                 datasets: [{
-                    label: 'Temps d\'exécution moyen (ms)',
+                    label: 'Temps d\'exÃ©cution moyen (ms)',
                     data: executionTimes,
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -325,7 +325,7 @@ if ($GenerateHTML) {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Temps d\'exécution moyen par fonction'
+                        text: 'Temps d\'exÃ©cution moyen par fonction'
                     }
                 },
                 scales: {
@@ -340,14 +340,14 @@ if ($GenerateHTML) {
             }
         });
         
-        // Graphique de l'utilisation mémoire
+        // Graphique de l'utilisation mÃ©moire
         const memoryUsageCtx = document.getElementById('memoryUsageChart').getContext('2d');
         new Chart(memoryUsageCtx, {
             type: 'bar',
             data: {
                 labels: functions,
                 datasets: [{
-                    label: 'Utilisation mémoire moyenne (KB)',
+                    label: 'Utilisation mÃ©moire moyenne (KB)',
                     data: memoryUsages,
                     backgroundColor: 'rgba(255, 99, 132, 0.5)',
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -359,7 +359,7 @@ if ($GenerateHTML) {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Utilisation mémoire moyenne par fonction'
+                        text: 'Utilisation mÃ©moire moyenne par fonction'
                     }
                 },
                 scales: {
@@ -367,7 +367,7 @@ if ($GenerateHTML) {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Mémoire (KB)'
+                            text: 'MÃ©moire (KB)'
                         }
                     }
                 }
@@ -380,7 +380,7 @@ if ($GenerateHTML) {
     
     $htmlContent | Out-File -FilePath $htmlPath -Encoding utf8
     
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
-Write-Log "Tests de performance terminés." -Level "SUCCESS"
+Write-Log "Tests de performance terminÃ©s." -Level "SUCCESS"

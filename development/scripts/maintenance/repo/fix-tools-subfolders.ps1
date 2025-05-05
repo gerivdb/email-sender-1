@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
     Corrige les noms des sous-dossiers du dossier development/tools.
 
 .DESCRIPTION
     Ce script corrige les noms des sous-dossiers du dossier development/tools
-    en supprimant le suffixe -tools-tools et en le remplaçant par -tools.
+    en supprimant le suffixe -tools-tools et en le remplaÃ§ant par -tools.
 
 .EXAMPLE
     .\fix-tools-subfolders.ps1
     
 .NOTES
     Auteur: Augment Agent
-    Date de création: 28/04/2025
+    Date de crÃ©ation: 28/04/2025
 #>
 
 # Fonction principale
@@ -23,10 +23,10 @@ function Fix-ToolsSubfolders {
         Write-Host "Correction des noms des sous-dossiers du dossier development/tools..." -ForegroundColor Cyan
         $ErrorActionPreference = "Stop"
         
-        # Définir le chemin du dossier tools
+        # DÃ©finir le chemin du dossier tools
         $toolsRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\tools"
         
-        # Vérifier que le dossier existe
+        # VÃ©rifier que le dossier existe
         if (-not (Test-Path $toolsRoot)) {
             Write-Error "Le dossier development\tools n'existe pas : $toolsRoot"
             return $false
@@ -35,7 +35,7 @@ function Fix-ToolsSubfolders {
         # Obtenir la liste des sous-dossiers
         $subfolders = Get-ChildItem -Path $toolsRoot -Directory | Sort-Object Name
         
-        # Créer un tableau pour stocker les mappages de noms
+        # CrÃ©er un tableau pour stocker les mappages de noms
         $folderMappings = @{}
         
         # Remplir le tableau avec les mappages de noms
@@ -59,15 +59,15 @@ function Fix-ToolsSubfolders {
                 if (Test-Path $oldPath) {
                     if ($PSCmdlet.ShouldProcess("$oldPath -> $newPath", "Renommer le dossier")) {
                         Rename-Item -Path $oldPath -NewName $newName -Force
-                        Write-Host "  Dossier renommé : $oldPath -> $newPath" -ForegroundColor Green
+                        Write-Host "  Dossier renommÃ© : $oldPath -> $newPath" -ForegroundColor Green
                     }
                 }
                 else {
-                    Write-Host "  Dossier non trouvé : $oldPath" -ForegroundColor Yellow
+                    Write-Host "  Dossier non trouvÃ© : $oldPath" -ForegroundColor Yellow
                 }
             }
             
-            # Mettre à jour le fichier README.md
+            # Mettre Ã  jour le fichier README.md
             $readmePath = Join-Path -Path $toolsRoot -ChildPath "README.md"
             
             if (Test-Path $readmePath) {
@@ -79,16 +79,16 @@ function Fix-ToolsSubfolders {
                     $readmeContent = $readmeContent -replace "- \*\*$oldName/\*\*", "- **$newName/**"
                 }
                 
-                if ($PSCmdlet.ShouldProcess($readmePath, "Mettre à jour le fichier README.md")) {
+                if ($PSCmdlet.ShouldProcess($readmePath, "Mettre Ã  jour le fichier README.md")) {
                     Set-Content -Path $readmePath -Value $readmeContent -Force
-                    Write-Host "  Fichier README.md mis à jour : $readmePath" -ForegroundColor Green
+                    Write-Host "  Fichier README.md mis Ã  jour : $readmePath" -ForegroundColor Green
                 }
             }
             else {
-                Write-Host "  Fichier README.md non trouvé : $readmePath" -ForegroundColor Yellow
+                Write-Host "  Fichier README.md non trouvÃ© : $readmePath" -ForegroundColor Yellow
             }
             
-            # Mettre à jour le script de mise à jour des références
+            # Mettre Ã  jour le script de mise Ã  jour des rÃ©fÃ©rences
             $updateReferencesScriptPath = Join-Path -Path (Get-Location).Path -ChildPath "development\scripts\maintenance\references\update-tools-references.ps1"
             
             if (Test-Path $updateReferencesScriptPath) {
@@ -103,13 +103,13 @@ function Fix-ToolsSubfolders {
                     $updateReferencesScriptContent = $updateReferencesScriptContent -replace "Description = ""Renommage du dossier $baseName en $oldName""", "Description = ""Renommage du dossier $baseName en $newName"""
                 }
                 
-                if ($PSCmdlet.ShouldProcess($updateReferencesScriptPath, "Mettre à jour le script de mise à jour des références")) {
+                if ($PSCmdlet.ShouldProcess($updateReferencesScriptPath, "Mettre Ã  jour le script de mise Ã  jour des rÃ©fÃ©rences")) {
                     Set-Content -Path $updateReferencesScriptPath -Value $updateReferencesScriptContent -Force
-                    Write-Host "  Script de mise à jour des références mis à jour : $updateReferencesScriptPath" -ForegroundColor Green
+                    Write-Host "  Script de mise Ã  jour des rÃ©fÃ©rences mis Ã  jour : $updateReferencesScriptPath" -ForegroundColor Green
                 }
             }
             else {
-                Write-Host "  Script de mise à jour des références non trouvé : $updateReferencesScriptPath" -ForegroundColor Yellow
+                Write-Host "  Script de mise Ã  jour des rÃ©fÃ©rences non trouvÃ© : $updateReferencesScriptPath" -ForegroundColor Yellow
             }
         }
         catch {
@@ -119,8 +119,8 @@ function Fix-ToolsSubfolders {
     }
     
     end {
-        Write-Host "`nCorrection des noms des sous-dossiers terminée !" -ForegroundColor Cyan
-        Write-Host "`nPour mettre à jour les références dans les fichiers du projet, exécutez le script suivant :" -ForegroundColor Yellow
+        Write-Host "`nCorrection des noms des sous-dossiers terminÃ©e !" -ForegroundColor Cyan
+        Write-Host "`nPour mettre Ã  jour les rÃ©fÃ©rences dans les fichiers du projet, exÃ©cutez le script suivant :" -ForegroundColor Yellow
         Write-Host "  .\development\scripts\maintenance\references\update-tools-references.ps1" -ForegroundColor Yellow
         return $true
     }

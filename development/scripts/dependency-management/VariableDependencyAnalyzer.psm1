@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 <#
 .SYNOPSIS
-    Module pour l'analyse des dépendances de variables dans les scripts PowerShell.
+    Module pour l'analyse des dÃ©pendances de variables dans les scripts PowerShell.
 
 .DESCRIPTION
     Ce module fournit des fonctions pour analyser les utilisations de variables dans les scripts PowerShell,
-    détecter les variables définies vs. utilisées, et générer un graphe de dépendances de variables.
+    dÃ©tecter les variables dÃ©finies vs. utilisÃ©es, et gÃ©nÃ©rer un graphe de dÃ©pendances de variables.
 
 .NOTES
     Auteur: Dependency Management Team
     Version: 1.0
-    Date de création: 2023-07-25
+    Date de crÃ©ation: 2023-07-25
 #>
 
 # Aucun module externe requis pour ce module
@@ -36,7 +36,7 @@ function Get-VariableUsageAnalysis {
     $tokens = $errors = $null
     if ($PSCmdlet.ParameterSetName -eq 'Path') {
         if (-not (Test-Path -Path $ScriptPath -PathType Leaf)) {
-            throw "Le fichier spécifié n'existe pas: $ScriptPath"
+            throw "Le fichier spÃ©cifiÃ© n'existe pas: $ScriptPath"
         }
         $ast = [System.Management.Automation.Language.Parser]::ParseFile($ScriptPath, [ref]$tokens, [ref]$errors)
         $scriptName = Split-Path -Path $ScriptPath -Leaf
@@ -45,9 +45,9 @@ function Get-VariableUsageAnalysis {
         $scriptName = "ScriptContent"
     }
 
-    # Vérifier les erreurs de parsing
+    # VÃ©rifier les erreurs de parsing
     if ($errors -and $errors.Count -gt 0) {
-        Write-Warning "Des erreurs de parsing ont été détectées dans le script:"
+        Write-Warning "Des erreurs de parsing ont Ã©tÃ© dÃ©tectÃ©es dans le script:"
         foreach ($error in $errors) {
             Write-Warning "Ligne $($error.Extent.StartLineNumber), Colonne $($error.Extent.StartColumnNumber): $($error.Message)"
         }
@@ -65,27 +65,27 @@ function Get-VariableUsageAnalysis {
         $node.GetType().Name -eq 'AssignmentStatementAst'
     }, $true)
 
-    # Collecter les résultats
+    # Collecter les rÃ©sultats
     $results = @()
 
-    # Variables système à exclure si demandé
+    # Variables systÃ¨me Ã  exclure si demandÃ©
     $systemVariables = @('_', 'PSItem', 'args', 'input', 'PSCmdlet', 'MyInvocation', 'PSBoundParameters', 'PSScriptRoot', 'PSCommandPath', 'error', 'foreach', 'this', 'null', 'true', 'false')
 
     # Traiter les assignations de variables
     foreach ($assignment in $assignmentStatements) {
         $variableName = $null
         
-        # Extraire le nom de la variable assignée
+        # Extraire le nom de la variable assignÃ©e
         if ($assignment.Left.GetType().Name -eq 'VariableExpressionAst') {
             $variableName = $assignment.Left.VariablePath.UserPath
         }
         
-        # Ignorer les variables système si demandé
+        # Ignorer les variables systÃ¨me si demandÃ©
         if (-not $IncludeSystemVariables -and $systemVariables -contains $variableName) {
             continue
         }
         
-        # Ignorer les variables d'environnement si demandé
+        # Ignorer les variables d'environnement si demandÃ©
         if (-not $IncludeEnvironmentVariables -and $variableName -like 'env:*') {
             continue
         }
@@ -108,17 +108,17 @@ function Get-VariableUsageAnalysis {
     foreach ($varExpr in $variableExpressions) {
         $variableName = $varExpr.VariablePath.UserPath
         
-        # Ignorer les variables système si demandé
+        # Ignorer les variables systÃ¨me si demandÃ©
         if (-not $IncludeSystemVariables -and $systemVariables -contains $variableName) {
             continue
         }
         
-        # Ignorer les variables d'environnement si demandé
+        # Ignorer les variables d'environnement si demandÃ©
         if (-not $IncludeEnvironmentVariables -and $variableName -like 'env:*') {
             continue
         }
         
-        # Vérifier si cette variable est déjà dans les résultats comme une assignation
+        # VÃ©rifier si cette variable est dÃ©jÃ  dans les rÃ©sultats comme une assignation
         $existingAssignment = $results | Where-Object { 
             $_.Type -eq "Assignment" -and 
             $_.Name -eq $variableName -and 
@@ -126,7 +126,7 @@ function Get-VariableUsageAnalysis {
             $_.Column -eq $varExpr.Extent.StartColumnNumber
         }
         
-        # Si ce n'est pas une assignation déjà traitée, l'ajouter comme utilisation
+        # Si ce n'est pas une assignation dÃ©jÃ  traitÃ©e, l'ajouter comme utilisation
         if (-not $existingAssignment) {
             $results += [PSCustomObject]@{
                 ScriptName = $scriptName
@@ -141,7 +141,7 @@ function Get-VariableUsageAnalysis {
         }
     }
 
-    # Marquer les variables qui sont à la fois définies et utilisées
+    # Marquer les variables qui sont Ã  la fois dÃ©finies et utilisÃ©es
     $variableNames = $results | Select-Object -ExpandProperty Name -Unique
     foreach ($name in $variableNames) {
         $isDefined = $results | Where-Object { $_.Name -eq $name -and $_.Type -eq "Assignment" } | Select-Object -First 1
@@ -175,7 +175,7 @@ function Compare-VariableDefinitionsAndUsages {
     # Obtenir les utilisations de variables
     $variableUsages = Get-VariableUsageAnalysis -ScriptPath $ScriptPath -IncludeSystemVariables:$IncludeSystemVariables -IncludeEnvironmentVariables:$IncludeEnvironmentVariables
 
-    # Créer des dictionnaires pour les variables définies et utilisées
+    # CrÃ©er des dictionnaires pour les variables dÃ©finies et utilisÃ©es
     $definedVariables = @{}
     $usedVariables = @{}
 
@@ -194,7 +194,7 @@ function Compare-VariableDefinitionsAndUsages {
         }
     }
 
-    # Analyser les résultats
+    # Analyser les rÃ©sultats
     $results = [PSCustomObject]@{
         ScriptPath = $ScriptPath
         DefinedVariables = $variableUsages | Where-Object { $_.Type -eq "Assignment" }
@@ -203,7 +203,7 @@ function Compare-VariableDefinitionsAndUsages {
         UsedButNotDefined = @()
     }
 
-    # Trouver les variables définies mais non utilisées
+    # Trouver les variables dÃ©finies mais non utilisÃ©es
     foreach ($name in $definedVariables.Keys) {
         $isUsed = $usedVariables.ContainsKey($name)
         if (-not $isUsed) {
@@ -211,7 +211,7 @@ function Compare-VariableDefinitionsAndUsages {
         }
     }
 
-    # Trouver les variables utilisées mais non définies
+    # Trouver les variables utilisÃ©es mais non dÃ©finies
     foreach ($name in $usedVariables.Keys) {
         $isDefined = $definedVariables.ContainsKey($name)
         if (-not $isDefined) {
@@ -245,21 +245,21 @@ function New-VariableDependencyGraph {
     # Obtenir les utilisations de variables
     $variableUsages = Get-VariableUsageAnalysis -ScriptPath $ScriptPath -IncludeSystemVariables:$IncludeSystemVariables -IncludeEnvironmentVariables:$IncludeEnvironmentVariables
 
-    # Créer le graphe de dépendances
+    # CrÃ©er le graphe de dÃ©pendances
     $graph = @{}
     
-    # Initialiser le graphe avec toutes les variables définies
+    # Initialiser le graphe avec toutes les variables dÃ©finies
     $definedVariables = $variableUsages | Where-Object { $_.Type -eq "Assignment" } | Select-Object -ExpandProperty Name -Unique
     foreach ($variable in $definedVariables) {
         $graph[$variable] = @()
     }
 
-    # Ajouter les dépendances
+    # Ajouter les dÃ©pendances
     foreach ($assignment in ($variableUsages | Where-Object { $_.Type -eq "Assignment" })) {
         $variableName = $assignment.Name
         $assignmentLine = $assignment.Line
         
-        # Trouver toutes les variables utilisées dans cette assignation
+        # Trouver toutes les variables utilisÃ©es dans cette assignation
         $usedInAssignment = $variableUsages | Where-Object { 
             $_.Type -eq "Usage" -and 
             $_.Line -eq $assignmentLine -and 
@@ -273,26 +273,26 @@ function New-VariableDependencyGraph {
         }
     }
 
-    # Éliminer les doublons dans les dépendances
+    # Ã‰liminer les doublons dans les dÃ©pendances
     $graphKeys = $graph.Keys.Clone()
     foreach ($key in $graphKeys) {
         $graph[$key] = $graph[$key] | Select-Object -Unique
     }
 
-    # Préparer le résultat
+    # PrÃ©parer le rÃ©sultat
     $result = [PSCustomObject]@{
         ScriptPath = $ScriptPath
         Graph = $graph
         Variables = $variableUsages
     }
 
-    # Exporter le résultat si demandé
+    # Exporter le rÃ©sultat si demandÃ©
     if ($OutputPath) {
         switch ($OutputFormat) {
             "Text" {
-                $output = "Graphe de dépendances de variables pour $ScriptPath`n`n"
+                $output = "Graphe de dÃ©pendances de variables pour $ScriptPath`n`n"
                 foreach ($variable in $graph.Keys | Sort-Object) {
-                    $output += "$variable dépend de: $($graph[$variable] -join ', ')`n"
+                    $output += "$variable dÃ©pend de: $($graph[$variable] -join ', ')`n"
                 }
                 $output | Out-File -FilePath $OutputPath -Encoding UTF8
             }
@@ -321,7 +321,7 @@ function New-VariableDependencyGraph {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Graphe de dépendances de variables</title>
+    <title>Graphe de dÃ©pendances de variables</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1 { color: #333; }
@@ -331,14 +331,14 @@ function New-VariableDependencyGraph {
     </style>
 </head>
 <body>
-    <h1>Graphe de dépendances de variables pour $ScriptPath</h1>
+    <h1>Graphe de dÃ©pendances de variables pour $ScriptPath</h1>
     <div class="graph">
 "@
                 
                 foreach ($variable in $graph.Keys | Sort-Object) {
                     $html += @"
         <div class="variable">
-            <span class="variable-name">$variable</span> dépend de:
+            <span class="variable-name">$variable</span> dÃ©pend de:
             <div class="dependencies">
 "@
                     if ($graph[$variable].Count -gt 0) {
@@ -346,7 +346,7 @@ function New-VariableDependencyGraph {
                             $html += "                <div>$dependency</div>`n"
                         }
                     } else {
-                        $html += "                <div>(aucune dépendance)</div>`n"
+                        $html += "                <div>(aucune dÃ©pendance)</div>`n"
                     }
                     
                     $html += @"
@@ -364,7 +364,7 @@ function New-VariableDependencyGraph {
             }
         }
         
-        Write-Verbose "Graphe de dépendances exporté vers: $OutputPath"
+        Write-Verbose "Graphe de dÃ©pendances exportÃ© vers: $OutputPath"
     }
 
     return $result

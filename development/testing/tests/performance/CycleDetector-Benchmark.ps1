@@ -1,12 +1,12 @@
-# Script de benchmark pour le module CycleDetector
-# Ce script mesure les performances du module CycleDetector sur différentes tailles de graphes
-# et génère un rapport de performance.
+﻿# Script de benchmark pour le module CycleDetector
+# Ce script mesure les performances du module CycleDetector sur diffÃ©rentes tailles de graphes
+# et gÃ©nÃ¨re un rapport de performance.
 
 # Importer le module CycleDetector
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\CycleDetector.psm1"
 Import-Module $modulePath -Force
 
-# Fonction pour générer un graphe aléatoire de taille spécifiée
+# Fonction pour gÃ©nÃ©rer un graphe alÃ©atoire de taille spÃ©cifiÃ©e
 function New-RandomGraph {
     [CmdletBinding()]
     param (
@@ -22,12 +22,12 @@ function New-RandomGraph {
     
     $graph = @{}
     
-    # Créer les nœuds
+    # CrÃ©er les nÅ“uds
     for ($i = 1; $i -le $NodeCount; $i++) {
         $graph["Node$i"] = @()
     }
     
-    # Ajouter des arêtes aléatoires
+    # Ajouter des arÃªtes alÃ©atoires
     $random = New-Object System.Random
     
     for ($i = 1; $i -le $NodeCount; $i++) {
@@ -36,21 +36,21 @@ function New-RandomGraph {
         for ($j = 1; $j -le $edgeCount; $j++) {
             $target = $random.Next(1, $NodeCount + 1)
             
-            # Éviter les boucles sur soi-même
+            # Ã‰viter les boucles sur soi-mÃªme
             if ($target -ne $i) {
                 $graph["Node$i"] += "Node$target"
             }
         }
     }
     
-    # Ajouter un cycle si demandé
+    # Ajouter un cycle si demandÃ©
     if ($WithCycle) {
-        # Créer un cycle simple de longueur 3
+        # CrÃ©er un cycle simple de longueur 3
         $startNode = "Node" + $random.Next(1, $NodeCount - 2)
         $middleNode = "Node" + ($random.Next(1, $NodeCount - 1))
         $endNode = "Node" + $random.Next(2, $NodeCount)
         
-        # S'assurer que les nœuds sont différents
+        # S'assurer que les nÅ“uds sont diffÃ©rents
         while ($middleNode -eq $startNode) {
             $middleNode = "Node" + ($random.Next(1, $NodeCount - 1))
         }
@@ -59,7 +59,7 @@ function New-RandomGraph {
             $endNode = "Node" + $random.Next(2, $NodeCount)
         }
         
-        # Ajouter les arêtes pour former un cycle
+        # Ajouter les arÃªtes pour former un cycle
         $graph[$startNode] = @($middleNode) + $graph[$startNode]
         $graph[$middleNode] = @($endNode) + $graph[$middleNode]
         $graph[$endNode] = @($startNode) + $graph[$endNode]
@@ -79,7 +79,7 @@ function Measure-CycleDetectorPerformance {
         [int]$Iterations = 5
     )
     
-    # Réinitialiser les statistiques
+    # RÃ©initialiser les statistiques
     Initialize-CycleDetector
     Clear-CycleDetectionCache
     
@@ -93,34 +93,34 @@ function Measure-CycleDetectorPerformance {
         MemoryUsage = 0
     }
     
-    # Mesurer l'utilisation de la mémoire avant
+    # Mesurer l'utilisation de la mÃ©moire avant
     $memoryBefore = [System.GC]::GetTotalMemory($true)
     
-    # Exécuter plusieurs itérations pour obtenir des mesures plus précises
+    # ExÃ©cuter plusieurs itÃ©rations pour obtenir des mesures plus prÃ©cises
     for ($i = 1; $i -le $Iterations; $i++) {
         $startTime = Get-Date
         
-        # Exécuter la détection de cycles
+        # ExÃ©cuter la dÃ©tection de cycles
         $cycleResult = Find-Cycle -Graph $Graph
         
         $endTime = Get-Date
         $executionTime = ($endTime - $startTime).TotalMilliseconds
         
-        # Mettre à jour les résultats
+        # Mettre Ã  jour les rÃ©sultats
         $results.TotalTime += $executionTime
         $results.MinTime = [Math]::Min($results.MinTime, $executionTime)
         $results.MaxTime = [Math]::Max($results.MaxTime, $executionTime)
         $results.HasCycle = $cycleResult.HasCycle
     }
     
-    # Mesurer l'utilisation de la mémoire après
+    # Mesurer l'utilisation de la mÃ©moire aprÃ¨s
     $memoryAfter = [System.GC]::GetTotalMemory($true)
     $results.MemoryUsage = ($memoryAfter - $memoryBefore) / 1MB
     
     # Calculer la moyenne
     $results.AverageTime = $results.TotalTime / $Iterations
     
-    # Récupérer les statistiques du cache
+    # RÃ©cupÃ©rer les statistiques du cache
     $cacheStats = Get-CycleDetectionStatistics
     $results.CacheHits = $cacheStats.CacheHits
     $results.CacheMisses = $cacheStats.CacheMisses
@@ -128,7 +128,7 @@ function Measure-CycleDetectorPerformance {
     return [PSCustomObject]$results
 }
 
-# Fonction pour exécuter le benchmark complet
+# Fonction pour exÃ©cuter le benchmark complet
 function Start-CycleDetectorBenchmark {
     [CmdletBinding()]
     param (
@@ -140,11 +140,11 @@ function Start-CycleDetectorBenchmark {
     $edgeDensities = @(0.01, 0.05, 0.1, 0.2)
     $results = @()
     
-    Write-Host "Démarrage du benchmark CycleDetector..."
+    Write-Host "DÃ©marrage du benchmark CycleDetector..."
     
     foreach ($size in $graphSizes) {
         foreach ($density in $edgeDensities) {
-            Write-Host "Benchmark pour graphe de taille $size avec densité $density..."
+            Write-Host "Benchmark pour graphe de taille $size avec densitÃ© $density..."
             
             # Graphe sans cycle
             Write-Host "  - Graphe sans cycle..."
@@ -164,13 +164,13 @@ function Start-CycleDetectorBenchmark {
         }
     }
     
-    # Exporter les résultats en CSV
+    # Exporter les rÃ©sultats en CSV
     $results | Export-Csv -Path $OutputPath -NoTypeInformation -Encoding UTF8
     
-    Write-Host "Benchmark terminé. Résultats exportés dans $OutputPath"
+    Write-Host "Benchmark terminÃ©. RÃ©sultats exportÃ©s dans $OutputPath"
     
-    # Afficher un résumé des résultats
-    Write-Host "`nRésumé des résultats :"
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
+    Write-Host "`nRÃ©sumÃ© des rÃ©sultats :"
     Write-Host "======================"
     
     $summary = $results | Group-Object -Property GraphSize | ForEach-Object {
@@ -190,5 +190,5 @@ function Start-CycleDetectorBenchmark {
     return $results
 }
 
-# Exécuter le benchmark
+# ExÃ©cuter le benchmark
 $benchmarkResults = Start-CycleDetectorBenchmark -OutputPath "benchmark_results.csv"

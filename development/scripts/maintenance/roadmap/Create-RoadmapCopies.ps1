@@ -1,5 +1,5 @@
-# Script pour crÃ©er des copies du fichier roadmap principal
-# Ce script crÃ©e des copies pour maintenir la compatibilitÃ© avec les scripts existants
+﻿# Script pour crÃƒÂ©er des copies du fichier roadmap principal
+# Ce script crÃƒÂ©e des copies pour maintenir la compatibilitÃƒÂ© avec les scripts existants
 
 param (
     [Parameter(Mandatory = $false)]
@@ -31,7 +31,7 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+    # CrÃƒÂ©er le rÃƒÂ©pertoire de logs si nÃƒÂ©cessaire
     $logDir = Split-Path -Path $LogFilePath -Parent
     if (-not (Test-Path -Path $logDir -PathType Container)) {
         New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -41,63 +41,63 @@ function Write-Log {
 }
 
 try {
-    # DÃ©finir le chemin absolu du fichier roadmap principal
+    # DÃƒÂ©finir le chemin absolu du fichier roadmap principal
     $projectRoot = Get-Location
     $roadmapPath = "Roadmap\roadmap_perso.md"""
     
-    # VÃ©rifier si le fichier existe
+    # VÃƒÂ©rifier si le fichier existe
     if (-not (Test-Path -Path $roadmapPath -PathType Leaf)) {
         Write-Log -Level ERROR -Message "Le fichier roadmap principal n'existe pas: $roadmapPath"
         exit 1
     }
     
-    # DÃ©finir les chemins des copies Ã  crÃ©er
+    # DÃƒÂ©finir les chemins des copies ÃƒÂ  crÃƒÂ©er
     $copyPaths = @(
         ("Roadmap\roadmap_perso.md"""),
         ("Roadmap\roadmap_perso.md""")
     )
     
-    # CrÃ©er les copies
+    # CrÃƒÂ©er les copies
     foreach ($copyPath in $copyPaths) {
-        # VÃ©rifier si le fichier existe dÃ©jÃ 
+        # VÃƒÂ©rifier si le fichier existe dÃƒÂ©jÃƒÂ 
         if (Test-Path -Path $copyPath -PathType Leaf) {
             # Renommer le fichier existant
             $backupPath = "$copyPath.backup_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
             if (-not $WhatIf) {
                 Move-Item -Path $copyPath -Destination $backupPath
-                Write-Log "Fichier existant renommÃ©: $copyPath -> $backupPath" -Level "INFO"
+                Write-Log "Fichier existant renommÃƒÂ©: $copyPath -> $backupPath" -Level "INFO"
             } else {
-                Write-Log "WhatIf: Fichier existant renommÃ©: $copyPath -> $backupPath" -Level "INFO"
+                Write-Log "WhatIf: Fichier existant renommÃƒÂ©: $copyPath -> $backupPath" -Level "INFO"
             }
         }
         
-        # CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
+        # CrÃƒÂ©er le rÃƒÂ©pertoire parent si nÃƒÂ©cessaire
         $parentDir = Split-Path -Path $copyPath -Parent
         if (-not (Test-Path -Path $parentDir -PathType Container)) {
             if (-not $WhatIf) {
                 New-Item -Path $parentDir -ItemType Directory -Force | Out-Null
-                Write-Log "RÃ©pertoire crÃ©Ã©: $parentDir" -Level "INFO"
+                Write-Log "RÃƒÂ©pertoire crÃƒÂ©ÃƒÂ©: $parentDir" -Level "INFO"
             } else {
-                Write-Log "WhatIf: RÃ©pertoire crÃ©Ã©: $parentDir" -Level "INFO"
+                Write-Log "WhatIf: RÃƒÂ©pertoire crÃƒÂ©ÃƒÂ©: $parentDir" -Level "INFO"
             }
         }
         
-        # CrÃ©er la copie
+        # CrÃƒÂ©er la copie
         if (-not $WhatIf) {
             Copy-Item -Path $roadmapPath -Destination $copyPath -Force
-            Write-Log "Copie crÃ©Ã©e: $copyPath <- $roadmapPath" -Level "INFO"
+            Write-Log "Copie crÃƒÂ©ÃƒÂ©e: $copyPath <- $roadmapPath" -Level "INFO"
         } else {
-            Write-Log "WhatIf: Copie crÃ©Ã©e: $copyPath <- $roadmapPath" -Level "INFO"
+            Write-Log "WhatIf: Copie crÃƒÂ©ÃƒÂ©e: $copyPath <- $roadmapPath" -Level "INFO"
         }
     }
     
-    # Afficher un rÃ©sumÃ©
-    Write-Host "`nRÃ©sumÃ© de la crÃ©ation des copies :" -ForegroundColor Cyan
+    # Afficher un rÃƒÂ©sumÃƒÂ©
+    Write-Host "`nRÃƒÂ©sumÃƒÂ© de la crÃƒÂ©ation des copies :" -ForegroundColor Cyan
     Write-Host "----------------------------------------" -ForegroundColor Cyan
     Write-Host "Fichier roadmap principal : $roadmapPath" -ForegroundColor White
-    Write-Host "Copies crÃ©Ã©es : $($copyPaths.Count)" -ForegroundColor Green
+    Write-Host "Copies crÃƒÂ©ÃƒÂ©es : $($copyPaths.Count)" -ForegroundColor Green
     
-    # CrÃ©er un fichier README.md dans le rÃ©pertoire Roadmap
+    # CrÃƒÂ©er un fichier README.md dans le rÃƒÂ©pertoire Roadmap
     $readmePath = Join-Path -Path (Split-Path -Path $roadmapPath -Parent) -ChildPath "README.md"
     $readmeContent = @"
 # Gestion de la Roadmap
@@ -105,12 +105,12 @@ try {
 ## Structure des fichiers
 
 - `"Roadmap\roadmap_perso.md"` : Fichier principal de la roadmap
-- `roadmap_perso_new.md` : Ancienne version de la roadmap (conservÃ©e pour rÃ©fÃ©rence)
+- `roadmap_perso_new.md` : Ancienne version de la roadmap (conservÃƒÂ©e pour rÃƒÂ©fÃƒÂ©rence)
 - Les autres fichiers avec le suffixe `_backup_` sont des sauvegardes automatiques
 
-## AccÃ¨s Ã  la Roadmap
+## AccÃƒÂ¨s ÃƒÂ  la Roadmap
 
-Pour accÃ©der Ã  la roadmap depuis les scripts, utilisez le script centralisÃ© :
+Pour accÃƒÂ©der ÃƒÂ  la roadmap depuis les scripts, utilisez le script centralisÃƒÂ© :
 
 ```powershell
 # Importer le module de gestion de la roadmap
@@ -128,29 +128,29 @@ else {
 
 ## Copies
 
-Des copies ont Ã©tÃ© crÃ©Ã©es pour maintenir la compatibilitÃ© avec les scripts existants :
+Des copies ont ÃƒÂ©tÃƒÂ© crÃƒÂ©ÃƒÂ©es pour maintenir la compatibilitÃƒÂ© avec les scripts existants :
 
-- `"Roadmap\roadmap_perso.md"` Ã  la racine du projet
+- `"Roadmap\roadmap_perso.md"` ÃƒÂ  la racine du projet
 - `md\"Roadmap\roadmap_perso.md"`
 
 Ces copies sont identiques au fichier principal `Roadmap\"Roadmap\roadmap_perso.md"`.
 
-## Mise Ã  jour des rÃ©fÃ©rences
+## Mise ÃƒÂ  jour des rÃƒÂ©fÃƒÂ©rences
 
-Pour mettre Ã  jour les rÃ©fÃ©rences Ã  la roadmap dans les scripts existants, utilisez le script :
+Pour mettre ÃƒÂ  jour les rÃƒÂ©fÃƒÂ©rences ÃƒÂ  la roadmap dans les scripts existants, utilisez le script :
 
 ```powershell
 .\development\scripts\maintenance\roadmap\Update-RoadmapReferences.ps1
 ```
 
-DerniÃ¨re mise Ã  jour : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+DerniÃƒÂ¨re mise ÃƒÂ  jour : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 "@
     
     if (-not $WhatIf) {
         Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
-        Write-Log "Fichier README.md crÃ©Ã©: $readmePath" -Level "INFO"
+        Write-Log "Fichier README.md crÃƒÂ©ÃƒÂ©: $readmePath" -Level "INFO"
     } else {
-        Write-Log "WhatIf: Fichier README.md crÃ©Ã©: $readmePath" -Level "INFO"
+        Write-Log "WhatIf: Fichier README.md crÃƒÂ©ÃƒÂ©: $readmePath" -Level "INFO"
     }
 }
 catch {
@@ -159,5 +159,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+    Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }

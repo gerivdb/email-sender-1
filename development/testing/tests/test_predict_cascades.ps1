@@ -1,7 +1,7 @@
-# Importer le script
+﻿# Importer le script
 . (Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\Predict-ErrorCascades.ps1")
 
-# CrÃ©er des donnÃ©es de test
+# CrÃƒÂ©er des donnÃƒÂ©es de test
 $patterns = @(
     @{
         Id = "pattern1"
@@ -130,9 +130,9 @@ $correlations = @(
 # Tester la fonction Build-ErrorDependencyGraph
 Write-Host "Tester Build-ErrorDependencyGraph:"
 $graph = Build-ErrorDependencyGraph -Patterns $patterns -Correlations $correlations -CorrelationThreshold 0.6
-Write-Host "Graphe de dÃ©pendances:"
+Write-Host "Graphe de dÃƒÂ©pendances:"
 $graph.Keys | ForEach-Object {
-    Write-Host "Pattern: $_, DÃ©pendances: $($graph[$_].Dependencies.Count)"
+    Write-Host "Pattern: $_, DÃƒÂ©pendances: $($graph[$_].Dependencies.Count)"
 }
 
 # Tester la fonction Get-RootPatterns
@@ -157,11 +157,11 @@ $cascadePaths | ForEach-Object {
 Write-Host "`nTester Measure-CascadeProbability:"
 if ($cascadePaths.Count -gt 0) {
     $probability = Measure-CascadeProbability -Graph $graph -Path $cascadePaths[0]
-    Write-Host "ProbabilitÃ© de cascade pour le chemin $($cascadePaths[0] -join ' -> '): $probability"
+    Write-Host "ProbabilitÃƒÂ© de cascade pour le chemin $($cascadePaths[0] -join ' -> '): $probability"
 }
 
 # Tester la fonction New-CascadePredictionReport
 Write-Host "`nTester New-CascadePredictionReport:"
 $reportPath = Join-Path -Path $PSScriptRoot -ChildPath "test_cascade_report.md"
 $result = New-CascadePredictionReport -Graph $graph -CascadePaths $cascadePaths -ReportPath $reportPath
-Write-Host "Rapport de prÃ©diction gÃ©nÃ©rÃ©: $result"
+Write-Host "Rapport de prÃƒÂ©diction gÃƒÂ©nÃƒÂ©rÃƒÂ©: $result"

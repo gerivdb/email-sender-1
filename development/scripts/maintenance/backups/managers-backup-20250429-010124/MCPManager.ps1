@@ -1,30 +1,30 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Démarre le gestionnaire de serveurs MCP ou un agent MCP.
+    DÃ©marre le gestionnaire de serveurs MCP ou un agent MCP.
 .DESCRIPTION
-    Ce script permet de démarrer le gestionnaire de serveurs MCP ou un agent MCP
-    qui utilise la bibliothèque mcp-use pour interagir avec les serveurs MCP.
+    Ce script permet de dÃ©marrer le gestionnaire de serveurs MCP ou un agent MCP
+    qui utilise la bibliothÃ¨que mcp-use pour interagir avec les serveurs MCP.
 .PARAMETER Agent
-    Démarre un agent MCP au lieu du gestionnaire de serveurs.
+    DÃ©marre un agent MCP au lieu du gestionnaire de serveurs.
 .PARAMETER Query
-    Spécifie la requête à exécuter par l'agent MCP.
+    SpÃ©cifie la requÃªte Ã  exÃ©cuter par l'agent MCP.
 .PARAMETER Force
-    Force la recréation de la configuration MCP même si elle existe déjà.
+    Force la recrÃ©ation de la configuration MCP mÃªme si elle existe dÃ©jÃ .
 .EXAMPLE
     .\Start-MCPManager.ps1
-    Démarre le gestionnaire de serveurs MCP.
+    DÃ©marre le gestionnaire de serveurs MCP.
 .EXAMPLE
     .\Start-MCPManager.ps1 -Agent
-    Démarre un agent MCP et demande à l'utilisateur d'entrer une requête.
+    DÃ©marre un agent MCP et demande Ã  l'utilisateur d'entrer une requÃªte.
 .EXAMPLE
-    .\Start-MCPManager.ps1 -Agent -Query "Trouve les meilleurs restaurants à Paris"
-    Démarre un agent MCP et exécute la requête spécifiée.
+    .\Start-MCPManager.ps1 -Agent -Query "Trouve les meilleurs restaurants Ã  Paris"
+    DÃ©marre un agent MCP et exÃ©cute la requÃªte spÃ©cifiÃ©e.
 .NOTES
     Version: 1.1.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-17
-    Date de mise à jour: 2025-04-20
+    Date de crÃ©ation: 2025-04-17
+    Date de mise Ã  jour: 2025-04-20
 #>
 [CmdletBinding()]
 param (
@@ -43,14 +43,14 @@ $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\MCPManager.ps
 if (Test-Path $modulePath) {
     Import-Module $modulePath -Force
 } else {
-    Write-Error "Module MCPManager introuvable à $modulePath"
+    Write-Error "Module MCPManager introuvable Ã  $modulePath"
     exit 1
 }
 
-# Démarrer le gestionnaire de serveurs MCP
+# DÃ©marrer le gestionnaire de serveurs MCP
 $result = Start-MCPManager -Agent:$Agent -Query $Query -Force:$Force
 
-# Sortir avec le code approprié
+# Sortir avec le code appropriÃ©
 if ($result) {
     exit 0
 } else {

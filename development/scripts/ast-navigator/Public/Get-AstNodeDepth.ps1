@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Obtient la profondeur d'un noeud dans l'arbre syntaxique PowerShell.
 
@@ -31,7 +31,7 @@ function Get-AstNodeDepth {
             # Initialiser la profondeur
             $depth = 0
 
-            # Remonter l'arbre jusqu'à la racine
+            # Remonter l'arbre jusqu'Ã  la racine
             $currentNode = $Node
             while ($null -ne $currentNode.Parent) {
                 $depth++

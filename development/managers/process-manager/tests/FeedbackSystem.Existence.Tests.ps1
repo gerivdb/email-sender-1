@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests d'existence pour le système de feedback.
+    Tests d'existence pour le systÃ¨me de feedback.
 
 .DESCRIPTION
-    Ce script vérifie simplement que les fichiers du système de feedback existent et sont correctement formatés.
+    Ce script vÃ©rifie simplement que les fichiers du systÃ¨me de feedback existent et sont correctement formatÃ©s.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Système de feedback - Tests d'existence" {
+# DÃ©finir les tests
+Describe "SystÃ¨me de feedback - Tests d'existence" {
     BeforeAll {
-        # Définir les chemins des modules
+        # DÃ©finir les chemins des modules
         $script:ModulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
         $script:FeedbackManagerPath = Join-Path -Path $script:ModulesPath -ChildPath "FeedbackManager"
         $script:FeedbackCollectorPath = Join-Path -Path $script:ModulesPath -ChildPath "FeedbackCollector"
@@ -27,19 +27,19 @@ Describe "Système de feedback - Tests d'existence" {
     }
 
     Context "Existence des fichiers" {
-        It "Le répertoire des modules doit exister" {
+        It "Le rÃ©pertoire des modules doit exister" {
             Test-Path -Path $script:ModulesPath -PathType Container | Should -Be $true
         }
 
-        It "Le répertoire FeedbackManager doit exister" {
+        It "Le rÃ©pertoire FeedbackManager doit exister" {
             Test-Path -Path $script:FeedbackManagerPath -PathType Container | Should -Be $true
         }
 
-        It "Le répertoire FeedbackCollector doit exister" {
+        It "Le rÃ©pertoire FeedbackCollector doit exister" {
             Test-Path -Path $script:FeedbackCollectorPath -PathType Container | Should -Be $true
         }
 
-        It "Le répertoire FeedbackExporter doit exister" {
+        It "Le rÃ©pertoire FeedbackExporter doit exister" {
             Test-Path -Path $script:FeedbackExporterPath -PathType Container | Should -Be $true
         }
 
@@ -81,55 +81,55 @@ Describe "Système de feedback - Tests d'existence" {
     }
 
     Context "Format des fichiers" {
-        It "Le fichier FeedbackManager.psm1 doit être un fichier PowerShell valide" {
+        It "Le fichier FeedbackManager.psm1 doit Ãªtre un fichier PowerShell valide" {
             $content = Get-Content -Path (Join-Path -Path $script:FeedbackManagerPath -ChildPath "FeedbackManager.psm1") -Raw
             $content | Should -Not -BeNullOrEmpty
             { [System.Management.Automation.Language.Parser]::ParseInput($content, [ref]$null, [ref]$null) } | Should -Not -Throw
         }
 
-        It "Le fichier FeedbackCollector.psm1 doit être un fichier PowerShell valide" {
+        It "Le fichier FeedbackCollector.psm1 doit Ãªtre un fichier PowerShell valide" {
             $content = Get-Content -Path (Join-Path -Path $script:FeedbackCollectorPath -ChildPath "FeedbackCollector.psm1") -Raw
             $content | Should -Not -BeNullOrEmpty
             { [System.Management.Automation.Language.Parser]::ParseInput($content, [ref]$null, [ref]$null) } | Should -Not -Throw
         }
 
-        It "Le fichier FeedbackExporter.psm1 doit être un fichier PowerShell valide" {
+        It "Le fichier FeedbackExporter.psm1 doit Ãªtre un fichier PowerShell valide" {
             $content = Get-Content -Path (Join-Path -Path $script:FeedbackExporterPath -ChildPath "FeedbackExporter.psm1") -Raw
             $content | Should -Not -BeNullOrEmpty
             { [System.Management.Automation.Language.Parser]::ParseInput($content, [ref]$null, [ref]$null) } | Should -Not -Throw
         }
 
-        It "Le fichier FeedbackManager.psd1 doit être un fichier de manifeste PowerShell valide" {
+        It "Le fichier FeedbackManager.psd1 doit Ãªtre un fichier de manifeste PowerShell valide" {
             $content = Get-Content -Path (Join-Path -Path $script:FeedbackManagerPath -ChildPath "FeedbackManager.psd1") -Raw
             $content | Should -Not -BeNullOrEmpty
             { Import-PowerShellDataFile -Path (Join-Path -Path $script:FeedbackManagerPath -ChildPath "FeedbackManager.psd1") } | Should -Not -Throw
         }
 
-        It "Le fichier FeedbackCollector.psd1 doit être un fichier de manifeste PowerShell valide" {
+        It "Le fichier FeedbackCollector.psd1 doit Ãªtre un fichier de manifeste PowerShell valide" {
             $content = Get-Content -Path (Join-Path -Path $script:FeedbackCollectorPath -ChildPath "FeedbackCollector.psd1") -Raw
             $content | Should -Not -BeNullOrEmpty
             { Import-PowerShellDataFile -Path (Join-Path -Path $script:FeedbackCollectorPath -ChildPath "FeedbackCollector.psd1") } | Should -Not -Throw
         }
 
-        It "Le fichier FeedbackExporter.psd1 doit être un fichier de manifeste PowerShell valide" {
+        It "Le fichier FeedbackExporter.psd1 doit Ãªtre un fichier de manifeste PowerShell valide" {
             $content = Get-Content -Path (Join-Path -Path $script:FeedbackExporterPath -ChildPath "FeedbackExporter.psd1") -Raw
             $content | Should -Not -BeNullOrEmpty
             { Import-PowerShellDataFile -Path (Join-Path -Path $script:FeedbackExporterPath -ChildPath "FeedbackExporter.psd1") } | Should -Not -Throw
         }
 
-        It "Le fichier FeedbackManager.manifest.json doit être un fichier JSON valide" {
+        It "Le fichier FeedbackManager.manifest.json doit Ãªtre un fichier JSON valide" {
             $content = Get-Content -Path (Join-Path -Path $script:FeedbackManagerPath -ChildPath "FeedbackManager.manifest.json") -Raw
             $content | Should -Not -BeNullOrEmpty
             { ConvertFrom-Json -InputObject $content } | Should -Not -Throw
         }
 
-        It "Le fichier FeedbackCollector.manifest.json doit être un fichier JSON valide" {
+        It "Le fichier FeedbackCollector.manifest.json doit Ãªtre un fichier JSON valide" {
             $content = Get-Content -Path (Join-Path -Path $script:FeedbackCollectorPath -ChildPath "FeedbackCollector.manifest.json") -Raw
             $content | Should -Not -BeNullOrEmpty
             { ConvertFrom-Json -InputObject $content } | Should -Not -Throw
         }
 
-        It "Le fichier FeedbackExporter.manifest.json doit être un fichier JSON valide" {
+        It "Le fichier FeedbackExporter.manifest.json doit Ãªtre un fichier JSON valide" {
             $content = Get-Content -Path (Join-Path -Path $script:FeedbackExporterPath -ChildPath "FeedbackExporter.manifest.json") -Raw
             $content | Should -Not -BeNullOrEmpty
             { ConvertFrom-Json -InputObject $content } | Should -Not -Throw

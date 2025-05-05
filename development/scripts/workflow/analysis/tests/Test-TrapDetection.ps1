@@ -1,9 +1,9 @@
-# Script pour tester la détection des blocs trap
-# Ce script teste spécifiquement la détection des blocs trap dans les workflows n8n
+﻿# Script pour tester la dÃ©tection des blocs trap
+# Ce script teste spÃ©cifiquement la dÃ©tection des blocs trap dans les workflows n8n
 
 #Requires -Version 5.1
 
-# Paramètres
+# ParamÃ¨tres
 param (
     [Parameter(Mandatory = $false)]
     [string]$TestDataPath = "TestData",
@@ -12,7 +12,7 @@ param (
     [string]$OutputFolder = "TestResults"
 )
 
-# Définir les chemins complets
+# DÃ©finir les chemins complets
 $TestDataPath = Join-Path -Path $PSScriptRoot -ChildPath $TestDataPath
 $OutputFolder = Join-Path -Path $PSScriptRoot -ChildPath $OutputFolder
 
@@ -38,7 +38,7 @@ function Write-TestMessage {
     Write-Host "[$Status] $Message" -ForegroundColor $color
 }
 
-# Créer les dossiers s'ils n'existent pas
+# CrÃ©er les dossiers s'ils n'existent pas
 if (-not (Test-Path -Path $TestDataPath)) {
     New-Item -Path $TestDataPath -ItemType Directory -Force | Out-Null
 }
@@ -47,10 +47,10 @@ if (-not (Test-Path -Path $OutputFolder)) {
     New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
 }
 
-# Créer un workflow de test avec des blocs trap
+# CrÃ©er un workflow de test avec des blocs trap
 $trapWorkflowPath = Join-Path -Path $TestDataPath -ChildPath "trap_workflow.json"
 if (-not (Test-Path -Path $trapWorkflowPath)) {
-    Write-TestMessage "Création d'un workflow de test avec des blocs trap..." -Status "INFO"
+    Write-TestMessage "CrÃ©ation d'un workflow de test avec des blocs trap..." -Status "INFO"
     
     $workflow = @{
         id          = "test-workflow-trap"
@@ -170,32 +170,32 @@ return processData();
     $workflowJson = $workflow | ConvertTo-Json -Depth 10
     Set-Content -Path $trapWorkflowPath -Value $workflowJson -Encoding UTF8
     
-    Write-TestMessage "Workflow de test créé: $trapWorkflowPath" -Status "SUCCESS"
+    Write-TestMessage "Workflow de test crÃ©Ã©: $trapWorkflowPath" -Status "SUCCESS"
 }
 else {
     Write-TestMessage "Utilisation du workflow de test existant: $trapWorkflowPath" -Status "INFO"
 }
 
-# Tester la détection des blocs trap
-Write-TestMessage "Test de la détection des blocs trap..." -Status "INFO"
+# Tester la dÃ©tection des blocs trap
+Write-TestMessage "Test de la dÃ©tection des blocs trap..." -Status "INFO"
 
 # Charger le workflow
 $workflow = Get-N8nWorkflow -WorkflowPath $trapWorkflowPath
 
 if (-not $workflow) {
-    Write-TestMessage "Échec du chargement du workflow" -Status "ERROR"
+    Write-TestMessage "Ã‰chec du chargement du workflow" -Status "ERROR"
     exit 1
 }
 
-Write-TestMessage "Workflow chargé avec succès: $($workflow.name)" -Status "SUCCESS"
+Write-TestMessage "Workflow chargÃ© avec succÃ¨s: $($workflow.name)" -Status "SUCCESS"
 
-# Détecter les blocs trap
+# DÃ©tecter les blocs trap
 $trapBlocks = Get-N8nWorkflowTrapBlocks -Workflow $workflow
 
 if ($trapBlocks) {
-    Write-TestMessage "Blocs trap détectés avec succès: $($trapBlocks.Count) noeuds trouvés" -Status "SUCCESS"
+    Write-TestMessage "Blocs trap dÃ©tectÃ©s avec succÃ¨s: $($trapBlocks.Count) noeuds trouvÃ©s" -Status "SUCCESS"
     
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     foreach ($node in $trapBlocks) {
         Write-TestMessage "Noeud: $($node.Name) (ID: $($node.Id))" -Status "INFO"
         Write-Host "  Type: $($node.Type)"
@@ -213,7 +213,7 @@ if ($trapBlocks) {
         }
     }
     
-    # Enregistrer les résultats dans un fichier Markdown
+    # Enregistrer les rÃ©sultats dans un fichier Markdown
     $outputPath = Join-Path -Path $OutputFolder -ChildPath "trap_blocks.md"
     
     $markdown = "# Blocs trap dans le workflow: $($workflow.name)`n`n"
@@ -238,10 +238,10 @@ if ($trapBlocks) {
     }
     
     $markdown | Out-File -FilePath $outputPath -Encoding UTF8
-    Write-TestMessage "Résultats enregistrés dans: $outputPath" -Status "SUCCESS"
+    Write-TestMessage "RÃ©sultats enregistrÃ©s dans: $outputPath" -Status "SUCCESS"
 }
 else {
-    Write-TestMessage "Aucun bloc trap détecté" -Status "WARNING"
+    Write-TestMessage "Aucun bloc trap dÃ©tectÃ©" -Status "WARNING"
 }
 
-Write-TestMessage "Test terminé." -Status "SUCCESS"
+Write-TestMessage "Test terminÃ©." -Status "SUCCESS"

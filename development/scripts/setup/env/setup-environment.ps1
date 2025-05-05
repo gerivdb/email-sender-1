@@ -1,4 +1,4 @@
-# Script d'installation et de configuration de l'environnement
+﻿# Script d'installation et de configuration de l'environnement
 
 Write-Host "=== Installation et configuration de l'environnement ===" -ForegroundColor Cyan
 
@@ -8,9 +8,9 @@ Write-Host "`n[1] Verification des prerequis..." -ForegroundColor Yellow
 # Verifier Node.js
 try {
     $nodeVersion = node --version
-    Write-Host "âœ… Node.js $nodeVersion est installe" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Node.js $nodeVersion est installe" -ForegroundColor Green
 } catch {
-    Write-Host "âŒ Node.js n'est pas installe ou n'est pas accessible" -ForegroundColor Red
+    Write-Host "Ã¢ÂÅ’ Node.js n'est pas installe ou n'est pas accessible" -ForegroundColor Red
     Write-Host "Veuillez installer Node.js depuis https://nodejs.org/" -ForegroundColor Yellow
     exit 1
 }
@@ -18,9 +18,9 @@ try {
 # Verifier npm
 try {
     $npmVersion = npm --version
-    Write-Host "âœ… npm $npmVersion est installe" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ npm $npmVersion est installe" -ForegroundColor Green
 } catch {
-    Write-Host "âŒ npm n'est pas installe ou n'est pas accessible" -ForegroundColor Red
+    Write-Host "Ã¢ÂÅ’ npm n'est pas installe ou n'est pas accessible" -ForegroundColor Red
     Write-Host "Veuillez reinstaller Node.js depuis https://nodejs.org/" -ForegroundColor Yellow
     exit 1
 }
@@ -28,25 +28,25 @@ try {
 # Verifier n8n
 try {
     $n8nVersion = npx n8n --version
-    Write-Host "âœ… n8n $n8nVersion est installe" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ n8n $n8nVersion est installe" -ForegroundColor Green
 } catch {
-    Write-Host "âš ï¸ n8n n'est pas installe ou n'est pas accessible" -ForegroundColor Yellow
+    Write-Host "Ã¢Å¡Â Ã¯Â¸Â n8n n'est pas installe ou n'est pas accessible" -ForegroundColor Yellow
     Write-Host "Installation de n8n..." -ForegroundColor Yellow
     npm install n8n
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "âŒ Erreur lors de l'installation de n8n" -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ Erreur lors de l'installation de n8n" -ForegroundColor Red
         exit 1
     }
     $n8nVersion = npx n8n --version
-    Write-Host "âœ… n8n $n8nVersion a ete installe" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ n8n $n8nVersion a ete installe" -ForegroundColor Green
 }
 
 # Verifier Python
 try {
     $pythonVersion = python --version
-    Write-Host "âœ… $pythonVersion est installe" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ $pythonVersion est installe" -ForegroundColor Green
 } catch {
-    Write-Host "âš ï¸ Python n'est pas installe ou n'est pas accessible" -ForegroundColor Yellow
+    Write-Host "Ã¢Å¡Â Ã¯Â¸Â Python n'est pas installe ou n'est pas accessible" -ForegroundColor Yellow
     Write-Host "Certaines fonctionnalites peuvent ne pas fonctionner correctement" -ForegroundColor Yellow
 }
 
@@ -77,9 +77,9 @@ $folders = @(
 foreach ($folder in $folders) {
     if (-not (Test-Path ".\$folder")) {
         New-Item -ItemType Directory -Path ".\$folder" | Out-Null
-        Write-Host "âœ… Dossier $folder cree" -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ Dossier $folder cree" -ForegroundColor Green
     } else {
-        Write-Host "âœ… Dossier $folder existe deja" -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ Dossier $folder existe deja" -ForegroundColor Green
     }
 }
 
@@ -114,18 +114,18 @@ if (-not (Test-Path ".\package.json")) {
 }
 "@
     Set-Content -Path ".\package.json" -Value $packageJsonContent
-    Write-Host "âœ… Fichier package.json cree" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Fichier package.json cree" -ForegroundColor Green
 } else {
-    Write-Host "âœ… Fichier package.json existe deja" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Fichier package.json existe deja" -ForegroundColor Green
 }
 
 # Installer les packages npm
 Write-Host "Installation des packages npm..." -ForegroundColor Yellow
 npm install n8n-nodes-mcp @suekou/mcp-notion-server
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "âš ï¸ Certains packages n'ont pas pu etre installes" -ForegroundColor Yellow
+    Write-Host "Ã¢Å¡Â Ã¯Â¸Â Certains packages n'ont pas pu etre installes" -ForegroundColor Yellow
 } else {
-    Write-Host "âœ… Packages npm installes" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Packages npm installes" -ForegroundColor Green
 }
 
 # Installer les packages Python si Python est installe
@@ -134,9 +134,9 @@ if ($pythonVersion) {
     try {
         pip install uvx==1.0.0
         pip install git+https://github.com/adhikasp/mcp-git-ingest
-        Write-Host "âœ… Packages Python installes" -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ Packages Python installes" -ForegroundColor Green
     } catch {
-        Write-Host "âš ï¸ Certains packages Python n'ont pas pu etre installes" -ForegroundColor Yellow
+        Write-Host "Ã¢Å¡Â Ã¯Â¸Â Certains packages Python n'ont pas pu etre installes" -ForegroundColor Yellow
     }
 }
 
@@ -163,15 +163,15 @@ NOTION_API_TOKEN=secret_...
 MCP_ENABLED=true
 "@
     Set-Content -Path $envPath -Value $envContent
-    Write-Host "âœ… Fichier .env cree dans le dossier config" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Fichier .env cree dans le dossier config" -ForegroundColor Green
 } else {
-    Write-Host "âœ… Fichier .env existe deja dans le dossier config" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Fichier .env existe deja dans le dossier config" -ForegroundColor Green
 }
 
 # Definir la variable d'environnement pour n8n
 [Environment]::SetEnvironmentVariable('N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE', 'true', 'User')
 [Environment]::SetEnvironmentVariable('N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE', 'true', 'Process')
-Write-Host "âœ… Variable d'environnement N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE definie" -ForegroundColor Green
+Write-Host "Ã¢Å“â€¦ Variable d'environnement N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE definie" -ForegroundColor Green
 
 # Creer un script de demarrage n8n
 $startScriptPath = "..\..\D"
@@ -209,9 +209,9 @@ npx n8n start
 if (-not (Test-Path $startScriptPath)) {
     New-Item -ItemType Directory -Path ".\development\tools" -Force | Out-Null
     Set-Content -Path $startScriptPath -Value $startScriptContent
-    Write-Host "âœ… Script de demarrage n8n cree" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Script de demarrage n8n cree" -ForegroundColor Green
 } else {
-    Write-Host "âœ… Script de demarrage n8n existe deja" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Script de demarrage n8n existe deja" -ForegroundColor Green
 }
 
 # Creer un .gitignore s'il n'existe pas
@@ -258,9 +258,9 @@ projet/config/.env
 Thumbs.db
 "@
     Set-Content -Path $gitignorePath -Value $gitignoreContent
-    Write-Host "âœ… Fichier .gitignore cree" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Fichier .gitignore cree" -ForegroundColor Green
 } else {
-    Write-Host "âœ… Fichier .gitignore existe deja" -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Fichier .gitignore existe deja" -ForegroundColor Green
 }
 
 Write-Host "`n=== Installation et configuration terminees ===" -ForegroundColor Cyan

@@ -1,6 +1,6 @@
-# Script pour générer un rapport de couverture de code détaillé
+﻿# Script pour gÃ©nÃ©rer un rapport de couverture de code dÃ©taillÃ©
 
-# Définir les paramètres
+# DÃ©finir les paramÃ¨tres
 param (
     [Parameter(Mandatory = $false)]
     [string]$CoverageReportPath = (Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\..\reports\tests\mode-manager-coverage.xml"),
@@ -13,24 +13,24 @@ param (
     [string[]]$ReportTypes = @("Html", "HtmlSummary", "Badges")
 )
 
-# Vérifier que le fichier de rapport de couverture existe
+# VÃ©rifier que le fichier de rapport de couverture existe
 if (-not (Test-Path -Path $CoverageReportPath)) {
-    Write-Error "Le fichier de rapport de couverture est introuvable à l'emplacement : $CoverageReportPath"
+    Write-Error "Le fichier de rapport de couverture est introuvable Ã  l'emplacement : $CoverageReportPath"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Vérifier si le module ReportGenerator est installé
+# VÃ©rifier si le module ReportGenerator est installÃ©
 if (-not (Get-Module -Name ReportGenerator -ListAvailable)) {
-    Write-Warning "Le module ReportGenerator n'est pas installé. Installation en cours..."
+    Write-Warning "Le module ReportGenerator n'est pas installÃ©. Installation en cours..."
     Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
 }
 
-# Générer le rapport de couverture
+# GÃ©nÃ©rer le rapport de couverture
 try {
     Import-Module -Name ReportGenerator
     
@@ -38,13 +38,13 @@ try {
     
     ConvertTo-ReportGeneratorReport -InputFile $CoverageReportPath -OutputFile $OutputPath -ReportType $reportTypesString
     
-    Write-Host "Rapport de couverture généré : $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport de couverture gÃ©nÃ©rÃ© : $OutputPath" -ForegroundColor Green
 } catch {
-    Write-Error "Impossible de générer le rapport de couverture : $_"
+    Write-Error "Impossible de gÃ©nÃ©rer le rapport de couverture : $_"
     exit 1
 }
 
-# Générer un fichier de synthèse
+# GÃ©nÃ©rer un fichier de synthÃ¨se
 $summaryPath = Join-Path -Path $OutputPath -ChildPath "summary.md"
 
 # Lire le fichier de rapport de couverture
@@ -82,13 +82,13 @@ foreach ($package in $coverageReport.report.package) {
 
 $coveragePercentage = if ($totalLines -gt 0) { [math]::Round(($coveredLines / $totalLines) * 100, 2) } else { 0 }
 
-# Générer le contenu du fichier de synthèse
+# GÃ©nÃ©rer le contenu du fichier de synthÃ¨se
 $summaryContent = @"
 # Rapport de couverture de code
 
-## Résumé
+## RÃ©sumÃ©
 
-- **Date de génération** : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+- **Date de gÃ©nÃ©ration** : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 - **Fichier de rapport** : $CoverageReportPath
 - **Lignes totales** : $totalLines
 - **Lignes couvertes** : $coveredLines
@@ -107,7 +107,7 @@ foreach ($className in ($classCoverage.Keys | Sort-Object)) {
 
 $summaryContent | Set-Content -Path $summaryPath -Encoding UTF8
 
-Write-Host "Fichier de synthèse généré : $summaryPath" -ForegroundColor Green
+Write-Host "Fichier de synthÃ¨se gÃ©nÃ©rÃ© : $summaryPath" -ForegroundColor Green
 
 # Ouvrir le rapport HTML si disponible
 if ($ReportTypes -contains "Html") {

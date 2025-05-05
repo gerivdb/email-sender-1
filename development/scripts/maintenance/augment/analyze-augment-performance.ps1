@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
     Script d'analyse des performances d'Augment Code.
 
 .DESCRIPTION
-    Ce script analyse les performances d'Augment Code en mesurant les temps de réponse,
-    la taille des inputs/outputs et d'autres métriques pertinentes.
+    Ce script analyse les performances d'Augment Code en mesurant les temps de rÃ©ponse,
+    la taille des inputs/outputs et d'autres mÃ©triques pertinentes.
 
 .PARAMETER LogPath
-    Chemin vers le fichier de log à analyser. Par défaut : "logs\augment\augment.log".
+    Chemin vers le fichier de log Ã  analyser. Par dÃ©faut : "logs\augment\augment.log".
 
 .PARAMETER OutputPath
-    Chemin vers le fichier de sortie pour le rapport. Par défaut : "reports\augment\performance.html".
+    Chemin vers le fichier de sortie pour le rapport. Par dÃ©faut : "reports\augment\performance.html".
 
 .EXAMPLE
     .\analyze-augment-performance.ps1
-    # Analyse les performances d'Augment Code avec les paramètres par défaut
+    # Analyse les performances d'Augment Code avec les paramÃ¨tres par dÃ©faut
 
 .NOTES
     Version: 1.0
@@ -31,7 +31,7 @@ param (
     [string]$OutputPath = "reports\augment\performance.html"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -41,42 +41,42 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
 
-# Vérifier si le fichier de log existe
+# VÃ©rifier si le fichier de log existe
 $logPath = Join-Path -Path $projectRoot -ChildPath $LogPath
 if (-not (Test-Path -Path $logPath)) {
     Write-Warning "Fichier de log introuvable : $logPath"
     
-    # Créer un fichier de log de démonstration
+    # CrÃ©er un fichier de log de dÃ©monstration
     $demoLogContent = @"
 2025-06-01T10:00:00.000Z|REQUEST|{"input":"Analyse le fichier gran-mode.ps1","input_size":35,"mode":"GRAN"}
 2025-06-01T10:00:05.123Z|RESPONSE|{"output":"Analyse du fichier gran-mode.ps1...","output_size":120,"time_ms":5123}
-2025-06-01T10:10:00.000Z|REQUEST|{"input":"Implémente une fonction pour détecter la complexité","input_size":52,"mode":"DEV-R"}
-2025-06-01T10:10:08.456Z|RESPONSE|{"output":"Voici l'implémentation de la fonction...","output_size":2500,"time_ms":8456}
-2025-06-01T10:20:00.000Z|REQUEST|{"input":"Vérifie si la tâche 1.2.3 est terminée","input_size":40,"mode":"CHECK"}
-2025-06-01T10:20:03.789Z|RESPONSE|{"output":"La tâche 1.2.3 est terminée à 80%...","output_size":800,"time_ms":3789}
-2025-06-01T10:30:00.000Z|REQUEST|{"input":"Optimise cette fonction pour réduire la complexité","input_size":48,"mode":"OPTI"}
-2025-06-01T10:30:10.234Z|RESPONSE|{"output":"Voici la version optimisée de la fonction...","output_size":1800,"time_ms":10234}
-2025-06-01T10:40:00.000Z|REQUEST|{"input":"Crée un diagramme d'architecture pour le module de gestion des modes","input_size":65,"mode":"ARCHI"}
+2025-06-01T10:10:00.000Z|REQUEST|{"input":"ImplÃ©mente une fonction pour dÃ©tecter la complexitÃ©","input_size":52,"mode":"DEV-R"}
+2025-06-01T10:10:08.456Z|RESPONSE|{"output":"Voici l'implÃ©mentation de la fonction...","output_size":2500,"time_ms":8456}
+2025-06-01T10:20:00.000Z|REQUEST|{"input":"VÃ©rifie si la tÃ¢che 1.2.3 est terminÃ©e","input_size":40,"mode":"CHECK"}
+2025-06-01T10:20:03.789Z|RESPONSE|{"output":"La tÃ¢che 1.2.3 est terminÃ©e Ã  80%...","output_size":800,"time_ms":3789}
+2025-06-01T10:30:00.000Z|REQUEST|{"input":"Optimise cette fonction pour rÃ©duire la complexitÃ©","input_size":48,"mode":"OPTI"}
+2025-06-01T10:30:10.234Z|RESPONSE|{"output":"Voici la version optimisÃ©e de la fonction...","output_size":1800,"time_ms":10234}
+2025-06-01T10:40:00.000Z|REQUEST|{"input":"CrÃ©e un diagramme d'architecture pour le module de gestion des modes","input_size":65,"mode":"ARCHI"}
 2025-06-01T10:40:15.678Z|RESPONSE|{"output":"Voici le diagramme d'architecture...","output_size":3200,"time_ms":15678}
 "@
     
-    # Créer le répertoire des logs s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire des logs s'il n'existe pas
     $logDir = Split-Path -Path $logPath -Parent
     if (-not (Test-Path -Path $logDir -PathType Container)) {
         New-Item -Path $logDir -ItemType Directory -Force | Out-Null
     }
     
-    # Enregistrer le fichier de log de démonstration
+    # Enregistrer le fichier de log de dÃ©monstration
     $demoLogContent | Out-File -FilePath $logPath -Encoding UTF8
-    Write-Host "Fichier de log de démonstration créé : $logPath" -ForegroundColor Yellow
+    Write-Host "Fichier de log de dÃ©monstration crÃ©Ã© : $logPath" -ForegroundColor Yellow
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 $outputPath = Join-Path -Path $projectRoot -ChildPath $OutputPath
 if (-not (Test-Path -Path $outputDir -PathType Container)) {
@@ -164,7 +164,7 @@ function Analyze-AugmentLog {
                 $metrics.MinResponseTime = $responseData.time_ms
             }
             
-            # Associer la réponse à la requête correspondante
+            # Associer la rÃ©ponse Ã  la requÃªte correspondante
             if ($requests.Count -ge $responses.Count) {
                 $request = $requests[$responses.Count - 1]
                 if ($request.Mode) {
@@ -184,7 +184,7 @@ function Analyze-AugmentLog {
         $metrics.AverageResponseTime = ($responses | Measure-Object -Property TimeMs -Average).Average
     }
     
-    # Calculer les temps de réponse moyens par mode
+    # Calculer les temps de rÃ©ponse moyens par mode
     foreach ($mode in $metrics.ResponseTimesByMode.Keys) {
         $times = $metrics.ResponseTimesByMode[$mode]
         if ($times.Count -gt 0) {
@@ -195,7 +195,7 @@ function Analyze-AugmentLog {
         }
     }
     
-    # Si aucune réponse n'a été trouvée, définir MinResponseTime à 0
+    # Si aucune rÃ©ponse n'a Ã©tÃ© trouvÃ©e, dÃ©finir MinResponseTime Ã  0
     if ($metrics.MinResponseTime -eq [int]::MaxValue) {
         $metrics.MinResponseTime = 0
     }
@@ -207,7 +207,7 @@ function Analyze-AugmentLog {
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function Generate-HtmlReport {
     [CmdletBinding()]
     param (
@@ -222,7 +222,7 @@ function Generate-HtmlReport {
     $requests = $AnalysisResults.Requests
     $responses = $AnalysisResults.Responses
 
-    # Créer le contenu HTML
+    # CrÃ©er le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -292,50 +292,50 @@ function Generate-HtmlReport {
 <body>
     <div class="container">
         <h1>Rapport de performances d'Augment Code</h1>
-        <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         
         <div class="card">
-            <h2>Métriques globales</h2>
+            <h2>MÃ©triques globales</h2>
             <div class="metric">
-                <span class="metric-name">Nombre total de requêtes</span>
+                <span class="metric-name">Nombre total de requÃªtes</span>
                 <span class="metric-value">$($metrics.TotalRequests)</span>
             </div>
             <div class="metric">
-                <span class="metric-name">Nombre total de réponses</span>
+                <span class="metric-name">Nombre total de rÃ©ponses</span>
                 <span class="metric-value">$($metrics.TotalResponses)</span>
             </div>
             <div class="metric">
-                <span class="metric-name">Temps de réponse moyen</span>
+                <span class="metric-name">Temps de rÃ©ponse moyen</span>
                 <span class="metric-value">$([math]::Round($metrics.AverageResponseTime, 2)) ms</span>
             </div>
             <div class="metric">
-                <span class="metric-name">Temps de réponse maximum</span>
+                <span class="metric-name">Temps de rÃ©ponse maximum</span>
                 <span class="metric-value">$($metrics.MaxResponseTime) ms</span>
             </div>
             <div class="metric">
-                <span class="metric-name">Temps de réponse minimum</span>
+                <span class="metric-name">Temps de rÃ©ponse minimum</span>
                 <span class="metric-value">$($metrics.MinResponseTime) ms</span>
             </div>
             <div class="metric">
                 <span class="metric-name">Taille moyenne des inputs</span>
-                <span class="metric-value">$([math]::Round($metrics.AverageInputSize, 2)) caractères</span>
+                <span class="metric-value">$([math]::Round($metrics.AverageInputSize, 2)) caractÃ¨res</span>
             </div>
             <div class="metric">
                 <span class="metric-name">Taille moyenne des outputs</span>
-                <span class="metric-value">$([math]::Round($metrics.AverageOutputSize, 2)) caractères</span>
+                <span class="metric-value">$([math]::Round($metrics.AverageOutputSize, 2)) caractÃ¨res</span>
             </div>
             <div class="metric">
                 <span class="metric-name">Taille maximum des inputs</span>
-                <span class="metric-value">$($metrics.MaxInputSize) caractères</span>
+                <span class="metric-value">$($metrics.MaxInputSize) caractÃ¨res</span>
             </div>
             <div class="metric">
                 <span class="metric-name">Taille maximum des outputs</span>
-                <span class="metric-value">$($metrics.MaxOutputSize) caractères</span>
+                <span class="metric-value">$($metrics.MaxOutputSize) caractÃ¨res</span>
             </div>
         </div>
         
         <div class="card">
-            <h2>Répartition par mode</h2>
+            <h2>RÃ©partition par mode</h2>
             <div class="chart-container">
                 <canvas id="requestsByModeChart"></canvas>
             </div>
@@ -345,7 +345,7 @@ function Generate-HtmlReport {
         </div>
         
         <div class="card">
-            <h2>Détail des requêtes</h2>
+            <h2>DÃ©tail des requÃªtes</h2>
             <table>
                 <thead>
                     <tr>
@@ -358,7 +358,7 @@ function Generate-HtmlReport {
                 <tbody>
 "@
 
-    # Ajouter les détails des requêtes
+    # Ajouter les dÃ©tails des requÃªtes
     foreach ($request in $requests) {
         $htmlContent += @"
                     <tr>
@@ -376,7 +376,7 @@ function Generate-HtmlReport {
         </div>
         
         <div class="card">
-            <h2>Détail des réponses</h2>
+            <h2>DÃ©tail des rÃ©ponses</h2>
             <table>
                 <thead>
                     <tr>
@@ -388,7 +388,7 @@ function Generate-HtmlReport {
                 <tbody>
 "@
 
-    # Ajouter les détails des réponses
+    # Ajouter les dÃ©tails des rÃ©ponses
     foreach ($response in $responses) {
         $htmlContent += @"
                     <tr>
@@ -399,7 +399,7 @@ function Generate-HtmlReport {
 "@
     }
 
-    # Préparer les données pour les graphiques
+    # PrÃ©parer les donnÃ©es pour les graphiques
     $modesJson = $metrics.RequestsByMode.Keys | ConvertTo-Json
     $requestsByModeJson = $metrics.RequestsByMode.Values | ConvertTo-Json
     $responseTimesByModeJson = $metrics.ResponseTimesByMode.Values | ConvertTo-Json
@@ -411,14 +411,14 @@ function Generate-HtmlReport {
     </div>
     
     <script>
-        // Graphique de répartition des requêtes par mode
+        // Graphique de rÃ©partition des requÃªtes par mode
         const requestsByModeCtx = document.getElementById('requestsByModeChart').getContext('2d');
         const requestsByModeChart = new Chart(requestsByModeCtx, {
             type: 'bar',
             data: {
                 labels: $modesJson,
                 datasets: [{
-                    label: 'Nombre de requêtes',
+                    label: 'Nombre de requÃªtes',
                     data: $requestsByModeJson,
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -433,7 +433,7 @@ function Generate-HtmlReport {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Nombre de requêtes'
+                            text: 'Nombre de requÃªtes'
                         }
                     },
                     x: {
@@ -446,14 +446,14 @@ function Generate-HtmlReport {
             }
         });
         
-        // Graphique des temps de réponse par mode
+        // Graphique des temps de rÃ©ponse par mode
         const responseTimesByModeCtx = document.getElementById('responseTimesByModeChart').getContext('2d');
         const responseTimesByModeChart = new Chart(responseTimesByModeCtx, {
             type: 'bar',
             data: {
                 labels: $modesJson,
                 datasets: [{
-                    label: 'Temps de réponse moyen (ms)',
+                    label: 'Temps de rÃ©ponse moyen (ms)',
                     data: $responseTimesByModeJson,
                     backgroundColor: 'rgba(255, 99, 132, 0.5)',
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -468,7 +468,7 @@ function Generate-HtmlReport {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Temps de réponse (ms)'
+                            text: 'Temps de rÃ©ponse (ms)'
                         }
                     },
                     x: {
@@ -493,23 +493,23 @@ function Generate-HtmlReport {
 Write-Host "Analyse du fichier de log : $logPath" -ForegroundColor Cyan
 $analysisResults = Analyze-AugmentLog -LogPath $logPath
 
-# Générer le rapport HTML
-Write-Host "Génération du rapport HTML : $outputPath" -ForegroundColor Cyan
+# GÃ©nÃ©rer le rapport HTML
+Write-Host "GÃ©nÃ©ration du rapport HTML : $outputPath" -ForegroundColor Cyan
 Generate-HtmlReport -AnalysisResults $analysisResults -OutputPath $outputPath
 
-# Afficher un résumé
-Write-Host "`nRésumé des performances d'Augment Code :" -ForegroundColor Green
-Write-Host "Nombre total de requêtes : $($analysisResults.Metrics.TotalRequests)" -ForegroundColor Gray
-Write-Host "Temps de réponse moyen : $([math]::Round($analysisResults.Metrics.AverageResponseTime, 2)) ms" -ForegroundColor Gray
-Write-Host "Taille moyenne des inputs : $([math]::Round($analysisResults.Metrics.AverageInputSize, 2)) caractères" -ForegroundColor Gray
-Write-Host "Taille moyenne des outputs : $([math]::Round($analysisResults.Metrics.AverageOutputSize, 2)) caractères" -ForegroundColor Gray
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des performances d'Augment Code :" -ForegroundColor Green
+Write-Host "Nombre total de requÃªtes : $($analysisResults.Metrics.TotalRequests)" -ForegroundColor Gray
+Write-Host "Temps de rÃ©ponse moyen : $([math]::Round($analysisResults.Metrics.AverageResponseTime, 2)) ms" -ForegroundColor Gray
+Write-Host "Taille moyenne des inputs : $([math]::Round($analysisResults.Metrics.AverageInputSize, 2)) caractÃ¨res" -ForegroundColor Gray
+Write-Host "Taille moyenne des outputs : $([math]::Round($analysisResults.Metrics.AverageOutputSize, 2)) caractÃ¨res" -ForegroundColor Gray
 
-Write-Host "`nRépartition par mode :" -ForegroundColor Green
+Write-Host "`nRÃ©partition par mode :" -ForegroundColor Green
 foreach ($mode in $analysisResults.Metrics.RequestsByMode.Keys) {
     $count = $analysisResults.Metrics.RequestsByMode[$mode]
     $time = [math]::Round($analysisResults.Metrics.ResponseTimesByMode[$mode], 2)
-    Write-Host "$mode : $count requêtes, temps moyen : $time ms" -ForegroundColor Gray
+    Write-Host "$mode : $count requÃªtes, temps moyen : $time ms" -ForegroundColor Gray
 }
 
-Write-Host "`nRapport HTML généré : $outputPath" -ForegroundColor Green
+Write-Host "`nRapport HTML gÃ©nÃ©rÃ© : $outputPath" -ForegroundColor Green
 Write-Host "Pour visualiser le rapport, ouvrez le fichier dans un navigateur web." -ForegroundColor Yellow

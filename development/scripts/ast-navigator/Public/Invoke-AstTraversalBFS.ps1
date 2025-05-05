@@ -1,28 +1,28 @@
-<#
+﻿<#
 .SYNOPSIS
     Effectue un parcours en largeur (BFS) de l'arbre syntaxique PowerShell.
 
 .DESCRIPTION
     Cette fonction parcourt un arbre syntaxique PowerShell (AST) en utilisant l'algorithme de parcours en largeur (BFS).
-    Elle permet de filtrer les nœuds par type, de limiter la profondeur de parcours et d'optimiser la gestion de la mémoire.
+    Elle permet de filtrer les nÅ“uds par type, de limiter la profondeur de parcours et d'optimiser la gestion de la mÃ©moire.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à parcourir. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  parcourir. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER NodeType
-    Type de nœud AST à filtrer. Si spécifié, seuls les nœuds de ce type seront inclus dans les résultats.
+    Type de nÅ“ud AST Ã  filtrer. Si spÃ©cifiÃ©, seuls les nÅ“uds de ce type seront inclus dans les rÃ©sultats.
 
 .PARAMETER MaxDepth
-    Profondeur maximale de parcours. Si 0 ou non spécifié, aucune limite de profondeur n'est appliquée.
+    Profondeur maximale de parcours. Si 0 ou non spÃ©cifiÃ©, aucune limite de profondeur n'est appliquÃ©e.
 
 .PARAMETER Predicate
-    Prédicat (ScriptBlock) pour filtrer les nœuds. Si spécifié, seuls les nœuds pour lesquels le prédicat retourne $true seront inclus dans les résultats.
+    PrÃ©dicat (ScriptBlock) pour filtrer les nÅ“uds. Si spÃ©cifiÃ©, seuls les nÅ“uds pour lesquels le prÃ©dicat retourne $true seront inclus dans les rÃ©sultats.
 
 .PARAMETER IncludeRoot
-    Si spécifié, inclut le nœud racine dans les résultats.
+    Si spÃ©cifiÃ©, inclut le nÅ“ud racine dans les rÃ©sultats.
 
 .PARAMETER BatchSize
-    Taille des lots pour le traitement des nœuds. Permet d'optimiser la gestion de la mémoire pour les grands arbres. La valeur par défaut est 100.
+    Taille des lots pour le traitement des nÅ“uds. Permet d'optimiser la gestion de la mÃ©moire pour les grands arbres. La valeur par dÃ©faut est 100.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -39,7 +39,7 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 function Invoke-AstTraversalBFS {
     [CmdletBinding()]
@@ -64,27 +64,27 @@ function Invoke-AstTraversalBFS {
     )
 
     begin {
-        # Initialiser la liste des résultats
+        # Initialiser la liste des rÃ©sultats
         $results = New-Object System.Collections.ArrayList
 
-        # Créer une file d'attente pour le parcours en largeur
+        # CrÃ©er une file d'attente pour le parcours en largeur
         $queue = New-Object System.Collections.Queue
     }
 
     process {
         try {
-            # Structure pour stocker les nœuds avec leur profondeur
+            # Structure pour stocker les nÅ“uds avec leur profondeur
             $nodeInfo = @{
                 Node = $Ast
                 Depth = 0
             }
 
-            # Ajouter le nœud racine à la file d'attente
+            # Ajouter le nÅ“ud racine Ã  la file d'attente
             $queue.Enqueue($nodeInfo)
 
-            # Vérifier si le nœud racine doit être inclus
+            # VÃ©rifier si le nÅ“ud racine doit Ãªtre inclus
             if ($IncludeRoot) {
-                # Vérifier si le nœud racine correspond au type spécifié
+                # VÃ©rifier si le nÅ“ud racine correspond au type spÃ©cifiÃ©
                 $includeRoot = $true
                 
                 if ($NodeType) {
@@ -92,12 +92,12 @@ function Invoke-AstTraversalBFS {
                     $includeRoot = $rootTypeName -eq $NodeType -or $rootTypeName -eq "${NodeType}Ast"
                 }
 
-                # Vérifier si le nœud racine correspond au prédicat spécifié
+                # VÃ©rifier si le nÅ“ud racine correspond au prÃ©dicat spÃ©cifiÃ©
                 if ($includeRoot -and $Predicate) {
                     $includeRoot = & $Predicate $Ast
                 }
 
-                # Ajouter le nœud racine aux résultats s'il correspond aux critères
+                # Ajouter le nÅ“ud racine aux rÃ©sultats s'il correspond aux critÃ¨res
                 if ($includeRoot) {
                     [void]$results.Add($Ast)
                 }
@@ -109,17 +109,17 @@ function Invoke-AstTraversalBFS {
 
             # Parcourir la file d'attente
             while ($queue.Count -gt 0) {
-                # Récupérer le prochain nœud de la file d'attente
+                # RÃ©cupÃ©rer le prochain nÅ“ud de la file d'attente
                 $currentNodeInfo = $queue.Dequeue()
                 $currentNode = $currentNodeInfo.Node
                 $currentDepth = $currentNodeInfo.Depth
 
-                # Vérifier la profondeur maximale
+                # VÃ©rifier la profondeur maximale
                 if ($MaxDepth -gt 0 -and $currentDepth -ge $MaxDepth) {
                     continue
                 }
 
-                # Ajouter les nœuds enfants à la file d'attente
+                # Ajouter les nÅ“uds enfants Ã  la file d'attente
                 $children = $currentNode.FindAll({ $true }, $false)
                 foreach ($child in $children) {
                     $childInfo = @{
@@ -128,7 +128,7 @@ function Invoke-AstTraversalBFS {
                     }
                     $queue.Enqueue($childInfo)
 
-                    # Vérifier si le nœud enfant correspond au type spécifié
+                    # VÃ©rifier si le nÅ“ud enfant correspond au type spÃ©cifiÃ©
                     $includeChild = $true
                     
                     if ($NodeType) {
@@ -136,29 +136,29 @@ function Invoke-AstTraversalBFS {
                         $includeChild = $childTypeName -eq $NodeType -or $childTypeName -eq "${NodeType}Ast"
                     }
 
-                    # Vérifier si le nœud enfant correspond au prédicat spécifié
+                    # VÃ©rifier si le nÅ“ud enfant correspond au prÃ©dicat spÃ©cifiÃ©
                     if ($includeChild -and $Predicate) {
                         $includeChild = & $Predicate $child
                     }
 
-                    # Ajouter le nœud enfant aux résultats s'il correspond aux critères
+                    # Ajouter le nÅ“ud enfant aux rÃ©sultats s'il correspond aux critÃ¨res
                     if ($includeChild) {
                         [void]$results.Add($child)
                     }
 
-                    # Gestion de la mémoire par lots
+                    # Gestion de la mÃ©moire par lots
                     $batchCounter++
                     if ($batchCounter -ge $BatchSize) {
-                        # Réinitialiser le compteur
+                        # RÃ©initialiser le compteur
                         $batchCounter = 0
                         
-                        # Libérer la mémoire
+                        # LibÃ©rer la mÃ©moire
                         [System.GC]::Collect()
                     }
                 }
             }
 
-            # Retourner les résultats
+            # Retourner les rÃ©sultats
             return $results
         }
         catch {
@@ -168,7 +168,7 @@ function Invoke-AstTraversalBFS {
     }
 
     end {
-        # Libérer la mémoire
+        # LibÃ©rer la mÃ©moire
         $queue.Clear()
         [System.GC]::Collect()
     }

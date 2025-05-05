@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fonctions de configuration des chemins d'accès.
+    Fonctions de configuration des chemins d'accÃ¨s.
 
 .DESCRIPTION
-    Ce script contient des fonctions pour configurer et gérer les chemins d'accès
-    utilisés par le module RoadmapParser.
+    Ce script contient des fonctions pour configurer et gÃ©rer les chemins d'accÃ¨s
+    utilisÃ©s par le module RoadmapParser.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
 # Importer les fonctions utilitaires de gestion des chemins
@@ -26,7 +26,7 @@ if (Test-Path -Path $pathResolverPath) {
     . $pathResolverPath
 }
 
-# Fonction pour initialiser les chemins d'accès
+# Fonction pour initialiser les chemins d'accÃ¨s
 function Initialize-Paths {
     [CmdletBinding()]
     param(
@@ -56,7 +56,7 @@ function Initialize-Paths {
         # Initialiser la table de hachage des chemins
         $paths = @{}
         
-        # Détecter le répertoire racine du projet
+        # DÃ©tecter le rÃ©pertoire racine du projet
         $projectRoot = Find-ProjectRoot -StartPath (Get-Location).Path
         $paths["ProjectRoot"] = $projectRoot
         
@@ -100,12 +100,12 @@ function Initialize-Paths {
             $paths["LogsPath"] = Join-Path -Path $projectRoot -ChildPath "logs"
         }
         
-        # Créer les répertoires si demandé
+        # CrÃ©er les rÃ©pertoires si demandÃ©
         if ($CreateIfMissing) {
             foreach ($key in $paths.Keys) {
                 $path = $paths[$key]
                 
-                # Ne pas créer le fichier de roadmap, seulement les répertoires
+                # Ne pas crÃ©er le fichier de roadmap, seulement les rÃ©pertoires
                 if ($key -ne "RoadmapPath" -and -not (Test-Path -Path $path -PathType Container)) {
                     New-DirectoryWithPermissions -Path $path -GrantFullControl -Force:$Force
                 }
@@ -115,12 +115,12 @@ function Initialize-Paths {
         return $paths
     }
     catch {
-        Write-Error "Erreur lors de l'initialisation des chemins d'accès : $_"
+        Write-Error "Erreur lors de l'initialisation des chemins d'accÃ¨s : $_"
         return @{}
     }
 }
 
-# Fonction pour valider les chemins d'accès
+# Fonction pour valider les chemins d'accÃ¨s
 function Test-Paths {
     [CmdletBinding()]
     param(
@@ -132,20 +132,20 @@ function Test-Paths {
     )
     
     try {
-        # Initialiser la table de hachage des résultats
+        # Initialiser la table de hachage des rÃ©sultats
         $results = @{}
         
-        # Vérifier chaque chemin
+        # VÃ©rifier chaque chemin
         foreach ($key in $Paths.Keys) {
             $path = $Paths[$key]
             
-            # Vérifier si le chemin existe
+            # VÃ©rifier si le chemin existe
             $exists = Test-Path -Path $path -ErrorAction SilentlyContinue
             
-            # Vérifier les permissions
+            # VÃ©rifier les permissions
             $permissions = Test-PathPermissions -Path $path -TestRead -TestWrite -TestExecute -Detailed
             
-            # Stocker les résultats
+            # Stocker les rÃ©sultats
             $results[$key] = [PSCustomObject]@{
                 Path = $path
                 Exists = $exists
@@ -153,16 +153,16 @@ function Test-Paths {
             }
         }
         
-        # Retourner les résultats détaillés si demandé
+        # Retourner les rÃ©sultats dÃ©taillÃ©s si demandÃ©
         if ($Detailed) {
             return $results
         }
         
-        # Sinon, retourner un résultat simple
+        # Sinon, retourner un rÃ©sultat simple
         return $results.Values | ForEach-Object { $_.Exists -and $_.Permissions.ReadAccess -and $_.Permissions.WriteAccess } | Where-Object { -not $_ } | Measure-Object | Select-Object -ExpandProperty Count -eq 0
     }
     catch {
-        Write-Error "Erreur lors de la validation des chemins d'accès : $_"
+        Write-Error "Erreur lors de la validation des chemins d'accÃ¨s : $_"
         
         if ($Detailed) {
             return @{}
@@ -172,7 +172,7 @@ function Test-Paths {
     }
 }
 
-# Fonction pour réparer les chemins d'accès
+# Fonction pour rÃ©parer les chemins d'accÃ¨s
 function Repair-Paths {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -184,22 +184,22 @@ function Repair-Paths {
     )
     
     try {
-        # Vérifier chaque chemin
+        # VÃ©rifier chaque chemin
         foreach ($key in $Paths.Keys) {
             $path = $Paths[$key]
             
-            # Ne pas créer le fichier de roadmap, seulement les répertoires
+            # Ne pas crÃ©er le fichier de roadmap, seulement les rÃ©pertoires
             if ($key -ne "RoadmapPath") {
-                # Vérifier si le chemin existe
+                # VÃ©rifier si le chemin existe
                 if (-not (Test-Path -Path $path -PathType Container)) {
-                    # Créer le répertoire
-                    if ($PSCmdlet.ShouldProcess($path, "Créer le répertoire")) {
+                    # CrÃ©er le rÃ©pertoire
+                    if ($PSCmdlet.ShouldProcess($path, "CrÃ©er le rÃ©pertoire")) {
                         New-DirectoryWithPermissions -Path $path -GrantFullControl -Force:$Force
                     }
                 }
                 else {
-                    # Réparer les permissions
-                    if ($PSCmdlet.ShouldProcess($path, "Réparer les permissions")) {
+                    # RÃ©parer les permissions
+                    if ($PSCmdlet.ShouldProcess($path, "RÃ©parer les permissions")) {
                         Repair-PathPermissions -Path $path -GrantFullControl -Force:$Force
                     }
                 }
@@ -209,7 +209,7 @@ function Repair-Paths {
         return $true
     }
     catch {
-        Write-Error "Erreur lors de la réparation des chemins d'accès : $_"
+        Write-Error "Erreur lors de la rÃ©paration des chemins d'accÃ¨s : $_"
         return $false
     }
 }
@@ -229,7 +229,7 @@ function Get-AbsolutePath {
         return Resolve-RelativePath -Path $Path -BasePath $BasePath
     }
     catch {
-        Write-Error "Erreur lors de la résolution du chemin absolu : $_"
+        Write-Error "Erreur lors de la rÃ©solution du chemin absolu : $_"
         return $null
     }
 }
@@ -249,7 +249,7 @@ function Get-RelativePath {
         return Resolve-AbsolutePath -Path $Path -BasePath $BasePath
     }
     catch {
-        Write-Error "Erreur lors de la résolution du chemin relatif : $_"
+        Write-Error "Erreur lors de la rÃ©solution du chemin relatif : $_"
         return $null
     }
 }

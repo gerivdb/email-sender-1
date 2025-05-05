@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Extrait la liste des compétences du rapport des compétences requises.
+    Extrait la liste des compÃ©tences du rapport des compÃ©tences requises.
 
 .DESCRIPTION
-    Ce script analyse le rapport des compétences requises et extrait la liste complète
-    des compétences identifiées pour chaque amélioration.
+    Ce script analyse le rapport des compÃ©tences requises et extrait la liste complÃ¨te
+    des compÃ©tences identifiÃ©es pour chaque amÃ©lioration.
 
 .PARAMETER SkillsReportPath
-    Chemin vers le fichier du rapport des compétences requises.
+    Chemin vers le fichier du rapport des compÃ©tences requises.
 
 .PARAMETER OutputPath
-    Chemin vers le fichier de sortie pour la liste des compétences extraites.
+    Chemin vers le fichier de sortie pour la liste des compÃ©tences extraites.
 
 .PARAMETER Format
     Format du fichier de sortie. Les valeurs possibles sont : JSON, CSV, Markdown.
-    Par défaut : Markdown
+    Par dÃ©faut : Markdown
 
 .EXAMPLE
     .\extract-required-skills.ps1 -SkillsReportPath "data\planning\required-skills.md" -OutputPath "data\planning\skills-list.md"
-    Extrait la liste des compétences du rapport des compétences requises et génère un fichier Markdown.
+    Extrait la liste des compÃ©tences du rapport des compÃ©tences requises et gÃ©nÃ¨re un fichier Markdown.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-10
+    Date de crÃ©ation: 2025-05-10
 #>
 [CmdletBinding()]
 param (
@@ -38,19 +38,19 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $SkillsReportPath)) {
-    Write-Error "Le fichier du rapport des compétences requises n'existe pas : $SkillsReportPath"
+    Write-Error "Le fichier du rapport des compÃ©tences requises n'existe pas : $SkillsReportPath"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour extraire les compétences du rapport Markdown
+# Fonction pour extraire les compÃ©tences du rapport Markdown
 function Extract-SkillsFromMarkdown {
     [CmdletBinding()]
     param (
@@ -63,10 +63,10 @@ function Extract-SkillsFromMarkdown {
     $currentManager = $null
     $currentImprovement = $null
 
-    # Utiliser une expression régulière pour extraire les sections des gestionnaires
+    # Utiliser une expression rÃ©guliÃ¨re pour extraire les sections des gestionnaires
     $managerPattern = '## <a name=''([^'']+)''></a>([^\n]+)'
     $improvementPattern = '### ([^\n]+)'
-    $skillsTablePattern = '\| Catégorie \| Compétence \| Niveau \| Justification \|[\r\n]+\|[^\n]+\|[\r\n]+((?:\|[^\n]+\|[\r\n]+)+)'
+    $skillsTablePattern = '\| CatÃ©gorie \| CompÃ©tence \| Niveau \| Justification \|[\r\n]+\|[^\n]+\|[\r\n]+((?:\|[^\n]+\|[\r\n]+)+)'
     $skillRowPattern = '\| ([^|]+) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|'
 
     # Extraire les gestionnaires
@@ -82,24 +82,24 @@ function Extract-SkillsFromMarkdown {
             $managerContent = $managerContent.Substring(0, $managerMatch.Length + $nextManagerMatch.Index)
         }
         
-        # Extraire les améliorations
+        # Extraire les amÃ©liorations
         $improvementMatches = [regex]::Matches($managerContent, $improvementPattern)
         foreach ($improvementMatch in $improvementMatches) {
             $improvementName = $improvementMatch.Groups[1].Value.Trim()
             
-            # Extraire le contenu de la section de l'amélioration
+            # Extraire le contenu de la section de l'amÃ©lioration
             $improvementContent = $managerContent.Substring($improvementMatch.Index)
             $nextImprovementMatch = [regex]::Match($improvementContent.Substring($improvementMatch.Length), $improvementPattern)
             if ($nextImprovementMatch.Success) {
                 $improvementContent = $improvementContent.Substring(0, $improvementMatch.Length + $nextImprovementMatch.Index)
             }
             
-            # Extraire la table des compétences
+            # Extraire la table des compÃ©tences
             $skillsTableMatch = [regex]::Match($improvementContent, $skillsTablePattern)
             if ($skillsTableMatch.Success) {
                 $skillsTable = $skillsTableMatch.Groups[1].Value
                 
-                # Extraire les lignes de compétences
+                # Extraire les lignes de compÃ©tences
                 $skillRowMatches = [regex]::Matches($skillsTable, $skillRowPattern)
                 foreach ($skillRowMatch in $skillRowMatches) {
                     $category = $skillRowMatch.Groups[1].Value.Trim()
@@ -126,7 +126,7 @@ function Extract-SkillsFromMarkdown {
     }
 }
 
-# Fonction pour générer le rapport au format Markdown
+# Fonction pour gÃ©nÃ©rer le rapport au format Markdown
 function Generate-MarkdownReport {
     [CmdletBinding()]
     param (
@@ -137,31 +137,31 @@ function Generate-MarkdownReport {
         [string[]]$Managers
     )
 
-    $markdown = "# Liste des Compétences Requises`n`n"
-    $markdown += "Ce document présente la liste des compétences requises extraites du rapport des compétences requises.`n`n"
+    $markdown = "# Liste des CompÃ©tences Requises`n`n"
+    $markdown += "Ce document prÃ©sente la liste des compÃ©tences requises extraites du rapport des compÃ©tences requises.`n`n"
     
-    $markdown += "## Table des Matières`n`n"
-    $markdown += "- [Résumé des Compétences](#résumé-des-compétences)`n"
-    $markdown += "- [Compétences par Catégorie](#compétences-par-catégorie)`n"
+    $markdown += "## Table des MatiÃ¨res`n`n"
+    $markdown += "- [RÃ©sumÃ© des CompÃ©tences](#rÃ©sumÃ©-des-compÃ©tences)`n"
+    $markdown += "- [CompÃ©tences par CatÃ©gorie](#compÃ©tences-par-catÃ©gorie)`n"
     foreach ($manager in $Managers) {
         $markdown += "- [$manager](#$($manager.ToLower().Replace(' ', '-')))`n"
     }
     
-    # Résumé des compétences
-    $markdown += "`n## Résumé des Compétences`n`n"
+    # RÃ©sumÃ© des compÃ©tences
+    $markdown += "`n## RÃ©sumÃ© des CompÃ©tences`n`n"
     
     $uniqueSkills = $Skills | Select-Object -Property Category, Skill -Unique | Sort-Object -Property Category, Skill
     $totalSkills = $uniqueSkills.Count
     $totalOccurrences = $Skills.Count
     
-    $markdown += "**Nombre total de compétences uniques :** $totalSkills`n`n"
+    $markdown += "**Nombre total de compÃ©tences uniques :** $totalSkills`n`n"
     $markdown += "**Nombre total d'occurrences :** $totalOccurrences`n`n"
     
-    # Compétences les plus demandées
+    # CompÃ©tences les plus demandÃ©es
     $skillOccurrences = $Skills | Group-Object -Property Skill | Sort-Object -Property Count -Descending | Select-Object -First 10
     
-    $markdown += "### Compétences les Plus Demandées`n`n"
-    $markdown += "| Compétence | Occurrences | Pourcentage |`n"
+    $markdown += "### CompÃ©tences les Plus DemandÃ©es`n`n"
+    $markdown += "| CompÃ©tence | Occurrences | Pourcentage |`n"
     $markdown += "|------------|-------------|-------------|`n"
     
     foreach ($skillOccurrence in $skillOccurrences) {
@@ -169,14 +169,14 @@ function Generate-MarkdownReport {
         $markdown += "| $($skillOccurrence.Name) | $($skillOccurrence.Count) | $percentage% |`n"
     }
     
-    # Compétences par catégorie
-    $markdown += "`n## Compétences par Catégorie`n`n"
+    # CompÃ©tences par catÃ©gorie
+    $markdown += "`n## CompÃ©tences par CatÃ©gorie`n`n"
     
     $categories = $uniqueSkills | Group-Object -Property Category | Sort-Object -Property Name
     
     foreach ($category in $categories) {
         $markdown += "### $($category.Name)`n`n"
-        $markdown += "| Compétence | Occurrences |`n"
+        $markdown += "| CompÃ©tence | Occurrences |`n"
         $markdown += "|------------|-------------|`n"
         
         $categorySkills = $Skills | Where-Object { $_.Category -eq $category.Name } | Group-Object -Property Skill | Sort-Object -Property Count -Descending
@@ -188,7 +188,7 @@ function Generate-MarkdownReport {
         $markdown += "`n"
     }
     
-    # Compétences par gestionnaire
+    # CompÃ©tences par gestionnaire
     foreach ($manager in $Managers) {
         $markdown += "## <a name='$($manager.ToLower().Replace(' ', '-'))'></a>$manager`n`n"
         
@@ -197,7 +197,7 @@ function Generate-MarkdownReport {
         
         foreach ($improvement in $managerImprovements) {
             $markdown += "### $($improvement.Improvement)`n`n"
-            $markdown += "| Catégorie | Compétence | Niveau | Justification |`n"
+            $markdown += "| CatÃ©gorie | CompÃ©tence | Niveau | Justification |`n"
             $markdown += "|-----------|------------|--------|---------------|`n"
             
             $improvementSkills = $managerSkills | Where-Object { $_.Improvement -eq $improvement.Improvement } | Sort-Object -Property Category, Skill
@@ -213,7 +213,7 @@ function Generate-MarkdownReport {
     return $markdown
 }
 
-# Fonction pour générer le rapport au format CSV
+# Fonction pour gÃ©nÃ©rer le rapport au format CSV
 function Generate-CsvReport {
     [CmdletBinding()]
     param (
@@ -230,7 +230,7 @@ function Generate-CsvReport {
     return $csv
 }
 
-# Fonction pour générer le rapport au format JSON
+# Fonction pour gÃ©nÃ©rer le rapport au format JSON
 function Generate-JsonReport {
     [CmdletBinding()]
     param (
@@ -296,15 +296,15 @@ function Generate-JsonReport {
     return $jsonData | ConvertTo-Json -Depth 10
 }
 
-# Lire le contenu du rapport des compétences requises
+# Lire le contenu du rapport des compÃ©tences requises
 $reportContent = Get-Content -Path $SkillsReportPath -Raw
 
-# Extraire les compétences du rapport
+# Extraire les compÃ©tences du rapport
 $extractionResult = Extract-SkillsFromMarkdown -MarkdownContent $reportContent
 $skills = $extractionResult.Skills
 $managers = $extractionResult.Managers
 
-# Générer le rapport dans le format spécifié
+# GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $reportContent = Generate-MarkdownReport -Skills $skills -Managers $managers
@@ -320,33 +320,33 @@ switch ($Format) {
 # Enregistrer le rapport
 try {
     $reportContent | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Liste des compétences extraite avec succès : $OutputPath"
+    Write-Host "Liste des compÃ©tences extraite avec succÃ¨s : $OutputPath"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du rapport : $_"
     exit 1
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'extraction des compétences :"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'extraction des compÃ©tences :"
 Write-Host "--------------------------------------"
 
 $uniqueSkills = $skills | Select-Object -Property Category, Skill -Unique | Sort-Object -Property Category, Skill
 $totalSkills = $uniqueSkills.Count
 $totalOccurrences = $skills.Count
 
-Write-Host "  Nombre total de compétences uniques : $totalSkills"
+Write-Host "  Nombre total de compÃ©tences uniques : $totalSkills"
 Write-Host "  Nombre total d'occurrences : $totalOccurrences"
 
 $categories = $uniqueSkills | Group-Object -Property Category | Sort-Object -Property Name
 
-Write-Host "`nRépartition par catégorie :"
+Write-Host "`nRÃ©partition par catÃ©gorie :"
 foreach ($category in $categories) {
-    Write-Host "  $($category.Name) : $($category.Count) compétences"
+    Write-Host "  $($category.Name) : $($category.Count) compÃ©tences"
 }
 
 $skillOccurrences = $skills | Group-Object -Property Skill | Sort-Object -Property Count -Descending | Select-Object -First 5
 
-Write-Host "`nTop 5 des compétences les plus demandées :"
+Write-Host "`nTop 5 des compÃ©tences les plus demandÃ©es :"
 foreach ($skillOccurrence in $skillOccurrences) {
     $percentage = [Math]::Round(($skillOccurrence.Count / $totalOccurrences) * 100, 1)
     Write-Host "  $($skillOccurrence.Name) : $($skillOccurrence.Count) occurrences ($percentage%)"

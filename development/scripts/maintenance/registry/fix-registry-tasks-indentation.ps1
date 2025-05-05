@@ -1,9 +1,9 @@
-# Script pour corriger l'indentation des tâches de registre dans le document actif
+﻿# Script pour corriger l'indentation des tÃ¢ches de registre dans le document actif
 
 # Chemin du document actif
 $documentPath = "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/docs/plans/plan-modes-stepup.md"
 
-# Vérifier que le document existe
+# VÃ©rifier que le document existe
 if (-not (Test-Path -Path $documentPath)) {
     Write-Error "Le document actif n'existe pas : $documentPath"
     exit 1
@@ -15,7 +15,7 @@ try {
     $modified = $false
     $tasksUpdated = 0
 
-    # Lignes à corriger avec leur indentation correcte
+    # Lignes Ã  corriger avec leur indentation correcte
     $linesToFix = @(
         @{
             LineNumber = 493
@@ -44,33 +44,33 @@ try {
         }
     )
 
-    # Parcourir chaque ligne à corriger
+    # Parcourir chaque ligne Ã  corriger
     foreach ($lineInfo in $linesToFix) {
         $lineNumber = $lineInfo.LineNumber - 1  # Ajuster pour l'index 0-based
         $line = $content[$lineNumber]
         $taskId = $lineInfo.TaskId
         $indentation = $lineInfo.Indentation
 
-        # Extraire le texte de la tâche (tout ce qui suit la case à cocher)
+        # Extraire le texte de la tÃ¢che (tout ce qui suit la case Ã  cocher)
         if ($line -match '^\s*-\s+\[x\]\s+(.*)') {
             $taskText = $matches[1]
             
-            # Créer la nouvelle ligne avec l'indentation correcte
+            # CrÃ©er la nouvelle ligne avec l'indentation correcte
             $newLine = "$indentation- [x] $taskText"
             $content[$lineNumber] = $newLine
             $modified = $true
             $tasksUpdated++
             
-            Write-Verbose "Indentation corrigée pour la tâche : $taskId"
+            Write-Verbose "Indentation corrigÃ©e pour la tÃ¢che : $taskId"
         }
     }
 
-    # Enregistrer les modifications si nécessaire
+    # Enregistrer les modifications si nÃ©cessaire
     if ($modified) {
         $content | Set-Content -Path $documentPath -Encoding UTF8
-        Write-Output "$tasksUpdated lignes ont été corrigées avec l'indentation appropriée dans le document : $documentPath"
+        Write-Output "$tasksUpdated lignes ont Ã©tÃ© corrigÃ©es avec l'indentation appropriÃ©e dans le document : $documentPath"
     } else {
-        Write-Output "Aucune ligne n'a été modifiée dans le document : $documentPath"
+        Write-Output "Aucune ligne n'a Ã©tÃ© modifiÃ©e dans le document : $documentPath"
     }
 }
 catch {

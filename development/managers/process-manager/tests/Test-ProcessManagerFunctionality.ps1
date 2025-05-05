@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests fonctionnels complets pour le Process Manager.
 
 .DESCRIPTION
-    Ce script exécute des tests fonctionnels complets pour vérifier le bon fonctionnement
-    du Process Manager avec les modules améliorés dans des scénarios réels.
+    Ce script exÃ©cute des tests fonctionnels complets pour vÃ©rifier le bon fonctionnement
+    du Process Manager avec les modules amÃ©liorÃ©s dans des scÃ©narios rÃ©els.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire courant.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER Force
-    Force l'exécution des tests même si les modules ne sont pas installés.
+    Force l'exÃ©cution des tests mÃªme si les modules ne sont pas installÃ©s.
 
 .PARAMETER SkipCleanup
-    Ne supprime pas les fichiers de test après l'exécution.
+    Ne supprime pas les fichiers de test aprÃ¨s l'exÃ©cution.
 
 .EXAMPLE
     .\Test-ProcessManagerFunctionality.ps1
-    Exécute les tests fonctionnels complets pour le Process Manager.
+    ExÃ©cute les tests fonctionnels complets pour le Process Manager.
 
 .EXAMPLE
     .\Test-ProcessManagerFunctionality.ps1 -ProjectRoot "D:\Projets\MonProjet" -Force -SkipCleanup
-    Force l'exécution des tests dans le répertoire spécifié et ne supprime pas les fichiers de test.
+    Force l'exÃ©cution des tests dans le rÃ©pertoire spÃ©cifiÃ© et ne supprime pas les fichiers de test.
 
 .NOTES
     Auteur: EMAIL_SENDER_1
     Version: 1.0
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -40,7 +40,7 @@ param (
     [switch]$SkipCleanup
 )
 
-# Définir les chemins
+# DÃ©finir les chemins
 $processManagerRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers\process-manager"
 $modulesRoot = Join-Path -Path $processManagerRoot -ChildPath "modules"
 $scriptsRoot = Join-Path -Path $processManagerRoot -ChildPath "scripts"
@@ -49,7 +49,7 @@ $processManagerScript = Join-Path -Path $scriptsRoot -ChildPath "process-manager
 $testDir = Join-Path -Path $testsRoot -ChildPath "functional-tests"
 $testConfigPath = Join-Path -Path $testDir -ChildPath "test-process-manager.config.json"
 
-# Fonction pour écrire des messages de journal
+# Fonction pour Ã©crire des messages de journal
 function Write-TestLog {
     [CmdletBinding()]
     param (
@@ -64,7 +64,7 @@ function Write-TestLog {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "[$timestamp] [$Level] $Message"
     
-    # Définir la couleur en fonction du niveau
+    # DÃ©finir la couleur en fonction du niveau
     $color = switch ($Level) {
         "Info" { "White" }
         "Warning" { "Yellow" }
@@ -78,7 +78,7 @@ function Write-TestLog {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Fonction pour exécuter un test et vérifier le résultat
+# Fonction pour exÃ©cuter un test et vÃ©rifier le rÃ©sultat
 function Invoke-FunctionalTest {
     [CmdletBinding()]
     param (
@@ -101,50 +101,50 @@ function Invoke-FunctionalTest {
         $result = & $Test
         
         if ($result) {
-            Write-TestLog -Message "  Résultat : Réussi" -Level Success
+            Write-TestLog -Message "  RÃ©sultat : RÃ©ussi" -Level Success
             return $true
         } else {
-            Write-TestLog -Message "  Résultat : Échec" -Level Error
+            Write-TestLog -Message "  RÃ©sultat : Ã‰chec" -Level Error
             return $false
         }
     } catch {
-        Write-TestLog -Message "  Résultat : Erreur - $_" -Level Error
+        Write-TestLog -Message "  RÃ©sultat : Erreur - $_" -Level Error
         return $false
     }
 }
 
-# Vérifier que le répertoire du projet existe
+# VÃ©rifier que le rÃ©pertoire du projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du projet n'existe pas : $ProjectRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du projet n'existe pas : $ProjectRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le répertoire du Process Manager existe
+# VÃ©rifier que le rÃ©pertoire du Process Manager existe
 if (-not (Test-Path -Path $processManagerRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le script du Process Manager existe
+# VÃ©rifier que le script du Process Manager existe
 if (-not (Test-Path -Path $processManagerScript -PathType Leaf)) {
     Write-TestLog -Message "Le script du Process Manager n'existe pas : $processManagerScript" -Level Error
     exit 1
 }
 
-# Vérifier si les modules sont installés
+# VÃ©rifier si les modules sont installÃ©s
 $processManagerModule = Get-Module -Name "ProcessManager" -ListAvailable
 if (-not $processManagerModule -and -not $Force) {
-    Write-TestLog -Message "Le module ProcessManager n'est pas installé. Utilisez -Force pour forcer l'exécution des tests." -Level Warning
-    Write-TestLog -Message "Exécutez le script install-modules.ps1 pour installer le module." -Level Info
+    Write-TestLog -Message "Le module ProcessManager n'est pas installÃ©. Utilisez -Force pour forcer l'exÃ©cution des tests." -Level Warning
+    Write-TestLog -Message "ExÃ©cutez le script install-modules.ps1 pour installer le module." -Level Info
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfig = @{
     Enabled = $true
     LogLevel = "Debug"
@@ -153,7 +153,7 @@ $testConfig = @{
 }
 $testConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $testConfigPath -Encoding UTF8
 
-# Créer des gestionnaires de test avec différentes configurations
+# CrÃ©er des gestionnaires de test avec diffÃ©rentes configurations
 $testManagers = @(
     @{
         Name = "SimpleManager"
@@ -165,7 +165,7 @@ $testManagers = @(
     Gestionnaire simple pour les tests fonctionnels.
 
 .DESCRIPTION
-    Ce script est un gestionnaire simple utilisé pour les tests fonctionnels
+    Ce script est un gestionnaire simple utilisÃ© pour les tests fonctionnels
     du Process Manager.
 #>
 
@@ -178,14 +178,14 @@ function Start-SimpleManager {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire simple..."
+    Write-Host "DÃ©marrage du gestionnaire simple..."
 }
 
 function Stop-SimpleManager {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire simple..."
+    Write-Host "ArrÃªt du gestionnaire simple..."
 }
 
 function Get-SimpleManagerStatus {
@@ -198,7 +198,7 @@ function Get-SimpleManagerStatus {
     }
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-SimpleManager
@@ -229,10 +229,10 @@ switch (`$Command) {
         Content = @"
 <#
 .SYNOPSIS
-    Gestionnaire dépendant pour les tests fonctionnels.
+    Gestionnaire dÃ©pendant pour les tests fonctionnels.
 
 .DESCRIPTION
-    Ce script est un gestionnaire dépendant utilisé pour les tests fonctionnels
+    Ce script est un gestionnaire dÃ©pendant utilisÃ© pour les tests fonctionnels
     du Process Manager.
 #>
 
@@ -245,18 +245,18 @@ function Start-DependentManager {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire dépendant..."
-    # Dépendance simulée
-    Write-Host "Démarrage du gestionnaire simple (dépendance)..."
+    Write-Host "DÃ©marrage du gestionnaire dÃ©pendant..."
+    # DÃ©pendance simulÃ©e
+    Write-Host "DÃ©marrage du gestionnaire simple (dÃ©pendance)..."
 }
 
 function Stop-DependentManager {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire dépendant..."
-    # Dépendance simulée
-    Write-Host "Arrêt du gestionnaire simple (dépendance)..."
+    Write-Host "ArrÃªt du gestionnaire dÃ©pendant..."
+    # DÃ©pendance simulÃ©e
+    Write-Host "ArrÃªt du gestionnaire simple (dÃ©pendance)..."
 }
 
 function Get-DependentManagerStatus {
@@ -270,7 +270,7 @@ function Get-DependentManagerStatus {
     }
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-DependentManager
@@ -288,7 +288,7 @@ switch (`$Command) {
 "@
         Manifest = @{
             Name = "DependentManager"
-            Description = "Gestionnaire dépendant pour les tests fonctionnels"
+            Description = "Gestionnaire dÃ©pendant pour les tests fonctionnels"
             Version = "1.0.0"
             Author = "EMAIL_SENDER_1"
             Dependencies = @(
@@ -310,7 +310,7 @@ switch (`$Command) {
     Gestionnaire invalide pour les tests fonctionnels.
 
 .DESCRIPTION
-    Ce script est un gestionnaire invalide utilisé pour les tests fonctionnels
+    Ce script est un gestionnaire invalide utilisÃ© pour les tests fonctionnels
     du Process Manager.
 #>
 
@@ -324,19 +324,19 @@ function Start-InvalidManager {
     [CmdletBinding()
     param()
     
-    Write-Host "Démarrage du gestionnaire invalide..."
+    Write-Host "DÃ©marrage du gestionnaire invalide..."
 }
 
 function Stop-InvalidManager {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire invalide..."
+    Write-Host "ArrÃªt du gestionnaire invalide..."
 }
 
 # Fonction de statut manquante intentionnellement
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-InvalidManager
@@ -362,28 +362,28 @@ switch (`$Command) {
     }
 )
 
-# Créer les gestionnaires de test
+# CrÃ©er les gestionnaires de test
 foreach ($manager in $testManagers) {
-    # Créer le script du gestionnaire
+    # CrÃ©er le script du gestionnaire
     Set-Content -Path $manager.Path -Value $manager.Content -Encoding UTF8
     
-    # Créer le manifeste du gestionnaire
+    # CrÃ©er le manifeste du gestionnaire
     $manager.Manifest | ConvertTo-Json -Depth 10 | Set-Content -Path $manager.ManifestPath -Encoding UTF8
 }
 
-# Définir les tests fonctionnels
+# DÃ©finir les tests fonctionnels
 $functionalTests = @(
     @{
         Name = "Test d'enregistrement d'un gestionnaire simple"
-        Description = "Vérifie que le Process Manager peut enregistrer un gestionnaire simple."
+        Description = "VÃ©rifie que le Process Manager peut enregistrer un gestionnaire simple."
         Test = {
             $result = & $processManagerScript -Command Register -ManagerName "SimpleManager" -ManagerPath $testManagers[0].Path -ConfigPath $testConfigPath -Force
             return $LASTEXITCODE -eq 0
         }
     },
     @{
-        Name = "Test d'enregistrement d'un gestionnaire avec dépendances"
-        Description = "Vérifie que le Process Manager peut enregistrer un gestionnaire avec dépendances."
+        Name = "Test d'enregistrement d'un gestionnaire avec dÃ©pendances"
+        Description = "VÃ©rifie que le Process Manager peut enregistrer un gestionnaire avec dÃ©pendances."
         Test = {
             $result = & $processManagerScript -Command Register -ManagerName "DependentManager" -ManagerPath $testManagers[1].Path -ConfigPath $testConfigPath -Force
             return $LASTEXITCODE -eq 0
@@ -391,7 +391,7 @@ $functionalTests = @(
     },
     @{
         Name = "Test de validation d'un gestionnaire invalide"
-        Description = "Vérifie que le Process Manager détecte correctement un gestionnaire invalide."
+        Description = "VÃ©rifie que le Process Manager dÃ©tecte correctement un gestionnaire invalide."
         Test = {
             if ($processManagerModule) {
                 # Utiliser le module ProcessManager si disponible
@@ -405,36 +405,36 @@ $functionalTests = @(
         }
     },
     @{
-        Name = "Test de découverte des gestionnaires"
-        Description = "Vérifie que le Process Manager peut découvrir automatiquement les gestionnaires."
+        Name = "Test de dÃ©couverte des gestionnaires"
+        Description = "VÃ©rifie que le Process Manager peut dÃ©couvrir automatiquement les gestionnaires."
         Test = {
-            # Créer un répertoire de découverte
+            # CrÃ©er un rÃ©pertoire de dÃ©couverte
             $discoveryDir = Join-Path -Path $testDir -ChildPath "discovery\test-manager"
             New-Item -Path $discoveryDir -ItemType Directory -Force | Out-Null
             
-            # Copier le gestionnaire simple dans le répertoire de découverte
+            # Copier le gestionnaire simple dans le rÃ©pertoire de dÃ©couverte
             $discoveryScriptsDir = Join-Path -Path $discoveryDir -ChildPath "scripts"
             New-Item -Path $discoveryScriptsDir -ItemType Directory -Force | Out-Null
             $discoveryManagerPath = Join-Path -Path $discoveryScriptsDir -ChildPath "test-manager.ps1"
             Copy-Item -Path $testManagers[0].Path -Destination $discoveryManagerPath
             
-            # Exécuter la découverte
+            # ExÃ©cuter la dÃ©couverte
             $result = & $processManagerScript -Command Discover -ConfigPath $testConfigPath -Force -SearchPaths @("$testDir\discovery")
             
             return $LASTEXITCODE -eq 0
         }
     },
     @{
-        Name = "Test d'exécution d'une commande sur un gestionnaire"
-        Description = "Vérifie que le Process Manager peut exécuter une commande sur un gestionnaire."
+        Name = "Test d'exÃ©cution d'une commande sur un gestionnaire"
+        Description = "VÃ©rifie que le Process Manager peut exÃ©cuter une commande sur un gestionnaire."
         Test = {
             $result = & $processManagerScript -Command Run -ManagerName "SimpleManager" -ManagerCommand "Status" -ConfigPath $testConfigPath
             return $LASTEXITCODE -eq 0
         }
     },
     @{
-        Name = "Test d'obtention de l'état d'un gestionnaire"
-        Description = "Vérifie que le Process Manager peut obtenir l'état d'un gestionnaire."
+        Name = "Test d'obtention de l'Ã©tat d'un gestionnaire"
+        Description = "VÃ©rifie que le Process Manager peut obtenir l'Ã©tat d'un gestionnaire."
         Test = {
             $result = & $processManagerScript -Command Status -ManagerName "SimpleManager" -ConfigPath $testConfigPath
             return $LASTEXITCODE -eq 0
@@ -442,7 +442,7 @@ $functionalTests = @(
     },
     @{
         Name = "Test de configuration d'un gestionnaire"
-        Description = "Vérifie que le Process Manager peut configurer un gestionnaire."
+        Description = "VÃ©rifie que le Process Manager peut configurer un gestionnaire."
         Test = {
             $result = & $processManagerScript -Command Configure -ManagerName "SimpleManager" -Enabled $true -ConfigPath $testConfigPath
             return $LASTEXITCODE -eq 0
@@ -450,15 +450,15 @@ $functionalTests = @(
     },
     @{
         Name = "Test de listage des gestionnaires"
-        Description = "Vérifie que le Process Manager peut lister les gestionnaires enregistrés."
+        Description = "VÃ©rifie que le Process Manager peut lister les gestionnaires enregistrÃ©s."
         Test = {
             $result = & $processManagerScript -Command List -ConfigPath $testConfigPath
             return $LASTEXITCODE -eq 0
         }
     },
     @{
-        Name = "Test de résolution des dépendances"
-        Description = "Vérifie que le Process Manager peut résoudre les dépendances entre gestionnaires."
+        Name = "Test de rÃ©solution des dÃ©pendances"
+        Description = "VÃ©rifie que le Process Manager peut rÃ©soudre les dÃ©pendances entre gestionnaires."
         Test = {
             if ($processManagerModule) {
                 # Utiliser le module ProcessManager si disponible
@@ -466,7 +466,7 @@ $functionalTests = @(
                 $result = Test-DependenciesAvailability -Dependencies $dependencies -ConfigPath $testConfigPath
                 return $result -eq $true
             } else {
-                # Simuler la résolution des dépendances
+                # Simuler la rÃ©solution des dÃ©pendances
                 $result = & $processManagerScript -Command Run -ManagerName "DependentManager" -ManagerCommand "Status" -ConfigPath $testConfigPath
                 return $LASTEXITCODE -eq 0
             }
@@ -474,7 +474,7 @@ $functionalTests = @(
     },
     @{
         Name = "Test de l'ordre de chargement des gestionnaires"
-        Description = "Vérifie que le Process Manager peut déterminer l'ordre de chargement des gestionnaires."
+        Description = "VÃ©rifie que le Process Manager peut dÃ©terminer l'ordre de chargement des gestionnaires."
         Test = {
             if ($processManagerModule) {
                 # Utiliser le module ProcessManager si disponible
@@ -488,12 +488,12 @@ $functionalTests = @(
     }
 )
 
-# Exécuter les tests fonctionnels
+# ExÃ©cuter les tests fonctionnels
 $totalTests = $functionalTests.Count
 $passedTests = 0
 $failedTests = 0
 
-Write-TestLog -Message "Exécution de $totalTests tests fonctionnels pour le Process Manager..." -Level Info
+Write-TestLog -Message "ExÃ©cution de $totalTests tests fonctionnels pour le Process Manager..." -Level Info
 
 foreach ($test in $functionalTests) {
     $result = Invoke-FunctionalTest -Name $test.Name -Description $test.Description -Test $test.Test
@@ -505,11 +505,11 @@ foreach ($test in $functionalTests) {
     }
 }
 
-# Afficher le résumé
-Write-TestLog -Message "`nRésumé des tests fonctionnels :" -Level Info
-Write-TestLog -Message "  Tests exécutés : $totalTests" -Level Info
-Write-TestLog -Message "  Tests réussis  : $passedTests" -Level Success
-Write-TestLog -Message "  Tests échoués  : $failedTests" -Level Error
+# Afficher le rÃ©sumÃ©
+Write-TestLog -Message "`nRÃ©sumÃ© des tests fonctionnels :" -Level Info
+Write-TestLog -Message "  Tests exÃ©cutÃ©s : $totalTests" -Level Info
+Write-TestLog -Message "  Tests rÃ©ussis  : $passedTests" -Level Success
+Write-TestLog -Message "  Tests Ã©chouÃ©s  : $failedTests" -Level Error
 
 # Nettoyer les fichiers de test
 if (-not $SkipCleanup) {
@@ -518,11 +518,11 @@ if (-not $SkipCleanup) {
     }
 }
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 if ($failedTests -eq 0) {
-    Write-TestLog -Message "`nTous les tests fonctionnels ont réussi !" -Level Success
+    Write-TestLog -Message "`nTous les tests fonctionnels ont rÃ©ussi !" -Level Success
     exit 0
 } else {
-    Write-TestLog -Message "`nCertains tests fonctionnels ont échoué." -Level Error
+    Write-TestLog -Message "`nCertains tests fonctionnels ont Ã©chouÃ©." -Level Error
     exit 1
 }

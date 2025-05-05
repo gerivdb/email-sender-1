@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module pour l'analyse récursive des dépendances de modules PowerShell.
+    Module pour l'analyse rÃ©cursive des dÃ©pendances de modules PowerShell.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour analyser les dépendances entre modules PowerShell,
-    détecter les dépendances via les manifestes (.psd1) et l'analyse du code,
-    éviter les boucles infinies dans la résolution, et visualiser le graphe de dépendances.
+    Ce module fournit des fonctions pour analyser les dÃ©pendances entre modules PowerShell,
+    dÃ©tecter les dÃ©pendances via les manifestes (.psd1) et l'analyse du code,
+    Ã©viter les boucles infinies dans la rÃ©solution, et visualiser le graphe de dÃ©pendances.
 
 .NOTES
     Auteur: Dependency Management Team
     Version: 1.1
-    Date de création: 2023-06-15
-    Date de mise à jour: 2023-07-20
+    Date de crÃ©ation: 2023-06-15
+    Date de mise Ã  jour: 2023-07-20
 #>
 
 # Variables globales pour le module
@@ -23,37 +23,37 @@ $script:CurrentRecursionDepth = 0
 
 <#
 .SYNOPSIS
-    Analyse récursivement les dépendances d'un module PowerShell.
+    Analyse rÃ©cursivement les dÃ©pendances d'un module PowerShell.
 
 .DESCRIPTION
-    Cette fonction analyse récursivement les dépendances d'un module PowerShell
+    Cette fonction analyse rÃ©cursivement les dÃ©pendances d'un module PowerShell
     en parcourant les manifestes (.psd1) et le code source des modules.
 
 .PARAMETER ModulePath
-    Chemin du module à analyser. Peut être un chemin vers un fichier .psm1, .psd1 ou un répertoire contenant un module.
+    Chemin du module Ã  analyser. Peut Ãªtre un chemin vers un fichier .psm1, .psd1 ou un rÃ©pertoire contenant un module.
 
 .PARAMETER MaxDepth
-    Profondeur maximale de récursion pour l'analyse des dépendances. Par défaut: 10.
+    Profondeur maximale de rÃ©cursion pour l'analyse des dÃ©pendances. Par dÃ©faut: 10.
 
 .PARAMETER IncludeNestedDependencies
-    Indique si les dépendances imbriquées doivent être incluses dans l'analyse.
+    Indique si les dÃ©pendances imbriquÃ©es doivent Ãªtre incluses dans l'analyse.
 
 .PARAMETER SkipSystemModules
-    Indique si les modules système doivent être exclus de l'analyse.
+    Indique si les modules systÃ¨me doivent Ãªtre exclus de l'analyse.
 
 .PARAMETER OutputFormat
-    Format de sortie des résultats. Valeurs possibles: Object, HashTable, Graph. Par défaut: Object.
+    Format de sortie des rÃ©sultats. Valeurs possibles: Object, HashTable, Graph. Par dÃ©faut: Object.
 
 .EXAMPLE
     $dependencies = Get-ModuleDependenciesRecursive -ModulePath C:\Modules\MyModule\MyModule.psd1
-    Analyse récursivement les dépendances du module MyModule.
+    Analyse rÃ©cursivement les dÃ©pendances du module MyModule.
 
 .EXAMPLE
     $dependencies = Get-ModuleDependenciesRecursive -ModulePath C:\Modules\MyModule -MaxDepth 5 -IncludeNestedDependencies
-    Analyse récursivement les dépendances du module MyModule avec une profondeur maximale de 5 et inclut les dépendances imbriquées.
+    Analyse rÃ©cursivement les dÃ©pendances du module MyModule avec une profondeur maximale de 5 et inclut les dÃ©pendances imbriquÃ©es.
 
 .OUTPUTS
-    [PSCustomObject] ou [HashTable] selon le paramètre OutputFormat.
+    [PSCustomObject] ou [HashTable] selon le paramÃ¨tre OutputFormat.
 #>
 function Get-ModuleDependenciesRecursive {
     [CmdletBinding()]
@@ -89,16 +89,16 @@ function Get-ModuleDependenciesRecursive {
                 [string]$Path
             )
 
-            # Vérifier si le chemin existe
+            # VÃ©rifier si le chemin existe
             if (-not (Test-Path -Path $Path)) {
-                Write-Warning "Le chemin spécifié n'existe pas: $Path"
+                Write-Warning "Le chemin spÃ©cifiÃ© n'existe pas: $Path"
                 return $null
             }
 
             # Obtenir le chemin complet
             $fullPath = Resolve-Path -Path $Path
 
-            # Si c'est un répertoire, chercher le fichier .psd1 ou .psm1
+            # Si c'est un rÃ©pertoire, chercher le fichier .psd1 ou .psm1
             if (Test-Path -Path $fullPath -PathType Container) {
                 $psd1Files = Get-ChildItem -Path $fullPath -Filter "*.psd1" -File
                 if ($psd1Files.Count -gt 0) {
@@ -110,14 +110,14 @@ function Get-ModuleDependenciesRecursive {
                     return $psm1Files[0].FullName
                 }
 
-                Write-Warning "Aucun fichier .psd1 ou .psm1 trouvé dans le répertoire: $fullPath"
+                Write-Warning "Aucun fichier .psd1 ou .psm1 trouvÃ© dans le rÃ©pertoire: $fullPath"
                 return $null
             }
 
-            # Si c'est un fichier, vérifier l'extension
+            # Si c'est un fichier, vÃ©rifier l'extension
             $extension = [System.IO.Path]::GetExtension($fullPath)
             if ($extension -notin ".psd1", ".psm1") {
-                Write-Warning "Le fichier spécifié n'est pas un fichier .psd1 ou .psm1: $fullPath"
+                Write-Warning "Le fichier spÃ©cifiÃ© n'est pas un fichier .psd1 ou .psm1: $fullPath"
                 return $null
             }
 
@@ -129,14 +129,14 @@ function Get-ModuleDependenciesRecursive {
         # Normaliser le chemin du module
         $normalizedPath = Get-NormalizedModulePath -Path $ModulePath
         if (-not $normalizedPath) {
-            Write-Error "Impossible de résoudre le chemin du module: $ModulePath"
+            Write-Error "Impossible de rÃ©soudre le chemin du module: $ModulePath"
             return $null
         }
 
-        # Analyser les dépendances récursivement
+        # Analyser les dÃ©pendances rÃ©cursivement
         $dependencies = Invoke-RecursiveDependencyAnalysis -ModulePath $normalizedPath -Depth 0 -IncludeNestedDependencies:$IncludeNestedDependencies -SkipSystemModules:$SkipSystemModules
 
-        # Formater la sortie selon le paramètre OutputFormat
+        # Formater la sortie selon le paramÃ¨tre OutputFormat
         switch ($OutputFormat) {
             "Object" {
                 return [PSCustomObject]@{
@@ -165,26 +165,26 @@ function Get-ModuleDependenciesRecursive {
 
 <#
 .SYNOPSIS
-    Fonction interne pour l'analyse récursive des dépendances.
+    Fonction interne pour l'analyse rÃ©cursive des dÃ©pendances.
 
 .DESCRIPTION
-    Cette fonction interne est utilisée par Get-ModuleDependenciesRecursive pour
-    analyser récursivement les dépendances d'un module PowerShell.
+    Cette fonction interne est utilisÃ©e par Get-ModuleDependenciesRecursive pour
+    analyser rÃ©cursivement les dÃ©pendances d'un module PowerShell.
 
 .PARAMETER ModulePath
-    Chemin du module à analyser.
+    Chemin du module Ã  analyser.
 
 .PARAMETER Depth
-    Profondeur actuelle de récursion.
+    Profondeur actuelle de rÃ©cursion.
 
 .PARAMETER IncludeNestedDependencies
-    Indique si les dépendances imbriquées doivent être incluses dans l'analyse.
+    Indique si les dÃ©pendances imbriquÃ©es doivent Ãªtre incluses dans l'analyse.
 
 .PARAMETER SkipSystemModules
-    Indique si les modules système doivent être exclus de l'analyse.
+    Indique si les modules systÃ¨me doivent Ãªtre exclus de l'analyse.
 
 .OUTPUTS
-    [System.Collections.ArrayList] Liste des dépendances du module.
+    [System.Collections.ArrayList] Liste des dÃ©pendances du module.
 #>
 function Invoke-RecursiveDependencyAnalysis {
     [CmdletBinding()]
@@ -202,36 +202,36 @@ function Invoke-RecursiveDependencyAnalysis {
         [switch]$SkipSystemModules
     )
 
-    # Vérifier si le module a déjà été visité
+    # VÃ©rifier si le module a dÃ©jÃ  Ã©tÃ© visitÃ©
     if ($script:VisitedModules.ContainsKey($ModulePath)) {
-        Write-Verbose "Module déjà visité: $ModulePath"
+        Write-Verbose "Module dÃ©jÃ  visitÃ©: $ModulePath"
         return @()
     }
 
-    # Vérifier la profondeur maximale de récursion
+    # VÃ©rifier la profondeur maximale de rÃ©cursion
     if ($Depth -gt $script:MaxRecursionDepth) {
-        Write-Verbose "Profondeur maximale de récursion atteinte: $Depth > $script:MaxRecursionDepth"
+        Write-Verbose "Profondeur maximale de rÃ©cursion atteinte: $Depth > $script:MaxRecursionDepth"
         return @()
     }
 
-    # Marquer le module comme visité
+    # Marquer le module comme visitÃ©
     $script:VisitedModules[$ModulePath] = $true
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
     # Obtenir le nom du module
     $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($ModulePath)
 
-    # Initialiser le graphe de dépendances pour ce module
+    # Initialiser le graphe de dÃ©pendances pour ce module
     if (-not $script:DependencyGraph.ContainsKey($moduleName)) {
         $script:DependencyGraph[$moduleName] = @()
     }
 
-    # Analyser les dépendances du module
+    # Analyser les dÃ©pendances du module
     $moduleDependencies = @()
 
-    # Déterminer le type de fichier
+    # DÃ©terminer le type de fichier
     $extension = [System.IO.Path]::GetExtension($ModulePath)
     if ($extension -eq ".psd1") {
         # Analyser le manifeste du module
@@ -243,21 +243,21 @@ function Invoke-RecursiveDependencyAnalysis {
         $moduleDependencies = Get-ModuleDependenciesFromCode -ModulePath $ModulePath -SkipSystemModules:$SkipSystemModules -ResolveModulePaths -IncludeScriptDependencies
     }
 
-    # Ajouter les dépendances à la liste
+    # Ajouter les dÃ©pendances Ã  la liste
     foreach ($dependency in $moduleDependencies) {
-        # Ajouter la dépendance au graphe
+        # Ajouter la dÃ©pendance au graphe
         if (-not ($script:DependencyGraph[$moduleName] -contains $dependency.Name)) {
             $script:DependencyGraph[$moduleName] += $dependency.Name
         }
 
-        # Ajouter la dépendance à la liste
+        # Ajouter la dÃ©pendance Ã  la liste
         [void]$dependencies.Add($dependency)
 
-        # Analyser récursivement les dépendances imbriquées
+        # Analyser rÃ©cursivement les dÃ©pendances imbriquÃ©es
         if ($IncludeNestedDependencies -and $dependency.Path) {
             $nestedDependencies = Invoke-RecursiveDependencyAnalysis -ModulePath $dependency.Path -Depth ($Depth + 1) -IncludeNestedDependencies:$IncludeNestedDependencies -SkipSystemModules:$SkipSystemModules
 
-            # Ajouter les dépendances imbriquées à la liste
+            # Ajouter les dÃ©pendances imbriquÃ©es Ã  la liste
             foreach ($nestedDependency in $nestedDependencies) {
                 [void]$dependencies.Add($nestedDependency)
             }
@@ -269,27 +269,27 @@ function Invoke-RecursiveDependencyAnalysis {
 
 <#
 .SYNOPSIS
-    Analyse les dépendances d'un module PowerShell à partir de son manifeste (.psd1).
+    Analyse les dÃ©pendances d'un module PowerShell Ã  partir de son manifeste (.psd1).
 
 .DESCRIPTION
     Cette fonction analyse le manifeste d'un module PowerShell (.psd1) pour
-    extraire ses dépendances (RequiredModules, NestedModules, etc.).
+    extraire ses dÃ©pendances (RequiredModules, NestedModules, etc.).
 
 .PARAMETER ManifestPath
-    Chemin du fichier manifeste (.psd1) à analyser.
+    Chemin du fichier manifeste (.psd1) Ã  analyser.
 
 .PARAMETER SkipSystemModules
-    Indique si les modules système doivent être exclus de l'analyse.
+    Indique si les modules systÃ¨me doivent Ãªtre exclus de l'analyse.
 
 .PARAMETER ResolveModulePaths
-    Indique si les chemins des modules dépendants doivent être résolus.
+    Indique si les chemins des modules dÃ©pendants doivent Ãªtre rÃ©solus.
 
 .EXAMPLE
     $dependencies = Get-ModuleDependenciesFromManifest -ManifestPath C:\Modules\MyModule\MyModule.psd1
-    Analyse les dépendances du module MyModule à partir de son manifeste.
+    Analyse les dÃ©pendances du module MyModule Ã  partir de son manifeste.
 
 .OUTPUTS
-    [System.Collections.ArrayList] Liste des dépendances du module.
+    [System.Collections.ArrayList] Liste des dÃ©pendances du module.
 #>
 function Get-ModuleDependenciesFromManifest {
     [CmdletBinding()]
@@ -304,19 +304,19 @@ function Get-ModuleDependenciesFromManifest {
         [switch]$ResolveModulePaths
     )
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ManifestPath -PathType Leaf)) {
         Write-Warning "Le fichier manifeste n'existe pas: $ManifestPath"
         return $dependencies
     }
 
-    # Vérifier l'extension du fichier
+    # VÃ©rifier l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($ManifestPath)
     if ($extension -ne ".psd1") {
-        Write-Warning "Le fichier spécifié n'est pas un fichier .psd1: $ManifestPath"
+        Write-Warning "Le fichier spÃ©cifiÃ© n'est pas un fichier .psd1: $ManifestPath"
         return $dependencies
     }
 
@@ -324,14 +324,14 @@ function Get-ModuleDependenciesFromManifest {
         # Importer le manifeste
         $manifest = Import-PowerShellDataFile -Path $ManifestPath -ErrorAction Stop
 
-        # Extraire les dépendances RequiredModules
+        # Extraire les dÃ©pendances RequiredModules
         if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
             Write-Verbose "Analyse des RequiredModules dans le manifeste: $ManifestPath"
 
-            # RequiredModules peut être une chaîne, un tableau de chaînes, ou un tableau d'objets
+            # RequiredModules peut Ãªtre une chaÃ®ne, un tableau de chaÃ®nes, ou un tableau d'objets
             $requiredModules = $manifest.RequiredModules
 
-            # Si RequiredModules est une chaîne unique, la convertir en tableau
+            # Si RequiredModules est une chaÃ®ne unique, la convertir en tableau
             if ($requiredModules -is [string]) {
                 $requiredModules = @($requiredModules)
             }
@@ -344,7 +344,7 @@ function Get-ModuleDependenciesFromManifest {
                 $moduleMaxVersion = $null
                 $moduleMinVersion = $null
 
-                # Déterminer le format du module requis
+                # DÃ©terminer le format du module requis
                 if ($requiredModule -is [string]) {
                     # Format simple: 'ModuleName'
                     $moduleName = $requiredModule
@@ -354,7 +354,7 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleName = $requiredModule.ModuleName
                     }
 
-                    # Gérer les différentes façons de spécifier la version
+                    # GÃ©rer les diffÃ©rentes faÃ§ons de spÃ©cifier la version
                     if ($requiredModule.ContainsKey('ModuleVersion')) {
                         $moduleVersion = $requiredModule.ModuleVersion
                     }
@@ -368,7 +368,7 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleMinVersion = $requiredModule.MinimumVersion
                     }
 
-                    # Gérer le GUID du module
+                    # GÃ©rer le GUID du module
                     if ($requiredModule.ContainsKey('GUID')) {
                         $moduleGuid = $requiredModule.GUID
                     }
@@ -388,18 +388,18 @@ function Get-ModuleDependenciesFromManifest {
                     }
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
-                    Write-Verbose "Module système ignoré: $moduleName"
+                    Write-Verbose "Module systÃ¨me ignorÃ©: $moduleName"
                     continue
                 }
 
-                # Résoudre le chemin du module si demandé
+                # RÃ©soudre le chemin du module si demandÃ©
                 if ($ResolveModulePaths -and -not $modulePath) {
                     $modulePath = Find-ModulePath -ModuleName $moduleName -ModuleVersion $moduleVersion
                 }
 
-                # Ajouter la dépendance à la liste
+                # Ajouter la dÃ©pendance Ã  la liste
                 [void]$dependencies.Add([PSCustomObject]@{
                         Name       = $moduleName
                         Version    = $moduleVersion
@@ -413,14 +413,14 @@ function Get-ModuleDependenciesFromManifest {
             }
         }
 
-        # Extraire les dépendances NestedModules
+        # Extraire les dÃ©pendances NestedModules
         if ($manifest.ContainsKey('NestedModules') -and $manifest.NestedModules) {
             Write-Verbose "Analyse des NestedModules dans le manifeste: $ManifestPath"
 
-            # NestedModules peut être une chaîne, un tableau de chaînes, ou un tableau d'objets
+            # NestedModules peut Ãªtre une chaÃ®ne, un tableau de chaÃ®nes, ou un tableau d'objets
             $nestedModules = $manifest.NestedModules
 
-            # Si NestedModules est une chaîne unique, la convertir en tableau
+            # Si NestedModules est une chaÃ®ne unique, la convertir en tableau
             if ($nestedModules -is [string]) {
                 $nestedModules = @($nestedModules)
             }
@@ -433,7 +433,7 @@ function Get-ModuleDependenciesFromManifest {
                 $moduleMaxVersion = $null
                 $moduleMinVersion = $null
 
-                # Déterminer le format du module imbriqué
+                # DÃ©terminer le format du module imbriquÃ©
                 if ($nestedModule -is [string]) {
                     # Format simple: 'ModuleName' ou 'Path\To\Module.psm1'
                     if ($nestedModule -match '\.ps[md]1$') {
@@ -441,7 +441,7 @@ function Get-ModuleDependenciesFromManifest {
                         $modulePath = $nestedModule
                         $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($nestedModule)
 
-                        # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                        # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du manifeste
                         if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                             $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
                             $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
@@ -456,7 +456,7 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleName = $nestedModule.ModuleName
                     }
 
-                    # Gérer les différentes façons de spécifier la version
+                    # GÃ©rer les diffÃ©rentes faÃ§ons de spÃ©cifier la version
                     if ($nestedModule.ContainsKey('ModuleVersion')) {
                         $moduleVersion = $nestedModule.ModuleVersion
                     }
@@ -470,16 +470,16 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleMinVersion = $nestedModule.MinimumVersion
                     }
 
-                    # Gérer le GUID du module
+                    # GÃ©rer le GUID du module
                     if ($nestedModule.ContainsKey('GUID')) {
                         $moduleGuid = $nestedModule.GUID
                     }
 
-                    # Gérer le chemin du module
+                    # GÃ©rer le chemin du module
                     if ($nestedModule.ContainsKey('Path')) {
                         $modulePath = $nestedModule.Path
 
-                        # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                        # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du manifeste
                         if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                             $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
                             $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
@@ -501,18 +501,18 @@ function Get-ModuleDependenciesFromManifest {
                     }
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
-                    Write-Verbose "Module système ignoré: $moduleName"
+                    Write-Verbose "Module systÃ¨me ignorÃ©: $moduleName"
                     continue
                 }
 
-                # Résoudre le chemin du module si demandé
+                # RÃ©soudre le chemin du module si demandÃ©
                 if ($ResolveModulePaths -and -not $modulePath) {
                     $modulePath = Find-ModulePath -ModuleName $moduleName -ModuleVersion $moduleVersion
                 }
 
-                # Ajouter la dépendance à la liste
+                # Ajouter la dÃ©pendance Ã  la liste
                 [void]$dependencies.Add([PSCustomObject]@{
                         Name       = $moduleName
                         Version    = $moduleVersion
@@ -526,7 +526,7 @@ function Get-ModuleDependenciesFromManifest {
             }
         }
 
-        # Extraire les dépendances ModuleToProcess (alias RootModule)
+        # Extraire les dÃ©pendances ModuleToProcess (alias RootModule)
         if (($manifest.ContainsKey('ModuleToProcess') -and $manifest.ModuleToProcess) -or
             ($manifest.ContainsKey('RootModule') -and $manifest.RootModule)) {
 
@@ -537,17 +537,17 @@ function Get-ModuleDependenciesFromManifest {
             }
             Write-Verbose "Analyse du RootModule dans le manifeste: $ManifestPath"
 
-            # Déterminer le type de RootModule
+            # DÃ©terminer le type de RootModule
             if ($rootModule -is [string]) {
                 $moduleName = $null
                 $modulePath = $null
 
-                # Vérifier si le RootModule est un chemin vers un fichier .psm1 ou .psd1
+                # VÃ©rifier si le RootModule est un chemin vers un fichier .psm1 ou .psd1
                 if ($rootModule -match '\.ps[md]1$') {
                     $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($rootModule)
                     $modulePath = $rootModule
 
-                    # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                    # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du manifeste
                     if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                         $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
                         $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
@@ -556,17 +556,17 @@ function Get-ModuleDependenciesFromManifest {
                     # C'est un nom de module
                     $moduleName = $rootModule
 
-                    # Résoudre le chemin du module si demandé
+                    # RÃ©soudre le chemin du module si demandÃ©
                     if ($ResolveModulePaths) {
                         $modulePath = Find-ModulePath -ModuleName $moduleName
                     }
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
-                    Write-Verbose "Module système ignoré: $moduleName"
+                    Write-Verbose "Module systÃ¨me ignorÃ©: $moduleName"
                 } else {
-                    # Ajouter la dépendance à la liste
+                    # Ajouter la dÃ©pendance Ã  la liste
                     [void]$dependencies.Add([PSCustomObject]@{
                             Name    = $moduleName
                             Version = $null
@@ -586,7 +586,7 @@ function Get-ModuleDependenciesFromManifest {
                     $moduleName = $rootModule.ModuleName
                 }
 
-                # Gérer les différentes façons de spécifier la version
+                # GÃ©rer les diffÃ©rentes faÃ§ons de spÃ©cifier la version
                 if ($rootModule.ContainsKey('ModuleVersion')) {
                     $moduleVersion = $rootModule.ModuleVersion
                 }
@@ -594,16 +594,16 @@ function Get-ModuleDependenciesFromManifest {
                     $moduleVersion = $rootModule.RequiredVersion
                 }
 
-                # Gérer le GUID du module
+                # GÃ©rer le GUID du module
                 if ($rootModule.ContainsKey('GUID')) {
                     $moduleGuid = $rootModule.GUID
                 }
 
-                # Gérer le chemin du module
+                # GÃ©rer le chemin du module
                 if ($rootModule.ContainsKey('Path')) {
                     $modulePath = $rootModule.Path
 
-                    # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                    # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du manifeste
                     if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                         $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
                         $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
@@ -612,11 +612,11 @@ function Get-ModuleDependenciesFromManifest {
                     $modulePath = Find-ModulePath -ModuleName $moduleName -ModuleVersion $moduleVersion
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
-                    Write-Verbose "Module système ignoré: $moduleName"
+                    Write-Verbose "Module systÃ¨me ignorÃ©: $moduleName"
                 } else {
-                    # Ajouter la dépendance à la liste
+                    # Ajouter la dÃ©pendance Ã  la liste
                     [void]$dependencies.Add([PSCustomObject]@{
                             Name    = $moduleName
                             Version = $moduleVersion
@@ -638,16 +638,16 @@ function Get-ModuleDependenciesFromManifest {
 
 <#
 .SYNOPSIS
-    Vérifie si un module est un module système.
+    VÃ©rifie si un module est un module systÃ¨me.
 
 .DESCRIPTION
-    Cette fonction vérifie si un module est un module système PowerShell.
+    Cette fonction vÃ©rifie si un module est un module systÃ¨me PowerShell.
 
 .PARAMETER ModuleName
-    Nom du module à vérifier.
+    Nom du module Ã  vÃ©rifier.
 
 .OUTPUTS
-    [bool] True si le module est un module système, False sinon.
+    [bool] True si le module est un module systÃ¨me, False sinon.
 #>
 function Test-SystemModule {
     [CmdletBinding()]
@@ -659,7 +659,7 @@ function Test-SystemModule {
         [string[]]$AdditionalSystemModules = @()
     )
 
-    # Liste des modules système PowerShell
+    # Liste des modules systÃ¨me PowerShell
     $systemModules = @(
         # Modules de base PowerShell
         'Microsoft.PowerShell.Archive',
@@ -700,7 +700,7 @@ function Test-SystemModule {
         'AWS.Tools.Common',
         'AWSPowerShell',
 
-        # Modules de développement
+        # Modules de dÃ©veloppement
         'Pester',
         'PSScriptAnalyzer',
 
@@ -709,20 +709,20 @@ function Test-SystemModule {
         'PSWorkflow',
         'PSScheduledJob',
 
-        # Modules de sécurité
+        # Modules de sÃ©curitÃ©
         'PKI',
         'CertificateDsc'
     )
 
-    # Ajouter les modules supplémentaires à la liste
+    # Ajouter les modules supplÃ©mentaires Ã  la liste
     if ($AdditionalSystemModules) {
         $systemModules += $AdditionalSystemModules
     }
 
-    # Vérifier si le module est un module système
+    # VÃ©rifier si le module est un module systÃ¨me
     $isSystemModule = $systemModules -contains $ModuleName
 
-    # Vérifier si le module est installé dans un répertoire système
+    # VÃ©rifier si le module est installÃ© dans un rÃ©pertoire systÃ¨me
     if (-not $isSystemModule) {
         $module = Get-Module -Name $ModuleName -ListAvailable -ErrorAction SilentlyContinue | Select-Object -First 1
         if ($module) {
@@ -748,13 +748,13 @@ function Test-SystemModule {
     Cette fonction recherche le chemin d'un module PowerShell en fonction de son nom et de sa version.
 
 .PARAMETER ModuleName
-    Nom du module à rechercher.
+    Nom du module Ã  rechercher.
 
 .PARAMETER ModuleVersion
-    Version du module à rechercher. Si non spécifié, la dernière version disponible est utilisée.
+    Version du module Ã  rechercher. Si non spÃ©cifiÃ©, la derniÃ¨re version disponible est utilisÃ©e.
 
 .OUTPUTS
-    [string] Chemin du module, ou $null si le module n'est pas trouvé.
+    [string] Chemin du module, ou $null si le module n'est pas trouvÃ©.
 #>
 function Find-ModulePath {
     [CmdletBinding()]
@@ -787,7 +787,7 @@ function Find-ModulePath {
         ErrorAction = 'SilentlyContinue'
     }
 
-    # Gérer les contraintes de version
+    # GÃ©rer les contraintes de version
     if ($ModuleVersion) {
         $moduleParams['RequiredVersion'] = $ModuleVersion
     } else {
@@ -802,12 +802,12 @@ function Find-ModulePath {
     # Rechercher le module dans les chemins standard
     $modules = Get-Module -ListAvailable @moduleParams
 
-    # Filtrer par GUID si spécifié
+    # Filtrer par GUID si spÃ©cifiÃ©
     if ($GUID) {
         $modules = $modules | Where-Object { $_.Guid -eq $GUID }
     }
 
-    # Rechercher le module dans les chemins supplémentaires
+    # Rechercher le module dans les chemins supplÃ©mentaires
     if ($AdditionalPaths) {
         foreach ($path in $AdditionalPaths) {
             if (Test-Path -Path $path -PathType Container) {
@@ -817,7 +817,7 @@ function Find-ModulePath {
                     try {
                         $manifest = Import-PowerShellDataFile -Path $psd1File.FullName -ErrorAction SilentlyContinue
                         if ($manifest -and $manifest.ContainsKey('ModuleName') -and $manifest.ModuleName -eq $ModuleName) {
-                            # Vérifier la version si spécifiée
+                            # VÃ©rifier la version si spÃ©cifiÃ©e
                             $versionMatch = $true
                             if ($ModuleVersion -and $manifest.ContainsKey('ModuleVersion') -and $manifest.ModuleVersion -ne $ModuleVersion) {
                                 $versionMatch = $false
@@ -857,7 +857,7 @@ function Find-ModulePath {
         }
     } else {
         if ($modules) {
-            # Trier par version et prendre le plus récent
+            # Trier par version et prendre le plus rÃ©cent
             $module = $modules | Sort-Object -Property Version -Descending | Select-Object -First 1
             return $module.Path
         }
@@ -868,30 +868,30 @@ function Find-ModulePath {
 
 <#
 .SYNOPSIS
-    Analyse les dépendances d'un module PowerShell à partir de son code source.
+    Analyse les dÃ©pendances d'un module PowerShell Ã  partir de son code source.
 
 .DESCRIPTION
     Cette fonction analyse le code source d'un module PowerShell (.psm1) pour
-    extraire ses dépendances (Import-Module, using module, etc.).
+    extraire ses dÃ©pendances (Import-Module, using module, etc.).
 
 .PARAMETER ModulePath
-    Chemin du fichier module (.psm1) à analyser.
+    Chemin du fichier module (.psm1) Ã  analyser.
 
 .PARAMETER SkipSystemModules
-    Indique si les modules système doivent être exclus de l'analyse.
+    Indique si les modules systÃ¨me doivent Ãªtre exclus de l'analyse.
 
 .PARAMETER ResolveModulePaths
-    Indique si les chemins des modules dépendants doivent être résolus.
+    Indique si les chemins des modules dÃ©pendants doivent Ãªtre rÃ©solus.
 
 .PARAMETER IncludeScriptDependencies
-    Indique si les dépendances de scripts (dot-sourcing) doivent être incluses.
+    Indique si les dÃ©pendances de scripts (dot-sourcing) doivent Ãªtre incluses.
 
 .EXAMPLE
     $dependencies = Get-ModuleDependenciesFromCode -ModulePath "C:\Modules\MyModule\MyModule.psm1"
-    Analyse les dépendances du module MyModule à partir de son code source.
+    Analyse les dÃ©pendances du module MyModule Ã  partir de son code source.
 
 .OUTPUTS
-    [System.Collections.ArrayList] Liste des dépendances du module.
+    [System.Collections.ArrayList] Liste des dÃ©pendances du module.
 #>
 function Get-ModuleDependenciesFromCode {
     [CmdletBinding()]
@@ -909,19 +909,19 @@ function Get-ModuleDependenciesFromCode {
         [switch]$IncludeScriptDependencies
     )
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ModulePath -PathType Leaf)) {
         Write-Warning "Le fichier module n'existe pas: $ModulePath"
         return $dependencies
     }
 
-    # Vérifier l'extension du fichier
+    # VÃ©rifier l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($ModulePath)
     if ($extension -ne ".psm1" -and $extension -ne ".ps1") {
-        Write-Warning "Le fichier spécifié n'est pas un fichier .psm1 ou .ps1: $ModulePath"
+        Write-Warning "Le fichier spÃ©cifiÃ© n'est pas un fichier .psm1 ou .ps1: $ModulePath"
         return $dependencies
     }
 
@@ -929,24 +929,24 @@ function Get-ModuleDependenciesFromCode {
         # Charger le contenu du fichier
         $content = Get-Content -Path $ModulePath -Raw -ErrorAction Stop
 
-        # Obtenir le répertoire du module
+        # Obtenir le rÃ©pertoire du module
         $moduleDir = [System.IO.Path]::GetDirectoryName($ModulePath)
 
-        # Analyser les dépendances avec l'AST (Abstract Syntax Tree)
+        # Analyser les dÃ©pendances avec l'AST (Abstract Syntax Tree)
         if ($PSVersionTable.PSVersion.Major -ge 3) {
-            # Utiliser l'AST pour une analyse plus précise
+            # Utiliser l'AST pour une analyse plus prÃ©cise
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($ModulePath, [ref]$null, [ref]$null)
 
-            # Analyser les dépendances avec l'AST
+            # Analyser les dÃ©pendances avec l'AST
             $astDependencies = Get-AstDependencies -Ast $ast -ModulePath $ModulePath -SkipSystemModules:$SkipSystemModules -ResolveModulePaths:$ResolveModulePaths
 
-            # Ajouter les dépendances AST à la liste
+            # Ajouter les dÃ©pendances AST Ã  la liste
             foreach ($dependency in $astDependencies) {
                 [void]$dependencies.Add($dependency)
             }
         } else {
-            # Utiliser des expressions régulières pour les versions antérieures de PowerShell
-            # Détecter les Import-Module avec différents formats
+            # Utiliser des expressions rÃ©guliÃ¨res pour les versions antÃ©rieures de PowerShell
+            # DÃ©tecter les Import-Module avec diffÃ©rents formats
             # Format 1: Import-Module ModuleName
             # Format 2: Import-Module -Name ModuleName
             # Format 3: Import-Module -Name "ModuleName"
@@ -954,7 +954,7 @@ function Get-ModuleDependenciesFromCode {
             # Format 5: Import-Module -Path "C:\Path\To\Module.psd1"
             $importMatches = [regex]::Matches($content, '(?m)^\s*Import-Module\s+(?:-Name\s+)?([''"]?)([^''"\s,;]+)\1|^\s*Import-Module\s+-Name\s+([''"]?)([^''"\s,;]+)\3|^\s*Import-Module\s+-Path\s+([''"]?)([^''"\s,;]+)\5')
             foreach ($match in $importMatches) {
-                # Extraire le nom du module en fonction du format détecté
+                # Extraire le nom du module en fonction du format dÃ©tectÃ©
                 $moduleName = $null
                 $isPath = $false
 
@@ -969,7 +969,7 @@ function Get-ModuleDependenciesFromCode {
                     $modulePath = $match.Groups[6].Value
                     $isPath = $true
 
-                    # Extraire le nom du module à partir du chemin
+                    # Extraire le nom du module Ã  partir du chemin
                     if ($modulePath -match '\.ps[md]1$') {
                         $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($modulePath)
                     } else {
@@ -977,32 +977,32 @@ function Get-ModuleDependenciesFromCode {
                     }
                 }
 
-                # Vérifier si un nom de module a été trouvé
+                # VÃ©rifier si un nom de module a Ã©tÃ© trouvÃ©
                 if (-not $moduleName) {
                     continue
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
-                    Write-Verbose "Module système ignoré: $moduleName"
+                    Write-Verbose "Module systÃ¨me ignorÃ©: $moduleName"
                     continue
                 }
 
-                # Résoudre le chemin du module si demandé
+                # RÃ©soudre le chemin du module si demandÃ©
                 if (-not $isPath) {
                     $modulePath = $null
                     if ($ResolveModulePaths) {
                         $modulePath = Find-ModulePath -ModuleName $moduleName
                     }
                 } else {
-                    # Si le chemin est relatif, le résoudre par rapport au répertoire du module
+                    # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du module
                     if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                         $moduleDir = [System.IO.Path]::GetDirectoryName($ModulePath)
                         $modulePath = Join-Path -Path $moduleDir -ChildPath $modulePath
                     }
                 }
 
-                # Ajouter la dépendance à la liste
+                # Ajouter la dÃ©pendance Ã  la liste
                 [void]$dependencies.Add([PSCustomObject]@{
                         Name    = $moduleName
                         Version = $null
@@ -1012,24 +1012,24 @@ function Get-ModuleDependenciesFromCode {
                     })
             }
 
-            # Détecter les using module
+            # DÃ©tecter les using module
             $usingMatches = [regex]::Matches($content, '(?m)^\s*using\s+module\s+([''"]?)([^''"\s]+)\1')
             foreach ($match in $usingMatches) {
                 $moduleName = $match.Groups[2].Value
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
-                    Write-Verbose "Module système ignoré: $moduleName"
+                    Write-Verbose "Module systÃ¨me ignorÃ©: $moduleName"
                     continue
                 }
 
-                # Résoudre le chemin du module si demandé
+                # RÃ©soudre le chemin du module si demandÃ©
                 $modulePath = $null
                 if ($ResolveModulePaths) {
                     $modulePath = Find-ModulePath -ModuleName $moduleName
                 }
 
-                # Ajouter la dépendance à la liste
+                # Ajouter la dÃ©pendance Ã  la liste
                 [void]$dependencies.Add([PSCustomObject]@{
                         Name    = $moduleName
                         Version = $null
@@ -1040,21 +1040,21 @@ function Get-ModuleDependenciesFromCode {
             }
         }
 
-        # Détecter les dépendances de scripts (dot-sourcing)
+        # DÃ©tecter les dÃ©pendances de scripts (dot-sourcing)
         if ($IncludeScriptDependencies) {
             $dotMatches = [regex]::Matches($content, '(?m)^\s*\.\s+([''"]?)([^''"\s]+)\1')
             foreach ($match in $dotMatches) {
                 $scriptPath = $match.Groups[2].Value
 
-                # Résoudre le chemin du script
+                # RÃ©soudre le chemin du script
                 $resolvedPath = $scriptPath
                 if (-not [System.IO.Path]::IsPathRooted($scriptPath)) {
                     $resolvedPath = Join-Path -Path $moduleDir -ChildPath $scriptPath
                 }
 
-                # Vérifier si le script existe
+                # VÃ©rifier si le script existe
                 if (Test-Path -Path $resolvedPath -PathType Leaf) {
-                    # Ajouter la dépendance à la liste
+                    # Ajouter la dÃ©pendance Ã  la liste
                     [void]$dependencies.Add([PSCustomObject]@{
                             Name    = [System.IO.Path]::GetFileNameWithoutExtension($scriptPath)
                             Version = $null
@@ -1075,26 +1075,26 @@ function Get-ModuleDependenciesFromCode {
 
 <#
 .SYNOPSIS
-    Analyse les dépendances d'un module PowerShell à partir de son AST.
+    Analyse les dÃ©pendances d'un module PowerShell Ã  partir de son AST.
 
 .DESCRIPTION
     Cette fonction interne analyse l'AST (Abstract Syntax Tree) d'un module PowerShell
-    pour extraire ses dépendances.
+    pour extraire ses dÃ©pendances.
 
 .PARAMETER Ast
-    L'AST du module à analyser.
+    L'AST du module Ã  analyser.
 
 .PARAMETER ModulePath
-    Chemin du fichier module (.psm1) analysé.
+    Chemin du fichier module (.psm1) analysÃ©.
 
 .PARAMETER SkipSystemModules
-    Indique si les modules système doivent être exclus de l'analyse.
+    Indique si les modules systÃ¨me doivent Ãªtre exclus de l'analyse.
 
 .PARAMETER ResolveModulePaths
-    Indique si les chemins des modules dépendants doivent être résolus.
+    Indique si les chemins des modules dÃ©pendants doivent Ãªtre rÃ©solus.
 
 .OUTPUTS
-    [System.Collections.ArrayList] Liste des dépendances du module.
+    [System.Collections.ArrayList] Liste des dÃ©pendances du module.
 #>
 function Get-AstDependencies {
     [CmdletBinding()]
@@ -1112,7 +1112,7 @@ function Get-AstDependencies {
         [switch]$ResolveModulePaths
     )
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
     # Rechercher les commandes Import-Module
@@ -1128,11 +1128,11 @@ function Get-AstDependencies {
         # Extraire le nom du module
         $moduleName = $null
 
-        # Rechercher le paramètre Name ou le premier argument positionnel
+        # Rechercher le paramÃ¨tre Name ou le premier argument positionnel
         for ($i = 1; $i -lt $cmdlet.CommandElements.Count; $i++) {
             $element = $cmdlet.CommandElements[$i]
 
-            # Vérifier si c'est un paramètre nommé
+            # VÃ©rifier si c'est un paramÃ¨tre nommÃ©
             if ($element -is [System.Management.Automation.Language.CommandParameterAst] -and
                 $element.ParameterName -eq "Name" -and
                 $i + 1 -lt $cmdlet.CommandElements.Count) {
@@ -1143,7 +1143,7 @@ function Get-AstDependencies {
                     break
                 }
             }
-            # Vérifier si c'est un argument positionnel
+            # VÃ©rifier si c'est un argument positionnel
             elseif ($element -is [System.Management.Automation.Language.StringConstantExpressionAst] -and -not $moduleName) {
                 $moduleName = $element.Value
                 break
@@ -1151,19 +1151,19 @@ function Get-AstDependencies {
         }
 
         if ($moduleName) {
-            # Ignorer les modules système si demandé
+            # Ignorer les modules systÃ¨me si demandÃ©
             if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
-                Write-Verbose "Module système ignoré: $moduleName"
+                Write-Verbose "Module systÃ¨me ignorÃ©: $moduleName"
                 continue
             }
 
-            # Résoudre le chemin du module si demandé
+            # RÃ©soudre le chemin du module si demandÃ©
             $modulePath = $null
             if ($ResolveModulePaths) {
                 $modulePath = Find-ModulePath -ModuleName $moduleName
             }
 
-            # Ajouter la dépendance à la liste
+            # Ajouter la dÃ©pendance Ã  la liste
             [void]$dependencies.Add([PSCustomObject]@{
                     Name    = $moduleName
                     Version = $null
@@ -1184,19 +1184,19 @@ function Get-AstDependencies {
     foreach ($statement in $usingModuleStatements) {
         $moduleName = $statement.Name.Value
 
-        # Ignorer les modules système si demandé
+        # Ignorer les modules systÃ¨me si demandÃ©
         if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
-            Write-Verbose "Module système ignoré: $moduleName"
+            Write-Verbose "Module systÃ¨me ignorÃ©: $moduleName"
             continue
         }
 
-        # Résoudre le chemin du module si demandé
+        # RÃ©soudre le chemin du module si demandÃ©
         $modulePath = $null
         if ($ResolveModulePaths) {
             $modulePath = Find-ModulePath -ModuleName $moduleName
         }
 
-        # Ajouter la dépendance à la liste
+        # Ajouter la dÃ©pendance Ã  la liste
         [void]$dependencies.Add([PSCustomObject]@{
                 Name    = $moduleName
                 Version = $null
@@ -1212,19 +1212,19 @@ function Get-AstDependencies {
         foreach ($requiredModule in $requiresAst.RequiredModules) {
             $moduleName = $requiredModule.Name
 
-            # Ignorer les modules système si demandé
+            # Ignorer les modules systÃ¨me si demandÃ©
             if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
-                Write-Verbose "Module système ignoré: $moduleName"
+                Write-Verbose "Module systÃ¨me ignorÃ©: $moduleName"
                 continue
             }
 
-            # Résoudre le chemin du module si demandé
+            # RÃ©soudre le chemin du module si demandÃ©
             $modulePath = $null
             if ($ResolveModulePaths) {
                 $modulePath = Find-ModulePath -ModuleName $moduleName
             }
 
-            # Ajouter la dépendance à la liste
+            # Ajouter la dÃ©pendance Ã  la liste
             [void]$dependencies.Add([PSCustomObject]@{
                     Name    = $moduleName
                     Version = $requiredModule.Version
@@ -1240,18 +1240,18 @@ function Get-AstDependencies {
 
 <#
 .SYNOPSIS
-    Détecte les cycles de dépendances entre modules PowerShell.
+    DÃ©tecte les cycles de dÃ©pendances entre modules PowerShell.
 
 .DESCRIPTION
-    Cette fonction détecte les cycles de dépendances entre modules PowerShell
-    en utilisant l'algorithme de détection de cycles de Tarjan.
+    Cette fonction dÃ©tecte les cycles de dÃ©pendances entre modules PowerShell
+    en utilisant l'algorithme de dÃ©tection de cycles de Tarjan.
 
 .PARAMETER DependencyGraph
-    Graphe de dépendances à analyser. Doit être un hashtable où les clés sont les noms des modules
-    et les valeurs sont des tableaux contenant les noms des modules dépendants.
+    Graphe de dÃ©pendances Ã  analyser. Doit Ãªtre un hashtable oÃ¹ les clÃ©s sont les noms des modules
+    et les valeurs sont des tableaux contenant les noms des modules dÃ©pendants.
 
 .PARAMETER IncludeAllCycles
-    Indique si tous les cycles doivent être inclus dans le résultat, ou seulement le premier cycle détecté.
+    Indique si tous les cycles doivent Ãªtre inclus dans le rÃ©sultat, ou seulement le premier cycle dÃ©tectÃ©.
 
 .EXAMPLE
     $graph = @{
@@ -1261,10 +1261,10 @@ function Get-AstDependencies {
         ModuleD = @()
     }
     $cycles = Find-ModuleDependencyCycles -DependencyGraph $graph
-    Détecte les cycles de dépendances dans le graphe spécifié.
+    DÃ©tecte les cycles de dÃ©pendances dans le graphe spÃ©cifiÃ©.
 
 .OUTPUTS
-    [PSCustomObject] Résultat de la détection de cycles.
+    [PSCustomObject] RÃ©sultat de la dÃ©tection de cycles.
 #>
 function Find-ModuleDependencyCycles {
     [CmdletBinding()]
@@ -1281,7 +1281,7 @@ function Find-ModuleDependencyCycles {
     $recursionStack = @{}
     $cycles = [System.Collections.ArrayList]::new()
 
-    # Fonction récursive pour la détection de cycles (DFS)
+    # Fonction rÃ©cursive pour la dÃ©tection de cycles (DFS)
     function Find-CyclesDFS {
         param (
             [Parameter(Mandatory = $true)]
@@ -1291,34 +1291,34 @@ function Find-ModuleDependencyCycles {
             [System.Collections.ArrayList]$Path = $null
         )
 
-        # Initialiser le chemin si nécessaire
+        # Initialiser le chemin si nÃ©cessaire
         if ($null -eq $Path) {
             $Path = [System.Collections.ArrayList]::new()
         }
 
-        # Marquer le nœud comme visité et l'ajouter à la pile de récursion
+        # Marquer le nÅ“ud comme visitÃ© et l'ajouter Ã  la pile de rÃ©cursion
         $visited[$Node] = $true
         $recursionStack[$Node] = $true
         [void]$Path.Add($Node)
 
-        # Parcourir les voisins du nœud
+        # Parcourir les voisins du nÅ“ud
         if ($DependencyGraph.ContainsKey($Node)) {
             foreach ($neighbor in $DependencyGraph[$Node]) {
-                # Si le voisin n'a pas été visité, le visiter
+                # Si le voisin n'a pas Ã©tÃ© visitÃ©, le visiter
                 if (-not $visited.ContainsKey($neighbor) -or -not $visited[$neighbor]) {
                     $cycleFound = Find-CyclesDFS -Node $neighbor -Path $Path
                     if ($cycleFound -and -not $IncludeAllCycles) {
                         return $true
                     }
                 }
-                # Si le voisin est dans la pile de récursion, un cycle a été détecté
+                # Si le voisin est dans la pile de rÃ©cursion, un cycle a Ã©tÃ© dÃ©tectÃ©
                 elseif ($recursionStack.ContainsKey($neighbor) -and $recursionStack[$neighbor]) {
-                    # Déterminer le cycle
+                    # DÃ©terminer le cycle
                     $cycleStartIndex = $Path.IndexOf($neighbor)
                     $cycle = $Path.GetRange($cycleStartIndex, $Path.Count - $cycleStartIndex)
                     $cycle.Add($neighbor)
 
-                    # Ajouter le cycle à la liste des cycles
+                    # Ajouter le cycle Ã  la liste des cycles
                     [void]$cycles.Add([PSCustomObject]@{
                             Nodes  = $cycle.ToArray()
                             Length = $cycle.Count
@@ -1331,14 +1331,14 @@ function Find-ModuleDependencyCycles {
             }
         }
 
-        # Retirer le nœud de la pile de récursion et du chemin
+        # Retirer le nÅ“ud de la pile de rÃ©cursion et du chemin
         $recursionStack[$Node] = $false
         [void]$Path.RemoveAt($Path.Count - 1)
 
         return $false
     }
 
-    # Parcourir tous les nœuds du graphe
+    # Parcourir tous les nÅ“uds du graphe
     foreach ($node in $DependencyGraph.Keys) {
         if (-not $visited.ContainsKey($node) -or -not $visited[$node]) {
             $cycleFound = Find-CyclesDFS -Node $node
@@ -1357,33 +1357,33 @@ function Find-ModuleDependencyCycles {
 
 <#
 .SYNOPSIS
-    Résout les dépendances d'un module PowerShell en évitant les boucles infinies.
+    RÃ©sout les dÃ©pendances d'un module PowerShell en Ã©vitant les boucles infinies.
 
 .DESCRIPTION
-    Cette fonction résout les dépendances d'un module PowerShell en évitant les boucles infinies
+    Cette fonction rÃ©sout les dÃ©pendances d'un module PowerShell en Ã©vitant les boucles infinies
     en utilisant un algorithme de tri topologique.
 
 .PARAMETER ModulePath
-    Chemin du module à analyser.
+    Chemin du module Ã  analyser.
 
 .PARAMETER MaxDepth
-    Profondeur maximale de récursion pour l'analyse des dépendances. Par défaut: 10.
+    Profondeur maximale de rÃ©cursion pour l'analyse des dÃ©pendances. Par dÃ©faut: 10.
 
 .PARAMETER SkipSystemModules
-    Indique si les modules système doivent être exclus de l'analyse.
+    Indique si les modules systÃ¨me doivent Ãªtre exclus de l'analyse.
 
 .PARAMETER BreakCycles
-    Indique si les cycles de dépendances doivent être brisés automatiquement.
+    Indique si les cycles de dÃ©pendances doivent Ãªtre brisÃ©s automatiquement.
 
 .PARAMETER OutputFormat
-    Format de sortie des résultats. Valeurs possibles: Object, HashTable, Graph. Par défaut: Object.
+    Format de sortie des rÃ©sultats. Valeurs possibles: Object, HashTable, Graph. Par dÃ©faut: Object.
 
 .EXAMPLE
     $dependencies = Resolve-ModuleDependencies -ModulePath C:\Modules\MyModule\MyModule.psd1
-    Résout les dépendances du module MyModule en évitant les boucles infinies.
+    RÃ©sout les dÃ©pendances du module MyModule en Ã©vitant les boucles infinies.
 
 .OUTPUTS
-    [PSCustomObject] ou [HashTable] selon le paramètre OutputFormat.
+    [PSCustomObject] ou [HashTable] selon le paramÃ¨tre OutputFormat.
 #>
 function Resolve-ModuleDependencies {
     [CmdletBinding()]
@@ -1405,19 +1405,19 @@ function Resolve-ModuleDependencies {
         [string]$OutputFormat = 'Object'
     )
 
-    # Analyser les dépendances récursivement
+    # Analyser les dÃ©pendances rÃ©cursivement
     $recursiveResult = Get-ModuleDependenciesRecursive -ModulePath $ModulePath -MaxDepth $MaxDepth -SkipSystemModules:$SkipSystemModules -OutputFormat 'HashTable'
 
-    # Vérifier si des dépendances ont été trouvées
+    # VÃ©rifier si des dÃ©pendances ont Ã©tÃ© trouvÃ©es
     if (-not $recursiveResult -or -not $recursiveResult.DependencyGraph) {
-        Write-Warning ('Aucune dépendance trouvée pour le module: ' + $ModulePath)
+        Write-Warning ('Aucune dÃ©pendance trouvÃ©e pour le module: ' + $ModulePath)
         return $null
     }
 
-    # Détecter les cycles de dépendances
+    # DÃ©tecter les cycles de dÃ©pendances
     $cycleResult = Find-ModuleDependencyCycles -DependencyGraph $recursiveResult.DependencyGraph -IncludeAllCycles
 
-    # Initialiser le résultat
+    # Initialiser le rÃ©sultat
     $result = [PSCustomObject]@{
         ModulePath      = $recursiveResult.ModulePath
         ModuleName      = $recursiveResult.ModuleName
@@ -1429,19 +1429,19 @@ function Resolve-ModuleDependencies {
         BrokenCycles    = @()
     }
 
-    # Briser les cycles si demandé
+    # Briser les cycles si demandÃ©
     if ($BreakCycles -and $cycleResult.HasCycles) {
         $brokenCycles = [System.Collections.ArrayList]::new()
 
         foreach ($cycle in $cycleResult.Cycles) {
-            # Briser le cycle en supprimant la dernière dépendance
+            # Briser le cycle en supprimant la derniÃ¨re dÃ©pendance
             $lastNode = $cycle.Nodes[$cycle.Nodes.Count - 2]
             $firstNode = $cycle.Nodes[0]
 
-            # Supprimer la dépendance
+            # Supprimer la dÃ©pendance
             $recursiveResult.DependencyGraph[$lastNode] = $recursiveResult.DependencyGraph[$lastNode] | Where-Object { $_ -ne $firstNode }
 
-            # Ajouter le cycle brisé à la liste
+            # Ajouter le cycle brisÃ© Ã  la liste
             [void]$brokenCycles.Add([PSCustomObject]@{
                     Cycle      = $cycle.Nodes
                     BrokenEdge = @{
@@ -1451,12 +1451,12 @@ function Resolve-ModuleDependencies {
                 })
         }
 
-        # Mettre à jour le résultat
+        # Mettre Ã  jour le rÃ©sultat
         $result.DependencyGraph = $recursiveResult.DependencyGraph
         $result.BrokenCycles = $brokenCycles
     }
 
-    # Formater la sortie selon le paramètre OutputFormat
+    # Formater la sortie selon le paramÃ¨tre OutputFormat
     switch ($OutputFormat) {
         "Object" {
             return $result
@@ -1481,27 +1481,27 @@ function Resolve-ModuleDependencies {
 
 <#
 .SYNOPSIS
-    Exporte un graphe de dépendances de modules PowerShell vers un fichier de visualisation.
+    Exporte un graphe de dÃ©pendances de modules PowerShell vers un fichier de visualisation.
 
 .DESCRIPTION
-    Cette fonction exporte un graphe de dépendances de modules PowerShell vers un fichier
-    de visualisation dans différents formats (HTML, DOT, JSON, Mermaid).
+    Cette fonction exporte un graphe de dÃ©pendances de modules PowerShell vers un fichier
+    de visualisation dans diffÃ©rents formats (HTML, DOT, JSON, Mermaid).
 
 .PARAMETER DependencyGraph
-    Graphe de dépendances à exporter. Doit être un hashtable où les clés sont les noms des modules
-    et les valeurs sont des tableaux contenant les noms des modules dépendants.
+    Graphe de dÃ©pendances Ã  exporter. Doit Ãªtre un hashtable oÃ¹ les clÃ©s sont les noms des modules
+    et les valeurs sont des tableaux contenant les noms des modules dÃ©pendants.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie. Si non spécifié, un fichier temporaire est créé.
+    Chemin du fichier de sortie. Si non spÃ©cifiÃ©, un fichier temporaire est crÃ©Ã©.
 
 .PARAMETER Format
-    Format de sortie. Valeurs possibles: HTML, DOT, JSON, Mermaid. Par défaut: HTML.
+    Format de sortie. Valeurs possibles: HTML, DOT, JSON, Mermaid. Par dÃ©faut: HTML.
 
 .PARAMETER HighlightCycles
-    Indique si les cycles de dépendances doivent être mis en évidence.
+    Indique si les cycles de dÃ©pendances doivent Ãªtre mis en Ã©vidence.
 
 .PARAMETER OpenInBrowser
-    Indique si le fichier de visualisation doit être ouvert dans le navigateur par défaut.
+    Indique si le fichier de visualisation doit Ãªtre ouvert dans le navigateur par dÃ©faut.
 
 .PARAMETER Title
     Titre de la visualisation.
@@ -1514,7 +1514,7 @@ function Resolve-ModuleDependencies {
         ModuleD = @()
     }
     Export-ModuleDependencyGraph -DependencyGraph $graph -OutputPath C:\Temp\dependencies.html -Format HTML -HighlightCycles -OpenInBrowser
-    Exporte le graphe de dépendances vers un fichier HTML et l'ouvre dans le navigateur par défaut.
+    Exporte le graphe de dÃ©pendances vers un fichier HTML et l'ouvre dans le navigateur par dÃ©faut.
 
 .OUTPUTS
     [string] Chemin du fichier de visualisation.
@@ -1542,21 +1542,21 @@ function Export-ModuleDependencyGraph {
         [string]$Title = "Module Dependency Graph"
     )
 
-    # Déterminer le chemin de sortie
+    # DÃ©terminer le chemin de sortie
     if (-not $OutputPath) {
         $tempDir = [System.IO.Path]::GetTempPath()
         $tempFileName = "ModuleDependencies_" + [System.Guid]::NewGuid().ToString() + "." + $Format.ToLower()
         $OutputPath = Join-Path -Path $tempDir -ChildPath $tempFileName
     }
 
-    # Détecter les cycles si nécessaire
+    # DÃ©tecter les cycles si nÃ©cessaire
     $cycles = @()
     $cyclicNodes = @()
     if ($HighlightCycles) {
         $cycleResult = Find-ModuleDependencyCycles -DependencyGraph $DependencyGraph -IncludeAllCycles
         $cycles = $cycleResult.Cycles
 
-        # Extraire les nœuds cycliques
+        # Extraire les nÅ“uds cycliques
         foreach ($cycle in $cycles) {
             foreach ($node in $cycle.Nodes) {
                 if (-not $cyclicNodes.Contains($node)) {
@@ -1566,39 +1566,39 @@ function Export-ModuleDependencyGraph {
         }
     }
 
-    # Générer la visualisation selon le format
+    # GÃ©nÃ©rer la visualisation selon le format
     switch ($Format) {
         "HTML" {
-            # Générer la visualisation HTML avec vis.js
+            # GÃ©nÃ©rer la visualisation HTML avec vis.js
             $html = Export-DependencyGraphToHtml -DependencyGraph $DependencyGraph -Title $Title -HighlightCycles:$HighlightCycles -CyclicNodes $cyclicNodes
 
-            # Écrire le fichier HTML
+            # Ã‰crire le fichier HTML
             $html | Out-File -FilePath $OutputPath -Encoding UTF8
         }
         "DOT" {
-            # Générer la visualisation DOT (Graphviz)
+            # GÃ©nÃ©rer la visualisation DOT (Graphviz)
             $dot = Export-DependencyGraphToDot -DependencyGraph $DependencyGraph -Title $Title -HighlightCycles:$HighlightCycles -CyclicNodes $cyclicNodes
 
-            # Écrire le fichier DOT
+            # Ã‰crire le fichier DOT
             $dot | Out-File -FilePath $OutputPath -Encoding UTF8
         }
         "JSON" {
-            # Générer la visualisation JSON
+            # GÃ©nÃ©rer la visualisation JSON
             $json = Export-DependencyGraphToJson -DependencyGraph $DependencyGraph -HighlightCycles:$HighlightCycles -CyclicNodes $cyclicNodes
 
-            # Écrire le fichier JSON
+            # Ã‰crire le fichier JSON
             $json | Out-File -FilePath $OutputPath -Encoding UTF8
         }
         "Mermaid" {
-            # Générer la visualisation Mermaid
+            # GÃ©nÃ©rer la visualisation Mermaid
             $mermaid = Export-DependencyGraphToMermaid -DependencyGraph $DependencyGraph -Title $Title -HighlightCycles:$HighlightCycles -CyclicNodes $cyclicNodes
 
-            # Écrire le fichier Mermaid
+            # Ã‰crire le fichier Mermaid
             $mermaid | Out-File -FilePath $OutputPath -Encoding UTF8
         }
     }
 
-    # Ouvrir le fichier dans le navigateur si demandé
+    # Ouvrir le fichier dans le navigateur si demandÃ©
     if ($OpenInBrowser -and $Format -eq "HTML") {
         Start-Process $OutputPath
     }
@@ -1608,23 +1608,23 @@ function Export-ModuleDependencyGraph {
 
 <#
 .SYNOPSIS
-    Exporte un graphe de dépendances vers un fichier HTML avec vis.js.
+    Exporte un graphe de dÃ©pendances vers un fichier HTML avec vis.js.
 
 .DESCRIPTION
-    Cette fonction interne exporte un graphe de dépendances vers un fichier HTML
-    en utilisant la bibliothèque vis.js pour la visualisation.
+    Cette fonction interne exporte un graphe de dÃ©pendances vers un fichier HTML
+    en utilisant la bibliothÃ¨que vis.js pour la visualisation.
 
 .PARAMETER DependencyGraph
-    Graphe de dépendances à exporter.
+    Graphe de dÃ©pendances Ã  exporter.
 
 .PARAMETER Title
     Titre de la visualisation.
 
 .PARAMETER HighlightCycles
-    Indique si les cycles de dépendances doivent être mis en évidence.
+    Indique si les cycles de dÃ©pendances doivent Ãªtre mis en Ã©vidence.
 
 .PARAMETER CyclicNodes
-    Liste des nœuds impliqués dans des cycles.
+    Liste des nÅ“uds impliquÃ©s dans des cycles.
 
 .OUTPUTS
     [string] Contenu HTML de la visualisation.
@@ -1645,17 +1645,17 @@ function Export-DependencyGraphToHtml {
         [string[]]$CyclicNodes = @()
     )
 
-    # Préparer les données pour vis.js
+    # PrÃ©parer les donnÃ©es pour vis.js
     $nodes = [System.Collections.ArrayList]::new()
     $edges = [System.Collections.ArrayList]::new()
     $nodeId = 0
     $nodeMap = @{}
 
-    # Créer les nœuds
+    # CrÃ©er les nÅ“uds
     foreach ($module in $DependencyGraph.Keys) {
         $nodeMap[$module] = $nodeId
 
-        # Déterminer si le nœud est impliqué dans un cycle
+        # DÃ©terminer si le nÅ“ud est impliquÃ© dans un cycle
         $isCyclic = $CyclicNodes -contains $module
         $group = if ($isCyclic -and $HighlightCycles) { "cyclic" } else { "normal" }
 
@@ -1668,7 +1668,7 @@ function Export-DependencyGraphToHtml {
         $nodeId++
     }
 
-    # Créer les arêtes
+    # CrÃ©er les arÃªtes
     foreach ($module in $DependencyGraph.Keys) {
         $fromId = $nodeMap[$module]
 
@@ -1676,7 +1676,7 @@ function Export-DependencyGraphToHtml {
             if ($nodeMap.ContainsKey($dependency)) {
                 $toId = $nodeMap[$dependency]
 
-                # Déterminer si l'arête fait partie d'un cycle
+                # DÃ©terminer si l'arÃªte fait partie d'un cycle
                 $isCyclicEdge = $CyclicNodes -contains $module -and $CyclicNodes -contains $dependency
                 $color = if ($isCyclicEdge -and $HighlightCycles) { "#ff0000" } else { "#848484" }
 
@@ -1692,12 +1692,12 @@ function Export-DependencyGraphToHtml {
         }
     }
 
-    # Convertir les données en JSON
+    # Convertir les donnÃ©es en JSON
     $nodesJson = $nodes | ConvertTo-Json
     $edgesJson = $edges | ConvertTo-Json
     $cyclesJson = $CyclicNodes | ConvertTo-Json
 
-    # Générer le HTML
+    # GÃ©nÃ©rer le HTML
     $html = @"
 <!DOCTYPE html>
 <html>
@@ -1755,7 +1755,7 @@ function Export-DependencyGraphToHtml {
         <p>Cyclic Modules: <strong>${($CyclicNodes.Count)}</strong></p>
     </div>
     <script type="text/javascript">
-        // Données du graphe
+        // DonnÃ©es du graphe
         var nodes = new vis.DataSet($nodesJson);
         var edges = new vis.DataSet($edgesJson);
         var cyclicNodes = $cyclesJson;
@@ -1806,12 +1806,12 @@ function Export-DependencyGraphToHtml {
             }
         };
 
-        // Créer le réseau
+        // CrÃ©er le rÃ©seau
         var network = new vis.Network(container, data, options);
 
-        // Fonction pour mettre en évidence les cycles
+        // Fonction pour mettre en Ã©vidence les cycles
         function highlightCycles() {
-            // Mettre à jour les nœuds cycliques
+            // Mettre Ã  jour les nÅ“uds cycliques
             nodes.forEach(function(node) {
                 if (cyclicNodes.includes(node.label)) {
                     nodes.update({
@@ -1821,7 +1821,7 @@ function Export-DependencyGraphToHtml {
                 }
             });
 
-            // Mettre à jour les arêtes cycliques
+            // Mettre Ã  jour les arÃªtes cycliques
             edges.forEach(function(edge) {
                 var fromNode = nodes.get(edge.from);
                 var toNode = nodes.get(edge.to);
@@ -1836,9 +1836,9 @@ function Export-DependencyGraphToHtml {
             });
         }
 
-        // Fonction pour réinitialiser la mise en évidence
+        // Fonction pour rÃ©initialiser la mise en Ã©vidence
         function resetHighlighting() {
-            // Réinitialiser les nœuds
+            // RÃ©initialiser les nÅ“uds
             nodes.forEach(function(node) {
                 nodes.update({
                     id: node.id,
@@ -1846,7 +1846,7 @@ function Export-DependencyGraphToHtml {
                 });
             });
 
-            // Réinitialiser les arêtes
+            // RÃ©initialiser les arÃªtes
             edges.forEach(function(edge) {
                 edges.update({
                     id: edge.id,
@@ -1862,7 +1862,7 @@ function Export-DependencyGraphToHtml {
             network.fit();
         }
 
-        // Initialiser la mise en évidence des cycles si demandé
+        // Initialiser la mise en Ã©vidence des cycles si demandÃ©
         if ($($HighlightCycles.ToString().ToLower())) {
             highlightCycles();
         }
@@ -1876,23 +1876,23 @@ function Export-DependencyGraphToHtml {
 
 <#
 .SYNOPSIS
-    Exporte un graphe de dépendances vers un fichier DOT (Graphviz).
+    Exporte un graphe de dÃ©pendances vers un fichier DOT (Graphviz).
 
 .DESCRIPTION
-    Cette fonction interne exporte un graphe de dépendances vers un fichier DOT
+    Cette fonction interne exporte un graphe de dÃ©pendances vers un fichier DOT
     pour une utilisation avec Graphviz.
 
 .PARAMETER DependencyGraph
-    Graphe de dépendances à exporter.
+    Graphe de dÃ©pendances Ã  exporter.
 
 .PARAMETER Title
     Titre de la visualisation.
 
 .PARAMETER HighlightCycles
-    Indique si les cycles de dépendances doivent être mis en évidence.
+    Indique si les cycles de dÃ©pendances doivent Ãªtre mis en Ã©vidence.
 
 .PARAMETER CyclicNodes
-    Liste des nœuds impliqués dans des cycles.
+    Liste des nÅ“uds impliquÃ©s dans des cycles.
 
 .OUTPUTS
     [string] Contenu DOT de la visualisation.
@@ -1918,7 +1918,7 @@ function Export-DependencyGraphToDot {
     $dot += "  rankdir=LR;`n"
     $dot += "  node [shape=box, style=filled, fillcolor=lightblue];`n"
 
-    # Ajouter les nœuds
+    # Ajouter les nÅ“uds
     foreach ($module in $DependencyGraph.Keys) {
         $isCyclic = $CyclicNodes -contains $module
         $color = if ($isCyclic -and $HighlightCycles) { "fillcolor=lightpink, color=red" } else { "fillcolor=lightblue" }
@@ -1926,7 +1926,7 @@ function Export-DependencyGraphToDot {
         $dot += "  `"$module`" [$color];`n"
     }
 
-    # Ajouter les arêtes
+    # Ajouter les arÃªtes
     foreach ($module in $DependencyGraph.Keys) {
         foreach ($dependency in $DependencyGraph[$module]) {
             $isCyclicEdge = $CyclicNodes -contains $module -and $CyclicNodes -contains $dependency
@@ -1943,19 +1943,19 @@ function Export-DependencyGraphToDot {
 
 <#
 .SYNOPSIS
-    Exporte un graphe de dépendances vers un fichier JSON.
+    Exporte un graphe de dÃ©pendances vers un fichier JSON.
 
 .DESCRIPTION
-    Cette fonction interne exporte un graphe de dépendances vers un fichier JSON.
+    Cette fonction interne exporte un graphe de dÃ©pendances vers un fichier JSON.
 
 .PARAMETER DependencyGraph
-    Graphe de dépendances à exporter.
+    Graphe de dÃ©pendances Ã  exporter.
 
 .PARAMETER HighlightCycles
-    Indique si les cycles de dépendances doivent être mis en évidence.
+    Indique si les cycles de dÃ©pendances doivent Ãªtre mis en Ã©vidence.
 
 .PARAMETER CyclicNodes
-    Liste des nœuds impliqués dans des cycles.
+    Liste des nÅ“uds impliquÃ©s dans des cycles.
 
 .OUTPUTS
     [string] Contenu JSON de la visualisation.
@@ -1973,14 +1973,14 @@ function Export-DependencyGraphToJson {
         [string[]]$CyclicNodes = @()
     )
 
-    # Créer l'objet JSON
+    # CrÃ©er l'objet JSON
     $jsonObj = @{
         nodes  = [System.Collections.ArrayList]::new()
         edges  = [System.Collections.ArrayList]::new()
         cycles = if ($HighlightCycles) { $CyclicNodes } else { @() }
     }
 
-    # Ajouter les nœuds
+    # Ajouter les nÅ“uds
     foreach ($module in $DependencyGraph.Keys) {
         $isCyclic = $CyclicNodes -contains $module
 
@@ -1991,7 +1991,7 @@ function Export-DependencyGraphToJson {
             })
     }
 
-    # Ajouter les arêtes
+    # Ajouter les arÃªtes
     foreach ($module in $DependencyGraph.Keys) {
         foreach ($dependency in $DependencyGraph[$module]) {
             $isCyclicEdge = $CyclicNodes -contains $module -and $CyclicNodes -contains $dependency
@@ -2012,23 +2012,23 @@ function Export-DependencyGraphToJson {
 
 <#
 .SYNOPSIS
-    Exporte un graphe de dépendances vers un fichier Mermaid.
+    Exporte un graphe de dÃ©pendances vers un fichier Mermaid.
 
 .DESCRIPTION
-    Cette fonction interne exporte un graphe de dépendances vers un fichier Mermaid
+    Cette fonction interne exporte un graphe de dÃ©pendances vers un fichier Mermaid
     pour une utilisation dans des documents Markdown.
 
 .PARAMETER DependencyGraph
-    Graphe de dépendances à exporter.
+    Graphe de dÃ©pendances Ã  exporter.
 
 .PARAMETER Title
     Titre de la visualisation.
 
 .PARAMETER HighlightCycles
-    Indique si les cycles de dépendances doivent être mis en évidence.
+    Indique si les cycles de dÃ©pendances doivent Ãªtre mis en Ã©vidence.
 
 .PARAMETER CyclicNodes
-    Liste des nœuds impliqués dans des cycles.
+    Liste des nÅ“uds impliquÃ©s dans des cycles.
 
 .OUTPUTS
     [string] Contenu Mermaid de la visualisation.
@@ -2054,7 +2054,7 @@ function Export-DependencyGraphToMermaid {
     $mermaid += "graph LR`n"
     $mermaid += "  %% $($Title)`n"
 
-    # Ajouter les nœuds
+    # Ajouter les nÅ“uds
     foreach ($module in $DependencyGraph.Keys) {
         $moduleId = $module -replace '[^a-zA-Z0-9]', '_'
         $isCyclic = $CyclicNodes -contains $module
@@ -2066,7 +2066,7 @@ function Export-DependencyGraphToMermaid {
         }
     }
 
-    # Ajouter les arêtes
+    # Ajouter les arÃªtes
     foreach ($module in $DependencyGraph.Keys) {
         $moduleId = $module -replace '[^a-zA-Z0-9]', '_'
 
@@ -2086,32 +2086,32 @@ function Export-DependencyGraphToMermaid {
 
 <#
 .SYNOPSIS
-    Affiche un graphe de dépendances de modules PowerShell dans le navigateur par défaut.
+    Affiche un graphe de dÃ©pendances de modules PowerShell dans le navigateur par dÃ©faut.
 
 .DESCRIPTION
-    Cette fonction affiche un graphe de dépendances de modules PowerShell dans le navigateur par défaut.
+    Cette fonction affiche un graphe de dÃ©pendances de modules PowerShell dans le navigateur par dÃ©faut.
 
 .PARAMETER ModulePath
-    Chemin du module à analyser.
+    Chemin du module Ã  analyser.
 
 .PARAMETER MaxDepth
-    Profondeur maximale de récursion pour l'analyse des dépendances. Par défaut: 10.
+    Profondeur maximale de rÃ©cursion pour l'analyse des dÃ©pendances. Par dÃ©faut: 10.
 
 .PARAMETER SkipSystemModules
-    Indique si les modules système doivent être exclus de l'analyse.
+    Indique si les modules systÃ¨me doivent Ãªtre exclus de l'analyse.
 
 .PARAMETER HighlightCycles
-    Indique si les cycles de dépendances doivent être mis en évidence.
+    Indique si les cycles de dÃ©pendances doivent Ãªtre mis en Ã©vidence.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie. Si non spécifié, un fichier temporaire est créé.
+    Chemin du fichier de sortie. Si non spÃ©cifiÃ©, un fichier temporaire est crÃ©Ã©.
 
 .PARAMETER Format
-    Format de sortie. Valeurs possibles: HTML, DOT, JSON, Mermaid. Par défaut: HTML.
+    Format de sortie. Valeurs possibles: HTML, DOT, JSON, Mermaid. Par dÃ©faut: HTML.
 
 .EXAMPLE
     Show-ModuleDependencyGraph -ModulePath C:\Modules\MyModule\MyModule.psd1 -HighlightCycles
-    Affiche le graphe de dépendances du module MyModule dans le navigateur par défaut.
+    Affiche le graphe de dÃ©pendances du module MyModule dans le navigateur par dÃ©faut.
 
 .OUTPUTS
     [string] Chemin du fichier de visualisation.
@@ -2139,16 +2139,16 @@ function Show-ModuleDependencyGraph {
         [string]$Format = 'HTML'
     )
 
-    # Analyser les dépendances récursivement
+    # Analyser les dÃ©pendances rÃ©cursivement
     $recursiveResult = Get-ModuleDependenciesRecursive -ModulePath $ModulePath -MaxDepth $MaxDepth -SkipSystemModules:$SkipSystemModules -OutputFormat 'HashTable'
 
-    # Vérifier si des dépendances ont été trouvées
+    # VÃ©rifier si des dÃ©pendances ont Ã©tÃ© trouvÃ©es
     if (-not $recursiveResult -or -not $recursiveResult.DependencyGraph) {
-        Write-Warning ('Aucune dépendance trouvée pour le module: ' + $ModulePath)
+        Write-Warning ('Aucune dÃ©pendance trouvÃ©e pour le module: ' + $ModulePath)
         return $null
     }
 
-    # Exporter le graphe de dépendances
+    # Exporter le graphe de dÃ©pendances
     $title = 'Module Dependency Graph - ' + $recursiveResult.ModuleName
     $visualizationPath = Export-ModuleDependencyGraph -DependencyGraph $recursiveResult.DependencyGraph -OutputPath $OutputPath -Format $Format -HighlightCycles:$HighlightCycles -OpenInBrowser -Title $title
 
@@ -2164,7 +2164,7 @@ function Show-ModuleDependencyGraph {
     et retourne un objet contenant les informations sur le manifeste.
 
 .PARAMETER ManifestPath
-    Chemin du fichier manifeste (.psd1) à analyser.
+    Chemin du fichier manifeste (.psd1) Ã  analyser.
 
 .EXAMPLE
     $manifestInfo = Get-PowerShellManifestStructure -ManifestPath C:\Modules\MyModule\MyModule.psd1
@@ -2180,14 +2180,14 @@ function Get-PowerShellManifestStructure {
         [string]$ManifestPath
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ManifestPath -PathType Leaf)) {
         $errorMsg = 'Manifest file not found: ' + $ManifestPath
         Write-Error $errorMsg
         return $null
     }
 
-    # Vérifier l'extension du fichier
+    # VÃ©rifier l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($ManifestPath)
     if ($extension -ne ".psd1") {
         $errorMsg = 'Not a PowerShell manifest file (.psd1): ' + $ManifestPath
@@ -2199,7 +2199,7 @@ function Get-PowerShellManifestStructure {
         # Importer le manifeste
         $manifest = Import-PowerShellDataFile -Path $ManifestPath -ErrorAction Stop
 
-        # Initialiser l'objet résultat
+        # Initialiser l'objet rÃ©sultat
     $result = [PSCustomObject]@{
         Path                   = $ManifestPath
         ModuleName             = [System.IO.Path]::GetFileNameWithoutExtension($ManifestPath)
@@ -2239,7 +2239,7 @@ function Get-PowerShellManifestStructure {
         DefaultCommandPrefix   = $manifest.DefaultCommandPrefix
     }
 
-    # Gérer le cas où RootModule ou ModuleToProcess est défini
+    # GÃ©rer le cas oÃ¹ RootModule ou ModuleToProcess est dÃ©fini
     if ($manifest.ContainsKey('RootModule') -and $manifest.RootModule) {
         $result | Add-Member -MemberType NoteProperty -Name 'RootModule' -Value $manifest.RootModule
     } elseif ($manifest.ContainsKey('ModuleToProcess') -and $manifest.ModuleToProcess) {
@@ -2247,7 +2247,7 @@ function Get-PowerShellManifestStructure {
         $result | Add-Member -MemberType NoteProperty -Name 'ModuleToProcess' -Value $manifest.ModuleToProcess
     }
 
-    # Analyser les dépendances RequiredModules
+    # Analyser les dÃ©pendances RequiredModules
     if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
         $requiredModules = @()
         foreach ($module in $manifest.RequiredModules) {
@@ -2268,7 +2268,7 @@ function Get-PowerShellManifestStructure {
         $result.RequiredModules = $requiredModules
     }
 
-    # Analyser les dépendances NestedModules
+    # Analyser les dÃ©pendances NestedModules
     if ($manifest.ContainsKey('NestedModules') -and $manifest.NestedModules) {
         $nestedModules = @()
         foreach ($module in $manifest.NestedModules) {

@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Interface utilisateur pour sélectionner et mettre à jour le statut des tâches dans un fichier de roadmap.
+    Interface utilisateur pour sÃ©lectionner et mettre Ã  jour le statut des tÃ¢ches dans un fichier de roadmap.
 
 .DESCRIPTION
-    Ce script fournit une interface utilisateur pour sélectionner un fichier de roadmap,
-    choisir les lignes à vérifier, et mettre à jour le statut des tâches en cochant les cases
-    des tâches implémentées.
+    Ce script fournit une interface utilisateur pour sÃ©lectionner un fichier de roadmap,
+    choisir les lignes Ã  vÃ©rifier, et mettre Ã  jour le statut des tÃ¢ches en cochant les cases
+    des tÃ¢ches implÃ©mentÃ©es.
 
 .PARAMETER RoadmapDirectory
-    Répertoire contenant les fichiers de roadmap. Par défaut, utilise le répertoire "Roadmap" à la racine du projet.
+    RÃ©pertoire contenant les fichiers de roadmap. Par dÃ©faut, utilise le rÃ©pertoire "Roadmap" Ã  la racine du projet.
 
 .PARAMETER VerifyOnly
-    Si spécifié, le script vérifie seulement les tâches sans modifier le fichier de roadmap.
+    Si spÃ©cifiÃ©, le script vÃ©rifie seulement les tÃ¢ches sans modifier le fichier de roadmap.
 
 .PARAMETER GenerateReport
-    Si spécifié, génère un rapport détaillé des tâches vérifiées.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport dÃ©taillÃ© des tÃ¢ches vÃ©rifiÃ©es.
 
 .EXAMPLE
     .\Invoke-RoadmapCheck.ps1
@@ -25,7 +25,7 @@
 .NOTES
     Auteur: Roadmap Tools Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 [CmdletBinding()]
 param (
@@ -39,11 +39,11 @@ param (
     [switch]$GenerateReport
 )
 
-# Ajouter les assemblies nécessaires pour l'interface utilisateur
+# Ajouter les assemblies nÃ©cessaires pour l'interface utilisateur
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-# Fonction pour sélectionner un fichier de roadmap
+# Fonction pour sÃ©lectionner un fichier de roadmap
 function Select-RoadmapFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -53,7 +53,7 @@ function Select-RoadmapFile {
     $openFileDialog = New-Object System.Windows.Forms.OpenFileDialog
     $openFileDialog.InitialDirectory = $InitialDirectory
     $openFileDialog.Filter = "Fichiers Markdown (*.md)|*.md|Tous les fichiers (*.*)|*.*"
-    $openFileDialog.Title = "Sélectionner un fichier de roadmap"
+    $openFileDialog.Title = "SÃ©lectionner un fichier de roadmap"
 
     if ($openFileDialog.ShowDialog() -eq "OK") {
         return $openFileDialog.FileName
@@ -62,35 +62,35 @@ function Select-RoadmapFile {
     return $null
 }
 
-# Fonction pour créer un formulaire de sélection des lignes
+# Fonction pour crÃ©er un formulaire de sÃ©lection des lignes
 function New-LineSelectionForm {
     param (
         [Parameter(Mandatory = $true)]
         [string]$RoadmapPath
     )
 
-    # Créer le formulaire principal
+    # CrÃ©er le formulaire principal
     $form = New-Object System.Windows.Forms.Form
-    $form.Text = "Sélection des lignes de la roadmap"
+    $form.Text = "SÃ©lection des lignes de la roadmap"
     $form.Size = New-Object System.Drawing.Size(800, 600)
     $form.StartPosition = "CenterScreen"
     $form.Font = New-Object System.Drawing.Font("Segoe UI", 10)
 
-    # Créer le label pour le chemin du fichier
+    # CrÃ©er le label pour le chemin du fichier
     $labelPath = New-Object System.Windows.Forms.Label
     $labelPath.Location = New-Object System.Drawing.Point(10, 10)
     $labelPath.Size = New-Object System.Drawing.Size(780, 20)
     $labelPath.Text = "Fichier : $RoadmapPath"
     $form.Controls.Add($labelPath)
 
-    # Créer le label d'instructions
+    # CrÃ©er le label d'instructions
     $labelInstructions = New-Object System.Windows.Forms.Label
     $labelInstructions.Location = New-Object System.Drawing.Point(10, 35)
     $labelInstructions.Size = New-Object System.Drawing.Size(780, 20)
-    $labelInstructions.Text = "Sélectionnez les lignes à vérifier (utilisez Ctrl ou Shift pour sélectionner plusieurs lignes)"
+    $labelInstructions.Text = "SÃ©lectionnez les lignes Ã  vÃ©rifier (utilisez Ctrl ou Shift pour sÃ©lectionner plusieurs lignes)"
     $form.Controls.Add($labelInstructions)
 
-    # Créer la liste des lignes
+    # CrÃ©er la liste des lignes
     $listBox = New-Object System.Windows.Forms.ListBox
     $listBox.Location = New-Object System.Drawing.Point(10, 60)
     $listBox.Size = New-Object System.Drawing.Size(780, 450)
@@ -101,14 +101,14 @@ function New-LineSelectionForm {
     # Lire le contenu du fichier de roadmap
     $content = Get-Content -Path $RoadmapPath -Encoding UTF8
     
-    # Ajouter les lignes au ListBox avec leur numéro
+    # Ajouter les lignes au ListBox avec leur numÃ©ro
     for ($i = 0; $i -lt $content.Count; $i++) {
         $lineNumber = $i + 1
         $line = $content[$i]
         $listBox.Items.Add("$lineNumber : $line")
     }
 
-    # Créer le bouton OK
+    # CrÃ©er le bouton OK
     $buttonOK = New-Object System.Windows.Forms.Button
     $buttonOK.Location = New-Object System.Drawing.Point(620, 520)
     $buttonOK.Size = New-Object System.Drawing.Size(80, 30)
@@ -117,7 +117,7 @@ function New-LineSelectionForm {
     $form.Controls.Add($buttonOK)
     $form.AcceptButton = $buttonOK
 
-    # Créer le bouton Annuler
+    # CrÃ©er le bouton Annuler
     $buttonCancel = New-Object System.Windows.Forms.Button
     $buttonCancel.Location = New-Object System.Drawing.Point(710, 520)
     $buttonCancel.Size = New-Object System.Drawing.Size(80, 30)
@@ -126,11 +126,11 @@ function New-LineSelectionForm {
     $form.Controls.Add($buttonCancel)
     $form.CancelButton = $buttonCancel
 
-    # Créer le bouton Tout sélectionner
+    # CrÃ©er le bouton Tout sÃ©lectionner
     $buttonSelectAll = New-Object System.Windows.Forms.Button
     $buttonSelectAll.Location = New-Object System.Drawing.Point(10, 520)
     $buttonSelectAll.Size = New-Object System.Drawing.Size(120, 30)
-    $buttonSelectAll.Text = "Tout sélectionner"
+    $buttonSelectAll.Text = "Tout sÃ©lectionner"
     $buttonSelectAll.Add_Click({
         for ($i = 0; $i -lt $listBox.Items.Count; $i++) {
             $listBox.SetSelected($i, $true)
@@ -138,11 +138,11 @@ function New-LineSelectionForm {
     })
     $form.Controls.Add($buttonSelectAll)
 
-    # Créer le bouton Sélectionner les tâches
+    # CrÃ©er le bouton SÃ©lectionner les tÃ¢ches
     $buttonSelectTasks = New-Object System.Windows.Forms.Button
     $buttonSelectTasks.Location = New-Object System.Drawing.Point(140, 520)
     $buttonSelectTasks.Size = New-Object System.Drawing.Size(150, 30)
-    $buttonSelectTasks.Text = "Sélectionner les tâches"
+    $buttonSelectTasks.Text = "SÃ©lectionner les tÃ¢ches"
     $buttonSelectTasks.Add_Click({
         for ($i = 0; $i -lt $listBox.Items.Count; $i++) {
             $line = $listBox.Items[$i]
@@ -156,7 +156,7 @@ function New-LineSelectionForm {
     })
     $form.Controls.Add($buttonSelectTasks)
 
-    # Afficher le formulaire et retourner les lignes sélectionnées
+    # Afficher le formulaire et retourner les lignes sÃ©lectionnÃ©es
     $result = $form.ShowDialog()
     
     if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
@@ -172,7 +172,7 @@ function New-LineSelectionForm {
     return $null
 }
 
-# Fonction pour exécuter le script de mise à jour de la roadmap
+# Fonction pour exÃ©cuter le script de mise Ã  jour de la roadmap
 function Invoke-UpdateRoadmapStatus {
     param (
         [Parameter(Mandatory = $true)]
@@ -191,7 +191,7 @@ function Invoke-UpdateRoadmapStatus {
     $updateScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Update-RoadmapStatus.ps1"
     
     if (-not (Test-Path -Path $updateScriptPath)) {
-        Write-Error "Le script de mise à jour de la roadmap n'a pas été trouvé : $updateScriptPath"
+        Write-Error "Le script de mise Ã  jour de la roadmap n'a pas Ã©tÃ© trouvÃ© : $updateScriptPath"
         return
     }
 
@@ -213,29 +213,29 @@ function Invoke-UpdateRoadmapStatus {
 
 # Script principal
 function Invoke-RoadmapCheck {
-    # Vérifier si le répertoire des roadmaps existe
+    # VÃ©rifier si le rÃ©pertoire des roadmaps existe
     if (-not (Test-Path -Path $RoadmapDirectory)) {
-        Write-Error "Le répertoire des roadmaps n'existe pas : $RoadmapDirectory"
+        Write-Error "Le rÃ©pertoire des roadmaps n'existe pas : $RoadmapDirectory"
         return
     }
 
-    # Sélectionner un fichier de roadmap
+    # SÃ©lectionner un fichier de roadmap
     $roadmapPath = Select-RoadmapFile -InitialDirectory $RoadmapDirectory
     if ($null -eq $roadmapPath) {
-        Write-Warning "Aucun fichier de roadmap sélectionné."
+        Write-Warning "Aucun fichier de roadmap sÃ©lectionnÃ©."
         return
     }
 
-    # Sélectionner les lignes à vérifier
+    # SÃ©lectionner les lignes Ã  vÃ©rifier
     $lineNumbers = New-LineSelectionForm -RoadmapPath $roadmapPath
     if ($null -eq $lineNumbers -or $lineNumbers.Count -eq 0) {
-        Write-Warning "Aucune ligne sélectionnée."
+        Write-Warning "Aucune ligne sÃ©lectionnÃ©e."
         return
     }
 
-    # Exécuter le script de mise à jour de la roadmap
+    # ExÃ©cuter le script de mise Ã  jour de la roadmap
     Invoke-UpdateRoadmapStatus -RoadmapPath $roadmapPath -LineNumbers $lineNumbers -VerifyOnly:$VerifyOnly -GenerateReport:$GenerateReport
 }
 
-# Exécuter le script principal
+# ExÃ©cuter le script principal
 Invoke-RoadmapCheck

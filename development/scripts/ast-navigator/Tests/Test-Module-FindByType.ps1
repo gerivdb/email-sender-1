@@ -1,4 +1,4 @@
-# Script de test pour le module AstNavigator avec la fonction Find-AstNodeByType
+﻿# Script de test pour le module AstNavigator avec la fonction Find-AstNodeByType
 
 # Charger directement les fonctions
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".."
@@ -13,7 +13,7 @@ foreach ($function in $publicFunctions) {
     . $function.FullName
 }
 
-# Créer un exemple de code PowerShell à analyser
+# CrÃ©er un exemple de code PowerShell Ã  analyser
 $sampleCode = @'
 function Get-Example {
     [CmdletBinding()]
@@ -82,7 +82,7 @@ foreach ($statement in $statements) {
     Write-Host "  ${typeName} (Ligne $lineNumber)" -ForegroundColor Green
 }
 
-# Tester la fonction Find-AstNodeByType avec expression régulière
+# Tester la fonction Find-AstNodeByType avec expression rÃ©guliÃ¨re
 Write-Host "`n=== Test de Find-AstNodeByType avec expression reguliere ===" -ForegroundColor Cyan
 $parameterNodes = Find-AstNodeByType -Ast $ast -RegexPattern "Parameter.*"
 Write-Host "Nombre de parametres trouves: $($parameterNodes.Count)" -ForegroundColor Yellow

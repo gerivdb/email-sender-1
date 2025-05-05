@@ -1,4 +1,4 @@
-# Importer le module
+﻿# Importer le module
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1") -Force
 
 # Tester la fonction Measure-LevenshteinDistance
@@ -7,13 +7,13 @@ $string2 = "sitting"
 $distance = Measure-LevenshteinDistance -String1 $string1 -String2 $string2
 Write-Host "Distance between '$string1' and '$string2': $distance"
 
-# Tester avec des chaÃ®nes identiques
+# Tester avec des chaÃƒÂ®nes identiques
 $string1 = "test"
 $string2 = "test"
 $distance = Measure-LevenshteinDistance -String1 $string1 -String2 $string2
 Write-Host "Distance between '$string1' and '$string2': $distance"
 
-# Tester avec une chaÃ®ne vide
+# Tester avec une chaÃƒÂ®ne vide
 $string1 = ""
 $string2 = "test"
 $distance = Measure-LevenshteinDistance -String1 $string1 -String2 $string2

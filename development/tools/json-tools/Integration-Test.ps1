@@ -1,4 +1,4 @@
-# Integration-Test.ps1
+﻿# Integration-Test.ps1
 # Script de test d'integration pour les utilitaires de gestion des chemins
 
 # Importer le module Path-Manager

@@ -1,35 +1,35 @@
-<#
+﻿<#
 .SYNOPSIS
-    Réorganise les fichiers des gestionnaires selon la nouvelle structure.
+    RÃ©organise les fichiers des gestionnaires selon la nouvelle structure.
 
 .DESCRIPTION
-    Ce script déplace les fichiers des gestionnaires vers leurs nouveaux emplacements
-    selon la structure définie.
+    Ce script dÃ©place les fichiers des gestionnaires vers leurs nouveaux emplacements
+    selon la structure dÃ©finie.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire parent du répertoire du script.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire parent du rÃ©pertoire du script.
 
 .PARAMETER BackupFolder
-    Chemin vers le dossier de sauvegarde. Par défaut, utilise le dossier "backups" dans le répertoire du script.
+    Chemin vers le dossier de sauvegarde. Par dÃ©faut, utilise le dossier "backups" dans le rÃ©pertoire du script.
 
 .PARAMETER WhatIf
-    Indique ce qui se passerait si le script s'exécutait sans effectuer de modifications.
+    Indique ce qui se passerait si le script s'exÃ©cutait sans effectuer de modifications.
 
 .PARAMETER Force
-    Force l'exécution du script sans demander de confirmation.
+    Force l'exÃ©cution du script sans demander de confirmation.
 
 .EXAMPLE
     .\reorganize-manager-files.ps1
-    Réorganise les fichiers des gestionnaires selon la nouvelle structure.
+    RÃ©organise les fichiers des gestionnaires selon la nouvelle structure.
 
 .EXAMPLE
     .\reorganize-manager-files.ps1 -WhatIf
-    Affiche ce qui se passerait si le script s'exécutait sans effectuer de modifications.
+    Affiche ce qui se passerait si le script s'exÃ©cutait sans effectuer de modifications.
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2023-06-01
+    Date de crÃ©ation: 2023-06-01
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -44,35 +44,35 @@ param (
     [switch]$Force
 )
 
-# Vérifier que le dossier de projet existe
+# VÃ©rifier que le dossier de projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
     Write-Error "Le dossier de projet est introuvable : $ProjectRoot"
     exit 1
 }
 
-# Créer le dossier de sauvegarde s'il n'existe pas
+# CrÃ©er le dossier de sauvegarde s'il n'existe pas
 if (-not (Test-Path -Path $BackupFolder -PathType Container)) {
-    if ($PSCmdlet.ShouldProcess($BackupFolder, "Créer le dossier de sauvegarde")) {
+    if ($PSCmdlet.ShouldProcess($BackupFolder, "CrÃ©er le dossier de sauvegarde")) {
         New-Item -Path $BackupFolder -ItemType Directory -Force | Out-Null
     }
 }
 
-# Définir les chemins des répertoires
+# DÃ©finir les chemins des rÃ©pertoires
 $managersRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers"
 $configRoot = Join-Path -Path $ProjectRoot -ChildPath "projet\config\managers"
 
-# Vérifier que les répertoires existent
+# VÃ©rifier que les rÃ©pertoires existent
 if (-not (Test-Path -Path $managersRoot -PathType Container)) {
-    Write-Error "Le répertoire racine des gestionnaires est introuvable : $managersRoot"
+    Write-Error "Le rÃ©pertoire racine des gestionnaires est introuvable : $managersRoot"
     exit 1
 }
 
 if (-not (Test-Path -Path $configRoot -PathType Container)) {
-    Write-Error "Le répertoire de configuration des gestionnaires est introuvable : $configRoot"
+    Write-Error "Le rÃ©pertoire de configuration des gestionnaires est introuvable : $configRoot"
     exit 1
 }
 
-# Définir les fichiers à déplacer
+# DÃ©finir les fichiers Ã  dÃ©placer
 $filesToMove = @{
     "integrated-manager" = @{
         "Scripts" = @(
@@ -86,7 +86,7 @@ $filesToMove = @{
             }
         )
         "Config" = @(
-            # Aucun fichier de configuration trouvé pour le gestionnaire intégré
+            # Aucun fichier de configuration trouvÃ© pour le gestionnaire intÃ©grÃ©
         )
     }
     "mode-manager" = @{
@@ -101,7 +101,7 @@ $filesToMove = @{
             }
         )
         "Config" = @(
-            # Aucun fichier de configuration trouvé pour le gestionnaire de modes
+            # Aucun fichier de configuration trouvÃ© pour le gestionnaire de modes
         )
     }
     "roadmap-manager" = @{
@@ -112,7 +112,7 @@ $filesToMove = @{
             }
         )
         "Config" = @(
-            # Aucun fichier de configuration trouvé pour le gestionnaire de roadmap
+            # Aucun fichier de configuration trouvÃ© pour le gestionnaire de roadmap
         )
     }
     "mcp-manager" = @{
@@ -123,7 +123,7 @@ $filesToMove = @{
             }
         )
         "Config" = @(
-            # Aucun fichier de configuration trouvé pour le gestionnaire MCP
+            # Aucun fichier de configuration trouvÃ© pour le gestionnaire MCP
         )
     }
     "script-manager" = @{
@@ -134,7 +134,7 @@ $filesToMove = @{
             }
         )
         "Config" = @(
-            # Aucun fichier de configuration trouvé pour le gestionnaire de scripts
+            # Aucun fichier de configuration trouvÃ© pour le gestionnaire de scripts
         )
     }
     "n8n-manager" = @{
@@ -153,12 +153,12 @@ $filesToMove = @{
     }
 }
 
-# Créer une sauvegarde des fichiers
+# CrÃ©er une sauvegarde des fichiers
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $backupPath = Join-Path -Path $BackupFolder -ChildPath "managers-backup-$timestamp"
 
-if ($PSCmdlet.ShouldProcess("Gestionnaires", "Créer une sauvegarde")) {
-    Write-Host "Création d'une sauvegarde des gestionnaires..." -ForegroundColor Yellow
+if ($PSCmdlet.ShouldProcess("Gestionnaires", "CrÃ©er une sauvegarde")) {
+    Write-Host "CrÃ©ation d'une sauvegarde des gestionnaires..." -ForegroundColor Yellow
     New-Item -Path $backupPath -ItemType Directory -Force | Out-Null
     
     foreach ($manager in $filesToMove.Keys) {
@@ -184,20 +184,20 @@ if ($PSCmdlet.ShouldProcess("Gestionnaires", "Créer une sauvegarde")) {
         }
     }
     
-    Write-Host "Sauvegarde créée : $backupPath" -ForegroundColor Green
+    Write-Host "Sauvegarde crÃ©Ã©e : $backupPath" -ForegroundColor Green
 }
 
-# Déplacer les fichiers vers leurs nouveaux emplacements
+# DÃ©placer les fichiers vers leurs nouveaux emplacements
 foreach ($manager in $filesToMove.Keys) {
     Write-Host "Traitement du gestionnaire $manager..." -ForegroundColor Yellow
     
-    # Déplacer les scripts
+    # DÃ©placer les scripts
     foreach ($script in $filesToMove[$manager].Scripts) {
         if (Test-Path -Path $script.Source -PathType Leaf) {
             $scriptName = Split-Path -Path $script.Source -Leaf
             
-            if ($PSCmdlet.ShouldProcess($script.Source, "Déplacer vers $($script.Destination)")) {
-                # Créer le répertoire de destination s'il n'existe pas
+            if ($PSCmdlet.ShouldProcess($script.Source, "DÃ©placer vers $($script.Destination)")) {
+                # CrÃ©er le rÃ©pertoire de destination s'il n'existe pas
                 $destinationDir = Split-Path -Path $script.Destination -Parent
                 if (-not (Test-Path -Path $destinationDir -PathType Container)) {
                     New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
@@ -205,7 +205,7 @@ foreach ($manager in $filesToMove.Keys) {
                 
                 # Copier le fichier vers la destination
                 Copy-Item -Path $script.Source -Destination $script.Destination -Force
-                Write-Host "  Script déplacé : $scriptName -> $($script.Destination)" -ForegroundColor Gray
+                Write-Host "  Script dÃ©placÃ© : $scriptName -> $($script.Destination)" -ForegroundColor Gray
                 
                 # Ne pas supprimer l'original pour l'instant
                 # Remove-Item -Path $script.Source -Force
@@ -215,13 +215,13 @@ foreach ($manager in $filesToMove.Keys) {
         }
     }
     
-    # Déplacer les fichiers de configuration
+    # DÃ©placer les fichiers de configuration
     foreach ($config in $filesToMove[$manager].Config) {
         if (Test-Path -Path $config.Source -PathType Leaf) {
             $configName = Split-Path -Path $config.Source -Leaf
             
-            if ($PSCmdlet.ShouldProcess($config.Source, "Déplacer vers $($config.Destination)")) {
-                # Créer le répertoire de destination s'il n'existe pas
+            if ($PSCmdlet.ShouldProcess($config.Source, "DÃ©placer vers $($config.Destination)")) {
+                # CrÃ©er le rÃ©pertoire de destination s'il n'existe pas
                 $destinationDir = Split-Path -Path $config.Destination -Parent
                 if (-not (Test-Path -Path $destinationDir -PathType Container)) {
                     New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
@@ -229,7 +229,7 @@ foreach ($manager in $filesToMove.Keys) {
                 
                 # Copier le fichier vers la destination
                 Copy-Item -Path $config.Source -Destination $config.Destination -Force
-                Write-Host "  Configuration déplacée : $configName -> $($config.Destination)" -ForegroundColor Gray
+                Write-Host "  Configuration dÃ©placÃ©e : $configName -> $($config.Destination)" -ForegroundColor Gray
                 
                 # Ne pas supprimer l'original pour l'instant
                 # Remove-Item -Path $config.Source -Force
@@ -240,19 +240,19 @@ foreach ($manager in $filesToMove.Keys) {
     }
 }
 
-# Créer des fichiers de configuration par défaut pour les gestionnaires qui n'en ont pas
+# CrÃ©er des fichiers de configuration par dÃ©faut pour les gestionnaires qui n'en ont pas
 foreach ($manager in $filesToMove.Keys) {
     $configPath = Join-Path -Path $configRoot -ChildPath "$manager\$manager.config.json"
     
     if (-not (Test-Path -Path $configPath -PathType Leaf)) {
-        if ($PSCmdlet.ShouldProcess($configPath, "Créer un fichier de configuration par défaut")) {
-            # Créer le répertoire de destination s'il n'existe pas
+        if ($PSCmdlet.ShouldProcess($configPath, "CrÃ©er un fichier de configuration par dÃ©faut")) {
+            # CrÃ©er le rÃ©pertoire de destination s'il n'existe pas
             $destinationDir = Split-Path -Path $configPath -Parent
             if (-not (Test-Path -Path $destinationDir -PathType Container)) {
                 New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
             }
             
-            # Créer un fichier de configuration par défaut
+            # CrÃ©er un fichier de configuration par dÃ©faut
             $defaultConfig = @{
                 "name" = $manager
                 "version" = "1.0.0"
@@ -265,56 +265,56 @@ foreach ($manager in $filesToMove.Keys) {
             } | ConvertTo-Json -Depth 10
             
             Set-Content -Path $configPath -Value $defaultConfig -Encoding UTF8
-            Write-Host "  Configuration par défaut créée : $configPath" -ForegroundColor Gray
+            Write-Host "  Configuration par dÃ©faut crÃ©Ã©e : $configPath" -ForegroundColor Gray
         }
     }
 }
 
-# Créer des fichiers README.md pour chaque gestionnaire
+# CrÃ©er des fichiers README.md pour chaque gestionnaire
 foreach ($manager in $filesToMove.Keys) {
     $readmePath = Join-Path -Path $managersRoot -ChildPath "$manager\README.md"
     
     if (-not (Test-Path -Path $readmePath -PathType Leaf)) {
-        if ($PSCmdlet.ShouldProcess($readmePath, "Créer un fichier README.md")) {
+        if ($PSCmdlet.ShouldProcess($readmePath, "CrÃ©er un fichier README.md")) {
             $readmeContent = @"
 # $manager
 
-Ce répertoire contient les fichiers du gestionnaire $manager.
+Ce rÃ©pertoire contient les fichiers du gestionnaire $manager.
 
 ## Structure
 
-- `config` : Fichiers de configuration spécifiques au gestionnaire
+- `config` : Fichiers de configuration spÃ©cifiques au gestionnaire
 - `scripts` : Scripts PowerShell du gestionnaire
 - `modules` : Modules PowerShell du gestionnaire
-- `tests` : Tests unitaires et d'intégration du gestionnaire
+- `tests` : Tests unitaires et d'intÃ©gration du gestionnaire
 
 ## Configuration
 
-Les fichiers de configuration du gestionnaire sont centralisés dans le répertoire `projet/config/managers/$manager`.
+Les fichiers de configuration du gestionnaire sont centralisÃ©s dans le rÃ©pertoire `projet/config/managers/$manager`.
 "@
             
             Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
-            Write-Host "  README créé : $readmePath" -ForegroundColor Gray
+            Write-Host "  README crÃ©Ã© : $readmePath" -ForegroundColor Gray
         }
     }
 }
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 Write-Host ""
-Write-Host "Résumé de la réorganisation des fichiers" -ForegroundColor Cyan
+Write-Host "RÃ©sumÃ© de la rÃ©organisation des fichiers" -ForegroundColor Cyan
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host "Sauvegarde : $backupPath" -ForegroundColor Gray
-Write-Host "Répertoire racine des gestionnaires : $managersRoot" -ForegroundColor Gray
-Write-Host "Répertoire de configuration des gestionnaires : $configRoot" -ForegroundColor Gray
+Write-Host "RÃ©pertoire racine des gestionnaires : $managersRoot" -ForegroundColor Gray
+Write-Host "RÃ©pertoire de configuration des gestionnaires : $configRoot" -ForegroundColor Gray
 Write-Host ""
-Write-Host "Gestionnaires traités :" -ForegroundColor Gray
+Write-Host "Gestionnaires traitÃ©s :" -ForegroundColor Gray
 foreach ($manager in $filesToMove.Keys) {
     Write-Host "  - $manager" -ForegroundColor Gray
 }
 Write-Host ""
-Write-Host "Réorganisation terminée avec succès." -ForegroundColor Green
+Write-Host "RÃ©organisation terminÃ©e avec succÃ¨s." -ForegroundColor Green
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 return @{
     BackupPath = $backupPath
     ManagersRoot = $managersRoot

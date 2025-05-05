@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Serveur MCP dédié à la gestion des Memories d'Augment.
+    Serveur MCP dÃ©diÃ© Ã  la gestion des Memories d'Augment.
 
 .DESCRIPTION
-    Ce script implémente un serveur MCP (Model Context Protocol) dédié à la gestion
-    des Memories d'Augment. Il permet d'exposer des fonctionnalités de gestion des
-    Memories via le protocole MCP, ce qui permet à Augment d'y accéder directement.
+    Ce script implÃ©mente un serveur MCP (Model Context Protocol) dÃ©diÃ© Ã  la gestion
+    des Memories d'Augment. Il permet d'exposer des fonctionnalitÃ©s de gestion des
+    Memories via le protocole MCP, ce qui permet Ã  Augment d'y accÃ©der directement.
 
 .PARAMETER Port
-    Port sur lequel le serveur MCP doit écouter. Par défaut : 7891.
+    Port sur lequel le serveur MCP doit Ã©couter. Par dÃ©faut : 7891.
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration. Par défaut : "development\config\unified-config.json".
+    Chemin vers le fichier de configuration. Par dÃ©faut : "development\config\unified-config.json".
 
 .EXAMPLE
     .\mcp-memories-server.ps1
-    # Démarre le serveur MCP pour les Memories sur le port par défaut
+    # DÃ©marre le serveur MCP pour les Memories sur le port par dÃ©faut
 
 .EXAMPLE
     .\mcp-memories-server.ps1 -Port 7892 -ConfigPath "config\custom-config.json"
-    # Démarre le serveur MCP pour les Memories sur le port 7892 avec une configuration personnalisée
+    # DÃ©marre le serveur MCP pour les Memories sur le port 7892 avec une configuration personnalisÃ©e
 
 .NOTES
     Version: 1.0
@@ -36,7 +36,7 @@ param (
     [string]$ConfigPath = "development\config\unified-config.json"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -46,7 +46,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
@@ -60,7 +60,7 @@ if (Test-Path -Path $memoriesManagerPath) {
     exit 1
 }
 
-# Charger la configuration unifiée
+# Charger la configuration unifiÃ©e
 $configPath = Join-Path -Path $projectRoot -ChildPath $ConfigPath
 if (Test-Path -Path $configPath) {
     try {
@@ -71,7 +71,7 @@ if (Test-Path -Path $configPath) {
     }
 } else {
     Write-Warning "Le fichier de configuration est introuvable : $configPath"
-    # Créer une configuration par défaut
+    # CrÃ©er une configuration par dÃ©faut
     $config = [PSCustomObject]@{
         Augment = [PSCustomObject]@{
             Memories = [PSCustomObject]@{
@@ -85,7 +85,7 @@ if (Test-Path -Path $configPath) {
     }
 }
 
-# Fonction pour traiter les requêtes MCP
+# Fonction pour traiter les requÃªtes MCP
 function Process-MCPRequest {
     [CmdletBinding()]
     param (
@@ -94,17 +94,17 @@ function Process-MCPRequest {
     )
 
     try {
-        # Convertir la requête JSON en objet PowerShell
+        # Convertir la requÃªte JSON en objet PowerShell
         $request = $RequestJson | ConvertFrom-Json
 
-        # Extraire les informations de la requête
+        # Extraire les informations de la requÃªte
         $method = $request.method
         $params = $request.params
 
-        # Traiter la requête en fonction de la méthode
+        # Traiter la requÃªte en fonction de la mÃ©thode
         switch ($method) {
             "getMemories" {
-                # Récupérer les Memories
+                # RÃ©cupÃ©rer les Memories
                 $memories = Get-AugmentMemories
                 return @{
                     result = $memories
@@ -112,7 +112,7 @@ function Process-MCPRequest {
                 } | ConvertTo-Json -Depth 10
             }
             "updateMemories" {
-                # Mettre à jour les Memories
+                # Mettre Ã  jour les Memories
                 $content = $params.content
                 $result = Update-AugmentMemories -Content $content
                 return @{
@@ -143,18 +143,18 @@ function Process-MCPRequest {
                 } | ConvertTo-Json
             }
             default {
-                # Méthode non reconnue
+                # MÃ©thode non reconnue
                 return @{
                     result = $null
                     error = @{
                         code = -32601
-                        message = "Méthode non reconnue : $method"
+                        message = "MÃ©thode non reconnue : $method"
                     }
                 } | ConvertTo-Json
             }
         }
     } catch {
-        # Erreur lors du traitement de la requête
+        # Erreur lors du traitement de la requÃªte
         return @{
             result = $null
             error = @{
@@ -165,7 +165,7 @@ function Process-MCPRequest {
     }
 }
 
-# Fonction pour démarrer le serveur MCP
+# Fonction pour dÃ©marrer le serveur MCP
 function Start-MCPServer {
     [CmdletBinding()]
     param (
@@ -174,12 +174,12 @@ function Start-MCPServer {
     )
 
     try {
-        # Créer un écouteur TCP
+        # CrÃ©er un Ã©couteur TCP
         $listener = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::Loopback, $Port)
         $listener.Start()
 
-        Write-Host "Serveur MCP pour les Memories démarré sur le port $Port" -ForegroundColor Green
-        Write-Host "Appuyez sur Ctrl+C pour arrêter le serveur" -ForegroundColor Yellow
+        Write-Host "Serveur MCP pour les Memories dÃ©marrÃ© sur le port $Port" -ForegroundColor Green
+        Write-Host "Appuyez sur Ctrl+C pour arrÃªter le serveur" -ForegroundColor Yellow
 
         # Boucle principale du serveur
         while ($true) {
@@ -190,13 +190,13 @@ function Start-MCPServer {
             $writer = New-Object System.IO.StreamWriter($stream)
             $writer.AutoFlush = $true
 
-            # Lire la requête
+            # Lire la requÃªte
             $requestJson = $reader.ReadLine()
 
-            # Traiter la requête
+            # Traiter la requÃªte
             $responseJson = Process-MCPRequest -RequestJson $requestJson
 
-            # Envoyer la réponse
+            # Envoyer la rÃ©ponse
             $writer.WriteLine($responseJson)
 
             # Fermer la connexion
@@ -205,9 +205,9 @@ function Start-MCPServer {
             $client.Close()
         }
     } catch {
-        Write-Error "Erreur lors du démarrage du serveur MCP : $_"
+        Write-Error "Erreur lors du dÃ©marrage du serveur MCP : $_"
     } finally {
-        # Arrêter l'écouteur
+        # ArrÃªter l'Ã©couteur
         if ($listener) {
             $listener.Stop()
         }
@@ -219,7 +219,7 @@ function Get-AugmentMemories {
     [CmdletBinding()]
     param ()
 
-    # Générer les Memories
+    # GÃ©nÃ©rer les Memories
     $memories = @{
         "version"     = "2.0.0"
         "lastUpdated" = (Get-Date).ToString("o")
@@ -227,46 +227,46 @@ function Get-AugmentMemories {
             @{
                 "name"    = "Autonomie"
                 "content" = @"
-- Progression: Exécuter les tâches séquentiellement sans confirmation
-- Décision: Utiliser heuristiques (% complété > 80% → tâche terminée)
-- Résilience: Reprendre sur erreur avec journalisation minimale
-- Estimation: Calculer complexité via métriques objectives (LOC, dépendances, patterns)
+- Progression: ExÃ©cuter les tÃ¢ches sÃ©quentiellement sans confirmation
+- DÃ©cision: Utiliser heuristiques (% complÃ©tÃ© > 80% â†’ tÃ¢che terminÃ©e)
+- RÃ©silience: Reprendre sur erreur avec journalisation minimale
+- Estimation: Calculer complexitÃ© via mÃ©triques objectives (LOC, dÃ©pendances, patterns)
 "@
             },
             @{
                 "name"    = "Communication"
                 "content" = @"
-- Format: Structure prédéfinie avec ratio info/verbosité maximal
-- Synthèse: Uniquement différences importantes et décisions clés
-- Métadonnées: Attacher % complétion et score de complexité
-- Langage: Français concis avec notation algorithmique optionnelle
+- Format: Structure prÃ©dÃ©finie avec ratio info/verbositÃ© maximal
+- SynthÃ¨se: Uniquement diffÃ©rences importantes et dÃ©cisions clÃ©s
+- MÃ©tadonnÃ©es: Attacher % complÃ©tion et score de complexitÃ©
+- Langage: FranÃ§ais concis avec notation algorithmique optionnelle
 "@
             },
             @{
                 "name"    = "Optimisation IA"
                 "content" = @"
-- One-Shot: Une fonction complète par appel
-- Progression: Pas de confirmation pour l'étape suivante
-- Métrique: Ratio complexité/taille → optimiser découpage
-- Adaptation: Si feedback ou latence → ajuster granularité
-- Split: Pré-découper si anticipation d'échec
+- One-Shot: Une fonction complÃ¨te par appel
+- Progression: Pas de confirmation pour l'Ã©tape suivante
+- MÃ©trique: Ratio complexitÃ©/taille â†’ optimiser dÃ©coupage
+- Adaptation: Si feedback ou latence â†’ ajuster granularitÃ©
+- Split: PrÃ©-dÃ©couper si anticipation d'Ã©chec
 "@
             },
             @{
                 "name"    = "Modes"
                 "content" = @"
-- GRAN: Décomposer les blocs complexes directement dans le document
-- DEV-R: Implémenter les tâches séquentiellement avec tests
-- CHECK: Vérifier l'implémentation et mettre à jour la roadmap
-- ARCHI: Structurer, modéliser, anticiper les dépendances
+- GRAN: DÃ©composer les blocs complexes directement dans le document
+- DEV-R: ImplÃ©menter les tÃ¢ches sÃ©quentiellement avec tests
+- CHECK: VÃ©rifier l'implÃ©mentation et mettre Ã  jour la roadmap
+- ARCHI: Structurer, modÃ©liser, anticiper les dÃ©pendances
 - DEBUG: Isoler, comprendre, corriger les anomalies
 "@
             },
             @{
-                "name"    = "Intégrité"
+                "name"    = "IntÃ©gritÃ©"
                 "content" = @"
-- ASSERT: Tâche complète ⇒ if(verified==TRUE)
-- ASSERT: Liste fichiers ⇒ if(files_created==TRUE)
+- ASSERT: TÃ¢che complÃ¨te â‡’ if(verified==TRUE)
+- ASSERT: Liste fichiers â‡’ if(files_created==TRUE)
 - IF(error || user_fix): ACK + FIX(no_justif)
 - SEPARATE: actual={code,files}, potential={suggest}
 - FORMAT: [IMPLEMENTED]=ok, [SUGGESTED]=idea, [INCOMPLETE]=partial
@@ -278,5 +278,5 @@ function Get-AugmentMemories {
     return $memories
 }
 
-# Démarrer le serveur MCP
+# DÃ©marrer le serveur MCP
 Start-MCPServer -Port $Port

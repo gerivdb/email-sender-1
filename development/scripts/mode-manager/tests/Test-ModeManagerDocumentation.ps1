@@ -1,15 +1,15 @@
-# Tests de documentation pour le mode manager
+﻿# Tests de documentation pour le mode manager
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
@@ -26,15 +26,15 @@ function Capture-Output {
     return Get-Content -Path $tempFile -Raw
 }
 
-# Test 1: Vérification de l'aide intégrée
-Write-Host "Test 1: Vérification de l'aide intégrée" -ForegroundColor Cyan
+# Test 1: VÃ©rification de l'aide intÃ©grÃ©e
+Write-Host "Test 1: VÃ©rification de l'aide intÃ©grÃ©e" -ForegroundColor Cyan
 try {
     # Capturer la sortie de la commande d'aide
     $helpOutput = Capture-Output {
         & $scriptPath -Help
     }
     
-    # Vérifier que l'aide contient des informations utiles
+    # VÃ©rifier que l'aide contient des informations utiles
     $success = $true
     $requiredSections = @(
         "SYNOPSIS",
@@ -45,12 +45,12 @@ try {
     
     foreach ($section in $requiredSections) {
         if (-not ($helpOutput -match $section)) {
-            Write-Host "Test 1 échoué: L'aide ne contient pas la section $section" -ForegroundColor Red
+            Write-Host "Test 1 Ã©chouÃ©: L'aide ne contient pas la section $section" -ForegroundColor Red
             $success = $false
         }
     }
     
-    # Vérifier que l'aide contient des informations sur les paramètres
+    # VÃ©rifier que l'aide contient des informations sur les paramÃ¨tres
     $requiredParameters = @(
         "-Mode",
         "-FilePath",
@@ -62,60 +62,60 @@ try {
     
     foreach ($parameter in $requiredParameters) {
         if (-not ($helpOutput -match $parameter)) {
-            Write-Host "Test 1 échoué: L'aide ne contient pas d'informations sur le paramètre $parameter" -ForegroundColor Red
+            Write-Host "Test 1 Ã©chouÃ©: L'aide ne contient pas d'informations sur le paramÃ¨tre $parameter" -ForegroundColor Red
             $success = $false
         }
     }
     
     if ($success) {
-        Write-Host "Test 1 réussi: L'aide intégrée contient toutes les sections et paramètres requis" -ForegroundColor Green
+        Write-Host "Test 1 rÃ©ussi: L'aide intÃ©grÃ©e contient toutes les sections et paramÃ¨tres requis" -ForegroundColor Green
     }
 } catch {
-    Write-Host "Test 1 échoué: Une erreur s'est produite lors de la vérification de l'aide intégrée" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Une erreur s'est produite lors de la vÃ©rification de l'aide intÃ©grÃ©e" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 2: Vérification des exemples d'utilisation
-Write-Host "Test 2: Vérification des exemples d'utilisation" -ForegroundColor Cyan
+# Test 2: VÃ©rification des exemples d'utilisation
+Write-Host "Test 2: VÃ©rification des exemples d'utilisation" -ForegroundColor Cyan
 try {
     # Capturer la sortie de la commande d'aide
     $helpOutput = Capture-Output {
         & $scriptPath -Help
     }
     
-    # Vérifier que l'aide contient des exemples d'utilisation
+    # VÃ©rifier que l'aide contient des exemples d'utilisation
     if ($helpOutput -match "EXAMPLES") {
         # Extraire les exemples
         $examplesMatch = $helpOutput -match "EXAMPLES([\s\S]*?)(?:\r?\n\s*\r?\n\s*[A-Z]+:|$)"
         if ($examplesMatch) {
             $examples = $Matches[1]
             
-            # Vérifier que les exemples contiennent des commandes PowerShell
+            # VÃ©rifier que les exemples contiennent des commandes PowerShell
             if ($examples -match ".\\\s*mode-manager\.ps1") {
-                Write-Host "Test 2 réussi: L'aide contient des exemples d'utilisation" -ForegroundColor Green
+                Write-Host "Test 2 rÃ©ussi: L'aide contient des exemples d'utilisation" -ForegroundColor Green
             } else {
-                Write-Host "Test 2 échoué: Les exemples ne contiennent pas de commandes PowerShell" -ForegroundColor Red
+                Write-Host "Test 2 Ã©chouÃ©: Les exemples ne contiennent pas de commandes PowerShell" -ForegroundColor Red
             }
         } else {
-            Write-Host "Test 2 échoué: Impossible d'extraire les exemples de l'aide" -ForegroundColor Red
+            Write-Host "Test 2 Ã©chouÃ©: Impossible d'extraire les exemples de l'aide" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 2 échoué: L'aide ne contient pas la section EXAMPLES" -ForegroundColor Red
+        Write-Host "Test 2 Ã©chouÃ©: L'aide ne contient pas la section EXAMPLES" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 2 échoué: Une erreur s'est produite lors de la vérification des exemples d'utilisation" -ForegroundColor Red
+    Write-Host "Test 2 Ã©chouÃ©: Une erreur s'est produite lors de la vÃ©rification des exemples d'utilisation" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 3: Vérification de la documentation des modes
-Write-Host "Test 3: Vérification de la documentation des modes" -ForegroundColor Cyan
+# Test 3: VÃ©rification de la documentation des modes
+Write-Host "Test 3: VÃ©rification de la documentation des modes" -ForegroundColor Cyan
 try {
     # Capturer la sortie de la commande de liste des modes
     $modesOutput = Capture-Output {
         & $scriptPath -ListModes
     }
     
-    # Vérifier que la liste des modes contient des descriptions
+    # VÃ©rifier que la liste des modes contient des descriptions
     $success = $true
     $requiredModes = @(
         "ARCHI",
@@ -130,26 +130,26 @@ try {
     
     foreach ($mode in $requiredModes) {
         if (-not ($modesOutput -match "$mode\s*:")) {
-            Write-Host "Test 3 échoué: La liste des modes ne contient pas le mode $mode" -ForegroundColor Red
+            Write-Host "Test 3 Ã©chouÃ©: La liste des modes ne contient pas le mode $mode" -ForegroundColor Red
             $success = $false
         }
     }
     
     if ($success) {
-        Write-Host "Test 3 réussi: La liste des modes contient tous les modes requis" -ForegroundColor Green
+        Write-Host "Test 3 rÃ©ussi: La liste des modes contient tous les modes requis" -ForegroundColor Green
     }
 } catch {
-    Write-Host "Test 3 échoué: Une erreur s'est produite lors de la vérification de la documentation des modes" -ForegroundColor Red
+    Write-Host "Test 3 Ã©chouÃ©: Une erreur s'est produite lors de la vÃ©rification de la documentation des modes" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 4: Vérification de la documentation des paramètres
-Write-Host "Test 4: Vérification de la documentation des paramètres" -ForegroundColor Cyan
+# Test 4: VÃ©rification de la documentation des paramÃ¨tres
+Write-Host "Test 4: VÃ©rification de la documentation des paramÃ¨tres" -ForegroundColor Cyan
 try {
     # Lire le contenu du script
     $scriptContent = Get-Content -Path $scriptPath -Raw
     
-    # Vérifier que les paramètres sont documentés
+    # VÃ©rifier que les paramÃ¨tres sont documentÃ©s
     $success = $true
     $requiredParameters = @(
         "Mode",
@@ -163,21 +163,21 @@ try {
     foreach ($parameter in $requiredParameters) {
         $parameterPattern = "\[Parameter\([^\)]*\)\]\s*\[(?:string|switch)[^\]]*\]\s*\$($parameter)"
         if (-not ($scriptContent -match $parameterPattern)) {
-            Write-Host "Test 4 échoué: Le paramètre $parameter n'est pas correctement documenté" -ForegroundColor Red
+            Write-Host "Test 4 Ã©chouÃ©: Le paramÃ¨tre $parameter n'est pas correctement documentÃ©" -ForegroundColor Red
             $success = $false
         }
     }
     
     if ($success) {
-        Write-Host "Test 4 réussi: Tous les paramètres sont correctement documentés" -ForegroundColor Green
+        Write-Host "Test 4 rÃ©ussi: Tous les paramÃ¨tres sont correctement documentÃ©s" -ForegroundColor Green
     }
 } catch {
-    Write-Host "Test 4 échoué: Une erreur s'est produite lors de la vérification de la documentation des paramètres" -ForegroundColor Red
+    Write-Host "Test 4 Ã©chouÃ©: Une erreur s'est produite lors de la vÃ©rification de la documentation des paramÃ¨tres" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 5: Vérification de la documentation des fonctions
-Write-Host "Test 5: Vérification de la documentation des fonctions" -ForegroundColor Cyan
+# Test 5: VÃ©rification de la documentation des fonctions
+Write-Host "Test 5: VÃ©rification de la documentation des fonctions" -ForegroundColor Cyan
 try {
     # Lire le contenu du script
     $scriptContent = Get-Content -Path $scriptPath -Raw
@@ -186,27 +186,27 @@ try {
     $functionMatches = [regex]::Matches($scriptContent, "function\s+([A-Za-z0-9\-_]+)\s*\{")
     $functions = $functionMatches | ForEach-Object { $_.Groups[1].Value }
     
-    # Vérifier que les fonctions sont documentées
+    # VÃ©rifier que les fonctions sont documentÃ©es
     $success = $true
     foreach ($function in $functions) {
         # Rechercher un bloc de commentaires avant la fonction
         $functionPattern = "(?:<#[\s\S]*?#>|#[^\r\n]*(?:\r?\n#[^\r\n]*)*)\s*function\s+$([regex]::Escape($function))\s*\{"
         if (-not ($scriptContent -match $functionPattern)) {
-            Write-Host "Test 5 échoué: La fonction $function n'est pas documentée" -ForegroundColor Red
+            Write-Host "Test 5 Ã©chouÃ©: La fonction $function n'est pas documentÃ©e" -ForegroundColor Red
             $success = $false
         }
     }
     
     if ($success) {
-        Write-Host "Test 5 réussi: Toutes les fonctions sont documentées" -ForegroundColor Green
+        Write-Host "Test 5 rÃ©ussi: Toutes les fonctions sont documentÃ©es" -ForegroundColor Green
     }
 } catch {
-    Write-Host "Test 5 échoué: Une erreur s'est produite lors de la vérification de la documentation des fonctions" -ForegroundColor Red
+    Write-Host "Test 5 Ã©chouÃ©: Une erreur s'est produite lors de la vÃ©rification de la documentation des fonctions" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 6: Vérification des exemples fonctionnels
-Write-Host "Test 6: Vérification des exemples fonctionnels" -ForegroundColor Cyan
+# Test 6: VÃ©rification des exemples fonctionnels
+Write-Host "Test 6: VÃ©rification des exemples fonctionnels" -ForegroundColor Cyan
 try {
     # Capturer la sortie de la commande d'aide
     $helpOutput = Capture-Output {
@@ -222,35 +222,35 @@ try {
         $commandMatches = [regex]::Matches($examples, ".\\\s*mode-manager\.ps1\s+([^\r\n]+)")
         $commands = $commandMatches | ForEach-Object { $_.Groups[1].Value }
         
-        # Vérifier que les exemples sont fonctionnels
+        # VÃ©rifier que les exemples sont fonctionnels
         $success = $true
         foreach ($command in $commands) {
-            # Créer un fichier de roadmap de test
+            # CrÃ©er un fichier de roadmap de test
             $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
             "# Test Roadmap" | Set-Content -Path $testRoadmapPath -Encoding UTF8
             
             # Remplacer les chemins de fichier dans la commande
             $modifiedCommand = $command -replace "docs\\plans\\[^\""\s]+", $testRoadmapPath
             
-            # Exécuter la commande
+            # ExÃ©cuter la commande
             try {
                 $null = Invoke-Expression "& `"$scriptPath`" $modifiedCommand"
                 Write-Host "Exemple fonctionnel: & `"$scriptPath`" $modifiedCommand" -ForegroundColor Cyan
             } catch {
-                Write-Host "Test 6 échoué: L'exemple '& `"$scriptPath`" $modifiedCommand' n'est pas fonctionnel" -ForegroundColor Red
+                Write-Host "Test 6 Ã©chouÃ©: L'exemple '& `"$scriptPath`" $modifiedCommand' n'est pas fonctionnel" -ForegroundColor Red
                 Write-Host "Erreur: $_" -ForegroundColor Red
                 $success = $false
             }
         }
         
         if ($success) {
-            Write-Host "Test 6 réussi: Tous les exemples sont fonctionnels" -ForegroundColor Green
+            Write-Host "Test 6 rÃ©ussi: Tous les exemples sont fonctionnels" -ForegroundColor Green
         }
     } else {
-        Write-Host "Test 6 échoué: Impossible d'extraire les exemples de l'aide" -ForegroundColor Red
+        Write-Host "Test 6 Ã©chouÃ©: Impossible d'extraire les exemples de l'aide" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 6 échoué: Une erreur s'est produite lors de la vérification des exemples fonctionnels" -ForegroundColor Red
+    Write-Host "Test 6 Ã©chouÃ©: Une erreur s'est produite lors de la vÃ©rification des exemples fonctionnels" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
@@ -260,4 +260,4 @@ if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 
-Write-Host "Tests terminés." -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s." -ForegroundColor Cyan

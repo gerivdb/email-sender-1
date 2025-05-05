@@ -1,13 +1,13 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "ModuleDependencyTraversal.psm1"
 
 Write-Host "Module path: $modulePath"
 
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Le module ModuleDependencyTraversal.psm1 n'existe pas dans le chemin spécifié: $modulePath"
+    throw "Le module ModuleDependencyTraversal.psm1 n'existe pas dans le chemin spÃ©cifiÃ©: $modulePath"
 }
 
 Write-Host "Importing module..."
@@ -15,32 +15,32 @@ Import-Module -Name $modulePath -Force
 
 Write-Host "Testing cycle resolution..."
 
-# Créer un graphe de dépendances simple avec un cycle
+# CrÃ©er un graphe de dÃ©pendances simple avec un cycle
 $graph = @{
     'A' = @('B')
     'B' = @('C')
     'C' = @('A')
 }
 
-Write-Host "Graphe de dépendances simple:"
+Write-Host "Graphe de dÃ©pendances simple:"
 $graph | ConvertTo-Json
 
-Write-Host "`nDétection des cycles dans le graphe simple:"
+Write-Host "`nDÃ©tection des cycles dans le graphe simple:"
 $cycles = Find-ModuleDependencyCycles -DependencyGraph $graph
-Write-Host "Cycles trouvés: $($cycles.CycleCount)"
+Write-Host "Cycles trouvÃ©s: $($cycles.CycleCount)"
 $cycles | ConvertTo-Json -Depth 10
 
-Write-Host "`nRésolution des cycles dans le graphe simple:"
+Write-Host "`nRÃ©solution des cycles dans le graphe simple:"
 $resolved = Resolve-ModuleDependencyCycles -DependencyGraph $graph
-Write-Host "Cycles résolus: $($resolved.ResolvedCycleCount)"
+Write-Host "Cycles rÃ©solus: $($resolved.ResolvedCycleCount)"
 $resolved | ConvertTo-Json -Depth 10
 
-Write-Host "`nVérification que les cycles ont été résolus:"
+Write-Host "`nVÃ©rification que les cycles ont Ã©tÃ© rÃ©solus:"
 $checkCycles = Find-ModuleDependencyCycles -DependencyGraph $resolved.ModifiedGraph
 Write-Host "Cycles restants: $($checkCycles.CycleCount)"
 $checkCycles | ConvertTo-Json -Depth 10
 
-# Créer un graphe de dépendances plus complexe avec plusieurs cycles
+# CrÃ©er un graphe de dÃ©pendances plus complexe avec plusieurs cycles
 $complexGraph = @{
     'ModuleA' = @('ModuleB', 'ModuleC')
     'ModuleB' = @('ModuleD')
@@ -50,22 +50,22 @@ $complexGraph = @{
     'ModuleF' = @('ModuleB')  # Cycle: ModuleF -> ModuleB -> ModuleD -> ModuleF
 }
 
-Write-Host "`nGraphe de dépendances complexe:"
+Write-Host "`nGraphe de dÃ©pendances complexe:"
 $complexGraph | ConvertTo-Json
 
-Write-Host "`nDétection des cycles dans le graphe complexe:"
+Write-Host "`nDÃ©tection des cycles dans le graphe complexe:"
 $complexCycles = Find-ModuleDependencyCycles -DependencyGraph $complexGraph
-Write-Host "Cycles trouvés: $($complexCycles.CycleCount)"
+Write-Host "Cycles trouvÃ©s: $($complexCycles.CycleCount)"
 $complexCycles | ConvertTo-Json -Depth 10
 
-Write-Host "`nRésolution des cycles dans le graphe complexe:"
+Write-Host "`nRÃ©solution des cycles dans le graphe complexe:"
 $complexResolved = Resolve-ModuleDependencyCycles -DependencyGraph $complexGraph
-Write-Host "Cycles résolus: $($complexResolved.ResolvedCycleCount)"
+Write-Host "Cycles rÃ©solus: $($complexResolved.ResolvedCycleCount)"
 $complexResolved | ConvertTo-Json -Depth 10
 
-Write-Host "`nVérification que les cycles ont été résolus:"
+Write-Host "`nVÃ©rification que les cycles ont Ã©tÃ© rÃ©solus:"
 $checkComplexCycles = Find-ModuleDependencyCycles -DependencyGraph $complexResolved.ModifiedGraph
 Write-Host "Cycles restants: $($checkComplexCycles.CycleCount)"
 $checkComplexCycles | ConvertTo-Json -Depth 10
 
-Write-Host "`nTest terminé!"
+Write-Host "`nTest terminÃ©!"

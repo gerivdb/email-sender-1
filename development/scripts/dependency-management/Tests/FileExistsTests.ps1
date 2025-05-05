@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires Pester pour vérifier l'existence du fichier du module.
+    Tests unitaires Pester pour vÃ©rifier l'existence du fichier du module.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires Pester pour vérifier l'existence du fichier du module.
+    Ce script contient des tests unitaires Pester pour vÃ©rifier l'existence du fichier du module.
 #>
 
 Describe "Tests d'existence du fichier du module" {
-    Context "Vérification du fichier" {
+    Context "VÃ©rification du fichier" {
         It "Le fichier du module existe" {
             $modulePath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\dependency-management\ImplicitModuleDependencyDetector.psm1"
             Test-Path -Path $modulePath | Should -Be $true

@@ -1,26 +1,26 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires du projet.
+    ExÃ©cute tous les tests unitaires du projet.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires du projet et génère des rapports
-    de résultats et de couverture de code.
+    Ce script exÃ©cute tous les tests unitaires du projet et gÃ©nÃ¨re des rapports
+    de rÃ©sultats et de couverture de code.
 .PARAMETER TestsPath
-    Chemin du dossier contenant les tests à exécuter.
+    Chemin du dossier contenant les tests Ã  exÃ©cuter.
 .PARAMETER OutputPath
-    Chemin du dossier pour les rapports de résultats.
+    Chemin du dossier pour les rapports de rÃ©sultats.
 .PARAMETER CoveragePath
     Chemin du dossier pour les rapports de couverture de code.
 .PARAMETER Tags
-    Tags des tests à exécuter (par défaut: tous les tests).
+    Tags des tests Ã  exÃ©cuter (par dÃ©faut: tous les tests).
 .PARAMETER Parallel
-    Exécute les tests en parallèle.
+    ExÃ©cute les tests en parallÃ¨le.
 .EXAMPLE
     .\Run-AllTests.ps1 -TestsPath ".\development\testing\tests" -OutputPath ".\reports\tests" -CoveragePath ".\reports\coverage"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-12
+    Date de crÃ©ation: 2025-05-12
 #>
 
 [CmdletBinding()]
@@ -41,7 +41,7 @@ param (
     [switch]$Parallel
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -67,16 +67,16 @@ function Write-Log {
     Write-Host $Message
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Log "Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -RequiredVersion 5.3.1 -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester -MinimumVersion 5.0.0
 
-# Créer les dossiers de sortie s'ils n'existent pas
+# CrÃ©er les dossiers de sortie s'ils n'existent pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
@@ -88,7 +88,7 @@ if (-not (Test-Path -Path $CoveragePath)) {
 # Obtenir tous les fichiers de test
 $testFiles = Get-ChildItem -Path $TestsPath -Filter "*.Tests.ps1" -Recurse
 
-Write-Log "Nombre de fichiers de test trouvés: $($testFiles.Count)" -Level "INFO"
+Write-Log "Nombre de fichiers de test trouvÃ©s: $($testFiles.Count)" -Level "INFO"
 
 # Configurer les options de Pester
 $pesterConfig = New-PesterConfiguration
@@ -102,7 +102,7 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputPath -ChildPath "test-results.xml"
 $pesterConfig.TestResult.OutputFormat = "NUnitXml"
 
-# Configurer les modules à couvrir
+# Configurer les modules Ã  couvrir
 $modulesToCover = @(
     ".\modules\CycleDetector.psm1"
     ".\modules\DependencyCycleResolver.psm1"
@@ -113,39 +113,39 @@ $modulesToCover = @(
 
 $pesterConfig.CodeCoverage.Path = $modulesToCover
 
-# Configurer les tags si spécifiés
+# Configurer les tags si spÃ©cifiÃ©s
 if ($Tags.Count -gt 0) {
     $pesterConfig.Filter.Tag = $Tags
 }
 
-# Configurer l'exécution parallèle si demandée
+# Configurer l'exÃ©cution parallÃ¨le si demandÃ©e
 if ($Parallel) {
     $pesterConfig.Run.EnableExit = $false
     $pesterConfig.Run.Exit = $false
     $pesterConfig.Run.Throw = $false
 
-    # Déterminer le nombre de threads à utiliser
+    # DÃ©terminer le nombre de threads Ã  utiliser
     $maxThreads = [Environment]::ProcessorCount
     $pesterConfig.Run.Container.MaxConcurrency = $maxThreads
 
-    Write-Log "Exécution des tests en parallèle avec $maxThreads threads..." -Level "INFO"
+    Write-Log "ExÃ©cution des tests en parallÃ¨le avec $maxThreads threads..." -Level "INFO"
 } else {
-    Write-Log "Exécution des tests en séquentiel..." -Level "INFO"
+    Write-Log "ExÃ©cution des tests en sÃ©quentiel..." -Level "INFO"
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher les résultats
-Write-Log "Résultats des tests:" -Level "TITLE"
-Write-Log "Tests exécutés: $($testResults.TotalCount)" -Level "INFO"
-Write-Log "Tests réussis: $($testResults.PassedCount)" -Level "SUCCESS"
-Write-Log "Tests échoués: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -gt 0) { "ERROR" } else { "INFO" })
-Write-Log "Tests ignorés: $($testResults.SkippedCount)" -Level "INFO"
-Write-Log "Tests non exécutés: $($testResults.NotRunCount)" -Level "INFO"
-Write-Log "Durée totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
+# Afficher les rÃ©sultats
+Write-Log "RÃ©sultats des tests:" -Level "TITLE"
+Write-Log "Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -Level "INFO"
+Write-Log "Tests rÃ©ussis: $($testResults.PassedCount)" -Level "SUCCESS"
+Write-Log "Tests Ã©chouÃ©s: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -gt 0) { "ERROR" } else { "INFO" })
+Write-Log "Tests ignorÃ©s: $($testResults.SkippedCount)" -Level "INFO"
+Write-Log "Tests non exÃ©cutÃ©s: $($testResults.NotRunCount)" -Level "INFO"
+Write-Log "DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
 
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 $htmlReportPath = Join-Path -Path $OutputPath -ChildPath "test-report.html"
 
 $htmlReport = @"
@@ -269,13 +269,13 @@ $htmlReport = @"
     <h1>Rapport de tests unitaires</h1>
 
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Tests exécutés: <strong>$($testResults.TotalCount)</strong></p>
-        <p>Tests réussis: <strong>$($testResults.PassedCount)</strong></p>
-        <p>Tests échoués: <strong>$($testResults.FailedCount)</strong></p>
-        <p>Tests ignorés: <strong>$($testResults.SkippedCount)</strong></p>
-        <p>Tests non exécutés: <strong>$($testResults.NotRunCount)</strong></p>
-        <p>Durée totale: <strong>$($testResults.Duration.TotalSeconds) secondes</strong></p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests exÃ©cutÃ©s: <strong>$($testResults.TotalCount)</strong></p>
+        <p>Tests rÃ©ussis: <strong>$($testResults.PassedCount)</strong></p>
+        <p>Tests Ã©chouÃ©s: <strong>$($testResults.FailedCount)</strong></p>
+        <p>Tests ignorÃ©s: <strong>$($testResults.SkippedCount)</strong></p>
+        <p>Tests non exÃ©cutÃ©s: <strong>$($testResults.NotRunCount)</strong></p>
+        <p>DurÃ©e totale: <strong>$($testResults.Duration.TotalSeconds) secondes</strong></p>
 
         <div class="progress-bar">
             <div class="progress" style="width: $([Math]::Round(($testResults.PassedCount / [Math]::Max(1, $testResults.TotalCount)) * 100))%">
@@ -289,11 +289,11 @@ $htmlReport = @"
         <p>Rapport de couverture disponible: <a href="$($pesterConfig.CodeCoverage.OutputPath)">$($pesterConfig.CodeCoverage.OutputPath)</a></p>
     </div>
 
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <div class="test-container">
 "@
 
-# Ajouter les détails des tests
+# Ajouter les dÃ©tails des tests
 foreach ($container in $testResults.Containers) {
     $fileName = [System.IO.Path]::GetFileName($container.Item.FullName)
     $passedCount = ($container.Tests | Where-Object { $_.Result -eq "Passed" }).Count
@@ -311,8 +311,8 @@ foreach ($container in $testResults.Containers) {
     }
 
     $statusText = switch ($status) {
-        "passed" { "Réussi" }
-        "failed" { "Échoué" }
+        "passed" { "RÃ©ussi" }
+        "failed" { "Ã‰chouÃ©" }
         "mixed" { "Mixte" }
     }
 
@@ -323,9 +323,9 @@ foreach ($container in $testResults.Containers) {
                 <span class="test-file-status status-$status">$statusText</span>
             </div>
             <p>Chemin: $($container.Item.FullName)</p>
-            <p>Tests réussis: $passedCount / $($container.Tests.Count)</p>
-            <p>Tests échoués: $failedCount</p>
-            <p>Tests ignorés: $skippedCount</p>
+            <p>Tests rÃ©ussis: $passedCount / $($container.Tests.Count)</p>
+            <p>Tests Ã©chouÃ©s: $failedCount</p>
+            <p>Tests ignorÃ©s: $skippedCount</p>
 "@
 
     # Ajouter les blocs de test
@@ -385,20 +385,20 @@ foreach ($container in $testResults.Containers) {
 $htmlReport += @"
     </div>
 
-    <p class="timestamp">Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p class="timestamp">Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
 </body>
 </html>
 "@
 
 $htmlReport | Out-File -FilePath $htmlReportPath -Encoding utf8
 
-Write-Log "Rapport HTML généré: $htmlReportPath" -Level "SUCCESS"
+Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlReportPath" -Level "SUCCESS"
 
 # Retourner le code de sortie
 if ($testResults.FailedCount -gt 0) {
-    Write-Log "Des tests ont échoué. Veuillez consulter le rapport pour plus de détails." -Level "ERROR"
+    Write-Log "Des tests ont Ã©chouÃ©. Veuillez consulter le rapport pour plus de dÃ©tails." -Level "ERROR"
     exit 1
 } else {
-    Write-Log "Tous les tests ont réussi!" -Level "SUCCESS"
+    Write-Log "Tous les tests ont rÃ©ussi!" -Level "SUCCESS"
     exit 0
 }

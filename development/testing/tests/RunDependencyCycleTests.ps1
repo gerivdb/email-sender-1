@@ -1,9 +1,9 @@
-# Script pour exécuter les tests d'intégration du module DependencyCycleResolver
+﻿# Script pour exÃ©cuter les tests d'intÃ©gration du module DependencyCycleResolver
 
-# Augmenter la limite de profondeur de la pile (commenté car non utilisé actuellement)
+# Augmenter la limite de profondeur de la pile (commentÃ© car non utilisÃ© actuellement)
 # $MaximumCallStackDepth = 1024
 
-# Importer les modules à tester
+# Importer les modules Ã  tester
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $cycleDetectorPath = Join-Path -Path $modulesPath -ChildPath "CycleDetector.psm1"
 $cycleResolverPath = Join-Path -Path $modulesPath -ChildPath "DependencyCycleResolver.psm1"
@@ -17,15 +17,15 @@ Write-Host "Initialisation des modules..."
 Initialize-CycleDetector -Enabled $true -MaxDepth 100 -CacheEnabled $true
 Initialize-DependencyCycleResolver -Enabled $true -MaxIterations 10 -Strategy "MinimumImpact"
 
-# Créer un dossier temporaire pour les tests
+# CrÃ©er un dossier temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "DependencyCycleTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -ItemType Directory -Path $testTempDir -Force | Out-Null
 
-# Créer des fichiers de test avec des dépendances cycliques
-Write-Host "Création des fichiers de test..."
+# CrÃ©er des fichiers de test avec des dÃ©pendances cycliques
+Write-Host "CrÃ©ation des fichiers de test..."
 $scriptA = @'
 # Script A
 . "$PSScriptRoot\ScriptB.ps1"
@@ -58,7 +58,7 @@ $scriptA | Out-File -FilePath (Join-Path -Path $testTempDir -ChildPath "ScriptA.
 $scriptB | Out-File -FilePath (Join-Path -Path $testTempDir -ChildPath "ScriptB.ps1") -Encoding utf8
 $scriptC | Out-File -FilePath (Join-Path -Path $testTempDir -ChildPath "ScriptC.ps1") -Encoding utf8
 
-# Créer un workflow n8n avec un cycle
+# CrÃ©er un workflow n8n avec un cycle
 $workflowJson = @'
 {
   "name": "Test Workflow",
@@ -119,44 +119,44 @@ $workflowJson = @'
 
 $workflowJson | Out-File -FilePath (Join-Path -Path $testTempDir -ChildPath "TestWorkflow.json") -Encoding utf8
 
-# Exécuter les tests manuellement
-Write-Host "`nTest 1: Résolution d'un cycle simple dans un graphe"
+# ExÃ©cuter les tests manuellement
+Write-Host "`nTest 1: RÃ©solution d'un cycle simple dans un graphe"
 $graph = @{
     "A" = @("B")
     "B" = @("C")
     "C" = @("A")
 }
 
-# Détecter le cycle
+# DÃ©tecter le cycle
 $cycleResult = Find-Cycle -Graph $graph
 
-# Vérifier que le cycle est détecté
+# VÃ©rifier que le cycle est dÃ©tectÃ©
 if ($cycleResult.HasCycle) {
-    Write-Host "  ✓ Cycle détecté" -ForegroundColor Green
+    Write-Host "  âœ“ Cycle dÃ©tectÃ©" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Cycle non détecté" -ForegroundColor Red
+    Write-Host "  âœ— Cycle non dÃ©tectÃ©" -ForegroundColor Red
 }
 
-# Résoudre le cycle
+# RÃ©soudre le cycle
 $resolveResult = Resolve-DependencyCycle -CycleResult $cycleResult
 
-# Vérifier que le cycle est résolu
+# VÃ©rifier que le cycle est rÃ©solu
 if ($resolveResult.Success) {
-    Write-Host "  ✓ Cycle résolu avec succès" -ForegroundColor Green
-    Write-Host "    Arête supprimée: $($resolveResult.RemovedEdges[0].Source) -> $($resolveResult.RemovedEdges[0].Target)"
+    Write-Host "  âœ“ Cycle rÃ©solu avec succÃ¨s" -ForegroundColor Green
+    Write-Host "    ArÃªte supprimÃ©e: $($resolveResult.RemovedEdges[0].Source) -> $($resolveResult.RemovedEdges[0].Target)"
 } else {
-    Write-Host "  ✗ Échec de la résolution du cycle" -ForegroundColor Red
+    Write-Host "  âœ— Ã‰chec de la rÃ©solution du cycle" -ForegroundColor Red
 }
 
-# Vérifier que le graphe modifié n'a plus de cycle
+# VÃ©rifier que le graphe modifiÃ© n'a plus de cycle
 $newCycleCheck = Find-Cycle -Graph $resolveResult.Graph
 if (-not $newCycleCheck.HasCycle) {
-    Write-Host "  ✓ Le graphe modifié ne contient plus de cycle" -ForegroundColor Green
+    Write-Host "  âœ“ Le graphe modifiÃ© ne contient plus de cycle" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Le graphe modifié contient encore un cycle" -ForegroundColor Red
+    Write-Host "  âœ— Le graphe modifiÃ© contient encore un cycle" -ForegroundColor Red
 }
 
-Write-Host "`nTest 2: Résolution d'un cycle complexe dans un graphe"
+Write-Host "`nTest 2: RÃ©solution d'un cycle complexe dans un graphe"
 $graph = @{
     "A" = @("B", "C")
     "B" = @("D", "E")
@@ -166,136 +166,136 @@ $graph = @{
     "F" = @("I")
     "G" = @("J")
     "H" = @("K")
-    "I" = @("A") # Crée un cycle A -> C -> F -> I -> A
+    "I" = @("A") # CrÃ©e un cycle A -> C -> F -> I -> A
     "J" = @()
     "K" = @()
 }
 
-# Détecter le cycle
+# DÃ©tecter le cycle
 $cycleResult = Find-Cycle -Graph $graph
 
-# Vérifier que le cycle est détecté
+# VÃ©rifier que le cycle est dÃ©tectÃ©
 if ($cycleResult.HasCycle) {
-    Write-Host "  ✓ Cycle détecté" -ForegroundColor Green
+    Write-Host "  âœ“ Cycle dÃ©tectÃ©" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Cycle non détecté" -ForegroundColor Red
+    Write-Host "  âœ— Cycle non dÃ©tectÃ©" -ForegroundColor Red
 }
 
-# Résoudre le cycle
+# RÃ©soudre le cycle
 $resolveResult = Resolve-DependencyCycle -CycleResult $cycleResult
 
-# Vérifier que le cycle est résolu
+# VÃ©rifier que le cycle est rÃ©solu
 if ($resolveResult.Success) {
-    Write-Host "  ✓ Cycle résolu avec succès" -ForegroundColor Green
-    Write-Host "    Arête supprimée: $($resolveResult.RemovedEdges[0].Source) -> $($resolveResult.RemovedEdges[0].Target)"
+    Write-Host "  âœ“ Cycle rÃ©solu avec succÃ¨s" -ForegroundColor Green
+    Write-Host "    ArÃªte supprimÃ©e: $($resolveResult.RemovedEdges[0].Source) -> $($resolveResult.RemovedEdges[0].Target)"
 } else {
-    Write-Host "  ✗ Échec de la résolution du cycle" -ForegroundColor Red
+    Write-Host "  âœ— Ã‰chec de la rÃ©solution du cycle" -ForegroundColor Red
 }
 
-# Vérifier que le graphe modifié n'a plus de cycle
+# VÃ©rifier que le graphe modifiÃ© n'a plus de cycle
 $newCycleCheck = Find-Cycle -Graph $resolveResult.Graph
 if (-not $newCycleCheck.HasCycle) {
-    Write-Host "  ✓ Le graphe modifié ne contient plus de cycle" -ForegroundColor Green
+    Write-Host "  âœ“ Le graphe modifiÃ© ne contient plus de cycle" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Le graphe modifié contient encore un cycle" -ForegroundColor Red
+    Write-Host "  âœ— Le graphe modifiÃ© contient encore un cycle" -ForegroundColor Red
 }
 
-Write-Host "`nTest 3: Résolution de cycles dans des scripts PowerShell"
-# Détecter et résoudre les cycles
+Write-Host "`nTest 3: RÃ©solution de cycles dans des scripts PowerShell"
+# DÃ©tecter et rÃ©soudre les cycles
 $resolveResult = Resolve-ScriptDependencyCycle -Path $testTempDir
 
-# Vérifier que des cycles ont été détectés et résolus
+# VÃ©rifier que des cycles ont Ã©tÃ© dÃ©tectÃ©s et rÃ©solus
 if ($resolveResult.CyclesDetected -gt 0) {
-    Write-Host "  ✓ Cycles détectés: $($resolveResult.CyclesDetected)" -ForegroundColor Green
+    Write-Host "  âœ“ Cycles dÃ©tectÃ©s: $($resolveResult.CyclesDetected)" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Aucun cycle détecté" -ForegroundColor Red
+    Write-Host "  âœ— Aucun cycle dÃ©tectÃ©" -ForegroundColor Red
 }
 
 if ($resolveResult.CyclesResolved -gt 0) {
-    Write-Host "  ✓ Cycles résolus: $($resolveResult.CyclesResolved)" -ForegroundColor Green
+    Write-Host "  âœ“ Cycles rÃ©solus: $($resolveResult.CyclesResolved)" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Aucun cycle résolu" -ForegroundColor Red
+    Write-Host "  âœ— Aucun cycle rÃ©solu" -ForegroundColor Red
 }
 
 if ($resolveResult.Success) {
-    Write-Host "  ✓ Résolution réussie" -ForegroundColor Green
+    Write-Host "  âœ“ RÃ©solution rÃ©ussie" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Échec de la résolution" -ForegroundColor Red
+    Write-Host "  âœ— Ã‰chec de la rÃ©solution" -ForegroundColor Red
 }
 
 if ($resolveResult.RemovedEdges.Count -gt 0) {
-    Write-Host "  ✓ Arêtes supprimées: $($resolveResult.RemovedEdges.Count)" -ForegroundColor Green
+    Write-Host "  âœ“ ArÃªtes supprimÃ©es: $($resolveResult.RemovedEdges.Count)" -ForegroundColor Green
     foreach ($edge in $resolveResult.RemovedEdges) {
         Write-Host "    $($edge.Source) -> $($edge.Target)"
     }
 } else {
-    Write-Host "  ✗ Aucune arête supprimée" -ForegroundColor Red
+    Write-Host "  âœ— Aucune arÃªte supprimÃ©e" -ForegroundColor Red
 }
 
-Write-Host "`nTest 4: Résolution de cycles dans des workflows n8n"
+Write-Host "`nTest 4: RÃ©solution de cycles dans des workflows n8n"
 # Chemin du workflow de test
 $workflowPath = Join-Path -Path $testTempDir -ChildPath "TestWorkflow.json"
 
-# Détecter et résoudre les cycles
+# DÃ©tecter et rÃ©soudre les cycles
 $resolveResult = Resolve-WorkflowCycle -WorkflowPath $workflowPath
 
-# Vérifier que des cycles ont été détectés et résolus
+# VÃ©rifier que des cycles ont Ã©tÃ© dÃ©tectÃ©s et rÃ©solus
 if ($resolveResult.CyclesDetected -gt 0) {
-    Write-Host "  ✓ Cycles détectés: $($resolveResult.CyclesDetected)" -ForegroundColor Green
+    Write-Host "  âœ“ Cycles dÃ©tectÃ©s: $($resolveResult.CyclesDetected)" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Aucun cycle détecté" -ForegroundColor Red
+    Write-Host "  âœ— Aucun cycle dÃ©tectÃ©" -ForegroundColor Red
 }
 
 if ($resolveResult.CyclesResolved -gt 0) {
-    Write-Host "  ✓ Cycles résolus: $($resolveResult.CyclesResolved)" -ForegroundColor Green
+    Write-Host "  âœ“ Cycles rÃ©solus: $($resolveResult.CyclesResolved)" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Aucun cycle résolu" -ForegroundColor Red
+    Write-Host "  âœ— Aucun cycle rÃ©solu" -ForegroundColor Red
 }
 
 if ($resolveResult.Success) {
-    Write-Host "  ✓ Résolution réussie" -ForegroundColor Green
+    Write-Host "  âœ“ RÃ©solution rÃ©ussie" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Échec de la résolution" -ForegroundColor Red
+    Write-Host "  âœ— Ã‰chec de la rÃ©solution" -ForegroundColor Red
 }
 
 if ($resolveResult.RemovedEdges.Count -gt 0) {
-    Write-Host "  ✓ Arêtes supprimées: $($resolveResult.RemovedEdges.Count)" -ForegroundColor Green
+    Write-Host "  âœ“ ArÃªtes supprimÃ©es: $($resolveResult.RemovedEdges.Count)" -ForegroundColor Green
     foreach ($edge in $resolveResult.RemovedEdges) {
         Write-Host "    $($edge.Source) -> $($edge.Target)"
     }
 } else {
-    Write-Host "  ✗ Aucune arête supprimée" -ForegroundColor Red
+    Write-Host "  âœ— Aucune arÃªte supprimÃ©e" -ForegroundColor Red
 }
 
-# Vérifier que le workflow modifié n'a plus de cycle
+# VÃ©rifier que le workflow modifiÃ© n'a plus de cycle
 $newCycleCheck = Test-WorkflowCycles -WorkflowPath $workflowPath
 if (-not $newCycleCheck.HasCycle) {
-    Write-Host "  ✓ Le workflow modifié ne contient plus de cycle" -ForegroundColor Green
+    Write-Host "  âœ“ Le workflow modifiÃ© ne contient plus de cycle" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Le workflow modifié contient encore un cycle" -ForegroundColor Red
+    Write-Host "  âœ— Le workflow modifiÃ© contient encore un cycle" -ForegroundColor Red
 }
 
-Write-Host "`nTest 5: Statistiques du résolveur de cycles"
+Write-Host "`nTest 5: Statistiques du rÃ©solveur de cycles"
 # Obtenir les statistiques
 $stats = Get-CycleResolverStatistics
 
-# Vérifier que les statistiques sont disponibles
+# VÃ©rifier que les statistiques sont disponibles
 if ($stats.TotalResolutions -gt 0) {
-    Write-Host "  ✓ Nombre total de résolutions: $($stats.TotalResolutions)" -ForegroundColor Green
+    Write-Host "  âœ“ Nombre total de rÃ©solutions: $($stats.TotalResolutions)" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Aucune résolution enregistrée" -ForegroundColor Red
+    Write-Host "  âœ— Aucune rÃ©solution enregistrÃ©e" -ForegroundColor Red
 }
 
 if ($stats.SuccessfulResolutions -gt 0) {
-    Write-Host "  ✓ Résolutions réussies: $($stats.SuccessfulResolutions)" -ForegroundColor Green
+    Write-Host "  âœ“ RÃ©solutions rÃ©ussies: $($stats.SuccessfulResolutions)" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Aucune résolution réussie" -ForegroundColor Red
+    Write-Host "  âœ— Aucune rÃ©solution rÃ©ussie" -ForegroundColor Red
 }
 
 if ($stats.SuccessRate -gt 0) {
-    Write-Host "  ✓ Taux de réussite: $($stats.SuccessRate)%" -ForegroundColor Green
+    Write-Host "  âœ“ Taux de rÃ©ussite: $($stats.SuccessRate)%" -ForegroundColor Green
 } else {
-    Write-Host "  ✗ Taux de réussite nul" -ForegroundColor Red
+    Write-Host "  âœ— Taux de rÃ©ussite nul" -ForegroundColor Red
 }
 
 Write-Host "`nNettoyage..."

@@ -1,64 +1,64 @@
-<#
+﻿<#
 .SYNOPSIS
-    Test d'intégration pour le script gran-mode.ps1.
+    Test d'intÃ©gration pour le script gran-mode.ps1.
 
 .DESCRIPTION
-    Ce script effectue un test d'intégration pour le script gran-mode.ps1,
-    en vérifiant que les nouvelles fonctionnalités d'estimation de temps et
-    de génération de sous-tâches par IA fonctionnent correctement.
+    Ce script effectue un test d'intÃ©gration pour le script gran-mode.ps1,
+    en vÃ©rifiant que les nouvelles fonctionnalitÃ©s d'estimation de temps et
+    de gÃ©nÃ©ration de sous-tÃ¢ches par IA fonctionnent correctement.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-06-02
+    Date de crÃ©ation: 2025-06-02
 #>
 
 # Importer Pester si disponible
 if (Get-Module -ListAvailable -Name Pester) {
     Import-Module Pester
 } else {
-    Write-Warning "Le module Pester n'est pas installé. Les tests ne seront pas exécutés avec le framework Pester."
+    Write-Warning "Le module Pester n'est pas installÃ©. Les tests ne seront pas exÃ©cutÃ©s avec le framework Pester."
     exit 1
 }
 
-# Chemin vers le script à tester
+# Chemin vers le script Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $granModePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "modes\gran-mode.ps1"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $granModePath)) {
-    throw "Le fichier gran-mode.ps1 est introuvable à l'emplacement : $granModePath"
+    throw "Le fichier gran-mode.ps1 est introuvable Ã  l'emplacement : $granModePath"
 }
 
-# Créer des fichiers temporaires pour les tests
+# CrÃ©er des fichiers temporaires pour les tests
 $testRoadmapPath = Join-Path -Path $env:TEMP -ChildPath "TestRoadmap_$(Get-Random).md"
 $testTimeEstimatesPath = Join-Path -Path $env:TEMP -ChildPath "time-estimates_$(Get-Random).json"
 $testAIConfigPath = Join-Path -Path $env:TEMP -ChildPath "ai-config_$(Get-Random).json"
 
 Describe "Gran-Mode Integration" {
     BeforeEach {
-        # Créer un fichier de roadmap de test
+        # CrÃ©er un fichier de roadmap de test
         @"
 # Roadmap de test
 
 ## Section 1
 
-- [ ] **1.1** Tâche 1
-- [ ] **1.2** Tâche 2
-  - [ ] **1.2.1** Sous-tâche 1
-  - [ ] **1.2.2** Sous-tâche 2
-- [ ] **1.3** Tâche à décomposer
+- [ ] **1.1** TÃ¢che 1
+- [ ] **1.2** TÃ¢che 2
+  - [ ] **1.2.1** Sous-tÃ¢che 1
+  - [ ] **1.2.2** Sous-tÃ¢che 2
+- [ ] **1.3** TÃ¢che Ã  dÃ©composer
 
 ## Section 2
 
-- [ ] **2.1** Autre tâche
+- [ ] **2.1** Autre tÃ¢che
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
-        # Créer un répertoire pour les fichiers de configuration
+        # CrÃ©er un rÃ©pertoire pour les fichiers de configuration
         $templatesDir = Join-Path -Path $env:TEMP -ChildPath "templates\subtasks"
         New-Item -Path $templatesDir -ItemType Directory -Force | Out-Null
 
-        # Créer un fichier de configuration pour les estimations de temps
+        # CrÃ©er un fichier de configuration pour les estimations de temps
         @"
 {
   "complexity_multipliers": {
@@ -103,16 +103,16 @@ Describe "Gran-Mode Integration" {
     }
   },
   "task_keywords": {
-    "analysis": ["analyser", "analyse", "étudier", "évaluer", "comprendre", "identifier", "rechercher"],
-    "design": ["concevoir", "conception", "architecture", "modéliser", "planifier", "structurer"],
-    "implementation": ["implémenter", "développer", "coder", "programmer", "créer", "mettre en place", "intégrer"],
-    "testing": ["tester", "vérifier", "valider", "contrôler", "qualité", "test"],
-    "documentation": ["documenter", "documentation", "guide", "manuel", "référence"]
+    "analysis": ["analyser", "analyse", "Ã©tudier", "Ã©valuer", "comprendre", "identifier", "rechercher"],
+    "design": ["concevoir", "conception", "architecture", "modÃ©liser", "planifier", "structurer"],
+    "implementation": ["implÃ©menter", "dÃ©velopper", "coder", "programmer", "crÃ©er", "mettre en place", "intÃ©grer"],
+    "testing": ["tester", "vÃ©rifier", "valider", "contrÃ´ler", "qualitÃ©", "test"],
+    "documentation": ["documenter", "documentation", "guide", "manuel", "rÃ©fÃ©rence"]
   }
 }
 "@ | Set-Content -Path $testTimeEstimatesPath -Encoding UTF8
 
-        # Créer un fichier de configuration pour l'IA
+        # CrÃ©er un fichier de configuration pour l'IA
         @"
 {
   "enabled": true,
@@ -120,11 +120,11 @@ Describe "Gran-Mode Integration" {
   "model": "gpt-3.5-turbo",
   "temperature": 0.7,
   "max_tokens": 1000,
-  "prompt_template": "Je dois décomposer une tâche de développement en sous-tâches. Voici les informations :\n\nTâche principale : {task}\nNiveau de complexité : {complexity}\nDomaines techniques : {domains}\nNombre maximum de sous-tâches : {max_subtasks}\n\nGénère une liste de sous-tâches pertinentes pour cette tâche, en tenant compte du niveau de complexité et des domaines techniques. Chaque sous-tâche doit être concise et commencer par un verbe d'action. N'inclus pas de numéros ou de tirets au début des lignes. Limite-toi à {max_subtasks} sous-tâches maximum. Retourne uniquement la liste des sous-tâches, une par ligne."
+  "prompt_template": "Je dois dÃ©composer une tÃ¢che de dÃ©veloppement en sous-tÃ¢ches. Voici les informations :\n\nTÃ¢che principale : {task}\nNiveau de complexitÃ© : {complexity}\nDomaines techniques : {domains}\nNombre maximum de sous-tÃ¢ches : {max_subtasks}\n\nGÃ©nÃ¨re une liste de sous-tÃ¢ches pertinentes pour cette tÃ¢che, en tenant compte du niveau de complexitÃ© et des domaines techniques. Chaque sous-tÃ¢che doit Ãªtre concise et commencer par un verbe d'action. N'inclus pas de numÃ©ros ou de tirets au dÃ©but des lignes. Limite-toi Ã  {max_subtasks} sous-tÃ¢ches maximum. Retourne uniquement la liste des sous-tÃ¢ches, une par ligne."
 }
 "@ | Set-Content -Path $testAIConfigPath -Encoding UTF8
 
-        # Créer des mocks pour les fonctions externes
+        # CrÃ©er des mocks pour les fonctions externes
         Mock Join-Path {
             if ($ChildPath -eq "development\templates\subtasks\time-estimates.json") {
                 return $testTimeEstimatesPath
@@ -146,19 +146,19 @@ Describe "Gran-Mode Integration" {
         }
 
         Mock Invoke-RestMethod {
-            # Simuler une réponse de l'API OpenAI
+            # Simuler une rÃ©ponse de l'API OpenAI
             return @{
                 choices = @(
                     @{
                         message = @{
-                            content = "Analyser les besoins du système`nConcevoir l'architecture`nDévelopper le module d'authentification`nIntégrer avec la base de données`nTester les fonctionnalités"
+                            content = "Analyser les besoins du systÃ¨me`nConcevoir l'architecture`nDÃ©velopper le module d'authentification`nIntÃ©grer avec la base de donnÃ©es`nTester les fonctionnalitÃ©s"
                         }
                     }
                 )
             }
         }
 
-        # Créer un mock pour Invoke-RoadmapGranularization
+        # CrÃ©er un mock pour Invoke-RoadmapGranularization
         Mock Invoke-RoadmapGranularization {
             param (
                 [string]$FilePath,
@@ -168,7 +168,7 @@ Describe "Gran-Mode Integration" {
                 [string]$CheckboxStyle
             )
 
-            # Simuler la décomposition de la tâche
+            # Simuler la dÃ©composition de la tÃ¢che
             $subTasks = $SubTasksInput -split "`n" | Where-Object { $_ -match '\S' }
             $content = Get-Content -Path $FilePath -Encoding UTF8
             $taskLineIndex = -1
@@ -212,7 +212,7 @@ Describe "Gran-Mode Integration" {
             }
         }
 
-        # Créer un mock pour Invoke-RoadmapGranularizationWithTimeEstimation
+        # CrÃ©er un mock pour Invoke-RoadmapGranularizationWithTimeEstimation
         Mock Invoke-RoadmapGranularizationWithTimeEstimation {
             param (
                 [string]$FilePath,
@@ -225,7 +225,7 @@ Describe "Gran-Mode Integration" {
                 [string]$Domain
             )
 
-            # Simuler la décomposition de la tâche avec estimations de temps
+            # Simuler la dÃ©composition de la tÃ¢che avec estimations de temps
             $subTasks = $SubTasksInput -split "`n" | Where-Object { $_ -match '\S' }
             $content = Get-Content -Path $FilePath -Encoding UTF8
             $taskLineIndex = -1
@@ -254,7 +254,7 @@ Describe "Gran-Mode Integration" {
                             $subTaskId = "$TaskIdentifier.$j"
                             $subTaskTitle = $subTasks[$j - 1]
                             if ($AddTimeEstimation) {
-                                $subTaskTitle = "$subTaskTitle [⏱️ 2 h]"
+                                $subTaskTitle = "$subTaskTitle [â±ï¸ 2 h]"
                             }
                             $newContent += "$subTaskIndentation- [ ] **$subTaskId** $subTaskTitle"
                         }
@@ -290,11 +290,11 @@ Describe "Gran-Mode Integration" {
         }
     }
 
-    It "Devrait décomposer une tâche en sous-tâches sans estimations de temps" {
+    It "Devrait dÃ©composer une tÃ¢che en sous-tÃ¢ches sans estimations de temps" {
         # Appeler le script
         & $granModePath -FilePath $testRoadmapPath -TaskIdentifier "1.3" -SubTasksInput "Analyser les besoins`nConcevoir la solution" -WhatIf
 
-        # Vérifier que la fonction Invoke-RoadmapGranularization a été appelée
+        # VÃ©rifier que la fonction Invoke-RoadmapGranularization a Ã©tÃ© appelÃ©e
         Should -Invoke Invoke-RoadmapGranularization -Times 1 -Exactly -ParameterFilter {
             $FilePath -eq $testRoadmapPath -and
             $TaskIdentifier -eq "1.3" -and
@@ -302,11 +302,11 @@ Describe "Gran-Mode Integration" {
         }
     }
 
-    It "Devrait décomposer une tâche en sous-tâches avec estimations de temps" {
+    It "Devrait dÃ©composer une tÃ¢che en sous-tÃ¢ches avec estimations de temps" {
         # Appeler le script
         & $granModePath -FilePath $testRoadmapPath -TaskIdentifier "1.3" -SubTasksInput "Analyser les besoins`nConcevoir la solution" -AddTimeEstimation -WhatIf
 
-        # Vérifier que la fonction Invoke-RoadmapGranularizationWithTimeEstimation a été appelée
+        # VÃ©rifier que la fonction Invoke-RoadmapGranularizationWithTimeEstimation a Ã©tÃ© appelÃ©e
         Should -Invoke Invoke-RoadmapGranularizationWithTimeEstimation -Times 1 -Exactly -ParameterFilter {
             $FilePath -eq $testRoadmapPath -and
             $TaskIdentifier -eq "1.3" -and
@@ -315,11 +315,11 @@ Describe "Gran-Mode Integration" {
         }
     }
 
-    It "Devrait décomposer une tâche en sous-tâches avec estimations de temps et un domaine spécifique" {
+    It "Devrait dÃ©composer une tÃ¢che en sous-tÃ¢ches avec estimations de temps et un domaine spÃ©cifique" {
         # Appeler le script
         & $granModePath -FilePath $testRoadmapPath -TaskIdentifier "1.3" -SubTasksInput "Analyser les besoins`nConcevoir la solution" -AddTimeEstimation -Domain "Backend" -WhatIf
 
-        # Vérifier que la fonction Invoke-RoadmapGranularizationWithTimeEstimation a été appelée
+        # VÃ©rifier que la fonction Invoke-RoadmapGranularizationWithTimeEstimation a Ã©tÃ© appelÃ©e
         Should -Invoke Invoke-RoadmapGranularizationWithTimeEstimation -Times 1 -Exactly -ParameterFilter {
             $FilePath -eq $testRoadmapPath -and
             $TaskIdentifier -eq "1.3" -and
@@ -329,29 +329,29 @@ Describe "Gran-Mode Integration" {
         }
     }
 
-    It "Devrait décomposer une tâche en sous-tâches avec l'IA" {
+    It "Devrait dÃ©composer une tÃ¢che en sous-tÃ¢ches avec l'IA" {
         # Appeler le script
         & $granModePath -FilePath $testRoadmapPath -TaskIdentifier "1.3" -UseAI -WhatIf
 
-        # Vérifier que la fonction Invoke-RestMethod a été appelée (pour l'API OpenAI)
+        # VÃ©rifier que la fonction Invoke-RestMethod a Ã©tÃ© appelÃ©e (pour l'API OpenAI)
         Should -Invoke Invoke-RestMethod -Times 1 -Exactly
     }
 
-    It "Devrait décomposer une tâche en sous-tâches avec l'IA et des estimations de temps" {
+    It "Devrait dÃ©composer une tÃ¢che en sous-tÃ¢ches avec l'IA et des estimations de temps" {
         # Appeler le script
         & $granModePath -FilePath $testRoadmapPath -TaskIdentifier "1.3" -UseAI -AddTimeEstimation -WhatIf
 
-        # Vérifier que la fonction Invoke-RestMethod a été appelée (pour l'API OpenAI)
+        # VÃ©rifier que la fonction Invoke-RestMethod a Ã©tÃ© appelÃ©e (pour l'API OpenAI)
         Should -Invoke Invoke-RestMethod -Times 1 -Exactly
 
-        # Vérifier que la fonction Invoke-RoadmapGranularizationWithTimeEstimation a été appelée
+        # VÃ©rifier que la fonction Invoke-RoadmapGranularizationWithTimeEstimation a Ã©tÃ© appelÃ©e
         Should -Invoke Invoke-RoadmapGranularizationWithTimeEstimation -Times 1 -Exactly -ParameterFilter {
             $AddTimeEstimation -eq $true
         }
     }
 }
 
-# Exécuter les tests si le script est exécuté directement
+# ExÃ©cuter les tests si le script est exÃ©cutÃ© directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Invoke-Pester -Script $MyInvocation.MyCommand.Path
 }

@@ -1,33 +1,33 @@
-<#
+﻿<#
 .SYNOPSIS
-    Effectue un parcours en profondeur (DFS) optimisé de l'arbre syntaxique PowerShell pour les grands arbres.
+    Effectue un parcours en profondeur (DFS) optimisÃ© de l'arbre syntaxique PowerShell pour les grands arbres.
 
 .DESCRIPTION
-    Cette fonction parcourt récursivement un arbre syntaxique PowerShell (AST) en utilisant l'algorithme de parcours en profondeur (DFS).
-    Elle implémente des optimisations pour améliorer les performances et réduire l'utilisation de la mémoire lors du traitement
+    Cette fonction parcourt rÃ©cursivement un arbre syntaxique PowerShell (AST) en utilisant l'algorithme de parcours en profondeur (DFS).
+    Elle implÃ©mente des optimisations pour amÃ©liorer les performances et rÃ©duire l'utilisation de la mÃ©moire lors du traitement
     de grands arbres syntaxiques. Les optimisations incluent:
-    - Utilisation de structures de données optimisées pour les grands ensembles
-    - Mise en cache des propriétés des types pour éviter la réflexion répétée
-    - Traitement par lots des nœuds pour réduire la pression sur la mémoire
-    - Détection précoce des nœuds non pertinents
+    - Utilisation de structures de donnÃ©es optimisÃ©es pour les grands ensembles
+    - Mise en cache des propriÃ©tÃ©s des types pour Ã©viter la rÃ©flexion rÃ©pÃ©tÃ©e
+    - Traitement par lots des nÅ“uds pour rÃ©duire la pression sur la mÃ©moire
+    - DÃ©tection prÃ©coce des nÅ“uds non pertinents
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à parcourir. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  parcourir. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER NodeType
-    Type de nœud AST à filtrer. Si spécifié, seuls les nœuds de ce type seront inclus dans les résultats.
+    Type de nÅ“ud AST Ã  filtrer. Si spÃ©cifiÃ©, seuls les nÅ“uds de ce type seront inclus dans les rÃ©sultats.
 
 .PARAMETER MaxDepth
-    Profondeur maximale de parcours. Si 0 ou non spécifié, aucune limite de profondeur n'est appliquée.
+    Profondeur maximale de parcours. Si 0 ou non spÃ©cifiÃ©, aucune limite de profondeur n'est appliquÃ©e.
 
 .PARAMETER Predicate
-    Prédicat (ScriptBlock) pour filtrer les nœuds. Si spécifié, seuls les nœuds pour lesquels le prédicat retourne $true seront inclus dans les résultats.
+    PrÃ©dicat (ScriptBlock) pour filtrer les nÅ“uds. Si spÃ©cifiÃ©, seuls les nÅ“uds pour lesquels le prÃ©dicat retourne $true seront inclus dans les rÃ©sultats.
 
 .PARAMETER IncludeRoot
-    Si spécifié, inclut le nœud racine dans les résultats.
+    Si spÃ©cifiÃ©, inclut le nÅ“ud racine dans les rÃ©sultats.
 
 .PARAMETER BatchSize
-    Taille des lots pour le traitement des nœuds. Permet d'optimiser la gestion de la mémoire pour les grands arbres. La valeur par défaut est 1000.
+    Taille des lots pour le traitement des nÅ“uds. Permet d'optimiser la gestion de la mÃ©moire pour les grands arbres. La valeur par dÃ©faut est 1000.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -44,7 +44,7 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 function Invoke-AstTraversalDFS-Optimized {
     [CmdletBinding()]
@@ -69,39 +69,39 @@ function Invoke-AstTraversalDFS-Optimized {
     )
 
     begin {
-        # Démarrer un chronomètre pour mesurer les performances
+        # DÃ©marrer un chronomÃ¨tre pour mesurer les performances
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
         
-        # Initialiser les structures de données optimisées
+        # Initialiser les structures de donnÃ©es optimisÃ©es
         $results = New-Object System.Collections.ArrayList
         $visitedNodes = New-Object System.Collections.Generic.HashSet[System.Management.Automation.Language.Ast]
         
-        # Cache pour les propriétés des types AST
+        # Cache pour les propriÃ©tÃ©s des types AST
         $typePropertiesCache = @{}
         
         # Statistiques pour le rapport de performance
         $nodeCount = 0
         $matchedNodeCount = 0
         
-        # Fonction pour vérifier si un nœud correspond aux critères
+        # Fonction pour vÃ©rifier si un nÅ“ud correspond aux critÃ¨res
         function Test-NodeMatchesCriteria {
             param (
                 [Parameter(Mandatory = $true)]
                 [System.Management.Automation.Language.Ast]$Node
             )
 
-            # Si aucun type n'est spécifié et aucun prédicat n'est fourni, inclure tous les nœuds
+            # Si aucun type n'est spÃ©cifiÃ© et aucun prÃ©dicat n'est fourni, inclure tous les nÅ“uds
             if (-not $NodeType -and -not $Predicate) {
                 return $true
             }
 
-            # Vérifier si le nœud correspond au type spécifié
+            # VÃ©rifier si le nÅ“ud correspond au type spÃ©cifiÃ©
             $includeNode = $true
             if ($NodeType) {
                 $nodeTypeName = $Node.GetType().Name
                 $typeToCheck = $NodeType
                 
-                # Ajouter "Ast" au type si nécessaire
+                # Ajouter "Ast" au type si nÃ©cessaire
                 if (-not $NodeType.EndsWith("Ast")) {
                     $typeToCheck = "${NodeType}Ast"
                 }
@@ -109,7 +109,7 @@ function Invoke-AstTraversalDFS-Optimized {
                 $includeNode = $nodeTypeName -eq $NodeType -or $nodeTypeName -eq $typeToCheck
             }
 
-            # Vérifier si le nœud correspond au prédicat spécifié
+            # VÃ©rifier si le nÅ“ud correspond au prÃ©dicat spÃ©cifiÃ©
             if ($includeNode -and $Predicate) {
                 $includeNode = & $Predicate $Node
             }
@@ -117,21 +117,21 @@ function Invoke-AstTraversalDFS-Optimized {
             return $includeNode
         }
         
-        # Fonction pour obtenir les propriétés AST d'un type (avec mise en cache)
+        # Fonction pour obtenir les propriÃ©tÃ©s AST d'un type (avec mise en cache)
         function Get-AstTypeProperties {
             param (
                 [Parameter(Mandatory = $true)]
                 [type]$Type
             )
             
-            # Vérifier si les propriétés sont déjà en cache
+            # VÃ©rifier si les propriÃ©tÃ©s sont dÃ©jÃ  en cache
             $typeName = $Type.FullName
             if (-not $typePropertiesCache.ContainsKey($typeName)) {
-                # Obtenir les propriétés qui peuvent contenir des objets AST
+                # Obtenir les propriÃ©tÃ©s qui peuvent contenir des objets AST
                 $astProperties = $Type.GetProperties() | Where-Object {
                     $propInfo = $_
                     
-                    # Vérifier si la propriété est de type Ast ou une collection d'Ast
+                    # VÃ©rifier si la propriÃ©tÃ© est de type Ast ou une collection d'Ast
                     $propType = $propInfo.PropertyType
                     $isAstType = $propType.IsSubclassOf([System.Management.Automation.Language.Ast]) -or 
                                  $propType -eq [System.Management.Automation.Language.Ast]
@@ -140,24 +140,24 @@ function Invoke-AstTraversalDFS-Optimized {
                     if (-not $isAstType -and 
                         [System.Collections.IEnumerable].IsAssignableFrom($propType) -and 
                         $propType -ne [string]) {
-                        # Pour les collections, vérifier si elles peuvent contenir des Ast
+                        # Pour les collections, vÃ©rifier si elles peuvent contenir des Ast
                         $isAstCollection = $true
                     }
                     
                     return $isAstType -or $isAstCollection
                 }
                 
-                # Mettre en cache les propriétés
+                # Mettre en cache les propriÃ©tÃ©s
                 $typePropertiesCache[$typeName] = $astProperties
                 return $astProperties
             }
             else {
-                # Retourner les propriétés du cache
+                # Retourner les propriÃ©tÃ©s du cache
                 return $typePropertiesCache[$typeName]
             }
         }
         
-        # Fonction pour obtenir les nœuds enfants directs
+        # Fonction pour obtenir les nÅ“uds enfants directs
         function Get-ChildNodes {
             param (
                 [Parameter(Mandatory = $true)]
@@ -166,11 +166,11 @@ function Invoke-AstTraversalDFS-Optimized {
             
             $childNodes = New-Object System.Collections.ArrayList
             
-            # Obtenir les propriétés AST du type (avec mise en cache)
+            # Obtenir les propriÃ©tÃ©s AST du type (avec mise en cache)
             $nodeType = $Node.GetType()
             $astProperties = Get-AstTypeProperties -Type $nodeType
             
-            # Extraire les enfants Ast des propriétés
+            # Extraire les enfants Ast des propriÃ©tÃ©s
             foreach ($prop in $astProperties) {
                 try {
                     $propValue = $prop.GetValue($Node)
@@ -180,11 +180,11 @@ function Invoke-AstTraversalDFS-Optimized {
                         continue
                     }
                     
-                    # Si la propriété est un Ast, l'ajouter aux enfants
+                    # Si la propriÃ©tÃ© est un Ast, l'ajouter aux enfants
                     if ($propValue -is [System.Management.Automation.Language.Ast]) {
                         [void]$childNodes.Add($propValue)
                     }
-                    # Si la propriété est une collection, ajouter chaque élément Ast
+                    # Si la propriÃ©tÃ© est une collection, ajouter chaque Ã©lÃ©ment Ast
                     elseif ($propValue -is [System.Collections.IEnumerable] -and $propValue -isnot [string]) {
                         foreach ($item in $propValue) {
                             if ($item -is [System.Management.Automation.Language.Ast]) {
@@ -194,15 +194,15 @@ function Invoke-AstTraversalDFS-Optimized {
                     }
                 }
                 catch {
-                    # Ignorer les erreurs d'accès aux propriétés
-                    Write-Verbose "Erreur lors de l'accès à la propriété $($prop.Name): $_"
+                    # Ignorer les erreurs d'accÃ¨s aux propriÃ©tÃ©s
+                    Write-Verbose "Erreur lors de l'accÃ¨s Ã  la propriÃ©tÃ© $($prop.Name): $_"
                 }
             }
             
             return $childNodes
         }
         
-        # Fonction récursive pour parcourir l'arbre
+        # Fonction rÃ©cursive pour parcourir l'arbre
         function Invoke-AstTraversalRecursive {
             param (
                 [Parameter(Mandatory = $true)]
@@ -212,42 +212,42 @@ function Invoke-AstTraversalDFS-Optimized {
                 [int]$Depth
             )
             
-            # Vérifier si le nœud est null
+            # VÃ©rifier si le nÅ“ud est null
             if ($null -eq $Node) {
                 return
             }
             
-            # Incrémenter le compteur de nœuds
+            # IncrÃ©menter le compteur de nÅ“uds
             $script:nodeCount++
             
-            # Vérifier si le nœud a déjà été visité pour éviter les boucles infinies
+            # VÃ©rifier si le nÅ“ud a dÃ©jÃ  Ã©tÃ© visitÃ© pour Ã©viter les boucles infinies
             if ($visitedNodes.Contains($Node)) {
                 return
             }
             
-            # Ajouter le nœud à l'ensemble des nœuds visités
+            # Ajouter le nÅ“ud Ã  l'ensemble des nÅ“uds visitÃ©s
             [void]$visitedNodes.Add($Node)
             
-            # Vérifier si la profondeur maximale est atteinte
+            # VÃ©rifier si la profondeur maximale est atteinte
             if ($MaxDepth -gt 0 -and $Depth -gt $MaxDepth) {
                 return
             }
             
-            # Vérifier si le nœud doit être inclus dans les résultats
+            # VÃ©rifier si le nÅ“ud doit Ãªtre inclus dans les rÃ©sultats
             if (($Depth -eq 0 -and $IncludeRoot) -or $Depth -gt 0) {
-                # Vérifier si le nœud correspond aux critères
+                # VÃ©rifier si le nÅ“ud correspond aux critÃ¨res
                 if (Test-NodeMatchesCriteria -Node $Node) {
                     [void]$results.Add($Node)
                     $script:matchedNodeCount++
                 }
             }
             
-            # Obtenir les nœuds enfants directs
+            # Obtenir les nÅ“uds enfants directs
             $children = Get-ChildNodes -Node $Node
             
-            # Parcourir récursivement les enfants
+            # Parcourir rÃ©cursivement les enfants
             foreach ($child in $children) {
-                # Éviter la récursion infinie en vérifiant que l'enfant n'est pas null et n'est pas le parent
+                # Ã‰viter la rÃ©cursion infinie en vÃ©rifiant que l'enfant n'est pas null et n'est pas le parent
                 if ($null -ne $child -and $child -ne $Node) {
                     Invoke-AstTraversalRecursive -Node $child -Depth ($Depth + 1)
                 }
@@ -257,28 +257,28 @@ function Invoke-AstTraversalDFS-Optimized {
 
     process {
         try {
-            Write-Verbose "Démarrage du parcours en profondeur optimisé de l'AST..."
+            Write-Verbose "DÃ©marrage du parcours en profondeur optimisÃ© de l'AST..."
             
-            # Vérifier si le nœud racine doit être inclus
+            # VÃ©rifier si le nÅ“ud racine doit Ãªtre inclus
             if ($IncludeRoot -and (Test-NodeMatchesCriteria -Node $Ast)) {
                 [void]$results.Add($Ast)
                 $matchedNodeCount++
             }
             
-            # Marquer le nœud racine comme visité
+            # Marquer le nÅ“ud racine comme visitÃ©
             [void]$visitedNodes.Add($Ast)
             
-            # Obtenir les enfants directs du nœud racine
+            # Obtenir les enfants directs du nÅ“ud racine
             $rootChildren = Get-ChildNodes -Node $Ast
             
-            # Parcours récursif standard
-            Write-Verbose "Utilisation du parcours récursif standard"
+            # Parcours rÃ©cursif standard
+            Write-Verbose "Utilisation du parcours rÃ©cursif standard"
             
             foreach ($child in $rootChildren) {
                 Invoke-AstTraversalRecursive -Node $child -Depth 1
             }
             
-            # Arrêter le chronomètre
+            # ArrÃªter le chronomÃ¨tre
             $stopwatch.Stop()
             $elapsedTime = $stopwatch.Elapsed
             
@@ -287,11 +287,11 @@ function Invoke-AstTraversalDFS-Optimized {
             Write-Verbose "Noeuds traites: $nodeCount"
             Write-Verbose "Noeuds correspondants: $matchedNodeCount"
             
-            # Retourner les résultats
+            # Retourner les rÃ©sultats
             return $results
         }
         catch {
-            Write-Error -Message "Erreur lors du parcours en profondeur optimisé de l'AST : $_"
+            Write-Error -Message "Erreur lors du parcours en profondeur optimisÃ© de l'AST : $_"
             throw
         }
     }

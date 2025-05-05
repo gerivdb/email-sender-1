@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires standards pour les workflows.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires standards pour vérifier le bon fonctionnement des workflows.
-    Ces tests utilisent des mocks pour simuler les dépendances et vérifier que les workflows fonctionnent correctement.
+    Ce script contient des tests unitaires standards pour vÃ©rifier le bon fonctionnement des workflows.
+    Ces tests utilisent des mocks pour simuler les dÃ©pendances et vÃ©rifier que les workflows fonctionnent correctement.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Définir les chemins
+# DÃ©finir les chemins
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))
 $workflowQuotidienPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\workflows\workflow-quotidien.ps1"
@@ -23,33 +23,33 @@ $workflowHebdomadairePath = Join-Path -Path $projectRoot -ChildPath "development
 $workflowMensuelPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\workflows\workflow-mensuel.ps1"
 $installScheduledTasksPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\workflows\install-scheduled-tasks.ps1"
 
-# Créer un répertoire de test temporaire
+# CrÃ©er un rÃ©pertoire de test temporaire
 $testDir = Join-Path -Path $scriptPath -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "unit-test-roadmap.md"
 @"
 # Roadmap de test unitaire
 
-## Tâche 1: Test des workflows
+## TÃ¢che 1: Test des workflows
 
 ### Description
-Cette tâche vise à tester les workflows.
+Cette tÃ¢che vise Ã  tester les workflows.
 
-### Sous-tâches
+### Sous-tÃ¢ches
 - [ ] **1.1** Tester le workflow quotidien
 - [ ] **1.2** Tester le workflow hebdomadaire
 - [ ] **1.3** Tester le workflow mensuel
-- [ ] **1.4** Tester l'installation des tâches planifiées
+- [ ] **1.4** Tester l'installation des tÃ¢ches planifiÃ©es
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests unitaires standards pour les workflows" {
     BeforeAll {
-        # Créer un mock pour le gestionnaire intégré
+        # CrÃ©er un mock pour le gestionnaire intÃ©grÃ©
         function global:Invoke-IntegratedManager {
             param (
                 [string]$Mode,
@@ -79,7 +79,7 @@ Describe "Tests unitaires standards pour les workflows" {
             }
         }
         
-        # Créer un mock pour Write-Log
+        # CrÃ©er un mock pour Write-Log
         function global:Write-Log {
             param (
                 [string]$Message,
@@ -93,7 +93,7 @@ Describe "Tests unitaires standards pour les workflows" {
             return $logMessage
         }
         
-        # Créer un mock pour Test-Path
+        # CrÃ©er un mock pour Test-Path
         Mock Test-Path {
             if ($Path -eq $testRoadmapPath) {
                 return $true
@@ -114,31 +114,31 @@ Describe "Tests unitaires standards pour les workflows" {
             }
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour New-Item
+        # CrÃ©er un mock pour New-Item
         Mock New-Item {
-            # Ne rien faire, juste simuler la création
+            # Ne rien faire, juste simuler la crÃ©ation
             return [PSCustomObject]@{
                 FullName = $Path
                 Exists = $true
             }
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour Join-Path
+        # CrÃ©er un mock pour Join-Path
         Mock Join-Path {
             return "$Path\$ChildPath"
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour Get-Date
+        # CrÃ©er un mock pour Get-Date
         Mock Get-Date {
             return [DateTime]::Parse("2023-06-01")
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour Out-File
+        # CrÃ©er un mock pour Out-File
         Mock Out-File {
-            # Ne rien faire, juste simuler l'écriture
+            # Ne rien faire, juste simuler l'Ã©criture
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour Get-ScheduledTask
+        # CrÃ©er un mock pour Get-ScheduledTask
         Mock Get-ScheduledTask {
             return @(
                 [PSCustomObject]@{
@@ -156,7 +156,7 @@ Describe "Tests unitaires standards pour les workflows" {
             )
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour Register-ScheduledTask
+        # CrÃ©er un mock pour Register-ScheduledTask
         Mock Register-ScheduledTask {
             return [PSCustomObject]@{
                 TaskName = $TaskName
@@ -164,12 +164,12 @@ Describe "Tests unitaires standards pour les workflows" {
             }
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour Unregister-ScheduledTask
+        # CrÃ©er un mock pour Unregister-ScheduledTask
         Mock Unregister-ScheduledTask {
             # Ne rien faire, juste simuler la suppression
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour New-ScheduledTaskAction
+        # CrÃ©er un mock pour New-ScheduledTaskAction
         Mock New-ScheduledTaskAction {
             return [PSCustomObject]@{
                 Execute = $Execute
@@ -178,7 +178,7 @@ Describe "Tests unitaires standards pour les workflows" {
             }
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour New-ScheduledTaskTrigger
+        # CrÃ©er un mock pour New-ScheduledTaskTrigger
         Mock New-ScheduledTaskTrigger {
             return [PSCustomObject]@{
                 DaysOfWeek = $DaysOfWeek
@@ -187,7 +187,7 @@ Describe "Tests unitaires standards pour les workflows" {
             }
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour New-ScheduledTaskSettingsSet
+        # CrÃ©er un mock pour New-ScheduledTaskSettingsSet
         Mock New-ScheduledTaskSettingsSet {
             return [PSCustomObject]@{
                 StartWhenAvailable = $StartWhenAvailable
@@ -198,7 +198,7 @@ Describe "Tests unitaires standards pour les workflows" {
             }
         } -ModuleName "Test-UnitWorkflows"
         
-        # Créer un mock pour New-ScheduledTaskPrincipal
+        # CrÃ©er un mock pour New-ScheduledTaskPrincipal
         Mock New-ScheduledTaskPrincipal {
             return [PSCustomObject]@{
                 UserId = $UserId
@@ -215,19 +215,19 @@ Describe "Tests unitaires standards pour les workflows" {
     }
     
     Context "Workflow quotidien" {
-        It "Le workflow quotidien devrait pouvoir être exécuté sans erreur" {
+        It "Le workflow quotidien devrait pouvoir Ãªtre exÃ©cutÃ© sans erreur" {
             $result = & $workflowQuotidienPath -RoadmapPath $testRoadmapPath -LogPath $testDir
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le workflow quotidien devrait pouvoir être exécuté avec un chemin de roadmap personnalisé" {
+        It "Le workflow quotidien devrait pouvoir Ãªtre exÃ©cutÃ© avec un chemin de roadmap personnalisÃ©" {
             $result = & $workflowQuotidienPath -RoadmapPath "$testDir\custom-roadmap.md" -LogPath $testDir
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le workflow quotidien devrait pouvoir être exécuté avec un répertoire de journalisation personnalisé" {
+        It "Le workflow quotidien devrait pouvoir Ãªtre exÃ©cutÃ© avec un rÃ©pertoire de journalisation personnalisÃ©" {
             $result = & $workflowQuotidienPath -RoadmapPath $testRoadmapPath -LogPath "$testDir\logs"
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
@@ -235,20 +235,20 @@ Describe "Tests unitaires standards pour les workflows" {
     }
     
     Context "Workflow hebdomadaire" {
-        It "Le workflow hebdomadaire devrait pouvoir être exécuté sans erreur" {
+        It "Le workflow hebdomadaire devrait pouvoir Ãªtre exÃ©cutÃ© sans erreur" {
             $result = & $workflowHebdomadairePath -RoadmapPaths @($testRoadmapPath) -OutputPath $testDir -LogPath $testDir
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le workflow hebdomadaire devrait pouvoir être exécuté avec plusieurs chemins de roadmap" {
+        It "Le workflow hebdomadaire devrait pouvoir Ãªtre exÃ©cutÃ© avec plusieurs chemins de roadmap" {
             $roadmapPaths = @($testRoadmapPath, "$testDir\custom-roadmap.md")
             $result = & $workflowHebdomadairePath -RoadmapPaths $roadmapPaths -OutputPath $testDir -LogPath $testDir
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le workflow hebdomadaire devrait pouvoir être exécuté avec un répertoire de sortie personnalisé" {
+        It "Le workflow hebdomadaire devrait pouvoir Ãªtre exÃ©cutÃ© avec un rÃ©pertoire de sortie personnalisÃ©" {
             $result = & $workflowHebdomadairePath -RoadmapPaths @($testRoadmapPath) -OutputPath "$testDir\output" -LogPath $testDir
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
@@ -256,43 +256,43 @@ Describe "Tests unitaires standards pour les workflows" {
     }
     
     Context "Workflow mensuel" {
-        It "Le workflow mensuel devrait pouvoir être exécuté sans erreur" {
+        It "Le workflow mensuel devrait pouvoir Ãªtre exÃ©cutÃ© sans erreur" {
             $result = & $workflowMensuelPath -RoadmapPaths @($testRoadmapPath) -OutputPath $testDir -LogPath $testDir
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le workflow mensuel devrait pouvoir être exécuté avec plusieurs chemins de roadmap" {
+        It "Le workflow mensuel devrait pouvoir Ãªtre exÃ©cutÃ© avec plusieurs chemins de roadmap" {
             $roadmapPaths = @($testRoadmapPath, "$testDir\custom-roadmap.md")
             $result = & $workflowMensuelPath -RoadmapPaths $roadmapPaths -OutputPath $testDir -LogPath $testDir
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le workflow mensuel devrait pouvoir être exécuté avec un répertoire de sortie personnalisé" {
+        It "Le workflow mensuel devrait pouvoir Ãªtre exÃ©cutÃ© avec un rÃ©pertoire de sortie personnalisÃ©" {
             $result = & $workflowMensuelPath -RoadmapPaths @($testRoadmapPath) -OutputPath "$testDir\output" -LogPath $testDir
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
     }
     
-    Context "Installation des tâches planifiées" {
-        It "Le script d'installation des tâches planifiées devrait pouvoir être exécuté sans erreur" {
+    Context "Installation des tÃ¢ches planifiÃ©es" {
+        It "Le script d'installation des tÃ¢ches planifiÃ©es devrait pouvoir Ãªtre exÃ©cutÃ© sans erreur" {
             $result = & $installScheduledTasksPath -WhatIf
             $result | Should -Not -BeNullOrEmpty
         }
         
-        It "Le script d'installation des tâches planifiées devrait pouvoir être exécuté avec un préfixe personnalisé" {
+        It "Le script d'installation des tÃ¢ches planifiÃ©es devrait pouvoir Ãªtre exÃ©cutÃ© avec un prÃ©fixe personnalisÃ©" {
             $result = & $installScheduledTasksPath -TaskPrefix "CustomPrefix" -WhatIf
             $result | Should -Not -BeNullOrEmpty
         }
         
-        It "Le script d'installation des tâches planifiées devrait pouvoir être exécuté avec le paramètre Force" {
+        It "Le script d'installation des tÃ¢ches planifiÃ©es devrait pouvoir Ãªtre exÃ©cutÃ© avec le paramÃ¨tre Force" {
             $result = & $installScheduledTasksPath -Force -WhatIf
             $result | Should -Not -BeNullOrEmpty
         }
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $MyInvocation.MyCommand.Path -Output Detailed

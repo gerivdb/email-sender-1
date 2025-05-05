@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte le format d'un fichier de configuration.
+    DÃ©tecte le format d'un fichier de configuration.
 .DESCRIPTION
-    Cette fonction analyse un fichier de configuration et détermine son format
+    Cette fonction analyse un fichier de configuration et dÃ©termine son format
     (JSON, YAML, XML, INI, PSD1) en se basant sur l'extension du fichier et son contenu.
 .PARAMETER Path
-    Chemin vers le fichier de configuration à analyser.
+    Chemin vers le fichier de configuration Ã  analyser.
 .PARAMETER Content
-    Contenu du fichier de configuration à analyser. Si spécifié, Path est ignoré.
+    Contenu du fichier de configuration Ã  analyser. Si spÃ©cifiÃ©, Path est ignorÃ©.
 .EXAMPLE
     Get-ConfigurationFormat -Path "config.json"
-    Détecte le format du fichier config.json.
+    DÃ©tecte le format du fichier config.json.
 .EXAMPLE
     Get-ConfigurationFormat -Content '{"key": "value"}'
-    Détecte le format du contenu fourni (JSON dans cet exemple).
+    DÃ©tecte le format du contenu fourni (JSON dans cet exemple).
 .OUTPUTS
     System.String
 #>
@@ -28,16 +28,16 @@ function Get-ConfigurationFormat {
     )
     
     try {
-        # Si le chemin est spécifié, essayer d'abord de déterminer le format à partir de l'extension
+        # Si le chemin est spÃ©cifiÃ©, essayer d'abord de dÃ©terminer le format Ã  partir de l'extension
         if ($PSCmdlet.ParameterSetName -eq "Path") {
             if (-not (Test-Path -Path $Path -PathType Leaf)) {
-                Write-Error "Le fichier spécifié n'existe pas: $Path"
+                Write-Error "Le fichier spÃ©cifiÃ© n'existe pas: $Path"
                 return "UNKNOWN"
             }
             
             $formatFromExtension = Get-FileExtensionFormat -FilePath $Path
             
-            # Si le format est déterminé à partir de l'extension, vérifier qu'il correspond au contenu
+            # Si le format est dÃ©terminÃ© Ã  partir de l'extension, vÃ©rifier qu'il correspond au contenu
             if ($formatFromExtension -and $formatFromExtension -ne "UNKNOWN") {
                 $Content = Get-Content -Path $Path -Raw -ErrorAction Stop
                 $formatFromContent = Get-ContentFormat -Content $Content
@@ -47,20 +47,20 @@ function Get-ConfigurationFormat {
                     return $formatFromExtension
                 }
                 
-                # Si les formats ne correspondent pas, privilégier l'analyse du contenu
-                Write-Verbose "Le format détecté à partir de l'extension ($formatFromExtension) ne correspond pas au format détecté à partir du contenu ($formatFromContent)."
+                # Si les formats ne correspondent pas, privilÃ©gier l'analyse du contenu
+                Write-Verbose "Le format dÃ©tectÃ© Ã  partir de l'extension ($formatFromExtension) ne correspond pas au format dÃ©tectÃ© Ã  partir du contenu ($formatFromContent)."
                 return $formatFromContent
             }
             
-            # Si le format n'est pas déterminé à partir de l'extension, analyser le contenu
+            # Si le format n'est pas dÃ©terminÃ© Ã  partir de l'extension, analyser le contenu
             $Content = Get-Content -Path $Path -Raw -ErrorAction Stop
         }
         
-        # Déterminer le format à partir du contenu
+        # DÃ©terminer le format Ã  partir du contenu
         return Get-ContentFormat -Content $Content
     }
     catch {
-        Write-Error "Erreur lors de la détection du format de configuration: $_"
+        Write-Error "Erreur lors de la dÃ©tection du format de configuration: $_"
         return "UNKNOWN"
     }
 }

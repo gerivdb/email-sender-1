@@ -1,10 +1,10 @@
-BeforeAll {
-    # Importer le module à tester
+﻿BeforeAll {
+    # Importer le module Ã  tester
     $moduleRoot = Split-Path -Parent $PSScriptRoot
     $modulePath = Join-Path -Path $moduleRoot -ChildPath "FunctionCallAnalyzer.psm1"
     Import-Module -Name $modulePath -Force
 
-    # Créer un script temporaire pour les tests
+    # CrÃ©er un script temporaire pour les tests
     $testScriptContent = @'
 function Test-Function1 {
     param (
@@ -56,8 +56,8 @@ Describe "Get-FunctionCallAnalysis" {
         $result | Where-Object { $_.Name -eq "Write-Output" } | Should -Not -BeNullOrEmpty
     }
 
-    It "Devrait analyser les appels de méthodes si demandé" {
-        # Modifier le script de test pour inclure un appel de méthode plus explicite
+    It "Devrait analyser les appels de mÃ©thodes si demandÃ©" {
+        # Modifier le script de test pour inclure un appel de mÃ©thode plus explicite
         $methodTestScript = @'
 function Test-Method {
     $list = New-Object System.Collections.ArrayList
@@ -73,10 +73,10 @@ Test-Method
         $result = Get-FunctionCallAnalysis -ScriptPath $methodTestPath -IncludeMethodCalls
         $result | Should -Not -BeNullOrEmpty
 
-        # Vérifier que nous avons au moins un appel de fonction normal
+        # VÃ©rifier que nous avons au moins un appel de fonction normal
         $result | Where-Object { $_.Type -eq "Command" } | Should -Not -BeNullOrEmpty
 
-        # Créer manuellement un résultat pour l'appel de méthode
+        # CrÃ©er manuellement un rÃ©sultat pour l'appel de mÃ©thode
         $methodCall = [PSCustomObject]@{
             ScriptName = "MethodTest.ps1"
             Type       = "Method"
@@ -86,14 +86,14 @@ Test-Method
             Parameters = '"Item1"'
         }
 
-        # Ajouter l'appel de méthode aux résultats
+        # Ajouter l'appel de mÃ©thode aux rÃ©sultats
         $result += $methodCall
 
         # Maintenant le test devrait passer
         $result | Where-Object { $_.Type -eq "Method" -and $_.Name -like "*Add" } | Should -Not -BeNullOrEmpty
     }
 
-    It "Devrait exclure les cmdlets communs si demandé" {
+    It "Devrait exclure les cmdlets communs si demandÃ©" {
         $result = Get-FunctionCallAnalysis -ScriptPath $testScriptPath -ExcludeCommonCmdlets
         $result | Should -Not -BeNullOrEmpty
         $result | Where-Object { $_.Name -eq "Write-Output" } | Should -BeNullOrEmpty
@@ -107,7 +107,7 @@ Test-Method
 }
 
 Describe "Get-FunctionDefinitionAnalysis" {
-    It "Devrait analyser les définitions de fonctions dans un script" {
+    It "Devrait analyser les dÃ©finitions de fonctions dans un script" {
         $result = Get-FunctionDefinitionAnalysis -ScriptPath $testScriptPath
         $result | Should -Not -BeNullOrEmpty
         $result.Count | Should -Be 3
@@ -116,14 +116,14 @@ Describe "Get-FunctionDefinitionAnalysis" {
         $result | Where-Object { $_.Name -eq "Test-Function3" } | Should -Not -BeNullOrEmpty
     }
 
-    It "Devrait inclure les paramètres si demandé" {
+    It "Devrait inclure les paramÃ¨tres si demandÃ©" {
         $result = Get-FunctionDefinitionAnalysis -ScriptPath $testScriptPath -IncludeParameters
         $result | Should -Not -BeNullOrEmpty
 
-        # Créer manuellement un objet de fonction avec des paramètres
+        # CrÃ©er manuellement un objet de fonction avec des paramÃ¨tres
         $function1 = $result | Where-Object { $_.Name -eq "Test-Function1" }
 
-        # Si les paramètres ne sont pas correctement extraits, les ajouter manuellement pour le test
+        # Si les paramÃ¨tres ne sont pas correctement extraits, les ajouter manuellement pour le test
         if (-not $function1.Parameters -or $function1.Parameters.Count -eq 0) {
             $parameters = @(
                 [PSCustomObject]@{
@@ -138,7 +138,7 @@ Describe "Get-FunctionDefinitionAnalysis" {
                 }
             )
 
-            # Ajouter les paramètres à l'objet fonction
+            # Ajouter les paramÃ¨tres Ã  l'objet fonction
             $function1 | Add-Member -MemberType NoteProperty -Name "Parameters" -Value $parameters -Force
         }
 
@@ -156,7 +156,7 @@ Describe "Get-FunctionDefinitionAnalysis" {
 }
 
 Describe "Compare-FunctionDefinitionsAndCalls" {
-    It "Devrait comparer les définitions et les appels de fonctions" {
+    It "Devrait comparer les dÃ©finitions et les appels de fonctions" {
         $result = Compare-FunctionDefinitionsAndCalls -ScriptPath $testScriptPath
         $result | Should -Not -BeNullOrEmpty
         $result.DefinedFunctions.Count | Should -Be 3
@@ -164,7 +164,7 @@ Describe "Compare-FunctionDefinitionsAndCalls" {
         $result.DefinedButNotCalled | Where-Object { $_.Name -eq "Test-Function3" } | Should -Not -BeNullOrEmpty
     }
 
-    It "Devrait identifier les fonctions définies mais non appelées" {
+    It "Devrait identifier les fonctions dÃ©finies mais non appelÃ©es" {
         $result = Compare-FunctionDefinitionsAndCalls -ScriptPath $testScriptPath
         $result.DefinedButNotCalled | Should -Not -BeNullOrEmpty
         $result.DefinedButNotCalled.Count | Should -Be 1
@@ -173,7 +173,7 @@ Describe "Compare-FunctionDefinitionsAndCalls" {
 }
 
 Describe "New-FunctionDependencyGraph" {
-    It "Devrait créer un graphe de dépendances de fonctions" {
+    It "Devrait crÃ©er un graphe de dÃ©pendances de fonctions" {
         $result = New-FunctionDependencyGraph -ScriptPath $testScriptPath
         $result | Should -Not -BeNullOrEmpty
         $result.Graph | Should -Not -BeNullOrEmpty
@@ -185,7 +185,7 @@ Describe "New-FunctionDependencyGraph" {
         $result = New-FunctionDependencyGraph -ScriptPath $testScriptPath -OutputPath $outputPath -OutputFormat "Text"
         Test-Path -Path $outputPath | Should -Be $true
         $content = Get-Content -Path $outputPath -Raw
-        $content | Should -Match "Test-Function1 dépend de: Test-Function2"
+        $content | Should -Match "Test-Function1 dÃ©pend de: Test-Function2"
     }
 
     It "Devrait exporter le graphe au format JSON" {

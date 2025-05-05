@@ -1,5 +1,5 @@
-# Start-QdrantContainer.ps1
-# Script pour démarrer, arrêter ou vérifier l'état du conteneur Docker de Qdrant
+﻿# Start-QdrantContainer.ps1
+# Script pour dÃ©marrer, arrÃªter ou vÃ©rifier l'Ã©tat du conteneur Docker de Qdrant
 
 [CmdletBinding()]
 param (
@@ -26,7 +26,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -49,36 +49,36 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Docker est installé et en cours d'exécution
+# Fonction pour vÃ©rifier si Docker est installÃ© et en cours d'exÃ©cution
 function Test-DockerAvailable {
     try {
         $dockerVersion = docker --version 2>&1
         if ($LASTEXITCODE -eq 0) {
-            Write-Log "Docker détecté: $dockerVersion" -Level Info
+            Write-Log "Docker dÃ©tectÃ©: $dockerVersion" -Level Info
             
-            # Vérifier si Docker est en cours d'exécution
+            # VÃ©rifier si Docker est en cours d'exÃ©cution
             $dockerInfo = docker info 2>&1
             if ($LASTEXITCODE -eq 0) {
-                Write-Log "Docker est en cours d'exécution." -Level Success
+                Write-Log "Docker est en cours d'exÃ©cution." -Level Success
                 return $true
             }
             else {
-                Write-Log "Docker est installé mais n'est pas en cours d'exécution." -Level Error
+                Write-Log "Docker est installÃ© mais n'est pas en cours d'exÃ©cution." -Level Error
                 return $false
             }
         }
         else {
-            Write-Log "Docker n'est pas correctement installé." -Level Error
+            Write-Log "Docker n'est pas correctement installÃ©." -Level Error
             return $false
         }
     }
     catch {
-        Write-Log "Docker n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Docker n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si le conteneur Qdrant existe
+# Fonction pour vÃ©rifier si le conteneur Qdrant existe
 function Test-QdrantContainerExists {
     param (
         [Parameter(Mandatory = $true)]
@@ -95,7 +95,7 @@ function Test-QdrantContainerExists {
     }
 }
 
-# Fonction pour vérifier si le conteneur Qdrant est en cours d'exécution
+# Fonction pour vÃ©rifier si le conteneur Qdrant est en cours d'exÃ©cution
 function Test-QdrantContainerRunning {
     param (
         [Parameter(Mandatory = $true)]
@@ -112,7 +112,7 @@ function Test-QdrantContainerRunning {
     }
 }
 
-# Fonction pour démarrer le conteneur Qdrant
+# Fonction pour dÃ©marrer le conteneur Qdrant
 function Start-QdrantContainer {
     param (
         [Parameter(Mandatory = $true)]
@@ -134,34 +134,34 @@ function Start-QdrantContainer {
         [switch]$Force
     )
     
-    # Vérifier si le conteneur existe déjà
+    # VÃ©rifier si le conteneur existe dÃ©jÃ 
     $containerExists = Test-QdrantContainerExists -ContainerName $ContainerName
     
     if ($containerExists) {
-        # Vérifier si le conteneur est déjà en cours d'exécution
+        # VÃ©rifier si le conteneur est dÃ©jÃ  en cours d'exÃ©cution
         $containerRunning = Test-QdrantContainerRunning -ContainerName $ContainerName
         
         if ($containerRunning) {
-            Write-Log "Le conteneur $ContainerName est déjà en cours d'exécution." -Level Info
+            Write-Log "Le conteneur $ContainerName est dÃ©jÃ  en cours d'exÃ©cution." -Level Info
             return $true
         }
         else {
-            # Démarrer le conteneur existant
-            Write-Log "Démarrage du conteneur $ContainerName..." -Level Info
+            # DÃ©marrer le conteneur existant
+            Write-Log "DÃ©marrage du conteneur $ContainerName..." -Level Info
             docker start $ContainerName 2>&1 | Out-Null
             
             if ($LASTEXITCODE -eq 0) {
-                Write-Log "Le conteneur $ContainerName a été démarré avec succès." -Level Success
+                Write-Log "Le conteneur $ContainerName a Ã©tÃ© dÃ©marrÃ© avec succÃ¨s." -Level Success
                 return $true
             }
             else {
-                Write-Log "Erreur lors du démarrage du conteneur $ContainerName." -Level Error
+                Write-Log "Erreur lors du dÃ©marrage du conteneur $ContainerName." -Level Error
                 return $false
             }
         }
     }
     else {
-        # Créer le dossier de données s'il n'existe pas
+        # CrÃ©er le dossier de donnÃ©es s'il n'existe pas
         $absoluteDataPath = (Resolve-Path -Path (Split-Path -Parent $DataPath) -ErrorAction SilentlyContinue).Path
         if (-not $absoluteDataPath) {
             $absoluteDataPath = (New-Item -Path (Split-Path -Parent $DataPath) -ItemType Directory -Force).FullName
@@ -170,31 +170,31 @@ function Start-QdrantContainer {
         
         if (-not (Test-Path -Path $absoluteDataPath)) {
             New-Item -Path $absoluteDataPath -ItemType Directory -Force | Out-Null
-            Write-Log "Dossier de données créé: $absoluteDataPath" -Level Info
+            Write-Log "Dossier de donnÃ©es crÃ©Ã©: $absoluteDataPath" -Level Info
         }
         
-        # Créer et démarrer un nouveau conteneur
-        Write-Log "Création et démarrage d'un nouveau conteneur $ContainerName..." -Level Info
+        # CrÃ©er et dÃ©marrer un nouveau conteneur
+        Write-Log "CrÃ©ation et dÃ©marrage d'un nouveau conteneur $ContainerName..." -Level Info
         
         # Utiliser le chemin absolu pour le montage du volume
         $volumeMount = "${absoluteDataPath}:/qdrant/storage"
         
-        # Créer et démarrer le conteneur
+        # CrÃ©er et dÃ©marrer le conteneur
         docker run -d --name $ContainerName -p ${HttpPort}:6333 -p ${GrpcPort}:6334 -v $volumeMount $QdrantImage 2>&1 | Out-Null
         
         if ($LASTEXITCODE -eq 0) {
-            Write-Log "Le conteneur $ContainerName a été créé et démarré avec succès." -Level Success
+            Write-Log "Le conteneur $ContainerName a Ã©tÃ© crÃ©Ã© et dÃ©marrÃ© avec succÃ¨s." -Level Success
             Write-Log "URL Qdrant: http://localhost:$HttpPort" -Level Info
             return $true
         }
         else {
-            Write-Log "Erreur lors de la création et du démarrage du conteneur $ContainerName." -Level Error
+            Write-Log "Erreur lors de la crÃ©ation et du dÃ©marrage du conteneur $ContainerName." -Level Error
             return $false
         }
     }
 }
 
-# Fonction pour arrêter le conteneur Qdrant
+# Fonction pour arrÃªter le conteneur Qdrant
 function Stop-QdrantContainer {
     param (
         [Parameter(Mandatory = $true)]
@@ -204,7 +204,7 @@ function Stop-QdrantContainer {
         [switch]$Force
     )
     
-    # Vérifier si le conteneur existe
+    # VÃ©rifier si le conteneur existe
     $containerExists = Test-QdrantContainerExists -ContainerName $ContainerName
     
     if (-not $containerExists) {
@@ -212,16 +212,16 @@ function Stop-QdrantContainer {
         return $true
     }
     
-    # Vérifier si le conteneur est en cours d'exécution
+    # VÃ©rifier si le conteneur est en cours d'exÃ©cution
     $containerRunning = Test-QdrantContainerRunning -ContainerName $ContainerName
     
     if (-not $containerRunning) {
-        Write-Log "Le conteneur $ContainerName n'est pas en cours d'exécution." -Level Info
+        Write-Log "Le conteneur $ContainerName n'est pas en cours d'exÃ©cution." -Level Info
         return $true
     }
     
-    # Arrêter le conteneur
-    Write-Log "Arrêt du conteneur $ContainerName..." -Level Info
+    # ArrÃªter le conteneur
+    Write-Log "ArrÃªt du conteneur $ContainerName..." -Level Info
     
     if ($Force) {
         docker kill $ContainerName 2>&1 | Out-Null
@@ -231,23 +231,23 @@ function Stop-QdrantContainer {
     }
     
     if ($LASTEXITCODE -eq 0) {
-        Write-Log "Le conteneur $ContainerName a été arrêté avec succès." -Level Success
+        Write-Log "Le conteneur $ContainerName a Ã©tÃ© arrÃªtÃ© avec succÃ¨s." -Level Success
         return $true
     }
     else {
-        Write-Log "Erreur lors de l'arrêt du conteneur $ContainerName." -Level Error
+        Write-Log "Erreur lors de l'arrÃªt du conteneur $ContainerName." -Level Error
         return $false
     }
 }
 
-# Fonction pour afficher l'état du conteneur Qdrant
+# Fonction pour afficher l'Ã©tat du conteneur Qdrant
 function Get-QdrantContainerStatus {
     param (
         [Parameter(Mandatory = $true)]
         [string]$ContainerName
     )
     
-    # Vérifier si le conteneur existe
+    # VÃ©rifier si le conteneur existe
     $containerExists = Test-QdrantContainerExists -ContainerName $ContainerName
     
     if (-not $containerExists) {
@@ -255,11 +255,11 @@ function Get-QdrantContainerStatus {
         return $false
     }
     
-    # Vérifier si le conteneur est en cours d'exécution
+    # VÃ©rifier si le conteneur est en cours d'exÃ©cution
     $containerRunning = Test-QdrantContainerRunning -ContainerName $ContainerName
     
     if ($containerRunning) {
-        # Obtenir des informations détaillées sur le conteneur
+        # Obtenir des informations dÃ©taillÃ©es sur le conteneur
         $containerInfo = docker inspect $ContainerName --format "{{json .}}" 2>&1
         
         if ($LASTEXITCODE -eq 0) {
@@ -270,19 +270,19 @@ function Get-QdrantContainerStatus {
             $image = $containerData.Config.Image
             $ports = $containerData.NetworkSettings.Ports
             
-            Write-Log "État du conteneur $ContainerName:" -Level Info
+            Write-Log "Ã‰tat du conteneur $ContainerName:" -Level Info
             Write-Log "  - Statut: $status" -Level Success
-            Write-Log "  - Démarré le: $startedAt" -Level Info
+            Write-Log "  - DÃ©marrÃ© le: $startedAt" -Level Info
             Write-Log "  - Image: $image" -Level Info
             
-            # Afficher les ports exposés
+            # Afficher les ports exposÃ©s
             foreach ($port in $ports.PSObject.Properties) {
                 $containerPort = $port.Name
                 $hostPort = $port.Value.HostPort
                 Write-Log "  - Port: $containerPort -> $hostPort" -Level Info
             }
             
-            # Vérifier si l'API Qdrant est accessible
+            # VÃ©rifier si l'API Qdrant est accessible
             try {
                 $qdrantUrl = "http://localhost:$HttpPort/dashboard"
                 $response = Invoke-WebRequest -Uri $qdrantUrl -Method Head -TimeoutSec 5 -ErrorAction SilentlyContinue
@@ -301,24 +301,24 @@ function Get-QdrantContainerStatus {
             return $true
         }
         else {
-            Write-Log "Erreur lors de la récupération des informations du conteneur $ContainerName." -Level Error
+            Write-Log "Erreur lors de la rÃ©cupÃ©ration des informations du conteneur $ContainerName." -Level Error
             return $false
         }
     }
     else {
-        Write-Log "Le conteneur $ContainerName existe mais n'est pas en cours d'exécution." -Level Warning
+        Write-Log "Le conteneur $ContainerName existe mais n'est pas en cours d'exÃ©cution." -Level Warning
         return $false
     }
 }
 
-# Fonction pour redémarrer le conteneur Qdrant
+# Fonction pour redÃ©marrer le conteneur Qdrant
 function Restart-QdrantContainer {
     param (
         [Parameter(Mandatory = $true)]
         [string]$ContainerName
     )
     
-    # Vérifier si le conteneur existe
+    # VÃ©rifier si le conteneur existe
     $containerExists = Test-QdrantContainerExists -ContainerName $ContainerName
     
     if (-not $containerExists) {
@@ -326,29 +326,29 @@ function Restart-QdrantContainer {
         return $false
     }
     
-    # Arrêter le conteneur
-    Write-Log "Redémarrage du conteneur $ContainerName..." -Level Info
+    # ArrÃªter le conteneur
+    Write-Log "RedÃ©marrage du conteneur $ContainerName..." -Level Info
     docker restart $ContainerName 2>&1 | Out-Null
     
     if ($LASTEXITCODE -eq 0) {
-        Write-Log "Le conteneur $ContainerName a été redémarré avec succès." -Level Success
+        Write-Log "Le conteneur $ContainerName a Ã©tÃ© redÃ©marrÃ© avec succÃ¨s." -Level Success
         return $true
     }
     else {
-        Write-Log "Erreur lors du redémarrage du conteneur $ContainerName." -Level Error
+        Write-Log "Erreur lors du redÃ©marrage du conteneur $ContainerName." -Level Error
         return $false
     }
 }
 
 # Fonction principale
 function Main {
-    # Vérifier si Docker est disponible
+    # VÃ©rifier si Docker est disponible
     if (-not (Test-DockerAvailable)) {
-        Write-Log "Docker est requis pour ce script. Veuillez installer Docker et réessayer." -Level Error
+        Write-Log "Docker est requis pour ce script. Veuillez installer Docker et rÃ©essayer." -Level Error
         return $false
     }
     
-    # Exécuter l'action demandée
+    # ExÃ©cuter l'action demandÃ©e
     switch ($Action) {
         "Start" {
             return Start-QdrantContainer -ContainerName $ContainerName -QdrantImage $QdrantImage -DataPath $DataPath -HttpPort $HttpPort -GrpcPort $GrpcPort -Force:$Force
@@ -369,5 +369,5 @@ function Main {
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

@@ -1,10 +1,10 @@
-# Script de test pour la fonction Invoke-AstTraversalBFS-Enhanced
+﻿# Script de test pour la fonction Invoke-AstTraversalBFS-Enhanced
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script PowerShell de test
+# CrÃ©er un script PowerShell de test
 $sampleCode = @'
 function Get-Example {
     param (
@@ -74,14 +74,14 @@ $stopwatch.Stop()
 Write-Host "Nombre de variables (profondeur >= 3): $($variables.Count)" -ForegroundColor Yellow
 Write-Host "Temps d'execution: $($stopwatch.Elapsed.TotalMilliseconds) ms" -ForegroundColor Yellow
 
-# Tester avec des types de nœuds à ignorer
-Write-Host "`n=== Test avec types de nœuds à ignorer ===" -ForegroundColor Cyan
+# Tester avec des types de nÅ“uds Ã  ignorer
+Write-Host "`n=== Test avec types de nÅ“uds Ã  ignorer ===" -ForegroundColor Cyan
 
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $nodes = Invoke-AstTraversalBFS-Enhanced -Ast $ast -SkipNodeTypes "VariableExpression", "StringConstantExpression" -Verbose
 $stopwatch.Stop()
 
-Write-Host "Nombre de nœuds (sans variables ni constantes string): $($nodes.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de nÅ“uds (sans variables ni constantes string): $($nodes.Count)" -ForegroundColor Yellow
 Write-Host "Temps d'execution: $($stopwatch.Elapsed.TotalMilliseconds) ms" -ForegroundColor Yellow
 
 # Comparer avec la version originale

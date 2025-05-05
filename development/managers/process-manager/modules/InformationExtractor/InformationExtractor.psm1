@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
     Module d'extraction d'informations pour le Process Manager.
 
 .DESCRIPTION
     Ce module fournit des fonctions pour extraire des informations sur les gestionnaires
-    enregistrés, leurs états, et leurs configurations.
+    enregistrÃ©s, leurs Ã©tats, et leurs configurations.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
 # Variables globales du module
@@ -27,7 +27,7 @@ function Write-ExtractorLog {
         [string]$Level = "Info"
     )
     
-    # Déterminer la couleur en fonction du niveau
+    # DÃ©terminer la couleur en fonction du niveau
     $color = switch ($Level) {
         "Debug" { "Gray" }
         "Info" { "White" }
@@ -37,20 +37,20 @@ function Write-ExtractorLog {
         default { "White" }
     }
     
-    # Écrire le message dans la console
+    # Ã‰crire le message dans la console
     Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [InformationExtractor] [$Level] $Message" -ForegroundColor $color
 }
 
 <#
 .SYNOPSIS
-    Extrait les informations sur un gestionnaire enregistré.
+    Extrait les informations sur un gestionnaire enregistrÃ©.
 
 .DESCRIPTION
-    Cette fonction extrait les informations détaillées sur un gestionnaire enregistré
-    dans le Process Manager, y compris son état, sa configuration, et ses dépendances.
+    Cette fonction extrait les informations dÃ©taillÃ©es sur un gestionnaire enregistrÃ©
+    dans le Process Manager, y compris son Ã©tat, sa configuration, et ses dÃ©pendances.
 
 .PARAMETER Name
-    Le nom du gestionnaire à extraire.
+    Le nom du gestionnaire Ã  extraire.
 
 .PARAMETER ConfigPath
     Le chemin vers le fichier de configuration du Process Manager.
@@ -70,7 +70,7 @@ function Get-ManagerInformation {
     )
     
     try {
-        # Vérifier que le fichier de configuration existe
+        # VÃ©rifier que le fichier de configuration existe
         if (-not (Test-Path -Path $ConfigPath -PathType Leaf)) {
             Write-ExtractorLog -Message "Le fichier de configuration n'existe pas : $ConfigPath" -Level Error
             return $null
@@ -79,16 +79,16 @@ function Get-ManagerInformation {
         # Charger la configuration
         $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
         
-        # Vérifier si le gestionnaire est enregistré
+        # VÃ©rifier si le gestionnaire est enregistrÃ©
         if (-not $config.Managers.$Name) {
-            Write-ExtractorLog -Message "Le gestionnaire '$Name' n'est pas enregistré." -Level Warning
+            Write-ExtractorLog -Message "Le gestionnaire '$Name' n'est pas enregistrÃ©." -Level Warning
             return $null
         }
         
         # Extraire les informations de base
         $managerInfo = $config.Managers.$Name
         
-        # Créer l'objet d'information
+        # CrÃ©er l'objet d'information
         $information = [PSCustomObject]@{
             Name = $Name
             Path = $managerInfo.Path
@@ -111,7 +111,7 @@ function Get-ManagerInformation {
                 if ($manifest) {
                     $information.Manifest = $manifest
                     
-                    # Mettre à jour les informations avec celles du manifeste
+                    # Mettre Ã  jour les informations avec celles du manifeste
                     if ($manifest.Version) {
                         $information.Version = $manifest.Version
                     }
@@ -126,7 +126,7 @@ function Get-ManagerInformation {
             }
         }
         
-        # Essayer de déterminer l'état du gestionnaire
+        # Essayer de dÃ©terminer l'Ã©tat du gestionnaire
         try {
             $managerProcess = Get-Process -Name $Name -ErrorAction SilentlyContinue
             
@@ -138,10 +138,10 @@ function Get-ManagerInformation {
             }
         }
         catch {
-            Write-ExtractorLog -Message "Erreur lors de la détermination de l'état du gestionnaire : $_" -Level Warning
+            Write-ExtractorLog -Message "Erreur lors de la dÃ©termination de l'Ã©tat du gestionnaire : $_" -Level Warning
         }
         
-        # Essayer de charger la configuration spécifique du gestionnaire
+        # Essayer de charger la configuration spÃ©cifique du gestionnaire
         $managerConfigPath = Join-Path -Path (Split-Path -Path $ConfigPath -Parent) -ChildPath "$Name\$Name.config.json"
         
         if (Test-Path -Path $managerConfigPath -PathType Leaf) {
@@ -165,18 +165,18 @@ function Get-ManagerInformation {
 
 <#
 .SYNOPSIS
-    Extrait les informations sur tous les gestionnaires enregistrés.
+    Extrait les informations sur tous les gestionnaires enregistrÃ©s.
 
 .DESCRIPTION
-    Cette fonction extrait les informations détaillées sur tous les gestionnaires
-    enregistrés dans le Process Manager.
+    Cette fonction extrait les informations dÃ©taillÃ©es sur tous les gestionnaires
+    enregistrÃ©s dans le Process Manager.
 
 .PARAMETER ConfigPath
     Le chemin vers le fichier de configuration du Process Manager.
 
 .EXAMPLE
     Get-AllManagersInformation
-    Extrait les informations sur tous les gestionnaires enregistrés.
+    Extrait les informations sur tous les gestionnaires enregistrÃ©s.
 #>
 function Get-AllManagersInformation {
     [CmdletBinding()]
@@ -186,7 +186,7 @@ function Get-AllManagersInformation {
     )
     
     try {
-        # Vérifier que le fichier de configuration existe
+        # VÃ©rifier que le fichier de configuration existe
         if (-not (Test-Path -Path $ConfigPath -PathType Leaf)) {
             Write-ExtractorLog -Message "Le fichier de configuration n'existe pas : $ConfigPath" -Level Error
             return $null
@@ -218,18 +218,18 @@ function Get-AllManagersInformation {
 
 <#
 .SYNOPSIS
-    Extrait les statistiques sur les gestionnaires enregistrés.
+    Extrait les statistiques sur les gestionnaires enregistrÃ©s.
 
 .DESCRIPTION
-    Cette fonction extrait des statistiques sur les gestionnaires enregistrés
-    dans le Process Manager, comme le nombre de gestionnaires, leur état, etc.
+    Cette fonction extrait des statistiques sur les gestionnaires enregistrÃ©s
+    dans le Process Manager, comme le nombre de gestionnaires, leur Ã©tat, etc.
 
 .PARAMETER ConfigPath
     Le chemin vers le fichier de configuration du Process Manager.
 
 .EXAMPLE
     Get-ManagersStatistics
-    Extrait les statistiques sur les gestionnaires enregistrés.
+    Extrait les statistiques sur les gestionnaires enregistrÃ©s.
 #>
 function Get-ManagersStatistics {
     [CmdletBinding()]
@@ -255,7 +255,7 @@ function Get-ManagersStatistics {
         $stoppedManagers = ($allInformation | Where-Object { $_.Status -eq "Stopped" }).Count
         $unknownStatusManagers = $totalManagers - $runningManagers - $stoppedManagers
         
-        # Créer l'objet de statistiques
+        # CrÃ©er l'objet de statistiques
         $statistics = [PSCustomObject]@{
             TotalManagers = $totalManagers
             EnabledManagers = $enabledManagers
@@ -266,7 +266,7 @@ function Get-ManagersStatistics {
             LastUpdated = Get-Date
         }
         
-        Write-ExtractorLog -Message "Statistiques calculées pour les gestionnaires." -Level Info
+        Write-ExtractorLog -Message "Statistiques calculÃ©es pour les gestionnaires." -Level Info
         return $statistics
     }
     catch {
@@ -277,21 +277,21 @@ function Get-ManagersStatistics {
 
 <#
 .SYNOPSIS
-    Extrait les dépendances entre les gestionnaires.
+    Extrait les dÃ©pendances entre les gestionnaires.
 
 .DESCRIPTION
-    Cette fonction extrait les dépendances entre les gestionnaires enregistrés
-    dans le Process Manager et génère un graphe de dépendances.
+    Cette fonction extrait les dÃ©pendances entre les gestionnaires enregistrÃ©s
+    dans le Process Manager et gÃ©nÃ¨re un graphe de dÃ©pendances.
 
 .PARAMETER ConfigPath
     Le chemin vers le fichier de configuration du Process Manager.
 
 .PARAMETER OutputFormat
-    Le format de sortie du graphe de dépendances (Text, JSON, DOT).
+    Le format de sortie du graphe de dÃ©pendances (Text, JSON, DOT).
 
 .EXAMPLE
     Get-ManagerDependencyGraph -OutputFormat "DOT"
-    Extrait le graphe de dépendances au format DOT.
+    Extrait le graphe de dÃ©pendances au format DOT.
 #>
 function Get-ManagerDependencyGraph {
     [CmdletBinding()]
@@ -309,11 +309,11 @@ function Get-ManagerDependencyGraph {
         $allInformation = Get-AllManagersInformation -ConfigPath $ConfigPath
         
         if (-not $allInformation) {
-            Write-ExtractorLog -Message "Aucune information disponible pour générer le graphe de dépendances." -Level Warning
+            Write-ExtractorLog -Message "Aucune information disponible pour gÃ©nÃ©rer le graphe de dÃ©pendances." -Level Warning
             return $null
         }
         
-        # Créer le graphe de dépendances
+        # CrÃ©er le graphe de dÃ©pendances
         $dependencyGraph = @{}
         
         foreach ($manager in $allInformation) {
@@ -328,16 +328,16 @@ function Get-ManagerDependencyGraph {
             $dependencyGraph[$manager.Name] = $dependencies
         }
         
-        # Générer la sortie selon le format demandé
+        # GÃ©nÃ©rer la sortie selon le format demandÃ©
         switch ($OutputFormat) {
             "Text" {
-                $output = "Graphe de dépendances des gestionnaires :`n"
+                $output = "Graphe de dÃ©pendances des gestionnaires :`n"
                 
                 foreach ($manager in $dependencyGraph.Keys) {
-                    $output += "`n$manager dépend de :`n"
+                    $output += "`n$manager dÃ©pend de :`n"
                     
                     if ($dependencyGraph[$manager].Count -eq 0) {
-                        $output += "  Aucune dépendance`n"
+                        $output += "  Aucune dÃ©pendance`n"
                     }
                     else {
                         foreach ($dependency in $dependencyGraph[$manager]) {
@@ -373,7 +373,7 @@ function Get-ManagerDependencyGraph {
         }
     }
     catch {
-        Write-ExtractorLog -Message "Erreur lors de la génération du graphe de dépendances : $_" -Level Error
+        Write-ExtractorLog -Message "Erreur lors de la gÃ©nÃ©ration du graphe de dÃ©pendances : $_" -Level Error
         return $null
     }
 }

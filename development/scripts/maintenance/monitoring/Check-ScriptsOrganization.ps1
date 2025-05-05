@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Vérifie l'organisation des scripts dans le dossier maintenance.
+    VÃ©rifie l'organisation des scripts dans le dossier maintenance.
 .DESCRIPTION
-    Ce script vérifie si des scripts PowerShell se trouvent à la racine du dossier maintenance
-    et génère un rapport sur l'organisation des scripts.
+    Ce script vÃ©rifie si des scripts PowerShell se trouvent Ã  la racine du dossier maintenance
+    et gÃ©nÃ¨re un rapport sur l'organisation des scripts.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de sortie.
 .PARAMETER SendEmail
-    Envoie un email en cas de problème d'organisation.
+    Envoie un email en cas de problÃ¨me d'organisation.
 .EXAMPLE
     .\Check-ScriptsOrganization.ps1 -OutputPath ".\reports\organization"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-10
+    Date de crÃ©ation: 2023-06-10
 #>
 
 [CmdletBinding()]
@@ -26,7 +26,7 @@ param (
     [switch]$SendEmail
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -67,39 +67,39 @@ function Send-OrganizationAlert {
     )
     
     # Cette fonction est un placeholder pour l'envoi d'email
-    # Vous devrez l'adapter à votre système d'envoi d'email
+    # Vous devrez l'adapter Ã  votre systÃ¨me d'envoi d'email
     
-    Write-Log "Alerte envoyée: $Subject" -Level "WARNING"
+    Write-Log "Alerte envoyÃ©e: $Subject" -Level "WARNING"
     Write-Log "Corps de l'alerte: $Body" -Level "INFO"
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
 # Chemin du dossier maintenance
 $maintenanceDir = $PSScriptRoot | Split-Path -Parent
-Write-Log "Vérification de l'organisation des scripts dans: $maintenanceDir" -Level "INFO"
+Write-Log "VÃ©rification de l'organisation des scripts dans: $maintenanceDir" -Level "INFO"
 
-# Récupérer tous les fichiers PowerShell à la racine du dossier maintenance
+# RÃ©cupÃ©rer tous les fichiers PowerShell Ã  la racine du dossier maintenance
 $rootFiles = Get-ChildItem -Path $maintenanceDir -File | Where-Object { 
     $_.Extension -in '.ps1', '.psm1', '.psd1' -and 
     $_.Name -ne 'Initialize-MaintenanceEnvironment.ps1' -and
     $_.Name -ne 'README.md'
 }
 
-# Récupérer tous les sous-dossiers
+# RÃ©cupÃ©rer tous les sous-dossiers
 $subDirs = Get-ChildItem -Path $maintenanceDir -Directory | Select-Object -ExpandProperty Name
 
-# Récupérer tous les fichiers PowerShell dans les sous-dossiers
+# RÃ©cupÃ©rer tous les fichiers PowerShell dans les sous-dossiers
 $subDirFiles = Get-ChildItem -Path $maintenanceDir -Recurse -File | Where-Object { 
     $_.Extension -in '.ps1', '.psm1', '.psd1' -and 
     $_.DirectoryName -ne $maintenanceDir
 }
 
-# Générer le rapport
+# GÃ©nÃ©rer le rapport
 $reportPath = Join-Path -Path $OutputPath -ChildPath "organization_report_$(Get-Date -Format 'yyyyMMdd').json"
 $report = @{
     GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -107,7 +107,7 @@ $report = @{
     RootFilesCount = $rootFiles.Count
     SubDirsCount = $subDirs.Count
     SubDirFilesCount = $subDirFiles.Count
-    OrganizationStatus = if ($rootFiles.Count -eq 0) { "OK" } else { "PROBLÈME" }
+    OrganizationStatus = if ($rootFiles.Count -eq 0) { "OK" } else { "PROBLÃˆME" }
     RootFiles = $rootFiles | Select-Object Name, LastWriteTime, Length
     SubDirs = $subDirs
     FilesPerSubDir = $subDirFiles | Group-Object { Split-Path -Leaf (Split-Path -Parent $_.FullName) } | 
@@ -116,45 +116,45 @@ $report = @{
 
 # Enregistrer le rapport
 $report | ConvertTo-Json -Depth 4 | Out-File -FilePath $reportPath -Encoding utf8
-Write-Log "Rapport généré: $reportPath" -Level "SUCCESS"
+Write-Log "Rapport gÃ©nÃ©rÃ©: $reportPath" -Level "SUCCESS"
 
-# Afficher un résumé
-Write-Log "`nRésumé de l'organisation:" -Level "INFO"
-Write-Log "  Fichiers à la racine: $($rootFiles.Count)" -Level $(if ($rootFiles.Count -eq 0) { "SUCCESS" } else { "ERROR" })
+# Afficher un rÃ©sumÃ©
+Write-Log "`nRÃ©sumÃ© de l'organisation:" -Level "INFO"
+Write-Log "  Fichiers Ã  la racine: $($rootFiles.Count)" -Level $(if ($rootFiles.Count -eq 0) { "SUCCESS" } else { "ERROR" })
 Write-Log "  Sous-dossiers: $($subDirs.Count)" -Level "INFO"
 Write-Log "  Fichiers dans les sous-dossiers: $($subDirFiles.Count)" -Level "INFO"
 
-# Afficher les fichiers à la racine s'il y en a
+# Afficher les fichiers Ã  la racine s'il y en a
 if ($rootFiles.Count -gt 0) {
-    Write-Log "`nFichiers à déplacer:" -Level "ERROR"
+    Write-Log "`nFichiers Ã  dÃ©placer:" -Level "ERROR"
     foreach ($file in $rootFiles) {
         Write-Log "  $($file.Name)" -Level "WARNING"
     }
     
-    Write-Log "`nUtilisez le script d'organisation pour déplacer ces fichiers:" -Level "INFO"
+    Write-Log "`nUtilisez le script d'organisation pour dÃ©placer ces fichiers:" -Level "INFO"
     Write-Log "  .\organize\Organize-MaintenanceScripts.ps1 -Force" -Level "INFO"
     
-    # Envoyer une alerte par email si demandé
+    # Envoyer une alerte par email si demandÃ©
     if ($SendEmail) {
-        $subject = "ALERTE: $($rootFiles.Count) scripts non organisés dans le dossier maintenance"
-        $body = "Les scripts suivants se trouvent à la racine du dossier maintenance et doivent être organisés:`n`n"
+        $subject = "ALERTE: $($rootFiles.Count) scripts non organisÃ©s dans le dossier maintenance"
+        $body = "Les scripts suivants se trouvent Ã  la racine du dossier maintenance et doivent Ãªtre organisÃ©s:`n`n"
         foreach ($file in $rootFiles) {
             $body += "- $($file.Name)`n"
         }
-        $body += "`nUtilisez le script d'organisation pour déplacer ces fichiers:`n"
+        $body += "`nUtilisez le script d'organisation pour dÃ©placer ces fichiers:`n"
         $body += ".\organize\Organize-MaintenanceScripts.ps1 -Force"
         
         Send-OrganizationAlert -Subject $subject -Body $body
     }
 }
 else {
-    Write-Log "`nTous les scripts sont correctement organisés." -Level "SUCCESS"
+    Write-Log "`nTous les scripts sont correctement organisÃ©s." -Level "SUCCESS"
 }
 
-# Afficher la répartition des fichiers par sous-dossier
-Write-Log "`nRépartition des fichiers par sous-dossier:" -Level "INFO"
+# Afficher la rÃ©partition des fichiers par sous-dossier
+Write-Log "`nRÃ©partition des fichiers par sous-dossier:" -Level "INFO"
 foreach ($dir in $report.FilesPerSubDir | Sort-Object Count -Descending) {
     Write-Log "  $($dir.Name): $($dir.Count) fichier(s)" -Level "INFO"
 }
 
-Write-Log "`nVérification terminée." -Level "SUCCESS"
+Write-Log "`nVÃ©rification terminÃ©e." -Level "SUCCESS"

@@ -1,9 +1,9 @@
-# Script pour tester la détection des blocs try/catch/finally
-# Ce script teste spécifiquement la détection des blocs try/catch/finally dans les workflows n8n
+﻿# Script pour tester la dÃ©tection des blocs try/catch/finally
+# Ce script teste spÃ©cifiquement la dÃ©tection des blocs try/catch/finally dans les workflows n8n
 
 #Requires -Version 5.1
 
-# Paramètres
+# ParamÃ¨tres
 param (
     [Parameter(Mandatory = $false)]
     [string]$TestDataPath = "TestData",
@@ -12,7 +12,7 @@ param (
     [string]$OutputFolder = "TestResults"
 )
 
-# Définir les chemins complets
+# DÃ©finir les chemins complets
 $TestDataPath = Join-Path -Path $PSScriptRoot -ChildPath $TestDataPath
 $OutputFolder = Join-Path -Path $PSScriptRoot -ChildPath $OutputFolder
 
@@ -38,7 +38,7 @@ function Write-TestMessage {
     Write-Host "[$Status] $Message" -ForegroundColor $color
 }
 
-# Créer les dossiers s'ils n'existent pas
+# CrÃ©er les dossiers s'ils n'existent pas
 if (-not (Test-Path -Path $TestDataPath)) {
     New-Item -Path $TestDataPath -ItemType Directory -Force | Out-Null
 }
@@ -47,42 +47,42 @@ if (-not (Test-Path -Path $OutputFolder)) {
     New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
 }
 
-# Générer le workflow de test avec try/catch/finally si nécessaire
+# GÃ©nÃ©rer le workflow de test avec try/catch/finally si nÃ©cessaire
 $tryCatchWorkflowPath = Join-Path -Path $TestDataPath -ChildPath "try_catch_workflow.json"
 if (-not (Test-Path -Path $tryCatchWorkflowPath)) {
-    Write-TestMessage "Le workflow de test n'existe pas. Génération en cours..." -Status "WARNING"
+    Write-TestMessage "Le workflow de test n'existe pas. GÃ©nÃ©ration en cours..." -Status "WARNING"
     
-    # Exécuter le script de génération de workflows
+    # ExÃ©cuter le script de gÃ©nÃ©ration de workflows
     $generateScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Generate-TestWorkflows.ps1"
     if (Test-Path -Path $generateScriptPath) {
         & $generateScriptPath -OutputFolder $TestDataPath
     }
     else {
-        Write-TestMessage "Le script de génération de workflows n'existe pas: $generateScriptPath" -Status "ERROR"
+        Write-TestMessage "Le script de gÃ©nÃ©ration de workflows n'existe pas: $generateScriptPath" -Status "ERROR"
         exit 1
     }
 }
 
-# Tester la détection des blocs try/catch/finally
-Write-TestMessage "Test de la détection des blocs try/catch/finally..." -Status "INFO"
+# Tester la dÃ©tection des blocs try/catch/finally
+Write-TestMessage "Test de la dÃ©tection des blocs try/catch/finally..." -Status "INFO"
 
 # Charger le workflow
 $workflow = Get-N8nWorkflow -WorkflowPath $tryCatchWorkflowPath
 
 if (-not $workflow) {
-    Write-TestMessage "Échec du chargement du workflow" -Status "ERROR"
+    Write-TestMessage "Ã‰chec du chargement du workflow" -Status "ERROR"
     exit 1
 }
 
-Write-TestMessage "Workflow chargé avec succès: $($workflow.name)" -Status "SUCCESS"
+Write-TestMessage "Workflow chargÃ© avec succÃ¨s: $($workflow.name)" -Status "SUCCESS"
 
-# Détecter les blocs try/catch/finally
+# DÃ©tecter les blocs try/catch/finally
 $tryCatchBlocks = Get-N8nWorkflowTryCatchBlocks -Workflow $workflow
 
 if ($tryCatchBlocks) {
-    Write-TestMessage "Blocs try/catch/finally détectés avec succès: $($tryCatchBlocks.Count) noeuds trouvés" -Status "SUCCESS"
+    Write-TestMessage "Blocs try/catch/finally dÃ©tectÃ©s avec succÃ¨s: $($tryCatchBlocks.Count) noeuds trouvÃ©s" -Status "SUCCESS"
     
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     foreach ($node in $tryCatchBlocks) {
         Write-TestMessage "Noeud: $($node.Name) (ID: $($node.Id))" -Status "INFO"
         Write-Host "  Type: $($node.Type)"
@@ -118,7 +118,7 @@ if ($tryCatchBlocks) {
         Write-Host ""
     }
     
-    # Enregistrer les résultats dans un fichier Markdown
+    # Enregistrer les rÃ©sultats dans un fichier Markdown
     $outputPath = Join-Path -Path $OutputFolder -ChildPath "try_catch_blocks.md"
     
     $markdown = "# Blocs try/catch/finally dans le workflow: $($workflow.name)`n`n"
@@ -157,10 +157,10 @@ if ($tryCatchBlocks) {
     }
     
     $markdown | Out-File -FilePath $outputPath -Encoding UTF8
-    Write-TestMessage "Résultats enregistrés dans: $outputPath" -Status "SUCCESS"
+    Write-TestMessage "RÃ©sultats enregistrÃ©s dans: $outputPath" -Status "SUCCESS"
 }
 else {
-    Write-TestMessage "Aucun bloc try/catch/finally détecté" -Status "WARNING"
+    Write-TestMessage "Aucun bloc try/catch/finally dÃ©tectÃ©" -Status "WARNING"
 }
 
-Write-TestMessage "Test terminé." -Status "SUCCESS"
+Write-TestMessage "Test terminÃ©." -Status "SUCCESS"

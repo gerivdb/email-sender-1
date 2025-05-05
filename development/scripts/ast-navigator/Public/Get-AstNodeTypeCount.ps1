@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Compte les noeuds d'un certain type dans l'arbre syntaxique PowerShell.
 
@@ -60,11 +60,11 @@ function Get-AstNodeTypeCount {
             $totalCount = 0
             $typeCounts = @{}
 
-            # Créer le prédicat de recherche
+            # CrÃ©er le prÃ©dicat de recherche
             $searchPredicate = {
                 param($node)
 
-                # Vérifier si le noeud correspond au type spécifié
+                # VÃ©rifier si le noeud correspond au type spÃ©cifiÃ©
                 $includeNode = $true
 
                 if ($NodeType) {
@@ -72,7 +72,7 @@ function Get-AstNodeTypeCount {
                     $includeNode = $nodeTypeName -eq $NodeType -or $nodeTypeName -eq "${NodeType}Ast"
                 }
 
-                # Vérifier si le noeud correspond au prédicat spécifié
+                # VÃ©rifier si le noeud correspond au prÃ©dicat spÃ©cifiÃ©
                 if ($includeNode -and $Predicate) {
                     $includeNode = & $Predicate $node
                 }
@@ -96,7 +96,7 @@ function Get-AstNodeTypeCount {
                 }
             }
 
-            # Retourner les résultats
+            # Retourner les rÃ©sultats
             if ($Detailed) {
                 # Convertir le hashtable en tableau d'objets
                 $typeCountsArray = $typeCounts.GetEnumerator() | ForEach-Object {

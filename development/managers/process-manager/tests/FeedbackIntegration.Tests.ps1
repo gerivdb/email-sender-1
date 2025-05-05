@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests d'intégration pour le système de feedback avec le Process Manager.
+    Tests d'intÃ©gration pour le systÃ¨me de feedback avec le Process Manager.
 
 .DESCRIPTION
-    Ce script contient les tests d'intégration pour vérifier l'interaction entre
-    les différents modules du système de feedback et le Process Manager.
+    Ce script contient les tests d'intÃ©gration pour vÃ©rifier l'interaction entre
+    les diffÃ©rents modules du systÃ¨me de feedback et le Process Manager.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les chemins des modules à tester
+# DÃ©finir les chemins des modules Ã  tester
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $feedbackManagerPath = Join-Path -Path $modulesPath -ChildPath "FeedbackManager\FeedbackManager.psm1"
 $feedbackCollectorPath = Join-Path -Path $modulesPath -ChildPath "FeedbackCollector\FeedbackCollector.psm1"
 $feedbackExporterPath = Join-Path -Path $modulesPath -ChildPath "FeedbackExporter\FeedbackExporter.psm1"
 $processManagerCommunicationPath = Join-Path -Path $modulesPath -ChildPath "ProcessManagerCommunication\ProcessManagerCommunication.psm1"
 
-# Importer les modules à tester
+# Importer les modules Ã  tester
 if (Test-Path -Path $feedbackManagerPath) {
     Import-Module $feedbackManagerPath -Force
 }
@@ -53,14 +53,14 @@ else {
     throw "Module ProcessManagerCommunication introuvable : $processManagerCommunicationPath"
 }
 
-# Définir les tests
-Describe "Système de feedback - Tests d'intégration" {
+# DÃ©finir les tests
+Describe "SystÃ¨me de feedback - Tests d'intÃ©gration" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "FeedbackIntegrationTests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
 
-        # Créer les sous-répertoires nécessaires
+        # CrÃ©er les sous-rÃ©pertoires nÃ©cessaires
         $script:ConfigDir = Join-Path -Path $script:TestDir -ChildPath "config\managers\process-manager"
         $script:DataDir = Join-Path -Path $script:TestDir -ChildPath "data\feedback"
         $script:ExportDir = Join-Path -Path $script:TestDir -ChildPath "exports\feedback"
@@ -69,7 +69,7 @@ Describe "Système de feedback - Tests d'intégration" {
         New-Item -Path $script:DataDir -ItemType Directory -Force | Out-Null
         New-Item -Path $script:ExportDir -ItemType Directory -Force | Out-Null
 
-        # Créer un fichier de configuration de test pour le Process Manager
+        # CrÃ©er un fichier de configuration de test pour le Process Manager
         $processManagerConfig = @{
             Managers = @{
                 FeedbackManager = @{
@@ -99,7 +99,7 @@ Describe "Système de feedback - Tests d'intégration" {
         $processManagerConfigPath = Join-Path -Path $script:ConfigDir -ChildPath "process-manager.config.json"
         $processManagerConfig | ConvertTo-Json -Depth 10 | Out-File -FilePath $processManagerConfigPath -Encoding utf8
 
-        # Créer un fichier de configuration de test pour le FeedbackManager
+        # CrÃ©er un fichier de configuration de test pour le FeedbackManager
         $feedbackManagerConfig = @{
             DefaultVerbosityLevel = "Normal"
             MaxHistorySize = 1000
@@ -108,7 +108,7 @@ Describe "Système de feedback - Tests d'intégration" {
         $feedbackManagerConfigPath = Join-Path -Path $script:ConfigDir -ChildPath "feedback-manager.config.json"
         $feedbackManagerConfig | ConvertTo-Json -Depth 5 | Out-File -FilePath $feedbackManagerConfigPath -Encoding utf8
 
-        # Créer un fichier de configuration de test pour le FeedbackCollector
+        # CrÃ©er un fichier de configuration de test pour le FeedbackCollector
         $feedbackCollectorConfig = @{
             MaxCollectionSize = 1000
             RotationEnabled = $true
@@ -121,7 +121,7 @@ Describe "Système de feedback - Tests d'intégration" {
         $feedbackCollectorConfigPath = Join-Path -Path $script:ConfigDir -ChildPath "feedback-collector.config.json"
         $feedbackCollectorConfig | ConvertTo-Json -Depth 5 | Out-File -FilePath $feedbackCollectorConfigPath -Encoding utf8
 
-        # Créer un fichier de configuration de test pour le FeedbackExporter
+        # CrÃ©er un fichier de configuration de test pour le FeedbackExporter
         $feedbackExporterConfig = @{
             DefaultFormat = "JSON"
             ExportPath = $script:ExportDir
@@ -140,22 +140,22 @@ Describe "Système de feedback - Tests d'intégration" {
         Initialize-FeedbackExporter -ConfigPath $feedbackExporterConfigPath -ExportPath $script:ExportDir
     }
 
-    Context "Intégration FeedbackManager et FeedbackCollector" {
-        It "Les messages envoyés via FeedbackManager doivent être collectés par FeedbackCollector" {
+    Context "IntÃ©gration FeedbackManager et FeedbackCollector" {
+        It "Les messages envoyÃ©s via FeedbackManager doivent Ãªtre collectÃ©s par FeedbackCollector" {
             # Envoyer un message via FeedbackManager
-            $message = Send-ProcessManagerInformation -Message "Test d'intégration" -PassThru
+            $message = Send-ProcessManagerInformation -Message "Test d'intÃ©gration" -PassThru
             
-            # Ajouter manuellement le message à la collection (car l'abonnement aux événements n'est pas actif dans les tests)
+            # Ajouter manuellement le message Ã  la collection (car l'abonnement aux Ã©vÃ©nements n'est pas actif dans les tests)
             Add-MessageToCollection -Message $message
             
-            # Vérifier que le message a été ajouté à la collection
+            # VÃ©rifier que le message a Ã©tÃ© ajoutÃ© Ã  la collection
             $script:MessageCollection.Messages.Count | Should -BeGreaterThan 0
-            $script:MessageCollection.Messages[0].Message | Should -Be "Test d'intégration"
+            $script:MessageCollection.Messages[0].Message | Should -Be "Test d'intÃ©gration"
         }
     }
 
-    Context "Intégration FeedbackCollector et FeedbackExporter" {
-        It "Les messages collectés doivent pouvoir être exportés" {
+    Context "IntÃ©gration FeedbackCollector et FeedbackExporter" {
+        It "Les messages collectÃ©s doivent pouvoir Ãªtre exportÃ©s" {
             # Envoyer plusieurs messages
             for ($i = 1; $i -le 5; $i++) {
                 $message = Send-ProcessManagerInformation -Message "Message de test $i" -PassThru
@@ -165,19 +165,19 @@ Describe "Système de feedback - Tests d'intégration" {
             # Exporter les messages
             $exportPath = Export-CollectedMessages -Format "JSON" -OutputPath (Join-Path -Path $script:ExportDir -ChildPath "test_export.json")
             
-            # Vérifier que le fichier d'exportation existe
+            # VÃ©rifier que le fichier d'exportation existe
             Test-Path -Path $exportPath | Should -Be $true
             
-            # Vérifier le contenu du fichier
+            # VÃ©rifier le contenu du fichier
             $exportContent = Get-Content -Path $exportPath -Raw | ConvertFrom-Json
             $exportContent.Messages.Count | Should -BeGreaterThan 0
             $exportContent.Messages[0].Message | Should -Match "Message de test"
         }
     }
 
-    Context "Intégration avec le Process Manager via ProcessManagerCommunication" {
+    Context "IntÃ©gration avec le Process Manager via ProcessManagerCommunication" {
         BeforeAll {
-            # Créer un mock pour la communication avec le Process Manager
+            # CrÃ©er un mock pour la communication avec le Process Manager
             Mock Initialize-ProcessManagerCommunication {
                 return @{
                     Protocol = "FileSystem"
@@ -203,13 +203,13 @@ Describe "Système de feedback - Tests d'intégration" {
                     [int]$Timeout = 30
                 )
                 
-                # Simuler une réponse du Process Manager
+                # Simuler une rÃ©ponse du Process Manager
                 $response = @{
                     Id = $Parameters.Id
                     Command = $Command
                     Success = $true
                     Result = @{
-                        Message = "Commande exécutée avec succès"
+                        Message = "Commande exÃ©cutÃ©e avec succÃ¨s"
                     }
                 }
                 

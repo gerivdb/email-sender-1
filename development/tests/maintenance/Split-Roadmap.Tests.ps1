@@ -1,4 +1,4 @@
-# Split-Roadmap.Tests.ps1
+﻿# Split-Roadmap.Tests.ps1
 # Tests unitaires pour le script Split-Roadmap.ps1
 
 BeforeAll {
@@ -11,22 +11,22 @@ BeforeAll {
     $script:testCompletedRoadmapPath = Join-Path -Path $testOutputPath -ChildPath "roadmap_completed.md"
     $script:testSectionsPath = Join-Path -Path $testOutputPath -ChildPath "sections"
 
-    # Initialiser les données de test
+    # Initialiser les donnÃ©es de test
     $initializeTestDataScript = Join-Path -Path $PSScriptRoot -ChildPath "Initialize-TestData.ps1"
     if (Test-Path -Path $initializeTestDataScript) {
         & $initializeTestDataScript -TestDataPath $testDataPath -OutputPath $testOutputPath -SectionsPath $testSectionsPath -Force
     } else {
-        throw "Le script d'initialisation des données de test n'a pas été trouvé à l'emplacement: $initializeTestDataScript"
+        throw "Le script d'initialisation des donnÃ©es de test n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $initializeTestDataScript"
     }
 
-    # Vérifier que le script existe
+    # VÃ©rifier que le script existe
     if (-not (Test-Path -Path $scriptPath)) {
-        throw "Le script Split-Roadmap.ps1 n'a pas été trouvé à l'emplacement: $scriptPath"
+        throw "Le script Split-Roadmap.ps1 n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $scriptPath"
     }
 
-    # Vérifier que les données de test existent
+    # VÃ©rifier que les donnÃ©es de test existent
     if (-not (Test-Path -Path $testRoadmapPath)) {
-        throw "Le fichier de roadmap de test n'a pas été trouvé à l'emplacement: $testRoadmapPath"
+        throw "Le fichier de roadmap de test n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $testRoadmapPath"
     }
 
     # Fonction pour nettoyer les fichiers de sortie
@@ -51,13 +51,13 @@ BeforeAll {
             [hashtable]$Parameters
         )
 
-        # Créer un tableau pour stocker la sortie
+        # CrÃ©er un tableau pour stocker la sortie
         $output = @()
 
         # Rediriger la sortie vers notre tableau
         & $ScriptPath @Parameters 2>&1 | ForEach-Object {
             $output += $_
-            # Afficher également la sortie pour le débogage
+            # Afficher Ã©galement la sortie pour le dÃ©bogage
             Write-Host $_
         }
 
@@ -69,13 +69,13 @@ BeforeAll {
 }
 
 AfterAll {
-    # Nettoyer après les tests
+    # Nettoyer aprÃ¨s les tests
     Clear-TestOutput
 }
 
 Describe "Split-Roadmap" {
-    Context "Validation des paramètres" {
-        It "Devrait échouer si le fichier source n'existe pas" {
+    Context "Validation des paramÃ¨tres" {
+        It "Devrait Ã©chouer si le fichier source n'existe pas" {
             $nonExistentPath = Join-Path -Path $testDataPath -ChildPath "non_existent.md"
             $params = @{
                 SourceRoadmapPath    = $nonExistentPath
@@ -88,8 +88,8 @@ Describe "Split-Roadmap" {
             $output -join "`n" | Should -Match "n'existe pas"
         }
 
-        It "Devrait échouer si les fichiers de destination existent déjà et -Force n'est pas spécifié" {
-            # Créer des fichiers de destination vides
+        It "Devrait Ã©chouer si les fichiers de destination existent dÃ©jÃ  et -Force n'est pas spÃ©cifiÃ©" {
+            # CrÃ©er des fichiers de destination vides
             Set-Content -Path $testActiveRoadmapPath -Value "Test" -Force
             Set-Content -Path $testCompletedRoadmapPath -Value "Test" -Force
 
@@ -100,16 +100,16 @@ Describe "Split-Roadmap" {
                 SectionsArchivePath  = $testSectionsPath
             }
             $output = Invoke-ScriptWithOutput -ScriptPath $scriptPath -Parameters $params
-            $output -join "`n" | Should -Match "existent déjà"
+            $output -join "`n" | Should -Match "existent dÃ©jÃ "
 
             # Nettoyer
             Clear-TestOutput
         }
     }
 
-    Context "Fonctionnalités de base" {
-        It "Devrait séparer correctement la roadmap en fichiers actif et complété" {
-            # Utiliser le script simplifié pour les tests
+    Context "FonctionnalitÃ©s de base" {
+        It "Devrait sÃ©parer correctement la roadmap en fichiers actif et complÃ©tÃ©" {
+            # Utiliser le script simplifiÃ© pour les tests
             $simpleScriptPath = Join-Path -Path $testDataPath -ChildPath "SimpleSplitRoadmap.ps1"
 
             # Nettoyer les fichiers de sortie
@@ -129,22 +129,22 @@ Describe "Split-Roadmap" {
             Test-Path -Path $testActiveRoadmapPath | Should -Be $true
             Test-Path -Path $testCompletedRoadmapPath | Should -Be $true
 
-            # Vérifier le contenu des fichiers
+            # VÃ©rifier le contenu des fichiers
             $activeContent = Get-Content -Path $testActiveRoadmapPath -Raw
             $completedContent = Get-Content -Path $testCompletedRoadmapPath -Raw
 
-            # Le fichier actif devrait contenir des tâches incomplètes
+            # Le fichier actif devrait contenir des tÃ¢ches incomplÃ¨tes
             $activeContent | Should -Match "- \[ \] \*\*1.1.2\*\*"
             $activeContent | Should -Match "- \[ \] \*\*1.2.2\*\*"
             $activeContent | Should -Match "- \[ \] \*\*2.1.1\*\*"
 
-            # Le fichier complété devrait contenir des tâches complétées
+            # Le fichier complÃ©tÃ© devrait contenir des tÃ¢ches complÃ©tÃ©es
             $completedContent | Should -Match "- \[x\] \*\*1.1.1\*\*"
             $completedContent | Should -Match "- \[x\] \*\*1.2.1\*\*"
         }
 
-        It "Devrait archiver les sections complétées si -ArchiveCompletedSections est spécifié" {
-            # Utiliser le script simplifié pour les tests
+        It "Devrait archiver les sections complÃ©tÃ©es si -ArchiveCompletedSections est spÃ©cifiÃ©" {
+            # Utiliser le script simplifiÃ© pour les tests
             $simpleScriptPath = Join-Path -Path $testDataPath -ChildPath "SimpleSplitRoadmap.ps1"
 
             # Nettoyer les fichiers de sortie
@@ -164,7 +164,7 @@ Describe "Split-Roadmap" {
             $result | Should -Be $true
             Test-Path -Path $testSectionsPath | Should -Be $true
 
-            # Vérifier qu'au moins un fichier de section a été créé
+            # VÃ©rifier qu'au moins un fichier de section a Ã©tÃ© crÃ©Ã©
             $sectionFiles = Get-ChildItem -Path $testSectionsPath -Filter "*.md" -Recurse
             $sectionFiles.Count | Should -BeGreaterThan 0
         }
@@ -172,14 +172,14 @@ Describe "Split-Roadmap" {
 
     Context "Fonctions internes" {
         BeforeAll {
-            # Dot-sourcer le script pour accéder aux fonctions internes
+            # Dot-sourcer le script pour accÃ©der aux fonctions internes
             . $scriptPath
         }
 
-        It "Get-TaskStatus devrait identifier correctement le statut d'une tâche" {
-            Get-TaskStatus -TaskLine "- [x] **1.1.1** Tâche complétée" | Should -Be "Completed"
-            Get-TaskStatus -TaskLine "- [ ] **1.1.2** Tâche incomplète" | Should -Be "Active"
-            Get-TaskStatus -TaskLine "Ceci n'est pas une tâche" | Should -Be "Unknown"
+        It "Get-TaskStatus devrait identifier correctement le statut d'une tÃ¢che" {
+            Get-TaskStatus -TaskLine "- [x] **1.1.1** TÃ¢che complÃ©tÃ©e" | Should -Be "Completed"
+            Get-TaskStatus -TaskLine "- [ ] **1.1.2** TÃ¢che incomplÃ¨te" | Should -Be "Active"
+            Get-TaskStatus -TaskLine "Ceci n'est pas une tÃ¢che" | Should -Be "Unknown"
         }
 
         It "Get-SectionLevel devrait identifier correctement le niveau d'une section" {
@@ -202,21 +202,21 @@ Describe "Split-Roadmap" {
             Get-SectionId -HeaderLine "### Titre sans ID" | Should -Be ""
         }
 
-        It "Test-SectionCompleted devrait identifier correctement si une section est complétée" {
+        It "Test-SectionCompleted devrait identifier correctement si une section est complÃ©tÃ©e" {
             $completedSection = @(
-                "### **1.1** Section complétée",
-                "- [x] **1.1.1** Tâche 1",
-                "- [x] **1.1.2** Tâche 2"
+                "### **1.1** Section complÃ©tÃ©e",
+                "- [x] **1.1.1** TÃ¢che 1",
+                "- [x] **1.1.2** TÃ¢che 2"
             )
 
             $incompleteSection = @(
-                "### **1.2** Section incomplète",
-                "- [x] **1.2.1** Tâche 1",
-                "- [ ] **1.2.2** Tâche 2"
+                "### **1.2** Section incomplÃ¨te",
+                "- [x] **1.2.1** TÃ¢che 1",
+                "- [ ] **1.2.2** TÃ¢che 2"
             )
 
             $noTasksSection = @(
-                "### **1.3** Section sans tâches",
+                "### **1.3** Section sans tÃ¢ches",
                 "Ceci est une description"
             )
 

@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
     Script pour optimiser les Memories d'Augment selon les conseils d'Augment Code.
 
 .DESCRIPTION
     Ce script optimise les Memories d'Augment en suivant les conseils d'Augment Code,
-    notamment en organisant les Memories par catégories fonctionnelles et en implémentant
-    un système de sélection contextuelle des Memories basé sur le mode actif.
+    notamment en organisant les Memories par catÃ©gories fonctionnelles et en implÃ©mentant
+    un systÃ¨me de sÃ©lection contextuelle des Memories basÃ© sur le mode actif.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les Memories optimisées.
-    Par défaut, utilise le chemin des Memories d'Augment dans VS Code.
+    Chemin du fichier de sortie pour les Memories optimisÃ©es.
+    Par dÃ©faut, utilise le chemin des Memories d'Augment dans VS Code.
 
 .PARAMETER Mode
     Mode actif pour lequel optimiser les Memories.
     Valeurs possibles : ARCHI, CHECK, C-BREAK, DEBUG, DEV-R, GRAN, OPTI, PREDIC, REVIEW, TEST.
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration. Par défaut : "development\config\unified-config.json".
+    Chemin vers le fichier de configuration. Par dÃ©faut : "development\config\unified-config.json".
 
 .EXAMPLE
     .\optimize-augment-memories.ps1
-    # Optimise les Memories d'Augment avec les paramètres par défaut
+    # Optimise les Memories d'Augment avec les paramÃ¨tres par dÃ©faut
 
 .EXAMPLE
     .\optimize-augment-memories.ps1 -Mode GRAN -OutputPath "C:\temp\augment_memories.json"
-    # Optimise les Memories d'Augment pour le mode GRAN et les enregistre dans le fichier spécifié
+    # Optimise les Memories d'Augment pour le mode GRAN et les enregistre dans le fichier spÃ©cifiÃ©
 
 .NOTES
     Version: 1.0
@@ -45,7 +45,7 @@ param (
     [string]$ConfigPath = "development\config\unified-config.json"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -55,7 +55,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
@@ -69,7 +69,7 @@ if (Test-Path -Path $memoriesManagerPath) {
     exit 1
 }
 
-# Charger la configuration unifiée
+# Charger la configuration unifiÃ©e
 $configPath = Join-Path -Path $projectRoot -ChildPath $ConfigPath
 if (Test-Path -Path $configPath) {
     try {
@@ -80,7 +80,7 @@ if (Test-Path -Path $configPath) {
     }
 } else {
     Write-Warning "Le fichier de configuration est introuvable : $configPath"
-    # Créer une configuration par défaut
+    # CrÃ©er une configuration par dÃ©faut
     $config = [PSCustomObject]@{
         Augment = [PSCustomObject]@{
             Memories = [PSCustomObject]@{
@@ -94,7 +94,7 @@ if (Test-Path -Path $configPath) {
     }
 }
 
-# Définir le chemin de sortie par défaut si non spécifié
+# DÃ©finir le chemin de sortie par dÃ©faut si non spÃ©cifiÃ©
 if (-not $OutputPath) {
     $workspaceId = if ($config.Augment.Memories.VSCodeWorkspaceId) { 
         $config.Augment.Memories.VSCodeWorkspaceId 
@@ -104,7 +104,7 @@ if (-not $OutputPath) {
     $OutputPath = "$env:APPDATA\Code\User\workspaceStorage\$workspaceId\Augment.vscode-augment\Augment-Memories"
 }
 
-# Fonction pour générer les Memories optimisées
+# Fonction pour gÃ©nÃ©rer les Memories optimisÃ©es
 function Get-OptimizedMemories {
     [CmdletBinding()]
     param (
@@ -112,7 +112,7 @@ function Get-OptimizedMemories {
         [string]$Mode = "ALL"
     )
 
-    # Définir les sections communes à tous les modes
+    # DÃ©finir les sections communes Ã  tous les modes
     $commonSections = @(
         @{
             "name"    = "PROJECT STRUCTURE"
@@ -156,7 +156,7 @@ function Get-OptimizedMemories {
 - GRAN mode: granularizes tasks directly in active document, adapting to complexity
 - DEV-R mode: implements tasks sequentially with minimal explanations
 - CHECK mode: verifies implementation status and updates roadmap
-- User prefers working sequence: GRAN → DEV-R → CHECK
+- User prefers working sequence: GRAN â†’ DEV-R â†’ CHECK
 - Mode manager system needed for coherent switching between operational modes
 "@
         },
@@ -175,7 +175,7 @@ function Get-OptimizedMemories {
         @{
             "name"    = "USER PREFERENCES"
             "content" = @"
-- Language: French (parle français)
+- Language: French (parle franÃ§ais)
 - Git: email `gerivonderbitsh+dev@gmail.com`, uses `git add commit push --no-verify`
 - Communication: concise responses (SILENT_DEVELOPMENT mode), small precise prompts
 - Implementation: detailed plans before coding, thorough testing before completion
@@ -185,22 +185,22 @@ function Get-OptimizedMemories {
         }
     )
 
-    # Définir les sections spécifiques à chaque mode
+    # DÃ©finir les sections spÃ©cifiques Ã  chaque mode
     $modeSections = @{
         "GRAN" = @(
             @{
                 "name"    = "GRAN MODE"
                 "content" = @"
 ## Mode GRAN - Granularisation
-- Objectif: Décomposer les blocs complexes directement dans le document
-- Déclencheurs: Taille > 5KB, complexité > 7, feedback utilisateur
+- Objectif: DÃ©composer les blocs complexes directement dans le document
+- DÃ©clencheurs: Taille > 5KB, complexitÃ© > 7, feedback utilisateur
 - Directives: 
   - split_by_responsibility()
   - detect_concatenated_tasks()
   - isolate_subtasks()
   - extract_functions()
   - granular_unit_set()
-- Extensions: utilise `SEGMENTOR` pour des données structurées ou volumineuses
+- Extensions: utilise `SEGMENTOR` pour des donnÃ©es structurÃ©es ou volumineuses
 "@
             },
             @{
@@ -208,12 +208,12 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\scripts\maintenance\modes\gran-mode.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.Gran
-- Paramètres clés:
-  - FilePath: Chemin vers le fichier de roadmap à modifier
-  - TaskIdentifier: Identifiant de la tâche à décomposer (ex: "1.2.3")
-  - ComplexityLevel: Niveau de complexité (Simple, Medium, Complex, Auto)
-  - Domain: Domaine de la tâche pour la génération de sous-tâches spécifiques
-  - UseAI: Utiliser l'IA pour générer des sous-tâches adaptées
+- ParamÃ¨tres clÃ©s:
+  - FilePath: Chemin vers le fichier de roadmap Ã  modifier
+  - TaskIdentifier: Identifiant de la tÃ¢che Ã  dÃ©composer (ex: "1.2.3")
+  - ComplexityLevel: Niveau de complexitÃ© (Simple, Medium, Complex, Auto)
+  - Domain: Domaine de la tÃ¢che pour la gÃ©nÃ©ration de sous-tÃ¢ches spÃ©cifiques
+  - UseAI: Utiliser l'IA pour gÃ©nÃ©rer des sous-tÃ¢ches adaptÃ©es
 "@
             }
         ),
@@ -221,13 +221,13 @@ function Get-OptimizedMemories {
             @{
                 "name"    = "DEV-R MODE"
                 "content" = @"
-## Mode DEV-R - Développement Roadmap
-- Objectif: Implémenter ce qui est dans la roadmap
-- Déclencheurs: Nouvelle tâche roadmap confirmée
+## Mode DEV-R - DÃ©veloppement Roadmap
+- Objectif: ImplÃ©menter ce qui est dans la roadmap
+- DÃ©clencheurs: Nouvelle tÃ¢che roadmap confirmÃ©e
 - Directives: 
-  - Implémenter la sélection sous-tâche par sous-tâche
-  - Générer les tests
-  - Corriger tous les problèmes
+  - ImplÃ©menter la sÃ©lection sous-tÃ¢che par sous-tÃ¢che
+  - GÃ©nÃ©rer les tests
+  - Corriger tous les problÃ¨mes
   - Assurer 100% couverture
 "@
             },
@@ -236,13 +236,13 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\roadmap\parser\modes\dev-r\dev-r-mode.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.DevR
-- Paramètres clés:
+- ParamÃ¨tres clÃ©s:
   - FilePath: Chemin vers le fichier de roadmap
-  - TaskIdentifier: Identifiant de la tâche à implémenter
-  - ProjectPath: Chemin vers le répertoire du projet
-  - TestsPath: Chemin vers le répertoire des tests
-  - GenerateTests: Générer automatiquement des tests
-  - UpdateRoadmap: Mettre à jour la roadmap après implémentation
+  - TaskIdentifier: Identifiant de la tÃ¢che Ã  implÃ©menter
+  - ProjectPath: Chemin vers le rÃ©pertoire du projet
+  - TestsPath: Chemin vers le rÃ©pertoire des tests
+  - GenerateTests: GÃ©nÃ©rer automatiquement des tests
+  - UpdateRoadmap: Mettre Ã  jour la roadmap aprÃ¨s implÃ©mentation
 "@
             }
         ),
@@ -250,14 +250,14 @@ function Get-OptimizedMemories {
             @{
                 "name"    = "CHECK MODE"
                 "content" = @"
-## Mode CHECK - Vérification
-- Objectif: Vérifier l'état d'avancement des tâches
-- Déclencheurs: Fin d'implémentation, validation requise
+## Mode CHECK - VÃ©rification
+- Objectif: VÃ©rifier l'Ã©tat d'avancement des tÃ¢ches
+- DÃ©clencheurs: Fin d'implÃ©mentation, validation requise
 - Directives: 
-  - Vérifier l'implémentation
-  - Exécuter les tests
-  - Mettre à jour la roadmap
-  - Générer un rapport
+  - VÃ©rifier l'implÃ©mentation
+  - ExÃ©cuter les tests
+  - Mettre Ã  jour la roadmap
+  - GÃ©nÃ©rer un rapport
 "@
             },
             @{
@@ -265,12 +265,12 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\scripts\maintenance\modes\check.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.Check
-- Paramètres clés:
+- ParamÃ¨tres clÃ©s:
   - FilePath: Chemin vers le fichier de roadmap
-  - TaskIdentifier: Identifiant de la tâche à vérifier
-  - GenerateReport: Générer un rapport de vérification
-  - AutoUpdateRoadmap: Mettre à jour automatiquement la roadmap
-  - RequireFullTestCoverage: Exiger une couverture de test complète
+  - TaskIdentifier: Identifiant de la tÃ¢che Ã  vÃ©rifier
+  - GenerateReport: GÃ©nÃ©rer un rapport de vÃ©rification
+  - AutoUpdateRoadmap: Mettre Ã  jour automatiquement la roadmap
+  - RequireFullTestCoverage: Exiger une couverture de test complÃ¨te
 "@
             }
         ),
@@ -279,8 +279,8 @@ function Get-OptimizedMemories {
                 "name"    = "ARCHI MODE"
                 "content" = @"
 ## Mode ARCHI - Architecture
-- Objectif: Structurer, modéliser, anticiper les dépendances
-- Déclencheurs: Analyse d'impact, modélisation, dette technique
+- Objectif: Structurer, modÃ©liser, anticiper les dÃ©pendances
+- DÃ©clencheurs: Analyse d'impact, modÃ©lisation, dette technique
 - Directives: 
   - diagram_layers()
   - define_contracts()
@@ -294,9 +294,9 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\scripts\maintenance\modes\archi-mode.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.Archi
-- Paramètres clés:
+- ParamÃ¨tres clÃ©s:
   - FilePath: Chemin vers le fichier de roadmap
-  - OutputPath: Chemin vers le répertoire de sortie des diagrammes
+  - OutputPath: Chemin vers le rÃ©pertoire de sortie des diagrammes
   - DiagramFormat: Format des diagrammes (PlantUML, Mermaid, Graphviz)
   - IncludeComponents: Inclure les composants dans les diagrammes
   - IncludeInterfaces: Inclure les interfaces dans les diagrammes
@@ -307,9 +307,9 @@ function Get-OptimizedMemories {
             @{
                 "name"    = "DEBUG MODE"
                 "content" = @"
-## Mode DEBUG - Débogage
+## Mode DEBUG - DÃ©bogage
 - Objectif: Isoler, comprendre, corriger les anomalies
-- Déclencheurs: Erreurs, logs, comportement inattendu
+- DÃ©clencheurs: Erreurs, logs, comportement inattendu
 - Directives: 
   - identify_fault_origin()
   - test_edge_cases()
@@ -323,10 +323,10 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\roadmap\parser\modes\debug\debug-mode.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.Debug
-- Paramètres clés:
+- ParamÃ¨tres clÃ©s:
   - FilePath: Chemin vers le fichier contenant l'erreur
   - ErrorLog: Chemin vers le fichier de log d'erreurs
-  - GeneratePatch: Générer un patch correctif
+  - GeneratePatch: GÃ©nÃ©rer un patch correctif
   - IncludeStackTrace: Inclure la trace d'appel dans l'analyse
   - AnalyzePerformance: Analyser les performances
 "@
@@ -337,8 +337,8 @@ function Get-OptimizedMemories {
                 "name"    = "TEST MODE"
                 "content" = @"
 ## Mode TEST - Tests
-- Objectif: Maximiser couverture et fiabilité
-- Déclencheurs: Specs, mode TDD actif
+- Objectif: Maximiser couverture et fiabilitÃ©
+- DÃ©clencheurs: Specs, mode TDD actif
 - Directives: 
   - test_suites(coverage=90%)
   - test_cases_by_pattern()
@@ -350,12 +350,12 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\roadmap\parser\modes\test\test-mode.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.Test
-- Paramètres clés:
-  - FilePath: Chemin vers le fichier à tester
-  - TestsPath: Chemin vers le répertoire des tests
-  - CoveragePath: Chemin vers le répertoire des rapports de couverture
-  - TestFramework: Framework de test à utiliser (Pester, pytest)
-  - GenerateReport: Générer un rapport de test
+- ParamÃ¨tres clÃ©s:
+  - FilePath: Chemin vers le fichier Ã  tester
+  - TestsPath: Chemin vers le rÃ©pertoire des tests
+  - CoveragePath: Chemin vers le rÃ©pertoire des rapports de couverture
+  - TestFramework: Framework de test Ã  utiliser (Pester, pytest)
+  - GenerateReport: GÃ©nÃ©rer un rapport de test
 "@
             }
         ),
@@ -364,13 +364,13 @@ function Get-OptimizedMemories {
                 "name"    = "OPTI MODE"
                 "content" = @"
 ## Mode OPTI - Optimisation
-- Objectif: Réduire complexité, taille ou temps d'exécution
-- Déclencheurs: Complexité > 5, taille excessive
+- Objectif: RÃ©duire complexitÃ©, taille ou temps d'exÃ©cution
+- DÃ©clencheurs: ComplexitÃ© > 5, taille excessive
 - Directives: 
   - runtime_hotspots()
   - reduce_LOC_nesting_calls()
   - optimized_version()
-- Extensions: inclut `PARALLELIZER` pour optimiser les traitements lourds, `CACHE_MGR` pour accélérer les accès et prédictions
+- Extensions: inclut `PARALLELIZER` pour optimiser les traitements lourds, `CACHE_MGR` pour accÃ©lÃ©rer les accÃ¨s et prÃ©dictions
 "@
             },
             @{
@@ -378,12 +378,12 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\scripts\maintenance\modes\opti-mode.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.Opti
-- Paramètres clés:
-  - FilePath: Chemin vers le fichier à optimiser
+- ParamÃ¨tres clÃ©s:
+  - FilePath: Chemin vers le fichier Ã  optimiser
   - OptimizationTarget: Cible de l'optimisation (All, Memory, CPU, Size)
   - ProfileDepth: Profondeur de profilage
-  - MemoryThreshold: Seuil de mémoire pour déclencher l'optimisation
-  - TimeThreshold: Seuil de temps pour déclencher l'optimisation
+  - MemoryThreshold: Seuil de mÃ©moire pour dÃ©clencher l'optimisation
+  - TimeThreshold: Seuil de temps pour dÃ©clencher l'optimisation
 "@
             }
         ),
@@ -392,8 +392,8 @@ function Get-OptimizedMemories {
                 "name"    = "REVIEW MODE"
                 "content" = @"
 ## Mode REVIEW - Revue
-- Objectif: Vérifier lisibilité, standards, documentation
-- Déclencheurs: Pre_commit, PR
+- Objectif: VÃ©rifier lisibilitÃ©, standards, documentation
+- DÃ©clencheurs: Pre_commit, PR
 - Directives: 
   - check_SOLID_KISS_DRY()
   - doc_ratio()
@@ -406,12 +406,12 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\scripts\maintenance\modes\review-mode.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.Review
-- Paramètres clés:
-  - FilePath: Chemin vers le fichier à réviser
-  - CodeStyle: Style de code à vérifier
+- ParamÃ¨tres clÃ©s:
+  - FilePath: Chemin vers le fichier Ã  rÃ©viser
+  - CodeStyle: Style de code Ã  vÃ©rifier
   - DocRatio: Ratio de documentation requis
-  - MaxCyclomaticComplexity: Complexité cyclomatique maximale autorisée
-  - GenerateReport: Générer un rapport de revue
+  - MaxCyclomaticComplexity: ComplexitÃ© cyclomatique maximale autorisÃ©e
+  - GenerateReport: GÃ©nÃ©rer un rapport de revue
 "@
             }
         ),
@@ -420,8 +420,8 @@ function Get-OptimizedMemories {
                 "name"    = "C-BREAK MODE"
                 "content" = @"
 ## Mode C-BREAK - Cycle Break
-- Objectif: Détecter et corriger les dépendances circulaires
-- Déclencheurs: Logique récursive, erreurs d'import ou workflow bloqué
+- Objectif: DÃ©tecter et corriger les dÃ©pendances circulaires
+- DÃ©clencheurs: Logique rÃ©cursive, erreurs d'import ou workflow bloquÃ©
 - Directives: 
   - Detect-CyclicDependencies()
   - Validate-WorkflowCycles()
@@ -434,12 +434,12 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\scripts\maintenance\modes\c-break-mode.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.CBreak
-- Paramètres clés:
-  - FilePath: Chemin vers le fichier à analyser
-  - MaxRecursionDepth: Profondeur maximale de récursion
+- ParamÃ¨tres clÃ©s:
+  - FilePath: Chemin vers le fichier Ã  analyser
+  - MaxRecursionDepth: Profondeur maximale de rÃ©cursion
   - AnalyzeImports: Analyser les imports
-  - AnalyzeReferences: Analyser les références
-  - GenerateGraph: Générer un graphe des dépendances
+  - AnalyzeReferences: Analyser les rÃ©fÃ©rences
+  - GenerateGraph: GÃ©nÃ©rer un graphe des dÃ©pendances
 "@
             }
         ),
@@ -447,9 +447,9 @@ function Get-OptimizedMemories {
             @{
                 "name"    = "PREDIC MODE"
                 "content" = @"
-## Mode PREDIC - Prédiction
-- Objectif: Anticiper performances, détecter anomalies, analyser tendances
-- Déclencheurs: Besoin d'analyse de charge ou de comportement futur
+## Mode PREDIC - PrÃ©diction
+- Objectif: Anticiper performances, dÃ©tecter anomalies, analyser tendances
+- DÃ©clencheurs: Besoin d'analyse de charge ou de comportement futur
 - Directives: 
   - predict_metrics()
   - find_anomalies()
@@ -463,10 +463,10 @@ function Get-OptimizedMemories {
                 "content" = @"
 - Script principal: `development\scripts\maintenance\modes\predic-mode.ps1`
 - Configuration: `development\config\unified-config.json` section Modes.Predic
-- Paramètres clés:
-  - FilePath: Chemin vers le fichier à analyser
-  - PredictionHorizon: Horizon de prédiction
-  - AnomalyDetection: Activer la détection d'anomalies
+- ParamÃ¨tres clÃ©s:
+  - FilePath: Chemin vers le fichier Ã  analyser
+  - PredictionHorizon: Horizon de prÃ©diction
+  - AnomalyDetection: Activer la dÃ©tection d'anomalies
   - TrendAnalysis: Activer l'analyse de tendances
   - AlertThreshold: Seuil d'alerte
 "@
@@ -474,16 +474,16 @@ function Get-OptimizedMemories {
         )
     }
 
-    # Définir les sections d'optimisation communes
+    # DÃ©finir les sections d'optimisation communes
     $optimizationSections = @(
         @{
-            "name"    = "MÉTHODO"
+            "name"    = "MÃ‰THODO"
             "content" = @"
 - **ANALYZE** : `decompose(tasks)`, `auto_complexity()`
 - **LEARN** : `extract_patterns(existing_code)`
 - **EXPLORE** : `ToT(3)`, `select_best()`
-- **REASON** : `ReAct(1)` = analyze→execute→adjust
-- **CODE** : `implement(functional_unit ≤ 5KB)`
+- **REASON** : `ReAct(1)` = analyzeâ†’executeâ†’adjust
+- **CODE** : `implement(functional_unit â‰¤ 5KB)`
 - **PROGRESS** : `sequential(no_confirmation)`
 - **ADAPT** : `granularity(detected_complexity)`
 - **SEGMENT** : `divide_if(complex)`
@@ -503,11 +503,11 @@ function Get-OptimizedMemories {
             "name"    = "INPUT_OPTIM"
             "content" = @"
 - **PREVALIDATE** : `UTF8ByteCount(input), strict_limit=5KB`
-- **SEGMENT** : `if(size>5KB) → split_by_function`
+- **SEGMENT** : `if(size>5KB) â†’ split_by_function`
 - **COMPRESS** : `strip(comments, spaces)` if needed
 - **DETECT** : `byte_counter(auto)`
 - **PREVENT** : `max_4KB/tool_call`
-- **INCREMENTAL** : `if(multiple_funcs) → implement_one_by_one`
+- **INCREMENTAL** : `if(multiple_funcs) â†’ implement_one_by_one`
 "@
         },
         @{
@@ -532,7 +532,7 @@ function Get-OptimizedMemories {
         }
     )
 
-    # Créer l'objet des Memories
+    # CrÃ©er l'objet des Memories
     $memories = @{
         "version"     = "2.0.0"
         "lastUpdated" = (Get-Date).ToString("o")
@@ -545,26 +545,26 @@ function Get-OptimizedMemories {
     # Ajouter les sections d'optimisation communes
     $memories.sections += $optimizationSections
 
-    # Ajouter les sections spécifiques au mode
+    # Ajouter les sections spÃ©cifiques au mode
     if ($Mode -ne "ALL") {
         if ($modeSections.ContainsKey($Mode)) {
             $memories.sections += $modeSections[$Mode]
         }
     } else {
-        # Ajouter une section résumée pour chaque mode
+        # Ajouter une section rÃ©sumÃ©e pour chaque mode
         $modesSummary = @{
             "name"    = "MODES SUMMARY"
             "content" = @"
-- **ARCHI** : Structurer, modéliser, anticiper les dépendances
-- **CHECK** : Vérifier l'état d'avancement des tâches
-- **C-BREAK** : Détecter et résoudre les dépendances circulaires
+- **ARCHI** : Structurer, modÃ©liser, anticiper les dÃ©pendances
+- **CHECK** : VÃ©rifier l'Ã©tat d'avancement des tÃ¢ches
+- **C-BREAK** : DÃ©tecter et rÃ©soudre les dÃ©pendances circulaires
 - **DEBUG** : Isoler, comprendre, corriger les anomalies
-- **DEV-R** : Implémenter ce qui est dans la roadmap
-- **GRAN** : Décomposer les blocs complexes
-- **OPTI** : Réduire complexité, taille ou temps d'exécution
-- **PREDIC** : Anticiper performances, détecter anomalies, analyser tendances
-- **REVIEW** : Vérifier lisibilité, standards, documentation
-- **TEST** : Maximiser couverture et fiabilité
+- **DEV-R** : ImplÃ©menter ce qui est dans la roadmap
+- **GRAN** : DÃ©composer les blocs complexes
+- **OPTI** : RÃ©duire complexitÃ©, taille ou temps d'exÃ©cution
+- **PREDIC** : Anticiper performances, dÃ©tecter anomalies, analyser tendances
+- **REVIEW** : VÃ©rifier lisibilitÃ©, standards, documentation
+- **TEST** : Maximiser couverture et fiabilitÃ©
 "@
         }
         $memories.sections += $modesSummary
@@ -573,12 +573,12 @@ function Get-OptimizedMemories {
     return $memories
 }
 
-# Générer les Memories optimisées
+# GÃ©nÃ©rer les Memories optimisÃ©es
 $memories = Get-OptimizedMemories -Mode $Mode
 
-# Enregistrer les Memories optimisées
+# Enregistrer les Memories optimisÃ©es
 try {
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $outputDir -PathType Container)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -586,8 +586,8 @@ try {
 
     # Enregistrer les Memories
     $memories | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Memories optimisées enregistrées dans : $OutputPath" -ForegroundColor Green
+    Write-Host "Memories optimisÃ©es enregistrÃ©es dans : $OutputPath" -ForegroundColor Green
 } catch {
-    Write-Error "Erreur lors de l'enregistrement des Memories optimisées : $_"
+    Write-Error "Erreur lors de l'enregistrement des Memories optimisÃ©es : $_"
     exit 1
 }

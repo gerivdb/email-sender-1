@@ -1,5 +1,5 @@
-# Run-AllTests.ps1
-# Script pour exécuter tous les tests unitaires du système de gestion de roadmap
+﻿# Run-AllTests.ps1
+# Script pour exÃ©cuter tous les tests unitaires du systÃ¨me de gestion de roadmap
 
 [CmdletBinding()]
 param (
@@ -10,9 +10,9 @@ param (
     [string]$OutputPath = "development\tests\maintenance\results"
 )
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Host "Le module Pester n'est pas installé. Installation en cours..." -ForegroundColor Yellow
+    Write-Host "Le module Pester n'est pas installÃ©. Installation en cours..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
@@ -23,7 +23,7 @@ Import-Module Pester
 $testPath = Join-Path -Path $PSScriptRoot -ChildPath "*.Tests.ps1"
 $testFiles = Get-ChildItem -Path $testPath
 
-# Créer le dossier de sortie si nécessaire
+# CrÃ©er le dossier de sortie si nÃ©cessaire
 if ($GenerateReport -and -not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
@@ -41,41 +41,41 @@ if ($GenerateReport) {
 }
 
 # Afficher les informations sur les tests
-Write-Host "Exécution des tests unitaires pour le système de gestion de roadmap" -ForegroundColor Cyan
-Write-Host "Fichiers de test trouvés: $($testFiles.Count)" -ForegroundColor Cyan
+Write-Host "ExÃ©cution des tests unitaires pour le systÃ¨me de gestion de roadmap" -ForegroundColor Cyan
+Write-Host "Fichiers de test trouvÃ©s: $($testFiles.Count)" -ForegroundColor Cyan
 foreach ($file in $testFiles) {
     Write-Host "  - $($file.Name)" -ForegroundColor Gray
 }
 Write-Host ""
 
-# Initialiser les données de test
-Write-Host "Initialisation des données de test..." -ForegroundColor Cyan
+# Initialiser les donnÃ©es de test
+Write-Host "Initialisation des donnÃ©es de test..." -ForegroundColor Cyan
 $initializeTestDataScript = Join-Path -Path $PSScriptRoot -ChildPath "Initialize-TestData.ps1"
 if (Test-Path -Path $initializeTestDataScript) {
     & $initializeTestDataScript
 } else {
-    Write-Host "Le script d'initialisation des données de test n'a pas été trouvé à l'emplacement: $initializeTestDataScript" -ForegroundColor Red
+    Write-Host "Le script d'initialisation des donnÃ©es de test n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $initializeTestDataScript" -ForegroundColor Red
     return
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $results = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "Résumé des résultats:" -ForegroundColor Cyan
-Write-Host "  - Tests exécutés: $($results.TotalCount)" -ForegroundColor Gray
-Write-Host "  - Tests réussis: $($results.PassedCount)" -ForegroundColor Green
-Write-Host "  - Tests échoués: $($results.FailedCount)" -ForegroundColor Red
-Write-Host "  - Tests ignorés: $($results.SkippedCount)" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "RÃ©sumÃ© des rÃ©sultats:" -ForegroundColor Cyan
+Write-Host "  - Tests exÃ©cutÃ©s: $($results.TotalCount)" -ForegroundColor Gray
+Write-Host "  - Tests rÃ©ussis: $($results.PassedCount)" -ForegroundColor Green
+Write-Host "  - Tests Ã©chouÃ©s: $($results.FailedCount)" -ForegroundColor Red
+Write-Host "  - Tests ignorÃ©s: $($results.SkippedCount)" -ForegroundColor Yellow
 Write-Host ""
 
 if ($GenerateReport) {
-    Write-Host "Rapports générés:" -ForegroundColor Cyan
-    Write-Host "  - Résultats des tests: $($pesterConfig.TestResult.OutputPath)" -ForegroundColor Gray
+    Write-Host "Rapports gÃ©nÃ©rÃ©s:" -ForegroundColor Cyan
+    Write-Host "  - RÃ©sultats des tests: $($pesterConfig.TestResult.OutputPath)" -ForegroundColor Gray
     Write-Host "  - Couverture de code: $($pesterConfig.CodeCoverage.OutputPath)" -ForegroundColor Gray
 }
 
-# Retourner un code d'erreur si des tests ont échoué
+# Retourner un code d'erreur si des tests ont Ã©chouÃ©
 if ($results.FailedCount -gt 0) {
     exit 1
 } else {

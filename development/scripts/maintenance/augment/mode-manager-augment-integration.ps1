@@ -1,35 +1,35 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'intégration entre le gestionnaire de modes et Augment Code.
+    Script d'intÃ©gration entre le gestionnaire de modes et Augment Code.
 
 .DESCRIPTION
-    Ce script permet d'intégrer le gestionnaire de modes avec Augment Code,
-    en exposant les fonctionnalités du gestionnaire de modes via des commandes
-    spécifiques pour Augment. Il facilite l'utilisation des différents modes
+    Ce script permet d'intÃ©grer le gestionnaire de modes avec Augment Code,
+    en exposant les fonctionnalitÃ©s du gestionnaire de modes via des commandes
+    spÃ©cifiques pour Augment. Il facilite l'utilisation des diffÃ©rents modes
     (GRAN, DEV-R, CHECK, etc.) directement depuis Augment.
 
 .PARAMETER Mode
-    Le mode à exécuter. Valeurs possibles : ARCHI, CHECK, C-BREAK, DEBUG, DEV-R, GRAN, OPTI, PREDIC, REVIEW, TEST.
+    Le mode Ã  exÃ©cuter. Valeurs possibles : ARCHI, CHECK, C-BREAK, DEBUG, DEV-R, GRAN, OPTI, PREDIC, REVIEW, TEST.
 
 .PARAMETER FilePath
     Chemin vers le fichier de roadmap ou le document actif.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à traiter (ex: "1.2.3").
+    Identifiant de la tÃ¢che Ã  traiter (ex: "1.2.3").
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration. Par défaut : "development\config\unified-config.json".
+    Chemin vers le fichier de configuration. Par dÃ©faut : "development\config\unified-config.json".
 
 .PARAMETER UpdateMemories
-    Indique si les Memories d'Augment doivent être mises à jour après l'exécution du mode.
+    Indique si les Memories d'Augment doivent Ãªtre mises Ã  jour aprÃ¨s l'exÃ©cution du mode.
 
 .EXAMPLE
     .\mode-manager-augment-integration.ps1 -Mode GRAN -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3"
-    # Exécute le mode GRAN sur la tâche 1.2.3 du fichier spécifié
+    # ExÃ©cute le mode GRAN sur la tÃ¢che 1.2.3 du fichier spÃ©cifiÃ©
 
 .EXAMPLE
     .\mode-manager-augment-integration.ps1 -Mode DEV-R -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3" -UpdateMemories
-    # Exécute le mode DEV-R sur la tâche 1.2.3 du fichier spécifié et met à jour les Memories d'Augment
+    # ExÃ©cute le mode DEV-R sur la tÃ¢che 1.2.3 du fichier spÃ©cifiÃ© et met Ã  jour les Memories d'Augment
 
 .NOTES
     Version: 1.0
@@ -59,7 +59,7 @@ param (
     [switch]$Force
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -69,7 +69,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
@@ -94,7 +94,7 @@ if (Test-Path -Path $memoriesManagerPath) {
     $UpdateMemories = $false
 }
 
-# Fonction pour exécuter le gestionnaire de modes
+# Fonction pour exÃ©cuter le gestionnaire de modes
 function Invoke-ModeManager {
     [CmdletBinding()]
     param (
@@ -114,7 +114,7 @@ function Invoke-ModeManager {
         [switch]$Force
     )
 
-    # Construire les paramètres pour le gestionnaire de modes
+    # Construire les paramÃ¨tres pour le gestionnaire de modes
     $params = @{
         Mode = $Mode
     }
@@ -135,12 +135,12 @@ function Invoke-ModeManager {
         $params.Force = $true
     }
 
-    # Exécuter le gestionnaire de modes
+    # ExÃ©cuter le gestionnaire de modes
     & $modeManagerPath @params
     return $LASTEXITCODE -eq 0
 }
 
-# Fonction pour mettre à jour les Memories d'Augment avec les informations du mode
+# Fonction pour mettre Ã  jour les Memories d'Augment avec les informations du mode
 function Update-AugmentModeMemories {
     [CmdletBinding()]
     param (
@@ -154,28 +154,28 @@ function Update-AugmentModeMemories {
         [string]$TaskIdentifier
     )
 
-    # Vérifier que le module AugmentMemoriesManager est disponible
+    # VÃ©rifier que le module AugmentMemoriesManager est disponible
     if (-not (Get-Command -Name "Update-AugmentMemories" -ErrorAction SilentlyContinue)) {
-        Write-Warning "Fonction Update-AugmentMemories non disponible. Impossible de mettre à jour les Memories."
+        Write-Warning "Fonction Update-AugmentMemories non disponible. Impossible de mettre Ã  jour les Memories."
         return $false
     }
 
-    # Générer le contenu des Memories spécifique au mode
-    $modeContent = "# Mode $Mode activé"
+    # GÃ©nÃ©rer le contenu des Memories spÃ©cifique au mode
+    $modeContent = "# Mode $Mode activÃ©"
     $modeContent += "`n- Fichier: $FilePath"
     if ($TaskIdentifier) {
-        $modeContent += "`n- Tâche: $TaskIdentifier"
+        $modeContent += "`n- TÃ¢che: $TaskIdentifier"
     }
     $modeContent += "`n- Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 
-    # Ajouter des informations spécifiques au mode
+    # Ajouter des informations spÃ©cifiques au mode
     switch ($Mode) {
         "GRAN" {
             $modeContent += @"
 
 ## Mode GRAN - Granularisation
-- Objectif: Décomposer les blocs complexes directement dans le document
-- Déclencheurs: Taille > 5KB, complexité > 7, feedback utilisateur
+- Objectif: DÃ©composer les blocs complexes directement dans le document
+- DÃ©clencheurs: Taille > 5KB, complexitÃ© > 7, feedback utilisateur
 - Directives: 
   - split_by_responsibility()
   - detect_concatenated_tasks()
@@ -187,35 +187,35 @@ function Update-AugmentModeMemories {
         "DEV-R" {
             $modeContent += @"
 
-## Mode DEV-R - Développement Roadmap
-- Objectif: Implémenter ce qui est dans la roadmap
-- Déclencheurs: Nouvelle tâche roadmap confirmée
+## Mode DEV-R - DÃ©veloppement Roadmap
+- Objectif: ImplÃ©menter ce qui est dans la roadmap
+- DÃ©clencheurs: Nouvelle tÃ¢che roadmap confirmÃ©e
 - Directives: 
-  - Implémenter la sélection sous-tâche par sous-tâche
-  - Générer les tests
-  - Corriger tous les problèmes
+  - ImplÃ©menter la sÃ©lection sous-tÃ¢che par sous-tÃ¢che
+  - GÃ©nÃ©rer les tests
+  - Corriger tous les problÃ¨mes
   - Assurer 100% couverture
 "@
         }
         "CHECK" {
             $modeContent += @"
 
-## Mode CHECK - Vérification
-- Objectif: Vérifier l'état d'avancement des tâches
-- Déclencheurs: Fin d'implémentation, validation requise
+## Mode CHECK - VÃ©rification
+- Objectif: VÃ©rifier l'Ã©tat d'avancement des tÃ¢ches
+- DÃ©clencheurs: Fin d'implÃ©mentation, validation requise
 - Directives: 
-  - Vérifier l'implémentation
-  - Exécuter les tests
-  - Mettre à jour la roadmap
-  - Générer un rapport
+  - VÃ©rifier l'implÃ©mentation
+  - ExÃ©cuter les tests
+  - Mettre Ã  jour la roadmap
+  - GÃ©nÃ©rer un rapport
 "@
         }
         "ARCHI" {
             $modeContent += @"
 
 ## Mode ARCHI - Architecture
-- Objectif: Structurer, modéliser, anticiper les dépendances
-- Déclencheurs: Analyse d'impact, modélisation, dette technique
+- Objectif: Structurer, modÃ©liser, anticiper les dÃ©pendances
+- DÃ©clencheurs: Analyse d'impact, modÃ©lisation, dette technique
 - Directives: 
   - diagram_layers()
   - define_contracts()
@@ -227,9 +227,9 @@ function Update-AugmentModeMemories {
         "DEBUG" {
             $modeContent += @"
 
-## Mode DEBUG - Débogage
+## Mode DEBUG - DÃ©bogage
 - Objectif: Isoler, comprendre, corriger les anomalies
-- Déclencheurs: Erreurs, logs, comportement inattendu
+- DÃ©clencheurs: Erreurs, logs, comportement inattendu
 - Directives: 
   - identify_fault_origin()
   - test_edge_cases()
@@ -242,8 +242,8 @@ function Update-AugmentModeMemories {
             $modeContent += @"
 
 ## Mode TEST - Tests
-- Objectif: Maximiser couverture et fiabilité
-- Déclencheurs: Specs, mode TDD actif
+- Objectif: Maximiser couverture et fiabilitÃ©
+- DÃ©clencheurs: Specs, mode TDD actif
 - Directives: 
   - test_suites(coverage=90%)
   - test_cases_by_pattern()
@@ -254,8 +254,8 @@ function Update-AugmentModeMemories {
             $modeContent += @"
 
 ## Mode OPTI - Optimisation
-- Objectif: Réduire complexité, taille ou temps d'exécution
-- Déclencheurs: Complexité > 5, taille excessive
+- Objectif: RÃ©duire complexitÃ©, taille ou temps d'exÃ©cution
+- DÃ©clencheurs: ComplexitÃ© > 5, taille excessive
 - Directives: 
   - runtime_hotspots()
   - reduce_LOC_nesting_calls()
@@ -266,8 +266,8 @@ function Update-AugmentModeMemories {
             $modeContent += @"
 
 ## Mode REVIEW - Revue
-- Objectif: Vérifier lisibilité, standards, documentation
-- Déclencheurs: Pre_commit, PR
+- Objectif: VÃ©rifier lisibilitÃ©, standards, documentation
+- DÃ©clencheurs: Pre_commit, PR
 - Directives: 
   - check_SOLID_KISS_DRY()
   - doc_ratio()
@@ -279,8 +279,8 @@ function Update-AugmentModeMemories {
             $modeContent += @"
 
 ## Mode C-BREAK - Cycle Break
-- Objectif: Détecter et corriger les dépendances circulaires
-- Déclencheurs: Logique récursive, erreurs d'import ou workflow bloqué
+- Objectif: DÃ©tecter et corriger les dÃ©pendances circulaires
+- DÃ©clencheurs: Logique rÃ©cursive, erreurs d'import ou workflow bloquÃ©
 - Directives: 
   - Detect-CyclicDependencies()
   - Validate-WorkflowCycles()
@@ -291,9 +291,9 @@ function Update-AugmentModeMemories {
         "PREDIC" {
             $modeContent += @"
 
-## Mode PREDIC - Prédiction
-- Objectif: Anticiper performances, détecter anomalies, analyser tendances
-- Déclencheurs: Besoin d'analyse de charge ou de comportement futur
+## Mode PREDIC - PrÃ©diction
+- Objectif: Anticiper performances, dÃ©tecter anomalies, analyser tendances
+- DÃ©clencheurs: Besoin d'analyse de charge ou de comportement futur
 - Directives: 
   - predict_metrics()
   - find_anomalies()
@@ -304,18 +304,18 @@ function Update-AugmentModeMemories {
         }
     }
 
-    # Mettre à jour les Memories d'Augment
+    # Mettre Ã  jour les Memories d'Augment
     try {
-        # Créer un fichier temporaire avec le contenu des Memories
+        # CrÃ©er un fichier temporaire avec le contenu des Memories
         $tempFile = [System.IO.Path]::GetTempFileName()
         $modeContent | Out-File -FilePath $tempFile -Encoding UTF8
 
-        # Mettre à jour les Memories
+        # Mettre Ã  jour les Memories
         Export-MemoriesToVSCode
-        Write-Host "Memories d'Augment mises à jour avec les informations du mode $Mode." -ForegroundColor Green
+        Write-Host "Memories d'Augment mises Ã  jour avec les informations du mode $Mode." -ForegroundColor Green
         return $true
     } catch {
-        Write-Warning "Erreur lors de la mise à jour des Memories d'Augment : $_"
+        Write-Warning "Erreur lors de la mise Ã  jour des Memories d'Augment : $_"
         return $false
     } finally {
         # Supprimer le fichier temporaire
@@ -325,13 +325,13 @@ function Update-AugmentModeMemories {
     }
 }
 
-# Exécuter le gestionnaire de modes
+# ExÃ©cuter le gestionnaire de modes
 $success = Invoke-ModeManager -Mode $Mode -FilePath $FilePath -TaskIdentifier $TaskIdentifier -ConfigPath $ConfigPath -Force:$Force
 
-# Mettre à jour les Memories d'Augment si demandé
+# Mettre Ã  jour les Memories d'Augment si demandÃ©
 if ($success -and $UpdateMemories) {
     Update-AugmentModeMemories -Mode $Mode -FilePath $FilePath -TaskIdentifier $TaskIdentifier
 }
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 exit [int](!$success)

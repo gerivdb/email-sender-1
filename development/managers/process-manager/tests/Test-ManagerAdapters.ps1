@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour les adaptateurs des gestionnaires.
 
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
-    des adaptateurs des gestionnaires intégrés avec le Process Manager.
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
+    des adaptateurs des gestionnaires intÃ©grÃ©s avec le Process Manager.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire courant.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .EXAMPLE
     .\Test-ManagerAdapters.ps1
-    Exécute les tests unitaires pour les adaptateurs des gestionnaires.
+    ExÃ©cute les tests unitaires pour les adaptateurs des gestionnaires.
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2025-05-03
+    Date de crÃ©ation: 2025-05-03
 #>
 [CmdletBinding()]
 param (
@@ -24,25 +24,25 @@ param (
     [string]$ProjectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 )
 
-# Vérifier que le répertoire du projet existe
+# VÃ©rifier que le rÃ©pertoire du projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
-    Write-Error "Le répertoire du projet n'existe pas : $ProjectRoot"
+    Write-Error "Le rÃ©pertoire du projet n'existe pas : $ProjectRoot"
     exit 1
 }
 
-# Définir les chemins
+# DÃ©finir les chemins
 $managerName = "process-manager"
 $managerRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers\$managerName"
 $adaptersPath = Join-Path -Path $managerRoot -ChildPath "adapters"
 $testConfigPath = Join-Path -Path $managerRoot -ChildPath "tests\test-config.json"
 
-# Vérifier que le répertoire des adaptateurs existe
+# VÃ©rifier que le rÃ©pertoire des adaptateurs existe
 if (-not (Test-Path -Path $adaptersPath -PathType Container)) {
-    Write-Error "Le répertoire des adaptateurs est introuvable : $adaptersPath"
+    Write-Error "Le rÃ©pertoire des adaptateurs est introuvable : $adaptersPath"
     exit 1
 }
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfig = @{
     Enabled = $true
     LogLevel = "Debug"
@@ -56,11 +56,11 @@ $testConfig = @{
     }
 }
 
-# Créer le fichier de configuration de test
+# CrÃ©er le fichier de configuration de test
 $testConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $testConfigPath -Encoding UTF8
-Write-Host "Fichier de configuration de test créé : $testConfigPath" -ForegroundColor Green
+Write-Host "Fichier de configuration de test crÃ©Ã© : $testConfigPath" -ForegroundColor Green
 
-# Créer un gestionnaire de test
+# CrÃ©er un gestionnaire de test
 $testManagerPath = Join-Path -Path $managerRoot -ChildPath "tests\test-manager.ps1"
 $testManagerContent = @"
 <#
@@ -68,20 +68,20 @@ $testManagerContent = @"
     Gestionnaire de test pour les tests unitaires des adaptateurs.
 
 .DESCRIPTION
-    Ce script est un gestionnaire factice utilisé pour les tests unitaires
-    des adaptateurs des gestionnaires intégrés avec le Process Manager.
+    Ce script est un gestionnaire factice utilisÃ© pour les tests unitaires
+    des adaptateurs des gestionnaires intÃ©grÃ©s avec le Process Manager.
 
 .PARAMETER Command
-    La commande à exécuter.
+    La commande Ã  exÃ©cuter.
 
 .EXAMPLE
     .\test-manager.ps1 -Command Test
-    Exécute la commande de test.
+    ExÃ©cute la commande de test.
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2025-05-03
+    Date de crÃ©ation: 2025-05-03
 #>
 [CmdletBinding()]
 param (
@@ -89,15 +89,15 @@ param (
     [string]`$Command = "Test"
 )
 
-Write-Host "Gestionnaire de test exécuté avec la commande : `$Command" -ForegroundColor Green
+Write-Host "Gestionnaire de test exÃ©cutÃ© avec la commande : `$Command" -ForegroundColor Green
 exit 0
 "@
 
-# Créer le gestionnaire de test
+# CrÃ©er le gestionnaire de test
 $testManagerContent | Set-Content -Path $testManagerPath -Encoding UTF8
-Write-Host "Gestionnaire de test créé : $testManagerPath" -ForegroundColor Green
+Write-Host "Gestionnaire de test crÃ©Ã© : $testManagerPath" -ForegroundColor Green
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Function {
     [CmdletBinding()]
     param (
@@ -114,10 +114,10 @@ function Test-Function {
         $result = & $Test
         
         if ($result -eq $true) {
-            Write-Host "  Résultat : Succès" -ForegroundColor Green
+            Write-Host "  RÃ©sultat : SuccÃ¨s" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Résultat : Échec" -ForegroundColor Red
+            Write-Host "  RÃ©sultat : Ã‰chec" -ForegroundColor Red
             return $false
         }
     } catch {
@@ -130,7 +130,7 @@ function Test-Function {
 $adapters = Get-ChildItem -Path $adaptersPath -Filter "*-adapter.ps1"
 
 if ($adapters.Count -eq 0) {
-    Write-Error "Aucun adaptateur trouvé dans le répertoire : $adaptersPath"
+    Write-Error "Aucun adaptateur trouvÃ© dans le rÃ©pertoire : $adaptersPath"
     exit 1
 }
 
@@ -141,7 +141,7 @@ foreach ($adapter in $adapters) {
     $adapterName = $adapter.BaseName
     $adapterPath = $adapter.FullName
     
-    # Ajouter un test pour vérifier que l'adaptateur existe
+    # Ajouter un test pour vÃ©rifier que l'adaptateur existe
     $tests += @{
         Name = "Test de l'existence de l'adaptateur $adapterName"
         Test = {
@@ -149,7 +149,7 @@ foreach ($adapter in $adapters) {
         }
     }
     
-    # Ajouter un test pour vérifier que l'adaptateur peut être chargé
+    # Ajouter un test pour vÃ©rifier que l'adaptateur peut Ãªtre chargÃ©
     $tests += @{
         Name = "Test du chargement de l'adaptateur $adapterName"
         Test = {
@@ -163,7 +163,7 @@ foreach ($adapter in $adapters) {
         }
     }
     
-    # Ajouter un test pour vérifier la syntaxe de l'adaptateur
+    # Ajouter un test pour vÃ©rifier la syntaxe de l'adaptateur
     $tests += @{
         Name = "Test de la syntaxe de l'adaptateur $adapterName"
         Test = {
@@ -178,7 +178,7 @@ foreach ($adapter in $adapters) {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $totalTests = $tests.Count
 $passedTests = 0
 
@@ -190,21 +190,21 @@ foreach ($test in $tests) {
     }
 }
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor Cyan
-Write-Host "  Tests réussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
-Write-Host "  Tests échoués : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
+Write-Host "  Tests Ã©chouÃ©s : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
 
 # Nettoyer les fichiers de test
 Remove-Item -Path $testConfigPath -Force
 Remove-Item -Path $testManagerPath -Force
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi." -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi." -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

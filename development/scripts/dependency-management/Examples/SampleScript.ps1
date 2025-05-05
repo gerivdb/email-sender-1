@@ -1,4 +1,4 @@
-function Get-UserInfo {
+﻿function Get-UserInfo {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Username,
@@ -7,7 +7,7 @@ function Get-UserInfo {
         [switch]$IncludeGroups
     )
     
-    Write-Verbose "Récupération des informations pour l'utilisateur: $Username"
+    Write-Verbose "RÃ©cupÃ©ration des informations pour l'utilisateur: $Username"
     
     $user = Get-User -Identity $Username
     $result = [PSCustomObject]@{
@@ -31,9 +31,9 @@ function Get-User {
         [string]$Identity
     )
     
-    Write-Verbose "Récupération de l'utilisateur: $Identity"
+    Write-Verbose "RÃ©cupÃ©ration de l'utilisateur: $Identity"
     
-    # Simulation de récupération d'utilisateur
+    # Simulation de rÃ©cupÃ©ration d'utilisateur
     return [PSCustomObject]@{
         SamAccountName = $Identity
         DisplayName = "Utilisateur $Identity"
@@ -48,13 +48,13 @@ function Get-UserGroups {
         [string]$Username
     )
     
-    Write-Verbose "Récupération des groupes pour l'utilisateur: $Username"
+    Write-Verbose "RÃ©cupÃ©ration des groupes pour l'utilisateur: $Username"
     
-    # Simulation de récupération de groupes
+    # Simulation de rÃ©cupÃ©ration de groupes
     return @(
         "Utilisateurs",
-        "Développeurs",
-        "Accès VPN"
+        "DÃ©veloppeurs",
+        "AccÃ¨s VPN"
     )
 }
 
@@ -64,9 +64,9 @@ function Remove-UserAccess {
         [string]$Username
     )
     
-    Write-Verbose "Suppression des accès pour l'utilisateur: $Username"
+    Write-Verbose "Suppression des accÃ¨s pour l'utilisateur: $Username"
     
-    # Cette fonction n'est pas appelée dans ce script
+    # Cette fonction n'est pas appelÃ©e dans ce script
 }
 
 # Appel de fonction en dehors d'une fonction

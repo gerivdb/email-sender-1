@@ -1,6 +1,6 @@
-# Script pour corriger l'encodage des fichiers
+﻿# Script pour corriger l'encodage des fichiers
 
-# Définir l'encodage de la console
+# DÃ©finir l'encodage de la console
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Fonction pour corriger l'encodage d'un fichier
@@ -16,13 +16,13 @@ function Fix-FileEncoding {
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Raw
     
-    # Créer un encodeur UTF-8 avec BOM
+    # CrÃ©er un encodeur UTF-8 avec BOM
     $utf8WithBom = New-Object System.Text.UTF8Encoding $true
     
-    # Écrire le contenu avec le nouvel encodage
+    # Ã‰crire le contenu avec le nouvel encodage
     [System.IO.File]::WriteAllText($FilePath, $content, $utf8WithBom)
     
-    Write-Host "Encodage corrigé en UTF-8 avec BOM" -ForegroundColor Green
+    Write-Host "Encodage corrigÃ© en UTF-8 avec BOM" -ForegroundColor Green
 }
 
 # Corriger l'encodage des fichiers PowerShell
@@ -59,4 +59,4 @@ foreach ($file in $mdFiles) {
     }
 }
 
-Write-Host "Correction de l'encodage terminée" -ForegroundColor Green
+Write-Host "Correction de l'encodage terminÃ©e" -ForegroundColor Green

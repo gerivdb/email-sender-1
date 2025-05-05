@@ -1,10 +1,10 @@
-using module Pester
+﻿using module Pester
 
-# Définir l'encodage UTF-8 pour les caractères accentués
+# DÃ©finir l'encodage UTF-8 pour les caractÃ¨res accentuÃ©s
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 BeforeAll {
-    # Charger le script à tester
+    # Charger le script Ã  tester
     . $PSScriptRoot\..\identify-document-sections.ps1
 }
 
@@ -71,7 +71,7 @@ Contenu du sous-titre 2.1.
         }
     }
 
-    Context 'Génération du rapport' {
+    Context 'GÃ©nÃ©ration du rapport' {
         BeforeAll {
             $testSections = @(
                 [PSCustomObject]@{
@@ -96,8 +96,8 @@ Contenu du sous-titre 2.1.
             $report = New-SectionsReport -Sections $testSections -IncludeContent $false
         }
 
-        It 'Devrait générer un rapport avec la structure hiérarchique' {
-            $report | Should -Match 'Structure Hiérarchique'
+        It 'Devrait gÃ©nÃ©rer un rapport avec la structure hiÃ©rarchique' {
+            $report | Should -Match 'Structure HiÃ©rarchique'
             $report | Should -Match 'Titre Principal 1'
             $report | Should -Match 'Sous-titre 1.1'
             $report | Should -Match 'Titre Principal 2'

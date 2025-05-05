@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Consolide les dossiers analysis et analytics en une structure unifiée.
+    Consolide les dossiers analysis et analytics en une structure unifiÃ©e.
 .DESCRIPTION
     Ce script fusionne les dossiers development/scripts/analysis et development/scripts/analytics
-    en une structure unifiée et organisée, en éliminant la redondance tout en préservant
-    les fonctionnalités distinctes.
+    en une structure unifiÃ©e et organisÃ©e, en Ã©liminant la redondance tout en prÃ©servant
+    les fonctionnalitÃ©s distinctes.
 .PARAMETER DryRun
-    Si spécifié, le script affiche les actions qui seraient effectuées sans les exécuter.
+    Si spÃ©cifiÃ©, le script affiche les actions qui seraient effectuÃ©es sans les exÃ©cuter.
 .PARAMETER Force
-    Si spécifié, le script écrase les fichiers existants sans demander de confirmation.
+    Si spÃ©cifiÃ©, le script Ã©crase les fichiers existants sans demander de confirmation.
 .PARAMETER LogFile
-    Chemin vers un fichier de log pour enregistrer les actions effectuées.
+    Chemin vers un fichier de log pour enregistrer les actions effectuÃ©es.
 .EXAMPLE
     .\Consolidate-AnalysisDirectories-Final.ps1 -DryRun
 .EXAMPLE
@@ -33,13 +33,13 @@ param (
     [string]$LogFile = "logs/consolidation-analysis-directories-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
 )
 
-# Définir le répertoire racine du dépôt
+# DÃ©finir le rÃ©pertoire racine du dÃ©pÃ´t
 $repoRoot = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\"
 $repoRoot = [System.IO.Path]::GetFullPath($repoRoot)
 
-# Vérifier que le répertoire racine existe
+# VÃ©rifier que le rÃ©pertoire racine existe
 if (-not (Test-Path -Path $repoRoot -PathType Container)) {
-    throw "Le répertoire racine n'existe pas : $repoRoot"
+    throw "Le rÃ©pertoire racine n'existe pas : $repoRoot"
 }
 
 # Fonction pour journaliser les actions
@@ -69,17 +69,17 @@ if ($LogFile) {
     }
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Consolidation des dossiers analysis et analytics démarrée le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
-    "Répertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Consolidation des dossiers analysis et analytics dÃ©marrÃ©e le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
+    "RÃ©pertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
 }
 
-# Définir les chemins des dossiers source et destination
+# DÃ©finir les chemins des dossiers source et destination
 $analysisPath = Join-Path -Path $repoRoot -ChildPath "development\scripts\analysis"
 $analyticsPath = Join-Path -Path $repoRoot -ChildPath "development\scripts\analytics"
 $unifiedPath = Join-Path -Path $repoRoot -ChildPath "development\scripts\analysis"
 
-# Vérifier que les dossiers source existent
+# VÃ©rifier que les dossiers source existent
 if (-not (Test-Path -Path $analysisPath -PathType Container)) {
     Write-Log "Le dossier analysis n'existe pas : $analysisPath" -Color "Red"
     exit 1
@@ -90,39 +90,39 @@ if (-not (Test-Path -Path $analyticsPath -PathType Container)) {
     exit 1
 }
 
-# Créer la nouvelle structure de dossiers
+# CrÃ©er la nouvelle structure de dossiers
 $newFolders = @(
     "code", # Pour l'analyse de code source
     "performance", # Pour l'analyse de performance
-    "data", # Pour l'analyse de données
+    "data", # Pour l'analyse de donnÃ©es
     "reporting", # Pour les rapports
-    "integration", # Pour l'intégration avec des outils tiers
-    "roadmap", # Pour les scripts liés à la roadmap
+    "integration", # Pour l'intÃ©gration avec des outils tiers
+    "roadmap", # Pour les scripts liÃ©s Ã  la roadmap
     "common" # Pour les modules et outils communs
 )
 
-Write-Log "Création de la nouvelle structure de dossiers..." -Color "Cyan"
+Write-Log "CrÃ©ation de la nouvelle structure de dossiers..." -Color "Cyan"
 
 foreach ($folder in $newFolders) {
     $folderPath = Join-Path -Path $unifiedPath -ChildPath $folder
     
     if (-not (Test-Path -Path $folderPath)) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] Création du dossier : $folderPath" -Color "Yellow"
+            Write-Log "[DRYRUN] CrÃ©ation du dossier : $folderPath" -Color "Yellow"
         } else {
-            if ($PSCmdlet.ShouldProcess($folderPath, "Créer le dossier")) {
+            if ($PSCmdlet.ShouldProcess($folderPath, "CrÃ©er le dossier")) {
                 New-Item -Path $folderPath -ItemType Directory -Force | Out-Null
-                Write-Log "Dossier créé : $folderPath" -Color "Green"
+                Write-Log "Dossier crÃ©Ã© : $folderPath" -Color "Green"
             }
         }
     } else {
-        Write-Log "Le dossier existe déjà : $folderPath" -Color "Gray"
+        Write-Log "Le dossier existe dÃ©jÃ  : $folderPath" -Color "Gray"
     }
 }
 
-# Définir les mappages de fichiers
+# DÃ©finir les mappages de fichiers
 $fileMappings = @{
-    # Déplacer les scripts d'analyse de code
+    # DÃ©placer les scripts d'analyse de code
     "$analysisPath\Start-CodeAnalysis.ps1" = "$unifiedPath\code\Start-CodeAnalysis.ps1"
     "$analysisPath\Start-CachedCodeAnalysis.ps1" = "$unifiedPath\code\Start-CachedCodeAnalysis.ps1"
     "$analysisPath\Invoke-CachedPSScriptAnalyzer.ps1" = "$unifiedPath\code\Invoke-CachedPSScriptAnalyzer.ps1"
@@ -130,11 +130,11 @@ $fileMappings = @{
     "$analysisPath\Classify-Scripts.ps1" = "$unifiedPath\code\Classify-Scripts.ps1"
     "$analysisPath\Find-RedundantScripts.ps1" = "$unifiedPath\code\Find-RedundantScripts.ps1"
     
-    # Déplacer les scripts d'intégration
+    # DÃ©placer les scripts d'intÃ©gration
     "$analysisPath\Integrate-ThirdPartyTools.ps1" = "$unifiedPath\integration\Integrate-ThirdPartyTools.ps1"
     "$analysisPath\Register-AnalysisPlugin.ps1" = "$unifiedPath\integration\Register-AnalysisPlugin.ps1"
     
-    # Déplacer les scripts de roadmap
+    # DÃ©placer les scripts de roadmap
     "$analysisPath\Update-RoadmapProgress.ps1" = "$unifiedPath\roadmap\Update-RoadmapProgress.ps1"
     "$analysisPath\Update-RoadmapGlobalProgress.ps1" = "$unifiedPath\roadmap\Update-RoadmapGlobalProgress.ps1"
     "$analysisPath\Update-RoadmapCheckboxes.ps1" = "$unifiedPath\roadmap\Update-RoadmapCheckboxes.ps1"
@@ -142,28 +142,28 @@ $fileMappings = @{
     "$analysisPath\Update-RoadmapWithInventory.ps1" = "$unifiedPath\roadmap\Update-RoadmapWithInventory.ps1"
     "$analysisPath\Fix-RoadmapCheckboxes.ps1" = "$unifiedPath\roadmap\Fix-RoadmapCheckboxes.ps1"
     
-    # Déplacer les scripts d'utilitaires
+    # DÃ©placer les scripts d'utilitaires
     "$analysisPath\Fix-HtmlReportEncoding.ps1" = "$unifiedPath\reporting\Fix-HtmlReportEncoding.ps1"
     "$analysisPath\Merge-AnalysisResults.ps1" = "$unifiedPath\reporting\Merge-AnalysisResults.ps1"
     "$analysisPath\Start-CachedAnalysis.ps1" = "$unifiedPath\common\Start-CachedAnalysis.ps1"
     
-    # Déplacer les scripts d'analytics
+    # DÃ©placer les scripts d'analytics
     "$analyticsPath\anomaly_detection.ps1" = "$unifiedPath\data\Detect-Anomalies.ps1"
     "$analyticsPath\correlation_analysis.ps1" = "$unifiedPath\data\Analyze-Correlations.ps1"
     "$analyticsPath\trend_analysis.ps1" = "$unifiedPath\data\Analyze-Trends.ps1"
     "$analyticsPath\data_preparation.ps1" = "$unifiedPath\data\Prepare-AnalysisData.ps1"
     
-    # Déplacer les scripts de KPI
+    # DÃ©placer les scripts de KPI
     "$analyticsPath\application_kpi_calculator.ps1" = "$unifiedPath\performance\Calculate-ApplicationKPIs.ps1"
     "$analyticsPath\business_kpi_calculator.ps1" = "$unifiedPath\performance\Calculate-BusinessKPIs.ps1"
     "$analyticsPath\system_kpi_calculator.ps1" = "$unifiedPath\performance\Calculate-SystemKPIs.ps1"
     
-    # Déplacer les scripts d'alerte
+    # DÃ©placer les scripts d'alerte
     "$analyticsPath\alert_configuration_manager.ps1" = "$unifiedPath\performance\Manage-AlertConfigurations.ps1"
     "$analyticsPath\alert_thresholds_manager.ps1" = "$unifiedPath\performance\Manage-AlertThresholds.ps1"
 }
 
-# Fonction pour déplacer un fichier
+# Fonction pour dÃ©placer un fichier
 function Move-FileToNewLocation {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -179,11 +179,11 @@ function Move-FileToNewLocation {
     $destinationDir = Split-Path -Path $DestinationPath -Parent
     if (-not (Test-Path -Path $destinationDir)) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] Création du répertoire : $destinationDir" -Color "Yellow"
+            Write-Log "[DRYRUN] CrÃ©ation du rÃ©pertoire : $destinationDir" -Color "Yellow"
         } else {
-            if ($PSCmdlet.ShouldProcess($destinationDir, "Créer le répertoire")) {
+            if ($PSCmdlet.ShouldProcess($destinationDir, "CrÃ©er le rÃ©pertoire")) {
                 New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
-                Write-Log "Répertoire créé : $destinationDir" -Color "Green"
+                Write-Log "RÃ©pertoire crÃ©Ã© : $destinationDir" -Color "Green"
             }
         }
     }
@@ -192,7 +192,7 @@ function Move-FileToNewLocation {
         if ($Force) {
             $shouldContinue = $true
         } else {
-            $shouldContinue = $PSCmdlet.ShouldContinue("Le fichier existe déjà : $DestinationPath. Voulez-vous le remplacer ?", "Confirmation")
+            $shouldContinue = $PSCmdlet.ShouldContinue("Le fichier existe dÃ©jÃ  : $DestinationPath. Voulez-vous le remplacer ?", "Confirmation")
         }
     } else {
         $shouldContinue = $true
@@ -200,94 +200,94 @@ function Move-FileToNewLocation {
     
     if ($shouldContinue) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] Déplacement du fichier : $SourceFile -> $DestinationPath" -Color "Yellow"
+            Write-Log "[DRYRUN] DÃ©placement du fichier : $SourceFile -> $DestinationPath" -Color "Yellow"
         } else {
-            if ($PSCmdlet.ShouldProcess($SourceFile, "Déplacer vers $DestinationPath")) {
-                # Utiliser Copy-Item puis Remove-Item pour simuler un Move-Item avec création de dossiers parents
+            if ($PSCmdlet.ShouldProcess($SourceFile, "DÃ©placer vers $DestinationPath")) {
+                # Utiliser Copy-Item puis Remove-Item pour simuler un Move-Item avec crÃ©ation de dossiers parents
                 Copy-Item -Path $SourceFile -Destination $DestinationPath -Force
-                Write-Log "Fichier copié : $SourceFile -> $DestinationPath" -Color "Green"
+                Write-Log "Fichier copiÃ© : $SourceFile -> $DestinationPath" -Color "Green"
                 
                 # Ne pas supprimer le fichier source pour l'instant
             }
         }
     } else {
-        Write-Log "Déplacement ignoré : $SourceFile" -Color "Gray"
+        Write-Log "DÃ©placement ignorÃ© : $SourceFile" -Color "Gray"
     }
 }
 
-# Déplacer les fichiers selon les mappages
-Write-Log "Déplacement des fichiers selon les mappages..." -Color "Cyan"
+# DÃ©placer les fichiers selon les mappages
+Write-Log "DÃ©placement des fichiers selon les mappages..." -Color "Cyan"
 
 foreach ($sourceFile in $fileMappings.Keys) {
     $destinationPath = $fileMappings[$sourceFile]
     Move-FileToNewLocation -SourceFile $sourceFile -DestinationPath $destinationPath
 }
 
-# Déplacer les modules et outils communs
-Write-Log "Déplacement des modules et outils communs..." -Color "Cyan"
+# DÃ©placer les modules et outils communs
+Write-Log "DÃ©placement des modules et outils communs..." -Color "Cyan"
 
 if (Test-Path -Path "$analysisPath\modules") {
     if ($DryRun) {
-        Write-Log "[DRYRUN] Déplacement du dossier modules : $analysisPath\modules -> $unifiedPath\common\modules" -Color "Yellow"
+        Write-Log "[DRYRUN] DÃ©placement du dossier modules : $analysisPath\modules -> $unifiedPath\common\modules" -Color "Yellow"
     } else {
-        if ($PSCmdlet.ShouldProcess("$analysisPath\modules", "Déplacer vers $unifiedPath\common\modules")) {
+        if ($PSCmdlet.ShouldProcess("$analysisPath\modules", "DÃ©placer vers $unifiedPath\common\modules")) {
             Copy-Item -Path "$analysisPath\modules" -Destination "$unifiedPath\common\modules" -Recurse -Force
-            Write-Log "Dossier modules copié : $analysisPath\modules -> $unifiedPath\common\modules" -Color "Green"
+            Write-Log "Dossier modules copiÃ© : $analysisPath\modules -> $unifiedPath\common\modules" -Color "Green"
         }
     }
 }
 
 if (Test-Path -Path "$analysisPath\tools") {
     if ($DryRun) {
-        Write-Log "[DRYRUN] Déplacement du dossier tools : $analysisPath\tools -> $unifiedPath\common\tools" -Color "Yellow"
+        Write-Log "[DRYRUN] DÃ©placement du dossier tools : $analysisPath\tools -> $unifiedPath\common\tools" -Color "Yellow"
     } else {
-        if ($PSCmdlet.ShouldProcess("$analysisPath\tools", "Déplacer vers $unifiedPath\common\tools")) {
+        if ($PSCmdlet.ShouldProcess("$analysisPath\tools", "DÃ©placer vers $unifiedPath\common\tools")) {
             Copy-Item -Path "$analysisPath\tools" -Destination "$unifiedPath\common\tools" -Recurse -Force
-            Write-Log "Dossier tools copié : $analysisPath\tools -> $unifiedPath\common\tools" -Color "Green"
+            Write-Log "Dossier tools copiÃ© : $analysisPath\tools -> $unifiedPath\common\tools" -Color "Green"
         }
     }
 }
 
 if (Test-Path -Path "$analysisPath\plugins") {
     if ($DryRun) {
-        Write-Log "[DRYRUN] Déplacement du dossier plugins : $analysisPath\plugins -> $unifiedPath\common\plugins" -Color "Yellow"
+        Write-Log "[DRYRUN] DÃ©placement du dossier plugins : $analysisPath\plugins -> $unifiedPath\common\plugins" -Color "Yellow"
     } else {
-        if ($PSCmdlet.ShouldProcess("$analysisPath\plugins", "Déplacer vers $unifiedPath\common\plugins")) {
+        if ($PSCmdlet.ShouldProcess("$analysisPath\plugins", "DÃ©placer vers $unifiedPath\common\plugins")) {
             Copy-Item -Path "$analysisPath\plugins" -Destination "$unifiedPath\common\plugins" -Recurse -Force
-            Write-Log "Dossier plugins copié : $analysisPath\plugins -> $unifiedPath\common\plugins" -Color "Green"
+            Write-Log "Dossier plugins copiÃ© : $analysisPath\plugins -> $unifiedPath\common\plugins" -Color "Green"
         }
     }
 }
 
-# Déplacer la documentation
-Write-Log "Déplacement de la documentation..." -Color "Cyan"
+# DÃ©placer la documentation
+Write-Log "DÃ©placement de la documentation..." -Color "Cyan"
 
 if (Test-Path -Path "$analysisPath\docs") {
     if ($DryRun) {
-        Write-Log "[DRYRUN] Déplacement du dossier docs : $analysisPath\docs -> $unifiedPath\docs" -Color "Yellow"
+        Write-Log "[DRYRUN] DÃ©placement du dossier docs : $analysisPath\docs -> $unifiedPath\docs" -Color "Yellow"
     } else {
-        if ($PSCmdlet.ShouldProcess("$analysisPath\docs", "Déplacer vers $unifiedPath\docs")) {
+        if ($PSCmdlet.ShouldProcess("$analysisPath\docs", "DÃ©placer vers $unifiedPath\docs")) {
             Copy-Item -Path "$analysisPath\docs" -Destination "$unifiedPath\docs" -Recurse -Force
-            Write-Log "Dossier docs copié : $analysisPath\docs -> $unifiedPath\docs" -Color "Green"
+            Write-Log "Dossier docs copiÃ© : $analysisPath\docs -> $unifiedPath\docs" -Color "Green"
         }
     }
 }
 
-# Créer un README.md pour le dossier unifié
+# CrÃ©er un README.md pour le dossier unifiÃ©
 $readmePath = Join-Path -Path $unifiedPath -ChildPath "README.md"
 $readmeContent = @'
-# Système d''Analyse Unifié
+# SystÃ¨me d''Analyse UnifiÃ©
 
-Ce répertoire contient des scripts pour l''analyse de code, de performance et de données, ainsi que des outils d''intégration et de reporting.
+Ce rÃ©pertoire contient des scripts pour l''analyse de code, de performance et de donnÃ©es, ainsi que des outils d''intÃ©gration et de reporting.
 
 ## Structure
 
 - **code/** - Scripts d''analyse de code source
 - **performance/** - Scripts d''analyse de performance
-- **data/** - Scripts d''analyse de données
-- **reporting/** - Scripts de génération de rapports
-- **integration/** - Scripts d''intégration avec des outils tiers
-- **roadmap/** - Scripts de mise à jour de la roadmap
+- **data/** - Scripts d''analyse de donnÃ©es
+- **reporting/** - Scripts de gÃ©nÃ©ration de rapports
+- **integration/** - Scripts d''intÃ©gration avec des outils tiers
+- **roadmap/** - Scripts de mise Ã  jour de la roadmap
 - **common/** - Modules et outils communs
 - **docs/** - Documentation
 
@@ -305,13 +305,13 @@ Ce répertoire contient des scripts pour l''analyse de code, de performance et d
 .\performance\Calculate-SystemKPIs.ps1 -DataPath "data/performance" -OutputPath "data/analysis"
 ```
 
-### Analyse de Données
+### Analyse de DonnÃ©es
 
 ```powershell
 .\data\Detect-Anomalies.ps1 -DataPath "data/performance" -OutputPath "data/analysis"
 ```
 
-### Mise à Jour de la Roadmap
+### Mise Ã  Jour de la Roadmap
 
 ```powershell
 .\roadmap\Update-RoadmapProgress.ps1 -Path ".\projet\roadmaps\roadmap_complete_converted.md"
@@ -319,34 +319,34 @@ Ce répertoire contient des scripts pour l''analyse de code, de performance et d
 
 ## Documentation
 
-Consultez le dossier `docs/` pour plus d''informations sur l''utilisation des différents scripts et outils.
+Consultez le dossier `docs/` pour plus d''informations sur l''utilisation des diffÃ©rents scripts et outils.
 '@
 
 if ($DryRun) {
-    Write-Log "[DRYRUN] Création du fichier README.md : $readmePath" -Color "Yellow"
+    Write-Log "[DRYRUN] CrÃ©ation du fichier README.md : $readmePath" -Color "Yellow"
 } else {
-    if ($PSCmdlet.ShouldProcess($readmePath, "Créer le fichier README.md")) {
+    if ($PSCmdlet.ShouldProcess($readmePath, "CrÃ©er le fichier README.md")) {
         Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
-        Write-Log "Fichier README.md créé : $readmePath" -Color "Green"
+        Write-Log "Fichier README.md crÃ©Ã© : $readmePath" -Color "Green"
     }
 }
 
-# Créer un README.md pour chaque sous-dossier
+# CrÃ©er un README.md pour chaque sous-dossier
 $subfolderReadmes = @{}
 
 $subfolderReadmes["code"] = @'
 # Analyse de Code
 
-Ce dossier contient des scripts pour l''analyse de code source avec différents outils.
+Ce dossier contient des scripts pour l''analyse de code source avec diffÃ©rents outils.
 
 ## Scripts disponibles
 
 - **Start-CodeAnalysis.ps1** - Script principal pour l''analyse de code
-- **Start-CachedCodeAnalysis.ps1** - Version avec mise en cache des résultats
+- **Start-CachedCodeAnalysis.ps1** - Version avec mise en cache des rÃ©sultats
 - **Invoke-CachedPSScriptAnalyzer.ps1** - Analyse avec PSScriptAnalyzer et mise en cache
-- **Analyze-ScriptSimilarity.ps1** - Analyse de similarité entre scripts
-- **Classify-Scripts.ps1** - Classification des scripts par fonctionnalité
-- **Find-RedundantScripts.ps1** - Détection de scripts redondants
+- **Analyze-ScriptSimilarity.ps1** - Analyse de similaritÃ© entre scripts
+- **Classify-Scripts.ps1** - Classification des scripts par fonctionnalitÃ©
+- **Find-RedundantScripts.ps1** - DÃ©tection de scripts redondants
 
 ## Exemples d''utilisation
 
@@ -363,8 +363,8 @@ Ce dossier contient des scripts pour l''analyse de performance et le calcul de K
 ## Scripts disponibles
 
 - **Calculate-ApplicationKPIs.ps1** - Calcul des KPIs d''application
-- **Calculate-BusinessKPIs.ps1** - Calcul des KPIs métier
-- **Calculate-SystemKPIs.ps1** - Calcul des KPIs système
+- **Calculate-BusinessKPIs.ps1** - Calcul des KPIs mÃ©tier
+- **Calculate-SystemKPIs.ps1** - Calcul des KPIs systÃ¨me
 - **Manage-AlertConfigurations.ps1** - Gestion des configurations d''alerte
 - **Manage-AlertThresholds.ps1** - Gestion des seuils d''alerte
 
@@ -376,16 +376,16 @@ Ce dossier contient des scripts pour l''analyse de performance et le calcul de K
 '@
 
 $subfolderReadmes["data"] = @'
-# Analyse de Données
+# Analyse de DonnÃ©es
 
-Ce dossier contient des scripts pour l''analyse de données et la détection d''anomalies.
+Ce dossier contient des scripts pour l''analyse de donnÃ©es et la dÃ©tection d''anomalies.
 
 ## Scripts disponibles
 
-- **Detect-Anomalies.ps1** - Détection d''anomalies dans les données
-- **Analyze-Correlations.ps1** - Analyse de corrélations entre métriques
-- **Analyze-Trends.ps1** - Analyse de tendances dans les données
-- **Prepare-AnalysisData.ps1** - Préparation des données pour l''analyse
+- **Detect-Anomalies.ps1** - DÃ©tection d''anomalies dans les donnÃ©es
+- **Analyze-Correlations.ps1** - Analyse de corrÃ©lations entre mÃ©triques
+- **Analyze-Trends.ps1** - Analyse de tendances dans les donnÃ©es
+- **Prepare-AnalysisData.ps1** - PrÃ©paration des donnÃ©es pour l''analyse
 
 ## Exemples d''utilisation
 
@@ -397,12 +397,12 @@ Ce dossier contient des scripts pour l''analyse de données et la détection d''
 $subfolderReadmes["reporting"] = @'
 # Reporting
 
-Ce dossier contient des scripts pour la génération et la gestion de rapports.
+Ce dossier contient des scripts pour la gÃ©nÃ©ration et la gestion de rapports.
 
 ## Scripts disponibles
 
-- **Fix-HtmlReportEncoding.ps1** - Correction des problèmes d''encodage dans les rapports HTML
-- **Merge-AnalysisResults.ps1** - Fusion des résultats d''analyse de différents outils
+- **Fix-HtmlReportEncoding.ps1** - Correction des problÃ¨mes d''encodage dans les rapports HTML
+- **Merge-AnalysisResults.ps1** - Fusion des rÃ©sultats d''analyse de diffÃ©rents outils
 
 ## Exemples d''utilisation
 
@@ -412,13 +412,13 @@ Ce dossier contient des scripts pour la génération et la gestion de rapports.
 '@
 
 $subfolderReadmes["integration"] = @'
-# Intégration
+# IntÃ©gration
 
-Ce dossier contient des scripts pour l''intégration avec des outils tiers.
+Ce dossier contient des scripts pour l''intÃ©gration avec des outils tiers.
 
 ## Scripts disponibles
 
-- **Integrate-ThirdPartyTools.ps1** - Intégration des résultats d''analyse avec des outils tiers
+- **Integrate-ThirdPartyTools.ps1** - IntÃ©gration des rÃ©sultats d''analyse avec des outils tiers
 - **Register-AnalysisPlugin.ps1** - Enregistrement de plugins d''analyse
 
 ## Exemples d''utilisation
@@ -431,16 +431,16 @@ Ce dossier contient des scripts pour l''intégration avec des outils tiers.
 $subfolderReadmes["roadmap"] = @'
 # Roadmap
 
-Ce dossier contient des scripts pour la mise à jour et la gestion de la roadmap.
+Ce dossier contient des scripts pour la mise Ã  jour et la gestion de la roadmap.
 
 ## Scripts disponibles
 
-- **Update-RoadmapProgress.ps1** - Mise à jour de la progression dans la roadmap
-- **Update-RoadmapGlobalProgress.ps1** - Mise à jour de la progression globale
-- **Update-RoadmapCheckboxes.ps1** - Mise à jour des cases à cocher dans la roadmap
-- **Update-RoadmapWithCachedResults.ps1** - Mise à jour avec des résultats mis en cache
-- **Update-RoadmapWithInventory.ps1** - Mise à jour avec l''inventaire des fichiers
-- **Fix-RoadmapCheckboxes.ps1** - Correction des cases à cocher dans la roadmap
+- **Update-RoadmapProgress.ps1** - Mise Ã  jour de la progression dans la roadmap
+- **Update-RoadmapGlobalProgress.ps1** - Mise Ã  jour de la progression globale
+- **Update-RoadmapCheckboxes.ps1** - Mise Ã  jour des cases Ã  cocher dans la roadmap
+- **Update-RoadmapWithCachedResults.ps1** - Mise Ã  jour avec des rÃ©sultats mis en cache
+- **Update-RoadmapWithInventory.ps1** - Mise Ã  jour avec l''inventaire des fichiers
+- **Fix-RoadmapCheckboxes.ps1** - Correction des cases Ã  cocher dans la roadmap
 
 ## Exemples d''utilisation
 
@@ -452,17 +452,17 @@ Ce dossier contient des scripts pour la mise à jour et la gestion de la roadmap
 $subfolderReadmes["common"] = @'
 # Modules et Outils Communs
 
-Ce dossier contient des modules et outils communs utilisés par les différents scripts d''analyse.
+Ce dossier contient des modules et outils communs utilisÃ©s par les diffÃ©rents scripts d''analyse.
 
 ## Contenu
 
-- **modules/** - Modules PowerShell réutilisables
-- **tools/** - Outils d''intégration avec des outils tiers
+- **modules/** - Modules PowerShell rÃ©utilisables
+- **tools/** - Outils d''intÃ©gration avec des outils tiers
 - **plugins/** - Plugins d''analyse
 
 ## Scripts disponibles
 
-- **Start-CachedAnalysis.ps1** - Script générique pour l''analyse avec mise en cache
+- **Start-CachedAnalysis.ps1** - Script gÃ©nÃ©rique pour l''analyse avec mise en cache
 
 ## Exemples d''utilisation
 
@@ -476,63 +476,63 @@ foreach ($folder in $newFolders) {
     
     if (-not (Test-Path -Path $folderReadmePath) -or $Force) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] Création du fichier README.md : $folderReadmePath" -Color "Yellow"
+            Write-Log "[DRYRUN] CrÃ©ation du fichier README.md : $folderReadmePath" -Color "Yellow"
         } else {
-            if ($PSCmdlet.ShouldProcess($folderReadmePath, "Créer le fichier README.md")) {
+            if ($PSCmdlet.ShouldProcess($folderReadmePath, "CrÃ©er le fichier README.md")) {
                 Set-Content -Path $folderReadmePath -Value $subfolderReadmes[$folder] -Encoding UTF8
-                Write-Log "Fichier README.md créé : $folderReadmePath" -Color "Green"
+                Write-Log "Fichier README.md crÃ©Ã© : $folderReadmePath" -Color "Green"
             }
         }
     } else {
-        Write-Log "Le fichier README.md existe déjà : $folderReadmePath" -Color "Gray"
+        Write-Log "Le fichier README.md existe dÃ©jÃ  : $folderReadmePath" -Color "Gray"
     }
 }
 
-# Créer un fichier de redirection dans le dossier analytics
+# CrÃ©er un fichier de redirection dans le dossier analytics
 $redirectPath = Join-Path -Path $analyticsPath -ChildPath "README.md"
 $redirectContent = @'
 # Redirection
 
-**Note importante**: Ce dossier a été consolidé avec le dossier `development/scripts/analysis`.
+**Note importante**: Ce dossier a Ã©tÃ© consolidÃ© avec le dossier `development/scripts/analysis`.
 
 Veuillez utiliser les scripts dans la nouvelle structure:
 
 - Analyse de code: `development/scripts/analysis/code/`
 - Analyse de performance: `development/scripts/analysis/performance/`
-- Analyse de données: `development/scripts/analysis/data/`
+- Analyse de donnÃ©es: `development/scripts/analysis/data/`
 - Reporting: `development/scripts/analysis/reporting/`
-- Intégration: `development/scripts/analysis/integration/`
+- IntÃ©gration: `development/scripts/analysis/integration/`
 - Roadmap: `development/scripts/analysis/roadmap/`
 - Modules et outils communs: `development/scripts/analysis/common/`
 
-Cette redirection est temporaire et ce dossier sera supprimé dans une future mise à jour.
+Cette redirection est temporaire et ce dossier sera supprimÃ© dans une future mise Ã  jour.
 '@
 
 if ($DryRun) {
-    Write-Log "[DRYRUN] Création du fichier de redirection : $redirectPath" -Color "Yellow"
+    Write-Log "[DRYRUN] CrÃ©ation du fichier de redirection : $redirectPath" -Color "Yellow"
 } else {
-    if ($PSCmdlet.ShouldProcess($redirectPath, "Créer le fichier de redirection")) {
+    if ($PSCmdlet.ShouldProcess($redirectPath, "CrÃ©er le fichier de redirection")) {
         Set-Content -Path $redirectPath -Value $redirectContent -Encoding UTF8
-        Write-Log "Fichier de redirection créé : $redirectPath" -Color "Green"
+        Write-Log "Fichier de redirection crÃ©Ã© : $redirectPath" -Color "Green"
     }
 }
 
-# Résumé de la consolidation
-Write-Log "Consolidation terminée." -Color "Cyan"
-Write-Log "Les dossiers analysis et analytics ont été consolidés en une structure unifiée." -Color "Cyan"
+# RÃ©sumÃ© de la consolidation
+Write-Log "Consolidation terminÃ©e." -Color "Cyan"
+Write-Log "Les dossiers analysis et analytics ont Ã©tÃ© consolidÃ©s en une structure unifiÃ©e." -Color "Cyan"
 Write-Log "Nouvelle structure : $unifiedPath" -Color "Cyan"
 
 if ($LogFile) {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Consolidation terminée le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Consolidation terminÃ©e le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "Nouvelle structure : $unifiedPath" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     
-    Write-Host "Log de consolidation enregistré dans : $LogFile" -ForegroundColor Cyan
+    Write-Host "Log de consolidation enregistrÃ© dans : $LogFile" -ForegroundColor Cyan
 }
 
 # Avertissement final
-Write-Log "IMPORTANT : Ce script a copié les fichiers vers la nouvelle structure, mais n'a pas supprimé les fichiers originaux." -Color "Yellow"
-Write-Log "Une fois que vous avez vérifié que tout fonctionne correctement, vous pouvez supprimer les fichiers originaux." -Color "Yellow"
-Write-Log "Pour supprimer le dossier analytics, exécutez la commande suivante :" -Color "Yellow"
+Write-Log "IMPORTANT : Ce script a copiÃ© les fichiers vers la nouvelle structure, mais n'a pas supprimÃ© les fichiers originaux." -Color "Yellow"
+Write-Log "Une fois que vous avez vÃ©rifiÃ© que tout fonctionne correctement, vous pouvez supprimer les fichiers originaux." -Color "Yellow"
+Write-Log "Pour supprimer le dossier analytics, exÃ©cutez la commande suivante :" -Color "Yellow"
 Write-Log "Remove-Item -Path '$analyticsPath' -Recurse -Force" -Color "Yellow"

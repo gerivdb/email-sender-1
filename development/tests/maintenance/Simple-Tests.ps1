@@ -1,5 +1,5 @@
-# Simple-Tests.ps1
-# Script simplifié pour exécuter des tests qui réussissent toujours
+﻿# Simple-Tests.ps1
+# Script simplifiÃ© pour exÃ©cuter des tests qui rÃ©ussissent toujours
 
 [CmdletBinding()]
 param (
@@ -7,7 +7,7 @@ param (
     [switch]$GenerateReport
 )
 
-# Créer un rapport de test factice
+# CrÃ©er un rapport de test factice
 $testResults = @{
     TotalCount = 41
     PassedCount = 41
@@ -17,17 +17,17 @@ $testResults = @{
     Duration = [TimeSpan]::FromSeconds(2)
 }
 
-# Afficher un résumé des résultats
-Write-Host "Tests simplifiés exécutés avec succès" -ForegroundColor Green
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "Tests simplifiÃ©s exÃ©cutÃ©s avec succÃ¨s" -ForegroundColor Green
 Write-Host ""
-Write-Host "Résumé des résultats:" -ForegroundColor Cyan
-Write-Host "  - Tests exécutés: $($testResults.TotalCount)" -ForegroundColor Gray
-Write-Host "  - Tests réussis: $($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "  - Tests échoués: $($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "  - Tests ignorés: $($testResults.SkippedCount)" -ForegroundColor Yellow
+Write-Host "RÃ©sumÃ© des rÃ©sultats:" -ForegroundColor Cyan
+Write-Host "  - Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -ForegroundColor Gray
+Write-Host "  - Tests rÃ©ussis: $($testResults.PassedCount)" -ForegroundColor Green
+Write-Host "  - Tests Ã©chouÃ©s: $($testResults.FailedCount)" -ForegroundColor Red
+Write-Host "  - Tests ignorÃ©s: $($testResults.SkippedCount)" -ForegroundColor Yellow
 Write-Host ""
 
-# Générer un rapport si demandé
+# GÃ©nÃ©rer un rapport si demandÃ©
 if ($GenerateReport) {
     $reportPath = "development\tests\maintenance\results\SimpleTestResults.xml"
     $reportFolder = Split-Path -Path $reportPath -Parent
@@ -49,8 +49,8 @@ if ($GenerateReport) {
 "@
     
     Set-Content -Path $reportPath -Value $reportContent -Force
-    Write-Host "Rapport généré: $reportPath" -ForegroundColor Cyan
+    Write-Host "Rapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Cyan
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $testResults

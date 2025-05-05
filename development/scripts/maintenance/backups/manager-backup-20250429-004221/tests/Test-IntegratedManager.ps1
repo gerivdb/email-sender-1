@@ -1,48 +1,48 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour le gestionnaire intégré.
+    Tests pour le gestionnaire intÃ©grÃ©.
 
 .DESCRIPTION
-    Ce script contient des tests pour vérifier le bon fonctionnement du gestionnaire intégré.
+    Ce script contient des tests pour vÃ©rifier le bon fonctionnement du gestionnaire intÃ©grÃ©.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Définir les chemins
+# DÃ©finir les chemins
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))
 $integratedManagerPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\integrated-manager.ps1"
 $configPath = Join-Path -Path $projectRoot -ChildPath "development\config\unified-config.json"
 
-# Créer un répertoire de test temporaire
+# CrÃ©er un rÃ©pertoire de test temporaire
 $testDir = Join-Path -Path $scriptPath -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 @"
 # Test Roadmap
 
-## Tâche 1.2.3
+## TÃ¢che 1.2.3
 
 ### Description
-Cette tâche est utilisée pour les tests du gestionnaire intégré.
+Cette tÃ¢che est utilisÃ©e pour les tests du gestionnaire intÃ©grÃ©.
 
-### Sous-tâches
-- [ ] Sous-tâche 1
-- [ ] Sous-tâche 2
-- [ ] Sous-tâche 3
+### Sous-tÃ¢ches
+- [ ] Sous-tÃ¢che 1
+- [ ] Sous-tÃ¢che 2
+- [ ] Sous-tÃ¢che 3
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfigPath = Join-Path -Path $testDir -ChildPath "test-config.json"
 @{
     General = @{
@@ -127,7 +127,7 @@ $testConfigPath = Join-Path -Path $testDir -ChildPath "test-config.json"
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $testConfigPath -Encoding UTF8
 
-# Créer des scripts mock pour les tests
+# CrÃ©er des scripts mock pour les tests
 $mockCheckModePath = Join-Path -Path $scriptPath -ChildPath "mock-check-mode.ps1"
 @"
 param (
@@ -136,7 +136,7 @@ param (
     [switch]`$Force
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$testDir" -ChildPath "check-mode-output.txt"
 @"
 Mode: CHECK
@@ -156,7 +156,7 @@ param (
     [switch]`$Force
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$testDir" -ChildPath "gran-mode-output.txt"
 @"
 Mode: GRAN
@@ -182,7 +182,7 @@ param (
     [switch]`$Interactive
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$testDir" -ChildPath "roadmap-manager-output.txt"
 @"
 RoadmapPath: `$RoadmapPath
@@ -209,7 +209,7 @@ param (
     [switch]`$GenerateChart
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$testDir" -ChildPath "roadmap-analyzer-output.txt"
 @"
 RoadmapPath: `$RoadmapPath
@@ -232,7 +232,7 @@ param (
     [switch]`$GenerateReport
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$testDir" -ChildPath "roadmap-git-updater-output.txt"
 @"
 RoadmapPath: `$RoadmapPath
@@ -245,87 +245,87 @@ GenerateReport: `$GenerateReport
 exit 0
 "@ | Set-Content -Path $mockRoadmapGitUpdaterPath -Encoding UTF8
 
-# Définir les tests
-Describe "Gestionnaire Intégré" {
-    Context "Paramètres de base" {
+# DÃ©finir les tests
+Describe "Gestionnaire IntÃ©grÃ©" {
+    Context "ParamÃ¨tres de base" {
         It "Devrait exister" {
             Test-Path -Path $integratedManagerPath | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre Mode" {
+        It "Devrait accepter le paramÃ¨tre Mode" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("Mode") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre RoadmapPath" {
+        It "Devrait accepter le paramÃ¨tre RoadmapPath" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("RoadmapPath") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre TaskIdentifier" {
+        It "Devrait accepter le paramÃ¨tre TaskIdentifier" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("TaskIdentifier") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre ConfigPath" {
+        It "Devrait accepter le paramÃ¨tre ConfigPath" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("ConfigPath") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre Force" {
+        It "Devrait accepter le paramÃ¨tre Force" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("Force") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre ListModes" {
+        It "Devrait accepter le paramÃ¨tre ListModes" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("ListModes") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre ListRoadmaps" {
+        It "Devrait accepter le paramÃ¨tre ListRoadmaps" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("ListRoadmaps") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre Analyze" {
+        It "Devrait accepter le paramÃ¨tre Analyze" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("Analyze") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre GitUpdate" {
+        It "Devrait accepter le paramÃ¨tre GitUpdate" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("GitUpdate") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre Workflow" {
+        It "Devrait accepter le paramÃ¨tre Workflow" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("Workflow") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre Interactive" {
+        It "Devrait accepter le paramÃ¨tre Interactive" {
             $result = Get-Command -Name $integratedManagerPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("Interactive") | Should -Be $true
         }
     }
     
-    Context "Exécution du mode CHECK" {
+    Context "ExÃ©cution du mode CHECK" {
         BeforeEach {
-            # Supprimer les fichiers de sortie des tests précédents
+            # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
             $outputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
             if (Test-Path -Path $outputPath) {
                 Remove-Item -Path $outputPath -Force
             }
         }
         
-        It "Devrait exécuter le mode CHECK avec succès" {
-            # Exécuter le script avec le mode CHECK
+        It "Devrait exÃ©cuter le mode CHECK avec succÃ¨s" {
+            # ExÃ©cuter le script avec le mode CHECK
             & $integratedManagerPath -Mode "CHECK" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath
             
-            # Vérifier que le fichier de sortie a été créé
+            # VÃ©rifier que le fichier de sortie a Ã©tÃ© crÃ©Ã©
             $outputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier de sortie
+            # VÃ©rifier le contenu du fichier de sortie
             $output = Get-Content -Path $outputPath -Raw
             $output | Should -Match "Mode: CHECK"
             $output | Should -Match "FilePath: $([regex]::Escape($testRoadmapPath))"
@@ -333,15 +333,15 @@ Describe "Gestionnaire Intégré" {
             $output | Should -Match "Force: False"
         }
         
-        It "Devrait exécuter le mode CHECK avec le paramètre Force" {
-            # Exécuter le script avec le mode CHECK et le paramètre Force
+        It "Devrait exÃ©cuter le mode CHECK avec le paramÃ¨tre Force" {
+            # ExÃ©cuter le script avec le mode CHECK et le paramÃ¨tre Force
             & $integratedManagerPath -Mode "CHECK" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Force
             
-            # Vérifier que le fichier de sortie a été créé
+            # VÃ©rifier que le fichier de sortie a Ã©tÃ© crÃ©Ã©
             $outputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier de sortie
+            # VÃ©rifier le contenu du fichier de sortie
             $output = Get-Content -Path $outputPath -Raw
             $output | Should -Match "Mode: CHECK"
             $output | Should -Match "FilePath: $([regex]::Escape($testRoadmapPath))"
@@ -350,24 +350,24 @@ Describe "Gestionnaire Intégré" {
         }
     }
     
-    Context "Exécution du mode GRAN" {
+    Context "ExÃ©cution du mode GRAN" {
         BeforeEach {
-            # Supprimer les fichiers de sortie des tests précédents
+            # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
             $outputPath = Join-Path -Path $testDir -ChildPath "gran-mode-output.txt"
             if (Test-Path -Path $outputPath) {
                 Remove-Item -Path $outputPath -Force
             }
         }
         
-        It "Devrait exécuter le mode GRAN avec succès" {
-            # Exécuter le script avec le mode GRAN
+        It "Devrait exÃ©cuter le mode GRAN avec succÃ¨s" {
+            # ExÃ©cuter le script avec le mode GRAN
             & $integratedManagerPath -Mode "GRAN" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath
             
-            # Vérifier que le fichier de sortie a été créé
+            # VÃ©rifier que le fichier de sortie a Ã©tÃ© crÃ©Ã©
             $outputPath = Join-Path -Path $testDir -ChildPath "gran-mode-output.txt"
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier de sortie
+            # VÃ©rifier le contenu du fichier de sortie
             $output = Get-Content -Path $outputPath -Raw
             $output | Should -Match "Mode: GRAN"
             $output | Should -Match "FilePath: $([regex]::Escape($testRoadmapPath))"
@@ -376,9 +376,9 @@ Describe "Gestionnaire Intégré" {
         }
     }
     
-    Context "Exécution d'un workflow" {
+    Context "ExÃ©cution d'un workflow" {
         BeforeEach {
-            # Supprimer les fichiers de sortie des tests précédents
+            # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
             $outputPaths = @(
                 (Join-Path -Path $testDir -ChildPath "check-mode-output.txt"),
                 (Join-Path -Path $testDir -ChildPath "gran-mode-output.txt")
@@ -391,18 +391,18 @@ Describe "Gestionnaire Intégré" {
             }
         }
         
-        It "Devrait exécuter le workflow Test avec succès" {
-            # Exécuter le script avec le workflow Test
+        It "Devrait exÃ©cuter le workflow Test avec succÃ¨s" {
+            # ExÃ©cuter le script avec le workflow Test
             & $integratedManagerPath -Workflow "Test" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath
             
-            # Vérifier que les fichiers de sortie ont été créés
+            # VÃ©rifier que les fichiers de sortie ont Ã©tÃ© crÃ©Ã©s
             $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
             $granOutputPath = Join-Path -Path $testDir -ChildPath "gran-mode-output.txt"
             
             Test-Path -Path $checkOutputPath | Should -Be $true
             Test-Path -Path $granOutputPath | Should -Be $true
             
-            # Vérifier le contenu des fichiers de sortie
+            # VÃ©rifier le contenu des fichiers de sortie
             $checkOutput = Get-Content -Path $checkOutputPath -Raw
             $checkOutput | Should -Match "Mode: CHECK"
             $checkOutput | Should -Match "FilePath: $([regex]::Escape($testRoadmapPath))"
@@ -417,22 +417,22 @@ Describe "Gestionnaire Intégré" {
     
     Context "Analyse de roadmap" {
         BeforeEach {
-            # Supprimer les fichiers de sortie des tests précédents
+            # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
             $outputPath = Join-Path -Path $testDir -ChildPath "roadmap-analyzer-output.txt"
             if (Test-Path -Path $outputPath) {
                 Remove-Item -Path $outputPath -Force
             }
         }
         
-        It "Devrait analyser la roadmap avec succès" {
-            # Exécuter le script avec le paramètre Analyze
+        It "Devrait analyser la roadmap avec succÃ¨s" {
+            # ExÃ©cuter le script avec le paramÃ¨tre Analyze
             & $integratedManagerPath -Analyze -RoadmapPath $testRoadmapPath -ConfigPath $testConfigPath
             
-            # Vérifier que le fichier de sortie a été créé
+            # VÃ©rifier que le fichier de sortie a Ã©tÃ© crÃ©Ã©
             $outputPath = Join-Path -Path $testDir -ChildPath "roadmap-analyzer-output.txt"
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier de sortie
+            # VÃ©rifier le contenu du fichier de sortie
             $output = Get-Content -Path $outputPath -Raw
             $output | Should -Match "RoadmapPath: $([regex]::Escape($testRoadmapPath))"
             $output | Should -Match "GenerateHtml: True"
@@ -441,24 +441,24 @@ Describe "Gestionnaire Intégré" {
         }
     }
     
-    Context "Mise à jour Git de roadmap" {
+    Context "Mise Ã  jour Git de roadmap" {
         BeforeEach {
-            # Supprimer les fichiers de sortie des tests précédents
+            # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
             $outputPath = Join-Path -Path $testDir -ChildPath "roadmap-git-updater-output.txt"
             if (Test-Path -Path $outputPath) {
                 Remove-Item -Path $outputPath -Force
             }
         }
         
-        It "Devrait mettre à jour la roadmap avec Git avec succès" {
-            # Exécuter le script avec le paramètre GitUpdate
+        It "Devrait mettre Ã  jour la roadmap avec Git avec succÃ¨s" {
+            # ExÃ©cuter le script avec le paramÃ¨tre GitUpdate
             & $integratedManagerPath -GitUpdate -RoadmapPath $testRoadmapPath -ConfigPath $testConfigPath
             
-            # Vérifier que le fichier de sortie a été créé
+            # VÃ©rifier que le fichier de sortie a Ã©tÃ© crÃ©Ã©
             $outputPath = Join-Path -Path $testDir -ChildPath "roadmap-git-updater-output.txt"
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier de sortie
+            # VÃ©rifier le contenu du fichier de sortie
             $output = Get-Content -Path $outputPath -Raw
             $output | Should -Match "RoadmapPath: $([regex]::Escape($testRoadmapPath))"
             $output | Should -Match "AutoUpdate: True"
@@ -467,5 +467,5 @@ Describe "Gestionnaire Intégré" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $MyInvocation.MyCommand.Path -Output Detailed

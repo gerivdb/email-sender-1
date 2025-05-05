@@ -1,5 +1,5 @@
-# Search-TasksSemantic.ps1
-# Script pour effectuer des recherches sémantiques dans les tâches de la roadmap
+﻿# Search-TasksSemantic.ps1
+# Script pour effectuer des recherches sÃ©mantiques dans les tÃ¢ches de la roadmap
 
 [CmdletBinding()]
 param (
@@ -32,7 +32,7 @@ param (
     [string]$OutputPath
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -55,26 +55,26 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         }
         else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     }
     catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("chromadb", "numpy", "requests")
     $missingPackages = @()
@@ -95,24 +95,24 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         }
         else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
     
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour la recherche sémantique
+# Fonction pour crÃ©er un script Python temporaire pour la recherche sÃ©mantique
 function New-SemanticSearchScript {
     [CmdletBinding()]
     param (
@@ -152,8 +152,8 @@ from datetime import datetime
 def get_embedding(text, api_key, endpoint, model):
     """Obtenir un vecteur d'embedding via l'API OpenRouter"""
     if not api_key:
-        # Générer un vecteur aléatoire si pas de clé API
-        print("Clé API non fournie. Génération d'un vecteur aléatoire.")
+        # GÃ©nÃ©rer un vecteur alÃ©atoire si pas de clÃ© API
+        print("ClÃ© API non fournie. GÃ©nÃ©ration d'un vecteur alÃ©atoire.")
         return np.random.uniform(-1, 1, 1536).tolist()
     
     try:
@@ -175,14 +175,14 @@ def get_embedding(text, api_key, endpoint, model):
         if 'data' in result and 'embedding' in result['data'][0]:
             return result['data'][0]['embedding']
         else:
-            print("Réponse API invalide. Génération d'un vecteur aléatoire.")
+            print("RÃ©ponse API invalide. GÃ©nÃ©ration d'un vecteur alÃ©atoire.")
             return np.random.uniform(-1, 1, 1536).tolist()
     except Exception as e:
-        print(f"Erreur lors de l'appel à l'API d'embedding: {e}")
+        print(f"Erreur lors de l'appel Ã  l'API d'embedding: {e}")
         return np.random.uniform(-1, 1, 1536).tolist()
 
 def main():
-    # Paramètres
+    # ParamÃ¨tres
     query = r'$Query'
     chroma_db_path = r'$ChromaDbPath'
     collection_name = '$CollectionName'
@@ -191,16 +191,16 @@ def main():
     model_name = '$ModelName'
     max_results = $MaxResults
     
-    print(f"Recherche sémantique pour: '{query}'")
+    print(f"Recherche sÃ©mantique pour: '{query}'")
     
     # Initialiser le client Chroma
     try:
         client = chromadb.PersistentClient(path=chroma_db_path)
     except Exception as e:
-        print(f"Erreur lors de la connexion à la base Chroma: {e}")
+        print(f"Erreur lors de la connexion Ã  la base Chroma: {e}")
         sys.exit(1)
     
-    # Vérifier si la collection existe
+    # VÃ©rifier si la collection existe
     try:
         existing_collections = client.list_collections()
         collection_exists = any(c.name == collection_name for c in existing_collections)
@@ -209,22 +209,22 @@ def main():
             print(f"La collection {collection_name} n'existe pas dans la base Chroma.")
             sys.exit(1)
         
-        # Récupérer la collection
+        # RÃ©cupÃ©rer la collection
         collection = client.get_collection(name=collection_name)
         
-        # Obtenir l'embedding de la requête
-        print("Génération de l'embedding pour la requête...")
+        # Obtenir l'embedding de la requÃªte
+        print("GÃ©nÃ©ration de l'embedding pour la requÃªte...")
         query_embedding = get_embedding(query, api_key, model_endpoint, model_name)
         
         # Effectuer la recherche
-        print(f"Recherche des {max_results} tâches les plus pertinentes...")
+        print(f"Recherche des {max_results} tÃ¢ches les plus pertinentes...")
         results = collection.query(
             query_embeddings=[query_embedding],
             n_results=max_results,
             include=["metadatas", "documents", "distances"]
         )
         
-        # Préparer les résultats
+        # PrÃ©parer les rÃ©sultats
         search_results = []
         
         if results['ids'] and results['ids'][0]:
@@ -232,7 +232,7 @@ def main():
                 metadata = results['metadatas'][0][i]
                 document = results['documents'][0][i]
                 distance = results['distances'][0][i]
-                similarity = 1 - (distance / 2)  # Convertir la distance en similarité (0-1)
+                similarity = 1 - (distance / 2)  # Convertir la distance en similaritÃ© (0-1)
                 
                 result = {
                     "taskId": task_id,
@@ -243,16 +243,16 @@ def main():
                     "lastUpdated": metadata.get("lastUpdated", ""),
                     "parentId": metadata.get("parentId", ""),
                     "document": document,
-                    "similarity": round(similarity * 100, 2)  # Pourcentage de similarité
+                    "similarity": round(similarity * 100, 2)  # Pourcentage de similaritÃ©
                 }
                 
                 search_results.append(result)
         
-        # Afficher les résultats au format JSON
+        # Afficher les rÃ©sultats au format JSON
         print(json.dumps(search_results, indent=2, ensure_ascii=False))
         
     except Exception as e:
-        print(f"Erreur lors de la recherche sémantique: {e}")
+        print(f"Erreur lors de la recherche sÃ©mantique: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
@@ -263,7 +263,7 @@ if __name__ == "__main__":
     return $scriptPath
 }
 
-# Fonction pour formater les résultats en Markdown
+# Fonction pour formater les rÃ©sultats en Markdown
 function Format-ResultsAsMarkdown {
     [CmdletBinding()]
     param (
@@ -276,15 +276,15 @@ function Format-ResultsAsMarkdown {
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $markdown = @"
-# Résultats de recherche sémantique
+# RÃ©sultats de recherche sÃ©mantique
 
-**Requête:** "$Query"  
+**RequÃªte:** "$Query"  
 **Date:** $timestamp  
-**Nombre de résultats:** $($Results.Count)
+**Nombre de rÃ©sultats:** $($Results.Count)
 
-## Résultats
+## RÃ©sultats
 
-| ID | Description | Section | Statut | Similarité |
+| ID | Description | Section | Statut | SimilaritÃ© |
 |---|---|---|---|---|
 "@
     
@@ -294,7 +294,7 @@ function Format-ResultsAsMarkdown {
     
     $markdown += @"
 
-## Détails des résultats
+## DÃ©tails des rÃ©sultats
 
 "@
     
@@ -303,10 +303,10 @@ function Format-ResultsAsMarkdown {
 
 ### $($result.taskId) - $($result.description)
 
-- **Similarité:** $($result.similarity)%
+- **SimilaritÃ©:** $($result.similarity)%
 - **Statut:** $($result.status)
 - **Section:** $($result.section)
-- **Dernière mise à jour:** $($result.lastUpdated)
+- **DerniÃ¨re mise Ã  jour:** $($result.lastUpdated)
 - **ID parent:** $($result.parentId)
 - **Niveau d'indentation:** $($result.indentLevel)
 
@@ -316,7 +316,7 @@ function Format-ResultsAsMarkdown {
     return $markdown
 }
 
-# Fonction pour afficher les résultats dans la console
+# Fonction pour afficher les rÃ©sultats dans la console
 function Show-ResultsInConsole {
     [CmdletBinding()]
     param (
@@ -327,14 +327,14 @@ function Show-ResultsInConsole {
         [string]$Query
     )
     
-    Write-Host "`nRésultats de recherche sémantique pour: '$Query'" -ForegroundColor Cyan
-    Write-Host "Nombre de résultats: $($Results.Count)" -ForegroundColor Cyan
+    Write-Host "`nRÃ©sultats de recherche sÃ©mantique pour: '$Query'" -ForegroundColor Cyan
+    Write-Host "Nombre de rÃ©sultats: $($Results.Count)" -ForegroundColor Cyan
     Write-Host "------------------------------------------------------------" -ForegroundColor Cyan
     
     foreach ($result in $Results) {
         Write-Host "ID: " -NoNewline
         Write-Host "$($result.taskId)" -ForegroundColor Yellow -NoNewline
-        Write-Host " - Similarité: " -NoNewline
+        Write-Host " - SimilaritÃ©: " -NoNewline
         Write-Host "$($result.similarity)%" -ForegroundColor Green
         
         Write-Host "Description: $($result.description)"
@@ -346,36 +346,36 @@ function Show-ResultsInConsole {
 
 # Fonction principale
 function Main {
-    # Vérifier si la base Chroma existe
+    # VÃ©rifier si la base Chroma existe
     if (-not (Test-Path -Path $ChromaDbPath)) {
         Write-Log "La base Chroma $ChromaDbPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
     
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
     
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour la recherche sémantique..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour la recherche sÃ©mantique..." -Level Info
     $pythonScript = New-SemanticSearchScript -Query $Query -ChromaDbPath $ChromaDbPath -CollectionName $CollectionName -ModelEndpoint $ModelEndpoint -ApiKey $ApiKey -ModelName $ModelName -MaxResults $MaxResults
     
-    # Exécuter le script Python et capturer la sortie JSON
-    Write-Log "Exécution de la recherche sémantique pour: '$Query'..." -Level Info
+    # ExÃ©cuter le script Python et capturer la sortie JSON
+    Write-Log "ExÃ©cution de la recherche sÃ©mantique pour: '$Query'..." -Level Info
     $output = python $pythonScript 2>&1
     
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
     
-    # Extraire les résultats JSON de la sortie
+    # Extraire les rÃ©sultats JSON de la sortie
     $jsonStartIndex = $output.IndexOf("[")
     $jsonEndIndex = $output.LastIndexOf("]")
     
@@ -383,7 +383,7 @@ function Main {
         $jsonString = $output.Substring($jsonStartIndex, $jsonEndIndex - $jsonStartIndex + 1)
         $results = $jsonString | ConvertFrom-Json
         
-        # Traiter les résultats selon le format demandé
+        # Traiter les rÃ©sultats selon le format demandÃ©
         switch ($OutputFormat) {
             "console" {
                 Show-ResultsInConsole -Results $results -Query $Query
@@ -397,7 +397,7 @@ function Main {
                 
                 if ($OutputPath) {
                     $jsonOutput | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Résultats sauvegardés au format JSON dans $OutputPath" -Level Success
+                    Write-Log "RÃ©sultats sauvegardÃ©s au format JSON dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $jsonOutput
@@ -408,7 +408,7 @@ function Main {
                 
                 if ($OutputPath) {
                     $markdownOutput | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Résultats sauvegardés au format Markdown dans $OutputPath" -Level Success
+                    Write-Log "RÃ©sultats sauvegardÃ©s au format Markdown dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $markdownOutput
@@ -416,12 +416,12 @@ function Main {
             }
         }
         
-        Write-Log "Recherche terminée. $($results.Count) résultats trouvés." -Level Success
+        Write-Log "Recherche terminÃ©e. $($results.Count) rÃ©sultats trouvÃ©s." -Level Success
     }
     else {
-        Write-Log "Aucun résultat trouvé ou erreur lors de la recherche." -Level Warning
+        Write-Log "Aucun rÃ©sultat trouvÃ© ou erreur lors de la recherche." -Level Warning
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

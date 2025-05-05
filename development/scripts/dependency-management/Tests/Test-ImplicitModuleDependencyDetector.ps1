@@ -1,25 +1,25 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests pour le module ImplicitModuleDependencyDetector.
 
 .DESCRIPTION
-    Ce script teste les fonctionnalités du module ImplicitModuleDependencyDetector
-    qui détecte les modules requis implicitement dans les scripts PowerShell.
+    Ce script teste les fonctionnalitÃ©s du module ImplicitModuleDependencyDetector
+    qui dÃ©tecte les modules requis implicitement dans les scripts PowerShell.
 
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-12-15
+    Date de crÃ©ation: 2023-12-15
 #>
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\ImplicitModuleDependencyDetector.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script PowerShell de test avec différentes cmdlets
+# CrÃ©er un script PowerShell de test avec diffÃ©rentes cmdlets
 $sampleCode = @'
-# Script avec des cmdlets de différents modules
+# Script avec des cmdlets de diffÃ©rents modules
 
 # Cmdlets Active Directory sans import
 Get-ADUser -Filter {Name -eq "John Doe"}
@@ -52,38 +52,38 @@ Invoke-ScriptAnalyzer -Path "C:\Scripts\MyScript.ps1"
 
 Write-Host "=== Test du module ImplicitModuleDependencyDetector ===" -ForegroundColor Cyan
 
-# Test 1: Détecter les cmdlets sans import explicite
-Write-Host "`nTest 1: Détecter les cmdlets sans import explicite" -ForegroundColor Cyan
+# Test 1: DÃ©tecter les cmdlets sans import explicite
+Write-Host "`nTest 1: DÃ©tecter les cmdlets sans import explicite" -ForegroundColor Cyan
 $results = Find-CmdletWithoutExplicitImport -ScriptContent $sampleCode
 
-Write-Host "  Cmdlets détectées sans import explicite:" -ForegroundColor Green
+Write-Host "  Cmdlets dÃ©tectÃ©es sans import explicite:" -ForegroundColor Green
 foreach ($result in $results) {
     Write-Host "    $($result.CmdletName) (Module: $($result.ModuleName)) - Ligne $($result.LineNumber)" -ForegroundColor Gray
 }
 
-# Test 2: Détecter toutes les cmdlets, y compris celles des modules importés
-Write-Host "`nTest 2: Détecter toutes les cmdlets, y compris celles des modules importés" -ForegroundColor Cyan
+# Test 2: DÃ©tecter toutes les cmdlets, y compris celles des modules importÃ©s
+Write-Host "`nTest 2: DÃ©tecter toutes les cmdlets, y compris celles des modules importÃ©s" -ForegroundColor Cyan
 $allResults = Find-CmdletWithoutExplicitImport -ScriptContent $sampleCode -IncludeImportedModules
 
-Write-Host "  Toutes les cmdlets détectées:" -ForegroundColor Green
+Write-Host "  Toutes les cmdlets dÃ©tectÃ©es:" -ForegroundColor Green
 foreach ($result in $allResults) {
-    $importStatus = if ($result.IsImported) { "Module importé" } else { "Module non importé" }
+    $importStatus = if ($result.IsImported) { "Module importÃ©" } else { "Module non importÃ©" }
     Write-Host "    $($result.CmdletName) (Module: $($result.ModuleName)) - $importStatus - Ligne $($result.LineNumber)" -ForegroundColor Gray
 }
 
-# Test 3: Vérifier la détection des imports explicites
-Write-Host "`nTest 3: Vérifier la détection des imports explicites" -ForegroundColor Cyan
+# Test 3: VÃ©rifier la dÃ©tection des imports explicites
+Write-Host "`nTest 3: VÃ©rifier la dÃ©tection des imports explicites" -ForegroundColor Cyan
 $importedModules = $allResults | Where-Object { $_.IsImported } | Select-Object -ExpandProperty ModuleName -Unique
 $nonImportedModules = $allResults | Where-Object { -not $_.IsImported } | Select-Object -ExpandProperty ModuleName -Unique
 
-Write-Host "  Modules importés explicitement:" -ForegroundColor Green
+Write-Host "  Modules importÃ©s explicitement:" -ForegroundColor Green
 foreach ($module in $importedModules) {
     Write-Host "    $module" -ForegroundColor Gray
 }
 
-Write-Host "  Modules non importés:" -ForegroundColor Green
+Write-Host "  Modules non importÃ©s:" -ForegroundColor Green
 foreach ($module in $nonImportedModules) {
     Write-Host "    $module" -ForegroundColor Gray
 }
 
-Write-Host "`nTests terminés avec succès!" -ForegroundColor Green
+Write-Host "`nTests terminÃ©s avec succÃ¨s!" -ForegroundColor Green

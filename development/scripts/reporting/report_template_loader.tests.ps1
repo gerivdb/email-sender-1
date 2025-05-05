@@ -1,33 +1,33 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module de chargement des templates de rapports.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃƒÂ©rifier le bon fonctionnement
     du module report_template_loader.ps1.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installÃ©. Installation en cours..."
+    Write-Host "Le module Pester n'est pas installÃƒÂ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemin vers le module Ã  tester
+# Chemin vers le module ÃƒÂ  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "report_template_loader.ps1"
 
-# CrÃ©er des donnÃ©es de test
+# CrÃƒÂ©er des donnÃƒÂ©es de test
 function New-TestTemplates {
     param (
         [string]$OutputPath
     )
 
-    # CrÃ©er le rÃ©pertoire de templates de test
+    # CrÃƒÂ©er le rÃƒÂ©pertoire de templates de test
     $TemplatesDir = Join-Path -Path $OutputPath -ChildPath "templates/reports"
     New-Item -Path $TemplatesDir -ItemType Directory -Force | Out-Null
 
-    # CrÃ©er un fichier JSON de templates de test
+    # CrÃƒÂ©er un fichier JSON de templates de test
     $JsonPath = Join-Path -Path $TemplatesDir -ChildPath "testdevelopment/templates.json"
 
     $Templates = @{
@@ -121,7 +121,7 @@ function New-TestTemplates {
 
     $Templates | ConvertTo-Json -Depth 100 | Out-File -FilePath $JsonPath -Encoding UTF8
 
-    # CrÃ©er un fichier JSON de template invalide
+    # CrÃƒÂ©er un fichier JSON de template invalide
     $InvalidJsonPath = Join-Path -Path $TemplatesDir -ChildPath "invaliddevelopment/templates.json"
 
     $InvalidTemplates = @{
@@ -145,11 +145,11 @@ function New-TestTemplates {
 
     $InvalidTemplates | ConvertTo-Json -Depth 100 | Out-File -FilePath $InvalidJsonPath -Encoding UTF8
 
-    # CrÃ©er le rÃ©pertoire pour le schÃ©ma
+    # CrÃƒÂ©er le rÃƒÂ©pertoire pour le schÃƒÂ©ma
     $SchemaDir = Join-Path -Path $OutputPath -ChildPath "docs/reporting"
     New-Item -Path $SchemaDir -ItemType Directory -Force | Out-Null
 
-    # Copier le schÃ©ma existant ou crÃ©er un schÃ©ma minimal
+    # Copier le schÃƒÂ©ma existant ou crÃƒÂ©er un schÃƒÂ©ma minimal
     $SchemaPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\docs\reporting\report_schema.json"
     $TestSchemaPath = Join-Path -Path $SchemaDir -ChildPath "report_schema.json"
 
@@ -173,20 +173,20 @@ function New-TestTemplates {
     }
 }
 
-# ExÃ©cuter les tests
+# ExÃƒÂ©cuter les tests
 Describe "Report Template Loader Module Tests" {
     BeforeAll {
-        # CrÃ©er un rÃ©pertoire temporaire pour les tests
+        # CrÃƒÂ©er un rÃƒÂ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "template_loader_tests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
 
-        # CrÃ©er des templates de test
+        # CrÃƒÂ©er des templates de test
         $script:TestPaths = New-TestTemplates -OutputPath $script:TestDir
 
-        # Importer le module Ã  tester
+        # Importer le module ÃƒÂ  tester
         . $ModulePath
 
-        # RedÃ©finir les chemins par dÃ©faut pour les tests
+        # RedÃƒÂ©finir les chemins par dÃƒÂ©faut pour les tests
         $script:DefaultTemplatesPath = $script:TestPaths.TemplatesPath
         $script:DefaultSchemaPath = $script:TestPaths.SchemaPath
     }
@@ -205,14 +205,14 @@ Describe "Report Template Loader Module Tests" {
             # Premier appel pour remplir le cache
             $Templates1 = Import-ReportTemplates -TemplatesPath $script:TestPaths.TemplatesPath
 
-            # DeuxiÃ¨me appel qui devrait utiliser le cache
+            # DeuxiÃƒÂ¨me appel qui devrait utiliser le cache
             $Templates2 = Import-ReportTemplates -TemplatesPath $script:TestPaths.TemplatesPath
 
             $Templates1 | Should -Not -BeNullOrEmpty
             $Templates2 | Should -Not -BeNullOrEmpty
             $Templates1.Count | Should -Be $Templates2.Count
 
-            # VÃ©rifier que les objets sont les mÃªmes (rÃ©fÃ©rence)
+            # VÃƒÂ©rifier que les objets sont les mÃƒÂªmes (rÃƒÂ©fÃƒÂ©rence)
             [System.Object]::ReferenceEquals($Templates1, $Templates2) | Should -Be $true
         }
 
@@ -220,14 +220,14 @@ Describe "Report Template Loader Module Tests" {
             # Premier appel pour remplir le cache
             $Templates1 = Import-ReportTemplates -TemplatesPath $script:TestPaths.TemplatesPath
 
-            # DeuxiÃ¨me appel avec ForceReload
+            # DeuxiÃƒÂ¨me appel avec ForceReload
             $Templates2 = Import-ReportTemplates -TemplatesPath $script:TestPaths.TemplatesPath -ForceReload
 
             $Templates1 | Should -Not -BeNullOrEmpty
             $Templates2 | Should -Not -BeNullOrEmpty
             $Templates1.Count | Should -Be $Templates2.Count
 
-            # VÃ©rifier que les objets sont diffÃ©rents (rÃ©fÃ©rence)
+            # VÃƒÂ©rifier que les objets sont diffÃƒÂ©rents (rÃƒÂ©fÃƒÂ©rence)
             [System.Object]::ReferenceEquals($Templates1, $Templates2) | Should -Be $false
         }
 
@@ -261,7 +261,7 @@ Describe "Report Template Loader Module Tests" {
             $Templates = Import-ReportTemplates -TemplatesPath $script:TestPaths.TemplatesPath
             $Template = $Templates[0]
 
-            # CrÃ©er une copie du template et supprimer un champ obligatoire
+            # CrÃƒÂ©er une copie du template et supprimer un champ obligatoire
             $InvalidTemplate = $Template | ConvertTo-Json -Depth 100 | ConvertFrom-Json
             $InvalidTemplate.PSObject.Properties.Remove("description")
 
@@ -274,7 +274,7 @@ Describe "Report Template Loader Module Tests" {
             $Templates = Import-ReportTemplates -TemplatesPath $script:TestPaths.TemplatesPath
             $Template = $Templates[0]
 
-            # CrÃ©er une copie du template et modifier un type de section
+            # CrÃƒÂ©er une copie du template et modifier un type de section
             $InvalidTemplate = $Template | ConvertTo-Json -Depth 100 | ConvertFrom-Json
             $InvalidTemplate.sections[0].type = "invalid_type"
 
@@ -347,6 +347,6 @@ Describe "Report Template Loader Module Tests" {
     }
 }
 
-# Ne pas exÃ©cuter les tests automatiquement Ã  la fin du script
-# Pour exÃ©cuter les tests, utilisez la commande suivante :
+# Ne pas exÃƒÂ©cuter les tests automatiquement ÃƒÂ  la fin du script
+# Pour exÃƒÂ©cuter les tests, utilisez la commande suivante :
 # Invoke-Pester -Path .\report_template_loader.tests.ps1 -Output Detailed

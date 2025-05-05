@@ -1,25 +1,25 @@
-# Définir les paramètres
+﻿# DÃ©finir les paramÃ¨tres
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\Integrate-WithTestOmnibus.ps1"
 
-# Créer un dossier de test pour TestOmnibus
+# CrÃ©er un dossier de test pour TestOmnibus
 $testOmnibusPath = Join-Path -Path $PSScriptRoot -ChildPath "TestOmnibus"
 if (-not (Test-Path -Path $testOmnibusPath)) {
   New-Item -Path $testOmnibusPath -ItemType Directory -Force | Out-Null
 }
 
-# Créer des dossiers pour les logs de test
+# CrÃ©er des dossiers pour les logs de test
 $logsPath = Join-Path -Path $testOmnibusPath -ChildPath "logs"
 if (-not (Test-Path -Path $logsPath)) {
   New-Item -Path $logsPath -ItemType Directory -Force | Out-Null
 }
 
-# Créer un dossier pour les hooks
+# CrÃ©er un dossier pour les hooks
 $hooksPath = Join-Path -Path $testOmnibusPath -ChildPath "hooks"
 if (-not (Test-Path -Path $hooksPath)) {
   New-Item -Path $hooksPath -ItemType Directory -Force | Out-Null
 }
 
-# Créer des fichiers de log de test
+# CrÃ©er des fichiers de log de test
 $logFile1 = Join-Path -Path $logsPath -ChildPath "test_log_1.log"
 $logContent1 = @"
 Exception : System.NullReferenceException: Object reference not set to an instance of an object.
@@ -66,7 +66,7 @@ $logContent3 = @"
 "@
 $logContent3 | Out-File -FilePath $logFile3 -Encoding utf8
 
-# Créer une base de données de test
+# CrÃ©er une base de donnÃ©es de test
 $databasePath = Join-Path -Path $PSScriptRoot -ChildPath "test_error_database.json"
 $reportPath = Join-Path -Path $PSScriptRoot -ChildPath "test_integration_report.md"
 
@@ -81,12 +81,12 @@ $errors | ForEach-Object {
 # Tester la fonction Add-TestOmnibusErrors
 Write-Host "`nTester Add-TestOmnibusErrors:"
 $patternIds = Add-TestOmnibusErrors -Errors $errors
-Write-Host "Patterns créés: $($patternIds.Count)"
+Write-Host "Patterns crÃ©Ã©s: $($patternIds.Count)"
 
 # Tester la fonction New-TestOmnibusHook
 Write-Host "`nTester New-TestOmnibusHook:"
 $hookPath = New-TestOmnibusHook -TestOmnibusPath $testOmnibusPath
-Write-Host "Hook créé: $hookPath"
+Write-Host "Hook crÃ©Ã©: $hookPath"
 if (Test-Path -Path $hookPath) {
   Write-Host "Le hook existe."
 }
@@ -94,7 +94,7 @@ if (Test-Path -Path $hookPath) {
 # Tester la fonction New-IntegrationReport
 Write-Host "`nTester New-IntegrationReport:"
 $result = New-IntegrationReport -PatternIds $patternIds -ReportPath $reportPath
-Write-Host "Rapport d'intégration généré: $result"
+Write-Host "Rapport d'intÃ©gration gÃ©nÃ©rÃ©: $result"
 if (Test-Path -Path $reportPath) {
   Write-Host "Le rapport existe."
 }

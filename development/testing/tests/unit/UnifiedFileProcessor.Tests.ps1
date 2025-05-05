@@ -1,37 +1,37 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module UnifiedFileProcessor.ps1.
 .DESCRIPTION
     Ce script contient des tests unitaires pour le module UnifiedFileProcessor.ps1,
-    y compris les fonctionnalités de mise en cache et de chiffrement.
+    y compris les fonctionnalitÃ©s de mise en cache et de chiffrement.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedFileProcessorPath = Join-Path -Path $modulesPath -ChildPath "UnifiedFileProcessor.ps1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "UnifiedFileProcessorTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer des sous-répertoires pour les tests
+# CrÃ©er des sous-rÃ©pertoires pour les tests
 $inputDir = Join-Path -Path $testTempDir -ChildPath "input"
 $outputDir = Join-Path -Path $testTempDir -ChildPath "output"
 $encryptedDir = Join-Path -Path $testTempDir -ChildPath "encrypted"
@@ -41,12 +41,12 @@ New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 New-Item -Path $encryptedDir -ItemType Directory -Force | Out-Null
 New-Item -Path $decryptedDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $jsonFilePath = Join-Path -Path $inputDir -ChildPath "test.json"
 $csvFilePath = Join-Path -Path $inputDir -ChildPath "test.csv"
 $yamlFilePath = Join-Path -Path $inputDir -ChildPath "test.yaml"
 
-# Créer un fichier JSON de test
+# CrÃ©er un fichier JSON de test
 $jsonContent = @{
     "name" = "Test Object"
     "items" = @(
@@ -57,7 +57,7 @@ $jsonContent = @{
 } | ConvertTo-Json -Depth 10
 Set-Content -Path $jsonFilePath -Value $jsonContent -Encoding UTF8
 
-# Créer un fichier CSV de test
+# CrÃ©er un fichier CSV de test
 $csvContent = @"
 id,name,value
 1,Item 1,Value 1
@@ -66,7 +66,7 @@ id,name,value
 "@
 Set-Content -Path $csvFilePath -Value $csvContent -Encoding UTF8
 
-# Créer un fichier YAML de test
+# CrÃ©er un fichier YAML de test
 $yamlContent = @"
 name: Test Object
 items:
@@ -79,13 +79,13 @@ items:
 "@
 Set-Content -Path $yamlFilePath -Value $yamlContent -Encoding UTF8
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests du module UnifiedFileProcessor" {
     BeforeAll {
         # Importer le module
         . $unifiedFileProcessorPath
         
-        # Initialiser le module avec le cache activé
+        # Initialiser le module avec le cache activÃ©
         $initResult = Initialize-UnifiedFileProcessor -EnableCache -CacheMaxItems 100 -CacheTTL 60
         $initResult | Should -Be $true
     }
@@ -96,7 +96,7 @@ Describe "Tests du module UnifiedFileProcessor" {
             $result | Should -Be $true
         }
         
-        It "Initialise correctement le module avec le cache activé" {
+        It "Initialise correctement le module avec le cache activÃ©" {
             $result = Initialize-UnifiedFileProcessor -Force -EnableCache -CacheMaxItems 200 -CacheTTL 120 -CacheEvictionPolicy "LFU"
             $result | Should -Be $true
         }
@@ -110,7 +110,7 @@ Describe "Tests du module UnifiedFileProcessor" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier YAML est valide
+            # VÃ©rifier que le fichier YAML est valide
             $yamlContent = Get-Content -Path $outputPath -Raw
             $yamlContent | Should -Not -BeNullOrEmpty
         }
@@ -122,13 +122,13 @@ Describe "Tests du module UnifiedFileProcessor" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier JSON est valide
+            # VÃ©rifier que le fichier JSON est valide
             $jsonContent = Get-Content -Path $outputPath -Raw
             $jsonContent | Should -Not -BeNullOrEmpty
             { $jsonContent | ConvertFrom-Json } | Should -Not -Throw
         }
         
-        It "Détecte automatiquement le format d'entrée" {
+        It "DÃ©tecte automatiquement le format d'entrÃ©e" {
             $outputPath = Join-Path -Path $outputDir -ChildPath "auto_to_json.json"
             $result = Invoke-SecureFileProcessing -InputFile $csvFilePath -OutputFile $outputPath -InputFormat "AUTO" -OutputFormat "JSON"
             
@@ -138,7 +138,7 @@ Describe "Tests du module UnifiedFileProcessor" {
     }
     
     Context "Tests de la fonction Invoke-ParallelSecureFileProcessing" {
-        It "Traite correctement plusieurs fichiers en parallèle" {
+        It "Traite correctement plusieurs fichiers en parallÃ¨le" {
             $files = @($jsonFilePath, $csvFilePath, $yamlFilePath)
             $results = Invoke-ParallelSecureFileProcessing -InputFiles $files -OutputDir $outputDir -InputFormat "AUTO" -OutputFormat "JSON" -ThrottleLimit 3
             
@@ -146,14 +146,14 @@ Describe "Tests du module UnifiedFileProcessor" {
             $results.Count | Should -Be 3
             $results | ForEach-Object { $_.Success | Should -Be $true }
             
-            # Vérifier que les fichiers de sortie existent
+            # VÃ©rifier que les fichiers de sortie existent
             $results | ForEach-Object { Test-Path -Path $_.OutputFile | Should -Be $true }
         }
     }
     
     Context "Tests des fonctions de chiffrement" {
-        It "Chiffre et déchiffre correctement un fichier" -Skip:(-not $availableOptionalModules.ContainsKey("EncryptionUtils")) {
-            # Générer une clé de chiffrement
+        It "Chiffre et dÃ©chiffre correctement un fichier" -Skip:(-not $availableOptionalModules.ContainsKey("EncryptionUtils")) {
+            # GÃ©nÃ©rer une clÃ© de chiffrement
             $password = ConvertTo-SecureString -String "TestPassword" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -165,7 +165,7 @@ Describe "Tests du module UnifiedFileProcessor" {
             $encryptResult.Success | Should -Be $true
             Test-Path -Path $encryptedPath | Should -Be $true
             
-            # Déchiffrer le fichier
+            # DÃ©chiffrer le fichier
             $decryptedPath = Join-Path -Path $decryptedDir -ChildPath "test_decrypted.json"
             $decryptResult = Unprotect-SecureFile -InputFile $encryptedPath -OutputFile $decryptedPath -EncryptionKey $key
             
@@ -173,7 +173,7 @@ Describe "Tests du module UnifiedFileProcessor" {
             $decryptResult.Success | Should -Be $true
             Test-Path -Path $decryptedPath | Should -Be $true
             
-            # Vérifier que le contenu est identique
+            # VÃ©rifier que le contenu est identique
             $originalContent = Get-Content -Path $jsonFilePath -Raw
             $decryptedContent = Get-Content -Path $decryptedPath -Raw
             
@@ -181,7 +181,7 @@ Describe "Tests du module UnifiedFileProcessor" {
         }
         
         It "Chiffre et signe correctement un fichier" -Skip:(-not $availableOptionalModules.ContainsKey("EncryptionUtils")) {
-            # Générer une clé de chiffrement
+            # GÃ©nÃ©rer une clÃ© de chiffrement
             $password = ConvertTo-SecureString -String "TestPassword" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -195,7 +195,7 @@ Describe "Tests du module UnifiedFileProcessor" {
             Test-Path -Path $encryptedPath | Should -Be $true
             Test-Path -Path $encryptResult.SignatureFile | Should -Be $true
             
-            # Déchiffrer le fichier avec vérification de la signature
+            # DÃ©chiffrer le fichier avec vÃ©rification de la signature
             $decryptedPath = Join-Path -Path $decryptedDir -ChildPath "test_signed_decrypted.json"
             $decryptResult = Unprotect-SecureFile -InputFile $encryptedPath -OutputFile $decryptedPath -EncryptionKey $key -VerifySignature -SignatureFile $encryptResult.SignatureFile
             
@@ -205,8 +205,8 @@ Describe "Tests du module UnifiedFileProcessor" {
     }
     
     Context "Tests des fonctions de mise en cache" {
-        It "Utilise correctement le cache pour les opérations répétitives" -Skip:(-not $availableOptionalModules.ContainsKey("CacheManager")) {
-            # Réinitialiser le cache
+        It "Utilise correctement le cache pour les opÃ©rations rÃ©pÃ©titives" -Skip:(-not $availableOptionalModules.ContainsKey("CacheManager")) {
+            # RÃ©initialiser le cache
             Initialize-UnifiedFileProcessor -Force -EnableCache
             
             # Premier appel (sans cache)
@@ -219,7 +219,7 @@ Describe "Tests du module UnifiedFileProcessor" {
             $result1 | Should -Be $true
             Test-Path -Path $outputPath1 | Should -Be $true
             
-            # Deuxième appel (avec cache)
+            # DeuxiÃ¨me appel (avec cache)
             $outputPath2 = Join-Path -Path $outputDir -ChildPath "cached2.json"
             $startTime = Get-Date
             $result2 = Invoke-CachedFileProcessing -InputFile $csvFilePath -OutputFile $outputPath2 -InputFormat "CSV" -OutputFormat "JSON"
@@ -229,18 +229,18 @@ Describe "Tests du module UnifiedFileProcessor" {
             $result2 | Should -Be $true
             Test-Path -Path $outputPath2 | Should -Be $true
             
-            # Le deuxième appel devrait être plus rapide
+            # Le deuxiÃ¨me appel devrait Ãªtre plus rapide
             $duration2 | Should -BeLessThan $duration1
             
-            # Vérifier les statistiques du cache
+            # VÃ©rifier les statistiques du cache
             $stats = Get-CacheStatistics
             $stats.Hits | Should -BeGreaterThan 0
         }
     }
     
-    Context "Tests d'intégration" {
-        It "Convertit, chiffre et déchiffre correctement un fichier" -Skip:(-not $availableOptionalModules.ContainsKey("EncryptionUtils")) {
-            # Générer une clé de chiffrement
+    Context "Tests d'intÃ©gration" {
+        It "Convertit, chiffre et dÃ©chiffre correctement un fichier" -Skip:(-not $availableOptionalModules.ContainsKey("EncryptionUtils")) {
+            # GÃ©nÃ©rer une clÃ© de chiffrement
             $password = ConvertTo-SecureString -String "TestPassword" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -259,7 +259,7 @@ Describe "Tests du module UnifiedFileProcessor" {
             $encryptResult.Success | Should -Be $true
             Test-Path -Path $encryptedPath | Should -Be $true
             
-            # Déchiffrer le fichier
+            # DÃ©chiffrer le fichier
             $decryptedPath = Join-Path -Path $decryptedDir -ChildPath "integrated_decrypted.yaml"
             $decryptResult = Unprotect-SecureFile -InputFile $encryptedPath -OutputFile $decryptedPath -EncryptionKey $key -VerifySignature
             
@@ -267,7 +267,7 @@ Describe "Tests du module UnifiedFileProcessor" {
             $decryptResult.Success | Should -Be $true
             Test-Path -Path $decryptedPath | Should -Be $true
             
-            # Vérifier que le contenu est identique
+            # VÃ©rifier que le contenu est identique
             $convertedContent = Get-Content -Path $convertedPath -Raw
             $decryptedContent = Get-Content -Path $decryptedPath -Raw
             

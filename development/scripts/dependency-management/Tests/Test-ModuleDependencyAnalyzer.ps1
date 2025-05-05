@@ -1,41 +1,41 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module ModuleDependencyAnalyzer.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
     du module ModuleDependencyAnalyzer.
 
 .NOTES
     Auteur: Dependency Management Team
     Version: 1.0
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "ModuleDependencyAnalyzer.psm1"
 
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Le module ModuleDependencyAnalyzer.psm1 n'existe pas dans le chemin spécifié: $modulePath"
+    throw "Le module ModuleDependencyAnalyzer.psm1 n'existe pas dans le chemin spÃ©cifiÃ©: $modulePath"
 }
 
 Import-Module -Name $modulePath -Force
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ModuleDependencyAnalyzerTests"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $testModuleA = @"
 #Requires -Modules ModuleB, ModuleC
 <#
@@ -131,7 +131,7 @@ $testManifestA = @"
 }
 "@
 
-# Écrire les fichiers de test
+# Ã‰crire les fichiers de test
 $testModuleAPath = Join-Path -Path $testDir -ChildPath "ModuleA.psm1"
 $testModuleBPath = Join-Path -Path $testDir -ChildPath "ModuleB.psm1"
 $testModuleCPath = Join-Path -Path $testDir -ChildPath "ModuleC.psm1"
@@ -144,7 +144,7 @@ $testModuleC | Out-File -FilePath $testModuleCPath -Encoding UTF8
 $testModuleD | Out-File -FilePath $testModuleDPath -Encoding UTF8
 $testManifestA | Out-File -FilePath $testManifestAPath -Encoding UTF8
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "ModuleDependencyAnalyzer" {
     Context "Get-PowerShellManifestStructure" {
         It "Analyse la structure d'un manifeste PowerShell" {
@@ -164,7 +164,7 @@ Describe "ModuleDependencyAnalyzer" {
     }
 
     Context "Get-ModuleDependenciesFromManifest" {
-        It "Détecte les dépendances à partir d'un manifeste" {
+        It "DÃ©tecte les dÃ©pendances Ã  partir d'un manifeste" {
             $dependencies = Get-ModuleDependenciesFromManifest -ManifestPath $testManifestAPath
             $dependencies | Should -Not -BeNullOrEmpty
             $dependencies.Count | Should -BeGreaterThan 0
@@ -175,7 +175,7 @@ Describe "ModuleDependencyAnalyzer" {
     }
 
     Context "Get-ModuleDependenciesFromCode" {
-        It "Détecte les dépendances à partir du code" {
+        It "DÃ©tecte les dÃ©pendances Ã  partir du code" {
             $dependencies = Get-ModuleDependenciesFromCode -ModulePath $testModuleAPath
             $dependencies | Should -Not -BeNullOrEmpty
             $dependencies.Count | Should -BeGreaterThan 0
@@ -183,7 +183,7 @@ Describe "ModuleDependencyAnalyzer" {
             $dependencies.Name | Should -Contain "ModuleC"
         }
 
-        It "Détecte les dépendances using module" {
+        It "DÃ©tecte les dÃ©pendances using module" {
             $dependencies = Get-ModuleDependenciesFromCode -ModulePath $testModuleBPath
             $dependencies | Should -Not -BeNullOrEmpty
             $dependencies.Count | Should -BeGreaterThan 0
@@ -192,7 +192,7 @@ Describe "ModuleDependencyAnalyzer" {
     }
 
     Context "Find-ModuleDependencyCycles" {
-        It "Détecte les cycles de dépendances" {
+        It "DÃ©tecte les cycles de dÃ©pendances" {
             $graph = @{
                 'ModuleA' = @('ModuleB', 'ModuleC')
                 'ModuleB' = @('ModuleD')
@@ -209,7 +209,7 @@ Describe "ModuleDependencyAnalyzer" {
     }
 
     Context "Get-ModuleDependenciesRecursive" {
-        It "Analyse récursivement les dépendances" {
+        It "Analyse rÃ©cursivement les dÃ©pendances" {
             $dependencies = Get-ModuleDependenciesRecursive -ModulePath $testManifestAPath -MaxDepth 2
             $dependencies | Should -Not -BeNullOrEmpty
             $dependencies.ModuleName | Should -Be "ModuleA"
@@ -218,7 +218,7 @@ Describe "ModuleDependencyAnalyzer" {
     }
 
     Context "Resolve-ModuleDependencies" {
-        It "Résout les dépendances et détecte les cycles" {
+        It "RÃ©sout les dÃ©pendances et dÃ©tecte les cycles" {
             $result = Resolve-ModuleDependencies -ModulePath $testManifestAPath -MaxDepth 2
             $result | Should -Not -BeNullOrEmpty
             $result.ModuleName | Should -Be "ModuleA"
@@ -227,7 +227,7 @@ Describe "ModuleDependencyAnalyzer" {
     }
 
     Context "Export-ModuleDependencyGraph" {
-        It "Exporte le graphe de dépendances en HTML" {
+        It "Exporte le graphe de dÃ©pendances en HTML" {
             $graph = @{
                 'ModuleA' = @('ModuleB', 'ModuleC')
                 'ModuleB' = @('ModuleD')
@@ -241,7 +241,7 @@ Describe "ModuleDependencyAnalyzer" {
             Test-Path -Path $outputPath | Should -Be $true
         }
 
-        It "Exporte le graphe de dépendances en Mermaid" {
+        It "Exporte le graphe de dÃ©pendances en Mermaid" {
             $graph = @{
                 'ModuleA' = @('ModuleB', 'ModuleC')
                 'ModuleB' = @('ModuleD')
@@ -257,14 +257,14 @@ Describe "ModuleDependencyAnalyzer" {
     }
 }
 
-# Tests pour les nouvelles fonctionnalités
+# Tests pour les nouvelles fonctionnalitÃ©s
 Context "Test-SystemModule" {
-    It "Détecte correctement les modules système" {
+    It "DÃ©tecte correctement les modules systÃ¨me" {
         Test-SystemModule -ModuleName "Microsoft.PowerShell.Core" | Should -Be $true
         Test-SystemModule -ModuleName "NonExistentModule" | Should -Be $false
     }
 
-    It "Prend en compte les modules supplémentaires" {
+    It "Prend en compte les modules supplÃ©mentaires" {
         Test-SystemModule -ModuleName "CustomModule" | Should -Be $false
         Test-SystemModule -ModuleName "CustomModule" -AdditionalSystemModules @("CustomModule") | Should -Be $true
     }
@@ -272,7 +272,7 @@ Context "Test-SystemModule" {
 
 Context "Find-ModulePath" {
     It "Trouve le chemin d'un module existant" {
-        # Créer un module de test
+        # CrÃ©er un module de test
         $testModuleDir = Join-Path -Path $testDir -ChildPath "TestModule"
         New-Item -Path $testModuleDir -ItemType Directory -Force | Out-Null
 
@@ -299,8 +299,8 @@ Context "Find-ModulePath" {
         $modulePath | Should -Be $testModuleManifestPath
     }
 
-    It "Gère les contraintes de version" {
-        # Créer des modules de test avec différentes versions
+    It "GÃ¨re les contraintes de version" {
+        # CrÃ©er des modules de test avec diffÃ©rentes versions
         $testModuleDir1 = Join-Path -Path $testDir -ChildPath "VersionedModule\1.0.0"
         $testModuleDir2 = Join-Path -Path $testDir -ChildPath "VersionedModule\2.0.0"
         New-Item -Path $testModuleDir1 -ItemType Directory -Force | Out-Null
@@ -339,7 +339,7 @@ Context "Find-ModulePath" {
         $testModuleManifest1 | Out-File -FilePath $testModuleManifestPath1 -Encoding UTF8
         $testModuleManifest2 | Out-File -FilePath $testModuleManifestPath2 -Encoding UTF8
 
-        # Tester la fonction avec une version spécifique
+        # Tester la fonction avec une version spÃ©cifique
         $modulePath = Find-ModulePath -ModuleName "VersionedModule" -ModuleVersion "1.0.0" -AdditionalPaths @($testDir)
         $modulePath | Should -Be $testModuleManifestPath1
 

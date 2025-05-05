@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module ManagerRegistrationService.
 
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
     du module ManagerRegistrationService.
 
 .NOTES
@@ -11,25 +11,25 @@
     Auteur: EMAIL_SENDER_1
 #>
 
-# Définir le chemin du module à tester
+# DÃ©finir le chemin du module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\ManagerRegistrationService\ManagerRegistrationService.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Le module ManagerRegistrationService est introuvable à l'emplacement : $modulePath"
+    Write-Error "Le module ManagerRegistrationService est introuvable Ã  l'emplacement : $modulePath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfigPath = Join-Path -Path $testDir -ChildPath "test-registration.config.json"
 
-# Créer un gestionnaire de test
+# CrÃ©er un gestionnaire de test
 $testManagerPath = Join-Path -Path $testDir -ChildPath "test-manager.ps1"
 Set-Content -Path $testManagerPath -Value @"
 <#
@@ -37,7 +37,7 @@ Set-Content -Path $testManagerPath -Value @"
     Gestionnaire de test pour les tests unitaires.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests unitaires
+    Ce script est un gestionnaire de test utilisÃ© pour les tests unitaires
     du module ManagerRegistrationService.
 #>
 
@@ -53,7 +53,7 @@ exit 0
 # Importer le module
 Import-Module -Name $modulePath -Force
 
-# Définir les tests unitaires
+# DÃ©finir les tests unitaires
 $tests = @(
     @{
         Name = "Test de Register-Manager"
@@ -61,12 +61,12 @@ $tests = @(
             # Enregistrer un gestionnaire
             $result = Register-Manager -Name "TestManager" -Path $testManagerPath -ConfigPath $testConfigPath
             
-            # Vérifier que l'enregistrement a réussi
+            # VÃ©rifier que l'enregistrement a rÃ©ussi
             if (-not $result) {
                 return $false
             }
             
-            # Vérifier que le gestionnaire est enregistré dans la configuration
+            # VÃ©rifier que le gestionnaire est enregistrÃ© dans la configuration
             $config = Get-Content -Path $testConfigPath -Raw | ConvertFrom-Json
             return $config.Managers.TestManager -ne $null
         }
@@ -74,30 +74,30 @@ $tests = @(
     @{
         Name = "Test de Get-RegisteredManager"
         Test = {
-            # Récupérer le gestionnaire enregistré
+            # RÃ©cupÃ©rer le gestionnaire enregistrÃ©
             $manager = Get-RegisteredManager -Name "TestManager" -ConfigPath $testConfigPath
             
-            # Vérifier que le gestionnaire est récupéré
+            # VÃ©rifier que le gestionnaire est rÃ©cupÃ©rÃ©
             if (-not $manager) {
                 return $false
             }
             
-            # Vérifier les propriétés du gestionnaire
+            # VÃ©rifier les propriÃ©tÃ©s du gestionnaire
             return $manager.Path -eq $testManagerPath -and $manager.Enabled -eq $true
         }
     },
     @{
         Name = "Test de Update-Manager"
         Test = {
-            # Mettre à jour le gestionnaire
+            # Mettre Ã  jour le gestionnaire
             $result = Update-Manager -Name "TestManager" -Version "1.1.0" -ConfigPath $testConfigPath
             
-            # Vérifier que la mise à jour a réussi
+            # VÃ©rifier que la mise Ã  jour a rÃ©ussi
             if (-not $result) {
                 return $false
             }
             
-            # Vérifier que la version a été mise à jour
+            # VÃ©rifier que la version a Ã©tÃ© mise Ã  jour
             $manager = Get-RegisteredManager -Name "TestManager" -ConfigPath $testConfigPath
             return $manager.Version -eq "1.1.0"
         }
@@ -105,42 +105,42 @@ $tests = @(
     @{
         Name = "Test de Find-Manager"
         Test = {
-            # Rechercher des gestionnaires selon des critères
+            # Rechercher des gestionnaires selon des critÃ¨res
             $managers = Find-Manager -Criteria @{ Version = "1.1.0" } -ConfigPath $testConfigPath
             
-            # Vérifier que le gestionnaire est trouvé
+            # VÃ©rifier que le gestionnaire est trouvÃ©
             if (-not $managers -or $managers.Count -eq 0) {
                 return $false
             }
             
-            # Vérifier que le gestionnaire trouvé est celui attendu
+            # VÃ©rifier que le gestionnaire trouvÃ© est celui attendu
             return $managers[0].Name -eq "TestManager"
         }
     },
     @{
         Name = "Test de Unregister-Manager"
         Test = {
-            # Désenregistrer le gestionnaire
+            # DÃ©senregistrer le gestionnaire
             $result = Unregister-Manager -Name "TestManager" -ConfigPath $testConfigPath -Force
             
-            # Vérifier que le désenregistrement a réussi
+            # VÃ©rifier que le dÃ©senregistrement a rÃ©ussi
             if (-not $result) {
                 return $false
             }
             
-            # Vérifier que le gestionnaire n'est plus enregistré
+            # VÃ©rifier que le gestionnaire n'est plus enregistrÃ©
             $manager = Get-RegisteredManager -Name "TestManager" -ConfigPath $testConfigPath
             return $manager.Count -eq 0
         }
     }
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $totalTests = $tests.Count
 $passedTests = 0
 $failedTests = 0
 
-Write-Host "Exécution de $totalTests tests unitaires pour le module ManagerRegistrationService..." -ForegroundColor Cyan
+Write-Host "ExÃ©cution de $totalTests tests unitaires pour le module ManagerRegistrationService..." -ForegroundColor Cyan
 
 foreach ($test in $tests) {
     Write-Host "Test : $($test.Name)" -ForegroundColor Yellow
@@ -149,34 +149,34 @@ foreach ($test in $tests) {
         $result = & $test.Test
         
         if ($result) {
-            Write-Host "  Résultat : Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©sultat : RÃ©ussi" -ForegroundColor Green
             $passedTests++
         } else {
-            Write-Host "  Résultat : Échec" -ForegroundColor Red
+            Write-Host "  RÃ©sultat : Ã‰chec" -ForegroundColor Red
             $failedTests++
         }
     } catch {
-        Write-Host "  Résultat : Erreur - $_" -ForegroundColor Red
+        Write-Host "  RÃ©sultat : Erreur - $_" -ForegroundColor Red
         $failedTests++
     }
 }
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor White
-Write-Host "  Tests réussis  : $passedTests" -ForegroundColor Green
-Write-Host "  Tests échoués  : $failedTests" -ForegroundColor Red
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis  : $passedTests" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s  : $failedTests" -ForegroundColor Red
 
 # Nettoyer les fichiers de test
 if (Test-Path -Path $testConfigPath) {
     Remove-Item -Path $testConfigPath -Force
 }
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 if ($failedTests -eq 0) {
-    Write-Host "`nTous les tests ont réussi !" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi !" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

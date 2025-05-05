@@ -1,21 +1,21 @@
-# Script PowerShell pour installer toutes les dÃ©pendances du systÃ¨me de journal de bord
+﻿# Script PowerShell pour installer toutes les dÃƒÂ©pendances du systÃƒÂ¨me de journal de bord
 
-# VÃ©rifier si le script est exÃ©cutÃ© en tant qu'administrateur
+# VÃƒÂ©rifier si le script est exÃƒÂ©cutÃƒÂ© en tant qu'administrateur
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-# Chemin absolu vers le rÃ©pertoire du projet
+# Chemin absolu vers le rÃƒÂ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $ScriptsDir = Join-Path $ProjectDir "scripts"
 $CmdScriptsDir = Join-Path $ScriptsDir "cmd"
 
 # Fonction pour afficher un message de section
 
-# Script PowerShell pour installer toutes les dÃ©pendances du systÃ¨me de journal de bord
+# Script PowerShell pour installer toutes les dÃƒÂ©pendances du systÃƒÂ¨me de journal de bord
 
-# VÃ©rifier si le script est exÃ©cutÃ© en tant qu'administrateur
+# VÃƒÂ©rifier si le script est exÃƒÂ©cutÃƒÂ© en tant qu'administrateur
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-# Chemin absolu vers le rÃ©pertoire du projet
+# Chemin absolu vers le rÃƒÂ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $ScriptsDir = Join-Path $ProjectDir "scripts"
 $CmdScriptsDir = Join-Path $ScriptsDir "cmd"
@@ -47,12 +47,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Ã‰crire dans le fichier journal
+    # Ãƒâ€°crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        # CrÃƒÂ©er le rÃƒÂ©pertoire de logs si nÃƒÂ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -61,7 +61,7 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'Ã©criture dans le journal
+        # Ignorer les erreurs d'ÃƒÂ©criture dans le journal
     }
 }
 try {
@@ -74,38 +74,38 @@ try {
 }
 
 # Afficher un message d'introduction
-Write-Host "Installation du systÃ¨me de journal de bord RAG" -ForegroundColor Magenta
+Write-Host "Installation du systÃƒÂ¨me de journal de bord RAG" -ForegroundColor Magenta
 Write-Host "=========================================" -ForegroundColor Magenta
 Write-Host ""
-Write-Host "Ce script va installer toutes les dÃ©pendances nÃ©cessaires pour le systÃ¨me de journal de bord:"
-Write-Host "1. DÃ©pendances Python pour le journal, l'analyse et l'intÃ©gration GitHub"
-Write-Host "2. DÃ©pendances pour l'application web"
-Write-Host "3. Configuration des rÃ©pertoires nÃ©cessaires"
+Write-Host "Ce script va installer toutes les dÃƒÂ©pendances nÃƒÂ©cessaires pour le systÃƒÂ¨me de journal de bord:"
+Write-Host "1. DÃƒÂ©pendances Python pour le journal, l'analyse et l'intÃƒÂ©gration GitHub"
+Write-Host "2. DÃƒÂ©pendances pour l'application web"
+Write-Host "3. Configuration des rÃƒÂ©pertoires nÃƒÂ©cessaires"
 Write-Host ""
 
 if (-not $isAdmin) {
-    Write-Host "AVERTISSEMENT: Ce script n'est pas exÃ©cutÃ© en tant qu'administrateur." -ForegroundColor Yellow
-    Write-Host "Certaines fonctionnalitÃ©s nÃ©cessitant des privilÃ¨ges d'administrateur seront ignorÃ©es." -ForegroundColor Yellow
+    Write-Host "AVERTISSEMENT: Ce script n'est pas exÃƒÂ©cutÃƒÂ© en tant qu'administrateur." -ForegroundColor Yellow
+    Write-Host "Certaines fonctionnalitÃƒÂ©s nÃƒÂ©cessitant des privilÃƒÂ¨ges d'administrateur seront ignorÃƒÂ©es." -ForegroundColor Yellow
     Write-Host ""
 }
 
-# 1. Installer les dÃ©pendances Python
-Write-Section "Installation des dÃ©pendances Python"
+# 1. Installer les dÃƒÂ©pendances Python
+Write-Section "Installation des dÃƒÂ©pendances Python"
 
-# DÃ©pendances de base
-Write-Host "Installation des dÃ©pendances de base..." -ForegroundColor Cyan
+# DÃƒÂ©pendances de base
+Write-Host "Installation des dÃƒÂ©pendances de base..." -ForegroundColor Cyan
 pip install requests python-dotenv
 
-# DÃ©pendances pour l'analyse
-Write-Host "Installation des dÃ©pendances pour l'analyse..." -ForegroundColor Cyan
+# DÃƒÂ©pendances pour l'analyse
+Write-Host "Installation des dÃƒÂ©pendances pour l'analyse..." -ForegroundColor Cyan
 pip install numpy pandas matplotlib wordcloud scikit-learn
 
-# DÃ©pendances pour l'application web
-Write-Host "Installation des dÃ©pendances pour l'application web..." -ForegroundColor Cyan
+# DÃƒÂ©pendances pour l'application web
+Write-Host "Installation des dÃƒÂ©pendances pour l'application web..." -ForegroundColor Cyan
 pip install fastapi uvicorn
 
-# 2. CrÃ©er les rÃ©pertoires nÃ©cessaires
-Write-Section "CrÃ©ation des rÃ©pertoires"
+# 2. CrÃƒÂ©er les rÃƒÂ©pertoires nÃƒÂ©cessaires
+Write-Section "CrÃƒÂ©ation des rÃƒÂ©pertoires"
 $JournalDir = Join-Path $ProjectDir "docs\journal_de_bord"
 $EntriesDir = Join-Path $JournalDir "entries"
 $AnalysisDir = Join-Path $JournalDir "analysis"
@@ -113,81 +113,81 @@ $GithubDir = Join-Path $JournalDir "github"
 $DocsDir = Join-Path $ProjectDir "docs\documentation"
 
 New-Item -ItemType Directory -Path $EntriesDir -Force | Out-Null
-Write-Host "RÃ©pertoire des entrÃ©es crÃ©Ã©: $EntriesDir" -ForegroundColor Green
+Write-Host "RÃƒÂ©pertoire des entrÃƒÂ©es crÃƒÂ©ÃƒÂ©: $EntriesDir" -ForegroundColor Green
 
 New-Item -ItemType Directory -Path $AnalysisDir -Force | Out-Null
-Write-Host "RÃ©pertoire d'analyse crÃ©Ã©: $AnalysisDir" -ForegroundColor Green
+Write-Host "RÃƒÂ©pertoire d'analyse crÃƒÂ©ÃƒÂ©: $AnalysisDir" -ForegroundColor Green
 
 New-Item -ItemType Directory -Path $GithubDir -Force | Out-Null
-Write-Host "RÃ©pertoire GitHub crÃ©Ã©: $GithubDir" -ForegroundColor Green
+Write-Host "RÃƒÂ©pertoire GitHub crÃƒÂ©ÃƒÂ©: $GithubDir" -ForegroundColor Green
 
 New-Item -ItemType Directory -Path $DocsDir -Force | Out-Null
-Write-Host "RÃ©pertoire de documentation crÃ©Ã©: $DocsDir" -ForegroundColor Green
+Write-Host "RÃƒÂ©pertoire de documentation crÃƒÂ©ÃƒÂ©: $DocsDir" -ForegroundColor Green
 
-# 3. Configurer l'intÃ©gration GitHub
-Write-Section "Configuration de l'intÃ©gration GitHub"
-$ConfigureGitHub = Read-Host "Voulez-vous configurer l'intÃ©gration GitHub maintenant? (O/N)"
+# 3. Configurer l'intÃƒÂ©gration GitHub
+Write-Section "Configuration de l'intÃƒÂ©gration GitHub"
+$ConfigureGitHub = Read-Host "Voulez-vous configurer l'intÃƒÂ©gration GitHub maintenant? (O/N)"
 
 if ($ConfigureGitHub -eq "O" -or $ConfigureGitHub -eq "o") {
     & "..\..\D"
 } else {
-    Write-Host "Configuration de l'intÃ©gration GitHub ignorÃ©e." -ForegroundColor Yellow
+    Write-Host "Configuration de l'intÃƒÂ©gration GitHub ignorÃƒÂ©e." -ForegroundColor Yellow
     Write-Host "Vous pourrez la configurer plus tard avec: .\development\scripts\cmd\setup-github-integration.ps1" -ForegroundColor Yellow
 }
 
-# 4. ExÃ©cuter les analyses initiales
-Write-Section "ExÃ©cution des analyses initiales"
-$RunAnalysis = Read-Host "Voulez-vous exÃ©cuter les analyses initiales maintenant? (O/N)"
+# 4. ExÃƒÂ©cuter les analyses initiales
+Write-Section "ExÃƒÂ©cution des analyses initiales"
+$RunAnalysis = Read-Host "Voulez-vous exÃƒÂ©cuter les analyses initiales maintenant? (O/N)"
 
 if ($RunAnalysis -eq "O" -or $RunAnalysis -eq "o") {
     & "..\..\D"
 } else {
-    Write-Host "ExÃ©cution des analyses ignorÃ©e." -ForegroundColor Yellow
-    Write-Host "Vous pourrez les exÃ©cuter plus tard avec: .\development\scripts\cmd\setup-journal-analysis.ps1" -ForegroundColor Yellow
+    Write-Host "ExÃƒÂ©cution des analyses ignorÃƒÂ©e." -ForegroundColor Yellow
+    Write-Host "Vous pourrez les exÃƒÂ©cuter plus tard avec: .\development\scripts\cmd\setup-journal-analysis.ps1" -ForegroundColor Yellow
 }
 
-# 5. Configurer les tÃ¢ches planifiÃ©es
-Write-Section "Configuration des tÃ¢ches planifiÃ©es"
+# 5. Configurer les tÃƒÂ¢ches planifiÃƒÂ©es
+Write-Section "Configuration des tÃƒÂ¢ches planifiÃƒÂ©es"
 
 if ($isAdmin) {
-    $ConfigureTasks = Read-Host "Voulez-vous configurer les tÃ¢ches planifiÃ©es maintenant? (O/N)"
+    $ConfigureTasks = Read-Host "Voulez-vous configurer les tÃƒÂ¢ches planifiÃƒÂ©es maintenant? (O/N)"
 
     if ($ConfigureTasks -eq "O" -or $ConfigureTasks -eq "o") {
         & "..\..\D"
         & "..\..\D"
     } else {
-        Write-Host "Configuration des tÃ¢ches planifiÃ©es ignorÃ©e." -ForegroundColor Yellow
+        Write-Host "Configuration des tÃƒÂ¢ches planifiÃƒÂ©es ignorÃƒÂ©e." -ForegroundColor Yellow
         Write-Host "Vous pourrez les configurer plus tard avec:" -ForegroundColor Yellow
         Write-Host "  .\development\scripts\cmd\setup-journal-tasks.ps1" -ForegroundColor Yellow
         Write-Host "  .\development\scripts\cmd\setup-journal-sync-task.ps1" -ForegroundColor Yellow
     }
 } else {
-    Write-Host "La configuration des tÃ¢ches planifiÃ©es nÃ©cessite des privilÃ¨ges d'administrateur." -ForegroundColor Yellow
-    Write-Host "ExÃ©cutez les scripts suivants en tant qu'administrateur pour configurer les tÃ¢ches:" -ForegroundColor Yellow
+    Write-Host "La configuration des tÃƒÂ¢ches planifiÃƒÂ©es nÃƒÂ©cessite des privilÃƒÂ¨ges d'administrateur." -ForegroundColor Yellow
+    Write-Host "ExÃƒÂ©cutez les scripts suivants en tant qu'administrateur pour configurer les tÃƒÂ¢ches:" -ForegroundColor Yellow
     Write-Host "  .\development\scripts\cmd\setup-journal-tasks.ps1" -ForegroundColor Yellow
     Write-Host "  .\development\scripts\cmd\setup-journal-sync-task.ps1" -ForegroundColor Yellow
 }
 
 # Afficher un message de conclusion
-Write-Section "Installation terminÃ©e"
-Write-Host "Le systÃ¨me de journal de bord RAG a Ã©tÃ© installÃ© avec succÃ¨s!" -ForegroundColor Green
+Write-Section "Installation terminÃƒÂ©e"
+Write-Host "Le systÃƒÂ¨me de journal de bord RAG a ÃƒÂ©tÃƒÂ© installÃƒÂ© avec succÃƒÂ¨s!" -ForegroundColor Green
 Write-Host ""
 Write-Host "Vous pouvez maintenant:"
-Write-Host "1. DÃ©marrer l'application web:" -ForegroundColor Cyan
+Write-Host "1. DÃƒÂ©marrer l'application web:" -ForegroundColor Cyan
 Write-Host "   .\development\scripts\cmd\start-journal-web.ps1"
 Write-Host ""
-Write-Host "2. CrÃ©er des entrÃ©es de journal:" -ForegroundColor Cyan
-Write-Host "   python scripts\python\journal\journal_entry.py \"Titre de l`'entrÃ©e\" --tags tag1 tag2"
+Write-Host "2. CrÃƒÂ©er des entrÃƒÂ©es de journal:" -ForegroundColor Cyan
+Write-Host "   python scripts\python\journal\journal_entry.py \"Titre de l`'entrÃƒÂ©e\" --tags tag1 tag2"
 Write-Host ""
 Write-Host "3. Analyser le journal:" -ForegroundColor Cyan
 Write-Host "   python scripts\python\journal\journal_analyzer.py --all"
 Write-Host ""
-Write-Host "4. IntÃ©grer avec GitHub:" -ForegroundColor Cyan
+Write-Host "4. IntÃƒÂ©grer avec GitHub:" -ForegroundColor Cyan
 Write-Host "   python scripts\python\journal\github_integration.py link-commits"
 Write-Host "   python scripts\python\journal\github_integration.py link-issues"
 Write-Host "   python scripts\python\journal\github_integration.py create-from-issue --issue NUMERO_ISSUE"
 Write-Host ""
-Write-Host "Profitez de votre systÃ¨me de journal de bord RAG!" -ForegroundColor Magenta
+Write-Host "Profitez de votre systÃƒÂ¨me de journal de bord RAG!" -ForegroundColor Magenta
 
 
 }
@@ -197,5 +197,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+    Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }

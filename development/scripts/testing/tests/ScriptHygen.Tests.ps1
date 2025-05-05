@@ -1,16 +1,16 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les templates Hygen scripts.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour les templates Hygen scripts.
-    Il vÃ©rifie que les templates sont correctement installÃ©s et fonctionnent comme prÃ©vu.
+    Il vÃƒÂ©rifie que les templates sont correctement installÃƒÂ©s et fonctionnent comme prÃƒÂ©vu.
 
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1
-    Date de crÃ©ation: 2023-05-15
+    Date de crÃƒÂ©ation: 2023-05-15
 #>
 
 # Importer Pester
@@ -26,7 +26,7 @@ function Get-ProjectPath {
     return $projectRoot
 }
 
-# CrÃ©er un dossier temporaire pour les tests
+# CrÃƒÂ©er un dossier temporaire pour les tests
 function New-TempFolder {
     $tempFolder = Join-Path -Path $env:TEMP -ChildPath "ScriptHygenTests-$(Get-Random)"
     New-Item -Path $tempFolder -ItemType Directory -Force | Out-Null
@@ -140,19 +140,19 @@ Describe "ScriptHygen" {
     
     Context "Generation" {
         BeforeAll {
-            # Sauvegarder le rÃ©pertoire courant
+            # Sauvegarder le rÃƒÂ©pertoire courant
             $currentLocation = Get-Location
-            # Changer le rÃ©pertoire courant pour le rÃ©pertoire du projet
+            # Changer le rÃƒÂ©pertoire courant pour le rÃƒÂ©pertoire du projet
             Set-Location -Path $projectRoot
         }
         
         AfterAll {
-            # Restaurer le rÃ©pertoire courant
+            # Restaurer le rÃƒÂ©pertoire courant
             Set-Location -Path $currentLocation
         }
         
         It "Should generate an automation script" {
-            # GÃ©nÃ©rer un script d'automatisation
+            # GÃƒÂ©nÃƒÂ©rer un script d'automatisation
             $automationName = "Test-Automation"
             $automationDescription = "Test automation script"
             $automationAuthor = "Test Author"
@@ -161,18 +161,18 @@ Describe "ScriptHygen" {
             $scriptPath = Join-Path -Path $projectRoot -ChildPath "development/scripts/utils/Generate-Script.ps1"
             & $scriptPath -Type automation -Name $automationName -Description $automationDescription -Author $automationAuthor -OutputFolder $outputFolder
             
-            # VÃ©rifier que le script a Ã©tÃ© gÃ©nÃ©rÃ©
+            # VÃƒÂ©rifier que le script a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ©
             $automationPath = Join-Path -Path $outputFolder -ChildPath "development/scripts/automation/$automationName.ps1"
             Test-Path -Path $automationPath | Should -Be $true
             
-            # VÃ©rifier le contenu du script
+            # VÃƒÂ©rifier le contenu du script
             $automationContent = Get-Content -Path $automationPath -Raw
             $automationContent | Should -Match $automationDescription
             $automationContent | Should -Match $automationAuthor
         }
         
         It "Should generate an analysis script" {
-            # GÃ©nÃ©rer un script d'analyse
+            # GÃƒÂ©nÃƒÂ©rer un script d'analyse
             $analysisName = "Test-Analysis"
             $analysisDescription = "Test analysis script"
             $analysisSubFolder = "plugins"
@@ -182,18 +182,18 @@ Describe "ScriptHygen" {
             $scriptPath = Join-Path -Path $projectRoot -ChildPath "development/scripts/utils/Generate-Script.ps1"
             & $scriptPath -Type analysis -Name $analysisName -Description $analysisDescription -SubFolder $analysisSubFolder -Author $analysisAuthor -OutputFolder $outputFolder
             
-            # VÃ©rifier que le script a Ã©tÃ© gÃ©nÃ©rÃ©
+            # VÃƒÂ©rifier que le script a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ©
             $analysisPath = Join-Path -Path $outputFolder -ChildPath "development/scripts/analysis/$analysisSubFolder/$analysisName.ps1"
             Test-Path -Path $analysisPath | Should -Be $true
             
-            # VÃ©rifier le contenu du script
+            # VÃƒÂ©rifier le contenu du script
             $analysisContent = Get-Content -Path $analysisPath -Raw
             $analysisContent | Should -Match $analysisDescription
             $analysisContent | Should -Match $analysisAuthor
         }
         
         It "Should generate a test script" {
-            # GÃ©nÃ©rer un script de test
+            # GÃƒÂ©nÃƒÂ©rer un script de test
             $testName = "Test-Script"
             $testDescription = "Test script tests"
             $testScriptToTest = "automation/Example-Script.ps1"
@@ -204,11 +204,11 @@ Describe "ScriptHygen" {
             $scriptPath = Join-Path -Path $projectRoot -ChildPath "development/scripts/utils/Generate-Script.ps1"
             & $scriptPath -Type test -Name $testName -Description $testDescription -ScriptToTest $testScriptToTest -FunctionName $testFunctionName -Author $testAuthor -OutputFolder $outputFolder
             
-            # VÃ©rifier que le script a Ã©tÃ© gÃ©nÃ©rÃ©
+            # VÃƒÂ©rifier que le script a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ©
             $testPath = Join-Path -Path $outputFolder -ChildPath "development/scripts/development/testing/tests/$testName.Tests.ps1"
             Test-Path -Path $testPath | Should -Be $true
             
-            # VÃ©rifier le contenu du script
+            # VÃƒÂ©rifier le contenu du script
             $testContent = Get-Content -Path $testPath -Raw
             $testContent | Should -Match $testDescription
             $testContent | Should -Match $testAuthor
@@ -217,7 +217,7 @@ Describe "ScriptHygen" {
         }
         
         It "Should generate an integration script" {
-            # GÃ©nÃ©rer un script d'intÃ©gration
+            # GÃƒÂ©nÃƒÂ©rer un script d'intÃƒÂ©gration
             $integrationName = "Test-Integration"
             $integrationDescription = "Test integration script"
             $integrationAuthor = "Test Author"
@@ -226,11 +226,11 @@ Describe "ScriptHygen" {
             $scriptPath = Join-Path -Path $projectRoot -ChildPath "development/scripts/utils/Generate-Script.ps1"
             & $scriptPath -Type integration -Name $integrationName -Description $integrationDescription -Author $integrationAuthor -OutputFolder $outputFolder
             
-            # VÃ©rifier que le script a Ã©tÃ© gÃ©nÃ©rÃ©
+            # VÃƒÂ©rifier que le script a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ©
             $integrationPath = Join-Path -Path $outputFolder -ChildPath "development/scripts/integration/$integrationName.ps1"
             Test-Path -Path $integrationPath | Should -Be $true
             
-            # VÃ©rifier le contenu du script
+            # VÃƒÂ©rifier le contenu du script
             $integrationContent = Get-Content -Path $integrationPath -Raw
             $integrationContent | Should -Match $integrationDescription
             $integrationContent | Should -Match $integrationAuthor

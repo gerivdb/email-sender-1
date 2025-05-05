@@ -1,15 +1,15 @@
-# Exemple d'utilisation du module FunctionCallAnalyzer
+﻿# Exemple d'utilisation du module FunctionCallAnalyzer
 
 # Importer le module
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "FunctionCallAnalyzer.psm1"
 Import-Module -Name $modulePath -Force
 
-# Définir le chemin du script à analyser
-# Remplacer par le chemin d'un script réel
+# DÃ©finir le chemin du script Ã  analyser
+# Remplacer par le chemin d'un script rÃ©el
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "SampleScript.ps1"
 
-# Créer un script d'exemple si le fichier n'existe pas
+# CrÃ©er un script d'exemple si le fichier n'existe pas
 if (-not (Test-Path -Path $scriptPath)) {
     $sampleScript = @'
 function Get-UserInfo {
@@ -21,7 +21,7 @@ function Get-UserInfo {
         [switch]$IncludeGroups
     )
     
-    Write-Verbose "Récupération des informations pour l'utilisateur: $Username"
+    Write-Verbose "RÃ©cupÃ©ration des informations pour l'utilisateur: $Username"
     
     $user = Get-User -Identity $Username
     $result = [PSCustomObject]@{
@@ -45,9 +45,9 @@ function Get-User {
         [string]$Identity
     )
     
-    Write-Verbose "Récupération de l'utilisateur: $Identity"
+    Write-Verbose "RÃ©cupÃ©ration de l'utilisateur: $Identity"
     
-    # Simulation de récupération d'utilisateur
+    # Simulation de rÃ©cupÃ©ration d'utilisateur
     return [PSCustomObject]@{
         SamAccountName = $Identity
         DisplayName = "Utilisateur $Identity"
@@ -62,13 +62,13 @@ function Get-UserGroups {
         [string]$Username
     )
     
-    Write-Verbose "Récupération des groupes pour l'utilisateur: $Username"
+    Write-Verbose "RÃ©cupÃ©ration des groupes pour l'utilisateur: $Username"
     
-    # Simulation de récupération de groupes
+    # Simulation de rÃ©cupÃ©ration de groupes
     return @(
         "Utilisateurs",
-        "Développeurs",
-        "Accès VPN"
+        "DÃ©veloppeurs",
+        "AccÃ¨s VPN"
     )
 }
 
@@ -78,9 +78,9 @@ function Remove-UserAccess {
         [string]$Username
     )
     
-    Write-Verbose "Suppression des accès pour l'utilisateur: $Username"
+    Write-Verbose "Suppression des accÃ¨s pour l'utilisateur: $Username"
     
-    # Cette fonction n'est pas appelée dans ce script
+    # Cette fonction n'est pas appelÃ©e dans ce script
 }
 
 # Appel de fonction en dehors d'une fonction
@@ -89,41 +89,41 @@ Write-Output $userInfo
 '@
     
     Set-Content -Path $scriptPath -Value $sampleScript
-    Write-Host "Script d'exemple créé: $scriptPath"
+    Write-Host "Script d'exemple crÃ©Ã©: $scriptPath"
 }
 
 # 1. Analyser les appels de fonction
 Write-Host "`n=== Analyse des appels de fonction ===" -ForegroundColor Cyan
 $functionCalls = Get-FunctionCallAnalysis -ScriptPath $scriptPath
-Write-Host "Appels de fonction détectés: $($functionCalls.Count)"
+Write-Host "Appels de fonction dÃ©tectÃ©s: $($functionCalls.Count)"
 $functionCalls | Format-Table -Property Name, Line, Column, Parameters
 
-# 2. Analyser les définitions de fonction
-Write-Host "`n=== Analyse des définitions de fonction ===" -ForegroundColor Cyan
+# 2. Analyser les dÃ©finitions de fonction
+Write-Host "`n=== Analyse des dÃ©finitions de fonction ===" -ForegroundColor Cyan
 $functionDefinitions = Get-FunctionDefinitionAnalysis -ScriptPath $scriptPath -IncludeParameters
-Write-Host "Fonctions définies: $($functionDefinitions.Count)"
+Write-Host "Fonctions dÃ©finies: $($functionDefinitions.Count)"
 $functionDefinitions | Format-Table -Property Name, Line, EndLine
 
-# Afficher les paramètres de chaque fonction
+# Afficher les paramÃ¨tres de chaque fonction
 foreach ($function in $functionDefinitions) {
-    Write-Host "`nParamètres de la fonction $($function.Name):" -ForegroundColor Yellow
+    Write-Host "`nParamÃ¨tres de la fonction $($function.Name):" -ForegroundColor Yellow
     $function.Parameters | Format-Table -Property Name, Type, Mandatory
 }
 
-# 3. Comparer les définitions et les appels
-Write-Host "`n=== Comparaison des définitions et des appels ===" -ForegroundColor Cyan
+# 3. Comparer les dÃ©finitions et les appels
+Write-Host "`n=== Comparaison des dÃ©finitions et des appels ===" -ForegroundColor Cyan
 $comparison = Compare-FunctionDefinitionsAndCalls -ScriptPath $scriptPath -IncludeParameters
-Write-Host "Fonctions définies mais non appelées: $($comparison.DefinedButNotCalled.Count)"
+Write-Host "Fonctions dÃ©finies mais non appelÃ©es: $($comparison.DefinedButNotCalled.Count)"
 $comparison.DefinedButNotCalled | Format-Table -Property Name, Line
 
-# 4. Créer un graphe de dépendances
-Write-Host "`n=== Graphe de dépendances de fonctions ===" -ForegroundColor Cyan
+# 4. CrÃ©er un graphe de dÃ©pendances
+Write-Host "`n=== Graphe de dÃ©pendances de fonctions ===" -ForegroundColor Cyan
 $outputDir = Join-Path -Path $PSScriptRoot -ChildPath "Output"
 if (-not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory | Out-Null
 }
 
-# Exporter le graphe dans différents formats
+# Exporter le graphe dans diffÃ©rents formats
 $textOutputPath = Join-Path -Path $outputDir -ChildPath "FunctionDependencies.txt"
 $jsonOutputPath = Join-Path -Path $outputDir -ChildPath "FunctionDependencies.json"
 $dotOutputPath = Join-Path -Path $outputDir -ChildPath "FunctionDependencies.dot"
@@ -134,14 +134,14 @@ New-FunctionDependencyGraph -ScriptPath $scriptPath -OutputPath $jsonOutputPath 
 New-FunctionDependencyGraph -ScriptPath $scriptPath -OutputPath $dotOutputPath -OutputFormat "DOT"
 New-FunctionDependencyGraph -ScriptPath $scriptPath -OutputPath $htmlOutputPath -OutputFormat "HTML"
 
-Write-Host "Graphe de dépendances exporté dans les formats suivants:"
+Write-Host "Graphe de dÃ©pendances exportÃ© dans les formats suivants:"
 Write-Host "- Texte: $textOutputPath"
 Write-Host "- JSON: $jsonOutputPath"
 Write-Host "- DOT: $dotOutputPath"
 Write-Host "- HTML: $htmlOutputPath"
 
-# Afficher le graphe de dépendances
-Write-Host "`nGraphe de dépendances:" -ForegroundColor Yellow
+# Afficher le graphe de dÃ©pendances
+Write-Host "`nGraphe de dÃ©pendances:" -ForegroundColor Yellow
 foreach ($function in $graph.Graph.Keys | Sort-Object) {
-    Write-Host "$function dépend de: $($graph.Graph[$function] -join ', ')"
+    Write-Host "$function dÃ©pend de: $($graph.Graph[$function] -join ', ')"
 }

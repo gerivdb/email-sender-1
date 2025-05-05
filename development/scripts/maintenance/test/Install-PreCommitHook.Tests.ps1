@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Install-PreCommitHook.ps1.
@@ -10,19 +10,19 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-10
+    Date de crÃ©ation: 2023-06-10
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\git\Install-PreCommitHook.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if (-not (Test-Path -Path $scriptPath)) {
     throw "Le script Install-PreCommitHook.ps1 n'existe pas: $scriptPath"
 }
@@ -30,14 +30,14 @@ if (-not (Test-Path -Path $scriptPath)) {
 # Tests Pester
 Describe "Tests du script Install-PreCommitHook.ps1" {
     BeforeAll {
-        # Créer un dossier temporaire pour simuler un dépôt Git
+        # CrÃ©er un dossier temporaire pour simuler un dÃ©pÃ´t Git
         $testDir = Join-Path -Path $env:TEMP -ChildPath "PreCommitHookTests"
         if (Test-Path -Path $testDir) {
             Remove-Item -Path $testDir -Recurse -Force
         }
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-        # Créer une structure de dossiers pour simuler un dépôt Git
+        # CrÃ©er une structure de dossiers pour simuler un dÃ©pÃ´t Git
         $gitDir = Join-Path -Path $testDir -ChildPath ".git"
         $hooksDir = Join-Path -Path $gitDir -ChildPath "hooks"
         New-Item -Path $gitDir -ItemType Directory -Force | Out-Null
@@ -50,18 +50,18 @@ Describe "Tests du script Install-PreCommitHook.ps1" {
     }
 
     AfterAll {
-        # Nettoyer après les tests
+        # Nettoyer aprÃ¨s les tests
         if (Test-Path -Path $script:testDir) {
             Remove-Item -Path $script:testDir -Recurse -Force
         }
     }
 
-    Context "Tests de fonctionnalité" {
+    Context "Tests de fonctionnalitÃ©" {
         It "Le script devrait exister" {
             Test-Path -Path $scriptPath | Should -Be $true
         }
 
-        It "Le script devrait être un fichier PowerShell valide" {
+        It "Le script devrait Ãªtre un fichier PowerShell valide" {
             { . $scriptPath } | Should -Not -Throw
         }
 
@@ -76,38 +76,38 @@ Describe "Tests du script Install-PreCommitHook.ps1" {
         }
     }
 
-    Context "Tests d'intégration" {
+    Context "Tests d'intÃ©gration" {
         BeforeEach {
-            # Simuler un dépôt Git en créant un fichier .git/config
+            # Simuler un dÃ©pÃ´t Git en crÃ©ant un fichier .git/config
             $configPath = Join-Path -Path $script:gitDir -ChildPath "config"
             Set-Content -Path $configPath -Value "[core]`n`trepositoryformatversion = 0`n`tfilemode = false`n`tbare = false`n`tlogallrefupdates = true`n`tsymlinks = false`n`tignorecase = true" -Encoding UTF8
         }
 
-        It "Devrait créer le hook pre-commit" {
-            # Simuler l'exécution du script dans un dépôt Git
-            # Note: Nous ne pouvons pas exécuter réellement le script car il dépend de git rev-parse
-            # Mais nous pouvons vérifier que le contenu du hook est correct
+        It "Devrait crÃ©er le hook pre-commit" {
+            # Simuler l'exÃ©cution du script dans un dÃ©pÃ´t Git
+            # Note: Nous ne pouvons pas exÃ©cuter rÃ©ellement le script car il dÃ©pend de git rev-parse
+            # Mais nous pouvons vÃ©rifier que le contenu du hook est correct
 
             # Extraire le contenu du hook pre-commit du script
             $scriptContent = Get-Content -Path $scriptPath -Raw
             if ($scriptContent -match "(?s)preCommitContent = @'(.*?)'@") {
                 $hookContent = $matches[1]
                 
-                # Créer manuellement le hook pre-commit
+                # CrÃ©er manuellement le hook pre-commit
                 $preCommitPath = Join-Path -Path $script:hooksDir -ChildPath "pre-commit"
                 Set-Content -Path $preCommitPath -Value $hookContent -Encoding utf8 -NoNewline
                 
-                # Vérifier que le hook a été créé
+                # VÃ©rifier que le hook a Ã©tÃ© crÃ©Ã©
                 Test-Path -Path $preCommitPath | Should -Be $true
                 
-                # Vérifier le contenu du hook
+                # VÃ©rifier le contenu du hook
                 $actualContent = Get-Content -Path $preCommitPath -Raw
                 $actualContent | Should -Match "Pre-commit hook pour organiser les scripts de maintenance"
                 $actualContent | Should -Match "MAINTENANCE_DIR="
                 $actualContent | Should -Match "Organisation automatique des scripts"
             }
             else {
-                # Si nous ne pouvons pas extraire le contenu du hook, le test échoue
+                # Si nous ne pouvons pas extraire le contenu du hook, le test Ã©choue
                 $false | Should -Be $true -Because "Impossible d'extraire le contenu du hook pre-commit du script"
             }
         }

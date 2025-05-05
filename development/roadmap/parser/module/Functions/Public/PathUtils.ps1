@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fonctions publiques pour la gestion des chemins d'accès.
+    Fonctions publiques pour la gestion des chemins d'accÃ¨s.
 
 .DESCRIPTION
-    Ce script contient des fonctions publiques pour initialiser, tester et réparer
-    les chemins d'accès dans le système de fichiers.
+    Ce script contient des fonctions publiques pour initialiser, tester et rÃ©parer
+    les chemins d'accÃ¨s dans le systÃ¨me de fichiers.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
-# Fonction pour initialiser les chemins d'accès
+# Fonction pour initialiser les chemins d'accÃ¨s
 function Initialize-Paths {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -32,30 +32,30 @@ function Initialize-Paths {
         foreach ($key in $Paths.Keys) {
             $path = $Paths[$key]
             
-            # Vérifier si le chemin existe
+            # VÃ©rifier si le chemin existe
             $exists = Test-Path -Path $path -ErrorAction SilentlyContinue
             
             if (-not $exists -and $CreateIfMissing) {
-                # Déterminer si c'est un fichier ou un répertoire
+                # DÃ©terminer si c'est un fichier ou un rÃ©pertoire
                 $isFile = [System.IO.Path]::HasExtension($path)
                 
                 if ($isFile) {
-                    # Créer le répertoire parent
+                    # CrÃ©er le rÃ©pertoire parent
                     $parentPath = [System.IO.Path]::GetDirectoryName($path)
                     
                     if (-not (Test-Path -Path $parentPath -PathType Container)) {
-                        if ($PSCmdlet.ShouldProcess($parentPath, "Créer le répertoire parent")) {
+                        if ($PSCmdlet.ShouldProcess($parentPath, "CrÃ©er le rÃ©pertoire parent")) {
                             $null = New-Item -Path $parentPath -ItemType Directory -Force -ErrorAction Stop
                         }
                     }
                     
-                    # Créer le fichier
-                    if ($PSCmdlet.ShouldProcess($path, "Créer le fichier")) {
+                    # CrÃ©er le fichier
+                    if ($PSCmdlet.ShouldProcess($path, "CrÃ©er le fichier")) {
                         $null = New-Item -Path $path -ItemType File -Force -ErrorAction Stop
                     }
                 } else {
-                    # Créer le répertoire
-                    if ($PSCmdlet.ShouldProcess($path, "Créer le répertoire")) {
+                    # CrÃ©er le rÃ©pertoire
+                    if ($PSCmdlet.ShouldProcess($path, "CrÃ©er le rÃ©pertoire")) {
                         $null = New-Item -Path $path -ItemType Directory -Force -ErrorAction Stop
                     }
                 }
@@ -77,7 +77,7 @@ function Initialize-Paths {
     }
 }
 
-# Fonction pour tester les chemins d'accès
+# Fonction pour tester les chemins d'accÃ¨s
 function Test-Paths {
     [CmdletBinding()]
     param(
@@ -116,7 +116,7 @@ function Test-Paths {
     }
 }
 
-# Fonction pour réparer les chemins d'accès
+# Fonction pour rÃ©parer les chemins d'accÃ¨s
 function Repair-Paths {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -151,31 +151,31 @@ function Repair-Paths {
         foreach ($key in $Paths.Keys) {
             $path = $Paths[$key]
             
-            # Vérifier si le chemin existe
+            # VÃ©rifier si le chemin existe
             $exists = Test-Path -Path $path -ErrorAction SilentlyContinue
             
             if (-not $exists) {
                 if ($CreateIfMissing) {
-                    # Déterminer si c'est un fichier ou un répertoire
+                    # DÃ©terminer si c'est un fichier ou un rÃ©pertoire
                     $isFile = [System.IO.Path]::HasExtension($path)
                     
                     if ($isFile) {
-                        # Créer le répertoire parent
+                        # CrÃ©er le rÃ©pertoire parent
                         $parentPath = [System.IO.Path]::GetDirectoryName($path)
                         
                         if (-not (Test-Path -Path $parentPath -PathType Container)) {
-                            if ($PSCmdlet.ShouldProcess($parentPath, "Créer le répertoire parent")) {
+                            if ($PSCmdlet.ShouldProcess($parentPath, "CrÃ©er le rÃ©pertoire parent")) {
                                 $null = New-Item -Path $parentPath -ItemType Directory -Force -ErrorAction Stop
                             }
                         }
                         
-                        # Créer le fichier
-                        if ($PSCmdlet.ShouldProcess($path, "Créer le fichier")) {
+                        # CrÃ©er le fichier
+                        if ($PSCmdlet.ShouldProcess($path, "CrÃ©er le fichier")) {
                             $null = New-Item -Path $path -ItemType File -Force -ErrorAction Stop
                         }
                     } else {
-                        # Créer le répertoire
-                        if ($PSCmdlet.ShouldProcess($path, "Créer le répertoire")) {
+                        # CrÃ©er le rÃ©pertoire
+                        if ($PSCmdlet.ShouldProcess($path, "CrÃ©er le rÃ©pertoire")) {
                             $null = New-Item -Path $path -ItemType Directory -Force -ErrorAction Stop
                         }
                     }
@@ -192,19 +192,19 @@ function Repair-Paths {
                 }
             }
             
-            # Réparer les permissions
+            # RÃ©parer les permissions
             $result = Repair-PathPermissions -Path $path -GrantRead:$GrantRead -GrantWrite:$GrantWrite -GrantExecute:$GrantExecute -GrantFullControl:$GrantFullControl -Recursive:$Recursive -User $User -WhatIf:$WhatIfPreference
             
             $results[$key] = @{
                 Path = $path
                 Success = $result
-                Error = if (-not $result) { "Échec de la réparation des permissions" } else { $null }
+                Error = if (-not $result) { "Ã‰chec de la rÃ©paration des permissions" } else { $null }
             }
         }
         
         return $results
     } catch {
-        Write-Error "Erreur lors de la réparation des chemins: $($_.Exception.Message)"
+        Write-Error "Erreur lors de la rÃ©paration des chemins: $($_.Exception.Message)"
         return $null
     }
 }

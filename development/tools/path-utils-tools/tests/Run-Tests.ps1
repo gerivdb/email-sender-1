@@ -1,8 +1,8 @@
-# Script pour exécuter les tests Pester pour le module Path-Manager
+﻿# Script pour exÃ©cuter les tests Pester pour le module Path-Manager
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Host "Le module Pester n'est pas installé. Installation en cours..." -ForegroundColor Yellow
+    Write-Host "Le module Pester n'est pas installÃ©. Installation en cours..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
@@ -20,7 +20,7 @@ $pesterConfig.CodeCoverage.Enabled = $true
 $pesterConfig.CodeCoverage.Path = Join-Path -Path $PSScriptRoot -ChildPath "..\Path-Manager.psm1"
 $pesterConfig.CodeCoverage.OutputPath = Join-Path -Path $PSScriptRoot -ChildPath "CodeCoverage.xml"
 
-# Traiter les paramètres
+# Traiter les paramÃ¨tres
 $showFailed = $false
 foreach ($arg in $args) {
     if ($arg -eq "-Show" -and $args.IndexOf($arg) -lt $args.Count - 1) {
@@ -36,12 +36,12 @@ if ($showFailed) {
     $pesterConfig.Filter.Tag = @('Focus')
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher les résultats des tests qui ont échoué
+# Afficher les rÃ©sultats des tests qui ont Ã©chouÃ©
 if ($testResults.FailedCount -gt 0) {
-    Write-Host "\nTests qui ont échoué:" -ForegroundColor Red
+    Write-Host "\nTests qui ont Ã©chouÃ©:" -ForegroundColor Red
     $testResults.Failed | ForEach-Object {
         Write-Host "  - $($_.Name)" -ForegroundColor Red
         Write-Host "    Message: $($_.ErrorRecord.Exception.Message)" -ForegroundColor Red

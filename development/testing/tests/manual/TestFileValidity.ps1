@@ -1,6 +1,6 @@
-# Script de test manuel pour la validation de fichiers CSV et YAML
+﻿# Script de test manuel pour la validation de fichiers CSV et YAML
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
@@ -8,25 +8,25 @@ $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmente
 # Importer le module
 . $unifiedSegmenterPath
 
-# Initialiser le segmenteur unifié
-Write-Host "Initialisation du segmenteur unifié..."
+# Initialiser le segmenteur unifiÃ©
+Write-Host "Initialisation du segmenteur unifiÃ©..."
 $initResult = Initialize-UnifiedSegmenter
-Write-Host "Initialisation réussie: $initResult"
+Write-Host "Initialisation rÃ©ussie: $initResult"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "FileValidityTest"
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $validCsvPath = Join-Path -Path $testDir -ChildPath "valid.csv"
 $invalidCsvPath = Join-Path -Path $testDir -ChildPath "invalid.csv"
 $validYamlPath = Join-Path -Path $testDir -ChildPath "valid.yaml"
 $invalidYamlPath = Join-Path -Path $testDir -ChildPath "invalid.yaml"
 
-# Créer un fichier CSV valide
+# CrÃ©er un fichier CSV valide
 $validCsvContent = @"
 id,name,value
 1,Item 1,Value 1
@@ -35,7 +35,7 @@ id,name,value
 "@
 Set-Content -Path $validCsvPath -Value $validCsvContent -Encoding UTF8
 
-# Créer un fichier CSV invalide (colonnes incohérentes)
+# CrÃ©er un fichier CSV invalide (colonnes incohÃ©rentes)
 $invalidCsvContent = @"
 id,name,value
 1,Item 1,Value 1
@@ -44,7 +44,7 @@ id,name,value
 "@
 Set-Content -Path $invalidCsvPath -Value $invalidCsvContent -Encoding UTF8
 
-# Créer un fichier YAML valide
+# CrÃ©er un fichier YAML valide
 $validYamlContent = @"
 name: Test Object
 items:
@@ -60,7 +60,7 @@ metadata:
 "@
 Set-Content -Path $validYamlPath -Value $validYamlContent -Encoding UTF8
 
-# Créer un fichier YAML invalide
+# CrÃ©er un fichier YAML invalide
 $invalidYamlContent = @"
 name: Test Object
 items:
@@ -110,4 +110,4 @@ Get-Content -Path $invalidYamlPath | ForEach-Object { Write-Host "  $_" }
 Write-Host "`nNettoyage des fichiers de test..."
 Remove-Item -Path $testDir -Recurse -Force
 
-Write-Host "`nTests terminés."
+Write-Host "`nTests terminÃ©s."

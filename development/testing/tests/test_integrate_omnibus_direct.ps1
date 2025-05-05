@@ -1,29 +1,29 @@
-# DÃ©finir l'encodage de la console
+﻿# DÃƒÂ©finir l'encodage de la console
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Importer le module d'analyse des patterns d'erreur
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1"
 Import-Module $modulePath -Force
 
-# CrÃ©er un dossier de test pour TestOmnibus
+# CrÃƒÂ©er un dossier de test pour TestOmnibus
 $testOmnibusPath = Join-Path -Path $PSScriptRoot -ChildPath "TestOmnibus"
 if (-not (Test-Path -Path $testOmnibusPath)) {
     New-Item -Path $testOmnibusPath -ItemType Directory -Force | Out-Null
 }
 
-# CrÃ©er des dossiers pour les logs de test
+# CrÃƒÂ©er des dossiers pour les logs de test
 $logsPath = Join-Path -Path $testOmnibusPath -ChildPath "logs"
 if (-not (Test-Path -Path $logsPath)) {
     New-Item -Path $logsPath -ItemType Directory -Force | Out-Null
 }
 
-# CrÃ©er un dossier pour les hooks
+# CrÃƒÂ©er un dossier pour les hooks
 $hooksPath = Join-Path -Path $testOmnibusPath -ChildPath "hooks"
 if (-not (Test-Path -Path $hooksPath)) {
     New-Item -Path $hooksPath -ItemType Directory -Force | Out-Null
 }
 
-# CrÃ©er des fichiers de log de test
+# CrÃƒÂ©er des fichiers de log de test
 $logFile1 = Join-Path -Path $logsPath -ChildPath "test_log_1.log"
 $logContent1 = @"
 Exception : System.NullReferenceException: Object reference not set to an instance of an object.
@@ -70,10 +70,10 @@ $logContent3 = @"
 "@
 $logContent3 | Out-File -FilePath $logFile3 -Encoding utf8 -Force
 
-# DÃ©finir le chemin du rapport d'intÃ©gration
+# DÃƒÂ©finir le chemin du rapport d'intÃƒÂ©gration
 $reportPath = Join-Path -Path $PSScriptRoot -ChildPath "test_integration_report.md"
 
-# DÃ©finir les fonctions de test
+# DÃƒÂ©finir les fonctions de test
 function Get-TestOmnibusErrors {
     [CmdletBinding()]
     param (
@@ -159,7 +159,7 @@ function Add-TestOmnibusErrors {
     $patternIds = @()
 
     foreach ($error in $Errors) {
-        # CrÃ©er un objet ErrorRecord
+        # CrÃƒÂ©er un objet ErrorRecord
         $exception = New-Object System.Exception $error.Message
         $errorRecord = New-Object System.Management.Automation.ErrorRecord(
             $exception,
@@ -168,12 +168,12 @@ function Add-TestOmnibusErrors {
             $null
         )
 
-        # Ajouter des informations supplÃ©mentaires
+        # Ajouter des informations supplÃƒÂ©mentaires
         $errorRecord.PSObject.Properties.Add(
             (New-Object System.Management.Automation.PSNoteProperty "ScriptStackTrace", $error.StackTrace)
         )
 
-        # Ajouter l'erreur Ã  la base de donnÃ©es
+        # Ajouter l'erreur ÃƒÂ  la base de donnÃƒÂ©es
         $patternId = "test-pattern-" + [guid]::NewGuid().ToString()
         $patternIds += $patternId
     }
@@ -197,7 +197,7 @@ function New-TestOmnibusHook {
     $hookPath = Join-Path -Path $hooksPath -ChildPath "ErrorPatternAnalyzer.ps1"
 
     $hookContent = @"
-# Hook d'intÃ©gration avec le systÃ¨me d'analyse des patterns d'erreurs inÃ©dits
+# Hook d'intÃƒÂ©gration avec le systÃƒÂ¨me d'analyse des patterns d'erreurs inÃƒÂ©dits
 
 # Importer le module d'analyse des patterns d'erreur
 `$modulePath = Join-Path -Path `$PSScriptRoot -ChildPath "..\..\maintenance\error-learning\ErrorPatternAnalyzer.psm1"
@@ -212,7 +212,7 @@ function Invoke-TestErrorProcessing {
     )
 
     foreach (`$error in `$Errors) {
-        # CrÃ©er un objet ErrorRecord
+        # CrÃƒÂ©er un objet ErrorRecord
         `$exception = New-Object System.Exception `$error.Message
         `$errorRecord = New-Object System.Management.Automation.ErrorRecord(
             `$exception,
@@ -221,12 +221,12 @@ function Invoke-TestErrorProcessing {
             `$null
         )
 
-        # Ajouter des informations supplÃ©mentaires
+        # Ajouter des informations supplÃƒÂ©mentaires
         `$errorRecord.PSObject.Properties.Add(
             (New-Object System.Management.Automation.PSNoteProperty "ScriptStackTrace", `$error.StackTrace)
         )
 
-        # Ajouter l'erreur Ã  la base de donnÃ©es
+        # Ajouter l'erreur ÃƒÂ  la base de donnÃƒÂ©es
         Add-ErrorRecord -ErrorRecord `$errorRecord -Source `$error.Source
     }
 }
@@ -251,25 +251,25 @@ function New-IntegrationReport {
     )
 
     $reportContent = @"
-# Rapport d'intÃ©gration avec TestOmnibus
+# Rapport d'intÃƒÂ©gration avec TestOmnibus
 
-## RÃ©sumÃ©
+## RÃƒÂ©sumÃƒÂ©
 
-Ce rapport prÃ©sente l'intÃ©gration du systÃ¨me d'analyse des patterns d'erreurs inÃ©dits avec TestOmnibus.
+Ce rapport prÃƒÂ©sente l'intÃƒÂ©gration du systÃƒÂ¨me d'analyse des patterns d'erreurs inÃƒÂ©dits avec TestOmnibus.
 
-## Patterns d'erreur dÃ©tectÃ©s
+## Patterns d'erreur dÃƒÂ©tectÃƒÂ©s
 
-$($PatternIds.Count) patterns d'erreur ont Ã©tÃ© dÃ©tectÃ©s dans les logs de TestOmnibus.
+$($PatternIds.Count) patterns d'erreur ont ÃƒÂ©tÃƒÂ© dÃƒÂ©tectÃƒÂ©s dans les logs de TestOmnibus.
 
-## IntÃ©gration avec TestOmnibus
+## IntÃƒÂ©gration avec TestOmnibus
 
-Un hook d'intÃ©gration a Ã©tÃ© crÃ©Ã© pour analyser automatiquement les erreurs de test et dÃ©tecter les patterns inÃ©dits.
+Un hook d'intÃƒÂ©gration a ÃƒÂ©tÃƒÂ© crÃƒÂ©ÃƒÂ© pour analyser automatiquement les erreurs de test et dÃƒÂ©tecter les patterns inÃƒÂ©dits.
 
-## Prochaines Ã©tapes
+## Prochaines ÃƒÂ©tapes
 
-1. Analyser les patterns dÃ©tectÃ©s pour identifier les erreurs inÃ©dites
-2. Valider les patterns dÃ©tectÃ©s
-3. CrÃ©er des rapports d'analyse pour les patterns validÃ©s
+1. Analyser les patterns dÃƒÂ©tectÃƒÂ©s pour identifier les erreurs inÃƒÂ©dites
+2. Valider les patterns dÃƒÂ©tectÃƒÂ©s
+3. CrÃƒÂ©er des rapports d'analyse pour les patterns validÃƒÂ©s
 "@
 
     $reportContent | Out-File -FilePath $ReportPath -Encoding utf8 -Force
@@ -287,18 +287,18 @@ $errors | ForEach-Object {
 
 Write-Host "`nTester Add-TestOmnibusErrors:"
 $patternIds = Add-TestOmnibusErrors -Errors $errors
-Write-Host "Patterns crÃ©Ã©s: $($patternIds.Count)"
+Write-Host "Patterns crÃƒÂ©ÃƒÂ©s: $($patternIds.Count)"
 
 Write-Host "`nTester New-TestOmnibusHook:"
 $hookPath = New-TestOmnibusHook -TestOmnibusPath $testOmnibusPath
-Write-Host "Hook crÃ©Ã©: $hookPath"
+Write-Host "Hook crÃƒÂ©ÃƒÂ©: $hookPath"
 if (Test-Path -Path $hookPath) {
     Write-Host "Le hook existe."
 }
 
 Write-Host "`nTester New-IntegrationReport:"
 $result = New-IntegrationReport -PatternIds $patternIds -ReportPath $reportPath
-Write-Host "Rapport d'intÃ©gration gÃ©nÃ©rÃ©: $result"
+Write-Host "Rapport d'intÃƒÂ©gration gÃƒÂ©nÃƒÂ©rÃƒÂ©: $result"
 if (Test-Path -Path $reportPath) {
     Write-Host "Le rapport existe."
 }

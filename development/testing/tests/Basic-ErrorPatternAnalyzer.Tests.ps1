@@ -1,7 +1,7 @@
-# Tests unitaires de base pour le module ErrorPatternAnalyzer
+﻿# Tests unitaires de base pour le module ErrorPatternAnalyzer
 # Utilise le framework Pester pour PowerShell
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1"
 Import-Module $modulePath -Force
 
@@ -36,7 +36,7 @@ Describe "Basic ErrorPatternAnalyzer Tests" {
             $pattern | Should -Match "Cannot access property 'Name' of null object at <PATH>\\Test.ps1:<NUMBER>"
         }
 
-        # Les tests pour les valeurs nulles sont ignorés car la fonction ne les supporte pas
+        # Les tests pour les valeurs nulles sont ignorÃ©s car la fonction ne les supporte pas
         # It "Should handle null messages correctly" {
         #     $pattern = Get-MessagePattern -Message $null
         #     $pattern | Should -Be ""
@@ -56,7 +56,7 @@ Describe "Basic ErrorPatternAnalyzer Tests" {
             $pattern | Should -Be "<VARIABLE> = <VARIABLE>.Properties[<STRING>] + <NUMBER>"
         }
 
-        # Les tests pour les valeurs nulles sont ignorés car la fonction ne les supporte pas
+        # Les tests pour les valeurs nulles sont ignorÃ©s car la fonction ne les supporte pas
         # It "Should handle null lines correctly" {
         #     $pattern = Get-LinePattern -Line $null
         #     $pattern | Should -Be ""
@@ -71,7 +71,7 @@ Describe "Basic ErrorPatternAnalyzer Tests" {
 
     Context "Measure-PatternSimilarity Function" {
         It "Should calculate similarity between patterns" {
-            # Créer des objets pattern
+            # CrÃ©er des objets pattern
             $pattern1 = @{
                 Message     = "Cannot access property 'Name' of null object"
                 Pattern     = "Cannot access property 'Name' of null object at <PATH>\\Test.ps1:<NUMBER>"
@@ -90,16 +90,16 @@ Describe "Basic ErrorPatternAnalyzer Tests" {
                 LinePattern = "<VARIABLE>[<VARIABLE>]"
             }
 
-            # Tester la similarité entre patterns similaires
+            # Tester la similaritÃ© entre patterns similaires
             $similarity1 = Measure-PatternSimilarity -Pattern1 $pattern1 -Pattern2 $pattern2
             $similarity1 | Should -BeGreaterThan 0.7
 
-            # Tester la similarité entre patterns différents
+            # Tester la similaritÃ© entre patterns diffÃ©rents
             $similarity2 = Measure-PatternSimilarity -Pattern1 $pattern1 -Pattern2 $pattern3
-            # La fonction peut retourner une similarité élevée même pour des patterns différents
-            Write-Host "Similarité entre patterns différents: $similarity2"
+            # La fonction peut retourner une similaritÃ© Ã©levÃ©e mÃªme pour des patterns diffÃ©rents
+            Write-Host "SimilaritÃ© entre patterns diffÃ©rents: $similarity2"
 
-            # Tester la similarité entre un pattern et lui-même
+            # Tester la similaritÃ© entre un pattern et lui-mÃªme
             $similarity3 = Measure-PatternSimilarity -Pattern1 $pattern1 -Pattern2 $pattern1
             $similarity3 | Should -Be 1.0
         }

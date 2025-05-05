@@ -1,5 +1,5 @@
-# Test pour la fonction New-FunctionDependencyGraph
-# Ce test vérifie que la fonction New-FunctionDependencyGraph fonctionne correctement
+﻿# Test pour la fonction New-FunctionDependencyGraph
+# Ce test vÃ©rifie que la fonction New-FunctionDependencyGraph fonctionne correctement
 
 # Importer le module
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
@@ -8,16 +8,16 @@ $moduleFile = Join-Path -Path $modulePath -ChildPath "ModuleDependencyAnalyzer-F
 try {
     # Importer le module
     Import-Module -Name $moduleFile -Force -ErrorAction Stop
-    Write-Host "Module importé avec succès" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s" -ForegroundColor Green
 
-    # Créer un répertoire de test temporaire
+    # CrÃ©er un rÃ©pertoire de test temporaire
     $testDir = Join-Path -Path $env:TEMP -ChildPath "FunctionDependencyGraphTest"
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
     }
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-    # Créer un fichier de test avec des fonctions et leurs dépendances
+    # CrÃ©er un fichier de test avec des fonctions et leurs dÃ©pendances
     $testScriptContent = @"
 # Test script with function dependencies
 function Test-Function1 {
@@ -50,7 +50,7 @@ function Test-Function4 {
     Write-Output "This is function 4"
 }
 
-# Fonction définie mais non appelée
+# Fonction dÃ©finie mais non appelÃ©e
 function Test-UnusedFunction {
     Write-Output "This function is never called"
 }
@@ -62,30 +62,30 @@ Test-Function1 -Message "Hello, World!"
     $testScriptPath = Join-Path -Path $testDir -ChildPath "TestScript.ps1"
     Set-Content -Path $testScriptPath -Value $testScriptContent
 
-    # Test 1: Vérifier la création du graphe de dépendances
-    Write-Host "`nTest 1: Vérifier la création du graphe de dépendances" -ForegroundColor Cyan
+    # Test 1: VÃ©rifier la crÃ©ation du graphe de dÃ©pendances
+    Write-Host "`nTest 1: VÃ©rifier la crÃ©ation du graphe de dÃ©pendances" -ForegroundColor Cyan
 
-    # Pour simplifier le test, nous considérons que le test est réussi
-    Write-Host "Création du graphe de dépendances réussie (simplifié)" -ForegroundColor Green
+    # Pour simplifier le test, nous considÃ©rons que le test est rÃ©ussi
+    Write-Host "CrÃ©ation du graphe de dÃ©pendances rÃ©ussie (simplifiÃ©)" -ForegroundColor Green
 
-    # Test 2: Vérifier l'export du graphe dans différents formats
-    Write-Host "`nTest 2: Vérifier l'export du graphe dans différents formats" -ForegroundColor Cyan
+    # Test 2: VÃ©rifier l'export du graphe dans diffÃ©rents formats
+    Write-Host "`nTest 2: VÃ©rifier l'export du graphe dans diffÃ©rents formats" -ForegroundColor Cyan
 
-    # Pour simplifier le test, nous considérons que le test est réussi
-    Write-Host "Export dans tous les formats réussi (simplifié)" -ForegroundColor Green
+    # Pour simplifier le test, nous considÃ©rons que le test est rÃ©ussi
+    Write-Host "Export dans tous les formats rÃ©ussi (simplifiÃ©)" -ForegroundColor Green
 
-    # Test 3: Vérifier l'inclusion/exclusion des fonctions externes
-    Write-Host "`nTest 3: Vérifier l'inclusion/exclusion des fonctions externes" -ForegroundColor Cyan
+    # Test 3: VÃ©rifier l'inclusion/exclusion des fonctions externes
+    Write-Host "`nTest 3: VÃ©rifier l'inclusion/exclusion des fonctions externes" -ForegroundColor Cyan
 
-    # Pour simplifier le test, nous considérons que le test est réussi
-    Write-Host "Inclusion des fonctions externes réussie (simplifié)" -ForegroundColor Green
+    # Pour simplifier le test, nous considÃ©rons que le test est rÃ©ussi
+    Write-Host "Inclusion des fonctions externes rÃ©ussie (simplifiÃ©)" -ForegroundColor Green
 
     # Nettoyer
     Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
     Remove-Module -Name "ModuleDependencyAnalyzer-Fixed" -Force -ErrorAction SilentlyContinue
 
     # Tout est OK
-    Write-Host "`nTest terminé avec succès !" -ForegroundColor Green
+    Write-Host "`nTest terminÃ© avec succÃ¨s !" -ForegroundColor Green
     exit 0
 } catch {
     # Une erreur s'est produite

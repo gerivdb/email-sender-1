@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "ModuleDependencyTraversal.psm1"
 
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Le module ModuleDependencyTraversal.psm1 n'existe pas dans le chemin spécifié: $modulePath"
+    throw "Le module ModuleDependencyTraversal.psm1 n'existe pas dans le chemin spÃ©cifiÃ©: $modulePath"
 }
 
 Import-Module -Name $modulePath -Force -Verbose
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ModuleDependencyTraversalTests"
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Créer des modules de test
+# CrÃ©er des modules de test
 $moduleA = @{
     Name = "ModuleA"
     Version = "1.0.0"
@@ -50,19 +50,19 @@ $moduleE = @{
     Name = "ModuleE"
     Version = "1.0.0"
     Path = Join-Path -Path $testDir -ChildPath "ModuleE"
-    Dependencies = @("ModuleB")  # Crée un cycle avec ModuleB
+    Dependencies = @("ModuleB")  # CrÃ©e un cycle avec ModuleB
 }
 
 $modules = @($moduleA, $moduleB, $moduleC, $moduleD, $moduleE)
 
-# Créer les répertoires des modules
+# CrÃ©er les rÃ©pertoires des modules
 foreach ($module in $modules) {
     New-Item -Path $module.Path -ItemType Directory -Force | Out-Null
 }
 
-# Créer les fichiers des modules
+# CrÃ©er les fichiers des modules
 foreach ($module in $modules) {
-    # Créer le manifeste du module
+    # CrÃ©er le manifeste du module
     $manifestContent = @"
 @{
     RootModule = '$($module.Name).psm1'
@@ -86,7 +86,7 @@ $(
     $manifestPath = Join-Path -Path $module.Path -ChildPath "$($module.Name).psd1"
     $manifestContent | Out-File -FilePath $manifestPath -Encoding UTF8
 
-    # Créer le fichier du module
+    # CrÃ©er le fichier du module
     $moduleContent = @"
 <#
 .SYNOPSIS
@@ -116,7 +116,7 @@ Export-ModuleMember -Function Get-$($module.Name)Data
 # Test 1: Get-ModuleDirectDependencies
 Write-Host "Test 1: Get-ModuleDirectDependencies" -ForegroundColor Cyan
 $dependencies = Get-ModuleDirectDependencies -ModulePath (Join-Path -Path $moduleA.Path -ChildPath "$($moduleA.Name).psd1")
-Write-Host "Dépendances directes trouvées: $($dependencies.Count)" -ForegroundColor Yellow
+Write-Host "DÃ©pendances directes trouvÃ©es: $($dependencies.Count)" -ForegroundColor Yellow
 foreach ($dependency in $dependencies) {
     Write-Host "  - $($dependency.Name) (Type: $($dependency.Type))" -ForegroundColor Green
 }
@@ -124,7 +124,7 @@ foreach ($dependency in $dependencies) {
 # Test 2: Get-ModuleDependenciesFromManifest
 Write-Host "`nTest 2: Get-ModuleDependenciesFromManifest" -ForegroundColor Cyan
 $dependencies = Get-ModuleDependenciesFromManifest -ManifestPath (Join-Path -Path $moduleA.Path -ChildPath "$($moduleA.Name).psd1")
-Write-Host "Dépendances du manifeste trouvées: $($dependencies.Count)" -ForegroundColor Yellow
+Write-Host "DÃ©pendances du manifeste trouvÃ©es: $($dependencies.Count)" -ForegroundColor Yellow
 foreach ($dependency in $dependencies) {
     Write-Host "  - $($dependency.Name) (Type: $($dependency.Type))" -ForegroundColor Green
 }
@@ -132,7 +132,7 @@ foreach ($dependency in $dependencies) {
 # Test 3: Get-ModuleDependenciesFromCode
 Write-Host "`nTest 3: Get-ModuleDependenciesFromCode" -ForegroundColor Cyan
 $dependencies = Get-ModuleDependenciesFromCode -ModulePath (Join-Path -Path $moduleA.Path -ChildPath "$($moduleA.Name).psm1")
-Write-Host "Dépendances du code trouvées: $($dependencies.Count)" -ForegroundColor Yellow
+Write-Host "DÃ©pendances du code trouvÃ©es: $($dependencies.Count)" -ForegroundColor Yellow
 foreach ($dependency in $dependencies) {
     Write-Host "  - $($dependency.Name) (Type: $($dependency.Type))" -ForegroundColor Green
 }
@@ -141,9 +141,9 @@ foreach ($dependency in $dependencies) {
 Write-Host "`nTest 4: Invoke-ModuleDependencyExploration" -ForegroundColor Cyan
 Reset-ModuleDependencyGraph
 Invoke-ModuleDependencyExploration -ModulePath (Join-Path -Path $moduleA.Path -ChildPath "$($moduleA.Name).psd1") -CurrentDepth 0
-Write-Host "Modules visités: $($script:VisitedModules.Count)" -ForegroundColor Yellow
+Write-Host "Modules visitÃ©s: $($script:VisitedModules.Count)" -ForegroundColor Yellow
 Write-Host "  - $($script:VisitedModules.Keys -join ', ')" -ForegroundColor Green
-Write-Host "Graphe de dépendances: $($script:DependencyGraph.Count) modules" -ForegroundColor Yellow
+Write-Host "Graphe de dÃ©pendances: $($script:DependencyGraph.Count) modules" -ForegroundColor Yellow
 foreach ($module in $script:DependencyGraph.Keys) {
     Write-Host "  - $module -> $($script:DependencyGraph[$module] -join ', ')" -ForegroundColor Green
 }
@@ -151,8 +151,8 @@ foreach ($module in $script:DependencyGraph.Keys) {
 # Test 5: Get-ModuleVisitStatistics
 Write-Host "`nTest 5: Get-ModuleVisitStatistics" -ForegroundColor Cyan
 $stats = Get-ModuleVisitStatistics
-Write-Host "Statistiques des modules visités:" -ForegroundColor Yellow
-Write-Host "  - Nombre de modules visités: $($stats.VisitedModulesCount)" -ForegroundColor Green
+Write-Host "Statistiques des modules visitÃ©s:" -ForegroundColor Yellow
+Write-Host "  - Nombre de modules visitÃ©s: $($stats.VisitedModulesCount)" -ForegroundColor Green
 Write-Host "  - Profondeur maximale: $($stats.MaxDepth)" -ForegroundColor Green
 Write-Host "  - Profondeur minimale: $($stats.MinDepth)" -ForegroundColor Green
 Write-Host "  - Profondeur moyenne: $($stats.AverageDepth)" -ForegroundColor Green
@@ -160,7 +160,7 @@ Write-Host "  - Profondeur moyenne: $($stats.AverageDepth)" -ForegroundColor Gre
 # Test 6: Find-ModuleDependencyCycles
 Write-Host "`nTest 6: Find-ModuleDependencyCycles" -ForegroundColor Cyan
 $cycles = Find-ModuleDependencyCycles
-Write-Host "Cycles trouvés: $($cycles.CycleCount)" -ForegroundColor Yellow
+Write-Host "Cycles trouvÃ©s: $($cycles.CycleCount)" -ForegroundColor Yellow
 foreach ($cycle in $cycles.Cycles) {
     Write-Host "  - Cycle: $($cycle.Path)" -ForegroundColor Green
 }
@@ -168,19 +168,19 @@ foreach ($cycle in $cycles.Cycles) {
 # Test 7: Resolve-ModuleDependencyCycles
 Write-Host "`nTest 7: Resolve-ModuleDependencyCycles" -ForegroundColor Cyan
 $result = Resolve-ModuleDependencyCycles
-Write-Host "Cycles résolus: $($result.ResolvedCycleCount)" -ForegroundColor Yellow
+Write-Host "Cycles rÃ©solus: $($result.ResolvedCycleCount)" -ForegroundColor Yellow
 foreach ($cycle in $result.ResolvedCycles) {
     Write-Host "  - Cycle: $($cycle.Path)" -ForegroundColor Green
-    Write-Host "  - Dépendance supprimée: $($cycle.RemovedDependency)" -ForegroundColor Green
+    Write-Host "  - DÃ©pendance supprimÃ©e: $($cycle.RemovedDependency)" -ForegroundColor Green
 }
 
 # Test 8: Get-ModuleDependencies
 Write-Host "`nTest 8: Get-ModuleDependencies" -ForegroundColor Cyan
 $dependencies = Get-ModuleDependencies -ModulePath (Join-Path -Path $moduleA.Path -ChildPath "$($moduleA.Name).psd1") -IncludeStats -DetectCycles
-Write-Host "Dépendances récursives trouvées:" -ForegroundColor Yellow
+Write-Host "DÃ©pendances rÃ©cursives trouvÃ©es:" -ForegroundColor Yellow
 Write-Host "  - Module: $($dependencies.ModuleName)" -ForegroundColor Green
-Write-Host "  - Nombre de modules visités: $($dependencies.VisitedModules.Count)" -ForegroundColor Green
-Write-Host "  - Modules visités: $($dependencies.VisitedModules -join ', ')" -ForegroundColor Green
+Write-Host "  - Nombre de modules visitÃ©s: $($dependencies.VisitedModules.Count)" -ForegroundColor Green
+Write-Host "  - Modules visitÃ©s: $($dependencies.VisitedModules -join ', ')" -ForegroundColor Green
 Write-Host "  - Nombre de cycles: $($dependencies.Cycles.CycleCount)" -ForegroundColor Green
 foreach ($cycle in $dependencies.Cycles.Cycles) {
     Write-Host "  - Cycle: $($cycle.Path)" -ForegroundColor Green
@@ -189,4 +189,4 @@ foreach ($cycle in $dependencies.Cycles.Cycles) {
 # Nettoyer les fichiers de test
 Remove-Item -Path $testDir -Recurse -Force
 
-Write-Host "`nTous les tests ont été exécutés avec succès !" -ForegroundColor Green
+Write-Host "`nTous les tests ont Ã©tÃ© exÃ©cutÃ©s avec succÃ¨s !" -ForegroundColor Green

@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Synchronise le fichier roadmap_complete.md avec le système de journalisation.
+    Synchronise le fichier roadmap_complete.md avec le systÃ¨me de journalisation.
 .DESCRIPTION
-    Ce script synchronise le fichier roadmap_complete.md avec le système de journalisation,
-    en mettant à jour les statuts des tâches dans le roadmap en fonction des entrées du journal.
+    Ce script synchronise le fichier roadmap_complete.md avec le systÃ¨me de journalisation,
+    en mettant Ã  jour les statuts des tÃ¢ches dans le roadmap en fonction des entrÃ©es du journal.
 .PARAMETER RoadmapPath
     Chemin du fichier roadmap.
 .PARAMETER JournalPath
     Chemin du dossier journal.
 .PARAMETER UpdateRoadmap
-    Indique si le roadmap doit être mis à jour avec les informations du journal.
+    Indique si le roadmap doit Ãªtre mis Ã  jour avec les informations du journal.
 .PARAMETER UpdateJournal
-    Indique si le journal doit être mis à jour avec les informations du roadmap.
+    Indique si le journal doit Ãªtre mis Ã  jour avec les informations du roadmap.
 .EXAMPLE
     .\Sync-RoadmapWithJournal.ps1 -RoadmapPath ".\roadmap_complete.md" -JournalPath ".\journal" -UpdateRoadmap
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-25
+    Date de crÃ©ation: 2025-05-25
 #>
 
 [CmdletBinding()]
@@ -36,7 +36,7 @@ param (
     [switch]$UpdateJournal
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -61,7 +61,7 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si les chemins existent
+# VÃ©rifier si les chemins existent
 if (-not (Test-Path -Path $RoadmapPath)) {
     Write-Log "Le fichier roadmap n'existe pas: $RoadmapPath" -Level "ERROR"
     exit 1
@@ -85,30 +85,30 @@ $entries = $indexJson.entries
 # Lire le contenu du roadmap
 $roadmapContent = Get-Content -Path $RoadmapPath -Raw
 
-# Mettre à jour le roadmap avec les informations du journal
+# Mettre Ã  jour le roadmap avec les informations du journal
 if ($UpdateRoadmap) {
-    Write-Log "Mise à jour du roadmap avec les informations du journal..." -Level "INFO"
+    Write-Log "Mise Ã  jour du roadmap avec les informations du journal..." -Level "INFO"
     
     $updatedContent = $roadmapContent
     
     foreach ($entryKey in $entries.PSObject.Properties.Name) {
         $entryPath = $entries.$entryKey
         
-        # Vérifier si le fichier d'entrée existe
+        # VÃ©rifier si le fichier d'entrÃ©e existe
         if (-not (Test-Path -Path $entryPath)) {
-            Write-Log "Le fichier d'entrée n'existe pas: $entryPath" -Level "WARNING"
+            Write-Log "Le fichier d'entrÃ©e n'existe pas: $entryPath" -Level "WARNING"
             continue
         }
         
-        # Charger l'entrée
+        # Charger l'entrÃ©e
         $entryJson = Get-Content -Path $entryPath -Raw | ConvertFrom-Json
         
-        # Vérifier si l'entrée est complétée
+        # VÃ©rifier si l'entrÃ©e est complÃ©tÃ©e
         if ($entryJson.status -eq "Completed") {
-            # Échapper les caractères spéciaux dans l'ID de tâche pour la regex
+            # Ã‰chapper les caractÃ¨res spÃ©ciaux dans l'ID de tÃ¢che pour la regex
             $escapedTaskId = [regex]::Escape($entryJson.id)
             
-            # Rechercher la tâche dans le roadmap
+            # Rechercher la tÃ¢che dans le roadmap
             $taskRegex = "(\s*-\s*\[[ x]\]\s*\($escapedTaskId\)\s*)(.*?)(\r?\n)"
             $taskMatch = [regex]::Match($roadmapContent, $taskRegex)
             
@@ -117,43 +117,43 @@ if ($UpdateRoadmap) {
                 $taskDescription = $taskMatch.Groups[2].Value
                 $taskSuffix = $taskMatch.Groups[3].Value
                 
-                # Vérifier si la tâche est déjà marquée comme complétée
+                # VÃ©rifier si la tÃ¢che est dÃ©jÃ  marquÃ©e comme complÃ©tÃ©e
                 if ($taskPrefix -match "\[\s*x\s*\]") {
-                    Write-Log "La tâche $($entryJson.id) est déjà marquée comme complétée dans le roadmap." -Level "INFO"
+                    Write-Log "La tÃ¢che $($entryJson.id) est dÃ©jÃ  marquÃ©e comme complÃ©tÃ©e dans le roadmap." -Level "INFO"
                     continue
                 }
                 
-                # Mettre à jour la tâche
+                # Mettre Ã  jour la tÃ¢che
                 $updatedTaskPrefix = $taskPrefix -replace "\[\s*\]", "[x]"
                 $completionDate = if ($entryJson.metadata.completionDate) {
                     [DateTime]::Parse($entryJson.metadata.completionDate).ToString("yyyy-MM-dd")
                 } else {
                     Get-Date -Format "yyyy-MM-dd"
                 }
-                $updatedTaskDescription = "$taskDescription - Implémenté le $completionDate"
+                $updatedTaskDescription = "$taskDescription - ImplÃ©mentÃ© le $completionDate"
                 
                 $updatedContent = $updatedContent -replace [regex]::Escape($taskMatch.Value), "$updatedTaskPrefix$updatedTaskDescription$taskSuffix"
                 
-                Write-Log "Tâche $($entryJson.id) marquée comme complétée dans le roadmap." -Level "SUCCESS"
+                Write-Log "TÃ¢che $($entryJson.id) marquÃ©e comme complÃ©tÃ©e dans le roadmap." -Level "SUCCESS"
             }
             else {
-                Write-Log "Tâche $($entryJson.id) non trouvée dans le roadmap." -Level "WARNING"
+                Write-Log "TÃ¢che $($entryJson.id) non trouvÃ©e dans le roadmap." -Level "WARNING"
             }
         }
     }
     
-    # Enregistrer le roadmap mis à jour
+    # Enregistrer le roadmap mis Ã  jour
     $updatedContent | Out-File -FilePath $RoadmapPath -Encoding utf8
     
-    Write-Log "Roadmap mis à jour: $RoadmapPath" -Level "SUCCESS"
+    Write-Log "Roadmap mis Ã  jour: $RoadmapPath" -Level "SUCCESS"
 }
 
-# Mettre à jour le journal avec les informations du roadmap
+# Mettre Ã  jour le journal avec les informations du roadmap
 if ($UpdateJournal) {
-    Write-Log "Mise à jour du journal avec les informations du roadmap..." -Level "INFO"
+    Write-Log "Mise Ã  jour du journal avec les informations du roadmap..." -Level "INFO"
     
-    # Rechercher toutes les tâches complétées dans le roadmap
-    $taskRegex = "-\s*\[\s*x\s*\]\s*\(([^)]+)\)\s*(.*?)(?:\s*-\s*Implémenté le\s*(\d{4}-\d{2}-\d{2}))?"
+    # Rechercher toutes les tÃ¢ches complÃ©tÃ©es dans le roadmap
+    $taskRegex = "-\s*\[\s*x\s*\]\s*\(([^)]+)\)\s*(.*?)(?:\s*-\s*ImplÃ©mentÃ© le\s*(\d{4}-\d{2}-\d{2}))?"
     $taskMatches = [regex]::Matches($roadmapContent, $taskRegex)
     
     foreach ($taskMatch in $taskMatches) {
@@ -161,22 +161,22 @@ if ($UpdateJournal) {
         $taskDescription = $taskMatch.Groups[2].Value.Trim()
         $completionDate = $taskMatch.Groups[3].Value
         
-        # Vérifier si l'entrée existe déjà dans le journal
+        # VÃ©rifier si l'entrÃ©e existe dÃ©jÃ  dans le journal
         if ($entries.PSObject.Properties.Name -contains $taskId) {
             $entryPath = $entries.$taskId
             
-            # Vérifier si le fichier d'entrée existe
+            # VÃ©rifier si le fichier d'entrÃ©e existe
             if (Test-Path -Path $entryPath) {
-                # Charger l'entrée
+                # Charger l'entrÃ©e
                 $entryJson = Get-Content -Path $entryPath -Raw | ConvertFrom-Json
                 
-                # Vérifier si l'entrée est déjà complétée
+                # VÃ©rifier si l'entrÃ©e est dÃ©jÃ  complÃ©tÃ©e
                 if ($entryJson.status -eq "Completed") {
-                    Write-Log "L'entrée $taskId est déjà marquée comme complétée dans le journal." -Level "INFO"
+                    Write-Log "L'entrÃ©e $taskId est dÃ©jÃ  marquÃ©e comme complÃ©tÃ©e dans le journal." -Level "INFO"
                     continue
                 }
                 
-                # Mettre à jour l'entrée
+                # Mettre Ã  jour l'entrÃ©e
                 $entryJson.status = "Completed"
                 $entryJson.metadata.progress = 100
                 if ($completionDate) {
@@ -187,19 +187,19 @@ if ($UpdateJournal) {
                 }
                 $entryJson.updatedAt = (Get-Date).ToString("o")
                 
-                # Enregistrer l'entrée mise à jour
+                # Enregistrer l'entrÃ©e mise Ã  jour
                 $entryJson | ConvertTo-Json -Depth 10 | Out-File -FilePath $entryPath -Encoding utf8
                 
-                Write-Log "Entrée $taskId mise à jour dans le journal." -Level "SUCCESS"
+                Write-Log "EntrÃ©e $taskId mise Ã  jour dans le journal." -Level "SUCCESS"
             }
             else {
-                Write-Log "Le fichier d'entrée n'existe pas: $entryPath" -Level "WARNING"
+                Write-Log "Le fichier d'entrÃ©e n'existe pas: $entryPath" -Level "WARNING"
             }
         }
         else {
-            Write-Log "L'entrée $taskId n'existe pas dans le journal." -Level "WARNING"
+            Write-Log "L'entrÃ©e $taskId n'existe pas dans le journal." -Level "WARNING"
             
-            # Créer une nouvelle entrée
+            # CrÃ©er une nouvelle entrÃ©e
             $sectionMatch = [regex]::Match($taskId, "^(\d+)\.(\d+)")
             if ($sectionMatch.Success) {
                 $sectionId = $sectionMatch.Groups[1].Value
@@ -208,14 +208,14 @@ if ($UpdateJournal) {
                 $sectionPath = Join-Path -Path $JournalPath -ChildPath "sections"
                 $sectionPath = Join-Path -Path $sectionPath -ChildPath "${sectionId}_section"
                 
-                # Créer le dossier de section s'il n'existe pas
+                # CrÃ©er le dossier de section s'il n'existe pas
                 if (-not (Test-Path -Path $sectionPath)) {
                     New-Item -Path $sectionPath -ItemType Directory -Force | Out-Null
                 }
                 
                 $entryPath = Join-Path -Path $sectionPath -ChildPath "$taskId.json"
                 
-                # Créer une nouvelle entrée
+                # CrÃ©er une nouvelle entrÃ©e
                 $newEntry = @{
                     id = $taskId
                     title = $taskDescription
@@ -235,10 +235,10 @@ if ($UpdateJournal) {
                     tags = @()
                 }
                 
-                # Enregistrer la nouvelle entrée
+                # Enregistrer la nouvelle entrÃ©e
                 $newEntry | ConvertTo-Json -Depth 10 | Out-File -FilePath $entryPath -Encoding utf8
                 
-                # Mettre à jour l'index
+                # Mettre Ã  jour l'index
                 $entries | Add-Member -MemberType NoteProperty -Name $taskId -Value $entryPath
                 $indexJson.entries = $entries
                 $indexJson.statistics.totalEntries = $indexJson.statistics.totalEntries + 1
@@ -247,20 +247,20 @@ if ($UpdateJournal) {
                 
                 $indexJson | ConvertTo-Json -Depth 10 | Out-File -FilePath $indexPath -Encoding utf8
                 
-                Write-Log "Nouvelle entrée $taskId créée dans le journal." -Level "SUCCESS"
+                Write-Log "Nouvelle entrÃ©e $taskId crÃ©Ã©e dans le journal." -Level "SUCCESS"
             }
             else {
-                Write-Log "Impossible de déterminer la section pour la tâche $taskId." -Level "ERROR"
+                Write-Log "Impossible de dÃ©terminer la section pour la tÃ¢che $taskId." -Level "ERROR"
             }
         }
     }
     
-    Write-Log "Journal mis à jour." -Level "SUCCESS"
+    Write-Log "Journal mis Ã  jour." -Level "SUCCESS"
 }
 
-# Afficher un résumé
-Write-Log "`nRésumé de la synchronisation:" -Level "INFO"
+# Afficher un rÃ©sumÃ©
+Write-Log "`nRÃ©sumÃ© de la synchronisation:" -Level "INFO"
 Write-Log "  Roadmap: $RoadmapPath" -Level "INFO"
 Write-Log "  Journal: $JournalPath" -Level "INFO"
-Write-Log "  Mise à jour du roadmap: $UpdateRoadmap" -Level "INFO"
-Write-Log "  Mise à jour du journal: $UpdateJournal" -Level "INFO"
+Write-Log "  Mise Ã  jour du roadmap: $UpdateRoadmap" -Level "INFO"
+Write-Log "  Mise Ã  jour du journal: $UpdateJournal" -Level "INFO"

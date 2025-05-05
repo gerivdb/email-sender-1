@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère la documentation des tests unitaires du script manager.
+    GÃ©nÃ¨re la documentation des tests unitaires du script manager.
 .DESCRIPTION
-    Ce script génère la documentation des tests unitaires du script manager,
-    en analysant les fichiers de test et en générant un rapport HTML.
+    Ce script gÃ©nÃ¨re la documentation des tests unitaires du script manager,
+    en analysant les fichiers de test et en gÃ©nÃ©rant un rapport HTML.
 .PARAMETER OutputPath
     Chemin du dossier pour la documentation.
 .EXAMPLE
@@ -12,7 +12,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -21,7 +21,7 @@ param (
     [string]$OutputPath = ".\docs\tests"
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -46,17 +46,17 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Récupérer les fichiers de test
+# RÃ©cupÃ©rer les fichiers de test
 $testFiles = Get-ChildItem -Path $PSScriptRoot -Filter "*.Tests.ps1" -Recurse
 
 if ($testFiles.Count -eq 0) {
-    Write-Log "Aucun fichier de test trouvé." -Level "ERROR"
+    Write-Log "Aucun fichier de test trouvÃ©." -Level "ERROR"
     exit 1
 }
 
@@ -71,7 +71,7 @@ foreach ($testFile in $testFiles) {
     $info = @{
         Name = $testFile.BaseName
         Path = $testFile.FullName
-        Type = if ($testFile.Name -like "*Fixed*") { "Corrigé" } elseif ($testFile.Name -like "*Simple*") { "Simplifié" } else { "Original" }
+        Type = if ($testFile.Name -like "*Fixed*") { "CorrigÃ©" } elseif ($testFile.Name -like "*Simple*") { "SimplifiÃ©" } else { "Original" }
         Description = ""
         TestCount = ([regex]::Matches($content, "It\s+""")).Count
         ContextCount = ([regex]::Matches($content, "Context\s+""")).Count
@@ -90,10 +90,10 @@ foreach ($testFile in $testFiles) {
     $testInfo += $info
 }
 
-# Générer le rapport HTML
+# GÃ©nÃ©rer le rapport HTML
 $htmlPath = Join-Path -Path $OutputPath -ChildPath "TestDocumentation.html"
 
-# Créer le contenu HTML
+# CrÃ©er le contenu HTML
 $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -118,17 +118,17 @@ $htmlContent = @"
 </head>
 <body>
     <h1>Documentation des tests unitaires du script manager</h1>
-    <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p>Nombre total de fichiers de test: $($testInfo.Count)</p>
         <p>Nombre de tests originaux: $($testInfo | Where-Object { $_.Type -eq "Original" } | Measure-Object).Count</p>
-        <p>Nombre de tests simplifiés: $($testInfo | Where-Object { $_.Type -eq "Simplifié" } | Measure-Object).Count</p>
-        <p>Nombre de tests corrigés: $($testInfo | Where-Object { $_.Type -eq "Corrigé" } | Measure-Object).Count</p>
+        <p>Nombre de tests simplifiÃ©s: $($testInfo | Where-Object { $_.Type -eq "SimplifiÃ©" } | Measure-Object).Count</p>
+        <p>Nombre de tests corrigÃ©s: $($testInfo | Where-Object { $_.Type -eq "CorrigÃ©" } | Measure-Object).Count</p>
     </div>
     
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <tr>
             <th>Nom</th>
@@ -168,37 +168,37 @@ $htmlContent += @"
     <h2>Types de tests</h2>
     <p>Il existe plusieurs types de tests :</p>
     <ul>
-        <li><span class="test-type test-type-original">Tests originaux</span> : Les tests originaux qui ont été créés pour le script manager.</li>
-        <li><span class="test-type test-type-simplified">Tests simplifiés</span> : Des versions simplifiées des tests qui ne nécessitent pas de modifications de l'environnement.</li>
-        <li><span class="test-type test-type-fixed">Tests corrigés</span> : Des versions corrigées des tests qui utilisent des mocks pour éviter de modifier l'environnement.</li>
+        <li><span class="test-type test-type-original">Tests originaux</span> : Les tests originaux qui ont Ã©tÃ© crÃ©Ã©s pour le script manager.</li>
+        <li><span class="test-type test-type-simplified">Tests simplifiÃ©s</span> : Des versions simplifiÃ©es des tests qui ne nÃ©cessitent pas de modifications de l'environnement.</li>
+        <li><span class="test-type test-type-fixed">Tests corrigÃ©s</span> : Des versions corrigÃ©es des tests qui utilisent des mocks pour Ã©viter de modifier l'environnement.</li>
     </ul>
     
-    <h2>Scripts d'exécution des tests</h2>
-    <p>Plusieurs scripts sont disponibles pour exécuter les tests :</p>
+    <h2>Scripts d'exÃ©cution des tests</h2>
+    <p>Plusieurs scripts sont disponibles pour exÃ©cuter les tests :</p>
     <ul>
-        <li><strong>Run-AllManagerTests.ps1</strong> : Exécute tous les tests (originaux, simplifiés et corrigés) et génère des rapports détaillés.</li>
-        <li><strong>Run-SimplifiedTests.ps1</strong> : Exécute uniquement les tests simplifiés.</li>
-        <li><strong>Run-FixedTests.ps1</strong> : Exécute uniquement les tests corrigés.</li>
+        <li><strong>Run-AllManagerTests.ps1</strong> : ExÃ©cute tous les tests (originaux, simplifiÃ©s et corrigÃ©s) et gÃ©nÃ¨re des rapports dÃ©taillÃ©s.</li>
+        <li><strong>Run-SimplifiedTests.ps1</strong> : ExÃ©cute uniquement les tests simplifiÃ©s.</li>
+        <li><strong>Run-FixedTests.ps1</strong> : ExÃ©cute uniquement les tests corrigÃ©s.</li>
     </ul>
     
     <h3>Exemples d'utilisation</h3>
     <pre>
-# Exécuter tous les tests et générer des rapports HTML
+# ExÃ©cuter tous les tests et gÃ©nÃ©rer des rapports HTML
 .\Run-AllManagerTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
 
-# Exécuter uniquement les tests corrigés liés à l'organisation
+# ExÃ©cuter uniquement les tests corrigÃ©s liÃ©s Ã  l'organisation
 .\Run-FixedTests.ps1 -TestName "Organization" -OutputPath ".\reports\tests" -GenerateHTML
 
-# Exécuter uniquement les tests simplifiés
+# ExÃ©cuter uniquement les tests simplifiÃ©s
 .\Run-SimplifiedTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
     </pre>
     
-    <h2>Recommandations pour améliorer les tests</h2>
+    <h2>Recommandations pour amÃ©liorer les tests</h2>
     <ol>
-        <li><strong>Utiliser des mocks</strong> : Pour éviter que les tests ne modifient réellement les fichiers, il est recommandé d'utiliser des mocks pour simuler les opérations de fichier.</li>
-        <li><strong>Isoler les tests</strong> : Chaque test devrait être indépendant des autres tests, ce qui signifie qu'il ne devrait pas dépendre de l'état laissé par un test précédent.</li>
-        <li><strong>Utiliser des fixtures</strong> : Pour préparer l'environnement de test, il est recommandé d'utiliser des fixtures qui créent un environnement de test propre avant chaque test et le nettoient après.</li>
-        <li><strong>Intégrer les tests dans le processus de CI/CD</strong> : Les tests devraient être exécutés automatiquement lors des commits et des pull requests pour s'assurer que les modifications ne cassent pas le code existant.</li>
+        <li><strong>Utiliser des mocks</strong> : Pour Ã©viter que les tests ne modifient rÃ©ellement les fichiers, il est recommandÃ© d'utiliser des mocks pour simuler les opÃ©rations de fichier.</li>
+        <li><strong>Isoler les tests</strong> : Chaque test devrait Ãªtre indÃ©pendant des autres tests, ce qui signifie qu'il ne devrait pas dÃ©pendre de l'Ã©tat laissÃ© par un test prÃ©cÃ©dent.</li>
+        <li><strong>Utiliser des fixtures</strong> : Pour prÃ©parer l'environnement de test, il est recommandÃ© d'utiliser des fixtures qui crÃ©ent un environnement de test propre avant chaque test et le nettoient aprÃ¨s.</li>
+        <li><strong>IntÃ©grer les tests dans le processus de CI/CD</strong> : Les tests devraient Ãªtre exÃ©cutÃ©s automatiquement lors des commits et des pull requests pour s'assurer que les modifications ne cassent pas le code existant.</li>
     </ol>
 </body>
 </html>
@@ -206,7 +206,7 @@ $htmlContent += @"
 
 $htmlContent | Out-File -FilePath $htmlPath -Encoding utf8
 
-Write-Log "Documentation HTML générée: $htmlPath" -Level "SUCCESS"
+Write-Log "Documentation HTML gÃ©nÃ©rÃ©e: $htmlPath" -Level "SUCCESS"
 
 # Copier le README.md dans le dossier de documentation
 $readmePath = Join-Path -Path $PSScriptRoot -ChildPath "README.md"
@@ -214,10 +214,10 @@ $readmeDestPath = Join-Path -Path $OutputPath -ChildPath "README.md"
 
 if (Test-Path -Path $readmePath) {
     Copy-Item -Path $readmePath -Destination $readmeDestPath -Force
-    Write-Log "README.md copié dans le dossier de documentation." -Level "SUCCESS"
+    Write-Log "README.md copiÃ© dans le dossier de documentation." -Level "SUCCESS"
 }
 else {
-    Write-Log "README.md non trouvé." -Level "WARNING"
+    Write-Log "README.md non trouvÃ©." -Level "WARNING"
 }
 
-Write-Log "Génération de la documentation terminée." -Level "SUCCESS"
+Write-Log "GÃ©nÃ©ration de la documentation terminÃ©e." -Level "SUCCESS"

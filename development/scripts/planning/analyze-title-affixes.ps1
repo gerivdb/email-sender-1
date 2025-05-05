@@ -1,11 +1,11 @@
-# Définir l'encodage UTF-8 pour les caractères accentués
+﻿# DÃ©finir l'encodage UTF-8 pour les caractÃ¨res accentuÃ©s
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Paramètres fixes
+# ParamÃ¨tres fixes
 $FilePath = "..\..\data\planning\expertise-levels.md"
 $OutputPath = "..\..\data\planning\title-affixes-analysis.md"
 $IncludeExamples = $true
-$MinOccurrences = 2  # Nombre minimum d'occurrences pour considérer un préfixe/suffixe comme récurrent
+$MinOccurrences = 2  # Nombre minimum d'occurrences pour considÃ©rer un prÃ©fixe/suffixe comme rÃ©current
 
 # Convertir les chemins relatifs en chemins absolus
 if (-not [System.IO.Path]::IsPathRooted($FilePath)) {
@@ -57,7 +57,7 @@ function Get-MarkdownTitles {
         }
     }
 
-    # Trier les titres par numéro de ligne
+    # Trier les titres par numÃ©ro de ligne
     return $titles | Sort-Object -Property LineNumber
 }
 
@@ -68,13 +68,13 @@ function Get-TitleWords {
     )
 
     # Nettoyer le titre et le diviser en mots
-    $cleanTitle = $Title -replace '[^\p{L}\p{N}\s]', ' '  # Remplacer les caractères non alphanumériques par des espaces
+    $cleanTitle = $Title -replace '[^\p{L}\p{N}\s]', ' '  # Remplacer les caractÃ¨res non alphanumÃ©riques par des espaces
     $words = $cleanTitle -split '\s+' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
     
     return $words
 }
 
-# Fonction pour analyser les préfixes et suffixes dans les titres
+# Fonction pour analyser les prÃ©fixes et suffixes dans les titres
 function Get-TitleAffixesAnalysis {
     param(
         [array]$Titles,
@@ -101,7 +101,7 @@ function Get-TitleAffixesAnalysis {
         $allWords += $words
     }
 
-    # Compter les occurrences de chaque mot en position de préfixe
+    # Compter les occurrences de chaque mot en position de prÃ©fixe
     foreach ($title in $Titles) {
         $words = $titleWords[$title.Title]
         $level = $title.Level
@@ -109,7 +109,7 @@ function Get-TitleAffixesAnalysis {
         if ($words.Count -gt 0) {
             $prefix = $words[0]
             
-            # Compter les préfixes
+            # Compter les prÃ©fixes
             if (-not $analysis.Prefixes.ContainsKey($prefix)) {
                 $analysis.Prefixes[$prefix] = @{
                     Count = 0
@@ -119,7 +119,7 @@ function Get-TitleAffixesAnalysis {
             $analysis.Prefixes[$prefix].Count++
             $analysis.Prefixes[$prefix].Titles += $title.Title
             
-            # Compter les préfixes par niveau
+            # Compter les prÃ©fixes par niveau
             if (-not $analysis.PrefixesByLevel.ContainsKey($level)) {
                 $analysis.PrefixesByLevel[$level] = @{}
             }
@@ -153,7 +153,7 @@ function Get-TitleAffixesAnalysis {
         }
     }
 
-    # Détecter les phrases communes (2 mots ou plus)
+    # DÃ©tecter les phrases communes (2 mots ou plus)
     foreach ($title1 in $Titles) {
         $words1 = $titleWords[$title1.Title]
         
@@ -187,7 +187,7 @@ function Get-TitleAffixesAnalysis {
         }
     }
 
-    # Filtrer les préfixes et suffixes récurrents
+    # Filtrer les prÃ©fixes et suffixes rÃ©currents
     $analysis.Prefixes = $analysis.Prefixes.GetEnumerator() | 
                          Where-Object { $_.Value.Count -ge $MinOccurrences } | 
                          ForEach-Object { $_.Key, $_.Value } | 
@@ -210,7 +210,7 @@ function Get-TitleAffixesAnalysis {
                          } | 
                          ForEach-Object { $_ }
 
-    # Préparer des exemples pour chaque préfixe et suffixe récurrent
+    # PrÃ©parer des exemples pour chaque prÃ©fixe et suffixe rÃ©current
     foreach ($prefix in $analysis.Prefixes.Keys) {
         $analysis.Examples[$prefix] = $analysis.Prefixes[$prefix].Titles | Select-Object -First 3
     }
@@ -226,7 +226,7 @@ function Get-TitleAffixesAnalysis {
     return $analysis
 }
 
-# Fonction pour générer un rapport d'analyse des préfixes et suffixes
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse des prÃ©fixes et suffixes
 function New-AffixesAnalysisReport {
     param(
         [hashtable]$Analysis,
@@ -235,20 +235,20 @@ function New-AffixesAnalysisReport {
     )
 
     $report = @"
-# Analyse des Préfixes et Suffixes Récurrents dans les Titres
+# Analyse des PrÃ©fixes et Suffixes RÃ©currents dans les Titres
 
-## Résumé
+## RÃ©sumÃ©
 
-- **Nombre total de titres analysés**: $($Analysis.TotalTitles)
+- **Nombre total de titres analysÃ©s**: $($Analysis.TotalTitles)
 - **Seuil minimum d'occurrences**: $MinOccurrences
 
-## Préfixes Récurrents
+## PrÃ©fixes RÃ©currents
 
 "@
 
-    # Ajouter les préfixes récurrents
+    # Ajouter les prÃ©fixes rÃ©currents
     if ($Analysis.Prefixes.Count -eq 0) {
-        $report += "`n- Aucun préfixe récurrent détecté (avec au moins $MinOccurrences occurrences)"
+        $report += "`n- Aucun prÃ©fixe rÃ©current dÃ©tectÃ© (avec au moins $MinOccurrences occurrences)"
     } else {
         foreach ($prefix in $Analysis.Prefixes.Keys | Sort-Object) {
             $count = $Analysis.Prefixes[$prefix].Count
@@ -268,11 +268,11 @@ function New-AffixesAnalysisReport {
         }
     }
 
-    # Ajouter les suffixes récurrents
-    $report += "`n`n## Suffixes Récurrents"
+    # Ajouter les suffixes rÃ©currents
+    $report += "`n`n## Suffixes RÃ©currents"
     
     if ($Analysis.Suffixes.Count -eq 0) {
-        $report += "`n- Aucun suffixe récurrent détecté (avec au moins $MinOccurrences occurrences)"
+        $report += "`n- Aucun suffixe rÃ©current dÃ©tectÃ© (avec au moins $MinOccurrences occurrences)"
     } else {
         foreach ($suffix in $Analysis.Suffixes.Keys | Sort-Object) {
             $count = $Analysis.Suffixes[$suffix].Count
@@ -296,7 +296,7 @@ function New-AffixesAnalysisReport {
     $report += "`n`n## Phrases Communes"
     
     if ($Analysis.CommonPhrases.Count -eq 0) {
-        $report += "`n- Aucune phrase commune détectée (avec au moins $MinOccurrences occurrences)"
+        $report += "`n- Aucune phrase commune dÃ©tectÃ©e (avec au moins $MinOccurrences occurrences)"
     } else {
         foreach ($phrase in $Analysis.CommonPhrases.Keys | Sort-Object -Property { $Analysis.CommonPhrases[$_].Count } -Descending) {
             $count = $Analysis.CommonPhrases[$phrase].Count
@@ -322,10 +322,10 @@ function New-AffixesAnalysisReport {
     foreach ($level in ($Analysis.PrefixesByLevel.Keys + $Analysis.SuffixesByLevel.Keys | Sort-Object -Unique)) {
         $report += "`n`n### Niveau $level (${level} #)"
         
-        # Préfixes par niveau
-        $report += "`n`n#### Préfixes"
+        # PrÃ©fixes par niveau
+        $report += "`n`n#### PrÃ©fixes"
         if (-not $Analysis.PrefixesByLevel.ContainsKey($level) -or $Analysis.PrefixesByLevel[$level].Count -eq 0) {
-            $report += "`n- Aucun préfixe récurrent détecté à ce niveau"
+            $report += "`n- Aucun prÃ©fixe rÃ©current dÃ©tectÃ© Ã  ce niveau"
         } else {
             foreach ($prefix in $Analysis.PrefixesByLevel[$level].Keys | Sort-Object -Property { $Analysis.PrefixesByLevel[$level][$_] } -Descending) {
                 $count = $Analysis.PrefixesByLevel[$level][$prefix]
@@ -344,7 +344,7 @@ function New-AffixesAnalysisReport {
         # Suffixes par niveau
         $report += "`n`n#### Suffixes"
         if (-not $Analysis.SuffixesByLevel.ContainsKey($level) -or $Analysis.SuffixesByLevel[$level].Count -eq 0) {
-            $report += "`n- Aucun suffixe récurrent détecté à ce niveau"
+            $report += "`n- Aucun suffixe rÃ©current dÃ©tectÃ© Ã  ce niveau"
         } else {
             foreach ($suffix in $Analysis.SuffixesByLevel[$level].Keys | Sort-Object -Property { $Analysis.SuffixesByLevel[$level][$_] } -Descending) {
                 $count = $Analysis.SuffixesByLevel[$level][$suffix]
@@ -366,43 +366,43 @@ function New-AffixesAnalysisReport {
 
 ## Observations et Recommandations
 
-1. **Préfixes récurrents**: $(
+1. **PrÃ©fixes rÃ©currents**: $(
     if ($Analysis.Prefixes.Count -eq 0) {
-        "Aucun préfixe récurrent n'a été détecté, ce qui suggère une variété dans la formulation des titres."
+        "Aucun prÃ©fixe rÃ©current n'a Ã©tÃ© dÃ©tectÃ©, ce qui suggÃ¨re une variÃ©tÃ© dans la formulation des titres."
     } else {
         $topPrefixes = $Analysis.Prefixes.GetEnumerator() | 
                       Sort-Object -Property { $_.Value.Count } -Descending | 
                       Select-Object -First 3 | 
                       ForEach-Object { "$($_.Key) ($($_.Value.Count) titres)" }
-        "Les préfixes les plus courants sont : $($topPrefixes -join ", "). Cela indique une certaine cohérence dans la formulation des titres."
+        "Les prÃ©fixes les plus courants sont : $($topPrefixes -join ", "). Cela indique une certaine cohÃ©rence dans la formulation des titres."
     }
 )
 
-2. **Suffixes récurrents**: $(
+2. **Suffixes rÃ©currents**: $(
     if ($Analysis.Suffixes.Count -eq 0) {
-        "Aucun suffixe récurrent n'a été détecté, ce qui suggère une variété dans la formulation des titres."
+        "Aucun suffixe rÃ©current n'a Ã©tÃ© dÃ©tectÃ©, ce qui suggÃ¨re une variÃ©tÃ© dans la formulation des titres."
     } else {
         $topSuffixes = $Analysis.Suffixes.GetEnumerator() | 
                       Sort-Object -Property { $_.Value.Count } -Descending | 
                       Select-Object -First 3 | 
                       ForEach-Object { "$($_.Key) ($($_.Value.Count) titres)" }
-        "Les suffixes les plus courants sont : $($topSuffixes -join ", "). Cela peut indiquer des catégories ou des types de contenu récurrents."
+        "Les suffixes les plus courants sont : $($topSuffixes -join ", "). Cela peut indiquer des catÃ©gories ou des types de contenu rÃ©currents."
     }
 )
 
 3. **Phrases communes**: $(
     if ($Analysis.CommonPhrases.Count -eq 0) {
-        "Aucune phrase commune n'a été détectée, ce qui suggère une variété dans la formulation des titres."
+        "Aucune phrase commune n'a Ã©tÃ© dÃ©tectÃ©e, ce qui suggÃ¨re une variÃ©tÃ© dans la formulation des titres."
     } else {
         $topPhrases = $Analysis.CommonPhrases.GetEnumerator() | 
                      Sort-Object -Property { $_.Value.Count } -Descending | 
                      Select-Object -First 3 | 
                      ForEach-Object { "`"$($_.Key)`" ($($_.Value.Count) titres)" }
-        "Les phrases les plus communes sont : $($topPhrases -join ", "). Ces motifs peuvent être utilisés pour standardiser la formulation des titres."
+        "Les phrases les plus communes sont : $($topPhrases -join ", "). Ces motifs peuvent Ãªtre utilisÃ©s pour standardiser la formulation des titres."
     }
 )
 
-4. **Cohérence par niveau**: $(
+4. **CohÃ©rence par niveau**: $(
     $inconsistentLevels = @()
     foreach ($level in ($Analysis.PrefixesByLevel.Keys + $Analysis.SuffixesByLevel.Keys | Sort-Object -Unique)) {
         $prefixCount = if ($Analysis.PrefixesByLevel.ContainsKey($level)) { 
@@ -423,28 +423,28 @@ function New-AffixesAnalysisReport {
     }
     
     if ($inconsistentLevels.Count -eq 0) {
-        "Tous les niveaux de titre présentent une certaine cohérence dans l'utilisation des préfixes et suffixes."
+        "Tous les niveaux de titre prÃ©sentent une certaine cohÃ©rence dans l'utilisation des prÃ©fixes et suffixes."
     } else {
-        "Les niveaux de titre suivants manquent de cohérence dans l'utilisation des préfixes ou suffixes : $($inconsistentLevels -join ", "). Envisager de standardiser la formulation des titres à ces niveaux."
+        "Les niveaux de titre suivants manquent de cohÃ©rence dans l'utilisation des prÃ©fixes ou suffixes : $($inconsistentLevels -join ", "). Envisager de standardiser la formulation des titres Ã  ces niveaux."
     }
 )
 
-5. **Recommandations générales**:
-   - Standardiser l'utilisation des préfixes pour les titres de même niveau ou de même catégorie.
-   - Utiliser des suffixes cohérents pour indiquer le type de contenu (ex: "Techniques", "Professionnelle", etc.).
-   - Maintenir la cohérence des phrases communes pour faciliter la navigation et la compréhension.
-   - Éviter les variations mineures dans la formulation des titres similaires.
-   - Considérer l'adoption d'un modèle de nommage pour chaque niveau de titre.
+5. **Recommandations gÃ©nÃ©rales**:
+   - Standardiser l'utilisation des prÃ©fixes pour les titres de mÃªme niveau ou de mÃªme catÃ©gorie.
+   - Utiliser des suffixes cohÃ©rents pour indiquer le type de contenu (ex: "Techniques", "Professionnelle", etc.).
+   - Maintenir la cohÃ©rence des phrases communes pour faciliter la navigation et la comprÃ©hension.
+   - Ã‰viter les variations mineures dans la formulation des titres similaires.
+   - ConsidÃ©rer l'adoption d'un modÃ¨le de nommage pour chaque niveau de titre.
 "@
 
     return $report
 }
 
-# Exécution principale
+# ExÃ©cution principale
 try {
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-        throw "Le fichier à analyser n'existe pas : $FilePath"
+        throw "Le fichier Ã  analyser n'existe pas : $FilePath"
     }
 
     # Lire le contenu du fichier
@@ -453,13 +453,13 @@ try {
     # Extraire les titres
     $Titles = Get-MarkdownTitles -Content $content
 
-    # Analyser les préfixes et suffixes dans les titres
+    # Analyser les prÃ©fixes et suffixes dans les titres
     $analysis = Get-TitleAffixesAnalysis -Titles $Titles -MinOccurrences $MinOccurrences
 
-    # Générer le rapport d'analyse
+    # GÃ©nÃ©rer le rapport d'analyse
     $report = New-AffixesAnalysisReport -Analysis $analysis -IncludeExamples $IncludeExamples -MinOccurrences $MinOccurrences
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -469,20 +469,20 @@ try {
     $utf8WithBom = New-Object System.Text.UTF8Encoding $true
     [System.IO.File]::WriteAllText($OutputPath, $report, $utf8WithBom)
 
-    # Afficher un résumé
-    Write-Host "Analyse des préfixes et suffixes terminée."
-    Write-Host "Nombre total de titres analysés : $($analysis.TotalTitles)"
-    Write-Host "Préfixes récurrents détectés : $($analysis.Prefixes.Count)"
-    Write-Host "Suffixes récurrents détectés : $($analysis.Suffixes.Count)"
-    Write-Host "Phrases communes détectées : $($analysis.CommonPhrases.Count)"
-    Write-Host "Rapport généré à : $OutputPath"
+    # Afficher un rÃ©sumÃ©
+    Write-Host "Analyse des prÃ©fixes et suffixes terminÃ©e."
+    Write-Host "Nombre total de titres analysÃ©s : $($analysis.TotalTitles)"
+    Write-Host "PrÃ©fixes rÃ©currents dÃ©tectÃ©s : $($analysis.Prefixes.Count)"
+    Write-Host "Suffixes rÃ©currents dÃ©tectÃ©s : $($analysis.Suffixes.Count)"
+    Write-Host "Phrases communes dÃ©tectÃ©es : $($analysis.CommonPhrases.Count)"
+    Write-Host "Rapport gÃ©nÃ©rÃ© Ã  : $OutputPath"
 
-    # Retourner l'analyse pour une utilisation ultérieure
+    # Retourner l'analyse pour une utilisation ultÃ©rieure
     return $analysis
 } catch {
-    Write-Error "Erreur lors de l'analyse des préfixes et suffixes : $_"
+    Write-Error "Erreur lors de l'analyse des prÃ©fixes et suffixes : $_"
 
-    # Afficher la pile d'appels pour faciliter le débogage
+    # Afficher la pile d'appels pour faciliter le dÃ©bogage
     Write-Host "Pile d'appels :"
     Write-Host $_.ScriptStackTrace
 

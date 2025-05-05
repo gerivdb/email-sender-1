@@ -1,13 +1,13 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires Pester très simples.
+    Tests unitaires Pester trÃ¨s simples.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires Pester très simples qui ne dépendent pas de l'importation du module.
+    Ce script contient des tests unitaires Pester trÃ¨s simples qui ne dÃ©pendent pas de l'importation du module.
 #>
 
-Describe "Tests très simples" {
+Describe "Tests trÃ¨s simples" {
     Context "Tests de base" {
         It "PowerShell fonctionne correctement" {
             $true | Should -Be $true
@@ -17,7 +17,7 @@ Describe "Tests très simples" {
             1 + 1 | Should -Be 2
         }
 
-        It "Les chaînes de caractères fonctionnent" {
+        It "Les chaÃ®nes de caractÃ¨res fonctionnent" {
             "Hello" + " " + "World" | Should -Be "Hello World"
         }
 
@@ -67,7 +67,7 @@ Describe "Tests très simples" {
             $obj.Value | Should -Be 42
         }
 
-        It "Les fichiers système existent" {
+        It "Les fichiers systÃ¨me existent" {
             Test-Path -Path "C:\Windows\System32" | Should -Be $true
         }
     }

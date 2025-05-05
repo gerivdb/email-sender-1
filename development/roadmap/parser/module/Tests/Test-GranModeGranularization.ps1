@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour la granularisation complète du mode GRAN.
+    Tests unitaires pour la granularisation complÃ¨te du mode GRAN.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement
-    de la granularisation complète du mode GRAN, en testant l'intégration de
-    toutes les fonctionnalités.
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
+    de la granularisation complÃ¨te du mode GRAN, en testant l'intÃ©gration de
+    toutes les fonctionnalitÃ©s.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-06-02
+    Date de crÃ©ation: 2025-06-02
 #>
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $granModePath = Join-Path -Path $modulePath -ChildPath "..\..\..\scripts\maintenance\modes\gran-mode.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $granModePath)) {
-    throw "Le script gran-mode.ps1 est introuvable à l'emplacement : $granModePath"
+    throw "Le script gran-mode.ps1 est introuvable Ã  l'emplacement : $granModePath"
 }
 
-# Créer un fichier de test temporaire
+# CrÃ©er un fichier de test temporaire
 function New-TestRoadmapFile {
     [CmdletBinding()]
     param (
@@ -34,26 +34,26 @@ function New-TestRoadmapFile {
     $content = @"
 # Roadmap de test
 
-## 1. Fonctionnalités principales
+## 1. FonctionnalitÃ©s principales
 
 ### 1.1 Interface utilisateur
-- [ ] **1.1.1** Créer une interface utilisateur responsive avec HTML et CSS
-- [ ] **1.1.2** Implémenter les interactions JavaScript pour améliorer l'expérience utilisateur
+- [ ] **1.1.1** CrÃ©er une interface utilisateur responsive avec HTML et CSS
+- [ ] **1.1.2** ImplÃ©menter les interactions JavaScript pour amÃ©liorer l'expÃ©rience utilisateur
 
 ### 1.2 Backend
-- [ ] **1.2.1** Développer l'API RESTful pour la gestion des données
-- [ ] **1.2.2** Implémenter l'authentification et l'autorisation des utilisateurs
+- [ ] **1.2.1** DÃ©velopper l'API RESTful pour la gestion des donnÃ©es
+- [ ] **1.2.2** ImplÃ©menter l'authentification et l'autorisation des utilisateurs
 
-### 1.3 Base de données
-- [ ] **1.3.1** Concevoir le schéma de la base de données relationnelle
-- [ ] **1.3.2** Optimiser les requêtes SQL pour améliorer les performances
+### 1.3 Base de donnÃ©es
+- [ ] **1.3.1** Concevoir le schÃ©ma de la base de donnÃ©es relationnelle
+- [ ] **1.3.2** Optimiser les requÃªtes SQL pour amÃ©liorer les performances
 
 ### 1.4 Tests
-- [ ] **1.4.1** Mettre en place des tests unitaires pour toutes les fonctionnalités
-- [ ] **1.4.2** Configurer l'intégration continue pour exécuter les tests automatiquement
+- [ ] **1.4.1** Mettre en place des tests unitaires pour toutes les fonctionnalitÃ©s
+- [ ] **1.4.2** Configurer l'intÃ©gration continue pour exÃ©cuter les tests automatiquement
 
-### 1.5 Déploiement
-- [ ] **1.5.1** Configurer le pipeline CI/CD pour le déploiement automatique
+### 1.5 DÃ©ploiement
+- [ ] **1.5.1** Configurer le pipeline CI/CD pour le dÃ©ploiement automatique
 - [ ] **1.5.2** Mettre en place la surveillance et les alertes pour l'application en production
 "@
 
@@ -81,12 +81,12 @@ function Test-Granularization {
         [int]$ExpectedSubTasksCount = 0
     )
 
-    # Créer une copie du fichier pour le test
+    # CrÃ©er une copie du fichier pour le test
     $testFilePath = "$FilePath.test"
     Copy-Item -Path $FilePath -Destination $testFilePath -Force
 
     try {
-        # Exécuter la granularisation
+        # ExÃ©cuter la granularisation
         $params = @{
             FilePath         = $testFilePath
             TaskIdentifier   = $TaskIdentifier
@@ -102,10 +102,10 @@ function Test-Granularization {
         # Appeler la fonction Invoke-GranMode
         $result = Invoke-GranMode @params
 
-        # Vérifier que le fichier a été modifié
+        # VÃ©rifier que le fichier a Ã©tÃ© modifiÃ©
         $content = Get-Content -Path $testFilePath -Encoding UTF8
 
-        # Trouver la ligne contenant la tâche granularisée
+        # Trouver la ligne contenant la tÃ¢che granularisÃ©e
         $taskLineIndex = -1
         $taskLinePattern = ".*\b$([regex]::Escape($TaskIdentifier))\b.*"
 
@@ -117,11 +117,11 @@ function Test-Granularization {
         }
 
         if ($taskLineIndex -eq -1) {
-            Write-Host "Test échoué : Tâche $TaskIdentifier non trouvée dans le fichier" -ForegroundColor Red
+            Write-Host "Test Ã©chouÃ© : TÃ¢che $TaskIdentifier non trouvÃ©e dans le fichier" -ForegroundColor Red
             return $false
         }
 
-        # Compter le nombre de sous-tâches
+        # Compter le nombre de sous-tÃ¢ches
         $subTasksCount = 0
         $subTaskPattern = ".*\b$([regex]::Escape($TaskIdentifier))\.[0-9]+\b.*"
 
@@ -129,18 +129,18 @@ function Test-Granularization {
             if ($content[$i] -match $subTaskPattern) {
                 $subTasksCount++
             } elseif ($content[$i] -match "^###") {
-                # Nouvelle section, fin des sous-tâches
+                # Nouvelle section, fin des sous-tÃ¢ches
                 break
             }
         }
 
-        # Vérifier le nombre de sous-tâches
+        # VÃ©rifier le nombre de sous-tÃ¢ches
         if ($ExpectedSubTasksCount -gt 0 -and $subTasksCount -ne $ExpectedSubTasksCount) {
-            Write-Host "Test échoué : Nombre de sous-tâches incorrect pour $TaskIdentifier. Attendu : $ExpectedSubTasksCount, Obtenu : $subTasksCount" -ForegroundColor Red
+            Write-Host "Test Ã©chouÃ© : Nombre de sous-tÃ¢ches incorrect pour $TaskIdentifier. Attendu : $ExpectedSubTasksCount, Obtenu : $subTasksCount" -ForegroundColor Red
             return $false
         }
 
-        Write-Host "Test réussi : Tâche $TaskIdentifier granularisée avec $subTasksCount sous-tâches" -ForegroundColor Green
+        Write-Host "Test rÃ©ussi : TÃ¢che $TaskIdentifier granularisÃ©e avec $subTasksCount sous-tÃ¢ches" -ForegroundColor Green
         return $true
     } finally {
         # Supprimer le fichier de test
@@ -150,9 +150,9 @@ function Test-Granularization {
     }
 }
 
-# Charger le script gran-mode.ps1 pour accéder aux fonctions
-# Simuler l'exécution du script gran-mode.ps1
-# Cette fonction simule l'exécution du script gran-mode.ps1 en modifiant directement le fichier
+# Charger le script gran-mode.ps1 pour accÃ©der aux fonctions
+# Simuler l'exÃ©cution du script gran-mode.ps1
+# Cette fonction simule l'exÃ©cution du script gran-mode.ps1 en modifiant directement le fichier
 function Invoke-GranMode {
     [CmdletBinding()]
     param (
@@ -175,16 +175,16 @@ function Invoke-GranMode {
         [string]$CheckboxStyle = "GitHub"
     )
 
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
-        Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+        Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
         return $false
     }
 
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Encoding UTF8
 
-    # Trouver la ligne contenant la tâche à décomposer
+    # Trouver la ligne contenant la tÃ¢che Ã  dÃ©composer
     $taskLineIndex = -1
     $taskLinePattern = ".*\b$([regex]::Escape($TaskIdentifier))\b.*"
 
@@ -196,12 +196,12 @@ function Invoke-GranMode {
     }
 
     if ($taskLineIndex -eq -1) {
-        Write-Error "Tâche non trouvée : $TaskIdentifier"
+        Write-Error "TÃ¢che non trouvÃ©e : $TaskIdentifier"
         return $false
     }
 
-    # Déterminer le nombre de sous-tâches à créer en fonction de la complexité et du domaine
-    $subTasksCount = 5 # Par défaut
+    # DÃ©terminer le nombre de sous-tÃ¢ches Ã  crÃ©er en fonction de la complexitÃ© et du domaine
+    $subTasksCount = 5 # Par dÃ©faut
 
     if ($Domain -ne "None") {
         switch ($Domain.ToLower()) {
@@ -221,17 +221,17 @@ function Invoke-GranMode {
         }
     }
 
-    # Créer les sous-tâches
-    $indentation = "  " # Indentation pour les sous-tâches
+    # CrÃ©er les sous-tÃ¢ches
+    $indentation = "  " # Indentation pour les sous-tÃ¢ches
     $subTasks = @()
 
     for ($i = 1; $i -le $subTasksCount; $i++) {
         $subTaskId = "$TaskIdentifier.$i"
-        $subTaskTitle = "Sous-tâche $i"
+        $subTaskTitle = "Sous-tÃ¢che $i"
         $subTasks += "$indentation- [ ] **$subTaskId** $subTaskTitle"
     }
 
-    # Insérer les sous-tâches après la tâche principale
+    # InsÃ©rer les sous-tÃ¢ches aprÃ¨s la tÃ¢che principale
     $newContent = @()
 
     for ($i = 0; $i -lt $content.Count; $i++) {
@@ -242,43 +242,43 @@ function Invoke-GranMode {
         }
     }
 
-    # Écrire le nouveau contenu dans le fichier
+    # Ã‰crire le nouveau contenu dans le fichier
     Set-Content -Path $FilePath -Value $newContent -Encoding UTF8
 
     return $true
 }
 
-# Créer un fichier de test
+# CrÃ©er un fichier de test
 $testFilePath = Join-Path -Path $env:TEMP -ChildPath "test_roadmap_$(Get-Random).md"
 New-TestRoadmapFile -FilePath $testFilePath
 
-# Exécuter les tests de granularisation
-Write-Host "Exécution des tests de granularisation complète..." -ForegroundColor Cyan
+# ExÃ©cuter les tests de granularisation
+Write-Host "ExÃ©cution des tests de granularisation complÃ¨te..." -ForegroundColor Cyan
 
-# Test 1 : Granularisation d'une tâche frontend avec détection automatique
+# Test 1 : Granularisation d'une tÃ¢che frontend avec dÃ©tection automatique
 $test1 = Test-Granularization -FilePath $testFilePath -TaskIdentifier "1.1.1" -ComplexityLevel "Auto" -Domain "Frontend" -ExpectedSubTasksCount 9
 
-# Test 2 : Granularisation d'une tâche backend avec complexité spécifiée
+# Test 2 : Granularisation d'une tÃ¢che backend avec complexitÃ© spÃ©cifiÃ©e
 $test2 = Test-Granularization -FilePath $testFilePath -TaskIdentifier "1.2.1" -ComplexityLevel "Complex" -Domain "None" -ExpectedSubTasksCount 10
 
-# Test 3 : Granularisation d'une tâche database avec domaine spécifié
+# Test 3 : Granularisation d'une tÃ¢che database avec domaine spÃ©cifiÃ©
 $test3 = Test-Granularization -FilePath $testFilePath -TaskIdentifier "1.3.1" -ComplexityLevel "Auto" -Domain "Database" -ExpectedSubTasksCount 9
 
-# Test 4 : Granularisation d'une tâche testing avec domaine spécifié
+# Test 4 : Granularisation d'une tÃ¢che testing avec domaine spÃ©cifiÃ©
 $test4 = Test-Granularization -FilePath $testFilePath -TaskIdentifier "1.4.1" -ComplexityLevel "Auto" -Domain "Testing" -ExpectedSubTasksCount 9
 
-# Test 5 : Granularisation d'une tâche devops avec domaine spécifié
+# Test 5 : Granularisation d'une tÃ¢che devops avec domaine spÃ©cifiÃ©
 $test5 = Test-Granularization -FilePath $testFilePath -TaskIdentifier "1.5.1" -ComplexityLevel "Auto" -Domain "DevOps" -ExpectedSubTasksCount 9
 
-# Afficher le résultat global des tests
+# Afficher le rÃ©sultat global des tests
 $totalTests = 5
 $passedTests = @($test1, $test2, $test3, $test4, $test5).Where({ $_ -eq $true }).Count
 
-Write-Host "`nRésultat des tests de granularisation : $passedTests / $totalTests" -ForegroundColor Cyan
+Write-Host "`nRÃ©sultat des tests de granularisation : $passedTests / $totalTests" -ForegroundColor Cyan
 if ($passedTests -eq $totalTests) {
-    Write-Host "Tous les tests ont réussi !" -ForegroundColor Green
+    Write-Host "Tous les tests ont rÃ©ussi !" -ForegroundColor Green
 } else {
-    Write-Host "Certains tests ont échoué." -ForegroundColor Red
+    Write-Host "Certains tests ont Ã©chouÃ©." -ForegroundColor Red
 }
 
 # Nettoyer

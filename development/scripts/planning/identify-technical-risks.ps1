@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
-    Identifie les risques techniques des améliorations.
+    Identifie les risques techniques des amÃ©liorations.
 
 .DESCRIPTION
-    Ce script identifie les risques techniques associés aux améliorations en analysant
-    la complexité technique, les dépendances, les technologies et les contraintes.
+    Ce script identifie les risques techniques associÃ©s aux amÃ©liorations en analysant
+    la complexitÃ© technique, les dÃ©pendances, les technologies et les contraintes.
 
 .PARAMETER InputFile
-    Chemin vers le fichier JSON contenant les améliorations à analyser.
+    Chemin vers le fichier JSON contenant les amÃ©liorations Ã  analyser.
 
 .PARAMETER DifficultyFile
-    Chemin vers le fichier d'évaluation de la difficulté d'implémentation généré précédemment.
+    Chemin vers le fichier d'Ã©valuation de la difficultÃ© d'implÃ©mentation gÃ©nÃ©rÃ© prÃ©cÃ©demment.
 
 .PARAMETER OutputFile
     Chemin vers le fichier de sortie pour le rapport des risques techniques.
 
 .PARAMETER Format
     Format du rapport de sortie. Les valeurs possibles sont : JSON, Markdown.
-    Par défaut : Markdown
+    Par dÃ©faut : Markdown
 
 .EXAMPLE
     .\identify-technical-risks.ps1 -InputFile "data\improvements.json" -DifficultyFile "data\planning\implementation-difficulty.md" -OutputFile "data\planning\technical-risks.md"
-    Génère un rapport des risques techniques au format Markdown.
+    GÃ©nÃ¨re un rapport des risques techniques au format Markdown.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-08
+    Date de crÃ©ation: 2025-05-08
 #>
 [CmdletBinding()]
 param (
@@ -44,28 +44,28 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Vérifier que les fichiers d'entrée existent
+# VÃ©rifier que les fichiers d'entrÃ©e existent
 if (-not (Test-Path -Path $InputFile)) {
-    Write-Error "Le fichier d'entrée n'existe pas : $InputFile"
+    Write-Error "Le fichier d'entrÃ©e n'existe pas : $InputFile"
     exit 1
 }
 
 if (-not (Test-Path -Path $DifficultyFile)) {
-    Write-Error "Le fichier d'évaluation de la difficulté n'existe pas : $DifficultyFile"
+    Write-Error "Le fichier d'Ã©valuation de la difficultÃ© n'existe pas : $DifficultyFile"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputFile -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Charger les données des améliorations
+# Charger les donnÃ©es des amÃ©liorations
 try {
     $improvementsData = Get-Content -Path $InputFile -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "Erreur lors du chargement du fichier d'entrée : $_"
+    Write-Error "Erreur lors du chargement du fichier d'entrÃ©e : $_"
     exit 1
 }
 
@@ -85,119 +85,119 @@ function Identify-TechnicalRisks {
 
     $risks = @()
     
-    # Risques liés à la complexité technique
-    if ($DifficultyLevel -eq "Difficile" -or $DifficultyLevel -eq "Très difficile") {
+    # Risques liÃ©s Ã  la complexitÃ© technique
+    if ($DifficultyLevel -eq "Difficile" -or $DifficultyLevel -eq "TrÃ¨s difficile") {
         $risks += [PSCustomObject]@{
-            Category = "Complexité"
-            Description = "Complexité technique élevée pouvant entraîner des difficultés d'implémentation"
-            Impact = "Élevé"
-            Probability = "Élevée"
-            Mitigation = "Décomposer l'amélioration en tâches plus petites et plus gérables"
+            Category = "ComplexitÃ©"
+            Description = "ComplexitÃ© technique Ã©levÃ©e pouvant entraÃ®ner des difficultÃ©s d'implÃ©mentation"
+            Impact = "Ã‰levÃ©"
+            Probability = "Ã‰levÃ©e"
+            Mitigation = "DÃ©composer l'amÃ©lioration en tÃ¢ches plus petites et plus gÃ©rables"
         }
     }
     
-    # Risques liés aux dépendances
+    # Risques liÃ©s aux dÃ©pendances
     if ($Improvement.Dependencies -and $Improvement.Dependencies.Count -gt 0) {
         $risks += [PSCustomObject]@{
-            Category = "Dépendances"
-            Description = "Dépendances externes pouvant causer des retards ou des problèmes d'intégration"
+            Category = "DÃ©pendances"
+            Description = "DÃ©pendances externes pouvant causer des retards ou des problÃ¨mes d'intÃ©gration"
             Impact = "Moyen"
             Probability = "Moyenne"
-            Mitigation = "Identifier et gérer proactivement les dépendances, établir des contrats d'interface clairs"
+            Mitigation = "Identifier et gÃ©rer proactivement les dÃ©pendances, Ã©tablir des contrats d'interface clairs"
         }
     }
     
-    # Risques liés aux technologies
+    # Risques liÃ©s aux technologies
     switch ($Improvement.Type) {
         "Optimisation" {
             $risks += [PSCustomObject]@{
                 Category = "Performance"
-                Description = "Risque de régression de performance dans d'autres parties du système"
-                Impact = "Élevé"
+                Description = "Risque de rÃ©gression de performance dans d'autres parties du systÃ¨me"
+                Impact = "Ã‰levÃ©"
                 Probability = "Moyenne"
-                Mitigation = "Mettre en place des tests de performance complets avant et après l'implémentation"
+                Mitigation = "Mettre en place des tests de performance complets avant et aprÃ¨s l'implÃ©mentation"
             }
         }
-        "Intégration" {
+        "IntÃ©gration" {
             $risks += [PSCustomObject]@{
-                Category = "Intégration"
-                Description = "Problèmes d'intégration avec des systèmes externes"
-                Impact = "Élevé"
-                Probability = "Élevée"
-                Mitigation = "Mettre en place des environnements de test d'intégration, définir des contrats d'API clairs"
+                Category = "IntÃ©gration"
+                Description = "ProblÃ¨mes d'intÃ©gration avec des systÃ¨mes externes"
+                Impact = "Ã‰levÃ©"
+                Probability = "Ã‰levÃ©e"
+                Mitigation = "Mettre en place des environnements de test d'intÃ©gration, dÃ©finir des contrats d'API clairs"
             }
         }
-        "Sécurité" {
+        "SÃ©curitÃ©" {
             $risks += [PSCustomObject]@{
-                Category = "Sécurité"
-                Description = "Vulnérabilités de sécurité potentielles"
-                Impact = "Très élevé"
+                Category = "SÃ©curitÃ©"
+                Description = "VulnÃ©rabilitÃ©s de sÃ©curitÃ© potentielles"
+                Impact = "TrÃ¨s Ã©levÃ©"
                 Probability = "Moyenne"
-                Mitigation = "Effectuer des revues de code de sécurité, des tests de pénétration et suivre les bonnes pratiques de sécurité"
+                Mitigation = "Effectuer des revues de code de sÃ©curitÃ©, des tests de pÃ©nÃ©tration et suivre les bonnes pratiques de sÃ©curitÃ©"
             }
         }
     }
     
-    # Risques spécifiques au gestionnaire
+    # Risques spÃ©cifiques au gestionnaire
     switch ($ManagerName) {
         "Process Manager" {
             $risks += [PSCustomObject]@{
                 Category = "Concurrence"
-                Description = "Problèmes de concurrence et de synchronisation"
-                Impact = "Élevé"
+                Description = "ProblÃ¨mes de concurrence et de synchronisation"
+                Impact = "Ã‰levÃ©"
                 Probability = "Moyenne"
-                Mitigation = "Utiliser des mécanismes de synchronisation appropriés, effectuer des tests de charge"
+                Mitigation = "Utiliser des mÃ©canismes de synchronisation appropriÃ©s, effectuer des tests de charge"
             }
         }
         "Mode Manager" {
             $risks += [PSCustomObject]@{
-                Category = "État"
-                Description = "Problèmes de gestion d'état et de transition"
+                Category = "Ã‰tat"
+                Description = "ProblÃ¨mes de gestion d'Ã©tat et de transition"
                 Impact = "Moyen"
                 Probability = "Moyenne"
-                Mitigation = "Mettre en place des tests de transition d'état exhaustifs"
+                Mitigation = "Mettre en place des tests de transition d'Ã©tat exhaustifs"
             }
         }
         "Roadmap Manager" {
             $risks += [PSCustomObject]@{
-                Category = "Cohérence"
-                Description = "Problèmes de cohérence des données"
+                Category = "CohÃ©rence"
+                Description = "ProblÃ¨mes de cohÃ©rence des donnÃ©es"
                 Impact = "Moyen"
                 Probability = "Moyenne"
-                Mitigation = "Mettre en place des mécanismes de validation et de vérification de cohérence"
+                Mitigation = "Mettre en place des mÃ©canismes de validation et de vÃ©rification de cohÃ©rence"
             }
         }
         "Integrated Manager" {
             $risks += [PSCustomObject]@{
-                Category = "Compatibilité"
-                Description = "Problèmes de compatibilité avec des systèmes externes"
-                Impact = "Élevé"
-                Probability = "Élevée"
-                Mitigation = "Mettre en place des tests de compatibilité, définir des contrats d'API clairs"
+                Category = "CompatibilitÃ©"
+                Description = "ProblÃ¨mes de compatibilitÃ© avec des systÃ¨mes externes"
+                Impact = "Ã‰levÃ©"
+                Probability = "Ã‰levÃ©e"
+                Mitigation = "Mettre en place des tests de compatibilitÃ©, dÃ©finir des contrats d'API clairs"
             }
         }
         "Script Manager" {
             $risks += [PSCustomObject]@{
-                Category = "Exécution"
-                Description = "Problèmes d'exécution de scripts dans différents environnements"
+                Category = "ExÃ©cution"
+                Description = "ProblÃ¨mes d'exÃ©cution de scripts dans diffÃ©rents environnements"
                 Impact = "Moyen"
                 Probability = "Moyenne"
-                Mitigation = "Tester l'exécution dans tous les environnements cibles"
+                Mitigation = "Tester l'exÃ©cution dans tous les environnements cibles"
             }
         }
         "Error Manager" {
             $risks += [PSCustomObject]@{
                 Category = "Gestion d'erreurs"
-                Description = "Problèmes de gestion d'erreurs et de récupération"
-                Impact = "Élevé"
+                Description = "ProblÃ¨mes de gestion d'erreurs et de rÃ©cupÃ©ration"
+                Impact = "Ã‰levÃ©"
                 Probability = "Moyenne"
-                Mitigation = "Mettre en place des tests d'erreur exhaustifs, simuler des scénarios de défaillance"
+                Mitigation = "Mettre en place des tests d'erreur exhaustifs, simuler des scÃ©narios de dÃ©faillance"
             }
         }
         "Configuration Manager" {
             $risks += [PSCustomObject]@{
                 Category = "Configuration"
-                Description = "Problèmes de configuration dans différents environnements"
+                Description = "ProblÃ¨mes de configuration dans diffÃ©rents environnements"
                 Impact = "Moyen"
                 Probability = "Moyenne"
                 Mitigation = "Mettre en place des tests de configuration dans tous les environnements cibles"
@@ -206,7 +206,7 @@ function Identify-TechnicalRisks {
         "Logging Manager" {
             $risks += [PSCustomObject]@{
                 Category = "Performance"
-                Description = "Impact sur les performances dû à une journalisation excessive"
+                Description = "Impact sur les performances dÃ» Ã  une journalisation excessive"
                 Impact = "Moyen"
                 Probability = "Moyenne"
                 Mitigation = "Optimiser la journalisation, mettre en place des niveaux de journalisation configurables"
@@ -214,43 +214,43 @@ function Identify-TechnicalRisks {
         }
     }
     
-    # Risques liés à l'effort
-    if ($Improvement.Effort -eq "Élevé") {
+    # Risques liÃ©s Ã  l'effort
+    if ($Improvement.Effort -eq "Ã‰levÃ©") {
         $risks += [PSCustomObject]@{
             Category = "Planification"
             Description = "Sous-estimation de l'effort requis"
             Impact = "Moyen"
-            Probability = "Élevée"
-            Mitigation = "Ajouter une marge de sécurité aux estimations, suivre régulièrement l'avancement"
+            Probability = "Ã‰levÃ©e"
+            Mitigation = "Ajouter une marge de sÃ©curitÃ© aux estimations, suivre rÃ©guliÃ¨rement l'avancement"
         }
     }
     
-    # Risques liés à la description
+    # Risques liÃ©s Ã  la description
     if ($Improvement.Description -match "nouveau|nouvelle|innovant|innovante") {
         $risks += [PSCustomObject]@{
             Category = "Innovation"
-            Description = "Risques liés à l'utilisation de technologies ou d'approches nouvelles"
+            Description = "Risques liÃ©s Ã  l'utilisation de technologies ou d'approches nouvelles"
             Impact = "Moyen"
             Probability = "Moyenne"
             Mitigation = "Effectuer des prototypes, des preuves de concept, et des validations techniques"
         }
     }
     
-    # Risques liés à l'impact
-    if ($Improvement.Impact -eq "Élevé") {
+    # Risques liÃ©s Ã  l'impact
+    if ($Improvement.Impact -eq "Ã‰levÃ©") {
         $risks += [PSCustomObject]@{
             Category = "Impact"
-            Description = "Impact potentiel sur d'autres parties du système"
-            Impact = "Élevé"
+            Description = "Impact potentiel sur d'autres parties du systÃ¨me"
+            Impact = "Ã‰levÃ©"
             Probability = "Moyenne"
-            Mitigation = "Effectuer une analyse d'impact complète, mettre en place des tests de régression"
+            Mitigation = "Effectuer une analyse d'impact complÃ¨te, mettre en place des tests de rÃ©gression"
         }
     }
     
     return $risks
 }
 
-# Fonction pour évaluer la criticité des risques
+# Fonction pour Ã©valuer la criticitÃ© des risques
 function Evaluate-RiskCriticality {
     [CmdletBinding()]
     param (
@@ -259,20 +259,20 @@ function Evaluate-RiskCriticality {
     )
 
     $impactScore = switch ($Risk.Impact) {
-        "Très élevé" { 5 }
-        "Élevé" { 4 }
+        "TrÃ¨s Ã©levÃ©" { 5 }
+        "Ã‰levÃ©" { 4 }
         "Moyen" { 3 }
         "Faible" { 2 }
-        "Très faible" { 1 }
+        "TrÃ¨s faible" { 1 }
         default { 3 }
     }
     
     $probabilityScore = switch ($Risk.Probability) {
-        "Très élevée" { 5 }
-        "Élevée" { 4 }
+        "TrÃ¨s Ã©levÃ©e" { 5 }
+        "Ã‰levÃ©e" { 4 }
         "Moyenne" { 3 }
         "Faible" { 2 }
-        "Très faible" { 1 }
+        "TrÃ¨s faible" { 1 }
         default { 3 }
     }
     
@@ -280,7 +280,7 @@ function Evaluate-RiskCriticality {
     
     $criticalityLevel = switch ($criticalityScore) {
         {$_ -ge 20} { "Critique" }
-        {$_ -ge 12 -and $_ -lt 20} { "Élevée" }
+        {$_ -ge 12 -and $_ -lt 20} { "Ã‰levÃ©e" }
         {$_ -ge 6 -and $_ -lt 12} { "Moyenne" }
         {$_ -lt 6} { "Faible" }
     }
@@ -291,7 +291,7 @@ function Evaluate-RiskCriticality {
     }
 }
 
-# Fonction pour générer le rapport au format Markdown
+# Fonction pour gÃ©nÃ©rer le rapport au format Markdown
 function Generate-MarkdownReport {
     [CmdletBinding()]
     param (
@@ -299,35 +299,35 @@ function Generate-MarkdownReport {
         [PSCustomObject]$RiskResults
     )
 
-    $markdown = "# Identification des Risques Techniques des Améliorations`n`n"
-    $markdown += "Ce document présente l'identification des risques techniques associés aux améliorations identifiées pour les différents gestionnaires.`n`n"
+    $markdown = "# Identification des Risques Techniques des AmÃ©liorations`n`n"
+    $markdown += "Ce document prÃ©sente l'identification des risques techniques associÃ©s aux amÃ©liorations identifiÃ©es pour les diffÃ©rents gestionnaires.`n`n"
     
-    $markdown += "## Table des Matières`n`n"
+    $markdown += "## Table des MatiÃ¨res`n`n"
     
     foreach ($manager in $RiskResults.Managers) {
         $markdown += "- [$($manager.Name)](#$($manager.Name.ToLower().Replace(' ', '-')))`n"
     }
     
-    $markdown += "`n## Méthodologie`n`n"
-    $markdown += "L'identification des risques techniques a été réalisée en analysant :`n`n"
-    $markdown += "1. **Complexité technique** : Risques liés à la complexité technique de l'amélioration`n"
-    $markdown += "2. **Dépendances** : Risques liés aux dépendances vis-à-vis d'autres composants ou systèmes`n"
-    $markdown += "3. **Technologies** : Risques liés aux technologies utilisées`n"
-    $markdown += "4. **Spécificités du gestionnaire** : Risques spécifiques à chaque gestionnaire`n`n"
+    $markdown += "`n## MÃ©thodologie`n`n"
+    $markdown += "L'identification des risques techniques a Ã©tÃ© rÃ©alisÃ©e en analysant :`n`n"
+    $markdown += "1. **ComplexitÃ© technique** : Risques liÃ©s Ã  la complexitÃ© technique de l'amÃ©lioration`n"
+    $markdown += "2. **DÃ©pendances** : Risques liÃ©s aux dÃ©pendances vis-Ã -vis d'autres composants ou systÃ¨mes`n"
+    $markdown += "3. **Technologies** : Risques liÃ©s aux technologies utilisÃ©es`n"
+    $markdown += "4. **SpÃ©cificitÃ©s du gestionnaire** : Risques spÃ©cifiques Ã  chaque gestionnaire`n`n"
     
-    $markdown += "### Évaluation de la Criticité des Risques`n`n"
-    $markdown += "La criticité des risques est évaluée en fonction de leur impact et de leur probabilité :`n`n"
-    $markdown += "| Impact | Probabilité | Criticité |`n"
+    $markdown += "### Ã‰valuation de la CriticitÃ© des Risques`n`n"
+    $markdown += "La criticitÃ© des risques est Ã©valuÃ©e en fonction de leur impact et de leur probabilitÃ© :`n`n"
+    $markdown += "| Impact | ProbabilitÃ© | CriticitÃ© |`n"
     $markdown += "|--------|-------------|-----------|`n"
-    $markdown += "| Très élevé (5) | Très élevée (5) | Critique (25) |`n"
-    $markdown += "| Élevé (4) | Élevée (4) | Élevée (16) |`n"
+    $markdown += "| TrÃ¨s Ã©levÃ© (5) | TrÃ¨s Ã©levÃ©e (5) | Critique (25) |`n"
+    $markdown += "| Ã‰levÃ© (4) | Ã‰levÃ©e (4) | Ã‰levÃ©e (16) |`n"
     $markdown += "| Moyen (3) | Moyenne (3) | Moyenne (9) |`n"
     $markdown += "| Faible (2) | Faible (2) | Faible (4) |`n"
-    $markdown += "| Très faible (1) | Très faible (1) | Faible (1) |`n`n"
+    $markdown += "| TrÃ¨s faible (1) | TrÃ¨s faible (1) | Faible (1) |`n`n"
     
-    $markdown += "La criticité est calculée en multipliant le score d'impact par le score de probabilité :`n`n"
+    $markdown += "La criticitÃ© est calculÃ©e en multipliant le score d'impact par le score de probabilitÃ© :`n`n"
     $markdown += "- **Critique** : Score >= 20`n"
-    $markdown += "- **Élevée** : 12 <= Score < 20`n"
+    $markdown += "- **Ã‰levÃ©e** : 12 <= Score < 20`n"
     $markdown += "- **Moyenne** : 6 <= Score < 12`n"
     $markdown += "- **Faible** : Score < 6`n`n"
     
@@ -339,32 +339,32 @@ function Generate-MarkdownReport {
             $markdown += "**Description :** $($improvement.Description)`n`n"
             $markdown += "**Type :** $($improvement.Type)`n`n"
             $markdown += "**Effort :** $($improvement.Effort)`n`n"
-            $markdown += "**Difficulté d'implémentation :** $($improvement.DifficultyLevel)`n`n"
+            $markdown += "**DifficultÃ© d'implÃ©mentation :** $($improvement.DifficultyLevel)`n`n"
             
             if ($improvement.Risks.Count -gt 0) {
-                $markdown += "#### Risques Identifiés`n`n"
-                $markdown += "| Catégorie | Description | Impact | Probabilité | Criticité | Mitigation |`n"
+                $markdown += "#### Risques IdentifiÃ©s`n`n"
+                $markdown += "| CatÃ©gorie | Description | Impact | ProbabilitÃ© | CriticitÃ© | Mitigation |`n"
                 $markdown += "|-----------|-------------|--------|-------------|-----------|------------|`n"
                 
                 foreach ($risk in $improvement.Risks) {
                     $markdown += "| $($risk.Category) | $($risk.Description) | $($risk.Impact) | $($risk.Probability) | $($risk.Criticality.Level) | $($risk.Mitigation) |`n"
                 }
             } else {
-                $markdown += "#### Risques Identifiés`n`n"
-                $markdown += "Aucun risque technique significatif identifié pour cette amélioration.`n"
+                $markdown += "#### Risques IdentifiÃ©s`n`n"
+                $markdown += "Aucun risque technique significatif identifiÃ© pour cette amÃ©lioration.`n"
             }
             
             $markdown += "`n"
         }
     }
     
-    $markdown += "## Résumé`n`n"
+    $markdown += "## RÃ©sumÃ©`n`n"
     
     $totalImprovements = 0
     $totalRisks = 0
     $criticalityLevels = @{
         "Critique" = 0
-        "Élevée" = 0
+        "Ã‰levÃ©e" = 0
         "Moyenne" = 0
         "Faible" = 0
     }
@@ -381,28 +381,28 @@ function Generate-MarkdownReport {
         }
     }
     
-    $markdown += "Cette analyse a identifié $totalRisks risques techniques pour $totalImprovements améliorations réparties sur $($RiskResults.Managers.Count) gestionnaires.`n`n"
+    $markdown += "Cette analyse a identifiÃ© $totalRisks risques techniques pour $totalImprovements amÃ©liorations rÃ©parties sur $($RiskResults.Managers.Count) gestionnaires.`n`n"
     
-    $markdown += "### Répartition par Niveau de Criticité`n`n"
+    $markdown += "### RÃ©partition par Niveau de CriticitÃ©`n`n"
     $markdown += "| Niveau | Nombre | Pourcentage |`n"
     $markdown += "|--------|--------|------------|`n"
     
-    foreach ($level in @("Critique", "Élevée", "Moyenne", "Faible")) {
+    foreach ($level in @("Critique", "Ã‰levÃ©e", "Moyenne", "Faible")) {
         $percentage = if ($totalRisks -gt 0) { [Math]::Round(($criticalityLevels[$level] / $totalRisks) * 100, 1) } else { 0 }
         $markdown += "| $level | $($criticalityLevels[$level]) | $percentage% |`n"
     }
     
-    $markdown += "`n### Recommandations Générales`n`n"
-    $markdown += "1. **Prioriser les risques critiques** : Mettre en place des plans de mitigation spécifiques pour tous les risques de criticité critique.`n"
-    $markdown += "2. **Suivi régulier** : Mettre en place un suivi régulier des risques identifiés tout au long du processus d'implémentation.`n"
-    $markdown += "3. **Revues techniques** : Organiser des revues techniques régulières pour évaluer l'évolution des risques.`n"
-    $markdown += "4. **Tests approfondis** : Mettre en place des tests approfondis pour détecter et corriger les problèmes liés aux risques identifiés.`n"
-    $markdown += "5. **Documentation** : Documenter les risques et les stratégies de mitigation pour référence future.`n"
+    $markdown += "`n### Recommandations GÃ©nÃ©rales`n`n"
+    $markdown += "1. **Prioriser les risques critiques** : Mettre en place des plans de mitigation spÃ©cifiques pour tous les risques de criticitÃ© critique.`n"
+    $markdown += "2. **Suivi rÃ©gulier** : Mettre en place un suivi rÃ©gulier des risques identifiÃ©s tout au long du processus d'implÃ©mentation.`n"
+    $markdown += "3. **Revues techniques** : Organiser des revues techniques rÃ©guliÃ¨res pour Ã©valuer l'Ã©volution des risques.`n"
+    $markdown += "4. **Tests approfondis** : Mettre en place des tests approfondis pour dÃ©tecter et corriger les problÃ¨mes liÃ©s aux risques identifiÃ©s.`n"
+    $markdown += "5. **Documentation** : Documenter les risques et les stratÃ©gies de mitigation pour rÃ©fÃ©rence future.`n"
     
     return $markdown
 }
 
-# Fonction pour générer le rapport au format JSON
+# Fonction pour gÃ©nÃ©rer le rapport au format JSON
 function Generate-JsonReport {
     [CmdletBinding()]
     param (
@@ -413,7 +413,7 @@ function Generate-JsonReport {
     return $RiskResults | ConvertTo-Json -Depth 10
 }
 
-# Identifier les risques techniques des améliorations
+# Identifier les risques techniques des amÃ©liorations
 $riskResults = [PSCustomObject]@{
     GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     Managers = @()
@@ -427,13 +427,13 @@ foreach ($manager in $improvementsData.Managers) {
     }
     
     foreach ($improvement in $manager.Improvements) {
-        # Déterminer le niveau de difficulté (à partir de l'évaluation précédente)
-        $difficultyLevel = "Modéré" # Valeur par défaut
+        # DÃ©terminer le niveau de difficultÃ© (Ã  partir de l'Ã©valuation prÃ©cÃ©dente)
+        $difficultyLevel = "ModÃ©rÃ©" # Valeur par dÃ©faut
         
-        # Dans un cas réel, on récupérerait cette information du fichier d'évaluation de la difficulté
-        # Pour simplifier, on utilise une logique basée sur l'effort et le type
-        if ($improvement.Effort -eq "Élevé") {
-            if ($improvement.Type -eq "Optimisation" -or $improvement.Type -eq "Intégration" -or $improvement.Type -eq "Sécurité") {
+        # Dans un cas rÃ©el, on rÃ©cupÃ©rerait cette information du fichier d'Ã©valuation de la difficultÃ©
+        # Pour simplifier, on utilise une logique basÃ©e sur l'effort et le type
+        if ($improvement.Effort -eq "Ã‰levÃ©") {
+            if ($improvement.Type -eq "Optimisation" -or $improvement.Type -eq "IntÃ©gration" -or $improvement.Type -eq "SÃ©curitÃ©") {
                 $difficultyLevel = "Difficile"
             }
         } elseif ($improvement.Effort -eq "Faible") {
@@ -443,7 +443,7 @@ foreach ($manager in $improvementsData.Managers) {
         # Identifier les risques
         $risks = Identify-TechnicalRisks -Improvement $improvement -ManagerName $manager.Name -DifficultyLevel $difficultyLevel
         
-        # Évaluer la criticité des risques
+        # Ã‰valuer la criticitÃ© des risques
         foreach ($risk in $risks) {
             $risk | Add-Member -MemberType NoteProperty -Name "Criticality" -Value (Evaluate-RiskCriticality -Risk $risk)
         }
@@ -463,7 +463,7 @@ foreach ($manager in $improvementsData.Managers) {
     $riskResults.Managers += $managerRisks
 }
 
-# Générer le rapport dans le format spécifié
+# GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $reportContent = Generate-MarkdownReport -RiskResults $riskResults
@@ -476,21 +476,21 @@ switch ($Format) {
 # Enregistrer le rapport
 try {
     $reportContent | Out-File -FilePath $OutputFile -Encoding UTF8
-    Write-Host "Rapport des risques techniques généré avec succès : $OutputFile"
+    Write-Host "Rapport des risques techniques gÃ©nÃ©rÃ© avec succÃ¨s : $OutputFile"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du rapport : $_"
     exit 1
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'identification des risques techniques :"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'identification des risques techniques :"
 Write-Host "------------------------------------------------"
 
 $totalImprovements = 0
 $totalRisks = 0
 $criticalityLevels = @{
     "Critique" = 0
-    "Élevée" = 0
+    "Ã‰levÃ©e" = 0
     "Moyenne" = 0
     "Faible" = 0
 }
@@ -510,12 +510,12 @@ foreach ($manager in $riskResults.Managers) {
     $totalImprovements += $managerImprovements
     $totalRisks += $managerRisks
     
-    Write-Host "  $($manager.Name) : $managerRisks risques pour $managerImprovements améliorations"
+    Write-Host "  $($manager.Name) : $managerRisks risques pour $managerImprovements amÃ©liorations"
 }
 
-Write-Host "  Total : $totalRisks risques pour $totalImprovements améliorations"
-Write-Host "`nRépartition par niveau de criticité :"
-foreach ($level in @("Critique", "Élevée", "Moyenne", "Faible")) {
+Write-Host "  Total : $totalRisks risques pour $totalImprovements amÃ©liorations"
+Write-Host "`nRÃ©partition par niveau de criticitÃ© :"
+foreach ($level in @("Critique", "Ã‰levÃ©e", "Moyenne", "Faible")) {
     $percentage = if ($totalRisks -gt 0) { [Math]::Round(($criticalityLevels[$level] / $totalRisks) * 100, 1) } else { 0 }
     Write-Host "  $level : $($criticalityLevels[$level]) ($percentage%)"
 }

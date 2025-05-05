@@ -1,4 +1,4 @@
-# Script de test pour la fonction Get-AstParameters
+﻿# Script de test pour la fonction Get-AstParameters
 
 # Importer la fonction
 . "$PSScriptRoot\..\Public\Get-AstParameters.ps1"

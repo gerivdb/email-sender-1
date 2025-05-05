@@ -1,25 +1,25 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour les optimisations de traitement parallèle.
+    Tests unitaires pour les optimisations de traitement parallÃ¨le.
 .DESCRIPTION
-    Ce script contient les tests unitaires pour les fonctions de traitement parallèle,
-    vérifiant les différentes méthodes de parallélisation.
+    Ce script contient les tests unitaires pour les fonctions de traitement parallÃ¨le,
+    vÃ©rifiant les diffÃ©rentes mÃ©thodes de parallÃ©lisation.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-11
+    Date de crÃ©ation: 2025-05-11
 #>
 
 BeforeAll {
-    # Importer les scripts à tester
+    # Importer les scripts Ã  tester
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\performance\Optimize-ParallelExecution.ps1"
     . $scriptPath
 }
 
 Describe "Invoke-SequentialProcessing" {
-    Context "Lorsqu'on exécute un traitement séquentiel" {
-        It "Devrait traiter tous les éléments" {
+    Context "Lorsqu'on exÃ©cute un traitement sÃ©quentiel" {
+        It "Devrait traiter tous les Ã©lÃ©ments" {
             $data = 1..10
             $scriptBlock = {
                 param($item)
@@ -34,7 +34,7 @@ Describe "Invoke-SequentialProcessing" {
             $result.ItemsProcessed | Should -Be 10
         }
         
-        It "Devrait mesurer le temps d'exécution" {
+        It "Devrait mesurer le temps d'exÃ©cution" {
             $data = 1..5
             $scriptBlock = {
                 param($item)
@@ -50,8 +50,8 @@ Describe "Invoke-SequentialProcessing" {
 }
 
 Describe "Invoke-RunspacePoolProcessing" {
-    Context "Lorsqu'on exécute un traitement parallèle avec Runspace Pools" {
-        It "Devrait traiter tous les éléments" {
+    Context "Lorsqu'on exÃ©cute un traitement parallÃ¨le avec Runspace Pools" {
+        It "Devrait traiter tous les Ã©lÃ©ments" {
             $data = 1..10
             $scriptBlock = {
                 param($item)
@@ -67,7 +67,7 @@ Describe "Invoke-RunspacePoolProcessing" {
             $result.MaxThreads | Should -Be 4
         }
         
-        It "Devrait être plus rapide que le traitement séquentiel pour les tâches longues" {
+        It "Devrait Ãªtre plus rapide que le traitement sÃ©quentiel pour les tÃ¢ches longues" {
             $data = 1..8
             $scriptBlock = {
                 param($item)
@@ -81,7 +81,7 @@ Describe "Invoke-RunspacePoolProcessing" {
             $parallelResult.ExecutionTime.TotalMilliseconds | Should -BeLessThan $sequentialResult.ExecutionTime.TotalMilliseconds
         }
         
-        It "Devrait utiliser le nombre de threads spécifié" {
+        It "Devrait utiliser le nombre de threads spÃ©cifiÃ©" {
             $data = 1..10
             $scriptBlock = {
                 param($item)
@@ -95,8 +95,8 @@ Describe "Invoke-RunspacePoolProcessing" {
 }
 
 Describe "Invoke-BatchParallelProcessing" {
-    Context "Lorsqu'on exécute un traitement parallèle par lots" {
-        It "Devrait traiter tous les éléments" {
+    Context "Lorsqu'on exÃ©cute un traitement parallÃ¨le par lots" {
+        It "Devrait traiter tous les Ã©lÃ©ments" {
             $data = 1..10
             $scriptBlock = {
                 param($item)
@@ -111,14 +111,14 @@ Describe "Invoke-BatchParallelProcessing" {
             $result.ItemsProcessed | Should -Be 10
             $result.MaxThreads | Should -Be 4
             $result.ChunkSize | Should -Be 3
-            $result.BatchCount | Should -Be 4  # 10 éléments divisés en lots de 3 = 4 lots
+            $result.BatchCount | Should -Be 4  # 10 Ã©lÃ©ments divisÃ©s en lots de 3 = 4 lots
         }
         
-        It "Devrait être efficace pour les tâches avec surcharge de démarrage" {
+        It "Devrait Ãªtre efficace pour les tÃ¢ches avec surcharge de dÃ©marrage" {
             $data = 1..20
             $scriptBlock = {
                 param($item)
-                # Simuler une surcharge de démarrage
+                # Simuler une surcharge de dÃ©marrage
                 Start-Sleep -Milliseconds 50
                 return $item
             }
@@ -126,11 +126,11 @@ Describe "Invoke-BatchParallelProcessing" {
             $runspaceResult = Invoke-RunspacePoolProcessing -Data $data -ScriptBlock $scriptBlock -MaxThreads 4
             $batchResult = Invoke-BatchParallelProcessing -Data $data -ScriptBlock $scriptBlock -MaxThreads 4 -ChunkSize 5
             
-            # Le traitement par lots devrait être plus efficace car il réduit la surcharge de démarrage
+            # Le traitement par lots devrait Ãªtre plus efficace car il rÃ©duit la surcharge de dÃ©marrage
             $batchResult.ExecutionTime.TotalMilliseconds | Should -BeLessThan $runspaceResult.ExecutionTime.TotalMilliseconds
         }
         
-        It "Devrait calculer automatiquement la taille des lots si non spécifiée" {
+        It "Devrait calculer automatiquement la taille des lots si non spÃ©cifiÃ©e" {
             $data = 1..10
             $scriptBlock = {
                 param($item)
@@ -147,8 +147,8 @@ Describe "Invoke-BatchParallelProcessing" {
 # Tester ForEach-Object -Parallel uniquement si PowerShell 7+ est disponible
 if ($PSVersionTable.PSVersion.Major -ge 7) {
     Describe "Invoke-ForEachParallelProcessing" {
-        Context "Lorsqu'on exécute un traitement parallèle avec ForEach-Object -Parallel" {
-            It "Devrait traiter tous les éléments" {
+        Context "Lorsqu'on exÃ©cute un traitement parallÃ¨le avec ForEach-Object -Parallel" {
+            It "Devrait traiter tous les Ã©lÃ©ments" {
                 $data = 1..10
                 $scriptBlock = {
                     param($item)
@@ -168,9 +168,9 @@ if ($PSVersionTable.PSVersion.Major -ge 7) {
 }
 
 Describe "Optimize-ParallelExecution" {
-    Context "Lorsqu'on optimise l'exécution parallèle" {
+    Context "Lorsqu'on optimise l'exÃ©cution parallÃ¨le" {
         BeforeAll {
-            # Créer une fonction de test
+            # CrÃ©er une fonction de test
             function Test-Function {
                 param($item)
                 Start-Sleep -Milliseconds 10
@@ -178,7 +178,7 @@ Describe "Optimize-ParallelExecution" {
             }
         }
         
-        It "Devrait comparer les différentes méthodes de parallélisation" {
+        It "Devrait comparer les diffÃ©rentes mÃ©thodes de parallÃ©lisation" {
             $data = 1..20
             $result = Optimize-ParallelExecution -Data $data -ScriptBlock ${function:Test-Function} -MaxThreads 4 -ChunkSize 5 -Measure
             
@@ -194,7 +194,7 @@ Describe "Optimize-ParallelExecution" {
             $result.Sequential | Should -Not -BeNullOrEmpty
         }
         
-        It "Devrait recommander la méthode la plus rapide" {
+        It "Devrait recommander la mÃ©thode la plus rapide" {
             $data = 1..20
             $result = Optimize-ParallelExecution -Data $data -ScriptBlock ${function:Test-Function} -MaxThreads 4 -ChunkSize 5 -Measure
             
@@ -202,7 +202,7 @@ Describe "Optimize-ParallelExecution" {
             $result.Recommendations.Method | Should -Be $result.FastestMethod
         }
         
-        It "Devrait exécuter directement avec la méthode optimale si Measure n'est pas spécifié" {
+        It "Devrait exÃ©cuter directement avec la mÃ©thode optimale si Measure n'est pas spÃ©cifiÃ©" {
             $data = 1..20
             $result = Optimize-ParallelExecution -Data $data -ScriptBlock ${function:Test-Function} -MaxThreads 4 -ChunkSize 5
             

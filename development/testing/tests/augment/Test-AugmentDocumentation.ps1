@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour la structure de documentation Augment.
 
 .DESCRIPTION
-    Ce script vérifie que la structure de documentation Augment est correctement
-    implémentée et accessible.
+    Ce script vÃ©rifie que la structure de documentation Augment est correctement
+    implÃ©mentÃ©e et accessible.
 
 .NOTES
     Version: 1.0
@@ -18,13 +18,13 @@ param()
 
 # Importer le module Pester s'il est disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -ErrorAction Stop
 
-# Définir le chemin racine du projet
+# DÃ©finir le chemin racine du projet
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 
 Describe "Structure de documentation Augment" {
@@ -101,8 +101,8 @@ Describe "Structure de documentation Augment" {
         }
     }
 
-    Context "Intégration à la roadmap" {
-        It "Le fichier de tâche dans la roadmap existe" {
+    Context "IntÃ©gration Ã  la roadmap" {
+        It "Le fichier de tÃ¢che dans la roadmap existe" {
             Test-Path -Path "$projectRoot\Roadmap\tasks\augment_documentation_structure.md" -PathType Leaf | Should -Be $true
         }
     }
@@ -119,9 +119,9 @@ Describe "Validation du contenu" {
         foreach ($file in $allFiles) {
             It "Le fichier $($file.Name) a un format Markdown valide" {
                 $content = Get-Content -Path $file.FullName -Raw
-                # Vérifier la présence d'au moins un titre
+                # VÃ©rifier la prÃ©sence d'au moins un titre
                 $content -match "^#\s+.+" | Should -Be $true
-                # Vérifier qu'il n'y a pas de balises HTML non fermées
+                # VÃ©rifier qu'il n'y a pas de balises HTML non fermÃ©es
                 $openTags = [regex]::Matches($content, "<[a-zA-Z]+[^>]*>").Count
                 $closeTags = [regex]::Matches($content, "</[a-zA-Z]+>").Count
                 $selfClosingTags = [regex]::Matches($content, "<[a-zA-Z]+[^>]*/\s*>").Count
@@ -137,5 +137,5 @@ Describe "Validation du contenu" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Output Detailed

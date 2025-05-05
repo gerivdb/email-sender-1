@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Analyse les paramètres d'importation dans un script PowerShell.
+    Analyse les paramÃ¨tres d'importation dans un script PowerShell.
 
 .DESCRIPTION
-    Ce script analyse un fichier PowerShell pour détecter les instructions Import-Module
-    et analyser en détail les paramètres utilisés dans ces instructions.
+    Ce script analyse un fichier PowerShell pour dÃ©tecter les instructions Import-Module
+    et analyser en dÃ©tail les paramÃ¨tres utilisÃ©s dans ces instructions.
 
 .PARAMETER FilePath
-    Chemin du fichier PowerShell à analyser.
+    Chemin du fichier PowerShell Ã  analyser.
 
 .PARAMETER OutputFormat
-    Format de sortie des résultats (Text, JSON, CSV).
+    Format de sortie des rÃ©sultats (Text, JSON, CSV).
 
 .EXAMPLE
     .\Analyze-ImportParameters.ps1 -FilePath "C:\Scripts\MyScript.ps1"
@@ -22,7 +22,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-12-15
+    Date de crÃ©ation: 2023-12-15
 #>
 
 [CmdletBinding()]
@@ -35,20 +35,20 @@ param (
     [string]$OutputFormat = "Text"
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $moduleDependencyDetectorPath = Join-Path -Path $PSScriptRoot -ChildPath "ModuleDependencyDetector.psm1"
 $importParameterAnalyzerPath = Join-Path -Path $PSScriptRoot -ChildPath "ImportParameterAnalyzer.psm1"
 
 Import-Module $moduleDependencyDetectorPath -Force
 Import-Module $importParameterAnalyzerPath -Force
 
-# Vérifier que le fichier existe
+# VÃ©rifier que le fichier existe
 if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-    Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+    Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
     exit 1
 }
 
-# Analyser le fichier pour détecter les instructions Import-Module
+# Analyser le fichier pour dÃ©tecter les instructions Import-Module
 try {
     # Obtenir le contenu du fichier
     $scriptContent = Get-Content -Path $FilePath -Raw
@@ -66,22 +66,22 @@ try {
         $node.CommandElements[0].Value -eq 'Import-Module'
     }, $true)
 
-    # Analyser les paramètres de chaque instruction Import-Module
+    # Analyser les paramÃ¨tres de chaque instruction Import-Module
     $results = @()
     foreach ($call in $importModuleCalls) {
         $parameterTypes = Get-ImportParameterTypes -CommandAst $call
         $namedParameters = Get-NamedParameters -CommandAst $call
         
-        # Extraire les valeurs des paramètres principaux
+        # Extraire les valeurs des paramÃ¨tres principaux
         $moduleName = Get-ParameterValue -CommandAst $call -ParameterName "Name"
         $modulePath = Get-ParameterValue -CommandAst $call -ParameterName "Path"
         
-        # Déterminer le nom du module (soit par le paramètre Name, soit par le chemin)
+        # DÃ©terminer le nom du module (soit par le paramÃ¨tre Name, soit par le chemin)
         if (-not $moduleName -and $modulePath) {
             $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($modulePath)
         }
         
-        # Créer l'objet résultat
+        # CrÃ©er l'objet rÃ©sultat
         $result = [PSCustomObject]@{
             ModuleName = $moduleName
             ModulePath = $modulePath
@@ -102,7 +102,7 @@ try {
         $results += $result
     }
 
-    # Afficher les résultats selon le format demandé
+    # Afficher les rÃ©sultats selon le format demandÃ©
     switch ($OutputFormat) {
         "JSON" {
             $results | ConvertTo-Json -Depth 5
@@ -111,13 +111,13 @@ try {
             $results | ConvertTo-Csv -NoTypeInformation
         }
         default {
-            # Format texte par défaut
-            Write-Host "Analyse des paramètres d'importation dans $FilePath :" -ForegroundColor Cyan
+            # Format texte par dÃ©faut
+            Write-Host "Analyse des paramÃ¨tres d'importation dans $FilePath :" -ForegroundColor Cyan
 
             if ($results.Count -eq 0) {
-                Write-Host "  Aucune instruction d'importation de module détectée." -ForegroundColor Yellow
+                Write-Host "  Aucune instruction d'importation de module dÃ©tectÃ©e." -ForegroundColor Yellow
             } else {
-                Write-Host "  Nombre d'instructions Import-Module trouvées : $($results.Count)" -ForegroundColor Yellow
+                Write-Host "  Nombre d'instructions Import-Module trouvÃ©es : $($results.Count)" -ForegroundColor Yellow
 
                 foreach ($result in $results) {
                     Write-Host "`n  Module : $($result.ModuleName)" -ForegroundColor Green
@@ -128,15 +128,15 @@ try {
                         Write-Host "    Chemin : $($result.ModulePath)" -ForegroundColor Gray
                     }
 
-                    Write-Host "    Paramètres nommés : $($result.NamedParameters)" -ForegroundColor Gray
-                    Write-Host "    Paramètres positionnels : $($result.PositionalParameters)" -ForegroundColor Gray
-                    Write-Host "    Paramètres switch : $($result.SwitchParameters)" -ForegroundColor Gray
-                    Write-Host "    A paramètre Name : $($result.HasNameParameter)" -ForegroundColor Gray
-                    Write-Host "    A paramètre Path : $($result.HasPathParameter)" -ForegroundColor Gray
-                    Write-Host "    A paramètre Version : $($result.HasVersionParameter)" -ForegroundColor Gray
-                    Write-Host "    A caractères spéciaux : $($result.HasSpecialCharacters)" -ForegroundColor Gray
-                    Write-Host "    Paramètres requis : $($result.RequiredParameters)" -ForegroundColor Gray
-                    Write-Host "    Paramètres optionnels : $($result.OptionalParameters)" -ForegroundColor Gray
+                    Write-Host "    ParamÃ¨tres nommÃ©s : $($result.NamedParameters)" -ForegroundColor Gray
+                    Write-Host "    ParamÃ¨tres positionnels : $($result.PositionalParameters)" -ForegroundColor Gray
+                    Write-Host "    ParamÃ¨tres switch : $($result.SwitchParameters)" -ForegroundColor Gray
+                    Write-Host "    A paramÃ¨tre Name : $($result.HasNameParameter)" -ForegroundColor Gray
+                    Write-Host "    A paramÃ¨tre Path : $($result.HasPathParameter)" -ForegroundColor Gray
+                    Write-Host "    A paramÃ¨tre Version : $($result.HasVersionParameter)" -ForegroundColor Gray
+                    Write-Host "    A caractÃ¨res spÃ©ciaux : $($result.HasSpecialCharacters)" -ForegroundColor Gray
+                    Write-Host "    ParamÃ¨tres requis : $($result.RequiredParameters)" -ForegroundColor Gray
+                    Write-Host "    ParamÃ¨tres optionnels : $($result.OptionalParameters)" -ForegroundColor Gray
                 }
             }
         }

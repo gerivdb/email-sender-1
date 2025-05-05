@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour vérifier le rapport du personnel requis.
+    Tests unitaires pour vÃ©rifier le rapport du personnel requis.
 
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier que le rapport du personnel
-    requis a été correctement créé et contient toutes les informations nécessaires.
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier que le rapport du personnel
+    requis a Ã©tÃ© correctement crÃ©Ã© et contient toutes les informations nÃ©cessaires.
 
 .PARAMETER DocumentPath
     Chemin vers le rapport du personnel requis.
 
 .EXAMPLE
     .\Test-RequiredPersonnel.ps1 -DocumentPath "..\..\data\planning\required-personnel.md"
-    Exécute les tests unitaires pour le rapport du personnel requis.
+    ExÃ©cute les tests unitaires pour le rapport du personnel requis.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-09
+    Date de crÃ©ation: 2025-05-09
 #>
 [CmdletBinding()]
 param (
@@ -24,13 +24,13 @@ param (
     [string]$DocumentPath
 )
 
-# Vérifier que le document existe
+# VÃ©rifier que le document existe
 if (-not (Test-Path -Path $DocumentPath)) {
     Write-Error "Le document est introuvable : $DocumentPath"
     exit 1
 }
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Function {
     [CmdletBinding()]
     param (
@@ -47,10 +47,10 @@ function Test-Function {
         $result = & $Test
         
         if ($result -eq $true) {
-            Write-Host "  Résultat : Succès" -ForegroundColor Green
+            Write-Host "  RÃ©sultat : SuccÃ¨s" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Résultat : Échec" -ForegroundColor Red
+            Write-Host "  RÃ©sultat : Ã‰chec" -ForegroundColor Red
             return $false
         }
     } catch {
@@ -71,122 +71,122 @@ $tests = @(
         }
     },
     @{
-        Name = "Test de la présence du titre principal"
+        Name = "Test de la prÃ©sence du titre principal"
         Test = {
-            return ($documentContent -match "# Détermination du Nombre de Personnes Nécessaires pour les Améliorations")
+            return ($documentContent -match "# DÃ©termination du Nombre de Personnes NÃ©cessaires pour les AmÃ©liorations")
         }
     },
     @{
-        Name = "Test de la présence de la table des matières"
+        Name = "Test de la prÃ©sence de la table des matiÃ¨res"
         Test = {
-            return ($documentContent -match "## Table des Matières")
+            return ($documentContent -match "## Table des MatiÃ¨res")
         }
     },
     @{
-        Name = "Test de la présence de la méthodologie"
+        Name = "Test de la prÃ©sence de la mÃ©thodologie"
         Test = {
-            return ($documentContent -match "## Méthodologie")
+            return ($documentContent -match "## MÃ©thodologie")
         }
     },
     @{
-        Name = "Test de la présence de l'échelle de base du personnel"
+        Name = "Test de la prÃ©sence de l'Ã©chelle de base du personnel"
         Test = {
-            return ($documentContent -match "### Échelle de Base du Personnel")
+            return ($documentContent -match "### Ã‰chelle de Base du Personnel")
         }
     },
     @{
-        Name = "Test de la présence du tableau de l'échelle de base"
+        Name = "Test de la prÃ©sence du tableau de l'Ã©chelle de base"
         Test = {
             return ($documentContent -match "\| Score \| Nombre de Personnes \|")
         }
     },
     @{
-        Name = "Test de la présence de l'évaluation du personnel nécessaire"
+        Name = "Test de la prÃ©sence de l'Ã©valuation du personnel nÃ©cessaire"
         Test = {
-            return ($documentContent -match "#### Évaluation du Personnel Nécessaire")
+            return ($documentContent -match "#### Ã‰valuation du Personnel NÃ©cessaire")
         }
     },
     @{
-        Name = "Test de la présence des facteurs d'évaluation"
+        Name = "Test de la prÃ©sence des facteurs d'Ã©valuation"
         Test = {
-            return ($documentContent -match "\*\*Facteurs d'évaluation :\*\*")
+            return ($documentContent -match "\*\*Facteurs d'Ã©valuation :\*\*")
         }
     },
     @{
-        Name = "Test de la présence du tableau des facteurs"
+        Name = "Test de la prÃ©sence du tableau des facteurs"
         Test = {
-            return ($documentContent -match "\| Facteur \| Poids \| Score \| Score pondéré \|")
+            return ($documentContent -match "\| Facteur \| Poids \| Score \| Score pondÃ©rÃ© \|")
         }
     },
     @{
-        Name = "Test de la présence de la répartition par rôle"
+        Name = "Test de la prÃ©sence de la rÃ©partition par rÃ´le"
         Test = {
-            return ($documentContent -match "\*\*Répartition par rôle :\*\*")
+            return ($documentContent -match "\*\*RÃ©partition par rÃ´le :\*\*")
         }
     },
     @{
-        Name = "Test de la présence du tableau des rôles"
+        Name = "Test de la prÃ©sence du tableau des rÃ´les"
         Test = {
-            return ($documentContent -match "\| Rôle \| Nombre \| Justification \|")
+            return ($documentContent -match "\| RÃ´le \| Nombre \| Justification \|")
         }
     },
     @{
-        Name = "Test de la présence de la justification"
+        Name = "Test de la prÃ©sence de la justification"
         Test = {
             return ($documentContent -match "#### Justification")
         }
     },
     @{
-        Name = "Test de la présence de la justification pour la complexité technique"
+        Name = "Test de la prÃ©sence de la justification pour la complexitÃ© technique"
         Test = {
-            return ($documentContent -match "\*\*Complexité technique \(Score : \d+\) :\*\*")
+            return ($documentContent -match "\*\*ComplexitÃ© technique \(Score : \d+\) :\*\*")
         }
     },
     @{
-        Name = "Test de la présence de la justification pour le nombre de compétences requises"
+        Name = "Test de la prÃ©sence de la justification pour le nombre de compÃ©tences requises"
         Test = {
-            return ($documentContent -match "\*\*Nombre de compétences requises \(Score : \d+\) :\*\*")
+            return ($documentContent -match "\*\*Nombre de compÃ©tences requises \(Score : \d+\) :\*\*")
         }
     },
     @{
-        Name = "Test de la présence de la justification pour l'effort requis"
+        Name = "Test de la prÃ©sence de la justification pour l'effort requis"
         Test = {
             return ($documentContent -match "\*\*Effort requis \(Score : \d+\) :\*\*")
         }
     },
     @{
-        Name = "Test de la présence de la justification pour le type d'amélioration"
+        Name = "Test de la prÃ©sence de la justification pour le type d'amÃ©lioration"
         Test = {
-            return ($documentContent -match "\*\*Type d'amélioration \(Score : \d+\) :\*\*")
+            return ($documentContent -match "\*\*Type d'amÃ©lioration \(Score : \d+\) :\*\*")
         }
     },
     @{
-        Name = "Test de la présence du résumé"
+        Name = "Test de la prÃ©sence du rÃ©sumÃ©"
         Test = {
-            return ($documentContent -match "## Résumé")
+            return ($documentContent -match "## RÃ©sumÃ©")
         }
     },
     @{
-        Name = "Test de la présence de la répartition par rôle dans le résumé"
+        Name = "Test de la prÃ©sence de la rÃ©partition par rÃ´le dans le rÃ©sumÃ©"
         Test = {
-            return ($documentContent -match "### Répartition par Rôle")
+            return ($documentContent -match "### RÃ©partition par RÃ´le")
         }
     },
     @{
-        Name = "Test de la présence du tableau de répartition par rôle"
+        Name = "Test de la prÃ©sence du tableau de rÃ©partition par rÃ´le"
         Test = {
-            return ($documentContent -match "\| Rôle \| Nombre \| Pourcentage \|")
+            return ($documentContent -match "\| RÃ´le \| Nombre \| Pourcentage \|")
         }
     },
     @{
-        Name = "Test de la présence des recommandations"
+        Name = "Test de la prÃ©sence des recommandations"
         Test = {
             return ($documentContent -match "### Recommandations")
         }
     }
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $totalTests = $tests.Count
 $passedTests = 0
 
@@ -198,17 +198,17 @@ foreach ($test in $tests) {
     }
 }
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor Cyan
-Write-Host "  Tests réussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
-Write-Host "  Tests échoués : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
+Write-Host "  Tests Ã©chouÃ©s : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi." -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi." -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

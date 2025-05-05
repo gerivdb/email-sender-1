@@ -1,29 +1,29 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Extrait les gestionnaires d'événements d'un script PowerShell.
+    Extrait les gestionnaires d'Ã©vÃ©nements d'un script PowerShell.
 
 .DESCRIPTION
-    Cette fonction analyse un script PowerShell pour détecter les gestionnaires d'événements,
-    y compris les appels à Register-Event, les événements Add-Type et les gestionnaires WMI.
-    Elle retourne des informations détaillées sur chaque gestionnaire trouvé.
+    Cette fonction analyse un script PowerShell pour dÃ©tecter les gestionnaires d'Ã©vÃ©nements,
+    y compris les appels Ã  Register-Event, les Ã©vÃ©nements Add-Type et les gestionnaires WMI.
+    Elle retourne des informations dÃ©taillÃ©es sur chaque gestionnaire trouvÃ©.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à analyser. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() 
+    L'arbre syntaxique PowerShell Ã  analyser. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() 
     ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER Type
-    Type de gestionnaire d'événements à rechercher. Les valeurs possibles sont:
-    - RegisterEvent: Détecte les appels à Register-Event et Register-ObjectEvent
-    - AddType: Détecte les événements définis via Add-Type
-    - WMI: Détecte les gestionnaires WMI (Register-WmiEvent, Get-WmiObject avec événements)
-    - All: Détecte tous les types de gestionnaires (valeur par défaut)
+    Type de gestionnaire d'Ã©vÃ©nements Ã  rechercher. Les valeurs possibles sont:
+    - RegisterEvent: DÃ©tecte les appels Ã  Register-Event et Register-ObjectEvent
+    - AddType: DÃ©tecte les Ã©vÃ©nements dÃ©finis via Add-Type
+    - WMI: DÃ©tecte les gestionnaires WMI (Register-WmiEvent, Get-WmiObject avec Ã©vÃ©nements)
+    - All: DÃ©tecte tous les types de gestionnaires (valeur par dÃ©faut)
 
 .PARAMETER IncludeContent
-    Si spécifié, inclut le contenu complet de chaque gestionnaire d'événements.
+    Si spÃ©cifiÃ©, inclut le contenu complet de chaque gestionnaire d'Ã©vÃ©nements.
 
 .PARAMETER IncludeScriptBlocks
-    Si spécifié, inclut les blocs de script associés aux gestionnaires d'événements.
+    Si spÃ©cifiÃ©, inclut les blocs de script associÃ©s aux gestionnaires d'Ã©vÃ©nements.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -36,7 +36,7 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-05-01
+    Date de crÃ©ation: 2023-05-01
 #>
 function Get-AstEventHandlers {
     [CmdletBinding()]
@@ -57,7 +57,7 @@ function Get-AstEventHandlers {
 
     process {
         try {
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $results = @()
 
             # Fonction pour extraire les informations d'un bloc de script
@@ -84,7 +84,7 @@ function Get-AstEventHandlers {
                 }
             }
 
-            # 1. Détecter les appels à Register-Event et Register-ObjectEvent
+            # 1. DÃ©tecter les appels Ã  Register-Event et Register-ObjectEvent
             if ($Type -in @("RegisterEvent", "All")) {
                 $registerEventCalls = $Ast.FindAll({
                     $args[0] -is [System.Management.Automation.Language.CommandAst] -and
@@ -102,7 +102,7 @@ function Get-AstEventHandlers {
                         Content = if ($IncludeContent) { $call.Extent.Text } else { $null }
                     }
 
-                    # Extraire les paramètres
+                    # Extraire les paramÃ¨tres
                     $parameters = @{}
                     $currentParam = $null
 
@@ -122,10 +122,10 @@ function Get-AstEventHandlers {
                         }
                     }
 
-                    # Ajouter les paramètres à l'objet résultat
+                    # Ajouter les paramÃ¨tres Ã  l'objet rÃ©sultat
                     $eventHandler | Add-Member -MemberType NoteProperty -Name "Parameters" -Value $parameters
 
-                    # Extraire le bloc de script si demandé
+                    # Extraire le bloc de script si demandÃ©
                     if ($IncludeScriptBlocks) {
                         $scriptBlockParam = $call.CommandElements | 
                             Where-Object { $_ -is [System.Management.Automation.Language.ScriptBlockExpressionAst] } | 
@@ -141,7 +141,7 @@ function Get-AstEventHandlers {
                 }
             }
 
-            # 2. Détecter les événements définis via Add-Type
+            # 2. DÃ©tecter les Ã©vÃ©nements dÃ©finis via Add-Type
             if ($Type -in @("AddType", "All")) {
                 $addTypeCalls = $Ast.FindAll({
                     $args[0] -is [System.Management.Automation.Language.CommandAst] -and
@@ -151,18 +151,18 @@ function Get-AstEventHandlers {
                 }, $true)
 
                 foreach ($call in $addTypeCalls) {
-                    # Vérifier si le code contient des événements
+                    # VÃ©rifier si le code contient des Ã©vÃ©nements
                     $typeDefinition = $null
                     $hasEvents = $false
 
-                    # Extraire la définition de type
+                    # Extraire la dÃ©finition de type
                     foreach ($element in $call.CommandElements) {
                         if ($element -is [System.Management.Automation.Language.CommandParameterAst] -and 
                             $element.ParameterName -eq "TypeDefinition") {
                             $index = $call.CommandElements.IndexOf($element)
                             if ($index + 1 -lt $call.CommandElements.Count) {
                                 $typeDefinition = $call.CommandElements[$index + 1].Extent.Text
-                                # Vérifier si la définition contient des événements
+                                # VÃ©rifier si la dÃ©finition contient des Ã©vÃ©nements
                                 $hasEvents = $typeDefinition -match "event\s+\w+|EventHandler|delegate\s+void"
                             }
                         }
@@ -185,9 +185,9 @@ function Get-AstEventHandlers {
                 }
             }
 
-            # 3. Détecter les gestionnaires WMI
+            # 3. DÃ©tecter les gestionnaires WMI
             if ($Type -in @("WMI", "All")) {
-                # Rechercher les appels à Register-WmiEvent
+                # Rechercher les appels Ã  Register-WmiEvent
                 $wmiEventCalls = $Ast.FindAll({
                     $args[0] -is [System.Management.Automation.Language.CommandAst] -and
                     $args[0].CommandElements.Count -gt 0 -and
@@ -204,7 +204,7 @@ function Get-AstEventHandlers {
                         Content = if ($IncludeContent) { $call.Extent.Text } else { $null }
                     }
 
-                    # Extraire les paramètres
+                    # Extraire les paramÃ¨tres
                     $parameters = @{}
                     $currentParam = $null
 
@@ -224,10 +224,10 @@ function Get-AstEventHandlers {
                         }
                     }
 
-                    # Ajouter les paramètres à l'objet résultat
+                    # Ajouter les paramÃ¨tres Ã  l'objet rÃ©sultat
                     $eventHandler | Add-Member -MemberType NoteProperty -Name "Parameters" -Value $parameters
 
-                    # Extraire le bloc de script si demandé
+                    # Extraire le bloc de script si demandÃ©
                     if ($IncludeScriptBlocks) {
                         $scriptBlockParam = $call.CommandElements | 
                             Where-Object { $_ -is [System.Management.Automation.Language.ScriptBlockExpressionAst] } | 
@@ -242,7 +242,7 @@ function Get-AstEventHandlers {
                     $results += $eventHandler
                 }
 
-                # Rechercher les appels à Get-WmiObject avec événements
+                # Rechercher les appels Ã  Get-WmiObject avec Ã©vÃ©nements
                 $getWmiCalls = $Ast.FindAll({
                     $args[0] -is [System.Management.Automation.Language.CommandAst] -and
                     $args[0].CommandElements.Count -gt 0 -and
@@ -251,7 +251,7 @@ function Get-AstEventHandlers {
                 }, $true)
 
                 foreach ($call in $getWmiCalls) {
-                    # Vérifier si l'appel contient des paramètres liés aux événements
+                    # VÃ©rifier si l'appel contient des paramÃ¨tres liÃ©s aux Ã©vÃ©nements
                     $hasEvents = $false
                     $eventParameters = @{}
 
@@ -263,9 +263,9 @@ function Get-AstEventHandlers {
                         }
                     }
 
-                    # Vérifier si l'appel est utilisé dans un contexte d'événement
+                    # VÃ©rifier si l'appel est utilisÃ© dans un contexte d'Ã©vÃ©nement
                     if (-not $hasEvents) {
-                        # Vérifier si l'appel est assigné à une variable utilisée plus tard avec Register-Event
+                        # VÃ©rifier si l'appel est assignÃ© Ã  une variable utilisÃ©e plus tard avec Register-Event
                         $parent = $call.Parent
                         if ($parent -is [System.Management.Automation.Language.AssignmentStatementAst]) {
                             $variableName = $null
@@ -314,7 +314,7 @@ function Get-AstEventHandlers {
             return $results
         }
         catch {
-            Write-Error "Erreur lors de l'extraction des gestionnaires d'événements: $_"
+            Write-Error "Erreur lors de l'extraction des gestionnaires d'Ã©vÃ©nements: $_"
             throw
         }
     }

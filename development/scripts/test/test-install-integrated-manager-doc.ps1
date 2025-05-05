@@ -1,13 +1,13 @@
-# Test de la documentation du script install-integrated-manager.ps1
+﻿# Test de la documentation du script install-integrated-manager.ps1
 
-# Définir le chemin du projet
+# DÃ©finir le chemin du projet
 $ProjectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 
-# Définir les chemins des fichiers
+# DÃ©finir les chemins des fichiers
 $scriptPath = Join-Path -Path $ProjectRoot -ChildPath "development\managers\integrated-manager\scripts\install-integrated-manager.ps1"
 $docPath = Join-Path -Path $ProjectRoot -ChildPath "development\docs\guides\methodologies\install_integrated_manager.md"
 
-# Vérifier que les fichiers existent
+# VÃ©rifier que les fichiers existent
 if (-not (Test-Path -Path $scriptPath -PathType Leaf)) {
     Write-Error "Le script install-integrated-manager.ps1 est introuvable : $scriptPath"
     exit 1
@@ -22,17 +22,17 @@ if (-not (Test-Path -Path $docPath -PathType Leaf)) {
 $scriptContent = Get-Content -Path $scriptPath -Raw
 $docContent = Get-Content -Path $docPath -Raw
 
-# Vérifier que la documentation contient les sections requises
+# VÃ©rifier que la documentation contient les sections requises
 $sections = @(
     "## Introduction",
     "## Objectif",
-    "## Prérequis",
-    "## Paramètres",
-    "## Fonctionnement détaillé",
+    "## PrÃ©requis",
+    "## ParamÃ¨tres",
+    "## Fonctionnement dÃ©taillÃ©",
     "## Exemples d'utilisation",
-    "## Cas d'erreur et résolution",
+    "## Cas d'erreur et rÃ©solution",
     "## Bonnes pratiques",
-    "## Intégration avec d'autres scripts",
+    "## IntÃ©gration avec d'autres scripts",
     "## Conclusion"
 )
 
@@ -50,7 +50,7 @@ foreach ($section in $sections) {
     }
 }
 
-# Vérifier que la documentation mentionne les paramètres du script
+# VÃ©rifier que la documentation mentionne les paramÃ¨tres du script
 $parameters = @(
     "ProjectRoot",
     "Force"
@@ -70,15 +70,15 @@ foreach ($parameter in $parameters) {
     }
 }
 
-# Vérifier que la documentation contient une table des paramètres
-$tableExists = $docContent -match "\| Parametre \|" -or $docContent -match "\| Paramètre \|"
+# VÃ©rifier que la documentation contient une table des paramÃ¨tres
+$tableExists = $docContent -match "\| Parametre \|" -or $docContent -match "\| ParamÃ¨tre \|"
 if ($tableExists) {
     Write-Host "Table des parametres trouvee" -ForegroundColor Green
 } else {
     Write-Host "Table des parametres manquante" -ForegroundColor Red
 }
 
-# Vérifier que la documentation contient des exemples d'utilisation
+# VÃ©rifier que la documentation contient des exemples d'utilisation
 $examplesExist = $docContent -match "```powershell"
 if ($examplesExist) {
     Write-Host "Exemples d'utilisation trouves" -ForegroundColor Green
@@ -86,7 +86,7 @@ if ($examplesExist) {
     Write-Host "Exemples d'utilisation manquants" -ForegroundColor Red
 }
 
-# Vérifier que la documentation contient des cas d'erreur
+# VÃ©rifier que la documentation contient des cas d'erreur
 $errorsExist = $docContent -match "\*\*Erreur :\*\*"
 if ($errorsExist) {
     Write-Host "Cas d'erreur trouves" -ForegroundColor Green
@@ -94,7 +94,7 @@ if ($errorsExist) {
     Write-Host "Cas d'erreur manquants" -ForegroundColor Red
 }
 
-# Afficher un résumé des résultats
+# Afficher un rÃ©sumÃ© des rÃ©sultats
 Write-Host ""
 Write-Host "Resume des tests" -ForegroundColor Cyan
 Write-Host "================" -ForegroundColor Cyan
@@ -149,7 +149,7 @@ if ($allChecksPass) {
     Write-Host "Resultat final : ECHEC" -ForegroundColor Red
 }
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 return @{
     SectionResults   = $sectionResults
     ParameterResults = $parameterResults

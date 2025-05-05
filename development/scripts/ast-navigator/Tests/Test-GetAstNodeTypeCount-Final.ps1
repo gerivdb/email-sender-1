@@ -1,9 +1,9 @@
-# Script de test pour la fonction Get-AstNodeTypeCount
+﻿# Script de test pour la fonction Get-AstNodeTypeCount
 
 # Importer la fonction Get-AstNodeTypeCount
 . "$PSScriptRoot\..\Public\Get-AstNodeTypeCount.ps1"
 
-# Créer un script PowerShell de test
+# CrÃ©er un script PowerShell de test
 $sampleCode = @'
 function Get-Example {
     param (

@@ -1,4 +1,4 @@
-# Script pour corriger les modules
+﻿# Script pour corriger les modules
 Write-Host "Correction des modules" -ForegroundColor Green
 
 # Importer les modules
@@ -20,7 +20,7 @@ function Fix-Module {
     Write-Host "Correction du module $ModuleName..." -ForegroundColor Yellow
     
     if (-not (Test-Path -Path $ModulePath)) {
-        Write-Host "Le module $ModuleName n'existe pas au chemin spécifié : $ModulePath" -ForegroundColor Red
+        Write-Host "Le module $ModuleName n'existe pas au chemin spÃ©cifiÃ© : $ModulePath" -ForegroundColor Red
         return $false
     }
     
@@ -29,12 +29,12 @@ function Fix-Module {
         $content = Get-Content -Path $ModulePath -Raw
         
         # Remplacer Export-ModuleMember par un commentaire
-        $newContent = $content -replace "Export-ModuleMember.*", "# Export-ModuleMember est commenté pour permettre le chargement direct du script"
+        $newContent = $content -replace "Export-ModuleMember.*", "# Export-ModuleMember est commentÃ© pour permettre le chargement direct du script"
         
-        # Écrire le contenu modifié
+        # Ã‰crire le contenu modifiÃ©
         Set-Content -Path $ModulePath -Value $newContent -Encoding UTF8
         
-        Write-Host "Module $ModuleName corrigé avec succès." -ForegroundColor Green
+        Write-Host "Module $ModuleName corrigÃ© avec succÃ¨s." -ForegroundColor Green
         return $true
     } catch {
         Write-Host "Erreur lors de la correction du module $ModuleName : $_" -ForegroundColor Red
@@ -59,15 +59,15 @@ foreach ($moduleName in $modules.Keys) {
     $results[$moduleName] = Fix-Module -ModuleName $moduleName -ModulePath $modulePath
 }
 
-# Afficher les résultats
-Write-Host "`nRésultats des corrections :" -ForegroundColor Cyan
+# Afficher les rÃ©sultats
+Write-Host "`nRÃ©sultats des corrections :" -ForegroundColor Cyan
 foreach ($moduleName in $results.Keys) {
-    $status = if ($results[$moduleName]) { "Succès" } else { "Échec" }
+    $status = if ($results[$moduleName]) { "SuccÃ¨s" } else { "Ã‰chec" }
     $color = if ($results[$moduleName]) { "Green" } else { "Red" }
     Write-Host "  $moduleName : $status" -ForegroundColor $color
 }
 
-# Vérifier si tous les modules ont été corrigés avec succès
+# VÃ©rifier si tous les modules ont Ã©tÃ© corrigÃ©s avec succÃ¨s
 $allSuccess = $true
 foreach ($success in $results.Values) {
     if (-not $success) {
@@ -77,9 +77,9 @@ foreach ($success in $results.Values) {
 }
 
 if ($allSuccess) {
-    Write-Host "`nTous les modules ont été corrigés avec succès." -ForegroundColor Green
+    Write-Host "`nTous les modules ont Ã©tÃ© corrigÃ©s avec succÃ¨s." -ForegroundColor Green
 } else {
-    Write-Host "`nCertains modules n'ont pas pu être corrigés. Veuillez vérifier les erreurs." -ForegroundColor Red
+    Write-Host "`nCertains modules n'ont pas pu Ãªtre corrigÃ©s. Veuillez vÃ©rifier les erreurs." -ForegroundColor Red
 }
 
-Write-Host "Corrections terminées." -ForegroundColor Green
+Write-Host "Corrections terminÃ©es." -ForegroundColor Green

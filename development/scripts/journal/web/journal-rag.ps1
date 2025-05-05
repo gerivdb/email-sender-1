@@ -1,4 +1,4 @@
-# Script PowerShell pour le systÃ¨me RAG du journal de bord
+﻿# Script PowerShell pour le systÃƒÂ¨me RAG du journal de bord
 
 param (
     [Parameter(Position=0)]
@@ -11,13 +11,13 @@ param (
 $ScriptsDir = "scripts\python\journal"
 
 function Show-Help {
-    Write-Host "Utilisation du systÃ¨me RAG pour le journal de bord"
+    Write-Host "Utilisation du systÃƒÂ¨me RAG pour le journal de bord"
     Write-Host ""
     Write-Host "Commandes disponibles:"
-    Write-Host "  setup       - Configure le systÃ¨me RAG"
-    Write-Host "  new         - CrÃ©e une nouvelle entrÃ©e dans le journal"
+    Write-Host "  setup       - Configure le systÃƒÂ¨me RAG"
+    Write-Host "  new         - CrÃƒÂ©e une nouvelle entrÃƒÂ©e dans le journal"
     Write-Host "  search      - Recherche dans le journal"
-    Write-Host "  query       - Interroge le systÃ¨me RAG"
+    Write-Host "  query       - Interroge le systÃƒÂ¨me RAG"
     Write-Host "  rebuild     - Reconstruit les index"
     Write-Host "  help        - Affiche cette aide"
     Write-Host ""
@@ -25,17 +25,17 @@ function Show-Help {
     Write-Host "  .\development\scripts\cmd\journal-rag.ps1 setup"
     Write-Host "  .\development\scripts\cmd\journal-rag.ps1 new"
     Write-Host "  .\development\scripts\cmd\journal-rag.ps1 search"
-    Write-Host "  .\development\scripts\cmd\journal-rag.ps1 query 'problÃ¨mes d''encodage'"
+    Write-Host "  .\development\scripts\cmd\journal-rag.ps1 query 'problÃƒÂ¨mes d''encodage'"
     Write-Host "  .\development\scripts\cmd\journal-rag.ps1 rebuild"
 }
 
 function Setup-System {
-    Write-Host "Configuration du systÃ¨me RAG..."
+    Write-Host "Configuration du systÃƒÂ¨me RAG..."
     python "$ScriptsDir\setup.py" $Arguments
 }
 
 function New-Entry {
-    Write-Host "CrÃ©ation d'une nouvelle entrÃ©e..."
+    Write-Host "CrÃƒÂ©ation d'une nouvelle entrÃƒÂ©e..."
     python "$ScriptsDir\journal_vscode.py" new
 }
 
@@ -46,13 +46,13 @@ function Search-Journal {
 
 function Query-RAG {
     if ($Arguments.Count -eq 0) {
-        Write-Host "Erreur: RequÃªte manquante"
-        Write-Host "Exemple: .\development\scripts\cmd\journal-rag.ps1 query 'problÃ¨mes d''encodage'"
+        Write-Host "Erreur: RequÃƒÂªte manquante"
+        Write-Host "Exemple: .\development\scripts\cmd\journal-rag.ps1 query 'problÃƒÂ¨mes d''encodage'"
         return
     }
 
     $Query = $Arguments -join " "
-    Write-Host "Interrogation du systÃ¨me RAG: '$Query'..."
+    Write-Host "Interrogation du systÃƒÂ¨me RAG: '$Query'..."
     python "$ScriptsDir\journal_rag_simple.py" --query $Query
 }
 
@@ -62,7 +62,7 @@ function Rebuild-Indexes {
     python "$ScriptsDir\journal_rag_simple.py" --rebuild --export
 }
 
-# ExÃ©cution de la commande
+# ExÃƒÂ©cution de la commande
 switch ($Command) {
     "setup" { Setup-System }
     "new" { New-Entry }

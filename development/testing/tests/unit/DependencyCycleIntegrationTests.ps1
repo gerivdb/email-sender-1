@@ -1,31 +1,31 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration simplifiés pour les modules DependencyCycleResolver et CycleDetector.
+    Tests d'intÃ©gration simplifiÃ©s pour les modules DependencyCycleResolver et CycleDetector.
 .DESCRIPTION
-    Ce script contient des tests d'intégration simplifiés pour vérifier le bon fonctionnement
+    Ce script contient des tests d'intÃ©gration simplifiÃ©s pour vÃ©rifier le bon fonctionnement
     des modules DependencyCycleResolver et CycleDetector ensemble.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-20
+    Date de crÃ©ation: 2025-04-20
 #>
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules"
 $cycleDetectorPath = Join-Path -Path $modulesPath -ChildPath "CycleDetector.psm1"
 $cycleResolverPath = Join-Path -Path $modulesPath -ChildPath "DependencyCycleResolver.psm1"
 
-# Vérifier si les modules existent
+# VÃ©rifier si les modules existent
 if (-not (Test-Path -Path $cycleDetectorPath)) {
-    throw "Le module CycleDetector.psm1 n'existe pas à l'emplacement spécifié: $cycleDetectorPath"
+    throw "Le module CycleDetector.psm1 n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $cycleDetectorPath"
 }
 
 if (-not (Test-Path -Path $cycleResolverPath)) {
-    throw "Le module DependencyCycleResolver.psm1 n'existe pas à l'emplacement spécifié: $cycleResolverPath"
+    throw "Le module DependencyCycleResolver.psm1 n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $cycleResolverPath"
 }
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Function {
     param (
         [string]$Name,
@@ -37,10 +37,10 @@ function Test-Function {
     try {
         $result = & $Test
         if ($result) {
-            Write-Host "  Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©ussi" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Échoué" -ForegroundColor Red
+            Write-Host "  Ã‰chouÃ©" -ForegroundColor Red
             return $false
         }
     } catch {
@@ -56,15 +56,15 @@ function Find-CycleWrapper {
         [hashtable]$Graph
     )
     
-    # Créer un objet CycleResult manuellement
+    # CrÃ©er un objet CycleResult manuellement
     $hasCycle = $false
     $cyclePath = @()
     
-    # Vérifier si le graphe contient un cycle
+    # VÃ©rifier si le graphe contient un cycle
     $visited = @{}
     $recursionStack = @{}
     
-    # Fonction récursive pour détecter un cycle
+    # Fonction rÃ©cursive pour dÃ©tecter un cycle
     function Detect-Cycle {
         param (
             [string]$Node,
@@ -74,14 +74,14 @@ function Find-CycleWrapper {
             [ref]$CyclePath
         )
         
-        # Marquer le nœud comme visité et ajouter à la pile de récursion
+        # Marquer le nÅ“ud comme visitÃ© et ajouter Ã  la pile de rÃ©cursion
         $Visited[$Node] = $true
         $RecursionStack[$Node] = $true
         
-        # Vérifier si le nœud a des voisins
+        # VÃ©rifier si le nÅ“ud a des voisins
         if ($Graph.ContainsKey($Node) -and $null -ne $Graph[$Node]) {
             foreach ($neighbor in $Graph[$Node]) {
-                # Si le voisin est déjà dans la pile de récursion, un cycle est détecté
+                # Si le voisin est dÃ©jÃ  dans la pile de rÃ©cursion, un cycle est dÃ©tectÃ©
                 if ($RecursionStack.ContainsKey($neighbor) -and $RecursionStack[$neighbor]) {
                     # Construire le chemin du cycle
                     $CyclePath.Value = @($neighbor)
@@ -94,7 +94,7 @@ function Find-CycleWrapper {
                     return $true
                 }
                 
-                # Si le voisin n'a pas été visité, le visiter récursivement
+                # Si le voisin n'a pas Ã©tÃ© visitÃ©, le visiter rÃ©cursivement
                 if (-not $Visited.ContainsKey($neighbor) -or -not $Visited[$neighbor]) {
                     if (Detect-Cycle -Node $neighbor -Visited $Visited -RecursionStack $RecursionStack -Graph $Graph -CyclePath $CyclePath) {
                         return $true
@@ -103,15 +103,15 @@ function Find-CycleWrapper {
             }
         }
         
-        # Retirer le nœud de la pile de récursion
+        # Retirer le nÅ“ud de la pile de rÃ©cursion
         $RecursionStack[$Node] = $false
         
         return $false
     }
     
-    # Parcourir tous les nœuds du graphe
+    # Parcourir tous les nÅ“uds du graphe
     foreach ($node in $Graph.Keys) {
-        # Si le nœud n'a pas été visité, le visiter
+        # Si le nÅ“ud n'a pas Ã©tÃ© visitÃ©, le visiter
         if (-not $visited.ContainsKey($node) -or -not $visited[$node]) {
             $cyclePathRef = [ref]$cyclePath
             if (Detect-Cycle -Node $node -Visited $visited -RecursionStack $recursionStack -Graph $Graph -CyclePath $cyclePathRef) {
@@ -128,14 +128,14 @@ function Find-CycleWrapper {
     }
 }
 
-# Initialiser les résultats des tests
+# Initialiser les rÃ©sultats des tests
 $testsPassed = 0
 $testsFailed = 0
 
 # Test 1: Importer les modules
 $result = Test-Function -Name "Importer les modules" -Test {
     try {
-        # Supprimer les modules s'ils sont déjà importés
+        # Supprimer les modules s'ils sont dÃ©jÃ  importÃ©s
         if (Get-Module -Name CycleDetector) {
             Remove-Module -Name CycleDetector -Force
         }
@@ -148,7 +148,7 @@ $result = Test-Function -Name "Importer les modules" -Test {
         Import-Module $cycleDetectorPath -Force
         Import-Module $cycleResolverPath -Force
         
-        # Vérifier que les modules sont importés
+        # VÃ©rifier que les modules sont importÃ©s
         $cycleDetectorImported = Get-Module -Name CycleDetector
         $cycleResolverImported = Get-Module -Name DependencyCycleResolver
         
@@ -175,63 +175,63 @@ $result = Test-Function -Name "Initialiser les modules" -Test {
 }
 if ($result) { $testsPassed++ } else { $testsFailed++ }
 
-# Test 3: Intégration Find-Cycle et Resolve-DependencyCycle
-$result = Test-Function -Name "Intégration Find-Cycle et Resolve-DependencyCycle" -Test {
+# Test 3: IntÃ©gration Find-Cycle et Resolve-DependencyCycle
+$result = Test-Function -Name "IntÃ©gration Find-Cycle et Resolve-DependencyCycle" -Test {
     try {
-        # Créer un graphe avec un cycle
+        # CrÃ©er un graphe avec un cycle
         $graph = @{
             "A" = @("B")
             "B" = @("C")
             "C" = @("A")
         }
         
-        # Détecter le cycle
+        # DÃ©tecter le cycle
         $cycleResult = Find-CycleWrapper -Graph $graph
         
-        # Vérifier que le cycle est détecté
+        # VÃ©rifier que le cycle est dÃ©tectÃ©
         if (-not $cycleResult.HasCycle) {
-            Write-Host "  Le cycle n'a pas été détecté" -ForegroundColor Red
+            Write-Host "  Le cycle n'a pas Ã©tÃ© dÃ©tectÃ©" -ForegroundColor Red
             return $false
         }
         
-        # Créer un objet CycleResult compatible avec Resolve-DependencyCycle
+        # CrÃ©er un objet CycleResult compatible avec Resolve-DependencyCycle
         $compatibleCycleResult = [PSCustomObject]@{
             HasCycle  = $cycleResult.HasCycle
             CyclePath = $cycleResult.CyclePath
             Graph     = $graph
         }
         
-        # Résoudre le cycle
+        # RÃ©soudre le cycle
         $resolveResult = Resolve-DependencyCycle -CycleResult $compatibleCycleResult
         
-        # Vérifier que le cycle est résolu
+        # VÃ©rifier que le cycle est rÃ©solu
         if (-not $resolveResult.Success) {
-            Write-Host "  Le cycle n'a pas été résolu" -ForegroundColor Red
+            Write-Host "  Le cycle n'a pas Ã©tÃ© rÃ©solu" -ForegroundColor Red
             return $false
         }
         
-        # Vérifier que le graphe modifié n'a plus de cycle
+        # VÃ©rifier que le graphe modifiÃ© n'a plus de cycle
         $newCycleCheck = Find-CycleWrapper -Graph $resolveResult.Graph
         
         return -not $newCycleCheck.HasCycle
     } catch {
-        Write-Host "  Erreur lors de l'intégration Find-Cycle et Resolve-DependencyCycle: $_" -ForegroundColor Red
+        Write-Host "  Erreur lors de l'intÃ©gration Find-Cycle et Resolve-DependencyCycle: $_" -ForegroundColor Red
         return $false
     }
 }
 if ($result) { $testsPassed++ } else { $testsFailed++ }
 
-# Afficher le résumé des tests
-Write-Host "`nRésumé des tests:" -ForegroundColor Yellow
-Write-Host "  Tests réussis: $testsPassed" -ForegroundColor Green
-Write-Host "  Tests échoués: $testsFailed" -ForegroundColor Red
+# Afficher le rÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Yellow
+Write-Host "  Tests rÃ©ussis: $testsPassed" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $testsFailed" -ForegroundColor Red
 Write-Host "  Total: $($testsPassed + $testsFailed)" -ForegroundColor Yellow
 
-# Retourner un code de sortie en fonction des résultats des tests
+# Retourner un code de sortie en fonction des rÃ©sultats des tests
 if ($testsFailed -eq 0) {
-    Write-Host "`nTous les tests ont été exécutés avec succès." -ForegroundColor Green
+    Write-Host "`nTous les tests ont Ã©tÃ© exÃ©cutÃ©s avec succÃ¨s." -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

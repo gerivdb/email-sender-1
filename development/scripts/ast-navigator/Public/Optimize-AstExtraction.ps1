@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Optimise les performances des fonctions d'extraction AST pour les grands scripts.
 .DESCRIPTION
-    Cette fonction fournit des optimisations pour améliorer les performances des fonctions
-    d'extraction AST lors du traitement de grands scripts PowerShell. Elle implémente
+    Cette fonction fournit des optimisations pour amÃ©liorer les performances des fonctions
+    d'extraction AST lors du traitement de grands scripts PowerShell. Elle implÃ©mente
     des techniques comme la mise en cache, le traitement par lots et la limitation de profondeur.
 .PARAMETER Ast
-    L'objet AST (Abstract Syntax Tree) à analyser.
+    L'objet AST (Abstract Syntax Tree) Ã  analyser.
 .PARAMETER NodeType
-    Le type de nœud AST à extraire (FunctionDefinition, Parameter, Variable, Command, etc.).
+    Le type de nÅ“ud AST Ã  extraire (FunctionDefinition, Parameter, Variable, Command, etc.).
 .PARAMETER MaxDepth
-    La profondeur maximale de l'arbre AST à parcourir. Utile pour limiter l'analyse des grands scripts.
+    La profondeur maximale de l'arbre AST Ã  parcourir. Utile pour limiter l'analyse des grands scripts.
 .PARAMETER BatchSize
-    La taille des lots pour le traitement par lots. Utile pour optimiser l'utilisation de la mémoire.
+    La taille des lots pour le traitement par lots. Utile pour optimiser l'utilisation de la mÃ©moire.
 .PARAMETER UseCache
-    Indique si le cache doit être utilisé pour stocker et récupérer les résultats d'extraction.
+    Indique si le cache doit Ãªtre utilisÃ© pour stocker et rÃ©cupÃ©rer les rÃ©sultats d'extraction.
 .PARAMETER CacheTimeout
-    Durée de validité du cache en minutes. Par défaut: 60 minutes.
+    DurÃ©e de validitÃ© du cache en minutes. Par dÃ©faut: 60 minutes.
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile(".\MonScript.ps1", [ref]$null, [ref]$null)
     $functions = Optimize-AstExtraction -Ast $ast -NodeType "FunctionDefinition" -MaxDepth 5 -UseCache
@@ -49,13 +49,13 @@ function Optimize-AstExtraction {
         [int]$CacheTimeout = 60
     )
 
-    # Initialiser le cache si nécessaire
+    # Initialiser le cache si nÃ©cessaire
     if ($UseCache -and -not $script:AstExtractionCache) {
         $script:AstExtractionCache = @{}
         $script:AstExtractionCacheTimestamps = @{}
     }
 
-    # Fonction pour générer une clé de cache unique
+    # Fonction pour gÃ©nÃ©rer une clÃ© de cache unique
     function Get-CacheKey {
         param(
             [System.Management.Automation.Language.Ast]$Ast,
@@ -63,7 +63,7 @@ function Optimize-AstExtraction {
             [int]$MaxDepth
         )
 
-        # Utiliser le contenu du script et sa date de modification comme partie de la clé
+        # Utiliser le contenu du script et sa date de modification comme partie de la clÃ©
         $scriptContent = $Ast.Extent.Text
         $scriptHash = [System.Security.Cryptography.SHA256]::Create().ComputeHash(
             [System.Text.Encoding]::UTF8.GetBytes($scriptContent)
@@ -73,7 +73,7 @@ function Optimize-AstExtraction {
         return "$scriptHashString-$NodeType-$MaxDepth"
     }
 
-    # Vérifier si le résultat est dans le cache
+    # VÃ©rifier si le rÃ©sultat est dans le cache
     if ($UseCache) {
         $cacheKey = Get-CacheKey -Ast $Ast -NodeType $NodeType -MaxDepth $MaxDepth
 
@@ -81,15 +81,15 @@ function Optimize-AstExtraction {
             $cacheTimestamp = $script:AstExtractionCacheTimestamps[$cacheKey]
             $cacheAge = (Get-Date) - $cacheTimestamp
 
-            # Vérifier si le cache est encore valide
+            # VÃ©rifier si le cache est encore valide
             if ($cacheAge.TotalMinutes -lt $CacheTimeout) {
-                Write-Verbose "Résultat récupéré du cache pour $NodeType (âge: $($cacheAge.TotalMinutes) minutes)"
+                Write-Verbose "RÃ©sultat rÃ©cupÃ©rÃ© du cache pour $NodeType (Ã¢ge: $($cacheAge.TotalMinutes) minutes)"
                 return $script:AstExtractionCache[$cacheKey]
             } else {
-                # Supprimer l'entrée de cache expirée
+                # Supprimer l'entrÃ©e de cache expirÃ©e
                 $script:AstExtractionCache.Remove($cacheKey)
                 $script:AstExtractionCacheTimestamps.Remove($cacheKey)
-                Write-Verbose "Cache expiré pour $NodeType (âge: $($cacheAge.TotalMinutes) minutes)"
+                Write-Verbose "Cache expirÃ© pour $NodeType (Ã¢ge: $($cacheAge.TotalMinutes) minutes)"
             }
         }
     }
@@ -103,10 +103,10 @@ function Optimize-AstExtraction {
             [int]$BatchSize
         )
 
-        # Obtenir tous les nœuds à traiter
+        # Obtenir tous les nÅ“uds Ã  traiter
         $allNodes = @()
 
-        # Fonction récursive pour collecter les nœuds
+        # Fonction rÃ©cursive pour collecter les nÅ“uds
         function Collect-Nodes {
             param(
                 [System.Management.Automation.Language.Ast]$CurrentAst,
@@ -126,7 +126,7 @@ function Optimize-AstExtraction {
 
         Collect-Nodes -CurrentAst $Ast
 
-        # Traiter les nœuds par lots
+        # Traiter les nÅ“uds par lots
         $results = @()
         $currentBatch = @()
         $nodeCount = $allNodes.Count
@@ -139,10 +139,10 @@ function Optimize-AstExtraction {
                 $batchResults = Process-NodeBatch -Nodes $currentBatch -NodeType $NodeType
                 $results += $batchResults
 
-                # Réinitialiser le lot
+                # RÃ©initialiser le lot
                 $currentBatch = @()
 
-                # Forcer le garbage collection pour libérer de la mémoire
+                # Forcer le garbage collection pour libÃ©rer de la mÃ©moire
                 [System.GC]::Collect()
             }
         }
@@ -150,7 +150,7 @@ function Optimize-AstExtraction {
         return $results
     }
 
-    # Fonction pour traiter un lot de nœuds
+    # Fonction pour traiter un lot de nÅ“uds
     function Process-NodeBatch {
         param(
             [System.Management.Automation.Language.Ast[]]$Nodes,
@@ -160,7 +160,7 @@ function Optimize-AstExtraction {
         $results = @()
 
         foreach ($node in $Nodes) {
-            # Filtrer selon le type de nœud
+            # Filtrer selon le type de nÅ“ud
             switch ($NodeType) {
                 "FunctionDefinition" {
                     if ($node -is [System.Management.Automation.Language.FunctionDefinitionAst]) {
@@ -191,7 +191,7 @@ function Optimize-AstExtraction {
         return $results
     }
 
-    # Fonction pour extraire les nœuds avec limitation de profondeur
+    # Fonction pour extraire les nÅ“uds avec limitation de profondeur
     function Extract-NodesWithDepthLimit {
         param(
             [System.Management.Automation.Language.Ast]$Ast,
@@ -199,7 +199,7 @@ function Optimize-AstExtraction {
             [int]$MaxDepth
         )
 
-        # Définir le prédicat en fonction du type de nœud
+        # DÃ©finir le prÃ©dicat en fonction du type de nÅ“ud
         $predicate = {
             param($node)
 
@@ -212,11 +212,11 @@ function Optimize-AstExtraction {
             }
         }
 
-        # Si MaxDepth est spécifié, utiliser une approche personnalisée
+        # Si MaxDepth est spÃ©cifiÃ©, utiliser une approche personnalisÃ©e
         if ($MaxDepth -gt 0) {
             $results = @()
 
-            # Fonction récursive pour parcourir l'AST avec limite de profondeur
+            # Fonction rÃ©cursive pour parcourir l'AST avec limite de profondeur
             function Find-NodesWithDepth {
                 param(
                     [System.Management.Automation.Language.Ast]$CurrentAst,
@@ -227,12 +227,12 @@ function Optimize-AstExtraction {
                     return
                 }
 
-                # Vérifier si le nœud actuel correspond au prédicat
+                # VÃ©rifier si le nÅ“ud actuel correspond au prÃ©dicat
                 if (& $predicate $CurrentAst) {
                     $results += $CurrentAst
                 }
 
-                # Parcourir les nœuds enfants
+                # Parcourir les nÅ“uds enfants
                 foreach ($childAst in $CurrentAst.FindAll({ $true }, $false)) {
                     Find-NodesWithDepth -CurrentAst $childAst -CurrentDepth ($CurrentDepth + 1)
                 }
@@ -241,19 +241,19 @@ function Optimize-AstExtraction {
             Find-NodesWithDepth -CurrentAst $Ast
             return $results
         } else {
-            # Utiliser la méthode standard FindAll si MaxDepth n'est pas spécifié
+            # Utiliser la mÃ©thode standard FindAll si MaxDepth n'est pas spÃ©cifiÃ©
             return $Ast.FindAll($predicate, $true)
         }
     }
 
-    # Exécuter l'extraction optimisée
+    # ExÃ©cuter l'extraction optimisÃ©e
     $result = $null
 
     try {
         # Mesurer les performances
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-        # Choisir la méthode d'extraction en fonction des paramètres
+        # Choisir la mÃ©thode d'extraction en fonction des paramÃ¨tres
         if ($BatchSize -gt 0) {
             Write-Verbose "Utilisation du traitement par lots (taille: $BatchSize)"
             $result = Process-AstInBatches -Ast $Ast -NodeType $NodeType -MaxDepth $MaxDepth -BatchSize $BatchSize
@@ -263,19 +263,19 @@ function Optimize-AstExtraction {
         }
 
         $stopwatch.Stop()
-        Write-Verbose "Extraction terminée en $($stopwatch.ElapsedMilliseconds) ms"
+        Write-Verbose "Extraction terminÃ©e en $($stopwatch.ElapsedMilliseconds) ms"
 
-        # Stocker le résultat dans le cache si nécessaire
+        # Stocker le rÃ©sultat dans le cache si nÃ©cessaire
         if ($UseCache) {
             $cacheKey = Get-CacheKey -Ast $Ast -NodeType $NodeType -MaxDepth $MaxDepth
             $script:AstExtractionCache[$cacheKey] = $result
             $script:AstExtractionCacheTimestamps[$cacheKey] = Get-Date
-            Write-Verbose "Résultat stocké dans le cache pour $NodeType"
+            Write-Verbose "RÃ©sultat stockÃ© dans le cache pour $NodeType"
         }
 
         return $result
     } catch {
-        Write-Error "Erreur lors de l'extraction optimisée: $_"
+        Write-Error "Erreur lors de l'extraction optimisÃ©e: $_"
         throw
     }
 }
@@ -289,9 +289,9 @@ function Clear-AstExtractionCache {
         $cacheSize = $script:AstExtractionCache.Count
         $script:AstExtractionCache = @{}
         $script:AstExtractionCacheTimestamps = @{}
-        Write-Verbose "Cache d'extraction AST nettoyé ($cacheSize entrées supprimées)"
+        Write-Verbose "Cache d'extraction AST nettoyÃ© ($cacheSize entrÃ©es supprimÃ©es)"
     } else {
-        Write-Verbose "Le cache d'extraction AST est déjà vide"
+        Write-Verbose "Le cache d'extraction AST est dÃ©jÃ  vide"
     }
 }
 
@@ -343,4 +343,4 @@ function Get-AstExtractionCacheStatistics {
     }
 }
 
-# Les fonctions sont exportées par le module
+# Les fonctions sont exportÃ©es par le module

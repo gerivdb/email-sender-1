@@ -1,9 +1,9 @@
-# Script de test pour la fonction Find-AstNodeByType
+﻿# Script de test pour la fonction Find-AstNodeByType
 
 # Charger la fonction
 . "$PSScriptRoot\..\Public\Find-AstNodeByType.ps1"
 
-# Créer un exemple de code PowerShell complexe à analyser
+# CrÃ©er un exemple de code PowerShell complexe Ã  analyser
 $sampleCode = @'
 function Get-Example {
     [CmdletBinding()]
@@ -70,7 +70,7 @@ $result | ForEach-Object {
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [ref]$tokens, [ref]$errors)
 
-# Vérifier s'il y a des erreurs d'analyse
+# VÃ©rifier s'il y a des erreurs d'analyse
 if ($errors.Count -gt 0) {
     Write-Error "Erreurs d'analyse du code :"
     foreach ($error in $errors) {
@@ -97,7 +97,7 @@ foreach ($statement in $statements) {
     Write-Host "  $typeName (Ligne $lineNumber)" -ForegroundColor Green
 }
 
-# Test 3: Recherche par expression régulière
+# Test 3: Recherche par expression rÃ©guliÃ¨re
 Write-Host "`n=== Test 3: Recherche par expression reguliere ===" -ForegroundColor Cyan
 $expressionNodes = Find-AstNodeByType -Ast $ast -RegexPattern ".*Expression"
 Write-Host "Nombre d'expressions trouvees: $($expressionNodes.Count)" -ForegroundColor Yellow
@@ -142,7 +142,7 @@ foreach ($variable in $variablesDepth2) {
     }
 }
 
-# Test 6: Recherche avec prédicat personnalisé
+# Test 6: Recherche avec prÃ©dicat personnalisÃ©
 Write-Host "`n=== Test 6: Recherche avec predicat personnalise ===" -ForegroundColor Cyan
 $predicate = {
     param($node)

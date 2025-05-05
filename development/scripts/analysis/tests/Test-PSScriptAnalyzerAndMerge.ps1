@@ -1,16 +1,16 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Script de test pour PSScriptAnalyzer et la fusion des rÃ©sultats.
+    Script de test pour PSScriptAnalyzer et la fusion des rÃƒÂ©sultats.
 
 .DESCRIPTION
-    Ce script teste PSScriptAnalyzer et fusionne ses rÃ©sultats avec ceux de TodoAnalyzer.
+    Ce script teste PSScriptAnalyzer et fusionne ses rÃƒÂ©sultats avec ceux de TodoAnalyzer.
 
 .PARAMETER FilePath
-    Chemin du fichier Ã  analyser.
+    Chemin du fichier ÃƒÂ  analyser.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les rÃ©sultats.
+    Chemin du fichier de sortie pour les rÃƒÂ©sultats.
 
 .EXAMPLE
     .\Test-PSScriptAnalyzerAndMerge.ps1 -FilePath ".\development\scripts\analysis\tests\test_script.ps1" -OutputPath ".\development\scripts\analysis\tests\results\merged-results.json"
@@ -46,14 +46,14 @@ $unifiedResultsFormatPath = Join-Path -Path $modulesPath -ChildPath "UnifiedResu
 Import-Module -Name $unifiedResultsFormatPath -Force
 Import-Module -Name PSScriptAnalyzer -Force
 
-# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
+# CrÃƒÂ©er le rÃƒÂ©pertoire de sortie s'il n'existe pas
 $outputDirectory = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $outputDirectory -PathType Container)) {
     try {
         New-Item -Path $outputDirectory -ItemType Directory -Force | Out-Null
-        Write-Verbose "RÃ©pertoire de sortie '$outputDirectory' crÃ©Ã©."
+        Write-Verbose "RÃƒÂ©pertoire de sortie '$outputDirectory' crÃƒÂ©ÃƒÂ©."
     } catch {
-        Write-Error "Impossible de crÃ©er le rÃ©pertoire de sortie '$outputDirectory': $_"
+        Write-Error "Impossible de crÃƒÂ©er le rÃƒÂ©pertoire de sortie '$outputDirectory': $_"
         return
     }
 }
@@ -63,34 +63,34 @@ Write-Host "Analyse du fichier avec PSScriptAnalyzer..." -ForegroundColor Cyan
 $psaResults = Invoke-ScriptAnalyzer -Path $FilePath
 $unifiedPsaResults = ConvertFrom-PSScriptAnalyzerResult -Results $psaResults
 
-# Enregistrer les rÃ©sultats de PSScriptAnalyzer
+# Enregistrer les rÃƒÂ©sultats de PSScriptAnalyzer
 $unifiedPsaResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $PSScriptAnalyzerResultsPath -Encoding utf8 -Force
-Write-Host "RÃ©sultats de PSScriptAnalyzer enregistrÃ©s dans '$PSScriptAnalyzerResultsPath'." -ForegroundColor Green
+Write-Host "RÃƒÂ©sultats de PSScriptAnalyzer enregistrÃƒÂ©s dans '$PSScriptAnalyzerResultsPath'." -ForegroundColor Green
 
-# Charger les rÃ©sultats de TodoAnalyzer
-Write-Host "Chargement des rÃ©sultats de TodoAnalyzer..." -ForegroundColor Cyan
+# Charger les rÃƒÂ©sultats de TodoAnalyzer
+Write-Host "Chargement des rÃƒÂ©sultats de TodoAnalyzer..." -ForegroundColor Cyan
 if (Test-Path -Path $TodoResultsPath -PathType Leaf) {
     $todoResults = Get-Content -Path $TodoResultsPath -Raw | ConvertFrom-Json
 } else {
-    Write-Warning "Fichier de rÃ©sultats TodoAnalyzer introuvable: $TodoResultsPath"
+    Write-Warning "Fichier de rÃƒÂ©sultats TodoAnalyzer introuvable: $TodoResultsPath"
     $todoResults = @()
 }
 
-# Fusionner les rÃ©sultats
-Write-Host "Fusion des rÃ©sultats..." -ForegroundColor Cyan
+# Fusionner les rÃƒÂ©sultats
+Write-Host "Fusion des rÃƒÂ©sultats..." -ForegroundColor Cyan
 $mergedResults = @()
 $mergedResults += $unifiedPsaResults
 $mergedResults += $todoResults
 
-# Enregistrer les rÃ©sultats fusionnÃ©s
+# Enregistrer les rÃƒÂ©sultats fusionnÃƒÂ©s
 $mergedResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding utf8 -Force
-Write-Host "RÃ©sultats fusionnÃ©s enregistrÃ©s dans '$OutputPath'." -ForegroundColor Green
+Write-Host "RÃƒÂ©sultats fusionnÃƒÂ©s enregistrÃƒÂ©s dans '$OutputPath'." -ForegroundColor Green
 
-# GÃ©nÃ©rer un rapport HTML si demandÃ©
+# GÃƒÂ©nÃƒÂ©rer un rapport HTML si demandÃƒÂ©
 if ($GenerateHtmlReport) {
     $htmlPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
 
-    # CrÃ©er le contenu HTML
+    # CrÃƒÂ©er le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -175,7 +175,7 @@ if ($GenerateHtmlReport) {
     <h1>Rapport d'analyse</h1>
 
     <div class="summary">
-        <h2>RÃ©sumÃ©</h2>
+        <h2>RÃƒÂ©sumÃƒÂ©</h2>
         <div class="summary-item error-count">
             <strong>Erreurs:</strong> <span id="error-count">$($mergedResults | Where-Object { $_.Severity -eq "Error" } | Measure-Object).Count</span>
         </div>
@@ -193,7 +193,7 @@ if ($GenerateHtmlReport) {
     <div class="filters">
         <h2>Filtres</h2>
         <div class="filter-group">
-            <label>SÃ©vÃ©ritÃ©:</label>
+            <label>SÃƒÂ©vÃƒÂ©ritÃƒÂ©:</label>
             <input type="checkbox" id="filter-error" checked> Erreurs
             <input type="checkbox" id="filter-warning" checked> Avertissements
             <input type="checkbox" id="filter-info" checked> Informations
@@ -211,7 +211,7 @@ $(
             </select>
         </div>
         <div class="filter-group">
-            <label>CatÃ©gorie:</label>
+            <label>CatÃƒÂ©gorie:</label>
             <select id="filter-category">
                 <option value="all">Toutes</option>
 $(
@@ -224,17 +224,17 @@ $(
         </div>
     </div>
 
-    <h2>RÃ©sultats dÃ©taillÃ©s</h2>
+    <h2>RÃƒÂ©sultats dÃƒÂ©taillÃƒÂ©s</h2>
     <table id="results-table">
         <thead>
             <tr>
                 <th>Fichier</th>
                 <th>Ligne</th>
                 <th>Colonne</th>
-                <th>SÃ©vÃ©ritÃ©</th>
+                <th>SÃƒÂ©vÃƒÂ©ritÃƒÂ©</th>
                 <th>Outil</th>
-                <th>RÃ¨gle</th>
-                <th>CatÃ©gorie</th>
+                <th>RÃƒÂ¨gle</th>
+                <th>CatÃƒÂ©gorie</th>
                 <th>Message</th>
             </tr>
         </thead>
@@ -258,7 +258,7 @@ $(
     </table>
 
     <script>
-        // Filtrage des rÃ©sultats
+        // Filtrage des rÃƒÂ©sultats
         function applyFilters() {
             const showError = document.getElementById('filter-error').checked;
             const showWarning = document.getElementById('filter-warning').checked;
@@ -302,7 +302,7 @@ $(
             document.getElementById('total-count').textContent = visibleCount;
         }
 
-        // Ajouter les Ã©couteurs d'Ã©vÃ©nements
+        // Ajouter les ÃƒÂ©couteurs d'ÃƒÂ©vÃƒÂ©nements
         document.getElementById('filter-error').addEventListener('change', applyFilters);
         document.getElementById('filter-warning').addEventListener('change', applyFilters);
         document.getElementById('filter-info').addEventListener('change', applyFilters);
@@ -316,30 +316,30 @@ $(
 </html>
 "@
 
-    # Ã‰crire le fichier HTML avec l'encodage UTF-8 avec BOM pour assurer la compatibilitÃ© avec les navigateurs
+    # Ãƒâ€°crire le fichier HTML avec l'encodage UTF-8 avec BOM pour assurer la compatibilitÃƒÂ© avec les navigateurs
     [System.IO.File]::WriteAllText($htmlPath, $htmlContent, [System.Text.Encoding]::UTF8)
-    Write-Host "Rapport HTML gÃ©nÃ©rÃ© dans '$htmlPath'." -ForegroundColor Green
+    Write-Host "Rapport HTML gÃƒÂ©nÃƒÂ©rÃƒÂ© dans '$htmlPath'." -ForegroundColor Green
 
-    # Ouvrir le rapport HTML dans le navigateur par dÃ©faut
+    # Ouvrir le rapport HTML dans le navigateur par dÃƒÂ©faut
     Start-Process $htmlPath
 }
 
-# Afficher un rÃ©sumÃ© des rÃ©sultats
+# Afficher un rÃƒÂ©sumÃƒÂ© des rÃƒÂ©sultats
 $totalIssues = $mergedResults.Count
 $errorCount = ($mergedResults | Where-Object { $_.Severity -eq "Error" }).Count
 $warningCount = ($mergedResults | Where-Object { $_.Severity -eq "Warning" }).Count
 $infoCount = ($mergedResults | Where-Object { $_.Severity -eq "Information" }).Count
 
-Write-Host "`nRÃ©sumÃ© des rÃ©sultats:" -ForegroundColor Cyan
+Write-Host "`nRÃƒÂ©sumÃƒÂ© des rÃƒÂ©sultats:" -ForegroundColor Cyan
 Write-Host "  - Erreurs: $errorCount" -ForegroundColor $(if ($errorCount -gt 0) { "Red" } else { "Green" })
 Write-Host "  - Avertissements: $warningCount" -ForegroundColor $(if ($warningCount -gt 0) { "Yellow" } else { "Green" })
 Write-Host "  - Informations: $infoCount" -ForegroundColor "Blue"
 Write-Host "  - Total: $totalIssues" -ForegroundColor "White"
 
-# Afficher la rÃ©partition par outil
+# Afficher la rÃƒÂ©partition par outil
 $toolCounts = $mergedResults | Group-Object -Property ToolName | Select-Object Name, Count
 
-Write-Host "`nRÃ©partition par outil:" -ForegroundColor Cyan
+Write-Host "`nRÃƒÂ©partition par outil:" -ForegroundColor Cyan
 foreach ($toolCount in $toolCounts) {
     Write-Host "  - $($toolCount.Name): $($toolCount.Count)" -ForegroundColor "White"
 }

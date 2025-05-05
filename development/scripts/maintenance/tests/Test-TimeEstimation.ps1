@@ -1,4 +1,4 @@
-# Fonction pour estimer le temps nécessaire pour une sous-tâche
+﻿# Fonction pour estimer le temps nÃ©cessaire pour une sous-tÃ¢che
 function Get-TaskTimeEstimate {
     [CmdletBinding()]
     param (
@@ -30,10 +30,10 @@ function Get-TaskTimeEstimate {
         return $null
     }
     
-    # Normaliser le contenu de la tâche
+    # Normaliser le contenu de la tÃ¢che
     $normalizedContent = $TaskContent.ToLower()
     
-    # Déterminer le type de tâche (analyse, conception, implémentation, test, documentation)
+    # DÃ©terminer le type de tÃ¢che (analyse, conception, implÃ©mentation, test, documentation)
     $taskType = "default"
     $maxScore = 0
     
@@ -51,21 +51,21 @@ function Get-TaskTimeEstimate {
         }
     }
     
-    # Obtenir le temps de base pour ce type de tâche
+    # Obtenir le temps de base pour ce type de tÃ¢che
     $baseTime = $timeConfig.base_times.$taskType.value
     $timeUnit = $timeConfig.base_times.$taskType.unit
     
-    # Appliquer le multiplicateur de complexité
+    # Appliquer le multiplicateur de complexitÃ©
     $complexityMultiplier = $timeConfig.complexity_multipliers.($ComplexityLevel.ToLower())
     $estimatedTime = $baseTime * $complexityMultiplier
     
-    # Appliquer le multiplicateur de domaine si spécifié
+    # Appliquer le multiplicateur de domaine si spÃ©cifiÃ©
     if ($Domain -and $timeConfig.domain_multipliers.PSObject.Properties.Name -contains $Domain.ToLower()) {
         $domainMultiplier = $timeConfig.domain_multipliers.($Domain.ToLower())
         $estimatedTime = $estimatedTime * $domainMultiplier
     }
     
-    # Arrondir à 0.5 près
+    # Arrondir Ã  0.5 prÃ¨s
     $estimatedTime = [Math]::Round($estimatedTime * 2) / 2
     
     # Retourner l'estimation
@@ -79,12 +79,12 @@ function Get-TaskTimeEstimate {
 
 # Tester la fonction
 $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
-$result = Get-TaskTimeEstimate -TaskContent "Analyser les besoins du système" -ComplexityLevel "Medium" -ProjectRoot $projectRoot
+$result = Get-TaskTimeEstimate -TaskContent "Analyser les besoins du systÃ¨me" -ComplexityLevel "Medium" -ProjectRoot $projectRoot
 
-# Afficher le résultat
+# Afficher le rÃ©sultat
 if ($result) {
     Write-Host "Estimation de temps : $($result.Formatted)"
-    Write-Host "Type de tâche : $($result.Type)"
+    Write-Host "Type de tÃ¢che : $($result.Type)"
 } else {
-    Write-Host "Impossible d'estimer le temps pour cette tâche."
+    Write-Host "Impossible d'estimer le temps pour cette tÃ¢che."
 }

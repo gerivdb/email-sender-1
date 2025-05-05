@@ -1,9 +1,9 @@
-# Script de test simple pour les fonctions AST
+﻿# Script de test simple pour les fonctions AST
 
 # Charger les fonctions
 . "$PSScriptRoot\..\Public\Invoke-AstTraversalDFS.ps1"
 
-# Créer un exemple de code PowerShell à analyser
+# CrÃ©er un exemple de code PowerShell Ã  analyser
 $sampleCode = @'
 function Get-Example {
     param (
@@ -35,4 +35,4 @@ foreach ($function in $functions) {
     Write-Host "  Fonction: $($function.Name) (Ligne $($function.Extent.StartLineNumber))"
 }
 
-Write-Host "Test terminé avec succès!" -ForegroundColor Green
+Write-Host "Test terminÃ© avec succÃ¨s!" -ForegroundColor Green

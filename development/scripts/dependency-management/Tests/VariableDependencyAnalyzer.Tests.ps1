@@ -1,12 +1,12 @@
-BeforeAll {
-    # Importer le module à tester
+﻿BeforeAll {
+    # Importer le module Ã  tester
     $moduleRoot = Split-Path -Parent $PSScriptRoot
     $modulePath = Join-Path -Path $moduleRoot -ChildPath "VariableDependencyAnalyzer.psm1"
     Import-Module -Name $modulePath -Force
     
-    # Créer un script temporaire pour les tests
+    # CrÃ©er un script temporaire pour les tests
     $testScriptContent = @'
-# Définition de variables
+# DÃ©finition de variables
 $var1 = "Hello"
 $var2 = 42
 $var3 = $var1 + " World"
@@ -16,10 +16,10 @@ $var4 = $var2 * 2
 Write-Output $var1
 Write-Output $var3
 
-# Variable définie mais non utilisée
-$unusedVar = "Je ne suis pas utilisée"
+# Variable dÃ©finie mais non utilisÃ©e
+$unusedVar = "Je ne suis pas utilisÃ©e"
 
-# Variable utilisée mais non définie
+# Variable utilisÃ©e mais non dÃ©finie
 Write-Output $undefinedVar
 
 # Fonction avec variables locales
@@ -53,7 +53,7 @@ Describe "Get-VariableUsageAnalysis" {
         $result | Where-Object { $_.Name -eq "var1" -and $_.Type -eq "Usage" } | Should -Not -BeNullOrEmpty
     }
     
-    It "Devrait identifier les variables définies et utilisées" {
+    It "Devrait identifier les variables dÃ©finies et utilisÃ©es" {
         $result = Get-VariableUsageAnalysis -ScriptPath $testScriptPath
         $var1Assignment = $result | Where-Object { $_.Name -eq "var1" -and $_.Type -eq "Assignment" } | Select-Object -First 1
         $var1Assignment.IsDefined | Should -Be $true
@@ -72,20 +72,20 @@ Describe "Get-VariableUsageAnalysis" {
 }
 
 Describe "Compare-VariableDefinitionsAndUsages" {
-    It "Devrait comparer les définitions et les utilisations de variables" {
+    It "Devrait comparer les dÃ©finitions et les utilisations de variables" {
         $result = Compare-VariableDefinitionsAndUsages -ScriptPath $testScriptPath
         $result | Should -Not -BeNullOrEmpty
         $result.DefinedVariables | Should -Not -BeNullOrEmpty
         $result.UsedVariables | Should -Not -BeNullOrEmpty
     }
     
-    It "Devrait identifier les variables définies mais non utilisées" {
+    It "Devrait identifier les variables dÃ©finies mais non utilisÃ©es" {
         $result = Compare-VariableDefinitionsAndUsages -ScriptPath $testScriptPath
         $result.DefinedButNotUsed | Should -Not -BeNullOrEmpty
         $result.DefinedButNotUsed | Where-Object { $_.Name -eq "unusedVar" } | Should -Not -BeNullOrEmpty
     }
     
-    It "Devrait identifier les variables utilisées mais non définies" {
+    It "Devrait identifier les variables utilisÃ©es mais non dÃ©finies" {
         $result = Compare-VariableDefinitionsAndUsages -ScriptPath $testScriptPath
         $result.UsedButNotDefined | Should -Not -BeNullOrEmpty
         $result.UsedButNotDefined | Where-Object { $_.Name -eq "undefinedVar" } | Should -Not -BeNullOrEmpty
@@ -93,7 +93,7 @@ Describe "Compare-VariableDefinitionsAndUsages" {
 }
 
 Describe "New-VariableDependencyGraph" {
-    It "Devrait créer un graphe de dépendances de variables" {
+    It "Devrait crÃ©er un graphe de dÃ©pendances de variables" {
         $result = New-VariableDependencyGraph -ScriptPath $testScriptPath
         $result | Should -Not -BeNullOrEmpty
         $result.Graph | Should -Not -BeNullOrEmpty
@@ -105,7 +105,7 @@ Describe "New-VariableDependencyGraph" {
         $result = New-VariableDependencyGraph -ScriptPath $testScriptPath -OutputPath $outputPath -OutputFormat "Text"
         Test-Path -Path $outputPath | Should -Be $true
         $content = Get-Content -Path $outputPath -Raw
-        $content | Should -Match "var3 dépend de: var1"
+        $content | Should -Match "var3 dÃ©pend de: var1"
     }
     
     It "Devrait exporter le graphe au format JSON" {

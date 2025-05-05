@@ -1,44 +1,44 @@
-# Tests pour les fonctions de configuration
+﻿# Tests pour les fonctions de configuration
 
-# Chemin vers le script à tester
+# Chemin vers le script Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
 $configFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\Configuration"
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 $initializeConfigPath = Join-Path -Path $configFunctionsPath -ChildPath "Initialize-Configuration.ps1"
 $getConfigPath = Join-Path -Path $configFunctionsPath -ChildPath "Get-Configuration.ps1"
 $testConfigPath = Join-Path -Path $configFunctionsPath -ChildPath "Test-Configuration.ps1"
 $setDefaultConfigPath = Join-Path -Path $configFunctionsPath -ChildPath "Set-DefaultConfiguration.ps1"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (Test-Path -Path $initializeConfigPath) {
     . $initializeConfigPath
-    Write-Host "Fonction Initialize-Configuration importée." -ForegroundColor Green
+    Write-Host "Fonction Initialize-Configuration importÃ©e." -ForegroundColor Green
 }
 
 if (Test-Path -Path $getConfigPath) {
     . $getConfigPath
-    Write-Host "Fonction Get-Configuration importée." -ForegroundColor Green
+    Write-Host "Fonction Get-Configuration importÃ©e." -ForegroundColor Green
 }
 
 if (Test-Path -Path $testConfigPath) {
     . $testConfigPath
-    Write-Host "Fonction Test-Configuration importée." -ForegroundColor Green
+    Write-Host "Fonction Test-Configuration importÃ©e." -ForegroundColor Green
 }
 
 if (Test-Path -Path $setDefaultConfigPath) {
     . $setDefaultConfigPath
-    Write-Host "Fonction Set-DefaultConfiguration importée." -ForegroundColor Green
+    Write-Host "Fonction Set-DefaultConfiguration importÃ©e." -ForegroundColor Green
 }
 
 Describe "Configuration Functions" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $env:TEMP -ChildPath "RoadmapParserTests_$(Get-Random)"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-        # Créer un fichier de configuration JSON de test
+        # CrÃ©er un fichier de configuration JSON de test
         $testJsonConfig = @{
             General = @{
                 RoadmapPath = "Roadmap\roadmap_complete_converted.md"
@@ -90,7 +90,7 @@ Describe "Configuration Functions" {
         $testJsonFile = Join-Path -Path $testDir -ChildPath "config.json"
         $testJsonConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $testJsonFile -Encoding UTF8
 
-        # Créer une configuration incomplète pour les tests
+        # CrÃ©er une configuration incomplÃ¨te pour les tests
         $testIncompleteConfig = @{
             General = @{
                 LogLevel = "INFO"
@@ -105,7 +105,7 @@ Describe "Configuration Functions" {
     }
 
     AfterAll {
-        # Nettoyer le répertoire temporaire
+        # Nettoyer le rÃ©pertoire temporaire
         if (Test-Path -Path $testDir) {
             Remove-Item -Path $testDir -Recurse -Force
         }

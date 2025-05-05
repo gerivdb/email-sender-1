@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le script mode-manager.ps1.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement du script mode-manager.ps1.
-    Il utilise le framework Pester pour exécuter les tests.
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement du script mode-manager.ps1.
+    Il utilise le framework Pester pour exÃ©cuter les tests.
 
 .NOTES
     Auteur: Mode Manager Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Importer le module Pester si nécessaire
+# Importer le module Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    throw "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
 }
 
-# Définir le chemin du projet
+# DÃ©finir le chemin du projet
 $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 if (-not (Test-Path -Path $projectRoot)) {
     $projectRoot = $PSScriptRoot
@@ -35,10 +35,10 @@ if (-not (Test-Path -Path $projectRoot)) {
     }
 }
 
-# Définir le chemin de configuration pour les tests
+# DÃ©finir le chemin de configuration pour les tests
 $testConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "test-config.json"
 
-# Créer un fichier de configuration de test si nécessaire
+# CrÃ©er un fichier de configuration de test si nÃ©cessaire
 if (-not (Test-Path -Path $testConfigPath)) {
     @{
         General   = @{
@@ -95,12 +95,12 @@ if (-not (Test-Path -Path $testConfigPath)) {
         }
         Workflows = @{
             Development = @{
-                Description  = "Workflow de développement complet"
+                Description  = "Workflow de dÃ©veloppement complet"
                 Modes        = @("Gran", "DevR", "Test", "Check")
                 AutoContinue = $true
             }
             Debugging   = @{
-                Description  = "Workflow de débogage"
+                Description  = "Workflow de dÃ©bogage"
                 Modes        = @("Debug", "Test", "Check")
                 AutoContinue = $true
             }
@@ -115,9 +115,9 @@ if (-not (Test-Path -Path $testConfigPath)) {
     } | ConvertTo-Json -Depth 5 | Set-Content -Path $testConfigPath -Encoding UTF8
 }
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Mode Manager Tests" {
-    Context "Paramètres de base" {
+    Context "ParamÃ¨tres de base" {
         It "Devrait afficher la liste des modes avec -ListModes" {
             $output = & $scriptPath -ListModes
             $output | Should -Not -BeNullOrEmpty
@@ -130,13 +130,13 @@ Describe "Mode Manager Tests" {
         It "Devrait afficher la configuration avec -ShowConfig" {
             $output = & $scriptPath -ShowConfig -ConfigPath $testConfigPath
             $output | Should -Not -BeNullOrEmpty
-            $output | Should -Contain "Configuration générale :"
+            $output | Should -Contain "Configuration gÃ©nÃ©rale :"
         }
     }
 
     Context "Fonctions internes" {
         # Charger les fonctions du script pour les tester
-        # Nous devons extraire les fonctions du script et les définir dans le contexte de test
+        # Nous devons extraire les fonctions du script et les dÃ©finir dans le contexte de test
 
         # Fonction pour charger la configuration
         function Get-ModeConfiguration {
@@ -157,7 +157,7 @@ Describe "Mode Manager Tests" {
                 Write-Warning "Fichier de configuration introuvable : $ConfigPath"
             }
 
-            # Configuration par défaut
+            # Configuration par dÃ©faut
             return [PSCustomObject]@{
                 General = [PSCustomObject]@{
                     RoadmapPath        = "docs\plans\roadmap_complete_2.md"
@@ -237,7 +237,7 @@ Describe "Mode Manager Tests" {
             if ($Config.Modes.$modeKey -and $Config.Modes.$modeKey.ScriptPath) {
                 $scriptPath = $Config.Modes.$modeKey.ScriptPath
 
-                # Convertir le chemin relatif en chemin absolu si nécessaire
+                # Convertir le chemin relatif en chemin absolu si nÃ©cessaire
                 if (-not [System.IO.Path]::IsPathRooted($scriptPath)) {
                     $scriptPath = Join-Path -Path $projectRoot -ChildPath $scriptPath
                 }
@@ -245,7 +245,7 @@ Describe "Mode Manager Tests" {
                 return $scriptPath
             }
 
-            # Recherche alternative si le chemin n'est pas trouvé dans la configuration
+            # Recherche alternative si le chemin n'est pas trouvÃ© dans la configuration
             $possiblePaths = @(
                 (Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\$($Mode.ToLower())-mode.ps1"),
                 (Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\modes\$($Mode.ToLower())\$($Mode.ToLower())-mode.ps1"),
@@ -267,16 +267,16 @@ Describe "Mode Manager Tests" {
             param ()
 
             $modes = @{
-                "ARCHI"   = "Structurer, modéliser, anticiper les dépendances"
-                "CHECK"   = "Vérifier l'état d'avancement des tâches"
-                "C-BREAK" = "Détecter et résoudre les dépendances circulaires"
+                "ARCHI"   = "Structurer, modÃ©liser, anticiper les dÃ©pendances"
+                "CHECK"   = "VÃ©rifier l'Ã©tat d'avancement des tÃ¢ches"
+                "C-BREAK" = "DÃ©tecter et rÃ©soudre les dÃ©pendances circulaires"
                 "DEBUG"   = "Isoler, comprendre, corriger les anomalies"
-                "DEV-R"   = "Implémenter ce qui est dans la roadmap"
-                "GRAN"    = "Décomposer les blocs complexes"
-                "OPTI"    = "Réduire complexité, taille ou temps d'exécution"
-                "PREDIC"  = "Anticiper performances, détecter anomalies, analyser tendances"
-                "REVIEW"  = "Vérifier lisibilité, standards, documentation"
-                "TEST"    = "Maximiser couverture et fiabilité"
+                "DEV-R"   = "ImplÃ©menter ce qui est dans la roadmap"
+                "GRAN"    = "DÃ©composer les blocs complexes"
+                "OPTI"    = "RÃ©duire complexitÃ©, taille ou temps d'exÃ©cution"
+                "PREDIC"  = "Anticiper performances, dÃ©tecter anomalies, analyser tendances"
+                "REVIEW"  = "VÃ©rifier lisibilitÃ©, standards, documentation"
+                "TEST"    = "Maximiser couverture et fiabilitÃ©"
             }
 
             Write-Host "Modes disponibles :" -ForegroundColor Cyan
@@ -337,7 +337,7 @@ Describe "Mode Manager Tests" {
             $config.Modes | Should -Not -BeNullOrEmpty
         }
 
-        It "Get-ModeConfiguration devrait retourner une configuration par défaut si le fichier n'existe pas" {
+        It "Get-ModeConfiguration devrait retourner une configuration par dÃ©faut si le fichier n'existe pas" {
             $nonExistentPath = "non-existent-config.json"
             $config = Get-ModeConfiguration -ConfigPath $nonExistentPath
             $config | Should -Not -BeNullOrEmpty
@@ -395,10 +395,10 @@ Describe "Mode Manager Tests" {
         }
     }
 
-    Context "Exécution des modes" {
-        # Ces tests nécessitent des mocks pour éviter d'exécuter réellement les scripts
+    Context "ExÃ©cution des modes" {
+        # Ces tests nÃ©cessitent des mocks pour Ã©viter d'exÃ©cuter rÃ©ellement les scripts
         BeforeAll {
-            # Variables pour suivre les appels aux fonctions mockées
+            # Variables pour suivre les appels aux fonctions mockÃ©es
             $script:invokedModes = @()
             $script:invokedChains = @()
             $script:mockScriptExists = $true
@@ -437,7 +437,7 @@ Describe "Mode Manager Tests" {
 
                 # Simuler une erreur si le mode est "ERROR"
                 if ($Mode -eq "ERROR") {
-                    throw "Erreur simulée pour le mode ERROR"
+                    throw "Erreur simulÃ©e pour le mode ERROR"
                 }
 
                 return $true
@@ -474,9 +474,9 @@ Describe "Mode Manager Tests" {
                     Force          = $Force
                 }
 
-                # Simuler une erreur si la chaîne contient "ERROR"
+                # Simuler une erreur si la chaÃ®ne contient "ERROR"
                 if ($Chain -match "ERROR") {
-                    throw "Erreur simulée pour la chaîne contenant ERROR"
+                    throw "Erreur simulÃ©e pour la chaÃ®ne contenant ERROR"
                 }
 
                 return $true
@@ -493,21 +493,21 @@ Describe "Mode Manager Tests" {
                 return $script:mockScriptExists
             }
 
-            # Mock pour l'opérateur &
-            # Nous ne pouvons pas directement mocker l'opérateur &, mais nous pouvons mocker les fonctions qu'il appelle
-            # Dans ce cas, nous allons simuler le comportement de l'exécution du script
+            # Mock pour l'opÃ©rateur &
+            # Nous ne pouvons pas directement mocker l'opÃ©rateur &, mais nous pouvons mocker les fonctions qu'il appelle
+            # Dans ce cas, nous allons simuler le comportement de l'exÃ©cution du script
             $global:LASTEXITCODE = $script:mockScriptExitCode
         }
 
         BeforeEach {
-            # Réinitialiser les variables de suivi
+            # RÃ©initialiser les variables de suivi
             $script:invokedModes = @()
             $script:invokedChains = @()
             $script:mockScriptExists = $true
             $script:mockScriptExitCode = 0
         }
 
-        It "Devrait exécuter un mode spécifique" {
+        It "Devrait exÃ©cuter un mode spÃ©cifique" {
             $result = Invoke-Mode -Mode "CHECK" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config (Get-ModeConfiguration -ConfigPath $testConfigPath)
             $result | Should -Be $true
             $script:invokedModes.Count | Should -Be 1
@@ -516,7 +516,7 @@ Describe "Mode Manager Tests" {
             $script:invokedModes[0].TaskIdentifier | Should -Be "1.2.3"
         }
 
-        It "Devrait exécuter une chaîne de modes" {
+        It "Devrait exÃ©cuter une chaÃ®ne de modes" {
             $result = Invoke-ModeChain -Chain "GRAN,DEV-R,CHECK" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config (Get-ModeConfiguration -ConfigPath $testConfigPath)
             $result | Should -Be $true
             $script:invokedChains.Count | Should -Be 1
@@ -525,20 +525,20 @@ Describe "Mode Manager Tests" {
             $script:invokedChains[0].TaskIdentifier | Should -Be "1.2.3"
         }
 
-        It "Devrait gérer les erreurs lors de l'exécution d'un mode" {
-            { Invoke-Mode -Mode "ERROR" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config (Get-ModeConfiguration -ConfigPath $testConfigPath) } | Should -Throw "Erreur simulée pour le mode ERROR"
+        It "Devrait gÃ©rer les erreurs lors de l'exÃ©cution d'un mode" {
+            { Invoke-Mode -Mode "ERROR" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config (Get-ModeConfiguration -ConfigPath $testConfigPath) } | Should -Throw "Erreur simulÃ©e pour le mode ERROR"
         }
 
-        It "Devrait gérer les erreurs lors de l'exécution d'une chaîne de modes" {
-            { Invoke-ModeChain -Chain "GRAN,ERROR,CHECK" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config (Get-ModeConfiguration -ConfigPath $testConfigPath) } | Should -Throw "Erreur simulée pour la chaîne contenant ERROR"
+        It "Devrait gÃ©rer les erreurs lors de l'exÃ©cution d'une chaÃ®ne de modes" {
+            { Invoke-ModeChain -Chain "GRAN,ERROR,CHECK" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config (Get-ModeConfiguration -ConfigPath $testConfigPath) } | Should -Throw "Erreur simulÃ©e pour la chaÃ®ne contenant ERROR"
         }
 
-        It "Devrait gérer le cas où le script du mode n'existe pas" {
+        It "Devrait gÃ©rer le cas oÃ¹ le script du mode n'existe pas" {
             $script:mockScriptExists = $false
             { Invoke-Mode -Mode "CHECK" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config (Get-ModeConfiguration -ConfigPath $testConfigPath) } | Should -Throw
         }
 
-        It "Devrait gérer le cas où le script du mode retourne un code d'erreur" {
+        It "Devrait gÃ©rer le cas oÃ¹ le script du mode retourne un code d'erreur" {
             $script:mockScriptExitCode = 1
             { Invoke-Mode -Mode "CHECK" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config (Get-ModeConfiguration -ConfigPath $testConfigPath) } | Should -Throw
         }
@@ -546,7 +546,7 @@ Describe "Mode Manager Tests" {
 
     Context "Workflows" {
         BeforeAll {
-            # Variables pour suivre les appels aux fonctions mockées
+            # Variables pour suivre les appels aux fonctions mockÃ©es
             $script:invokedModes = @()
             $script:invokedChains = @()
 
@@ -615,7 +615,7 @@ Describe "Mode Manager Tests" {
                     Force          = $Force
                 }
 
-                # Simuler l'exécution de la chaîne
+                # Simuler l'exÃ©cution de la chaÃ®ne
                 $modes = $Chain -split ',' | ForEach-Object { $_.Trim() }
                 foreach ($mode in $modes) {
                     Invoke-Mode -Mode $mode -FilePath $FilePath -TaskIdentifier $TaskIdentifier -ConfigPath $ConfigPath -Force:$Force -Config $Config
@@ -626,12 +626,12 @@ Describe "Mode Manager Tests" {
         }
 
         BeforeEach {
-            # Réinitialiser les variables de suivi
+            # RÃ©initialiser les variables de suivi
             $script:invokedModes = @()
             $script:invokedChains = @()
         }
 
-        It "Devrait exécuter le workflow de développement" {
+        It "Devrait exÃ©cuter le workflow de dÃ©veloppement" {
             $config = Get-ModeConfiguration -ConfigPath $testConfigPath
             $result = Invoke-ModeChain -Chain "GRAN,DEV-R,TEST,CHECK" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config $config
             $result | Should -Be $true
@@ -644,7 +644,7 @@ Describe "Mode Manager Tests" {
             $script:invokedModes[3].Mode | Should -Be "CHECK"
         }
 
-        It "Devrait exécuter le workflow de débogage" {
+        It "Devrait exÃ©cuter le workflow de dÃ©bogage" {
             $config = Get-ModeConfiguration -ConfigPath $testConfigPath
             $result = Invoke-ModeChain -Chain "DEBUG,TEST,CHECK" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config $config
             $result | Should -Be $true
@@ -656,7 +656,7 @@ Describe "Mode Manager Tests" {
             $script:invokedModes[2].Mode | Should -Be "CHECK"
         }
 
-        It "Devrait exécuter un workflow personnalisé" {
+        It "Devrait exÃ©cuter un workflow personnalisÃ©" {
             $config = Get-ModeConfiguration -ConfigPath $testConfigPath
             $result = Invoke-ModeChain -Chain "REVIEW,OPTI,TEST" -FilePath "test.md" -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -Config $config
             $result | Should -Be $true
@@ -670,5 +670,5 @@ Describe "Mode Manager Tests" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSScriptRoot

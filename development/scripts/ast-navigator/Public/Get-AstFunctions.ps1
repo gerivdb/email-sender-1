@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
     Extrait les fonctions d'un script PowerShell.
 
 .DESCRIPTION
     Cette fonction extrait les fonctions d'un script PowerShell en utilisant l'arbre syntaxique (AST).
-    Elle permet de filtrer les fonctions par nom et d'obtenir des informations détaillées sur chaque fonction.
+    Elle permet de filtrer les fonctions par nom et d'obtenir des informations dÃ©taillÃ©es sur chaque fonction.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à analyser. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  analyser. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER Name
-    Nom de la fonction à rechercher. Peut contenir des caractères génériques.
+    Nom de la fonction Ã  rechercher. Peut contenir des caractÃ¨res gÃ©nÃ©riques.
 
 .PARAMETER Detailed
-    Si spécifié, retourne des informations détaillées sur chaque fonction (paramètres, corps, etc.).
+    Si spÃ©cifiÃ©, retourne des informations dÃ©taillÃ©es sur chaque fonction (paramÃ¨tres, corps, etc.).
 
 .PARAMETER IncludeContent
-    Si spécifié, inclut le contenu complet de chaque fonction.
+    Si spÃ©cifiÃ©, inclut le contenu complet de chaque fonction.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -54,18 +54,18 @@ function Get-AstFunctions {
                 $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst]
             }, $true)
 
-            # Filtrer par nom si spécifié
+            # Filtrer par nom si spÃ©cifiÃ©
             if ($Name) {
                 $functions = $functions | Where-Object { $_.Name -like $Name }
             }
 
-            # Préparer les résultats
+            # PrÃ©parer les rÃ©sultats
             $results = @()
 
             # Traiter chaque fonction
             foreach ($function in $functions) {
                 if ($Detailed) {
-                    # Extraire les paramètres
+                    # Extraire les paramÃ¨tres
                     $parameters = @()
                     if ($function.Parameters) {
                         foreach ($param in $function.Parameters) {
@@ -83,7 +83,7 @@ function Get-AstFunctions {
                         }
                     }
 
-                    # Créer l'objet résultat détaillé
+                    # CrÃ©er l'objet rÃ©sultat dÃ©taillÃ©
                     $functionInfo = [PSCustomObject]@{
                         Name = $function.Name
                         Parameters = $parameters
@@ -96,7 +96,7 @@ function Get-AstFunctions {
                     $results += $functionInfo
                 }
                 else {
-                    # Créer l'objet résultat simple
+                    # CrÃ©er l'objet rÃ©sultat simple
                     $functionInfo = [PSCustomObject]@{
                         Name = $function.Name
                         StartLine = $function.Extent.StartLineNumber

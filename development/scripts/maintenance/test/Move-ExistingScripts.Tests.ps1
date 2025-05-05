@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Move-ExistingScripts.ps1.
@@ -10,19 +10,19 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-10
+    Date de crÃ©ation: 2023-06-10
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\organize\Move-ExistingScripts.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if (-not (Test-Path -Path $scriptPath)) {
     throw "Le script Move-ExistingScripts.ps1 n'existe pas: $scriptPath"
 }
@@ -30,24 +30,24 @@ if (-not (Test-Path -Path $scriptPath)) {
 # Tests Pester
 Describe "Tests du script Move-ExistingScripts.ps1" {
     BeforeAll {
-        # Créer un dossier temporaire pour les tests
+        # CrÃ©er un dossier temporaire pour les tests
         $testDir = Join-Path -Path $env:TEMP -ChildPath "MoveExistingScriptsTests"
         if (Test-Path -Path $testDir) {
             Remove-Item -Path $testDir -Recurse -Force
         }
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-        # Créer une structure de dossiers pour les tests
+        # CrÃ©er une structure de dossiers pour les tests
         $maintenanceDir = Join-Path -Path $testDir -ChildPath "maintenance"
         New-Item -Path $maintenanceDir -ItemType Directory -Force | Out-Null
 
-        # Créer quelques sous-dossiers
+        # CrÃ©er quelques sous-dossiers
         $categories = @('api', 'cleanup', 'paths', 'test', 'utils', 'roadmap', 'modes', 'vscode', 'backups')
         foreach ($category in $categories) {
             New-Item -Path (Join-Path -Path $maintenanceDir -ChildPath $category) -ItemType Directory -Force | Out-Null
         }
 
-        # Créer quelques fichiers de test à la racine
+        # CrÃ©er quelques fichiers de test Ã  la racine
         $testFiles = @(
             "Analyze-Feedback.ps1",
             "autoprefixer.ps1",
@@ -82,18 +82,18 @@ Describe "Tests du script Move-ExistingScripts.ps1" {
     }
 
     AfterAll {
-        # Nettoyer après les tests
+        # Nettoyer aprÃ¨s les tests
         if (Test-Path -Path $script:testDir) {
             Remove-Item -Path $script:testDir -Recurse -Force
         }
     }
 
-    Context "Tests de fonctionnalité" {
+    Context "Tests de fonctionnalitÃ©" {
         It "Le script devrait exister" {
             Test-Path -Path $scriptPath | Should -Be $true
         }
 
-        It "Le script devrait être un fichier PowerShell valide" {
+        It "Le script devrait Ãªtre un fichier PowerShell valide" {
             { . $scriptPath } | Should -Not -Throw
         }
 
@@ -108,12 +108,12 @@ Describe "Tests du script Move-ExistingScripts.ps1" {
         }
     }
 
-    Context "Tests d'intégration" {
-        It "Devrait déplacer les fichiers dans les bons sous-dossiers selon la classification prédéfinie" {
-            # Exécuter le script avec les paramètres de test
+    Context "Tests d'intÃ©gration" {
+        It "Devrait dÃ©placer les fichiers dans les bons sous-dossiers selon la classification prÃ©dÃ©finie" {
+            # ExÃ©cuter le script avec les paramÃ¨tres de test
             & $scriptPath -Force -CreateBackups:$false
 
-            # Vérifier que les fichiers ont été déplacés dans les bons sous-dossiers
+            # VÃ©rifier que les fichiers ont Ã©tÃ© dÃ©placÃ©s dans les bons sous-dossiers
             Test-Path -Path (Join-Path -Path $script:maintenanceDir -ChildPath "api\Analyze-Feedback.ps1") | Should -Be $true
             Test-Path -Path (Join-Path -Path $script:maintenanceDir -ChildPath "utils\autoprefixer.ps1") | Should -Be $true
             Test-Path -Path (Join-Path -Path $script:maintenanceDir -ChildPath "cleanup\Consolidate-AnalysisDirectories-Final.ps1") | Should -Be $true
@@ -135,7 +135,7 @@ Describe "Tests du script Move-ExistingScripts.ps1" {
             Test-Path -Path (Join-Path -Path $script:maintenanceDir -ChildPath "vscode\update-vscode-cache.ps1") | Should -Be $true
         }
 
-        It "Ne devrait plus y avoir de fichiers à la racine du dossier maintenance" {
+        It "Ne devrait plus y avoir de fichiers Ã  la racine du dossier maintenance" {
             $rootFiles = Get-ChildItem -Path $script:maintenanceDir -File
             $rootFiles.Count | Should -Be 0
         }

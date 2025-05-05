@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Enregistre les tests du script manager avec MCP Desktop Commander.
 .DESCRIPTION
     Ce script enregistre les tests du script manager avec MCP Desktop Commander
-    pour une exécution plus facile.
+    pour une exÃ©cution plus facile.
 .PARAMETER MCPPath
     Chemin du dossier MCP Desktop Commander.
 .EXAMPLE
@@ -12,7 +12,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -21,7 +21,7 @@ param (
     [string]$MCPPath
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -46,45 +46,45 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si MCP Desktop Commander existe
+# VÃ©rifier si MCP Desktop Commander existe
 if (-not (Test-Path -Path $MCPPath)) {
-    Write-Log "MCP Desktop Commander n'existe pas à l'emplacement spécifié: $MCPPath" -Level "ERROR"
+    Write-Log "MCP Desktop Commander n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $MCPPath" -Level "ERROR"
     exit 1
 }
 
-# Vérifier si le dossier de configuration MCP existe
+# VÃ©rifier si le dossier de configuration MCP existe
 $mcpConfigPath = Join-Path -Path $MCPPath -ChildPath "config"
 if (-not (Test-Path -Path $mcpConfigPath)) {
-    if ($PSCmdlet.ShouldProcess($mcpConfigPath, "Créer le dossier de configuration MCP")) {
+    if ($PSCmdlet.ShouldProcess($mcpConfigPath, "CrÃ©er le dossier de configuration MCP")) {
         New-Item -Path $mcpConfigPath -ItemType Directory -Force | Out-Null
     }
 }
 
-# Vérifier si le dossier de scripts MCP existe
+# VÃ©rifier si le dossier de scripts MCP existe
 $mcpScriptsPath = Join-Path -Path $MCPPath -ChildPath "scripts"
 if (-not (Test-Path -Path $mcpScriptsPath)) {
-    if ($PSCmdlet.ShouldProcess($mcpScriptsPath, "Créer le dossier de scripts MCP")) {
+    if ($PSCmdlet.ShouldProcess($mcpScriptsPath, "CrÃ©er le dossier de scripts MCP")) {
         New-Item -Path $mcpScriptsPath -ItemType Directory -Force | Out-Null
     }
 }
 
-# Vérifier si le dossier de tests MCP existe
+# VÃ©rifier si le dossier de tests MCP existe
 $mcpTestsPath = Join-Path -Path $mcpScriptsPath -ChildPath "tests"
 if (-not (Test-Path -Path $mcpTestsPath)) {
-    if ($PSCmdlet.ShouldProcess($mcpTestsPath, "Créer le dossier de tests MCP")) {
+    if ($PSCmdlet.ShouldProcess($mcpTestsPath, "CrÃ©er le dossier de tests MCP")) {
         New-Item -Path $mcpTestsPath -ItemType Directory -Force | Out-Null
     }
 }
 
-# Vérifier si le dossier de tests du script manager existe
+# VÃ©rifier si le dossier de tests du script manager existe
 $mcpManagerTestsPath = Join-Path -Path $mcpTestsPath -ChildPath "manager"
 if (-not (Test-Path -Path $mcpManagerTestsPath)) {
-    if ($PSCmdlet.ShouldProcess($mcpManagerTestsPath, "Créer le dossier de tests du script manager")) {
+    if ($PSCmdlet.ShouldProcess($mcpManagerTestsPath, "CrÃ©er le dossier de tests du script manager")) {
         New-Item -Path $mcpManagerTestsPath -ItemType Directory -Force | Out-Null
     }
 }
 
-# Créer le fichier de configuration MCP pour les tests du script manager
+# CrÃ©er le fichier de configuration MCP pour les tests du script manager
 $mcpConfigFile = Join-Path -Path $mcpConfigPath -ChildPath "manager-tests.json"
 $mcpConfig = @{
     name = "Tests du script manager"
@@ -96,7 +96,7 @@ $mcpConfig = @{
     commands = @(
         @{
             name = "Run-AllTests"
-            description = "Exécute tous les tests du script manager"
+            description = "ExÃ©cute tous les tests du script manager"
             script = "tests/manager/Run-AllTests.ps1"
             parameters = @(
                 @{
@@ -107,7 +107,7 @@ $mcpConfig = @{
                 },
                 @{
                     name = "GenerateHTML"
-                    description = "Génère un rapport HTML des résultats des tests"
+                    description = "GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests"
                     type = "switch"
                     default = $false
                 }
@@ -115,7 +115,7 @@ $mcpConfig = @{
         },
         @{
             name = "Run-SimplifiedTests"
-            description = "Exécute les tests simplifiés du script manager"
+            description = "ExÃ©cute les tests simplifiÃ©s du script manager"
             script = "tests/manager/Run-SimplifiedTests.ps1"
             parameters = @(
                 @{
@@ -126,7 +126,7 @@ $mcpConfig = @{
                 },
                 @{
                     name = "GenerateHTML"
-                    description = "Génère un rapport HTML des résultats des tests"
+                    description = "GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests"
                     type = "switch"
                     default = $false
                 }
@@ -134,7 +134,7 @@ $mcpConfig = @{
         },
         @{
             name = "Run-FixedTests"
-            description = "Exécute les tests corrigés du script manager"
+            description = "ExÃ©cute les tests corrigÃ©s du script manager"
             script = "tests/manager/Run-FixedTests.ps1"
             parameters = @(
                 @{
@@ -145,13 +145,13 @@ $mcpConfig = @{
                 },
                 @{
                     name = "GenerateHTML"
-                    description = "Génère un rapport HTML des résultats des tests"
+                    description = "GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests"
                     type = "switch"
                     default = $false
                 },
                 @{
                     name = "TestName"
-                    description = "Nom du test à exécuter"
+                    description = "Nom du test Ã  exÃ©cuter"
                     type = "string"
                     default = ""
                 }
@@ -159,7 +159,7 @@ $mcpConfig = @{
         },
         @{
             name = "Run-PerformanceTests"
-            description = "Exécute des tests de performance pour le script manager"
+            description = "ExÃ©cute des tests de performance pour le script manager"
             script = "tests/manager/Run-PerformanceTests.ps1"
             parameters = @(
                 @{
@@ -170,13 +170,13 @@ $mcpConfig = @{
                 },
                 @{
                     name = "Iterations"
-                    description = "Nombre d'itérations pour chaque test de performance"
+                    description = "Nombre d'itÃ©rations pour chaque test de performance"
                     type = "int"
                     default = 5
                 },
                 @{
                     name = "GenerateHTML"
-                    description = "Génère un rapport HTML des résultats des tests"
+                    description = "GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests"
                     type = "switch"
                     default = $false
                 }
@@ -184,7 +184,7 @@ $mcpConfig = @{
         },
         @{
             name = "Run-ParameterizedTests"
-            description = "Exécute des tests paramétrés pour le script manager"
+            description = "ExÃ©cute des tests paramÃ©trÃ©s pour le script manager"
             script = "tests/manager/Run-ParameterizedTests.ps1"
             parameters = @(
                 @{
@@ -195,7 +195,7 @@ $mcpConfig = @{
                 },
                 @{
                     name = "GenerateHTML"
-                    description = "Génère un rapport HTML des résultats des tests"
+                    description = "GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests"
                     type = "switch"
                     default = $false
                 }
@@ -203,7 +203,7 @@ $mcpConfig = @{
         },
         @{
             name = "Run-MutationTests"
-            description = "Exécute des tests de mutation pour le script manager"
+            description = "ExÃ©cute des tests de mutation pour le script manager"
             script = "tests/manager/Run-MutationTests.ps1"
             parameters = @(
                 @{
@@ -214,13 +214,13 @@ $mcpConfig = @{
                 },
                 @{
                     name = "GenerateHTML"
-                    description = "Génère un rapport HTML des résultats des tests"
+                    description = "GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests"
                     type = "switch"
                     default = $false
                 },
                 @{
                     name = "MaxMutations"
-                    description = "Nombre maximum de mutations à effectuer"
+                    description = "Nombre maximum de mutations Ã  effectuer"
                     type = "int"
                     default = 5
                 }
@@ -228,7 +228,7 @@ $mcpConfig = @{
         },
         @{
             name = "Generate-TestDocumentation"
-            description = "Génère la documentation des tests unitaires du script manager"
+            description = "GÃ©nÃ¨re la documentation des tests unitaires du script manager"
             script = "tests/manager/Generate-TestDocumentation.ps1"
             parameters = @(
                 @{
@@ -242,9 +242,9 @@ $mcpConfig = @{
     )
 }
 
-if ($PSCmdlet.ShouldProcess($mcpConfigFile, "Créer le fichier de configuration MCP")) {
+if ($PSCmdlet.ShouldProcess($mcpConfigFile, "CrÃ©er le fichier de configuration MCP")) {
     $mcpConfig | ConvertTo-Json -Depth 5 | Out-File -FilePath $mcpConfigFile -Encoding utf8
-    Write-Log "Fichier de configuration MCP créé: $mcpConfigFile" -Level "SUCCESS"
+    Write-Log "Fichier de configuration MCP crÃ©Ã©: $mcpConfigFile" -Level "SUCCESS"
 }
 
 # Copier les scripts de test dans le dossier MCP
@@ -265,13 +265,13 @@ foreach ($script in $testScripts) {
     if (Test-Path -Path $sourcePath) {
         if ($PSCmdlet.ShouldProcess($destinationPath, "Copier le script de test")) {
             Copy-Item -Path $sourcePath -Destination $destinationPath -Force
-            Write-Log "Script de test copié: $destinationPath" -Level "SUCCESS"
+            Write-Log "Script de test copiÃ©: $destinationPath" -Level "SUCCESS"
         }
     }
     else {
-        Write-Log "Script de test non trouvé: $sourcePath" -Level "WARNING"
+        Write-Log "Script de test non trouvÃ©: $sourcePath" -Level "WARNING"
     }
 }
 
-Write-Log "Enregistrement des tests avec MCP Desktop Commander terminé." -Level "SUCCESS"
-Write-Log "Pour exécuter les tests, ouvrez MCP Desktop Commander et sélectionnez 'Tests du script manager' dans la liste des commandes." -Level "INFO"
+Write-Log "Enregistrement des tests avec MCP Desktop Commander terminÃ©." -Level "SUCCESS"
+Write-Log "Pour exÃ©cuter les tests, ouvrez MCP Desktop Commander et sÃ©lectionnez 'Tests du script manager' dans la liste des commandes." -Level "INFO"

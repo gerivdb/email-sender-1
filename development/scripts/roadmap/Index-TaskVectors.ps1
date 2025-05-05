@@ -1,5 +1,5 @@
-# Index-TaskVectors.ps1
-# Script pour indexer les vecteurs de tâches par identifiant, statut, date, etc.
+﻿# Index-TaskVectors.ps1
+# Script pour indexer les vecteurs de tÃ¢ches par identifiant, statut, date, etc.
 
 [CmdletBinding()]
 param (
@@ -16,7 +16,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -39,26 +39,26 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         }
         else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     }
     catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("chromadb", "numpy", "pandas")
     $missingPackages = @()
@@ -79,24 +79,24 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         }
         else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
     
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour indexer les vecteurs
+# Fonction pour crÃ©er un script Python temporaire pour indexer les vecteurs
 function New-TaskIndexScript {
     [CmdletBinding()]
     param (
@@ -124,29 +124,29 @@ from datetime import datetime
 from collections import defaultdict
 
 def main():
-    # Paramètres
+    # ParamÃ¨tres
     chroma_db_path = r'$ChromaDbPath'
     collection_name = '$CollectionName'
     index_output_path = r'$IndexOutputPath'
     force = $($Force.ToString().ToLower())
     
-    # Vérifier si le fichier d'index existe déjà
+    # VÃ©rifier si le fichier d'index existe dÃ©jÃ 
     if os.path.exists(index_output_path) and not force:
-        print(f"Le fichier d'index {index_output_path} existe déjà. Utilisez -Force pour l'écraser.")
+        print(f"Le fichier d'index {index_output_path} existe dÃ©jÃ . Utilisez -Force pour l'Ã©craser.")
         sys.exit(0)
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     os.makedirs(os.path.dirname(index_output_path), exist_ok=True)
     
     # Initialiser le client Chroma
-    print(f"Connexion à la base Chroma dans {chroma_db_path}...")
+    print(f"Connexion Ã  la base Chroma dans {chroma_db_path}...")
     try:
         client = chromadb.PersistentClient(path=chroma_db_path)
     except Exception as e:
-        print(f"Erreur lors de la connexion à la base Chroma: {e}")
+        print(f"Erreur lors de la connexion Ã  la base Chroma: {e}")
         sys.exit(1)
     
-    # Vérifier si la collection existe
+    # VÃ©rifier si la collection existe
     try:
         existing_collections = client.list_collections()
         collection_exists = any(c.name == collection_name for c in existing_collections)
@@ -155,19 +155,19 @@ def main():
             print(f"La collection {collection_name} n'existe pas dans la base Chroma.")
             sys.exit(1)
         
-        # Récupérer la collection
+        # RÃ©cupÃ©rer la collection
         collection = client.get_collection(name=collection_name)
         
-        # Récupérer toutes les données
-        print("Récupération des données de la collection...")
+        # RÃ©cupÃ©rer toutes les donnÃ©es
+        print("RÃ©cupÃ©ration des donnÃ©es de la collection...")
         result = collection.get()
         
         if not result['ids']:
             print("La collection est vide.")
             sys.exit(0)
         
-        # Créer les index
-        print("Création des index...")
+        # CrÃ©er les index
+        print("CrÃ©ation des index...")
         
         # Index par ID
         id_index = {task_id: i for i, task_id in enumerate(result['ids'])}
@@ -190,7 +190,7 @@ def main():
             indent = metadata.get('indentLevel', 0)
             indent_index[str(indent)].append(result['ids'][i])
         
-        # Index par date de mise à jour
+        # Index par date de mise Ã  jour
         date_index = defaultdict(list)
         for i, metadata in enumerate(result['metadatas']):
             date = metadata.get('lastUpdated', 'Unknown')
@@ -200,10 +200,10 @@ def main():
         parent_index = defaultdict(list)
         for i, metadata in enumerate(result['metadatas']):
             parent = metadata.get('parentId', '')
-            if parent:  # Ne pas indexer les tâches sans parent
+            if parent:  # Ne pas indexer les tÃ¢ches sans parent
                 parent_index[parent].append(result['ids'][i])
         
-        # Créer l'objet d'index complet
+        # CrÃ©er l'objet d'index complet
         indexes = {
             'metadata': {
                 'created': datetime.now().isoformat(),
@@ -225,17 +225,17 @@ def main():
         with open(index_output_path, 'w', encoding='utf-8') as f:
             json.dump(indexes, f, indent=2, ensure_ascii=False)
         
-        print(f"Indexation terminée. Les index ont été sauvegardés dans {index_output_path}.")
+        print(f"Indexation terminÃ©e. Les index ont Ã©tÃ© sauvegardÃ©s dans {index_output_path}.")
         print(f"Statistiques des index:")
-        print(f"  - Nombre total de tâches: {len(result['ids'])}")
-        print(f"  - Nombre de statuts différents: {len(status_index)}")
-        print(f"  - Nombre de sections différentes: {len(section_index)}")
+        print(f"  - Nombre total de tÃ¢ches: {len(result['ids'])}")
+        print(f"  - Nombre de statuts diffÃ©rents: {len(status_index)}")
+        print(f"  - Nombre de sections diffÃ©rentes: {len(section_index)}")
         print(f"  - Nombre de niveaux d'indentation: {len(indent_index)}")
-        print(f"  - Nombre de dates de mise à jour: {len(date_index)}")
-        print(f"  - Nombre de tâches avec parent: {sum(len(tasks) for tasks in parent_index.values())}")
+        print(f"  - Nombre de dates de mise Ã  jour: {len(date_index)}")
+        print(f"  - Nombre de tÃ¢ches avec parent: {sum(len(tasks) for tasks in parent_index.values())}")
         
     except Exception as e:
-        print(f"Erreur lors de l'indexation des tâches: {e}")
+        print(f"Erreur lors de l'indexation des tÃ¢ches: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
@@ -248,43 +248,43 @@ if __name__ == "__main__":
 
 # Fonction principale
 function Main {
-    # Vérifier si la base Chroma existe
+    # VÃ©rifier si la base Chroma existe
     if (-not (Test-Path -Path $ChromaDbPath)) {
         Write-Log "La base Chroma $ChromaDbPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si le fichier d'index existe déjà
+    # VÃ©rifier si le fichier d'index existe dÃ©jÃ 
     if ((Test-Path -Path $IndexOutputPath) -and -not $Force) {
-        Write-Log "Le fichier d'index $IndexOutputPath existe déjà. Utilisez -Force pour l'écraser." -Level Warning
+        Write-Log "Le fichier d'index $IndexOutputPath existe dÃ©jÃ . Utilisez -Force pour l'Ã©craser." -Level Warning
         return
     }
     
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
     
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
     
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour l'indexation des tâches..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour l'indexation des tÃ¢ches..." -Level Info
     $pythonScript = New-TaskIndexScript -ChromaDbPath $ChromaDbPath -CollectionName $CollectionName -IndexOutputPath $IndexOutputPath -Force:$Force
     
-    # Exécuter le script Python
-    Write-Log "Exécution du script Python pour l'indexation des tâches..." -Level Info
+    # ExÃ©cuter le script Python
+    Write-Log "ExÃ©cution du script Python pour l'indexation des tÃ¢ches..." -Level Info
     python $pythonScript
     
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
     
-    Write-Log "Opération terminée." -Level Success
+    Write-Log "OpÃ©ration terminÃ©e." -Level Success
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

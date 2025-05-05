@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les fonctions d'inventaire des scripts du manager.
@@ -10,16 +10,16 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Créer des fonctions de test pour l'inventaire des scripts
+# CrÃ©er des fonctions de test pour l'inventaire des scripts
 function Get-ScriptInventory {
     [CmdletBinding()]
     param (
@@ -31,10 +31,10 @@ function Get-ScriptInventory {
     )
     
     try {
-        # Récupérer tous les scripts
+        # RÃ©cupÃ©rer tous les scripts
         $scripts = Get-ChildItem -Path $RootPath -Recurse -File | Where-Object { $Extensions -contains $_.Extension }
         
-        # Créer l'inventaire
+        # CrÃ©er l'inventaire
         $inventory = @{
             GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             RootPath = $RootPath
@@ -50,7 +50,7 @@ function Get-ScriptInventory {
             $inventory.ScriptsByExtension[$extension] = $count
         }
         
-        # Compter les scripts par répertoire
+        # Compter les scripts par rÃ©pertoire
         $directories = $scripts | Group-Object -Property { Split-Path -Parent $_.FullName } | Select-Object Name, Count
         foreach ($directory in $directories) {
             $inventory.ScriptsByDirectory[$directory.Name] = $directory.Count
@@ -74,7 +74,7 @@ function Get-ScriptInventory {
         return $inventory
     }
     catch {
-        Write-Error "Erreur lors de la création de l'inventaire des scripts : $_"
+        Write-Error "Erreur lors de la crÃ©ation de l'inventaire des scripts : $_"
         return $null
     }
 }
@@ -108,7 +108,7 @@ function Find-Script {
             $results = $results | Where-Object { $_.Extension -eq $Extension }
         }
         
-        # Filtrer par répertoire
+        # Filtrer par rÃ©pertoire
         if ($Directory) {
             $results = $results | Where-Object { $_.Directory -like "*$Directory*" }
         }
@@ -125,20 +125,20 @@ function Find-Script {
 Describe "Tests des fonctions d'inventaire des scripts du manager" {
     Context "Tests de la fonction Get-ScriptInventory" {
         BeforeAll {
-            # Créer un dossier temporaire pour les tests
+            # CrÃ©er un dossier temporaire pour les tests
             $testDir = Join-Path -Path $env:TEMP -ChildPath "ScriptInventoryTests"
             if (Test-Path -Path $testDir) {
                 Remove-Item -Path $testDir -Recurse -Force
             }
             New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-            # Créer des sous-dossiers
+            # CrÃ©er des sous-dossiers
             $subDir1 = Join-Path -Path $testDir -ChildPath "subdir1"
             $subDir2 = Join-Path -Path $testDir -ChildPath "subdir2"
             New-Item -Path $subDir1 -ItemType Directory -Force | Out-Null
             New-Item -Path $subDir2 -ItemType Directory -Force | Out-Null
 
-            # Créer des scripts de test
+            # CrÃ©er des scripts de test
             $script1Path = Join-Path -Path $testDir -ChildPath "script1.ps1"
             $script2Path = Join-Path -Path $subDir1 -ChildPath "script2.ps1"
             $script3Path = Join-Path -Path $subDir1 -ChildPath "script3.psm1"
@@ -160,13 +160,13 @@ Describe "Tests des fonctions d'inventaire des scripts du manager" {
         }
 
         AfterAll {
-            # Nettoyer après les tests
+            # Nettoyer aprÃ¨s les tests
             if (Test-Path -Path $script:testDir) {
                 Remove-Item -Path $script:testDir -Recurse -Force
             }
         }
 
-        It "Devrait créer un inventaire des scripts" {
+        It "Devrait crÃ©er un inventaire des scripts" {
             $inventory = Get-ScriptInventory -RootPath $script:testDir
             $inventory | Should -Not -BeNullOrEmpty
             $inventory.TotalScripts | Should -Be 4
@@ -176,7 +176,7 @@ Describe "Tests des fonctions d'inventaire des scripts du manager" {
             $inventory.Scripts.Count | Should -Be 4
         }
 
-        It "Devrait compter les scripts par répertoire" {
+        It "Devrait compter les scripts par rÃ©pertoire" {
             $inventory = Get-ScriptInventory -RootPath $script:testDir
             $inventory.ScriptsByDirectory[$script:testDir] | Should -Be 1
             $inventory.ScriptsByDirectory[$script:subDir1] | Should -Be 2
@@ -194,7 +194,7 @@ Describe "Tests des fonctions d'inventaire des scripts du manager" {
 
     Context "Tests de la fonction Find-Script" {
         BeforeAll {
-            # Créer un inventaire de test
+            # CrÃ©er un inventaire de test
             $script:testInventory = @{
                 Scripts = @(
                     @{
@@ -250,7 +250,7 @@ Describe "Tests des fonctions d'inventaire des scripts du manager" {
             $results[0].Name | Should -Be "module1.psm1"
         }
 
-        It "Devrait trouver des scripts par répertoire" {
+        It "Devrait trouver des scripts par rÃ©pertoire" {
             $results = Find-Script -Inventory $script:testInventory -Directory "subdir1"
             $results.Count | Should -Be 2
             $results[0].Name | Should -Be "script2.ps1"

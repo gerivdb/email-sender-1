@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste l'intégration avec Augment Code.
+    Teste l'intÃ©gration avec Augment Code.
 
 .DESCRIPTION
-    Ce script teste l'intégration avec Augment Code en vérifiant que tous les
+    Ce script teste l'intÃ©gration avec Augment Code en vÃ©rifiant que tous les
     composants fonctionnent correctement.
 
 .PARAMETER Verbose
-    Affiche des informations détaillées sur les tests.
+    Affiche des informations dÃ©taillÃ©es sur les tests.
 
 .EXAMPLE
     .\test-augment-integration.ps1
-    # Teste l'intégration avec Augment Code
+    # Teste l'intÃ©gration avec Augment Code
 
 .EXAMPLE
     .\test-augment-integration.ps1 -Verbose
-    # Teste l'intégration avec Augment Code avec des informations détaillées
+    # Teste l'intÃ©gration avec Augment Code avec des informations dÃ©taillÃ©es
 
 .NOTES
     Version: 1.0
@@ -26,7 +26,7 @@
 [CmdletBinding()]
 param ()
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -36,12 +36,12 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Component {
     [CmdletBinding()]
     param (
@@ -60,7 +60,7 @@ function Test-Component {
             Write-Host "OK" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "ÉCHEC" -ForegroundColor Red
+            Write-Host "Ã‰CHEC" -ForegroundColor Red
             return $false
         }
     } catch {
@@ -142,14 +142,14 @@ function Test-ModeManagerMCPAdapter {
     return $true
 }
 
-# Fonction pour tester le script d'intégration pour le gestionnaire de modes
+# Fonction pour tester le script d'intÃ©gration pour le gestionnaire de modes
 function Test-ModeManagerIntegration {
     [CmdletBinding()]
     param ()
     
     $integrationPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\mode-manager-augment-integration.ps1"
     if (-not (Test-Path -Path $integrationPath)) {
-        Write-Verbose "Script d'intégration pour le gestionnaire de modes introuvable : $integrationPath"
+        Write-Verbose "Script d'intÃ©gration pour le gestionnaire de modes introuvable : $integrationPath"
         return $false
     }
     
@@ -170,28 +170,28 @@ function Test-MemoriesOptimization {
     return $true
 }
 
-# Fonction pour tester le script de configuration pour l'intégration MCP
+# Fonction pour tester le script de configuration pour l'intÃ©gration MCP
 function Test-MCPConfiguration {
     [CmdletBinding()]
     param ()
     
     $configurationPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\configure-augment-mcp.ps1"
     if (-not (Test-Path -Path $configurationPath)) {
-        Write-Verbose "Script de configuration pour l'intégration MCP introuvable : $configurationPath"
+        Write-Verbose "Script de configuration pour l'intÃ©gration MCP introuvable : $configurationPath"
         return $false
     }
     
     return $true
 }
 
-# Fonction pour tester le script de démarrage pour les serveurs MCP
+# Fonction pour tester le script de dÃ©marrage pour les serveurs MCP
 function Test-MCPServersStartup {
     [CmdletBinding()]
     param ()
     
     $startupPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\start-mcp-servers.ps1"
     if (-not (Test-Path -Path $startupPath)) {
-        Write-Verbose "Script de démarrage pour les serveurs MCP introuvable : $startupPath"
+        Write-Verbose "Script de dÃ©marrage pour les serveurs MCP introuvable : $startupPath"
         return $false
     }
     
@@ -253,15 +253,15 @@ function Test-Documentation {
     return $true
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $tests = @(
     @{ Name = "Module AugmentIntegration"; Test = { Test-AugmentIntegrationModule } },
     @{ Name = "Serveur MCP pour les Memories"; Test = { Test-MemoriesMCPServer } },
     @{ Name = "Adaptateur MCP pour le gestionnaire de modes"; Test = { Test-ModeManagerMCPAdapter } },
-    @{ Name = "Script d'intégration pour le gestionnaire de modes"; Test = { Test-ModeManagerIntegration } },
+    @{ Name = "Script d'intÃ©gration pour le gestionnaire de modes"; Test = { Test-ModeManagerIntegration } },
     @{ Name = "Script d'optimisation des Memories"; Test = { Test-MemoriesOptimization } },
-    @{ Name = "Script de configuration pour l'intégration MCP"; Test = { Test-MCPConfiguration } },
-    @{ Name = "Script de démarrage pour les serveurs MCP"; Test = { Test-MCPServersStartup } },
+    @{ Name = "Script de configuration pour l'intÃ©gration MCP"; Test = { Test-MCPConfiguration } },
+    @{ Name = "Script de dÃ©marrage pour les serveurs MCP"; Test = { Test-MCPServersStartup } },
     @{ Name = "Script d'analyse des performances"; Test = { Test-PerformanceAnalysis } },
     @{ Name = "Script de synchronisation des Memories avec n8n"; Test = { Test-MemoriesSync } },
     @{ Name = "Documentation"; Test = { Test-Documentation } }
@@ -276,34 +276,34 @@ foreach ($test in $tests) {
     }
 }
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 $successCount = ($results | Where-Object { $_.Success } | Measure-Object).Count
 $totalCount = $results.Count
 $successRate = [math]::Round(($successCount / $totalCount) * 100, 2)
 
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "Tests réussis : $successCount / $totalCount ($successRate%)" -ForegroundColor $(if ($successRate -eq 100) { "Green" } elseif ($successRate -ge 80) { "Yellow" } else { "Red" })
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "Tests rÃ©ussis : $successCount / $totalCount ($successRate%)" -ForegroundColor $(if ($successRate -eq 100) { "Green" } elseif ($successRate -ge 80) { "Yellow" } else { "Red" })
 
-# Afficher les tests échoués
+# Afficher les tests Ã©chouÃ©s
 $failedTests = $results | Where-Object { -not $_.Success }
 if ($failedTests) {
-    Write-Host "`nTests échoués :" -ForegroundColor Red
+    Write-Host "`nTests Ã©chouÃ©s :" -ForegroundColor Red
     foreach ($test in $failedTests) {
         Write-Host "- $($test.Name)" -ForegroundColor Red
     }
     
-    Write-Host "`nConsultez la documentation pour résoudre les problèmes :" -ForegroundColor Yellow
+    Write-Host "`nConsultez la documentation pour rÃ©soudre les problÃ¨mes :" -ForegroundColor Yellow
     Write-Host "- docs\guides\augment\integration_guide.md" -ForegroundColor Yellow
 }
 
-# Afficher les prochaines étapes
-Write-Host "`nProchaines étapes :" -ForegroundColor Cyan
+# Afficher les prochaines Ã©tapes
+Write-Host "`nProchaines Ã©tapes :" -ForegroundColor Cyan
 if ($successRate -eq 100) {
-    Write-Host "1. Exécutez `Initialize-AugmentIntegration -StartServers` pour démarrer les serveurs MCP" -ForegroundColor Green
+    Write-Host "1. ExÃ©cutez `Initialize-AugmentIntegration -StartServers` pour dÃ©marrer les serveurs MCP" -ForegroundColor Green
     Write-Host "2. Utilisez le module AugmentIntegration pour interagir avec Augment Code" -ForegroundColor Green
     Write-Host "3. Consultez la documentation pour plus d'informations" -ForegroundColor Green
 } else {
-    Write-Host "1. Corrigez les tests échoués" -ForegroundColor Yellow
-    Write-Host "2. Exécutez à nouveau ce script pour vérifier que tout fonctionne correctement" -ForegroundColor Yellow
+    Write-Host "1. Corrigez les tests Ã©chouÃ©s" -ForegroundColor Yellow
+    Write-Host "2. ExÃ©cutez Ã  nouveau ce script pour vÃ©rifier que tout fonctionne correctement" -ForegroundColor Yellow
     Write-Host "3. Consultez la documentation pour plus d'informations" -ForegroundColor Yellow
 }

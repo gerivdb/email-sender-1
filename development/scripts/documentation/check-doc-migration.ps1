@@ -1,7 +1,7 @@
-# Script pour vérifier l'état de la migration de la documentation
-# Ce script vérifie si tous les fichiers ont été migrés correctement
+﻿# Script pour vÃ©rifier l'Ã©tat de la migration de la documentation
+# Ce script vÃ©rifie si tous les fichiers ont Ã©tÃ© migrÃ©s correctement
 
-# Définition des mappings de chemins
+# DÃ©finition des mappings de chemins
 $pathMappings = @(
     @{ Old = "docs\architecture"; New = "projet\architecture" },
     @{ Old = "docs\tutorials"; New = "projet\tutorials" },
@@ -16,7 +16,7 @@ $pathMappings = @(
     @{ Old = "docs\guides\methodologies"; New = "development\methodologies" }
 )
 
-# Fonction pour vérifier si un dossier existe
+# Fonction pour vÃ©rifier si un dossier existe
 function Test-DirectoryExists {
     param (
         [string]$path
@@ -43,8 +43,8 @@ function Count-Files {
     return $files.Count
 }
 
-# Vérification des dossiers
-Write-Host "Vérification des dossiers..." -ForegroundColor Cyan
+# VÃ©rification des dossiers
+Write-Host "VÃ©rification des dossiers..." -ForegroundColor Cyan
 
 $results = @()
 
@@ -55,9 +55,9 @@ foreach ($mapping in $pathMappings) {
     $newFileCount = Count-Files -path $mapping.New
 
     $status = if ($oldExists -and $newExists -and $newFileCount -gt 0) {
-        "Migré"
+        "MigrÃ©"
     } elseif ($oldExists -and -not $newExists) {
-        "Non migré"
+        "Non migrÃ©"
     } elseif (-not $oldExists -and $newExists) {
         "Nouveau"
     } else {
@@ -75,11 +75,11 @@ foreach ($mapping in $pathMappings) {
     }
 }
 
-# Affichage des résultats
+# Affichage des rÃ©sultats
 $results | Format-Table -AutoSize
 
-# Vérification des fichiers de référence
-Write-Host "Vérification des références..." -ForegroundColor Cyan
+# VÃ©rification des fichiers de rÃ©fÃ©rence
+Write-Host "VÃ©rification des rÃ©fÃ©rences..." -ForegroundColor Cyan
 
 $referencesFound = 0
 $files = Get-ChildItem -Path . -Recurse -Include *.md, *.txt, *.ps1, *.py, *.js, *.html, *.css, *.json, *.yaml, *.yml -File
@@ -92,7 +92,7 @@ foreach ($file in $files) {
         if ($content -match [regex]::Escape($mapping.Old)) {
             $foundReference = $true
             $referencesFound++
-            Write-Host "Référence trouvée dans: $($file.FullName)" -ForegroundColor Yellow
+            Write-Host "RÃ©fÃ©rence trouvÃ©e dans: $($file.FullName)" -ForegroundColor Yellow
             Write-Host "  Ancien chemin: $($mapping.Old)" -ForegroundColor Yellow
             Write-Host "  Nouveau chemin: $($mapping.New)" -ForegroundColor Yellow
             break
@@ -105,18 +105,18 @@ foreach ($file in $files) {
 }
 
 if ($referencesFound -eq 0) {
-    Write-Host "Aucune référence à l'ancienne structure trouvée." -ForegroundColor Green
+    Write-Host "Aucune rÃ©fÃ©rence Ã  l'ancienne structure trouvÃ©e." -ForegroundColor Green
 } else {
-    Write-Host "$referencesFound références à l'ancienne structure trouvées." -ForegroundColor Yellow
+    Write-Host "$referencesFound rÃ©fÃ©rences Ã  l'ancienne structure trouvÃ©es." -ForegroundColor Yellow
 }
 
-# Résumé
-Write-Host "Résumé de la migration:" -ForegroundColor Cyan
-$migratedCount = ($results | Where-Object { $_.Statut -eq "Migré" }).Count
-$notMigratedCount = ($results | Where-Object { $_.Statut -eq "Non migré" }).Count
+# RÃ©sumÃ©
+Write-Host "RÃ©sumÃ© de la migration:" -ForegroundColor Cyan
+$migratedCount = ($results | Where-Object { $_.Statut -eq "MigrÃ©" }).Count
+$notMigratedCount = ($results | Where-Object { $_.Statut -eq "Non migrÃ©" }).Count
 $newCount = ($results | Where-Object { $_.Statut -eq "Nouveau" }).Count
 
-Write-Host "Dossiers migrés: $migratedCount" -ForegroundColor Green
-Write-Host "Dossiers non migrés: $notMigratedCount" -ForegroundColor Yellow
+Write-Host "Dossiers migrÃ©s: $migratedCount" -ForegroundColor Green
+Write-Host "Dossiers non migrÃ©s: $notMigratedCount" -ForegroundColor Yellow
 Write-Host "Nouveaux dossiers: $newCount" -ForegroundColor Cyan
-Write-Host "Références à mettre à jour: $referencesFound" -ForegroundColor Yellow
+Write-Host "RÃ©fÃ©rences Ã  mettre Ã  jour: $referencesFound" -ForegroundColor Yellow

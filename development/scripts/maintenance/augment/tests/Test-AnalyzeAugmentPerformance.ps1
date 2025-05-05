@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le script d'analyse des performances.
 
@@ -8,7 +8,7 @@
 
 .EXAMPLE
     Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-AnalyzeAugmentPerformance.ps1"
-    # Exécute les tests unitaires pour le script d'analyse des performances
+    # ExÃ©cute les tests unitaires pour le script d'analyse des performances
 
 .NOTES
     Version: 1.0
@@ -16,17 +16,17 @@
     Auteur: Augment Agent
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Déterminer le chemin du script à tester
+# DÃ©terminer le chemin du script Ã  tester
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $scriptPath = Join-Path -Path $scriptRoot -ChildPath "analyze-augment-performance.ps1"
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $scriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -35,7 +35,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 
 Describe "Analyze Augment Performance Tests" {
     BeforeAll {
-        # Créer un fichier de log temporaire pour les tests
+        # CrÃ©er un fichier de log temporaire pour les tests
         $testDir = Join-Path -Path $TestDrive -ChildPath "logs\augment"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         
@@ -50,17 +50,17 @@ Describe "Analyze Augment Performance Tests" {
 "@
         $testLogContent | Out-File -FilePath $testLogPath -Encoding UTF8
         
-        # Créer un répertoire de sortie temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire de sortie temporaire pour les tests
         $testOutputDir = Join-Path -Path $TestDrive -ChildPath "reports\augment"
         New-Item -Path $testOutputDir -ItemType Directory -Force | Out-Null
         
         $testOutputPath = Join-Path -Path $testOutputDir -ChildPath "performance.html"
         
-        # Définir des variables globales pour les tests
+        # DÃ©finir des variables globales pour les tests
         $Global:TestLogPath = $testLogPath
         $Global:TestOutputPath = $testOutputPath
         
-        # Créer des fonctions de mock pour les fonctions du script
+        # CrÃ©er des fonctions de mock pour les fonctions du script
         function Analyze-AugmentLog {
             param (
                 [string]$LogPath
@@ -137,7 +137,7 @@ Describe "Analyze Augment Performance Tests" {
                 [string]$OutputPath
             )
             
-            # Créer un fichier HTML minimal
+            # CrÃ©er un fichier HTML minimal
             $html = @"
 <!DOCTYPE html>
 <html>
@@ -146,7 +146,7 @@ Describe "Analyze Augment Performance Tests" {
 </head>
 <body>
     <h1>Rapport de performances d'Augment Code</h1>
-    <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
 </body>
 </html>
 "@
@@ -166,18 +166,18 @@ Describe "Analyze Augment Performance Tests" {
     
     Context "Script Loading" {
         It "Should load the script without errors" {
-            # Vérifier que le script existe
+            # VÃ©rifier que le script existe
             Test-Path -Path $scriptPath | Should -Be $true
             
-            # Charger le script dans un bloc de script pour éviter d'exécuter le script complet
+            # Charger le script dans un bloc de script pour Ã©viter d'exÃ©cuter le script complet
             $scriptContent = Get-Content -Path $scriptPath -Raw
             
-            # Remplacer la partie qui exécute le script par un commentaire
-            $scriptContent = $scriptContent -replace "# Analyser le fichier de log.*?# Afficher un résumé", "# Script execution disabled for testing"
+            # Remplacer la partie qui exÃ©cute le script par un commentaire
+            $scriptContent = $scriptContent -replace "# Analyser le fichier de log.*?# Afficher un rÃ©sumÃ©", "# Script execution disabled for testing"
             
             $scriptBlock = [ScriptBlock]::Create($scriptContent)
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             { . $scriptBlock } | Should -Not -Throw
         }
     }
@@ -202,16 +202,16 @@ Describe "Analyze Augment Performance Tests" {
     
     Context "Generate-HtmlReport" {
         It "Should generate HTML report correctly" {
-            # Créer des données d'analyse
+            # CrÃ©er des donnÃ©es d'analyse
             $analysisResults = Analyze-AugmentLog -LogPath $Global:TestLogPath
             
             # Tester la fonction
             Generate-HtmlReport -AnalysisResults $analysisResults -OutputPath $Global:TestOutputPath
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $Global:TestOutputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier
+            # VÃ©rifier le contenu du fichier
             $content = Get-Content -Path $Global:TestOutputPath -Raw
             $content | Should -Not -BeNullOrEmpty
             $content | Should -Match "Rapport de performances d'Augment Code"
@@ -220,7 +220,7 @@ Describe "Analyze Augment Performance Tests" {
     
     Context "Script Execution" {
         It "Should analyze performance and generate report" {
-            # Mock les fonctions nécessaires
+            # Mock les fonctions nÃ©cessaires
             Mock -CommandName Analyze-AugmentLog -MockWith {
                 param (
                     [string]$LogPath
@@ -269,7 +269,7 @@ Describe "Analyze Augment Performance Tests" {
                     [string]$OutputPath
                 )
                 
-                # Créer un fichier HTML minimal
+                # CrÃ©er un fichier HTML minimal
                 $html = @"
 <!DOCTYPE html>
 <html>
@@ -278,7 +278,7 @@ Describe "Analyze Augment Performance Tests" {
 </head>
 <body>
     <h1>Rapport de performances d'Augment Code</h1>
-    <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
 </body>
 </html>
 "@
@@ -286,16 +286,16 @@ Describe "Analyze Augment Performance Tests" {
                 $html | Out-File -FilePath $OutputPath -Encoding UTF8
             }
             
-            # Exécuter le script avec des paramètres spécifiques
+            # ExÃ©cuter le script avec des paramÃ¨tres spÃ©cifiques
             $params = @{
                 LogPath = $Global:TestLogPath
                 OutputPath = $Global:TestOutputPath
             }
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             & $scriptPath @params
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $Global:TestOutputPath | Should -Be $true
         }
     }

@@ -1,6 +1,6 @@
-# Script de test très minimal
+﻿# Script de test trÃ¨s minimal
 
-# Créer un script PowerShell de test très simple
+# CrÃ©er un script PowerShell de test trÃ¨s simple
 $sampleCode = @'
 function Test-Function {
     "Hello, World!"
@@ -17,7 +17,7 @@ $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefin
     $functionCount++
 }
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 Write-Host "Nombre de fonctions trouvees: $functionCount" -ForegroundColor Yellow
 
 # Compter tous les noeuds

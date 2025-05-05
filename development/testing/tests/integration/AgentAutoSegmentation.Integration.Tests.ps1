@@ -1,37 +1,37 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration pour la segmentation d'entrées avec Agent Auto.
+    Tests d'intÃ©gration pour la segmentation d'entrÃ©es avec Agent Auto.
 .DESCRIPTION
-    Ce script contient les tests d'intégration pour la segmentation d'entrées
-    avec Agent Auto, vérifiant l'intégration entre les composants.
+    Ce script contient les tests d'intÃ©gration pour la segmentation d'entrÃ©es
+    avec Agent Auto, vÃ©rifiant l'intÃ©gration entre les composants.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
 BeforeAll {
-    # Importer le module à tester
+    # Importer le module Ã  tester
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\InputSegmentation.psm1"
     Import-Module $modulePath -Force
     
     # Initialiser le module
     Initialize-InputSegmentation -MaxInputSizeKB 10 -DefaultChunkSizeKB 5
     
-    # Créer un dossier temporaire pour les sorties
+    # CrÃ©er un dossier temporaire pour les sorties
     $tempOutputDir = Join-Path -Path $TestDrive -ChildPath "output"
     New-Item -Path $tempOutputDir -ItemType Directory -Force | Out-Null
     
-    # Créer des données de test
+    # CrÃ©er des donnÃ©es de test
     $tempDataDir = Join-Path -Path $TestDrive -ChildPath "data"
     New-Item -Path $tempDataDir -ItemType Directory -Force | Out-Null
     
-    # Créer un fichier texte volumineux
+    # CrÃ©er un fichier texte volumineux
     $largeTextPath = Join-Path -Path $tempDataDir -ChildPath "large_text.txt"
     "A" * 20KB | Out-File -FilePath $largeTextPath -Encoding utf8
     
-    # Créer un fichier JSON volumineux
+    # CrÃ©er un fichier JSON volumineux
     $largeJsonPath = Join-Path -Path $tempDataDir -ChildPath "large_json.json"
     $largeJson = @{
         items = @()
@@ -47,10 +47,10 @@ BeforeAll {
     
     $largeJson | ConvertTo-Json -Depth 10 | Out-File -FilePath $largeJsonPath -Encoding utf8
     
-    # Créer un script de test pour Agent Auto
+    # CrÃ©er un script de test pour Agent Auto
     $agentAutoScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\agent-auto\Example-AgentAutoSegmentation.ps1"
     
-    # Vérifier si le script existe, sinon le créer pour les tests
+    # VÃ©rifier si le script existe, sinon le crÃ©er pour les tests
     if (-not (Test-Path -Path $agentAutoScriptPath)) {
         $scriptDir = Split-Path -Path $agentAutoScriptPath -Parent
         if (-not (Test-Path -Path $scriptDir)) {
@@ -64,15 +64,15 @@ BeforeAll {
     Exemple d'utilisation de la segmentation automatique pour Agent Auto.
 .DESCRIPTION
     Ce script montre comment utiliser la segmentation automatique pour
-    traiter des entrées volumineuses avec Agent Auto.
+    traiter des entrÃ©es volumineuses avec Agent Auto.
 .PARAMETER Input
-    Entrée à traiter (texte, JSON ou chemin de fichier).
+    EntrÃ©e Ã  traiter (texte, JSON ou chemin de fichier).
 .PARAMETER InputType
-    Type d'entrée (Text, Json, File).
+    Type d'entrÃ©e (Text, Json, File).
 .PARAMETER OutputPath
     Chemin du dossier de sortie pour les segments.
 .PARAMETER TestMode
-    Mode de test pour les tests d'intégration.
+    Mode de test pour les tests d'intÃ©gration.
 .EXAMPLE
     .\Example-AgentAutoSegmentation.ps1 -Input "Texte volumineux" -InputType Text
 #>
@@ -100,7 +100,7 @@ Import-Module `$modulePath -Force
 # Initialiser le module de segmentation
 Initialize-InputSegmentation -MaxInputSizeKB 10 -DefaultChunkSizeKB 5
 
-# Fonction pour traiter une entrée avec segmentation
+# Fonction pour traiter une entrÃ©e avec segmentation
 function Invoke-AgentAutoWithSegmentation {
     [CmdletBinding()]
     param (
@@ -118,7 +118,7 @@ function Invoke-AgentAutoWithSegmentation {
         [switch]`$TestMode
     )
     
-    # Déterminer le type d'entrée si non spécifié
+    # DÃ©terminer le type d'entrÃ©e si non spÃ©cifiÃ©
     if (-not `$InputType) {
         if (`$Input -is [string]) {
             if (Test-Path -Path `$Input -PathType Leaf) {
@@ -129,14 +129,14 @@ function Invoke-AgentAutoWithSegmentation {
         } elseif (`$Input -is [hashtable] -or `$Input -is [PSCustomObject]) {
             `$InputType = "Json"
         } else {
-            throw "Type d'entrée non reconnu. Veuillez spécifier le paramètre InputType."
+            throw "Type d'entrÃ©e non reconnu. Veuillez spÃ©cifier le paramÃ¨tre InputType."
         }
     }
     
-    # Mesurer la taille de l'entrée
+    # Mesurer la taille de l'entrÃ©e
     `$sizeKB = Measure-InputSize -Input `$Input
     
-    # Créer un objet de résultat pour le mode de test
+    # CrÃ©er un objet de rÃ©sultat pour le mode de test
     if (`$TestMode) {
         `$result = [PSCustomObject]@{
             InputType = `$InputType
@@ -147,7 +147,7 @@ function Invoke-AgentAutoWithSegmentation {
         }
     }
     
-    # Si l'entrée est plus petite que la taille maximale, la traiter directement
+    # Si l'entrÃ©e est plus petite que la taille maximale, la traiter directement
     if (`$sizeKB -le 10) {
         if (`$TestMode) {
             `$result.IsSegmented = `$false
@@ -157,12 +157,12 @@ function Invoke-AgentAutoWithSegmentation {
         }
         
         # Simuler le traitement par Agent Auto
-        Write-Host "Agent Auto traite l'entrée directement (taille: `$sizeKB KB)..." -ForegroundColor Cyan
+        Write-Host "Agent Auto traite l'entrÃ©e directement (taille: `$sizeKB KB)..." -ForegroundColor Cyan
         Start-Sleep -Seconds 1
-        return "Agent Auto a traité l'entrée directement: `$InputType de taille `$sizeKB KB"
+        return "Agent Auto a traitÃ© l'entrÃ©e directement: `$InputType de taille `$sizeKB KB"
     }
     
-    # Segmenter l'entrée
+    # Segmenter l'entrÃ©e
     `$segments = @()
     
     switch (`$InputType) {
@@ -177,7 +177,7 @@ function Invoke-AgentAutoWithSegmentation {
         }
     }
     
-    # Enregistrer les segments si un chemin de sortie est spécifié
+    # Enregistrer les segments si un chemin de sortie est spÃ©cifiÃ©
     if (`$OutputPath) {
         if (-not (Test-Path -Path `$OutputPath)) {
             New-Item -Path `$OutputPath -ItemType Directory -Force | Out-Null
@@ -202,28 +202,28 @@ function Invoke-AgentAutoWithSegmentation {
     }
     
     # Simuler le traitement par Agent Auto
-    Write-Host "Entrée segmentée en `$(`$segments.Count) parties." -ForegroundColor Yellow
+    Write-Host "EntrÃ©e segmentÃ©e en `$(`$segments.Count) parties." -ForegroundColor Yellow
     
     for (`$i = 0; `$i -lt `$segments.Count; `$i++) {
         Write-Host "Agent Auto traite le segment `$(`$i + 1)/`$(`$segments.Count)..." -ForegroundColor Cyan
         Start-Sleep -Seconds 1
         
         `$segmentSize = Measure-InputSize -Input `$segments[`$i]
-        Write-Host "Segment `$(`$i + 1) traité (taille: `$segmentSize KB)" -ForegroundColor Green
+        Write-Host "Segment `$(`$i + 1) traitÃ© (taille: `$segmentSize KB)" -ForegroundColor Green
     }
     
-    return "Traitement terminé. `$(`$segments.Count) segments traités."
+    return "Traitement terminÃ©. `$(`$segments.Count) segments traitÃ©s."
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Invoke-AgentAutoWithSegmentation -Input `$Input -InputType `$InputType -OutputPath `$OutputPath -TestMode:`$TestMode
 "@ | Out-File -FilePath $agentAutoScriptPath -Encoding utf8
     }
     
-    # Créer un script d'initialisation pour Agent Auto
+    # CrÃ©er un script d'initialisation pour Agent Auto
     $initScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\agent-auto\Initialize-AgentAutoSegmentation.ps1"
     
-    # Vérifier si le script existe, sinon le créer pour les tests
+    # VÃ©rifier si le script existe, sinon le crÃ©er pour les tests
     if (-not (Test-Path -Path $initScriptPath)) {
         $scriptDir = Split-Path -Path $initScriptPath -Parent
         if (-not (Test-Path -Path $scriptDir)) {
@@ -236,22 +236,22 @@ Invoke-AgentAutoWithSegmentation -Input `$Input -InputType `$InputType -OutputPa
 .SYNOPSIS
     Initialise la segmentation automatique pour Agent Auto.
 .DESCRIPTION
-    Ce script configure et initialise la segmentation automatique des entrées
-    pour Agent Auto, évitant ainsi les interruptions dues aux limites de taille d'entrée.
+    Ce script configure et initialise la segmentation automatique des entrÃ©es
+    pour Agent Auto, Ã©vitant ainsi les interruptions dues aux limites de taille d'entrÃ©e.
 .PARAMETER ConfigPath
     Chemin du fichier de configuration Augment.
 .PARAMETER Enable
     Active la segmentation automatique.
 .PARAMETER MaxInputSizeKB
-    Taille maximale d'entrée en KB (par défaut: 10).
+    Taille maximale d'entrÃ©e en KB (par dÃ©faut: 10).
 .PARAMETER ChunkSizeKB
-    Taille des segments en KB (par défaut: 5).
+    Taille des segments en KB (par dÃ©faut: 5).
 .PARAMETER PreserveLines
-    Préserve les sauts de ligne lors de la segmentation de texte.
+    PrÃ©serve les sauts de ligne lors de la segmentation de texte.
 .PARAMETER CachePath
-    Chemin du dossier de cache pour les états de segmentation.
+    Chemin du dossier de cache pour les Ã©tats de segmentation.
 .PARAMETER TestMode
-    Mode de test pour les tests d'intégration.
+    Mode de test pour les tests d'intÃ©gration.
 .EXAMPLE
     .\Initialize-AgentAutoSegmentation.ps1 -Enable -MaxInputSizeKB 15 -ChunkSizeKB 7
 #>
@@ -284,7 +284,7 @@ param (
 `$modulePath = Join-Path -Path `$PSScriptRoot -ChildPath "..\..\modules\InputSegmentation.psm1"
 Import-Module `$modulePath -Force
 
-# Fonction pour mettre à jour la configuration
+# Fonction pour mettre Ã  jour la configuration
 function Update-AugmentConfig {
     [CmdletBinding()]
     param (
@@ -307,15 +307,15 @@ function Update-AugmentConfig {
         [string]`$CachePath
     )
     
-    # Vérifier si le fichier de configuration existe
+    # VÃ©rifier si le fichier de configuration existe
     if (-not (Test-Path -Path `$ConfigPath)) {
-        # Créer le dossier de configuration s'il n'existe pas
+        # CrÃ©er le dossier de configuration s'il n'existe pas
         `$configDir = Split-Path -Path `$ConfigPath -Parent
         if (-not (Test-Path -Path `$configDir)) {
             New-Item -Path `$configDir -ItemType Directory -Force | Out-Null
         }
         
-        # Créer un fichier de configuration vide
+        # CrÃ©er un fichier de configuration vide
         @{} | ConvertTo-Json | Out-File -FilePath `$ConfigPath -Encoding utf8
     }
     
@@ -323,14 +323,14 @@ function Update-AugmentConfig {
         # Charger la configuration
         `$config = Get-Content -Path `$ConfigPath -Raw | ConvertFrom-Json
         
-        # Convertir en hashtable si nécessaire
+        # Convertir en hashtable si nÃ©cessaire
         if (`$config -isnot [PSCustomObject]) {
             `$config = [PSCustomObject]@{}
         }
         
-        # Vérifier si la section agent_auto existe
+        # VÃ©rifier si la section agent_auto existe
         if (-not (Get-Member -InputObject `$config -Name "agent_auto" -MemberType Properties)) {
-            # Créer la section agent_auto
+            # CrÃ©er la section agent_auto
             `$config | Add-Member -MemberType NoteProperty -Name "agent_auto" -Value @{
                 input_segmentation = @{
                     enabled = `$Enable
@@ -342,9 +342,9 @@ function Update-AugmentConfig {
             }
         }
         else {
-            # Vérifier si la section input_segmentation existe
+            # VÃ©rifier si la section input_segmentation existe
             if (-not (Get-Member -InputObject `$config.agent_auto -Name "input_segmentation" -MemberType Properties)) {
-                # Créer la section input_segmentation
+                # CrÃ©er la section input_segmentation
                 `$config.agent_auto | Add-Member -MemberType NoteProperty -Name "input_segmentation" -Value @{
                     enabled = `$Enable
                     max_input_size_kb = `$MaxInputSizeKB
@@ -354,7 +354,7 @@ function Update-AugmentConfig {
                 }
             }
             else {
-                # Mettre à jour la section input_segmentation
+                # Mettre Ã  jour la section input_segmentation
                 `$config.agent_auto.input_segmentation.enabled = `$Enable
                 `$config.agent_auto.input_segmentation.max_input_size_kb = `$MaxInputSizeKB
                 `$config.agent_auto.input_segmentation.chunk_size_kb = `$ChunkSizeKB
@@ -369,7 +369,7 @@ function Update-AugmentConfig {
         return `$true
     }
     catch {
-        Write-Error "Erreur lors de la mise à jour de la configuration: `$_"
+        Write-Error "Erreur lors de la mise Ã  jour de la configuration: `$_"
         return `$false
     }
 }
@@ -403,10 +403,10 @@ function Initialize-AgentAutoSegmentation {
     # Initialiser le module de segmentation
     Initialize-InputSegmentation -MaxInputSizeKB `$MaxInputSizeKB -DefaultChunkSizeKB `$ChunkSizeKB
     
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     `$configUpdated = Update-AugmentConfig -ConfigPath `$ConfigPath -Enable `$Enable -MaxInputSizeKB `$MaxInputSizeKB -ChunkSizeKB `$ChunkSizeKB -PreserveLines `$PreserveLines -CachePath `$CachePath
     
-    # Créer les dossiers nécessaires
+    # CrÃ©er les dossiers nÃ©cessaires
     `$cacheDirPath = Split-Path -Path `$CachePath -Parent
     
     if (-not (Test-Path -Path `$cacheDirPath)) {
@@ -433,18 +433,18 @@ function Initialize-AgentAutoSegmentation {
     return `$configUpdated
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Initialize-AgentAutoSegmentation -ConfigPath `$ConfigPath -Enable:`$Enable -MaxInputSizeKB `$MaxInputSizeKB -ChunkSizeKB `$ChunkSizeKB -PreserveLines:`$PreserveLines -CachePath `$CachePath -TestMode:`$TestMode
 "@ | Out-File -FilePath $initScriptPath -Encoding utf8
     }
     
-    # Créer un fichier de configuration temporaire
+    # CrÃ©er un fichier de configuration temporaire
     $tempConfigPath = Join-Path -Path $TestDrive -ChildPath ".augment\config.json"
     $tempConfigDir = Split-Path -Path $tempConfigPath -Parent
     New-Item -Path $tempConfigDir -ItemType Directory -Force | Out-Null
     @{} | ConvertTo-Json | Out-File -FilePath $tempConfigPath -Encoding utf8
     
-    # Créer un dossier de cache temporaire
+    # CrÃ©er un dossier de cache temporaire
     $tempCachePath = Join-Path -Path $TestDrive -ChildPath "cache\agent_auto_state.json"
     $tempCacheDir = Split-Path -Path $tempCachePath -Parent
     New-Item -Path $tempCacheDir -ItemType Directory -Force | Out-Null
@@ -461,7 +461,7 @@ Describe "Agent Auto Segmentation Integration" {
             $result.ChunkSizeKB | Should -Be 7
         }
         
-        It "Devrait mettre à jour la configuration Augment" {
+        It "Devrait mettre Ã  jour la configuration Augment" {
             $config = Get-Content -Path $tempConfigPath -Raw | ConvertFrom-Json
             
             $config.agent_auto | Should -Not -BeNullOrEmpty
@@ -472,14 +472,14 @@ Describe "Agent Auto Segmentation Integration" {
         }
     }
     
-    Context "Lorsqu'on traite des entrées avec Agent Auto" {
-        It "Devrait segmenter automatiquement une entrée texte volumineuse" {
+    Context "Lorsqu'on traite des entrÃ©es avec Agent Auto" {
+        It "Devrait segmenter automatiquement une entrÃ©e texte volumineuse" {
             $largeText = Get-Content -Path $largeTextPath -Raw
             $result = & $agentAutoScriptPath -Input $largeText -InputType "Text" -OutputPath $tempOutputDir -TestMode
             
             $result.IsSegmented | Should -Be $true
             $result.SegmentCount | Should -BeGreaterThan 1
-            $result.InputSizeKB | Should -BeGreaterThan 15  # Taille maximale configurée
+            $result.InputSizeKB | Should -BeGreaterThan 15  # Taille maximale configurÃ©e
         }
         
         It "Devrait segmenter automatiquement un objet JSON volumineux" {
@@ -497,7 +497,7 @@ Describe "Agent Auto Segmentation Integration" {
             $result.SegmentCount | Should -BeGreaterThan 1
         }
         
-        It "Ne devrait pas segmenter une entrée plus petite que la taille maximale" {
+        It "Ne devrait pas segmenter une entrÃ©e plus petite que la taille maximale" {
             $smallText = "Ceci est un petit texte de test."
             $result = & $agentAutoScriptPath -Input $smallText -InputType "Text" -OutputPath $tempOutputDir -TestMode
             
@@ -505,7 +505,7 @@ Describe "Agent Auto Segmentation Integration" {
             $result.SegmentCount | Should -Be 1
         }
         
-        It "Devrait créer des fichiers de segment dans le dossier de sortie" {
+        It "Devrait crÃ©er des fichiers de segment dans le dossier de sortie" {
             & $agentAutoScriptPath -Input $largeTextPath -InputType "File" -OutputPath $tempOutputDir
             
             $segmentFiles = Get-ChildItem -Path $tempOutputDir -Filter "segment_*.txt"

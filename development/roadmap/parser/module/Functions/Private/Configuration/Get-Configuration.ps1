@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
-    Récupère la configuration du système de roadmap.
+    RÃ©cupÃ¨re la configuration du systÃ¨me de roadmap.
 .DESCRIPTION
-    Cette fonction récupère la configuration en chargeant le fichier de configuration
-    et en appliquant des valeurs par défaut si nécessaire.
+    Cette fonction rÃ©cupÃ¨re la configuration en chargeant le fichier de configuration
+    et en appliquant des valeurs par dÃ©faut si nÃ©cessaire.
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration. Par défaut, il s'agit de config.json dans le répertoire config.
+    Chemin vers le fichier de configuration. Par dÃ©faut, il s'agit de config.json dans le rÃ©pertoire config.
 .PARAMETER ApplyDefaults
-    Si spécifié, applique des valeurs par défaut aux propriétés manquantes.
+    Si spÃ©cifiÃ©, applique des valeurs par dÃ©faut aux propriÃ©tÃ©s manquantes.
 .PARAMETER Validate
-    Si spécifié, valide la configuration et génère une erreur si elle est invalide.
+    Si spÃ©cifiÃ©, valide la configuration et gÃ©nÃ¨re une erreur si elle est invalide.
 .EXAMPLE
     $config = Get-Configuration -ApplyDefaults
-    Récupère la configuration et applique des valeurs par défaut aux propriétés manquantes.
+    RÃ©cupÃ¨re la configuration et applique des valeurs par dÃ©faut aux propriÃ©tÃ©s manquantes.
 .EXAMPLE
     $config = Get-Configuration -ConfigPath "chemin/vers/config.json" -Validate
-    Récupère la configuration à partir du chemin spécifié et la valide.
+    RÃ©cupÃ¨re la configuration Ã  partir du chemin spÃ©cifiÃ© et la valide.
 #>
 function Get-Configuration {
     [CmdletBinding()]
@@ -37,29 +37,29 @@ function Get-Configuration {
         $validationResult = Test-Configuration -Config $config -Detailed
         
         if (-not $validationResult.IsValid) {
-            Write-Warning "La validation de la configuration a échoué:"
+            Write-Warning "La validation de la configuration a Ã©chouÃ©:"
             foreach ($result in $validationResult.Results) {
                 Write-Warning "  - $result"
             }
             
             if ($ApplyDefaults) {
-                Write-Verbose "Application des valeurs par défaut à la configuration invalide"
+                Write-Verbose "Application des valeurs par dÃ©faut Ã  la configuration invalide"
                 $config = Set-DefaultConfiguration -Config $config
             }
             elseif ($Validate) {
-                throw "La validation de la configuration a échoué. Utilisez -ApplyDefaults pour appliquer des valeurs par défaut."
+                throw "La validation de la configuration a Ã©chouÃ©. Utilisez -ApplyDefaults pour appliquer des valeurs par dÃ©faut."
             }
             else {
-                Write-Warning "La configuration est invalide. Utilisez -ApplyDefaults pour appliquer des valeurs par défaut."
+                Write-Warning "La configuration est invalide. Utilisez -ApplyDefaults pour appliquer des valeurs par dÃ©faut."
             }
         }
         
         return $config
     }
     catch {
-        Write-Error "Erreur lors de la récupération de la configuration: $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration de la configuration: $_"
         if ($ApplyDefaults) {
-            Write-Warning "Utilisation de la configuration par défaut"
+            Write-Warning "Utilisation de la configuration par dÃ©faut"
             return Initialize-Configuration -CreateIfMissing -ErrorAction Stop
         }
         else {

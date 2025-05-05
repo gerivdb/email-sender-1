@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les fonctions d'analyse des scripts du manager.
@@ -10,16 +10,16 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Créer des fonctions de test pour l'analyse des scripts
+# CrÃ©er des fonctions de test pour l'analyse des scripts
 function Get-ScriptInfo {
     [CmdletBinding()]
     param (
@@ -63,7 +63,7 @@ function Test-ScriptQuality {
         [hashtable]$ScriptInfo
     )
     
-    # Définir les seuils de qualité
+    # DÃ©finir les seuils de qualitÃ©
     $thresholds = @{
         MinLineCount = 10
         MaxLineCount = 1000
@@ -72,21 +72,21 @@ function Test-ScriptQuality {
         RequiredElements = @("HasSynopsis", "HasDescription", "HasExample")
     }
     
-    # Calculer les métriques
+    # Calculer les mÃ©triques
     $metrics = @{
         CommentRatio = if ($ScriptInfo.LineCount -gt 0) { $ScriptInfo.CommentLineCount / $ScriptInfo.LineCount } else { 0 }
         EmptyLineRatio = if ($ScriptInfo.LineCount -gt 0) { $ScriptInfo.EmptyLineCount / $ScriptInfo.LineCount } else { 0 }
         MissingElements = @()
     }
     
-    # Vérifier les éléments requis
+    # VÃ©rifier les Ã©lÃ©ments requis
     foreach ($element in $thresholds.RequiredElements) {
         if (-not $ScriptInfo[$element]) {
             $metrics.MissingElements += $element
         }
     }
     
-    # Évaluer la qualité
+    # Ã‰valuer la qualitÃ©
     $quality = @{
         IsValid = $true
         Issues = @()
@@ -109,12 +109,12 @@ function Test-ScriptQuality {
     
     if ($metrics.EmptyLineRatio -gt $thresholds.MaxEmptyLineRatio) {
         $quality.IsValid = $false
-        $quality.Issues += "Le ratio de lignes vides est trop élevé (plus de $($thresholds.MaxEmptyLineRatio * 100)%)"
+        $quality.Issues += "Le ratio de lignes vides est trop Ã©levÃ© (plus de $($thresholds.MaxEmptyLineRatio * 100)%)"
     }
     
     if ($metrics.MissingElements.Count -gt 0) {
         $quality.IsValid = $false
-        $quality.Issues += "Éléments manquants : $($metrics.MissingElements -join ', ')"
+        $quality.Issues += "Ã‰lÃ©ments manquants : $($metrics.MissingElements -join ', ')"
     }
     
     return $quality
@@ -124,22 +124,22 @@ function Test-ScriptQuality {
 Describe "Tests des fonctions d'analyse des scripts du manager" {
     Context "Tests de la fonction Get-ScriptInfo" {
         BeforeAll {
-            # Créer un dossier temporaire pour les tests
+            # CrÃ©er un dossier temporaire pour les tests
             $testDir = Join-Path -Path $env:TEMP -ChildPath "ScriptInfoTests"
             if (Test-Path -Path $testDir) {
                 Remove-Item -Path $testDir -Recurse -Force
             }
             New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-            # Créer un script de test bien documenté
+            # CrÃ©er un script de test bien documentÃ©
             $goodScriptPath = Join-Path -Path $testDir -ChildPath "good-script.ps1"
             $goodScriptContent = @"
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Un script bien documenté.
+    Un script bien documentÃ©.
 .DESCRIPTION
-    Ce script est bien documenté avec tous les éléments requis.
+    Ce script est bien documentÃ© avec tous les Ã©lÃ©ments requis.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de sortie.
 .EXAMPLE
@@ -147,7 +147,7 @@ Describe "Tests des fonctions d'analyse des scripts du manager" {
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -156,7 +156,7 @@ param (
     [string]`$OutputPath = ".\reports\output"
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -175,29 +175,29 @@ function Write-Log {
 }
 
 # Code principal
-Write-Log "Démarrage du script..." -Level "INFO"
+Write-Log "DÃ©marrage du script..." -Level "INFO"
 
 # Votre code ici
 
-Write-Log "Opération terminée avec succès." -Level "SUCCESS"
+Write-Log "OpÃ©ration terminÃ©e avec succÃ¨s." -Level "SUCCESS"
 "@
             Set-Content -Path $goodScriptPath -Value $goodScriptContent -Encoding UTF8
 
-            # Créer un script de test mal documenté
+            # CrÃ©er un script de test mal documentÃ©
             $badScriptPath = Join-Path -Path $testDir -ChildPath "bad-script.ps1"
             $badScriptContent = @"
-# Un script mal documenté
+# Un script mal documentÃ©
 
 param (
     [string]`$OutputPath = ".\reports\output"
 )
 
 # Code principal
-Write-Host "Démarrage du script..."
+Write-Host "DÃ©marrage du script..."
 
 # Votre code ici
 
-Write-Host "Opération terminée."
+Write-Host "OpÃ©ration terminÃ©e."
 "@
             Set-Content -Path $badScriptPath -Value $badScriptContent -Encoding UTF8
 
@@ -208,13 +208,13 @@ Write-Host "Opération terminée."
         }
 
         AfterAll {
-            # Nettoyer après les tests
+            # Nettoyer aprÃ¨s les tests
             if (Test-Path -Path $script:testDir) {
                 Remove-Item -Path $script:testDir -Recurse -Force
             }
         }
 
-        It "Devrait extraire les informations d'un script bien documenté" {
+        It "Devrait extraire les informations d'un script bien documentÃ©" {
             $info = Get-ScriptInfo -FilePath $script:goodScriptPath
             $info | Should -Not -BeNullOrEmpty
             $info.Name | Should -Be "good-script.ps1"
@@ -228,7 +228,7 @@ Write-Host "Opération terminée."
             $info.ParameterCount | Should -Be 2
         }
 
-        It "Devrait extraire les informations d'un script mal documenté" {
+        It "Devrait extraire les informations d'un script mal documentÃ©" {
             $info = Get-ScriptInfo -FilePath $script:badScriptPath
             $info | Should -Not -BeNullOrEmpty
             $info.Name | Should -Be "bad-script.ps1"
@@ -244,7 +244,7 @@ Write-Host "Opération terminée."
     }
 
     Context "Tests de la fonction Test-ScriptQuality" {
-        It "Devrait valider un script de bonne qualité" {
+        It "Devrait valider un script de bonne qualitÃ©" {
             $goodScriptInfo = @{
                 LineCount = 50
                 CommentLineCount = 10
@@ -259,7 +259,7 @@ Write-Host "Opération terminée."
             $quality.Issues.Count | Should -Be 0
         }
 
-        It "Devrait détecter un script trop court" {
+        It "Devrait dÃ©tecter un script trop court" {
             $shortScriptInfo = @{
                 LineCount = 5
                 CommentLineCount = 1
@@ -274,7 +274,7 @@ Write-Host "Opération terminée."
             $quality.Issues | Should -Contain "Le script est trop court (moins de 10 lignes)"
         }
 
-        It "Devrait détecter un script trop long" {
+        It "Devrait dÃ©tecter un script trop long" {
             $longScriptInfo = @{
                 LineCount = 1500
                 CommentLineCount = 200
@@ -289,7 +289,7 @@ Write-Host "Opération terminée."
             $quality.Issues | Should -Contain "Le script est trop long (plus de 1000 lignes)"
         }
 
-        It "Devrait détecter un ratio de commentaires trop faible" {
+        It "Devrait dÃ©tecter un ratio de commentaires trop faible" {
             $lowCommentScriptInfo = @{
                 LineCount = 100
                 CommentLineCount = 5
@@ -304,7 +304,7 @@ Write-Host "Opération terminée."
             $quality.Issues | Should -Contain "Le ratio de commentaires est trop faible (moins de 10%)"
         }
 
-        It "Devrait détecter un ratio de lignes vides trop élevé" {
+        It "Devrait dÃ©tecter un ratio de lignes vides trop Ã©levÃ©" {
             $highEmptyLineScriptInfo = @{
                 LineCount = 100
                 CommentLineCount = 20
@@ -316,10 +316,10 @@ Write-Host "Opération terminée."
             
             $quality = Test-ScriptQuality -ScriptInfo $highEmptyLineScriptInfo
             $quality.IsValid | Should -Be $false
-            $quality.Issues | Should -Contain "Le ratio de lignes vides est trop élevé (plus de 30%)"
+            $quality.Issues | Should -Contain "Le ratio de lignes vides est trop Ã©levÃ© (plus de 30%)"
         }
 
-        It "Devrait détecter des éléments manquants" {
+        It "Devrait dÃ©tecter des Ã©lÃ©ments manquants" {
             $missingElementsScriptInfo = @{
                 LineCount = 100
                 CommentLineCount = 20
@@ -331,7 +331,7 @@ Write-Host "Opération terminée."
             
             $quality = Test-ScriptQuality -ScriptInfo $missingElementsScriptInfo
             $quality.IsValid | Should -Be $false
-            $quality.Issues | Should -Contain "Éléments manquants : HasSynopsis, HasExample"
+            $quality.Issues | Should -Contain "Ã‰lÃ©ments manquants : HasSynopsis, HasExample"
         }
     }
 }

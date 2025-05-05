@@ -1,27 +1,27 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests de compatibilité des fonctions d'extraction AST avec différentes versions de PowerShell.
+    Tests de compatibilitÃ© des fonctions d'extraction AST avec diffÃ©rentes versions de PowerShell.
 
 .DESCRIPTION
-    Ce script teste la compatibilité des fonctions d'extraction AST (Get-AstFunctions, Get-AstParameters, 
-    Get-AstVariables, Get-AstCommands) avec différentes versions de PowerShell.
+    Ce script teste la compatibilitÃ© des fonctions d'extraction AST (Get-AstFunctions, Get-AstParameters, 
+    Get-AstVariables, Get-AstCommands) avec diffÃ©rentes versions de PowerShell.
     
-    Note: Ce script doit être exécuté sur un système où plusieurs versions de PowerShell sont installées.
+    Note: Ce script doit Ãªtre exÃ©cutÃ© sur un systÃ¨me oÃ¹ plusieurs versions de PowerShell sont installÃ©es.
     Il utilise PowerShell 5.1 (Windows PowerShell) et PowerShell 7+ (PowerShell Core) si disponibles.
 
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-12-15
+    Date de crÃ©ation: 2023-12-15
 #>
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 . "$PSScriptRoot\..\Public\Get-AstFunctions.ps1"
 . "$PSScriptRoot\..\Public\Get-AstParameters.ps1"
 . "$PSScriptRoot\..\Public\Get-AstVariables.ps1"
 . "$PSScriptRoot\..\Public\Get-AstCommands.ps1"
 
-# Fonction pour vérifier une condition
+# Fonction pour vÃ©rifier une condition
 function Assert-Condition {
     param (
         [Parameter(Mandatory = $true)]
@@ -47,7 +47,7 @@ function Assert-Condition {
     }
 }
 
-# Fonction pour exécuter les tests de compatibilité
+# Fonction pour exÃ©cuter les tests de compatibilitÃ©
 function Test-PSVersionCompatibility {
     [CmdletBinding()]
     param (
@@ -69,8 +69,8 @@ function Test-PSVersionCompatibility {
     $tokens = $errors = $null
     $ast = [System.Management.Automation.Language.Parser]::ParseInput($ScriptContent, [ref]$tokens, [ref]$errors)
     
-    # Vérifier que l'analyse AST s'est bien déroulée
-    if (-not (Assert-Condition -Condition ($null -ne $ast) -Message "L'AST a été créé avec succès" -Critical)) {
+    # VÃ©rifier que l'analyse AST s'est bien dÃ©roulÃ©e
+    if (-not (Assert-Condition -Condition ($null -ne $ast) -Message "L'AST a Ã©tÃ© crÃ©Ã© avec succÃ¨s" -Critical)) {
         Write-Host "  Erreurs d'analyse: $errors" -ForegroundColor Red
         return $false
     }
@@ -79,38 +79,38 @@ function Test-PSVersionCompatibility {
     Write-Host "`n  Test 1: Extraction des fonctions" -ForegroundColor Yellow
     try {
         $functions = Get-AstFunctions -Ast $ast
-        $functionsSuccess = Assert-Condition -Condition ($null -ne $functions) -Message "Les fonctions ont été extraites avec succès"
+        $functionsSuccess = Assert-Condition -Condition ($null -ne $functions) -Message "Les fonctions ont Ã©tÃ© extraites avec succÃ¨s"
         
         if ($functionsSuccess -and $functions.Count -gt 0) {
-            Write-Host "    Fonctions trouvées: $($functions.Count)" -ForegroundColor Cyan
+            Write-Host "    Fonctions trouvÃ©es: $($functions.Count)" -ForegroundColor Cyan
         }
     }
     catch {
         Write-Host "  [ERREUR] Extraction des fonctions: $_" -ForegroundColor Red
     }
     
-    # Test 2: Extraction des paramètres
-    Write-Host "`n  Test 2: Extraction des paramètres" -ForegroundColor Yellow
+    # Test 2: Extraction des paramÃ¨tres
+    Write-Host "`n  Test 2: Extraction des paramÃ¨tres" -ForegroundColor Yellow
     try {
         $scriptParams = Get-AstParameters -Ast $ast
-        $scriptParamsSuccess = Assert-Condition -Condition ($null -ne $scriptParams) -Message "Les paramètres du script ont été extraits avec succès"
+        $scriptParamsSuccess = Assert-Condition -Condition ($null -ne $scriptParams) -Message "Les paramÃ¨tres du script ont Ã©tÃ© extraits avec succÃ¨s"
         
         if ($scriptParamsSuccess -and $scriptParams.Count -gt 0) {
-            Write-Host "    Paramètres du script trouvés: $($scriptParams.Count)" -ForegroundColor Cyan
+            Write-Host "    ParamÃ¨tres du script trouvÃ©s: $($scriptParams.Count)" -ForegroundColor Cyan
         }
     }
     catch {
-        Write-Host "  [ERREUR] Extraction des paramètres: $_" -ForegroundColor Red
+        Write-Host "  [ERREUR] Extraction des paramÃ¨tres: $_" -ForegroundColor Red
     }
     
     # Test 3: Extraction des variables
     Write-Host "`n  Test 3: Extraction des variables" -ForegroundColor Yellow
     try {
         $variables = Get-AstVariables -Ast $ast
-        $variablesSuccess = Assert-Condition -Condition ($null -ne $variables) -Message "Les variables ont été extraites avec succès"
+        $variablesSuccess = Assert-Condition -Condition ($null -ne $variables) -Message "Les variables ont Ã©tÃ© extraites avec succÃ¨s"
         
         if ($variablesSuccess -and $variables.Count -gt 0) {
-            Write-Host "    Variables trouvées: $($variables.Count)" -ForegroundColor Cyan
+            Write-Host "    Variables trouvÃ©es: $($variables.Count)" -ForegroundColor Cyan
         }
     }
     catch {
@@ -121,36 +121,36 @@ function Test-PSVersionCompatibility {
     Write-Host "`n  Test 4: Extraction des commandes" -ForegroundColor Yellow
     try {
         $commands = Get-AstCommands -Ast $ast
-        $commandsSuccess = Assert-Condition -Condition ($null -ne $commands) -Message "Les commandes ont été extraites avec succès"
+        $commandsSuccess = Assert-Condition -Condition ($null -ne $commands) -Message "Les commandes ont Ã©tÃ© extraites avec succÃ¨s"
         
         if ($commandsSuccess -and $commands.Count -gt 0) {
-            Write-Host "    Commandes trouvées: $($commands.Count)" -ForegroundColor Cyan
+            Write-Host "    Commandes trouvÃ©es: $($commands.Count)" -ForegroundColor Cyan
         }
     }
     catch {
         Write-Host "  [ERREUR] Extraction des commandes: $_" -ForegroundColor Red
     }
     
-    # Si PowerShell 7 est disponible et que le test n'est pas ignoré, tester avec PowerShell 7
+    # Si PowerShell 7 est disponible et que le test n'est pas ignorÃ©, tester avec PowerShell 7
     if (-not $SkipPS7Test) {
         $pwsh = Get-Command -Name pwsh -ErrorAction SilentlyContinue
         if ($pwsh) {
             Write-Host "`n=== Test avec PowerShell 7+ ===" -ForegroundColor Cyan
             
-            # Créer un fichier temporaire pour le script de test
+            # CrÃ©er un fichier temporaire pour le script de test
             $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
             $tempResultPath = [System.IO.Path]::GetTempFileName() + ".txt"
             
             try {
-                # Créer le script de test
+                # CrÃ©er le script de test
                 $testScript = @"
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 . "$PSScriptRoot\..\Public\Get-AstFunctions.ps1"
 . "$PSScriptRoot\..\Public\Get-AstParameters.ps1"
 . "$PSScriptRoot\..\Public\Get-AstVariables.ps1"
 . "$PSScriptRoot\..\Public\Get-AstCommands.ps1"
 
-# Script à analyser
+# Script Ã  analyser
 `$scriptContent = @'
 $ScriptContent
 '@
@@ -159,7 +159,7 @@ $ScriptContent
 `$tokens = `$errors = `$null
 `$ast = [System.Management.Automation.Language.Parser]::ParseInput(`$scriptContent, [ref]`$tokens, [ref]`$errors)
 
-# Résultats
+# RÃ©sultats
 `$results = [PSCustomObject]@{
     PSVersion = `$PSVersionTable.PSVersion.ToString()
     AstCreated = `$null -ne `$ast
@@ -186,7 +186,7 @@ catch {
     }
 }
 
-# Test 2: Extraction des paramètres
+# Test 2: Extraction des paramÃ¨tres
 try {
     `$scriptParams = Get-AstParameters -Ast `$ast
     `$results.Parameters = @{
@@ -234,47 +234,47 @@ catch {
     }
 }
 
-# Exporter les résultats
+# Exporter les rÃ©sultats
 `$results | ConvertTo-Json -Depth 5 | Out-File -FilePath "$tempResultPath"
 "@
                 
-                # Écrire le script de test dans le fichier temporaire
+                # Ã‰crire le script de test dans le fichier temporaire
                 Set-Content -Path $tempScriptPath -Value $testScript
                 
-                # Exécuter le script avec PowerShell 7
+                # ExÃ©cuter le script avec PowerShell 7
                 $pwshProcess = Start-Process -FilePath $pwsh.Source -ArgumentList "-File `"$tempScriptPath`"" -NoNewWindow -Wait -PassThru
                 
                 if ($pwshProcess.ExitCode -eq 0) {
-                    # Lire les résultats
+                    # Lire les rÃ©sultats
                     $results = Get-Content -Path $tempResultPath -Raw | ConvertFrom-Json
                     
                     Write-Host "  Version PowerShell: $($results.PSVersion)" -ForegroundColor Cyan
                     
-                    # Afficher les résultats
-                    Assert-Condition -Condition $results.AstCreated -Message "L'AST a été créé avec succès"
+                    # Afficher les rÃ©sultats
+                    Assert-Condition -Condition $results.AstCreated -Message "L'AST a Ã©tÃ© crÃ©Ã© avec succÃ¨s"
                     
                     Write-Host "`n  Test 1: Extraction des fonctions" -ForegroundColor Yellow
                     if ($results.Functions.Success) {
-                        Assert-Condition -Condition $true -Message "Les fonctions ont été extraites avec succès"
-                        Write-Host "    Fonctions trouvées: $($results.Functions.Count)" -ForegroundColor Cyan
+                        Assert-Condition -Condition $true -Message "Les fonctions ont Ã©tÃ© extraites avec succÃ¨s"
+                        Write-Host "    Fonctions trouvÃ©es: $($results.Functions.Count)" -ForegroundColor Cyan
                     }
                     else {
                         Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des fonctions: $($results.Functions.Error)"
                     }
                     
-                    Write-Host "`n  Test 2: Extraction des paramètres" -ForegroundColor Yellow
+                    Write-Host "`n  Test 2: Extraction des paramÃ¨tres" -ForegroundColor Yellow
                     if ($results.Parameters.Success) {
-                        Assert-Condition -Condition $true -Message "Les paramètres ont été extraits avec succès"
-                        Write-Host "    Paramètres trouvés: $($results.Parameters.Count)" -ForegroundColor Cyan
+                        Assert-Condition -Condition $true -Message "Les paramÃ¨tres ont Ã©tÃ© extraits avec succÃ¨s"
+                        Write-Host "    ParamÃ¨tres trouvÃ©s: $($results.Parameters.Count)" -ForegroundColor Cyan
                     }
                     else {
-                        Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des paramètres: $($results.Parameters.Error)"
+                        Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des paramÃ¨tres: $($results.Parameters.Error)"
                     }
                     
                     Write-Host "`n  Test 3: Extraction des variables" -ForegroundColor Yellow
                     if ($results.Variables.Success) {
-                        Assert-Condition -Condition $true -Message "Les variables ont été extraites avec succès"
-                        Write-Host "    Variables trouvées: $($results.Variables.Count)" -ForegroundColor Cyan
+                        Assert-Condition -Condition $true -Message "Les variables ont Ã©tÃ© extraites avec succÃ¨s"
+                        Write-Host "    Variables trouvÃ©es: $($results.Variables.Count)" -ForegroundColor Cyan
                     }
                     else {
                         Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des variables: $($results.Variables.Error)"
@@ -282,15 +282,15 @@ catch {
                     
                     Write-Host "`n  Test 4: Extraction des commandes" -ForegroundColor Yellow
                     if ($results.Commands.Success) {
-                        Assert-Condition -Condition $true -Message "Les commandes ont été extraites avec succès"
-                        Write-Host "    Commandes trouvées: $($results.Commands.Count)" -ForegroundColor Cyan
+                        Assert-Condition -Condition $true -Message "Les commandes ont Ã©tÃ© extraites avec succÃ¨s"
+                        Write-Host "    Commandes trouvÃ©es: $($results.Commands.Count)" -ForegroundColor Cyan
                     }
                     else {
                         Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des commandes: $($results.Commands.Error)"
                     }
                 }
                 else {
-                    Write-Host "  [ERREUR] L'exécution du script avec PowerShell 7 a échoué avec le code de sortie $($pwshProcess.ExitCode)" -ForegroundColor Red
+                    Write-Host "  [ERREUR] L'exÃ©cution du script avec PowerShell 7 a Ã©chouÃ© avec le code de sortie $($pwshProcess.ExitCode)" -ForegroundColor Red
                 }
             }
             catch {
@@ -307,7 +307,7 @@ catch {
             }
         }
         else {
-            Write-Host "`n  [INFO] PowerShell 7 (pwsh) n'est pas disponible sur ce système. Test ignoré." -ForegroundColor Yellow
+            Write-Host "`n  [INFO] PowerShell 7 (pwsh) n'est pas disponible sur ce systÃ¨me. Test ignorÃ©." -ForegroundColor Yellow
         }
     }
     
@@ -317,20 +317,20 @@ catch {
         if ($powershell) {
             Write-Host "`n=== Test avec Windows PowerShell 5.1 ===" -ForegroundColor Cyan
             
-            # Créer un fichier temporaire pour le script de test
+            # CrÃ©er un fichier temporaire pour le script de test
             $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
             $tempResultPath = [System.IO.Path]::GetTempFileName() + ".txt"
             
             try {
-                # Créer le script de test (similaire à celui pour PowerShell 7)
+                # CrÃ©er le script de test (similaire Ã  celui pour PowerShell 7)
                 $testScript = @"
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 . "$PSScriptRoot\..\Public\Get-AstFunctions.ps1"
 . "$PSScriptRoot\..\Public\Get-AstParameters.ps1"
 . "$PSScriptRoot\..\Public\Get-AstVariables.ps1"
 . "$PSScriptRoot\..\Public\Get-AstCommands.ps1"
 
-# Script à analyser
+# Script Ã  analyser
 `$scriptContent = @'
 $ScriptContent
 '@
@@ -339,7 +339,7 @@ $ScriptContent
 `$tokens = `$errors = `$null
 `$ast = [System.Management.Automation.Language.Parser]::ParseInput(`$scriptContent, [ref]`$tokens, [ref]`$errors)
 
-# Résultats
+# RÃ©sultats
 `$results = [PSCustomObject]@{
     PSVersion = `$PSVersionTable.PSVersion.ToString()
     AstCreated = `$null -ne `$ast
@@ -366,7 +366,7 @@ catch {
     }
 }
 
-# Test 2: Extraction des paramètres
+# Test 2: Extraction des paramÃ¨tres
 try {
     `$scriptParams = Get-AstParameters -Ast `$ast
     `$results.Parameters = @{
@@ -414,47 +414,47 @@ catch {
     }
 }
 
-# Exporter les résultats
+# Exporter les rÃ©sultats
 `$results | ConvertTo-Json -Depth 5 | Out-File -FilePath "$tempResultPath"
 "@
                 
-                # Écrire le script de test dans le fichier temporaire
+                # Ã‰crire le script de test dans le fichier temporaire
                 Set-Content -Path $tempScriptPath -Value $testScript
                 
-                # Exécuter le script avec Windows PowerShell
+                # ExÃ©cuter le script avec Windows PowerShell
                 $powershellProcess = Start-Process -FilePath $powershell.Source -ArgumentList "-File `"$tempScriptPath`"" -NoNewWindow -Wait -PassThru
                 
                 if ($powershellProcess.ExitCode -eq 0) {
-                    # Lire les résultats
+                    # Lire les rÃ©sultats
                     $results = Get-Content -Path $tempResultPath -Raw | ConvertFrom-Json
                     
                     Write-Host "  Version PowerShell: $($results.PSVersion)" -ForegroundColor Cyan
                     
-                    # Afficher les résultats
-                    Assert-Condition -Condition $results.AstCreated -Message "L'AST a été créé avec succès"
+                    # Afficher les rÃ©sultats
+                    Assert-Condition -Condition $results.AstCreated -Message "L'AST a Ã©tÃ© crÃ©Ã© avec succÃ¨s"
                     
                     Write-Host "`n  Test 1: Extraction des fonctions" -ForegroundColor Yellow
                     if ($results.Functions.Success) {
-                        Assert-Condition -Condition $true -Message "Les fonctions ont été extraites avec succès"
-                        Write-Host "    Fonctions trouvées: $($results.Functions.Count)" -ForegroundColor Cyan
+                        Assert-Condition -Condition $true -Message "Les fonctions ont Ã©tÃ© extraites avec succÃ¨s"
+                        Write-Host "    Fonctions trouvÃ©es: $($results.Functions.Count)" -ForegroundColor Cyan
                     }
                     else {
                         Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des fonctions: $($results.Functions.Error)"
                     }
                     
-                    Write-Host "`n  Test 2: Extraction des paramètres" -ForegroundColor Yellow
+                    Write-Host "`n  Test 2: Extraction des paramÃ¨tres" -ForegroundColor Yellow
                     if ($results.Parameters.Success) {
-                        Assert-Condition -Condition $true -Message "Les paramètres ont été extraits avec succès"
-                        Write-Host "    Paramètres trouvés: $($results.Parameters.Count)" -ForegroundColor Cyan
+                        Assert-Condition -Condition $true -Message "Les paramÃ¨tres ont Ã©tÃ© extraits avec succÃ¨s"
+                        Write-Host "    ParamÃ¨tres trouvÃ©s: $($results.Parameters.Count)" -ForegroundColor Cyan
                     }
                     else {
-                        Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des paramètres: $($results.Parameters.Error)"
+                        Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des paramÃ¨tres: $($results.Parameters.Error)"
                     }
                     
                     Write-Host "`n  Test 3: Extraction des variables" -ForegroundColor Yellow
                     if ($results.Variables.Success) {
-                        Assert-Condition -Condition $true -Message "Les variables ont été extraites avec succès"
-                        Write-Host "    Variables trouvées: $($results.Variables.Count)" -ForegroundColor Cyan
+                        Assert-Condition -Condition $true -Message "Les variables ont Ã©tÃ© extraites avec succÃ¨s"
+                        Write-Host "    Variables trouvÃ©es: $($results.Variables.Count)" -ForegroundColor Cyan
                     }
                     else {
                         Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des variables: $($results.Variables.Error)"
@@ -462,15 +462,15 @@ catch {
                     
                     Write-Host "`n  Test 4: Extraction des commandes" -ForegroundColor Yellow
                     if ($results.Commands.Success) {
-                        Assert-Condition -Condition $true -Message "Les commandes ont été extraites avec succès"
-                        Write-Host "    Commandes trouvées: $($results.Commands.Count)" -ForegroundColor Cyan
+                        Assert-Condition -Condition $true -Message "Les commandes ont Ã©tÃ© extraites avec succÃ¨s"
+                        Write-Host "    Commandes trouvÃ©es: $($results.Commands.Count)" -ForegroundColor Cyan
                     }
                     else {
                         Assert-Condition -Condition $false -Message "Erreur lors de l'extraction des commandes: $($results.Commands.Error)"
                     }
                 }
                 else {
-                    Write-Host "  [ERREUR] L'exécution du script avec Windows PowerShell a échoué avec le code de sortie $($powershellProcess.ExitCode)" -ForegroundColor Red
+                    Write-Host "  [ERREUR] L'exÃ©cution du script avec Windows PowerShell a Ã©chouÃ© avec le code de sortie $($powershellProcess.ExitCode)" -ForegroundColor Red
                 }
             }
             catch {
@@ -487,22 +487,22 @@ catch {
             }
         }
         else {
-            Write-Host "`n  [INFO] Windows PowerShell n'est pas disponible sur ce système. Test ignoré." -ForegroundColor Yellow
+            Write-Host "`n  [INFO] Windows PowerShell n'est pas disponible sur ce systÃ¨me. Test ignorÃ©." -ForegroundColor Yellow
         }
     }
     
-    Write-Host "`n=== Fin des tests de compatibilité ===" -ForegroundColor Cyan
+    Write-Host "`n=== Fin des tests de compatibilitÃ© ===" -ForegroundColor Cyan
     return $true
 }
 
-# Script de test pour la compatibilité
+# Script de test pour la compatibilitÃ©
 $testScript = @'
 <#
 .SYNOPSIS
-    Script de test pour la compatibilité avec différentes versions de PowerShell.
+    Script de test pour la compatibilitÃ© avec diffÃ©rentes versions de PowerShell.
 #>
 
-# Paramètres du script
+# ParamÃ¨tres du script
 param (
     [string]$InputPath = "C:\Temp",
     [switch]$Recurse
@@ -512,13 +512,13 @@ param (
 $Global:LogFile = "C:\Temp\log.txt"
 $script:Counter = 0
 
-# Fonction simple sans paramètres
+# Fonction simple sans paramÃ¨tres
 function Show-Welcome {
     Write-Host "Bienvenue dans le script de test!"
     $script:Counter++
 }
 
-# Fonction avec paramètres et valeur de retour
+# Fonction avec paramÃ¨tres et valeur de retour
 function Get-FileCount {
     param (
         [Parameter(Mandatory = $true)]
@@ -576,13 +576,13 @@ if (Test-Path $InputPath) {
 # Utilisation de splatting
 $params = @{
     Path = $Global:LogFile
-    Value = "Script exécuté le $(Get-Date)"
+    Value = "Script exÃ©cutÃ© le $(Get-Date)"
     Append = $true
 }
 Add-Content @params
 '@
 
-# Exécuter les tests de compatibilité
+# ExÃ©cuter les tests de compatibilitÃ©
 Test-PSVersionCompatibility -ScriptContent $testScript
 
-Write-Host "`n=== Tous les tests de compatibilité sont terminés ===" -ForegroundColor Green
+Write-Host "`n=== Tous les tests de compatibilitÃ© sont terminÃ©s ===" -ForegroundColor Green

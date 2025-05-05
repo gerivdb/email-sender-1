@@ -1,4 +1,4 @@
-# Function to copy files recursively
+﻿# Function to copy files recursively
 function Copy-FilesRecursively {
     param (
         [string]$sourcePath,

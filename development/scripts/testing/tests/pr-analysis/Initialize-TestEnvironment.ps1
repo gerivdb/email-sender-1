@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
     Initialise un environnement de test pour l'analyse des pull requests.
 .DESCRIPTION
-    Ce script crÃ©e un environnement de test isolÃ© pour tester le systÃ¨me d'analyse des pull requests.
-    Il configure un dÃ©pÃ´t Git local, crÃ©e des fichiers PowerShell de rÃ©fÃ©rence avec des erreurs connues,
-    et configure les webhooks nÃ©cessaires pour l'intÃ©gration.
+    Ce script crÃƒÂ©e un environnement de test isolÃƒÂ© pour tester le systÃƒÂ¨me d'analyse des pull requests.
+    Il configure un dÃƒÂ©pÃƒÂ´t Git local, crÃƒÂ©e des fichiers PowerShell de rÃƒÂ©fÃƒÂ©rence avec des erreurs connues,
+    et configure les webhooks nÃƒÂ©cessaires pour l'intÃƒÂ©gration.
 .PARAMETER TestRepoPath
-    Chemin oÃ¹ le dÃ©pÃ´t de test sera crÃ©Ã©. Par dÃ©faut, un rÃ©pertoire temporaire est utilisÃ©.
+    Chemin oÃƒÂ¹ le dÃƒÂ©pÃƒÂ´t de test sera crÃƒÂ©ÃƒÂ©. Par dÃƒÂ©faut, un rÃƒÂ©pertoire temporaire est utilisÃƒÂ©.
 .PARAMETER ErrorPatterns
-    Nombre de patterns d'erreurs Ã  inclure dans les fichiers de test. Par dÃ©faut, 10.
+    Nombre de patterns d'erreurs ÃƒÂ  inclure dans les fichiers de test. Par dÃƒÂ©faut, 10.
 .PARAMETER CleanExisting
-    Si spÃ©cifiÃ©, supprime le dÃ©pÃ´t de test existant s'il existe dÃ©jÃ .
+    Si spÃƒÂ©cifiÃƒÂ©, supprime le dÃƒÂ©pÃƒÂ´t de test existant s'il existe dÃƒÂ©jÃƒÂ .
 .EXAMPLE
     .\Initialize-TestEnvironment.ps1 -TestRepoPath "D:\TestRepo" -ErrorPatterns 20 -CleanExisting
 .NOTES
@@ -30,17 +30,17 @@ param (
     [switch]$CleanExisting
 )
 
-# Importer les modules nÃ©cessaires
+# Importer les modules nÃƒÂ©cessaires
 $ErrorActionPreference = "Stop"
 $VerbosePreference = "Continue"
 
-# VÃ©rifier si Git est installÃ©
+# VÃƒÂ©rifier si Git est installÃƒÂ©
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    Write-Error "Git n'est pas installÃ© ou n'est pas dans le PATH."
+    Write-Error "Git n'est pas installÃƒÂ© ou n'est pas dans le PATH."
     exit 1
 }
 
-# Fonction pour crÃ©er un fichier PowerShell avec des erreurs connues
+# Fonction pour crÃƒÂ©er un fichier PowerShell avec des erreurs connues
 function New-PowerShellFileWithErrors {
     param (
         [Parameter(Mandatory = $true)]
@@ -64,16 +64,16 @@ function New-PowerShellFileWithErrors {
         )
     )
     
-    # CrÃ©er le contenu du fichier
+    # CrÃƒÂ©er le contenu du fichier
     $content = @"
 <#
 .SYNOPSIS
     Fichier PowerShell de test avec des erreurs connues.
 .DESCRIPTION
-    Ce fichier contient des erreurs PowerShell connues pour tester le systÃ¨me d'analyse des pull requests.
-    Il a Ã©tÃ© gÃ©nÃ©rÃ© automatiquement par le script Initialize-TestEnvironment.ps1.
+    Ce fichier contient des erreurs PowerShell connues pour tester le systÃƒÂ¨me d'analyse des pull requests.
+    Il a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ© automatiquement par le script Initialize-TestEnvironment.ps1.
 .NOTES
-    GÃ©nÃ©rÃ© le: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+    GÃƒÂ©nÃƒÂ©rÃƒÂ© le: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
     Nombre d'erreurs: $ErrorCount
 #>
 
@@ -100,7 +100,7 @@ function Write-TestLog {
 
 "@
     
-    # Ajouter des erreurs spÃ©cifiques en fonction des types d'erreurs demandÃ©s
+    # Ajouter des erreurs spÃƒÂ©cifiques en fonction des types d'erreurs demandÃƒÂ©s
     $errorFunctions = @()
     
     for ($i = 1; $i -le $ErrorCount; $i++) {
@@ -112,9 +112,9 @@ function Write-TestLog {
 @"
 
 function $functionName {
-    # Erreur: RÃ©fÃ©rence nulle
+    # Erreur: RÃƒÂ©fÃƒÂ©rence nulle
     `$user = `$null
-    `$name = `$user.Name  # Erreur potentielle: rÃ©fÃ©rence nulle
+    `$name = `$user.Name  # Erreur potentielle: rÃƒÂ©fÃƒÂ©rence nulle
     return `$name
 }
 "@
@@ -145,8 +145,8 @@ function $functionName {
 @"
 
 function $functionName {
-    # Erreur: Variable non initialisÃ©e
-    `$result = `$total + 10  # Erreur potentielle: `$total n'est pas initialisÃ©
+    # Erreur: Variable non initialisÃƒÂ©e
+    `$result = `$total + 10  # Erreur potentielle: `$total n'est pas initialisÃƒÂ©
     return `$result
 }
 "@
@@ -155,9 +155,9 @@ function $functionName {
 @"
 
 function $functionName {
-    # Erreur: Division par zÃ©ro
+    # Erreur: Division par zÃƒÂ©ro
     `$divisor = 0
-    `$quotient = 10 / `$divisor  # Erreur potentielle: division par zÃ©ro
+    `$quotient = 10 / `$divisor  # Erreur potentielle: division par zÃƒÂ©ro
     return `$quotient
 }
 "@
@@ -166,9 +166,9 @@ function $functionName {
 @"
 
 function $functionName {
-    # Erreur: AccÃ¨s Ã  une propriÃ©tÃ© inexistante
+    # Erreur: AccÃƒÂ¨s ÃƒÂ  une propriÃƒÂ©tÃƒÂ© inexistante
     `$obj = New-Object PSObject
-    `$value = `$obj.MissingProperty  # Erreur potentielle: propriÃ©tÃ© inexistante
+    `$value = `$obj.MissingProperty  # Erreur potentielle: propriÃƒÂ©tÃƒÂ© inexistante
     return `$value
 }
 "@
@@ -177,7 +177,7 @@ function $functionName {
 @"
 
 function $functionName {
-    # Erreur: Appel de fonction avec des paramÃ¨tres manquants
+    # Erreur: Appel de fonction avec des paramÃƒÂ¨tres manquants
     function Inner-Test {
         param (
             [Parameter(Mandatory = `$true)]
@@ -186,7 +186,7 @@ function $functionName {
         return "Hello, `$Name!"
     }
     
-    `$result = Inner-Test  # Erreur potentielle: paramÃ¨tre obligatoire manquant
+    `$result = Inner-Test  # Erreur potentielle: paramÃƒÂ¨tre obligatoire manquant
     return `$result
 }
 "@
@@ -195,8 +195,8 @@ function $functionName {
 @"
 
 function $functionName {
-    # Erreur: Utilisation d'une variable non dÃ©clarÃ©e
-    `$result = `$undeclaredVariable * 2  # Erreur potentielle: variable non dÃ©clarÃ©e
+    # Erreur: Utilisation d'une variable non dÃƒÂ©clarÃƒÂ©e
+    `$result = `$undeclaredVariable * 2  # Erreur potentielle: variable non dÃƒÂ©clarÃƒÂ©e
     return `$result
 }
 "@
@@ -207,7 +207,7 @@ function $functionName {
 function $functionName {
     # Erreur: Comparaison incorrecte
     `$value = "10"
-    if (`$value > 5) {  # Erreur potentielle: comparaison de types diffÃ©rents
+    if (`$value > 5) {  # Erreur potentielle: comparaison de types diffÃƒÂ©rents
         return `$true
     }
     return `$false
@@ -221,7 +221,7 @@ function $functionName {
     # Erreur: Fuite de ressources
     `$stream = [System.IO.File]::OpenRead("C:\temp\test.txt")
     `$content = [System.IO.StreamReader]::new(`$stream).ReadToEnd()
-    # Erreur potentielle: le stream n'est pas fermÃ© avec `$stream.Close() ou `$stream.Dispose()
+    # Erreur potentielle: le stream n'est pas fermÃƒÂ© avec `$stream.Close() ou `$stream.Dispose()
     return `$content
 }
 "@
@@ -230,7 +230,7 @@ function $functionName {
 @"
 
 function $functionName {
-    # Erreur gÃ©nÃ©rique
+    # Erreur gÃƒÂ©nÃƒÂ©rique
     Write-Host "Fonction avec erreur potentielle"
     return `$null
 }
@@ -248,7 +248,7 @@ function $functionName {
     $content += @"
 
 function Test-AllErrors {
-    Write-TestLog "DÃ©marrage des tests d'erreurs..."
+    Write-TestLog "DÃƒÂ©marrage des tests d'erreurs..."
     
     try {
 
@@ -261,7 +261,7 @@ function Test-AllErrors {
         $content += @"
         try {
             `$result = $functionName
-            Write-TestLog "Test $functionName terminÃ© avec rÃ©sultat: `$result" -Level "Info"
+            Write-TestLog "Test $functionName terminÃƒÂ© avec rÃƒÂ©sultat: `$result" -Level "Info"
         } catch {
             Write-TestLog "Erreur dans $functionName: `$_" -Level "Error"
         }
@@ -270,25 +270,25 @@ function Test-AllErrors {
     }
     
     $content += @"
-        Write-TestLog "Tous les tests d'erreurs sont terminÃ©s." -Level "Info"
+        Write-TestLog "Tous les tests d'erreurs sont terminÃƒÂ©s." -Level "Info"
     } catch {
-        Write-TestLog "Erreur gÃ©nÃ©rale: `$_" -Level "Error"
+        Write-TestLog "Erreur gÃƒÂ©nÃƒÂ©rale: `$_" -Level "Error"
     }
 }
 
-# Appeler la fonction principale si le script est exÃ©cutÃ© directement
+# Appeler la fonction principale si le script est exÃƒÂ©cutÃƒÂ© directement
 if (`$MyInvocation.InvocationName -ne '.') {
     Test-AllErrors
 }
 "@
     
-    # Ã‰crire le contenu dans le fichier
+    # Ãƒâ€°crire le contenu dans le fichier
     $content | Out-File -FilePath $FilePath -Encoding utf8
     
-    Write-Verbose "Fichier PowerShell avec $ErrorCount erreurs crÃ©Ã©: $FilePath"
+    Write-Verbose "Fichier PowerShell avec $ErrorCount erreurs crÃƒÂ©ÃƒÂ©: $FilePath"
 }
 
-# Fonction pour crÃ©er un fichier PowerShell sans erreurs
+# Fonction pour crÃƒÂ©er un fichier PowerShell sans erreurs
 function New-CleanPowerShellFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -298,16 +298,16 @@ function New-CleanPowerShellFile {
         [int]$FunctionCount = 5
     )
     
-    # CrÃ©er le contenu du fichier
+    # CrÃƒÂ©er le contenu du fichier
     $content = @"
 <#
 .SYNOPSIS
     Fichier PowerShell de test sans erreurs.
 .DESCRIPTION
-    Ce fichier contient des fonctions PowerShell sans erreurs pour tester le systÃ¨me d'analyse des pull requests.
-    Il a Ã©tÃ© gÃ©nÃ©rÃ© automatiquement par le script Initialize-TestEnvironment.ps1.
+    Ce fichier contient des fonctions PowerShell sans erreurs pour tester le systÃƒÂ¨me d'analyse des pull requests.
+    Il a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ© automatiquement par le script Initialize-TestEnvironment.ps1.
 .NOTES
-    GÃ©nÃ©rÃ© le: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+    GÃƒÂ©nÃƒÂ©rÃƒÂ© le: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
     Nombre de fonctions: $FunctionCount
 #>
 
@@ -350,7 +350,7 @@ function $functionName {
     
     # Fonction sans erreurs
     `$result = "Processed: `$InputValue"
-    Write-TestLog "Fonction $functionName exÃ©cutÃ©e avec succÃ¨s" -Level "Info"
+    Write-TestLog "Fonction $functionName exÃƒÂ©cutÃƒÂ©e avec succÃƒÂ¨s" -Level "Info"
     return `$result
 }
 "@
@@ -365,7 +365,7 @@ function $functionName {
     $content += @"
 
 function Test-AllCleanFunctions {
-    Write-TestLog "DÃ©marrage des tests des fonctions sans erreurs..."
+    Write-TestLog "DÃƒÂ©marrage des tests des fonctions sans erreurs..."
     
     try {
 
@@ -376,31 +376,31 @@ function Test-AllCleanFunctions {
         
         $content += @"
         `$result = $functionName -InputValue "Test$i"
-        Write-TestLog "Test $functionName terminÃ© avec rÃ©sultat: `$result" -Level "Info"
+        Write-TestLog "Test $functionName terminÃƒÂ© avec rÃƒÂ©sultat: `$result" -Level "Info"
 
 "@
     }
     
     $content += @"
-        Write-TestLog "Tous les tests des fonctions sans erreurs sont terminÃ©s." -Level "Info"
+        Write-TestLog "Tous les tests des fonctions sans erreurs sont terminÃƒÂ©s." -Level "Info"
     } catch {
-        Write-TestLog "Erreur gÃ©nÃ©rale: `$_" -Level "Error"
+        Write-TestLog "Erreur gÃƒÂ©nÃƒÂ©rale: `$_" -Level "Error"
     }
 }
 
-# Appeler la fonction principale si le script est exÃ©cutÃ© directement
+# Appeler la fonction principale si le script est exÃƒÂ©cutÃƒÂ© directement
 if (`$MyInvocation.InvocationName -ne '.') {
     Test-AllCleanFunctions
 }
 "@
     
-    # Ã‰crire le contenu dans le fichier
+    # Ãƒâ€°crire le contenu dans le fichier
     $content | Out-File -FilePath $FilePath -Encoding utf8
     
-    Write-Verbose "Fichier PowerShell sans erreurs crÃ©Ã©: $FilePath"
+    Write-Verbose "Fichier PowerShell sans erreurs crÃƒÂ©ÃƒÂ©: $FilePath"
 }
 
-# Fonction pour crÃ©er un fichier de configuration pour les webhooks
+# Fonction pour crÃƒÂ©er un fichier de configuration pour les webhooks
 function New-WebhookConfigFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -430,10 +430,10 @@ function New-WebhookConfigFile {
     
     $content | Out-File -FilePath $FilePath -Encoding utf8
     
-    Write-Verbose "Fichier de configuration des webhooks crÃ©Ã©: $FilePath"
+    Write-Verbose "Fichier de configuration des webhooks crÃƒÂ©ÃƒÂ©: $FilePath"
 }
 
-# Fonction pour crÃ©er un fichier de configuration pour GitHub Actions
+# Fonction pour crÃƒÂ©er un fichier de configuration pour GitHub Actions
 function New-GitHubActionsConfigFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -488,7 +488,7 @@ jobs:
         run: |
           `$prNumber = `${{ github.event.pull_request.number }}
           
-          # ExÃ©cuter l'analyse
+          # ExÃƒÂ©cuter l'analyse
           .\git-hooks\Analyze-PullRequest.ps1 -Action Comment -PullRequestNumber `$prNumber
       
       - name: Upload Analysis Report
@@ -500,42 +500,42 @@ jobs:
     
     $content | Out-File -FilePath $FilePath -Encoding utf8
     
-    Write-Verbose "Fichier de configuration GitHub Actions crÃ©Ã©: $FilePath"
+    Write-Verbose "Fichier de configuration GitHub Actions crÃƒÂ©ÃƒÂ©: $FilePath"
 }
 
-# VÃ©rifier si le rÃ©pertoire de test existe dÃ©jÃ 
+# VÃƒÂ©rifier si le rÃƒÂ©pertoire de test existe dÃƒÂ©jÃƒÂ 
 if (Test-Path -Path $TestRepoPath) {
     if ($CleanExisting) {
-        if ($PSCmdlet.ShouldProcess($TestRepoPath, "Supprimer le rÃ©pertoire de test existant")) {
-            Write-Verbose "Suppression du rÃ©pertoire de test existant: $TestRepoPath"
+        if ($PSCmdlet.ShouldProcess($TestRepoPath, "Supprimer le rÃƒÂ©pertoire de test existant")) {
+            Write-Verbose "Suppression du rÃƒÂ©pertoire de test existant: $TestRepoPath"
             Remove-Item -Path $TestRepoPath -Recurse -Force
         }
     } else {
-        Write-Error "Le rÃ©pertoire de test existe dÃ©jÃ : $TestRepoPath. Utilisez -CleanExisting pour le supprimer."
+        Write-Error "Le rÃƒÂ©pertoire de test existe dÃƒÂ©jÃƒÂ : $TestRepoPath. Utilisez -CleanExisting pour le supprimer."
         exit 1
     }
 }
 
-# CrÃ©er le rÃ©pertoire de test
-if ($PSCmdlet.ShouldProcess($TestRepoPath, "CrÃ©er le rÃ©pertoire de test")) {
-    Write-Verbose "CrÃ©ation du rÃ©pertoire de test: $TestRepoPath"
+# CrÃƒÂ©er le rÃƒÂ©pertoire de test
+if ($PSCmdlet.ShouldProcess($TestRepoPath, "CrÃƒÂ©er le rÃƒÂ©pertoire de test")) {
+    Write-Verbose "CrÃƒÂ©ation du rÃƒÂ©pertoire de test: $TestRepoPath"
     New-Item -Path $TestRepoPath -ItemType Directory -Force | Out-Null
 }
 
-# Initialiser le dÃ©pÃ´t Git
-if ($PSCmdlet.ShouldProcess($TestRepoPath, "Initialiser le dÃ©pÃ´t Git")) {
-    Write-Verbose "Initialisation du dÃ©pÃ´t Git dans: $TestRepoPath"
+# Initialiser le dÃƒÂ©pÃƒÂ´t Git
+if ($PSCmdlet.ShouldProcess($TestRepoPath, "Initialiser le dÃƒÂ©pÃƒÂ´t Git")) {
+    Write-Verbose "Initialisation du dÃƒÂ©pÃƒÂ´t Git dans: $TestRepoPath"
     Push-Location $TestRepoPath
     try {
         git init
         
-        # CrÃ©er un fichier README.md
+        # CrÃƒÂ©er un fichier README.md
         @"
 # PR Analysis Test Repository
 
-Ce dÃ©pÃ´t est utilisÃ© pour tester le systÃ¨me d'analyse des pull requests.
+Ce dÃƒÂ©pÃƒÂ´t est utilisÃƒÂ© pour tester le systÃƒÂ¨me d'analyse des pull requests.
 
-## Structure du dÃ©pÃ´t
+## Structure du dÃƒÂ©pÃƒÂ´t
 
 - `development/scripts/` : Contient des scripts PowerShell avec et sans erreurs
 - `.github/workflows/` : Contient les workflows GitHub Actions
@@ -543,10 +543,10 @@ Ce dÃ©pÃ´t est utilisÃ© pour tester le systÃ¨me d'analyse des pull reque
 
 ## Utilisation
 
-Ce dÃ©pÃ´t est gÃ©nÃ©rÃ© automatiquement par le script `Initialize-TestEnvironment.ps1`.
+Ce dÃƒÂ©pÃƒÂ´t est gÃƒÂ©nÃƒÂ©rÃƒÂ© automatiquement par le script `Initialize-TestEnvironment.ps1`.
 "@ | Out-File -FilePath "README.md" -Encoding utf8
         
-        # CrÃ©er les rÃ©pertoires nÃ©cessaires
+        # CrÃƒÂ©er les rÃƒÂ©pertoires nÃƒÂ©cessaires
         New-Item -Path "scripts" -ItemType Directory -Force | Out-Null
         New-Item -Path "development/scripts/with-errors" -ItemType Directory -Force | Out-Null
         New-Item -Path "development/scripts/clean" -ItemType Directory -Force | Out-Null
@@ -555,22 +555,22 @@ Ce dÃ©pÃ´t est gÃ©nÃ©rÃ© automatiquement par le script `Initialize-Tes
         New-Item -Path "git-hooks" -ItemType Directory -Force | Out-Null
         New-Item -Path "git-hooks/reports" -ItemType Directory -Force | Out-Null
         
-        # CrÃ©er des fichiers PowerShell avec des erreurs
+        # CrÃƒÂ©er des fichiers PowerShell avec des erreurs
         for ($i = 1; $i -le $ErrorPatterns; $i++) {
             $filePath = "development/scripts/with-errors/Test-Errors$i.ps1"
             New-PowerShellFileWithErrors -FilePath $filePath -ErrorCount (Get-Random -Minimum 3 -Maximum 8)
         }
         
-        # CrÃ©er des fichiers PowerShell sans erreurs
+        # CrÃƒÂ©er des fichiers PowerShell sans erreurs
         for ($i = 1; $i -le 5; $i++) {
             $filePath = "development/scripts/clean/Test-Clean$i.ps1"
             New-CleanPowerShellFile -FilePath $filePath -FunctionCount (Get-Random -Minimum 3 -Maximum 8)
         }
         
-        # CrÃ©er un fichier de configuration pour les webhooks
+        # CrÃƒÂ©er un fichier de configuration pour les webhooks
         New-WebhookConfigFile -FilePath "projet/config/webhooks.json"
         
-        # CrÃ©er un fichier de configuration pour GitHub Actions
+        # CrÃƒÂ©er un fichier de configuration pour GitHub Actions
         New-GitHubActionsConfigFile -FilePath ".github/workflows/pr-analysis.yml"
         
         # Copier les scripts d'analyse des pull requests
@@ -581,7 +581,7 @@ Ce dÃ©pÃ´t est gÃ©nÃ©rÃ© automatiquement par le script `Initialize-Tes
             
             $sourcePythonDir = Join-Path -Path (git rev-parse --show-toplevel) -ChildPath "scripts\journal\web"
             if (Test-Path -Path $sourcePythonDir) {
-                Write-Verbose "Copie du script Python d'intÃ©gration depuis: $sourcePythonDir"
+                Write-Verbose "Copie du script Python d'intÃƒÂ©gration depuis: $sourcePythonDir"
                 Copy-Item -Path "$sourcePythonDir\pr_integration.py" -Destination "scripts\" -Force
             }
         }
@@ -592,18 +592,18 @@ Ce dÃ©pÃ´t est gÃ©nÃ©rÃ© automatiquement par le script `Initialize-Tes
         git config user.name "Test User"
         git commit -m "Initial commit"
         
-        Write-Verbose "DÃ©pÃ´t Git initialisÃ© avec succÃ¨s dans: $TestRepoPath"
+        Write-Verbose "DÃƒÂ©pÃƒÂ´t Git initialisÃƒÂ© avec succÃƒÂ¨s dans: $TestRepoPath"
     } finally {
         Pop-Location
     }
 }
 
-Write-Host "Environnement de test crÃ©Ã© avec succÃ¨s dans: $TestRepoPath" -ForegroundColor Green
+Write-Host "Environnement de test crÃƒÂ©ÃƒÂ© avec succÃƒÂ¨s dans: $TestRepoPath" -ForegroundColor Green
 Write-Host "Nombre de fichiers PowerShell avec erreurs: $ErrorPatterns" -ForegroundColor Cyan
 Write-Host "Nombre de fichiers PowerShell sans erreurs: 5" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Pour utiliser cet environnement de test:" -ForegroundColor Yellow
-Write-Host "1. AccÃ©dez au rÃ©pertoire: cd $TestRepoPath" -ForegroundColor Yellow
-Write-Host "2. CrÃ©ez une branche pour les tests: git checkout -b test-branch" -ForegroundColor Yellow
-Write-Host "3. Modifiez les fichiers et crÃ©ez des commits" -ForegroundColor Yellow
-Write-Host "4. Poussez la branche et crÃ©ez une pull request" -ForegroundColor Yellow
+Write-Host "1. AccÃƒÂ©dez au rÃƒÂ©pertoire: cd $TestRepoPath" -ForegroundColor Yellow
+Write-Host "2. CrÃƒÂ©ez une branche pour les tests: git checkout -b test-branch" -ForegroundColor Yellow
+Write-Host "3. Modifiez les fichiers et crÃƒÂ©ez des commits" -ForegroundColor Yellow
+Write-Host "4. Poussez la branche et crÃƒÂ©ez une pull request" -ForegroundColor Yellow

@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Installe une tâche planifiée pour vérifier l'organisation des scripts.
+    Installe une tÃ¢che planifiÃ©e pour vÃ©rifier l'organisation des scripts.
 .DESCRIPTION
-    Ce script installe une tâche planifiée Windows qui exécute régulièrement
-    le script Check-ScriptsOrganization.ps1 pour vérifier l'organisation des scripts.
+    Ce script installe une tÃ¢che planifiÃ©e Windows qui exÃ©cute rÃ©guliÃ¨rement
+    le script Check-ScriptsOrganization.ps1 pour vÃ©rifier l'organisation des scripts.
 .PARAMETER TaskName
-    Nom de la tâche planifiée.
+    Nom de la tÃ¢che planifiÃ©e.
 .PARAMETER Frequency
-    Fréquence d'exécution de la tâche (Daily, Weekly, Monthly).
+    FrÃ©quence d'exÃ©cution de la tÃ¢che (Daily, Weekly, Monthly).
 .PARAMETER Time
-    Heure d'exécution de la tâche (format HH:mm).
+    Heure d'exÃ©cution de la tÃ¢che (format HH:mm).
 .PARAMETER Force
-    Force l'installation de la tâche sans demander de confirmation.
+    Force l'installation de la tÃ¢che sans demander de confirmation.
 .EXAMPLE
     .\Install-OrganizationCheckTask.ps1 -TaskName "CheckScriptsOrganization" -Frequency Daily -Time "09:00" -Force
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-10
+    Date de crÃ©ation: 2023-06-10
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -37,7 +37,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -62,65 +62,65 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si l'utilisateur a les droits d'administrateur
+# VÃ©rifier si l'utilisateur a les droits d'administrateur
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) {
-    Write-Log "Ce script doit être exécuté avec des droits d'administrateur." -Level "ERROR"
-    Write-Log "Veuillez relancer PowerShell en tant qu'administrateur et réexécuter ce script." -Level "INFO"
+    Write-Log "Ce script doit Ãªtre exÃ©cutÃ© avec des droits d'administrateur." -Level "ERROR"
+    Write-Log "Veuillez relancer PowerShell en tant qu'administrateur et rÃ©exÃ©cuter ce script." -Level "INFO"
     exit 1
 }
 
-# Chemin du script de vérification
+# Chemin du script de vÃ©rification
 $scriptDir = $PSScriptRoot
 $checkScriptPath = Join-Path -Path $scriptDir -ChildPath "Check-ScriptsOrganization.ps1"
 
-# Vérifier si le script de vérification existe
+# VÃ©rifier si le script de vÃ©rification existe
 if (-not (Test-Path -Path $checkScriptPath)) {
     Write-Log "Le script Check-ScriptsOrganization.ps1 n'existe pas: $checkScriptPath" -Level "ERROR"
     exit 1
 }
 
-# Créer l'action de la tâche
+# CrÃ©er l'action de la tÃ¢che
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$checkScriptPath`" -SendEmail"
 
-# Créer le déclencheur de la tâche
+# CrÃ©er le dÃ©clencheur de la tÃ¢che
 $trigger = switch ($Frequency) {
     "Daily" { New-ScheduledTaskTrigger -Daily -At $Time }
     "Weekly" { New-ScheduledTaskTrigger -Weekly -At $Time -DaysOfWeek Monday }
     "Monthly" { New-ScheduledTaskTrigger -Monthly -At $Time -DaysOfMonth 1 }
 }
 
-# Créer les paramètres de la tâche
+# CrÃ©er les paramÃ¨tres de la tÃ¢che
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 
-# Vérifier si la tâche existe déjà
+# VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
 $existingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
 
 if ($existingTask) {
-    Write-Log "La tâche '$TaskName' existe déjà." -Level "WARNING"
+    Write-Log "La tÃ¢che '$TaskName' existe dÃ©jÃ ." -Level "WARNING"
     
-    if ($Force -or $PSCmdlet.ShouldProcess($TaskName, "Remplacer la tâche existante")) {
-        # Supprimer la tâche existante
+    if ($Force -or $PSCmdlet.ShouldProcess($TaskName, "Remplacer la tÃ¢che existante")) {
+        # Supprimer la tÃ¢che existante
         Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
-        Write-Log "Tâche existante supprimée." -Level "INFO"
+        Write-Log "TÃ¢che existante supprimÃ©e." -Level "INFO"
     }
     else {
-        Write-Log "Opération annulée." -Level "INFO"
+        Write-Log "OpÃ©ration annulÃ©e." -Level "INFO"
         exit 0
     }
 }
 
-# Créer la tâche
-if ($PSCmdlet.ShouldProcess($TaskName, "Créer la tâche planifiée")) {
-    Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings -Description "Vérifie l'organisation des scripts de maintenance"
+# CrÃ©er la tÃ¢che
+if ($PSCmdlet.ShouldProcess($TaskName, "CrÃ©er la tÃ¢che planifiÃ©e")) {
+    Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings -Description "VÃ©rifie l'organisation des scripts de maintenance"
     
-    Write-Log "Tâche planifiée '$TaskName' créée avec succès." -Level "SUCCESS"
-    Write-Log "  Fréquence: $Frequency" -Level "INFO"
+    Write-Log "TÃ¢che planifiÃ©e '$TaskName' crÃ©Ã©e avec succÃ¨s." -Level "SUCCESS"
+    Write-Log "  FrÃ©quence: $Frequency" -Level "INFO"
     Write-Log "  Heure: $Time" -Level "INFO"
     Write-Log "  Script: $checkScriptPath" -Level "INFO"
 }
 else {
-    Write-Log "Création de la tâche annulée." -Level "INFO"
+    Write-Log "CrÃ©ation de la tÃ¢che annulÃ©e." -Level "INFO"
 }
 
-Write-Log "Installation terminée." -Level "SUCCESS"
+Write-Log "Installation terminÃ©e." -Level "SUCCESS"

@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module EncryptionUtils.ps1.
@@ -7,48 +7,48 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $encryptionUtilsPath = Join-Path -Path $modulesPath -ChildPath "EncryptionUtils.ps1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "EncryptionUtilsTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests du module EncryptionUtils" {
     BeforeAll {
         # Importer le module
         . $encryptionUtilsPath
         
-        # Créer des fichiers de test
+        # CrÃ©er des fichiers de test
         $testFilePath = Join-Path -Path $testTempDir -ChildPath "test.txt"
         $encryptedFilePath = Join-Path -Path $testTempDir -ChildPath "test.enc"
         $decryptedFilePath = Join-Path -Path $testTempDir -ChildPath "test_decrypted.txt"
         $signatureFilePath = Join-Path -Path $testTempDir -ChildPath "test.sig"
         
-        # Créer un fichier de test
+        # CrÃ©er un fichier de test
         $testContent = "Ceci est un fichier de test pour le chiffrement."
         Set-Content -Path $testFilePath -Value $testContent -Encoding UTF8
     }
     
     Context "Tests de la fonction New-EncryptionKey" {
-        It "Génère une clé à partir d'un mot de passe" {
+        It "GÃ©nÃ¨re une clÃ© Ã  partir d'un mot de passe" {
             $password = ConvertTo-SecureString -String "TestPassword" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -61,7 +61,7 @@ Describe "Tests du module EncryptionUtils" {
             $key.HashAlgorithm | Should -Be "SHA256"
         }
         
-        It "Génère une clé aléatoire si aucun mot de passe n'est fourni" {
+        It "GÃ©nÃ¨re une clÃ© alÃ©atoire si aucun mot de passe n'est fourni" {
             $key = New-EncryptionKey
             
             $key | Should -Not -BeNullOrEmpty
@@ -71,11 +71,11 @@ Describe "Tests du module EncryptionUtils" {
     }
     
     Context "Tests des fonctions Protect-String et Unprotect-String" {
-        It "Chiffre et déchiffre correctement une chaîne" {
+        It "Chiffre et dÃ©chiffre correctement une chaÃ®ne" {
             $password = ConvertTo-SecureString -String "TestPassword" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
-            $originalString = "Ceci est une chaîne de test pour le chiffrement."
+            $originalString = "Ceci est une chaÃ®ne de test pour le chiffrement."
             $encryptedString = Protect-String -InputString $originalString -EncryptionKey $key
             
             $encryptedString | Should -Not -BeNullOrEmpty
@@ -88,7 +88,7 @@ Describe "Tests du module EncryptionUtils" {
     }
     
     Context "Tests des fonctions Protect-File et Unprotect-File" {
-        It "Chiffre et déchiffre correctement un fichier" {
+        It "Chiffre et dÃ©chiffre correctement un fichier" {
             $password = ConvertTo-SecureString -String "TestPassword" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -102,13 +102,13 @@ Describe "Tests du module EncryptionUtils" {
             $encryptResult | Should -Be $true
             Test-Path -Path $encryptedFilePath | Should -Be $true
             
-            # Déchiffrer le fichier
+            # DÃ©chiffrer le fichier
             $decryptResult = Unprotect-File -InputFile $encryptedFilePath -OutputFile $decryptedFilePath -EncryptionKey $key
             
             $decryptResult | Should -Be $true
             Test-Path -Path $decryptedFilePath | Should -Be $true
             
-            # Vérifier que le contenu est identique
+            # VÃ©rifier que le contenu est identique
             $originalContent = Get-Content -Path $testFilePath -Raw
             $decryptedContent = Get-Content -Path $decryptedFilePath -Raw
             
@@ -130,7 +130,7 @@ Describe "Tests du module EncryptionUtils" {
     }
     
     Context "Tests des fonctions New-FileSignature et Test-FileSignature" {
-        It "Signe et vérifie correctement un fichier" {
+        It "Signe et vÃ©rifie correctement un fichier" {
             $password = ConvertTo-SecureString -String "TestPassword" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -143,7 +143,7 @@ Describe "Tests du module EncryptionUtils" {
             $signature | Should -Not -BeNullOrEmpty
             Test-Path -Path $signatureFilePath | Should -Be $true
             
-            # Vérifier la signature
+            # VÃ©rifier la signature
             $verifyResult = Test-FileSignature -FilePath $testFilePath -EncryptionKey $key -SignatureFile $signatureFilePath
             
             $verifyResult | Should -Not -BeNullOrEmpty
@@ -152,7 +152,7 @@ Describe "Tests du module EncryptionUtils" {
             $verifyResult.Algorithm | Should -Be "SHA256"
         }
         
-        It "Détecte correctement une modification du fichier" {
+        It "DÃ©tecte correctement une modification du fichier" {
             $password = ConvertTo-SecureString -String "TestPassword" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -163,10 +163,10 @@ Describe "Tests du module EncryptionUtils" {
             $signature = New-FileSignature -FilePath $testFilePath -EncryptionKey $key -SignatureFile $signatureFilePath
             
             # Modifier le fichier
-            $modifiedContent = "Contenu modifié après la signature."
+            $modifiedContent = "Contenu modifiÃ© aprÃ¨s la signature."
             Set-Content -Path $testFilePath -Value $modifiedContent -Encoding UTF8
             
-            # Vérifier la signature
+            # VÃ©rifier la signature
             $verifyResult = Test-FileSignature -FilePath $testFilePath -EncryptionKey $key -SignatureFile $signatureFilePath
             
             $verifyResult | Should -Not -BeNullOrEmpty

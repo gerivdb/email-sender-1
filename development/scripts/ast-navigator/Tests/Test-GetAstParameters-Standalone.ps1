@@ -1,4 +1,4 @@
-# Script de test autonome pour la fonction Get-AstParameters
+﻿# Script de test autonome pour la fonction Get-AstParameters
 
 # Definir la fonction Get-AstParameters
 function Get-AstParameters {

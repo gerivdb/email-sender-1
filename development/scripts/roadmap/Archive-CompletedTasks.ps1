@@ -1,5 +1,5 @@
-# Archive-CompletedTasks.ps1
-# Script pour archiver les tâches terminées de la roadmap active
+﻿# Archive-CompletedTasks.ps1
+# Script pour archiver les tÃ¢ches terminÃ©es de la roadmap active
 # Version: 1.0
 # Date: 2025-05-02
 
@@ -61,23 +61,23 @@ function Get-CompletedTasks {
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
 
-        # Détecter les sections
+        # DÃ©tecter les sections
         if ($line -match "^#+\s+(.+)$") {
             $currentSection = $matches[1].Trim()
         }
 
-        # Détecter les tâches terminées
+        # DÃ©tecter les tÃ¢ches terminÃ©es
         if ($line -match "^\s*-\s+\[x\]\s+\*\*([^*]+)\*\*\s*(.*)$") {
             $taskId = $matches[1].Trim()
             $taskDescription = $matches[2].Trim()
 
-            # Déterminer le niveau d'indentation
+            # DÃ©terminer le niveau d'indentation
             $indentLevel = 0
             if ($line -match "^(\s*)") {
                 $indentLevel = [math]::Floor($matches[1].Length / 2)
             }
 
-            # Ajouter la tâche à la liste des tâches terminées
+            # Ajouter la tÃ¢che Ã  la liste des tÃ¢ches terminÃ©es
             $completedTasks += [PSCustomObject]@{
                 Id          = $taskId
                 Description = $taskDescription
@@ -105,19 +105,19 @@ function Get-TaskWithChildren {
     while ($i -lt $Lines.Count) {
         $line = $Lines[$i]
 
-        # Détecter le niveau d'indentation
+        # DÃ©tecter le niveau d'indentation
         $indentLevel = 0
         if ($line -match "^(\s*)") {
             $indentLevel = [math]::Floor($matches[1].Length / 2)
         }
 
-        # Si le niveau d'indentation est inférieur ou égal à celui de la tâche principale,
-        # nous avons atteint la fin des sous-tâches
+        # Si le niveau d'indentation est infÃ©rieur ou Ã©gal Ã  celui de la tÃ¢che principale,
+        # nous avons atteint la fin des sous-tÃ¢ches
         if ($line -match "^\s*-\s+\[" -and $indentLevel -le $TaskIndentLevel) {
             break
         }
 
-        # Ajouter la ligne aux lignes de la tâche
+        # Ajouter la ligne aux lignes de la tÃ¢che
         $taskLines += $line
         $i++
     }
@@ -134,15 +134,15 @@ function Update-RoadmapFiles {
         [string]$ArchivePath
     )
 
-    # Créer le répertoire d'archive s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire d'archive s'il n'existe pas
     $archiveDir = Split-Path -Parent $ArchivePath
     if (-not (Test-Path -Path $archiveDir)) {
         New-Item -Path $archiveDir -ItemType Directory -Force | Out-Null
     }
 
-    # Créer le fichier d'archive s'il n'existe pas
+    # CrÃ©er le fichier d'archive s'il n'existe pas
     if (-not (Test-Path -Path $ArchivePath)) {
-        $archiveHeader = "# Roadmap Archive`n`n## Tâches archivées`n`n"
+        $archiveHeader = "# Roadmap Archive`n`n## TÃ¢ches archivÃ©es`n`n"
         Set-Content -Path $ArchivePath -Value $archiveHeader -Encoding UTF8
     }
 
@@ -152,27 +152,27 @@ function Update-RoadmapFiles {
     # Lire le contenu du fichier de roadmap
     $roadmapLines = $RoadmapContent -split "`n"
 
-    # Trier les tâches par ligne (de la plus grande à la plus petite)
-    # pour éviter de décaler les indices lors de la suppression
+    # Trier les tÃ¢ches par ligne (de la plus grande Ã  la plus petite)
+    # pour Ã©viter de dÃ©caler les indices lors de la suppression
     $CompletedTasks = $CompletedTasks | Sort-Object -Property Line -Descending
 
-    # Parcourir les tâches terminées
+    # Parcourir les tÃ¢ches terminÃ©es
     foreach ($task in $CompletedTasks) {
-        # Récupérer la tâche et ses sous-tâches
+        # RÃ©cupÃ©rer la tÃ¢che et ses sous-tÃ¢ches
         $taskLines = Get-TaskWithChildren -Lines $roadmapLines -TaskLine $task.Line -TaskIndentLevel $task.IndentLevel
 
-        # Ajouter la tâche et ses sous-tâches au fichier d'archive
+        # Ajouter la tÃ¢che et ses sous-tÃ¢ches au fichier d'archive
         $archiveContent = $archiveContent.TrimEnd() + "`n`n" + ($taskLines -join "`n")
 
-        # Supprimer la tâche et ses sous-tâches du fichier de roadmap
+        # Supprimer la tÃ¢che et ses sous-tÃ¢ches du fichier de roadmap
         $roadmapLines = $roadmapLines[0..($task.Line - 1)] + $roadmapLines[($task.Line + $taskLines.Count)..($roadmapLines.Count - 1)]
     }
 
-    # Mettre à jour le fichier de roadmap
+    # Mettre Ã  jour le fichier de roadmap
     $roadmapContent = $roadmapLines -join "`n"
     Set-Content -Path $RoadmapPath -Value $roadmapContent -Encoding UTF8
 
-    # Mettre à jour le fichier d'archive
+    # Mettre Ã  jour le fichier d'archive
     Set-Content -Path $ArchivePath -Value $archiveContent -Encoding UTF8
 
     return @{
@@ -188,18 +188,18 @@ function Update-VectorDatabase {
         [string]$CollectionName
     )
 
-    # Appeler le script d'indexation pour mettre à jour la base de données vectorielle
+    # Appeler le script d'indexation pour mettre Ã  jour la base de donnÃ©es vectorielle
     $indexScriptPath = Join-Path -Path $scriptPath -ChildPath "Index-TaskVectorsQdrant.ps1"
 
     if (Test-Path $indexScriptPath) {
-        Write-Log "Mise à jour de la base de données vectorielle..." -Level Info
+        Write-Log "Mise Ã  jour de la base de donnÃ©es vectorielle..." -Level Info
         & $indexScriptPath -RoadmapPath $RoadmapPath -QdrantUrl $QdrantUrl -CollectionName $CollectionName -Force:$Force
 
         if ($LASTEXITCODE -eq 0) {
-            Write-Log "Base de données vectorielle mise à jour avec succès." -Level Success
+            Write-Log "Base de donnÃ©es vectorielle mise Ã  jour avec succÃ¨s." -Level Success
             return $true
         } else {
-            Write-Log "Échec de la mise à jour de la base de données vectorielle." -Level Error
+            Write-Log "Ã‰chec de la mise Ã  jour de la base de donnÃ©es vectorielle." -Level Error
             return $false
         }
     } else {
@@ -209,7 +209,7 @@ function Update-VectorDatabase {
 }
 
 function Invoke-TaskArchiving {
-    # Vérifier si les fichiers existent
+    # VÃ©rifier si les fichiers existent
     if (-not (Test-FileExists -FilePath $RoadmapPath)) {
         return
     }
@@ -217,44 +217,44 @@ function Invoke-TaskArchiving {
     # Lire le contenu du fichier de roadmap
     $roadmapContent = Get-Content -Path $RoadmapPath -Raw
 
-    # Récupérer les tâches terminées
+    # RÃ©cupÃ©rer les tÃ¢ches terminÃ©es
     $completedTasks = Get-CompletedTasks -RoadmapContent $roadmapContent
 
-    # Vérifier s'il y a des tâches terminées à archiver
+    # VÃ©rifier s'il y a des tÃ¢ches terminÃ©es Ã  archiver
     if ($completedTasks.Count -eq 0) {
-        Write-Log "Aucune tâche terminée à archiver." -Level Info
+        Write-Log "Aucune tÃ¢che terminÃ©e Ã  archiver." -Level Info
         return
     }
 
-    # Afficher les tâches terminées
-    Write-Log "Tâches terminées à archiver:" -Level Info
+    # Afficher les tÃ¢ches terminÃ©es
+    Write-Log "TÃ¢ches terminÃ©es Ã  archiver:" -Level Info
     foreach ($task in $completedTasks) {
         Write-Log "- $($task.Id): $($task.Description)" -Level Info
     }
 
     # Demander confirmation
     if (-not $Force) {
-        $confirmation = Read-Host "Voulez-vous archiver ces $($completedTasks.Count) tâches? (O/N)"
+        $confirmation = Read-Host "Voulez-vous archiver ces $($completedTasks.Count) tÃ¢ches? (O/N)"
         if ($confirmation -ne "O") {
-            Write-Log "Opération annulée." -Level Warning
+            Write-Log "OpÃ©ration annulÃ©e." -Level Warning
             return
         }
     }
 
-    # Mettre à jour les fichiers
+    # Mettre Ã  jour les fichiers
     $result = Update-RoadmapFiles -RoadmapContent $roadmapContent -ArchiveContent "" -CompletedTasks $completedTasks -RoadmapPath $RoadmapPath -ArchivePath $ArchivePath
 
-    # Afficher le résultat
-    Write-Log "Archivage terminé." -Level Success
-    Write-Log "$($completedTasks.Count) tâches archivées." -Level Info
-    Write-Log "Fichier de roadmap mis à jour: $RoadmapPath" -Level Info
-    Write-Log "Fichier d'archive mis à jour: $ArchivePath" -Level Info
+    # Afficher le rÃ©sultat
+    Write-Log "Archivage terminÃ©." -Level Success
+    Write-Log "$($completedTasks.Count) tÃ¢ches archivÃ©es." -Level Info
+    Write-Log "Fichier de roadmap mis Ã  jour: $RoadmapPath" -Level Info
+    Write-Log "Fichier d'archive mis Ã  jour: $ArchivePath" -Level Info
 
-    # Mettre à jour la base de données vectorielle si demandé
+    # Mettre Ã  jour la base de donnÃ©es vectorielle si demandÃ©
     if ($UpdateVectorDB) {
         Update-VectorDatabase -RoadmapPath $RoadmapPath -QdrantUrl $QdrantUrl -CollectionName $CollectionName
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Invoke-TaskArchiving

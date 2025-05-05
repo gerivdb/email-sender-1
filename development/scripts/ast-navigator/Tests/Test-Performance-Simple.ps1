@@ -1,10 +1,10 @@
-# Script de test de performance simplifié
+﻿# Script de test de performance simplifiÃ©
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script PowerShell complexe
+# CrÃ©er un script PowerShell complexe
 $complexScript = @'
 # Script PowerShell complexe pour les tests de performance
 
@@ -81,7 +81,7 @@ $data2 = Get-Example2 -Name "Test" -Count 10
 $processedData1 = Process-Data -Data $data1
 $processedData2 = Process-Data -Data $data2
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 foreach ($item in $processedData1) {
     Write-Output "$($item.Name): $($item.Value) - $($item.IsValid)"
 }
@@ -95,7 +95,7 @@ foreach ($item in $processedData2) {
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseInput($complexScript, [ref]$tokens, [ref]$errors)
 
-# Fonction pour exécuter un test de performance
+# Fonction pour exÃ©cuter un test de performance
 function Test-Performance {
     param (
         [string]$FunctionName,
@@ -109,7 +109,7 @@ function Test-Performance {
 
     Write-Host "Test de performance pour $FunctionName" -ForegroundColor Cyan
     
-    # Préparer les paramètres
+    # PrÃ©parer les paramÃ¨tres
     $params = @{
         Ast = $Ast
     }
@@ -130,7 +130,7 @@ function Test-Performance {
         $params.IncludeRoot = $true
     }
     
-    # Exécuter le test plusieurs fois pour obtenir une moyenne
+    # ExÃ©cuter le test plusieurs fois pour obtenir une moyenne
     $times = @()
     $resultCount = 0
     
@@ -146,7 +146,7 @@ function Test-Performance {
     # Calculer la moyenne
     $avgTime = ($times | Measure-Object -Average).Average
     
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     Write-Host "  Temps d'execution moyen: $($avgTime) ms" -ForegroundColor Yellow
     Write-Host "  Nombre de noeuds trouves: $resultCount" -ForegroundColor Yellow
     
@@ -157,7 +157,7 @@ function Test-Performance {
     }
 }
 
-# Exécuter les tests de performance
+# ExÃ©cuter les tests de performance
 Write-Host "`nExecution des tests de performance..." -ForegroundColor Green
 
 # Test 1: Recherche de toutes les fonctions
@@ -169,7 +169,7 @@ $results += Test-Performance -FunctionName "Invoke-AstTraversalDFS-Enhanced" -As
 $results += Test-Performance -FunctionName "Invoke-AstTraversalDFS-Optimized" -Ast $ast -NodeType "FunctionDefinition"
 $results += Test-Performance -FunctionName "Invoke-AstTraversalBFS" -Ast $ast -NodeType "FunctionDefinition"
 
-# Test 2: Recherche de tous les nœuds de type VariableExpressionAst
+# Test 2: Recherche de tous les nÅ“uds de type VariableExpressionAst
 Write-Host "`nTest 2: Recherche de tous les noeuds de type VariableExpressionAst" -ForegroundColor Magenta
 
 $results += Test-Performance -FunctionName "Invoke-AstTraversalDFS" -Ast $ast -NodeType "VariableExpressionAst"
@@ -177,7 +177,7 @@ $results += Test-Performance -FunctionName "Invoke-AstTraversalDFS-Enhanced" -As
 $results += Test-Performance -FunctionName "Invoke-AstTraversalDFS-Optimized" -Ast $ast -NodeType "VariableExpressionAst"
 $results += Test-Performance -FunctionName "Invoke-AstTraversalBFS" -Ast $ast -NodeType "VariableExpressionAst"
 
-# Test 3: Recherche avec prédicat personnalisé
+# Test 3: Recherche avec prÃ©dicat personnalisÃ©
 Write-Host "`nTest 3: Recherche avec predicat personnalise" -ForegroundColor Magenta
 $customPredicate = { $args[0] -is [System.Management.Automation.Language.VariableExpressionAst] -and $args[0].VariablePath.UserPath -like "item*" }
 
@@ -186,7 +186,7 @@ $results += Test-Performance -FunctionName "Invoke-AstTraversalDFS-Enhanced" -As
 $results += Test-Performance -FunctionName "Invoke-AstTraversalDFS-Optimized" -Ast $ast -Predicate $customPredicate
 $results += Test-Performance -FunctionName "Invoke-AstTraversalBFS" -Ast $ast -Predicate $customPredicate
 
-# Afficher un résumé des résultats
+# Afficher un rÃ©sumÃ© des rÃ©sultats
 Write-Host "`nResume des resultats de performance:" -ForegroundColor Green
 $results | Format-Table -Property FunctionName, ElapsedTime, ResultCount -AutoSize
 
@@ -200,7 +200,7 @@ $results | Group-Object -Property FunctionName | ForEach-Object {
     Write-Host ("{0,-30} {1,10:N3} {2}" -f $functionName, $avgTime, $bar) -ForegroundColor Yellow
 }
 
-# Afficher les améliorations de performance
+# Afficher les amÃ©liorations de performance
 Write-Host "`nAmeliorations de performance par rapport a Invoke-AstTraversalDFS:" -ForegroundColor Green
 $baselineResults = $results | Where-Object { $_.FunctionName -eq "Invoke-AstTraversalDFS" }
 $baselineAvgTime = ($baselineResults | Measure-Object -Property ElapsedTime -Average).Average

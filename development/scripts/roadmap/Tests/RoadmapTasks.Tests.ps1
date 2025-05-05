@@ -1,4 +1,4 @@
-BeforeAll {
+﻿BeforeAll {
     # Importer le module commun
     $scriptPath = Split-Path -Parent $PSScriptRoot
     $projectRoot = Split-Path -Parent $scriptPath
@@ -11,17 +11,17 @@ BeforeAll {
         throw "Module commun introuvable: $modulePath"
     }
     
-    # Créer un fichier de roadmap temporaire pour les tests
+    # CrÃ©er un fichier de roadmap temporaire pour les tests
     $testRoadmapContent = @"
 # Roadmap de test
 
-## Tâches actives
+## TÃ¢ches actives
 
-- [ ] **1.1** Tâche de test 1
-  - [ ] **1.1.1** Sous-tâche 1.1
-  - [ ] **1.1.2** Sous-tâche 1.2
-- [ ] **1.2** Tâche de test 2
-  - [x] **1.2.1** Sous-tâche terminée
+- [ ] **1.1** TÃ¢che de test 1
+  - [ ] **1.1.1** Sous-tÃ¢che 1.1
+  - [ ] **1.1.2** Sous-tÃ¢che 1.2
+- [ ] **1.2** TÃ¢che de test 2
+  - [x] **1.2.1** Sous-tÃ¢che terminÃ©e
 "@
     
     $script:testRoadmapPath = Join-Path -Path $TestDrive -ChildPath "test_roadmap.md"
@@ -29,8 +29,8 @@ BeforeAll {
 }
 
 Describe "RoadmapTasks" {
-    It "Extrait correctement les tâches d'un fichier Markdown" {
-        # Définir une fonction de mock pour l'extraction des tâches
+    It "Extrait correctement les tÃ¢ches d'un fichier Markdown" {
+        # DÃ©finir une fonction de mock pour l'extraction des tÃ¢ches
         function ExtractTasks {
             param (
                 [string]$FilePath
@@ -39,46 +39,46 @@ Describe "RoadmapTasks" {
             return @(
                 [PSCustomObject]@{
                     Id = "1.1"
-                    Description = "Tâche de test 1"
+                    Description = "TÃ¢che de test 1"
                     Status = "Incomplete"
                     Level = 1
-                    Section = "Tâches actives"
+                    Section = "TÃ¢ches actives"
                 },
                 [PSCustomObject]@{
                     Id = "1.1.1"
-                    Description = "Sous-tâche 1.1"
+                    Description = "Sous-tÃ¢che 1.1"
                     Status = "Incomplete"
                     Level = 2
-                    Section = "Tâches actives"
+                    Section = "TÃ¢ches actives"
                 },
                 [PSCustomObject]@{
                     Id = "1.1.2"
-                    Description = "Sous-tâche 1.2"
+                    Description = "Sous-tÃ¢che 1.2"
                     Status = "Incomplete"
                     Level = 2
-                    Section = "Tâches actives"
+                    Section = "TÃ¢ches actives"
                 },
                 [PSCustomObject]@{
                     Id = "1.2"
-                    Description = "Tâche de test 2"
+                    Description = "TÃ¢che de test 2"
                     Status = "Incomplete"
                     Level = 1
-                    Section = "Tâches actives"
+                    Section = "TÃ¢ches actives"
                 },
                 [PSCustomObject]@{
                     Id = "1.2.1"
-                    Description = "Sous-tâche terminée"
+                    Description = "Sous-tÃ¢che terminÃ©e"
                     Status = "Completed"
                     Level = 2
-                    Section = "Tâches actives"
+                    Section = "TÃ¢ches actives"
                 }
             )
         }
         
-        # Extraire les tâches du fichier de roadmap de test
+        # Extraire les tÃ¢ches du fichier de roadmap de test
         $tasks = ExtractTasks -FilePath $script:testRoadmapPath
         
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $tasks | Should -Not -BeNullOrEmpty
         $tasks.Count | Should -BeGreaterThan 0
         $tasks | Where-Object { $_.Id -eq "1.1" } | Should -Not -BeNullOrEmpty
@@ -87,7 +87,7 @@ Describe "RoadmapTasks" {
         $tasks | Where-Object { $_.Id -eq "1.2" } | Should -Not -BeNullOrEmpty
         $tasks | Where-Object { $_.Id -eq "1.2.1" } | Should -Not -BeNullOrEmpty
         
-        # Vérifier les statuts
+        # VÃ©rifier les statuts
         $tasks | Where-Object { $_.Id -eq "1.2.1" } | Select-Object -ExpandProperty Status | Should -Be "Completed"
         $tasks | Where-Object { $_.Id -eq "1.1" } | Select-Object -ExpandProperty Status | Should -Be "Incomplete"
     }

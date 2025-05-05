@@ -1,22 +1,22 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    ExÃ©cute la rÃ©organisation et standardisation complÃ¨te du dÃ©pÃ´t
+    ExÃƒÂ©cute la rÃƒÂ©organisation et standardisation complÃƒÂ¨te du dÃƒÂ©pÃƒÂ´t
 .DESCRIPTION
-    Ce script exÃ©cute toutes les Ã©tapes de rÃ©organisation et standardisation
-    du dÃ©pÃ´t en une seule commande, incluant la validation de structure,
-    la rÃ©organisation des fichiers et le nettoyage des scripts obsolÃ¨tes
+    Ce script exÃƒÂ©cute toutes les ÃƒÂ©tapes de rÃƒÂ©organisation et standardisation
+    du dÃƒÂ©pÃƒÂ´t en une seule commande, incluant la validation de structure,
+    la rÃƒÂ©organisation des fichiers et le nettoyage des scripts obsolÃƒÂ¨tes
     et redondants.
 .PARAMETER Path
-    Chemin du dÃ©pÃ´t Ã  standardiser
+    Chemin du dÃƒÂ©pÃƒÂ´t ÃƒÂ  standardiser
 .PARAMETER DryRun
-    Indique si le script doit simuler les opÃ©rations sans effectuer de modifications
+    Indique si le script doit simuler les opÃƒÂ©rations sans effectuer de modifications
 .PARAMETER Force
-    Indique si le script doit forcer les opÃ©rations mÃªme en cas de conflits
+    Indique si le script doit forcer les opÃƒÂ©rations mÃƒÂªme en cas de conflits
 .PARAMETER SkipTests
-    Indique s'il faut ignorer l'exÃ©cution des tests aprÃ¨s la standardisation
+    Indique s'il faut ignorer l'exÃƒÂ©cution des tests aprÃƒÂ¨s la standardisation
 .PARAMETER SimilarityThreshold
-    Seuil de similaritÃ© pour considÃ©rer deux scripts comme redondants (0-100)
+    Seuil de similaritÃƒÂ© pour considÃƒÂ©rer deux scripts comme redondants (0-100)
 .EXAMPLE
     .\Invoke-RepoStandardization.ps1 -Path "D:\Repos\EMAIL_SENDER_1" -DryRun
 .NOTES
@@ -43,7 +43,7 @@ param(
     [int]$SimilarityThreshold = 80
 )
 
-# Fonction pour Ã©crire dans le journal
+# Fonction pour ÃƒÂ©crire dans le journal
 function Write-Log {
     param (
         [Parameter(Mandatory = $true)]
@@ -66,7 +66,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour exÃ©cuter un script avec des paramÃ¨tres
+# Fonction pour exÃƒÂ©cuter un script avec des paramÃƒÂ¨tres
 function Invoke-ScriptWithParams {
     param (
         [Parameter(Mandatory = $true)]
@@ -79,13 +79,13 @@ function Invoke-ScriptWithParams {
         [string]$Description = ""
     )
     
-    # VÃ©rifier que le script existe
+    # VÃƒÂ©rifier que le script existe
     if (-not (Test-Path -Path $ScriptPath -PathType Leaf)) {
         Write-Log -Message "Le script n'existe pas: $ScriptPath" -Level "ERROR"
         return $false
     }
     
-    # Construire la chaÃ®ne de paramÃ¨tres
+    # Construire la chaÃƒÂ®ne de paramÃƒÂ¨tres
     $paramString = ""
     foreach ($key in $Parameters.Keys) {
         $value = $Parameters[$key]
@@ -103,54 +103,54 @@ function Invoke-ScriptWithParams {
     
     # Afficher la commande
     $command = "& '$ScriptPath'$paramString"
-    Write-Log -Message "ExÃ©cution de: $command" -Level "INFO"
+    Write-Log -Message "ExÃƒÂ©cution de: $command" -Level "INFO"
     
-    # ExÃ©cuter le script
+    # ExÃƒÂ©cuter le script
     try {
-        Write-Log -Message "DÃ©but de l'exÃ©cution: $Description" -Level "INFO"
+        Write-Log -Message "DÃƒÂ©but de l'exÃƒÂ©cution: $Description" -Level "INFO"
         Invoke-Expression $command
-        Write-Log -Message "Fin de l'exÃ©cution: $Description" -Level "SUCCESS"
+        Write-Log -Message "Fin de l'exÃƒÂ©cution: $Description" -Level "SUCCESS"
         return $true
     } catch {
-        Write-Log -Message "Erreur lors de l'exÃ©cution: $Description - $_" -Level "ERROR"
+        Write-Log -Message "Erreur lors de l'exÃƒÂ©cution: $Description - $_" -Level "ERROR"
         return $false
     }
 }
 
-# VÃ©rifier que le chemin existe
+# VÃƒÂ©rifier que le chemin existe
 if (-not (Test-Path -Path $Path -PathType Container)) {
-    Write-Log -Message "Le chemin spÃ©cifiÃ© n'existe pas: $Path" -Level "ERROR"
+    Write-Log -Message "Le chemin spÃƒÂ©cifiÃƒÂ© n'existe pas: $Path" -Level "ERROR"
     exit 1
 }
 
-# Afficher le mode d'exÃ©cution
+# Afficher le mode d'exÃƒÂ©cution
 if ($DryRun) {
-    Write-Log -Message "Mode simulation activÃ©. Aucune modification ne sera effectuÃ©e." -Level "WARNING"
+    Write-Log -Message "Mode simulation activÃƒÂ©. Aucune modification ne sera effectuÃƒÂ©e." -Level "WARNING"
 }
 
-# DÃ©finir les chemins des scripts
+# DÃƒÂ©finir les chemins des scripts
 $testRepoStructurePath = Join-Path -Path $PSScriptRoot -ChildPath "Test-RepoStructure.ps1"
 $reorganizeRepositoryPath = Join-Path -Path $PSScriptRoot -ChildPath "Reorganize-Repository.ps1"
 $cleanRepositoryPath = Join-Path -Path $PSScriptRoot -ChildPath "Clean-Repository.ps1"
 $testIntegrationPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "..\development\testing\tests\Test-RepoStructureIntegration.ps1"
 
-# Ã‰tape 1: Valider la structure du dÃ©pÃ´t
-Write-Log -Message "Ã‰tape 1: Validation de la structure du dÃ©pÃ´t" -Level "INFO"
+# Ãƒâ€°tape 1: Valider la structure du dÃƒÂ©pÃƒÂ´t
+Write-Log -Message "Ãƒâ€°tape 1: Validation de la structure du dÃƒÂ©pÃƒÂ´t" -Level "INFO"
 $validationParams = @{
     Path = $Path
     ReportPath = "reports\structure-validation-$(Get-Date -Format 'yyyyMMdd-HHmmss').md"
     Fix = $Force
 }
 
-$validationSuccess = Invoke-ScriptWithParams -ScriptPath $testRepoStructurePath -Parameters $validationParams -Description "Validation de la structure du dÃ©pÃ´t"
+$validationSuccess = Invoke-ScriptWithParams -ScriptPath $testRepoStructurePath -Parameters $validationParams -Description "Validation de la structure du dÃƒÂ©pÃƒÂ´t"
 
 if (-not $validationSuccess) {
-    Write-Log -Message "La validation de la structure du dÃ©pÃ´t a Ã©chouÃ©. ArrÃªt du processus." -Level "ERROR"
+    Write-Log -Message "La validation de la structure du dÃƒÂ©pÃƒÂ´t a ÃƒÂ©chouÃƒÂ©. ArrÃƒÂªt du processus." -Level "ERROR"
     exit 1
 }
 
-# Ã‰tape 2: RÃ©organiser le dÃ©pÃ´t
-Write-Log -Message "Ã‰tape 2: RÃ©organisation du dÃ©pÃ´t" -Level "INFO"
+# Ãƒâ€°tape 2: RÃƒÂ©organiser le dÃƒÂ©pÃƒÂ´t
+Write-Log -Message "Ãƒâ€°tape 2: RÃƒÂ©organisation du dÃƒÂ©pÃƒÂ´t" -Level "INFO"
 $reorganizationParams = @{
     Path = $Path
     LogPath = "logs\reorganization-$(Get-Date -Format 'yyyyMMdd-HHmmss').log"
@@ -158,15 +158,15 @@ $reorganizationParams = @{
     Force = $Force
 }
 
-$reorganizationSuccess = Invoke-ScriptWithParams -ScriptPath $reorganizeRepositoryPath -Parameters $reorganizationParams -Description "RÃ©organisation du dÃ©pÃ´t"
+$reorganizationSuccess = Invoke-ScriptWithParams -ScriptPath $reorganizeRepositoryPath -Parameters $reorganizationParams -Description "RÃƒÂ©organisation du dÃƒÂ©pÃƒÂ´t"
 
 if (-not $reorganizationSuccess) {
-    Write-Log -Message "La rÃ©organisation du dÃ©pÃ´t a Ã©chouÃ©. ArrÃªt du processus." -Level "ERROR"
+    Write-Log -Message "La rÃƒÂ©organisation du dÃƒÂ©pÃƒÂ´t a ÃƒÂ©chouÃƒÂ©. ArrÃƒÂªt du processus." -Level "ERROR"
     exit 1
 }
 
-# Ã‰tape 3: Nettoyer le dÃ©pÃ´t
-Write-Log -Message "Ã‰tape 3: Nettoyage du dÃ©pÃ´t" -Level "INFO"
+# Ãƒâ€°tape 3: Nettoyer le dÃƒÂ©pÃƒÂ´t
+Write-Log -Message "Ãƒâ€°tape 3: Nettoyage du dÃƒÂ©pÃƒÂ´t" -Level "INFO"
 $cleaningParams = @{
     Path = $Path
     ArchivePath = "archive\$(Get-Date -Format 'yyyyMMdd')"
@@ -176,35 +176,35 @@ $cleaningParams = @{
     Force = $Force
 }
 
-$cleaningSuccess = Invoke-ScriptWithParams -ScriptPath $cleanRepositoryPath -Parameters $cleaningParams -Description "Nettoyage du dÃ©pÃ´t"
+$cleaningSuccess = Invoke-ScriptWithParams -ScriptPath $cleanRepositoryPath -Parameters $cleaningParams -Description "Nettoyage du dÃƒÂ©pÃƒÂ´t"
 
 if (-not $cleaningSuccess) {
-    Write-Log -Message "Le nettoyage du dÃ©pÃ´t a Ã©chouÃ©. ArrÃªt du processus." -Level "ERROR"
+    Write-Log -Message "Le nettoyage du dÃƒÂ©pÃƒÂ´t a ÃƒÂ©chouÃƒÂ©. ArrÃƒÂªt du processus." -Level "ERROR"
     exit 1
 }
 
-# Ã‰tape 4: ExÃ©cuter les tests d'intÃ©gration
+# Ãƒâ€°tape 4: ExÃƒÂ©cuter les tests d'intÃƒÂ©gration
 if (-not $SkipTests) {
-    Write-Log -Message "Ã‰tape 4: ExÃ©cution des tests d'intÃ©gration" -Level "INFO"
+    Write-Log -Message "Ãƒâ€°tape 4: ExÃƒÂ©cution des tests d'intÃƒÂ©gration" -Level "INFO"
     $testParams = @{
         OutputFormat = "HTML"
         CoverageReport = $true
     }
     
-    $testSuccess = Invoke-ScriptWithParams -ScriptPath $testIntegrationPath -Parameters $testParams -Description "Tests d'intÃ©gration"
+    $testSuccess = Invoke-ScriptWithParams -ScriptPath $testIntegrationPath -Parameters $testParams -Description "Tests d'intÃƒÂ©gration"
     
     if (-not $testSuccess) {
-        Write-Log -Message "Les tests d'intÃ©gration ont Ã©chouÃ©. VÃ©rifiez les rapports de test pour plus de dÃ©tails." -Level "WARNING"
+        Write-Log -Message "Les tests d'intÃƒÂ©gration ont ÃƒÂ©chouÃƒÂ©. VÃƒÂ©rifiez les rapports de test pour plus de dÃƒÂ©tails." -Level "WARNING"
     }
 }
 
-# Afficher un rÃ©sumÃ©
-Write-Log -Message "RÃ©organisation et standardisation du dÃ©pÃ´t terminÃ©es avec succÃ¨s." -Level "SUCCESS"
-Write-Log -Message "Consultez les rapports gÃ©nÃ©rÃ©s pour plus de dÃ©tails." -Level "INFO"
+# Afficher un rÃƒÂ©sumÃƒÂ©
+Write-Log -Message "RÃƒÂ©organisation et standardisation du dÃƒÂ©pÃƒÂ´t terminÃƒÂ©es avec succÃƒÂ¨s." -Level "SUCCESS"
+Write-Log -Message "Consultez les rapports gÃƒÂ©nÃƒÂ©rÃƒÂ©s pour plus de dÃƒÂ©tails." -Level "INFO"
 
-# Afficher les prochaines Ã©tapes
-Write-Log -Message "Prochaines Ã©tapes recommandÃ©es:" -Level "INFO"
-Write-Log -Message "1. VÃ©rifiez les rapports de validation et de nettoyage" -Level "INFO"
-Write-Log -Message "2. Examinez les scripts archivÃ©s avant de les supprimer dÃ©finitivement" -Level "INFO"
-Write-Log -Message "3. Mettez Ã  jour la documentation du projet pour reflÃ©ter la nouvelle structure" -Level "INFO"
-Write-Log -Message "4. Configurez des hooks Git pour maintenir la structure standardisÃ©e" -Level "INFO"
+# Afficher les prochaines ÃƒÂ©tapes
+Write-Log -Message "Prochaines ÃƒÂ©tapes recommandÃƒÂ©es:" -Level "INFO"
+Write-Log -Message "1. VÃƒÂ©rifiez les rapports de validation et de nettoyage" -Level "INFO"
+Write-Log -Message "2. Examinez les scripts archivÃƒÂ©s avant de les supprimer dÃƒÂ©finitivement" -Level "INFO"
+Write-Log -Message "3. Mettez ÃƒÂ  jour la documentation du projet pour reflÃƒÂ©ter la nouvelle structure" -Level "INFO"
+Write-Log -Message "4. Configurez des hooks Git pour maintenir la structure standardisÃƒÂ©e" -Level "INFO"

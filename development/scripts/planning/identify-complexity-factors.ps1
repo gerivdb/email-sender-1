@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param (
     [Parameter(Mandatory = $true)]
     [string]$OutputFile,
@@ -8,144 +8,144 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputFile -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Définir les catégories de facteurs de complexité
+# DÃ©finir les catÃ©gories de facteurs de complexitÃ©
 $complexityFactors = @{
     "TechnicalComplexity" = @{
-        "Description" = "Facteurs liés à la complexité technique de l'amélioration"
+        "Description" = "Facteurs liÃ©s Ã  la complexitÃ© technique de l'amÃ©lioration"
         "Factors" = @(
             @{
-                "Name" = "Complexité algorithmique"
-                "Description" = "Complexité des algorithmes et des structures de données nécessaires"
+                "Name" = "ComplexitÃ© algorithmique"
+                "Description" = "ComplexitÃ© des algorithmes et des structures de donnÃ©es nÃ©cessaires"
                 "Examples" = @(
-                    "Algorithmes simples (boucles, conditions) = complexité faible",
-                    "Algorithmes de tri ou de recherche = complexité moyenne",
-                    "Algorithmes d'optimisation ou d'apprentissage = complexité élevée"
+                    "Algorithmes simples (boucles, conditions) = complexitÃ© faible",
+                    "Algorithmes de tri ou de recherche = complexitÃ© moyenne",
+                    "Algorithmes d'optimisation ou d'apprentissage = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.20
             },
             @{
-                "Name" = "Intégration avec des systèmes existants"
-                "Description" = "Niveau d'intégration requis avec les systèmes existants"
+                "Name" = "IntÃ©gration avec des systÃ¨mes existants"
+                "Description" = "Niveau d'intÃ©gration requis avec les systÃ¨mes existants"
                 "Examples" = @(
-                    "Aucune intégration = complexité faible",
-                    "Intégration avec un système interne = complexité moyenne",
-                    "Intégration avec plusieurs systèmes externes = complexité élevée"
+                    "Aucune intÃ©gration = complexitÃ© faible",
+                    "IntÃ©gration avec un systÃ¨me interne = complexitÃ© moyenne",
+                    "IntÃ©gration avec plusieurs systÃ¨mes externes = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.15
             },
             @{
-                "Name" = "Dépendances techniques"
-                "Description" = "Nombre et complexité des dépendances techniques"
+                "Name" = "DÃ©pendances techniques"
+                "Description" = "Nombre et complexitÃ© des dÃ©pendances techniques"
                 "Examples" = @(
-                    "Aucune dépendance externe = complexité faible",
-                    "Quelques dépendances bien documentées = complexité moyenne",
-                    "Nombreuses dépendances ou dépendances complexes = complexité élevée"
+                    "Aucune dÃ©pendance externe = complexitÃ© faible",
+                    "Quelques dÃ©pendances bien documentÃ©es = complexitÃ© moyenne",
+                    "Nombreuses dÃ©pendances ou dÃ©pendances complexes = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.15
             },
             @{
-                "Name" = "Nouveauté technologique"
-                "Description" = "Degré de nouveauté des technologies utilisées"
+                "Name" = "NouveautÃ© technologique"
+                "Description" = "DegrÃ© de nouveautÃ© des technologies utilisÃ©es"
                 "Examples" = @(
-                    "Technologies bien maîtrisées = complexité faible",
-                    "Technologies partiellement maîtrisées = complexité moyenne",
-                    "Technologies nouvelles ou peu maîtrisées = complexité élevée"
+                    "Technologies bien maÃ®trisÃ©es = complexitÃ© faible",
+                    "Technologies partiellement maÃ®trisÃ©es = complexitÃ© moyenne",
+                    "Technologies nouvelles ou peu maÃ®trisÃ©es = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.10
             },
             @{
-                "Name" = "Sécurité"
-                "Description" = "Exigences de sécurité associées à l'amélioration"
+                "Name" = "SÃ©curitÃ©"
+                "Description" = "Exigences de sÃ©curitÃ© associÃ©es Ã  l'amÃ©lioration"
                 "Examples" = @(
-                    "Aucune exigence de sécurité particulière = complexité faible",
-                    "Authentification et autorisation standard = complexité moyenne",
-                    "Chiffrement, protection contre les attaques avancées = complexité élevée"
+                    "Aucune exigence de sÃ©curitÃ© particuliÃ¨re = complexitÃ© faible",
+                    "Authentification et autorisation standard = complexitÃ© moyenne",
+                    "Chiffrement, protection contre les attaques avancÃ©es = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.10
             }
         )
     },
     "FunctionalComplexity" = @{
-        "Description" = "Facteurs liés à la complexité fonctionnelle de l'amélioration"
+        "Description" = "Facteurs liÃ©s Ã  la complexitÃ© fonctionnelle de l'amÃ©lioration"
         "Factors" = @(
             @{
-                "Name" = "Nombre de fonctionnalités"
-                "Description" = "Nombre de fonctionnalités à implémenter"
+                "Name" = "Nombre de fonctionnalitÃ©s"
+                "Description" = "Nombre de fonctionnalitÃ©s Ã  implÃ©menter"
                 "Examples" = @(
-                    "Une seule fonctionnalité simple = complexité faible",
-                    "Plusieurs fonctionnalités liées = complexité moyenne",
-                    "Nombreuses fonctionnalités interdépendantes = complexité élevée"
+                    "Une seule fonctionnalitÃ© simple = complexitÃ© faible",
+                    "Plusieurs fonctionnalitÃ©s liÃ©es = complexitÃ© moyenne",
+                    "Nombreuses fonctionnalitÃ©s interdÃ©pendantes = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.15
             },
             @{
-                "Name" = "Complexité des règles métier"
-                "Description" = "Complexité des règles métier à implémenter"
+                "Name" = "ComplexitÃ© des rÃ¨gles mÃ©tier"
+                "Description" = "ComplexitÃ© des rÃ¨gles mÃ©tier Ã  implÃ©menter"
                 "Examples" = @(
-                    "Règles métier simples et directes = complexité faible",
-                    "Règles métier avec quelques conditions = complexité moyenne",
-                    "Règles métier complexes avec nombreuses exceptions = complexité élevée"
+                    "RÃ¨gles mÃ©tier simples et directes = complexitÃ© faible",
+                    "RÃ¨gles mÃ©tier avec quelques conditions = complexitÃ© moyenne",
+                    "RÃ¨gles mÃ©tier complexes avec nombreuses exceptions = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.15
             },
             @{
                 "Name" = "Interface utilisateur"
-                "Description" = "Complexité de l'interface utilisateur à développer"
+                "Description" = "ComplexitÃ© de l'interface utilisateur Ã  dÃ©velopper"
                 "Examples" = @(
-                    "Pas d'interface utilisateur ou interface simple = complexité faible",
-                    "Interface utilisateur avec quelques écrans = complexité moyenne",
-                    "Interface utilisateur complexe avec nombreuses interactions = complexité élevée"
+                    "Pas d'interface utilisateur ou interface simple = complexitÃ© faible",
+                    "Interface utilisateur avec quelques Ã©crans = complexitÃ© moyenne",
+                    "Interface utilisateur complexe avec nombreuses interactions = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.10
             },
             @{
-                "Name" = "Gestion des données"
-                "Description" = "Complexité de la gestion des données"
+                "Name" = "Gestion des donnÃ©es"
+                "Description" = "ComplexitÃ© de la gestion des donnÃ©es"
                 "Examples" = @(
-                    "Données simples sans persistance = complexité faible",
-                    "Données structurées avec persistance simple = complexité moyenne",
-                    "Données complexes avec relations multiples = complexité élevée"
+                    "DonnÃ©es simples sans persistance = complexitÃ© faible",
+                    "DonnÃ©es structurÃ©es avec persistance simple = complexitÃ© moyenne",
+                    "DonnÃ©es complexes avec relations multiples = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.10
             },
             @{
                 "Name" = "Traitement asynchrone"
-                "Description" = "Nécessité de traitement asynchrone ou parallèle"
+                "Description" = "NÃ©cessitÃ© de traitement asynchrone ou parallÃ¨le"
                 "Examples" = @(
-                    "Traitement synchrone uniquement = complexité faible",
-                    "Quelques opérations asynchrones simples = complexité moyenne",
-                    "Traitement massivement parallèle ou distribué = complexité élevée"
+                    "Traitement synchrone uniquement = complexitÃ© faible",
+                    "Quelques opÃ©rations asynchrones simples = complexitÃ© moyenne",
+                    "Traitement massivement parallÃ¨le ou distribuÃ© = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.10
             }
         )
     },
     "ProjectComplexity" = @{
-        "Description" = "Facteurs liés à la complexité du projet"
+        "Description" = "Facteurs liÃ©s Ã  la complexitÃ© du projet"
         "Factors" = @(
             @{
-                "Name" = "Taille de l'équipe"
-                "Description" = "Nombre de personnes impliquées dans le développement"
+                "Name" = "Taille de l'Ã©quipe"
+                "Description" = "Nombre de personnes impliquÃ©es dans le dÃ©veloppement"
                 "Examples" = @(
-                    "Une seule personne = complexité faible",
-                    "Petite équipe (2-5 personnes) = complexité moyenne",
-                    "Grande équipe (plus de 5 personnes) = complexité élevée"
+                    "Une seule personne = complexitÃ© faible",
+                    "Petite Ã©quipe (2-5 personnes) = complexitÃ© moyenne",
+                    "Grande Ã©quipe (plus de 5 personnes) = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.05
             },
             @{
-                "Name" = "Distribution géographique"
-                "Description" = "Distribution géographique de l'équipe"
+                "Name" = "Distribution gÃ©ographique"
+                "Description" = "Distribution gÃ©ographique de l'Ã©quipe"
                 "Examples" = @(
-                    "Équipe co-localisée = complexité faible",
-                    "Équipe distribuée dans un même fuseau horaire = complexité moyenne",
-                    "Équipe distribuée globalement = complexité élevée"
+                    "Ã‰quipe co-localisÃ©e = complexitÃ© faible",
+                    "Ã‰quipe distribuÃ©e dans un mÃªme fuseau horaire = complexitÃ© moyenne",
+                    "Ã‰quipe distribuÃ©e globalement = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.05
             },
@@ -153,74 +153,74 @@ $complexityFactors = @{
                 "Name" = "Contraintes de temps"
                 "Description" = "Contraintes de temps pour la livraison"
                 "Examples" = @(
-                    "Pas de contrainte de temps stricte = complexité faible",
-                    "Délai raisonnable mais fixe = complexité moyenne",
-                    "Délai très court ou critique = complexité élevée"
+                    "Pas de contrainte de temps stricte = complexitÃ© faible",
+                    "DÃ©lai raisonnable mais fixe = complexitÃ© moyenne",
+                    "DÃ©lai trÃ¨s court ou critique = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.05
             },
             @{
-                "Name" = "Dépendances externes"
-                "Description" = "Dépendances vis-à-vis d'équipes ou de fournisseurs externes"
+                "Name" = "DÃ©pendances externes"
+                "Description" = "DÃ©pendances vis-Ã -vis d'Ã©quipes ou de fournisseurs externes"
                 "Examples" = @(
-                    "Aucune dépendance externe = complexité faible",
-                    "Quelques dépendances externes bien définies = complexité moyenne",
-                    "Nombreuses dépendances externes ou mal définies = complexité élevée"
+                    "Aucune dÃ©pendance externe = complexitÃ© faible",
+                    "Quelques dÃ©pendances externes bien dÃ©finies = complexitÃ© moyenne",
+                    "Nombreuses dÃ©pendances externes ou mal dÃ©finies = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.05
             },
             @{
-                "Name" = "Criticité"
-                "Description" = "Niveau de criticité de l'amélioration pour l'entreprise"
+                "Name" = "CriticitÃ©"
+                "Description" = "Niveau de criticitÃ© de l'amÃ©lioration pour l'entreprise"
                 "Examples" = @(
-                    "Faible impact en cas d'échec = complexité faible",
-                    "Impact modéré en cas d'échec = complexité moyenne",
-                    "Impact majeur en cas d'échec = complexité élevée"
+                    "Faible impact en cas d'Ã©chec = complexitÃ© faible",
+                    "Impact modÃ©rÃ© en cas d'Ã©chec = complexitÃ© moyenne",
+                    "Impact majeur en cas d'Ã©chec = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.05
             }
         )
     },
     "QualityComplexity" = @{
-        "Description" = "Facteurs liés aux exigences de qualité"
+        "Description" = "Facteurs liÃ©s aux exigences de qualitÃ©"
         "Factors" = @(
             @{
                 "Name" = "Exigences de performance"
                 "Description" = "Niveau d'exigence en termes de performance"
                 "Examples" = @(
-                    "Pas d'exigence particulière de performance = complexité faible",
-                    "Exigences de performance modérées = complexité moyenne",
-                    "Exigences de performance élevées ou critiques = complexité élevée"
+                    "Pas d'exigence particuliÃ¨re de performance = complexitÃ© faible",
+                    "Exigences de performance modÃ©rÃ©es = complexitÃ© moyenne",
+                    "Exigences de performance Ã©levÃ©es ou critiques = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.10
             },
             @{
-                "Name" = "Exigences de fiabilité"
-                "Description" = "Niveau d'exigence en termes de fiabilité"
+                "Name" = "Exigences de fiabilitÃ©"
+                "Description" = "Niveau d'exigence en termes de fiabilitÃ©"
                 "Examples" = @(
-                    "Tolérance aux erreurs acceptable = complexité faible",
-                    "Haute disponibilité requise = complexité moyenne",
-                    "Zéro temps d'arrêt requis = complexité élevée"
+                    "TolÃ©rance aux erreurs acceptable = complexitÃ© faible",
+                    "Haute disponibilitÃ© requise = complexitÃ© moyenne",
+                    "ZÃ©ro temps d'arrÃªt requis = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.10
             },
             @{
-                "Name" = "Exigences de testabilité"
-                "Description" = "Facilité à tester l'amélioration"
+                "Name" = "Exigences de testabilitÃ©"
+                "Description" = "FacilitÃ© Ã  tester l'amÃ©lioration"
                 "Examples" = @(
-                    "Tests simples et directs = complexité faible",
-                    "Tests nécessitant des mocks ou des stubs = complexité moyenne",
-                    "Tests nécessitant des environnements complexes = complexité élevée"
+                    "Tests simples et directs = complexitÃ© faible",
+                    "Tests nÃ©cessitant des mocks ou des stubs = complexitÃ© moyenne",
+                    "Tests nÃ©cessitant des environnements complexes = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.05
             },
             @{
-                "Name" = "Exigences de maintenabilité"
-                "Description" = "Niveau d'exigence en termes de maintenabilité"
+                "Name" = "Exigences de maintenabilitÃ©"
+                "Description" = "Niveau d'exigence en termes de maintenabilitÃ©"
                 "Examples" = @(
-                    "Code jetable ou à usage unique = complexité faible",
-                    "Code devant être maintenu à moyen terme = complexité moyenne",
-                    "Code critique devant être maintenu à long terme = complexité élevée"
+                    "Code jetable ou Ã  usage unique = complexitÃ© faible",
+                    "Code devant Ãªtre maintenu Ã  moyen terme = complexitÃ© moyenne",
+                    "Code critique devant Ãªtre maintenu Ã  long terme = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.05
             },
@@ -228,9 +228,9 @@ $complexityFactors = @{
                 "Name" = "Exigences de documentation"
                 "Description" = "Niveau d'exigence en termes de documentation"
                 "Examples" = @(
-                    "Documentation minimale requise = complexité faible",
-                    "Documentation standard requise = complexité moyenne",
-                    "Documentation exhaustive requise = complexité élevée"
+                    "Documentation minimale requise = complexitÃ© faible",
+                    "Documentation standard requise = complexitÃ© moyenne",
+                    "Documentation exhaustive requise = complexitÃ© Ã©levÃ©e"
                 )
                 "Weight" = 0.05
             }
@@ -238,7 +238,7 @@ $complexityFactors = @{
     }
 }
 
-# Fonction pour générer le document au format Markdown
+# Fonction pour gÃ©nÃ©rer le document au format Markdown
 function Generate-MarkdownDocument {
     [CmdletBinding()]
     param (
@@ -246,24 +246,24 @@ function Generate-MarkdownDocument {
         [hashtable]$ComplexityFactors
     )
 
-    $markdown = "# Facteurs Influençant la Complexité des Améliorations`n`n"
-    $markdown += "Ce document identifie et décrit les facteurs qui influencent la complexité des améliorations logicielles. "
-    $markdown += "Ces facteurs servent de base pour l'estimation de l'effort requis pour implémenter les améliorations.`n`n"
+    $markdown = "# Facteurs InfluenÃ§ant la ComplexitÃ© des AmÃ©liorations`n`n"
+    $markdown += "Ce document identifie et dÃ©crit les facteurs qui influencent la complexitÃ© des amÃ©liorations logicielles. "
+    $markdown += "Ces facteurs servent de base pour l'estimation de l'effort requis pour implÃ©menter les amÃ©liorations.`n`n"
     
-    $markdown += "## Table des Matières`n`n"
+    $markdown += "## Table des MatiÃ¨res`n`n"
     
     foreach ($category in $ComplexityFactors.Keys) {
         $markdown += "- [$($ComplexityFactors[$category].Description)](#$($category.ToLower()))`n"
     }
     
     $markdown += "`n## Utilisation`n`n"
-    $markdown += "Pour chaque amélioration à estimer, évaluez sa complexité selon chacun des facteurs listés ci-dessous. "
-    $markdown += "Attribuez un score de 1 (complexité faible) à 5 (complexité élevée) pour chaque facteur, puis calculez "
-    $markdown += "un score pondéré en utilisant les poids indiqués.`n`n"
+    $markdown += "Pour chaque amÃ©lioration Ã  estimer, Ã©valuez sa complexitÃ© selon chacun des facteurs listÃ©s ci-dessous. "
+    $markdown += "Attribuez un score de 1 (complexitÃ© faible) Ã  5 (complexitÃ© Ã©levÃ©e) pour chaque facteur, puis calculez "
+    $markdown += "un score pondÃ©rÃ© en utilisant les poids indiquÃ©s.`n`n"
     
-    $markdown += "La formule générale est :`n`n"
+    $markdown += "La formule gÃ©nÃ©rale est :`n`n"
     $markdown += "````n"
-    $markdown += "Score de complexité = Somme(Score du facteur * Poids du facteur)`n"
+    $markdown += "Score de complexitÃ© = Somme(Score du facteur * Poids du facteur)`n"
     $markdown += "````n`n"
     
     foreach ($category in $ComplexityFactors.Keys) {
@@ -282,19 +282,19 @@ function Generate-MarkdownDocument {
         }
     }
     
-    $markdown += "## Matrice d'Évaluation`n`n"
+    $markdown += "## Matrice d'Ã‰valuation`n`n"
     $markdown += "| Niveau | Description | Score |`n"
     $markdown += "|--------|-------------|-------|`n"
-    $markdown += "| Très faible | Complexité minimale, solution directe | 1 |`n"
-    $markdown += "| Faible | Complexité légèrement supérieure à la moyenne, quelques défis | 2 |`n"
-    $markdown += "| Moyen | Complexité moyenne, défis modérés | 3 |`n"
-    $markdown += "| Élevé | Complexité significative, défis importants | 4 |`n"
-    $markdown += "| Très élevé | Complexité extrême, défis majeurs | 5 |`n"
+    $markdown += "| TrÃ¨s faible | ComplexitÃ© minimale, solution directe | 1 |`n"
+    $markdown += "| Faible | ComplexitÃ© lÃ©gÃ¨rement supÃ©rieure Ã  la moyenne, quelques dÃ©fis | 2 |`n"
+    $markdown += "| Moyen | ComplexitÃ© moyenne, dÃ©fis modÃ©rÃ©s | 3 |`n"
+    $markdown += "| Ã‰levÃ© | ComplexitÃ© significative, dÃ©fis importants | 4 |`n"
+    $markdown += "| TrÃ¨s Ã©levÃ© | ComplexitÃ© extrÃªme, dÃ©fis majeurs | 5 |`n"
     
     return $markdown
 }
 
-# Fonction pour générer le document au format JSON
+# Fonction pour gÃ©nÃ©rer le document au format JSON
 function Generate-JsonDocument {
     [CmdletBinding()]
     param (
@@ -303,33 +303,33 @@ function Generate-JsonDocument {
     )
 
     $jsonObject = @{
-        Title = "Facteurs Influençant la Complexité des Améliorations"
-        Description = "Ce document identifie et décrit les facteurs qui influencent la complexité des améliorations logicielles. Ces facteurs servent de base pour l'estimation de l'effort requis pour implémenter les améliorations."
+        Title = "Facteurs InfluenÃ§ant la ComplexitÃ© des AmÃ©liorations"
+        Description = "Ce document identifie et dÃ©crit les facteurs qui influencent la complexitÃ© des amÃ©liorations logicielles. Ces facteurs servent de base pour l'estimation de l'effort requis pour implÃ©menter les amÃ©liorations."
         Categories = @{}
         EvaluationMatrix = @(
             @{
-                Level = "Très faible"
-                Description = "Complexité minimale, solution directe"
+                Level = "TrÃ¨s faible"
+                Description = "ComplexitÃ© minimale, solution directe"
                 Score = 1
             },
             @{
                 Level = "Faible"
-                Description = "Complexité légèrement supérieure à la moyenne, quelques défis"
+                Description = "ComplexitÃ© lÃ©gÃ¨rement supÃ©rieure Ã  la moyenne, quelques dÃ©fis"
                 Score = 2
             },
             @{
                 Level = "Moyen"
-                Description = "Complexité moyenne, défis modérés"
+                Description = "ComplexitÃ© moyenne, dÃ©fis modÃ©rÃ©s"
                 Score = 3
             },
             @{
-                Level = "Élevé"
-                Description = "Complexité significative, défis importants"
+                Level = "Ã‰levÃ©"
+                Description = "ComplexitÃ© significative, dÃ©fis importants"
                 Score = 4
             },
             @{
-                Level = "Très élevé"
-                Description = "Complexité extrême, défis majeurs"
+                Level = "TrÃ¨s Ã©levÃ©"
+                Description = "ComplexitÃ© extrÃªme, dÃ©fis majeurs"
                 Score = 5
             }
         )
@@ -345,7 +345,7 @@ function Generate-JsonDocument {
     return $jsonObject | ConvertTo-Json -Depth 10
 }
 
-# Générer le document dans le format spécifié
+# GÃ©nÃ©rer le document dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $documentContent = Generate-MarkdownDocument -ComplexityFactors $complexityFactors
@@ -358,14 +358,14 @@ switch ($Format) {
 # Enregistrer le document
 try {
     $documentContent | Out-File -FilePath $OutputFile -Encoding UTF8
-    Write-Host "Document des facteurs de complexité généré avec succès : $OutputFile"
+    Write-Host "Document des facteurs de complexitÃ© gÃ©nÃ©rÃ© avec succÃ¨s : $OutputFile"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du document : $_"
     exit 1
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé des facteurs de complexité :"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des facteurs de complexitÃ© :"
 Write-Host "--------------------------------"
 
 $totalFactors = 0

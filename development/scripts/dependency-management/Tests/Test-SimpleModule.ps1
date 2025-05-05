@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests simples pour le module SimpleModule.
@@ -11,18 +11,18 @@
     Version: 1.0
 #>
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
 $moduleFile = Join-Path -Path $modulePath -ChildPath "SimpleModule.psm1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "SimpleModuleTests"
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $manifestContent = @"
 @{
     ModuleVersion = '1.0.0'

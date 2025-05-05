@@ -1,50 +1,50 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires standards pour les modes de roadmap.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires standards pour vérifier le bon fonctionnement des modes de roadmap.
-    Ces tests utilisent des mocks pour simuler les dépendances et vérifier que les modes de roadmap fonctionnent correctement.
+    Ce script contient des tests unitaires standards pour vÃ©rifier le bon fonctionnement des modes de roadmap.
+    Ces tests utilisent des mocks pour simuler les dÃ©pendances et vÃ©rifier que les modes de roadmap fonctionnent correctement.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Définir les chemins
+# DÃ©finir les chemins
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))
 $roadmapSyncPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\roadmap-sync-mode.ps1"
 $roadmapReportPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\roadmap-report-mode.ps1"
 $roadmapPlanPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\roadmap-plan-mode.ps1"
 
-# Créer un répertoire de test temporaire
+# CrÃ©er un rÃ©pertoire de test temporaire
 $testDir = Join-Path -Path $scriptPath -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "unit-test-roadmap.md"
 @"
 # Roadmap de test unitaire
 
-## Tâche 1: Test des modes de roadmap
+## TÃ¢che 1: Test des modes de roadmap
 
 ### Description
-Cette tâche vise à tester les modes de roadmap.
+Cette tÃ¢che vise Ã  tester les modes de roadmap.
 
-### Sous-tâches
+### Sous-tÃ¢ches
 - [ ] **1.1** Tester le mode ROADMAP-SYNC
 - [ ] **1.2** Tester le mode ROADMAP-REPORT
 - [ ] **1.3** Tester le mode ROADMAP-PLAN
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfigPath = Join-Path -Path $testDir -ChildPath "unit-test-config.json"
 @{
     General = @{
@@ -84,7 +84,7 @@ $testConfigPath = Join-Path -Path $testDir -ChildPath "unit-test-config.json"
     }
 } | ConvertTo-Json -Depth 10 | Set-Content -Path $testConfigPath -Encoding UTF8
 
-# Créer un module mock pour RoadmapParser
+# CrÃ©er un module mock pour RoadmapParser
 $mockRoadmapParserPath = Join-Path -Path $testDir -ChildPath "MockRoadmapParser.psm1"
 @"
 function ConvertFrom-MarkdownToJson {
@@ -98,7 +98,7 @@ function ConvertFrom-MarkdownToJson {
         Title = "Roadmap de test unitaire"
         Tasks = @(
             @{
-                Title = "Tâche 1: Test des modes de roadmap"
+                Title = "TÃ¢che 1: Test des modes de roadmap"
                 SubTasks = @(
                     @{ Title = "Tester le mode ROADMAP-SYNC"; IsCompleted = `$false },
                     @{ Title = "Tester le mode ROADMAP-REPORT"; IsCompleted = `$false },
@@ -128,10 +128,10 @@ function ConvertFrom-MarkdownToHtml {
 </head>
 <body>
     <h1>Roadmap de test unitaire</h1>
-    <h2>Tâche 1: Test des modes de roadmap</h2>
+    <h2>TÃ¢che 1: Test des modes de roadmap</h2>
     <h3>Description</h3>
-    <p>Cette tâche vise à tester les modes de roadmap.</p>
-    <h3>Sous-tâches</h3>
+    <p>Cette tÃ¢che vise Ã  tester les modes de roadmap.</p>
+    <h3>Sous-tÃ¢ches</h3>
     <ul>
         <li>[ ] <strong>1.1</strong> Tester le mode ROADMAP-SYNC</li>
         <li>[ ] <strong>1.2</strong> Tester le mode ROADMAP-REPORT</li>
@@ -155,9 +155,9 @@ function ConvertFrom-MarkdownToCsv {
     # Simuler la conversion de Markdown vers CSV
     `$csv = @"
 "TaskGroup","TaskId","TaskTitle","IsCompleted"
-"Tâche 1: Test des modes de roadmap","1.1","Tester le mode ROADMAP-SYNC","False"
-"Tâche 1: Test des modes de roadmap","1.2","Tester le mode ROADMAP-REPORT","False"
-"Tâche 1: Test des modes de roadmap","1.3","Tester le mode ROADMAP-PLAN","False"
+"TÃ¢che 1: Test des modes de roadmap","1.1","Tester le mode ROADMAP-SYNC","False"
+"TÃ¢che 1: Test des modes de roadmap","1.2","Tester le mode ROADMAP-REPORT","False"
+"TÃ¢che 1: Test des modes de roadmap","1.3","Tester le mode ROADMAP-PLAN","False"
 "@
     
     Set-Content -Path `$CsvPath -Value `$csv -Encoding UTF8
@@ -189,7 +189,7 @@ function New-HtmlReport {
         [bool]`$IncludePredictions
     )
     
-    # Simuler la génération d'un rapport HTML
+    # Simuler la gÃ©nÃ©ration d'un rapport HTML
     `$reportPath = Join-Path -Path `$OutputPath -ChildPath "roadmap-report.html"
     
     `$html = @"
@@ -200,9 +200,9 @@ function New-HtmlReport {
 </head>
 <body>
     <h1>Rapport de Roadmap</h1>
-    <p>Tâches totales: `$(`$Analysis.TotalTasks)</p>
-    <p>Tâches complétées: `$(`$Analysis.CompletedTasks)</p>
-    <p>Pourcentage de complétion: `$(`$Analysis.CompletionPercentage)%</p>
+    <p>TÃ¢ches totales: `$(`$Analysis.TotalTasks)</p>
+    <p>TÃ¢ches complÃ©tÃ©es: `$(`$Analysis.CompletedTasks)</p>
+    <p>Pourcentage de complÃ©tion: `$(`$Analysis.CompletionPercentage)%</p>
 </body>
 </html>
 "@
@@ -218,7 +218,7 @@ function New-JsonReport {
         [string]`$OutputPath
     )
     
-    # Simuler la génération d'un rapport JSON
+    # Simuler la gÃ©nÃ©ration d'un rapport JSON
     `$reportPath = Join-Path -Path `$OutputPath -ChildPath "roadmap-report.json"
     
     `$json = `$Analysis | ConvertTo-Json -Depth 5
@@ -234,7 +234,7 @@ function New-CsvReport {
         [string]`$OutputPath
     )
     
-    # Simuler la génération d'un rapport CSV
+    # Simuler la gÃ©nÃ©ration d'un rapport CSV
     `$reportPath = Join-Path -Path `$OutputPath -ChildPath "roadmap-report.csv"
     
     `$csv = @"
@@ -257,18 +257,18 @@ function New-MarkdownReport {
         [string]`$OutputPath
     )
     
-    # Simuler la génération d'un rapport Markdown
+    # Simuler la gÃ©nÃ©ration d'un rapport Markdown
     `$reportPath = Join-Path -Path `$OutputPath -ChildPath "roadmap-report.md"
     
     `$markdown = @"
 # Rapport de Roadmap
 
-## Résumé
+## RÃ©sumÃ©
 
 - **Roadmap** : `$(`$Analysis.RoadmapPath)
-- **Tâches totales** : `$(`$Analysis.TotalTasks)
-- **Tâches complétées** : `$(`$Analysis.CompletedTasks)
-- **Pourcentage de complétion** : `$(`$Analysis.CompletionPercentage)%
+- **TÃ¢ches totales** : `$(`$Analysis.TotalTasks)
+- **TÃ¢ches complÃ©tÃ©es** : `$(`$Analysis.CompletedTasks)
+- **Pourcentage de complÃ©tion** : `$(`$Analysis.CompletionPercentage)%
 - **Date d'analyse** : `$(`$Analysis.AnalysisDate)
 "@
     
@@ -283,14 +283,14 @@ function New-ActionPlan {
         [int]`$DaysToForecast
     )
     
-    # Simuler la génération d'un plan d'action
+    # Simuler la gÃ©nÃ©ration d'un plan d'action
     return @{
         StartDate = (Get-Date).ToString("yyyy-MM-dd")
         EndDate = (Get-Date).AddDays(`$DaysToForecast).ToString("yyyy-MM-dd")
         DaysToForecast = `$DaysToForecast
         Tasks = @(
             @{
-                TaskGroup = "Tâche 1: Test des modes de roadmap"
+                TaskGroup = "TÃ¢che 1: Test des modes de roadmap"
                 SubTaskId = "1.1"
                 SubTaskTitle = "Tester le mode ROADMAP-SYNC"
                 StartDate = (Get-Date).ToString("yyyy-MM-dd")
@@ -298,7 +298,7 @@ function New-ActionPlan {
                 EstimatedDays = 3
             },
             @{
-                TaskGroup = "Tâche 1: Test des modes de roadmap"
+                TaskGroup = "TÃ¢che 1: Test des modes de roadmap"
                 SubTaskId = "1.2"
                 SubTaskTitle = "Tester le mode ROADMAP-REPORT"
                 StartDate = (Get-Date).AddDays(3).ToString("yyyy-MM-dd")
@@ -306,7 +306,7 @@ function New-ActionPlan {
                 EstimatedDays = 3
             },
             @{
-                TaskGroup = "Tâche 1: Test des modes de roadmap"
+                TaskGroup = "TÃ¢che 1: Test des modes de roadmap"
                 SubTaskId = "1.3"
                 SubTaskTitle = "Tester le mode ROADMAP-PLAN"
                 StartDate = (Get-Date).AddDays(6).ToString("yyyy-MM-dd")
@@ -323,17 +323,17 @@ function New-PlanReport {
         [string]`$OutputPath
     )
     
-    # Simuler la génération d'un rapport de plan d'action
+    # Simuler la gÃ©nÃ©ration d'un rapport de plan d'action
     `$markdown = @"
 # Plan d'action pour la roadmap
 
-## Période de planification
-- Date de début: `$(`$Plan.StartDate)
+## PÃ©riode de planification
+- Date de dÃ©but: `$(`$Plan.StartDate)
 - Date de fin: `$(`$Plan.EndDate)
 - Nombre de jours: `$(`$Plan.DaysToForecast)
 
-## Tâches planifiées
-| Groupe | ID | Tâche | Date de début | Date de fin | Jours estimés |
+## TÃ¢ches planifiÃ©es
+| Groupe | ID | TÃ¢che | Date de dÃ©but | Date de fin | Jours estimÃ©s |
 | ------ | -- | ----- | ------------- | ----------- | ------------- |
 "@
     
@@ -349,20 +349,20 @@ function New-PlanReport {
 Export-ModuleMember -Function ConvertFrom-MarkdownToJson, ConvertFrom-MarkdownToHtml, ConvertFrom-MarkdownToCsv, Get-RoadmapAnalysis, New-HtmlReport, New-JsonReport, New-CsvReport, New-MarkdownReport, New-ActionPlan, New-PlanReport
 "@ | Set-Content -Path $mockRoadmapParserPath -Encoding UTF8
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests unitaires standards pour les modes de roadmap" {
     BeforeAll {
-        # Créer un mock pour Import-Module
+        # CrÃ©er un mock pour Import-Module
         Mock Import-Module {
             # Ne rien faire, juste simuler l'importation
         } -ModuleName "Test-UnitRoadmapModes"
         
-        # Créer un mock pour le module RoadmapParser
+        # CrÃ©er un mock pour le module RoadmapParser
         Mock Import-Module {
             Import-Module $mockRoadmapParserPath -Force
         } -ParameterFilter { $Name -match "RoadmapParser" }
         
-        # Créer un mock pour Get-Content
+        # CrÃ©er un mock pour Get-Content
         Mock Get-Content {
             if ($Path -eq $testConfigPath) {
                 return Get-Content -Path $testConfigPath -Raw
@@ -373,7 +373,7 @@ Describe "Tests unitaires standards pour les modes de roadmap" {
             }
         } -ModuleName "Test-UnitRoadmapModes"
         
-        # Créer un mock pour Test-Path
+        # CrÃ©er un mock pour Test-Path
         Mock Test-Path {
             if ($Path -eq $testConfigPath) {
                 return $true
@@ -390,17 +390,17 @@ Describe "Tests unitaires standards pour les modes de roadmap" {
             }
         } -ModuleName "Test-UnitRoadmapModes"
         
-        # Créer un mock pour ConvertFrom-Json
+        # CrÃ©er un mock pour ConvertFrom-Json
         Mock ConvertFrom-Json {
             return Get-Content -Path $testConfigPath -Raw | ConvertFrom-Json
         } -ModuleName "Test-UnitRoadmapModes"
         
-        # Créer un mock pour Set-Content
+        # CrÃ©er un mock pour Set-Content
         Mock Set-Content {
-            # Ne rien faire, juste simuler l'écriture
+            # Ne rien faire, juste simuler l'Ã©criture
         } -ModuleName "Test-UnitRoadmapModes"
         
-        # Créer un mock pour Join-Path
+        # CrÃ©er un mock pour Join-Path
         Mock Join-Path {
             if ($ChildPath -match "roadmap-report.html") {
                 return Join-Path -Path $testDir -ChildPath "roadmap-report.html"
@@ -437,7 +437,7 @@ Describe "Tests unitaires standards pour les modes de roadmap" {
             $result.Success | Should -Be $true
         }
         
-        It "Le mode ROADMAP-SYNC devrait pouvoir convertir plusieurs roadmaps en une seule opération" {
+        It "Le mode ROADMAP-SYNC devrait pouvoir convertir plusieurs roadmaps en une seule opÃ©ration" {
             $sourcePaths = @($testRoadmapPath, $testRoadmapPath)
             $result = & $roadmapSyncPath -SourcePath $sourcePaths -MultiSync -TargetFormat "JSON" -ConfigPath $testConfigPath
             $result | Should -Not -BeNullOrEmpty
@@ -446,31 +446,31 @@ Describe "Tests unitaires standards pour les modes de roadmap" {
     }
     
     Context "Mode ROADMAP-REPORT" {
-        It "Le mode ROADMAP-REPORT devrait pouvoir générer un rapport HTML" {
+        It "Le mode ROADMAP-REPORT devrait pouvoir gÃ©nÃ©rer un rapport HTML" {
             $result = & $roadmapReportPath -RoadmapPath $testRoadmapPath -ReportFormat "HTML" -ConfigPath $testConfigPath
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le mode ROADMAP-REPORT devrait pouvoir générer un rapport JSON" {
+        It "Le mode ROADMAP-REPORT devrait pouvoir gÃ©nÃ©rer un rapport JSON" {
             $result = & $roadmapReportPath -RoadmapPath $testRoadmapPath -ReportFormat "JSON" -ConfigPath $testConfigPath
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le mode ROADMAP-REPORT devrait pouvoir générer un rapport CSV" {
+        It "Le mode ROADMAP-REPORT devrait pouvoir gÃ©nÃ©rer un rapport CSV" {
             $result = & $roadmapReportPath -RoadmapPath $testRoadmapPath -ReportFormat "CSV" -ConfigPath $testConfigPath
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le mode ROADMAP-REPORT devrait pouvoir générer un rapport Markdown" {
+        It "Le mode ROADMAP-REPORT devrait pouvoir gÃ©nÃ©rer un rapport Markdown" {
             $result = & $roadmapReportPath -RoadmapPath $testRoadmapPath -ReportFormat "Markdown" -ConfigPath $testConfigPath
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le mode ROADMAP-REPORT devrait pouvoir générer des rapports dans tous les formats" {
+        It "Le mode ROADMAP-REPORT devrait pouvoir gÃ©nÃ©rer des rapports dans tous les formats" {
             $result = & $roadmapReportPath -RoadmapPath $testRoadmapPath -ReportFormat "All" -ConfigPath $testConfigPath
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
@@ -478,19 +478,19 @@ Describe "Tests unitaires standards pour les modes de roadmap" {
     }
     
     Context "Mode ROADMAP-PLAN" {
-        It "Le mode ROADMAP-PLAN devrait pouvoir générer un plan d'action" {
+        It "Le mode ROADMAP-PLAN devrait pouvoir gÃ©nÃ©rer un plan d'action" {
             $result = & $roadmapPlanPath -RoadmapPath $testRoadmapPath -ConfigPath $testConfigPath
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le mode ROADMAP-PLAN devrait pouvoir générer un plan d'action avec une période de prévision personnalisée" {
+        It "Le mode ROADMAP-PLAN devrait pouvoir gÃ©nÃ©rer un plan d'action avec une pÃ©riode de prÃ©vision personnalisÃ©e" {
             $result = & $roadmapPlanPath -RoadmapPath $testRoadmapPath -DaysToForecast 60 -ConfigPath $testConfigPath
             $result | Should -Not -BeNullOrEmpty
             $result.Success | Should -Be $true
         }
         
-        It "Le mode ROADMAP-PLAN devrait pouvoir générer un plan d'action dans un fichier spécifique" {
+        It "Le mode ROADMAP-PLAN devrait pouvoir gÃ©nÃ©rer un plan d'action dans un fichier spÃ©cifique" {
             $outputPath = Join-Path -Path $testDir -ChildPath "roadmap-plan.md"
             $result = & $roadmapPlanPath -RoadmapPath $testRoadmapPath -OutputPath $outputPath -ConfigPath $testConfigPath
             $result | Should -Not -BeNullOrEmpty
@@ -499,5 +499,5 @@ Describe "Tests unitaires standards pour les modes de roadmap" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $MyInvocation.MyCommand.Path -Output Detailed

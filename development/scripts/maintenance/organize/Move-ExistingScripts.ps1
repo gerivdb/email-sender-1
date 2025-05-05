@@ -1,21 +1,21 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Déplace les scripts existants à la racine du dossier maintenance vers les sous-dossiers appropriés.
+    DÃ©place les scripts existants Ã  la racine du dossier maintenance vers les sous-dossiers appropriÃ©s.
 .DESCRIPTION
-    Ce script analyse les scripts PowerShell à la racine du dossier maintenance
-    et les déplace vers les sous-dossiers appropriés en fonction de leur contenu et de leur nom.
-    Il utilise une classification prédéfinie pour déterminer le sous-dossier de destination.
+    Ce script analyse les scripts PowerShell Ã  la racine du dossier maintenance
+    et les dÃ©place vers les sous-dossiers appropriÃ©s en fonction de leur contenu et de leur nom.
+    Il utilise une classification prÃ©dÃ©finie pour dÃ©terminer le sous-dossier de destination.
 .PARAMETER Force
-    Force le déplacement des fichiers sans demander de confirmation.
+    Force le dÃ©placement des fichiers sans demander de confirmation.
 .PARAMETER CreateBackups
-    Crée des copies de sauvegarde des fichiers avant de les déplacer.
+    CrÃ©e des copies de sauvegarde des fichiers avant de les dÃ©placer.
 .EXAMPLE
     .\Move-ExistingScripts.ps1 -Force
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-10
+    Date de crÃ©ation: 2023-06-10
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -27,7 +27,7 @@ param (
     [switch]$CreateBackups = $true
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -52,7 +52,7 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Classification prédéfinie des scripts
+# Classification prÃ©dÃ©finie des scripts
 $scriptClassification = @{
     "Analyze-Feedback.ps1"                          = "api"
     "autoprefixer.ps1"                              = "utils"
@@ -75,7 +75,7 @@ $scriptClassification = @{
     "update-vscode-cache.ps1"                       = "vscode"
 }
 
-# Fonction pour créer une sauvegarde d'un fichier
+# Fonction pour crÃ©er une sauvegarde d'un fichier
 function Backup-File {
     [CmdletBinding()]
     param (
@@ -86,15 +86,15 @@ function Backup-File {
     try {
         $backupPath = "$FilePath.bak"
         Copy-Item -Path $FilePath -Destination $backupPath -Force
-        Write-Log "Sauvegarde créée: $backupPath" -Level "INFO"
+        Write-Log "Sauvegarde crÃ©Ã©e: $backupPath" -Level "INFO"
         return $true
     } catch {
-        Write-Log "Erreur lors de la création de la sauvegarde pour $FilePath : $_" -Level "ERROR"
+        Write-Log "Erreur lors de la crÃ©ation de la sauvegarde pour $FilePath : $_" -Level "ERROR"
         return $false
     }
 }
 
-# Fonction pour déplacer un fichier vers un sous-dossier
+# Fonction pour dÃ©placer un fichier vers un sous-dossier
 function Move-ScriptToCategory {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -113,35 +113,35 @@ function Move-ScriptToCategory {
         $targetDir = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $FilePath)) -ChildPath $Category
         $targetPath = Join-Path -Path $targetDir -ChildPath $fileName
 
-        # Vérifier si le dossier cible existe, sinon le créer
+        # VÃ©rifier si le dossier cible existe, sinon le crÃ©er
         if (-not (Test-Path -Path $targetDir)) {
-            if ($PSCmdlet.ShouldProcess($targetDir, "Créer le dossier")) {
+            if ($PSCmdlet.ShouldProcess($targetDir, "CrÃ©er le dossier")) {
                 New-Item -Path $targetDir -ItemType Directory -Force | Out-Null
-                Write-Log "Dossier créé: $targetDir" -Level "INFO"
+                Write-Log "Dossier crÃ©Ã©: $targetDir" -Level "INFO"
             }
         }
 
-        # Vérifier si le fichier existe déjà dans le dossier cible
+        # VÃ©rifier si le fichier existe dÃ©jÃ  dans le dossier cible
         if (Test-Path -Path $targetPath) {
-            Write-Log "Le fichier $fileName existe déjà dans $targetDir" -Level "WARNING"
+            Write-Log "Le fichier $fileName existe dÃ©jÃ  dans $targetDir" -Level "WARNING"
             return $false
         }
 
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($CreateBackup) {
             Backup-File -FilePath $FilePath | Out-Null
         }
 
-        # Déplacer le fichier
-        if ($PSCmdlet.ShouldProcess($FilePath, "Déplacer vers $targetDir")) {
+        # DÃ©placer le fichier
+        if ($PSCmdlet.ShouldProcess($FilePath, "DÃ©placer vers $targetDir")) {
             Move-Item -Path $FilePath -Destination $targetPath -Force
-            Write-Log "Fichier déplacé: $FilePath -> $targetPath" -Level "SUCCESS"
+            Write-Log "Fichier dÃ©placÃ©: $FilePath -> $targetPath" -Level "SUCCESS"
             return $true
         }
 
         return $false
     } catch {
-        Write-Log "Erreur lors du déplacement de $FilePath : $_" -Level "ERROR"
+        Write-Log "Erreur lors du dÃ©placement de $FilePath : $_" -Level "ERROR"
         return $false
     }
 }
@@ -150,14 +150,14 @@ function Move-ScriptToCategory {
 $maintenanceDir = $PSScriptRoot | Split-Path -Parent
 Write-Log "Dossier maintenance: $maintenanceDir" -Level "INFO"
 
-# Récupérer tous les fichiers PowerShell à la racine du dossier maintenance
+# RÃ©cupÃ©rer tous les fichiers PowerShell Ã  la racine du dossier maintenance
 $rootFiles = Get-ChildItem -Path $maintenanceDir -File | Where-Object {
     $_.Extension -in '.ps1', '.psm1', '.psd1' -and
     $_.Name -ne 'Initialize-MaintenanceEnvironment.ps1' -and
     $_.Name -ne 'README.md'
 }
 
-Write-Log "Nombre de fichiers à organiser: $($rootFiles.Count)" -Level "INFO"
+Write-Log "Nombre de fichiers Ã  organiser: $($rootFiles.Count)" -Level "INFO"
 
 # Statistiques
 $stats = @{
@@ -172,22 +172,22 @@ $stats = @{
 foreach ($file in $rootFiles) {
     Write-Log "Traitement du fichier: $($file.Name)" -Level "INFO"
 
-    # Déterminer la catégorie
+    # DÃ©terminer la catÃ©gorie
     $category = $scriptClassification[$file.Name]
     if (-not $category) {
         $category = "utils"
-        Write-Log "Aucune catégorie prédéfinie pour $($file.Name), utilisation de 'utils'" -Level "WARNING"
+        Write-Log "Aucune catÃ©gorie prÃ©dÃ©finie pour $($file.Name), utilisation de 'utils'" -Level "WARNING"
     } else {
-        Write-Log "Catégorie prédéfinie: $category" -Level "INFO"
+        Write-Log "CatÃ©gorie prÃ©dÃ©finie: $category" -Level "INFO"
     }
 
-    # Mettre à jour les statistiques
+    # Mettre Ã  jour les statistiques
     if (-not $stats.Categories.ContainsKey($category)) {
         $stats.Categories[$category] = 0
     }
     $stats.Categories[$category]++
 
-    # Déplacer le fichier
+    # DÃ©placer le fichier
     $moved = Move-ScriptToCategory -FilePath $file.FullName -Category $category -CreateBackup:$CreateBackups
 
     if ($moved) {
@@ -198,15 +198,15 @@ foreach ($file in $rootFiles) {
 }
 
 # Afficher les statistiques
-Write-Log "`nRésumé de l'organisation:" -Level "INFO"
+Write-Log "`nRÃ©sumÃ© de l'organisation:" -Level "INFO"
 Write-Log "  Total des fichiers: $($stats.Total)" -Level "INFO"
-Write-Log "  Fichiers déplacés: $($stats.Moved)" -Level "SUCCESS"
-Write-Log "  Fichiers ignorés: $($stats.Skipped)" -Level "WARNING"
-Write-Log "  Fichiers en échec: $($stats.Failed)" -Level "ERROR"
+Write-Log "  Fichiers dÃ©placÃ©s: $($stats.Moved)" -Level "SUCCESS"
+Write-Log "  Fichiers ignorÃ©s: $($stats.Skipped)" -Level "WARNING"
+Write-Log "  Fichiers en Ã©chec: $($stats.Failed)" -Level "ERROR"
 
-Write-Log "`nRépartition par catégorie:" -Level "INFO"
+Write-Log "`nRÃ©partition par catÃ©gorie:" -Level "INFO"
 foreach ($cat in $stats.Categories.GetEnumerator() | Sort-Object Value -Descending) {
     Write-Log "  $($cat.Key): $($cat.Value) fichier(s)" -Level "INFO"
 }
 
-Write-Log "`nOrganisation terminée." -Level "SUCCESS"
+Write-Log "`nOrganisation terminÃ©e." -Level "SUCCESS"

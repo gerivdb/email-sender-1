@@ -1,4 +1,4 @@
-# Script pour verifier les chemins dans les fichiers de configuration
+﻿# Script pour verifier les chemins dans les fichiers de configuration
 # Ce script recherche les anciens chemins dans les fichiers de configuration et les signale
 
 Write-Host "=== Verification des chemins dans les fichiers de configuration ===" -ForegroundColor Cyan
@@ -14,10 +14,10 @@ $oldPathVariants = @(
 # Nouveau chemin (avec underscores)
 $newPath = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 
-# Types de fichiers Ã  vÃ©rifier
+# Types de fichiers ÃƒÂ  vÃƒÂ©rifier
 $fileTypes = @("*.json", "*.cmd", "*.ps1", "*.yaml", "*.md")
 
-# Fonction pour vÃ©rifier un fichier
+# Fonction pour vÃƒÂ©rifier un fichier
 function Check-File {
     param (
         [string]$filePath
@@ -51,18 +51,18 @@ foreach ($fileType in $fileTypes) {
     }
 }
 
-# Afficher les rÃ©sultats
+# Afficher les rÃƒÂ©sultats
 if ($filesWithOldPaths.Count -eq 0) {
-    Write-Host "âœ… Aucun fichier contenant les anciens chemins n'a Ã©tÃ© trouvÃ©." -ForegroundColor Green
+    Write-Host "Ã¢Å“â€¦ Aucun fichier contenant les anciens chemins n'a ÃƒÂ©tÃƒÂ© trouvÃƒÂ©." -ForegroundColor Green
 } else {
-    Write-Host "âŒ Les fichiers suivants contiennent encore des rÃ©fÃ©rences aux anciens chemins :" -ForegroundColor Red
+    Write-Host "Ã¢ÂÅ’ Les fichiers suivants contiennent encore des rÃƒÂ©fÃƒÂ©rences aux anciens chemins :" -ForegroundColor Red
     foreach ($file in $filesWithOldPaths) {
         Write-Host "   - $file" -ForegroundColor Yellow
     }
 
     Write-Host "`nPour corriger ces fichiers, vous pouvez :"
     Write-Host "1. Ouvrir chaque fichier et remplacer manuellement les anciens chemins par le nouveau chemin."
-    Write-Host "2. Utiliser le script suivant pour remplacer automatiquement les chemins (Ã  exÃ©cuter avec prÃ©caution) :"
+    Write-Host "2. Utiliser le script suivant pour remplacer automatiquement les chemins (ÃƒÂ  exÃƒÂ©cuter avec prÃƒÂ©caution) :"
     Write-Host "   .\development\scripts\maintenance\fix-paths.ps1"
 }
 

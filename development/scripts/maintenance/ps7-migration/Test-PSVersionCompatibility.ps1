@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Teste la compatibilitÃ© des scripts PowerShell avec PowerShell 7.
+    Teste la compatibilitÃƒÂ© des scripts PowerShell avec PowerShell 7.
 .DESCRIPTION
-    Ce script analyse les scripts PowerShell pour dÃ©tecter les problÃ¨mes de compatibilitÃ©
-    avec PowerShell 7 et suggÃ¨re des corrections.
+    Ce script analyse les scripts PowerShell pour dÃƒÂ©tecter les problÃƒÂ¨mes de compatibilitÃƒÂ©
+    avec PowerShell 7 et suggÃƒÂ¨re des corrections.
 .PARAMETER Path
-    Chemin du dossier ou fichier Ã  analyser.
+    Chemin du dossier ou fichier ÃƒÂ  analyser.
 .PARAMETER Recursive
-    Analyse rÃ©cursivement les sous-dossiers.
+    Analyse rÃƒÂ©cursivement les sous-dossiers.
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour le rapport.
 .PARAMETER Fix
-    Tente de corriger automatiquement les problÃ¨mes de compatibilitÃ©.
+    Tente de corriger automatiquement les problÃƒÂ¨mes de compatibilitÃƒÂ©.
 .EXAMPLE
     .\Test-PSVersionCompatibility.ps1 -Path ".\development\scripts" -Recursive -OutputPath ".\reports\ps7_compatibility.json"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de crÃ©ation: 2025-04-17
+    Date de crÃƒÂ©ation: 2025-04-17
 #>
 
 [CmdletBinding()]
@@ -36,7 +36,7 @@ param (
     [switch]$Fix
 )
 
-# Fonction pour Ã©crire dans le journal
+# Fonction pour ÃƒÂ©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -62,7 +62,7 @@ function Write-Log {
     Write-Host $Message
 }
 
-# Fonction pour dÃ©tecter les problÃ¨mes de compatibilitÃ©
+# Fonction pour dÃƒÂ©tecter les problÃƒÂ¨mes de compatibilitÃƒÂ©
 function Find-CompatibilityIssues {
     [CmdletBinding()]
     param (
@@ -70,7 +70,7 @@ function Find-CompatibilityIssues {
         [string]$ScriptPath
     )
     
-    # VÃ©rifier si le script existe
+    # VÃƒÂ©rifier si le script existe
     if (-not (Test-Path -Path $ScriptPath)) {
         Write-Log "Le script n'existe pas: $ScriptPath" -Level "ERROR"
         return @()
@@ -80,45 +80,45 @@ function Find-CompatibilityIssues {
     $content = Get-Content -Path $ScriptPath -Raw
     $lines = Get-Content -Path $ScriptPath
     
-    # Liste des problÃ¨mes de compatibilitÃ©
+    # Liste des problÃƒÂ¨mes de compatibilitÃƒÂ©
     $issues = @()
     
-    # 1. VÃ©rifier l'utilisation de cmdlets obsolÃ¨tes
+    # 1. VÃƒÂ©rifier l'utilisation de cmdlets obsolÃƒÂ¨tes
     $deprecatedCmdlets = @(
         @{
             Pattern = "Add-PSSnapin"
             Replacement = "Import-Module"
-            Description = "Add-PSSnapin est obsolÃ¨te dans PowerShell 7. Utilisez Import-Module Ã  la place."
+            Description = "Add-PSSnapin est obsolÃƒÂ¨te dans PowerShell 7. Utilisez Import-Module ÃƒÂ  la place."
         },
         @{
             Pattern = "Export-Console"
             Replacement = "N/A"
-            Description = "Export-Console est obsolÃ¨te dans PowerShell 7 et n'a pas d'Ã©quivalent direct."
+            Description = "Export-Console est obsolÃƒÂ¨te dans PowerShell 7 et n'a pas d'ÃƒÂ©quivalent direct."
         },
         @{
             Pattern = "Get-WmiObject"
             Replacement = "Get-CimInstance"
-            Description = "Get-WmiObject est obsolÃ¨te dans PowerShell 7. Utilisez Get-CimInstance Ã  la place."
+            Description = "Get-WmiObject est obsolÃƒÂ¨te dans PowerShell 7. Utilisez Get-CimInstance ÃƒÂ  la place."
         },
         @{
             Pattern = "Invoke-WmiMethod"
             Replacement = "Invoke-CimMethod"
-            Description = "Invoke-WmiMethod est obsolÃ¨te dans PowerShell 7. Utilisez Invoke-CimMethod Ã  la place."
+            Description = "Invoke-WmiMethod est obsolÃƒÂ¨te dans PowerShell 7. Utilisez Invoke-CimMethod ÃƒÂ  la place."
         },
         @{
             Pattern = "Register-WmiEvent"
             Replacement = "Register-CimIndicationEvent"
-            Description = "Register-WmiEvent est obsolÃ¨te dans PowerShell 7. Utilisez Register-CimIndicationEvent Ã  la place."
+            Description = "Register-WmiEvent est obsolÃƒÂ¨te dans PowerShell 7. Utilisez Register-CimIndicationEvent ÃƒÂ  la place."
         },
         @{
             Pattern = "Remove-WmiObject"
             Replacement = "Remove-CimInstance"
-            Description = "Remove-WmiObject est obsolÃ¨te dans PowerShell 7. Utilisez Remove-CimInstance Ã  la place."
+            Description = "Remove-WmiObject est obsolÃƒÂ¨te dans PowerShell 7. Utilisez Remove-CimInstance ÃƒÂ  la place."
         },
         @{
             Pattern = "Set-WmiInstance"
             Replacement = "Set-CimInstance"
-            Description = "Set-WmiInstance est obsolÃ¨te dans PowerShell 7. Utilisez Set-CimInstance Ã  la place."
+            Description = "Set-WmiInstance est obsolÃƒÂ¨te dans PowerShell 7. Utilisez Set-CimInstance ÃƒÂ  la place."
         }
     )
     
@@ -129,7 +129,7 @@ function Find-CompatibilityIssues {
             $lineNumber = 0
             $line = ""
             
-            # Trouver le numÃ©ro de ligne
+            # Trouver le numÃƒÂ©ro de ligne
             for ($i = 0; $i -lt $lines.Count; $i++) {
                 if ($lines[$i] -match [regex]::Escape($match.Value)) {
                     $lineNumber = $i + 1
@@ -150,14 +150,14 @@ function Find-CompatibilityIssues {
         }
     }
     
-    # 2. VÃ©rifier l'utilisation de $null Ã  droite des comparaisons
+    # 2. VÃƒÂ©rifier l'utilisation de $null ÃƒÂ  droite des comparaisons
     $nullComparisons = [regex]::Matches($content, "([a-zA-Z0-9_\[\]\.\$\{\}]+)\s+(?:-eq|-ne|-gt|-lt|-ge|-le)\s+\$null")
     
     foreach ($match in $nullComparisons) {
         $lineNumber = 0
         $line = ""
         
-        # Trouver le numÃ©ro de ligne
+        # Trouver le numÃƒÂ©ro de ligne
         for ($i = 0; $i -lt $lines.Count; $i++) {
             if ($lines[$i] -match [regex]::Escape($match.Value)) {
                 $lineNumber = $i + 1
@@ -171,7 +171,7 @@ function Find-CompatibilityIssues {
         
         $issues += [PSCustomObject]@{
             Type = "NullComparison"
-            Description = "Comparaison avec `$null Ã  droite. Dans PowerShell 7, il est recommandÃ© de placer `$null Ã  gauche pour Ã©viter des problÃ¨mes avec les collections."
+            Description = "Comparaison avec `$null ÃƒÂ  droite. Dans PowerShell 7, il est recommandÃƒÂ© de placer `$null ÃƒÂ  gauche pour ÃƒÂ©viter des problÃƒÂ¨mes avec les collections."
             LineNumber = $lineNumber
             Line = $line
             Replacement = "`$null $operator $variable"
@@ -180,14 +180,14 @@ function Find-CompatibilityIssues {
         }
     }
     
-    # 3. VÃ©rifier l'utilisation de SupportsShouldProcess sans $true
+    # 3. VÃƒÂ©rifier l'utilisation de SupportsShouldProcess sans $true
     $shouldProcessMatches = [regex]::Matches($content, "\[CmdletBinding\(SupportsShouldProcess\)\]")
     
     foreach ($match in $shouldProcessMatches) {
         $lineNumber = 0
         $line = ""
         
-        # Trouver le numÃ©ro de ligne
+        # Trouver le numÃƒÂ©ro de ligne
         for ($i = 0; $i -lt $lines.Count; $i++) {
             if ($lines[$i] -match [regex]::Escape($match.Value)) {
                 $lineNumber = $i + 1
@@ -198,7 +198,7 @@ function Find-CompatibilityIssues {
         
         $issues += [PSCustomObject]@{
             Type = "SupportsShouldProcess"
-            Description = "SupportsShouldProcess sans valeur explicite. Dans PowerShell 7, il est recommandÃ© d'utiliser SupportsShouldProcess=`$true."
+            Description = "SupportsShouldProcess sans valeur explicite. Dans PowerShell 7, il est recommandÃƒÂ© d'utiliser SupportsShouldProcess=`$true."
             LineNumber = $lineNumber
             Line = $line
             Replacement = "[CmdletBinding(SupportsShouldProcess=`$true)]"
@@ -207,7 +207,7 @@ function Find-CompatibilityIssues {
         }
     }
     
-    # 4. VÃ©rifier l'utilisation de variables non utilisÃ©es
+    # 4. VÃƒÂ©rifier l'utilisation de variables non utilisÃƒÂ©es
     $variableDeclarations = [regex]::Matches($content, "\$([a-zA-Z0-9_]+)\s*=")
     
     foreach ($declaration in $variableDeclarations) {
@@ -218,14 +218,14 @@ function Find-CompatibilityIssues {
             continue
         }
         
-        # VÃ©rifier si la variable est utilisÃ©e ailleurs dans le script
+        # VÃƒÂ©rifier si la variable est utilisÃƒÂ©e ailleurs dans le script
         $usageCount = [regex]::Matches($content, "\$($variableName)(?!\s*=)").Count
         
         if ($usageCount -eq 0) {
             $lineNumber = 0
             $line = ""
             
-            # Trouver le numÃ©ro de ligne
+            # Trouver le numÃƒÂ©ro de ligne
             for ($i = 0; $i -lt $lines.Count; $i++) {
                 if ($lines[$i] -match "\$($variableName)\s*=") {
                     $lineNumber = $i + 1
@@ -236,7 +236,7 @@ function Find-CompatibilityIssues {
             
             $issues += [PSCustomObject]@{
                 Type = "UnusedVariable"
-                Description = "Variable `$$variableName dÃ©clarÃ©e mais non utilisÃ©e. PowerShell 7 est plus strict concernant les variables non utilisÃ©es."
+                Description = "Variable `$$variableName dÃƒÂ©clarÃƒÂ©e mais non utilisÃƒÂ©e. PowerShell 7 est plus strict concernant les variables non utilisÃƒÂ©es."
                 LineNumber = $lineNumber
                 Line = $line
                 Replacement = "# $line"
@@ -246,19 +246,19 @@ function Find-CompatibilityIssues {
         }
     }
     
-    # 5. VÃ©rifier l'utilisation de cmdlets avec des paramÃ¨tres obsolÃ¨tes
+    # 5. VÃƒÂ©rifier l'utilisation de cmdlets avec des paramÃƒÂ¨tres obsolÃƒÂ¨tes
     $deprecatedParameters = @(
         @{
             Cmdlet = "Invoke-RestMethod"
             Parameter = "-UseDefaultCredentials"
             Replacement = "-Authentication Default"
-            Description = "Le paramÃ¨tre -UseDefaultCredentials est obsolÃ¨te dans PowerShell 7. Utilisez -Authentication Default Ã  la place."
+            Description = "Le paramÃƒÂ¨tre -UseDefaultCredentials est obsolÃƒÂ¨te dans PowerShell 7. Utilisez -Authentication Default ÃƒÂ  la place."
         },
         @{
             Cmdlet = "Invoke-WebRequest"
             Parameter = "-UseDefaultCredentials"
             Replacement = "-Authentication Default"
-            Description = "Le paramÃ¨tre -UseDefaultCredentials est obsolÃ¨te dans PowerShell 7. Utilisez -Authentication Default Ã  la place."
+            Description = "Le paramÃƒÂ¨tre -UseDefaultCredentials est obsolÃƒÂ¨te dans PowerShell 7. Utilisez -Authentication Default ÃƒÂ  la place."
         }
     )
     
@@ -269,7 +269,7 @@ function Find-CompatibilityIssues {
             $lineNumber = 0
             $line = ""
             
-            # Trouver le numÃ©ro de ligne
+            # Trouver le numÃƒÂ©ro de ligne
             for ($i = 0; $i -lt $lines.Count; $i++) {
                 if ($lines[$i] -match [regex]::Escape($match.Value)) {
                     $lineNumber = $i + 1
@@ -290,7 +290,7 @@ function Find-CompatibilityIssues {
         }
     }
     
-    # 6. VÃ©rifier l'utilisation de .NET Framework au lieu de .NET Core
+    # 6. VÃƒÂ©rifier l'utilisation de .NET Framework au lieu de .NET Core
     $netFrameworkClasses = @(
         @{
             Pattern = "System\.Web\."
@@ -300,12 +300,12 @@ function Find-CompatibilityIssues {
         @{
             Pattern = "System\.Windows\.Forms\."
             Replacement = "N/A"
-            Description = "Utilisation de System.Windows.Forms qui n'est pas entiÃ¨rement compatible avec .NET Core. Envisagez d'utiliser des alternatives multiplateformes."
+            Description = "Utilisation de System.Windows.Forms qui n'est pas entiÃƒÂ¨rement compatible avec .NET Core. Envisagez d'utiliser des alternatives multiplateformes."
         },
         @{
             Pattern = "System\.Drawing\."
             Replacement = "N/A"
-            Description = "Utilisation de System.Drawing qui n'est pas entiÃ¨rement compatible avec .NET Core. Envisagez d'utiliser System.Drawing.Common ou d'autres alternatives."
+            Description = "Utilisation de System.Drawing qui n'est pas entiÃƒÂ¨rement compatible avec .NET Core. Envisagez d'utiliser System.Drawing.Common ou d'autres alternatives."
         }
     )
     
@@ -316,7 +316,7 @@ function Find-CompatibilityIssues {
             $lineNumber = 0
             $line = ""
             
-            # Trouver le numÃ©ro de ligne
+            # Trouver le numÃƒÂ©ro de ligne
             for ($i = 0; $i -lt $lines.Count; $i++) {
                 if ($lines[$i] -match [regex]::Escape($match.Value)) {
                     $lineNumber = $i + 1
@@ -340,7 +340,7 @@ function Find-CompatibilityIssues {
     return $issues
 }
 
-# Fonction pour corriger les problÃ¨mes de compatibilitÃ©
+# Fonction pour corriger les problÃƒÂ¨mes de compatibilitÃƒÂ©
 function Fix-CompatibilityIssues {
     [CmdletBinding()]
     param (
@@ -351,7 +351,7 @@ function Fix-CompatibilityIssues {
         [array]$Issues
     )
     
-    # VÃ©rifier si le script existe
+    # VÃƒÂ©rifier si le script existe
     if (-not (Test-Path -Path $ScriptPath)) {
         Write-Log "Le script n'existe pas: $ScriptPath" -Level "ERROR"
         return $false
@@ -360,11 +360,11 @@ function Fix-CompatibilityIssues {
     # Lire le contenu du script
     $content = Get-Content -Path $ScriptPath -Raw
     
-    # CrÃ©er une copie de sauvegarde
+    # CrÃƒÂ©er une copie de sauvegarde
     $backupPath = "$ScriptPath.bak"
     Copy-Item -Path $ScriptPath -Destination $backupPath -Force
     
-    # Trier les problÃ¨mes par numÃ©ro de ligne (dÃ©croissant) pour Ã©viter les dÃ©calages
+    # Trier les problÃƒÂ¨mes par numÃƒÂ©ro de ligne (dÃƒÂ©croissant) pour ÃƒÂ©viter les dÃƒÂ©calages
     $sortedIssues = $Issues | Sort-Object -Property LineNumber -Descending
     
     # Appliquer les corrections
@@ -373,7 +373,7 @@ function Fix-CompatibilityIssues {
     foreach ($issue in $sortedIssues) {
         if ($issue.Replacement -ne "N/A") {
             try {
-                # Remplacer le problÃ¨me
+                # Remplacer le problÃƒÂ¨me
                 $pattern = [regex]::Escape($issue.Pattern)
                 $replacement = $issue.Replacement
                 
@@ -381,10 +381,10 @@ function Fix-CompatibilityIssues {
                     $content = $content -replace $pattern, $replacement
                     $modified = $true
                     
-                    Write-Log "Correction appliquÃ©e: Ligne $($issue.LineNumber) - $($issue.Type)" -Level "SUCCESS"
+                    Write-Log "Correction appliquÃƒÂ©e: Ligne $($issue.LineNumber) - $($issue.Type)" -Level "SUCCESS"
                 }
                 else {
-                    Write-Log "Impossible de trouver le motif Ã  remplacer: $($issue.Pattern)" -Level "WARNING"
+                    Write-Log "Impossible de trouver le motif ÃƒÂ  remplacer: $($issue.Pattern)" -Level "WARNING"
                 }
             }
             catch {
@@ -399,11 +399,11 @@ function Fix-CompatibilityIssues {
     # Enregistrer les modifications
     if ($modified) {
         $content | Out-File -FilePath $ScriptPath -Encoding utf8
-        Write-Log "Script corrigÃ© et enregistrÃ©: $ScriptPath (sauvegarde: $backupPath)" -Level "SUCCESS"
+        Write-Log "Script corrigÃƒÂ© et enregistrÃƒÂ©: $ScriptPath (sauvegarde: $backupPath)" -Level "SUCCESS"
         return $true
     }
     else {
-        Write-Log "Aucune modification apportÃ©e au script: $ScriptPath" -Level "INFO"
+        Write-Log "Aucune modification apportÃƒÂ©e au script: $ScriptPath" -Level "INFO"
         Remove-Item -Path $backupPath -Force
         return $false
     }
@@ -426,12 +426,12 @@ function Start-PSVersionCompatibilityTest {
         [switch]$Fix
     )
     
-    Write-Log "DÃ©marrage du test de compatibilitÃ© PowerShell 7..." -Level "TITLE"
+    Write-Log "DÃƒÂ©marrage du test de compatibilitÃƒÂ© PowerShell 7..." -Level "TITLE"
     Write-Log "Chemin: $Path"
-    Write-Log "RÃ©cursif: $Recursive"
+    Write-Log "RÃƒÂ©cursif: $Recursive"
     Write-Log "Correction automatique: $Fix"
     
-    # VÃ©rifier si le chemin existe
+    # VÃƒÂ©rifier si le chemin existe
     if (-not (Test-Path -Path $Path)) {
         Write-Log "Le chemin n'existe pas: $Path" -Level "ERROR"
         return
@@ -459,7 +459,7 @@ function Start-PSVersionCompatibilityTest {
         $files = Get-Item -Path $Path
     }
     
-    Write-Log "Nombre de fichiers PowerShell Ã  analyser: $($files.Count)"
+    Write-Log "Nombre de fichiers PowerShell ÃƒÂ  analyser: $($files.Count)"
     
     # Analyser les fichiers
     $results = @()
@@ -474,7 +474,7 @@ function Start-PSVersionCompatibilityTest {
         $totalIssues += $issues.Count
         
         if ($issues.Count -gt 0) {
-            Write-Log "ProblÃ¨mes de compatibilitÃ© dÃ©tectÃ©s: $($issues.Count)" -Level "WARNING"
+            Write-Log "ProblÃƒÂ¨mes de compatibilitÃƒÂ© dÃƒÂ©tectÃƒÂ©s: $($issues.Count)" -Level "WARNING"
             
             foreach ($issue in $issues) {
                 Write-Log "- Ligne $($issue.LineNumber): $($issue.Description)" -Level "WARNING"
@@ -489,7 +489,7 @@ function Start-PSVersionCompatibilityTest {
             }
         }
         else {
-            Write-Log "Aucun problÃ¨me de compatibilitÃ© dÃ©tectÃ©." -Level "SUCCESS"
+            Write-Log "Aucun problÃƒÂ¨me de compatibilitÃƒÂ© dÃƒÂ©tectÃƒÂ©." -Level "SUCCESS"
         }
         
         $results += [PSCustomObject]@{
@@ -501,7 +501,7 @@ function Start-PSVersionCompatibilityTest {
         }
     }
     
-    # GÃ©nÃ©rer le rapport
+    # GÃƒÂ©nÃƒÂ©rer le rapport
     if ($OutputPath) {
         $report = @{
             GeneratedAt = (Get-Date).ToString("o")
@@ -513,7 +513,7 @@ function Start-PSVersionCompatibilityTest {
             Results = $results
         }
         
-        # CrÃ©er le dossier de sortie s'il n'existe pas
+        # CrÃƒÂ©er le dossier de sortie s'il n'existe pas
         $outputDir = [System.IO.Path]::GetDirectoryName($OutputPath)
         
         if (-not (Test-Path -Path $outputDir)) {
@@ -523,20 +523,20 @@ function Start-PSVersionCompatibilityTest {
         # Enregistrer le rapport
         $report | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
         
-        Write-Log "Rapport gÃ©nÃ©rÃ©: $OutputPath" -Level "SUCCESS"
+        Write-Log "Rapport gÃƒÂ©nÃƒÂ©rÃƒÂ©: $OutputPath" -Level "SUCCESS"
     }
     
-    # Afficher le rÃ©sumÃ©
-    Write-Log "RÃ©sumÃ©:" -Level "TITLE"
-    Write-Log "Fichiers analysÃ©s: $($files.Count)"
-    Write-Log "ProblÃ¨mes dÃ©tectÃ©s: $totalIssues"
+    # Afficher le rÃƒÂ©sumÃƒÂ©
+    Write-Log "RÃƒÂ©sumÃƒÂ©:" -Level "TITLE"
+    Write-Log "Fichiers analysÃƒÂ©s: $($files.Count)"
+    Write-Log "ProblÃƒÂ¨mes dÃƒÂ©tectÃƒÂ©s: $totalIssues"
     
     if ($Fix) {
-        Write-Log "Fichiers corrigÃ©s: $fixedFiles"
+        Write-Log "Fichiers corrigÃƒÂ©s: $fixedFiles"
     }
     
     return $results
 }
 
-# ExÃ©cuter la fonction principale
+# ExÃƒÂ©cuter la fonction principale
 Start-PSVersionCompatibilityTest -Path $Path -Recursive:$Recursive -OutputPath $OutputPath -Fix:$Fix

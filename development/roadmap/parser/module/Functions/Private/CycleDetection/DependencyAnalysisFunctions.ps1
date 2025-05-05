@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fonctions pour l'analyse des dépendances entre fichiers.
+    Fonctions pour l'analyse des dÃ©pendances entre fichiers.
 
 .DESCRIPTION
-    Ce script contient des fonctions pour analyser les dépendances entre fichiers
+    Ce script contient des fonctions pour analyser les dÃ©pendances entre fichiers
     dans un projet, en fonction du langage de programmation.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
-# Fonction pour analyser les dépendances d'un fichier PowerShell
+# Fonction pour analyser les dÃ©pendances d'un fichier PowerShell
 function Get-PowerShellDependencies {
     [CmdletBinding()]
     param(
@@ -24,7 +24,7 @@ function Get-PowerShellDependencies {
     )
     
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Warning "Le fichier n'existe pas : $FilePath"
             return @()
@@ -33,7 +33,7 @@ function Get-PowerShellDependencies {
         # Lire le contenu du fichier
         $content = Get-Content -Path $FilePath -Raw
         
-        # Initialiser le tableau des dépendances
+        # Initialiser le tableau des dÃ©pendances
         $dependencies = @()
         
         # Rechercher les instructions . (dot sourcing)
@@ -48,7 +48,7 @@ function Get-PowerShellDependencies {
                 $path = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($directory, $path))
             }
             
-            # Vérifier si le fichier existe
+            # VÃ©rifier si le fichier existe
             if (Test-Path -Path $path -PathType Leaf) {
                 $dependencies += $path
             }
@@ -86,16 +86,16 @@ function Get-PowerShellDependencies {
             }
         }
         
-        # Retourner les dépendances uniques
+        # Retourner les dÃ©pendances uniques
         return $dependencies | Select-Object -Unique
     }
     catch {
-        Write-Error "Erreur lors de l'analyse des dépendances PowerShell pour $FilePath : $_"
+        Write-Error "Erreur lors de l'analyse des dÃ©pendances PowerShell pour $FilePath : $_"
         return @()
     }
 }
 
-# Fonction pour analyser les dépendances d'un fichier Python
+# Fonction pour analyser les dÃ©pendances d'un fichier Python
 function Get-PythonDependencies {
     [CmdletBinding()]
     param(
@@ -107,7 +107,7 @@ function Get-PythonDependencies {
     )
     
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Warning "Le fichier n'existe pas : $FilePath"
             return @()
@@ -116,7 +116,7 @@ function Get-PythonDependencies {
         # Lire le contenu du fichier
         $content = Get-Content -Path $FilePath -Raw
         
-        # Initialiser le tableau des dépendances
+        # Initialiser le tableau des dÃ©pendances
         $dependencies = @()
         
         # Rechercher les instructions import
@@ -146,7 +146,7 @@ function Get-PythonDependencies {
                 $dependencies += $moduleFile.FullName
             }
             
-            # Rechercher également les packages
+            # Rechercher Ã©galement les packages
             $packagePath = $moduleName.Replace(".", [System.IO.Path]::DirectorySeparatorChar)
             $initFiles = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "__init__.py" -File | Where-Object {
                 $_.DirectoryName -like "*$packagePath"
@@ -157,16 +157,16 @@ function Get-PythonDependencies {
             }
         }
         
-        # Retourner les dépendances uniques
+        # Retourner les dÃ©pendances uniques
         return $dependencies | Select-Object -Unique
     }
     catch {
-        Write-Error "Erreur lors de l'analyse des dépendances Python pour $FilePath : $_"
+        Write-Error "Erreur lors de l'analyse des dÃ©pendances Python pour $FilePath : $_"
         return @()
     }
 }
 
-# Fonction pour analyser les dépendances d'un fichier JavaScript/TypeScript
+# Fonction pour analyser les dÃ©pendances d'un fichier JavaScript/TypeScript
 function Get-JavaScriptDependencies {
     [CmdletBinding()]
     param(
@@ -178,7 +178,7 @@ function Get-JavaScriptDependencies {
     )
     
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Warning "Le fichier n'existe pas : $FilePath"
             return @()
@@ -187,7 +187,7 @@ function Get-JavaScriptDependencies {
         # Lire le contenu du fichier
         $content = Get-Content -Path $FilePath -Raw
         
-        # Initialiser le tableau des dépendances
+        # Initialiser le tableau des dÃ©pendances
         $dependencies = @()
         
         # Rechercher les instructions import
@@ -202,7 +202,7 @@ function Get-JavaScriptDependencies {
                 $directory = [System.IO.Path]::GetDirectoryName($FilePath)
                 $absolutePath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($directory, $path))
                 
-                # Vérifier si le fichier existe
+                # VÃ©rifier si le fichier existe
                 if (Test-Path -Path $absolutePath -PathType Leaf) {
                     $dependencies += $absolutePath
                 }
@@ -232,7 +232,7 @@ function Get-JavaScriptDependencies {
                 $directory = [System.IO.Path]::GetDirectoryName($FilePath)
                 $absolutePath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($directory, $path))
                 
-                # Vérifier si le fichier existe
+                # VÃ©rifier si le fichier existe
                 if (Test-Path -Path $absolutePath -PathType Leaf) {
                     $dependencies += $absolutePath
                 }
@@ -250,16 +250,16 @@ function Get-JavaScriptDependencies {
             }
         }
         
-        # Retourner les dépendances uniques
+        # Retourner les dÃ©pendances uniques
         return $dependencies | Select-Object -Unique
     }
     catch {
-        Write-Error "Erreur lors de l'analyse des dépendances JavaScript/TypeScript pour $FilePath : $_"
+        Write-Error "Erreur lors de l'analyse des dÃ©pendances JavaScript/TypeScript pour $FilePath : $_"
         return @()
     }
 }
 
-# Fonction pour analyser les dépendances d'un fichier C#
+# Fonction pour analyser les dÃ©pendances d'un fichier C#
 function Get-CSharpDependencies {
     [CmdletBinding()]
     param(
@@ -271,7 +271,7 @@ function Get-CSharpDependencies {
     )
     
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Warning "Le fichier n'existe pas : $FilePath"
             return @()
@@ -280,7 +280,7 @@ function Get-CSharpDependencies {
         # Lire le contenu du fichier
         $content = Get-Content -Path $FilePath -Raw
         
-        # Initialiser le tableau des dépendances
+        # Initialiser le tableau des dÃ©pendances
         $dependencies = @()
         
         # Rechercher les instructions using
@@ -290,12 +290,12 @@ function Get-CSharpDependencies {
         foreach ($match in $usingMatches) {
             $namespace = $match.Groups[1].Value
             
-            # Ignorer les namespaces système
+            # Ignorer les namespaces systÃ¨me
             if ($namespace -match '^System\.') {
                 continue
             }
             
-            # Rechercher les fichiers qui définissent ce namespace
+            # Rechercher les fichiers qui dÃ©finissent ce namespace
             $files = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "*.cs" -File | Where-Object {
                 $fileContent = Get-Content -Path $_.FullName -Raw
                 $fileContent -match "namespace\s+$([regex]::Escape($namespace))"
@@ -308,16 +308,16 @@ function Get-CSharpDependencies {
             }
         }
         
-        # Retourner les dépendances uniques
+        # Retourner les dÃ©pendances uniques
         return $dependencies | Select-Object -Unique
     }
     catch {
-        Write-Error "Erreur lors de l'analyse des dépendances C# pour $FilePath : $_"
+        Write-Error "Erreur lors de l'analyse des dÃ©pendances C# pour $FilePath : $_"
         return @()
     }
 }
 
-# Fonction pour analyser les dépendances d'un fichier Java
+# Fonction pour analyser les dÃ©pendances d'un fichier Java
 function Get-JavaDependencies {
     [CmdletBinding()]
     param(
@@ -329,7 +329,7 @@ function Get-JavaDependencies {
     )
     
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Warning "Le fichier n'existe pas : $FilePath"
             return @()
@@ -338,7 +338,7 @@ function Get-JavaDependencies {
         # Lire le contenu du fichier
         $content = Get-Content -Path $FilePath -Raw
         
-        # Initialiser le tableau des dépendances
+        # Initialiser le tableau des dÃ©pendances
         $dependencies = @()
         
         # Rechercher les instructions import
@@ -347,7 +347,7 @@ function Get-JavaDependencies {
         foreach ($match in $importMatches) {
             $package = $match.Groups[1].Value
             
-            # Rechercher les fichiers qui définissent ce package
+            # Rechercher les fichiers qui dÃ©finissent ce package
             $packagePath = $package.Replace(".", [System.IO.Path]::DirectorySeparatorChar)
             $files = Get-ChildItem -Path $ProjectRoot -Recurse -Filter "*.java" -File | Where-Object {
                 $_.DirectoryName -like "*$packagePath"
@@ -360,16 +360,16 @@ function Get-JavaDependencies {
             }
         }
         
-        # Retourner les dépendances uniques
+        # Retourner les dÃ©pendances uniques
         return $dependencies | Select-Object -Unique
     }
     catch {
-        Write-Error "Erreur lors de l'analyse des dépendances Java pour $FilePath : $_"
+        Write-Error "Erreur lors de l'analyse des dÃ©pendances Java pour $FilePath : $_"
         return @()
     }
 }
 
-# Fonction pour analyser les dépendances d'un fichier
+# Fonction pour analyser les dÃ©pendances d'un fichier
 function Get-FileDependencies {
     [CmdletBinding()]
     param(
@@ -381,7 +381,7 @@ function Get-FileDependencies {
     )
     
     try {
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Warning "Le fichier n'existe pas : $FilePath"
             return @()
@@ -390,7 +390,7 @@ function Get-FileDependencies {
         # Obtenir l'extension du fichier
         $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
         
-        # Analyser les dépendances en fonction du type de fichier
+        # Analyser les dÃ©pendances en fonction du type de fichier
         switch ($extension) {
             { $_ -in '.ps1', '.psm1', '.psd1' } {
                 return Get-PowerShellDependencies -FilePath $FilePath -ProjectRoot $ProjectRoot
@@ -414,12 +414,12 @@ function Get-FileDependencies {
         }
     }
     catch {
-        Write-Error "Erreur lors de l'analyse des dépendances pour $FilePath : $_"
+        Write-Error "Erreur lors de l'analyse des dÃ©pendances pour $FilePath : $_"
         return @()
     }
 }
 
-# Fonction pour construire le graphe de dépendances
+# Fonction pour construire le graphe de dÃ©pendances
 function Build-DependencyGraph {
     [CmdletBinding()]
     param(
@@ -434,22 +434,22 @@ function Build-DependencyGraph {
     )
     
     try {
-        # Initialiser le graphe de dépendances
+        # Initialiser le graphe de dÃ©pendances
         $graph = @{}
         
         # Construire le graphe
         foreach ($file in $Files) {
             $filePath = $file.FullName
             
-            # Initialiser l'entrée dans le graphe
+            # Initialiser l'entrÃ©e dans le graphe
             if (-not $graph.ContainsKey($filePath)) {
                 $graph[$filePath] = @()
             }
             
-            # Obtenir les dépendances directes
+            # Obtenir les dÃ©pendances directes
             $dependencies = Get-FileDependencies -FilePath $filePath -ProjectRoot $ProjectRoot
             
-            # Ajouter les dépendances au graphe
+            # Ajouter les dÃ©pendances au graphe
             foreach ($dependency in $dependencies) {
                 if ($dependency -ne $filePath) {
                     $graph[$filePath] += $dependency
@@ -457,7 +457,7 @@ function Build-DependencyGraph {
             }
         }
         
-        # Limiter la profondeur des dépendances
+        # Limiter la profondeur des dÃ©pendances
         if ($MaxDepth -gt 0) {
             $visited = @{}
             
@@ -470,15 +470,15 @@ function Build-DependencyGraph {
                     [int]$Depth
                 )
                 
-                # Marquer le nœud comme visité
+                # Marquer le nÅ“ud comme visitÃ©
                 $visited[$Node] = $true
                 
-                # Si la profondeur maximale est atteinte, arrêter
+                # Si la profondeur maximale est atteinte, arrÃªter
                 if ($Depth -ge $MaxDepth) {
                     return
                 }
                 
-                # Parcourir les dépendances
+                # Parcourir les dÃ©pendances
                 if ($graph.ContainsKey($Node)) {
                     foreach ($dependency in $graph[$Node]) {
                         if (-not $visited.ContainsKey($dependency)) {
@@ -488,7 +488,7 @@ function Build-DependencyGraph {
                 }
             }
             
-            # Limiter la profondeur pour chaque nœud
+            # Limiter la profondeur pour chaque nÅ“ud
             foreach ($node in $graph.Keys) {
                 $visited = @{}
                 Limit-Depth -Node $node -Depth 0
@@ -498,7 +498,7 @@ function Build-DependencyGraph {
         return $graph
     }
     catch {
-        Write-Error "Erreur lors de la construction du graphe de dépendances : $_"
+        Write-Error "Erreur lors de la construction du graphe de dÃ©pendances : $_"
         return @{}
     }
 }

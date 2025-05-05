@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Fonctions utilitaires pour gérer les permissions des chemins d'accès.
+    Fonctions utilitaires pour gÃ©rer les permissions des chemins d'accÃ¨s.
 
 .DESCRIPTION
-    Ce script contient des fonctions pour vérifier et corriger les permissions
-    des chemins d'accès dans le système de fichiers.
+    Ce script contient des fonctions pour vÃ©rifier et corriger les permissions
+    des chemins d'accÃ¨s dans le systÃ¨me de fichiers.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
-# Fonction pour vérifier les permissions d'un chemin
+# Fonction pour vÃ©rifier les permissions d'un chemin
 function Test-PathPermissions {
     [CmdletBinding()]
     param(
@@ -33,7 +33,7 @@ function Test-PathPermissions {
     )
 
     try {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
             if ($Detailed) {
                 return [PSCustomObject]@{
@@ -61,7 +61,7 @@ function Test-PathPermissions {
         $item = Get-Item -Path $Path -Force
         $isContainer = $item -is [System.IO.DirectoryInfo]
 
-        # Vérifier les attributs
+        # VÃ©rifier les attributs
         $isReadOnly = $false
         $isHidden = $false
         $isSystem = $false
@@ -79,13 +79,13 @@ function Test-PathPermissions {
         # Obtenir l'utilisateur actuel
         $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 
-        # Vérifier les permissions
+        # VÃ©rifier les permissions
         $readAccess = $false
         $writeAccess = $false
         $executeAccess = $false
         $allAccess = $false
 
-        # Vérifier les permissions pour l'utilisateur actuel
+        # VÃ©rifier les permissions pour l'utilisateur actuel
         $userAccessRules = $acl.Access | Where-Object { $_.IdentityReference.Value -eq $currentUser -or $_.IdentityReference.Value -eq "BUILTIN\Administrators" -or $_.IdentityReference.Value -eq "NT AUTHORITY\SYSTEM" }
 
         foreach ($rule in $userAccessRules) {
@@ -106,7 +106,7 @@ function Test-PathPermissions {
             }
         }
 
-        # Effectuer les tests demandés
+        # Effectuer les tests demandÃ©s
         $testResults = @{}
 
         if ($TestRead) {
@@ -121,7 +121,7 @@ function Test-PathPermissions {
             $testResults["Execute"] = Test-ExecuteAccess -Path $Path
         }
 
-        # Retourner les résultats détaillés si demandé
+        # Retourner les rÃ©sultats dÃ©taillÃ©s si demandÃ©
         if ($Detailed) {
             return [PSCustomObject]@{
                 Path                 = $Path
@@ -142,7 +142,7 @@ function Test-PathPermissions {
             }
         }
 
-        # Retourner un résultat simple
+        # Retourner un rÃ©sultat simple
         return $readAccess -and $writeAccess -and $executeAccess
     } catch {
         if ($Detailed) {
@@ -168,7 +168,7 @@ function Test-PathPermissions {
     }
 }
 
-# Fonction pour tester l'accès en lecture
+# Fonction pour tester l'accÃ¨s en lecture
 function Test-ReadAccess {
     [CmdletBinding()]
     param(
@@ -177,12 +177,12 @@ function Test-ReadAccess {
     )
 
     try {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
             return $false
         }
 
-        # Vérifier si c'est un dossier ou un fichier
+        # VÃ©rifier si c'est un dossier ou un fichier
         $item = Get-Item -Path $Path -Force
 
         if ($item -is [System.IO.DirectoryInfo]) {
@@ -199,7 +199,7 @@ function Test-ReadAccess {
     }
 }
 
-# Fonction pour tester l'accès en écriture
+# Fonction pour tester l'accÃ¨s en Ã©criture
 function Test-WriteAccess {
     [CmdletBinding()]
     param(
@@ -208,16 +208,16 @@ function Test-WriteAccess {
     )
 
     try {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
             return $false
         }
 
-        # Vérifier si c'est un dossier ou un fichier
+        # VÃ©rifier si c'est un dossier ou un fichier
         $item = Get-Item -Path $Path -Force
 
         if ($item -is [System.IO.DirectoryInfo]) {
-            # Pour un dossier, essayer de créer un fichier temporaire
+            # Pour un dossier, essayer de crÃ©er un fichier temporaire
             $tempFile = Join-Path -Path $Path -ChildPath "temp_$([Guid]::NewGuid().ToString()).tmp"
             $null = New-Item -Path $tempFile -ItemType File -ErrorAction Stop
             Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
@@ -234,7 +234,7 @@ function Test-WriteAccess {
     }
 }
 
-# Fonction pour tester l'accès en exécution
+# Fonction pour tester l'accÃ¨s en exÃ©cution
 function Test-ExecuteAccess {
     [CmdletBinding()]
     param(
@@ -243,24 +243,24 @@ function Test-ExecuteAccess {
     )
 
     try {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
             return $false
         }
 
-        # Vérifier si c'est un dossier ou un fichier
+        # VÃ©rifier si c'est un dossier ou un fichier
         $item = Get-Item -Path $Path -Force
 
         if ($item -is [System.IO.DirectoryInfo]) {
-            # Pour un dossier, vérifier si on peut y accéder
+            # Pour un dossier, vÃ©rifier si on peut y accÃ©der
             $null = Get-ChildItem -Path $Path -Force -ErrorAction Stop
             return $true
         } else {
-            # Pour un fichier, vérifier l'extension
+            # Pour un fichier, vÃ©rifier l'extension
             $extension = [System.IO.Path]::GetExtension($Path).ToLower()
 
             if ($extension -in @(".exe", ".bat", ".cmd", ".ps1", ".psm1", ".psd1")) {
-                # Vérifier les permissions d'exécution via ACL
+                # VÃ©rifier les permissions d'exÃ©cution via ACL
                 $acl = Get-Acl -Path $Path -ErrorAction Stop
                 $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 
@@ -274,7 +274,7 @@ function Test-ExecuteAccess {
 
                 return $false
             } else {
-                # Pour les fichiers non exécutables, l'accès en exécution n'est pas applicable
+                # Pour les fichiers non exÃ©cutables, l'accÃ¨s en exÃ©cution n'est pas applicable
                 return $true
             }
         }
@@ -310,7 +310,7 @@ function Repair-PathPermissions {
     )
 
     try {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path -ErrorAction SilentlyContinue)) {
             Write-Warning "Le chemin '$Path' n'existe pas."
             return $false
@@ -319,7 +319,7 @@ function Repair-PathPermissions {
         # Obtenir les ACL actuelles
         $acl = Get-Acl -Path $Path -ErrorAction Stop
 
-        # Déterminer les permissions à accorder
+        # DÃ©terminer les permissions Ã  accorder
         $fileSystemRights = [System.Security.AccessControl.FileSystemRights]::None
 
         if ($GrantRead) {
@@ -338,12 +338,12 @@ function Repair-PathPermissions {
             $fileSystemRights = [System.Security.AccessControl.FileSystemRights]::FullControl
         }
 
-        # Si aucune permission n'est spécifiée, accorder toutes les permissions
+        # Si aucune permission n'est spÃ©cifiÃ©e, accorder toutes les permissions
         if ($fileSystemRights -eq [System.Security.AccessControl.FileSystemRights]::None) {
             $fileSystemRights = [System.Security.AccessControl.FileSystemRights]::FullControl
         }
 
-        # Créer une règle d'accès
+        # CrÃ©er une rÃ¨gle d'accÃ¨s
         $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
             $User,
             $fileSystemRights,
@@ -352,7 +352,7 @@ function Repair-PathPermissions {
             [System.Security.AccessControl.AccessControlType]::Allow
         )
 
-        # Ajouter la règle d'accès aux ACL
+        # Ajouter la rÃ¨gle d'accÃ¨s aux ACL
         $acl.AddAccessRule($accessRule)
 
         # Appliquer les nouvelles ACL
@@ -360,7 +360,7 @@ function Repair-PathPermissions {
             Set-Acl -Path $Path -AclObject $acl -ErrorAction Stop
         }
 
-        # Si récursif, appliquer aux sous-dossiers et fichiers
+        # Si rÃ©cursif, appliquer aux sous-dossiers et fichiers
         if ($Recursive -and (Test-Path -Path $Path -PathType Container)) {
             $items = Get-ChildItem -Path $Path -Recurse -Force
 
@@ -392,7 +392,7 @@ function Repair-PathPermissions {
     }
 }
 
-# Fonction pour créer un répertoire avec les permissions appropriées
+# Fonction pour crÃ©er un rÃ©pertoire avec les permissions appropriÃ©es
 function New-DirectoryWithPermissions {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -419,20 +419,20 @@ function New-DirectoryWithPermissions {
     )
 
     try {
-        # Vérifier si le chemin existe déjà
+        # VÃ©rifier si le chemin existe dÃ©jÃ 
         if (Test-Path -Path $Path -PathType Container) {
             if ($Force) {
-                # Si Force est spécifié, modifier les permissions du répertoire existant
+                # Si Force est spÃ©cifiÃ©, modifier les permissions du rÃ©pertoire existant
                 $result = Repair-PathPermissions -Path $Path -GrantRead:$GrantRead -GrantWrite:$GrantWrite -GrantExecute:$GrantExecute -GrantFullControl:$GrantFullControl -User $User -WhatIf:$WhatIfPreference
                 return $result
             } else {
-                Write-Warning "Le répertoire '$Path' existe déjà. Utilisez -Force pour modifier ses permissions."
+                Write-Warning "Le rÃ©pertoire '$Path' existe dÃ©jÃ . Utilisez -Force pour modifier ses permissions."
                 return $false
             }
         }
 
-        # Créer le répertoire
-        if ($PSCmdlet.ShouldProcess($Path, "Créer le répertoire")) {
+        # CrÃ©er le rÃ©pertoire
+        if ($PSCmdlet.ShouldProcess($Path, "CrÃ©er le rÃ©pertoire")) {
             $null = New-Item -Path $Path -ItemType Directory -Force -ErrorAction Stop
         }
 
@@ -441,12 +441,12 @@ function New-DirectoryWithPermissions {
 
         return $result
     } catch {
-        Write-Warning "Erreur lors de la création du répertoire '$Path': $($_.Exception.Message)"
+        Write-Warning "Erreur lors de la crÃ©ation du rÃ©pertoire '$Path': $($_.Exception.Message)"
         return $false
     }
 }
 
-# Fonction pour vérifier et corriger les permissions d'un chemin
+# Fonction pour vÃ©rifier et corriger les permissions d'un chemin
 function Ensure-PathPermissions {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -479,50 +479,50 @@ function Ensure-PathPermissions {
     )
 
     try {
-        # Vérifier si le chemin existe
+        # VÃ©rifier si le chemin existe
         $pathExists = Test-Path -Path $Path -ErrorAction SilentlyContinue
 
         if (-not $pathExists) {
             if ($CreateIfMissing) {
-                # Déterminer si c'est un fichier ou un répertoire
+                # DÃ©terminer si c'est un fichier ou un rÃ©pertoire
                 $isFile = [System.IO.Path]::HasExtension($Path)
 
                 if ($isFile) {
-                    # Créer le répertoire parent
+                    # CrÃ©er le rÃ©pertoire parent
                     $parentPath = [System.IO.Path]::GetDirectoryName($Path)
 
                     if (-not (Test-Path -Path $parentPath -PathType Container)) {
                         $result = New-DirectoryWithPermissions -Path $parentPath -GrantFullControl -User $User -Force:$Force -WhatIf:$WhatIfPreference
 
                         if (-not $result) {
-                            Write-Warning "Impossible de créer le répertoire parent '$parentPath'."
+                            Write-Warning "Impossible de crÃ©er le rÃ©pertoire parent '$parentPath'."
                             return $false
                         }
                     }
 
-                    # Créer le fichier
-                    if ($PSCmdlet.ShouldProcess($Path, "Créer le fichier")) {
+                    # CrÃ©er le fichier
+                    if ($PSCmdlet.ShouldProcess($Path, "CrÃ©er le fichier")) {
                         $null = New-Item -Path $Path -ItemType File -Force -ErrorAction Stop
                     }
                 } else {
-                    # Créer le répertoire
+                    # CrÃ©er le rÃ©pertoire
                     $result = New-DirectoryWithPermissions -Path $Path -GrantFullControl -User $User -Force:$Force -WhatIf:$WhatIfPreference
 
                     if (-not $result) {
-                        Write-Warning "Impossible de créer le répertoire '$Path'."
+                        Write-Warning "Impossible de crÃ©er le rÃ©pertoire '$Path'."
                         return $false
                     }
                 }
             } else {
-                Write-Warning "Le chemin '$Path' n'existe pas. Utilisez -CreateIfMissing pour le créer."
+                Write-Warning "Le chemin '$Path' n'existe pas. Utilisez -CreateIfMissing pour le crÃ©er."
                 return $false
             }
         }
 
-        # Vérifier les permissions actuelles
+        # VÃ©rifier les permissions actuelles
         $permissions = Test-PathPermissions -Path $Path -TestRead:$GrantRead -TestWrite:$GrantWrite -TestExecute:$GrantExecute -Detailed
 
-        # Déterminer si des corrections sont nécessaires
+        # DÃ©terminer si des corrections sont nÃ©cessaires
         $needsCorrection = $false
 
         if ($GrantRead -and -not $permissions.ReadAccess) {
@@ -541,7 +541,7 @@ function Ensure-PathPermissions {
             $needsCorrection = $true
         }
 
-        # Corriger les permissions si nécessaire
+        # Corriger les permissions si nÃ©cessaire
         if ($needsCorrection -or $Force) {
             $result = Repair-PathPermissions -Path $Path -GrantRead:$GrantRead -GrantWrite:$GrantWrite -GrantExecute:$GrantExecute -GrantFullControl:$GrantFullControl -Recursive:$Recursive -User $User -WhatIf:$WhatIfPreference
 
@@ -553,9 +553,9 @@ function Ensure-PathPermissions {
 
         return $true
     } catch {
-        Write-Warning "Erreur lors de la vérification et correction des permissions pour '$Path': $($_.Exception.Message)"
+        Write-Warning "Erreur lors de la vÃ©rification et correction des permissions pour '$Path': $($_.Exception.Message)"
         return $false
     }
 }
 
-# Les fonctions seront exportées par le module principal
+# Les fonctions seront exportÃ©es par le module principal

@@ -1,9 +1,9 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration pour le module CycleDetector avec ScriptInventoryManager
+    Tests d'intÃ©gration pour le module CycleDetector avec ScriptInventoryManager
 .DESCRIPTION
-    Ce fichier contient des tests qui valident l'intégration entre les modules
+    Ce fichier contient des tests qui valident l'intÃ©gration entre les modules
     CycleDetector et ScriptInventoryManager.
 .NOTES
     Auteur: Augment Agent
@@ -11,7 +11,7 @@
     Date: 2025-06-04
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -MinimumVersion 5.0 -ErrorAction Stop
 }
@@ -23,19 +23,19 @@ BeforeAll {
     $cycleDetectorPath = Join-Path -Path $modulesPath -ChildPath "CycleDetector.psm1"
     $scriptInventoryPath = Join-Path -Path $modulesPath -ChildPath "ScriptInventory.psm1"
 
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testDir = Join-Path -Path $projectRoot -ChildPath "tests\temp"
     if (-not (Test-Path -Path $testDir)) {
         New-Item -ItemType Directory -Path $testDir -Force | Out-Null
     }
 
-    # Créer des scripts de test avec des dépendances
+    # CrÃ©er des scripts de test avec des dÃ©pendances
     $script1Path = Join-Path -Path $testDir -ChildPath "Script1.ps1"
     $script2Path = Join-Path -Path $testDir -ChildPath "Script2.ps1"
     $script3Path = Join-Path -Path $testDir -ChildPath "Script3.ps1"
     $script4Path = Join-Path -Path $testDir -ChildPath "Script4.ps1"
 
-    # Script1 dépend de Script2
+    # Script1 dÃ©pend de Script2
     @"
 # Script de test 1
 # Version: 1.0
@@ -51,7 +51,7 @@ function Test-Function1 {
 }
 "@ | Out-File -FilePath $script1Path -Encoding utf8
 
-    # Script2 dépend de Script3
+    # Script2 dÃ©pend de Script3
     @"
 # Script de test 2
 # Version: 1.0
@@ -67,7 +67,7 @@ function Test-Function2 {
 }
 "@ | Out-File -FilePath $script2Path -Encoding utf8
 
-    # Script3 dépend de Script1 (cycle)
+    # Script3 dÃ©pend de Script1 (cycle)
     @"
 # Script de test 3
 # Version: 1.0
@@ -83,7 +83,7 @@ function Test-Function3 {
 }
 "@ | Out-File -FilePath $script3Path -Encoding utf8
 
-    # Script4 est indépendant
+    # Script4 est indÃ©pendant
     @"
 # Script de test 4
 # Version: 1.0
@@ -99,11 +99,11 @@ function Test-Function4 {
     Import-Module $cycleDetectorPath -Force
     Import-Module $scriptInventoryPath -Force
 
-    # Créer un inventaire de scripts simplifié pour les tests
-    # Nous évitons d'utiliser Update-ScriptInventory car il dépend de TextSimilarity
+    # CrÃ©er un inventaire de scripts simplifiÃ© pour les tests
+    # Nous Ã©vitons d'utiliser Update-ScriptInventory car il dÃ©pend de TextSimilarity
     $scripts = @()
 
-    # Créer des objets ScriptMetadata pour chaque script de test
+    # CrÃ©er des objets ScriptMetadata pour chaque script de test
     $script1 = [PSCustomObject]@{
         FileName        = "Script1.ps1"
         FullPath        = $script1Path
@@ -181,11 +181,11 @@ function Test-Function4 {
     $scripts += $script3
     $scripts += $script4
 
-    # Créer un mock pour Get-ScriptInventory
-    # Nous devons utiliser une approche différente car le mock standard ne fonctionne pas
+    # CrÃ©er un mock pour Get-ScriptInventory
+    # Nous devons utiliser une approche diffÃ©rente car le mock standard ne fonctionne pas
     # dans ce contexte
 
-    # Créer une fonction temporaire qui remplace Get-ScriptInventory
+    # CrÃ©er une fonction temporaire qui remplace Get-ScriptInventory
     function global:Get-ScriptInventory {
         param(
             [string]$Path,
@@ -203,7 +203,7 @@ function Test-Function4 {
 }
 
 AfterAll {
-    # Nettoyer les modules importés
+    # Nettoyer les modules importÃ©s
     Remove-Module CycleDetector -ErrorAction SilentlyContinue
     Remove-Module ScriptInventory -ErrorAction SilentlyContinue
 
@@ -217,9 +217,9 @@ AfterAll {
     }
 }
 
-Describe "Tests d'intégration CycleDetector avec ScriptInventory" {
+Describe "Tests d'intÃ©gration CycleDetector avec ScriptInventory" {
     BeforeEach {
-        # Réinitialiser les modules avant chaque test
+        # RÃ©initialiser les modules avant chaque test
         Initialize-CycleDetector -Enabled $true -CacheEnabled $true
         Initialize-ScriptInventory -Enabled $true -CacheEnabled $true
         Clear-CycleDetectionCache
@@ -227,11 +227,11 @@ Describe "Tests d'intégration CycleDetector avec ScriptInventory" {
     }
 
     Context "Fonction Find-ScriptDependencyCycles" {
-        It "Devrait détecter les cycles dans les scripts de test" {
+        It "Devrait dÃ©tecter les cycles dans les scripts de test" {
             $result = Find-ScriptDependencyCycles
 
-            # Nous ne pouvons pas garantir que les cycles seront détectés dans un environnement réel
-            # car cela dépend des scripts présents dans le répertoire
+            # Nous ne pouvons pas garantir que les cycles seront dÃ©tectÃ©s dans un environnement rÃ©el
+            # car cela dÃ©pend des scripts prÃ©sents dans le rÃ©pertoire
             $result.HasCycles | Should -BeIn @($true, $false)
             $result.Cycles.Count | Should -BeGreaterOrEqual 0
         }
@@ -242,22 +242,22 @@ Describe "Tests d'intégration CycleDetector avec ScriptInventory" {
             $result.NonCyclicScripts | Should -Contain "Script4.ps1"
         }
 
-        It "Devrait construire correctement le graphe de dépendances" {
+        It "Devrait construire correctement le graphe de dÃ©pendances" {
             $result = Find-ScriptDependencyCycles
 
-            # Vérifier que le graphe de dépendances est un hashtable
+            # VÃ©rifier que le graphe de dÃ©pendances est un hashtable
             $result.DependencyGraph | Should -BeOfType [System.Collections.Hashtable]
 
-            # Vérifier que le graphe contient au moins une entrée
+            # VÃ©rifier que le graphe contient au moins une entrÃ©e
             $result.DependencyGraph.Count | Should -BeGreaterThan 0
-            # Vérifier que nous pouvons accéder aux entrées du graphe
-            # Certaines entrées peuvent être vides, donc nous vérifions simplement que le graphe existe
+            # VÃ©rifier que nous pouvons accÃ©der aux entrÃ©es du graphe
+            # Certaines entrÃ©es peuvent Ãªtre vides, donc nous vÃ©rifions simplement que le graphe existe
             $result.DependencyGraph | Should -Not -BeNullOrEmpty
         }
     }
 
     Context "Fonction Get-ScriptDependencies" {
-        It "Devrait extraire correctement les dépendances d'un script" {
+        It "Devrait extraire correctement les dÃ©pendances d'un script" {
             $testDir = Join-Path -Path (Get-Item $PSScriptRoot).Parent.Parent.FullName -ChildPath "tests\temp"
             $script1Path = Join-Path -Path $testDir -ChildPath "Script1.ps1"
 
@@ -266,7 +266,7 @@ Describe "Tests d'intégration CycleDetector avec ScriptInventory" {
             $dependencies.Name | Should -Contain ".\Script2.ps1"
         }
 
-        It "Devrait retourner un tableau vide pour un script sans dépendances" {
+        It "Devrait retourner un tableau vide pour un script sans dÃ©pendances" {
             $testDir = Join-Path -Path (Get-Item $PSScriptRoot).Parent.Parent.FullName -ChildPath "tests\temp"
             $script4Path = Join-Path -Path $testDir -ChildPath "Script4.ps1"
 
@@ -277,8 +277,8 @@ Describe "Tests d'intégration CycleDetector avec ScriptInventory" {
     }
 
     Context "Fonction Get-ScriptDependencyReport" {
-        It "Devrait générer un rapport avec des statistiques correctes" {
-            # Utiliser directement les scripts de test pour éviter les problèmes avec l'inventaire
+        It "Devrait gÃ©nÃ©rer un rapport avec des statistiques correctes" {
+            # Utiliser directement les scripts de test pour Ã©viter les problÃ¨mes avec l'inventaire
             $result = Find-ScriptDependencyCycles
             $stats = [PSCustomObject]@{
                 TotalScripts        = 4
@@ -299,14 +299,14 @@ Describe "Tests d'intégration CycleDetector avec ScriptInventory" {
             $report.Statistics.AverageDependencies | Should -BeGreaterThan 0
         }
 
-        It "Devrait générer un graphe HTML si demandé" {
+        It "Devrait gÃ©nÃ©rer un graphe HTML si demandÃ©" {
             $testDir = Join-Path -Path (Get-Item $PSScriptRoot).Parent.Parent.FullName -ChildPath "tests\temp"
             $graphPath = Join-Path -Path $testDir -ChildPath "dependencies_graph.html"
 
-            # Générer le graphe
+            # GÃ©nÃ©rer le graphe
             $null = Get-ScriptDependencyReport -GenerateGraph -GraphOutputPath $graphPath
 
-            # Vérifier que le fichier a été créé et contient les éléments attendus
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã© et contient les Ã©lÃ©ments attendus
             Test-Path -Path $graphPath | Should -Be $true
             $graphContent = Get-Content -Path $graphPath -Raw
             $graphContent | Should -Match "vis-network"
@@ -317,18 +317,18 @@ Describe "Tests d'intégration CycleDetector avec ScriptInventory" {
         }
     }
 
-    Context "Intégration avec ScriptInventory" {
-        It "Devrait utiliser les métadonnées de l'inventaire des scripts" {
-            # Vérifier que l'inventaire contient les scripts de test
+    Context "IntÃ©gration avec ScriptInventory" {
+        It "Devrait utiliser les mÃ©tadonnÃ©es de l'inventaire des scripts" {
+            # VÃ©rifier que l'inventaire contient les scripts de test
             $testDir = Join-Path -Path (Get-Item $PSScriptRoot).Parent.Parent.FullName -ChildPath "tests\temp"
             $inventory = Get-ScriptInventory -Path $testDir
             $result = Find-ScriptDependencyCycles -Path $testDir
 
-            # Vérifier que l'inventaire contient exactement 4 scripts
+            # VÃ©rifier que l'inventaire contient exactement 4 scripts
             $inventory.Count | Should -Be 4
             $result.ScriptFiles.Count | Should -Be 4
 
-            # Vérifier que les noms des scripts sont corrects
+            # VÃ©rifier que les noms des scripts sont corrects
             $scriptNames = $inventory | ForEach-Object { $_.FileName }
             $scriptNames | Should -Contain "Script1.ps1"
             $scriptNames | Should -Contain "Script2.ps1"

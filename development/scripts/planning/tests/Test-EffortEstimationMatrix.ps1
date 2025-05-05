@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour vérifier le document de la matrice d'estimation d'effort.
+    Tests unitaires pour vÃ©rifier le document de la matrice d'estimation d'effort.
 
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier que le document de la matrice
-    d'estimation d'effort a été correctement créé et contient toutes les informations nécessaires.
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier que le document de la matrice
+    d'estimation d'effort a Ã©tÃ© correctement crÃ©Ã© et contient toutes les informations nÃ©cessaires.
 
 .PARAMETER DocumentPath
     Chemin vers le document de la matrice d'estimation d'effort.
 
 .EXAMPLE
     .\Test-EffortEstimationMatrix.ps1 -DocumentPath "..\..\data\planning\effort-estimation-matrix.md"
-    Exécute les tests unitaires pour le document de la matrice d'estimation d'effort.
+    ExÃ©cute les tests unitaires pour le document de la matrice d'estimation d'effort.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-07
+    Date de crÃ©ation: 2025-05-07
 #>
 [CmdletBinding()]
 param (
@@ -24,13 +24,13 @@ param (
     [string]$DocumentPath
 )
 
-# Vérifier que le document existe
+# VÃ©rifier que le document existe
 if (-not (Test-Path -Path $DocumentPath)) {
     Write-Error "Le document est introuvable : $DocumentPath"
     exit 1
 }
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Function {
     [CmdletBinding()]
     param (
@@ -47,10 +47,10 @@ function Test-Function {
         $result = & $Test
         
         if ($result -eq $true) {
-            Write-Host "  Résultat : Succès" -ForegroundColor Green
+            Write-Host "  RÃ©sultat : SuccÃ¨s" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Résultat : Échec" -ForegroundColor Red
+            Write-Host "  RÃ©sultat : Ã‰chec" -ForegroundColor Red
             return $false
         }
     } catch {
@@ -71,104 +71,104 @@ $tests = @(
         }
     },
     @{
-        Name = "Test de la présence du titre principal"
+        Name = "Test de la prÃ©sence du titre principal"
         Test = {
             return ($documentContent -match "# Matrice d'Estimation d'Effort")
         }
     },
     @{
-        Name = "Test de la présence du principe de la matrice"
+        Name = "Test de la prÃ©sence du principe de la matrice"
         Test = {
             return ($documentContent -match "## Principe de la Matrice")
         }
     },
     @{
-        Name = "Test de la présence de la structure de la matrice"
+        Name = "Test de la prÃ©sence de la structure de la matrice"
         Test = {
             return ($documentContent -match "## Structure de la Matrice")
         }
     },
     @{
-        Name = "Test de la présence de la matrice d'estimation d'effort"
+        Name = "Test de la prÃ©sence de la matrice d'estimation d'effort"
         Test = {
             return ($documentContent -match "## Matrice d'Estimation d'Effort \(en jours-personnes\)")
         }
     },
     @{
-        Name = "Test de la présence du tableau de la matrice"
+        Name = "Test de la prÃ©sence du tableau de la matrice"
         Test = {
-            return ($documentContent -match "\| Taille de l'équipe \| Complexité 1 \(Très faible\) \| Complexité 2 \(Faible\) \| Complexité 3 \(Moyen\) \| Complexité 4 \(Élevé\) \| Complexité 5 \(Très élevé\) \|")
+            return ($documentContent -match "\| Taille de l'Ã©quipe \| ComplexitÃ© 1 \(TrÃ¨s faible\) \| ComplexitÃ© 2 \(Faible\) \| ComplexitÃ© 3 \(Moyen\) \| ComplexitÃ© 4 \(Ã‰levÃ©\) \| ComplexitÃ© 5 \(TrÃ¨s Ã©levÃ©\) \|")
         }
     },
     @{
-        Name = "Test de la présence des facteurs d'ajustement"
+        Name = "Test de la prÃ©sence des facteurs d'ajustement"
         Test = {
             return ($documentContent -match "## Facteurs d'Ajustement")
         }
     },
     @{
-        Name = "Test de la présence du tableau des facteurs d'ajustement"
+        Name = "Test de la prÃ©sence du tableau des facteurs d'ajustement"
         Test = {
             return ($documentContent -match "\| Facteur d'ajustement \| Impact \| Multiplicateur \|")
         }
     },
     @{
-        Name = "Test de la présence de la formule de calcul"
+        Name = "Test de la prÃ©sence de la formule de calcul"
         Test = {
             return ($documentContent -match "## Formule de Calcul")
         }
     },
     @{
-        Name = "Test de la présence des exemples d'application"
+        Name = "Test de la prÃ©sence des exemples d'application"
         Test = {
             return ($documentContent -match "## Exemples d'Application")
         }
     },
     @{
-        Name = "Test de la présence de l'exemple 1"
+        Name = "Test de la prÃ©sence de l'exemple 1"
         Test = {
-            return ($documentContent -match "### Exemple 1 : Amélioration de complexité faible")
+            return ($documentContent -match "### Exemple 1 : AmÃ©lioration de complexitÃ© faible")
         }
     },
     @{
-        Name = "Test de la présence de l'exemple 2"
+        Name = "Test de la prÃ©sence de l'exemple 2"
         Test = {
-            return ($documentContent -match "### Exemple 2 : Amélioration de complexité moyenne")
+            return ($documentContent -match "### Exemple 2 : AmÃ©lioration de complexitÃ© moyenne")
         }
     },
     @{
-        Name = "Test de la présence de l'exemple 3"
+        Name = "Test de la prÃ©sence de l'exemple 3"
         Test = {
-            return ($documentContent -match "### Exemple 3 : Amélioration de complexité élevée")
+            return ($documentContent -match "### Exemple 3 : AmÃ©lioration de complexitÃ© Ã©levÃ©e")
         }
     },
     @{
-        Name = "Test de la présence de la conversion en durée calendaire"
+        Name = "Test de la prÃ©sence de la conversion en durÃ©e calendaire"
         Test = {
-            return ($documentContent -match "## Conversion en Durée Calendaire")
+            return ($documentContent -match "## Conversion en DurÃ©e Calendaire")
         }
     },
     @{
-        Name = "Test de la présence des considérations importantes"
+        Name = "Test de la prÃ©sence des considÃ©rations importantes"
         Test = {
-            return ($documentContent -match "## Considérations Importantes")
+            return ($documentContent -match "## ConsidÃ©rations Importantes")
         }
     },
     @{
-        Name = "Test de la présence des limites de la matrice"
+        Name = "Test de la prÃ©sence des limites de la matrice"
         Test = {
             return ($documentContent -match "## Limites de la Matrice")
         }
     },
     @{
-        Name = "Test de la présence du processus d'utilisation recommandé"
+        Name = "Test de la prÃ©sence du processus d'utilisation recommandÃ©"
         Test = {
-            return ($documentContent -match "## Processus d'Utilisation Recommandé")
+            return ($documentContent -match "## Processus d'Utilisation RecommandÃ©")
         }
     }
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $totalTests = $tests.Count
 $passedTests = 0
 
@@ -180,17 +180,17 @@ foreach ($test in $tests) {
     }
 }
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor Cyan
-Write-Host "  Tests réussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
-Write-Host "  Tests échoués : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
+Write-Host "  Tests Ã©chouÃ©s : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi." -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi." -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

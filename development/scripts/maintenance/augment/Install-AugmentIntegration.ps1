@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
-    Installe le module d'intégration Augment.
+    Installe le module d'intÃ©gration Augment.
 
 .DESCRIPTION
-    Ce script installe le module d'intégration Augment dans le répertoire des modules PowerShell
+    Ce script installe le module d'intÃ©gration Augment dans le rÃ©pertoire des modules PowerShell
     de l'utilisateur, permettant de l'utiliser facilement dans n'importe quel script PowerShell.
 
 .PARAMETER Force
-    Force la réinstallation du module même s'il est déjà installé.
+    Force la rÃ©installation du module mÃªme s'il est dÃ©jÃ  installÃ©.
 
 .EXAMPLE
     .\Install-AugmentIntegration.ps1
-    # Installe le module d'intégration Augment
+    # Installe le module d'intÃ©gration Augment
 
 .EXAMPLE
     .\Install-AugmentIntegration.ps1 -Force
-    # Force la réinstallation du module d'intégration Augment
+    # Force la rÃ©installation du module d'intÃ©gration Augment
 
 .NOTES
     Version: 1.0
@@ -29,7 +29,7 @@ param (
     [switch]$Force
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -39,56 +39,56 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
 
-# Chemin vers le module d'intégration Augment
+# Chemin vers le module d'intÃ©gration Augment
 $modulePath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\AugmentIntegration.psm1"
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Module d'intégration Augment introuvable : $modulePath"
+    Write-Error "Module d'intÃ©gration Augment introuvable : $modulePath"
     exit 1
 }
 
-# Chemin vers le répertoire des modules PowerShell de l'utilisateur
+# Chemin vers le rÃ©pertoire des modules PowerShell de l'utilisateur
 $userModulesPath = $env:PSModulePath -split ';' | Where-Object { $_ -like "$env:USERPROFILE*" } | Select-Object -First 1
 if (-not $userModulesPath) {
     $userModulesPath = Join-Path -Path $env:USERPROFILE -ChildPath "Documents\WindowsPowerShell\Modules"
 }
 
-# Créer le répertoire des modules s'il n'existe pas
+# CrÃ©er le rÃ©pertoire des modules s'il n'existe pas
 if (-not (Test-Path -Path $userModulesPath -PathType Container)) {
     New-Item -Path $userModulesPath -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire des modules PowerShell créé : $userModulesPath" -ForegroundColor Green
+    Write-Host "RÃ©pertoire des modules PowerShell crÃ©Ã© : $userModulesPath" -ForegroundColor Green
 }
 
-# Chemin vers le répertoire du module AugmentIntegration
+# Chemin vers le rÃ©pertoire du module AugmentIntegration
 $moduleDir = Join-Path -Path $userModulesPath -ChildPath "AugmentIntegration"
 if (-not (Test-Path -Path $moduleDir -PathType Container)) {
     New-Item -Path $moduleDir -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire du module AugmentIntegration créé : $moduleDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire du module AugmentIntegration crÃ©Ã© : $moduleDir" -ForegroundColor Green
 }
 
-# Vérifier si le module est déjà installé
+# VÃ©rifier si le module est dÃ©jÃ  installÃ©
 $installedModulePath = Join-Path -Path $moduleDir -ChildPath "AugmentIntegration.psm1"
 if (Test-Path -Path $installedModulePath) {
     if (-not $Force) {
-        Write-Host "Le module AugmentIntegration est déjà installé." -ForegroundColor Yellow
-        Write-Host "Utilisez le paramètre -Force pour forcer la réinstallation." -ForegroundColor Yellow
+        Write-Host "Le module AugmentIntegration est dÃ©jÃ  installÃ©." -ForegroundColor Yellow
+        Write-Host "Utilisez le paramÃ¨tre -Force pour forcer la rÃ©installation." -ForegroundColor Yellow
         exit 0
     } else {
-        Write-Host "Réinstallation du module AugmentIntegration..." -ForegroundColor Cyan
+        Write-Host "RÃ©installation du module AugmentIntegration..." -ForegroundColor Cyan
     }
 }
 
-# Copier le module et les fichiers associés
+# Copier le module et les fichiers associÃ©s
 try {
     # Copier le module principal
     Copy-Item -Path $modulePath -Destination $moduleDir -Force
-    Write-Host "Module AugmentIntegration copié vers : $installedModulePath" -ForegroundColor Green
+    Write-Host "Module AugmentIntegration copiÃ© vers : $installedModulePath" -ForegroundColor Green
     
-    # Copier les fichiers associés
+    # Copier les fichiers associÃ©s
     $associatedFiles = @(
         "AugmentMemoriesManager.ps1",
         "mcp-memories-server.ps1",
@@ -105,20 +105,20 @@ try {
         $sourcePath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\$file"
         if (Test-Path -Path $sourcePath) {
             Copy-Item -Path $sourcePath -Destination $moduleDir -Force
-            Write-Host "Fichier associé copié : $file" -ForegroundColor Gray
+            Write-Host "Fichier associÃ© copiÃ© : $file" -ForegroundColor Gray
         } else {
-            Write-Warning "Fichier associé introuvable : $file"
+            Write-Warning "Fichier associÃ© introuvable : $file"
         }
     }
     
-    # Créer le manifeste du module
+    # CrÃ©er le manifeste du module
     $manifestPath = Join-Path -Path $moduleDir -ChildPath "AugmentIntegration.psd1"
     $manifestParams = @{
         Path              = $manifestPath
         RootModule        = "AugmentIntegration.psm1"
         ModuleVersion     = "1.0.0"
         Author            = "Augment Agent"
-        Description       = "Module d'intégration avec Augment Code"
+        Description       = "Module d'intÃ©gration avec Augment Code"
         PowerShellVersion = "5.1"
         FunctionsToExport = @(
             "Invoke-AugmentMode",
@@ -134,9 +134,9 @@ try {
     }
     
     New-ModuleManifest @manifestParams
-    Write-Host "Manifeste du module créé : $manifestPath" -ForegroundColor Green
+    Write-Host "Manifeste du module crÃ©Ã© : $manifestPath" -ForegroundColor Green
     
-    # Créer un script d'exemple
+    # CrÃ©er un script d'exemple
     $examplePath = Join-Path -Path $moduleDir -ChildPath "Example.ps1"
     $exampleContent = @"
 # Exemple d'utilisation du module AugmentIntegration
@@ -144,13 +144,13 @@ try {
 # Importer le module
 Import-Module AugmentIntegration
 
-# Initialiser l'intégration avec Augment Code
+# Initialiser l'intÃ©gration avec Augment Code
 Initialize-AugmentIntegration -StartServers
 
-# Exécuter un mode spécifique
+# ExÃ©cuter un mode spÃ©cifique
 Invoke-AugmentMode -Mode GRAN -FilePath "docs\plans\plan-modes-stepup.md" -TaskIdentifier "1.2.3" -UpdateMemories
 
-# Mettre à jour les Memories pour un mode spécifique
+# Mettre Ã  jour les Memories pour un mode spÃ©cifique
 Update-AugmentMemoriesForMode -Mode GRAN
 
 # Mesurer la taille d'un input
@@ -165,15 +165,15 @@ if (`$inputSize.IsOverLimit) {
 # Analyser les performances d'Augment Code
 Analyze-AugmentPerformance
 
-# Arrêter les serveurs MCP
+# ArrÃªter les serveurs MCP
 Stop-AugmentMCPServers
 "@
     
     $exampleContent | Out-File -FilePath $examplePath -Encoding UTF8
-    Write-Host "Script d'exemple créé : $examplePath" -ForegroundColor Green
+    Write-Host "Script d'exemple crÃ©Ã© : $examplePath" -ForegroundColor Green
     
-    Write-Host "`nModule AugmentIntegration installé avec succès." -ForegroundColor Green
-    Write-Host "Pour l'utiliser, exécutez : Import-Module AugmentIntegration" -ForegroundColor Yellow
+    Write-Host "`nModule AugmentIntegration installÃ© avec succÃ¨s." -ForegroundColor Green
+    Write-Host "Pour l'utiliser, exÃ©cutez : Import-Module AugmentIntegration" -ForegroundColor Yellow
 } catch {
     Write-Error "Erreur lors de l'installation du module : $_"
     exit 1

@@ -1,4 +1,4 @@
-# Script de test simple pour les fonctions d'extraction d'elements specifiques
+﻿# Script de test simple pour les fonctions d'extraction d'elements specifiques
 
 # Importer les fonctions individuellement
 . "$PSScriptRoot\..\Public\Get-AstFunctions.ps1"

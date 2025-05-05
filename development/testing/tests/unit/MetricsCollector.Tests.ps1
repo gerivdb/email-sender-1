@@ -1,5 +1,5 @@
-BeforeAll {
-    # Importer le module à tester
+﻿BeforeAll {
+    # Importer le module Ã  tester
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\MetricsCollector.psm1"
     Import-Module $modulePath -Force
 
@@ -10,7 +10,7 @@ BeforeAll {
 Describe "MetricsCollector" {
     Context "Configuration" {
         It "Should initialize the configuration correctly" {
-            # Vérifier que la fonction d'initialisation fonctionne correctement
+            # VÃ©rifier que la fonction d'initialisation fonctionne correctement
             $config = Initialize-MetricsCollector -TopProcessCount 10
             $config | Should -Not -BeNullOrEmpty
             $config.TopProcessCount | Should -Be 10
@@ -169,6 +169,6 @@ Describe "MetricsCollector" {
 }
 
 AfterAll {
-    # Nettoyer après les tests
+    # Nettoyer aprÃ¨s les tests
     Remove-Module MetricsCollector -ErrorAction SilentlyContinue
 }

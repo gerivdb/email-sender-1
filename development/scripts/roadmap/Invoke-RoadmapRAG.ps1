@@ -1,5 +1,5 @@
-# Invoke-RoadmapRAG.ps1
-# Script principal pour le système RAG (Retrieval-Augmented Generation) de gestion de roadmap
+﻿# Invoke-RoadmapRAG.ps1
+# Script principal pour le systÃ¨me RAG (Retrieval-Augmented Generation) de gestion de roadmap
 
 [CmdletBinding()]
 param (
@@ -20,7 +20,7 @@ param (
     [string]$VectorDb = "Qdrant"
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -46,52 +46,52 @@ function Write-Log {
 # Fonction pour afficher l'aide
 function Show-Help {
     Write-Host @"
-Système RAG (Retrieval-Augmented Generation) pour la gestion de roadmap
+SystÃ¨me RAG (Retrieval-Augmented Generation) pour la gestion de roadmap
 =======================================================================
 
 SYNTAXE:
     .\Invoke-RoadmapRAG.ps1 -Action <Action> [-Parameters <Hashtable>] [-VectorDb <Qdrant|Chroma>]
 
 ACTIONS:
-    Initialize      : Initialise le système RAG (crée les dossiers nécessaires)
-    Convert         : Convertit les tâches de la roadmap en vecteurs
+    Initialize      : Initialise le systÃ¨me RAG (crÃ©e les dossiers nÃ©cessaires)
+    Convert         : Convertit les tÃ¢ches de la roadmap en vecteurs
     Store           : Stocke les vecteurs dans une base vectorielle (Qdrant ou Chroma)
-    Index           : Indexe les tâches par identifiant, statut, date, etc.
-    Search          : Recherche sémantique des tâches par contenu
-    Filter          : Filtre les tâches selon différents critères
-    UpdateStatus    : Met à jour le statut d'une tâche avec historique
-    ViewActive      : Génère une vue de la roadmap active
-    ViewCompleted   : Génère une vue des tâches récemment terminées
-    ViewPriority    : Génère une vue des prochaines étapes prioritaires
+    Index           : Indexe les tÃ¢ches par identifiant, statut, date, etc.
+    Search          : Recherche sÃ©mantique des tÃ¢ches par contenu
+    Filter          : Filtre les tÃ¢ches selon diffÃ©rents critÃ¨res
+    UpdateStatus    : Met Ã  jour le statut d'une tÃ¢che avec historique
+    ViewActive      : GÃ©nÃ¨re une vue de la roadmap active
+    ViewCompleted   : GÃ©nÃ¨re une vue des tÃ¢ches rÃ©cemment terminÃ©es
+    ViewPriority    : GÃ©nÃ¨re une vue des prochaines Ã©tapes prioritaires
     Help            : Affiche cette aide
 
 EXEMPLES:
-    # Initialiser le système
+    # Initialiser le systÃ¨me
     .\Invoke-RoadmapRAG.ps1 -Action Initialize
 
-    # Convertir les tâches en vecteurs
+    # Convertir les tÃ¢ches en vecteurs
     .\Invoke-RoadmapRAG.ps1 -Action Convert -Parameters @{
         RoadmapPath = "projet\roadmaps\active\roadmap_active.md"
         OutputPath = "projet\roadmaps\vectors\task_vectors.json"
         Force = $true
     }
 
-    # Rechercher des tâches par contenu
+    # Rechercher des tÃ¢ches par contenu
     .\Invoke-RoadmapRAG.ps1 -Action Search -Parameters @{
-        Query = "Implémentation des fonctionnalités de base"
+        Query = "ImplÃ©mentation des fonctionnalitÃ©s de base"
         MaxResults = 5
         OutputFormat = "markdown"
     }
 
-    # Mettre à jour le statut d'une tâche
+    # Mettre Ã  jour le statut d'une tÃ¢che
     .\Invoke-RoadmapRAG.ps1 -Action UpdateStatus -Parameters @{
         TaskId = "1.1.2.1"
         Status = "Complete"
-        Comment = "Fonctionnalité terminée et testée"
+        Comment = "FonctionnalitÃ© terminÃ©e et testÃ©e"
         UpdateRoadmap = $true
     }
 
-    # Générer une vue des prochaines étapes prioritaires
+    # GÃ©nÃ©rer une vue des prochaines Ã©tapes prioritaires
     .\Invoke-RoadmapRAG.ps1 -Action ViewPriority -Parameters @{
         MaxTasks = 10
         PriorityMethod = "Auto"
@@ -99,12 +99,12 @@ EXEMPLES:
         OutputPath = "projet\roadmaps\views\priority_tasks.html"
     }
 
-Pour plus d'informations sur les paramètres disponibles pour chaque action,
+Pour plus d'informations sur les paramÃ¨tres disponibles pour chaque action,
 consultez les scripts individuels dans le dossier development\scripts\roadmap\.
 "@
 }
 
-# Fonction pour initialiser le système RAG
+# Fonction pour initialiser le systÃ¨me RAG
 function Initialize-RoadmapRAG {
     [CmdletBinding()]
     param (
@@ -118,7 +118,7 @@ function Initialize-RoadmapRAG {
         [switch]$StartQdrantContainer = $true
     )
 
-    # Définir les dossiers à créer
+    # DÃ©finir les dossiers Ã  crÃ©er
     $folders = @(
         "$BasePath\active",
         "$BasePath\completed",
@@ -130,17 +130,17 @@ function Initialize-RoadmapRAG {
         "$BasePath\config"
     )
 
-    # Créer les dossiers
+    # CrÃ©er les dossiers
     foreach ($folder in $folders) {
         if (-not (Test-Path -Path $folder) -or $Force) {
             New-Item -Path $folder -ItemType Directory -Force | Out-Null
-            Write-Log "Dossier créé: $folder" -Level Success
+            Write-Log "Dossier crÃ©Ã©: $folder" -Level Success
         } else {
-            Write-Log "Le dossier $folder existe déjà." -Level Info
+            Write-Log "Le dossier $folder existe dÃ©jÃ ." -Level Info
         }
     }
 
-    # Créer un fichier de configuration de priorité par défaut
+    # CrÃ©er un fichier de configuration de prioritÃ© par dÃ©faut
     $priorityConfigPath = "$BasePath\config\priority_config.json"
     if (-not (Test-Path -Path $priorityConfigPath) -or $Force) {
         $priorityConfig = @{
@@ -154,28 +154,28 @@ function Initialize-RoadmapRAG {
                 @{
                     rule        = "ParentComplete"
                     score       = 50
-                    description = "Le parent est terminé"
+                    description = "Le parent est terminÃ©"
                 },
                 @{
                     rule        = "HasAssignee"
                     score       = 30
-                    description = "La tâche est assignée"
+                    description = "La tÃ¢che est assignÃ©e"
                 },
                 @{
                     rule        = "InProgress"
                     score       = 40
-                    description = "La tâche est en cours"
+                    description = "La tÃ¢che est en cours"
                 }
             )
         }
 
         $priorityConfig | ConvertTo-Json -Depth 5 | Set-Content -Path $priorityConfigPath -Encoding UTF8
-        Write-Log "Fichier de configuration de priorité créé: $priorityConfigPath" -Level Success
+        Write-Log "Fichier de configuration de prioritÃ© crÃ©Ã©: $priorityConfigPath" -Level Success
     }
 
-    # Si Qdrant est sélectionné et StartQdrantContainer est activé, démarrer le conteneur Docker
+    # Si Qdrant est sÃ©lectionnÃ© et StartQdrantContainer est activÃ©, dÃ©marrer le conteneur Docker
     if ($VectorDb -eq "Qdrant" -and $StartQdrantContainer) {
-        Write-Log "Démarrage du conteneur Docker pour Qdrant..." -Level Info
+        Write-Log "DÃ©marrage du conteneur Docker pour Qdrant..." -Level Info
 
         $qdrantContainerScript = Join-Path -Path $PSScriptRoot -ChildPath "Start-QdrantContainer.ps1"
         if (Test-Path -Path $qdrantContainerScript) {
@@ -183,28 +183,28 @@ function Initialize-RoadmapRAG {
             & $qdrantContainerScript -Action Start -DataPath $qdrantDataPath -Force:$Force
 
             if ($LASTEXITCODE -eq 0) {
-                Write-Log "Conteneur Docker pour Qdrant démarré avec succès." -Level Success
+                Write-Log "Conteneur Docker pour Qdrant dÃ©marrÃ© avec succÃ¨s." -Level Success
             } else {
-                Write-Log "Erreur lors du démarrage du conteneur Docker pour Qdrant." -Level Warning
-                Write-Log "Vous devrez démarrer le conteneur manuellement avec la commande:" -Level Warning
+                Write-Log "Erreur lors du dÃ©marrage du conteneur Docker pour Qdrant." -Level Warning
+                Write-Log "Vous devrez dÃ©marrer le conteneur manuellement avec la commande:" -Level Warning
                 Write-Log ".\Start-QdrantContainer.ps1 -Action Start -DataPath `"$qdrantDataPath`"" -Level Warning
             }
         } else {
-            Write-Log "Script de gestion du conteneur Docker pour Qdrant non trouvé: $qdrantContainerScript" -Level Warning
-            Write-Log "Vous devrez démarrer le conteneur manuellement." -Level Warning
+            Write-Log "Script de gestion du conteneur Docker pour Qdrant non trouvÃ©: $qdrantContainerScript" -Level Warning
+            Write-Log "Vous devrez dÃ©marrer le conteneur manuellement." -Level Warning
         }
     }
 
-    Write-Log "Initialisation du système RAG terminée." -Level Success
+    Write-Log "Initialisation du systÃ¨me RAG terminÃ©e." -Level Success
     return $true
 }
 
 # Fonction principale
 function Main {
-    # Vérifier l'action demandée
+    # VÃ©rifier l'action demandÃ©e
     switch ($Action) {
         "Initialize" {
-            # Ajouter le paramètre VectorDb aux paramètres d'initialisation
+            # Ajouter le paramÃ¨tre VectorDb aux paramÃ¨tres d'initialisation
             $initParams = $Parameters.Clone()
             $initParams["VectorDb"] = $VectorDb
 
@@ -217,7 +217,7 @@ function Main {
                 & $scriptPath @Parameters
                 return $?
             } else {
-                Write-Log "Script non trouvé: $scriptPath" -Level Error
+                Write-Log "Script non trouvÃ©: $scriptPath" -Level Error
                 return $false
             }
         }
@@ -232,7 +232,7 @@ function Main {
                 & $scriptPath @Parameters
                 return $?
             } else {
-                Write-Log "Script non trouvé: $scriptPath" -Level Error
+                Write-Log "Script non trouvÃ©: $scriptPath" -Level Error
                 return $false
             }
         }
@@ -247,7 +247,7 @@ function Main {
                 & $scriptPath @Parameters
                 return $?
             } else {
-                Write-Log "Script non trouvé: $scriptPath" -Level Error
+                Write-Log "Script non trouvÃ©: $scriptPath" -Level Error
                 return $false
             }
         }
@@ -262,7 +262,7 @@ function Main {
                 & $scriptPath @Parameters
                 return $?
             } else {
-                Write-Log "Script non trouvé: $scriptPath" -Level Error
+                Write-Log "Script non trouvÃ©: $scriptPath" -Level Error
                 return $false
             }
         }
@@ -272,7 +272,7 @@ function Main {
                 & $scriptPath @Parameters
                 return $?
             } else {
-                Write-Log "Script non trouvé: $scriptPath" -Level Error
+                Write-Log "Script non trouvÃ©: $scriptPath" -Level Error
                 return $false
             }
         }
@@ -282,7 +282,7 @@ function Main {
                 & $scriptPath @Parameters
                 return $?
             } else {
-                Write-Log "Script non trouvé: $scriptPath" -Level Error
+                Write-Log "Script non trouvÃ©: $scriptPath" -Level Error
                 return $false
             }
         }
@@ -292,7 +292,7 @@ function Main {
                 & $scriptPath @Parameters
                 return $?
             } else {
-                Write-Log "Script non trouvé: $scriptPath" -Level Error
+                Write-Log "Script non trouvÃ©: $scriptPath" -Level Error
                 return $false
             }
         }
@@ -302,7 +302,7 @@ function Main {
                 & $scriptPath @Parameters
                 return $?
             } else {
-                Write-Log "Script non trouvé: $scriptPath" -Level Error
+                Write-Log "Script non trouvÃ©: $scriptPath" -Level Error
                 return $false
             }
         }
@@ -312,7 +312,7 @@ function Main {
                 & $scriptPath @Parameters
                 return $?
             } else {
-                Write-Log "Script non trouvé: $scriptPath" -Level Error
+                Write-Log "Script non trouvÃ©: $scriptPath" -Level Error
                 return $false
             }
         }
@@ -328,5 +328,5 @@ function Main {
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

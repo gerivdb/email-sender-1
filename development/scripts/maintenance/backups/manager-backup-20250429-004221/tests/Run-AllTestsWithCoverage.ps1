@@ -1,6 +1,6 @@
-# Script pour exécuter tous les tests avec couverture de code
+﻿# Script pour exÃ©cuter tous les tests avec couverture de code
 
-# Définir les paramètres
+# DÃ©finir les paramÃ¨tres
 param (
     [Parameter(Mandatory = $false)]
     [ValidateSet("All", "Unit", "Integration", "Performance", "Workflow", "Error", "Config", "Simple", "PerformanceAdvanced", "WorkflowAdvanced", "UI", "Security", "Documentation", "Installation", "Regression", "Load", "IntegrationRoadmapParser", "Compatibility", "Localization", "LongTermPerformance", "IntegrationReporting")]
@@ -22,13 +22,13 @@ param (
     [switch]$GenerateBadge = $true
 )
 
-# Importer le module Pester si nécessaire
+# Importer le module Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir le chemin du projet
+# DÃ©finir le chemin du projet
 $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 if (-not (Test-Path -Path $projectRoot)) {
     $projectRoot = $PSScriptRoot
@@ -37,23 +37,23 @@ if (-not (Test-Path -Path $projectRoot)) {
     }
 }
 
-# Définir les chemins des fichiers à tester
+# DÃ©finir les chemins des fichiers Ã  tester
 $modeManagerScript = Join-Path -Path $projectRoot -ChildPath "development\scripts\manager\mode-manager.ps1"
 $modeManagerDir = Join-Path -Path $projectRoot -ChildPath "development\scripts\manager"
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Définir les chemins des rapports
+# DÃ©finir les chemins des rapports
 $reportPath = Join-Path -Path $OutputPath -ChildPath "mode-manager-tests.xml"
 $htmlReportPath = Join-Path -Path $OutputPath -ChildPath "mode-manager-tests.html"
 $coverageReportPath = Join-Path -Path $OutputPath -ChildPath "mode-manager-coverage.xml"
 $htmlCoverageReportPath = Join-Path -Path $OutputPath -ChildPath "mode-manager-coverage.html"
 
 # Afficher les informations
-Write-Host "Exécution des tests du mode MANAGER avec couverture de code" -ForegroundColor Cyan
+Write-Host "ExÃ©cution des tests du mode MANAGER avec couverture de code" -ForegroundColor Cyan
 Write-Host "Chemin du projet : $projectRoot" -ForegroundColor Cyan
 Write-Host "Chemin des tests : $PSScriptRoot" -ForegroundColor Cyan
 Write-Host "Chemin du rapport : $reportPath" -ForegroundColor Cyan
@@ -61,17 +61,17 @@ Write-Host "Chemin du rapport HTML : $htmlReportPath" -ForegroundColor Cyan
 Write-Host "Chemin du rapport de couverture : $coverageReportPath" -ForegroundColor Cyan
 Write-Host "Chemin du rapport de couverture HTML : $htmlCoverageReportPath" -ForegroundColor Cyan
 
-# Vérifier la version de Pester
+# VÃ©rifier la version de Pester
 $pesterVersion = (Get-Module -Name Pester -ListAvailable | Sort-Object Version -Descending | Select-Object -First 1).Version
 
 # Configurer Pester
 if ($pesterVersion -ge [Version]"5.0.0") {
     Write-Host "Utilisation de Pester version $pesterVersion" -ForegroundColor Cyan
 
-    # Créer la configuration Pester
+    # CrÃ©er la configuration Pester
     $pesterConfig = New-PesterConfiguration
 
-    # Configurer les tests à exécuter
+    # Configurer les tests Ã  exÃ©cuter
     if ($TestType -eq "All") {
         $pesterConfig.Run.Path = $PSScriptRoot
     } else {
@@ -96,17 +96,17 @@ if ($pesterVersion -ge [Version]"5.0.0") {
     $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
     $pesterConfig.CodeCoverage.OutputPath = $coverageReportPath
 
-    # Filtrer les tests à exécuter
+    # Filtrer les tests Ã  exÃ©cuter
     if ($SkipPerformanceTests) {
         $pesterConfig.Filter.ExcludeTag = @("Performance")
     }
 
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     $testResults = Invoke-Pester -Configuration $pesterConfig
 } else {
     Write-Host "Utilisation de Pester version $pesterVersion" -ForegroundColor Cyan
 
-    # Configurer les paramètres Pester
+    # Configurer les paramÃ¨tres Pester
     $pesterParams = @{
         PassThru                     = $true
         OutputFormat                 = "NUnitXml"
@@ -116,7 +116,7 @@ if ($pesterVersion -ge [Version]"5.0.0") {
         CodeCoverageOutputFileFormat = "JaCoCo"
     }
 
-    # Configurer les tests à exécuter
+    # Configurer les tests Ã  exÃ©cuter
     if ($TestType -eq "All") {
         $pesterParams.Path = $PSScriptRoot
     } else {
@@ -129,34 +129,34 @@ if ($pesterVersion -ge [Version]"5.0.0") {
         }
     }
 
-    # Filtrer les tests à exécuter
+    # Filtrer les tests Ã  exÃ©cuter
     if ($SkipPerformanceTests) {
         $pesterParams.ExcludeTag = "Performance"
     }
 
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     $testResults = Invoke-Pester @pesterParams
 }
 
-# Générer le rapport HTML
+# GÃ©nÃ©rer le rapport HTML
 if ($GenerateHTML) {
-    # Vérifier si le rapport XML existe
+    # VÃ©rifier si le rapport XML existe
     if (Test-Path -Path $reportPath) {
-        # Vérifier si le module ReportUnit est installé
+        # VÃ©rifier si le module ReportUnit est installÃ©
         if (-not (Get-Module -Name ReportUnit -ListAvailable)) {
-            Write-Warning "Le module ReportUnit n'est pas installé. Installation en cours..."
+            Write-Warning "Le module ReportUnit n'est pas installÃ©. Installation en cours..."
             Install-Module -Name ReportUnit -Force -SkipPublisherCheck
         }
 
         try {
-            # Générer le rapport HTML
+            # GÃ©nÃ©rer le rapport HTML
             Import-Module -Name ReportUnit
             ConvertTo-ReportUnit -InputFile $reportPath -OutputFile $htmlReportPath
-            Write-Host "Rapport HTML généré : $htmlReportPath" -ForegroundColor Green
+            Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $htmlReportPath" -ForegroundColor Green
         } catch {
-            Write-Warning "Impossible de générer le rapport HTML : $_"
+            Write-Warning "Impossible de gÃ©nÃ©rer le rapport HTML : $_"
 
-            # Générer un rapport HTML simple
+            # GÃ©nÃ©rer un rapport HTML simple
             $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -178,23 +178,23 @@ if ($GenerateHTML) {
 <body>
     <h1>Rapport de tests du mode MANAGER</h1>
     <div class="summary">
-        <p>Tests exécutés : $($testResults.TotalCount)</p>
-        <p>Tests réussis : <span class="passed">$($testResults.PassedCount)</span></p>
-        <p>Tests échoués : <span class="failed">$($testResults.FailedCount)</span></p>
-        <p>Tests ignorés : $($testResults.SkippedCount)</p>
-        <p>Durée : $($testResults.Duration.TotalSeconds) secondes</p>
+        <p>Tests exÃ©cutÃ©s : $($testResults.TotalCount)</p>
+        <p>Tests rÃ©ussis : <span class="passed">$($testResults.PassedCount)</span></p>
+        <p>Tests Ã©chouÃ©s : <span class="failed">$($testResults.FailedCount)</span></p>
+        <p>Tests ignorÃ©s : $($testResults.SkippedCount)</p>
+        <p>DurÃ©e : $($testResults.Duration.TotalSeconds) secondes</p>
     </div>
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <table>
         <tr>
             <th>Nom</th>
-            <th>Résultat</th>
-            <th>Durée (ms)</th>
+            <th>RÃ©sultat</th>
+            <th>DurÃ©e (ms)</th>
         </tr>
 "@
 
             foreach ($test in $testResults.Tests) {
-                $result = if ($test.Result -eq "Passed") { "<span class='passed'>Réussi</span>" } else { "<span class='failed'>Échoué</span>" }
+                $result = if ($test.Result -eq "Passed") { "<span class='passed'>RÃ©ussi</span>" } else { "<span class='failed'>Ã‰chouÃ©</span>" }
                 $htmlContent += @"
         <tr>
             <td>$($test.Name)</td>
@@ -211,30 +211,30 @@ if ($GenerateHTML) {
 "@
 
             Set-Content -Path $htmlReportPath -Value $htmlContent -Encoding UTF8
-            Write-Host "Rapport HTML simple généré : $htmlReportPath" -ForegroundColor Green
+            Write-Host "Rapport HTML simple gÃ©nÃ©rÃ© : $htmlReportPath" -ForegroundColor Green
         }
     } else {
-        Write-Warning "Le rapport XML n'a pas été généré. Impossible de créer le rapport HTML."
+        Write-Warning "Le rapport XML n'a pas Ã©tÃ© gÃ©nÃ©rÃ©. Impossible de crÃ©er le rapport HTML."
     }
 
-    # Générer le rapport de couverture HTML
+    # GÃ©nÃ©rer le rapport de couverture HTML
     if (Test-Path -Path $coverageReportPath) {
         try {
-            # Vérifier si le module ReportGenerator est installé
+            # VÃ©rifier si le module ReportGenerator est installÃ©
             if (-not (Get-Module -Name ReportGenerator -ListAvailable)) {
-                Write-Warning "Le module ReportGenerator n'est pas installé. Installation en cours..."
+                Write-Warning "Le module ReportGenerator n'est pas installÃ©. Installation en cours..."
                 Install-Module -Name ReportGenerator -Force -SkipPublisherCheck
             }
 
-            # Générer le rapport de couverture HTML
+            # GÃ©nÃ©rer le rapport de couverture HTML
             Import-Module -Name ReportGenerator
             ConvertTo-ReportGeneratorReport -InputFile $coverageReportPath -OutputFile $htmlCoverageReportPath -ReportType "Html"
-            Write-Host "Rapport de couverture HTML généré : $htmlCoverageReportPath" -ForegroundColor Green
+            Write-Host "Rapport de couverture HTML gÃ©nÃ©rÃ© : $htmlCoverageReportPath" -ForegroundColor Green
         } catch {
-            Write-Warning "Impossible de générer le rapport de couverture HTML : $_"
+            Write-Warning "Impossible de gÃ©nÃ©rer le rapport de couverture HTML : $_"
         }
     } else {
-        Write-Warning "Le rapport de couverture XML n'a pas été généré. Impossible de créer le rapport de couverture HTML."
+        Write-Warning "Le rapport de couverture XML n'a pas Ã©tÃ© gÃ©nÃ©rÃ©. Impossible de crÃ©er le rapport de couverture HTML."
     }
 }
 
@@ -249,23 +249,23 @@ if ($OpenReport -and $GenerateHTML) {
     }
 }
 
-# Afficher le résumé des tests
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "Tests exécutés : $($testResults.TotalCount)" -ForegroundColor Cyan
-Write-Host "Tests réussis : " -ForegroundColor Cyan -NoNewline
+# Afficher le rÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "Tests exÃ©cutÃ©s : $($testResults.TotalCount)" -ForegroundColor Cyan
+Write-Host "Tests rÃ©ussis : " -ForegroundColor Cyan -NoNewline
 Write-Host "$($testResults.PassedCount)" -ForegroundColor Green
-Write-Host "Tests échoués : " -ForegroundColor Cyan -NoNewline
+Write-Host "Tests Ã©chouÃ©s : " -ForegroundColor Cyan -NoNewline
 Write-Host "$($testResults.FailedCount)" -ForegroundColor Red
-Write-Host "Tests ignorés : $($testResults.SkippedCount)" -ForegroundColor Cyan
-Write-Host "Durée : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor Cyan
+Write-Host "Tests ignorÃ©s : $($testResults.SkippedCount)" -ForegroundColor Cyan
+Write-Host "DurÃ©e : $($testResults.Duration.TotalSeconds) secondes" -ForegroundColor Cyan
 
-# Générer un badge de couverture
+# GÃ©nÃ©rer un badge de couverture
 if ($GenerateBadge) {
     $badgeScript = Join-Path -Path $PSScriptRoot -ChildPath "Generate-CoverageBadge.ps1"
     if (Test-Path -Path $badgeScript) {
         & $badgeScript -CoverageReportPath $coverageReportPath
     } else {
-        Write-Warning "Le script de génération de badge est introuvable : $badgeScript"
+        Write-Warning "Le script de gÃ©nÃ©ration de badge est introuvable : $badgeScript"
     }
 }
 

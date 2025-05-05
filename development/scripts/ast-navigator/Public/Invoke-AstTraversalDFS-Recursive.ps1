@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
-    Effectue un parcours en profondeur (DFS) récursif de l'arbre syntaxique PowerShell.
+    Effectue un parcours en profondeur (DFS) rÃ©cursif de l'arbre syntaxique PowerShell.
 
 .DESCRIPTION
-    Cette fonction parcourt récursivement un arbre syntaxique PowerShell (AST) en utilisant l'algorithme de parcours en profondeur (DFS).
-    Elle permet de filtrer les nœuds par type et de limiter la profondeur de parcours.
-    Contrairement à Invoke-AstTraversalDFS, cette fonction utilise une approche récursive pour le parcours.
+    Cette fonction parcourt rÃ©cursivement un arbre syntaxique PowerShell (AST) en utilisant l'algorithme de parcours en profondeur (DFS).
+    Elle permet de filtrer les nÅ“uds par type et de limiter la profondeur de parcours.
+    Contrairement Ã  Invoke-AstTraversalDFS, cette fonction utilise une approche rÃ©cursive pour le parcours.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à parcourir. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  parcourir. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER NodeType
-    Type de nœud AST à filtrer. Si spécifié, seuls les nœuds de ce type seront inclus dans les résultats.
+    Type de nÅ“ud AST Ã  filtrer. Si spÃ©cifiÃ©, seuls les nÅ“uds de ce type seront inclus dans les rÃ©sultats.
 
 .PARAMETER MaxDepth
-    Profondeur maximale de parcours. Si 0 ou non spécifié, aucune limite de profondeur n'est appliquée.
+    Profondeur maximale de parcours. Si 0 ou non spÃ©cifiÃ©, aucune limite de profondeur n'est appliquÃ©e.
 
 .PARAMETER Predicate
-    Prédicat (ScriptBlock) pour filtrer les nœuds. Si spécifié, seuls les nœuds pour lesquels le prédicat retourne $true seront inclus dans les résultats.
+    PrÃ©dicat (ScriptBlock) pour filtrer les nÅ“uds. Si spÃ©cifiÃ©, seuls les nÅ“uds pour lesquels le prÃ©dicat retourne $true seront inclus dans les rÃ©sultats.
 
 .PARAMETER IncludeRoot
-    Si spécifié, inclut le nœud racine dans les résultats.
+    Si spÃ©cifiÃ©, inclut le nÅ“ud racine dans les rÃ©sultats.
 
 .PARAMETER CurrentDepth
-    Paramètre interne utilisé pour suivre la profondeur actuelle lors de la récursion. Ne pas utiliser directement.
+    ParamÃ¨tre interne utilisÃ© pour suivre la profondeur actuelle lors de la rÃ©cursion. Ne pas utiliser directement.
 
 .PARAMETER Results
-    Paramètre interne utilisé pour accumuler les résultats lors de la récursion. Ne pas utiliser directement.
+    ParamÃ¨tre interne utilisÃ© pour accumuler les rÃ©sultats lors de la rÃ©cursion. Ne pas utiliser directement.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -43,7 +43,7 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 function Invoke-AstTraversalDFS-Recursive {
     [CmdletBinding()]
@@ -71,31 +71,31 @@ function Invoke-AstTraversalDFS-Recursive {
     )
 
     begin {
-        # Initialiser la liste des résultats si c'est le premier appel
+        # Initialiser la liste des rÃ©sultats si c'est le premier appel
         if ($null -eq $Results) {
             $Results = New-Object System.Collections.ArrayList
         }
 
-        # Fonction pour vérifier si un nœud correspond aux critères
+        # Fonction pour vÃ©rifier si un nÅ“ud correspond aux critÃ¨res
         function Test-NodeMatchesCriteria {
             param (
                 [Parameter(Mandatory = $true)]
                 [System.Management.Automation.Language.Ast]$Node
             )
 
-            # Si aucun type n'est spécifié et aucun prédicat n'est fourni, inclure tous les nœuds
+            # Si aucun type n'est spÃ©cifiÃ© et aucun prÃ©dicat n'est fourni, inclure tous les nÅ“uds
             if (-not $NodeType -and -not $Predicate) {
                 return $true
             }
 
-            # Vérifier si le nœud correspond au type spécifié
+            # VÃ©rifier si le nÅ“ud correspond au type spÃ©cifiÃ©
             $includeNode = $true
             if ($NodeType) {
                 $nodeTypeName = $Node.GetType().Name
                 $includeNode = $nodeTypeName -eq $NodeType -or $nodeTypeName -eq "${NodeType}Ast"
             }
 
-            # Vérifier si le nœud correspond au prédicat spécifié
+            # VÃ©rifier si le nÅ“ud correspond au prÃ©dicat spÃ©cifiÃ©
             if ($includeNode -and $Predicate) {
                 $includeNode = & $Predicate $Node
             }
@@ -106,43 +106,43 @@ function Invoke-AstTraversalDFS-Recursive {
 
     process {
         try {
-            # Vérifier si la profondeur maximale est atteinte
+            # VÃ©rifier si la profondeur maximale est atteinte
             if ($MaxDepth -gt 0 -and $CurrentDepth -gt $MaxDepth) {
                 return $Results
             }
 
-            # Vérifier si le nœud racine doit être inclus
+            # VÃ©rifier si le nÅ“ud racine doit Ãªtre inclus
             if (($CurrentDepth -eq 0 -and $IncludeRoot) -or $CurrentDepth -gt 0) {
-                # Vérifier si le nœud correspond aux critères
+                # VÃ©rifier si le nÅ“ud correspond aux critÃ¨res
                 if (Test-NodeMatchesCriteria -Node $Ast) {
                     [void]$Results.Add($Ast)
                 }
             }
 
-            # Parcourir récursivement les nœuds enfants directs
-            # Utiliser une approche différente pour obtenir les enfants directs
+            # Parcourir rÃ©cursivement les nÅ“uds enfants directs
+            # Utiliser une approche diffÃ©rente pour obtenir les enfants directs
             $children = @()
 
-            # Obtenir les propriétés qui contiennent des objets Ast
+            # Obtenir les propriÃ©tÃ©s qui contiennent des objets Ast
             $astProperties = $Ast.GetType().GetProperties() | Where-Object {
                 $propValue = $_.GetValue($Ast)
 
-                # Vérifier si la propriété est de type Ast ou une collection d'Ast
+                # VÃ©rifier si la propriÃ©tÃ© est de type Ast ou une collection d'Ast
                 ($propValue -is [System.Management.Automation.Language.Ast]) -or
                 ($propValue -is [System.Collections.IEnumerable] -and
                 $propValue -isnot [string] -and
                 $propValue | Where-Object { $_ -is [System.Management.Automation.Language.Ast] })
             }
 
-            # Extraire les enfants Ast des propriétés
+            # Extraire les enfants Ast des propriÃ©tÃ©s
             foreach ($prop in $astProperties) {
                 $propValue = $prop.GetValue($Ast)
 
-                # Si la propriété est un Ast, l'ajouter aux enfants
+                # Si la propriÃ©tÃ© est un Ast, l'ajouter aux enfants
                 if ($propValue -is [System.Management.Automation.Language.Ast]) {
                     $children += $propValue
                 }
-                # Si la propriété est une collection, ajouter chaque élément Ast
+                # Si la propriÃ©tÃ© est une collection, ajouter chaque Ã©lÃ©ment Ast
                 elseif ($propValue -is [System.Collections.IEnumerable] -and $propValue -isnot [string]) {
                     foreach ($item in $propValue) {
                         if ($item -is [System.Management.Automation.Language.Ast]) {
@@ -152,15 +152,15 @@ function Invoke-AstTraversalDFS-Recursive {
                 }
             }
 
-            # Parcourir récursivement les enfants
+            # Parcourir rÃ©cursivement les enfants
             foreach ($child in $children) {
-                # Éviter la récursion infinie en vérifiant que l'enfant n'est pas le parent
+                # Ã‰viter la rÃ©cursion infinie en vÃ©rifiant que l'enfant n'est pas le parent
                 if ($child -ne $Ast) {
                     Invoke-AstTraversalDFS-Recursive -Ast $child -NodeType $NodeType -MaxDepth $MaxDepth -Predicate $Predicate -CurrentDepth ($CurrentDepth + 1) -Results $Results
                 }
             }
 
-            # Retourner les résultats si c'est le premier appel
+            # Retourner les rÃ©sultats si c'est le premier appel
             if ($CurrentDepth -eq 0) {
                 return $Results
             }

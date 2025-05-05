@@ -1,9 +1,9 @@
-# Script PowerShell pour configurer l'ensemble du systÃ¨me de journal de bord RAG
+﻿# Script PowerShell pour configurer l'ensemble du systÃƒÂ¨me de journal de bord RAG
 
-# VÃ©rifier si le script est exÃ©cutÃ© en tant qu'administrateur
+# VÃƒÂ©rifier si le script est exÃƒÂ©cutÃƒÂ© en tant qu'administrateur
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-# Chemin absolu vers le rÃ©pertoire du projet
+# Chemin absolu vers le rÃƒÂ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $ScriptsDir = Join-Path $ProjectDir "scripts"
 $PythonScriptsDir = Join-Path $ScriptsDir "python\journal"
@@ -20,7 +20,7 @@ function Write-Section {
     Write-Host ""
 }
 
-# Fonction pour exÃ©cuter une commande et afficher son rÃ©sultat
+# Fonction pour exÃƒÂ©cuter une commande et afficher son rÃƒÂ©sultat
 function Invoke-CommandWithOutput {
     param (
         [string]$Command,
@@ -29,66 +29,66 @@ function Invoke-CommandWithOutput {
     )
     
     if ($RequiresAdmin -and -not $isAdmin) {
-        Write-Host "Cette commande nÃ©cessite des privilÃ¨ges d'administrateur et sera ignorÃ©e:" -ForegroundColor Yellow
+        Write-Host "Cette commande nÃƒÂ©cessite des privilÃƒÂ¨ges d'administrateur et sera ignorÃƒÂ©e:" -ForegroundColor Yellow
         Write-Host "  $Command $Arguments" -ForegroundColor Yellow
         return
     }
     
-    Write-Host "ExÃ©cution de: $Command $Arguments" -ForegroundColor Gray
+    Write-Host "ExÃƒÂ©cution de: $Command $Arguments" -ForegroundColor Gray
     
     try {
         $process = Start-Process -FilePath $Command -ArgumentList $Arguments -NoNewWindow -PassThru -Wait
         
         if ($process.ExitCode -eq 0) {
-            Write-Host "Commande exÃ©cutÃ©e avec succÃ¨s." -ForegroundColor Green
+            Write-Host "Commande exÃƒÂ©cutÃƒÂ©e avec succÃƒÂ¨s." -ForegroundColor Green
         } else {
-            Write-Host "La commande a Ã©chouÃ© avec le code de sortie $($process.ExitCode)." -ForegroundColor Red
+            Write-Host "La commande a ÃƒÂ©chouÃƒÂ© avec le code de sortie $($process.ExitCode)." -ForegroundColor Red
         }
     } catch {
-        Write-Host "Erreur lors de l'exÃ©cution de la commande: $_" -ForegroundColor Red
+        Write-Host "Erreur lors de l'exÃƒÂ©cution de la commande: $_" -ForegroundColor Red
     }
 }
 
 # Afficher un message d'introduction
-Write-Host "Configuration du systÃ¨me de journal de bord RAG" -ForegroundColor Magenta
+Write-Host "Configuration du systÃƒÂ¨me de journal de bord RAG" -ForegroundColor Magenta
 Write-Host "================================================" -ForegroundColor Magenta
 Write-Host ""
-Write-Host "Ce script va configurer tous les aspects du systÃ¨me de journal de bord RAG:"
-Write-Host "1. Installation des dÃ©pendances Python"
-Write-Host "2. Configuration des tÃ¢ches planifiÃ©es"
+Write-Host "Ce script va configurer tous les aspects du systÃƒÂ¨me de journal de bord RAG:"
+Write-Host "1. Installation des dÃƒÂ©pendances Python"
+Write-Host "2. Configuration des tÃƒÂ¢ches planifiÃƒÂ©es"
 Write-Host "3. Configuration de la surveillance des fichiers"
-Write-Host "4. Configuration de l'intÃ©gration avec VS Code"
+Write-Host "4. Configuration de l'intÃƒÂ©gration avec VS Code"
 Write-Host ""
 
 if (-not $isAdmin) {
-    Write-Host "AVERTISSEMENT: Ce script n'est pas exÃ©cutÃ© en tant qu'administrateur." -ForegroundColor Yellow
-    Write-Host "Certaines fonctionnalitÃ©s nÃ©cessitant des privilÃ¨ges d'administrateur seront ignorÃ©es." -ForegroundColor Yellow
-    Write-Host "Pour une installation complÃ¨te, exÃ©cutez ce script en tant qu'administrateur." -ForegroundColor Yellow
+    Write-Host "AVERTISSEMENT: Ce script n'est pas exÃƒÂ©cutÃƒÂ© en tant qu'administrateur." -ForegroundColor Yellow
+    Write-Host "Certaines fonctionnalitÃƒÂ©s nÃƒÂ©cessitant des privilÃƒÂ¨ges d'administrateur seront ignorÃƒÂ©es." -ForegroundColor Yellow
+    Write-Host "Pour une installation complÃƒÂ¨te, exÃƒÂ©cutez ce script en tant qu'administrateur." -ForegroundColor Yellow
     Write-Host ""
     
     $continue = Read-Host "Voulez-vous continuer avec une installation partielle? (O/N)"
     if ($continue -ne "O" -and $continue -ne "o") {
-        Write-Host "Installation annulÃ©e." -ForegroundColor Red
+        Write-Host "Installation annulÃƒÂ©e." -ForegroundColor Red
         exit
     }
 }
 
-# 1. Installation des dÃ©pendances Python
-Write-Section "Installation des dÃ©pendances Python"
+# 1. Installation des dÃƒÂ©pendances Python
+Write-Section "Installation des dÃƒÂ©pendances Python"
 Invoke-CommandWithOutput -Command "pip" -Arguments "install -r $PythonScriptsDir\requirements.txt"
 Invoke-CommandWithOutput -Command "pip" -Arguments "install watchdog pywin32"
 
-# 2. Configuration du systÃ¨me de base
-Write-Section "Configuration du systÃ¨me de base"
+# 2. Configuration du systÃƒÂ¨me de base
+Write-Section "Configuration du systÃƒÂ¨me de base"
 Invoke-CommandWithOutput -Command "python" -Arguments "$PythonScriptsDir\setup.py"
 
-# 3. Configuration des tÃ¢ches planifiÃ©es
-Write-Section "Configuration des tÃ¢ches planifiÃ©es"
+# 3. Configuration des tÃƒÂ¢ches planifiÃƒÂ©es
+Write-Section "Configuration des tÃƒÂ¢ches planifiÃƒÂ©es"
 if ($isAdmin) {
     Invoke-CommandWithOutput -Command "powershell" -Arguments "-File $CmdScriptsDir\setup-journal-tasks.ps1" -RequiresAdmin
 } else {
-    Write-Host "La configuration des tÃ¢ches planifiÃ©es nÃ©cessite des privilÃ¨ges d'administrateur." -ForegroundColor Yellow
-    Write-Host "Pour configurer les tÃ¢ches planifiÃ©es, exÃ©cutez manuellement:" -ForegroundColor Yellow
+    Write-Host "La configuration des tÃƒÂ¢ches planifiÃƒÂ©es nÃƒÂ©cessite des privilÃƒÂ¨ges d'administrateur." -ForegroundColor Yellow
+    Write-Host "Pour configurer les tÃƒÂ¢ches planifiÃƒÂ©es, exÃƒÂ©cutez manuellement:" -ForegroundColor Yellow
     Write-Host "  powershell -File $CmdScriptsDir\setup-journal-tasks.ps1" -ForegroundColor Yellow
 }
 
@@ -97,52 +97,52 @@ Write-Section "Configuration de la surveillance des fichiers"
 if ($isAdmin) {
     Invoke-CommandWithOutput -Command "powershell" -Arguments "-File $CmdScriptsDir\setup-journal-watcher.ps1" -RequiresAdmin
 } else {
-    Write-Host "La configuration du service de surveillance nÃ©cessite des privilÃ¨ges d'administrateur." -ForegroundColor Yellow
-    Write-Host "Pour configurer le service de surveillance, exÃ©cutez manuellement:" -ForegroundColor Yellow
+    Write-Host "La configuration du service de surveillance nÃƒÂ©cessite des privilÃƒÂ¨ges d'administrateur." -ForegroundColor Yellow
+    Write-Host "Pour configurer le service de surveillance, exÃƒÂ©cutez manuellement:" -ForegroundColor Yellow
     Write-Host "  powershell -File $CmdScriptsDir\setup-journal-watcher.ps1" -ForegroundColor Yellow
     
-    # DÃ©marrer le watcher en mode non-service
-    Write-Host "DÃ©marrage du watcher en mode non-service..." -ForegroundColor Cyan
+    # DÃƒÂ©marrer le watcher en mode non-service
+    Write-Host "DÃƒÂ©marrage du watcher en mode non-service..." -ForegroundColor Cyan
     Start-Process -FilePath "python" -ArgumentList "$PythonScriptsDir\journal_watcher.py --background" -WindowStyle Hidden
 }
 
-# 5. CrÃ©ation d'une entrÃ©e de journal pour documenter l'installation
-Write-Section "CrÃ©ation d'une entrÃ©e de journal pour documenter l'installation"
+# 5. CrÃƒÂ©ation d'une entrÃƒÂ©e de journal pour documenter l'installation
+Write-Section "CrÃƒÂ©ation d'une entrÃƒÂ©e de journal pour documenter l'installation"
 $date = Get-Date -Format "yyyy-MM-dd"
 $installDetails = @"
-## Installation du systÃ¨me de journal de bord RAG
+## Installation du systÃƒÂ¨me de journal de bord RAG
 
-Le systÃ¨me de journal de bord RAG a Ã©tÃ© installÃ© et configurÃ© le $date.
+Le systÃƒÂ¨me de journal de bord RAG a ÃƒÂ©tÃƒÂ© installÃƒÂ© et configurÃƒÂ© le $date.
 
-### Composants installÃ©s:
-- Scripts Python pour la crÃ©ation et la recherche d'entrÃ©es
-- SystÃ¨me RAG simplifiÃ© pour l'interrogation du journal
-- TÃ¢ches planifiÃ©es pour la crÃ©ation automatique d'entrÃ©es
-- Surveillance des fichiers pour la mise Ã  jour automatique des index
-- IntÃ©gration avec VS Code pour faciliter l'utilisation
+### Composants installÃƒÂ©s:
+- Scripts Python pour la crÃƒÂ©ation et la recherche d'entrÃƒÂ©es
+- SystÃƒÂ¨me RAG simplifiÃƒÂ© pour l'interrogation du journal
+- TÃƒÂ¢ches planifiÃƒÂ©es pour la crÃƒÂ©ation automatique d'entrÃƒÂ©es
+- Surveillance des fichiers pour la mise ÃƒÂ  jour automatique des index
+- IntÃƒÂ©gration avec VS Code pour faciliter l'utilisation
 
-### FonctionnalitÃ©s disponibles:
-- CrÃ©ation manuelle d'entrÃ©es via les scripts ou VS Code
-- CrÃ©ation automatique d'entrÃ©es quotidiennes et hebdomadaires
-- Recherche dans le journal par mots-clÃ©s, tags ou date
-- Interrogation du systÃ¨me RAG pour obtenir des rÃ©ponses basÃ©es sur le contenu du journal
-- Mise Ã  jour automatique des index lors de modifications
+### FonctionnalitÃƒÂ©s disponibles:
+- CrÃƒÂ©ation manuelle d'entrÃƒÂ©es via les scripts ou VS Code
+- CrÃƒÂ©ation automatique d'entrÃƒÂ©es quotidiennes et hebdomadaires
+- Recherche dans le journal par mots-clÃƒÂ©s, tags ou date
+- Interrogation du systÃƒÂ¨me RAG pour obtenir des rÃƒÂ©ponses basÃƒÂ©es sur le contenu du journal
+- Mise ÃƒÂ  jour automatique des index lors de modifications
 
 ### Utilisation:
 - Via les scripts Python: `python development/scripts/python/journal/journal_entry.py "Titre"`
 - Via PowerShell: `.\development\scripts\cmd\journal-rag.ps1 new`
-- Via VS Code: Utiliser les tÃ¢ches configurÃ©es ou les raccourcis clavier
+- Via VS Code: Utiliser les tÃƒÂ¢ches configurÃƒÂ©es ou les raccourcis clavier
 "@
 
-Invoke-CommandWithOutput -Command "python" -Arguments "$PythonScriptsDir\journal_entry.py `"Installation du systÃ¨me de journal de bord RAG`" --tags installation rag journal"
+Invoke-CommandWithOutput -Command "python" -Arguments "$PythonScriptsDir\journal_entry.py `"Installation du systÃƒÂ¨me de journal de bord RAG`" --tags installation rag journal"
 
 # Afficher un message de conclusion
-Write-Section "Installation terminÃ©e"
-Write-Host "Le systÃ¨me de journal de bord RAG a Ã©tÃ© configurÃ© avec succÃ¨s!" -ForegroundColor Green
+Write-Section "Installation terminÃƒÂ©e"
+Write-Host "Le systÃƒÂ¨me de journal de bord RAG a ÃƒÂ©tÃƒÂ© configurÃƒÂ© avec succÃƒÂ¨s!" -ForegroundColor Green
 Write-Host ""
-Write-Host "Vous pouvez maintenant utiliser le systÃ¨me de plusieurs faÃ§ons:"
+Write-Host "Vous pouvez maintenant utiliser le systÃƒÂ¨me de plusieurs faÃƒÂ§ons:"
 Write-Host "1. Via les scripts Python:" -ForegroundColor Cyan
-Write-Host "   python development/scripts/python/journal/journal_entry.py `"Titre de l'entrÃ©e`" --tags tag1 tag2"
+Write-Host "   python development/scripts/python/journal/journal_entry.py `"Titre de l'entrÃƒÂ©e`" --tags tag1 tag2"
 Write-Host "   python development/scripts/python/journal/journal_search_simple.py --query `"votre recherche`""
 Write-Host "   python development/scripts/python/journal/journal_rag_simple.py --query `"votre question`""
 Write-Host ""
@@ -152,14 +152,14 @@ Write-Host "   .\development\scripts\cmd\journal-rag.ps1 search"
 Write-Host "   .\development\scripts\cmd\journal-rag.ps1 query `"votre question`""
 Write-Host ""
 Write-Host "3. Via VS Code:" -ForegroundColor Cyan
-Write-Host "   Utiliser les tÃ¢ches configurÃ©es dans le menu TÃ¢ches"
+Write-Host "   Utiliser les tÃƒÂ¢ches configurÃƒÂ©es dans le menu TÃƒÂ¢ches"
 Write-Host "   Utiliser les raccourcis clavier (Ctrl+Alt+J suivi de D, W, N, S, R, Q)"
 Write-Host ""
-Write-Host "EntrÃ©es automatiques:" -ForegroundColor Cyan
-Write-Host "   EntrÃ©e quotidienne: CrÃ©Ã©e automatiquement chaque jour Ã  09:00"
-Write-Host "   EntrÃ©e hebdomadaire: CrÃ©Ã©e automatiquement chaque lundi Ã  08:00"
+Write-Host "EntrÃƒÂ©es automatiques:" -ForegroundColor Cyan
+Write-Host "   EntrÃƒÂ©e quotidienne: CrÃƒÂ©ÃƒÂ©e automatiquement chaque jour ÃƒÂ  09:00"
+Write-Host "   EntrÃƒÂ©e hebdomadaire: CrÃƒÂ©ÃƒÂ©e automatiquement chaque lundi ÃƒÂ  08:00"
 Write-Host ""
 Write-Host "Surveillance des fichiers:" -ForegroundColor Cyan
-Write-Host "   Les index sont automatiquement mis Ã  jour lorsque des fichiers du journal sont modifiÃ©s"
+Write-Host "   Les index sont automatiquement mis ÃƒÂ  jour lorsque des fichiers du journal sont modifiÃƒÂ©s"
 Write-Host ""
-Write-Host "Profitez de votre systÃ¨me de journal de bord RAG!" -ForegroundColor Magenta
+Write-Host "Profitez de votre systÃƒÂ¨me de journal de bord RAG!" -ForegroundColor Magenta

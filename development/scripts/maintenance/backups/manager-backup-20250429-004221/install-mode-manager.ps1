@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
     Script d'installation du mode MANAGER.
 
 .DESCRIPTION
     Ce script installe le mode MANAGER en :
-    1. Copiant les fichiers nécessaires dans les bons répertoires
-    2. Mettant à jour la configuration pour inclure le mode MANAGER
-    3. Créant des liens symboliques pour faciliter l'accès au mode MANAGER
+    1. Copiant les fichiers nÃ©cessaires dans les bons rÃ©pertoires
+    2. Mettant Ã  jour la configuration pour inclure le mode MANAGER
+    3. CrÃ©ant des liens symboliques pour faciliter l'accÃ¨s au mode MANAGER
 
 .PARAMETER Force
-    Indique si les modifications doivent être appliquées sans confirmation.
-    Par défaut : $false (mode simulation).
+    Indique si les modifications doivent Ãªtre appliquÃ©es sans confirmation.
+    Par dÃ©faut : $false (mode simulation).
 
 .PARAMETER BackupFiles
-    Indique si des copies de sauvegarde des fichiers originaux doivent être créées.
-    Par défaut : $true.
+    Indique si des copies de sauvegarde des fichiers originaux doivent Ãªtre crÃ©Ã©es.
+    Par dÃ©faut : $true.
 
 .EXAMPLE
     .\install-mode-manager.ps1 -Force
@@ -22,7 +22,7 @@
 .NOTES
     Auteur: Mode Manager Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -43,7 +43,7 @@ if (-not (Test-Path -Path $basePath)) {
     }
 }
 
-# Afficher les informations de démarrage
+# Afficher les informations de dÃ©marrage
 Write-Host "Installation du mode MANAGER" -ForegroundColor Cyan
 Write-Host "Mode : " -NoNewline
 if ($Force) {
@@ -53,12 +53,12 @@ if ($Force) {
 }
 Write-Host "Sauvegarde des fichiers originaux : " -NoNewline
 if ($BackupFiles) {
-    Write-Host "Activée" -ForegroundColor Green
+    Write-Host "ActivÃ©e" -ForegroundColor Green
 } else {
-    Write-Host "Désactivée" -ForegroundColor Yellow
+    Write-Host "DÃ©sactivÃ©e" -ForegroundColor Yellow
 }
 
-# Fonction pour créer une sauvegarde d'un fichier
+# Fonction pour crÃ©er une sauvegarde d'un fichier
 function Backup-File {
     [CmdletBinding()]
     param (
@@ -67,7 +67,7 @@ function Backup-File {
     )
 
     if (-not (Test-Path -Path $FilePath)) {
-        Write-Warning "Le fichier à sauvegarder n'existe pas : $FilePath"
+        Write-Warning "Le fichier Ã  sauvegarder n'existe pas : $FilePath"
         return
     }
 
@@ -78,13 +78,13 @@ function Backup-File {
         $i++
     }
 
-    if ($PSCmdlet.ShouldProcess($FilePath, "Créer une sauvegarde")) {
+    if ($PSCmdlet.ShouldProcess($FilePath, "CrÃ©er une sauvegarde")) {
         Copy-Item -Path $FilePath -Destination $backupPath -Force
-        Write-Host "Sauvegarde créée : $backupPath" -ForegroundColor Green
+        Write-Host "Sauvegarde crÃ©Ã©e : $backupPath" -ForegroundColor Green
     }
 }
 
-# Fonction pour créer un répertoire s'il n'existe pas
+# Fonction pour crÃ©er un rÃ©pertoire s'il n'existe pas
 function Ensure-Directory {
     [CmdletBinding()]
     param (
@@ -93,9 +93,9 @@ function Ensure-Directory {
     )
 
     if (-not (Test-Path -Path $DirectoryPath)) {
-        if ($PSCmdlet.ShouldProcess($DirectoryPath, "Créer le répertoire")) {
+        if ($PSCmdlet.ShouldProcess($DirectoryPath, "CrÃ©er le rÃ©pertoire")) {
             New-Item -Path $DirectoryPath -ItemType Directory -Force | Out-Null
-            Write-Host "Répertoire créé : $DirectoryPath" -ForegroundColor Green
+            Write-Host "RÃ©pertoire crÃ©Ã© : $DirectoryPath" -ForegroundColor Green
         }
     }
 }
@@ -119,22 +119,22 @@ function Copy-FileWithBackup {
         return
     }
 
-    # Créer le répertoire de destination s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de destination s'il n'existe pas
     $destinationDir = Split-Path -Path $DestinationPath -Parent
     Ensure-Directory -DirectoryPath $destinationDir
 
-    # Créer une sauvegarde si le fichier de destination existe et que la sauvegarde est activée
+    # CrÃ©er une sauvegarde si le fichier de destination existe et que la sauvegarde est activÃ©e
     if ((Test-Path -Path $DestinationPath) -and $CreateBackup) {
         Backup-File -FilePath $DestinationPath
     }
 
     if ($PSCmdlet.ShouldProcess($DestinationPath, "Copier le fichier")) {
         Copy-Item -Path $SourcePath -Destination $DestinationPath -Force
-        Write-Host "Fichier copié : $SourcePath -> $DestinationPath" -ForegroundColor Green
+        Write-Host "Fichier copiÃ© : $SourcePath -> $DestinationPath" -ForegroundColor Green
     }
 }
 
-# Fonction pour mettre à jour la configuration
+# Fonction pour mettre Ã  jour la configuration
 function Update-Configuration {
     [CmdletBinding()]
     param (
@@ -150,7 +150,7 @@ function Update-Configuration {
         return
     }
 
-    # Créer une sauvegarde si la sauvegarde est activée
+    # CrÃ©er une sauvegarde si la sauvegarde est activÃ©e
     if ($CreateBackup) {
         Backup-File -FilePath $ConfigPath
     }
@@ -159,7 +159,7 @@ function Update-Configuration {
         # Lire le contenu du fichier de configuration
         $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
 
-        # Vérifier si le mode MANAGER existe déjà dans la configuration
+        # VÃ©rifier si le mode MANAGER existe dÃ©jÃ  dans la configuration
         $managerExists = $false
         if ($config.Modes -and $config.Modes.PSObject.Properties.Name -contains "Manager") {
             $managerExists = $true
@@ -176,19 +176,19 @@ function Update-Configuration {
                 ScriptPath = "development\scripts\manager\mode-manager.ps1"
             })
 
-            if ($PSCmdlet.ShouldProcess($ConfigPath, "Mettre à jour la configuration")) {
+            if ($PSCmdlet.ShouldProcess($ConfigPath, "Mettre Ã  jour la configuration")) {
                 $config | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigPath -Encoding UTF8
-                Write-Host "Configuration mise à jour : $ConfigPath" -ForegroundColor Green
+                Write-Host "Configuration mise Ã  jour : $ConfigPath" -ForegroundColor Green
             }
         } else {
-            Write-Host "Le mode MANAGER existe déjà dans la configuration : $ConfigPath" -ForegroundColor Yellow
+            Write-Host "Le mode MANAGER existe dÃ©jÃ  dans la configuration : $ConfigPath" -ForegroundColor Yellow
         }
     } catch {
-        Write-Error "Erreur lors de la mise à jour de la configuration : $_"
+        Write-Error "Erreur lors de la mise Ã  jour de la configuration : $_"
     }
 }
 
-# Fonction pour créer un lien symbolique
+# Fonction pour crÃ©er un lien symbolique
 function Create-SymbolicLink {
     [CmdletBinding()]
     param (
@@ -204,24 +204,24 @@ function Create-SymbolicLink {
         return
     }
 
-    # Supprimer le lien s'il existe déjà
+    # Supprimer le lien s'il existe dÃ©jÃ 
     if (Test-Path -Path $LinkPath) {
         if ($PSCmdlet.ShouldProcess($LinkPath, "Supprimer le lien existant")) {
             Remove-Item -Path $LinkPath -Force
-            Write-Host "Lien existant supprimé : $LinkPath" -ForegroundColor Yellow
+            Write-Host "Lien existant supprimÃ© : $LinkPath" -ForegroundColor Yellow
         }
     }
 
-    # Créer le répertoire parent s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire parent s'il n'existe pas
     $linkDir = Split-Path -Path $LinkPath -Parent
     Ensure-Directory -DirectoryPath $linkDir
 
-    if ($PSCmdlet.ShouldProcess($LinkPath, "Créer un lien symbolique")) {
+    if ($PSCmdlet.ShouldProcess($LinkPath, "CrÃ©er un lien symbolique")) {
         try {
             New-Item -ItemType SymbolicLink -Path $LinkPath -Target $SourcePath -Force | Out-Null
-            Write-Host "Lien symbolique créé : $LinkPath -> $SourcePath" -ForegroundColor Green
+            Write-Host "Lien symbolique crÃ©Ã© : $LinkPath -> $SourcePath" -ForegroundColor Green
         } catch {
-            Write-Warning "Impossible de créer un lien symbolique. Création d'une copie à la place."
+            Write-Warning "Impossible de crÃ©er un lien symbolique. CrÃ©ation d'une copie Ã  la place."
             Copy-FileWithBackup -SourcePath $SourcePath -DestinationPath $LinkPath -CreateBackup:$false
         }
     }
@@ -244,7 +244,7 @@ $linkPaths = @{
     "scripts\mode-manager.ps1" = $modeManagerScript
 }
 
-# Vérifier que les fichiers source existent
+# VÃ©rifier que les fichiers source existent
 if (-not (Test-Path -Path $modeManagerScript)) {
     Write-Error "Le script mode-manager.ps1 est introuvable : $modeManagerScript"
     exit 1
@@ -258,14 +258,14 @@ if (-not (Test-Path -Path $modesConfigJson)) {
     Write-Warning "Le fichier de configuration des modes est introuvable : $modesConfigJson"
 }
 
-# Mettre à jour la configuration
+# Mettre Ã  jour la configuration
 foreach ($configPath in $configPaths) {
     if (Test-Path -Path $configPath) {
         Update-Configuration -ConfigPath $configPath -CreateBackup:$BackupFiles
     }
 }
 
-# Créer des liens symboliques
+# CrÃ©er des liens symboliques
 foreach ($linkPath in $linkPaths.Keys) {
     $fullLinkPath = Join-Path -Path $basePath -ChildPath $linkPath
     Create-SymbolicLink -SourcePath $linkPaths[$linkPath] -LinkPath $fullLinkPath
@@ -281,9 +281,9 @@ if (Test-Path -Path $modesConfigJson) {
 }
 
 # Afficher un message de fin
-Write-Host "`nInstallation du mode MANAGER terminée." -ForegroundColor Cyan
+Write-Host "`nInstallation du mode MANAGER terminÃ©e." -ForegroundColor Cyan
 if (-not $Force) {
-    Write-Host "Exécutez ce script avec le paramètre -Force pour appliquer les modifications." -ForegroundColor Yellow
+    Write-Host "ExÃ©cutez ce script avec le paramÃ¨tre -Force pour appliquer les modifications." -ForegroundColor Yellow
 }
 
 # Afficher des exemples d'utilisation

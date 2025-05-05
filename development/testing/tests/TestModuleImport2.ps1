@@ -1,4 +1,4 @@
-# Script pour tester l'importation des modules
+﻿# Script pour tester l'importation des modules
 
 # Chemin des modules
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"

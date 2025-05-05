@@ -1,7 +1,7 @@
-# Définir l'encodage UTF-8 pour les caractères accentués
+﻿# DÃ©finir l'encodage UTF-8 pour les caractÃ¨res accentuÃ©s
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Paramètres fixes
+# ParamÃ¨tres fixes
 $FilePath = "..\..\data\planning\expertise-levels.md"
 $OutputPath = "..\..\data\planning\title-casing-analysis.md"
 $IncludeExamples = $true
@@ -56,20 +56,20 @@ function Get-MarkdownTitles {
         }
     }
 
-    # Trier les titres par numéro de ligne
+    # Trier les titres par numÃ©ro de ligne
     return $titles | Sort-Object -Property LineNumber
 }
 
-# Fonction pour déterminer le style de casse d'un titre
+# Fonction pour dÃ©terminer le style de casse d'un titre
 function Get-CasingStyle {
     param(
         [string]$Text
     )
 
-    # Supprimer les caractères spéciaux et les nombres pour l'analyse de casse
+    # Supprimer les caractÃ¨res spÃ©ciaux et les nombres pour l'analyse de casse
     $cleanText = $Text -replace '[^a-zA-Z\s]', ''
     
-    # Si le texte est vide après nettoyage, retourner "Unknown"
+    # Si le texte est vide aprÃ¨s nettoyage, retourner "Unknown"
     if ([string]::IsNullOrWhiteSpace($cleanText)) {
         return "Unknown"
     }
@@ -77,12 +77,12 @@ function Get-CasingStyle {
     # Diviser le texte en mots
     $words = $cleanText -split '\s+' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
     
-    # Si aucun mot n'est trouvé, retourner "Unknown"
+    # Si aucun mot n'est trouvÃ©, retourner "Unknown"
     if ($words.Count -eq 0) {
         return "Unknown"
     }
 
-    # Vérifier si tous les mots commencent par une majuscule (Title Case)
+    # VÃ©rifier si tous les mots commencent par une majuscule (Title Case)
     $allTitleCase = $true
     foreach ($word in $words) {
         if ($word.Length -gt 0 -and -not [char]::IsUpper($word[0])) {
@@ -91,7 +91,7 @@ function Get-CasingStyle {
         }
     }
 
-    # Vérifier si le premier mot commence par une majuscule et les autres par une minuscule (Sentence Case)
+    # VÃ©rifier si le premier mot commence par une majuscule et les autres par une minuscule (Sentence Case)
     $sentenceCase = $words.Count -gt 0 -and [char]::IsUpper($words[0][0])
     for ($i = 1; $i -lt $words.Count; $i++) {
         if ($words[$i].Length -gt 0 -and [char]::IsUpper($words[$i][0])) {
@@ -100,7 +100,7 @@ function Get-CasingStyle {
         }
     }
 
-    # Vérifier si tous les mots sont en majuscules (ALL CAPS)
+    # VÃ©rifier si tous les mots sont en majuscules (ALL CAPS)
     $allCaps = $true
     foreach ($word in $words) {
         if ($word -cne $word.ToUpper()) {
@@ -109,7 +109,7 @@ function Get-CasingStyle {
         }
     }
 
-    # Vérifier si tous les mots sont en minuscules (all lowercase)
+    # VÃ©rifier si tous les mots sont en minuscules (all lowercase)
     $allLowercase = $true
     foreach ($word in $words) {
         if ($word -cne $word.ToLower()) {
@@ -118,13 +118,13 @@ function Get-CasingStyle {
         }
     }
 
-    # Vérifier si c'est du CamelCase (pas d'espaces, première lettre minuscule, autres mots commencent par majuscule)
+    # VÃ©rifier si c'est du CamelCase (pas d'espaces, premiÃ¨re lettre minuscule, autres mots commencent par majuscule)
     $camelCase = $cleanText -cmatch '^[a-z][a-zA-Z0-9]*$' -and $cleanText -cmatch '[a-z][A-Z]'
 
-    # Vérifier si c'est du PascalCase (pas d'espaces, première lettre majuscule, autres mots commencent par majuscule)
+    # VÃ©rifier si c'est du PascalCase (pas d'espaces, premiÃ¨re lettre majuscule, autres mots commencent par majuscule)
     $pascalCase = $cleanText -cmatch '^[A-Z][a-zA-Z0-9]*$' -and $cleanText -cmatch '[a-z][A-Z]'
 
-    # Déterminer le style de casse
+    # DÃ©terminer le style de casse
     if ($allCaps) {
         return "ALL_CAPS"
     }
@@ -179,7 +179,7 @@ function Get-TitleCasingAnalysis {
         }
         $analysis.CasingStyles[$style]++
 
-        # Ajouter un exemple si nécessaire
+        # Ajouter un exemple si nÃ©cessaire
         if ($analysis.Examples[$style].Count -lt 3) {
             $analysis.Examples[$style] += $title.Title
         }
@@ -194,7 +194,7 @@ function Get-TitleCasingAnalysis {
         $analysis.ByLevel[$level][$style]++
     }
 
-    # Déterminer le style dominant global
+    # DÃ©terminer le style dominant global
     $dominantStyle = ""
     $maxCount = 0
     foreach ($style in $analysis.CasingStyles.Keys) {
@@ -211,10 +211,10 @@ function Get-TitleCasingAnalysis {
         0 
     }
 
-    # Calculer la cohérence globale (pourcentage du style dominant)
+    # Calculer la cohÃ©rence globale (pourcentage du style dominant)
     $analysis.Consistency.OverallConsistency = $analysis.Consistency.DominantStylePercentage
 
-    # Calculer la cohérence par niveau
+    # Calculer la cohÃ©rence par niveau
     foreach ($level in $analysis.ByLevel.Keys) {
         $levelTotal = 0
         $levelMax = 0
@@ -245,7 +245,7 @@ function Get-TitleCasingAnalysis {
     return $analysis
 }
 
-# Fonction pour générer un rapport d'analyse des conventions de casse
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse des conventions de casse
 function New-CasingAnalysisReport {
     param(
         [hashtable]$Analysis,
@@ -255,11 +255,11 @@ function New-CasingAnalysisReport {
     $report = @"
 # Analyse des Conventions de Casse dans les Titres
 
-## Résumé
+## RÃ©sumÃ©
 
-- **Nombre total de titres analysés**: $($Analysis.TotalTitles)
+- **Nombre total de titres analysÃ©s**: $($Analysis.TotalTitles)
 - **Style de casse dominant**: $($Analysis.Consistency.DominantStyle) ($($Analysis.Consistency.DominantStylePercentage)%)
-- **Cohérence globale**: $($Analysis.Consistency.OverallConsistency)%
+- **CohÃ©rence globale**: $($Analysis.Consistency.OverallConsistency)%
 
 ## Distribution des Styles de Casse
 
@@ -276,7 +276,7 @@ function New-CasingAnalysisReport {
         $report += "`n- **$style**: $count titres ($percentage%)"
     }
 
-    # Ajouter des exemples si demandé
+    # Ajouter des exemples si demandÃ©
     if ($IncludeExamples) {
         $report += "`n`n## Exemples par Style de Casse`n"
 
@@ -302,7 +302,7 @@ function New-CasingAnalysisReport {
         $report += "`n### Niveau $level (${level} #)`n"
         $report += "`n- **Nombre de titres**: $($levelInfo.TotalTitles)"
         $report += "`n- **Style dominant**: $($levelInfo.DominantStyle)"
-        $report += "`n- **Cohérence**: $($levelInfo.Consistency)%`n"
+        $report += "`n- **CohÃ©rence**: $($levelInfo.Consistency)%`n"
         
         $report += "`n**Distribution des styles:**`n"
         foreach ($style in $Analysis.ByLevel[$level].Keys | Sort-Object) {
@@ -321,16 +321,16 @@ function New-CasingAnalysisReport {
 
 ## Recommandations
 
-1. **Cohérence globale**: $(if ($Analysis.Consistency.OverallConsistency -ge 80) { "La cohérence globale est bonne (>= 80%). Maintenir cette cohérence dans les futurs ajouts." } else { "La cohérence globale est inférieure à 80%. Envisager de standardiser les conventions de casse." })
+1. **CohÃ©rence globale**: $(if ($Analysis.Consistency.OverallConsistency -ge 80) { "La cohÃ©rence globale est bonne (>= 80%). Maintenir cette cohÃ©rence dans les futurs ajouts." } else { "La cohÃ©rence globale est infÃ©rieure Ã  80%. Envisager de standardiser les conventions de casse." })
 
-2. **Style recommandé**: Le style dominant est **$($Analysis.Consistency.DominantStyle)**. $(if ($Analysis.Consistency.DominantStyle -eq "Title Case") { "Ce style est approprié pour les titres et est largement utilisé dans la documentation technique." } elseif ($Analysis.Consistency.DominantStyle -eq "Sentence case") { "Ce style est clair et facile à lire, mais moins formel que Title Case." } else { "Envisager d'adopter Title Case ou Sentence case pour une meilleure lisibilité des titres." })
+2. **Style recommandÃ©**: Le style dominant est **$($Analysis.Consistency.DominantStyle)**. $(if ($Analysis.Consistency.DominantStyle -eq "Title Case") { "Ce style est appropriÃ© pour les titres et est largement utilisÃ© dans la documentation technique." } elseif ($Analysis.Consistency.DominantStyle -eq "Sentence case") { "Ce style est clair et facile Ã  lire, mais moins formel que Title Case." } else { "Envisager d'adopter Title Case ou Sentence case pour une meilleure lisibilitÃ© des titres." })
 
-3. **Cohérence par niveau**: $(
+3. **CohÃ©rence par niveau**: $(
     $inconsistentLevels = @($Analysis.Consistency.ConsistencyByLevel.Keys | Where-Object { $Analysis.Consistency.ConsistencyByLevel[$_].Consistency -lt 80 })
     if ($inconsistentLevels.Count -eq 0) {
-        "Tous les niveaux de titre présentent une bonne cohérence."
+        "Tous les niveaux de titre prÃ©sentent une bonne cohÃ©rence."
     } else {
-        "Les niveaux de titre suivants présentent une cohérence inférieure à 80% : $($inconsistentLevels -join ", "). Envisager de standardiser ces niveaux."
+        "Les niveaux de titre suivants prÃ©sentent une cohÃ©rence infÃ©rieure Ã  80% : $($inconsistentLevels -join ", "). Envisager de standardiser ces niveaux."
     }
 )
 
@@ -354,11 +354,11 @@ function New-CasingAnalysisReport {
     return $report
 }
 
-# Exécution principale
+# ExÃ©cution principale
 try {
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-        throw "Le fichier à analyser n'existe pas : $FilePath"
+        throw "Le fichier Ã  analyser n'existe pas : $FilePath"
     }
 
     # Lire le contenu du fichier
@@ -370,10 +370,10 @@ try {
     # Analyser les conventions de casse
     $analysis = Get-TitleCasingAnalysis -Titles $titles
 
-    # Générer le rapport d'analyse
+    # GÃ©nÃ©rer le rapport d'analyse
     $report = New-CasingAnalysisReport -Analysis $analysis -IncludeExamples $IncludeExamples
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -383,18 +383,18 @@ try {
     $utf8WithBom = New-Object System.Text.UTF8Encoding $true
     [System.IO.File]::WriteAllText($OutputPath, $report, $utf8WithBom)
 
-    # Afficher un résumé
-    Write-Host "Analyse des conventions de casse terminée."
-    Write-Host "Nombre total de titres analysés : $($analysis.TotalTitles)"
+    # Afficher un rÃ©sumÃ©
+    Write-Host "Analyse des conventions de casse terminÃ©e."
+    Write-Host "Nombre total de titres analysÃ©s : $($analysis.TotalTitles)"
     Write-Host "Style de casse dominant : $($analysis.Consistency.DominantStyle) ($($analysis.Consistency.DominantStylePercentage)%)"
-    Write-Host "Rapport généré à : $OutputPath"
+    Write-Host "Rapport gÃ©nÃ©rÃ© Ã  : $OutputPath"
 
-    # Retourner l'analyse pour une utilisation ultérieure
+    # Retourner l'analyse pour une utilisation ultÃ©rieure
     return $analysis
 } catch {
     Write-Error "Erreur lors de l'analyse des conventions de casse : $_"
 
-    # Afficher la pile d'appels pour faciliter le débogage
+    # Afficher la pile d'appels pour faciliter le dÃ©bogage
     Write-Host "Pile d'appels :"
     Write-Host $_.ScriptStackTrace
 

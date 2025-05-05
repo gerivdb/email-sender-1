@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests de performance pour le module UnifiedSegmenter.
+    ExÃ©cute les tests de performance pour le module UnifiedSegmenter.
 .DESCRIPTION
-    Ce script exécute des tests de performance pour mesurer l'efficacité des conversions
-    et des opérations sur les formats CSV et YAML.
+    Ce script exÃ©cute des tests de performance pour mesurer l'efficacitÃ© des conversions
+    et des opÃ©rations sur les formats CSV et YAML.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 param (
@@ -31,26 +31,26 @@ $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
 . $unifiedSegmenterPath
 
-# Initialiser le segmenteur unifié
+# Initialiser le segmenteur unifiÃ©
 $initResult = Initialize-UnifiedSegmenter
 if (-not $initResult) {
-    Write-Error "Erreur lors de l'initialisation du segmenteur unifié"
+    Write-Error "Erreur lors de l'initialisation du segmenteur unifiÃ©"
     return
 }
 
-# Créer le répertoire de rapports s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de rapports s'il n'existe pas
 if (-not (Test-Path -Path $ReportsPath)) {
     New-Item -Path $ReportsPath -ItemType Directory -Force | Out-Null
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $tempDir = Join-Path -Path $env:TEMP -ChildPath "PerformanceTests"
 if (Test-Path -Path $tempDir) {
     Remove-Item -Path $tempDir -Recurse -Force
 }
 New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
 
-# Fonction pour générer un fichier CSV de test
+# Fonction pour gÃ©nÃ©rer un fichier CSV de test
 function New-TestCsvFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -60,30 +60,30 @@ function New-TestCsvFile {
         [int]$SizeKB
     )
 
-    # Calculer le nombre approximatif de lignes nécessaires
+    # Calculer le nombre approximatif de lignes nÃ©cessaires
     $bytesPerLine = 50  # Estimation moyenne
     $targetBytes = $SizeKB * 1024
     $targetLines = [math]::Ceiling($targetBytes / $bytesPerLine)
 
-    # Générer l'en-tête
+    # GÃ©nÃ©rer l'en-tÃªte
     $header = "id,name,value,description,date,number,boolean,email,url,notes"
 
-    # Générer les lignes
+    # GÃ©nÃ©rer les lignes
     $lines = @($header)
     for ($i = 1; $i -le $targetLines; $i++) {
         $line = "$i,Item $i,Value $i,Description for item $i,2025-06-$($i % 30 + 1),$($i * 1.5),$($i % 2 -eq 0),user$i@example.com,https://example.com/item/$i,Additional notes for item $i"
         $lines += $line
     }
 
-    # Écrire le fichier
+    # Ã‰crire le fichier
     $lines | Set-Content -Path $FilePath -Encoding UTF8
 
-    # Vérifier la taille
+    # VÃ©rifier la taille
     $actualSize = (Get-Item -Path $FilePath).Length / 1KB
-    Write-Host "Fichier CSV généré: $FilePath ($actualSize KB)"
+    Write-Host "Fichier CSV gÃ©nÃ©rÃ©: $FilePath ($actualSize KB)"
 }
 
-# Fonction pour générer un fichier JSON de test
+# Fonction pour gÃ©nÃ©rer un fichier JSON de test
 function New-TestJsonFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -93,12 +93,12 @@ function New-TestJsonFile {
         [int]$SizeKB
     )
 
-    # Calculer le nombre approximatif d'éléments nécessaires
+    # Calculer le nombre approximatif d'Ã©lÃ©ments nÃ©cessaires
     $bytesPerItem = 200  # Estimation moyenne
     $targetBytes = $SizeKB * 1024
     $targetItems = [math]::Ceiling($targetBytes / $bytesPerItem)
 
-    # Générer les données
+    # GÃ©nÃ©rer les donnÃ©es
     $items = @()
     for ($i = 1; $i -le $targetItems; $i++) {
         $item = @{
@@ -122,15 +122,15 @@ function New-TestJsonFile {
         $items += $item
     }
 
-    # Écrire le fichier
+    # Ã‰crire le fichier
     $items | ConvertTo-Json -Depth 10 | Set-Content -Path $FilePath -Encoding UTF8
 
-    # Vérifier la taille
+    # VÃ©rifier la taille
     $actualSize = (Get-Item -Path $FilePath).Length / 1KB
-    Write-Host "Fichier JSON généré: $FilePath ($actualSize KB)"
+    Write-Host "Fichier JSON gÃ©nÃ©rÃ©: $FilePath ($actualSize KB)"
 }
 
-# Fonction pour générer un fichier YAML de test
+# Fonction pour gÃ©nÃ©rer un fichier YAML de test
 function New-TestYamlFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -140,7 +140,7 @@ function New-TestYamlFile {
         [int]$SizeKB
     )
 
-    # Générer d'abord un fichier JSON
+    # GÃ©nÃ©rer d'abord un fichier JSON
     $jsonPath = [System.IO.Path]::ChangeExtension($FilePath, ".json")
     New-TestJsonFile -FilePath $jsonPath -SizeKB $SizeKB
 
@@ -150,9 +150,9 @@ function New-TestYamlFile {
     # Supprimer le fichier JSON temporaire
     Remove-Item -Path $jsonPath -Force
 
-    # Vérifier la taille
+    # VÃ©rifier la taille
     $actualSize = (Get-Item -Path $FilePath).Length / 1KB
-    Write-Host "Fichier YAML généré: $FilePath ($actualSize KB)"
+    Write-Host "Fichier YAML gÃ©nÃ©rÃ©: $FilePath ($actualSize KB)"
 }
 
 # Fonction pour mesurer les performances
@@ -171,14 +171,14 @@ function Measure-Performance {
     $results = @()
 
     for ($i = 1; $i -le $Iterations; $i++) {
-        Write-Host "Exécution de $TestName - Itération $i/$Iterations..."
+        Write-Host "ExÃ©cution de $TestName - ItÃ©ration $i/$Iterations..."
         $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
         try {
             & $ScriptBlock
             $success = $true
         } catch {
-            Write-Error "Erreur lors de l'exécution de $TestName : $_"
+            Write-Error "Erreur lors de l'exÃ©cution de $TestName : $_"
             $success = $false
         }
 
@@ -193,25 +193,25 @@ function Measure-Performance {
         }
 
         $results += $result
-        Write-Host "  Durée: $duration secondes"
+        Write-Host "  DurÃ©e: $duration secondes"
     }
 
     return $results
 }
 
-# Générer les fichiers de test
+# GÃ©nÃ©rer les fichiers de test
 $csvFilePath = Join-Path -Path $tempDir -ChildPath "test.csv"
 $jsonFilePath = Join-Path -Path $tempDir -ChildPath "test.json"
 $yamlFilePath = Join-Path -Path $tempDir -ChildPath "test.yaml"
 $outputDir = Join-Path -Path $tempDir -ChildPath "output"
 New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 
-Write-Host "Génération des fichiers de test..."
+Write-Host "GÃ©nÃ©ration des fichiers de test..."
 New-TestCsvFile -FilePath $csvFilePath -SizeKB $FileSizeKB
 New-TestJsonFile -FilePath $jsonFilePath -SizeKB $FileSizeKB
 New-TestYamlFile -FilePath $yamlFilePath -SizeKB $FileSizeKB
 
-# Définir les tests de performance
+# DÃ©finir les tests de performance
 $performanceTests = @(
     # Tests de conversion de base
     @{
@@ -235,7 +235,7 @@ $performanceTests = @(
     @{
         Name        = "JSON_to_CSV_Flattened"
         Category    = "Conversion"
-        Description = "Conversion d'un fichier JSON en CSV avec aplatissement des objets imbriqués"
+        Description = "Conversion d'un fichier JSON en CSV avec aplatissement des objets imbriquÃ©s"
         ScriptBlock = {
             $outputPath = Join-Path -Path $outputDir -ChildPath "json_to_csv_flattened.csv"
             Convert-FileFormat -InputFile $jsonFilePath -OutputFile $outputPath -InputFormat "JSON" -OutputFormat "CSV" -FlattenNestedObjects $true
@@ -244,7 +244,7 @@ $performanceTests = @(
     @{
         Name        = "JSON_to_CSV_NonFlattened"
         Category    = "Conversion"
-        Description = "Conversion d'un fichier JSON en CSV sans aplatissement des objets imbriqués"
+        Description = "Conversion d'un fichier JSON en CSV sans aplatissement des objets imbriquÃ©s"
         ScriptBlock = {
             $outputPath = Join-Path -Path $outputDir -ChildPath "json_to_csv_non_flattened.csv"
             Convert-FileFormat -InputFile $jsonFilePath -OutputFile $outputPath -InputFormat "JSON" -OutputFormat "CSV" -FlattenNestedObjects $false
@@ -392,11 +392,11 @@ $performanceTests = @(
         }
     },
 
-    # Tests de détection de format
+    # Tests de dÃ©tection de format
     @{
         Name        = "Format_Detection"
-        Category    = "Détection"
-        Description = "Détection du format d'un fichier"
+        Category    = "DÃ©tection"
+        Description = "DÃ©tection du format d'un fichier"
         ScriptBlock = {
             Get-FileFormat -FilePath $csvFilePath
             Get-FileFormat -FilePath $jsonFilePath
@@ -405,8 +405,8 @@ $performanceTests = @(
     },
     @{
         Name        = "Format_Detection_With_Encoding"
-        Category    = "Détection"
-        Description = "Détection du format d'un fichier avec détection d'encodage"
+        Category    = "DÃ©tection"
+        Description = "DÃ©tection du format d'un fichier avec dÃ©tection d'encodage"
         ScriptBlock = {
             Get-FileFormat -FilePath $csvFilePath -UseEncodingDetector
             Get-FileFormat -FilePath $jsonFilePath -UseEncodingDetector
@@ -418,7 +418,7 @@ $performanceTests = @(
     @{
         Name        = "Encoding_Detection"
         Category    = "Encodage"
-        Description = "Détection de l'encodage d'un fichier"
+        Description = "DÃ©tection de l'encodage d'un fichier"
         ScriptBlock = {
             Get-FileEncoding -FilePath $csvFilePath
             Get-FileEncoding -FilePath $jsonFilePath
@@ -427,7 +427,7 @@ $performanceTests = @(
     }
 )
 
-# Exécuter les tests de performance
+# ExÃ©cuter les tests de performance
 $allResults = @()
 
 foreach ($test in $performanceTests) {
@@ -461,7 +461,7 @@ $statistics = $allResults | Group-Object -Property TestName | ForEach-Object {
     }
 }
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 $resultsPath = Join-Path -Path $ReportsPath -ChildPath "PerformanceResults.csv"
 $allResults | Export-Csv -Path $resultsPath -NoTypeInformation
 
@@ -471,57 +471,57 @@ $statistics | Export-Csv -Path $statisticsPath -NoTypeInformation
 # Afficher les statistiques
 Write-Host "`nStatistiques de performance :"
 
-# Afficher les statistiques par catégorie
+# Afficher les statistiques par catÃ©gorie
 foreach ($category in ($statistics | Select-Object -Property Category -Unique).Category) {
-    Write-Host "`nCatégorie: $category" -ForegroundColor Green
+    Write-Host "`nCatÃ©gorie: $category" -ForegroundColor Green
     $statistics | Where-Object { $_.Category -eq $category } | Format-Table -Property TestName, Description, AverageDuration, MinDuration, MaxDuration, StdDeviation, SuccessRate -AutoSize
 }
 
-# Afficher un résumé global
-Write-Host "`nRésumé global:" -ForegroundColor Yellow
+# Afficher un rÃ©sumÃ© global
+Write-Host "`nRÃ©sumÃ© global:" -ForegroundColor Yellow
 $statistics | Sort-Object -Property AverageDuration | Select-Object -First 5 | Format-Table -Property TestName, Category, AverageDuration, SuccessRate -AutoSize
 
 # Afficher les tests les plus lents
 Write-Host "Tests les plus lents:" -ForegroundColor Yellow
 $statistics | Sort-Object -Property AverageDuration -Descending | Select-Object -First 5 | Format-Table -Property TestName, Category, AverageDuration, SuccessRate -AutoSize
 
-# Générer des graphiques si demandé
+# GÃ©nÃ©rer des graphiques si demandÃ©
 if ($GenerateCharts) {
     $chartScriptPath = Join-Path -Path $ReportsPath -ChildPath "GeneratePerformanceCharts.ps1"
     $chartScript = @"
-# Script pour générer des graphiques de performance
-# Nécessite le module PSChart
+# Script pour gÃ©nÃ©rer des graphiques de performance
+# NÃ©cessite le module PSChart
 
-# Installer PSChart si nécessaire
+# Installer PSChart si nÃ©cessaire
 if (-not (Get-Module -Name PSChart -ListAvailable)) {
     Install-Module -Name PSChart -Force -SkipPublisherCheck
 }
 
 Import-Module PSChart
 
-# Charger les données
+# Charger les donnÃ©es
 `$results = Import-Csv -Path "$resultsPath"
 `$statistics = Import-Csv -Path "$statisticsPath"
 
-# Créer des graphiques par catégorie
+# CrÃ©er des graphiques par catÃ©gorie
 foreach (`$category in (`$statistics | Select-Object -Property Category -Unique).Category) {
-    # Filtrer les statistiques par catégorie
+    # Filtrer les statistiques par catÃ©gorie
     `$categoryStats = `$statistics | Where-Object { `$_.Category -eq `$category }
 
-    # Créer un graphique à barres pour les durées moyennes
+    # CrÃ©er un graphique Ã  barres pour les durÃ©es moyennes
     `$chartPath = Join-Path -Path "$ReportsPath" -ChildPath "`$category-DurationChart.png"
-    New-BarChart -InputObject `$categoryStats -LabelProperty "TestName" -DataProperty "AverageDuration" -Title "Durée moyenne - `$category" -XLabel "Test" -YLabel "Durée (secondes)" -Width 800 -Height 600 -OutputPath `$chartPath
+    New-BarChart -InputObject `$categoryStats -LabelProperty "TestName" -DataProperty "AverageDuration" -Title "DurÃ©e moyenne - `$category" -XLabel "Test" -YLabel "DurÃ©e (secondes)" -Width 800 -Height 600 -OutputPath `$chartPath
 
-    # Créer un graphique à barres pour les taux de réussite
+    # CrÃ©er un graphique Ã  barres pour les taux de rÃ©ussite
     `$successChartPath = Join-Path -Path "$ReportsPath" -ChildPath "`$category-SuccessRateChart.png"
-    New-BarChart -InputObject `$categoryStats -LabelProperty "TestName" -DataProperty "SuccessRate" -Title "Taux de réussite - `$category" -XLabel "Test" -YLabel "Taux de réussite" -Width 800 -Height 600 -OutputPath `$successChartPath
+    New-BarChart -InputObject `$categoryStats -LabelProperty "TestName" -DataProperty "SuccessRate" -Title "Taux de rÃ©ussite - `$category" -XLabel "Test" -YLabel "Taux de rÃ©ussite" -Width 800 -Height 600 -OutputPath `$successChartPath
 
-    Write-Host "Graphiques générés pour la catégorie `$category :"
+    Write-Host "Graphiques gÃ©nÃ©rÃ©s pour la catÃ©gorie `$category :"
     Write-Host "- `$chartPath"
     Write-Host "- `$successChartPath"
 }
 
-# Créer un graphique comparé des performances par catégorie
+# CrÃ©er un graphique comparÃ© des performances par catÃ©gorie
 `$categoryAvgPath = Join-Path -Path "$ReportsPath" -ChildPath "CategoryPerformanceChart.png"
 `$categoryAvg = `$statistics | Group-Object -Property Category | ForEach-Object {
     [PSCustomObject]@{
@@ -530,28 +530,28 @@ foreach (`$category in (`$statistics | Select-Object -Property Category -Unique)
         SuccessRate = (`$_.Group | Measure-Object -Property SuccessRate -Average).Average
     }
 }
-New-BarChart -InputObject `$categoryAvg -LabelProperty "Category" -DataProperty "AverageDuration" -Title "Durée moyenne par catégorie" -XLabel "Catégorie" -YLabel "Durée (secondes)" -Width 800 -Height 600 -OutputPath `$categoryAvgPath
+New-BarChart -InputObject `$categoryAvg -LabelProperty "Category" -DataProperty "AverageDuration" -Title "DurÃ©e moyenne par catÃ©gorie" -XLabel "CatÃ©gorie" -YLabel "DurÃ©e (secondes)" -Width 800 -Height 600 -OutputPath `$categoryAvgPath
 
-# Créer un graphique de dispersion pour visualiser la relation entre durée et taux de réussite
+# CrÃ©er un graphique de dispersion pour visualiser la relation entre durÃ©e et taux de rÃ©ussite
 `$scatterPath = Join-Path -Path "$ReportsPath" -ChildPath "PerformanceScatterChart.png"
-New-ScatterChart -InputObject `$statistics -XProperty "AverageDuration" -YProperty "SuccessRate" -LabelProperty "TestName" -Title "Relation entre durée et taux de réussite" -XLabel "Durée (secondes)" -YLabel "Taux de réussite" -Width 800 -Height 600 -OutputPath `$scatterPath
+New-ScatterChart -InputObject `$statistics -XProperty "AverageDuration" -YProperty "SuccessRate" -LabelProperty "TestName" -Title "Relation entre durÃ©e et taux de rÃ©ussite" -XLabel "DurÃ©e (secondes)" -YLabel "Taux de rÃ©ussite" -Width 800 -Height 600 -OutputPath `$scatterPath
 
-Write-Host "Graphiques globaux générés :"
+Write-Host "Graphiques globaux gÃ©nÃ©rÃ©s :"
 Write-Host "- `$categoryAvgPath"
 Write-Host "- `$scatterPath"
 "@
 
     Set-Content -Path $chartScriptPath -Value $chartScript -Encoding UTF8
-    Write-Host "`nScript de génération de graphiques créé : $chartScriptPath"
-    Write-Host "Pour générer les graphiques, exécutez ce script après avoir installé le module PSChart."
+    Write-Host "`nScript de gÃ©nÃ©ration de graphiques crÃ©Ã© : $chartScriptPath"
+    Write-Host "Pour gÃ©nÃ©rer les graphiques, exÃ©cutez ce script aprÃ¨s avoir installÃ© le module PSChart."
 }
 
 # Nettoyer
 Write-Host "`nNettoyage des fichiers temporaires..."
 Remove-Item -Path $tempDir -Recurse -Force
 
-Write-Host "`nTests de performance terminés."
-Write-Host "Résultats enregistrés dans : $resultsPath"
-Write-Host "Statistiques enregistrées dans : $statisticsPath"
+Write-Host "`nTests de performance terminÃ©s."
+Write-Host "RÃ©sultats enregistrÃ©s dans : $resultsPath"
+Write-Host "Statistiques enregistrÃ©es dans : $statisticsPath"
 
 return $statistics

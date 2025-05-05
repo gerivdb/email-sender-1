@@ -1,32 +1,32 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 <#
 .SYNOPSIS
-    Module pour la détection des cycles dans un graphe de dépendances.
+    Module pour la dÃ©tection des cycles dans un graphe de dÃ©pendances.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour détecter les cycles dans un graphe de dépendances.
+    Ce module fournit des fonctions pour dÃ©tecter les cycles dans un graphe de dÃ©pendances.
 
 .NOTES
     Auteur: Dependency Management Team
     Version: 1.0
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 <#
 .SYNOPSIS
-    Détecte les cycles dans un graphe de dépendances.
+    DÃ©tecte les cycles dans un graphe de dÃ©pendances.
 
 .DESCRIPTION
-    Cette fonction détecte les cycles dans un graphe de dépendances en utilisant
-    l'algorithme de détection de cycles dans un graphe orienté.
+    Cette fonction dÃ©tecte les cycles dans un graphe de dÃ©pendances en utilisant
+    l'algorithme de dÃ©tection de cycles dans un graphe orientÃ©.
 
 .PARAMETER Graph
-    Graphe de dépendances à analyser. Le graphe doit être une table de hachage où les clés
-    sont les noms des nœuds et les valeurs sont des listes de noms de nœuds dépendants.
+    Graphe de dÃ©pendances Ã  analyser. Le graphe doit Ãªtre une table de hachage oÃ¹ les clÃ©s
+    sont les noms des nÅ“uds et les valeurs sont des listes de noms de nÅ“uds dÃ©pendants.
 
 .PARAMETER IncludeAllCycles
-    Indique si tous les cycles doivent être détectés. Par défaut, s'arrête au premier cycle trouvé.
+    Indique si tous les cycles doivent Ãªtre dÃ©tectÃ©s. Par dÃ©faut, s'arrÃªte au premier cycle trouvÃ©.
 
 .EXAMPLE
     $graph = @{
@@ -35,10 +35,10 @@
         'C' = @('A')
     }
     $cycles = Find-GraphCycles -Graph $graph
-    Détecte les cycles dans le graphe spécifié.
+    DÃ©tecte les cycles dans le graphe spÃ©cifiÃ©.
 
 .OUTPUTS
-    [PSCustomObject] Résultat de la détection des cycles.
+    [PSCustomObject] RÃ©sultat de la dÃ©tection des cycles.
 #>
 function Find-GraphCycles {
     [CmdletBinding()]
@@ -50,7 +50,7 @@ function Find-GraphCycles {
         [switch]$IncludeAllCycles
     )
 
-    # Vérifier si le graphe est vide
+    # VÃ©rifier si le graphe est vide
     if ($Graph.Count -eq 0) {
         Write-Warning "Le graphe est vide."
         return [PSCustomObject]@{
@@ -65,7 +65,7 @@ function Find-GraphCycles {
     $recursionStack = @{}
     $cycles = [System.Collections.ArrayList]@()
 
-    # Fonction récursive pour détecter les cycles
+    # Fonction rÃ©cursive pour dÃ©tecter les cycles
     function DetectCycle {
         param (
             [string]$Node,
@@ -75,21 +75,21 @@ function Find-GraphCycles {
             [System.Collections.ArrayList]$Cycles
         )
 
-        # Marquer le nœud comme visité et l'ajouter à la pile de récursion
+        # Marquer le nÅ“ud comme visitÃ© et l'ajouter Ã  la pile de rÃ©cursion
         $Visited[$Node] = $true
         $RecursionStack[$Node] = $true
         [void]$Path.Add($Node)
 
-        # Parcourir les voisins du nœud
+        # Parcourir les voisins du nÅ“ud
         if ($Graph.ContainsKey($Node)) {
             foreach ($neighbor in $Graph[$Node]) {
-                # Si le voisin n'a pas été visité, l'explorer
+                # Si le voisin n'a pas Ã©tÃ© visitÃ©, l'explorer
                 if (-not $Visited.ContainsKey($neighbor)) {
                     DetectCycle -Node $neighbor -Visited $Visited -RecursionStack $RecursionStack -Path $Path -Cycles $Cycles
                 }
-                # Si le voisin est dans la pile de récursion, un cycle a été détecté
+                # Si le voisin est dans la pile de rÃ©cursion, un cycle a Ã©tÃ© dÃ©tectÃ©
                 elseif ($RecursionStack.ContainsKey($neighbor) -and $RecursionStack[$neighbor]) {
-                    # Créer un cycle
+                    # CrÃ©er un cycle
                     $cycle = [System.Collections.ArrayList]@()
                     $startIndex = $Path.IndexOf($neighbor)
                     
@@ -101,19 +101,19 @@ function Find-GraphCycles {
                         [void]$cycle.Add($neighbor)
                     }
                     else {
-                        # Sinon, créer un cycle simple
+                        # Sinon, crÃ©er un cycle simple
                         [void]$cycle.Add($Node)
                         [void]$cycle.Add($neighbor)
                     }
 
-                    # Ajouter le cycle à la liste des cycles
+                    # Ajouter le cycle Ã  la liste des cycles
                     [void]$Cycles.Add([PSCustomObject]@{
                         Nodes = $cycle.ToArray()
                         Length = $cycle.Count
                         Path = $cycle -join ' -> '
                     })
 
-                    # Si on ne veut pas tous les cycles, on peut s'arrêter ici
+                    # Si on ne veut pas tous les cycles, on peut s'arrÃªter ici
                     if (-not $IncludeAllCycles) {
                         break
                     }
@@ -121,25 +121,25 @@ function Find-GraphCycles {
             }
         }
 
-        # Retirer le nœud de la pile de récursion et du chemin
+        # Retirer le nÅ“ud de la pile de rÃ©cursion et du chemin
         $RecursionStack[$Node] = $false
         [void]$Path.RemoveAt($Path.Count - 1)
     }
 
-    # Parcourir tous les nœuds du graphe
+    # Parcourir tous les nÅ“uds du graphe
     foreach ($node in $Graph.Keys) {
         if (-not $visited.ContainsKey($node)) {
             $path = [System.Collections.ArrayList]@()
             DetectCycle -Node $node -Visited $visited -RecursionStack $recursionStack -Path $path -Cycles $cycles
             
-            # Si on a trouvé un cycle et qu'on ne veut pas tous les cycles, on peut s'arrêter ici
+            # Si on a trouvÃ© un cycle et qu'on ne veut pas tous les cycles, on peut s'arrÃªter ici
             if ($cycles.Count -gt 0 -and -not $IncludeAllCycles) {
                 break
             }
         }
     }
 
-    # Retourner le résultat
+    # Retourner le rÃ©sultat
     return [PSCustomObject]@{
         HasCycles = $cycles.Count -gt 0
         Cycles = $cycles

@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
     Module d'exportation des messages de feedback pour le Process Manager.
 
 .DESCRIPTION
     Ce module fournit des fonctions pour exporter les messages de feedback
-    collectés par le FeedbackCollector vers différents formats et destinations.
+    collectÃ©s par le FeedbackCollector vers diffÃ©rents formats et destinations.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
-# Importer les dépendances
+# Importer les dÃ©pendances
 if (-not (Get-Module -Name "FeedbackCollector")) {
     $feedbackCollectorPath = Join-Path -Path $PSScriptRoot -Parent -ChildPath "FeedbackCollector\FeedbackCollector.psm1"
     if (Test-Path -Path $feedbackCollectorPath) {
@@ -39,7 +39,7 @@ function Write-ExporterLog {
         [string]$Level = "Info"
     )
     
-    # Déterminer la couleur en fonction du niveau
+    # DÃ©terminer la couleur en fonction du niveau
     $color = switch ($Level) {
         "Debug" { "Gray" }
         "Info" { "White" }
@@ -49,7 +49,7 @@ function Write-ExporterLog {
         default { "White" }
     }
     
-    # Écrire le message dans la console
+    # Ã‰crire le message dans la console
     Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [FeedbackExporter] [$Level] $Message" -ForegroundColor $color
 }
 
@@ -69,10 +69,10 @@ function Initialize-FeedbackExporter {
     )
     
     try {
-        # Vérifier si le répertoire d'exportation existe
+        # VÃ©rifier si le rÃ©pertoire d'exportation existe
         if (-not (Test-Path -Path $ExportPath -PathType Container)) {
             New-Item -Path $ExportPath -ItemType Directory -Force | Out-Null
-            Write-ExporterLog -Message "Répertoire d'exportation créé : $ExportPath" -Level Info
+            Write-ExporterLog -Message "RÃ©pertoire d'exportation crÃ©Ã© : $ExportPath" -Level Info
         }
         
         # Charger la configuration si elle existe
@@ -83,17 +83,17 @@ function Initialize-FeedbackExporter {
                 $DefaultFormat = $config.DefaultFormat
             }
             
-            Write-ExporterLog -Message "Configuration chargée depuis $ConfigPath" -Level Info
+            Write-ExporterLog -Message "Configuration chargÃ©e depuis $ConfigPath" -Level Info
         }
         else {
-            # Créer la configuration par défaut
+            # CrÃ©er la configuration par dÃ©faut
             $config = @{
                 DefaultFormat = $DefaultFormat
                 ExportPath = $ExportPath
                 SupportedFormats = $script:SupportedFormats
             }
             
-            # Créer le répertoire parent si nécessaire
+            # CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
             $configDir = Split-Path -Path $ConfigPath -Parent
             if (-not (Test-Path -Path $configDir -PathType Container)) {
                 New-Item -Path $configDir -ItemType Directory -Force | Out-Null
@@ -101,14 +101,14 @@ function Initialize-FeedbackExporter {
             
             # Enregistrer la configuration
             $config | ConvertTo-Json -Depth 5 | Out-File -FilePath $ConfigPath -Encoding utf8
-            Write-ExporterLog -Message "Configuration par défaut créée : $ConfigPath" -Level Info
+            Write-ExporterLog -Message "Configuration par dÃ©faut crÃ©Ã©e : $ConfigPath" -Level Info
         }
         
-        # Mettre à jour les variables globales
+        # Mettre Ã  jour les variables globales
         $script:DefaultExportPath = $ExportPath
         $script:DefaultFormat = $DefaultFormat
         
-        Write-ExporterLog -Message "Exportateur de feedback initialisé" -Level Success
+        Write-ExporterLog -Message "Exportateur de feedback initialisÃ©" -Level Success
         return $true
     }
     catch {
@@ -117,7 +117,7 @@ function Initialize-FeedbackExporter {
     }
 }
 
-# Fonction pour exporter les messages collectés
+# Fonction pour exporter les messages collectÃ©s
 function Export-CollectedMessages {
     [CmdletBinding()]
     param (
@@ -142,26 +142,26 @@ function Export-CollectedMessages {
     )
     
     try {
-        # Vérifier si le module FeedbackCollector est disponible
+        # VÃ©rifier si le module FeedbackCollector est disponible
         if (-not (Get-Module -Name "FeedbackCollector")) {
             Write-ExporterLog -Message "Le module FeedbackCollector n'est pas disponible" -Level Error
             return $null
         }
         
-        # Déterminer le chemin de sortie
+        # DÃ©terminer le chemin de sortie
         if (-not $OutputPath) {
             $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
             $fileName = "feedback_export_${timestamp}.${Format}".ToLower()
             $OutputPath = Join-Path -Path $script:DefaultExportPath -ChildPath $fileName
         }
         
-        # Créer le répertoire parent si nécessaire
+        # CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
         $outputDir = Split-Path -Path $OutputPath -Parent
         if (-not (Test-Path -Path $outputDir -PathType Container)) {
             New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
         }
         
-        # Obtenir les messages collectés
+        # Obtenir les messages collectÃ©s
         $messages = $null
         
         if ($Filter) {
@@ -174,11 +174,11 @@ function Export-CollectedMessages {
         }
         
         if (-not $messages -or $messages.Count -eq 0) {
-            Write-ExporterLog -Message "Aucun message à exporter" -Level Warning
+            Write-ExporterLog -Message "Aucun message Ã  exporter" -Level Warning
             return $null
         }
         
-        # Préparer les données à exporter
+        # PrÃ©parer les donnÃ©es Ã  exporter
         $exportData = @{
             Messages = $messages
             ExportTime = Get-Date
@@ -190,7 +190,7 @@ function Export-CollectedMessages {
             $exportData.Statistics = $script:MessageCollection.GetStatistics()
         }
         
-        # Exporter les données selon le format demandé
+        # Exporter les donnÃ©es selon le format demandÃ©
         switch ($Format) {
             "JSON" {
                 $jsonContent = ConvertTo-Json -InputObject $exportData -Depth 10
@@ -353,7 +353,7 @@ function Export-CollectedMessages {
             }
         }
         
-        # Compresser le fichier si demandé
+        # Compresser le fichier si demandÃ©
         if ($Compress) {
             $compressedPath = "$OutputPath.zip"
             
@@ -367,17 +367,17 @@ function Export-CollectedMessages {
             # Supprimer le fichier original
             Remove-Item -Path $OutputPath -Force
             
-            # Mettre à jour le chemin de sortie
+            # Mettre Ã  jour le chemin de sortie
             $OutputPath = $compressedPath
         }
         
-        # Vider la collection si demandé
+        # Vider la collection si demandÃ©
         if ($ClearAfterExport) {
             $script:MessageCollection.Clear()
-            Write-ExporterLog -Message "Collection vidée après exportation" -Level Info
+            Write-ExporterLog -Message "Collection vidÃ©e aprÃ¨s exportation" -Level Info
         }
         
-        # Ajouter l'exportation à l'historique
+        # Ajouter l'exportation Ã  l'historique
         $exportInfo = @{
             Path = $OutputPath
             Format = $Format
@@ -388,7 +388,7 @@ function Export-CollectedMessages {
         
         $script:ExportHistory += $exportInfo
         
-        Write-ExporterLog -Message "Messages exportés avec succès : $OutputPath" -Level Success
+        Write-ExporterLog -Message "Messages exportÃ©s avec succÃ¨s : $OutputPath" -Level Success
         return $OutputPath
     }
     catch {
@@ -419,24 +419,24 @@ function Export-ImportantMessages {
     )
     
     try {
-        # Déterminer le chemin de sortie
+        # DÃ©terminer le chemin de sortie
         if (-not $OutputPath) {
             $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
             $fileName = "important_messages_${timestamp}.${Format}".ToLower()
             $OutputPath = Join-Path -Path $script:DefaultExportPath -ChildPath $fileName
         }
         
-        # Créer le répertoire parent si nécessaire
+        # CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
         $outputDir = Split-Path -Path $OutputPath -Parent
         if (-not (Test-Path -Path $outputDir -PathType Container)) {
             New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
         }
         
-        # Déterminer le répertoire des messages importants
+        # DÃ©terminer le rÃ©pertoire des messages importants
         $importantMessagesDir = Join-Path -Path (Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent -Parent -Parent -Parent) -ChildPath "projet\data\feedback") -ChildPath "important"
         
         if (-not (Test-Path -Path $importantMessagesDir -PathType Container)) {
-            Write-ExporterLog -Message "Aucun message important trouvé" -Level Warning
+            Write-ExporterLog -Message "Aucun message important trouvÃ©" -Level Warning
             return $null
         }
         
@@ -444,11 +444,11 @@ function Export-ImportantMessages {
         $messageFiles = Get-ChildItem -Path $importantMessagesDir -Filter "important_*.json" -File
         
         if (-not $messageFiles -or $messageFiles.Count -eq 0) {
-            Write-ExporterLog -Message "Aucun message important trouvé" -Level Warning
+            Write-ExporterLog -Message "Aucun message important trouvÃ©" -Level Warning
             return $null
         }
         
-        # Filtrer les fichiers par date si nécessaire
+        # Filtrer les fichiers par date si nÃ©cessaire
         if ($StartDate -or $EndDate) {
             $filteredFiles = @()
             
@@ -474,7 +474,7 @@ function Export-ImportantMessages {
         }
         
         if (-not $messageFiles -or $messageFiles.Count -eq 0) {
-            Write-ExporterLog -Message "Aucun message important trouvé dans la plage de dates spécifiée" -Level Warning
+            Write-ExporterLog -Message "Aucun message important trouvÃ© dans la plage de dates spÃ©cifiÃ©e" -Level Warning
             return $null
         }
         
@@ -493,11 +493,11 @@ function Export-ImportantMessages {
         }
         
         if (-not $importantMessages -or $importantMessages.Count -eq 0) {
-            Write-ExporterLog -Message "Aucun message important valide trouvé" -Level Warning
+            Write-ExporterLog -Message "Aucun message important valide trouvÃ©" -Level Warning
             return $null
         }
         
-        # Préparer les données à exporter
+        # PrÃ©parer les donnÃ©es Ã  exporter
         $exportData = @{
             Messages = $importantMessages
             ExportTime = Get-Date
@@ -505,9 +505,9 @@ function Export-ImportantMessages {
             MessageCount = $importantMessages.Count
         }
         
-        # Exporter les données selon le format demandé (même logique que Export-CollectedMessages)
-        # Pour éviter la duplication de code, on pourrait refactoriser cette partie
-        # dans une fonction commune, mais pour simplifier, on la répète ici
+        # Exporter les donnÃ©es selon le format demandÃ© (mÃªme logique que Export-CollectedMessages)
+        # Pour Ã©viter la duplication de code, on pourrait refactoriser cette partie
+        # dans une fonction commune, mais pour simplifier, on la rÃ©pÃ¨te ici
         
         switch ($Format) {
             "JSON" {
@@ -529,11 +529,11 @@ function Export-ImportantMessages {
                 
                 $csvContent | Out-File -FilePath $OutputPath -Encoding utf8
             }
-            # Les autres formats (XML, HTML, TEXT) suivraient la même logique que dans Export-CollectedMessages
-            # Pour simplifier, on ne les répète pas ici
+            # Les autres formats (XML, HTML, TEXT) suivraient la mÃªme logique que dans Export-CollectedMessages
+            # Pour simplifier, on ne les rÃ©pÃ¨te pas ici
         }
         
-        # Compresser le fichier si demandé
+        # Compresser le fichier si demandÃ©
         if ($Compress) {
             $compressedPath = "$OutputPath.zip"
             
@@ -547,11 +547,11 @@ function Export-ImportantMessages {
             # Supprimer le fichier original
             Remove-Item -Path $OutputPath -Force
             
-            # Mettre à jour le chemin de sortie
+            # Mettre Ã  jour le chemin de sortie
             $OutputPath = $compressedPath
         }
         
-        # Ajouter l'exportation à l'historique
+        # Ajouter l'exportation Ã  l'historique
         $exportInfo = @{
             Path = $OutputPath
             Format = $Format
@@ -563,7 +563,7 @@ function Export-ImportantMessages {
         
         $script:ExportHistory += $exportInfo
         
-        Write-ExporterLog -Message "Messages importants exportés avec succès : $OutputPath" -Level Success
+        Write-ExporterLog -Message "Messages importants exportÃ©s avec succÃ¨s : $OutputPath" -Level Success
         return $OutputPath
     }
     catch {
@@ -598,7 +598,7 @@ function Get-ExportHistory {
         return $history
     }
     catch {
-        Write-ExporterLog -Message "Erreur lors de la récupération de l'historique des exportations : $_" -Level Error
+        Write-ExporterLog -Message "Erreur lors de la rÃ©cupÃ©ration de l'historique des exportations : $_" -Level Error
         return $null
     }
 }

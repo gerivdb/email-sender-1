@@ -1,13 +1,13 @@
-BeforeAll {
+﻿BeforeAll {
     # Importer le module
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath '..\ConfigurationMetadataExtractor.psm1'
     Import-Module $modulePath -Force
 }
 
 Describe 'Get-ConfigurationConstraints' {
-    Context 'Extraction des contraintes à partir d''un schéma JSON' {
+    Context 'Extraction des contraintes Ã  partir d''un schÃ©ma JSON' {
         It 'Extrait correctement les contraintes de type' {
-            # Créer des fichiers temporaires pour le contenu JSON et le schéma
+            # CrÃ©er des fichiers temporaires pour le contenu JSON et le schÃ©ma
             $jsonContent = @"
 {
     "server": {
@@ -119,7 +119,7 @@ Describe 'Get-ConfigurationConstraints' {
             $result | Should -Not -BeNullOrEmpty
             $result.TypeConstraints | Should -Not -BeNullOrEmpty
             $result.TypeConstraints.'server.host'.Type | Should -Be 'string'
-            # Vérifier que le type est correct pour server.port
+            # VÃ©rifier que le type est correct pour server.port
             if ($result.TypeConstraints.'server.port'.ContainsKey('OriginalType')) {
                 $result.TypeConstraints.'server.port'.OriginalType | Should -Be 'integer'
             } else {
@@ -137,7 +137,7 @@ Describe 'Get-ConfigurationConstraints' {
         }
 
         It 'Extrait correctement les contraintes de valeur' {
-            # Créer des fichiers temporaires pour le contenu JSON et le schéma
+            # CrÃ©er des fichiers temporaires pour le contenu JSON et le schÃ©ma
             $jsonContent = @"
 {
     "server": {
@@ -248,13 +248,13 @@ Describe 'Get-ConfigurationConstraints' {
 
             $result | Should -Not -BeNullOrEmpty
             $result.ValueConstraints | Should -Not -BeNullOrEmpty
-            # Vérifier que le pattern est correct pour server.host
+            # VÃ©rifier que le pattern est correct pour server.host
             $result.ValueConstraints.'server.host'.pattern | Should -BeIn @('^[a-zA-Z0-9.-]+$', '^[a-zA-Z]+$')
-            # Vérifier que le minimum est correct pour server.port
+            # VÃ©rifier que le minimum est correct pour server.port
             $result.ValueConstraints.'server.port'.min | Should -BeIn @(0, 1)
             $result.ValueConstraints.'server.port'.max | Should -Be 65535
             $result.ValueConstraints.'server.ssl'.Default | Should -Be $false
-            # Vérifier que le minimum est correct pour database.maxConnections
+            # VÃ©rifier que le minimum est correct pour database.maxConnections
             $result.ValueConstraints.'database.maxConnections'.min | Should -BeIn @(0, 1)
             $result.ValueConstraints.'database.maxConnections'.max | Should -Be 1000
             $result.ValueConstraints.'database.maxConnections'.Default | Should -Be 10
@@ -263,7 +263,7 @@ Describe 'Get-ConfigurationConstraints' {
         }
 
         It 'Extrait correctement les contraintes de relation' {
-            # Créer des fichiers temporaires pour le contenu JSON et le schéma
+            # CrÃ©er des fichiers temporaires pour le contenu JSON et le schÃ©ma
             $jsonContent = @"
 {
     "server": {
@@ -378,7 +378,7 @@ Describe 'Get-ConfigurationConstraints' {
         }
 
         It 'Valide correctement les valeurs par rapport aux contraintes' {
-            # Créer des fichiers temporaires pour le contenu JSON et le schéma
+            # CrÃ©er des fichiers temporaires pour le contenu JSON et le schÃ©ma
             $jsonContent = @"
 {
     "server": {
@@ -494,7 +494,7 @@ Describe 'Get-ConfigurationConstraints' {
 
     Context 'Extraction des contraintes implicites' {
         It 'Extrait correctement les contraintes de type implicites' {
-            # Créer un fichier temporaire pour le contenu JSON
+            # CrÃ©er un fichier temporaire pour le contenu JSON
             $jsonContent = @"
 {
     "server": {
@@ -539,7 +539,7 @@ Describe 'Get-ConfigurationConstraints' {
         }
 
         It 'Extrait correctement les contraintes de valeur implicites' {
-            # Créer un fichier temporaire pour le contenu JSON
+            # CrÃ©er un fichier temporaire pour le contenu JSON
             $jsonContent = @"
 {
     "server": {
@@ -581,11 +581,11 @@ Describe 'Get-ConfigurationConstraints' {
             $result.ValueConstraints.'email.address'.ImplicitFormat | Should -Be 'email'
             $result.ValueConstraints.'url'.ImplicitFormat | Should -Be 'uri'
             $result.ValueConstraints.'date'.ImplicitFormat | Should -Be 'date'
-            # Vérifier que le format date-time est détecté pour datetime
+            # VÃ©rifier que le format date-time est dÃ©tectÃ© pour datetime
             if ($result.ValueConstraints.ContainsKey('datetime') -and $result.ValueConstraints.'datetime'.ContainsKey('ImplicitFormat')) {
                 $result.ValueConstraints.'datetime'.ImplicitFormat | Should -Be 'date-time'
             } else {
-                # Si la propriété n'existe pas, on la considère comme passée
+                # Si la propriÃ©tÃ© n'existe pas, on la considÃ¨re comme passÃ©e
                 $true | Should -Be $true
             }
             $result.ValueConstraints.'tags'.ImplicitMinItems | Should -Be 0
@@ -595,7 +595,7 @@ Describe 'Get-ConfigurationConstraints' {
 
     Context 'Validation des valeurs avec contraintes' {
         It 'Ne signale pas d''erreurs pour des valeurs valides' {
-            # Créer des fichiers temporaires pour le contenu JSON et le schéma
+            # CrÃ©er des fichiers temporaires pour le contenu JSON et le schÃ©ma
             $validJsonContent = @"
 {
     "server": {
@@ -650,7 +650,7 @@ Describe 'Get-ConfigurationConstraints' {
         }
 
         It 'Signale des erreurs pour des valeurs invalides' {
-            # Créer des fichiers temporaires pour le contenu JSON et le schéma
+            # CrÃ©er des fichiers temporaires pour le contenu JSON et le schÃ©ma
             $invalidJsonContent = @"
 {
     "server": {
@@ -703,13 +703,13 @@ Describe 'Get-ConfigurationConstraints' {
             $result | Should -Not -BeNullOrEmpty
             $result.ValidationIssues | Should -Not -BeNullOrEmpty
             $result.ValidationIssues.Count | Should -BeGreaterThan 0
-            $result.ValidationIssues | Should -Contain "Valeur trop grande pour server.port : maximum 65535, trouvé 99999"
-            $result.ValidationIssues | Should -Contain "Valeur trop petite pour timeout : minimum 0, trouvé -10"
+            $result.ValidationIssues | Should -Contain "Valeur trop grande pour server.port : maximum 65535, trouvÃ© 99999"
+            $result.ValidationIssues | Should -Contain "Valeur trop petite pour timeout : minimum 0, trouvÃ© -10"
         }
     }
 
     Context 'Gestion des erreurs' {
-        It 'Génère une erreur pour un contenu JSON invalide' {
+        It 'GÃ©nÃ¨re une erreur pour un contenu JSON invalide' {
             $invalidJson = '{invalid json}'
             $tempJsonPath = [System.IO.Path]::GetTempFileName() + ".json"
             Set-Content -Path $tempJsonPath -Value $invalidJson
@@ -721,7 +721,7 @@ Describe 'Get-ConfigurationConstraints' {
             }
         }
 
-        It 'Génère une erreur pour un format non pris en charge' {
+        It 'GÃ©nÃ¨re une erreur pour un format non pris en charge' {
             $content = 'key = value'
             $tempPath = [System.IO.Path]::GetTempFileName() + ".txt"
             Set-Content -Path $tempPath -Value $content

@@ -1,33 +1,33 @@
-<#
+﻿<#
 .SYNOPSIS
-    Évalue la difficulté d'implémentation des améliorations.
+    Ã‰value la difficultÃ© d'implÃ©mentation des amÃ©liorations.
 
 .DESCRIPTION
-    Ce script évalue la difficulté d'implémentation des améliorations en analysant
-    la complexité technique, l'expertise requise, les contraintes de temps et les
-    dépendances.
+    Ce script Ã©value la difficultÃ© d'implÃ©mentation des amÃ©liorations en analysant
+    la complexitÃ© technique, l'expertise requise, les contraintes de temps et les
+    dÃ©pendances.
 
 .PARAMETER InputFile
-    Chemin vers le fichier JSON contenant les améliorations à évaluer.
+    Chemin vers le fichier JSON contenant les amÃ©liorations Ã  Ã©valuer.
 
 .PARAMETER TechnicalAnalysisFile
-    Chemin vers le fichier d'analyse technique généré précédemment.
+    Chemin vers le fichier d'analyse technique gÃ©nÃ©rÃ© prÃ©cÃ©demment.
 
 .PARAMETER OutputFile
-    Chemin vers le fichier de sortie pour le rapport d'évaluation de la difficulté.
+    Chemin vers le fichier de sortie pour le rapport d'Ã©valuation de la difficultÃ©.
 
 .PARAMETER Format
     Format du rapport de sortie. Les valeurs possibles sont : JSON, Markdown.
-    Par défaut : Markdown
+    Par dÃ©faut : Markdown
 
 .EXAMPLE
     .\evaluate-implementation-difficulty.ps1 -InputFile "data\improvements.json" -TechnicalAnalysisFile "data\planning\technical-analysis.md" -OutputFile "data\planning\implementation-difficulty.md"
-    Génère un rapport d'évaluation de la difficulté d'implémentation au format Markdown.
+    GÃ©nÃ¨re un rapport d'Ã©valuation de la difficultÃ© d'implÃ©mentation au format Markdown.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-08
+    Date de crÃ©ation: 2025-05-08
 #>
 [CmdletBinding()]
 param (
@@ -45,9 +45,9 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Vérifier que les fichiers d'entrée existent
+# VÃ©rifier que les fichiers d'entrÃ©e existent
 if (-not (Test-Path -Path $InputFile)) {
-    Write-Error "Le fichier d'entrée n'existe pas : $InputFile"
+    Write-Error "Le fichier d'entrÃ©e n'existe pas : $InputFile"
     exit 1
 }
 
@@ -56,21 +56,21 @@ if (-not (Test-Path -Path $TechnicalAnalysisFile)) {
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputFile -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Charger les données des améliorations
+# Charger les donnÃ©es des amÃ©liorations
 try {
     $improvementsData = Get-Content -Path $InputFile -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "Erreur lors du chargement du fichier d'entrée : $_"
+    Write-Error "Erreur lors du chargement du fichier d'entrÃ©e : $_"
     exit 1
 }
 
-# Fonction pour évaluer la difficulté d'implémentation
+# Fonction pour Ã©valuer la difficultÃ© d'implÃ©mentation
 function Evaluate-ImplementationDifficulty {
     [CmdletBinding()]
     param (
@@ -81,9 +81,9 @@ function Evaluate-ImplementationDifficulty {
         [string]$ManagerName
     )
 
-    # Facteurs de difficulté
+    # Facteurs de difficultÃ©
     $difficultyFactors = @{
-        # Complexité technique (basée sur les scores existants)
+        # ComplexitÃ© technique (basÃ©e sur les scores existants)
         TechnicalComplexity = @{
             Weight = 0.35
             Score = 0
@@ -101,32 +101,32 @@ function Evaluate-ImplementationDifficulty {
             Score = 0
         }
         
-        # Dépendances
+        # DÃ©pendances
         Dependencies = @{
             Weight = 0.20
             Score = 0
         }
     }
     
-    # Évaluer la complexité technique
+    # Ã‰valuer la complexitÃ© technique
     $technicalComplexityScore = 0
     
     # Utiliser les scores existants si disponibles
     if ($Improvement.Scores -and $Improvement.Scores.PSObject.Properties.Name -contains "Impact") {
         $technicalComplexityScore = $Improvement.Scores.Impact
     } else {
-        # Estimer la complexité technique en fonction du type d'amélioration
+        # Estimer la complexitÃ© technique en fonction du type d'amÃ©lioration
         switch ($Improvement.Type) {
-            "Fonctionnalité" { $technicalComplexityScore = 7 }
-            "Amélioration" { $technicalComplexityScore = 5 }
+            "FonctionnalitÃ©" { $technicalComplexityScore = 7 }
+            "AmÃ©lioration" { $technicalComplexityScore = 5 }
             "Optimisation" { $technicalComplexityScore = 8 }
-            "Intégration" { $technicalComplexityScore = 8 }
-            "Sécurité" { $technicalComplexityScore = 9 }
+            "IntÃ©gration" { $technicalComplexityScore = 8 }
+            "SÃ©curitÃ©" { $technicalComplexityScore = 9 }
             default { $technicalComplexityScore = 6 }
         }
         
         # Ajuster en fonction de l'effort
-        if ($Improvement.Effort -eq "Élevé") {
+        if ($Improvement.Effort -eq "Ã‰levÃ©") {
             $technicalComplexityScore += 2
         } elseif ($Improvement.Effort -eq "Faible") {
             $technicalComplexityScore -= 2
@@ -138,16 +138,16 @@ function Evaluate-ImplementationDifficulty {
     
     $difficultyFactors.TechnicalComplexity.Score = $technicalComplexityScore
     
-    # Évaluer l'expertise requise
+    # Ã‰valuer l'expertise requise
     $expertiseRequiredScore = 0
     
-    # Estimer l'expertise requise en fonction du type d'amélioration et du gestionnaire
+    # Estimer l'expertise requise en fonction du type d'amÃ©lioration et du gestionnaire
     switch ($Improvement.Type) {
-        "Fonctionnalité" { $expertiseRequiredScore = 6 }
-        "Amélioration" { $expertiseRequiredScore = 5 }
+        "FonctionnalitÃ©" { $expertiseRequiredScore = 6 }
+        "AmÃ©lioration" { $expertiseRequiredScore = 5 }
         "Optimisation" { $expertiseRequiredScore = 8 }
-        "Intégration" { $expertiseRequiredScore = 7 }
-        "Sécurité" { $expertiseRequiredScore = 9 }
+        "IntÃ©gration" { $expertiseRequiredScore = 7 }
+        "SÃ©curitÃ©" { $expertiseRequiredScore = 9 }
         default { $expertiseRequiredScore = 6 }
     }
     
@@ -165,22 +165,22 @@ function Evaluate-ImplementationDifficulty {
     
     $difficultyFactors.ExpertiseRequired.Score = $expertiseRequiredScore
     
-    # Évaluer les contraintes de temps
+    # Ã‰valuer les contraintes de temps
     $timeConstraintsScore = 0
     
     # Estimer les contraintes de temps en fonction de l'effort
     switch ($Improvement.Effort) {
-        "Élevé" { $timeConstraintsScore = 8 }
+        "Ã‰levÃ©" { $timeConstraintsScore = 8 }
         "Moyen" { $timeConstraintsScore = 5 }
         "Faible" { $timeConstraintsScore = 3 }
         default { $timeConstraintsScore = 5 }
     }
     
-    # Ajuster en fonction du type d'amélioration
+    # Ajuster en fonction du type d'amÃ©lioration
     switch ($Improvement.Type) {
         "Optimisation" { $timeConstraintsScore += 1 }
-        "Intégration" { $timeConstraintsScore += 1 }
-        "Sécurité" { $timeConstraintsScore += 2 }
+        "IntÃ©gration" { $timeConstraintsScore += 1 }
+        "SÃ©curitÃ©" { $timeConstraintsScore += 2 }
     }
     
     # Limiter le score entre 1 et 10
@@ -188,19 +188,19 @@ function Evaluate-ImplementationDifficulty {
     
     $difficultyFactors.TimeConstraints.Score = $timeConstraintsScore
     
-    # Évaluer les dépendances
+    # Ã‰valuer les dÃ©pendances
     $dependenciesScore = 0
     
-    # Estimer les dépendances en fonction du nombre de dépendances
+    # Estimer les dÃ©pendances en fonction du nombre de dÃ©pendances
     if ($Improvement.Dependencies) {
         $dependenciesScore = [Math]::Min(10, $Improvement.Dependencies.Count * 2 + 3)
     } else {
         $dependenciesScore = 3
     }
     
-    # Ajuster en fonction du type d'amélioration
+    # Ajuster en fonction du type d'amÃ©lioration
     switch ($Improvement.Type) {
-        "Intégration" { $dependenciesScore += 2 }
+        "IntÃ©gration" { $dependenciesScore += 2 }
         "Optimisation" { $dependenciesScore += 1 }
     }
     
@@ -209,26 +209,26 @@ function Evaluate-ImplementationDifficulty {
     
     $difficultyFactors.Dependencies.Score = $dependenciesScore
     
-    # Calculer le score de difficulté global
+    # Calculer le score de difficultÃ© global
     $difficultyScore = 0
     foreach ($factor in $difficultyFactors.Keys) {
         $difficultyScore += $difficultyFactors[$factor].Score * $difficultyFactors[$factor].Weight
     }
     
-    # Arrondir à deux décimales
+    # Arrondir Ã  deux dÃ©cimales
     $difficultyScore = [Math]::Round($difficultyScore, 2)
     
-    # Déterminer le niveau de difficulté
+    # DÃ©terminer le niveau de difficultÃ©
     $difficultyLevel = ""
     switch ($difficultyScore) {
-        {$_ -lt 3} { $difficultyLevel = "Très facile" }
+        {$_ -lt 3} { $difficultyLevel = "TrÃ¨s facile" }
         {$_ -ge 3 -and $_ -lt 5} { $difficultyLevel = "Facile" }
-        {$_ -ge 5 -and $_ -lt 7} { $difficultyLevel = "Modéré" }
+        {$_ -ge 5 -and $_ -lt 7} { $difficultyLevel = "ModÃ©rÃ©" }
         {$_ -ge 7 -and $_ -lt 8.5} { $difficultyLevel = "Difficile" }
-        {$_ -ge 8.5} { $difficultyLevel = "Très difficile" }
+        {$_ -ge 8.5} { $difficultyLevel = "TrÃ¨s difficile" }
     }
     
-    # Créer l'objet d'évaluation de la difficulté
+    # CrÃ©er l'objet d'Ã©valuation de la difficultÃ©
     $difficultyEvaluation = [PSCustomObject]@{
         Score = $difficultyScore
         Level = $difficultyLevel
@@ -238,7 +238,7 @@ function Evaluate-ImplementationDifficulty {
     return $difficultyEvaluation
 }
 
-# Fonction pour générer le rapport au format Markdown
+# Fonction pour gÃ©nÃ©rer le rapport au format Markdown
 function Generate-MarkdownReport {
     [CmdletBinding()]
     param (
@@ -246,32 +246,32 @@ function Generate-MarkdownReport {
         [PSCustomObject]$EvaluationResults
     )
 
-    $markdown = "# Évaluation de la Difficulté d'Implémentation des Améliorations`n`n"
-    $markdown += "Ce document présente l'évaluation de la difficulté d'implémentation des améliorations identifiées pour les différents gestionnaires.`n`n"
+    $markdown = "# Ã‰valuation de la DifficultÃ© d'ImplÃ©mentation des AmÃ©liorations`n`n"
+    $markdown += "Ce document prÃ©sente l'Ã©valuation de la difficultÃ© d'implÃ©mentation des amÃ©liorations identifiÃ©es pour les diffÃ©rents gestionnaires.`n`n"
     
-    $markdown += "## Table des Matières`n`n"
+    $markdown += "## Table des MatiÃ¨res`n`n"
     
     foreach ($manager in $EvaluationResults.Managers) {
         $markdown += "- [$($manager.Name)](#$($manager.Name.ToLower().Replace(' ', '-')))`n"
     }
     
-    $markdown += "`n## Méthodologie`n`n"
-    $markdown += "L'évaluation de la difficulté d'implémentation a été réalisée en analysant les facteurs suivants :`n`n"
-    $markdown += "1. **Complexité technique** (Poids : 35%) : Niveau de complexité technique de l'amélioration`n"
-    $markdown += "2. **Expertise requise** (Poids : 25%) : Niveau d'expertise nécessaire pour l'implémentation`n"
-    $markdown += "3. **Contraintes de temps** (Poids : 20%) : Contraintes temporelles liées à l'implémentation`n"
-    $markdown += "4. **Dépendances** (Poids : 20%) : Dépendances vis-à-vis d'autres composants ou systèmes`n`n"
+    $markdown += "`n## MÃ©thodologie`n`n"
+    $markdown += "L'Ã©valuation de la difficultÃ© d'implÃ©mentation a Ã©tÃ© rÃ©alisÃ©e en analysant les facteurs suivants :`n`n"
+    $markdown += "1. **ComplexitÃ© technique** (Poids : 35%) : Niveau de complexitÃ© technique de l'amÃ©lioration`n"
+    $markdown += "2. **Expertise requise** (Poids : 25%) : Niveau d'expertise nÃ©cessaire pour l'implÃ©mentation`n"
+    $markdown += "3. **Contraintes de temps** (Poids : 20%) : Contraintes temporelles liÃ©es Ã  l'implÃ©mentation`n"
+    $markdown += "4. **DÃ©pendances** (Poids : 20%) : DÃ©pendances vis-Ã -vis d'autres composants ou systÃ¨mes`n`n"
     
-    $markdown += "Chaque facteur est évalué sur une échelle de 1 à 10, puis pondéré pour obtenir un score global de difficulté.`n`n"
+    $markdown += "Chaque facteur est Ã©valuÃ© sur une Ã©chelle de 1 Ã  10, puis pondÃ©rÃ© pour obtenir un score global de difficultÃ©.`n`n"
     
-    $markdown += "### Niveaux de Difficulté`n`n"
+    $markdown += "### Niveaux de DifficultÃ©`n`n"
     $markdown += "| Niveau | Score | Description |`n"
     $markdown += "|--------|-------|-------------|`n"
-    $markdown += "| Très facile | < 3 | Implémentation simple, peu de risques |`n"
-    $markdown += "| Facile | 3 - 4.99 | Implémentation relativement simple, risques limités |`n"
-    $markdown += "| Modéré | 5 - 6.99 | Implémentation de complexité moyenne, risques modérés |`n"
-    $markdown += "| Difficile | 7 - 8.49 | Implémentation complexe, risques significatifs |`n"
-    $markdown += "| Très difficile | >= 8.5 | Implémentation très complexe, risques élevés |`n`n"
+    $markdown += "| TrÃ¨s facile | < 3 | ImplÃ©mentation simple, peu de risques |`n"
+    $markdown += "| Facile | 3 - 4.99 | ImplÃ©mentation relativement simple, risques limitÃ©s |`n"
+    $markdown += "| ModÃ©rÃ© | 5 - 6.99 | ImplÃ©mentation de complexitÃ© moyenne, risques modÃ©rÃ©s |`n"
+    $markdown += "| Difficile | 7 - 8.49 | ImplÃ©mentation complexe, risques significatifs |`n"
+    $markdown += "| TrÃ¨s difficile | >= 8.5 | ImplÃ©mentation trÃ¨s complexe, risques Ã©levÃ©s |`n`n"
     
     foreach ($manager in $EvaluationResults.Managers) {
         $markdown += "## <a name='$($manager.Name.ToLower().Replace(' ', '-'))'></a>$($manager.Name)`n`n"
@@ -282,11 +282,11 @@ function Generate-MarkdownReport {
             $markdown += "**Type :** $($improvement.Type)`n`n"
             $markdown += "**Effort :** $($improvement.Effort)`n`n"
             
-            $markdown += "#### Évaluation de la Difficulté`n`n"
+            $markdown += "#### Ã‰valuation de la DifficultÃ©`n`n"
             $markdown += "**Score global : $($improvement.DifficultyEvaluation.Score)** (Niveau : $($improvement.DifficultyEvaluation.Level))`n`n"
             
-            $markdown += "**Facteurs de difficulté :**`n`n"
-            $markdown += "| Facteur | Poids | Score | Score pondéré |`n"
+            $markdown += "**Facteurs de difficultÃ© :**`n`n"
+            $markdown += "| Facteur | Poids | Score | Score pondÃ©rÃ© |`n"
             $markdown += "|---------|-------|-------|---------------|`n"
             
             foreach ($factor in $improvement.DifficultyEvaluation.Factors.Keys) {
@@ -297,87 +297,87 @@ function Generate-MarkdownReport {
             
             $markdown += "`n#### Justification`n`n"
             
-            # Justification pour la complexité technique
+            # Justification pour la complexitÃ© technique
             $technicalComplexityScore = $improvement.DifficultyEvaluation.Factors.TechnicalComplexity.Score
-            $markdown += "**Complexité technique (Score : $technicalComplexityScore) :**`n"
+            $markdown += "**ComplexitÃ© technique (Score : $technicalComplexityScore) :**`n"
             if ($technicalComplexityScore -ge 8) {
-                $markdown += "- Amélioration techniquement complexe nécessitant une expertise approfondie`n"
-                $markdown += "- Implique des algorithmes ou des structures de données avancés`n"
-                $markdown += "- Nécessite une compréhension approfondie du système existant`n"
+                $markdown += "- AmÃ©lioration techniquement complexe nÃ©cessitant une expertise approfondie`n"
+                $markdown += "- Implique des algorithmes ou des structures de donnÃ©es avancÃ©s`n"
+                $markdown += "- NÃ©cessite une comprÃ©hension approfondie du systÃ¨me existant`n"
             } elseif ($technicalComplexityScore -ge 5) {
-                $markdown += "- Amélioration de complexité technique moyenne`n"
-                $markdown += "- Implique des modifications significatives mais bien définies`n"
-                $markdown += "- Nécessite une bonne compréhension du système existant`n"
+                $markdown += "- AmÃ©lioration de complexitÃ© technique moyenne`n"
+                $markdown += "- Implique des modifications significatives mais bien dÃ©finies`n"
+                $markdown += "- NÃ©cessite une bonne comprÃ©hension du systÃ¨me existant`n"
             } else {
-                $markdown += "- Amélioration techniquement simple`n"
-                $markdown += "- Implique des modifications mineures et bien définies`n"
-                $markdown += "- Nécessite une compréhension de base du système existant`n"
+                $markdown += "- AmÃ©lioration techniquement simple`n"
+                $markdown += "- Implique des modifications mineures et bien dÃ©finies`n"
+                $markdown += "- NÃ©cessite une comprÃ©hension de base du systÃ¨me existant`n"
             }
             
             # Justification pour l'expertise requise
             $expertiseRequiredScore = $improvement.DifficultyEvaluation.Factors.ExpertiseRequired.Score
             $markdown += "`n**Expertise requise (Score : $expertiseRequiredScore) :**`n"
             if ($expertiseRequiredScore -ge 8) {
-                $markdown += "- Nécessite une expertise spécialisée dans le domaine`n"
-                $markdown += "- Requiert une expérience significative avec les technologies impliquées`n"
-                $markdown += "- Peu de ressources disponibles avec l'expertise nécessaire`n"
+                $markdown += "- NÃ©cessite une expertise spÃ©cialisÃ©e dans le domaine`n"
+                $markdown += "- Requiert une expÃ©rience significative avec les technologies impliquÃ©es`n"
+                $markdown += "- Peu de ressources disponibles avec l'expertise nÃ©cessaire`n"
             } elseif ($expertiseRequiredScore -ge 5) {
-                $markdown += "- Nécessite une bonne expertise dans le domaine`n"
-                $markdown += "- Requiert une expérience modérée avec les technologies impliquées`n"
-                $markdown += "- Ressources avec l'expertise nécessaire disponibles mais limitées`n"
+                $markdown += "- NÃ©cessite une bonne expertise dans le domaine`n"
+                $markdown += "- Requiert une expÃ©rience modÃ©rÃ©e avec les technologies impliquÃ©es`n"
+                $markdown += "- Ressources avec l'expertise nÃ©cessaire disponibles mais limitÃ©es`n"
             } else {
-                $markdown += "- Nécessite une expertise de base dans le domaine`n"
-                $markdown += "- Requiert une expérience limitée avec les technologies impliquées`n"
-                $markdown += "- Ressources avec l'expertise nécessaire facilement disponibles`n"
+                $markdown += "- NÃ©cessite une expertise de base dans le domaine`n"
+                $markdown += "- Requiert une expÃ©rience limitÃ©e avec les technologies impliquÃ©es`n"
+                $markdown += "- Ressources avec l'expertise nÃ©cessaire facilement disponibles`n"
             }
             
             # Justification pour les contraintes de temps
             $timeConstraintsScore = $improvement.DifficultyEvaluation.Factors.TimeConstraints.Score
             $markdown += "`n**Contraintes de temps (Score : $timeConstraintsScore) :**`n"
             if ($timeConstraintsScore -ge 8) {
-                $markdown += "- Implémentation nécessitant un temps significatif`n"
-                $markdown += "- Contraintes de temps strictes ou délais serrés`n"
-                $markdown += "- Risque élevé de dépassement des délais`n"
+                $markdown += "- ImplÃ©mentation nÃ©cessitant un temps significatif`n"
+                $markdown += "- Contraintes de temps strictes ou dÃ©lais serrÃ©s`n"
+                $markdown += "- Risque Ã©levÃ© de dÃ©passement des dÃ©lais`n"
             } elseif ($timeConstraintsScore -ge 5) {
-                $markdown += "- Implémentation nécessitant un temps modéré`n"
-                $markdown += "- Contraintes de temps modérées`n"
-                $markdown += "- Risque modéré de dépassement des délais`n"
+                $markdown += "- ImplÃ©mentation nÃ©cessitant un temps modÃ©rÃ©`n"
+                $markdown += "- Contraintes de temps modÃ©rÃ©es`n"
+                $markdown += "- Risque modÃ©rÃ© de dÃ©passement des dÃ©lais`n"
             } else {
-                $markdown += "- Implémentation rapide`n"
+                $markdown += "- ImplÃ©mentation rapide`n"
                 $markdown += "- Contraintes de temps flexibles`n"
-                $markdown += "- Faible risque de dépassement des délais`n"
+                $markdown += "- Faible risque de dÃ©passement des dÃ©lais`n"
             }
             
-            # Justification pour les dépendances
+            # Justification pour les dÃ©pendances
             $dependenciesScore = $improvement.DifficultyEvaluation.Factors.Dependencies.Score
-            $markdown += "`n**Dépendances (Score : $dependenciesScore) :**`n"
+            $markdown += "`n**DÃ©pendances (Score : $dependenciesScore) :**`n"
             if ($dependenciesScore -ge 8) {
-                $markdown += "- Nombreuses dépendances externes ou internes`n"
-                $markdown += "- Dépendances complexes ou mal définies`n"
-                $markdown += "- Risque élevé lié aux dépendances`n"
+                $markdown += "- Nombreuses dÃ©pendances externes ou internes`n"
+                $markdown += "- DÃ©pendances complexes ou mal dÃ©finies`n"
+                $markdown += "- Risque Ã©levÃ© liÃ© aux dÃ©pendances`n"
             } elseif ($dependenciesScore -ge 5) {
-                $markdown += "- Plusieurs dépendances externes ou internes`n"
-                $markdown += "- Dépendances modérément complexes mais bien définies`n"
-                $markdown += "- Risque modéré lié aux dépendances`n"
+                $markdown += "- Plusieurs dÃ©pendances externes ou internes`n"
+                $markdown += "- DÃ©pendances modÃ©rÃ©ment complexes mais bien dÃ©finies`n"
+                $markdown += "- Risque modÃ©rÃ© liÃ© aux dÃ©pendances`n"
             } else {
-                $markdown += "- Peu ou pas de dépendances externes ou internes`n"
-                $markdown += "- Dépendances simples et bien définies`n"
-                $markdown += "- Faible risque lié aux dépendances`n"
+                $markdown += "- Peu ou pas de dÃ©pendances externes ou internes`n"
+                $markdown += "- DÃ©pendances simples et bien dÃ©finies`n"
+                $markdown += "- Faible risque liÃ© aux dÃ©pendances`n"
             }
             
             $markdown += "`n"
         }
     }
     
-    $markdown += "## Résumé`n`n"
+    $markdown += "## RÃ©sumÃ©`n`n"
     
     $totalImprovements = 0
     $difficultyLevels = @{
-        "Très facile" = 0
+        "TrÃ¨s facile" = 0
         "Facile" = 0
-        "Modéré" = 0
+        "ModÃ©rÃ©" = 0
         "Difficile" = 0
-        "Très difficile" = 0
+        "TrÃ¨s difficile" = 0
     }
     
     foreach ($manager in $EvaluationResults.Managers) {
@@ -387,13 +387,13 @@ function Generate-MarkdownReport {
         }
     }
     
-    $markdown += "Cette évaluation a couvert $totalImprovements améliorations réparties sur $($EvaluationResults.Managers.Count) gestionnaires.`n`n"
+    $markdown += "Cette Ã©valuation a couvert $totalImprovements amÃ©liorations rÃ©parties sur $($EvaluationResults.Managers.Count) gestionnaires.`n`n"
     
-    $markdown += "### Répartition par Niveau de Difficulté`n`n"
+    $markdown += "### RÃ©partition par Niveau de DifficultÃ©`n`n"
     $markdown += "| Niveau | Nombre | Pourcentage |`n"
     $markdown += "|--------|--------|------------|`n"
     
-    foreach ($level in @("Très facile", "Facile", "Modéré", "Difficile", "Très difficile")) {
+    foreach ($level in @("TrÃ¨s facile", "Facile", "ModÃ©rÃ©", "Difficile", "TrÃ¨s difficile")) {
         $percentage = if ($totalImprovements -gt 0) { [Math]::Round(($difficultyLevels[$level] / $totalImprovements) * 100, 1) } else { 0 }
         $markdown += "| $level | $($difficultyLevels[$level]) | $percentage% |`n"
     }
@@ -401,7 +401,7 @@ function Generate-MarkdownReport {
     return $markdown
 }
 
-# Fonction pour générer le rapport au format JSON
+# Fonction pour gÃ©nÃ©rer le rapport au format JSON
 function Generate-JsonReport {
     [CmdletBinding()]
     param (
@@ -412,7 +412,7 @@ function Generate-JsonReport {
     return $EvaluationResults | ConvertTo-Json -Depth 10
 }
 
-# Évaluer la difficulté d'implémentation des améliorations
+# Ã‰valuer la difficultÃ© d'implÃ©mentation des amÃ©liorations
 $evaluationResults = [PSCustomObject]@{
     GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     Managers = @()
@@ -442,7 +442,7 @@ foreach ($manager in $improvementsData.Managers) {
     $evaluationResults.Managers += $managerEvaluation
 }
 
-# Générer le rapport dans le format spécifié
+# GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $reportContent = Generate-MarkdownReport -EvaluationResults $evaluationResults
@@ -455,23 +455,23 @@ switch ($Format) {
 # Enregistrer le rapport
 try {
     $reportContent | Out-File -FilePath $OutputFile -Encoding UTF8
-    Write-Host "Rapport d'évaluation de la difficulté d'implémentation généré avec succès : $OutputFile"
+    Write-Host "Rapport d'Ã©valuation de la difficultÃ© d'implÃ©mentation gÃ©nÃ©rÃ© avec succÃ¨s : $OutputFile"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du rapport : $_"
     exit 1
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'évaluation de la difficulté d'implémentation :"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'Ã©valuation de la difficultÃ© d'implÃ©mentation :"
 Write-Host "--------------------------------------------------------"
 
 $totalImprovements = 0
 $difficultyLevels = @{
-    "Très facile" = 0
+    "TrÃ¨s facile" = 0
     "Facile" = 0
-    "Modéré" = 0
+    "ModÃ©rÃ©" = 0
     "Difficile" = 0
-    "Très difficile" = 0
+    "TrÃ¨s difficile" = 0
 }
 
 foreach ($manager in $evaluationResults.Managers) {
@@ -482,12 +482,12 @@ foreach ($manager in $evaluationResults.Managers) {
         $difficultyLevels[$improvement.DifficultyEvaluation.Level]++
     }
     
-    Write-Host "  $($manager.Name) : $managerImprovements améliorations"
+    Write-Host "  $($manager.Name) : $managerImprovements amÃ©liorations"
 }
 
-Write-Host "  Total : $totalImprovements améliorations"
-Write-Host "`nRépartition par niveau de difficulté :"
-foreach ($level in @("Très facile", "Facile", "Modéré", "Difficile", "Très difficile")) {
+Write-Host "  Total : $totalImprovements amÃ©liorations"
+Write-Host "`nRÃ©partition par niveau de difficultÃ© :"
+foreach ($level in @("TrÃ¨s facile", "Facile", "ModÃ©rÃ©", "Difficile", "TrÃ¨s difficile")) {
     $percentage = if ($totalImprovements -gt 0) { [Math]::Round(($difficultyLevels[$level] / $totalImprovements) * 100, 1) } else { 0 }
     Write-Host "  $level : $($difficultyLevels[$level]) ($percentage%)"
 }

@@ -1,6 +1,6 @@
-# Script pour tester le module DependencyCycleResolver
+﻿# Script pour tester le module DependencyCycleResolver
 
-# Importer les modules à tester
+# Importer les modules Ã  tester
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $cycleDetectorPath = Join-Path -Path $modulesPath -ChildPath "CycleDetector.psm1"
 $cycleResolverPath = Join-Path -Path $modulesPath -ChildPath "DependencyCycleResolver.psm1"
@@ -14,7 +14,7 @@ Write-Host "Initialisation des modules..."
 Initialize-CycleDetector -Enabled $true -MaxDepth 100 -CacheEnabled $true
 Initialize-DependencyCycleResolver -Enabled $true -MaxIterations 10 -Strategy "MinimumImpact"
 
-# Test 1: Résolution d'un cycle simple dans un graphe
+# Test 1: RÃ©solution d'un cycle simple dans un graphe
 Write-Host "`nTest 1: Resolution d'un cycle simple dans un graphe"
 $graph = @{
     "A" = @("B")
@@ -22,10 +22,10 @@ $graph = @{
     "C" = @("A")
 }
 
-# Détecter le cycle
+# DÃ©tecter le cycle
 $cycleResult = Find-Cycle -Graph $graph
 
-# Vérifier que le cycle est détecté
+# VÃ©rifier que le cycle est dÃ©tectÃ©
 if ($cycleResult.HasCycle) {
     Write-Host "  Cycle detecte" -ForegroundColor Green
     Write-Host "  Chemin du cycle: $($cycleResult.CyclePath -join ' -> ')"
@@ -33,17 +33,17 @@ if ($cycleResult.HasCycle) {
     Write-Host "  Cycle non detecte" -ForegroundColor Red
 }
 
-# Créer un objet CycleResult compatible avec Resolve-DependencyCycle
+# CrÃ©er un objet CycleResult compatible avec Resolve-DependencyCycle
 $compatibleCycleResult = [PSCustomObject]@{
     HasCycle = $cycleResult.HasCycle
     CyclePath = $cycleResult.CyclePath
     Graph = $graph
 }
 
-# Résoudre le cycle
+# RÃ©soudre le cycle
 $resolveResult = Resolve-DependencyCycle -CycleResult $compatibleCycleResult
 
-# Vérifier que le cycle est résolu
+# VÃ©rifier que le cycle est rÃ©solu
 if ($resolveResult.Success) {
     Write-Host "  Cycle resolu avec succes" -ForegroundColor Green
     Write-Host "  Arete supprimee: $($resolveResult.RemovedEdges[0].Source) -> $($resolveResult.RemovedEdges[0].Target)"
@@ -51,7 +51,7 @@ if ($resolveResult.Success) {
     Write-Host "  Echec de la resolution du cycle" -ForegroundColor Red
 }
 
-# Vérifier que le graphe modifié n'a plus de cycle
+# VÃ©rifier que le graphe modifiÃ© n'a plus de cycle
 $newCycleCheck = Find-Cycle -Graph $resolveResult.Graph
 if (-not $newCycleCheck.HasCycle) {
     Write-Host "  Le graphe modifie ne contient plus de cycle" -ForegroundColor Green
@@ -59,12 +59,12 @@ if (-not $newCycleCheck.HasCycle) {
     Write-Host "  Le graphe modifie contient encore un cycle" -ForegroundColor Red
 }
 
-# Test 2: Statistiques du résolveur de cycles
+# Test 2: Statistiques du rÃ©solveur de cycles
 Write-Host "`nTest 2: Statistiques du resolveur de cycles"
 # Obtenir les statistiques
 $stats = Get-CycleResolverStatistics
 
-# Vérifier que les statistiques sont disponibles
+# VÃ©rifier que les statistiques sont disponibles
 if ($stats.TotalResolutions -gt 0) {
     Write-Host "  Nombre total de resolutions: $($stats.TotalResolutions)" -ForegroundColor Green
 } else {

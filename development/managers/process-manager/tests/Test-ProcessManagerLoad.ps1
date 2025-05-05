@@ -1,35 +1,35 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests de charge pour le Process Manager.
 
 .DESCRIPTION
-    Ce script exécute des tests de charge pour évaluer la capacité du Process Manager
-    à gérer un grand nombre de gestionnaires et d'opérations simultanées.
+    Ce script exÃ©cute des tests de charge pour Ã©valuer la capacitÃ© du Process Manager
+    Ã  gÃ©rer un grand nombre de gestionnaires et d'opÃ©rations simultanÃ©es.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire courant.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER NumManagers
-    Nombre de gestionnaires à créer pour les tests de charge. Par défaut, 100.
+    Nombre de gestionnaires Ã  crÃ©er pour les tests de charge. Par dÃ©faut, 100.
 
 .PARAMETER NumOperations
-    Nombre d'opérations à exécuter pour les tests de charge. Par défaut, 500.
+    Nombre d'opÃ©rations Ã  exÃ©cuter pour les tests de charge. Par dÃ©faut, 500.
 
 .PARAMETER SkipCleanup
-    Ne supprime pas les fichiers de test après l'exécution.
+    Ne supprime pas les fichiers de test aprÃ¨s l'exÃ©cution.
 
 .EXAMPLE
     .\Test-ProcessManagerLoad.ps1
-    Exécute les tests de charge pour le Process Manager.
+    ExÃ©cute les tests de charge pour le Process Manager.
 
 .EXAMPLE
     .\Test-ProcessManagerLoad.ps1 -ProjectRoot "D:\Projets\MonProjet" -NumManagers 200 -NumOperations 1000 -SkipCleanup
-    Exécute les tests de charge avec 200 gestionnaires et 1000 opérations, et ne supprime pas les fichiers de test.
+    ExÃ©cute les tests de charge avec 200 gestionnaires et 1000 opÃ©rations, et ne supprime pas les fichiers de test.
 
 .NOTES
     Auteur: EMAIL_SENDER_1
     Version: 1.0
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -46,7 +46,7 @@ param (
     [switch]$SkipCleanup
 )
 
-# Définir les chemins
+# DÃ©finir les chemins
 $processManagerRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers\process-manager"
 $modulesRoot = Join-Path -Path $processManagerRoot -ChildPath "modules"
 $scriptsRoot = Join-Path -Path $processManagerRoot -ChildPath "scripts"
@@ -56,7 +56,7 @@ $testDir = Join-Path -Path $testsRoot -ChildPath "load-tests"
 $testConfigPath = Join-Path -Path $testDir -ChildPath "test-load.config.json"
 $resultsPath = Join-Path -Path $testDir -ChildPath "load-results.csv"
 
-# Fonction pour écrire des messages de journal
+# Fonction pour Ã©crire des messages de journal
 function Write-TestLog {
     [CmdletBinding()]
     param (
@@ -71,7 +71,7 @@ function Write-TestLog {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "[$timestamp] [$Level] $Message"
     
-    # Définir la couleur en fonction du niveau
+    # DÃ©finir la couleur en fonction du niveau
     $color = switch ($Level) {
         "Info" { "White" }
         "Warning" { "Yellow" }
@@ -85,46 +85,46 @@ function Write-TestLog {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier que le répertoire du projet existe
+# VÃ©rifier que le rÃ©pertoire du projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du projet n'existe pas : $ProjectRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du projet n'existe pas : $ProjectRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le répertoire du Process Manager existe
+# VÃ©rifier que le rÃ©pertoire du Process Manager existe
 if (-not (Test-Path -Path $processManagerRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le script du Process Manager existe
+# VÃ©rifier que le script du Process Manager existe
 if (-not (Test-Path -Path $processManagerScript -PathType Leaf)) {
     Write-TestLog -Message "Le script du Process Manager n'existe pas : $processManagerScript" -Level Error
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfig = @{
     Enabled = $true
-    LogLevel = "Error" # Utiliser Error pour réduire la sortie console pendant les tests de charge
+    LogLevel = "Error" # Utiliser Error pour rÃ©duire la sortie console pendant les tests de charge
     LogPath = "logs/test-load"
     Managers = @{}
 }
 $testConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $testConfigPath -Encoding UTF8
 
-# Créer des gestionnaires de test pour les tests de charge
+# CrÃ©er des gestionnaires de test pour les tests de charge
 $testManagerTemplate = @"
 <#
 .SYNOPSIS
     Gestionnaire de test {0} pour les tests de charge.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests de charge
+    Ce script est un gestionnaire de test utilisÃ© pour les tests de charge
     du Process Manager.
 #>
 
@@ -137,14 +137,14 @@ function Start-LoadManager{0} {{
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire de charge {0}..."
+    Write-Host "DÃ©marrage du gestionnaire de charge {0}..."
 }}
 
 function Stop-LoadManager{0} {{
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire de charge {0}..."
+    Write-Host "ArrÃªt du gestionnaire de charge {0}..."
 }}
 
 function Get-LoadManager{0}Status {{
@@ -158,7 +158,7 @@ function Get-LoadManager{0}Status {{
     }}
 }}
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {{
     "Start" {{
         Start-LoadManager{0}
@@ -175,7 +175,7 @@ switch (`$Command) {{
 }}
 "@
 
-Write-TestLog -Message "Création de $NumManagers gestionnaires de test pour les tests de charge..." -Level Info
+Write-TestLog -Message "CrÃ©ation de $NumManagers gestionnaires de test pour les tests de charge..." -Level Info
 
 $testManagers = @()
 for ($i = 1; $i -le $NumManagers; $i++) {
@@ -183,11 +183,11 @@ for ($i = 1; $i -le $NumManagers; $i++) {
     $managerPath = Join-Path -Path $testDir -ChildPath "load-manager-$i.ps1"
     $manifestPath = Join-Path -Path $testDir -ChildPath "load-manager-$i.manifest.json"
     
-    # Créer le script du gestionnaire
+    # CrÃ©er le script du gestionnaire
     $managerContent = $testManagerTemplate -f $i
     Set-Content -Path $managerPath -Value $managerContent -Encoding UTF8
     
-    # Créer le manifeste du gestionnaire
+    # CrÃ©er le manifeste du gestionnaire
     $manifest = @{
         Name = $managerName
         Description = "Gestionnaire de test $i pour les tests de charge"
@@ -205,11 +205,11 @@ for ($i = 1; $i -le $NumManagers; $i++) {
     
     # Afficher la progression
     if ($i % 10 -eq 0) {
-        Write-Progress -Activity "Création des gestionnaires de test" -Status "$i/$NumManagers gestionnaires créés" -PercentComplete (($i / $NumManagers) * 100)
+        Write-Progress -Activity "CrÃ©ation des gestionnaires de test" -Status "$i/$NumManagers gestionnaires crÃ©Ã©s" -PercentComplete (($i / $NumManagers) * 100)
     }
 }
 
-Write-Progress -Activity "Création des gestionnaires de test" -Completed
+Write-Progress -Activity "CrÃ©ation des gestionnaires de test" -Completed
 
 # Enregistrer les gestionnaires de test
 Write-TestLog -Message "Enregistrement des gestionnaires de test..." -Level Info
@@ -222,7 +222,7 @@ foreach ($manager in $testManagers) {
         
         # Afficher la progression
         if ($registeredManagers % 10 -eq 0) {
-            Write-Progress -Activity "Enregistrement des gestionnaires de test" -Status "$registeredManagers/$NumManagers gestionnaires enregistrés" -PercentComplete (($registeredManagers / $NumManagers) * 100)
+            Write-Progress -Activity "Enregistrement des gestionnaires de test" -Status "$registeredManagers/$NumManagers gestionnaires enregistrÃ©s" -PercentComplete (($registeredManagers / $NumManagers) * 100)
         }
     } catch {
         Write-TestLog -Message "Erreur lors de l'enregistrement du gestionnaire $($manager.Name) : $_" -Level Error
@@ -230,9 +230,9 @@ foreach ($manager in $testManagers) {
 }
 
 Write-Progress -Activity "Enregistrement des gestionnaires de test" -Completed
-Write-TestLog -Message "$registeredManagers/$NumManagers gestionnaires enregistrés avec succès." -Level Success
+Write-TestLog -Message "$registeredManagers/$NumManagers gestionnaires enregistrÃ©s avec succÃ¨s." -Level Success
 
-# Définir les opérations de test
+# DÃ©finir les opÃ©rations de test
 $operations = @(
     @{
         Name = "Status"
@@ -257,8 +257,8 @@ $operations = @(
     }
 )
 
-# Exécuter les opérations de test
-Write-TestLog -Message "Exécution de $NumOperations opérations de test..." -Level Info
+# ExÃ©cuter les opÃ©rations de test
+Write-TestLog -Message "ExÃ©cution de $NumOperations opÃ©rations de test..." -Level Info
 
 $results = @()
 $successfulOperations = 0
@@ -266,11 +266,11 @@ $failedOperations = 0
 $startTime = Get-Date
 
 for ($i = 1; $i -le $NumOperations; $i++) {
-    # Sélectionner un gestionnaire et une opération aléatoires
+    # SÃ©lectionner un gestionnaire et une opÃ©ration alÃ©atoires
     $manager = $testManagers | Get-Random
     $operation = $operations | Get-Random
     
-    # Mesurer le temps d'exécution
+    # Mesurer le temps d'exÃ©cution
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     
     try {
@@ -301,19 +301,19 @@ for ($i = 1; $i -le $NumOperations; $i++) {
         }
         
         $failedOperations++
-        Write-TestLog -Message "Erreur lors de l'opération $($operation.Name) sur le gestionnaire $($manager.Name) : $_" -Level Error
+        Write-TestLog -Message "Erreur lors de l'opÃ©ration $($operation.Name) sur le gestionnaire $($manager.Name) : $_" -Level Error
     }
     
     # Afficher la progression
     if ($i % 10 -eq 0) {
-        Write-Progress -Activity "Exécution des opérations de test" -Status "$i/$NumOperations opérations exécutées" -PercentComplete (($i / $NumOperations) * 100)
+        Write-Progress -Activity "ExÃ©cution des opÃ©rations de test" -Status "$i/$NumOperations opÃ©rations exÃ©cutÃ©es" -PercentComplete (($i / $NumOperations) * 100)
     }
 }
 
 $endTime = Get-Date
 $totalDuration = ($endTime - $startTime).TotalSeconds
 
-Write-Progress -Activity "Exécution des opérations de test" -Completed
+Write-Progress -Activity "ExÃ©cution des opÃ©rations de test" -Completed
 
 # Calculer les statistiques
 $avgExecutionTime = ($results | Measure-Object -Property ExecutionTime -Average).Average
@@ -323,22 +323,22 @@ $stdDevExecutionTime = [Math]::Sqrt(($results | ForEach-Object { [Math]::Pow($_.
 
 $operationsPerSecond = $NumOperations / $totalDuration
 
-# Enregistrer les résultats dans un fichier CSV
+# Enregistrer les rÃ©sultats dans un fichier CSV
 $results | Export-Csv -Path $resultsPath -NoTypeInformation -Encoding UTF8
-Write-TestLog -Message "Résultats détaillés enregistrés dans : $resultsPath" -Level Success
+Write-TestLog -Message "RÃ©sultats dÃ©taillÃ©s enregistrÃ©s dans : $resultsPath" -Level Success
 
-# Afficher le résumé
-Write-TestLog -Message "`nRésumé des tests de charge :" -Level Info
+# Afficher le rÃ©sumÃ©
+Write-TestLog -Message "`nRÃ©sumÃ© des tests de charge :" -Level Info
 Write-TestLog -Message "  Nombre de gestionnaires : $NumManagers" -Level Info
-Write-TestLog -Message "  Nombre d'opérations : $NumOperations" -Level Info
-Write-TestLog -Message "  Opérations réussies : $successfulOperations" -Level Success
-Write-TestLog -Message "  Opérations échouées : $failedOperations" -Level Error
-Write-TestLog -Message "  Durée totale : $($totalDuration.ToString("F2")) secondes" -Level Info
-Write-TestLog -Message "  Opérations par seconde : $($operationsPerSecond.ToString("F2"))" -Level Info
-Write-TestLog -Message "  Temps d'exécution moyen : $($avgExecutionTime.ToString("F2")) ms" -Level Info
-Write-TestLog -Message "  Temps d'exécution min : $($minExecutionTime.ToString("F2")) ms" -Level Info
-Write-TestLog -Message "  Temps d'exécution max : $($maxExecutionTime.ToString("F2")) ms" -Level Info
-Write-TestLog -Message "  Écart-type : $($stdDevExecutionTime.ToString("F2")) ms" -Level Info
+Write-TestLog -Message "  Nombre d'opÃ©rations : $NumOperations" -Level Info
+Write-TestLog -Message "  OpÃ©rations rÃ©ussies : $successfulOperations" -Level Success
+Write-TestLog -Message "  OpÃ©rations Ã©chouÃ©es : $failedOperations" -Level Error
+Write-TestLog -Message "  DurÃ©e totale : $($totalDuration.ToString("F2")) secondes" -Level Info
+Write-TestLog -Message "  OpÃ©rations par seconde : $($operationsPerSecond.ToString("F2"))" -Level Info
+Write-TestLog -Message "  Temps d'exÃ©cution moyen : $($avgExecutionTime.ToString("F2")) ms" -Level Info
+Write-TestLog -Message "  Temps d'exÃ©cution min : $($minExecutionTime.ToString("F2")) ms" -Level Info
+Write-TestLog -Message "  Temps d'exÃ©cution max : $($maxExecutionTime.ToString("F2")) ms" -Level Info
+Write-TestLog -Message "  Ã‰cart-type : $($stdDevExecutionTime.ToString("F2")) ms" -Level Info
 
 # Nettoyer les fichiers de test
 if (-not $SkipCleanup) {
@@ -347,7 +347,7 @@ if (-not $SkipCleanup) {
     }
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return [PSCustomObject]@{
     NumManagers = $NumManagers
     NumOperations = $NumOperations

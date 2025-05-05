@@ -1,6 +1,6 @@
-# Module d'analyse des workflows n8n
+﻿# Module d'analyse des workflows n8n
 # Ce module fournit des fonctions pour analyser les workflows n8n,
-# détecter les activités, extraire les transitions et analyser les conditions.
+# dÃ©tecter les activitÃ©s, extraire les transitions et analyser les conditions.
 
 #Requires -Version 5.1
 
@@ -19,7 +19,7 @@ function Get-N8nWorkflow {
         # Convertir le contenu JSON en objet PowerShell
         $workflow = $workflowContent | ConvertFrom-Json
 
-        # Vérifier si le workflow est valide
+        # VÃ©rifier si le workflow est valide
         if (-not $workflow.nodes -or -not $workflow.connections) {
             Write-Error "Le fichier ne contient pas un workflow n8n valide."
             return $null
@@ -32,7 +32,7 @@ function Get-N8nWorkflow {
     }
 }
 
-# Fonction pour détecter les activités d'un workflow n8n
+# Fonction pour dÃ©tecter les activitÃ©s d'un workflow n8n
 function Get-N8nWorkflowActivities {
     [CmdletBinding()]
     param (
@@ -45,18 +45,18 @@ function Get-N8nWorkflowActivities {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $activities = @()
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Créer un objet pour représenter l'activité
+                # CrÃ©er un objet pour reprÃ©senter l'activitÃ©
                 $activity = [PSCustomObject]@{
                     Id       = $node.id
                     Name     = $node.name
@@ -65,7 +65,7 @@ function Get-N8nWorkflowActivities {
                     Category = Get-NodeCategory -NodeType $node.type
                 }
 
-                # Ajouter des détails si demandé
+                # Ajouter des dÃ©tails si demandÃ©
                 if ($IncludeDetails) {
                     $activity | Add-Member -MemberType NoteProperty -Name "Parameters" -Value $node.parameters
                     $activity | Add-Member -MemberType NoteProperty -Name "TypeVersion" -Value $node.typeVersion
@@ -102,13 +102,13 @@ function Get-N8nWorkflowActivities {
                     $activity | Add-Member -MemberType NoteProperty -Name "OutgoingConnections" -Value $outgoingConnections
                 }
 
-                # Ajouter l'activité aux résultats
+                # Ajouter l'activitÃ© aux rÃ©sultats
                 $activities += $activity
             }
 
             return $activities
         } catch {
-            Write-Error "Erreur lors de la détection des activités: $_"
+            Write-Error "Erreur lors de la dÃ©tection des activitÃ©s: $_"
             return $null
         }
     }
@@ -127,16 +127,16 @@ function Get-N8nWorkflowTransitions {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes -or -not $Workflow.connections) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $transitions = @()
 
-            # Créer un dictionnaire pour accéder rapidement aux nœuds par ID
+            # CrÃ©er un dictionnaire pour accÃ©der rapidement aux nÅ“uds par ID
             $nodesById = @{}
             foreach ($node in $Workflow.nodes) {
                 $nodesById[$node.id] = $node
@@ -150,7 +150,7 @@ function Get-N8nWorkflowTransitions {
                     foreach ($connection in $connectionArray) {
                         $targetNode = $nodesById[$connection.node]
 
-                        # Créer un objet pour représenter la transition
+                        # CrÃ©er un objet pour reprÃ©senter la transition
                         $transition = [PSCustomObject]@{
                             SourceNodeId   = $sourceNodeId
                             SourceNodeName = $sourceNode.name
@@ -161,13 +161,13 @@ function Get-N8nWorkflowTransitions {
                             OutputIndex    = $connection.index
                         }
 
-                        # Ajouter des détails si demandé
+                        # Ajouter des dÃ©tails si demandÃ©
                         if ($IncludeNodeDetails) {
                             $transition | Add-Member -MemberType NoteProperty -Name "SourceNode" -Value $sourceNode
                             $transition | Add-Member -MemberType NoteProperty -Name "TargetNode" -Value $targetNode
                         }
 
-                        # Ajouter la transition aux résultats
+                        # Ajouter la transition aux rÃ©sultats
                         $transitions += $transition
                     }
                 }
@@ -194,30 +194,30 @@ function Get-N8nWorkflowConditions {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $conditions = @()
 
-            # Créer un dictionnaire pour accéder rapidement aux nœuds par ID
+            # CrÃ©er un dictionnaire pour accÃ©der rapidement aux nÅ“uds par ID
             $nodesById = @{}
             foreach ($node in $Workflow.nodes) {
                 $nodesById[$node.id] = $node
             }
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est un nœud conditionnel
+                # VÃ©rifier si le nÅ“ud est un nÅ“ud conditionnel
                 if ($node.type -eq "n8n-nodes-base.if" -or $node.type -eq "n8n-nodes-base.switch") {
                     # Extraire les conditions
                     $conditionDetails = @()
 
                     if ($node.type -eq "n8n-nodes-base.if") {
-                        # Nœud IF
+                        # NÅ“ud IF
                         if ($node.parameters.conditions) {
                             foreach ($conditionType in $node.parameters.conditions.PSObject.Properties.Name) {
                                 foreach ($condition in $node.parameters.conditions.$conditionType) {
@@ -231,7 +231,7 @@ function Get-N8nWorkflowConditions {
                             }
                         }
                     } elseif ($node.type -eq "n8n-nodes-base.switch") {
-                        # Nœud Switch
+                        # NÅ“ud Switch
                         if ($node.parameters.rules) {
                             foreach ($rule in $node.parameters.rules) {
                                 $conditionDetails += [PSCustomObject]@{
@@ -245,7 +245,7 @@ function Get-N8nWorkflowConditions {
                         }
                     }
 
-                    # Créer un objet pour représenter le nœud conditionnel
+                    # CrÃ©er un objet pour reprÃ©senter le nÅ“ud conditionnel
                     $conditionNode = [PSCustomObject]@{
                         Id         = $node.id
                         Name       = $node.name
@@ -253,7 +253,7 @@ function Get-N8nWorkflowConditions {
                         Conditions = $conditionDetails
                     }
 
-                    # Ajouter les transitions si demandé
+                    # Ajouter les transitions si demandÃ©
                     if ($IncludeTransitions -and $Workflow.connections.$($node.id)) {
                         $transitions = @()
 
@@ -280,7 +280,7 @@ function Get-N8nWorkflowConditions {
                         $conditionNode | Add-Member -MemberType NoteProperty -Name "Transitions" -Value $transitions
                     }
 
-                    # Ajouter le nœud conditionnel aux résultats
+                    # Ajouter le nÅ“ud conditionnel aux rÃ©sultats
                     $conditions += $conditionNode
                 }
             }
@@ -293,7 +293,7 @@ function Get-N8nWorkflowConditions {
     }
 }
 
-# Fonction pour générer un rapport d'analyse d'un workflow n8n
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse d'un workflow n8n
 function Get-N8nWorkflowAnalysisReport {
     [CmdletBinding()]
     param (
@@ -322,24 +322,24 @@ function Get-N8nWorkflowAnalysisReport {
         $transitions = Get-N8nWorkflowTransitions -Workflow $workflow
         $conditions = Get-N8nWorkflowConditions -Workflow $workflow -IncludeTransitions
 
-        # Créer le rapport
+        # CrÃ©er le rapport
         $report = ""
 
         switch ($Format) {
             "Markdown" {
                 $report = "# Rapport d'analyse du workflow: $($workflow.name)`n`n"
 
-                # Informations générales
-                $report += "## Informations générales`n`n"
+                # Informations gÃ©nÃ©rales
+                $report += "## Informations gÃ©nÃ©rales`n`n"
                 $report += "- **Nom**: $($workflow.name)`n"
                 $report += "- **ID**: $($workflow.id)`n"
                 $report += "- **Actif**: $($workflow.active)`n"
                 $report += "- **Nombre de noeuds**: $($workflow.nodes.Count)`n"
                 $report += "- **Nombre de connexions**: $($transitions.Count)`n`n"
 
-                # Activités
-                $report += "## Activités`n`n"
-                $report += "| ID | Nom | Type | Catégorie |`n"
+                # ActivitÃ©s
+                $report += "## ActivitÃ©s`n`n"
+                $report += "| ID | Nom | Type | CatÃ©gorie |`n"
                 $report += "|----|-----|------|-----------|`n"
                 foreach ($activity in $activities) {
                     $report += "| $($activity.Id) | $($activity.Name) | $($activity.Type) | $($activity.Category) |`n"
@@ -362,7 +362,7 @@ function Get-N8nWorkflowAnalysisReport {
                     $report += "- **Type**: $($condition.Type)`n"
                     $report += "- **Conditions**:`n`n"
 
-                    $report += "| Type | Valeur 1 | Opération | Valeur 2 |`n"
+                    $report += "| Type | Valeur 1 | OpÃ©ration | Valeur 2 |`n"
                     $report += "|------|----------|-----------|----------|`n"
                     foreach ($cond in $condition.Conditions) {
                         $report += "| $($cond.Type) | $($cond.Value1) | $($cond.Operation) | $($cond.Value2) |`n"
@@ -395,12 +395,12 @@ function Get-N8nWorkflowAnalysisReport {
                 $report = $reportObj | ConvertTo-Json -Depth 10
             }
             "HTML" {
-                # Implémentation HTML simplifiée
+                # ImplÃ©mentation HTML simplifiÃ©e
                 $report = "<html><head><title>Rapport d'analyse du workflow: $($workflow.name)</title></head><body>"
                 $report += "<h1>Rapport d'analyse du workflow: $($workflow.name)</h1>"
 
-                # Informations générales
-                $report += "<h2>Informations générales</h2>"
+                # Informations gÃ©nÃ©rales
+                $report += "<h2>Informations gÃ©nÃ©rales</h2>"
                 $report += "<ul>"
                 $report += "<li><strong>Nom</strong>: $($workflow.name)</li>"
                 $report += "<li><strong>ID</strong>: $($workflow.id)</li>"
@@ -409,9 +409,9 @@ function Get-N8nWorkflowAnalysisReport {
                 $report += "<li><strong>Nombre de connexions</strong>: $($transitions.Count)</li>"
                 $report += "</ul>"
 
-                # Activités
-                $report += "<h2>Activités</h2>"
-                $report += "<table border='1'><tr><th>ID</th><th>Nom</th><th>Type</th><th>Catégorie</th></tr>"
+                # ActivitÃ©s
+                $report += "<h2>ActivitÃ©s</h2>"
+                $report += "<table border='1'><tr><th>ID</th><th>Nom</th><th>Type</th><th>CatÃ©gorie</th></tr>"
                 foreach ($activity in $activities) {
                     $report += "<tr><td>$($activity.Id)</td><td>$($activity.Name)</td><td>$($activity.Type)</td><td>$($activity.Category)</td></tr>"
                 }
@@ -432,7 +432,7 @@ function Get-N8nWorkflowAnalysisReport {
                     $report += "<p><strong>Type</strong>: $($condition.Type)</p>"
                     $report += "<p><strong>Conditions</strong>:</p>"
 
-                    $report += "<table border='1'><tr><th>Type</th><th>Valeur 1</th><th>Opération</th><th>Valeur 2</th></tr>"
+                    $report += "<table border='1'><tr><th>Type</th><th>Valeur 1</th><th>OpÃ©ration</th><th>Valeur 2</th></tr>"
                     foreach ($cond in $condition.Conditions) {
                         $report += "<tr><td>$($cond.Type)</td><td>$($cond.Value1)</td><td>$($cond.Operation)</td><td>$($cond.Value2)</td></tr>"
                     }
@@ -453,18 +453,18 @@ function Get-N8nWorkflowAnalysisReport {
             "Text" {
                 $report = "Rapport d'analyse du workflow: $($workflow.name)`r`n`r`n"
 
-                # Informations générales
-                $report += "Informations générales:`r`n"
+                # Informations gÃ©nÃ©rales
+                $report += "Informations gÃ©nÃ©rales:`r`n"
                 $report += "- Nom: $($workflow.name)`r`n"
                 $report += "- ID: $($workflow.id)`r`n"
                 $report += "- Actif: $($workflow.active)`r`n"
                 $report += "- Nombre de noeuds: $($workflow.nodes.Count)`r`n"
                 $report += "- Nombre de connexions: $($transitions.Count)`r`n`r`n"
 
-                # Activités
-                $report += "Activités:`r`n"
+                # ActivitÃ©s
+                $report += "ActivitÃ©s:`r`n"
                 foreach ($activity in $activities) {
-                    $report += "- $($activity.Name) (ID: $($activity.Id), Type: $($activity.Type), Catégorie: $($activity.Category))`r`n"
+                    $report += "- $($activity.Name) (ID: $($activity.Id), Type: $($activity.Type), CatÃ©gorie: $($activity.Category))`r`n"
                 }
                 $report += "`r`n"
 
@@ -497,20 +497,20 @@ function Get-N8nWorkflowAnalysisReport {
             }
         }
 
-        # Enregistrer le rapport si un chemin de sortie est spécifié
+        # Enregistrer le rapport si un chemin de sortie est spÃ©cifiÃ©
         if ($OutputPath) {
             $report | Out-File -FilePath $OutputPath -Encoding UTF8
-            Write-Host "Rapport enregistré dans $OutputPath"
+            Write-Host "Rapport enregistrÃ© dans $OutputPath"
         }
 
         return $report
     } catch {
-        Write-Error "Erreur lors de la génération du rapport: $_"
+        Write-Error "Erreur lors de la gÃ©nÃ©ration du rapport: $_"
         return $null
     }
 }
 
-# Fonction utilitaire pour déterminer la catégorie d'un nœud
+# Fonction utilitaire pour dÃ©terminer la catÃ©gorie d'un nÅ“ud
 function Get-NodeCategory {
     [CmdletBinding()]
     param (
@@ -518,7 +518,7 @@ function Get-NodeCategory {
         [string]$NodeType
     )
 
-    # Catégoriser les nœuds par type
+    # CatÃ©goriser les nÅ“uds par type
     switch -Wildcard ($NodeType) {
         "n8n-nodes-base.start" { return "Trigger" }
         "n8n-nodes-base.manualTrigger" { return "Trigger" }
@@ -554,7 +554,7 @@ function Get-NodeCategory {
     }
 }
 
-# Fonction pour détecter les blocs try/catch/finally dans le code d'une fonction
+# Fonction pour dÃ©tecter les blocs try/catch/finally dans le code d'une fonction
 function Get-TryCatchBlocks {
     [CmdletBinding()]
     param (
@@ -563,7 +563,7 @@ function Get-TryCatchBlocks {
     )
 
     try {
-        # Initialiser les résultats
+        # Initialiser les rÃ©sultats
         $blocks = @{
             TryBlocks     = @()
             CatchBlocks   = @()
@@ -602,12 +602,12 @@ function Get-TryCatchBlocks {
 
         return $blocks
     } catch {
-        Write-Error "Erreur lors de la détection des blocs try/catch/finally: $_"
+        Write-Error "Erreur lors de la dÃ©tection des blocs try/catch/finally: $_"
         return $null
     }
 }
 
-# Fonction pour détecter les blocs trap dans le code d'une fonction
+# Fonction pour dÃ©tecter les blocs trap dans le code d'une fonction
 function Get-TrapBlocks {
     [CmdletBinding()]
     param (
@@ -616,16 +616,16 @@ function Get-TrapBlocks {
     )
 
     try {
-        # Initialiser les résultats
+        # Initialiser les rÃ©sultats
         $trapBlocks = @()
 
         # Rechercher les blocs trap
         # Le pattern recherche "trap" suivi d'un bloc de code entre accolades
-        # Optionnellement, il peut y avoir une condition entre crochets après "trap"
+        # Optionnellement, il peut y avoir une condition entre crochets aprÃ¨s "trap"
         $trapMatches = [regex]::Matches($FunctionCode, "trap\s*(?:\[[^\]]+\])?\s*{([^{}]|(?<open>{)|(?<-open>}))*(?(open)(?!))}")
 
         foreach ($match in $trapMatches) {
-            # Extraire le type d'exception (s'il est spécifié)
+            # Extraire le type d'exception (s'il est spÃ©cifiÃ©)
             $exceptionType = ""
             $typeMatch = [regex]::Match($match.Value, "trap\s*\[([^\]]+)\]")
             if ($typeMatch.Success) {
@@ -642,7 +642,7 @@ function Get-TrapBlocks {
 
         return $trapBlocks
     } catch {
-        Write-Error "Erreur lors de la détection des blocs trap: $_"
+        Write-Error "Erreur lors de la dÃ©tection des blocs trap: $_"
         return $null
     }
 }
@@ -657,18 +657,18 @@ function Get-N8nWorkflowTryCatchBlocks {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $tryCatchNodes = @()
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est un nœud de fonction
+                # VÃ©rifier si le nÅ“ud est un nÅ“ud de fonction
                 if ($node.type -eq "n8n-nodes-base.function" -or $node.type -eq "n8n-nodes-base.functionItem" -or $node.type -eq "n8n-nodes-base.code") {
                     # Extraire le code de la fonction
                     $functionCode = ""
@@ -680,11 +680,11 @@ function Get-N8nWorkflowTryCatchBlocks {
                     }
 
                     if ($functionCode) {
-                        # Détecter les blocs try/catch/finally
+                        # DÃ©tecter les blocs try/catch/finally
                         $blocks = Get-TryCatchBlocks -FunctionCode $functionCode
 
                         if ($blocks -and ($blocks.TryBlocks.Count -gt 0 -or $blocks.CatchBlocks.Count -gt 0 -or $blocks.FinallyBlocks.Count -gt 0)) {
-                            # Créer un objet pour représenter le nœud avec des blocs try/catch/finally
+                            # CrÃ©er un objet pour reprÃ©senter le nÅ“ud avec des blocs try/catch/finally
                             $tryCatchNode = [PSCustomObject]@{
                                 Id            = $node.id
                                 Name          = $node.name
@@ -696,7 +696,7 @@ function Get-N8nWorkflowTryCatchBlocks {
                                 Blocks        = $blocks
                             }
 
-                            # Ajouter le nœud aux résultats
+                            # Ajouter le nÅ“ud aux rÃ©sultats
                             $tryCatchNodes += $tryCatchNode
                         }
                     }
@@ -721,18 +721,18 @@ function Get-N8nWorkflowTrapBlocks {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $trapNodes = @()
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est un nœud de fonction
+                # VÃ©rifier si le nÅ“ud est un nÅ“ud de fonction
                 if ($node.type -eq "n8n-nodes-base.function" -or $node.type -eq "n8n-nodes-base.functionItem" -or $node.type -eq "n8n-nodes-base.code") {
                     # Extraire le code de la fonction
                     $functionCode = ""
@@ -744,11 +744,11 @@ function Get-N8nWorkflowTrapBlocks {
                     }
 
                     if ($functionCode) {
-                        # Détecter les blocs trap
+                        # DÃ©tecter les blocs trap
                         $trapBlocks = Get-TrapBlocks -FunctionCode $functionCode
 
                         if ($trapBlocks -and $trapBlocks.Count -gt 0) {
-                            # Créer un objet pour représenter le nœud avec des blocs trap
+                            # CrÃ©er un objet pour reprÃ©senter le nÅ“ud avec des blocs trap
                             $trapNode = [PSCustomObject]@{
                                 Id           = $node.id
                                 Name         = $node.name
@@ -758,7 +758,7 @@ function Get-N8nWorkflowTrapBlocks {
                                 Blocks       = $trapBlocks
                             }
 
-                            # Ajouter le nœud aux résultats
+                            # Ajouter le nÅ“ud aux rÃ©sultats
                             $trapNodes += $trapNode
                         }
                     }
@@ -773,7 +773,7 @@ function Get-N8nWorkflowTrapBlocks {
     }
 }
 
-# Fonction pour détecter les gestionnaires d'erreurs personnalisés dans le code d'une fonction
+# Fonction pour dÃ©tecter les gestionnaires d'erreurs personnalisÃ©s dans le code d'une fonction
 function Get-CustomErrorHandlers {
     [CmdletBinding()]
     param (
@@ -782,11 +782,11 @@ function Get-CustomErrorHandlers {
     )
 
     try {
-        # Initialiser les résultats
+        # Initialiser les rÃ©sultats
         $customErrorHandlers = @()
 
-        # Rechercher les gestionnaires d'erreurs personnalisés
-        # 1. Rechercher les blocs try/catch avec des messages d'erreur personnalisés
+        # Rechercher les gestionnaires d'erreurs personnalisÃ©s
+        # 1. Rechercher les blocs try/catch avec des messages d'erreur personnalisÃ©s
         $customCatchMatches = [regex]::Matches($FunctionCode, "catch\s*(\([^)]*\))?\s*{([^{}]|(?<open>{)|(?<-open>}))*(?(open)(?!))(error|err|exception|e)([^{}]|(?<open>{)|(?<-open>}))*(?(open)(?!))(message|msg)([^{}]|(?<open>{)|(?<-open>}))*(?(open)(?!))")
 
         foreach ($match in $customCatchMatches) {
@@ -798,7 +798,7 @@ function Get-CustomErrorHandlers {
             }
         }
 
-        # 2. Rechercher les appels à Stop And Error ou des fonctions similaires
+        # 2. Rechercher les appels Ã  Stop And Error ou des fonctions similaires
         $stopErrorMatches = [regex]::Matches($FunctionCode, "(throw|new\s+Error|StopAndError|Stop-Process|Stop-Execution|Stop-Workflow)\s*\(([^()]|(?<open>\()|(?<-open>\)))*(?(open)(?!))")
 
         foreach ($match in $stopErrorMatches) {
@@ -810,7 +810,7 @@ function Get-CustomErrorHandlers {
             }
         }
 
-        # 3. Rechercher les conditions qui vérifient des erreurs et effectuent des actions spécifiques
+        # 3. Rechercher les conditions qui vÃ©rifient des erreurs et effectuent des actions spÃ©cifiques
         $errorCheckMatches = [regex]::Matches($FunctionCode, "if\s*\(([^()]|(?<open>\()|(?<-open>\)))*(?(open)(?!))(error|err|exception|e)([^{}]|(?<open>{)|(?<-open>}))*(?(open)(?!))")
 
         foreach ($match in $errorCheckMatches) {
@@ -822,7 +822,7 @@ function Get-CustomErrorHandlers {
             }
         }
 
-        # 4. Rechercher les fonctions de gestion d'erreurs personnalisées
+        # 4. Rechercher les fonctions de gestion d'erreurs personnalisÃ©es
         $customFunctionMatches = [regex]::Matches($FunctionCode, "function\s+([a-zA-Z0-9_]+Error[a-zA-Z0-9_]*|handle[a-zA-Z0-9_]*Error[a-zA-Z0-9_]*|process[a-zA-Z0-9_]*Error[a-zA-Z0-9_]*|on[a-zA-Z0-9_]*Error[a-zA-Z0-9_]*)\s*\(([^()]|(?<open>\()|(?<-open>\)))*(?(open)(?!))\)\s*{([^{}]|(?<open>{)|(?<-open>}))*(?(open)(?!))}")
 
         foreach ($match in $customFunctionMatches) {
@@ -842,18 +842,18 @@ function Get-CustomErrorHandlers {
             }
         }
 
-        # 5. Rechercher les appels à ces fonctions personnalisées
+        # 5. Rechercher les appels Ã  ces fonctions personnalisÃ©es
         if ($customFunctionMatches.Count -gt 0) {
             foreach ($functionMatch in $customFunctionMatches) {
                 $functionNameMatch = [regex]::Match($functionMatch.Value, "function\s+([a-zA-Z0-9_]+)")
                 if ($functionNameMatch.Success -and $functionNameMatch.Groups.Count -gt 1) {
                     $functionName = $functionNameMatch.Groups[1].Value.Trim()
 
-                    # Rechercher les appels à cette fonction
+                    # Rechercher les appels Ã  cette fonction
                     $functionCallMatches = [regex]::Matches($FunctionCode, $functionName + "\s*\(([^()]|(?<open>\()|(?<-open>\)))*(?(open)(?!))\)")
 
                     foreach ($callMatch in $functionCallMatches) {
-                        # Vérifier que ce n'est pas la définition de la fonction elle-même
+                        # VÃ©rifier que ce n'est pas la dÃ©finition de la fonction elle-mÃªme
                         if ($callMatch.Index -ne $functionMatch.Index) {
                             $customErrorHandlers += [PSCustomObject]@{
                                 Type       = "CustomErrorFunctionCall"
@@ -870,12 +870,12 @@ function Get-CustomErrorHandlers {
 
         return $customErrorHandlers
     } catch {
-        Write-Error "Erreur lors de la détection des gestionnaires d'erreurs personnalisés: $_"
+        Write-Error "Erreur lors de la dÃ©tection des gestionnaires d'erreurs personnalisÃ©s: $_"
         return $null
     }
 }
 
-# Fonction pour analyser les gestionnaires d'erreurs personnalisés dans un workflow n8n
+# Fonction pour analyser les gestionnaires d'erreurs personnalisÃ©s dans un workflow n8n
 function Get-N8nWorkflowCustomErrorHandlers {
     [CmdletBinding()]
     param (
@@ -885,18 +885,18 @@ function Get-N8nWorkflowCustomErrorHandlers {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $customErrorNodes = @()
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est un nœud de fonction
+                # VÃ©rifier si le nÅ“ud est un nÅ“ud de fonction
                 if ($node.type -eq "n8n-nodes-base.function" -or $node.type -eq "n8n-nodes-base.functionItem" -or $node.type -eq "n8n-nodes-base.code") {
                     # Extraire le code de la fonction
                     $functionCode = ""
@@ -908,11 +908,11 @@ function Get-N8nWorkflowCustomErrorHandlers {
                     }
 
                     if ($functionCode) {
-                        # Détecter les gestionnaires d'erreurs personnalisés
+                        # DÃ©tecter les gestionnaires d'erreurs personnalisÃ©s
                         $customErrorHandlers = Get-CustomErrorHandlers -FunctionCode $functionCode
 
                         if ($customErrorHandlers -and $customErrorHandlers.Count -gt 0) {
-                            # Créer un objet pour représenter le nœud avec des gestionnaires d'erreurs personnalisés
+                            # CrÃ©er un objet pour reprÃ©senter le nÅ“ud avec des gestionnaires d'erreurs personnalisÃ©s
                             $customErrorNode = [PSCustomObject]@{
                                 Id                       = $node.id
                                 Name                     = $node.name
@@ -922,14 +922,14 @@ function Get-N8nWorkflowCustomErrorHandlers {
                                 Handlers                 = $customErrorHandlers
                             }
 
-                            # Ajouter le nœud aux résultats
+                            # Ajouter le nÅ“ud aux rÃ©sultats
                             $customErrorNodes += $customErrorNode
                         }
                     }
                 }
-                # Vérifier si le nœud est un nœud Stop And Error
+                # VÃ©rifier si le nÅ“ud est un nÅ“ud Stop And Error
                 elseif ($node.type -eq "n8n-nodes-base.stopAndError") {
-                    # Créer un objet pour représenter le nœud Stop And Error
+                    # CrÃ©er un objet pour reprÃ©senter le nÅ“ud Stop And Error
                     $customErrorNode = [PSCustomObject]@{
                         Id                       = $node.id
                         Name                     = $node.name
@@ -940,12 +940,12 @@ function Get-N8nWorkflowCustomErrorHandlers {
                         ErrorObject              = if ($node.parameters.errorObject) { $node.parameters.errorObject } else { "" }
                     }
 
-                    # Ajouter le nœud aux résultats
+                    # Ajouter le nÅ“ud aux rÃ©sultats
                     $customErrorNodes += $customErrorNode
                 }
             }
 
-            # Vérifier si le workflow a un workflow d'erreur configuré
+            # VÃ©rifier si le workflow a un workflow d'erreur configurÃ©
             if ($Workflow.settings -and $Workflow.settings.errorWorkflow) {
                 $customErrorNodes += [PSCustomObject]@{
                     Id                       = "error-workflow-config"
@@ -958,13 +958,13 @@ function Get-N8nWorkflowCustomErrorHandlers {
 
             return $customErrorNodes
         } catch {
-            Write-Error "Erreur lors de l'analyse des gestionnaires d'erreurs personnalisés: $_"
+            Write-Error "Erreur lors de l'analyse des gestionnaires d'erreurs personnalisÃ©s: $_"
             return $null
         }
     }
 }
 
-# Fonction pour extraire les conditions de déclenchement d'un workflow n8n
+# Fonction pour extraire les conditions de dÃ©clenchement d'un workflow n8n
 function Get-N8nWorkflowTriggerConditions {
     [CmdletBinding()]
     param (
@@ -977,21 +977,21 @@ function Get-N8nWorkflowTriggerConditions {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $triggerConditions = @()
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est un déclencheur
+                # VÃ©rifier si le nÅ“ud est un dÃ©clencheur
                 $category = Get-NodeCategory -NodeType $node.type
                 if ($category -eq "Trigger") {
-                    # Créer un objet de base pour représenter le déclencheur
+                    # CrÃ©er un objet de base pour reprÃ©senter le dÃ©clencheur
                     $trigger = [PSCustomObject]@{
                         Id          = $node.id
                         Name        = $node.name
@@ -1000,55 +1000,55 @@ function Get-N8nWorkflowTriggerConditions {
                         Conditions  = @()
                     }
 
-                    # Extraire les conditions spécifiques au type de déclencheur
+                    # Extraire les conditions spÃ©cifiques au type de dÃ©clencheur
                     switch -Wildcard ($node.type) {
                         "n8n-nodes-base.cron" {
-                            # Déclencheur Cron (planification)
+                            # DÃ©clencheur Cron (planification)
                             $trigger.Conditions = Get-CronTriggerConditions -Node $node
                         }
                         "n8n-nodes-base.webhook" {
-                            # Déclencheur Webhook
+                            # DÃ©clencheur Webhook
                             $trigger.Conditions = Get-WebhookTriggerConditions -Node $node
                         }
                         "n8n-nodes-base.manualTrigger" {
-                            # Déclencheur Manuel
+                            # DÃ©clencheur Manuel
                             $trigger.Conditions = Get-ManualTriggerConditions -Node $node
                         }
                         "n8n-nodes-base.emailReadImap" {
-                            # Déclencheur Email
+                            # DÃ©clencheur Email
                             $trigger.Conditions = Get-EmailTriggerConditions -Node $node
                         }
                         "n8n-nodes-base.workflowTrigger" {
-                            # Déclencheur de Workflow
+                            # DÃ©clencheur de Workflow
                             $trigger.Conditions = Get-WorkflowTriggerConditions -Node $node
                         }
                         default {
-                            # Autres types de déclencheurs
+                            # Autres types de dÃ©clencheurs
                             $trigger.Conditions = Get-GenericTriggerConditions -Node $node
                         }
                     }
 
-                    # Ajouter des détails si demandé
+                    # Ajouter des dÃ©tails si demandÃ©
                     if ($IncludeDetails) {
                         $trigger | Add-Member -MemberType NoteProperty -Name "Parameters" -Value $node.parameters
                         $trigger | Add-Member -MemberType NoteProperty -Name "TypeVersion" -Value $node.typeVersion
                         $trigger | Add-Member -MemberType NoteProperty -Name "Position" -Value $node.position
                     }
 
-                    # Ajouter le déclencheur aux résultats
+                    # Ajouter le dÃ©clencheur aux rÃ©sultats
                     $triggerConditions += $trigger
                 }
             }
 
             return $triggerConditions
         } catch {
-            Write-Error "Erreur lors de l'extraction des conditions de déclenchement: $_"
+            Write-Error "Erreur lors de l'extraction des conditions de dÃ©clenchement: $_"
             return $null
         }
     }
 }
 
-# Fonction pour déterminer le type de déclencheur
+# Fonction pour dÃ©terminer le type de dÃ©clencheur
 function Get-TriggerType {
     [CmdletBinding()]
     param (
@@ -1067,7 +1067,7 @@ function Get-TriggerType {
     }
 }
 
-# Fonction pour extraire les conditions d'un déclencheur Cron
+# Fonction pour extraire les conditions d'un dÃ©clencheur Cron
 function Get-CronTriggerConditions {
     [CmdletBinding()]
     param (
@@ -1120,7 +1120,7 @@ function Get-CronTriggerConditions {
                     Value = "Manual"
                 }
             } else {
-                # Planification spécifique (heure, minute, jour, etc.)
+                # Planification spÃ©cifique (heure, minute, jour, etc.)
                 $scheduleDetails = @()
 
                 if ($null -ne $item.hour) {
@@ -1150,7 +1150,7 @@ function Get-CronTriggerConditions {
     return $conditions
 }
 
-# Fonction pour extraire les conditions d'un déclencheur Webhook
+# Fonction pour extraire les conditions d'un dÃ©clencheur Webhook
 function Get-WebhookTriggerConditions {
     [CmdletBinding()]
     param (
@@ -1192,7 +1192,7 @@ function Get-WebhookTriggerConditions {
     return $conditions
 }
 
-# Fonction pour extraire les conditions d'un déclencheur Manuel
+# Fonction pour extraire les conditions d'un dÃ©clencheur Manuel
 function Get-ManualTriggerConditions {
     [CmdletBinding()]
     param (
@@ -1200,14 +1200,14 @@ function Get-ManualTriggerConditions {
         [PSObject]$Node
     )
 
-    # Le déclencheur manuel n'a pas de conditions spécifiques
+    # Le dÃ©clencheur manuel n'a pas de conditions spÃ©cifiques
     return @([PSCustomObject]@{
             Type  = "Manual"
             Value = "Triggered manually by user"
         })
 }
 
-# Fonction pour extraire les conditions d'un déclencheur Email
+# Fonction pour extraire les conditions d'un dÃ©clencheur Email
 function Get-EmailTriggerConditions {
     [CmdletBinding()]
     param (
@@ -1217,7 +1217,7 @@ function Get-EmailTriggerConditions {
 
     $conditions = @()
 
-    # Extraire les informations sur le déclencheur email
+    # Extraire les informations sur le dÃ©clencheur email
     if ($Node.parameters.mailbox) {
         $conditions += [PSCustomObject]@{
             Type  = "Mailbox"
@@ -1242,7 +1242,7 @@ function Get-EmailTriggerConditions {
     return $conditions
 }
 
-# Fonction pour extraire les conditions d'un déclencheur de Workflow
+# Fonction pour extraire les conditions d'un dÃ©clencheur de Workflow
 function Get-WorkflowTriggerConditions {
     [CmdletBinding()]
     param (
@@ -1252,7 +1252,7 @@ function Get-WorkflowTriggerConditions {
 
     $conditions = @()
 
-    # Extraire les informations sur le déclencheur de workflow
+    # Extraire les informations sur le dÃ©clencheur de workflow
     if ($Node.parameters.workflowId) {
         $conditions += [PSCustomObject]@{
             Type  = "WorkflowId"
@@ -1270,7 +1270,7 @@ function Get-WorkflowTriggerConditions {
     return $conditions
 }
 
-# Fonction pour extraire les conditions d'un déclencheur générique
+# Fonction pour extraire les conditions d'un dÃ©clencheur gÃ©nÃ©rique
 function Get-GenericTriggerConditions {
     [CmdletBinding()]
     param (
@@ -1280,7 +1280,7 @@ function Get-GenericTriggerConditions {
 
     $conditions = @()
 
-    # Extraire les paramètres génériques
+    # Extraire les paramÃ¨tres gÃ©nÃ©riques
     if ($Node.parameters) {
         foreach ($param in $Node.parameters.PSObject.Properties) {
             $conditions += [PSCustomObject]@{
@@ -1293,7 +1293,7 @@ function Get-GenericTriggerConditions {
     return $conditions
 }
 
-# Fonction pour détecter les sources d'événements d'un workflow n8n
+# Fonction pour dÃ©tecter les sources d'Ã©vÃ©nements d'un workflow n8n
 function Get-N8nWorkflowEventSources {
     [CmdletBinding()]
     param (
@@ -1306,24 +1306,24 @@ function Get-N8nWorkflowEventSources {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $eventSources = @()
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est un déclencheur ou une source d'événements
+                # VÃ©rifier si le nÅ“ud est un dÃ©clencheur ou une source d'Ã©vÃ©nements
                 $category = Get-NodeCategory -NodeType $node.type
                 if ($category -eq "Trigger" -or $node.type -match "webhook|event|trigger") {
-                    # Déterminer le type de source d'événements
+                    # DÃ©terminer le type de source d'Ã©vÃ©nements
                     $sourceType = Get-EventSourceType -NodeType $node.type
 
-                    # Créer un objet pour représenter la source d'événements
+                    # CrÃ©er un objet pour reprÃ©senter la source d'Ã©vÃ©nements
                     $eventSource = [PSCustomObject]@{
                         Id         = $node.id
                         Name       = $node.name
@@ -1332,27 +1332,27 @@ function Get-N8nWorkflowEventSources {
                         Details    = Get-EventSourceDetails -Node $node -SourceType $sourceType
                     }
 
-                    # Ajouter des détails si demandé
+                    # Ajouter des dÃ©tails si demandÃ©
                     if ($IncludeDetails) {
                         $eventSource | Add-Member -MemberType NoteProperty -Name "Parameters" -Value $node.parameters
                         $eventSource | Add-Member -MemberType NoteProperty -Name "TypeVersion" -Value $node.typeVersion
                         $eventSource | Add-Member -MemberType NoteProperty -Name "Position" -Value $node.position
                     }
 
-                    # Ajouter la source d'événements aux résultats
+                    # Ajouter la source d'Ã©vÃ©nements aux rÃ©sultats
                     $eventSources += $eventSource
                 }
             }
 
             return $eventSources
         } catch {
-            Write-Error "Erreur lors de la détection des sources d'événements: $_"
+            Write-Error "Erreur lors de la dÃ©tection des sources d'Ã©vÃ©nements: $_"
             return $null
         }
     }
 }
 
-# Fonction pour déterminer le type de source d'événements
+# Fonction pour dÃ©terminer le type de source d'Ã©vÃ©nements
 function Get-EventSourceType {
     [CmdletBinding()]
     param (
@@ -1374,7 +1374,7 @@ function Get-EventSourceType {
     }
 }
 
-# Fonction pour extraire les détails d'une source d'événements
+# Fonction pour extraire les dÃ©tails d'une source d'Ã©vÃ©nements
 function Get-EventSourceDetails {
     [CmdletBinding()]
     param (
@@ -1421,7 +1421,7 @@ function Get-EventSourceDetails {
             }
         }
         default {
-            # Extraire tous les paramètres pour les autres types
+            # Extraire tous les paramÃ¨tres pour les autres types
             if ($Node.parameters) {
                 foreach ($param in $Node.parameters.PSObject.Properties) {
                     $details[$param.Name] = $param.Value
@@ -1433,7 +1433,7 @@ function Get-EventSourceDetails {
     return $details
 }
 
-# Fonction pour analyser les paramètres de déclenchement d'un workflow n8n
+# Fonction pour analyser les paramÃ¨tres de dÃ©clenchement d'un workflow n8n
 function Get-N8nWorkflowTriggerParameters {
     [CmdletBinding()]
     param (
@@ -1446,21 +1446,21 @@ function Get-N8nWorkflowTriggerParameters {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $triggerParameters = @()
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est un déclencheur
+                # VÃ©rifier si le nÅ“ud est un dÃ©clencheur
                 $category = Get-NodeCategory -NodeType $node.type
                 if ($category -eq "Trigger") {
-                    # Créer un objet pour représenter les paramètres du déclencheur
+                    # CrÃ©er un objet pour reprÃ©senter les paramÃ¨tres du dÃ©clencheur
                     $triggerParam = [PSCustomObject]@{
                         Id          = $node.id
                         Name        = $node.name
@@ -1470,30 +1470,30 @@ function Get-N8nWorkflowTriggerParameters {
                         Impact      = Get-TriggerParameterImpact -Node $node
                     }
 
-                    # Extraire les paramètres spécifiques au type de déclencheur
+                    # Extraire les paramÃ¨tres spÃ©cifiques au type de dÃ©clencheur
                     $triggerParam.Parameters = Get-SpecificTriggerParameters -Node $node -TriggerType (Get-TriggerType -NodeType $node.type)
 
-                    # Ajouter des détails si demandé
+                    # Ajouter des dÃ©tails si demandÃ©
                     if ($IncludeDetails) {
                         $triggerParam | Add-Member -MemberType NoteProperty -Name "RawParameters" -Value $node.parameters
                         $triggerParam | Add-Member -MemberType NoteProperty -Name "TypeVersion" -Value $node.typeVersion
                         $triggerParam | Add-Member -MemberType NoteProperty -Name "Position" -Value $node.position
                     }
 
-                    # Ajouter les paramètres du déclencheur aux résultats
+                    # Ajouter les paramÃ¨tres du dÃ©clencheur aux rÃ©sultats
                     $triggerParameters += $triggerParam
                 }
             }
 
             return $triggerParameters
         } catch {
-            Write-Error "Erreur lors de l'analyse des paramètres de déclenchement: $_"
+            Write-Error "Erreur lors de l'analyse des paramÃ¨tres de dÃ©clenchement: $_"
             return $null
         }
     }
 }
 
-# Fonction pour extraire les paramètres spécifiques à un type de déclencheur
+# Fonction pour extraire les paramÃ¨tres spÃ©cifiques Ã  un type de dÃ©clencheur
 function Get-SpecificTriggerParameters {
     [CmdletBinding()]
     param (
@@ -1508,7 +1508,7 @@ function Get-SpecificTriggerParameters {
 
     switch ($TriggerType) {
         "Schedule" {
-            # Paramètres pour les déclencheurs de planification
+            # ParamÃ¨tres pour les dÃ©clencheurs de planification
             if ($Node.parameters.triggerTimes) {
                 foreach ($item in $Node.parameters.triggerTimes.item) {
                     foreach ($prop in $item.PSObject.Properties) {
@@ -1522,7 +1522,7 @@ function Get-SpecificTriggerParameters {
             }
         }
         "Webhook" {
-            # Paramètres pour les déclencheurs webhook
+            # ParamÃ¨tres pour les dÃ©clencheurs webhook
             if ($Node.parameters.path) {
                 $parameters += [PSCustomObject]@{
                     Name  = "path"
@@ -1553,7 +1553,7 @@ function Get-SpecificTriggerParameters {
             }
         }
         "Email" {
-            # Paramètres pour les déclencheurs email
+            # ParamÃ¨tres pour les dÃ©clencheurs email
             if ($Node.parameters.mailbox) {
                 $parameters += [PSCustomObject]@{
                     Name  = "mailbox"
@@ -1577,7 +1577,7 @@ function Get-SpecificTriggerParameters {
             }
         }
         "Workflow" {
-            # Paramètres pour les déclencheurs de workflow
+            # ParamÃ¨tres pour les dÃ©clencheurs de workflow
             if ($Node.parameters.workflowId) {
                 $parameters += [PSCustomObject]@{
                     Name  = "workflowId"
@@ -1594,7 +1594,7 @@ function Get-SpecificTriggerParameters {
             }
         }
         default {
-            # Paramètres génériques pour les autres types de déclencheurs
+            # ParamÃ¨tres gÃ©nÃ©riques pour les autres types de dÃ©clencheurs
             if ($Node.parameters) {
                 foreach ($param in $Node.parameters.PSObject.Properties) {
                     $parameters += [PSCustomObject]@{
@@ -1610,7 +1610,7 @@ function Get-SpecificTriggerParameters {
     return $parameters
 }
 
-# Fonction pour analyser l'impact des paramètres de déclenchement
+# Fonction pour analyser l'impact des paramÃ¨tres de dÃ©clenchement
 function Get-TriggerParameterImpact {
     [CmdletBinding()]
     param (
@@ -1626,12 +1626,12 @@ function Get-TriggerParameterImpact {
         Dependencies = @()
     }
 
-    # Déterminer l'impact en fonction du type de déclencheur
+    # DÃ©terminer l'impact en fonction du type de dÃ©clencheur
     $triggerType = Get-TriggerType -NodeType $node.type
 
     switch ($triggerType) {
         "Schedule" {
-            # Analyser la fréquence pour les déclencheurs de planification
+            # Analyser la frÃ©quence pour les dÃ©clencheurs de planification
             if ($Node.parameters.triggerTimes) {
                 foreach ($item in $Node.parameters.triggerTimes.item) {
                     if ($item.mode -eq "everyMinute") {
@@ -1700,7 +1700,7 @@ function Get-TriggerParameterImpact {
             $impact.Dependencies = @("User Interaction")
         }
         default {
-            # Valeurs par défaut pour les autres types
+            # Valeurs par dÃ©faut pour les autres types
             $impact.Frequency = "Unknown"
             $impact.DataVolume = "Unknown"
             $impact.Reliability = "Unknown"
@@ -1712,7 +1712,7 @@ function Get-TriggerParameterImpact {
     return $impact
 }
 
-# Fonction pour extraire les actions exécutées dans un workflow n8n
+# Fonction pour extraire les actions exÃ©cutÃ©es dans un workflow n8n
 function Get-N8nWorkflowActions {
     [CmdletBinding()]
     param (
@@ -1728,27 +1728,27 @@ function Get-N8nWorkflowActions {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $actions = @()
 
-            # Créer un dictionnaire pour accéder rapidement aux nœuds par ID
+            # CrÃ©er un dictionnaire pour accÃ©der rapidement aux nÅ“uds par ID
             $nodesById = @{}
             foreach ($node in $Workflow.nodes) {
                 $nodesById[$node.id] = $node
             }
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est une action (pas un déclencheur)
+                # VÃ©rifier si le nÅ“ud est une action (pas un dÃ©clencheur)
                 $category = Get-NodeCategory -NodeType $node.type
                 if ($category -ne "Trigger") {
-                    # Créer un objet de base pour représenter l'action
+                    # CrÃ©er un objet de base pour reprÃ©senter l'action
                     $action = [PSCustomObject]@{
                         Id         = $node.id
                         Name       = $node.name
@@ -1758,19 +1758,19 @@ function Get-N8nWorkflowActions {
                         Parameters = @()
                     }
 
-                    # Extraire les paramètres spécifiques au type d'action
+                    # Extraire les paramÃ¨tres spÃ©cifiques au type d'action
                     $action.Parameters = Get-ActionParameters -Node $node -ActionType (Get-ActionType -NodeType $node.type)
 
-                    # Ajouter des détails si demandé
+                    # Ajouter des dÃ©tails si demandÃ©
                     if ($IncludeDetails) {
                         $action | Add-Member -MemberType NoteProperty -Name "RawParameters" -Value $node.parameters
                         $action | Add-Member -MemberType NoteProperty -Name "TypeVersion" -Value $node.typeVersion
                         $action | Add-Member -MemberType NoteProperty -Name "Position" -Value $node.position
                     }
 
-                    # Ajouter les relations si demandé
+                    # Ajouter les relations si demandÃ©
                     if ($IncludeRelationships) {
-                        # Trouver les nœuds sources (entrées)
+                        # Trouver les nÅ“uds sources (entrÃ©es)
                         $inputNodes = @()
                         foreach ($sourceNodeId in $Workflow.connections.PSObject.Properties.Name) {
                             foreach ($connectionArray in $Workflow.connections.$sourceNodeId.main) {
@@ -1786,7 +1786,7 @@ function Get-N8nWorkflowActions {
                             }
                         }
 
-                        # Trouver les nœuds cibles (sorties)
+                        # Trouver les nÅ“uds cibles (sorties)
                         $outputNodes = @()
                         if ($Workflow.connections.$($node.id)) {
                             foreach ($connectionArray in $Workflow.connections.$($node.id).main) {
@@ -1804,7 +1804,7 @@ function Get-N8nWorkflowActions {
                         $action | Add-Member -MemberType NoteProperty -Name "OutputNodes" -Value $outputNodes
                     }
 
-                    # Ajouter l'action aux résultats
+                    # Ajouter l'action aux rÃ©sultats
                     $actions += $action
                 }
             }
@@ -1817,7 +1817,7 @@ function Get-N8nWorkflowActions {
     }
 }
 
-# Fonction pour déterminer le type d'action
+# Fonction pour dÃ©terminer le type d'action
 function Get-ActionType {
     [CmdletBinding()]
     param (
@@ -1848,7 +1848,7 @@ function Get-ActionType {
     }
 }
 
-# Fonction pour extraire les paramètres d'une action
+# Fonction pour extraire les paramÃ¨tres d'une action
 function Get-ActionParameters {
     [CmdletBinding()]
     param (
@@ -1863,7 +1863,7 @@ function Get-ActionParameters {
 
     switch ($ActionType) {
         "HTTP" {
-            # Paramètres pour les actions HTTP
+            # ParamÃ¨tres pour les actions HTTP
             if ($Node.parameters.url) {
                 $parameters += [PSCustomObject]@{
                     Name  = "url"
@@ -1896,7 +1896,7 @@ function Get-ActionParameters {
             }
         }
         "DataManipulation" {
-            # Paramètres pour les actions de manipulation de données
+            # ParamÃ¨tres pour les actions de manipulation de donnÃ©es
             if ($Node.parameters.values) {
                 foreach ($valueType in $Node.parameters.values.PSObject.Properties) {
                     foreach ($value in $Node.parameters.values.$($valueType.Name)) {
@@ -1919,7 +1919,7 @@ function Get-ActionParameters {
             }
         }
         "CodeExecution" {
-            # Paramètres pour les actions d'exécution de code
+            # ParamÃ¨tres pour les actions d'exÃ©cution de code
             if ($Node.parameters.functionCode) {
                 $parameters += [PSCustomObject]@{
                     Name  = "functionCode"
@@ -1943,7 +1943,7 @@ function Get-ActionParameters {
             }
         }
         "FlowControl" {
-            # Paramètres pour les actions de contrôle de flux
+            # ParamÃ¨tres pour les actions de contrÃ´le de flux
             if ($Node.parameters.conditions) {
                 foreach ($conditionType in $Node.parameters.conditions.PSObject.Properties) {
                     foreach ($condition in $Node.parameters.conditions.$($conditionType.Name)) {
@@ -1973,7 +1973,7 @@ function Get-ActionParameters {
             }
         }
         "Communication" {
-            # Paramètres pour les actions de communication
+            # ParamÃ¨tres pour les actions de communication
             if ($Node.parameters.to) {
                 $parameters += [PSCustomObject]@{
                     Name  = "to"
@@ -2011,7 +2011,7 @@ function Get-ActionParameters {
             }
         }
         "Integration" {
-            # Paramètres pour les actions d'intégration
+            # ParamÃ¨tres pour les actions d'intÃ©gration
             if ($Node.parameters.resource) {
                 $parameters += [PSCustomObject]@{
                     Name  = "resource"
@@ -2042,7 +2042,7 @@ function Get-ActionParameters {
             }
         }
         "ErrorHandling" {
-            # Paramètres pour les actions de gestion d'erreurs
+            # ParamÃ¨tres pour les actions de gestion d'erreurs
             if ($Node.parameters.errorMessage) {
                 $parameters += [PSCustomObject]@{
                     Name  = "errorMessage"
@@ -2066,10 +2066,10 @@ function Get-ActionParameters {
             }
         }
         default {
-            # Paramètres génériques pour les autres types d'actions
+            # ParamÃ¨tres gÃ©nÃ©riques pour les autres types d'actions
             if ($Node.parameters) {
                 foreach ($param in $Node.parameters.PSObject.Properties) {
-                    # Exclure les paramètres complexes ou trop volumineux
+                    # Exclure les paramÃ¨tres complexes ou trop volumineux
                     if ($param.Value -isnot [System.Management.Automation.PSCustomObject] -and
                         $param.Value -isnot [System.Object[]] -and
                         $param.Name -ne "functionCode" -and
@@ -2088,7 +2088,7 @@ function Get-ActionParameters {
     return $parameters
 }
 
-# Fonction pour détecter les paramètres d'action dans un workflow n8n
+# Fonction pour dÃ©tecter les paramÃ¨tres d'action dans un workflow n8n
 function Get-N8nWorkflowActionParameters {
     [CmdletBinding()]
     param (
@@ -2101,21 +2101,21 @@ function Get-N8nWorkflowActionParameters {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $actionParameters = @()
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est une action (pas un déclencheur)
+                # VÃ©rifier si le nÅ“ud est une action (pas un dÃ©clencheur)
                 $category = Get-NodeCategory -NodeType $node.type
                 if ($category -ne "Trigger") {
-                    # Créer un objet pour représenter les paramètres de l'action
+                    # CrÃ©er un objet pour reprÃ©senter les paramÃ¨tres de l'action
                     $actionParam = [PSCustomObject]@{
                         Id         = $node.id
                         Name       = $node.name
@@ -2126,30 +2126,30 @@ function Get-N8nWorkflowActionParameters {
                         Impact     = Get-ActionParameterImpact -Node $node -ActionType (Get-ActionType -NodeType $node.type)
                     }
 
-                    # Extraire les paramètres spécifiques au type d'action
+                    # Extraire les paramÃ¨tres spÃ©cifiques au type d'action
                     $actionParam.Parameters = Get-ActionParameters -Node $node -ActionType (Get-ActionType -NodeType $node.type)
 
-                    # Ajouter des détails si demandé
+                    # Ajouter des dÃ©tails si demandÃ©
                     if ($IncludeDetails) {
                         $actionParam | Add-Member -MemberType NoteProperty -Name "RawParameters" -Value $node.parameters
                         $actionParam | Add-Member -MemberType NoteProperty -Name "TypeVersion" -Value $node.typeVersion
                         $actionParam | Add-Member -MemberType NoteProperty -Name "Position" -Value $node.position
                     }
 
-                    # Ajouter les paramètres de l'action aux résultats
+                    # Ajouter les paramÃ¨tres de l'action aux rÃ©sultats
                     $actionParameters += $actionParam
                 }
             }
 
             return $actionParameters
         } catch {
-            Write-Error "Erreur lors de l'analyse des paramètres d'action: $_"
+            Write-Error "Erreur lors de l'analyse des paramÃ¨tres d'action: $_"
             return $null
         }
     }
 }
 
-# Fonction pour analyser l'impact des paramètres d'action
+# Fonction pour analyser l'impact des paramÃ¨tres d'action
 function Get-ActionParameterImpact {
     [CmdletBinding()]
     param (
@@ -2168,7 +2168,7 @@ function Get-ActionParameterImpact {
         Dependencies = @()
     }
 
-    # Déterminer l'impact en fonction du type d'action
+    # DÃ©terminer l'impact en fonction du type d'action
     switch ($ActionType) {
         "HTTP" {
             $impact.Performance = "Medium"
@@ -2231,7 +2231,7 @@ function Get-ActionParameterImpact {
     return $impact
 }
 
-# Fonction pour analyser les résultats d'action dans un workflow n8n
+# Fonction pour analyser les rÃ©sultats d'action dans un workflow n8n
 function Get-N8nWorkflowActionResults {
     [CmdletBinding()]
     param (
@@ -2244,27 +2244,27 @@ function Get-N8nWorkflowActionResults {
 
     process {
         try {
-            # Vérifier si le workflow est valide
+            # VÃ©rifier si le workflow est valide
             if (-not $Workflow.nodes -or -not $Workflow.connections) {
                 Write-Error "Le workflow fourni n'est pas valide."
                 return $null
             }
 
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $actionResults = @()
 
-            # Créer un dictionnaire pour accéder rapidement aux nœuds par ID
+            # CrÃ©er un dictionnaire pour accÃ©der rapidement aux nÅ“uds par ID
             $nodesById = @{}
             foreach ($node in $Workflow.nodes) {
                 $nodesById[$node.id] = $node
             }
 
-            # Analyser chaque nœud du workflow
+            # Analyser chaque nÅ“ud du workflow
             foreach ($node in $Workflow.nodes) {
-                # Vérifier si le nœud est une action (pas un déclencheur)
+                # VÃ©rifier si le nÅ“ud est une action (pas un dÃ©clencheur)
                 $category = Get-NodeCategory -NodeType $node.type
                 if ($category -ne "Trigger") {
-                    # Créer un objet pour représenter les résultats de l'action
+                    # CrÃ©er un objet pour reprÃ©senter les rÃ©sultats de l'action
                     $actionResult = [PSCustomObject]@{
                         Id         = $node.id
                         Name       = $node.name
@@ -2276,7 +2276,7 @@ function Get-N8nWorkflowActionResults {
                         DataFlow   = @()
                     }
 
-                    # Trouver les nœuds qui consomment les résultats de cette action
+                    # Trouver les nÅ“uds qui consomment les rÃ©sultats de cette action
                     if ($Workflow.connections.$($node.id)) {
                         foreach ($outputIndex in 0..($Workflow.connections.$($node.id).main.Count - 1)) {
                             foreach ($connection in $Workflow.connections.$($node.id).main[$outputIndex]) {
@@ -2291,7 +2291,7 @@ function Get-N8nWorkflowActionResults {
 
                                 $actionResult.Consumers += $consumer
 
-                                # Ajouter l'information de flux de données
+                                # Ajouter l'information de flux de donnÃ©es
                                 $dataFlow = [PSCustomObject]@{
                                     SourceNode      = $node.name
                                     SourceType      = $node.type
@@ -2301,7 +2301,7 @@ function Get-N8nWorkflowActionResults {
                                     DataTransformed = $false
                                 }
 
-                                # Déterminer si les données sont transformées
+                                # DÃ©terminer si les donnÃ©es sont transformÃ©es
                                 if ($targetNode.type -match "function|code|set|if|switch") {
                                     $dataFlow.DataTransformed = $true
                                 }
@@ -2311,27 +2311,27 @@ function Get-N8nWorkflowActionResults {
                         }
                     }
 
-                    # Ajouter des détails si demandé
+                    # Ajouter des dÃ©tails si demandÃ©
                     if ($IncludeDetails) {
                         $actionResult | Add-Member -MemberType NoteProperty -Name "Parameters" -Value $node.parameters
                         $actionResult | Add-Member -MemberType NoteProperty -Name "TypeVersion" -Value $node.typeVersion
                         $actionResult | Add-Member -MemberType NoteProperty -Name "Position" -Value $node.position
                     }
 
-                    # Ajouter les résultats de l'action aux résultats
+                    # Ajouter les rÃ©sultats de l'action aux rÃ©sultats
                     $actionResults += $actionResult
                 }
             }
 
             return $actionResults
         } catch {
-            Write-Error "Erreur lors de l'analyse des résultats d'action: $_"
+            Write-Error "Erreur lors de l'analyse des rÃ©sultats d'action: $_"
             return $null
         }
     }
 }
 
-# Fonction pour déterminer le type de sortie d'une action
+# Fonction pour dÃ©terminer le type de sortie d'une action
 function Get-ActionOutputType {
     [CmdletBinding()]
     param (

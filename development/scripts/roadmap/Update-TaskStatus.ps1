@@ -1,5 +1,5 @@
-# Update-TaskStatus.ps1
-# Script pour mettre à jour le statut des tâches avec historique
+﻿# Update-TaskStatus.ps1
+# Script pour mettre Ã  jour le statut des tÃ¢ches avec historique
 
 [CmdletBinding()]
 param (
@@ -35,7 +35,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -58,26 +58,26 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         }
         else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     }
     catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("chromadb", "json", "datetime")
     $missingPackages = @()
@@ -98,24 +98,24 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         }
         else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
     
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour la mise à jour du statut
+# Fonction pour crÃ©er un script Python temporaire pour la mise Ã  jour du statut
 function New-StatusUpdateScript {
     [CmdletBinding()]
     param (
@@ -151,7 +151,7 @@ import sys
 from datetime import datetime
 
 def main():
-    # Paramètres
+    # ParamÃ¨tres
     task_id = r'$TaskId'
     new_status = r'$Status'
     comment = r'$Comment'
@@ -164,10 +164,10 @@ def main():
     try:
         client = chromadb.PersistentClient(path=chroma_db_path)
     except Exception as e:
-        print(f"Erreur lors de la connexion à la base Chroma: {e}")
+        print(f"Erreur lors de la connexion Ã  la base Chroma: {e}")
         sys.exit(1)
     
-    # Vérifier si la collection existe
+    # VÃ©rifier si la collection existe
     try:
         existing_collections = client.list_collections()
         collection_exists = any(c.name == collection_name for c in existing_collections)
@@ -176,22 +176,22 @@ def main():
             print(f"La collection {collection_name} n'existe pas dans la base Chroma.")
             sys.exit(1)
         
-        # Récupérer la collection
+        # RÃ©cupÃ©rer la collection
         collection = client.get_collection(name=collection_name)
         
-        # Vérifier si la tâche existe
+        # VÃ©rifier si la tÃ¢che existe
         try:
             task_result = collection.get(ids=[task_id])
             
             if not task_result['ids']:
-                print(f"La tâche avec l'ID {task_id} n'existe pas.")
+                print(f"La tÃ¢che avec l'ID {task_id} n'existe pas.")
                 sys.exit(1)
             
-            # Récupérer les métadonnées actuelles
+            # RÃ©cupÃ©rer les mÃ©tadonnÃ©es actuelles
             current_metadata = task_result['metadatas'][0]
             current_status = current_metadata.get('status', 'Unknown')
             
-            # Créer les nouvelles métadonnées
+            # CrÃ©er les nouvelles mÃ©tadonnÃ©es
             new_metadata = current_metadata.copy()
             new_metadata['status'] = new_status
             new_metadata['lastUpdated'] = datetime.now().strftime("%Y-%m-%d")
@@ -199,13 +199,13 @@ def main():
             if assignee:
                 new_metadata['assignee'] = assignee
             
-            # Mettre à jour les métadonnées dans la collection
+            # Mettre Ã  jour les mÃ©tadonnÃ©es dans la collection
             collection.update(
                 ids=[task_id],
                 metadatas=[new_metadata]
             )
             
-            # Créer l'entrée d'historique
+            # CrÃ©er l'entrÃ©e d'historique
             history_entry = {
                 "taskId": task_id,
                 "timestamp": datetime.now().isoformat(),
@@ -216,7 +216,7 @@ def main():
                 "user": os.environ.get('USERNAME', 'unknown')
             }
             
-            # Charger l'historique existant ou créer un nouveau
+            # Charger l'historique existant ou crÃ©er un nouveau
             history_data = {}
             if os.path.exists(history_path):
                 try:
@@ -226,11 +226,11 @@ def main():
                     print(f"Erreur lors du chargement de l'historique: {e}")
                     history_data = {"tasks": {}}
             else:
-                # Créer le dossier si nécessaire
+                # CrÃ©er le dossier si nÃ©cessaire
                 os.makedirs(os.path.dirname(history_path), exist_ok=True)
                 history_data = {"tasks": {}}
             
-            # Ajouter l'entrée à l'historique
+            # Ajouter l'entrÃ©e Ã  l'historique
             if task_id not in history_data["tasks"]:
                 history_data["tasks"][task_id] = []
             
@@ -240,7 +240,7 @@ def main():
             with open(history_path, 'w', encoding='utf-8') as f:
                 json.dump(history_data, f, indent=2, ensure_ascii=False)
             
-            # Préparer le résultat
+            # PrÃ©parer le rÃ©sultat
             result = {
                 "taskId": task_id,
                 "description": current_metadata.get("description", ""),
@@ -251,15 +251,15 @@ def main():
                 "historyEntryAdded": True
             }
             
-            # Afficher le résultat au format JSON
+            # Afficher le rÃ©sultat au format JSON
             print(json.dumps(result, indent=2, ensure_ascii=False))
             
         except Exception as e:
-            print(f"Erreur lors de la mise à jour du statut: {e}")
+            print(f"Erreur lors de la mise Ã  jour du statut: {e}")
             sys.exit(1)
         
     except Exception as e:
-        print(f"Erreur lors de l'accès à la collection: {e}")
+        print(f"Erreur lors de l'accÃ¨s Ã  la collection: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
@@ -270,7 +270,7 @@ if __name__ == "__main__":
     return $scriptPath
 }
 
-# Fonction pour mettre à jour le fichier Markdown de la roadmap
+# Fonction pour mettre Ã  jour le fichier Markdown de la roadmap
 function Update-RoadmapMarkdown {
     [CmdletBinding()]
     param (
@@ -300,8 +300,8 @@ function Update-RoadmapMarkdown {
                     "Complete" { "x" }
                     "Incomplete" { " " }
                     "InProgress" { "o" }  # Utiliser 'o' pour en cours
-                    "Blocked" { "!" }     # Utiliser '!' pour bloqué
-                    "Deferred" { ">" }    # Utiliser '>' pour reporté
+                    "Blocked" { "!" }     # Utiliser '!' pour bloquÃ©
+                    "Deferred" { ">" }    # Utiliser '>' pour reportÃ©
                     default { " " }
                 }
                 
@@ -314,59 +314,59 @@ function Update-RoadmapMarkdown {
         if ($updated) {
             $newContent = $lines -join "`r`n"
             Set-Content -Path $RoadmapPath -Value $newContent -Encoding UTF8
-            Write-Log "Statut de la tâche $TaskId mis à jour dans le fichier roadmap." -Level Success
+            Write-Log "Statut de la tÃ¢che $TaskId mis Ã  jour dans le fichier roadmap." -Level Success
             return $true
         }
         else {
-            Write-Log "Tâche $TaskId non trouvée dans le fichier roadmap." -Level Warning
+            Write-Log "TÃ¢che $TaskId non trouvÃ©e dans le fichier roadmap." -Level Warning
             return $false
         }
     }
     catch {
-        Write-Log "Erreur lors de la mise à jour du fichier roadmap: $_" -Level Error
+        Write-Log "Erreur lors de la mise Ã  jour du fichier roadmap: $_" -Level Error
         return $false
     }
 }
 
 # Fonction principale
 function Main {
-    # Vérifier si la base Chroma existe
+    # VÃ©rifier si la base Chroma existe
     if (-not (Test-Path -Path $ChromaDbPath)) {
         Write-Log "La base Chroma $ChromaDbPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
     
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
     
-    # Créer le dossier d'historique s'il n'existe pas
+    # CrÃ©er le dossier d'historique s'il n'existe pas
     $historyFolder = Split-Path -Path $HistoryPath -Parent
     if (-not (Test-Path -Path $historyFolder)) {
         New-Item -Path $historyFolder -ItemType Directory -Force | Out-Null
-        Write-Log "Dossier d'historique créé: $historyFolder" -Level Info
+        Write-Log "Dossier d'historique crÃ©Ã©: $historyFolder" -Level Info
     }
     
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour la mise à jour du statut..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour la mise Ã  jour du statut..." -Level Info
     $pythonScript = New-StatusUpdateScript -TaskId $TaskId -Status $Status -Comment $Comment -Assignee $Assignee -ChromaDbPath $ChromaDbPath -CollectionName $CollectionName -HistoryPath $HistoryPath
     
-    # Exécuter le script Python et capturer la sortie JSON
-    Write-Log "Mise à jour du statut de la tâche $TaskId vers '$Status'..." -Level Info
+    # ExÃ©cuter le script Python et capturer la sortie JSON
+    Write-Log "Mise Ã  jour du statut de la tÃ¢che $TaskId vers '$Status'..." -Level Info
     $output = python $pythonScript 2>&1
     
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
     
-    # Extraire les résultats JSON de la sortie
+    # Extraire les rÃ©sultats JSON de la sortie
     $jsonStartIndex = $output.IndexOf("{")
     $jsonEndIndex = $output.LastIndexOf("}")
     
@@ -374,36 +374,36 @@ function Main {
         $jsonString = $output.Substring($jsonStartIndex, $jsonEndIndex - $jsonStartIndex + 1)
         $result = $jsonString | ConvertFrom-Json
         
-        # Mettre à jour le fichier Markdown si demandé
+        # Mettre Ã  jour le fichier Markdown si demandÃ©
         if ($UpdateRoadmap) {
             $markdownUpdated = Update-RoadmapMarkdown -RoadmapPath $RoadmapPath -TaskId $TaskId -Status $Status
             
             if ($markdownUpdated) {
-                Write-Log "Fichier Markdown de la roadmap mis à jour avec succès." -Level Success
+                Write-Log "Fichier Markdown de la roadmap mis Ã  jour avec succÃ¨s." -Level Success
             }
             else {
-                Write-Log "Échec de la mise à jour du fichier Markdown de la roadmap." -Level Warning
+                Write-Log "Ã‰chec de la mise Ã  jour du fichier Markdown de la roadmap." -Level Warning
             }
         }
         
-        # Afficher le résultat
-        Write-Host "`nMise à jour du statut effectuée avec succès:" -ForegroundColor Green
-        Write-Host "ID de la tâche: $($result.taskId)" -ForegroundColor Cyan
+        # Afficher le rÃ©sultat
+        Write-Host "`nMise Ã  jour du statut effectuÃ©e avec succÃ¨s:" -ForegroundColor Green
+        Write-Host "ID de la tÃ¢che: $($result.taskId)" -ForegroundColor Cyan
         Write-Host "Description: $($result.description)" -ForegroundColor Cyan
         Write-Host "Ancien statut: $($result.oldStatus)" -ForegroundColor Yellow
         Write-Host "Nouveau statut: $($result.newStatus)" -ForegroundColor Green
-        Write-Host "Dernière mise à jour: $($result.lastUpdated)" -ForegroundColor Cyan
+        Write-Host "DerniÃ¨re mise Ã  jour: $($result.lastUpdated)" -ForegroundColor Cyan
         
         if ($result.assignee) {
-            Write-Host "Assigné à: $($result.assignee)" -ForegroundColor Cyan
+            Write-Host "AssignÃ© Ã : $($result.assignee)" -ForegroundColor Cyan
         }
         
-        Write-Log "Mise à jour du statut terminée avec succès." -Level Success
+        Write-Log "Mise Ã  jour du statut terminÃ©e avec succÃ¨s." -Level Success
     }
     else {
-        Write-Log "Erreur lors de la mise à jour du statut." -Level Error
+        Write-Log "Erreur lors de la mise Ã  jour du statut." -Level Error
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

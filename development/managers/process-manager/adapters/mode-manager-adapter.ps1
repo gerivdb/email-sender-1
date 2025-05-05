@@ -1,26 +1,26 @@
-<#
+﻿<#
 .SYNOPSIS
     Adaptateur pour le Mode Manager.
 
 .DESCRIPTION
-    Cet adaptateur permet d'intégrer le Mode Manager avec le Process Manager.
-    Il fournit une interface standardisée pour interagir avec le Mode Manager.
+    Cet adaptateur permet d'intÃ©grer le Mode Manager avec le Process Manager.
+    Il fournit une interface standardisÃ©e pour interagir avec le Mode Manager.
 
 .PARAMETER Command
-    La commande à exécuter. Les commandes disponibles sont :
+    La commande Ã  exÃ©cuter. Les commandes disponibles sont :
     - GetMode : Obtient le mode actuel
-    - SetMode : Définit le mode actuel
+    - SetMode : DÃ©finit le mode actuel
     - ListModes : Liste tous les modes disponibles
-    - GetModeInfo : Obtient des informations sur un mode spécifique
+    - GetModeInfo : Obtient des informations sur un mode spÃ©cifique
 
 .PARAMETER Mode
-    Le mode à utiliser pour la commande.
+    Le mode Ã  utiliser pour la commande.
 
 .PARAMETER FilePath
-    Le chemin vers le fichier à utiliser pour la commande.
+    Le chemin vers le fichier Ã  utiliser pour la commande.
 
 .PARAMETER Parameters
-    Les paramètres supplémentaires à passer à la commande.
+    Les paramÃ¨tres supplÃ©mentaires Ã  passer Ã  la commande.
 
 .EXAMPLE
     .\mode-manager-adapter.ps1 -Command GetMode
@@ -28,12 +28,12 @@
 
 .EXAMPLE
     .\mode-manager-adapter.ps1 -Command SetMode -Mode "CHECK"
-    Définit le mode actuel sur "CHECK".
+    DÃ©finit le mode actuel sur "CHECK".
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2025-05-03
+    Date de crÃ©ation: 2025-05-03
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -51,16 +51,16 @@ param (
     [hashtable]$Parameters = @{}
 )
 
-# Définir le chemin vers le Mode Manager
+# DÃ©finir le chemin vers le Mode Manager
 $modeManagerPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path))) -ChildPath "mode-manager\scripts\mode-manager.ps1"
 
-# Vérifier que le Mode Manager existe
+# VÃ©rifier que le Mode Manager existe
 if (-not (Test-Path -Path $modeManagerPath)) {
-    Write-Error "Le Mode Manager est introuvable à l'emplacement : $modeManagerPath"
+    Write-Error "Le Mode Manager est introuvable Ã  l'emplacement : $modeManagerPath"
     exit 1
 }
 
-# Fonction pour exécuter une commande sur le Mode Manager
+# Fonction pour exÃ©cuter une commande sur le Mode Manager
 function Invoke-ModeManagerCommand {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -77,11 +77,11 @@ function Invoke-ModeManagerCommand {
         ArgumentList = "-Command $Command"
     }
 
-    # Ajouter les paramètres
+    # Ajouter les paramÃ¨tres
     foreach ($param in $Parameters.Keys) {
         $value = $Parameters[$param]
         
-        # Gérer les types de paramètres
+        # GÃ©rer les types de paramÃ¨tres
         if ($value -is [switch]) {
             if ($value) {
                 $commandParams.ArgumentList += " -$param"
@@ -94,19 +94,19 @@ function Invoke-ModeManagerCommand {
         }
     }
 
-    # Exécuter la commande
-    if ($PSCmdlet.ShouldProcess("Mode Manager", "Exécuter la commande $Command")) {
+    # ExÃ©cuter la commande
+    if ($PSCmdlet.ShouldProcess("Mode Manager", "ExÃ©cuter la commande $Command")) {
         try {
             $result = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $($commandParams.FilePath) $($commandParams.ArgumentList)" -Wait -PassThru -NoNewWindow
             
             if ($result.ExitCode -eq 0) {
                 return $true
             } else {
-                Write-Error "Erreur lors de l'exécution de la commande. Code de sortie : $($result.ExitCode)"
+                Write-Error "Erreur lors de l'exÃ©cution de la commande. Code de sortie : $($result.ExitCode)"
                 return $false
             }
         } catch {
-            Write-Error "Erreur lors de l'exécution de la commande : $_"
+            Write-Error "Erreur lors de l'exÃ©cution de la commande : $_"
             return $false
         }
     }
@@ -114,7 +114,7 @@ function Invoke-ModeManagerCommand {
     return $false
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch ($Command) {
     "GetMode" {
         # Obtenir le mode actuel
@@ -123,23 +123,23 @@ switch ($Command) {
     }
     
     "SetMode" {
-        # Vérifier que le mode est spécifié
+        # VÃ©rifier que le mode est spÃ©cifiÃ©
         if (-not $Mode) {
-            Write-Error "Le paramètre Mode est requis pour la commande SetMode."
+            Write-Error "Le paramÃ¨tre Mode est requis pour la commande SetMode."
             exit 1
         }
         
-        # Définir le mode
+        # DÃ©finir le mode
         $params = @{
             Mode = $Mode
         }
         
-        # Ajouter le chemin du fichier si spécifié
+        # Ajouter le chemin du fichier si spÃ©cifiÃ©
         if ($FilePath) {
             $params.FilePath = $FilePath
         }
         
-        # Ajouter les paramètres supplémentaires
+        # Ajouter les paramÃ¨tres supplÃ©mentaires
         foreach ($param in $Parameters.Keys) {
             $params[$param] = $Parameters[$param]
         }
@@ -155,9 +155,9 @@ switch ($Command) {
     }
     
     "GetModeInfo" {
-        # Vérifier que le mode est spécifié
+        # VÃ©rifier que le mode est spÃ©cifiÃ©
         if (-not $Mode) {
-            Write-Error "Le paramètre Mode est requis pour la commande GetModeInfo."
+            Write-Error "Le paramÃ¨tre Mode est requis pour la commande GetModeInfo."
             exit 1
         }
         

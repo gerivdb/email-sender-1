@@ -1,15 +1,15 @@
-# Script pour générer des workflows n8n de test
-# Ce script génère des workflows n8n de test pour les tests unitaires
+﻿# Script pour gÃ©nÃ©rer des workflows n8n de test
+# Ce script gÃ©nÃ¨re des workflows n8n de test pour les tests unitaires
 
 #Requires -Version 5.1
 
-# Paramètres
+# ParamÃ¨tres
 param (
     [Parameter(Mandatory = $false)]
     [string]$OutputFolder = "TestData"
 )
 
-# Définir le chemin complet du dossier de sortie
+# DÃ©finir le chemin complet du dossier de sortie
 $OutputFolder = Join-Path -Path $PSScriptRoot -ChildPath $OutputFolder
 
 # Fonction pour afficher un message
@@ -30,12 +30,12 @@ function Write-Message {
     Write-Host "[$Status] $Message" -ForegroundColor $color
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputFolder)) {
     New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
 }
 
-# Générer un workflow n8n de test simple
+# GÃ©nÃ©rer un workflow n8n de test simple
 function New-SimpleWorkflow {
     param (
         [string]$OutputPath
@@ -115,7 +115,7 @@ function New-SimpleWorkflow {
     return $workflow
 }
 
-# Générer un workflow n8n de test avec des conditions
+# GÃ©nÃ©rer un workflow n8n de test avec des conditions
 function New-ConditionalWorkflow {
     param (
         [string]$OutputPath
@@ -330,7 +330,7 @@ function New-ConditionalWorkflow {
     return $workflow
 }
 
-# Générer un workflow n8n de test complexe avec différents types de nœuds
+# GÃ©nÃ©rer un workflow n8n de test complexe avec diffÃ©rents types de nÅ“uds
 function New-ComplexWorkflow {
     param (
         [string]$OutputPath
@@ -527,7 +527,7 @@ function New-ComplexWorkflow {
     return $workflow
 }
 
-# Générer un workflow n8n de test avec des blocs try/catch/finally
+# GÃ©nÃ©rer un workflow n8n de test avec des blocs try/catch/finally
 function New-TryCatchWorkflow {
     param (
         [string]$OutputPath
@@ -719,7 +719,7 @@ function New-TryCatchWorkflow {
     return $workflow
 }
 
-# Générer un workflow n8n de test avec des blocs trap
+# GÃ©nÃ©rer un workflow n8n de test avec des blocs trap
 function New-TrapWorkflow {
     param (
         [string]$OutputPath
@@ -846,7 +846,7 @@ return processData();
     return $workflow
 }
 
-# Générer un workflow n8n de test avec des gestionnaires d'erreurs personnalisés
+# GÃ©nÃ©rer un workflow n8n de test avec des gestionnaires d'erreurs personnalisÃ©s
 function New-CustomErrorHandlersWorkflow {
     param (
         [string]$OutputPath
@@ -1026,37 +1026,37 @@ return processData();
     return $workflow
 }
 
-# Générer les workflows de test
-Write-Message "Génération des workflows de test..." -Status "INFO"
+# GÃ©nÃ©rer les workflows de test
+Write-Message "GÃ©nÃ©ration des workflows de test..." -Status "INFO"
 
 # Workflow simple
 $simpleWorkflowPath = Join-Path -Path $OutputFolder -ChildPath "simple_workflow.json"
 New-SimpleWorkflow -OutputPath $simpleWorkflowPath | Out-Null
-Write-Message "Workflow simple généré: $simpleWorkflowPath" -Status "SUCCESS"
+Write-Message "Workflow simple gÃ©nÃ©rÃ©: $simpleWorkflowPath" -Status "SUCCESS"
 
 # Workflow conditionnel
 $conditionalWorkflowPath = Join-Path -Path $OutputFolder -ChildPath "conditional_workflow.json"
 New-ConditionalWorkflow -OutputPath $conditionalWorkflowPath | Out-Null
-Write-Message "Workflow conditionnel généré: $conditionalWorkflowPath" -Status "SUCCESS"
+Write-Message "Workflow conditionnel gÃ©nÃ©rÃ©: $conditionalWorkflowPath" -Status "SUCCESS"
 
 # Workflow complexe
 $complexWorkflowPath = Join-Path -Path $OutputFolder -ChildPath "complex_workflow.json"
 New-ComplexWorkflow -OutputPath $complexWorkflowPath | Out-Null
-Write-Message "Workflow complexe généré: $complexWorkflowPath" -Status "SUCCESS"
+Write-Message "Workflow complexe gÃ©nÃ©rÃ©: $complexWorkflowPath" -Status "SUCCESS"
 
 # Workflow avec try/catch
 $tryCatchWorkflowPath = Join-Path -Path $OutputFolder -ChildPath "try_catch_workflow.json"
 New-TryCatchWorkflow -OutputPath $tryCatchWorkflowPath | Out-Null
-Write-Message "Workflow avec try/catch généré: $tryCatchWorkflowPath" -Status "SUCCESS"
+Write-Message "Workflow avec try/catch gÃ©nÃ©rÃ©: $tryCatchWorkflowPath" -Status "SUCCESS"
 
 # Workflow avec trap
 $trapWorkflowPath = Join-Path -Path $OutputFolder -ChildPath "trap_workflow.json"
 New-TrapWorkflow -OutputPath $trapWorkflowPath | Out-Null
-Write-Message "Workflow avec trap généré: $trapWorkflowPath" -Status "SUCCESS"
+Write-Message "Workflow avec trap gÃ©nÃ©rÃ©: $trapWorkflowPath" -Status "SUCCESS"
 
-# Workflow avec gestionnaires d'erreurs personnalisés
+# Workflow avec gestionnaires d'erreurs personnalisÃ©s
 $customErrorHandlersWorkflowPath = Join-Path -Path $OutputFolder -ChildPath "custom_error_handlers_workflow.json"
 New-CustomErrorHandlersWorkflow -OutputPath $customErrorHandlersWorkflowPath | Out-Null
-Write-Message "Workflow avec gestionnaires d'erreurs personnalisés généré: $customErrorHandlersWorkflowPath" -Status "SUCCESS"
+Write-Message "Workflow avec gestionnaires d'erreurs personnalisÃ©s gÃ©nÃ©rÃ©: $customErrorHandlersWorkflowPath" -Status "SUCCESS"
 
-Write-Message "Génération des workflows de test terminée." -Status "SUCCESS"
+Write-Message "GÃ©nÃ©ration des workflows de test terminÃ©e." -Status "SUCCESS"

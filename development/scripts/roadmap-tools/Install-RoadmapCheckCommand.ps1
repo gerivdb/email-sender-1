@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Installe la commande de vérification de roadmap dans VS Code.
+    Installe la commande de vÃ©rification de roadmap dans VS Code.
 
 .DESCRIPTION
-    Ce script installe une commande dans le menu contextuel de VS Code pour exécuter
-    le mode CHECK sur les fichiers de roadmap. Il ajoute également un raccourci clavier
-    pour exécuter la commande.
+    Ce script installe une commande dans le menu contextuel de VS Code pour exÃ©cuter
+    le mode CHECK sur les fichiers de roadmap. Il ajoute Ã©galement un raccourci clavier
+    pour exÃ©cuter la commande.
 
 .PARAMETER VSCodeSettingsPath
-    Chemin vers le fichier de paramètres de VS Code. Par défaut, utilise le chemin standard
+    Chemin vers le fichier de paramÃ¨tres de VS Code. Par dÃ©faut, utilise le chemin standard
     pour Windows.
 
 .EXAMPLE
@@ -17,7 +17,7 @@
 .NOTES
     Auteur: Roadmap Tools Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 [CmdletBinding()]
 param (
@@ -25,13 +25,13 @@ param (
     [string]$VSCodeSettingsPath = "$env:APPDATA\Code\User\settings.json"
 )
 
-# Fonction pour vérifier si VS Code est installé
+# Fonction pour vÃ©rifier si VS Code est installÃ©
 function Test-VSCodeInstalled {
     $vscodePath = Get-Command -Name "code" -ErrorAction SilentlyContinue
     return ($null -ne $vscodePath)
 }
 
-# Fonction pour vérifier si le fichier de paramètres de VS Code existe
+# Fonction pour vÃ©rifier si le fichier de paramÃ¨tres de VS Code existe
 function Test-VSCodeSettingsExist {
     param (
         [Parameter(Mandatory = $true)]
@@ -41,7 +41,7 @@ function Test-VSCodeSettingsExist {
     return (Test-Path -Path $Path)
 }
 
-# Fonction pour lire le fichier de paramètres de VS Code
+# Fonction pour lire le fichier de paramÃ¨tres de VS Code
 function Get-VSCodeSettings {
     param (
         [Parameter(Mandatory = $true)]
@@ -54,12 +54,12 @@ function Get-VSCodeSettings {
         return $settings
     }
     catch {
-        Write-Warning "Erreur lors de la lecture du fichier de paramètres de VS Code : $_"
+        Write-Warning "Erreur lors de la lecture du fichier de paramÃ¨tres de VS Code : $_"
         return $null
     }
 }
 
-# Fonction pour ajouter la commande de vérification de roadmap aux paramètres de VS Code
+# Fonction pour ajouter la commande de vÃ©rification de roadmap aux paramÃ¨tres de VS Code
 function Add-RoadmapCheckCommand {
     param (
         [Parameter(Mandatory = $true)]
@@ -72,15 +72,15 @@ function Add-RoadmapCheckCommand {
     # Convertir le chemin du script en chemin absolu
     $scriptFullPath = (Resolve-Path -Path $ScriptPath).Path
     
-    # Échapper les barres obliques inverses dans le chemin
+    # Ã‰chapper les barres obliques inverses dans le chemin
     $scriptPathEscaped = $scriptFullPath -replace '\\', '\\'
     
-    # Vérifier si la propriété "powershell.commands" existe
+    # VÃ©rifier si la propriÃ©tÃ© "powershell.commands" existe
     if (-not (Get-Member -InputObject $Settings -Name "powershell.commands" -MemberType NoteProperty)) {
         $Settings | Add-Member -NotePropertyName "powershell.commands" -NotePropertyValue @()
     }
     
-    # Vérifier si la commande existe déjà
+    # VÃ©rifier si la commande existe dÃ©jÃ 
     $commandExists = $false
     foreach ($command in $Settings."powershell.commands") {
         if ($command.name -eq "roadmap.check") {
@@ -99,12 +99,12 @@ function Add-RoadmapCheckCommand {
         $Settings."powershell.commands" += $newCommand
     }
     
-    # Vérifier si la propriété "powershell.keybindings" existe
+    # VÃ©rifier si la propriÃ©tÃ© "powershell.keybindings" existe
     if (-not (Get-Member -InputObject $Settings -Name "powershell.keybindings" -MemberType NoteProperty)) {
         $Settings | Add-Member -NotePropertyName "powershell.keybindings" -NotePropertyValue @()
     }
     
-    # Vérifier si le raccourci clavier existe déjà
+    # VÃ©rifier si le raccourci clavier existe dÃ©jÃ 
     $keybindingExists = $false
     foreach ($keybinding in $Settings."powershell.keybindings") {
         if ($keybinding.command -eq "roadmap.check") {
@@ -126,7 +126,7 @@ function Add-RoadmapCheckCommand {
     return $Settings
 }
 
-# Fonction pour sauvegarder les paramètres de VS Code
+# Fonction pour sauvegarder les paramÃ¨tres de VS Code
 function Save-VSCodeSettings {
     param (
         [Parameter(Mandatory = $true)]
@@ -142,57 +142,57 @@ function Save-VSCodeSettings {
         return $true
     }
     catch {
-        Write-Error "Erreur lors de l'écriture du fichier de paramètres de VS Code : $_"
+        Write-Error "Erreur lors de l'Ã©criture du fichier de paramÃ¨tres de VS Code : $_"
         return $false
     }
 }
 
 # Script principal
 function Install-RoadmapCheckCommand {
-    # Vérifier si VS Code est installé
+    # VÃ©rifier si VS Code est installÃ©
     if (-not (Test-VSCodeInstalled)) {
-        Write-Error "VS Code n'est pas installé ou n'est pas dans le PATH."
+        Write-Error "VS Code n'est pas installÃ© ou n'est pas dans le PATH."
         return
     }
 
-    # Vérifier si le fichier de paramètres de VS Code existe
+    # VÃ©rifier si le fichier de paramÃ¨tres de VS Code existe
     if (-not (Test-VSCodeSettingsExist -Path $VSCodeSettingsPath)) {
-        Write-Warning "Le fichier de paramètres de VS Code n'existe pas : $VSCodeSettingsPath"
-        Write-Host "Création d'un nouveau fichier de paramètres..."
+        Write-Warning "Le fichier de paramÃ¨tres de VS Code n'existe pas : $VSCodeSettingsPath"
+        Write-Host "CrÃ©ation d'un nouveau fichier de paramÃ¨tres..."
         $settings = [PSCustomObject]@{}
     }
     else {
-        # Lire le fichier de paramètres de VS Code
+        # Lire le fichier de paramÃ¨tres de VS Code
         $settings = Get-VSCodeSettings -Path $VSCodeSettingsPath
         if ($null -eq $settings) {
-            Write-Error "Impossible de lire le fichier de paramètres de VS Code."
+            Write-Error "Impossible de lire le fichier de paramÃ¨tres de VS Code."
             return
         }
     }
 
-    # Chemin vers le script de vérification de roadmap
+    # Chemin vers le script de vÃ©rification de roadmap
     $roadmapCheckScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-RoadmapCheck.ps1"
     
     if (-not (Test-Path -Path $roadmapCheckScriptPath)) {
-        Write-Error "Le script de vérification de roadmap n'a pas été trouvé : $roadmapCheckScriptPath"
+        Write-Error "Le script de vÃ©rification de roadmap n'a pas Ã©tÃ© trouvÃ© : $roadmapCheckScriptPath"
         return
     }
 
-    # Ajouter la commande de vérification de roadmap aux paramètres de VS Code
+    # Ajouter la commande de vÃ©rification de roadmap aux paramÃ¨tres de VS Code
     $settings = Add-RoadmapCheckCommand -Settings $settings -ScriptPath $roadmapCheckScriptPath
 
-    # Sauvegarder les paramètres de VS Code
+    # Sauvegarder les paramÃ¨tres de VS Code
     $saved = Save-VSCodeSettings -Settings $settings -Path $VSCodeSettingsPath
     
     if ($saved) {
-        Write-Host "La commande de vérification de roadmap a été installée avec succès." -ForegroundColor Green
+        Write-Host "La commande de vÃ©rification de roadmap a Ã©tÃ© installÃ©e avec succÃ¨s." -ForegroundColor Green
         Write-Host "Vous pouvez maintenant utiliser la commande 'roadmap.check' dans VS Code." -ForegroundColor Green
         Write-Host "Raccourci clavier : Ctrl+Alt+C" -ForegroundColor Green
     }
     else {
-        Write-Error "Échec de l'installation de la commande de vérification de roadmap."
+        Write-Error "Ã‰chec de l'installation de la commande de vÃ©rification de roadmap."
     }
 }
 
-# Exécuter le script principal
+# ExÃ©cuter le script principal
 Install-RoadmapCheckCommand

@@ -1,4 +1,4 @@
-@{
+﻿@{
     # Version du module
     ModuleVersion = '1.0.0'
     
@@ -11,10 +11,10 @@
     # Module PowerShell requis
     PowerShellVersion = '5.1'
     
-    # Modules à importer en tant que modules imbriqués
+    # Modules Ã  importer en tant que modules imbriquÃ©s
     NestedModules = @('FeedbackExporter.psm1')
     
-    # Fonctions à exporter
+    # Fonctions Ã  exporter
     FunctionsToExport = @(
         'Initialize-FeedbackExporter',
         'Export-CollectedMessages',
@@ -22,16 +22,16 @@
         'Get-ExportHistory'
     )
     
-    # Variables à exporter
+    # Variables Ã  exporter
     VariablesToExport = @()
     
-    # Alias à exporter
+    # Alias Ã  exporter
     AliasesToExport = @()
     
-    # Informations privées
+    # Informations privÃ©es
     PrivateData = @{
         PSData = @{
-            # Tags appliqués à ce module
+            # Tags appliquÃ©s Ã  ce module
             Tags = @('ProcessManager', 'Feedback', 'Export', 'Reporting')
             
             # URL du projet

@@ -1,5 +1,5 @@
-# Filter-Tasks.ps1
-# Script pour filtrer les tâches de la roadmap selon différents critères
+﻿# Filter-Tasks.ps1
+# Script pour filtrer les tÃ¢ches de la roadmap selon diffÃ©rents critÃ¨res
 
 [CmdletBinding()]
 param (
@@ -42,7 +42,7 @@ param (
     [string]$OutputPath
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -65,26 +65,26 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         }
         else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     }
     catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("chromadb", "json", "datetime")
     $missingPackages = @()
@@ -105,24 +105,24 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         }
         else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
     
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour le filtrage des tâches
+# Fonction pour crÃ©er un script Python temporaire pour le filtrage des tÃ¢ches
 function New-TaskFilterScript {
     [CmdletBinding()]
     param (
@@ -177,7 +177,7 @@ def parse_date(date_str):
         return None
 
 def main():
-    # Paramètres
+    # ParamÃ¨tres
     chroma_db_path = r'$ChromaDbPath'
     collection_name = '$CollectionName'
     index_path = r'$IndexPath'
@@ -189,7 +189,7 @@ def main():
     last_updated_after = r'$LastUpdatedAfter'
     assignee_filter = r'$Assignee'
     
-    # Vérifier si le fichier d'index existe
+    # VÃ©rifier si le fichier d'index existe
     if not os.path.exists(index_path):
         print(f"Le fichier d'index {index_path} n'existe pas.")
         sys.exit(1)
@@ -206,10 +206,10 @@ def main():
     try:
         client = chromadb.PersistentClient(path=chroma_db_path)
     except Exception as e:
-        print(f"Erreur lors de la connexion à la base Chroma: {e}")
+        print(f"Erreur lors de la connexion Ã  la base Chroma: {e}")
         sys.exit(1)
     
-    # Vérifier si la collection existe
+    # VÃ©rifier si la collection existe
     try:
         existing_collections = client.list_collections()
         collection_exists = any(c.name == collection_name for c in existing_collections)
@@ -218,10 +218,10 @@ def main():
             print(f"La collection {collection_name} n'existe pas dans la base Chroma.")
             sys.exit(1)
         
-        # Récupérer la collection
+        # RÃ©cupÃ©rer la collection
         collection = client.get_collection(name=collection_name)
         
-        # Préparer les filtres
+        # PrÃ©parer les filtres
         task_ids = set()
         
         # Filtrer par statut
@@ -229,11 +229,11 @@ def main():
             if status_filter in indexes['indexes']['byStatus']:
                 task_ids.update(indexes['indexes']['byStatus'][status_filter])
             else:
-                print(f"Aucune tâche avec le statut '{status_filter}' trouvée.")
+                print(f"Aucune tÃ¢che avec le statut '{status_filter}' trouvÃ©e.")
                 if not task_ids:  # Si c'est le premier filtre, on initialise avec un ensemble vide
                     task_ids = set()
         else:
-            # Si pas de filtre de statut, inclure toutes les tâches
+            # Si pas de filtre de statut, inclure toutes les tÃ¢ches
             task_ids = set(indexes['indexes']['byId'].keys())
         
         # Filtrer par section
@@ -249,7 +249,7 @@ def main():
                 else:
                     task_ids = section_tasks
             else:
-                print(f"Aucune tâche dans la section '{section_filter}' trouvée.")
+                print(f"Aucune tÃ¢che dans la section '{section_filter}' trouvÃ©e.")
                 task_ids = set()  # Aucune correspondance, ensemble vide
         
         # Filtrer par ID parent
@@ -261,7 +261,7 @@ def main():
                 else:
                     task_ids = parent_tasks
             else:
-                print(f"Aucune tâche avec l'ID parent '{parent_id_filter}' trouvée.")
+                print(f"Aucune tÃ¢che avec l'ID parent '{parent_id_filter}' trouvÃ©e.")
                 task_ids = set()  # Aucune correspondance, ensemble vide
         
         # Filtrer par niveau d'indentation
@@ -276,29 +276,29 @@ def main():
                 else:
                     task_ids = indent_tasks
             else:
-                print(f"Aucune tâche avec le niveau d'indentation {indent_level_filter} trouvée.")
+                print(f"Aucune tÃ¢che avec le niveau d'indentation {indent_level_filter} trouvÃ©e.")
                 task_ids = set()  # Aucune correspondance, ensemble vide
         
         # Convertir les dates pour le filtrage
         before_date = parse_date(last_updated_before)
         after_date = parse_date(last_updated_after)
         
-        # Si des filtres de date sont spécifiés, nous devons récupérer les métadonnées des tâches
+        # Si des filtres de date sont spÃ©cifiÃ©s, nous devons rÃ©cupÃ©rer les mÃ©tadonnÃ©es des tÃ¢ches
         if before_date or after_date or assignee_filter:
-            # Récupérer les métadonnées des tâches filtrées jusqu'à présent
+            # RÃ©cupÃ©rer les mÃ©tadonnÃ©es des tÃ¢ches filtrÃ©es jusqu'Ã  prÃ©sent
             filtered_task_ids = list(task_ids)
             
             if filtered_task_ids:
-                # Récupérer les métadonnées des tâches
+                # RÃ©cupÃ©rer les mÃ©tadonnÃ©es des tÃ¢ches
                 result = collection.get(ids=filtered_task_ids)
                 
-                # Appliquer les filtres de date et d'assigné
+                # Appliquer les filtres de date et d'assignÃ©
                 date_filtered_ids = set()
                 
                 for i, task_id in enumerate(result['ids']):
                     metadata = result['metadatas'][i]
                     
-                    # Filtrer par date de mise à jour
+                    # Filtrer par date de mise Ã  jour
                     if before_date or after_date:
                         task_date_str = metadata.get('lastUpdated', '')
                         if task_date_str:
@@ -314,29 +314,29 @@ def main():
                                 # Ignorer les dates invalides
                                 pass
                     
-                    # Filtrer par assigné
+                    # Filtrer par assignÃ©
                     if assignee_filter:
                         task_assignee = metadata.get('assignee', '')
                         if not task_assignee or assignee_filter.lower() not in task_assignee.lower():
                             continue
                     
-                    # Si la tâche passe tous les filtres, l'ajouter à l'ensemble filtré
+                    # Si la tÃ¢che passe tous les filtres, l'ajouter Ã  l'ensemble filtrÃ©
                     date_filtered_ids.add(task_id)
                 
-                # Mettre à jour l'ensemble des IDs filtrés
+                # Mettre Ã  jour l'ensemble des IDs filtrÃ©s
                 task_ids = date_filtered_ids
         
         # Convertir l'ensemble en liste pour le tri
         filtered_task_ids = list(task_ids)
         
         if not filtered_task_ids:
-            print("Aucune tâche ne correspond aux critères de filtrage.")
+            print("Aucune tÃ¢che ne correspond aux critÃ¨res de filtrage.")
             sys.exit(0)
         
-        # Récupérer les détails des tâches filtrées
+        # RÃ©cupÃ©rer les dÃ©tails des tÃ¢ches filtrÃ©es
         result = collection.get(ids=filtered_task_ids)
         
-        # Préparer les résultats
+        # PrÃ©parer les rÃ©sultats
         filtered_results = []
         
         for i, task_id in enumerate(result['ids']):
@@ -354,20 +354,20 @@ def main():
                 "document": document
             }
             
-            # Ajouter l'assigné s'il existe
+            # Ajouter l'assignÃ© s'il existe
             if 'assignee' in metadata:
                 task_result["assignee"] = metadata["assignee"]
             
             filtered_results.append(task_result)
         
-        # Trier les résultats par ID de tâche
+        # Trier les rÃ©sultats par ID de tÃ¢che
         filtered_results.sort(key=lambda x: x["taskId"])
         
-        # Afficher les résultats au format JSON
+        # Afficher les rÃ©sultats au format JSON
         print(json.dumps(filtered_results, indent=2, ensure_ascii=False))
         
     except Exception as e:
-        print(f"Erreur lors du filtrage des tâches: {e}")
+        print(f"Erreur lors du filtrage des tÃ¢ches: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
@@ -378,7 +378,7 @@ if __name__ == "__main__":
     return $scriptPath
 }
 
-# Fonction pour formater les résultats en Markdown
+# Fonction pour formater les rÃ©sultats en Markdown
 function Format-ResultsAsMarkdown {
     [CmdletBinding()]
     param (
@@ -392,7 +392,7 @@ function Format-ResultsAsMarkdown {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     
     # Construire la description des filtres
-    $filterDescription = "**Filtres appliqués:**"
+    $filterDescription = "**Filtres appliquÃ©s:**"
     foreach ($key in $Filters.Keys) {
         if ($Filters[$key]) {
             $filterDescription += "`n- $key : $($Filters[$key])"
@@ -400,16 +400,16 @@ function Format-ResultsAsMarkdown {
     }
     
     $markdown = @"
-# Résultats de filtrage des tâches
+# RÃ©sultats de filtrage des tÃ¢ches
 
 **Date:** $timestamp  
-**Nombre de résultats:** $($Results.Count)
+**Nombre de rÃ©sultats:** $($Results.Count)
 
 $filterDescription
 
-## Résultats
+## RÃ©sultats
 
-| ID | Description | Section | Statut | Dernière mise à jour |
+| ID | Description | Section | Statut | DerniÃ¨re mise Ã  jour |
 |---|---|---|---|---|
 "@
     
@@ -419,7 +419,7 @@ $filterDescription
     
     $markdown += @"
 
-## Détails des résultats
+## DÃ©tails des rÃ©sultats
 
 "@
     
@@ -430,21 +430,21 @@ $filterDescription
 
 - **Statut:** $($result.status)
 - **Section:** $($result.section)
-- **Dernière mise à jour:** $($result.lastUpdated)
+- **DerniÃ¨re mise Ã  jour:** $($result.lastUpdated)
 - **ID parent:** $($result.parentId)
 - **Niveau d'indentation:** $($result.indentLevel)
 
 "@
         
         if ($result.assignee) {
-            $markdown += "- **Assigné à:** $($result.assignee)`n"
+            $markdown += "- **AssignÃ© Ã :** $($result.assignee)`n"
         }
     }
     
     return $markdown
 }
 
-# Fonction pour afficher les résultats dans la console
+# Fonction pour afficher les rÃ©sultats dans la console
 function Show-ResultsInConsole {
     [CmdletBinding()]
     param (
@@ -455,11 +455,11 @@ function Show-ResultsInConsole {
         [hashtable]$Filters
     )
     
-    Write-Host "`nRésultats du filtrage des tâches" -ForegroundColor Cyan
-    Write-Host "Nombre de résultats: $($Results.Count)" -ForegroundColor Cyan
+    Write-Host "`nRÃ©sultats du filtrage des tÃ¢ches" -ForegroundColor Cyan
+    Write-Host "Nombre de rÃ©sultats: $($Results.Count)" -ForegroundColor Cyan
     
-    # Afficher les filtres appliqués
-    Write-Host "`nFiltres appliqués:" -ForegroundColor Yellow
+    # Afficher les filtres appliquÃ©s
+    Write-Host "`nFiltres appliquÃ©s:" -ForegroundColor Yellow
     foreach ($key in $Filters.Keys) {
         if ($Filters[$key]) {
             Write-Host "- $key : $($Filters[$key])" -ForegroundColor Yellow
@@ -475,10 +475,10 @@ function Show-ResultsInConsole {
         Write-Host "Description: $($result.description)"
         Write-Host "Section: $($result.section)"
         Write-Host "Statut: $($result.status)"
-        Write-Host "Dernière mise à jour: $($result.lastUpdated)"
+        Write-Host "DerniÃ¨re mise Ã  jour: $($result.lastUpdated)"
         
         if ($result.assignee) {
-            Write-Host "Assigné à: $($result.assignee)"
+            Write-Host "AssignÃ© Ã : $($result.assignee)"
         }
         
         Write-Host "------------------------------------------------------------" -ForegroundColor Cyan
@@ -487,42 +487,42 @@ function Show-ResultsInConsole {
 
 # Fonction principale
 function Main {
-    # Vérifier si la base Chroma existe
+    # VÃ©rifier si la base Chroma existe
     if (-not (Test-Path -Path $ChromaDbPath)) {
         Write-Log "La base Chroma $ChromaDbPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si le fichier d'index existe
+    # VÃ©rifier si le fichier d'index existe
     if (-not (Test-Path -Path $IndexPath)) {
         Write-Log "Le fichier d'index $IndexPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
     
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
     
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour le filtrage des tâches..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour le filtrage des tÃ¢ches..." -Level Info
     $pythonScript = New-TaskFilterScript -ChromaDbPath $ChromaDbPath -CollectionName $CollectionName -IndexPath $IndexPath -Status $Status -Section $Section -ParentId $ParentId -IndentLevel $IndentLevel -LastUpdatedBefore $LastUpdatedBefore -LastUpdatedAfter $LastUpdatedAfter -Assignee $Assignee
     
-    # Exécuter le script Python et capturer la sortie JSON
-    Write-Log "Exécution du filtrage des tâches..." -Level Info
+    # ExÃ©cuter le script Python et capturer la sortie JSON
+    Write-Log "ExÃ©cution du filtrage des tÃ¢ches..." -Level Info
     $output = python $pythonScript 2>&1
     
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
     
-    # Extraire les résultats JSON de la sortie
+    # Extraire les rÃ©sultats JSON de la sortie
     $jsonStartIndex = $output.IndexOf("[")
     $jsonEndIndex = $output.LastIndexOf("]")
     
@@ -530,18 +530,18 @@ function Main {
         $jsonString = $output.Substring($jsonStartIndex, $jsonEndIndex - $jsonStartIndex + 1)
         $results = $jsonString | ConvertFrom-Json
         
-        # Créer un hashtable des filtres appliqués
+        # CrÃ©er un hashtable des filtres appliquÃ©s
         $filters = @{
             "Statut" = $Status
             "Section" = $Section
             "ID parent" = $ParentId
             "Niveau d'indentation" = if ($IndentLevel -ge 0) { $IndentLevel } else { $null }
-            "Mise à jour avant" = $LastUpdatedBefore
-            "Mise à jour après" = $LastUpdatedAfter
-            "Assigné à" = $Assignee
+            "Mise Ã  jour avant" = $LastUpdatedBefore
+            "Mise Ã  jour aprÃ¨s" = $LastUpdatedAfter
+            "AssignÃ© Ã " = $Assignee
         }
         
-        # Traiter les résultats selon le format demandé
+        # Traiter les rÃ©sultats selon le format demandÃ©
         switch ($OutputFormat) {
             "console" {
                 Show-ResultsInConsole -Results $results -Filters $filters
@@ -555,7 +555,7 @@ function Main {
                 
                 if ($OutputPath) {
                     $jsonOutput | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Résultats sauvegardés au format JSON dans $OutputPath" -Level Success
+                    Write-Log "RÃ©sultats sauvegardÃ©s au format JSON dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $jsonOutput
@@ -566,7 +566,7 @@ function Main {
                 
                 if ($OutputPath) {
                     $markdownOutput | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Résultats sauvegardés au format Markdown dans $OutputPath" -Level Success
+                    Write-Log "RÃ©sultats sauvegardÃ©s au format Markdown dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $markdownOutput
@@ -574,12 +574,12 @@ function Main {
             }
         }
         
-        Write-Log "Filtrage terminé. $($results.Count) résultats trouvés." -Level Success
+        Write-Log "Filtrage terminÃ©. $($results.Count) rÃ©sultats trouvÃ©s." -Level Success
     }
     else {
-        Write-Log "Aucun résultat trouvé ou erreur lors du filtrage." -Level Warning
+        Write-Log "Aucun rÃ©sultat trouvÃ© ou erreur lors du filtrage." -Level Warning
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

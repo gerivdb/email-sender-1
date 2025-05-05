@@ -1,38 +1,38 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour synchroniser les roadmaps entre différents formats (Mode ROADMAP-SYNC).
+    Script pour synchroniser les roadmaps entre diffÃ©rents formats (Mode ROADMAP-SYNC).
 
 .DESCRIPTION
-    Ce script permet de synchroniser les roadmaps entre différents formats (Markdown, JSON, HTML, etc.).
-    Il implémente le mode ROADMAP-SYNC qui est conçu pour maintenir la cohérence entre les différentes
-    représentations de la roadmap.
+    Ce script permet de synchroniser les roadmaps entre diffÃ©rents formats (Markdown, JSON, HTML, etc.).
+    Il implÃ©mente le mode ROADMAP-SYNC qui est conÃ§u pour maintenir la cohÃ©rence entre les diffÃ©rentes
+    reprÃ©sentations de la roadmap.
 
 .PARAMETER SourcePath
-    Chemin vers le fichier de roadmap source. Peut être un chemin unique ou un tableau de chemins.
+    Chemin vers le fichier de roadmap source. Peut Ãªtre un chemin unique ou un tableau de chemins.
 
 .PARAMETER TargetPath
-    Chemin vers le fichier de roadmap cible. Si non spécifié, le script utilisera les valeurs de la configuration.
-    Si SourcePath est un tableau, TargetPath doit également être un tableau de même longueur ou être omis.
+    Chemin vers le fichier de roadmap cible. Si non spÃ©cifiÃ©, le script utilisera les valeurs de la configuration.
+    Si SourcePath est un tableau, TargetPath doit Ã©galement Ãªtre un tableau de mÃªme longueur ou Ãªtre omis.
 
 .PARAMETER MultiSync
-    Indique si plusieurs roadmaps doivent être synchronisées en une seule opération.
-    Si ce paramètre est spécifié, SourcePath doit être un tableau de chemins.
+    Indique si plusieurs roadmaps doivent Ãªtre synchronisÃ©es en une seule opÃ©ration.
+    Si ce paramÃ¨tre est spÃ©cifiÃ©, SourcePath doit Ãªtre un tableau de chemins.
 
 .PARAMETER SourceFormat
     Format du fichier source. Valeurs possibles : "Markdown", "JSON", "HTML", "CSV".
-    Par défaut : "Markdown".
+    Par dÃ©faut : "Markdown".
 
 .PARAMETER TargetFormat
     Format du fichier cible. Valeurs possibles : "Markdown", "JSON", "HTML", "CSV".
-    Par défaut : "JSON".
+    Par dÃ©faut : "JSON".
 
 .PARAMETER Force
-    Indique si les modifications doivent être appliquées sans confirmation.
-    Par défaut : $false.
+    Indique si les modifications doivent Ãªtre appliquÃ©es sans confirmation.
+    Par dÃ©faut : $false.
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration unifiée.
-    Par défaut : "development\config\unified-config.json".
+    Chemin vers le fichier de configuration unifiÃ©e.
+    Par dÃ©faut : "development\config\unified-config.json".
 
 .EXAMPLE
     .\roadmap-sync-mode.ps1 -SourcePath "projet\roadmaps\Roadmap\roadmap_complete_converted.md" -TargetPath "projet\roadmaps\Roadmap\roadmap_complete.json"
@@ -49,7 +49,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-06-01
+    Date de crÃ©ation: 2023-06-01
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -77,7 +77,7 @@ param (
     [string]$ConfigPath = "development\config\unified-config.json"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -87,12 +87,12 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
 
-# Charger la configuration unifiée
+# Charger la configuration unifiÃ©e
 $configPath = Join-Path -Path $projectRoot -ChildPath $ConfigPath
 if (Test-Path -Path $configPath) {
     try {
@@ -115,7 +115,7 @@ if (Test-Path -Path $configPath) {
     foreach ($path in $alternativePaths) {
         $fullPath = Join-Path -Path $projectRoot -ChildPath $path
         if (Test-Path -Path $fullPath) {
-            Write-Host "Fichier de configuration trouvé à l'emplacement : $fullPath" -ForegroundColor Green
+            Write-Host "Fichier de configuration trouvÃ© Ã  l'emplacement : $fullPath" -ForegroundColor Green
             $configPath = $fullPath
             try {
                 $config = Get-Content -Path $configPath -Raw | ConvertFrom-Json
@@ -127,27 +127,27 @@ if (Test-Path -Path $configPath) {
     }
 
     if (-not $config) {
-        Write-Error "Aucun fichier de configuration valide trouvé."
+        Write-Error "Aucun fichier de configuration valide trouvÃ©."
         exit 1
     }
 }
 
-# Vérifier si le mode MultiSync est activé
+# VÃ©rifier si le mode MultiSync est activÃ©
 if ($MultiSync) {
-    # Vérifier que SourcePath est un tableau
+    # VÃ©rifier que SourcePath est un tableau
     if (-not ($SourcePath -is [array])) {
-        Write-Error "Lorsque le paramètre MultiSync est spécifié, SourcePath doit être un tableau de chemins."
+        Write-Error "Lorsque le paramÃ¨tre MultiSync est spÃ©cifiÃ©, SourcePath doit Ãªtre un tableau de chemins."
         exit 1
     }
 
-    # Vérifier que TargetPath est un tableau de même longueur ou n'est pas spécifié
+    # VÃ©rifier que TargetPath est un tableau de mÃªme longueur ou n'est pas spÃ©cifiÃ©
     if ($TargetPath -and -not ($TargetPath -is [array])) {
-        Write-Error "Lorsque le paramètre MultiSync est spécifié et que SourcePath est un tableau, TargetPath doit également être un tableau ou être omis."
+        Write-Error "Lorsque le paramÃ¨tre MultiSync est spÃ©cifiÃ© et que SourcePath est un tableau, TargetPath doit Ã©galement Ãªtre un tableau ou Ãªtre omis."
         exit 1
     }
 
     if ($TargetPath -and ($SourcePath.Count -ne $TargetPath.Count)) {
-        Write-Error "Les tableaux SourcePath et TargetPath doivent avoir le même nombre d'éléments."
+        Write-Error "Les tableaux SourcePath et TargetPath doivent avoir le mÃªme nombre d'Ã©lÃ©ments."
         exit 1
     }
 
@@ -163,13 +163,13 @@ if ($MultiSync) {
             $currentSourcePath = Join-Path -Path $projectRoot -ChildPath $currentSourcePath
         }
 
-        # Vérifier que le fichier source existe
+        # VÃ©rifier que le fichier source existe
         if (-not (Test-Path -Path $currentSourcePath)) {
-            Write-Error "Le fichier source spécifié n'existe pas : $currentSourcePath"
+            Write-Error "Le fichier source spÃ©cifiÃ© n'existe pas : $currentSourcePath"
             exit 1
         }
 
-        # Déterminer le chemin cible si non spécifié
+        # DÃ©terminer le chemin cible si non spÃ©cifiÃ©
         if ($TargetPath) {
             $currentTargetPath = $TargetPath[$i]
 
@@ -194,25 +194,25 @@ if ($MultiSync) {
 
         $targetPaths += $currentTargetPath
 
-        # Mettre à jour les tableaux
+        # Mettre Ã  jour les tableaux
         $SourcePath[$i] = $currentSourcePath
     }
 
-    # Mettre à jour TargetPath
+    # Mettre Ã  jour TargetPath
     if (-not $TargetPath) {
         $TargetPath = $targetPaths
     }
 } else {
     # Mode standard (un seul fichier)
 
-    # Utiliser les valeurs de la configuration si les paramètres ne sont pas spécifiés
+    # Utiliser les valeurs de la configuration si les paramÃ¨tres ne sont pas spÃ©cifiÃ©s
     if (-not $SourcePath) {
         if ($config.Roadmaps.Main.Path) {
             $SourcePath = Join-Path -Path $projectRoot -ChildPath $config.Roadmaps.Main.Path
         } elseif ($config.General.RoadmapPath) {
             $SourcePath = Join-Path -Path $projectRoot -ChildPath $config.General.RoadmapPath
         } else {
-            Write-Error "Aucun chemin source spécifié et aucun chemin par défaut trouvé dans la configuration."
+            Write-Error "Aucun chemin source spÃ©cifiÃ© et aucun chemin par dÃ©faut trouvÃ© dans la configuration."
             exit 1
         }
     }
@@ -222,13 +222,13 @@ if ($MultiSync) {
         $SourcePath = Join-Path -Path $projectRoot -ChildPath $SourcePath
     }
 
-    # Vérifier que le fichier source existe
+    # VÃ©rifier que le fichier source existe
     if (-not (Test-Path -Path $SourcePath)) {
-        Write-Error "Le fichier source spécifié n'existe pas : $SourcePath"
+        Write-Error "Le fichier source spÃ©cifiÃ© n'existe pas : $SourcePath"
         exit 1
     }
 
-    # Déterminer le format source à partir de l'extension du fichier si non spécifié
+    # DÃ©terminer le format source Ã  partir de l'extension du fichier si non spÃ©cifiÃ©
     if ($SourceFormat -eq "Markdown" -and -not $SourcePath.EndsWith(".md")) {
         $extension = [System.IO.Path]::GetExtension($SourcePath).ToLower()
         switch ($extension) {
@@ -238,7 +238,7 @@ if ($MultiSync) {
         }
     }
 
-    # Déterminer le chemin cible si non spécifié
+    # DÃ©terminer le chemin cible si non spÃ©cifiÃ©
     if (-not $TargetPath) {
         $directory = [System.IO.Path]::GetDirectoryName($SourcePath)
         $filename = [System.IO.Path]::GetFileNameWithoutExtension($SourcePath)
@@ -269,12 +269,12 @@ if (Test-Path -Path $modulePath) {
     exit 1
 }
 
-# Afficher les paramètres
+# Afficher les paramÃ¨tres
 Write-Host "Mode ROADMAP-SYNC - Synchronisation des roadmaps" -ForegroundColor Cyan
 
 if ($MultiSync) {
-    Write-Host "Mode multi-synchronisation activé" -ForegroundColor Yellow
-    Write-Host "Nombre de fichiers à synchroniser : $($SourcePath.Count)" -ForegroundColor Gray
+    Write-Host "Mode multi-synchronisation activÃ©" -ForegroundColor Yellow
+    Write-Host "Nombre de fichiers Ã  synchroniser : $($SourcePath.Count)" -ForegroundColor Gray
 
     for ($i = 0; $i -lt $SourcePath.Count; $i++) {
         Write-Host "Fichier source $($i+1) : $($SourcePath[$i]) ($SourceFormat)" -ForegroundColor Gray
@@ -298,23 +298,23 @@ function ConvertFrom-MarkdownToJson {
     # Lire le contenu du fichier Markdown
     $markdownContent = Get-Content -Path $MarkdownPath -Encoding UTF8 -Raw
 
-    # Analyser le contenu Markdown pour extraire les tâches
+    # Analyser le contenu Markdown pour extraire les tÃ¢ches
     $tasks = @()
     $lines = $markdownContent -split "`n"
     $currentTask = $null
     $currentSubTasks = @()
 
     foreach ($line in $lines) {
-        # Détecter les tâches principales (lignes commençant par "## ")
+        # DÃ©tecter les tÃ¢ches principales (lignes commenÃ§ant par "## ")
         if ($line -match "^## (.+)") {
-            # Si une tâche est en cours de traitement, l'ajouter à la liste
+            # Si une tÃ¢che est en cours de traitement, l'ajouter Ã  la liste
             if ($currentTask) {
                 $currentTask.SubTasks = $currentSubTasks
                 $tasks += $currentTask
                 $currentSubTasks = @()
             }
 
-            # Créer une nouvelle tâche
+            # CrÃ©er une nouvelle tÃ¢che
             $currentTask = @{
                 Title       = $matches[1].Trim()
                 Id          = ""
@@ -323,7 +323,7 @@ function ConvertFrom-MarkdownToJson {
                 SubTasks    = @()
             }
         }
-        # Détecter les descriptions (lignes commençant par "### Description")
+        # DÃ©tecter les descriptions (lignes commenÃ§ant par "### Description")
         elseif ($line -match "^### Description" -and $currentTask) {
             $descriptionLines = @()
             $i = [array]::IndexOf($lines, $line) + 1
@@ -335,7 +335,7 @@ function ConvertFrom-MarkdownToJson {
 
             $currentTask.Description = ($descriptionLines -join "`n").Trim()
         }
-        # Détecter les sous-tâches (lignes commençant par "- [ ]" ou "- [x]")
+        # DÃ©tecter les sous-tÃ¢ches (lignes commenÃ§ant par "- [ ]" ou "- [x]")
         elseif ($line -match "^- \[([ x])\] (?:\*\*([0-9.]+)\*\* )?(.+)" -and $currentTask) {
             $isChecked = $matches[1] -eq "x"
             $id = if ($matches[2]) { $matches[2] } else { "" }
@@ -351,16 +351,16 @@ function ConvertFrom-MarkdownToJson {
         }
     }
 
-    # Ajouter la dernière tâche
+    # Ajouter la derniÃ¨re tÃ¢che
     if ($currentTask) {
         $currentTask.SubTasks = $currentSubTasks
         $tasks += $currentTask
     }
 
-    # Créer l'objet JSON
+    # CrÃ©er l'objet JSON
     $roadmap = @{
         Title       = "Roadmap"
-        Description = "Roadmap générée à partir du fichier Markdown"
+        Description = "Roadmap gÃ©nÃ©rÃ©e Ã  partir du fichier Markdown"
         LastUpdated = Get-Date -Format "yyyy-MM-ddTHH:mm:ss"
         Tasks       = $tasks
     }
@@ -382,7 +382,7 @@ function ConvertFrom-JsonToMarkdown {
     # Lire le contenu du fichier JSON
     $jsonContent = Get-Content -Path $JsonPath -Encoding UTF8 -Raw | ConvertFrom-Json
 
-    # Créer le contenu Markdown
+    # CrÃ©er le contenu Markdown
     $markdown = "# $($jsonContent.Title)`n`n"
 
     if ($jsonContent.Description) {
@@ -390,10 +390,10 @@ function ConvertFrom-JsonToMarkdown {
     }
 
     if ($jsonContent.LastUpdated) {
-        $markdown += "Dernière mise à jour : $($jsonContent.LastUpdated)`n`n"
+        $markdown += "DerniÃ¨re mise Ã  jour : $($jsonContent.LastUpdated)`n`n"
     }
 
-    # Ajouter les tâches
+    # Ajouter les tÃ¢ches
     foreach ($task in $jsonContent.Tasks) {
         $markdown += "## $($task.Title)`n`n"
 
@@ -402,7 +402,7 @@ function ConvertFrom-JsonToMarkdown {
         }
 
         if ($task.SubTasks -and $task.SubTasks.Count -gt 0) {
-            $markdown += "### Sous-tâches`n"
+            $markdown += "### Sous-tÃ¢ches`n"
 
             foreach ($subTask in $task.SubTasks) {
                 $checkbox = if ($subTask.Status -eq "Completed") { "x" } else { " " }
@@ -427,9 +427,9 @@ function ConvertFrom-MarkdownToHtml {
         [string]$HtmlPath
     )
 
-    # Vérifier si le module MarkdownPS est installé
+    # VÃ©rifier si le module MarkdownPS est installÃ©
     if (-not (Get-Module -ListAvailable -Name MarkdownPS)) {
-        Write-Warning "Le module MarkdownPS n'est pas installé. Installation en cours..."
+        Write-Warning "Le module MarkdownPS n'est pas installÃ©. Installation en cours..."
         Install-Module -Name MarkdownPS -Force -Scope CurrentUser
     }
 
@@ -498,7 +498,7 @@ $html
 </html>
 "@
 
-    # Remplacer les cases à cocher Markdown par des cases à cocher HTML
+    # Remplacer les cases Ã  cocher Markdown par des cases Ã  cocher HTML
     $htmlWithStyles = $htmlWithStyles -replace '<li>\[ \]', '<li><input type="checkbox" disabled>'
     $htmlWithStyles = $htmlWithStyles -replace '<li>\[x\]', '<li><input type="checkbox" checked disabled>'
 
@@ -518,19 +518,19 @@ function ConvertFrom-MarkdownToCsv {
     # Lire le contenu du fichier Markdown
     $markdownContent = Get-Content -Path $MarkdownPath -Encoding UTF8 -Raw
 
-    # Analyser le contenu Markdown pour extraire les tâches
+    # Analyser le contenu Markdown pour extraire les tÃ¢ches
     $tasks = @()
     $lines = $markdownContent -split "`n"
     $currentTaskTitle = ""
     $currentTaskDescription = ""
 
     foreach ($line in $lines) {
-        # Détecter les tâches principales (lignes commençant par "## ")
+        # DÃ©tecter les tÃ¢ches principales (lignes commenÃ§ant par "## ")
         if ($line -match "^## (.+)") {
             $currentTaskTitle = $matches[1].Trim()
             $currentTaskDescription = ""
         }
-        # Détecter les descriptions (lignes commençant par "### Description")
+        # DÃ©tecter les descriptions (lignes commenÃ§ant par "### Description")
         elseif ($line -match "^### Description" -and $currentTaskTitle) {
             $descriptionLines = @()
             $i = [array]::IndexOf($lines, $line) + 1
@@ -542,7 +542,7 @@ function ConvertFrom-MarkdownToCsv {
 
             $currentTaskDescription = ($descriptionLines -join " ").Trim()
         }
-        # Détecter les sous-tâches (lignes commençant par "- [ ]" ou "- [x]")
+        # DÃ©tecter les sous-tÃ¢ches (lignes commenÃ§ant par "- [ ]" ou "- [x]")
         elseif ($line -match "^- \[([ x])\] (?:\*\*([0-9.]+)\*\* )?(.+)" -and $currentTaskTitle) {
             $isChecked = $matches[1] -eq "x"
             $id = if ($matches[2]) { $matches[2] } else { "" }
@@ -609,9 +609,9 @@ function ConvertFrom-HtmlToMarkdown {
         [string]$MarkdownPath
     )
 
-    # Vérifier si le module PSParseHTML est installé
+    # VÃ©rifier si le module PSParseHTML est installÃ©
     if (-not (Get-Module -ListAvailable -Name PSParseHTML)) {
-        Write-Warning "Le module PSParseHTML n'est pas installé. Installation en cours..."
+        Write-Warning "Le module PSParseHTML n'est pas installÃ©. Installation en cours..."
         Install-Module -Name PSParseHTML -Force -Scope CurrentUser
     }
 
@@ -640,24 +640,24 @@ function ConvertFrom-CsvToMarkdown {
     # Lire le contenu du fichier CSV
     $csvContent = Import-Csv -Path $CsvPath -Encoding UTF8
 
-    # Créer le contenu Markdown
+    # CrÃ©er le contenu Markdown
     $markdown = "# Roadmap`n`n"
-    $markdown += "Dernière mise à jour : $(Get-Date -Format "yyyy-MM-ddTHH:mm:ss")`n`n"
+    $markdown += "DerniÃ¨re mise Ã  jour : $(Get-Date -Format "yyyy-MM-ddTHH:mm:ss")`n`n"
 
-    # Regrouper les tâches par groupe
+    # Regrouper les tÃ¢ches par groupe
     $taskGroups = $csvContent | Group-Object -Property TaskGroup
 
     foreach ($group in $taskGroups) {
         $markdown += "## $($group.Name)`n`n"
 
-        # Ajouter la description (prendre la première, car elles devraient toutes être identiques)
+        # Ajouter la description (prendre la premiÃ¨re, car elles devraient toutes Ãªtre identiques)
         $description = ($group.Group | Select-Object -First 1).TaskDescription
         if ($description) {
             $markdown += "### Description`n$description`n`n"
         }
 
-        # Ajouter les sous-tâches
-        $markdown += "### Sous-tâches`n"
+        # Ajouter les sous-tÃ¢ches
+        $markdown += "### Sous-tÃ¢ches`n"
 
         foreach ($task in $group.Group) {
             $checkbox = if ($task.Status -eq "Completed") { "x" } else { " " }
@@ -721,16 +721,16 @@ function Convert-RoadmapFile {
         [switch]$Force
     )
 
-    # Vérifier si le fichier cible existe déjà
+    # VÃ©rifier si le fichier cible existe dÃ©jÃ 
     if (Test-Path -Path $TargetPath) {
         if (-not $Force) {
-            $confirmation = Read-Host "Le fichier cible existe déjà ($TargetPath). Voulez-vous le remplacer ? (O/N)"
+            $confirmation = Read-Host "Le fichier cible existe dÃ©jÃ  ($TargetPath). Voulez-vous le remplacer ? (O/N)"
             if ($confirmation -ne "O" -and $confirmation -ne "o") {
-                Write-Host "Opération annulée pour $TargetPath." -ForegroundColor Yellow
+                Write-Host "OpÃ©ration annulÃ©e pour $TargetPath." -ForegroundColor Yellow
                 return $false
             }
         } else {
-            Write-Host "Le fichier cible existe déjà et sera remplacé (mode force activé) : $TargetPath" -ForegroundColor Yellow
+            Write-Host "Le fichier cible existe dÃ©jÃ  et sera remplacÃ© (mode force activÃ©) : $TargetPath" -ForegroundColor Yellow
         }
     }
 
@@ -771,11 +771,11 @@ function Convert-RoadmapFile {
         default { "ConvertFrom-MarkdownToJson" }
     }
 
-    # Exécuter la conversion
+    # ExÃ©cuter la conversion
     if ($PSCmdlet.ShouldProcess($TargetPath, "Convertir de $SourceFormat vers $TargetFormat")) {
         try {
             & $conversionFunction -MarkdownPath $SourcePath -JsonPath $TargetPath
-            Write-Host "Conversion réussie : $SourcePath ($SourceFormat) -> $TargetPath ($TargetFormat)" -ForegroundColor Green
+            Write-Host "Conversion rÃ©ussie : $SourcePath ($SourceFormat) -> $TargetPath ($TargetFormat)" -ForegroundColor Green
             return $true
         } catch {
             Write-Error "Erreur lors de la conversion : $_"
@@ -821,19 +821,19 @@ if ($MultiSync) {
 }
 
 # Afficher un message de fin
-Write-Host "`nExécution du mode ROADMAP-SYNC terminée." -ForegroundColor Cyan
+Write-Host "`nExÃ©cution du mode ROADMAP-SYNC terminÃ©e." -ForegroundColor Cyan
 
-# Afficher un résumé des résultats
+# Afficher un rÃ©sumÃ© des rÃ©sultats
 $successCount = ($results | Where-Object { $_.Success -eq $true }).Count
 $failureCount = ($results | Where-Object { $_.Success -eq $false }).Count
 $totalCount = $results.Count
 
-Write-Host "Résumé des conversions :" -ForegroundColor Yellow
+Write-Host "RÃ©sumÃ© des conversions :" -ForegroundColor Yellow
 Write-Host "  - Total : $totalCount" -ForegroundColor Gray
-Write-Host "  - Réussies : $successCount" -ForegroundColor Green
-Write-Host "  - Échouées : $failureCount" -ForegroundColor $(if ($failureCount -gt 0) { "Red" } else { "Gray" })
+Write-Host "  - RÃ©ussies : $successCount" -ForegroundColor Green
+Write-Host "  - Ã‰chouÃ©es : $failureCount" -ForegroundColor $(if ($failureCount -gt 0) { "Red" } else { "Gray" })
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 if ($MultiSync) {
     return @{
         MultiSync    = $true

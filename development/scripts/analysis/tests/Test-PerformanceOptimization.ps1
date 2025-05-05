@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Test de performance pour le systÃ¨me d'analyse de code.
+    Test de performance pour le systÃƒÂ¨me d'analyse de code.
 .DESCRIPTION
-    Ce script teste les performances du systÃ¨me d'analyse de code en comparant
-    l'analyse sÃ©quentielle et l'analyse parallÃ¨le avec diffÃ©rents nombres de threads.
+    Ce script teste les performances du systÃƒÂ¨me d'analyse de code en comparant
+    l'analyse sÃƒÂ©quentielle et l'analyse parallÃƒÂ¨le avec diffÃƒÂ©rents nombres de threads.
 .PARAMETER TestDirectory
-    RÃ©pertoire contenant les fichiers Ã  analyser pour le test.
+    RÃƒÂ©pertoire contenant les fichiers ÃƒÂ  analyser pour le test.
 .PARAMETER OutputPath
-    RÃ©pertoire oÃ¹ les rÃ©sultats des tests seront enregistrÃ©s.
+    RÃƒÂ©pertoire oÃƒÂ¹ les rÃƒÂ©sultats des tests seront enregistrÃƒÂ©s.
 .PARAMETER NumberOfFiles
-    Nombre de fichiers Ã  analyser pour le test.
+    Nombre de fichiers ÃƒÂ  analyser pour le test.
 .PARAMETER MaxThreads
-    Nombre maximum de threads Ã  utiliser pour l'analyse parallÃ¨le.
+    Nombre maximum de threads ÃƒÂ  utiliser pour l'analyse parallÃƒÂ¨le.
 .EXAMPLE
     .\Test-PerformanceOptimization.ps1 -TestDirectory ".\development\scripts" -OutputPath ".\results" -NumberOfFiles 100 -MaxThreads 8
 #>
@@ -32,32 +32,32 @@ param (
     [int]$MaxThreads = 8
 )
 
-# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
+# CrÃƒÂ©er le rÃƒÂ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath -PathType Container)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# VÃ©rifier si le rÃ©pertoire de test existe
+# VÃƒÂ©rifier si le rÃƒÂ©pertoire de test existe
 if (-not (Test-Path -Path $TestDirectory -PathType Container)) {
-    throw "Le rÃ©pertoire de test '$TestDirectory' n'existe pas."
+    throw "Le rÃƒÂ©pertoire de test '$TestDirectory' n'existe pas."
 }
 
-# RÃ©cupÃ©rer les fichiers PowerShell dans le rÃ©pertoire de test
+# RÃƒÂ©cupÃƒÂ©rer les fichiers PowerShell dans le rÃƒÂ©pertoire de test
 $files = Get-ChildItem -Path $TestDirectory -Include "*.ps1", "*.psm1", "*.psd1" -File -Recurse | Select-Object -First $NumberOfFiles
 
 if ($files.Count -eq 0) {
-    throw "Aucun fichier PowerShell trouvÃ© dans le rÃ©pertoire de test '$TestDirectory'."
+    throw "Aucun fichier PowerShell trouvÃƒÂ© dans le rÃƒÂ©pertoire de test '$TestDirectory'."
 }
 
-Write-Host "Nombre de fichiers Ã  analyser: $($files.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de fichiers ÃƒÂ  analyser: $($files.Count)" -ForegroundColor Yellow
 
 # Chemin du script d'analyse
 $scriptPath = Join-Path -Path $PSScriptRoot -Parent -ChildPath "Start-CodeAnalysis.ps1"
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Le script Start-CodeAnalysis.ps1 n'existe pas Ã  l'emplacement: $scriptPath"
+    throw "Le script Start-CodeAnalysis.ps1 n'existe pas ÃƒÂ  l'emplacement: $scriptPath"
 }
 
-# Fonction pour exÃ©cuter un test de performance
+# Fonction pour exÃƒÂ©cuter un test de performance
 function Invoke-PerformanceTest {
     [CmdletBinding()]
     param (
@@ -96,23 +96,23 @@ function Invoke-PerformanceTest {
         $params.Add("MaxThreads", $MaxThreads)
     }
     
-    Write-Host "ExÃ©cution du test '$TestName'..." -ForegroundColor Cyan
+    Write-Host "ExÃƒÂ©cution du test '$TestName'..." -ForegroundColor Cyan
     
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     
-    # ExÃ©cuter le script d'analyse
+    # ExÃƒÂ©cuter le script d'analyse
     & $ScriptPath @params
     
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed.TotalSeconds
     
-    Write-Host "Test '$TestName' terminÃ© en $elapsedTime secondes." -ForegroundColor Green
+    Write-Host "Test '$TestName' terminÃƒÂ© en $elapsedTime secondes." -ForegroundColor Green
     
-    # RÃ©cupÃ©rer les rÃ©sultats
+    # RÃƒÂ©cupÃƒÂ©rer les rÃƒÂ©sultats
     $results = Get-Content -Path $outputFile -Raw | ConvertFrom-Json
     $resultCount = $results.Count
     
-    # CrÃ©er un objet de rÃ©sultat
+    # CrÃƒÂ©er un objet de rÃƒÂ©sultat
     $testResult = [PSCustomObject]@{
         TestName = $TestName
         ElapsedTime = $elapsedTime
@@ -125,26 +125,26 @@ function Invoke-PerformanceTest {
     return $testResult
 }
 
-# ExÃ©cuter les tests de performance
+# ExÃƒÂ©cuter les tests de performance
 $testResults = @()
 
-# Test 1: Analyse sÃ©quentielle
+# Test 1: Analyse sÃƒÂ©quentielle
 $testResults += Invoke-PerformanceTest -TestName "Sequential" -ScriptPath $scriptPath -TestDirectory $TestDirectory -OutputPath $OutputPath
 
-# Test 2: Analyse parallÃ¨le avec 2 threads
+# Test 2: Analyse parallÃƒÂ¨le avec 2 threads
 $testResults += Invoke-PerformanceTest -TestName "Parallel_2_Threads" -ScriptPath $scriptPath -TestDirectory $TestDirectory -OutputPath $OutputPath -UseParallel -MaxThreads 2
 
-# Test 3: Analyse parallÃ¨le avec 4 threads
+# Test 3: Analyse parallÃƒÂ¨le avec 4 threads
 $testResults += Invoke-PerformanceTest -TestName "Parallel_4_Threads" -ScriptPath $scriptPath -TestDirectory $TestDirectory -OutputPath $OutputPath -UseParallel -MaxThreads 4
 
-# Test 4: Analyse parallÃ¨le avec 8 threads
+# Test 4: Analyse parallÃƒÂ¨le avec 8 threads
 $testResults += Invoke-PerformanceTest -TestName "Parallel_8_Threads" -ScriptPath $scriptPath -TestDirectory $TestDirectory -OutputPath $OutputPath -UseParallel -MaxThreads 8
 
-# Enregistrer les rÃ©sultats des tests
+# Enregistrer les rÃƒÂ©sultats des tests
 $testResultsFile = Join-Path -Path $OutputPath -ChildPath "PerformanceTestResults.json"
 $testResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $testResultsFile -Encoding utf8 -Force
 
-# GÃ©nÃ©rer un rapport HTML
+# GÃƒÂ©nÃƒÂ©rer un rapport HTML
 $htmlReportFile = Join-Path -Path $OutputPath -ChildPath "PerformanceTestResults.html"
 
 $htmlReport = @"
@@ -189,19 +189,19 @@ $htmlReport = @"
     
     <h2>Configuration du test</h2>
     <ul>
-        <li>RÃ©pertoire de test: $TestDirectory</li>
+        <li>RÃƒÂ©pertoire de test: $TestDirectory</li>
         <li>Nombre de fichiers: $($files.Count)</li>
         <li>Version PowerShell: $($PSVersionTable.PSVersion)</li>
         <li>Date du test: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</li>
     </ul>
     
-    <h2>RÃ©sultats</h2>
+    <h2>RÃƒÂ©sultats</h2>
     <table>
         <tr>
             <th>Test</th>
-            <th>Temps d'exÃ©cution (s)</th>
-            <th>Nombre de rÃ©sultats</th>
-            <th>ParallÃ¨le</th>
+            <th>Temps d'exÃƒÂ©cution (s)</th>
+            <th>Nombre de rÃƒÂ©sultats</th>
+            <th>ParallÃƒÂ¨le</th>
             <th>Threads</th>
             <th>Version PowerShell</th>
         </tr>
@@ -229,18 +229,18 @@ $htmlReport += @"
     </div>
     
     <script>
-        // DonnÃ©es pour le graphique
+        // DonnÃƒÂ©es pour le graphique
         const testNames = [$(($testResults | ForEach-Object { "'$($_.TestName)'" }) -join ", ")];
         const elapsedTimes = [$(($testResults | ForEach-Object { $_.ElapsedTime.ToString("F2") }) -join ", ")];
         
-        // CrÃ©er le graphique
+        // CrÃƒÂ©er le graphique
         const ctx = document.getElementById('performanceChart').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: testNames,
                 datasets: [{
-                    label: 'Temps d\'exÃ©cution (s)',
+                    label: 'Temps d\'exÃƒÂ©cution (s)',
                     data: elapsedTimes,
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -254,7 +254,7 @@ $htmlReport += @"
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Temps d\'exÃ©cution (s)'
+                            text: 'Temps d\'exÃƒÂ©cution (s)'
                         }
                     },
                     x: {
@@ -273,11 +273,11 @@ $htmlReport += @"
 
 $htmlReport | Out-File -FilePath $htmlReportFile -Encoding utf8 -Force
 
-# Afficher un rÃ©sumÃ© des rÃ©sultats
-Write-Host "`nRÃ©sumÃ© des rÃ©sultats:" -ForegroundColor Cyan
+# Afficher un rÃƒÂ©sumÃƒÂ© des rÃƒÂ©sultats
+Write-Host "`nRÃƒÂ©sumÃƒÂ© des rÃƒÂ©sultats:" -ForegroundColor Cyan
 $testResults | Format-Table -Property TestName, ElapsedTime, ResultCount, UseParallel, MaxThreads, PowerShellVersion -AutoSize
 
-Write-Host "`nRapports gÃ©nÃ©rÃ©s:" -ForegroundColor Cyan
+Write-Host "`nRapports gÃƒÂ©nÃƒÂ©rÃƒÂ©s:" -ForegroundColor Cyan
 Write-Host "  - Rapport JSON: $testResultsFile" -ForegroundColor White
 Write-Host "  - Rapport HTML: $htmlReportFile" -ForegroundColor White
 

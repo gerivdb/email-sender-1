@@ -1,9 +1,9 @@
-# Run-Tests.ps1
-# Script pour tester automatiquement le systÃ¨me de dÃ©tection des tÃ¢ches
+﻿# Run-Tests.ps1
+# Script pour tester automatiquement le systÃƒÂ¨me de dÃƒÂ©tection des tÃƒÂ¢ches
 
 
 # Run-Tests.ps1
-# Script pour tester automatiquement le systÃ¨me de dÃ©tection des tÃ¢ches
+# Script pour tester automatiquement le systÃƒÂ¨me de dÃƒÂ©tection des tÃƒÂ¢ches
 
 param (
     [Parameter(Mandatory = $false)
@@ -29,12 +29,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Ã‰crire dans le fichier journal
+    # Ãƒâ€°crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        # CrÃƒÂ©er le rÃƒÂ©pertoire de logs si nÃƒÂ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -43,7 +43,7 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'Ã©criture dans le journal
+        # Ignorer les erreurs d'ÃƒÂ©criture dans le journal
     }
 }
 try {
@@ -64,14 +64,14 @@ $testCasesPath = Join-Path -Path $scriptPath -ChildPath $TestCasesFile
 $processConversationPath = Join-Path -Path $scriptPath -ChildPath "Process-Conversation.ps1"
 $testResultsPath = Join-Path -Path $scriptPath -ChildPath "test-results.txt"
 
-# VÃ©rifier que les fichiers nÃ©cessaires existent
+# VÃƒÂ©rifier que les fichiers nÃƒÂ©cessaires existent
 if (-not (Test-Path -Path $testCasesPath)) {
     Write-Error "Le fichier de cas de test '$testCasesPath' n'existe pas."
     exit 1
 }
 
 if (-not (Test-Path -Path $processConversationPath)) {
-    Write-Error "Le script Process-Conversation.ps1 n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement : $processConversationPath"
+    Write-Error "Le script Process-Conversation.ps1 n'a pas ÃƒÂ©tÃƒÂ© trouvÃƒÂ© ÃƒÂ  l'emplacement : $processConversationPath"
     exit 1
 }
 
@@ -103,7 +103,7 @@ function Extract-TestCases {
     return $testCases
 }
 
-# Fonction pour exÃ©cuter un test
+# Fonction pour exÃƒÂ©cuter un test
 function Run-Test {
     param (
         [hashtable]$TestCase,
@@ -111,20 +111,20 @@ function Run-Test {
         [switch]$Verbose
     )
     
-    Write-Host "ExÃ©cution du test #$($TestCase.Id) : $($TestCase.Title)"
+    Write-Host "ExÃƒÂ©cution du test #$($TestCase.Id) : $($TestCase.Title)"
     
-    # CrÃ©er un fichier temporaire pour le contenu du test
+    # CrÃƒÂ©er un fichier temporaire pour le contenu du test
     $tempFile = [System.IO.Path]::GetTempFileName()
     $TestCase.Content | Set-Content -Path $tempFile
     
-    # ExÃ©cuter le script de traitement des conversations
+    # ExÃƒÂ©cuter le script de traitement des conversations
     $addToRoadmapParam = if ($AddToRoadmap) { "-AddToRoadmap" } else { "" }
     $verboseParam = if ($Verbose) { "-Verbose" } else { "" }
     
     $command = "powershell -ExecutionPolicy Bypass -File `"$processConversationPath`" -ConversationFile `"$tempFile`" $addToRoadmapParam $verboseParam"
     
     if ($Verbose) {
-        Write-Host "ExÃ©cution de la commande : $command"
+        Write-Host "ExÃƒÂ©cution de la commande : $command"
     }
     
     $result = Invoke-Expression $command
@@ -132,18 +132,18 @@ function Run-Test {
     # Supprimer le fichier temporaire
     Remove-Item -Path $tempFile -Force
     
-    # Analyser les rÃ©sultats
+    # Analyser les rÃƒÂ©sultats
     $taskCount = $result.Count
     
     if ($taskCount -eq 0) {
-        Write-Host "  RÃ©sultat : Aucune tÃ¢che dÃ©tectÃ©e" -ForegroundColor Yellow
-        $success = $TestCase.Id -eq "8"  # Le cas 8 ne contient pas de tÃ¢che
+        Write-Host "  RÃƒÂ©sultat : Aucune tÃƒÂ¢che dÃƒÂ©tectÃƒÂ©e" -ForegroundColor Yellow
+        $success = $TestCase.Id -eq "8"  # Le cas 8 ne contient pas de tÃƒÂ¢che
     }
     else {
-        Write-Host "  RÃ©sultat : $taskCount tÃ¢che(s) dÃ©tectÃ©e(s)" -ForegroundColor Green
+        Write-Host "  RÃƒÂ©sultat : $taskCount tÃƒÂ¢che(s) dÃƒÂ©tectÃƒÂ©e(s)" -ForegroundColor Green
         
         foreach ($task in $result) {
-            Write-Host "    - CatÃ©gorie : $($task.Category), PrioritÃ© : $($task.Priority), Estimation : $($task.Estimate), DÃ©marrer : $($task.Start)"
+            Write-Host "    - CatÃƒÂ©gorie : $($task.Category), PrioritÃƒÂ© : $($task.Priority), Estimation : $($task.Estimate), DÃƒÂ©marrer : $($task.Start)"
             Write-Host "      Description : $($task.Description)"
         }
         
@@ -157,38 +157,38 @@ function Run-Test {
     }
 }
 
-# Fonction pour gÃ©nÃ©rer un rapport de test
+# Fonction pour gÃƒÂ©nÃƒÂ©rer un rapport de test
 function Generate-TestReport {
     param (
         [array]$TestResults
     )
     
-    $report = "# Rapport de test du systÃ¨me de dÃ©tection des tÃ¢ches`n`n"
+    $report = "# Rapport de test du systÃƒÂ¨me de dÃƒÂ©tection des tÃƒÂ¢ches`n`n"
     $report += "Date : $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`n`n"
     
     $successCount = ($TestResults | Where-Object { $_.Success }).Count
     $totalCount = $TestResults.Count
     $successRate = [math]::Round(($successCount / $totalCount) * 100)
     
-    $report += "RÃ©sumÃ© : $successCount / $totalCount tests rÃ©ussis ($successRate%)`n`n"
+    $report += "RÃƒÂ©sumÃƒÂ© : $successCount / $totalCount tests rÃƒÂ©ussis ($successRate%)`n`n"
     
     foreach ($result in $TestResults) {
-        $status = if ($result.Success) { "RÃ‰USSI" } else { "Ã‰CHEC" }
+        $status = if ($result.Success) { "RÃƒâ€°USSI" } else { "Ãƒâ€°CHEC" }
         $report += "## Test #$($result.TestCase.Id) : $($result.TestCase.Title) - $status`n`n"
         
         $taskCount = $result.Result.Count
         
         if ($taskCount -eq 0) {
-            $report += "Aucune tÃ¢che dÃ©tectÃ©e`n`n"
+            $report += "Aucune tÃƒÂ¢che dÃƒÂ©tectÃƒÂ©e`n`n"
         }
         else {
-            $report += "$taskCount tÃ¢che(s) dÃ©tectÃ©e(s) :`n`n"
+            $report += "$taskCount tÃƒÂ¢che(s) dÃƒÂ©tectÃƒÂ©e(s) :`n`n"
             
             foreach ($task in $result.Result) {
-                $report += "- CatÃ©gorie : $($task.Category)`n"
-                $report += "  PrioritÃ© : $($task.Priority)`n"
+                $report += "- CatÃƒÂ©gorie : $($task.Category)`n"
+                $report += "  PrioritÃƒÂ© : $($task.Priority)`n"
                 $report += "  Estimation : $($task.Estimate) jours`n"
-                $report += "  DÃ©marrer : $($task.Start)`n"
+                $report += "  DÃƒÂ©marrer : $($task.Start)`n"
                 $report += "  Description : $($task.Description)`n`n"
             }
         }
@@ -201,21 +201,21 @@ function Generate-TestReport {
 
 # Fonction principale
 function Main {
-    Write-Host "Test automatique du systÃ¨me de dÃ©tection des tÃ¢ches"
+    Write-Host "Test automatique du systÃƒÂ¨me de dÃƒÂ©tection des tÃƒÂ¢ches"
     Write-Host ""
     
     # Extraire les cas de test
     $testCases = Extract-TestCases -FilePath $testCasesPath
     
     if ($testCases.Count -eq 0) {
-        Write-Error "Aucun cas de test trouvÃ© dans le fichier '$testCasesPath'."
+        Write-Error "Aucun cas de test trouvÃƒÂ© dans le fichier '$testCasesPath'."
         exit 1
     }
     
-    Write-Host "Cas de test trouvÃ©s : $($testCases.Count)"
+    Write-Host "Cas de test trouvÃƒÂ©s : $($testCases.Count)"
     Write-Host ""
     
-    # ExÃ©cuter les tests
+    # ExÃƒÂ©cuter les tests
     $testResults = @()
     
     foreach ($testCase in $testCases) {
@@ -224,20 +224,20 @@ function Main {
         Write-Host ""
     }
     
-    # GÃ©nÃ©rer et sauvegarder le rapport de test
+    # GÃƒÂ©nÃƒÂ©rer et sauvegarder le rapport de test
     $report = Generate-TestReport -TestResults $testResults
     $report | Set-Content -Path $testResultsPath
     
-    # Afficher le rÃ©sumÃ©
+    # Afficher le rÃƒÂ©sumÃƒÂ©
     $successCount = ($testResults | Where-Object { $_.Success }).Count
     $totalCount = $testResults.Count
     $successRate = [math]::Round(($successCount / $totalCount) * 100)
     
-    Write-Host "Tests terminÃ©s : $successCount / $totalCount tests rÃ©ussis ($successRate%)"
-    Write-Host "Rapport de test sauvegardÃ© dans : $testResultsPath"
+    Write-Host "Tests terminÃƒÂ©s : $successCount / $totalCount tests rÃƒÂ©ussis ($successRate%)"
+    Write-Host "Rapport de test sauvegardÃƒÂ© dans : $testResultsPath"
 }
 
-# ExÃ©cuter la fonction principale
+# ExÃƒÂ©cuter la fonction principale
 Main
 
 }
@@ -247,5 +247,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+    Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }

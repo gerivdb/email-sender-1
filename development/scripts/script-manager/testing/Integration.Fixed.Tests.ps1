@@ -1,26 +1,26 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration corrigés pour le script manager.
+    Tests d'intÃ©gration corrigÃ©s pour le script manager.
 .DESCRIPTION
-    Ce script contient des tests d'intégration corrigés pour le script manager,
+    Ce script contient des tests d'intÃ©gration corrigÃ©s pour le script manager,
     en utilisant le framework Pester avec des mocks.
 .EXAMPLE
     Invoke-Pester -Path ".\Integration.Fixed.Tests.ps1"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Tests Pester
-Describe "Tests d'intégration du script manager (version corrigée)" {
+Describe "Tests d'intÃ©gration du script manager (version corrigÃ©e)" {
     Context "Tests de la structure des dossiers" {
         BeforeAll {
             $script:managerDir = "$PSScriptRoot/.."
@@ -63,28 +63,28 @@ Describe "Tests d'intégration du script manager (version corrigée)" {
 
     Context "Tests de flux de travail avec mocks" {
         BeforeAll {
-            # Créer des mocks pour les fonctions utilisées
+            # CrÃ©er des mocks pour les fonctions utilisÃ©es
             Mock Invoke-Expression { return 0 }
             Mock Write-Host { }
         }
 
-        It "Devrait pouvoir exécuter le flux de travail complet" {
-            # Simuler l'exécution du flux de travail
+        It "Devrait pouvoir exÃ©cuter le flux de travail complet" {
+            # Simuler l'exÃ©cution du flux de travail
             $result = Invoke-Expression -Command "echo 'Flux de travail complet'"
             $result | Should -Be 0
         }
     }
 
-    Context "Tests de compatibilité avec les scripts de maintenance" {
+    Context "Tests de compatibilitÃ© avec les scripts de maintenance" {
         BeforeAll {
-            # Créer des mocks pour les fonctions utilisées
+            # CrÃ©er des mocks pour les fonctions utilisÃ©es
             Mock Test-Path { return $true } -ParameterFilter { $Path -eq ".git/hooks/pre-commit" }
             Mock Get-Content { return "maintenance`nmanager" } -ParameterFilter { $Path -eq ".git/hooks/pre-commit" }
             Mock Get-ChildItem { return @() }
         }
 
-        It "Devrait être compatible avec les scripts de maintenance" {
-            # Vérifier que le hook pre-commit est compatible
+        It "Devrait Ãªtre compatible avec les scripts de maintenance" {
+            # VÃ©rifier que le hook pre-commit est compatible
             $hookPath = ".git/hooks/pre-commit"
             $hookContent = Get-Content -Path $hookPath
             $hookContent | Should -Match "maintenance"

@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests de performance pour le script mode-manager.ps1.
 
 .DESCRIPTION
     Ce script contient des tests de performance pour mesurer les performances du mode MANAGER.
-    Il mesure le temps d'exécution et la consommation de mémoire du mode MANAGER.
+    Il mesure le temps d'exÃ©cution et la consommation de mÃ©moire du mode MANAGER.
 
 .NOTES
     Auteur: Mode Manager Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
-# Importer le module Pester si nécessaire
+# Importer le module Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    throw "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
 }
 
-# Définir le chemin du projet
+# DÃ©finir le chemin du projet
 $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 if (-not (Test-Path -Path $projectRoot)) {
     $projectRoot = $PSScriptRoot
@@ -35,31 +35,31 @@ if (-not (Test-Path -Path $projectRoot)) {
     }
 }
 
-# Définir le chemin de configuration pour les tests
+# DÃ©finir le chemin de configuration pour les tests
 $testConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "test-config.json"
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $PSScriptRoot -ChildPath "test-roadmap.md"
 if (-not (Test-Path -Path $testRoadmapPath)) {
     @"
 # Roadmap de test
 
-## Tâches
+## TÃ¢ches
 
-- [ ] **1** Tâche 1
-  - [ ] **1.1** Sous-tâche 1.1
-  - [ ] **1.2** Sous-tâche 1.2
-    - [ ] **1.2.1** Sous-tâche 1.2.1
-    - [ ] **1.2.2** Sous-tâche 1.2.2
-    - [ ] **1.2.3** Sous-tâche 1.2.3
-  - [ ] **1.3** Sous-tâche 1.3
-- [ ] **2** Tâche 2
-  - [ ] **2.1** Sous-tâche 2.1
-  - [ ] **2.2** Sous-tâche 2.2
+- [ ] **1** TÃ¢che 1
+  - [ ] **1.1** Sous-tÃ¢che 1.1
+  - [ ] **1.2** Sous-tÃ¢che 1.2
+    - [ ] **1.2.1** Sous-tÃ¢che 1.2.1
+    - [ ] **1.2.2** Sous-tÃ¢che 1.2.2
+    - [ ] **1.2.3** Sous-tÃ¢che 1.2.3
+  - [ ] **1.3** Sous-tÃ¢che 1.3
+- [ ] **2** TÃ¢che 2
+  - [ ] **2.1** Sous-tÃ¢che 2.1
+  - [ ] **2.2** Sous-tÃ¢che 2.2
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
 }
 
-# Fonction pour mesurer le temps d'exécution
+# Fonction pour mesurer le temps d'exÃ©cution
 function Measure-ExecutionTime {
     [CmdletBinding()]
     param (
@@ -73,7 +73,7 @@ function Measure-ExecutionTime {
     return $stopwatch.ElapsedMilliseconds
 }
 
-# Fonction pour mesurer la consommation de mémoire
+# Fonction pour mesurer la consommation de mÃ©moire
 function Measure-MemoryUsage {
     [CmdletBinding()]
     param (
@@ -87,16 +87,16 @@ function Measure-MemoryUsage {
     return $finalMemory - $initialMemory
 }
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Mode Manager Performance Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
         if (-not (Test-Path -Path $testDir)) {
             New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         }
 
-        # Créer un fichier de configuration temporaire
+        # CrÃ©er un fichier de configuration temporaire
         $tempConfigPath = Join-Path -Path $testDir -ChildPath "config.json"
         @{
             General = @{
@@ -119,7 +119,7 @@ Describe "Mode Manager Performance Tests" {
             }
         } | ConvertTo-Json -Depth 5 | Set-Content -Path $tempConfigPath -Encoding UTF8
 
-        # Créer des scripts de mode simulés
+        # CrÃ©er des scripts de mode simulÃ©s
         $mockCheckModePath = Join-Path -Path $PSScriptRoot -ChildPath "mock-check-mode.ps1"
         @"
 param (
@@ -133,7 +133,7 @@ param (
     [switch]`$Force
 )
 
-# Simuler un traitement léger
+# Simuler un traitement lÃ©ger
 Start-Sleep -Milliseconds 100
 
 exit 0
@@ -152,7 +152,7 @@ param (
     [switch]`$Force
 )
 
-# Simuler un traitement léger
+# Simuler un traitement lÃ©ger
 Start-Sleep -Milliseconds 100
 
 exit 0
@@ -166,7 +166,7 @@ exit 0
             Remove-Item -Path $testDir -Recurse -Force
         }
 
-        # Supprimer les scripts de mode simulés
+        # Supprimer les scripts de mode simulÃ©s
         $mockCheckModePath = Join-Path -Path $PSScriptRoot -ChildPath "mock-check-mode.ps1"
         if (Test-Path -Path $mockCheckModePath) {
             Remove-Item -Path $mockCheckModePath -Force
@@ -178,80 +178,80 @@ exit 0
         }
     }
 
-    Context "Temps d'exécution" {
-        It "Devrait mesurer le temps d'exécution du mode MANAGER avec -ListModes" {
+    Context "Temps d'exÃ©cution" {
+        It "Devrait mesurer le temps d'exÃ©cution du mode MANAGER avec -ListModes" {
             $executionTime = Measure-ExecutionTime -ScriptBlock {
                 & $scriptPath -ListModes
             }
-            Write-Host "Temps d'exécution du mode MANAGER avec -ListModes : $executionTime ms"
+            Write-Host "Temps d'exÃ©cution du mode MANAGER avec -ListModes : $executionTime ms"
             $executionTime | Should -BeLessThan 1000
         }
 
-        It "Devrait mesurer le temps d'exécution du mode MANAGER avec -ShowConfig" {
+        It "Devrait mesurer le temps d'exÃ©cution du mode MANAGER avec -ShowConfig" {
             $tempConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "temp\config.json"
             $executionTime = Measure-ExecutionTime -ScriptBlock {
                 & $scriptPath -ShowConfig -ConfigPath $tempConfigPath
             }
-            Write-Host "Temps d'exécution du mode MANAGER avec -ShowConfig : $executionTime ms"
+            Write-Host "Temps d'exÃ©cution du mode MANAGER avec -ShowConfig : $executionTime ms"
             $executionTime | Should -BeLessThan 1000
         }
 
-        It "Devrait mesurer le temps d'exécution du mode MANAGER avec -Mode CHECK" {
+        It "Devrait mesurer le temps d'exÃ©cution du mode MANAGER avec -Mode CHECK" {
             $tempConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "temp\config.json"
             $executionTime = Measure-ExecutionTime -ScriptBlock {
                 & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath
             }
-            Write-Host "Temps d'exécution du mode MANAGER avec -Mode CHECK : $executionTime ms"
+            Write-Host "Temps d'exÃ©cution du mode MANAGER avec -Mode CHECK : $executionTime ms"
             $executionTime | Should -BeLessThan 1000
         }
 
-        It "Devrait mesurer le temps d'exécution du mode MANAGER avec -Chain" {
+        It "Devrait mesurer le temps d'exÃ©cution du mode MANAGER avec -Chain" {
             $tempConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "temp\config.json"
             $executionTime = Measure-ExecutionTime -ScriptBlock {
                 & $scriptPath -Chain "GRAN,CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath
             }
-            Write-Host "Temps d'exécution du mode MANAGER avec -Chain : $executionTime ms"
+            Write-Host "Temps d'exÃ©cution du mode MANAGER avec -Chain : $executionTime ms"
             $executionTime | Should -BeLessThan 2000
         }
     }
 
-    Context "Consommation de mémoire" {
-        It "Devrait mesurer la consommation de mémoire du mode MANAGER avec -ListModes" {
+    Context "Consommation de mÃ©moire" {
+        It "Devrait mesurer la consommation de mÃ©moire du mode MANAGER avec -ListModes" {
             $memoryUsage = Measure-MemoryUsage -ScriptBlock {
                 & $scriptPath -ListModes
             }
-            Write-Host "Consommation de mémoire du mode MANAGER avec -ListModes : $memoryUsage octets"
+            Write-Host "Consommation de mÃ©moire du mode MANAGER avec -ListModes : $memoryUsage octets"
             $memoryUsage | Should -BeLessThan 10MB
         }
 
-        It "Devrait mesurer la consommation de mémoire du mode MANAGER avec -ShowConfig" {
+        It "Devrait mesurer la consommation de mÃ©moire du mode MANAGER avec -ShowConfig" {
             $tempConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "temp\config.json"
             $memoryUsage = Measure-MemoryUsage -ScriptBlock {
                 & $scriptPath -ShowConfig -ConfigPath $tempConfigPath
             }
-            Write-Host "Consommation de mémoire du mode MANAGER avec -ShowConfig : $memoryUsage octets"
+            Write-Host "Consommation de mÃ©moire du mode MANAGER avec -ShowConfig : $memoryUsage octets"
             $memoryUsage | Should -BeLessThan 10MB
         }
 
-        It "Devrait mesurer la consommation de mémoire du mode MANAGER avec -Mode CHECK" {
+        It "Devrait mesurer la consommation de mÃ©moire du mode MANAGER avec -Mode CHECK" {
             $tempConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "temp\config.json"
             $memoryUsage = Measure-MemoryUsage -ScriptBlock {
                 & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath
             }
-            Write-Host "Consommation de mémoire du mode MANAGER avec -Mode CHECK : $memoryUsage octets"
+            Write-Host "Consommation de mÃ©moire du mode MANAGER avec -Mode CHECK : $memoryUsage octets"
             $memoryUsage | Should -BeLessThan 10MB
         }
 
-        It "Devrait mesurer la consommation de mémoire du mode MANAGER avec -Chain" {
+        It "Devrait mesurer la consommation de mÃ©moire du mode MANAGER avec -Chain" {
             $tempConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "temp\config.json"
             $memoryUsage = Measure-MemoryUsage -ScriptBlock {
                 & $scriptPath -Chain "GRAN,CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath
             }
-            Write-Host "Consommation de mémoire du mode MANAGER avec -Chain : $memoryUsage octets"
+            Write-Host "Consommation de mÃ©moire du mode MANAGER avec -Chain : $memoryUsage octets"
             $memoryUsage | Should -BeLessThan 10MB
         }
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSScriptRoot

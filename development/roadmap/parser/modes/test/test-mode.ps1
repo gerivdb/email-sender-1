@@ -1,123 +1,123 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour le mode TEST qui permet de tester les fonctionnalitÃ©s d'un module.
+    Script pour le mode TEST qui permet de tester les fonctionnalitÃƒÂ©s d'un module.
 
 .DESCRIPTION
-    Ce script implÃ©mente le mode TEST qui permet de tester les fonctionnalitÃ©s d'un module
-    en exÃ©cutant des tests unitaires et d'intÃ©gration et en gÃ©nÃ©rant des rapports de couverture.
+    Ce script implÃƒÂ©mente le mode TEST qui permet de tester les fonctionnalitÃƒÂ©s d'un module
+    en exÃƒÂ©cutant des tests unitaires et d'intÃƒÂ©gration et en gÃƒÂ©nÃƒÂ©rant des rapports de couverture.
     Il fait partie de la suite d'outils RoadmapParser pour la gestion de roadmaps.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap Ã  traiter.
+    Chemin vers le fichier de roadmap ÃƒÂ  traiter.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tÃ¢che Ã  traiter (optionnel). Si non spÃ©cifiÃ©, toutes les tÃ¢ches seront traitÃ©es.
+    Identifiant de la tÃƒÂ¢che ÃƒÂ  traiter (optionnel). Si non spÃƒÂ©cifiÃƒÂ©, toutes les tÃƒÂ¢ches seront traitÃƒÂ©es.
 
 .PARAMETER OutputPath
-    Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les fichiers de sortie. Par dÃ©faut, les fichiers sont gÃ©nÃ©rÃ©s dans le rÃ©pertoire courant.
+    Chemin oÃƒÂ¹ seront gÃƒÂ©nÃƒÂ©rÃƒÂ©s les fichiers de sortie. Par dÃƒÂ©faut, les fichiers sont gÃƒÂ©nÃƒÂ©rÃƒÂ©s dans le rÃƒÂ©pertoire courant.
 
 .PARAMETER ConfigFile
-    Chemin vers un fichier de configuration personnalisÃ©. Si non spÃ©cifiÃ©, la configuration par dÃ©faut sera utilisÃ©e.
+    Chemin vers un fichier de configuration personnalisÃƒÂ©. Si non spÃƒÂ©cifiÃƒÂ©, la configuration par dÃƒÂ©faut sera utilisÃƒÂ©e.
 
 .PARAMETER LogLevel
-    Niveau de journalisation Ã  utiliser. Les valeurs possibles sont : ERROR, WARNING, INFO, VERBOSE, DEBUG.
-    Par dÃ©faut, le niveau est INFO.
+    Niveau de journalisation ÃƒÂ  utiliser. Les valeurs possibles sont : ERROR, WARNING, INFO, VERBOSE, DEBUG.
+    Par dÃƒÂ©faut, le niveau est INFO.
 
 .PARAMETER ModulePath
-    Chemin vers le rÃ©pertoire du module Ã  tester.
+    Chemin vers le rÃƒÂ©pertoire du module ÃƒÂ  tester.
 
 .PARAMETER TestsPath
-    Chemin vers le rÃ©pertoire contenant les tests Ã  exÃ©cuter.
+    Chemin vers le rÃƒÂ©pertoire contenant les tests ÃƒÂ  exÃƒÂ©cuter.
 
 .PARAMETER CoverageThreshold
-    Seuil de couverture de code en pourcentage. Par dÃ©faut, le seuil est de 80%.
+    Seuil de couverture de code en pourcentage. Par dÃƒÂ©faut, le seuil est de 80%.
 
 .PARAMETER GenerateReport
-    Indique si un rapport de test doit Ãªtre gÃ©nÃ©rÃ©.
+    Indique si un rapport de test doit ÃƒÂªtre gÃƒÂ©nÃƒÂ©rÃƒÂ©.
 
 .PARAMETER IncludeCodeCoverage
-    Indique si la couverture de code doit Ãªtre incluse dans le rapport.
+    Indique si la couverture de code doit ÃƒÂªtre incluse dans le rapport.
 
 .PARAMETER TestFramework
-    Framework de test Ã  utiliser. Les valeurs possibles sont : Pester, NUnit, xUnit.
-    Par dÃ©faut, le framework est Pester.
+    Framework de test ÃƒÂ  utiliser. Les valeurs possibles sont : Pester, NUnit, xUnit.
+    Par dÃƒÂ©faut, le framework est Pester.
 
 .PARAMETER ParallelTests
-    Indique si les tests doivent Ãªtre exÃ©cutÃ©s en parallÃ¨le.
+    Indique si les tests doivent ÃƒÂªtre exÃƒÂ©cutÃƒÂ©s en parallÃƒÂ¨le.
 
 .PARAMETER TestCases
-    Chemin vers un fichier JSON contenant des cas de test supplÃ©mentaires.
+    Chemin vers un fichier JSON contenant des cas de test supplÃƒÂ©mentaires.
 
 .EXAMPLE
     .\test-mode.ps1 -FilePath "roadmap.md" -TaskIdentifier "1.1" -OutputPath "output" -ModulePath "module" -TestsPath "tests" -CoverageThreshold 80 -GenerateReport $true
 
-    Traite la tÃ¢che 1.1 du fichier roadmap.md, teste le module dans le rÃ©pertoire "module" avec les tests dans le rÃ©pertoire "tests", vÃ©rifie que la couverture de code est d'au moins 80% et gÃ©nÃ¨re un rapport dans le rÃ©pertoire "output".
+    Traite la tÃƒÂ¢che 1.1 du fichier roadmap.md, teste le module dans le rÃƒÂ©pertoire "module" avec les tests dans le rÃƒÂ©pertoire "tests", vÃƒÂ©rifie que la couverture de code est d'au moins 80% et gÃƒÂ©nÃƒÂ¨re un rapport dans le rÃƒÂ©pertoire "output".
 
 .EXAMPLE
     .\test-mode.ps1 -FilePath "roadmap.md" -ModulePath "module" -TestsPath "tests" -IncludeCodeCoverage $true -TestFramework "Pester" -ParallelTests $true
 
-    Traite toutes les tÃ¢ches du fichier roadmap.md, teste le module dans le rÃ©pertoire "module" avec les tests dans le rÃ©pertoire "tests", inclut la couverture de code dans le rapport et exÃ©cute les tests en parallÃ¨le avec le framework Pester.
+    Traite toutes les tÃƒÂ¢ches du fichier roadmap.md, teste le module dans le rÃƒÂ©pertoire "module" avec les tests dans le rÃƒÂ©pertoire "tests", inclut la couverture de code dans le rapport et exÃƒÂ©cute les tests en parallÃƒÂ¨le avec le framework Pester.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de crÃ©ation: 2023-08-15
+    Date de crÃƒÂ©ation: 2023-08-15
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-    [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Chemin vers le fichier de roadmap Ã  traiter.")]
+    [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Chemin vers le fichier de roadmap ÃƒÂ  traiter.")]
     [ValidateNotNullOrEmpty()]
     [string]$FilePath,
 
-    [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Identifiant de la tÃ¢che Ã  traiter (optionnel).")]
+    [Parameter(Mandatory = $false, Position = 1, HelpMessage = "Identifiant de la tÃƒÂ¢che ÃƒÂ  traiter (optionnel).")]
     [string]$TaskIdentifier,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin oÃ¹ seront gÃ©nÃ©rÃ©s les fichiers de sortie.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin oÃƒÂ¹ seront gÃƒÂ©nÃƒÂ©rÃƒÂ©s les fichiers de sortie.")]
     [string]$OutputPath = (Get-Location).Path,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers un fichier de configuration personnalisÃ©.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers un fichier de configuration personnalisÃƒÂ©.")]
     [string]$ConfigFile,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Niveau de journalisation Ã  utiliser.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Niveau de journalisation ÃƒÂ  utiliser.")]
     [ValidateSet("ERROR", "WARNING", "INFO", "VERBOSE", "DEBUG")]
     [string]$LogLevel = "INFO",
 
-    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le rÃ©pertoire du module Ã  tester.")]
+    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le rÃƒÂ©pertoire du module ÃƒÂ  tester.")]
     [string]$ModulePath,
 
-    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le rÃ©pertoire contenant les tests Ã  exÃ©cuter.")]
+    [Parameter(Mandatory = $true, HelpMessage = "Chemin vers le rÃƒÂ©pertoire contenant les tests ÃƒÂ  exÃƒÂ©cuter.")]
     [string]$TestsPath,
 
     [Parameter(Mandatory = $false, HelpMessage = "Seuil de couverture de code en pourcentage.")]
     [int]$CoverageThreshold = 80,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Indique si un rapport de test doit Ãªtre gÃ©nÃ©rÃ©.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Indique si un rapport de test doit ÃƒÂªtre gÃƒÂ©nÃƒÂ©rÃƒÂ©.")]
     [bool]$GenerateReport = $true,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Indique si la couverture de code doit Ãªtre incluse dans le rapport.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Indique si la couverture de code doit ÃƒÂªtre incluse dans le rapport.")]
     [bool]$IncludeCodeCoverage = $true,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Framework de test Ã  utiliser.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Framework de test ÃƒÂ  utiliser.")]
     [ValidateSet("Pester", "NUnit", "xUnit")]
     [string]$TestFramework = "Pester",
 
-    [Parameter(Mandatory = $false, HelpMessage = "Indique si les tests doivent Ãªtre exÃ©cutÃ©s en parallÃ¨le.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Indique si les tests doivent ÃƒÂªtre exÃƒÂ©cutÃƒÂ©s en parallÃƒÂ¨le.")]
     [bool]$ParallelTests = $false,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers un fichier JSON contenant des cas de test supplÃ©mentaires.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers un fichier JSON contenant des cas de test supplÃƒÂ©mentaires.")]
     [string]$TestCases,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Active la mise Ã  jour automatique des tÃ¢ches dans le document actif.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Active la mise ÃƒÂ  jour automatique des tÃƒÂ¢ches dans le document actif.")]
     [bool]$UpdateTasksInDocument = $false,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers le document contenant les tÃ¢ches Ã  mettre Ã  jour.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Chemin vers le document contenant les tÃƒÂ¢ches ÃƒÂ  mettre ÃƒÂ  jour.")]
     [string]$DocumentPath,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Expression rÃ©guliÃ¨re pour identifier les tÃ¢ches.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Expression rÃƒÂ©guliÃƒÂ¨re pour identifier les tÃƒÂ¢ches.")]
     [string]$TaskIdentifierPattern = "\*\*([0-9.]+)\*\*",
 
-    [Parameter(Mandatory = $false, HelpMessage = "Fichier JSON dÃ©finissant la correspondance entre tests et tÃ¢ches.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Fichier JSON dÃƒÂ©finissant la correspondance entre tests et tÃƒÂ¢ches.")]
     [string]$TestToTaskMappingFile
 )
 
@@ -127,9 +127,9 @@ param(
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Join-Path -Path $scriptPath -ChildPath "roadmap-parser\module"
 
-# VÃ©rifier si le module existe
+# VÃƒÂ©rifier si le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Le module RoadmapParser est introuvable Ã  l'emplacement : $modulePath"
+    Write-Error "Le module RoadmapParser est introuvable ÃƒÂ  l'emplacement : $modulePath"
     exit 1
 }
 
@@ -137,9 +137,9 @@ if (-not (Test-Path -Path $modulePath)) {
 $commonFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\CommonFunctions.ps1"
 if (Test-Path -Path $commonFunctionsPath) {
     . $commonFunctionsPath
-    Write-Host "Fonctions communes importÃ©es." -ForegroundColor Green
+    Write-Host "Fonctions communes importÃƒÂ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions communes est introuvable Ã  l'emplacement : $commonFunctionsPath"
+    Write-Error "Le fichier de fonctions communes est introuvable ÃƒÂ  l'emplacement : $commonFunctionsPath"
     exit 1
 }
 
@@ -147,9 +147,9 @@ if (Test-Path -Path $commonFunctionsPath) {
 $loggingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\LoggingFunctions.ps1"
 if (Test-Path -Path $loggingFunctionsPath) {
     . $loggingFunctionsPath
-    Write-Host "Fonctions de journalisation importÃ©es." -ForegroundColor Green
+    Write-Host "Fonctions de journalisation importÃƒÂ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de journalisation est introuvable Ã  l'emplacement : $loggingFunctionsPath"
+    Write-Error "Le fichier de fonctions de journalisation est introuvable ÃƒÂ  l'emplacement : $loggingFunctionsPath"
     exit 1
 }
 
@@ -160,9 +160,9 @@ Set-LoggingLevel -Level $LogLevel
 $validationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ValidationFunctions.ps1"
 if (Test-Path -Path $validationFunctionsPath) {
     . $validationFunctionsPath
-    Write-Host "Fonctions de validation importÃ©es." -ForegroundColor Green
+    Write-Host "Fonctions de validation importÃƒÂ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de validation est introuvable Ã  l'emplacement : $validationFunctionsPath"
+    Write-Error "Le fichier de fonctions de validation est introuvable ÃƒÂ  l'emplacement : $validationFunctionsPath"
     exit 1
 }
 
@@ -170,9 +170,9 @@ if (Test-Path -Path $validationFunctionsPath) {
 $errorHandlingFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ErrorHandlingFunctions.ps1"
 if (Test-Path -Path $errorHandlingFunctionsPath) {
     . $errorHandlingFunctionsPath
-    Write-Host "Fonctions de gestion des erreurs importÃ©es." -ForegroundColor Green
+    Write-Host "Fonctions de gestion des erreurs importÃƒÂ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de gestion des erreurs est introuvable Ã  l'emplacement : $errorHandlingFunctionsPath"
+    Write-Error "Le fichier de fonctions de gestion des erreurs est introuvable ÃƒÂ  l'emplacement : $errorHandlingFunctionsPath"
     exit 1
 }
 
@@ -180,9 +180,9 @@ if (Test-Path -Path $errorHandlingFunctionsPath) {
 $configurationFunctionsPath = Join-Path -Path $modulePath -ChildPath "Functions\Common\ConfigurationFunctions.ps1"
 if (Test-Path -Path $configurationFunctionsPath) {
     . $configurationFunctionsPath
-    Write-Host "Fonctions de configuration importÃ©es." -ForegroundColor Green
+    Write-Host "Fonctions de configuration importÃƒÂ©es." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonctions de configuration est introuvable Ã  l'emplacement : $configurationFunctionsPath"
+    Write-Error "Le fichier de fonctions de configuration est introuvable ÃƒÂ  l'emplacement : $configurationFunctionsPath"
     exit 1
 }
 
@@ -190,13 +190,13 @@ if (Test-Path -Path $configurationFunctionsPath) {
 $modeFunctionPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapTest.ps1"
 if (Test-Path -Path $modeFunctionPath) {
     . $modeFunctionPath
-    Write-Host "Fonction Invoke-RoadmapTest importÃ©e." -ForegroundColor Green
+    Write-Host "Fonction Invoke-RoadmapTest importÃƒÂ©e." -ForegroundColor Green
 } else {
-    Write-Error "Le fichier de fonction du mode est introuvable Ã  l'emplacement : $modeFunctionPath"
+    Write-Error "Le fichier de fonction du mode est introuvable ÃƒÂ  l'emplacement : $modeFunctionPath"
     exit 1
 }
 
-# Fonction pour mettre Ã  jour les tÃ¢ches dans le document actif
+# Fonction pour mettre ÃƒÂ  jour les tÃƒÂ¢ches dans le document actif
 function Update-TasksInActiveDocument {
     [CmdletBinding()]
     param(
@@ -214,7 +214,7 @@ function Update-TasksInActiveDocument {
     )
 
     try {
-        # VÃ©rifier que le document existe
+        # VÃƒÂ©rifier que le document existe
         if (-not (Test-Path -Path $DocumentPath)) {
             Write-LogError "Le document '$DocumentPath' n'existe pas."
             return $false
@@ -223,14 +223,14 @@ function Update-TasksInActiveDocument {
         # Lire le contenu du document
         $documentContent = Get-Content -Path $DocumentPath -Raw
 
-        # Charger le mapping entre tests et tÃ¢ches si spÃ©cifiÃ©
+        # Charger le mapping entre tests et tÃƒÂ¢ches si spÃƒÂ©cifiÃƒÂ©
         $testToTaskMapping = @{}
         if ($TestToTaskMappingFile -and (Test-Path -Path $TestToTaskMappingFile)) {
             $testToTaskMapping = Get-Content -Path $TestToTaskMappingFile -Raw | ConvertFrom-Json -AsHashtable
-            Write-LogInfo "Mapping entre tests et tÃ¢ches chargÃ© depuis : $TestToTaskMappingFile"
+            Write-LogInfo "Mapping entre tests et tÃƒÂ¢ches chargÃƒÂ© depuis : $TestToTaskMappingFile"
         } else {
-            # CrÃ©er un mapping automatique basÃ© sur les noms de tests
-            Write-LogInfo "CrÃ©ation automatique du mapping entre tests et tÃ¢ches..."
+            # CrÃƒÂ©er un mapping automatique basÃƒÂ© sur les noms de tests
+            Write-LogInfo "CrÃƒÂ©ation automatique du mapping entre tests et tÃƒÂ¢ches..."
             foreach ($test in $TestResults.Tests) {
                 if ($test.Name -match $TaskIdentifierPattern) {
                     $taskId = $matches[1]
@@ -238,12 +238,12 @@ function Update-TasksInActiveDocument {
                         $testToTaskMapping[$taskId] = @()
                     }
                     $testToTaskMapping[$taskId] += $test.Name
-                    Write-LogDebug "Test '$($test.Name)' associÃ© Ã  la tÃ¢che '$taskId'"
+                    Write-LogDebug "Test '$($test.Name)' associÃƒÂ© ÃƒÂ  la tÃƒÂ¢che '$taskId'"
                 }
             }
         }
 
-        # Analyser les rÃ©sultats des tests par tÃ¢che
+        # Analyser les rÃƒÂ©sultats des tests par tÃƒÂ¢che
         $taskResults = @{}
         foreach ($taskId in $testToTaskMapping.Keys) {
             $testsForTask = $testToTaskMapping[$taskId]
@@ -263,10 +263,10 @@ function Update-TasksInActiveDocument {
                 Success     = ($passedTests -eq $totalTests -and $totalTests -gt 0)
             }
 
-            Write-LogDebug "TÃ¢che '$taskId' : $passeddevelopment/testing/tests/$totalTests tests rÃ©ussis, SuccÃ¨s = $($taskResults[$taskId].Success)"
+            Write-LogDebug "TÃƒÂ¢che '$taskId' : $passeddevelopment/testing/tests/$totalTests tests rÃƒÂ©ussis, SuccÃƒÂ¨s = $($taskResults[$taskId].Success)"
         }
 
-        # Mettre Ã  jour les tÃ¢ches dans le document
+        # Mettre ÃƒÂ  jour les tÃƒÂ¢ches dans le document
         $tasksUpdated = 0
         $tasksPartiallyTested = @()
         $tasksFullyTested = @()
@@ -280,44 +280,44 @@ function Update-TasksInActiveDocument {
                 $documentContent = $documentContent -replace $taskPattern, $taskReplacement
                 $tasksUpdated++
                 $tasksFullyTested += "- [x] **$taskId**"
-                Write-LogInfo "TÃ¢che '$taskId' marquÃ©e comme complÃ©tÃ©e dans le document."
+                Write-LogInfo "TÃƒÂ¢che '$taskId' marquÃƒÂ©e comme complÃƒÂ©tÃƒÂ©e dans le document."
             } elseif ($taskResult.PassedTests -gt 0) {
-                $tasksPartiallyTested += "- [ ] **$taskId** ($($taskResult.PassedTests)/$($taskResult.TotalTests) tests rÃ©ussis)"
-                Write-LogInfo "TÃ¢che '$taskId' partiellement testÃ©e : $($taskResult.PassedTests)/$($taskResult.TotalTests) tests rÃ©ussis."
+                $tasksPartiallyTested += "- [ ] **$taskId** ($($taskResult.PassedTests)/$($taskResult.TotalTests) tests rÃƒÂ©ussis)"
+                Write-LogInfo "TÃƒÂ¢che '$taskId' partiellement testÃƒÂ©e : $($taskResult.PassedTests)/$($taskResult.TotalTests) tests rÃƒÂ©ussis."
             }
         }
 
-        # Enregistrer le document mis Ã  jour
+        # Enregistrer le document mis ÃƒÂ  jour
         $documentContent | Set-Content -Path $DocumentPath -Force
-        Write-LogInfo "Document mis Ã  jour : $DocumentPath"
+        Write-LogInfo "Document mis ÃƒÂ  jour : $DocumentPath"
 
-        # GÃ©nÃ©rer le rapport de mise Ã  jour
+        # GÃƒÂ©nÃƒÂ©rer le rapport de mise ÃƒÂ  jour
         $updateReport = @"
-## Mise Ã  jour des tÃ¢ches dans le document
+## Mise ÃƒÂ  jour des tÃƒÂ¢ches dans le document
 
 Document : $DocumentPath
-TÃ¢ches mises Ã  jour : $tasksUpdated
+TÃƒÂ¢ches mises ÃƒÂ  jour : $tasksUpdated
 
-### TÃ¢ches cochÃ©es automatiquement
+### TÃƒÂ¢ches cochÃƒÂ©es automatiquement
 
 $($tasksFullyTested -join "`n")
 
-### TÃ¢ches partiellement testÃ©es
+### TÃƒÂ¢ches partiellement testÃƒÂ©es
 
 $($tasksPartiallyTested -join "`n")
 "@
 
-        # Enregistrer le rapport de mise Ã  jour
+        # Enregistrer le rapport de mise ÃƒÂ  jour
         $updateReportPath = Join-Path -Path $OutputPath -ChildPath "update-report.md"
         $updateReport | Set-Content -Path $updateReportPath -Force
-        Write-LogInfo "Rapport de mise Ã  jour gÃ©nÃ©rÃ© : $updateReportPath"
+        Write-LogInfo "Rapport de mise ÃƒÂ  jour gÃƒÂ©nÃƒÂ©rÃƒÂ© : $updateReportPath"
 
         # Afficher le rapport
         Write-Host "`n$updateReport" -ForegroundColor Cyan
 
         return $true
     } catch {
-        Write-LogError "Erreur lors de la mise Ã  jour des tÃ¢ches dans le document : $_"
+        Write-LogError "Erreur lors de la mise ÃƒÂ  jour des tÃƒÂ¢ches dans le document : $_"
         return $false
     }
 }
@@ -327,62 +327,62 @@ $config = Get-DefaultConfiguration
 if ($ConfigFile -and (Test-Path -Path $ConfigFile)) {
     $customConfig = Get-Configuration -ConfigFile $ConfigFile
     $config = Merge-Configuration -DefaultConfig $config -CustomConfig $customConfig
-    Write-LogInfo "Configuration personnalisÃ©e chargÃ©e depuis : $ConfigFile"
+    Write-LogInfo "Configuration personnalisÃƒÂ©e chargÃƒÂ©e depuis : $ConfigFile"
 } else {
-    Write-LogInfo "Configuration par dÃ©faut utilisÃ©e."
+    Write-LogInfo "Configuration par dÃƒÂ©faut utilisÃƒÂ©e."
 }
 
 #endregion
 
-#region Validation des entrÃ©es
+#region Validation des entrÃƒÂ©es
 
-# VÃ©rifier si le fichier de roadmap existe
+# VÃƒÂ©rifier si le fichier de roadmap existe
 Assert-ValidFile -FilePath $FilePath -FileType ".md" -ParameterName "FilePath" -ErrorMessage "Le fichier de roadmap est introuvable ou n'est pas un fichier Markdown : $FilePath"
 
-# VÃ©rifier si le rÃ©pertoire du module existe
-Assert-ValidDirectory -DirectoryPath $ModulePath -ParameterName "ModulePath" -ErrorMessage "Le rÃ©pertoire du module est introuvable : $ModulePath"
+# VÃƒÂ©rifier si le rÃƒÂ©pertoire du module existe
+Assert-ValidDirectory -DirectoryPath $ModulePath -ParameterName "ModulePath" -ErrorMessage "Le rÃƒÂ©pertoire du module est introuvable : $ModulePath"
 
-# VÃ©rifier si le rÃ©pertoire des tests existe
-Assert-ValidDirectory -DirectoryPath $TestsPath -ParameterName "TestsPath" -ErrorMessage "Le rÃ©pertoire des tests est introuvable : $TestsPath"
+# VÃƒÂ©rifier si le rÃƒÂ©pertoire des tests existe
+Assert-ValidDirectory -DirectoryPath $TestsPath -ParameterName "TestsPath" -ErrorMessage "Le rÃƒÂ©pertoire des tests est introuvable : $TestsPath"
 
-# VÃ©rifier si le rÃ©pertoire de sortie existe, sinon le crÃ©er
+# VÃƒÂ©rifier si le rÃƒÂ©pertoire de sortie existe, sinon le crÃƒÂ©er
 if (-not (Test-Path -Path $OutputPath)) {
-    if ($PSCmdlet.ShouldProcess($OutputPath, "CrÃ©er le rÃ©pertoire de sortie")) {
+    if ($PSCmdlet.ShouldProcess($OutputPath, "CrÃƒÂ©er le rÃƒÂ©pertoire de sortie")) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-        Write-LogInfo "RÃ©pertoire de sortie crÃ©Ã© : $OutputPath"
+        Write-LogInfo "RÃƒÂ©pertoire de sortie crÃƒÂ©ÃƒÂ© : $OutputPath"
     } else {
-        Write-LogWarning "CrÃ©ation du rÃ©pertoire de sortie annulÃ©e : $OutputPath"
+        Write-LogWarning "CrÃƒÂ©ation du rÃƒÂ©pertoire de sortie annulÃƒÂ©e : $OutputPath"
         exit 0
     }
 }
 
-# VÃ©rifier si l'identifiant de tÃ¢che est valide
+# VÃƒÂ©rifier si l'identifiant de tÃƒÂ¢che est valide
 if ($TaskIdentifier) {
-    Assert-ValidTaskIdentifier -TaskIdentifier $TaskIdentifier -ParameterName "TaskIdentifier" -ErrorMessage "L'identifiant de tÃ¢che n'est pas valide : $TaskIdentifier. Il doit Ãªtre au format 'X.Y.Z'."
+    Assert-ValidTaskIdentifier -TaskIdentifier $TaskIdentifier -ParameterName "TaskIdentifier" -ErrorMessage "L'identifiant de tÃƒÂ¢che n'est pas valide : $TaskIdentifier. Il doit ÃƒÂªtre au format 'X.Y.Z'."
 }
 
-# VÃ©rifier si le fichier de cas de test existe
+# VÃƒÂ©rifier si le fichier de cas de test existe
 if ($TestCases) {
     Assert-ValidFile -FilePath $TestCases -FileType ".json" -ParameterName "TestCases" -ErrorMessage "Le fichier de cas de test est introuvable ou n'est pas un fichier JSON : $TestCases"
 }
 
-# VÃ©rifier si le document Ã  mettre Ã  jour existe
+# VÃƒÂ©rifier si le document ÃƒÂ  mettre ÃƒÂ  jour existe
 if ($UpdateTasksInDocument -and -not $DocumentPath) {
-    Write-LogWarning "Le paramÃ¨tre DocumentPath est requis lorsque UpdateTasksInDocument est activÃ©. La mise Ã  jour des tÃ¢ches dans le document sera dÃ©sactivÃ©e."
+    Write-LogWarning "Le paramÃƒÂ¨tre DocumentPath est requis lorsque UpdateTasksInDocument est activÃƒÂ©. La mise ÃƒÂ  jour des tÃƒÂ¢ches dans le document sera dÃƒÂ©sactivÃƒÂ©e."
     $UpdateTasksInDocument = $false
 } elseif ($UpdateTasksInDocument -and $DocumentPath) {
     if (-not (Test-Path -Path $DocumentPath)) {
-        Write-LogWarning "Le document spÃ©cifiÃ© n'existe pas : $DocumentPath. La mise Ã  jour des tÃ¢ches dans le document sera dÃ©sactivÃ©e."
+        Write-LogWarning "Le document spÃƒÂ©cifiÃƒÂ© n'existe pas : $DocumentPath. La mise ÃƒÂ  jour des tÃƒÂ¢ches dans le document sera dÃƒÂ©sactivÃƒÂ©e."
         $UpdateTasksInDocument = $false
     } elseif (-not $DocumentPath.EndsWith(".md")) {
-        Write-LogWarning "Le document spÃ©cifiÃ© n'est pas un fichier Markdown : $DocumentPath. La mise Ã  jour des tÃ¢ches dans le document sera dÃ©sactivÃ©e."
+        Write-LogWarning "Le document spÃƒÂ©cifiÃƒÂ© n'est pas un fichier Markdown : $DocumentPath. La mise ÃƒÂ  jour des tÃƒÂ¢ches dans le document sera dÃƒÂ©sactivÃƒÂ©e."
         $UpdateTasksInDocument = $false
     }
 }
 
-# VÃ©rifier si le fichier de mapping entre tests et tÃ¢ches existe
+# VÃƒÂ©rifier si le fichier de mapping entre tests et tÃƒÂ¢ches existe
 if ($TestToTaskMappingFile -and -not (Test-Path -Path $TestToTaskMappingFile)) {
-    Write-LogWarning "Le fichier de mapping entre tests et tÃ¢ches est introuvable : $TestToTaskMappingFile. Le mapping automatique sera utilisÃ©."
+    Write-LogWarning "Le fichier de mapping entre tests et tÃƒÂ¢ches est introuvable : $TestToTaskMappingFile. Le mapping automatique sera utilisÃƒÂ©."
     $TestToTaskMappingFile = ""
 }
 
@@ -390,18 +390,18 @@ if ($TestToTaskMappingFile -and -not (Test-Path -Path $TestToTaskMappingFile)) {
 
 #region Traitement principal
 
-Write-LogInfo "DÃ©but du traitement du mode TEST."
+Write-LogInfo "DÃƒÂ©but du traitement du mode TEST."
 Write-LogInfo "Fichier de roadmap : $FilePath"
 if ($TaskIdentifier) {
-    Write-LogInfo "TÃ¢che Ã  traiter : $TaskIdentifier"
+    Write-LogInfo "TÃƒÂ¢che ÃƒÂ  traiter : $TaskIdentifier"
 } else {
-    Write-LogInfo "Toutes les tÃ¢ches seront traitÃ©es."
+    Write-LogInfo "Toutes les tÃƒÂ¢ches seront traitÃƒÂ©es."
 }
-Write-LogInfo "RÃ©pertoire du module : $ModulePath"
-Write-LogInfo "RÃ©pertoire des tests : $TestsPath"
+Write-LogInfo "RÃƒÂ©pertoire du module : $ModulePath"
+Write-LogInfo "RÃƒÂ©pertoire des tests : $TestsPath"
 Write-LogInfo "Seuil de couverture : $CoverageThreshold%"
 Write-LogInfo "Framework de test : $TestFramework"
-Write-LogInfo "RÃ©pertoire de sortie : $OutputPath"
+Write-LogInfo "RÃƒÂ©pertoire de sortie : $OutputPath"
 
 # Appeler la fonction principale du mode
 try {
@@ -425,26 +425,26 @@ try {
         $params.TestCases = $TestCases
     }
 
-    if ($PSCmdlet.ShouldProcess("Invoke-RoadmapTest", "ExÃ©cuter avec les paramÃ¨tres spÃ©cifiÃ©s")) {
+    if ($PSCmdlet.ShouldProcess("Invoke-RoadmapTest", "ExÃƒÂ©cuter avec les paramÃƒÂ¨tres spÃƒÂ©cifiÃƒÂ©s")) {
         $result = Invoke-WithErrorHandling -Action {
             Invoke-RoadmapTest @params
-        } -ErrorMessage "Une erreur s'est produite lors de l'exÃ©cution du mode TEST." -ExitOnError $false
+        } -ErrorMessage "Une erreur s'est produite lors de l'exÃƒÂ©cution du mode TEST." -ExitOnError $false
 
-        # Traiter les rÃ©sultats
+        # Traiter les rÃƒÂ©sultats
         if ($result) {
-            Write-LogInfo "Traitement terminÃ© avec succÃ¨s."
+            Write-LogInfo "Traitement terminÃƒÂ© avec succÃƒÂ¨s."
 
-            # Afficher un rÃ©sumÃ© des rÃ©sultats
-            Write-Host "`nRÃ©sumÃ© des rÃ©sultats :" -ForegroundColor Yellow
-            Write-Host "  - Nombre de tests exÃ©cutÃ©s : $($result.TestCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tests rÃ©ussis : $($result.PassedCount)" -ForegroundColor Green
-            Write-Host "  - Nombre de tests Ã©chouÃ©s : $($result.FailedCount)" -ForegroundColor $(if ($result.FailedCount -eq 0) { "Green" } else { "Red" })
-            Write-Host "  - Nombre de tests ignorÃ©s : $($result.SkippedCount)" -ForegroundColor $(if ($result.SkippedCount -eq 0) { "Green" } else { "Yellow" })
+            # Afficher un rÃƒÂ©sumÃƒÂ© des rÃƒÂ©sultats
+            Write-Host "`nRÃƒÂ©sumÃƒÂ© des rÃƒÂ©sultats :" -ForegroundColor Yellow
+            Write-Host "  - Nombre de tests exÃƒÂ©cutÃƒÂ©s : $($result.TestCount)" -ForegroundColor Green
+            Write-Host "  - Nombre de tests rÃƒÂ©ussis : $($result.PassedCount)" -ForegroundColor Green
+            Write-Host "  - Nombre de tests ÃƒÂ©chouÃƒÂ©s : $($result.FailedCount)" -ForegroundColor $(if ($result.FailedCount -eq 0) { "Green" } else { "Red" })
+            Write-Host "  - Nombre de tests ignorÃƒÂ©s : $($result.SkippedCount)" -ForegroundColor $(if ($result.SkippedCount -eq 0) { "Green" } else { "Yellow" })
             Write-Host "  - Couverture de code : $($result.Coverage)%" -ForegroundColor $(if ($result.Coverage -ge $CoverageThreshold) { "Green" } else { "Red" })
 
-            # Afficher les tests Ã©chouÃ©s
+            # Afficher les tests ÃƒÂ©chouÃƒÂ©s
             if ($result.FailedTests -and $result.FailedTests.Count -gt 0) {
-                Write-Host "`nTests Ã©chouÃ©s :" -ForegroundColor Red
+                Write-Host "`nTests ÃƒÂ©chouÃƒÂ©s :" -ForegroundColor Red
                 foreach ($test in $result.FailedTests) {
                     Write-Host "  - $($test.Name) : $($test.Message)" -ForegroundColor Red
                     Write-Host "    Fichier : $($test.File)" -ForegroundColor Gray
@@ -452,25 +452,25 @@ try {
                 }
             }
 
-            # Indiquer les fichiers gÃ©nÃ©rÃ©s
+            # Indiquer les fichiers gÃƒÂ©nÃƒÂ©rÃƒÂ©s
             if ($result.OutputFiles -and $result.OutputFiles.Count -gt 0) {
-                Write-Host "`nFichiers gÃ©nÃ©rÃ©s :" -ForegroundColor Yellow
+                Write-Host "`nFichiers gÃƒÂ©nÃƒÂ©rÃƒÂ©s :" -ForegroundColor Yellow
                 foreach ($file in $result.OutputFiles) {
                     Write-Host "  - $file" -ForegroundColor Gray
                 }
             }
 
-            # Mettre Ã  jour la roadmap si une tÃ¢che a Ã©tÃ© spÃ©cifiÃ©e
+            # Mettre ÃƒÂ  jour la roadmap si une tÃƒÂ¢che a ÃƒÂ©tÃƒÂ© spÃƒÂ©cifiÃƒÂ©e
             if ($TaskIdentifier -and $result.Success) {
-                if ($PSCmdlet.ShouldProcess("Update-RoadmapTask", "Mettre Ã  jour l'Ã©tat de la tÃ¢che $TaskIdentifier")) {
+                if ($PSCmdlet.ShouldProcess("Update-RoadmapTask", "Mettre ÃƒÂ  jour l'ÃƒÂ©tat de la tÃƒÂ¢che $TaskIdentifier")) {
                     Update-RoadmapTask -FilePath $FilePath -TaskIdentifier $TaskIdentifier -Completed $true -BackupFile $true
-                    Write-LogInfo "TÃ¢che $TaskIdentifier marquÃ©e comme complÃ©tÃ©e dans la roadmap."
+                    Write-LogInfo "TÃƒÂ¢che $TaskIdentifier marquÃƒÂ©e comme complÃƒÂ©tÃƒÂ©e dans la roadmap."
                 }
             }
 
-            # Mettre Ã  jour les tÃ¢ches dans le document actif si demandÃ©
+            # Mettre ÃƒÂ  jour les tÃƒÂ¢ches dans le document actif si demandÃƒÂ©
             if ($UpdateTasksInDocument -and $DocumentPath) {
-                if ($PSCmdlet.ShouldProcess("Update-TasksInActiveDocument", "Mettre Ã  jour les tÃ¢ches dans le document $DocumentPath")) {
+                if ($PSCmdlet.ShouldProcess("Update-TasksInActiveDocument", "Mettre ÃƒÂ  jour les tÃƒÂ¢ches dans le document $DocumentPath")) {
                     $updateParams = @{
                         TestResults           = $result
                         DocumentPath          = $DocumentPath
@@ -483,19 +483,19 @@ try {
 
                     $updateResult = Update-TasksInActiveDocument @updateParams
                     if ($updateResult) {
-                        Write-LogInfo "TÃ¢ches mises Ã  jour avec succÃ¨s dans le document $DocumentPath."
+                        Write-LogInfo "TÃƒÂ¢ches mises ÃƒÂ  jour avec succÃƒÂ¨s dans le document $DocumentPath."
                     } else {
-                        Write-LogWarning "Ã‰chec de la mise Ã  jour des tÃ¢ches dans le document $DocumentPath."
+                        Write-LogWarning "Ãƒâ€°chec de la mise ÃƒÂ  jour des tÃƒÂ¢ches dans le document $DocumentPath."
                     }
                 } else {
-                    Write-LogWarning "Mise Ã  jour des tÃ¢ches dans le document annulÃ©e."
+                    Write-LogWarning "Mise ÃƒÂ  jour des tÃƒÂ¢ches dans le document annulÃƒÂ©e."
                 }
             }
         } else {
-            Write-LogWarning "Aucun rÃ©sultat n'a Ã©tÃ© retournÃ© par la fonction Invoke-RoadmapTest."
+            Write-LogWarning "Aucun rÃƒÂ©sultat n'a ÃƒÂ©tÃƒÂ© retournÃƒÂ© par la fonction Invoke-RoadmapTest."
         }
     } else {
-        Write-LogWarning "ExÃ©cution de Invoke-RoadmapTest annulÃ©e."
+        Write-LogWarning "ExÃƒÂ©cution de Invoke-RoadmapTest annulÃƒÂ©e."
     }
 } catch {
     Handle-Error -ErrorRecord $_ -ErrorMessage "Une erreur s'est produite lors du traitement du mode TEST." -ExitOnError $true
@@ -505,5 +505,5 @@ Write-LogInfo "Fin du traitement du mode TEST."
 
 #endregion
 
-# Retourner les rÃ©sultats
+# Retourner les rÃƒÂ©sultats
 return $result

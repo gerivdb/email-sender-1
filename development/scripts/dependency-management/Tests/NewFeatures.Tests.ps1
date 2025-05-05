@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires Pester pour les nouvelles fonctionnalités du module ImplicitModuleDependencyDetector.
+    Tests unitaires Pester pour les nouvelles fonctionnalitÃ©s du module ImplicitModuleDependencyDetector.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires Pester pour les nouvelles fonctionnalités du module
-    ImplicitModuleDependencyDetector, notamment la détection des alias de modules, des variables
+    Ce script contient des tests unitaires Pester pour les nouvelles fonctionnalitÃ©s du module
+    ImplicitModuleDependencyDetector, notamment la dÃ©tection des alias de modules, des variables
     de modules, l'analyse des commentaires et la validation des modules.
 #>
 
-# Définir le chemin absolu du module à tester
+# DÃ©finir le chemin absolu du module Ã  tester
 $modulePath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\dependency-management\ImplicitModuleDependencyDetector.psm1"
 Write-Host "Module path: $modulePath"
 
-# Vérifier si le fichier existe
+# VÃ©rifier si le fichier existe
 if (-not (Test-Path -Path $modulePath -PathType Leaf)) {
     throw "Module not found at path: $modulePath"
 }
@@ -21,36 +21,36 @@ if (-not (Test-Path -Path $modulePath -PathType Leaf)) {
 # Importer le module
 Import-Module $modulePath -Force -ErrorAction Stop
 
-Describe "Nouvelles fonctionnalités du module ImplicitModuleDependencyDetector" {
+Describe "Nouvelles fonctionnalitÃ©s du module ImplicitModuleDependencyDetector" {
     BeforeAll {
 
-        # Créer un script PowerShell de test avec différentes références
+        # CrÃ©er un script PowerShell de test avec diffÃ©rentes rÃ©fÃ©rences
         $script:scriptWithAliases = @'
 # Ce script utilise des alias de modules sans les importer explicitement
-# Référence à AD (ActiveDirectory)
+# RÃ©fÃ©rence Ã  AD (ActiveDirectory)
 $adUser = Get-ADUser -Identity "jdoe"
 
-# Référence à Azure dans une chaîne
-$message = "Connexion à Azure en cours..."
+# RÃ©fÃ©rence Ã  Azure dans une chaÃ®ne
+$message = "Connexion Ã  Azure en cours..."
 
-# Référence à SQL dans une variable
+# RÃ©fÃ©rence Ã  SQL dans une variable
 $SQLConnection = "Server=localhost;Database=master;Integrated Security=True;"
 
-# Référence à Pester dans un commentaire
+# RÃ©fÃ©rence Ã  Pester dans un commentaire
 # Utiliser Pester pour les tests unitaires
 '@
 
         $script:scriptWithComments = @'
-# Ce script contient des références à des modules dans les commentaires
+# Ce script contient des rÃ©fÃ©rences Ã  des modules dans les commentaires
 # Utiliser ActiveDirectory pour la gestion des utilisateurs
 # Az.Accounts pour la gestion des comptes Azure
-# SqlServer pour les requêtes SQL
+# SqlServer pour les requÃªtes SQL
 # Pester pour les tests unitaires
 
-# Référence à des cmdlets dans les commentaires
+# RÃ©fÃ©rence Ã  des cmdlets dans les commentaires
 # Get-ADUser, New-AzVM, Invoke-Sqlcmd, Describe
 
-# Référence à des types dans les commentaires
+# RÃ©fÃ©rence Ã  des types dans les commentaires
 # Microsoft.ActiveDirectory.Management.ADUser
 # Microsoft.Azure.Commands.Compute.Models.PSVirtualMachine
 
@@ -60,16 +60,16 @@ $SQLConnection = "Server=localhost;Database=master;Integrated Security=True;"
 
         $script:scriptWithVariables = @'
 # Ce script utilise des variables globales de modules sans les importer explicitement
-# Référence à PSVersionTable (Microsoft.PowerShell.Core)
+# RÃ©fÃ©rence Ã  PSVersionTable (Microsoft.PowerShell.Core)
 $version = $PSVersionTable.PSVersion
 
-# Référence à AzContext (Az.Accounts)
+# RÃ©fÃ©rence Ã  AzContext (Az.Accounts)
 $subscription = $AzContext.Subscription.Name
 
-# Référence à PesterPreference (Pester)
+# RÃ©fÃ©rence Ã  PesterPreference (Pester)
 $PesterPreference.Output.Verbosity = 'Detailed'
 
-# Référence à une variable avec un nom qui suit un modèle de module
+# RÃ©fÃ©rence Ã  une variable avec un nom qui suit un modÃ¨le de module
 $ADUserInfo = Get-UserInfo -Identity "jdoe"
 '@
 
@@ -79,12 +79,12 @@ $ADUserInfo = Get-UserInfo -Identity "jdoe"
 Get-Process | Where-Object { $_.CPU -gt 10 } | Stop-Process -Force
 
 # Utilisation de cmdlets de Microsoft.PowerShell.Utility
-Write-Output "Processus arrêtés"
+Write-Output "Processus arrÃªtÃ©s"
 '@
     }
 
     Context "Find-ModuleAliasWithoutExplicitImport" {
-        It "Devrait détecter les références à des alias de modules dans un script" {
+        It "Devrait dÃ©tecter les rÃ©fÃ©rences Ã  des alias de modules dans un script" {
             $results = Find-ModuleAliasWithoutExplicitImport -ScriptContent $script:scriptWithAliases
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -BeGreaterThan 0
@@ -99,13 +99,13 @@ Write-Output "Processus arrêtés"
     }
 
     Context "Find-ModuleReferenceInComments" {
-        It "Devrait détecter les références à des modules dans les commentaires" {
+        It "Devrait dÃ©tecter les rÃ©fÃ©rences Ã  des modules dans les commentaires" {
             $results = Find-ModuleReferenceInComments -ScriptContent $script:scriptWithComments
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -BeGreaterThan 0
         }
 
-        It "Devrait identifier correctement les types de références" {
+        It "Devrait identifier correctement les types de rÃ©fÃ©rences" {
             $results = Find-ModuleReferenceInComments -ScriptContent $script:scriptWithComments
             $explicitModuleRefs = $results | Where-Object { $_.Type -eq "ExplicitModule" }
             $explicitModuleRefs | Should -Not -BeNullOrEmpty
@@ -113,7 +113,7 @@ Write-Output "Processus arrêtés"
     }
 
     Context "Test-ModuleAvailability" {
-        It "Devrait vérifier correctement la disponibilité des modules intégrés" {
+        It "Devrait vÃ©rifier correctement la disponibilitÃ© des modules intÃ©grÃ©s" {
             $results = Test-ModuleAvailability -ModuleNames "Microsoft.PowerShell.Management", "Microsoft.PowerShell.Utility"
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -Be 2
@@ -130,14 +130,14 @@ Write-Output "Processus arrêtés"
     }
 
     Context "Confirm-ModuleDependencies" {
-        It "Devrait détecter et valider correctement les dépendances implicites" {
+        It "Devrait dÃ©tecter et valider correctement les dÃ©pendances implicites" {
             $results = Confirm-ModuleDependencies -ScriptContent $script:scriptWithDependencies
             $results | Should -Not -BeNullOrEmpty
             $results.Status | Should -Be "AllModulesAvailable"
             $results.ValidationPassed | Should -BeTrue
         }
 
-        It "Devrait générer correctement les instructions Import-Module si demandé" {
+        It "Devrait gÃ©nÃ©rer correctement les instructions Import-Module si demandÃ©" {
             $results = Confirm-ModuleDependencies -ScriptContent $script:scriptWithDependencies -GenerateImportStatements
             $results.ImportStatements | Should -Not -BeNullOrEmpty
             $results.ImportStatements.Count | Should -BeGreaterThan 0

@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests de performance pour le Process Manager.
 
 .DESCRIPTION
-    Ce script exécute des tests de performance pour évaluer les performances
-    du Process Manager avec les modules améliorés.
+    Ce script exÃ©cute des tests de performance pour Ã©valuer les performances
+    du Process Manager avec les modules amÃ©liorÃ©s.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire courant.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER Iterations
-    Nombre d'itérations pour chaque test de performance. Par défaut, 10.
+    Nombre d'itÃ©rations pour chaque test de performance. Par dÃ©faut, 10.
 
 .PARAMETER SkipCleanup
-    Ne supprime pas les fichiers de test après l'exécution.
+    Ne supprime pas les fichiers de test aprÃ¨s l'exÃ©cution.
 
 .EXAMPLE
     .\Test-ProcessManagerPerformance.ps1
-    Exécute les tests de performance pour le Process Manager.
+    ExÃ©cute les tests de performance pour le Process Manager.
 
 .EXAMPLE
     .\Test-ProcessManagerPerformance.ps1 -ProjectRoot "D:\Projets\MonProjet" -Iterations 20 -SkipCleanup
-    Exécute les tests de performance avec 20 itérations et ne supprime pas les fichiers de test.
+    ExÃ©cute les tests de performance avec 20 itÃ©rations et ne supprime pas les fichiers de test.
 
 .NOTES
     Auteur: EMAIL_SENDER_1
     Version: 1.0
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -40,7 +40,7 @@ param (
     [switch]$SkipCleanup
 )
 
-# Définir les chemins
+# DÃ©finir les chemins
 $processManagerRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers\process-manager"
 $modulesRoot = Join-Path -Path $processManagerRoot -ChildPath "modules"
 $scriptsRoot = Join-Path -Path $processManagerRoot -ChildPath "scripts"
@@ -50,7 +50,7 @@ $testDir = Join-Path -Path $testsRoot -ChildPath "performance-tests"
 $testConfigPath = Join-Path -Path $testDir -ChildPath "test-performance.config.json"
 $resultsPath = Join-Path -Path $testDir -ChildPath "performance-results.csv"
 
-# Fonction pour écrire des messages de journal
+# Fonction pour Ã©crire des messages de journal
 function Write-TestLog {
     [CmdletBinding()]
     param (
@@ -65,7 +65,7 @@ function Write-TestLog {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "[$timestamp] [$Level] $Message"
     
-    # Définir la couleur en fonction du niveau
+    # DÃ©finir la couleur en fonction du niveau
     $color = switch ($Level) {
         "Info" { "White" }
         "Warning" { "Yellow" }
@@ -79,7 +79,7 @@ function Write-TestLog {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Fonction pour mesurer les performances d'une opération
+# Fonction pour mesurer les performances d'une opÃ©ration
 function Measure-Performance {
     [CmdletBinding()]
     param (
@@ -104,16 +104,16 @@ function Measure-Performance {
     $results = @()
     
     for ($i = 1; $i -le $Iterations; $i++) {
-        Write-TestLog -Message "  Itération $i/$Iterations..." -Level Debug
+        Write-TestLog -Message "  ItÃ©ration $i/$Iterations..." -Level Debug
         
         try {
-            # Mesurer le temps d'exécution
+            # Mesurer le temps d'exÃ©cution
             $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
             $result = & $Operation
             $stopwatch.Stop()
             $executionTime = $stopwatch.ElapsedMilliseconds
             
-            # Mesurer l'utilisation de la mémoire
+            # Mesurer l'utilisation de la mÃ©moire
             $memoryBefore = [System.GC]::GetTotalMemory($true)
             $result = & $Operation
             $memoryAfter = [System.GC]::GetTotalMemory($true)
@@ -125,7 +125,7 @@ function Measure-Performance {
                 MemoryUsage = $memoryUsage
             }
         } catch {
-            Write-TestLog -Message "  Erreur lors de l'itération $i : $_" -Level Error
+            Write-TestLog -Message "  Erreur lors de l'itÃ©ration $i : $_" -Level Error
         }
     }
     
@@ -140,15 +140,15 @@ function Measure-Performance {
     $maxMemoryUsage = ($results | Measure-Object -Property MemoryUsage -Maximum).Maximum
     $stdDevMemoryUsage = [Math]::Sqrt(($results | ForEach-Object { [Math]::Pow($_.MemoryUsage - $avgMemoryUsage, 2) } | Measure-Object -Average).Average)
     
-    # Afficher les résultats
-    Write-TestLog -Message "  Résultats :" -Level Info
-    Write-TestLog -Message "    Temps d'exécution moyen : $($avgExecutionTime.ToString("F2")) ms" -Level Info
-    Write-TestLog -Message "    Temps d'exécution min   : $($minExecutionTime.ToString("F2")) ms" -Level Info
-    Write-TestLog -Message "    Temps d'exécution max   : $($maxExecutionTime.ToString("F2")) ms" -Level Info
-    Write-TestLog -Message "    Écart-type              : $($stdDevExecutionTime.ToString("F2")) ms" -Level Info
-    Write-TestLog -Message "    Utilisation mémoire moy.: $($avgMemoryUsage.ToString("F2")) octets" -Level Info
+    # Afficher les rÃ©sultats
+    Write-TestLog -Message "  RÃ©sultats :" -Level Info
+    Write-TestLog -Message "    Temps d'exÃ©cution moyen : $($avgExecutionTime.ToString("F2")) ms" -Level Info
+    Write-TestLog -Message "    Temps d'exÃ©cution min   : $($minExecutionTime.ToString("F2")) ms" -Level Info
+    Write-TestLog -Message "    Temps d'exÃ©cution max   : $($maxExecutionTime.ToString("F2")) ms" -Level Info
+    Write-TestLog -Message "    Ã‰cart-type              : $($stdDevExecutionTime.ToString("F2")) ms" -Level Info
+    Write-TestLog -Message "    Utilisation mÃ©moire moy.: $($avgMemoryUsage.ToString("F2")) octets" -Level Info
     
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return [PSCustomObject]@{
         Name = $Name
         Description = $Description
@@ -165,47 +165,47 @@ function Measure-Performance {
     }
 }
 
-# Vérifier que le répertoire du projet existe
+# VÃ©rifier que le rÃ©pertoire du projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du projet n'existe pas : $ProjectRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du projet n'existe pas : $ProjectRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le répertoire du Process Manager existe
+# VÃ©rifier que le rÃ©pertoire du Process Manager existe
 if (-not (Test-Path -Path $processManagerRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le script du Process Manager existe
+# VÃ©rifier que le script du Process Manager existe
 if (-not (Test-Path -Path $processManagerScript -PathType Leaf)) {
     Write-TestLog -Message "Le script du Process Manager n'existe pas : $processManagerScript" -Level Error
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfig = @{
     Enabled = $true
-    LogLevel = "Error" # Utiliser Error pour réduire la sortie console pendant les tests de performance
+    LogLevel = "Error" # Utiliser Error pour rÃ©duire la sortie console pendant les tests de performance
     LogPath = "logs/test-performance"
     Managers = @{}
 }
 $testConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $testConfigPath -Encoding UTF8
 
-# Créer des gestionnaires de test pour les tests de performance
-$numTestManagers = 50 # Nombre de gestionnaires de test à créer
+# CrÃ©er des gestionnaires de test pour les tests de performance
+$numTestManagers = 50 # Nombre de gestionnaires de test Ã  crÃ©er
 $testManagerTemplate = @"
 <#
 .SYNOPSIS
     Gestionnaire de test {0} pour les tests de performance.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests de performance
+    Ce script est un gestionnaire de test utilisÃ© pour les tests de performance
     du Process Manager.
 #>
 
@@ -218,14 +218,14 @@ function Start-TestManager{0} {{
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire de test {0}..."
+    Write-Host "DÃ©marrage du gestionnaire de test {0}..."
 }}
 
 function Stop-TestManager{0} {{
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire de test {0}..."
+    Write-Host "ArrÃªt du gestionnaire de test {0}..."
 }}
 
 function Get-TestManager{0}Status {{
@@ -239,7 +239,7 @@ function Get-TestManager{0}Status {{
     }}
 }}
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {{
     "Start" {{
         Start-TestManager{0}
@@ -262,11 +262,11 @@ for ($i = 1; $i -le $numTestManagers; $i++) {
     $managerPath = Join-Path -Path $testDir -ChildPath "test-manager-$i.ps1"
     $manifestPath = Join-Path -Path $testDir -ChildPath "test-manager-$i.manifest.json"
     
-    # Créer le script du gestionnaire
+    # CrÃ©er le script du gestionnaire
     $managerContent = $testManagerTemplate -f $i
     Set-Content -Path $managerPath -Value $managerContent -Encoding UTF8
     
-    # Créer le manifeste du gestionnaire
+    # CrÃ©er le manifeste du gestionnaire
     $manifest = @{
         Name = $managerName
         Description = "Gestionnaire de test $i pour les tests de performance"
@@ -283,7 +283,7 @@ for ($i = 1; $i -le $numTestManagers; $i++) {
     }
 }
 
-# Définir les tests de performance
+# DÃ©finir les tests de performance
 $performanceTests = @(
     @{
         Name = "Enregistrement d'un gestionnaire"
@@ -294,8 +294,8 @@ $performanceTests = @(
         }
     },
     @{
-        Name = "Découverte des gestionnaires"
-        Description = "Mesure les performances de découverte des gestionnaires."
+        Name = "DÃ©couverte des gestionnaires"
+        Description = "Mesure les performances de dÃ©couverte des gestionnaires."
         Operation = {
             & $processManagerScript -Command Discover -ConfigPath $testConfigPath -Force -SearchPaths @($testDir)
         }
@@ -308,16 +308,16 @@ $performanceTests = @(
         }
     },
     @{
-        Name = "Exécution d'une commande sur un gestionnaire"
-        Description = "Mesure les performances d'exécution d'une commande sur un gestionnaire."
+        Name = "ExÃ©cution d'une commande sur un gestionnaire"
+        Description = "Mesure les performances d'exÃ©cution d'une commande sur un gestionnaire."
         Operation = {
             $manager = $testManagers | Get-Random
             & $processManagerScript -Command Run -ManagerName $manager.Name -ManagerCommand "Status" -ConfigPath $testConfigPath
         }
     },
     @{
-        Name = "Obtention de l'état d'un gestionnaire"
-        Description = "Mesure les performances d'obtention de l'état d'un gestionnaire."
+        Name = "Obtention de l'Ã©tat d'un gestionnaire"
+        Description = "Mesure les performances d'obtention de l'Ã©tat d'un gestionnaire."
         Operation = {
             $manager = $testManagers | Get-Random
             & $processManagerScript -Command Status -ManagerName $manager.Name -ConfigPath $testConfigPath
@@ -333,25 +333,25 @@ $performanceTests = @(
     }
 )
 
-# Exécuter les tests de performance
+# ExÃ©cuter les tests de performance
 $results = @()
 
-Write-TestLog -Message "Exécution de $($performanceTests.Count) tests de performance pour le Process Manager..." -Level Info
-Write-TestLog -Message "Nombre d'itérations par test : $Iterations" -Level Info
+Write-TestLog -Message "ExÃ©cution de $($performanceTests.Count) tests de performance pour le Process Manager..." -Level Info
+Write-TestLog -Message "Nombre d'itÃ©rations par test : $Iterations" -Level Info
 
 foreach ($test in $performanceTests) {
     $result = Measure-Performance -Name $test.Name -Description $test.Description -Operation $test.Operation -Iterations $Iterations
     $results += $result
 }
 
-# Enregistrer les résultats dans un fichier CSV
+# Enregistrer les rÃ©sultats dans un fichier CSV
 $results | Select-Object Name, Description, Iterations, AvgExecutionTime, MinExecutionTime, MaxExecutionTime, StdDevExecutionTime, AvgMemoryUsage | Export-Csv -Path $resultsPath -NoTypeInformation -Encoding UTF8
-Write-TestLog -Message "Résultats enregistrés dans : $resultsPath" -Level Success
+Write-TestLog -Message "RÃ©sultats enregistrÃ©s dans : $resultsPath" -Level Success
 
-# Afficher le résumé
-Write-TestLog -Message "`nRésumé des tests de performance :" -Level Info
+# Afficher le rÃ©sumÃ©
+Write-TestLog -Message "`nRÃ©sumÃ© des tests de performance :" -Level Info
 $results | ForEach-Object {
-    Write-TestLog -Message "  $($_.Name) : $($_.AvgExecutionTime.ToString("F2")) ms (±$($_.StdDevExecutionTime.ToString("F2")) ms)" -Level Info
+    Write-TestLog -Message "  $($_.Name) : $($_.AvgExecutionTime.ToString("F2")) ms (Â±$($_.StdDevExecutionTime.ToString("F2")) ms)" -Level Info
 }
 
 # Nettoyer les fichiers de test
@@ -361,5 +361,5 @@ if (-not $SkipCleanup) {
     }
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $results

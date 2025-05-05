@@ -1,40 +1,40 @@
-<#
+﻿<#
 .SYNOPSIS
-    Décompose interactivement une tâche de roadmap en sous-tâches plus granulaires avec estimations de temps.
+    DÃ©compose interactivement une tÃ¢che de roadmap en sous-tÃ¢ches plus granulaires avec estimations de temps.
 
 .DESCRIPTION
-    Cette fonction permet de décomposer interactivement une tâche de roadmap en sous-tâches
+    Cette fonction permet de dÃ©composer interactivement une tÃ¢che de roadmap en sous-tÃ¢ches
     plus granulaires directement dans le document. Elle utilise la fonction Split-RoadmapTask
-    pour effectuer la décomposition et peut ajouter des estimations de temps aux sous-tâches.
+    pour effectuer la dÃ©composition et peut ajouter des estimations de temps aux sous-tÃ¢ches.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap à modifier.
+    Chemin vers le fichier de roadmap Ã  modifier.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à décomposer (par exemple, "1.2.1.3.2.3").
-    Si non spécifié, l'utilisateur sera invité à le saisir.
+    Identifiant de la tÃ¢che Ã  dÃ©composer (par exemple, "1.2.1.3.2.3").
+    Si non spÃ©cifiÃ©, l'utilisateur sera invitÃ© Ã  le saisir.
 
 .PARAMETER SubTasksInput
-    Texte contenant les sous-tâches à créer, une par ligne.
-    Si non spécifié, l'utilisateur sera invité à les saisir.
+    Texte contenant les sous-tÃ¢ches Ã  crÃ©er, une par ligne.
+    Si non spÃ©cifiÃ©, l'utilisateur sera invitÃ© Ã  les saisir.
 
 .PARAMETER IndentationStyle
-    Style d'indentation à utiliser. Par défaut, utilise le style détecté dans le document.
+    Style d'indentation Ã  utiliser. Par dÃ©faut, utilise le style dÃ©tectÃ© dans le document.
     Options : "Spaces2", "Spaces4", "Tab", "Auto".
 
 .PARAMETER CheckboxStyle
-    Style de case à cocher à utiliser. Par défaut, utilise le style détecté dans le document.
+    Style de case Ã  cocher Ã  utiliser. Par dÃ©faut, utilise le style dÃ©tectÃ© dans le document.
     Options : "GitHub", "Custom", "Auto".
 
 .PARAMETER AddTimeEstimation
-    Ajoute des estimations de temps aux sous-tâches.
+    Ajoute des estimations de temps aux sous-tÃ¢ches.
 
 .PARAMETER ComplexityLevel
-    Niveau de complexité à utiliser pour les estimations de temps.
+    Niveau de complexitÃ© Ã  utiliser pour les estimations de temps.
     Options : "Simple", "Medium", "Complex".
 
 .PARAMETER Domain
-    Domaine technique à utiliser pour les estimations de temps.
+    Domaine technique Ã  utiliser pour les estimations de temps.
     Options : "Frontend", "Backend", "Database", "Testing", "DevOps", "Security", "AI-ML", "Documentation".
 
 .EXAMPLE
@@ -44,7 +44,7 @@
     Invoke-RoadmapGranularizationWithTimeEstimation -FilePath "Roadmap/roadmap.md" -TaskIdentifier "1.2.3" -SubTasksInput @"
     Analyser les besoins
     Concevoir la solution
-    Implémenter le code
+    ImplÃ©menter le code
     Tester la solution
     "@
 
@@ -52,14 +52,14 @@
     Invoke-RoadmapGranularizationWithTimeEstimation -FilePath "Roadmap/roadmap.md" -TaskIdentifier "1.2.3" -SubTasksInput @"
     Analyser les besoins
     Concevoir la solution
-    Implémenter le code
+    ImplÃ©menter le code
     Tester la solution
     "@ -AddTimeEstimation -ComplexityLevel "Medium" -Domain "Backend"
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-06-02
+    Date de crÃ©ation: 2025-06-02
 #>
 function Invoke-RoadmapGranularizationWithTimeEstimation {
     [CmdletBinding(SupportsShouldProcess = $true)]
@@ -92,41 +92,41 @@ function Invoke-RoadmapGranularizationWithTimeEstimation {
         [string]$Domain = "None"
     )
 
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
-        throw "Le fichier spécifié n'existe pas : $FilePath"
+        throw "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
     }
 
-    # Importer la fonction Split-RoadmapTask si elle n'est pas déjà disponible
+    # Importer la fonction Split-RoadmapTask si elle n'est pas dÃ©jÃ  disponible
     $splitTaskPath = Join-Path -Path (Split-Path -Parent $MyInvocation.MyCommand.Path) -ChildPath "Split-RoadmapTask.ps1"
     if (Test-Path -Path $splitTaskPath) {
         . $splitTaskPath
     } else {
-        throw "La fonction Split-RoadmapTask est introuvable. Assurez-vous que le fichier Split-RoadmapTask.ps1 est présent dans le répertoire $(Split-Path -Parent $MyInvocation.MyCommand.Path)."
+        throw "La fonction Split-RoadmapTask est introuvable. Assurez-vous que le fichier Split-RoadmapTask.ps1 est prÃ©sent dans le rÃ©pertoire $(Split-Path -Parent $MyInvocation.MyCommand.Path)."
     }
 
-    # Si l'identifiant de tâche n'est pas spécifié, afficher le contenu du fichier et demander à l'utilisateur
+    # Si l'identifiant de tÃ¢che n'est pas spÃ©cifiÃ©, afficher le contenu du fichier et demander Ã  l'utilisateur
     if (-not $TaskIdentifier) {
         # Lire le contenu du fichier
         $content = Get-Content -Path $FilePath -Encoding UTF8
 
-        # Afficher le contenu avec des numéros de ligne
+        # Afficher le contenu avec des numÃ©ros de ligne
         Write-Host "Contenu du fichier de roadmap :" -ForegroundColor Cyan
         for ($i = 0; $i -lt $content.Count; $i++) {
             Write-Host ("{0,5}: {1}" -f ($i + 1), $content[$i])
         }
 
-        # Demander à l'utilisateur de saisir l'identifiant de la tâche
-        $TaskIdentifier = Read-Host -Prompt "Entrez l'identifiant de la tâche à décomposer (par exemple, 1.2.1.3.2.3)"
+        # Demander Ã  l'utilisateur de saisir l'identifiant de la tÃ¢che
+        $TaskIdentifier = Read-Host -Prompt "Entrez l'identifiant de la tÃ¢che Ã  dÃ©composer (par exemple, 1.2.1.3.2.3)"
 
         if (-not $TaskIdentifier) {
-            throw "Aucun identifiant de tâche spécifié. Opération annulée."
+            throw "Aucun identifiant de tÃ¢che spÃ©cifiÃ©. OpÃ©ration annulÃ©e."
         }
     }
 
-    # Si les sous-tâches ne sont pas spécifiées, demander à l'utilisateur
+    # Si les sous-tÃ¢ches ne sont pas spÃ©cifiÃ©es, demander Ã  l'utilisateur
     if (-not $SubTasksInput) {
-        Write-Host "Entrez les sous-tâches à créer, une par ligne. Terminez par une ligne vide." -ForegroundColor Cyan
+        Write-Host "Entrez les sous-tÃ¢ches Ã  crÃ©er, une par ligne. Terminez par une ligne vide." -ForegroundColor Cyan
         $lines = @()
         $line = Read-Host
 
@@ -138,15 +138,15 @@ function Invoke-RoadmapGranularizationWithTimeEstimation {
         $SubTasksInput = $lines -join "`n"
 
         if (-not $SubTasksInput) {
-            throw "Aucune sous-tâche spécifiée. Opération annulée."
+            throw "Aucune sous-tÃ¢che spÃ©cifiÃ©e. OpÃ©ration annulÃ©e."
         }
     }
 
-    # Convertir le texte des sous-tâches en tableau d'objets
+    # Convertir le texte des sous-tÃ¢ches en tableau d'objets
     $subTasks = @()
     $lines = $SubTasksInput -split "`n" | Where-Object { $_ -match '\S' }  # Ignorer les lignes vides
 
-    # Déterminer le chemin du projet
+    # DÃ©terminer le chemin du projet
     $projectRoot = $PSScriptRoot
     while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
         -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -156,12 +156,12 @@ function Invoke-RoadmapGranularizationWithTimeEstimation {
     if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
         $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
         if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-            Write-Warning "Impossible de déterminer le chemin du projet. Les estimations de temps ne seront pas ajoutées."
+            Write-Warning "Impossible de dÃ©terminer le chemin du projet. Les estimations de temps ne seront pas ajoutÃ©es."
             $AddTimeEstimation = $false
         }
     }
 
-    # Fonction pour estimer le temps nécessaire pour une sous-tâche
+    # Fonction pour estimer le temps nÃ©cessaire pour une sous-tÃ¢che
     function Get-TaskTimeEstimate {
         [CmdletBinding()]
         param (
@@ -193,10 +193,10 @@ function Invoke-RoadmapGranularizationWithTimeEstimation {
             return $null
         }
         
-        # Normaliser le contenu de la tâche
+        # Normaliser le contenu de la tÃ¢che
         $normalizedContent = $TaskContent.ToLower()
         
-        # Déterminer le type de tâche (analyse, conception, implémentation, test, documentation)
+        # DÃ©terminer le type de tÃ¢che (analyse, conception, implÃ©mentation, test, documentation)
         $taskType = "default"
         $maxScore = 0
         
@@ -214,21 +214,21 @@ function Invoke-RoadmapGranularizationWithTimeEstimation {
             }
         }
         
-        # Obtenir le temps de base pour ce type de tâche
+        # Obtenir le temps de base pour ce type de tÃ¢che
         $baseTime = $timeConfig.base_times.$taskType.value
         $timeUnit = $timeConfig.base_times.$taskType.unit
         
-        # Appliquer le multiplicateur de complexité
+        # Appliquer le multiplicateur de complexitÃ©
         $complexityMultiplier = $timeConfig.complexity_multipliers.($ComplexityLevel.ToLower())
         $estimatedTime = $baseTime * $complexityMultiplier
         
-        # Appliquer le multiplicateur de domaine si spécifié
+        # Appliquer le multiplicateur de domaine si spÃ©cifiÃ©
         if ($Domain -and $timeConfig.domain_multipliers.PSObject.Properties.Name -contains $Domain.ToLower()) {
             $domainMultiplier = $timeConfig.domain_multipliers.($Domain.ToLower())
             $estimatedTime = $estimatedTime * $domainMultiplier
         }
         
-        # Arrondir à 0.5 près
+        # Arrondir Ã  0.5 prÃ¨s
         $estimatedTime = [Math]::Round($estimatedTime * 2) / 2
         
         # Retourner l'estimation
@@ -244,16 +244,16 @@ function Invoke-RoadmapGranularizationWithTimeEstimation {
         $title = $line.Trim()
         $description = ""
         
-        # Ajouter l'estimation de temps si demandé
+        # Ajouter l'estimation de temps si demandÃ©
         if ($AddTimeEstimation) {
             try {
                 $timeEstimate = Get-TaskTimeEstimate -TaskContent $title -ComplexityLevel $ComplexityLevel -Domain $Domain -ProjectRoot $projectRoot
                 
                 if ($timeEstimate) {
-                    $title = "$title [⏱️ $($timeEstimate.Formatted)]"
+                    $title = "$title [â±ï¸ $($timeEstimate.Formatted)]"
                 }
             } catch {
-                Write-Warning "Erreur lors de l'estimation du temps pour la tâche '$title': $_"
+                Write-Warning "Erreur lors de l'estimation du temps pour la tÃ¢che '$title': $_"
             }
         }
         
@@ -265,7 +265,7 @@ function Invoke-RoadmapGranularizationWithTimeEstimation {
     }
 
     # Appeler la fonction Split-RoadmapTask
-    if ($PSCmdlet.ShouldProcess($FilePath, "Décomposer la tâche '$TaskIdentifier' en $($subTasks.Count) sous-tâches")) {
+    if ($PSCmdlet.ShouldProcess($FilePath, "DÃ©composer la tÃ¢che '$TaskIdentifier' en $($subTasks.Count) sous-tÃ¢ches")) {
         Split-RoadmapTask -FilePath $FilePath -TaskIdentifier $TaskIdentifier -SubTasks $subTasks -IndentationStyle $IndentationStyle -CheckboxStyle $CheckboxStyle
     }
 }

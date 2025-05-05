@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
-    Module de résolution de dépendances pour le Process Manager.
+    Module de rÃ©solution de dÃ©pendances pour le Process Manager.
 
 .DESCRIPTION
-    Ce module fournit des fonctionnalités pour analyser, valider et résoudre
-    les dépendances entre gestionnaires dans le Process Manager.
+    Ce module fournit des fonctionnalitÃ©s pour analyser, valider et rÃ©soudre
+    les dÃ©pendances entre gestionnaires dans le Process Manager.
 
 .NOTES
     Version: 1.0.0
@@ -13,28 +13,28 @@
 
 #region Variables globales
 
-# Chemin du fichier de configuration par défaut
+# Chemin du fichier de configuration par dÃ©faut
 $script:DefaultConfigPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "config\process-manager.config.json"
 
 #endregion
 
-#region Fonctions privées
+#region Fonctions privÃ©es
 
 <#
 .SYNOPSIS
-    Écrit un message dans le journal.
+    Ã‰crit un message dans le journal.
 
 .DESCRIPTION
-    Cette fonction écrit un message dans le journal avec un niveau de gravité spécifié.
+    Cette fonction Ã©crit un message dans le journal avec un niveau de gravitÃ© spÃ©cifiÃ©.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Level
-    Le niveau de gravité du message (Debug, Info, Warning, Error).
+    Le niveau de gravitÃ© du message (Debug, Info, Warning, Error).
 
 .EXAMPLE
-    Write-DependencyLog -Message "Analyse des dépendances du gestionnaire 'ModeManager'" -Level Info
+    Write-DependencyLog -Message "Analyse des dÃ©pendances du gestionnaire 'ModeManager'" -Level Info
 #>
 function Write-DependencyLog {
     [CmdletBinding()]
@@ -47,7 +47,7 @@ function Write-DependencyLog {
         [string]$Level = "Info"
     )
 
-    # Définir les niveaux de journalisation
+    # DÃ©finir les niveaux de journalisation
     $logLevels = @{
         Debug = 0
         Info = 1
@@ -55,7 +55,7 @@ function Write-DependencyLog {
         Error = 3
     }
 
-    # Définir la couleur en fonction du niveau
+    # DÃ©finir la couleur en fonction du niveau
     $color = switch ($Level) {
         "Debug" { "Gray" }
         "Info" { "White" }
@@ -75,10 +75,10 @@ function Write-DependencyLog {
     Obtient la configuration du Process Manager.
 
 .DESCRIPTION
-    Cette fonction charge la configuration du Process Manager à partir du fichier de configuration.
+    Cette fonction charge la configuration du Process Manager Ã  partir du fichier de configuration.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     $config = Get-ProcessManagerConfig
@@ -90,7 +90,7 @@ function Get-ProcessManagerConfig {
         [string]$ConfigPath = $script:DefaultConfigPath
     )
 
-    # Vérifier si le fichier de configuration existe
+    # VÃ©rifier si le fichier de configuration existe
     if (-not (Test-Path -Path $ConfigPath -PathType Leaf)) {
         Write-DependencyLog -Message "Le fichier de configuration n'existe pas : $ConfigPath" -Level Error
         return $null
@@ -109,19 +109,19 @@ function Get-ProcessManagerConfig {
 
 <#
 .SYNOPSIS
-    Compare deux versions sémantiques.
+    Compare deux versions sÃ©mantiques.
 
 .DESCRIPTION
-    Cette fonction compare deux versions sémantiques et retourne un résultat en fonction de l'opérateur spécifié.
+    Cette fonction compare deux versions sÃ©mantiques et retourne un rÃ©sultat en fonction de l'opÃ©rateur spÃ©cifiÃ©.
 
 .PARAMETER Version1
-    La première version à comparer.
+    La premiÃ¨re version Ã  comparer.
 
 .PARAMETER Version2
-    La deuxième version à comparer.
+    La deuxiÃ¨me version Ã  comparer.
 
 .PARAMETER Operator
-    L'opérateur de comparaison (Equal, NotEqual, GreaterThan, GreaterOrEqual, LessThan, LessOrEqual).
+    L'opÃ©rateur de comparaison (Equal, NotEqual, GreaterThan, GreaterOrEqual, LessThan, LessOrEqual).
 
 .EXAMPLE
     $result = Compare-SemanticVersion -Version1 "1.0.0" -Version2 "1.1.0" -Operator "LessThan"
@@ -142,12 +142,12 @@ function Compare-SemanticVersion {
 
     # Valider les versions
     if (-not ($Version1 -match '^\d+\.\d+\.\d+$')) {
-        Write-DependencyLog -Message "Version1 n'est pas au format sémantique (X.Y.Z) : $Version1" -Level Error
+        Write-DependencyLog -Message "Version1 n'est pas au format sÃ©mantique (X.Y.Z) : $Version1" -Level Error
         return $false
     }
     
     if (-not ($Version2 -match '^\d+\.\d+\.\d+$')) {
-        Write-DependencyLog -Message "Version2 n'est pas au format sémantique (X.Y.Z) : $Version2" -Level Error
+        Write-DependencyLog -Message "Version2 n'est pas au format sÃ©mantique (X.Y.Z) : $Version2" -Level Error
         return $false
     }
     
@@ -173,13 +173,13 @@ function Compare-SemanticVersion {
 
 <#
 .SYNOPSIS
-    Détecte les cycles dans un graphe de dépendances.
+    DÃ©tecte les cycles dans un graphe de dÃ©pendances.
 
 .DESCRIPTION
-    Cette fonction détecte les cycles dans un graphe de dépendances en utilisant l'algorithme de détection de cycles de Tarjan.
+    Cette fonction dÃ©tecte les cycles dans un graphe de dÃ©pendances en utilisant l'algorithme de dÃ©tection de cycles de Tarjan.
 
 .PARAMETER DependencyGraph
-    Le graphe de dépendances sous forme de hashtable.
+    Le graphe de dÃ©pendances sous forme de hashtable.
 
 .EXAMPLE
     $cycles = Detect-DependencyCycles -DependencyGraph $dependencyGraph
@@ -199,36 +199,36 @@ function Detect-DependencyCycles {
     $onStack = @{}
     $stronglyConnectedComponents = @()
     
-    # Fonction récursive pour l'algorithme de Tarjan
+    # Fonction rÃ©cursive pour l'algorithme de Tarjan
     function StrongConnect {
         param (
             [Parameter(Mandatory = $true)]
             [string]$Node
         )
         
-        # Initialiser le nœud
+        # Initialiser le nÅ“ud
         $indices[$Node] = $index
         $lowLinks[$Node] = $index
         $index++
         $stack += $Node
         $onStack[$Node] = $true
         
-        # Parcourir les dépendances du nœud
+        # Parcourir les dÃ©pendances du nÅ“ud
         if ($DependencyGraph.ContainsKey($Node)) {
             foreach ($dependency in $DependencyGraph[$Node]) {
                 if (-not $indices.ContainsKey($dependency)) {
-                    # Nœud non visité
+                    # NÅ“ud non visitÃ©
                     StrongConnect -Node $dependency
                     $lowLinks[$Node] = [Math]::Min($lowLinks[$Node], $lowLinks[$dependency])
                 }
                 elseif ($onStack[$dependency]) {
-                    # Nœud déjà sur la pile (cycle potentiel)
+                    # NÅ“ud dÃ©jÃ  sur la pile (cycle potentiel)
                     $lowLinks[$Node] = [Math]::Min($lowLinks[$Node], $indices[$dependency])
                 }
             }
         }
         
-        # Vérifier si le nœud est la racine d'une composante fortement connexe
+        # VÃ©rifier si le nÅ“ud est la racine d'une composante fortement connexe
         if ($lowLinks[$Node] -eq $indices[$Node]) {
             $component = @()
             $w = ""
@@ -240,14 +240,14 @@ function Detect-DependencyCycles {
                 $component += $w
             } while ($w -ne $Node)
             
-            # Ajouter la composante si elle contient plus d'un nœud (cycle)
+            # Ajouter la composante si elle contient plus d'un nÅ“ud (cycle)
             if ($component.Count -gt 1) {
                 $stronglyConnectedComponents += ,$component
             }
         }
     }
     
-    # Appliquer l'algorithme de Tarjan à tous les nœuds
+    # Appliquer l'algorithme de Tarjan Ã  tous les nÅ“uds
     foreach ($node in $DependencyGraph.Keys) {
         if (-not $indices.ContainsKey($node)) {
             StrongConnect -Node $node
@@ -259,13 +259,13 @@ function Detect-DependencyCycles {
 
 <#
 .SYNOPSIS
-    Trie les gestionnaires selon leurs dépendances.
+    Trie les gestionnaires selon leurs dÃ©pendances.
 
 .DESCRIPTION
-    Cette fonction trie les gestionnaires selon leurs dépendances en utilisant l'algorithme de tri topologique.
+    Cette fonction trie les gestionnaires selon leurs dÃ©pendances en utilisant l'algorithme de tri topologique.
 
 .PARAMETER DependencyGraph
-    Le graphe de dépendances sous forme de hashtable.
+    Le graphe de dÃ©pendances sous forme de hashtable.
 
 .EXAMPLE
     $sortedManagers = Sort-ManagersByDependencies -DependencyGraph $dependencyGraph
@@ -277,10 +277,10 @@ function Sort-ManagersByDependencies {
         [hashtable]$DependencyGraph
     )
 
-    # Vérifier s'il y a des cycles
+    # VÃ©rifier s'il y a des cycles
     $cycles = Detect-DependencyCycles -DependencyGraph $DependencyGraph
     if ($cycles.Count -gt 0) {
-        Write-DependencyLog -Message "Des cycles de dépendances ont été détectés : $($cycles | ForEach-Object { $_ -join ' -> ' } | Join-String -Separator ', ')" -Level Error
+        Write-DependencyLog -Message "Des cycles de dÃ©pendances ont Ã©tÃ© dÃ©tectÃ©s : $($cycles | ForEach-Object { $_ -join ' -> ' } | Join-String -Separator ', ')" -Level Error
         return $null
     }
     
@@ -288,38 +288,38 @@ function Sort-ManagersByDependencies {
     $visited = @{}
     $sorted = @()
     
-    # Fonction récursive pour l'algorithme de tri topologique
+    # Fonction rÃ©cursive pour l'algorithme de tri topologique
     function Visit {
         param (
             [Parameter(Mandatory = $true)]
             [string]$Node
         )
         
-        # Vérifier si le nœud a déjà été visité
+        # VÃ©rifier si le nÅ“ud a dÃ©jÃ  Ã©tÃ© visitÃ©
         if ($visited.ContainsKey($Node)) {
             return
         }
         
-        # Marquer le nœud comme visité
+        # Marquer le nÅ“ud comme visitÃ©
         $visited[$Node] = $true
         
-        # Visiter les dépendances du nœud
+        # Visiter les dÃ©pendances du nÅ“ud
         if ($DependencyGraph.ContainsKey($Node)) {
             foreach ($dependency in $DependencyGraph[$Node]) {
                 Visit -Node $dependency
             }
         }
         
-        # Ajouter le nœud à la liste triée
+        # Ajouter le nÅ“ud Ã  la liste triÃ©e
         $sorted += $Node
     }
     
-    # Appliquer l'algorithme de tri topologique à tous les nœuds
+    # Appliquer l'algorithme de tri topologique Ã  tous les nÅ“uds
     foreach ($node in $DependencyGraph.Keys) {
         Visit -Node $node
     }
     
-    # Ajouter les nœuds qui n'ont pas de dépendances
+    # Ajouter les nÅ“uds qui n'ont pas de dÃ©pendances
     foreach ($node in $DependencyGraph.Keys) {
         if (-not $visited.ContainsKey($node)) {
             $sorted += $node
@@ -335,16 +335,16 @@ function Sort-ManagersByDependencies {
 
 <#
 .SYNOPSIS
-    Obtient les dépendances d'un gestionnaire.
+    Obtient les dÃ©pendances d'un gestionnaire.
 
 .DESCRIPTION
-    Cette fonction extrait les dépendances d'un gestionnaire à partir de son manifeste.
+    Cette fonction extrait les dÃ©pendances d'un gestionnaire Ã  partir de son manifeste.
 
 .PARAMETER Path
     Le chemin vers le fichier du gestionnaire.
 
 .PARAMETER ManifestPath
-    Le chemin vers le fichier de manifeste. Si non spécifié, tente de le déduire à partir du chemin du gestionnaire.
+    Le chemin vers le fichier de manifeste. Si non spÃ©cifiÃ©, tente de le dÃ©duire Ã  partir du chemin du gestionnaire.
 
 .EXAMPLE
     $dependencies = Get-ManagerDependencies -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
@@ -362,7 +362,7 @@ function Get-ManagerDependencies {
         [string]$ManifestPath
     )
 
-    # Vérifier que le fichier du gestionnaire existe
+    # VÃ©rifier que le fichier du gestionnaire existe
     if (-not (Test-Path -Path $Path -PathType Leaf)) {
         Write-DependencyLog -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $null
@@ -370,11 +370,11 @@ function Get-ManagerDependencies {
 
     # Extraire le nom du gestionnaire
     $managerName = [System.IO.Path]::GetFileNameWithoutExtension($Path)
-    Write-DependencyLog -Message "Extraction des dépendances du gestionnaire '$managerName'..." -Level Info
+    Write-DependencyLog -Message "Extraction des dÃ©pendances du gestionnaire '$managerName'..." -Level Info
 
     # Essayer d'extraire le manifeste
     try {
-        # Vérifier si le module ManifestParser est disponible
+        # VÃ©rifier si le module ManifestParser est disponible
         if (Get-Module -ListAvailable -Name "ManifestParser") {
             # Importer le module ManifestParser
             Import-Module -Name "ManifestParser" -ErrorAction Stop
@@ -382,22 +382,22 @@ function Get-ManagerDependencies {
             # Extraire le manifeste
             $manifest = Get-ManagerManifest -Path $Path -ManifestPath $ManifestPath -ErrorAction Stop
             
-            # Extraire les dépendances du manifeste
+            # Extraire les dÃ©pendances du manifeste
             if ($manifest -and $manifest.Dependencies) {
-                Write-DependencyLog -Message "Dépendances trouvées dans le manifeste : $($manifest.Dependencies.Count)" -Level Info
+                Write-DependencyLog -Message "DÃ©pendances trouvÃ©es dans le manifeste : $($manifest.Dependencies.Count)" -Level Info
                 return $manifest.Dependencies
             }
         }
         else {
-            Write-DependencyLog -Message "Le module ManifestParser n'est pas disponible. Analyse manuelle des dépendances..." -Level Warning
+            Write-DependencyLog -Message "Le module ManifestParser n'est pas disponible. Analyse manuelle des dÃ©pendances..." -Level Warning
         }
     }
     catch {
         Write-DependencyLog -Message "Erreur lors de l'extraction du manifeste : $_" -Level Warning
     }
 
-    # Analyse manuelle des dépendances si le manifeste n'est pas disponible
-    Write-DependencyLog -Message "Analyse manuelle des dépendances..." -Level Info
+    # Analyse manuelle des dÃ©pendances si le manifeste n'est pas disponible
+    Write-DependencyLog -Message "Analyse manuelle des dÃ©pendances..." -Level Info
     
     # Charger le contenu du fichier
     $content = Get-Content -Path $Path -Raw
@@ -415,16 +415,16 @@ function Get-ManagerDependencies {
         }
     }
     
-    # Rechercher les appels à d'autres gestionnaires
+    # Rechercher les appels Ã  d'autres gestionnaires
     $managerPattern = '(Start|Stop|Get)-(\w+)(Manager|Service)'
     $managerMatches = [regex]::Matches($content, $managerPattern)
     
     foreach ($match in $managerMatches) {
         $calledManagerName = $match.Groups[2].Value + $match.Groups[3].Value
         
-        # Éviter les auto-références
+        # Ã‰viter les auto-rÃ©fÃ©rences
         if ($calledManagerName -ne $managerName) {
-            # Vérifier si la dépendance existe déjà
+            # VÃ©rifier si la dÃ©pendance existe dÃ©jÃ 
             $existingDependency = $dependencies | Where-Object { $_.Name -eq $calledManagerName } | Select-Object -First 1
             
             if (-not $existingDependency) {
@@ -436,22 +436,22 @@ function Get-ManagerDependencies {
         }
     }
     
-    Write-DependencyLog -Message "Dépendances trouvées par analyse manuelle : $($dependencies.Count)" -Level Info
+    Write-DependencyLog -Message "DÃ©pendances trouvÃ©es par analyse manuelle : $($dependencies.Count)" -Level Info
     return $dependencies
 }
 
 <#
 .SYNOPSIS
-    Vérifie la disponibilité des dépendances d'un gestionnaire.
+    VÃ©rifie la disponibilitÃ© des dÃ©pendances d'un gestionnaire.
 
 .DESCRIPTION
-    Cette fonction vérifie si les dépendances d'un gestionnaire sont disponibles et compatibles.
+    Cette fonction vÃ©rifie si les dÃ©pendances d'un gestionnaire sont disponibles et compatibles.
 
 .PARAMETER Dependencies
-    Les dépendances à vérifier.
+    Les dÃ©pendances Ã  vÃ©rifier.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     $result = Test-DependenciesAvailability -Dependencies $dependencies
@@ -469,9 +469,9 @@ function Test-DependenciesAvailability {
         [string]$ConfigPath = $script:DefaultConfigPath
     )
 
-    # Vérifier si des dépendances sont spécifiées
+    # VÃ©rifier si des dÃ©pendances sont spÃ©cifiÃ©es
     if ($Dependencies.Count -eq 0) {
-        Write-DependencyLog -Message "Aucune dépendance à vérifier." -Level Info
+        Write-DependencyLog -Message "Aucune dÃ©pendance Ã  vÃ©rifier." -Level Info
         return $true
     }
 
@@ -482,7 +482,7 @@ function Test-DependenciesAvailability {
         return $false
     }
 
-    # Vérifier chaque dépendance
+    # VÃ©rifier chaque dÃ©pendance
     $missingDependencies = @()
     $incompatibleDependencies = @()
     
@@ -490,81 +490,81 @@ function Test-DependenciesAvailability {
         $dependencyName = $dependency.Name
         $required = $dependency.Required -eq $true
         
-        # Vérifier si la dépendance est enregistrée
+        # VÃ©rifier si la dÃ©pendance est enregistrÃ©e
         if (-not $config.Managers.PSObject.Properties.Name -contains $dependencyName) {
             if ($required) {
-                Write-DependencyLog -Message "Dépendance requise non enregistrée : $dependencyName" -Level Error
+                Write-DependencyLog -Message "DÃ©pendance requise non enregistrÃ©e : $dependencyName" -Level Error
                 $missingDependencies += $dependencyName
             } else {
-                Write-DependencyLog -Message "Dépendance optionnelle non enregistrée : $dependencyName" -Level Warning
+                Write-DependencyLog -Message "DÃ©pendance optionnelle non enregistrÃ©e : $dependencyName" -Level Warning
             }
             continue
         }
         
-        # Vérifier la version si spécifiée
+        # VÃ©rifier la version si spÃ©cifiÃ©e
         if ($dependency.MinimumVersion -or $dependency.MaximumVersion) {
             $dependencyVersion = $config.Managers.$dependencyName.Version
             
             if (-not $dependencyVersion) {
-                Write-DependencyLog -Message "Version non spécifiée pour la dépendance : $dependencyName" -Level Warning
+                Write-DependencyLog -Message "Version non spÃ©cifiÃ©e pour la dÃ©pendance : $dependencyName" -Level Warning
                 continue
             }
             
-            # Vérifier la version minimale
+            # VÃ©rifier la version minimale
             if ($dependency.MinimumVersion) {
                 $versionCompatible = Compare-SemanticVersion -Version1 $dependencyVersion -Version2 $dependency.MinimumVersion -Operator "GreaterOrEqual"
                 
                 if (-not $versionCompatible) {
-                    Write-DependencyLog -Message "Version incompatible pour la dépendance $dependencyName : $dependencyVersion < $($dependency.MinimumVersion) (minimum requis)" -Level Error
+                    Write-DependencyLog -Message "Version incompatible pour la dÃ©pendance $dependencyName : $dependencyVersion < $($dependency.MinimumVersion) (minimum requis)" -Level Error
                     $incompatibleDependencies += "$dependencyName (version $dependencyVersion < $($dependency.MinimumVersion))"
                     continue
                 }
             }
             
-            # Vérifier la version maximale
+            # VÃ©rifier la version maximale
             if ($dependency.MaximumVersion) {
                 $versionCompatible = Compare-SemanticVersion -Version1 $dependencyVersion -Version2 $dependency.MaximumVersion -Operator "LessOrEqual"
                 
                 if (-not $versionCompatible) {
-                    Write-DependencyLog -Message "Version incompatible pour la dépendance $dependencyName : $dependencyVersion > $($dependency.MaximumVersion) (maximum autorisé)" -Level Error
+                    Write-DependencyLog -Message "Version incompatible pour la dÃ©pendance $dependencyName : $dependencyVersion > $($dependency.MaximumVersion) (maximum autorisÃ©)" -Level Error
                     $incompatibleDependencies += "$dependencyName (version $dependencyVersion > $($dependency.MaximumVersion))"
                     continue
                 }
             }
         }
         
-        Write-DependencyLog -Message "Dépendance disponible et compatible : $dependencyName" -Level Debug
+        Write-DependencyLog -Message "DÃ©pendance disponible et compatible : $dependencyName" -Level Debug
     }
     
-    # Vérifier s'il y a des dépendances manquantes ou incompatibles
+    # VÃ©rifier s'il y a des dÃ©pendances manquantes ou incompatibles
     if ($missingDependencies.Count -gt 0 -or $incompatibleDependencies.Count -gt 0) {
         if ($missingDependencies.Count -gt 0) {
-            Write-DependencyLog -Message "Dépendances requises manquantes : $($missingDependencies -join ', ')" -Level Error
+            Write-DependencyLog -Message "DÃ©pendances requises manquantes : $($missingDependencies -join ', ')" -Level Error
         }
         
         if ($incompatibleDependencies.Count -gt 0) {
-            Write-DependencyLog -Message "Dépendances incompatibles : $($incompatibleDependencies -join ', ')" -Level Error
+            Write-DependencyLog -Message "DÃ©pendances incompatibles : $($incompatibleDependencies -join ', ')" -Level Error
         }
         
         return $false
     }
     
-    Write-DependencyLog -Message "Toutes les dépendances sont disponibles et compatibles." -Level Info
+    Write-DependencyLog -Message "Toutes les dÃ©pendances sont disponibles et compatibles." -Level Info
     return $true
 }
 
 <#
 .SYNOPSIS
-    Résout les conflits de dépendances.
+    RÃ©sout les conflits de dÃ©pendances.
 
 .DESCRIPTION
-    Cette fonction détecte et résout les conflits de dépendances entre gestionnaires.
+    Cette fonction dÃ©tecte et rÃ©sout les conflits de dÃ©pendances entre gestionnaires.
 
 .PARAMETER Dependencies
-    Les dépendances à résoudre.
+    Les dÃ©pendances Ã  rÃ©soudre.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     $resolvedDependencies = Resolve-DependencyConflicts -Dependencies $dependencies
@@ -582,9 +582,9 @@ function Resolve-DependencyConflicts {
         [string]$ConfigPath = $script:DefaultConfigPath
     )
 
-    # Vérifier si des dépendances sont spécifiées
+    # VÃ©rifier si des dÃ©pendances sont spÃ©cifiÃ©es
     if ($Dependencies.Count -eq 0) {
-        Write-DependencyLog -Message "Aucune dépendance à résoudre." -Level Info
+        Write-DependencyLog -Message "Aucune dÃ©pendance Ã  rÃ©soudre." -Level Info
         return @()
     }
 
@@ -595,7 +595,7 @@ function Resolve-DependencyConflicts {
         return $null
     }
 
-    # Regrouper les dépendances par nom
+    # Regrouper les dÃ©pendances par nom
     $dependenciesByName = @{}
     foreach ($dependency in $Dependencies) {
         $dependencyName = $dependency.Name
@@ -607,21 +607,21 @@ function Resolve-DependencyConflicts {
         $dependenciesByName[$dependencyName] += $dependency
     }
     
-    # Résoudre les conflits pour chaque dépendance
+    # RÃ©soudre les conflits pour chaque dÃ©pendance
     $resolvedDependencies = @()
     
     foreach ($dependencyName in $dependenciesByName.Keys) {
         $dependencyGroup = $dependenciesByName[$dependencyName]
         
-        # Si une seule dépendance, pas de conflit
+        # Si une seule dÃ©pendance, pas de conflit
         if ($dependencyGroup.Count -eq 1) {
             $resolvedDependencies += $dependencyGroup[0]
             continue
         }
         
-        Write-DependencyLog -Message "Résolution des conflits pour la dépendance : $dependencyName" -Level Info
+        Write-DependencyLog -Message "RÃ©solution des conflits pour la dÃ©pendance : $dependencyName" -Level Info
         
-        # Déterminer si la dépendance est requise
+        # DÃ©terminer si la dÃ©pendance est requise
         $isRequired = $dependencyGroup | Where-Object { $_.Required -eq $true } | Select-Object -First 1
         
         # Fusionner les versions
@@ -638,29 +638,29 @@ function Resolve-DependencyConflicts {
             }
         }
         
-        # Déterminer la version minimale la plus élevée
+        # DÃ©terminer la version minimale la plus Ã©levÃ©e
         $minVersion = $null
         if ($minVersions.Count -gt 0) {
             $minVersion = $minVersions | Sort-Object -Descending | Select-Object -First 1
         }
         
-        # Déterminer la version maximale la plus basse
+        # DÃ©terminer la version maximale la plus basse
         $maxVersion = $null
         if ($maxVersions.Count -gt 0) {
             $maxVersion = $maxVersions | Sort-Object | Select-Object -First 1
         }
         
-        # Vérifier si les versions sont compatibles
+        # VÃ©rifier si les versions sont compatibles
         if ($minVersion -and $maxVersion) {
             $versionsCompatible = Compare-SemanticVersion -Version1 $minVersion -Version2 $maxVersion -Operator "LessOrEqual"
             
             if (-not $versionsCompatible) {
-                Write-DependencyLog -Message "Conflit de versions irrésolvable pour la dépendance $dependencyName : $minVersion > $maxVersion" -Level Error
+                Write-DependencyLog -Message "Conflit de versions irrÃ©solvable pour la dÃ©pendance $dependencyName : $minVersion > $maxVersion" -Level Error
                 return $null
             }
         }
         
-        # Créer la dépendance résolue
+        # CrÃ©er la dÃ©pendance rÃ©solue
         $resolvedDependency = @{
             Name = $dependencyName
             Required = $isRequired -ne $null
@@ -675,7 +675,7 @@ function Resolve-DependencyConflicts {
         }
         
         $resolvedDependencies += $resolvedDependency
-        Write-DependencyLog -Message "Conflit résolu pour la dépendance $dependencyName : Required=$($resolvedDependency.Required), MinVersion=$($resolvedDependency.MinimumVersion), MaxVersion=$($resolvedDependency.MaximumVersion)" -Level Info
+        Write-DependencyLog -Message "Conflit rÃ©solu pour la dÃ©pendance $dependencyName : Required=$($resolvedDependency.Required), MinVersion=$($resolvedDependency.MinimumVersion), MaxVersion=$($resolvedDependency.MaximumVersion)" -Level Info
     }
     
     return $resolvedDependencies
@@ -683,16 +683,16 @@ function Resolve-DependencyConflicts {
 
 <#
 .SYNOPSIS
-    Détermine l'ordre de chargement des gestionnaires.
+    DÃ©termine l'ordre de chargement des gestionnaires.
 
 .DESCRIPTION
-    Cette fonction détermine l'ordre de chargement des gestionnaires en fonction de leurs dépendances.
+    Cette fonction dÃ©termine l'ordre de chargement des gestionnaires en fonction de leurs dÃ©pendances.
 
 .PARAMETER ManagerNames
-    Les noms des gestionnaires à ordonner.
+    Les noms des gestionnaires Ã  ordonner.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     $loadOrder = Get-ManagerLoadOrder -ManagerNames @("ModeManager", "RoadmapManager")
@@ -710,9 +710,9 @@ function Get-ManagerLoadOrder {
         [string]$ConfigPath = $script:DefaultConfigPath
     )
 
-    # Vérifier si des gestionnaires sont spécifiés
+    # VÃ©rifier si des gestionnaires sont spÃ©cifiÃ©s
     if ($ManagerNames.Count -eq 0) {
-        Write-DependencyLog -Message "Aucun gestionnaire à ordonner." -Level Info
+        Write-DependencyLog -Message "Aucun gestionnaire Ã  ordonner." -Level Info
         return @()
     }
 
@@ -723,30 +723,30 @@ function Get-ManagerLoadOrder {
         return $null
     }
 
-    # Construire le graphe de dépendances
+    # Construire le graphe de dÃ©pendances
     $dependencyGraph = @{}
     
     foreach ($managerName in $ManagerNames) {
-        # Vérifier si le gestionnaire est enregistré
+        # VÃ©rifier si le gestionnaire est enregistrÃ©
         if (-not $config.Managers.PSObject.Properties.Name -contains $managerName) {
-            Write-DependencyLog -Message "Gestionnaire non enregistré : $managerName" -Level Warning
+            Write-DependencyLog -Message "Gestionnaire non enregistrÃ© : $managerName" -Level Warning
             continue
         }
         
         # Obtenir le chemin du gestionnaire
         $managerPath = $config.Managers.$managerName.Path
         
-        # Obtenir les dépendances du gestionnaire
+        # Obtenir les dÃ©pendances du gestionnaire
         $dependencies = Get-ManagerDependencies -Path $managerPath
         
-        # Ajouter les dépendances au graphe
+        # Ajouter les dÃ©pendances au graphe
         $dependencyGraph[$managerName] = @()
         
         if ($dependencies) {
             foreach ($dependency in $dependencies) {
                 $dependencyName = $dependency.Name
                 
-                # Vérifier si la dépendance est dans la liste des gestionnaires à ordonner
+                # VÃ©rifier si la dÃ©pendance est dans la liste des gestionnaires Ã  ordonner
                 if ($ManagerNames -contains $dependencyName) {
                     $dependencyGraph[$managerName] += $dependencyName
                 }
@@ -754,11 +754,11 @@ function Get-ManagerLoadOrder {
         }
     }
     
-    # Trier les gestionnaires selon leurs dépendances
+    # Trier les gestionnaires selon leurs dÃ©pendances
     $sortedManagers = Sort-ManagersByDependencies -DependencyGraph $dependencyGraph
     
     if (-not $sortedManagers) {
-        Write-DependencyLog -Message "Impossible de déterminer l'ordre de chargement des gestionnaires." -Level Error
+        Write-DependencyLog -Message "Impossible de dÃ©terminer l'ordre de chargement des gestionnaires." -Level Error
         return $null
     }
     

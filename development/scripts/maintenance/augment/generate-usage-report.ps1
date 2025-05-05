@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Génère un rapport sur l'utilisation d'Augment Code.
+    GÃ©nÃ¨re un rapport sur l'utilisation d'Augment Code.
 
 .DESCRIPTION
-    Ce script génère un rapport simple sur l'utilisation d'Augment Code,
+    Ce script gÃ©nÃ¨re un rapport simple sur l'utilisation d'Augment Code,
     en analysant les logs et les Memories.
 
 .PARAMETER OutputPath
     Chemin vers le fichier de sortie pour le rapport.
-    Par défaut : "reports\augment\usage-report.md".
+    Par dÃ©faut : "reports\augment\usage-report.md".
 
 .EXAMPLE
     .\generate-usage-report.ps1
-    # Génère un rapport sur l'utilisation d'Augment Code
+    # GÃ©nÃ¨re un rapport sur l'utilisation d'Augment Code
 
 .NOTES
     Version: 1.0
@@ -26,7 +26,7 @@ param (
     [string]$OutputPath = "reports\augment\usage-report.md"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -36,12 +36,12 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputPath = Join-Path -Path $projectRoot -ChildPath $OutputPath
 $outputDir = Split-Path -Path $outputPath -Parent
 if (-not (Test-Path -Path $outputDir -PathType Container)) {
@@ -99,22 +99,22 @@ function Get-UsageStats {
     return $stats
 }
 
-# Générer le rapport
+# GÃ©nÃ©rer le rapport
 $stats = Get-UsageStats
 $report = @"
 # Rapport d'utilisation d'Augment Code
 
-Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 ## Statistiques globales
 
-- **Nombre total de requêtes** : $($stats.TotalRequests)
+- **Nombre total de requÃªtes** : $($stats.TotalRequests)
 - **Taille des Memories** : $([math]::Round($stats.MemoriesSize / 1024, 2)) KB
-- **Dernière mise à jour des Memories** : $($stats.LastUpdated)
+- **DerniÃ¨re mise Ã  jour des Memories** : $($stats.LastUpdated)
 
 ## Utilisation par mode
 
-| Mode | Nombre de requêtes | Pourcentage |
+| Mode | Nombre de requÃªtes | Pourcentage |
 |------|-------------------|------------|
 "@
 
@@ -132,33 +132,33 @@ $report += @"
 
 "@
 
-# Ajouter des recommandations basées sur les statistiques
+# Ajouter des recommandations basÃ©es sur les statistiques
 if ($stats.TotalRequests -eq 0) {
-    $report += "- Commencez à utiliser Augment Code pour bénéficier de ses fonctionnalités.`n"
+    $report += "- Commencez Ã  utiliser Augment Code pour bÃ©nÃ©ficier de ses fonctionnalitÃ©s.`n"
 } else {
-    # Recommandations basées sur l'utilisation des modes
+    # Recommandations basÃ©es sur l'utilisation des modes
     $mostUsedMode = $stats.ModeUsage.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 1
     $leastUsedModes = $stats.ModeUsage.GetEnumerator() | Sort-Object -Property Value | Select-Object -First 3
     
-    $report += "- Mode le plus utilisé : **$($mostUsedMode.Key)** ($($mostUsedMode.Value) requêtes)`n"
-    $report += "- Modes les moins utilisés : $($leastUsedModes.Key -join ', ')`n"
-    $report += "- Envisagez d'utiliser davantage les modes moins utilisés pour tirer pleinement parti d'Augment Code.`n"
+    $report += "- Mode le plus utilisÃ© : **$($mostUsedMode.Key)** ($($mostUsedMode.Value) requÃªtes)`n"
+    $report += "- Modes les moins utilisÃ©s : $($leastUsedModes.Key -join ', ')`n"
+    $report += "- Envisagez d'utiliser davantage les modes moins utilisÃ©s pour tirer pleinement parti d'Augment Code.`n"
     
-    # Recommandations basées sur la taille des Memories
+    # Recommandations basÃ©es sur la taille des Memories
     if ($stats.MemoriesSize -gt 10240) {
         $report += "- Les Memories sont assez volumineuses ($([math]::Round($stats.MemoriesSize / 1024, 2)) KB). Envisagez de les optimiser.`n"
     } elseif ($stats.MemoriesSize -lt 1024) {
-        $report += "- Les Memories sont très petites ($([math]::Round($stats.MemoriesSize / 1024, 2)) KB). Envisagez de les enrichir.`n"
+        $report += "- Les Memories sont trÃ¨s petites ($([math]::Round($stats.MemoriesSize / 1024, 2)) KB). Envisagez de les enrichir.`n"
     }
     
-    # Recommandations basées sur la date de dernière mise à jour
+    # Recommandations basÃ©es sur la date de derniÃ¨re mise Ã  jour
     if ($stats.LastUpdated) {
         try {
             $lastUpdated = [DateTime]$stats.LastUpdated
             $daysSinceUpdate = (Get-Date) - $lastUpdated
             
             if ($daysSinceUpdate.Days -gt 7) {
-                $report += "- Les Memories n'ont pas été mises à jour depuis $($daysSinceUpdate.Days) jours. Envisagez de les mettre à jour.`n"
+                $report += "- Les Memories n'ont pas Ã©tÃ© mises Ã  jour depuis $($daysSinceUpdate.Days) jours. Envisagez de les mettre Ã  jour.`n"
             }
         } catch {
             # Ignorer les erreurs de conversion de date
@@ -168,21 +168,21 @@ if ($stats.TotalRequests -eq 0) {
 
 $report += @"
 
-## Prochaines étapes
+## Prochaines Ã©tapes
 
-1. Exécutez `Import-Module AugmentIntegration` pour utiliser le module d'intégration Augment
-2. Utilisez `Initialize-AugmentIntegration -StartServers` pour démarrer les serveurs MCP
-3. Mettez à jour les Memories avec `Update-AugmentMemoriesForMode -Mode ALL`
+1. ExÃ©cutez `Import-Module AugmentIntegration` pour utiliser le module d'intÃ©gration Augment
+2. Utilisez `Initialize-AugmentIntegration -StartServers` pour dÃ©marrer les serveurs MCP
+3. Mettez Ã  jour les Memories avec `Update-AugmentMemoriesForMode -Mode ALL`
 4. Analysez les performances avec `Analyze-AugmentPerformance`
 
 ## Ressources
 
-- [Guide d'intégration avec Augment Code](../../docs/guides/augment/integration_guide.md)
-- [Guide d'utilisation avancée](../../docs/guides/augment/advanced_usage.md)
+- [Guide d'intÃ©gration avec Augment Code](../../docs/guides/augment/integration_guide.md)
+- [Guide d'utilisation avancÃ©e](../../docs/guides/augment/advanced_usage.md)
 - [Optimisation des Memories](../../docs/guides/augment/memories_optimization.md)
 - [Limitations d'Augment Code](../../docs/guides/augment/limitations.md)
 "@
 
 # Enregistrer le rapport
 $report | Out-File -FilePath $outputPath -Encoding UTF8
-Write-Host "Rapport d'utilisation généré : $outputPath" -ForegroundColor Green
+Write-Host "Rapport d'utilisation gÃ©nÃ©rÃ© : $outputPath" -ForegroundColor Green

@@ -1,5 +1,5 @@
-# Generate-ActiveRoadmapView.ps1
-# Script pour générer une vue de la roadmap active à la demande
+﻿# Generate-ActiveRoadmapView.ps1
+# Script pour gÃ©nÃ©rer une vue de la roadmap active Ã  la demande
 
 [CmdletBinding()]
 param (
@@ -33,7 +33,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -56,26 +56,26 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         }
         else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     }
     catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("chromadb", "json", "datetime")
     $missingPackages = @()
@@ -96,24 +96,24 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         }
         else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
     
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour générer la vue de la roadmap active
+# Fonction pour crÃ©er un script Python temporaire pour gÃ©nÃ©rer la vue de la roadmap active
 function New-ActiveRoadmapViewScript {
     [CmdletBinding()]
     param (
@@ -147,11 +147,11 @@ from datetime import datetime
 from collections import defaultdict
 
 def get_task_level(task_id):
-    """Déterminer le niveau hiérarchique d'une tâche à partir de son ID"""
+    """DÃ©terminer le niveau hiÃ©rarchique d'une tÃ¢che Ã  partir de son ID"""
     return len(task_id.split('.'))
 
 def get_parent_id(task_id):
-    """Obtenir l'ID parent d'une tâche"""
+    """Obtenir l'ID parent d'une tÃ¢che"""
     parts = task_id.split('.')
     if len(parts) <= 1:
         return ""
@@ -171,7 +171,7 @@ def get_status_symbol(status):
         return " "
 
 def main():
-    # Paramètres
+    # ParamÃ¨tres
     chroma_db_path = r'$ChromaDbPath'
     collection_name = '$CollectionName'
     status_filter = '$StatusFilter'
@@ -183,10 +183,10 @@ def main():
     try:
         client = chromadb.PersistentClient(path=chroma_db_path)
     except Exception as e:
-        print(f"Erreur lors de la connexion à la base Chroma: {e}")
+        print(f"Erreur lors de la connexion Ã  la base Chroma: {e}")
         sys.exit(1)
     
-    # Vérifier si la collection existe
+    # VÃ©rifier si la collection existe
     try:
         existing_collections = client.list_collections()
         collection_exists = any(c.name == collection_name for c in existing_collections)
@@ -195,30 +195,30 @@ def main():
             print(f"La collection {collection_name} n'existe pas dans la base Chroma.")
             sys.exit(1)
         
-        # Récupérer la collection
+        # RÃ©cupÃ©rer la collection
         collection = client.get_collection(name=collection_name)
         
-        # Construire la requête pour récupérer les tâches
+        # Construire la requÃªte pour rÃ©cupÃ©rer les tÃ¢ches
         where_clause = {}
         
         if status_filter != "All":
             where_clause["status"] = status_filter
         
         if section_filter:
-            # Utiliser une requête plus complexe pour la section
-            # Ceci est une simplification, car Chroma ne supporte pas les recherches partielles dans les métadonnées
+            # Utiliser une requÃªte plus complexe pour la section
+            # Ceci est une simplification, car Chroma ne supporte pas les recherches partielles dans les mÃ©tadonnÃ©es
             pass
         
-        # Récupérer toutes les tâches
+        # RÃ©cupÃ©rer toutes les tÃ¢ches
         result = collection.get(
             where=where_clause if where_clause else None
         )
         
         if not result['ids']:
-            print("Aucune tâche ne correspond aux critères.")
+            print("Aucune tÃ¢che ne correspond aux critÃ¨res.")
             sys.exit(0)
         
-        # Filtrer par section si nécessaire (post-traitement)
+        # Filtrer par section si nÃ©cessaire (post-traitement)
         filtered_indices = []
         if section_filter:
             for i, metadata in enumerate(result['metadatas']):
@@ -228,13 +228,13 @@ def main():
         else:
             filtered_indices = list(range(len(result['ids'])))
         
-        # Créer une structure de données pour les tâches
+        # CrÃ©er une structure de donnÃ©es pour les tÃ¢ches
         tasks = []
         for i in filtered_indices:
             task_id = result['ids'][i]
             metadata = result['metadatas'][i]
             
-            # Filtrer par profondeur si nécessaire
+            # Filtrer par profondeur si nÃ©cessaire
             if max_depth > 0 and get_task_level(task_id) > max_depth:
                 continue
             
@@ -249,7 +249,7 @@ def main():
                 "level": get_task_level(task_id)
             }
             
-            # Ajouter d'autres métadonnées si demandé
+            # Ajouter d'autres mÃ©tadonnÃ©es si demandÃ©
             if include_metadata:
                 for key, value in metadata.items():
                     if key not in task:
@@ -257,10 +257,10 @@ def main():
             
             tasks.append(task)
         
-        # Trier les tâches par ID
+        # Trier les tÃ¢ches par ID
         tasks.sort(key=lambda x: [int(p) if p.isdigit() else p for p in x["id"].split('.')])
         
-        # Construire une structure hiérarchique
+        # Construire une structure hiÃ©rarchique
         task_hierarchy = defaultdict(list)
         root_tasks = []
         
@@ -271,52 +271,52 @@ def main():
             else:
                 task_hierarchy[parent_id].append(task)
         
-        # Générer la vue Markdown
+        # GÃ©nÃ©rer la vue Markdown
         markdown_lines = []
         markdown_lines.append("# Roadmap Active")
         markdown_lines.append("")
-        markdown_lines.append(f"Générée le {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        markdown_lines.append(f"GÃ©nÃ©rÃ©e le {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         markdown_lines.append("")
         
         if status_filter != "All":
-            markdown_lines.append(f"Filtré par statut: {status_filter}")
+            markdown_lines.append(f"FiltrÃ© par statut: {status_filter}")
         
         if section_filter:
-            markdown_lines.append(f"Filtré par section: {section_filter}")
+            markdown_lines.append(f"FiltrÃ© par section: {section_filter}")
         
         if max_depth > 0:
             markdown_lines.append(f"Profondeur maximale: {max_depth}")
         
         markdown_lines.append("")
-        markdown_lines.append("## Tâches")
+        markdown_lines.append("## TÃ¢ches")
         markdown_lines.append("")
         
-        # Fonction récursive pour ajouter les tâches à la vue
+        # Fonction rÃ©cursive pour ajouter les tÃ¢ches Ã  la vue
         def add_tasks_to_view(tasks_list, indent=0):
             for task in tasks_list:
-                # Ajouter la tâche actuelle
+                # Ajouter la tÃ¢che actuelle
                 status_symbol = get_status_symbol(task["status"])
                 indent_str = "  " * indent
                 markdown_lines.append(f"{indent_str}- [{status_symbol}] **{task['id']}** {task['description']}")
                 
-                # Ajouter les métadonnées si demandé
+                # Ajouter les mÃ©tadonnÃ©es si demandÃ©
                 if include_metadata:
                     metadata_str = ", ".join([f"{key}: {value}" for key, value in task.items() 
                                             if key not in ["id", "description", "parentId", "indentLevel", "level"]])
                     if metadata_str:
                         markdown_lines.append(f"{indent_str}  _{metadata_str}_")
                 
-                # Ajouter les tâches enfants
+                # Ajouter les tÃ¢ches enfants
                 if task["id"] in task_hierarchy:
                     add_tasks_to_view(task_hierarchy[task["id"]], indent + 1)
         
-        # Générer la vue
+        # GÃ©nÃ©rer la vue
         add_tasks_to_view(root_tasks)
         
-        # Joindre les lignes et afficher le résultat
+        # Joindre les lignes et afficher le rÃ©sultat
         markdown_content = "\n".join(markdown_lines)
         
-        # Créer un objet résultat
+        # CrÃ©er un objet rÃ©sultat
         result = {
             "markdown": markdown_content,
             "tasks": tasks,
@@ -329,11 +329,11 @@ def main():
             }
         }
         
-        # Afficher le résultat au format JSON
+        # Afficher le rÃ©sultat au format JSON
         print(json.dumps(result, indent=2, ensure_ascii=False))
         
     except Exception as e:
-        print(f"Erreur lors de la génération de la vue de la roadmap: {e}")
+        print(f"Erreur lors de la gÃ©nÃ©ration de la vue de la roadmap: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
@@ -416,14 +416,14 @@ code {
     $html = $html -replace '^### (.*?)$', '<h3>$1</h3>'
     $html = $html -replace '^#### (.*?)$', '<h4>$1</h4>'
     
-    # Convertir les listes et les tâches
+    # Convertir les listes et les tÃ¢ches
     $html = $html -replace '^\s*- \[x\] \*\*(.*?)\*\* (.*?)$', '<li class="task-complete"><input type="checkbox" checked disabled> <strong>$1</strong> $2</li>'
     $html = $html -replace '^\s*- \[ \] \*\*(.*?)\*\* (.*?)$', '<li class="task-incomplete"><input type="checkbox" disabled> <strong>$1</strong> $2</li>'
     $html = $html -replace '^\s*- \[o\] \*\*(.*?)\*\* (.*?)$', '<li class="task-inprogress"><input type="checkbox" disabled> <strong>$1</strong> $2 (En cours)</li>'
-    $html = $html -replace '^\s*- \[!\] \*\*(.*?)\*\* (.*?)$', '<li class="task-blocked"><input type="checkbox" disabled> <strong>$1</strong> $2 (Bloqué)</li>'
-    $html = $html -replace '^\s*- \[>\] \*\*(.*?)\*\* (.*?)$', '<li class="task-deferred"><input type="checkbox" disabled> <strong>$1</strong> $2 (Reporté)</li>'
+    $html = $html -replace '^\s*- \[!\] \*\*(.*?)\*\* (.*?)$', '<li class="task-blocked"><input type="checkbox" disabled> <strong>$1</strong> $2 (BloquÃ©)</li>'
+    $html = $html -replace '^\s*- \[>\] \*\*(.*?)\*\* (.*?)$', '<li class="task-deferred"><input type="checkbox" disabled> <strong>$1</strong> $2 (ReportÃ©)</li>'
     
-    # Convertir les métadonnées en italique
+    # Convertir les mÃ©tadonnÃ©es en italique
     $html = $html -replace '^\s*_(.*?)_$', '<div class="metadata">$1</div>'
     
     # Convertir les sauts de ligne
@@ -451,42 +451,42 @@ code {
 
 # Fonction principale
 function Main {
-    # Vérifier si la base Chroma existe
+    # VÃ©rifier si la base Chroma existe
     if (-not (Test-Path -Path $ChromaDbPath)) {
         Write-Log "La base Chroma $ChromaDbPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
     
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
     
-    # Vérifier si le fichier de sortie existe déjà
+    # VÃ©rifier si le fichier de sortie existe dÃ©jÃ 
     if ($OutputPath -and (Test-Path -Path $OutputPath) -and -not $Force) {
-        Write-Log "Le fichier de sortie $OutputPath existe déjà. Utilisez -Force pour l'écraser." -Level Warning
+        Write-Log "Le fichier de sortie $OutputPath existe dÃ©jÃ . Utilisez -Force pour l'Ã©craser." -Level Warning
         return
     }
     
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour générer la vue de la roadmap active..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour gÃ©nÃ©rer la vue de la roadmap active..." -Level Info
     $pythonScript = New-ActiveRoadmapViewScript -ChromaDbPath $ChromaDbPath -CollectionName $CollectionName -StatusFilter $StatusFilter -SectionFilter $SectionFilter -MaxDepth $MaxDepth -IncludeMetadata $IncludeMetadata
     
-    # Exécuter le script Python et capturer la sortie JSON
-    Write-Log "Génération de la vue de la roadmap active..." -Level Info
+    # ExÃ©cuter le script Python et capturer la sortie JSON
+    Write-Log "GÃ©nÃ©ration de la vue de la roadmap active..." -Level Info
     $output = python $pythonScript 2>&1
     
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
     
-    # Extraire les résultats JSON de la sortie
+    # Extraire les rÃ©sultats JSON de la sortie
     $jsonStartIndex = $output.IndexOf("{")
     $jsonEndIndex = $output.LastIndexOf("}")
     
@@ -494,14 +494,14 @@ function Main {
         $jsonString = $output.Substring($jsonStartIndex, $jsonEndIndex - $jsonStartIndex + 1)
         $result = $jsonString | ConvertFrom-Json
         
-        # Traiter les résultats selon le format demandé
+        # Traiter les rÃ©sultats selon le format demandÃ©
         switch ($OutputFormat) {
             "markdown" {
                 $content = $result.markdown
                 
                 if ($OutputPath) {
                     $content | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Vue de la roadmap active sauvegardée au format Markdown dans $OutputPath" -Level Success
+                    Write-Log "Vue de la roadmap active sauvegardÃ©e au format Markdown dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $content
@@ -512,7 +512,7 @@ function Main {
                 
                 if ($OutputPath) {
                     $html | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Vue de la roadmap active sauvegardée au format HTML dans $OutputPath" -Level Success
+                    Write-Log "Vue de la roadmap active sauvegardÃ©e au format HTML dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $html
@@ -521,7 +521,7 @@ function Main {
             "json" {
                 if ($OutputPath) {
                     $result | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Vue de la roadmap active sauvegardée au format JSON dans $OutputPath" -Level Success
+                    Write-Log "Vue de la roadmap active sauvegardÃ©e au format JSON dans $OutputPath" -Level Success
                 }
                 else {
                     $result | ConvertTo-Json -Depth 10
@@ -529,12 +529,12 @@ function Main {
             }
         }
         
-        Write-Log "Génération de la vue terminée. $($result.metadata.taskCount) tâches incluses." -Level Success
+        Write-Log "GÃ©nÃ©ration de la vue terminÃ©e. $($result.metadata.taskCount) tÃ¢ches incluses." -Level Success
     }
     else {
-        Write-Log "Erreur lors de la génération de la vue de la roadmap active." -Level Error
+        Write-Log "Erreur lors de la gÃ©nÃ©ration de la vue de la roadmap active." -Level Error
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

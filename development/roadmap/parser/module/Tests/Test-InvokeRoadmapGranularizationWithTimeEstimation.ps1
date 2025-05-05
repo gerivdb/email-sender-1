@@ -1,70 +1,70 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour la fonction Invoke-RoadmapGranularizationWithTimeEstimation.
 
 .DESCRIPTION
     Ce script contient des tests unitaires pour la fonction Invoke-RoadmapGranularizationWithTimeEstimation
-    qui permet d'invoquer interactivement la granularisation des tâches de roadmap avec estimations de temps.
+    qui permet d'invoquer interactivement la granularisation des tÃ¢ches de roadmap avec estimations de temps.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-06-02
+    Date de crÃ©ation: 2025-06-02
 #>
 
 # Importer Pester si disponible
 if (Get-Module -ListAvailable -Name Pester) {
     Import-Module Pester
 } else {
-    Write-Warning "Le module Pester n'est pas installé. Les tests ne seront pas exécutés avec le framework Pester."
+    Write-Warning "Le module Pester n'est pas installÃ©. Les tests ne seront pas exÃ©cutÃ©s avec le framework Pester."
 }
 
-# Chemin vers les fonctions à tester
+# Chemin vers les fonctions Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent $scriptPath
 $invokeGranPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapGranularizationWithTimeEstimation.ps1"
 $splitTaskPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Split-RoadmapTask.ps1"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path $invokeGranPath)) {
-    throw "Le fichier Invoke-RoadmapGranularizationWithTimeEstimation.ps1 est introuvable à l'emplacement : $invokeGranPath"
+    throw "Le fichier Invoke-RoadmapGranularizationWithTimeEstimation.ps1 est introuvable Ã  l'emplacement : $invokeGranPath"
 }
 if (-not (Test-Path -Path $splitTaskPath)) {
-    throw "Le fichier Split-RoadmapTask.ps1 est introuvable à l'emplacement : $splitTaskPath"
+    throw "Le fichier Split-RoadmapTask.ps1 est introuvable Ã  l'emplacement : $splitTaskPath"
 }
 
 # Importer les fonctions
 . $splitTaskPath
 . $invokeGranPath
 
-# Créer un fichier temporaire pour les tests
+# CrÃ©er un fichier temporaire pour les tests
 $testFilePath = Join-Path -Path $env:TEMP -ChildPath "TestRoadmap_$(Get-Random).md"
 $testSubTasksFilePath = Join-Path -Path $env:TEMP -ChildPath "TestSubTasks_$(Get-Random).txt"
 
 Describe "Invoke-RoadmapGranularizationWithTimeEstimation" {
     BeforeEach {
-        # Créer un fichier de test avec une structure de roadmap simple
+        # CrÃ©er un fichier de test avec une structure de roadmap simple
         @"
 # Roadmap de test
 
 ## Section 1
 
-- [ ] **1.1** Tâche 1
-- [ ] **1.2** Tâche 2
-  - [ ] **1.2.1** Sous-tâche 1
-  - [ ] **1.2.2** Sous-tâche 2
-- [ ] **1.3** Tâche à décomposer
+- [ ] **1.1** TÃ¢che 1
+- [ ] **1.2** TÃ¢che 2
+  - [ ] **1.2.1** Sous-tÃ¢che 1
+  - [ ] **1.2.2** Sous-tÃ¢che 2
+- [ ] **1.3** TÃ¢che Ã  dÃ©composer
 
 ## Section 2
 
-- [ ] **2.1** Autre tâche
+- [ ] **2.1** Autre tÃ¢che
 "@ | Set-Content -Path $testFilePath -Encoding UTF8
 
-        # Créer un fichier de sous-tâches de test
+        # CrÃ©er un fichier de sous-tÃ¢ches de test
         @"
 Analyser les besoins
 Concevoir la solution
-Implémenter le code
+ImplÃ©menter le code
 Tester la solution
 "@ | Set-Content -Path $testSubTasksFilePath -Encoding UTF8
     }
@@ -81,16 +81,16 @@ Tester la solution
 
     It "Devrait lever une exception si le fichier n'existe pas" {
         # Appeler la fonction avec un fichier inexistant
-        { Invoke-RoadmapGranularizationWithTimeEstimation -FilePath "FichierInexistant.md" -TaskIdentifier "1.3" -SubTasksInput "Sous-tâche" } | Should -Throw
+        { Invoke-RoadmapGranularizationWithTimeEstimation -FilePath "FichierInexistant.md" -TaskIdentifier "1.3" -SubTasksInput "Sous-tÃ¢che" } | Should -Throw
     }
 
-    It "Devrait lever une exception si aucune sous-tâche n'est spécifiée" {
-        # Appeler la fonction sans sous-tâches
+    It "Devrait lever une exception si aucune sous-tÃ¢che n'est spÃ©cifiÃ©e" {
+        # Appeler la fonction sans sous-tÃ¢ches
         { Invoke-RoadmapGranularizationWithTimeEstimation -FilePath $testFilePath -TaskIdentifier "1.3" -SubTasksInput "" } | Should -Throw
     }
 
-    It "Devrait décomposer une tâche en sous-tâches avec estimations de temps" {
-        # Créer un mock pour la fonction Get-TaskTimeEstimate
+    It "Devrait dÃ©composer une tÃ¢che en sous-tÃ¢ches avec estimations de temps" {
+        # CrÃ©er un mock pour la fonction Get-TaskTimeEstimate
         function Get-TaskTimeEstimate {
             param (
                 [string]$TaskContent,
@@ -110,25 +110,25 @@ Tester la solution
         # Appeler la fonction
         Invoke-RoadmapGranularizationWithTimeEstimation -FilePath $testFilePath -TaskIdentifier "1.3" -SubTasksInput "Analyser les besoins`nConcevoir la solution" -AddTimeEstimation
         
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $content = Get-Content -Path $testFilePath -Encoding UTF8
-        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.1\*\* Analyser les besoins \[⏱️ 2 h\]"
-        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.2\*\* Concevoir la solution \[⏱️ 2 h\]"
+        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.1\*\* Analyser les besoins \[â±ï¸ 2 h\]"
+        $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.2\*\* Concevoir la solution \[â±ï¸ 2 h\]"
     }
 
-    It "Devrait décomposer une tâche en sous-tâches sans estimations de temps si AddTimeEstimation n'est pas spécifié" {
+    It "Devrait dÃ©composer une tÃ¢che en sous-tÃ¢ches sans estimations de temps si AddTimeEstimation n'est pas spÃ©cifiÃ©" {
         # Appeler la fonction sans AddTimeEstimation
         Invoke-RoadmapGranularizationWithTimeEstimation -FilePath $testFilePath -TaskIdentifier "1.3" -SubTasksInput "Analyser les besoins`nConcevoir la solution"
         
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $content = Get-Content -Path $testFilePath -Encoding UTF8
         $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.1\*\* Analyser les besoins"
         $content -join "`n" | Should -Match "- \[ \] \*\*1\.3\.2\*\* Concevoir la solution"
-        $content -join "`n" | Should -Not -Match "\[⏱️"
+        $content -join "`n" | Should -Not -Match "\[â±ï¸"
     }
 
-    It "Devrait utiliser le niveau de complexité spécifié pour les estimations de temps" {
-        # Créer un mock pour la fonction Get-TaskTimeEstimate qui vérifie le niveau de complexité
+    It "Devrait utiliser le niveau de complexitÃ© spÃ©cifiÃ© pour les estimations de temps" {
+        # CrÃ©er un mock pour la fonction Get-TaskTimeEstimate qui vÃ©rifie le niveau de complexitÃ©
         $complexityUsed = $null
         function Get-TaskTimeEstimate {
             param (
@@ -148,15 +148,15 @@ Tester la solution
             }
         }
         
-        # Appeler la fonction avec un niveau de complexité spécifique
+        # Appeler la fonction avec un niveau de complexitÃ© spÃ©cifique
         Invoke-RoadmapGranularizationWithTimeEstimation -FilePath $testFilePath -TaskIdentifier "1.3" -SubTasksInput "Analyser les besoins" -AddTimeEstimation -ComplexityLevel "Complex"
         
-        # Vérifier que le niveau de complexité a été utilisé
+        # VÃ©rifier que le niveau de complexitÃ© a Ã©tÃ© utilisÃ©
         $complexityUsed | Should -Be "Complex"
     }
 
-    It "Devrait utiliser le domaine spécifié pour les estimations de temps" {
-        # Créer un mock pour la fonction Get-TaskTimeEstimate qui vérifie le domaine
+    It "Devrait utiliser le domaine spÃ©cifiÃ© pour les estimations de temps" {
+        # CrÃ©er un mock pour la fonction Get-TaskTimeEstimate qui vÃ©rifie le domaine
         $domainUsed = $null
         function Get-TaskTimeEstimate {
             param (
@@ -176,15 +176,15 @@ Tester la solution
             }
         }
         
-        # Appeler la fonction avec un domaine spécifique
+        # Appeler la fonction avec un domaine spÃ©cifique
         Invoke-RoadmapGranularizationWithTimeEstimation -FilePath $testFilePath -TaskIdentifier "1.3" -SubTasksInput "Analyser les besoins" -AddTimeEstimation -Domain "Backend"
         
-        # Vérifier que le domaine a été utilisé
+        # VÃ©rifier que le domaine a Ã©tÃ© utilisÃ©
         $domainUsed | Should -Be "Backend"
     }
 }
 
-# Exécuter les tests si le script est exécuté directement
+# ExÃ©cuter les tests si le script est exÃ©cutÃ© directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Invoke-Pester -Script $MyInvocation.MyCommand.Path
 }

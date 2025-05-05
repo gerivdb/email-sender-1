@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour planifier les tâches futures en fonction de l'état actuel (Mode ROADMAP-PLAN).
+    Script pour planifier les tÃ¢ches futures en fonction de l'Ã©tat actuel (Mode ROADMAP-PLAN).
 
 .DESCRIPTION
-    Ce script permet de planifier les tâches futures en fonction de l'état actuel de la roadmap.
-    Il analyse l'état d'avancement, identifie les dépendances et propose un plan d'action.
+    Ce script permet de planifier les tÃ¢ches futures en fonction de l'Ã©tat actuel de la roadmap.
+    Il analyse l'Ã©tat d'avancement, identifie les dÃ©pendances et propose un plan d'action.
 
 .PARAMETER RoadmapPath
-    Chemin vers le fichier de roadmap à analyser.
+    Chemin vers le fichier de roadmap Ã  analyser.
 
 .PARAMETER OutputPath
-    Chemin vers le fichier de sortie pour le plan. Si non spécifié, utilise la configuration.
+    Chemin vers le fichier de sortie pour le plan. Si non spÃ©cifiÃ©, utilise la configuration.
 
 .PARAMETER DaysToForecast
-    Nombre de jours à prévoir dans le plan. Par défaut : 30.
+    Nombre de jours Ã  prÃ©voir dans le plan. Par dÃ©faut : 30.
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration unifiée.
-    Par défaut : "development\config\unified-config.json".
+    Chemin vers le fichier de configuration unifiÃ©e.
+    Par dÃ©faut : "development\config\unified-config.json".
 
 .EXAMPLE
     .\roadmap-plan-mode.ps1 -RoadmapPath "projet\roadmaps\Roadmap\roadmap_complete_converted.md"
@@ -25,7 +25,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2023-06-01
+    Date de crÃ©ation: 2023-06-01
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -42,7 +42,7 @@ param (
     [string]$ConfigPath = "development\config\unified-config.json"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and 
        -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -52,12 +52,12 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
 
-# Charger la configuration unifiée
+# Charger la configuration unifiÃ©e
 $configPath = Join-Path -Path $projectRoot -ChildPath $ConfigPath
 if (Test-Path -Path $configPath) {
     try {
@@ -78,7 +78,7 @@ if (Test-Path -Path $configPath) {
     foreach ($path in $alternativePaths) {
         $fullPath = Join-Path -Path $projectRoot -ChildPath $path
         if (Test-Path -Path $fullPath) {
-            Write-Host "Fichier de configuration trouvé : $fullPath" -ForegroundColor Green
+            Write-Host "Fichier de configuration trouvÃ© : $fullPath" -ForegroundColor Green
             $configPath = $fullPath
             try {
                 $config = Get-Content -Path $configPath -Raw | ConvertFrom-Json
@@ -90,19 +90,19 @@ if (Test-Path -Path $configPath) {
     }
     
     if (-not $config) {
-        Write-Error "Aucun fichier de configuration valide trouvé."
+        Write-Error "Aucun fichier de configuration valide trouvÃ©."
         exit 1
     }
 }
 
-# Utiliser les valeurs de la configuration si les paramètres ne sont pas spécifiés
+# Utiliser les valeurs de la configuration si les paramÃ¨tres ne sont pas spÃ©cifiÃ©s
 if (-not $RoadmapPath) {
     if ($config.Roadmaps.Main.Path) {
         $RoadmapPath = Join-Path -Path $projectRoot -ChildPath $config.Roadmaps.Main.Path
     } elseif ($config.General.RoadmapPath) {
         $RoadmapPath = Join-Path -Path $projectRoot -ChildPath $config.General.RoadmapPath
     } else {
-        Write-Error "Aucun chemin de roadmap spécifié et aucun chemin par défaut trouvé dans la configuration."
+        Write-Error "Aucun chemin de roadmap spÃ©cifiÃ© et aucun chemin par dÃ©faut trouvÃ© dans la configuration."
         exit 1
     }
 }
@@ -120,9 +120,9 @@ if (-not [System.IO.Path]::IsPathRooted($OutputPath)) {
     $OutputPath = Join-Path -Path $projectRoot -ChildPath $OutputPath
 }
 
-# Vérifier que le fichier de roadmap existe
+# VÃ©rifier que le fichier de roadmap existe
 if (-not (Test-Path -Path $RoadmapPath)) {
-    Write-Error "Le fichier de roadmap spécifié n'existe pas : $RoadmapPath"
+    Write-Error "Le fichier de roadmap spÃ©cifiÃ© n'existe pas : $RoadmapPath"
     exit 1
 }
 
@@ -135,11 +135,11 @@ if (Test-Path -Path $modulePath) {
     exit 1
 }
 
-# Afficher les paramètres
-Write-Host "Mode ROADMAP-PLAN - Planification des tâches futures" -ForegroundColor Cyan
+# Afficher les paramÃ¨tres
+Write-Host "Mode ROADMAP-PLAN - Planification des tÃ¢ches futures" -ForegroundColor Cyan
 Write-Host "Fichier de roadmap : $RoadmapPath" -ForegroundColor Gray
 Write-Host "Fichier de sortie : $OutputPath" -ForegroundColor Gray
-Write-Host "Nombre de jours à prévoir : $DaysToForecast" -ForegroundColor Gray
+Write-Host "Nombre de jours Ã  prÃ©voir : $DaysToForecast" -ForegroundColor Gray
 Write-Host ""
 
 # Fonction pour analyser la roadmap
@@ -151,23 +151,23 @@ function Get-RoadmapTasks {
     # Lire le contenu du fichier de roadmap
     $roadmapContent = Get-Content -Path $RoadmapPath -Encoding UTF8 -Raw
     
-    # Analyser le contenu pour extraire les tâches
+    # Analyser le contenu pour extraire les tÃ¢ches
     $tasks = @()
     $lines = $roadmapContent -split "`n"
     $currentTask = $null
     $currentSubTasks = @()
     
     foreach ($line in $lines) {
-        # Détecter les tâches principales (lignes commençant par "## ")
+        # DÃ©tecter les tÃ¢ches principales (lignes commenÃ§ant par "## ")
         if ($line -match "^## (.+)") {
-            # Si une tâche est en cours de traitement, l'ajouter à la liste
+            # Si une tÃ¢che est en cours de traitement, l'ajouter Ã  la liste
             if ($currentTask) {
                 $currentTask.SubTasks = $currentSubTasks
                 $tasks += $currentTask
                 $currentSubTasks = @()
             }
             
-            # Créer une nouvelle tâche
+            # CrÃ©er une nouvelle tÃ¢che
             $currentTask = @{
                 Title = $matches[1].Trim()
                 Id = ""
@@ -175,7 +175,7 @@ function Get-RoadmapTasks {
                 SubTasks = @()
             }
         }
-        # Détecter les descriptions (lignes commençant par "### Description")
+        # DÃ©tecter les descriptions (lignes commenÃ§ant par "### Description")
         elseif ($line -match "^### Description" -and $currentTask) {
             $descriptionLines = @()
             $i = [array]::IndexOf($lines, $line) + 1
@@ -187,7 +187,7 @@ function Get-RoadmapTasks {
             
             $currentTask.Description = ($descriptionLines -join "`n").Trim()
         }
-        # Détecter les sous-tâches (lignes commençant par "- [ ]" ou "- [x]")
+        # DÃ©tecter les sous-tÃ¢ches (lignes commenÃ§ant par "- [ ]" ou "- [x]")
         elseif ($line -match "^- \[([ x])\] (?:\*\*([0-9.]+)\*\* )?(.+)" -and $currentTask) {
             $isChecked = $matches[1] -eq "x"
             $id = if ($matches[2]) { $matches[2] } else { "" }
@@ -203,7 +203,7 @@ function Get-RoadmapTasks {
         }
     }
     
-    # Ajouter la dernière tâche
+    # Ajouter la derniÃ¨re tÃ¢che
     if ($currentTask) {
         $currentTask.SubTasks = $currentSubTasks
         $tasks += $currentTask
@@ -212,14 +212,14 @@ function Get-RoadmapTasks {
     return $tasks
 }
 
-# Fonction pour générer un plan d'action
+# Fonction pour gÃ©nÃ©rer un plan d'action
 function New-ActionPlan {
     param (
         [array]$Tasks,
         [int]$DaysToForecast
     )
     
-    # Identifier les tâches non complétées
+    # Identifier les tÃ¢ches non complÃ©tÃ©es
     $incompleteTasks = @()
     
     foreach ($task in $Tasks) {
@@ -234,7 +234,7 @@ function New-ActionPlan {
         }
     }
     
-    # Estimer le temps nécessaire pour chaque tâche (simulation)
+    # Estimer le temps nÃ©cessaire pour chaque tÃ¢che (simulation)
     $today = Get-Date
     $endDate = $today.AddDays($DaysToForecast)
     $currentDate = $today
@@ -257,13 +257,13 @@ function New-ActionPlan {
             $plan += $planItem
             $currentDate = $currentDate.AddDays($estimatedDays)
             
-            # Si on dépasse la période de prévision, arrêter
+            # Si on dÃ©passe la pÃ©riode de prÃ©vision, arrÃªter
             if ($currentDate -gt $endDate) {
                 break
             }
         }
         
-        # Si on dépasse la période de prévision, arrêter
+        # Si on dÃ©passe la pÃ©riode de prÃ©vision, arrÃªter
         if ($currentDate -gt $endDate) {
             break
         }
@@ -277,23 +277,23 @@ function New-ActionPlan {
     }
 }
 
-# Fonction pour générer un rapport de plan d'action
+# Fonction pour gÃ©nÃ©rer un rapport de plan d'action
 function New-PlanReport {
     param (
         [hashtable]$Plan,
         [string]$OutputPath
     )
     
-    # Créer le contenu Markdown
+    # CrÃ©er le contenu Markdown
     $markdown = "# Plan d'action pour la roadmap`n`n"
     
-    $markdown += "## Période de planification`n`n"
-    $markdown += "- **Date de début :** $($Plan.StartDate)`n"
+    $markdown += "## PÃ©riode de planification`n`n"
+    $markdown += "- **Date de dÃ©but :** $($Plan.StartDate)`n"
     $markdown += "- **Date de fin :** $($Plan.EndDate)`n"
     $markdown += "- **Nombre de jours :** $($Plan.DaysToForecast)`n`n"
     
-    $markdown += "## Tâches planifiées`n`n"
-    $markdown += "| Groupe | ID | Tâche | Date de début | Date de fin | Jours estimés |`n"
+    $markdown += "## TÃ¢ches planifiÃ©es`n`n"
+    $markdown += "| Groupe | ID | TÃ¢che | Date de dÃ©but | Date de fin | Jours estimÃ©s |`n"
     $markdown += "| ------ | -- | ----- | ------------- | ----------- | ------------- |`n"
     
     foreach ($task in $Plan.Tasks) {
@@ -301,13 +301,13 @@ function New-PlanReport {
     }
     
     $markdown += "`n## Recommandations`n`n"
-    $markdown += "1. Commencer par les tâches prioritaires`n"
-    $markdown += "2. Vérifier régulièrement l'avancement`n"
-    $markdown += "3. Mettre à jour la roadmap au fur et à mesure`n"
-    $markdown += "4. Ajuster le plan si nécessaire`n`n"
+    $markdown += "1. Commencer par les tÃ¢ches prioritaires`n"
+    $markdown += "2. VÃ©rifier rÃ©guliÃ¨rement l'avancement`n"
+    $markdown += "3. Mettre Ã  jour la roadmap au fur et Ã  mesure`n"
+    $markdown += "4. Ajuster le plan si nÃ©cessaire`n`n"
     
     $markdown += "## Notes`n`n"
-    $markdown += "Ce plan a été généré automatiquement par le mode ROADMAP-PLAN. Les estimations sont basées sur des simulations et peuvent ne pas refléter la réalité. Il est recommandé de l'ajuster en fonction de votre expérience et de vos contraintes.`n"
+    $markdown += "Ce plan a Ã©tÃ© gÃ©nÃ©rÃ© automatiquement par le mode ROADMAP-PLAN. Les estimations sont basÃ©es sur des simulations et peuvent ne pas reflÃ©ter la rÃ©alitÃ©. Il est recommandÃ© de l'ajuster en fonction de votre expÃ©rience et de vos contraintes.`n"
     
     # Enregistrer le rapport
     Set-Content -Path $OutputPath -Value $markdown -Encoding UTF8
@@ -318,17 +318,17 @@ function New-PlanReport {
 # Analyser la roadmap
 $tasks = Get-RoadmapTasks -RoadmapPath $RoadmapPath
 
-# Générer un plan d'action
+# GÃ©nÃ©rer un plan d'action
 $plan = New-ActionPlan -Tasks $tasks -DaysToForecast $DaysToForecast
 
-# Générer un rapport de plan d'action
+# GÃ©nÃ©rer un rapport de plan d'action
 $reportPath = New-PlanReport -Plan $plan -OutputPath $OutputPath
 
 # Afficher un message de fin
-Write-Host "`nExécution du mode ROADMAP-PLAN terminée." -ForegroundColor Cyan
-Write-Host "Plan d'action généré : $reportPath" -ForegroundColor Green
+Write-Host "`nExÃ©cution du mode ROADMAP-PLAN terminÃ©e." -ForegroundColor Cyan
+Write-Host "Plan d'action gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 return @{
     RoadmapPath = $RoadmapPath
     OutputPath = $reportPath

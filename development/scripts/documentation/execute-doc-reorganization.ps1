@@ -1,4 +1,4 @@
-# Main script to execute documentation reorganization
+﻿# Main script to execute documentation reorganization
 param (
     [switch]$Force,
     [switch]$WhatIf

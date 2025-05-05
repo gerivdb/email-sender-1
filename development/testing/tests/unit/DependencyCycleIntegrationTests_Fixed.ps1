@@ -1,32 +1,32 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration améliorés pour les modules DependencyCycleResolver et CycleDetector.
+    Tests d'intÃ©gration amÃ©liorÃ©s pour les modules DependencyCycleResolver et CycleDetector.
 .DESCRIPTION
-    Ce script contient des tests d'intégration améliorés pour vérifier le bon fonctionnement
+    Ce script contient des tests d'intÃ©gration amÃ©liorÃ©s pour vÃ©rifier le bon fonctionnement
     des modules DependencyCycleResolver et CycleDetector ensemble, en utilisant le wrapper
-    CycleDetectorWrapper pour résoudre les problèmes d'importation.
+    CycleDetectorWrapper pour rÃ©soudre les problÃ¨mes d'importation.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-20
+    Date de crÃ©ation: 2025-04-20
 #>
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules"
 $cycleDetectorWrapperPath = Join-Path -Path $modulesPath -ChildPath "CycleDetectorWrapper.psm1"
 $cycleResolverPath = Join-Path -Path $modulesPath -ChildPath "DependencyCycleResolver.psm1"
 
-# Vérifier si les modules existent
+# VÃ©rifier si les modules existent
 if (-not (Test-Path -Path $cycleDetectorWrapperPath)) {
-    throw "Le module CycleDetectorWrapper.psm1 n'existe pas à l'emplacement spécifié: $cycleDetectorWrapperPath"
+    throw "Le module CycleDetectorWrapper.psm1 n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $cycleDetectorWrapperPath"
 }
 
 if (-not (Test-Path -Path $cycleResolverPath)) {
-    throw "Le module DependencyCycleResolver.psm1 n'existe pas à l'emplacement spécifié: $cycleResolverPath"
+    throw "Le module DependencyCycleResolver.psm1 n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $cycleResolverPath"
 }
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Function {
     param (
         [string]$Name,
@@ -38,10 +38,10 @@ function Test-Function {
     try {
         $result = & $Test
         if ($result) {
-            Write-Host "  Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©ussi" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Échoué" -ForegroundColor Red
+            Write-Host "  Ã‰chouÃ©" -ForegroundColor Red
             return $false
         }
     } catch {
@@ -50,14 +50,14 @@ function Test-Function {
     }
 }
 
-# Initialiser les résultats des tests
+# Initialiser les rÃ©sultats des tests
 $testsPassed = 0
 $testsFailed = 0
 
 # Test 1: Importer les modules
 $result = Test-Function -Name "Importer les modules" -Test {
     try {
-        # Supprimer les modules s'ils sont déjà importés
+        # Supprimer les modules s'ils sont dÃ©jÃ  importÃ©s
         if (Get-Module -Name CycleDetectorWrapper) {
             Remove-Module -Name CycleDetectorWrapper -Force
         }
@@ -70,7 +70,7 @@ $result = Test-Function -Name "Importer les modules" -Test {
         Import-Module $cycleDetectorWrapperPath -Force
         Import-Module $cycleResolverPath -Force
         
-        # Vérifier que les modules sont importés
+        # VÃ©rifier que les modules sont importÃ©s
         $cycleDetectorImported = Get-Module -Name CycleDetectorWrapper
         $cycleResolverImported = Get-Module -Name DependencyCycleResolver
         
@@ -97,47 +97,47 @@ $result = Test-Function -Name "Initialiser les modules" -Test {
 }
 if ($result) { $testsPassed++ } else { $testsFailed++ }
 
-# Test 3: Intégration Find-Cycle et Resolve-DependencyCycle
-$result = Test-Function -Name "Intégration Find-Cycle et Resolve-DependencyCycle" -Test {
+# Test 3: IntÃ©gration Find-Cycle et Resolve-DependencyCycle
+$result = Test-Function -Name "IntÃ©gration Find-Cycle et Resolve-DependencyCycle" -Test {
     try {
-        # Créer un graphe avec un cycle
+        # CrÃ©er un graphe avec un cycle
         $graph = @{
             "A" = @("B")
             "B" = @("C")
             "C" = @("A")
         }
         
-        # Détecter le cycle
+        # DÃ©tecter le cycle
         $cycleResult = Find-Cycle -Graph $graph
         
-        # Vérifier que le cycle est détecté
+        # VÃ©rifier que le cycle est dÃ©tectÃ©
         if (-not $cycleResult.HasCycle) {
-            Write-Host "  Le cycle n'a pas été détecté" -ForegroundColor Red
+            Write-Host "  Le cycle n'a pas Ã©tÃ© dÃ©tectÃ©" -ForegroundColor Red
             return $false
         }
         
-        # Créer un objet CycleResult compatible avec Resolve-DependencyCycle
+        # CrÃ©er un objet CycleResult compatible avec Resolve-DependencyCycle
         $compatibleCycleResult = [PSCustomObject]@{
             HasCycle  = $cycleResult.HasCycle
             CyclePath = $cycleResult.CyclePath
             Graph     = $graph
         }
         
-        # Résoudre le cycle
+        # RÃ©soudre le cycle
         $resolveResult = Resolve-DependencyCycle -CycleResult $compatibleCycleResult
         
-        # Vérifier que le cycle est résolu
+        # VÃ©rifier que le cycle est rÃ©solu
         if (-not $resolveResult.Success) {
-            Write-Host "  Le cycle n'a pas été résolu" -ForegroundColor Red
+            Write-Host "  Le cycle n'a pas Ã©tÃ© rÃ©solu" -ForegroundColor Red
             return $false
         }
         
-        # Vérifier que le graphe modifié n'a plus de cycle
+        # VÃ©rifier que le graphe modifiÃ© n'a plus de cycle
         $newCycleCheck = Find-Cycle -Graph $resolveResult.Graph
         
         return -not $newCycleCheck.HasCycle
     } catch {
-        Write-Host "  Erreur lors de l'intégration Find-Cycle et Resolve-DependencyCycle: $_" -ForegroundColor Red
+        Write-Host "  Erreur lors de l'intÃ©gration Find-Cycle et Resolve-DependencyCycle: $_" -ForegroundColor Red
         return $false
     }
 }
@@ -146,14 +146,14 @@ if ($result) { $testsPassed++ } else { $testsFailed++ }
 # Test 4: Test de workflow n8n
 $result = Test-Function -Name "Test de workflow n8n" -Test {
     try {
-        # Créer un dossier temporaire pour les tests
+        # CrÃ©er un dossier temporaire pour les tests
         $testTempDir = Join-Path -Path $env:TEMP -ChildPath "DependencyCycleTests"
         if (Test-Path -Path $testTempDir) {
             Remove-Item -Path $testTempDir -Recurse -Force
         }
         New-Item -ItemType Directory -Path $testTempDir -Force | Out-Null
         
-        # Créer un workflow n8n avec un cycle
+        # CrÃ©er un workflow n8n avec un cycle
         $workflowJson = @'
 {
   "name": "Test Workflow",
@@ -218,9 +218,9 @@ $result = Test-Function -Name "Test de workflow n8n" -Test {
         # Tester le workflow
         $cycleResult = Test-WorkflowCycles -WorkflowPath $workflowPath
         
-        # Vérifier que le cycle est détecté
+        # VÃ©rifier que le cycle est dÃ©tectÃ©
         if (-not $cycleResult.HasCycle) {
-            Write-Host "  Le cycle n'a pas été détecté dans le workflow" -ForegroundColor Red
+            Write-Host "  Le cycle n'a pas Ã©tÃ© dÃ©tectÃ© dans le workflow" -ForegroundColor Red
             return $false
         }
         
@@ -237,17 +237,17 @@ $result = Test-Function -Name "Test de workflow n8n" -Test {
 }
 if ($result) { $testsPassed++ } else { $testsFailed++ }
 
-# Afficher le résumé des tests
-Write-Host "`nRésumé des tests:" -ForegroundColor Yellow
-Write-Host "  Tests réussis: $testsPassed" -ForegroundColor Green
-Write-Host "  Tests échoués: $testsFailed" -ForegroundColor Red
+# Afficher le rÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Yellow
+Write-Host "  Tests rÃ©ussis: $testsPassed" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $testsFailed" -ForegroundColor Red
 Write-Host "  Total: $($testsPassed + $testsFailed)" -ForegroundColor Yellow
 
-# Retourner un code de sortie en fonction des résultats des tests
+# Retourner un code de sortie en fonction des rÃ©sultats des tests
 if ($testsFailed -eq 0) {
-    Write-Host "`nTous les tests ont été exécutés avec succès." -ForegroundColor Green
+    Write-Host "`nTous les tests ont Ã©tÃ© exÃ©cutÃ©s avec succÃ¨s." -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

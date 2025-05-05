@@ -1,38 +1,38 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de chargement des templates de rapports.
 .DESCRIPTION
     Ce module fournit des fonctions pour charger et valider les templates de rapports
-    Ã  partir de fichiers JSON.
+    ÃƒÂ  partir de fichiers JSON.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
-    Date de crÃ©ation: 2025-04-22
+    Date de crÃƒÂ©ation: 2025-04-22
 #>
 
-# DÃ©finition des chemins par dÃ©faut
+# DÃƒÂ©finition des chemins par dÃƒÂ©faut
 $script:DefaultTemplatesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\templates\reports\reportdevelopment/templates.json"
 $script:DefaultSchemaPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\docs\reporting\report_schema.json"
 
-# Cache pour les templates chargÃ©s
+# Cache pour les templates chargÃƒÂ©s
 $script:TemplatesCache = @{}
 $script:LastCacheUpdate = $null
 $script:CacheExpirationMinutes = 10
 
 <#
 .SYNOPSIS
-    Charge les templates de rapports Ã  partir d'un fichier JSON.
+    Charge les templates de rapports ÃƒÂ  partir d'un fichier JSON.
 .DESCRIPTION
-    Cette fonction charge les templates de rapports Ã  partir d'un fichier JSON
-    et les met en cache pour optimiser les accÃ¨s rÃ©pÃ©tÃ©s.
+    Cette fonction charge les templates de rapports ÃƒÂ  partir d'un fichier JSON
+    et les met en cache pour optimiser les accÃƒÂ¨s rÃƒÂ©pÃƒÂ©tÃƒÂ©s.
 .PARAMETER TemplatesPath
     Chemin vers le fichier JSON contenant les templates de rapports.
 .PARAMETER ForceReload
-    Force le rechargement des templates mÃªme s'ils sont en cache.
+    Force le rechargement des templates mÃƒÂªme s'ils sont en cache.
 .EXAMPLE
     $Templates = Import-ReportTemplates -TemplatesPath "templates/reports/reportdevelopment/templates.json"
 .OUTPUTS
-    System.Object[] - Les templates de rapports chargÃ©s.
+    System.Object[] - Les templates de rapports chargÃƒÂ©s.
 #>
 function Import-ReportTemplates {
     [CmdletBinding()]
@@ -45,7 +45,7 @@ function Import-ReportTemplates {
     )
     
     try {
-        # VÃ©rifier si les templates sont dÃ©jÃ  en cache et si le cache est valide
+        # VÃƒÂ©rifier si les templates sont dÃƒÂ©jÃƒÂ  en cache et si le cache est valide
         $CacheKey = $TemplatesPath
         $CurrentTime = Get-Date
         
@@ -57,7 +57,7 @@ function Import-ReportTemplates {
             return $script:TemplatesCache[$CacheKey]
         }
         
-        # VÃ©rifier si le fichier existe
+        # VÃƒÂ©rifier si le fichier existe
         if (-not (Test-Path -Path $TemplatesPath)) {
             Write-Error "Le fichier de templates n'existe pas: $TemplatesPath"
             return $null
@@ -67,12 +67,12 @@ function Import-ReportTemplates {
         Write-Verbose "Chargement des templates depuis $TemplatesPath"
         $TemplatesJson = Get-Content -Path $TemplatesPath -Raw -Encoding UTF8
         
-        # DÃ©sÃ©rialiser le JSON
+        # DÃƒÂ©sÃƒÂ©rialiser le JSON
         $Templates = ConvertFrom-Json -InputObject $TemplatesJson -ErrorAction Stop
         
-        # VÃ©rifier la structure de base
+        # VÃƒÂ©rifier la structure de base
         if (-not (Get-Member -InputObject $Templates -Name "templates" -MemberType Properties)) {
-            Write-Error "Le fichier de templates ne contient pas la propriÃ©tÃ© 'templates'"
+            Write-Error "Le fichier de templates ne contient pas la propriÃƒÂ©tÃƒÂ© 'templates'"
             return $null
         }
         
@@ -80,7 +80,7 @@ function Import-ReportTemplates {
         $script:TemplatesCache[$CacheKey] = $Templates.templates
         $script:LastCacheUpdate = $CurrentTime
         
-        Write-Verbose "Templates chargÃ©s avec succÃ¨s: $($Templates.templates.Count) templates"
+        Write-Verbose "Templates chargÃƒÂ©s avec succÃƒÂ¨s: $($Templates.templates.Count) templates"
         return $Templates.templates
     }
     catch {
@@ -91,14 +91,14 @@ function Import-ReportTemplates {
 
 <#
 .SYNOPSIS
-    Valide un template de rapport par rapport au schÃ©ma JSON.
+    Valide un template de rapport par rapport au schÃƒÂ©ma JSON.
 .DESCRIPTION
-    Cette fonction valide un template de rapport par rapport au schÃ©ma JSON
-    pour s'assurer qu'il est conforme aux spÃ©cifications.
+    Cette fonction valide un template de rapport par rapport au schÃƒÂ©ma JSON
+    pour s'assurer qu'il est conforme aux spÃƒÂ©cifications.
 .PARAMETER Template
-    Le template de rapport Ã  valider.
+    Le template de rapport ÃƒÂ  valider.
 .PARAMETER SchemaPath
-    Chemin vers le fichier JSON contenant le schÃ©ma de validation.
+    Chemin vers le fichier JSON contenant le schÃƒÂ©ma de validation.
 .EXAMPLE
     $IsValid = Test-ReportTemplate -Template $Template -SchemaPath "docs/reporting/report_schema.json"
 .OUTPUTS
@@ -115,13 +115,13 @@ function Test-ReportTemplate {
     )
     
     try {
-        # VÃ©rifier si le fichier de schÃ©ma existe
+        # VÃƒÂ©rifier si le fichier de schÃƒÂ©ma existe
         if (-not (Test-Path -Path $SchemaPath)) {
-            Write-Error "Le fichier de schÃ©ma n'existe pas: $SchemaPath"
+            Write-Error "Le fichier de schÃƒÂ©ma n'existe pas: $SchemaPath"
             return $false
         }
         
-        # VÃ©rifier les champs obligatoires de base
+        # VÃƒÂ©rifier les champs obligatoires de base
         $RequiredFields = @("id", "name", "description", "type", "format", "sections")
         foreach ($Field in $RequiredFields) {
             if (-not (Get-Member -InputObject $Template -Name $Field -MemberType Properties)) {
@@ -130,27 +130,27 @@ function Test-ReportTemplate {
             }
         }
         
-        # VÃ©rifier le type de rapport
+        # VÃƒÂ©rifier le type de rapport
         $ValidTypes = @("system", "application", "business")
         if ($ValidTypes -notcontains $Template.type) {
             Write-Error "Type de rapport invalide: $($Template.type). Valeurs valides: $($ValidTypes -join ', ')"
             return $false
         }
         
-        # VÃ©rifier le format de rapport
+        # VÃƒÂ©rifier le format de rapport
         $ValidFormats = @("html", "pdf", "excel")
         if ($ValidFormats -notcontains $Template.format) {
             Write-Error "Format de rapport invalide: $($Template.format). Valeurs valides: $($ValidFormats -join ', ')"
             return $false
         }
         
-        # VÃ©rifier les sections
+        # VÃƒÂ©rifier les sections
         if ($Template.sections -isnot [array] -or $Template.sections.Count -eq 0) {
             Write-Error "Le template doit contenir au moins une section"
             return $false
         }
         
-        # VÃ©rifier chaque section
+        # VÃƒÂ©rifier chaque section
         foreach ($Section in $Template.sections) {
             $SectionRequiredFields = @("id", "title", "type")
             foreach ($Field in $SectionRequiredFields) {
@@ -160,14 +160,14 @@ function Test-ReportTemplate {
                 }
             }
             
-            # VÃ©rifier le type de section
+            # VÃƒÂ©rifier le type de section
             $ValidSectionTypes = @("text", "metrics_summary", "chart", "table", "anomalies", "recommendations")
             if ($ValidSectionTypes -notcontains $Section.type) {
                 Write-Error "Type de section invalide: $($Section.type). Valeurs valides: $($ValidSectionTypes -join ', ')"
                 return $false
             }
             
-            # VÃ©rifications spÃ©cifiques selon le type de section
+            # VÃƒÂ©rifications spÃƒÂ©cifiques selon le type de section
             switch ($Section.type) {
                 "text" {
                     if (-not (Get-Member -InputObject $Section -Name "content" -MemberType Properties)) {
@@ -187,24 +187,24 @@ function Test-ReportTemplate {
                         $MetricRequiredFields = @("id", "name", "metric", "function")
                         foreach ($Field in $MetricRequiredFields) {
                             if (-not (Get-Member -InputObject $Metric -Name $Field -MemberType Properties)) {
-                                Write-Error "La mÃ©trique ne contient pas le champ obligatoire '$Field'"
+                                Write-Error "La mÃƒÂ©trique ne contient pas le champ obligatoire '$Field'"
                                 return $false
                             }
                         }
                         
-                        # VÃ©rifier la fonction
+                        # VÃƒÂ©rifier la fonction
                         $ValidFunctions = @("avg", "max", "min", "sum", "count", "percentile", "median", "stddev")
                         if ($ValidFunctions -notcontains $Metric.function) {
-                            Write-Error "Fonction de mÃ©trique invalide: $($Metric.function). Valeurs valides: $($ValidFunctions -join ', ')"
+                            Write-Error "Fonction de mÃƒÂ©trique invalide: $($Metric.function). Valeurs valides: $($ValidFunctions -join ', ')"
                             return $false
                         }
                         
-                        # VÃ©rifier le percentile si nÃ©cessaire
+                        # VÃƒÂ©rifier le percentile si nÃƒÂ©cessaire
                         if ($Metric.function -eq "percentile" -and 
                             (-not (Get-Member -InputObject $Metric -Name "percentile" -MemberType Properties) -or 
                              $Metric.percentile -lt 0 -or 
                              $Metric.percentile -gt 100)) {
-                            Write-Error "La fonction 'percentile' nÃ©cessite un champ 'percentile' valide (0-100)"
+                            Write-Error "La fonction 'percentile' nÃƒÂ©cessite un champ 'percentile' valide (0-100)"
                             return $false
                         }
                     }
@@ -221,7 +221,7 @@ function Test-ReportTemplate {
                         return $false
                     }
                     
-                    # VÃ©rifier la mÃ©trique ou les mÃ©triques
+                    # VÃƒÂ©rifier la mÃƒÂ©trique ou les mÃƒÂ©triques
                     if (-not ((Get-Member -InputObject $Section -Name "metric" -MemberType Properties) -or 
                               (Get-Member -InputObject $Section -Name "metrics" -MemberType Properties))) {
                         Write-Error "La section de type 'chart' doit contenir le champ 'metric' ou 'metrics'"
@@ -263,18 +263,18 @@ function Test-ReportTemplate {
 
 <#
 .SYNOPSIS
-    RÃ©cupÃ¨re un template de rapport spÃ©cifique par son ID.
+    RÃƒÂ©cupÃƒÂ¨re un template de rapport spÃƒÂ©cifique par son ID.
 .DESCRIPTION
-    Cette fonction rÃ©cupÃ¨re un template de rapport spÃ©cifique par son ID
-    Ã  partir des templates chargÃ©s.
+    Cette fonction rÃƒÂ©cupÃƒÂ¨re un template de rapport spÃƒÂ©cifique par son ID
+    ÃƒÂ  partir des templates chargÃƒÂ©s.
 .PARAMETER TemplateId
-    L'ID du template Ã  rÃ©cupÃ©rer.
+    L'ID du template ÃƒÂ  rÃƒÂ©cupÃƒÂ©rer.
 .PARAMETER TemplatesPath
     Chemin vers le fichier JSON contenant les templates de rapports.
 .EXAMPLE
     $Template = Get-ReportTemplate -TemplateId "system_performance_report"
 .OUTPUTS
-    System.Object - Le template de rapport correspondant Ã  l'ID spÃ©cifiÃ©.
+    System.Object - Le template de rapport correspondant ÃƒÂ  l'ID spÃƒÂ©cifiÃƒÂ©.
 #>
 function Get-ReportTemplate {
     [CmdletBinding()]
@@ -299,7 +299,7 @@ function Get-ReportTemplate {
         $Template = $Templates | Where-Object { $_.id -eq $TemplateId } | Select-Object -First 1
         
         if ($null -eq $Template) {
-            Write-Error "Aucun template trouvÃ© avec l'ID: $TemplateId"
+            Write-Error "Aucun template trouvÃƒÂ© avec l'ID: $TemplateId"
             return $null
         }
         
@@ -311,11 +311,11 @@ function Get-ReportTemplate {
             return $null
         }
         
-        Write-Verbose "Template '$TemplateId' rÃ©cupÃ©rÃ© avec succÃ¨s"
+        Write-Verbose "Template '$TemplateId' rÃƒÂ©cupÃƒÂ©rÃƒÂ© avec succÃƒÂ¨s"
         return $Template
     }
     catch {
-        Write-Error "Erreur lors de la rÃ©cupÃ©ration du template: $_"
+        Write-Error "Erreur lors de la rÃƒÂ©cupÃƒÂ©ration du template: $_"
         return $null
     }
 }
@@ -355,12 +355,12 @@ function Get-ReportTemplatesList {
             return $null
         }
         
-        # Filtrer par type si spÃ©cifiÃ©
+        # Filtrer par type si spÃƒÂ©cifiÃƒÂ©
         if (-not [string]::IsNullOrEmpty($Type)) {
             $Templates = $Templates | Where-Object { $_.type -eq $Type }
         }
         
-        # CrÃ©er une liste simplifiÃ©e
+        # CrÃƒÂ©er une liste simplifiÃƒÂ©e
         $TemplatesList = $Templates | ForEach-Object {
             [PSCustomObject]@{
                 Id = $_.id
@@ -372,11 +372,11 @@ function Get-ReportTemplatesList {
             }
         }
         
-        Write-Verbose "Liste des templates rÃ©cupÃ©rÃ©e avec succÃ¨s: $($TemplatesList.Count) templates"
+        Write-Verbose "Liste des templates rÃƒÂ©cupÃƒÂ©rÃƒÂ©e avec succÃƒÂ¨s: $($TemplatesList.Count) templates"
         return $TemplatesList
     }
     catch {
-        Write-Error "Erreur lors de la rÃ©cupÃ©ration de la liste des templates: $_"
+        Write-Error "Erreur lors de la rÃƒÂ©cupÃƒÂ©ration de la liste des templates: $_"
         return $null
     }
 }

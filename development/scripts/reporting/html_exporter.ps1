@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
     Module d'export de rapports au format HTML.
 .DESCRIPTION
     Ce module fournit des fonctions pour exporter des rapports au format HTML
-    en utilisant des templates prÃ©dÃ©finis.
+    en utilisant des templates prÃƒÂ©dÃƒÂ©finis.
 .NOTES
     Version: 1.0
     Auteur: Augment Agent
-    Date de crÃ©ation: 2025-04-23
+    Date de crÃƒÂ©ation: 2025-04-23
 #>
 
-# DÃ©finition des chemins par dÃ©faut
+# DÃƒÂ©finition des chemins par dÃƒÂ©faut
 $script:DefaultTemplatesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\templates\reports\html"
 $script:BaseTemplatePath = Join-Path -Path $script:DefaultTemplatesPath -ChildPath "base_template.html"
 $script:SectionTemplatesPath = Join-Path -Path $script:DefaultTemplatesPath -ChildPath "sectiondevelopment/templates.html"
@@ -23,13 +23,13 @@ $script:TemplatesCache = @{}
     Charge un template HTML depuis un fichier.
 .DESCRIPTION
     Cette fonction charge un template HTML depuis un fichier et le met en cache
-    pour optimiser les accÃ¨s rÃ©pÃ©tÃ©s.
+    pour optimiser les accÃƒÂ¨s rÃƒÂ©pÃƒÂ©tÃƒÂ©s.
 .PARAMETER TemplatePath
     Chemin vers le fichier de template HTML.
 .PARAMETER TemplateKey
-    ClÃ© pour identifier le template dans le cache.
+    ClÃƒÂ© pour identifier le template dans le cache.
 .PARAMETER ForceReload
-    Force le rechargement du template mÃªme s'il est en cache.
+    Force le rechargement du template mÃƒÂªme s'il est en cache.
 .EXAMPLE
     $Template = Get-HtmlTemplate -TemplatePath "templates/reports/html/base_template.html" -TemplateKey "base"
 .OUTPUTS
@@ -49,13 +49,13 @@ function Get-HtmlTemplate {
     )
     
     try {
-        # VÃ©rifier si le template est dÃ©jÃ  en cache
+        # VÃƒÂ©rifier si le template est dÃƒÂ©jÃƒÂ  en cache
         if (-not $ForceReload -and $script:TemplatesCache.ContainsKey($TemplateKey)) {
             Write-Verbose "Utilisation du template en cache pour $TemplateKey"
             return $script:TemplatesCache[$TemplateKey]
         }
         
-        # VÃ©rifier si le fichier existe
+        # VÃƒÂ©rifier si le fichier existe
         if (-not (Test-Path -Path $TemplatePath)) {
             Write-Error "Le fichier de template n'existe pas: $TemplatePath"
             return $null
@@ -78,18 +78,18 @@ function Get-HtmlTemplate {
 
 <#
 .SYNOPSIS
-    Extrait une section spÃ©cifique d'un template HTML.
+    Extrait une section spÃƒÂ©cifique d'un template HTML.
 .DESCRIPTION
-    Cette fonction extrait une section spÃ©cifique d'un template HTML
-    en utilisant des marqueurs de dÃ©but et de fin.
+    Cette fonction extrait une section spÃƒÂ©cifique d'un template HTML
+    en utilisant des marqueurs de dÃƒÂ©but et de fin.
 .PARAMETER TemplateContent
     Contenu du template HTML.
 .PARAMETER SectionName
-    Nom de la section Ã  extraire.
+    Nom de la section ÃƒÂ  extraire.
 .PARAMETER StartMarker
-    Marqueur de dÃ©but de la section (par dÃ©faut: "<!-- Template pour une section de").
+    Marqueur de dÃƒÂ©but de la section (par dÃƒÂ©faut: "<!-- Template pour une section de").
 .PARAMETER EndMarker
-    Marqueur de fin de la section (par dÃ©faut: "<!-- Template pour").
+    Marqueur de fin de la section (par dÃƒÂ©faut: "<!-- Template pour").
 .EXAMPLE
     $SectionTemplate = Get-HtmlTemplateSection -TemplateContent $SectionTemplates -SectionName "texte"
 .OUTPUTS
@@ -112,21 +112,21 @@ function Get-HtmlTemplateSection {
     )
     
     try {
-        # Construire le marqueur de dÃ©but complet
+        # Construire le marqueur de dÃƒÂ©but complet
         $FullStartMarker = "$StartMarker $SectionName -->"
         
-        # Trouver la position du marqueur de dÃ©but
+        # Trouver la position du marqueur de dÃƒÂ©but
         $StartPos = $TemplateContent.IndexOf($FullStartMarker)
         
         if ($StartPos -eq -1) {
-            Write-Error "Section de template non trouvÃ©e: $SectionName"
+            Write-Error "Section de template non trouvÃƒÂ©e: $SectionName"
             return $null
         }
         
-        # Trouver la position du prochain marqueur de dÃ©but (qui sera la fin de notre section)
+        # Trouver la position du prochain marqueur de dÃƒÂ©but (qui sera la fin de notre section)
         $EndPos = $TemplateContent.IndexOf($EndMarker, $StartPos + $FullStartMarker.Length)
         
-        # Si aucun autre marqueur n'est trouvÃ©, prendre jusqu'Ã  la fin du template
+        # Si aucun autre marqueur n'est trouvÃƒÂ©, prendre jusqu'ÃƒÂ  la fin du template
         if ($EndPos -eq -1) {
             $SectionContent = $TemplateContent.Substring($StartPos)
         }
@@ -151,11 +151,11 @@ function Get-HtmlTemplateSection {
 .PARAMETER TemplateContent
     Contenu du template HTML.
 .PARAMETER Variables
-    Dictionnaire de variables Ã  remplacer.
+    Dictionnaire de variables ÃƒÂ  remplacer.
 .EXAMPLE
     $ProcessedTemplate = Replace-HtmlTemplateVariables -TemplateContent $Template -Variables @{ "report_title" = "Rapport de performance" }
 .OUTPUTS
-    System.String - Le contenu du template avec les variables remplacÃ©es.
+    System.String - Le contenu du template avec les variables remplacÃƒÂ©es.
 #>
 function Replace-HtmlTemplateVariables {
     [CmdletBinding()]
@@ -186,9 +186,9 @@ function Replace-HtmlTemplateVariables {
 
 <#
 .SYNOPSIS
-    GÃ©nÃ¨re le code JavaScript pour initialiser les graphiques.
+    GÃƒÂ©nÃƒÂ¨re le code JavaScript pour initialiser les graphiques.
 .DESCRIPTION
-    Cette fonction gÃ©nÃ¨re le code JavaScript pour initialiser les graphiques
+    Cette fonction gÃƒÂ©nÃƒÂ¨re le code JavaScript pour initialiser les graphiques
     dans un rapport HTML.
 .PARAMETER Charts
     Liste des configurations de graphiques.
@@ -236,19 +236,19 @@ function New-ChartInitializationScript {
         return $ChartScripts -join "`n`n"
     }
     catch {
-        Write-Error "Erreur lors de la gÃ©nÃ©ration du script d'initialisation des graphiques: $_"
-        return "// Erreur lors de la gÃ©nÃ©ration du script d'initialisation des graphiques"
+        Write-Error "Erreur lors de la gÃƒÂ©nÃƒÂ©ration du script d'initialisation des graphiques: $_"
+        return "// Erreur lors de la gÃƒÂ©nÃƒÂ©ration du script d'initialisation des graphiques"
     }
 }
 
 <#
 .SYNOPSIS
-    GÃ©nÃ¨re une section de rapport HTML.
+    GÃƒÂ©nÃƒÂ¨re une section de rapport HTML.
 .DESCRIPTION
-    Cette fonction gÃ©nÃ¨re une section de rapport HTML
-    en utilisant un template et des donnÃ©es.
+    Cette fonction gÃƒÂ©nÃƒÂ¨re une section de rapport HTML
+    en utilisant un template et des donnÃƒÂ©es.
 .PARAMETER SectionData
-    DonnÃ©es de la section.
+    DonnÃƒÂ©es de la section.
 .PARAMETER SectionTemplates
     Contenu des templates de sections.
 .EXAMPLE
@@ -267,37 +267,37 @@ function New-ReportSection {
     )
     
     try {
-        # DÃ©terminer le type de section
+        # DÃƒÂ©terminer le type de section
         $SectionType = $SectionData.type
         
-        # Extraire le template de section appropriÃ©
+        # Extraire le template de section appropriÃƒÂ©
         $SectionTemplate = Get-HtmlTemplateSection -TemplateContent $SectionTemplates -SectionName $SectionType
         
         if ($null -eq $SectionTemplate) {
-            Write-Error "Template non trouvÃ© pour le type de section: $SectionType"
+            Write-Error "Template non trouvÃƒÂ© pour le type de section: $SectionType"
             return ""
         }
         
-        # PrÃ©parer les variables pour le template
+        # PrÃƒÂ©parer les variables pour le template
         $Variables = @{
             "section_id" = $SectionData.id
             "section_title" = $SectionData.title
         }
         
-        # Ajouter des variables spÃ©cifiques selon le type de section
+        # Ajouter des variables spÃƒÂ©cifiques selon le type de section
         switch ($SectionType) {
             "texte" {
                 $Variables["section_content"] = $SectionData.content
             }
             "metrics_summary" {
-                # Pour les mÃ©triques, nous devons gÃ©nÃ©rer le HTML pour chaque mÃ©trique
+                # Pour les mÃƒÂ©triques, nous devons gÃƒÂ©nÃƒÂ©rer le HTML pour chaque mÃƒÂ©trique
                 $MetricsHtml = @()
                 
                 foreach ($Metric in $SectionData.metrics) {
                     $TrendHtml = ""
                     if ($Metric.PSObject.Properties.Name -contains "trend") {
                         $TrendClass = if ($Metric.trend -gt 0) { "trend-up" } else { "trend-down" }
-                        $TrendIcon = if ($Metric.trend -gt 0) { "â†‘" } else { "â†“" }
+                        $TrendIcon = if ($Metric.trend -gt 0) { "Ã¢â€ â€˜" } else { "Ã¢â€ â€œ" }
                         $TrendValue = "$([Math]::Abs($Metric.trend).ToString("0.00"))%"
                         
                         $TrendHtml = @"
@@ -327,7 +327,7 @@ function New-ReportSection {
                 }
             }
             "table" {
-                # Pour les tableaux, nous devons gÃ©nÃ©rer le HTML pour les en-tÃªtes et les lignes
+                # Pour les tableaux, nous devons gÃƒÂ©nÃƒÂ©rer le HTML pour les en-tÃƒÂªtes et les lignes
                 $HeadersHtml = @()
                 foreach ($Column in $SectionData.columns) {
                     $HeadersHtml += "<th>$Column</th>"
@@ -347,7 +347,7 @@ function New-ReportSection {
                 $Variables["rows"] = ($RowsHtml -join "`n")
             }
             "anomalies" {
-                # Pour les anomalies, nous devons gÃ©nÃ©rer le HTML pour chaque anomalie
+                # Pour les anomalies, nous devons gÃƒÂ©nÃƒÂ©rer le HTML pour chaque anomalie
                 $AnomaliesHtml = @()
                 
                 if ($SectionData.anomalies.Count -gt 0) {
@@ -356,7 +356,7 @@ function New-ReportSection {
 <li class="anomaly-item">
     <h3 class="anomaly-metric">$($Anomaly.metric)</h3>
     <p class="anomaly-description">$($Anomaly.description)</p>
-    <p class="anomaly-time">DÃ©tectÃ© le $($Anomaly.datetime)</p>
+    <p class="anomaly-time">DÃƒÂ©tectÃƒÂ© le $($Anomaly.datetime)</p>
 </li>
 "@
                         
@@ -366,11 +366,11 @@ function New-ReportSection {
                     $Variables["anomalies"] = ($AnomaliesHtml -join "`n")
                 }
                 else {
-                    $Variables["anomalies"] = "<p>Aucune anomalie dÃ©tectÃ©e pendant la pÃ©riode analysÃ©e.</p>"
+                    $Variables["anomalies"] = "<p>Aucune anomalie dÃƒÂ©tectÃƒÂ©e pendant la pÃƒÂ©riode analysÃƒÂ©e.</p>"
                 }
             }
             "recommendations" {
-                # Pour les recommandations, nous devons gÃ©nÃ©rer le HTML pour chaque recommandation
+                # Pour les recommandations, nous devons gÃƒÂ©nÃƒÂ©rer le HTML pour chaque recommandation
                 $RecommendationsHtml = @()
                 
                 if ($SectionData.recommendations.Count -gt 0) {
@@ -392,7 +392,7 @@ function New-ReportSection {
                     $Variables["recommendations"] = ($RecommendationsHtml -join "`n")
                 }
                 else {
-                    $Variables["recommendations"] = "<p>Aucune recommandation pour la pÃ©riode analysÃ©e.</p>"
+                    $Variables["recommendations"] = "<p>Aucune recommandation pour la pÃƒÂ©riode analysÃƒÂ©e.</p>"
                 }
             }
         }
@@ -403,16 +403,16 @@ function New-ReportSection {
         return $SectionHtml
     }
     catch {
-        Write-Error "Erreur lors de la gÃ©nÃ©ration de la section de rapport: $_"
+        Write-Error "Erreur lors de la gÃƒÂ©nÃƒÂ©ration de la section de rapport: $_"
         return ""
     }
 }
 
 <#
 .SYNOPSIS
-    GÃ©nÃ¨re la table des matiÃ¨res d'un rapport HTML.
+    GÃƒÂ©nÃƒÂ¨re la table des matiÃƒÂ¨res d'un rapport HTML.
 .DESCRIPTION
-    Cette fonction gÃ©nÃ¨re la table des matiÃ¨res d'un rapport HTML
+    Cette fonction gÃƒÂ©nÃƒÂ¨re la table des matiÃƒÂ¨res d'un rapport HTML
     en utilisant les sections du rapport.
 .PARAMETER Sections
     Liste des sections du rapport.
@@ -421,7 +421,7 @@ function New-ReportSection {
 .EXAMPLE
     $TocHtml = New-TableOfContents -Sections $ReportData.sections -SectionTemplates $SectionTemplates
 .OUTPUTS
-    System.String - Le HTML de la table des matiÃ¨res.
+    System.String - Le HTML de la table des matiÃƒÂ¨res.
 #>
 function New-TableOfContents {
     [CmdletBinding()]
@@ -434,15 +434,15 @@ function New-TableOfContents {
     )
     
     try {
-        # Extraire le template d'Ã©lÃ©ment de table des matiÃ¨res
-        $TocItemTemplate = Get-HtmlTemplateSection -TemplateContent $SectionTemplates -SectionName "toc-item" -StartMarker "<!-- Template pour un Ã©lÃ©ment de la table des matiÃ¨res" -EndMarker "</li>"
+        # Extraire le template d'ÃƒÂ©lÃƒÂ©ment de table des matiÃƒÂ¨res
+        $TocItemTemplate = Get-HtmlTemplateSection -TemplateContent $SectionTemplates -SectionName "toc-item" -StartMarker "<!-- Template pour un ÃƒÂ©lÃƒÂ©ment de la table des matiÃƒÂ¨res" -EndMarker "</li>"
         
         if ($null -eq $TocItemTemplate) {
-            Write-Error "Template non trouvÃ© pour l'Ã©lÃ©ment de table des matiÃ¨res"
+            Write-Error "Template non trouvÃƒÂ© pour l'ÃƒÂ©lÃƒÂ©ment de table des matiÃƒÂ¨res"
             return ""
         }
         
-        # GÃ©nÃ©rer les Ã©lÃ©ments de la table des matiÃ¨res
+        # GÃƒÂ©nÃƒÂ©rer les ÃƒÂ©lÃƒÂ©ments de la table des matiÃƒÂ¨res
         $TocItems = @()
         
         foreach ($Section in $Sections) {
@@ -458,7 +458,7 @@ function New-TableOfContents {
         return $TocItems -join "`n"
     }
     catch {
-        Write-Error "Erreur lors de la gÃ©nÃ©ration de la table des matiÃ¨res: $_"
+        Write-Error "Erreur lors de la gÃƒÂ©nÃƒÂ©ration de la table des matiÃƒÂ¨res: $_"
         return ""
     }
 }
@@ -468,11 +468,11 @@ function New-TableOfContents {
     Exporte un rapport au format HTML.
 .DESCRIPTION
     Cette fonction exporte un rapport au format HTML
-    en utilisant des templates prÃ©dÃ©finis.
+    en utilisant des templates prÃƒÂ©dÃƒÂ©finis.
 .PARAMETER ReportData
-    DonnÃ©es du rapport Ã  exporter.
+    DonnÃƒÂ©es du rapport ÃƒÂ  exporter.
 .PARAMETER OutputPath
-    Chemin oÃ¹ le fichier HTML sera sauvegardÃ©.
+    Chemin oÃƒÂ¹ le fichier HTML sera sauvegardÃƒÂ©.
 .PARAMETER BaseTemplatePath
     Chemin vers le template HTML de base.
 .PARAMETER SectionTemplatesPath
@@ -480,7 +480,7 @@ function New-TableOfContents {
 .EXAMPLE
     $Result = Export-ReportToHtml -ReportData $ReportData -OutputPath "output/reports/report.html"
 .OUTPUTS
-    System.Boolean - True si l'export a rÃ©ussi, False sinon.
+    System.Boolean - True si l'export a rÃƒÂ©ussi, False sinon.
 #>
 function Export-ReportToHtml {
     [CmdletBinding()]
@@ -508,10 +508,10 @@ function Export-ReportToHtml {
             return $false
         }
         
-        # GÃ©nÃ©rer la table des matiÃ¨res
+        # GÃƒÂ©nÃƒÂ©rer la table des matiÃƒÂ¨res
         $TocHtml = New-TableOfContents -Sections $ReportData.sections -SectionTemplates $SectionTemplates
         
-        # GÃ©nÃ©rer les sections du rapport
+        # GÃƒÂ©nÃƒÂ©rer les sections du rapport
         $SectionsHtml = @()
         $Charts = @()
         
@@ -530,10 +530,10 @@ function Export-ReportToHtml {
             }
         }
         
-        # GÃ©nÃ©rer le script d'initialisation des graphiques
+        # GÃƒÂ©nÃƒÂ©rer le script d'initialisation des graphiques
         $ChartInitScript = New-ChartInitializationScript -Charts $Charts
         
-        # PrÃ©parer les variables pour le template de base
+        # PrÃƒÂ©parer les variables pour le template de base
         $Variables = @{
             "report_title" = $ReportData.name
             "report_description" = $ReportData.description
@@ -549,7 +549,7 @@ function Export-ReportToHtml {
         # Remplacer les variables dans le template de base
         $ReportHtml = Replace-HtmlTemplateVariables -TemplateContent $BaseTemplate -Variables $Variables
         
-        # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
+        # CrÃƒÂ©er le rÃƒÂ©pertoire de sortie s'il n'existe pas
         $OutputDir = Split-Path -Parent $OutputPath
         if (-not (Test-Path -Path $OutputDir)) {
             New-Item -Path $OutputDir -ItemType Directory -Force | Out-Null
@@ -558,7 +558,7 @@ function Export-ReportToHtml {
         # Sauvegarder le fichier HTML
         $ReportHtml | Out-File -FilePath $OutputPath -Encoding UTF8
         
-        Write-Verbose "Rapport HTML gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath"
+        Write-Verbose "Rapport HTML gÃƒÂ©nÃƒÂ©rÃƒÂ© avec succÃƒÂ¨s: $OutputPath"
         return $true
     }
     catch {

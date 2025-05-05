@@ -1,21 +1,21 @@
-# Tests de charge pour le mode manager
+﻿# Tests de charge pour le mode manager
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour mesurer le temps d'exécution
+# Fonction pour mesurer le temps d'exÃ©cution
 function Measure-ExecutionTime {
     param (
         [ScriptBlock]$ScriptBlock
@@ -27,7 +27,7 @@ function Measure-ExecutionTime {
     return $stopwatch.ElapsedMilliseconds
 }
 
-# Fonction pour mesurer l'utilisation de la mémoire
+# Fonction pour mesurer l'utilisation de la mÃ©moire
 function Measure-MemoryUsage {
     param (
         [ScriptBlock]$ScriptBlock
@@ -41,7 +41,7 @@ function Measure-MemoryUsage {
     return ($finalMemory - $initialMemory) / 1MB
 }
 
-# Fonction pour créer un grand fichier de roadmap
+# Fonction pour crÃ©er un grand fichier de roadmap
 function Create-LargeRoadmap {
     param (
         [string]$FilePath,
@@ -51,15 +51,15 @@ function Create-LargeRoadmap {
     $content = "# Grand fichier de roadmap pour tests de charge`n`n"
     
     for ($i = 1; $i -le $TaskCount; $i++) {
-        $content += "## Tâche $i`n`n"
+        $content += "## TÃ¢che $i`n`n"
         
         for ($j = 1; $j -le 5; $j++) {
-            $content += "### Sous-tâche $i.$j`n`n"
+            $content += "### Sous-tÃ¢che $i.$j`n`n"
             
             for ($k = 1; $k -le 3; $k++) {
-                $content += "- [ ] Élément $i.$j.$k`n"
-                $content += "  - Description de l'élément $i.$j.$k`n"
-                $content += "  - Détails supplémentaires pour l'élément $i.$j.$k`n`n"
+                $content += "- [ ] Ã‰lÃ©ment $i.$j.$k`n"
+                $content += "  - Description de l'Ã©lÃ©ment $i.$j.$k`n"
+                $content += "  - DÃ©tails supplÃ©mentaires pour l'Ã©lÃ©ment $i.$j.$k`n`n"
             }
         }
     }
@@ -68,7 +68,7 @@ function Create-LargeRoadmap {
     return $FilePath
 }
 
-# Fonction pour créer une configuration avec de nombreux modes
+# Fonction pour crÃ©er une configuration avec de nombreux modes
 function Create-LargeConfig {
     param (
         [string]$FilePath,
@@ -94,7 +94,7 @@ function Create-LargeConfig {
         }
     }
     
-    # Ajouter des modes supplémentaires
+    # Ajouter des modes supplÃ©mentaires
     for ($i = 1; $i -le $ModeCount; $i++) {
         $modeName = "MODE$i"
         $config.Modes[$modeName] = @{
@@ -114,7 +114,7 @@ function Create-LargeConfig {
         $workflowName = "Workflow$i"
         $modes = @()
         
-        # Ajouter des modes aléatoires au workflow
+        # Ajouter des modes alÃ©atoires au workflow
         $modeCount = Get-Random -Minimum 3 -Maximum 10
         $allModes = @($standardModes) + (1..$ModeCount | ForEach-Object { "MODE$_" })
         
@@ -134,7 +134,7 @@ function Create-LargeConfig {
     return $FilePath
 }
 
-# Fonction pour créer des scripts de mode simulés
+# Fonction pour crÃ©er des scripts de mode simulÃ©s
 function Create-MockScripts {
     param (
         [string]$TestDir,
@@ -143,7 +143,7 @@ function Create-MockScripts {
     
     $mockScripts = @()
     
-    # Créer les scripts de mode standard
+    # CrÃ©er les scripts de mode standard
     $standardModes = @("check", "gran", "debug", "test")
     foreach ($mode in $standardModes) {
         $mockScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "mock-$mode-mode.ps1"
@@ -165,7 +165,7 @@ param (
     [string]`$WorkflowName
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$TestDir" -ChildPath "$mode-mode-output.txt"
 @"
 FilePath : `$FilePath
@@ -181,7 +181,7 @@ exit 0
         $mockScripts += $mockScriptPath
     }
     
-    # Créer des scripts de mode supplémentaires
+    # CrÃ©er des scripts de mode supplÃ©mentaires
     for ($i = 1; $i -le $ModeCount; $i++) {
         $mockScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "mock-mode$i-mode.ps1"
         $mockScriptContent = @"
@@ -211,7 +211,7 @@ param (
     [string]`$Param3
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$TestDir" -ChildPath "mode$i-output.txt"
 @"
 FilePath : `$FilePath
@@ -233,15 +233,15 @@ exit 0
     return $mockScripts
 }
 
-# Créer un grand fichier de roadmap
+# CrÃ©er un grand fichier de roadmap
 $largeRoadmapPath = Join-Path -Path $testDir -ChildPath "large-roadmap.md"
 Create-LargeRoadmap -FilePath $largeRoadmapPath -TaskCount 1000
 
-# Créer une configuration avec de nombreux modes
+# CrÃ©er une configuration avec de nombreux modes
 $largeConfigPath = Join-Path -Path $testDir -ChildPath "large-config.json"
 Create-LargeConfig -FilePath $largeConfigPath -ModeCount 100
 
-# Créer des scripts de mode simulés
+# CrÃ©er des scripts de mode simulÃ©s
 $mockScripts = Create-MockScripts -TestDir $testDir -ModeCount 100
 
 # Test 1: Charge - Grand fichier de roadmap
@@ -249,11 +249,11 @@ Write-Host "Test 1: Charge - Grand fichier de roadmap" -ForegroundColor Cyan
 $executionTime = Measure-ExecutionTime {
     & $scriptPath -Mode "CHECK" -FilePath $largeRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $largeConfigPath
 }
-Write-Host "Temps d'exécution avec un grand fichier de roadmap : $executionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution avec un grand fichier de roadmap : $executionTime ms" -ForegroundColor Cyan
 if ($executionTime -lt 10000) {
-    Write-Host "Test 1 réussi: Le script a traité un grand fichier de roadmap en moins de 10 secondes" -ForegroundColor Green
+    Write-Host "Test 1 rÃ©ussi: Le script a traitÃ© un grand fichier de roadmap en moins de 10 secondes" -ForegroundColor Green
 } else {
-    Write-Host "Test 1 échoué: Le script a pris plus de 10 secondes pour traiter un grand fichier de roadmap" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Le script a pris plus de 10 secondes pour traiter un grand fichier de roadmap" -ForegroundColor Red
 }
 
 # Test 2: Charge - Configuration avec de nombreux modes
@@ -261,33 +261,33 @@ Write-Host "Test 2: Charge - Configuration avec de nombreux modes" -ForegroundCo
 $memoryUsage = Measure-MemoryUsage {
     & $scriptPath -ListModes -ConfigPath $largeConfigPath
 }
-Write-Host "Utilisation de la mémoire avec de nombreux modes : $memoryUsage MB" -ForegroundColor Cyan
+Write-Host "Utilisation de la mÃ©moire avec de nombreux modes : $memoryUsage MB" -ForegroundColor Cyan
 if ($memoryUsage -lt 100) {
-    Write-Host "Test 2 réussi: Le script a utilisé moins de 100 MB de mémoire avec de nombreux modes" -ForegroundColor Green
+    Write-Host "Test 2 rÃ©ussi: Le script a utilisÃ© moins de 100 MB de mÃ©moire avec de nombreux modes" -ForegroundColor Green
 } else {
-    Write-Host "Test 2 échoué: Le script a utilisé plus de 100 MB de mémoire avec de nombreux modes" -ForegroundColor Red
+    Write-Host "Test 2 Ã©chouÃ©: Le script a utilisÃ© plus de 100 MB de mÃ©moire avec de nombreux modes" -ForegroundColor Red
 }
 
-# Test 3: Charge - Exécution répétée
-Write-Host "Test 3: Charge - Exécution répétée" -ForegroundColor Cyan
+# Test 3: Charge - ExÃ©cution rÃ©pÃ©tÃ©e
+Write-Host "Test 3: Charge - ExÃ©cution rÃ©pÃ©tÃ©e" -ForegroundColor Cyan
 $executionTimes = @()
 for ($i = 1; $i -le 10; $i++) {
     $executionTime = Measure-ExecutionTime {
         & $scriptPath -Mode "CHECK" -FilePath $largeRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $largeConfigPath
     }
     $executionTimes += $executionTime
-    Write-Host "Exécution $i : $executionTime ms" -ForegroundColor Cyan
+    Write-Host "ExÃ©cution $i : $executionTime ms" -ForegroundColor Cyan
 }
 $averageTime = ($executionTimes | Measure-Object -Average).Average
-Write-Host "Temps d'exécution moyen : $averageTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution moyen : $averageTime ms" -ForegroundColor Cyan
 if ($averageTime -lt 10000) {
-    Write-Host "Test 3 réussi: Le script a maintenu des performances acceptables lors d'exécutions répétées" -ForegroundColor Green
+    Write-Host "Test 3 rÃ©ussi: Le script a maintenu des performances acceptables lors d'exÃ©cutions rÃ©pÃ©tÃ©es" -ForegroundColor Green
 } else {
-    Write-Host "Test 3 échoué: Le script n'a pas maintenu des performances acceptables lors d'exécutions répétées" -ForegroundColor Red
+    Write-Host "Test 3 Ã©chouÃ©: Le script n'a pas maintenu des performances acceptables lors d'exÃ©cutions rÃ©pÃ©tÃ©es" -ForegroundColor Red
 }
 
-# Test 4: Charge - Exécution parallèle
-Write-Host "Test 4: Charge - Exécution parallèle" -ForegroundColor Cyan
+# Test 4: Charge - ExÃ©cution parallÃ¨le
+Write-Host "Test 4: Charge - ExÃ©cution parallÃ¨le" -ForegroundColor Cyan
 $parallelExecutionTime = Measure-ExecutionTime {
     1..5 | ForEach-Object -Parallel {
         $scriptPath = $using:scriptPath
@@ -296,15 +296,15 @@ $parallelExecutionTime = Measure-ExecutionTime {
         & $scriptPath -Mode "CHECK" -FilePath $largeRoadmapPath -TaskIdentifier "$_.1.1" -ConfigPath $largeConfigPath
     } -ThrottleLimit 5
 }
-Write-Host "Temps d'exécution parallèle : $parallelExecutionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution parallÃ¨le : $parallelExecutionTime ms" -ForegroundColor Cyan
 if ($parallelExecutionTime -lt 20000) {
-    Write-Host "Test 4 réussi: Le script a géré l'exécution parallèle en moins de 20 secondes" -ForegroundColor Green
+    Write-Host "Test 4 rÃ©ussi: Le script a gÃ©rÃ© l'exÃ©cution parallÃ¨le en moins de 20 secondes" -ForegroundColor Green
 } else {
-    Write-Host "Test 4 échoué: Le script a pris plus de 20 secondes pour gérer l'exécution parallèle" -ForegroundColor Red
+    Write-Host "Test 4 Ã©chouÃ©: Le script a pris plus de 20 secondes pour gÃ©rer l'exÃ©cution parallÃ¨le" -ForegroundColor Red
 }
 
-# Test 5: Charge - Chaîne de modes longue
-Write-Host "Test 5: Charge - Chaîne de modes longue" -ForegroundColor Cyan
+# Test 5: Charge - ChaÃ®ne de modes longue
+Write-Host "Test 5: Charge - ChaÃ®ne de modes longue" -ForegroundColor Cyan
 $longChain = "CHECK,GRAN,TEST,DEBUG"
 for ($i = 1; $i -le 10; $i++) {
     $longChain += ",MODE$i"
@@ -312,52 +312,52 @@ for ($i = 1; $i -le 10; $i++) {
 $executionTime = Measure-ExecutionTime {
     & $scriptPath -Chain $longChain -FilePath $largeRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $largeConfigPath
 }
-Write-Host "Temps d'exécution avec une chaîne de modes longue : $executionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution avec une chaÃ®ne de modes longue : $executionTime ms" -ForegroundColor Cyan
 if ($executionTime -lt 30000) {
-    Write-Host "Test 5 réussi: Le script a exécuté une chaîne de modes longue en moins de 30 secondes" -ForegroundColor Green
+    Write-Host "Test 5 rÃ©ussi: Le script a exÃ©cutÃ© une chaÃ®ne de modes longue en moins de 30 secondes" -ForegroundColor Green
 } else {
-    Write-Host "Test 5 échoué: Le script a pris plus de 30 secondes pour exécuter une chaîne de modes longue" -ForegroundColor Red
+    Write-Host "Test 5 Ã©chouÃ©: Le script a pris plus de 30 secondes pour exÃ©cuter une chaÃ®ne de modes longue" -ForegroundColor Red
 }
 
-# Test 6: Charge - Tâches profondes
-Write-Host "Test 6: Charge - Tâches profondes" -ForegroundColor Cyan
+# Test 6: Charge - TÃ¢ches profondes
+Write-Host "Test 6: Charge - TÃ¢ches profondes" -ForegroundColor Cyan
 $deepTaskId = "1000.5.3"
 $executionTime = Measure-ExecutionTime {
     & $scriptPath -Mode "CHECK" -FilePath $largeRoadmapPath -TaskIdentifier $deepTaskId -ConfigPath $largeConfigPath
 }
-Write-Host "Temps d'exécution avec une tâche profonde : $executionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution avec une tÃ¢che profonde : $executionTime ms" -ForegroundColor Cyan
 if ($executionTime -lt 10000) {
-    Write-Host "Test 6 réussi: Le script a traité une tâche profonde en moins de 10 secondes" -ForegroundColor Green
+    Write-Host "Test 6 rÃ©ussi: Le script a traitÃ© une tÃ¢che profonde en moins de 10 secondes" -ForegroundColor Green
 } else {
-    Write-Host "Test 6 échoué: Le script a pris plus de 10 secondes pour traiter une tâche profonde" -ForegroundColor Red
+    Write-Host "Test 6 Ã©chouÃ©: Le script a pris plus de 10 secondes pour traiter une tÃ¢che profonde" -ForegroundColor Red
 }
 
-# Test 7: Charge - Fichier de roadmap très grand
-Write-Host "Test 7: Charge - Fichier de roadmap très grand" -ForegroundColor Cyan
+# Test 7: Charge - Fichier de roadmap trÃ¨s grand
+Write-Host "Test 7: Charge - Fichier de roadmap trÃ¨s grand" -ForegroundColor Cyan
 $veryLargeRoadmapPath = Join-Path -Path $testDir -ChildPath "very-large-roadmap.md"
 Create-LargeRoadmap -FilePath $veryLargeRoadmapPath -TaskCount 5000
 $executionTime = Measure-ExecutionTime {
     & $scriptPath -Mode "CHECK" -FilePath $veryLargeRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $largeConfigPath
 }
-Write-Host "Temps d'exécution avec un fichier de roadmap très grand : $executionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution avec un fichier de roadmap trÃ¨s grand : $executionTime ms" -ForegroundColor Cyan
 if ($executionTime -lt 30000) {
-    Write-Host "Test 7 réussi: Le script a traité un fichier de roadmap très grand en moins de 30 secondes" -ForegroundColor Green
+    Write-Host "Test 7 rÃ©ussi: Le script a traitÃ© un fichier de roadmap trÃ¨s grand en moins de 30 secondes" -ForegroundColor Green
 } else {
-    Write-Host "Test 7 échoué: Le script a pris plus de 30 secondes pour traiter un fichier de roadmap très grand" -ForegroundColor Red
+    Write-Host "Test 7 Ã©chouÃ©: Le script a pris plus de 30 secondes pour traiter un fichier de roadmap trÃ¨s grand" -ForegroundColor Red
 }
 
-# Test 8: Charge - Configuration très grande
-Write-Host "Test 8: Charge - Configuration très grande" -ForegroundColor Cyan
+# Test 8: Charge - Configuration trÃ¨s grande
+Write-Host "Test 8: Charge - Configuration trÃ¨s grande" -ForegroundColor Cyan
 $veryLargeConfigPath = Join-Path -Path $testDir -ChildPath "very-large-config.json"
 Create-LargeConfig -FilePath $veryLargeConfigPath -ModeCount 500
 $executionTime = Measure-ExecutionTime {
     & $scriptPath -ListModes -ConfigPath $veryLargeConfigPath
 }
-Write-Host "Temps d'exécution avec une configuration très grande : $executionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution avec une configuration trÃ¨s grande : $executionTime ms" -ForegroundColor Cyan
 if ($executionTime -lt 10000) {
-    Write-Host "Test 8 réussi: Le script a traité une configuration très grande en moins de 10 secondes" -ForegroundColor Green
+    Write-Host "Test 8 rÃ©ussi: Le script a traitÃ© une configuration trÃ¨s grande en moins de 10 secondes" -ForegroundColor Green
 } else {
-    Write-Host "Test 8 échoué: Le script a pris plus de 10 secondes pour traiter une configuration très grande" -ForegroundColor Red
+    Write-Host "Test 8 Ã©chouÃ©: Le script a pris plus de 10 secondes pour traiter une configuration trÃ¨s grande" -ForegroundColor Red
 }
 
 # Nettoyer les fichiers temporaires
@@ -372,4 +372,4 @@ foreach ($script in $mockScripts) {
     }
 }
 
-Write-Host "Tests terminés." -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s." -ForegroundColor Cyan

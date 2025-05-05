@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module ManifestParser.
 
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
     du module ManifestParser.
 
 .NOTES
@@ -11,22 +11,22 @@
     Auteur: EMAIL_SENDER_1
 #>
 
-# Définir le chemin du module à tester
+# DÃ©finir le chemin du module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\ManifestParser\ManifestParser.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Le module ManifestParser est introuvable à l'emplacement : $modulePath"
+    Write-Error "Le module ManifestParser est introuvable Ã  l'emplacement : $modulePath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un gestionnaire de test
+# CrÃ©er un gestionnaire de test
 $testManagerPath = Join-Path -Path $testDir -ChildPath "test-manager.ps1"
 Set-Content -Path $testManagerPath -Value @"
 <#
@@ -34,7 +34,7 @@ Set-Content -Path $testManagerPath -Value @"
     Gestionnaire de test pour les tests unitaires.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests unitaires
+    Ce script est un gestionnaire de test utilisÃ© pour les tests unitaires
     du module ManifestParser.
 
 .VERSION
@@ -56,14 +56,14 @@ function Start-TestManager {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire de test..."
+    Write-Host "DÃ©marrage du gestionnaire de test..."
 }
 
 function Stop-TestManager {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire de test..."
+    Write-Host "ArrÃªt du gestionnaire de test..."
 }
 
 function Get-TestManagerStatus {
@@ -96,10 +96,10 @@ function Set-TestManagerConfiguration {
         [int]`$MaxThreads
     )
     
-    Write-Host "Configuration mise à jour."
+    Write-Host "Configuration mise Ã  jour."
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-TestManager
@@ -116,7 +116,7 @@ switch (`$Command) {
 }
 "@
 
-# Créer un fichier de manifeste JSON pour les tests
+# CrÃ©er un fichier de manifeste JSON pour les tests
 $testManifestJsonPath = Join-Path -Path $testDir -ChildPath "test-manager.manifest.json"
 Set-Content -Path $testManifestJsonPath -Value @"
 {
@@ -145,21 +145,21 @@ Set-Content -Path $testManifestJsonPath -Value @"
 }
 "@
 
-# Créer un script avec un manifeste intégré dans les commentaires
+# CrÃ©er un script avec un manifeste intÃ©grÃ© dans les commentaires
 $testManagerWithManifestPath = Join-Path -Path $testDir -ChildPath "test-manager-with-manifest.ps1"
 Set-Content -Path $testManagerWithManifestPath -Value @"
 <#
 .SYNOPSIS
-    Gestionnaire de test avec manifeste intégré.
+    Gestionnaire de test avec manifeste intÃ©grÃ©.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test avec un manifeste intégré
-    utilisé pour les tests unitaires du module ManifestParser.
+    Ce script est un gestionnaire de test avec un manifeste intÃ©grÃ©
+    utilisÃ© pour les tests unitaires du module ManifestParser.
 
 .MANIFEST
 {
     "Name": "TestManagerWithManifest",
-    "Description": "Un gestionnaire de test avec manifeste intégré",
+    "Description": "Un gestionnaire de test avec manifeste intÃ©grÃ©",
     "Version": "1.1.0",
     "Author": "EMAIL_SENDER_1",
     "Dependencies": [
@@ -185,17 +185,17 @@ function Start-TestManagerWithManifest {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire de test avec manifeste intégré..."
+    Write-Host "DÃ©marrage du gestionnaire de test avec manifeste intÃ©grÃ©..."
 }
 
 function Stop-TestManagerWithManifest {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire de test avec manifeste intégré..."
+    Write-Host "ArrÃªt du gestionnaire de test avec manifeste intÃ©grÃ©..."
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-TestManagerWithManifest
@@ -212,7 +212,7 @@ switch (`$Command) {
 # Importer le module
 Import-Module -Name $modulePath -Force
 
-# Définir les tests unitaires
+# DÃ©finir les tests unitaires
 $tests = @(
     @{
         Name = "Test de Get-ManagerManifest avec fichier JSON"
@@ -220,42 +220,42 @@ $tests = @(
             # Extraire le manifeste du fichier JSON
             $manifest = Get-ManagerManifest -Path $testManagerPath -ManifestPath $testManifestJsonPath
             
-            # Vérifier que le manifeste est extrait correctement
+            # VÃ©rifier que le manifeste est extrait correctement
             if (-not $manifest) {
                 return $false
             }
             
-            # Vérifier les propriétés du manifeste
+            # VÃ©rifier les propriÃ©tÃ©s du manifeste
             return $manifest.Name -eq "TestManager" -and $manifest.Version -eq "1.0.0" -and $manifest.Author -eq "EMAIL_SENDER_1"
         }
     },
     @{
-        Name = "Test de Get-ManagerManifest avec manifeste intégré"
+        Name = "Test de Get-ManagerManifest avec manifeste intÃ©grÃ©"
         Test = {
-            # Extraire le manifeste du script avec manifeste intégré
+            # Extraire le manifeste du script avec manifeste intÃ©grÃ©
             $manifest = Get-ManagerManifest -Path $testManagerWithManifestPath
             
-            # Vérifier que le manifeste est extrait correctement
+            # VÃ©rifier que le manifeste est extrait correctement
             if (-not $manifest) {
                 return $false
             }
             
-            # Vérifier les propriétés du manifeste
+            # VÃ©rifier les propriÃ©tÃ©s du manifeste
             return $manifest.Name -eq "TestManagerWithManifest" -and $manifest.Version -eq "1.1.0" -and $manifest.Author -eq "EMAIL_SENDER_1"
         }
     },
     @{
-        Name = "Test de Get-ManagerManifest avec génération automatique"
+        Name = "Test de Get-ManagerManifest avec gÃ©nÃ©ration automatique"
         Test = {
             # Extraire le manifeste du script sans manifeste explicite
             $manifest = Get-ManagerManifest -Path $testManagerPath
             
-            # Vérifier que le manifeste est généré correctement
+            # VÃ©rifier que le manifeste est gÃ©nÃ©rÃ© correctement
             if (-not $manifest) {
                 return $false
             }
             
-            # Vérifier les propriétés du manifeste
+            # VÃ©rifier les propriÃ©tÃ©s du manifeste
             return $manifest.Name -eq "test-manager" -and $manifest.Version -eq "1.0.0"
         }
     },
@@ -265,52 +265,52 @@ $tests = @(
             # Extraire le manifeste du fichier JSON
             $manifest = Get-ManagerManifest -Path $testManagerPath -ManifestPath $testManifestJsonPath
             
-            # Vérifier la validité du manifeste
+            # VÃ©rifier la validitÃ© du manifeste
             return Test-ManifestValidity -Manifest $manifest
         }
     },
     @{
         Name = "Test de Test-ManifestValidity avec manifeste invalide"
         Test = {
-            # Créer un manifeste invalide (sans nom)
+            # CrÃ©er un manifeste invalide (sans nom)
             $invalidManifest = @{
                 Description = "Un manifeste invalide"
                 Version = "1.0.0"
             }
             
-            # Vérifier que le manifeste est détecté comme invalide
+            # VÃ©rifier que le manifeste est dÃ©tectÃ© comme invalide
             return -not (Test-ManifestValidity -Manifest $invalidManifest)
         }
     },
     @{
         Name = "Test de Convert-ToManifest"
         Test = {
-            # Générer un manifeste à partir du script
+            # GÃ©nÃ©rer un manifeste Ã  partir du script
             $outputPath = Join-Path -Path $testDir -ChildPath "generated-manifest.json"
             $manifest = Convert-ToManifest -Path $testManagerPath -OutputPath $outputPath
             
-            # Vérifier que le manifeste est généré correctement
+            # VÃ©rifier que le manifeste est gÃ©nÃ©rÃ© correctement
             if (-not $manifest) {
                 return $false
             }
             
-            # Vérifier que le fichier de manifeste est créé
+            # VÃ©rifier que le fichier de manifeste est crÃ©Ã©
             if (-not (Test-Path -Path $outputPath)) {
                 return $false
             }
             
-            # Vérifier les propriétés du manifeste
+            # VÃ©rifier les propriÃ©tÃ©s du manifeste
             return $manifest.Name -eq "test-manager" -and $manifest.Version -eq "1.0.0" -and $manifest.Capabilities -contains "Startable"
         }
     }
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $totalTests = $tests.Count
 $passedTests = 0
 $failedTests = 0
 
-Write-Host "Exécution de $totalTests tests unitaires pour le module ManifestParser..." -ForegroundColor Cyan
+Write-Host "ExÃ©cution de $totalTests tests unitaires pour le module ManifestParser..." -ForegroundColor Cyan
 
 foreach ($test in $tests) {
     Write-Host "Test : $($test.Name)" -ForegroundColor Yellow
@@ -319,34 +319,34 @@ foreach ($test in $tests) {
         $result = & $test.Test
         
         if ($result) {
-            Write-Host "  Résultat : Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©sultat : RÃ©ussi" -ForegroundColor Green
             $passedTests++
         } else {
-            Write-Host "  Résultat : Échec" -ForegroundColor Red
+            Write-Host "  RÃ©sultat : Ã‰chec" -ForegroundColor Red
             $failedTests++
         }
     } catch {
-        Write-Host "  Résultat : Erreur - $_" -ForegroundColor Red
+        Write-Host "  RÃ©sultat : Erreur - $_" -ForegroundColor Red
         $failedTests++
     }
 }
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor White
-Write-Host "  Tests réussis  : $passedTests" -ForegroundColor Green
-Write-Host "  Tests échoués  : $failedTests" -ForegroundColor Red
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis  : $passedTests" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s  : $failedTests" -ForegroundColor Red
 
 # Nettoyer les fichiers de test
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 if ($failedTests -eq 0) {
-    Write-Host "`nTous les tests ont réussi !" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi !" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

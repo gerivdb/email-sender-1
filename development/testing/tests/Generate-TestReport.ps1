@@ -1,21 +1,21 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère un rapport de tests pour le module MCPClient.
+    GÃ©nÃ¨re un rapport de tests pour le module MCPClient.
 .DESCRIPTION
-    Ce script génère un rapport de tests détaillé au format Markdown et JSON
-    à partir des résultats des tests unitaires, d'intégration et de performance.
+    Ce script gÃ©nÃ¨re un rapport de tests dÃ©taillÃ© au format Markdown et JSON
+    Ã  partir des rÃ©sultats des tests unitaires, d'intÃ©gration et de performance.
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour le rapport Markdown.
 .PARAMETER JsonOutputPath
     Chemin du fichier de sortie pour le rapport JSON.
 .EXAMPLE
     .\Generate-TestReport.ps1 -OutputPath "docs\test_reports\MCP_TestReport.md" -JsonOutputPath "docs\test_reports\MCP_TestReport.json"
-    Génère un rapport de tests au format Markdown et JSON.
+    GÃ©nÃ¨re un rapport de tests au format Markdown et JSON.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-21
+    Date de crÃ©ation: 2025-04-21
 #>
 
 param (
@@ -36,12 +36,12 @@ function Format-Date {
     return $Date.ToString("yyyy-MM-dd HH:mm:ss")
 }
 
-# Fonction pour lire les résultats des tests unitaires
+# Fonction pour lire les rÃ©sultats des tests unitaires
 function Get-UnitTestResults {
     $unitTestResultsPath = "docs\test_reports\MCPClient.Tests.xml"
     
     if (-not (Test-Path -Path $unitTestResultsPath)) {
-        Write-Warning "Fichier de résultats des tests unitaires introuvable: $unitTestResultsPath"
+        Write-Warning "Fichier de rÃ©sultats des tests unitaires introuvable: $unitTestResultsPath"
         return $null
     }
     
@@ -90,17 +90,17 @@ function Get-UnitTestResults {
             TestCases = $testCases
         }
     } catch {
-        Write-Warning "Erreur lors de la lecture des résultats des tests unitaires: $_"
+        Write-Warning "Erreur lors de la lecture des rÃ©sultats des tests unitaires: $_"
         return $null
     }
 }
 
-# Fonction pour lire les résultats des tests d'intégration
+# Fonction pour lire les rÃ©sultats des tests d'intÃ©gration
 function Get-IntegrationTestResults {
     $integrationTestResultsPath = "docs\test_reports\MCPClient.Integration.Tests.xml"
     
     if (-not (Test-Path -Path $integrationTestResultsPath)) {
-        Write-Warning "Fichier de résultats des tests d'intégration introuvable: $integrationTestResultsPath"
+        Write-Warning "Fichier de rÃ©sultats des tests d'intÃ©gration introuvable: $integrationTestResultsPath"
         return $null
     }
     
@@ -149,17 +149,17 @@ function Get-IntegrationTestResults {
             TestCases = $testCases
         }
     } catch {
-        Write-Warning "Erreur lors de la lecture des résultats des tests d'intégration: $_"
+        Write-Warning "Erreur lors de la lecture des rÃ©sultats des tests d'intÃ©gration: $_"
         return $null
     }
 }
 
-# Fonction pour lire les résultats des tests de performance
+# Fonction pour lire les rÃ©sultats des tests de performance
 function Get-PerformanceTestResults {
     $performanceTestResultsPath = "docs\test_reports\MCPClient.Performance.json"
     
     if (-not (Test-Path -Path $performanceTestResultsPath)) {
-        Write-Warning "Fichier de résultats des tests de performance introuvable: $performanceTestResultsPath"
+        Write-Warning "Fichier de rÃ©sultats des tests de performance introuvable: $performanceTestResultsPath"
         return $null
     }
     
@@ -167,17 +167,17 @@ function Get-PerformanceTestResults {
         $results = Get-Content -Path $performanceTestResultsPath -Raw | ConvertFrom-Json
         return $results
     } catch {
-        Write-Warning "Erreur lors de la lecture des résultats des tests de performance: $_"
+        Write-Warning "Erreur lors de la lecture des rÃ©sultats des tests de performance: $_"
         return $null
     }
 }
 
-# Fonction pour lire les résultats de couverture de code
+# Fonction pour lire les rÃ©sultats de couverture de code
 function Get-CodeCoverageResults {
     $codeCoverageResultsPath = "docs\test_reports\MCPClient.Integration.Coverage.xml"
     
     if (-not (Test-Path -Path $codeCoverageResultsPath)) {
-        Write-Warning "Fichier de résultats de couverture de code introuvable: $codeCoverageResultsPath"
+        Write-Warning "Fichier de rÃ©sultats de couverture de code introuvable: $codeCoverageResultsPath"
         return $null
     }
     
@@ -210,12 +210,12 @@ function Get-CodeCoverageResults {
             CoveragePercentage = $coveragePercentage
         }
     } catch {
-        Write-Warning "Erreur lors de la lecture des résultats de couverture de code: $_"
+        Write-Warning "Erreur lors de la lecture des rÃ©sultats de couverture de code: $_"
         return $null
     }
 }
 
-# Fonction pour générer le rapport Markdown
+# Fonction pour gÃ©nÃ©rer le rapport Markdown
 function Generate-MarkdownReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -237,45 +237,45 @@ function Generate-MarkdownReport {
     $report = @"
 # Rapport de tests du module MCPClient
 
-## Résumé
+## RÃ©sumÃ©
 
 Date du rapport: $(Format-Date -Date (Get-Date))
 
-| Type de test | Total | Réussis | Échoués | Non exécutés | Couverture |
+| Type de test | Total | RÃ©ussis | Ã‰chouÃ©s | Non exÃ©cutÃ©s | Couverture |
 |--------------|-------|---------|---------|--------------|------------|
 | Unitaires | $($UnitTestResults.TotalTests) | $($UnitTestResults.Passed) | $($UnitTestResults.Failed) | $($UnitTestResults.NotRun + $UnitTestResults.Skipped + $UnitTestResults.Ignored) | N/A |
-| Intégration | $($IntegrationTestResults.TotalTests) | $($IntegrationTestResults.Passed) | $($IntegrationTestResults.Failed) | $($IntegrationTestResults.NotRun + $IntegrationTestResults.Skipped + $IntegrationTestResults.Ignored) | $($CodeCoverageResults.CoveragePercentage)% |
+| IntÃ©gration | $($IntegrationTestResults.TotalTests) | $($IntegrationTestResults.Passed) | $($IntegrationTestResults.Failed) | $($IntegrationTestResults.NotRun + $IntegrationTestResults.Skipped + $IntegrationTestResults.Ignored) | $($CodeCoverageResults.CoveragePercentage)% |
 | Performance | $($PerformanceTestResults.Count) | $($PerformanceTestResults.Count) | 0 | 0 | N/A |
 
 ## Tests unitaires
 
-Date d'exécution: $(Format-Date -Date $UnitTestResults.Date)
+Date d'exÃ©cution: $(Format-Date -Date $UnitTestResults.Date)
 
-### Résultats détaillés
+### RÃ©sultats dÃ©taillÃ©s
 
-| Test | Résultat | Temps (s) |
+| Test | RÃ©sultat | Temps (s) |
 |------|----------|-----------|
 "@
     
     foreach ($testCase in $UnitTestResults.TestCases) {
-        $result = if ($testCase.Success) { "✅ Réussi" } else { "❌ Échoué" }
+        $result = if ($testCase.Success) { "âœ… RÃ©ussi" } else { "âŒ Ã‰chouÃ©" }
         $report += "`n| $($testCase.Name) | $result | $($testCase.Time) |"
     }
     
     $report += @"
 
-## Tests d'intégration
+## Tests d'intÃ©gration
 
-Date d'exécution: $(Format-Date -Date $IntegrationTestResults.Date)
+Date d'exÃ©cution: $(Format-Date -Date $IntegrationTestResults.Date)
 
-### Résultats détaillés
+### RÃ©sultats dÃ©taillÃ©s
 
-| Test | Résultat | Temps (s) |
+| Test | RÃ©sultat | Temps (s) |
 |------|----------|-----------|
 "@
     
     foreach ($testCase in $IntegrationTestResults.TestCases) {
-        $result = if ($testCase.Success) { "✅ Réussi" } else { "❌ Échoué" }
+        $result = if ($testCase.Success) { "âœ… RÃ©ussi" } else { "âŒ Ã‰chouÃ©" }
         $report += "`n| $($testCase.Name) | $result | $($testCase.Time) |"
     }
     
@@ -289,9 +289,9 @@ Date d'exécution: $(Format-Date -Date $IntegrationTestResults.Date)
 
 ## Tests de performance
 
-### Résultats détaillés
+### RÃ©sultats dÃ©taillÃ©s
 
-| Test | Temps moyen (ms) | Temps min (ms) | Temps max (ms) | Itérations |
+| Test | Temps moyen (ms) | Temps min (ms) | Temps max (ms) | ItÃ©rations |
 |------|------------------|----------------|----------------|------------|
 "@
     
@@ -303,18 +303,18 @@ Date d'exécution: $(Format-Date -Date $IntegrationTestResults.Date)
 
 ## Conclusion
 
-Le module MCPClient a été testé avec succès. Les tests unitaires et d'intégration ont été exécutés avec un taux de réussite élevé, et les tests de performance ont montré des résultats satisfaisants.
+Le module MCPClient a Ã©tÃ© testÃ© avec succÃ¨s. Les tests unitaires et d'intÃ©gration ont Ã©tÃ© exÃ©cutÃ©s avec un taux de rÃ©ussite Ã©levÃ©, et les tests de performance ont montrÃ© des rÃ©sultats satisfaisants.
 
-La couverture de code est de $($CodeCoverageResults.CoveragePercentage)%, ce qui est un bon indicateur de la qualité des tests.
+La couverture de code est de $($CodeCoverageResults.CoveragePercentage)%, ce qui est un bon indicateur de la qualitÃ© des tests.
 
 ### Recommandations
 
-- Continuer à améliorer la couverture de code pour atteindre 100%.
+- Continuer Ã  amÃ©liorer la couverture de code pour atteindre 100%.
 - Ajouter des tests pour les cas limites et les cas d'erreur.
-- Optimiser les performances du module pour les opérations longues.
+- Optimiser les performances du module pour les opÃ©rations longues.
 "@
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -323,10 +323,10 @@ La couverture de code est de $($CodeCoverageResults.CoveragePercentage)%, ce qui
     # Enregistrer le rapport Markdown
     $report | Out-File -FilePath $OutputPath -Encoding utf8
     
-    Write-Host "Rapport Markdown généré avec succès: $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport Markdown gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -ForegroundColor Green
 }
 
-# Fonction pour générer le rapport JSON
+# Fonction pour gÃ©nÃ©rer le rapport JSON
 function Generate-JsonReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -384,7 +384,7 @@ function Generate-JsonReport {
         CodeCoverage = $CodeCoverageResults
     }
     
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -393,7 +393,7 @@ function Generate-JsonReport {
     # Enregistrer le rapport JSON
     $report | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
     
-    Write-Host "Rapport JSON généré avec succès: $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport JSON gÃ©nÃ©rÃ© avec succÃ¨s: $OutputPath" -ForegroundColor Green
 }
 
 # Fonction principale
@@ -406,13 +406,13 @@ function Generate-TestReport {
         [string]$JsonOutputPath
     )
     
-    # Récupérer les résultats des tests
+    # RÃ©cupÃ©rer les rÃ©sultats des tests
     $unitTestResults = Get-UnitTestResults
     $integrationTestResults = Get-IntegrationTestResults
     $performanceTestResults = Get-PerformanceTestResults
     $codeCoverageResults = Get-CodeCoverageResults
     
-    # Vérifier que tous les résultats sont disponibles
+    # VÃ©rifier que tous les rÃ©sultats sont disponibles
     if (-not $unitTestResults) {
         $unitTestResults = [PSCustomObject]@{
             TotalTests = 0
@@ -428,7 +428,7 @@ function Generate-TestReport {
             TestCases = @()
         }
         
-        Write-Warning "Résultats des tests unitaires non disponibles. Utilisation de valeurs par défaut."
+        Write-Warning "RÃ©sultats des tests unitaires non disponibles. Utilisation de valeurs par dÃ©faut."
     }
     
     if (-not $integrationTestResults) {
@@ -446,12 +446,12 @@ function Generate-TestReport {
             TestCases = @()
         }
         
-        Write-Warning "Résultats des tests d'intégration non disponibles. Utilisation de valeurs par défaut."
+        Write-Warning "RÃ©sultats des tests d'intÃ©gration non disponibles. Utilisation de valeurs par dÃ©faut."
     }
     
     if (-not $performanceTestResults) {
         $performanceTestResults = @()
-        Write-Warning "Résultats des tests de performance non disponibles. Utilisation de valeurs par défaut."
+        Write-Warning "RÃ©sultats des tests de performance non disponibles. Utilisation de valeurs par dÃ©faut."
     }
     
     if (-not $codeCoverageResults) {
@@ -461,13 +461,13 @@ function Generate-TestReport {
             CoveragePercentage = 0
         }
         
-        Write-Warning "Résultats de couverture de code non disponibles. Utilisation de valeurs par défaut."
+        Write-Warning "RÃ©sultats de couverture de code non disponibles. Utilisation de valeurs par dÃ©faut."
     }
     
-    # Générer les rapports
+    # GÃ©nÃ©rer les rapports
     Generate-MarkdownReport -OutputPath $OutputPath -UnitTestResults $unitTestResults -IntegrationTestResults $integrationTestResults -PerformanceTestResults $performanceTestResults -CodeCoverageResults $codeCoverageResults
     Generate-JsonReport -OutputPath $JsonOutputPath -UnitTestResults $unitTestResults -IntegrationTestResults $integrationTestResults -PerformanceTestResults $performanceTestResults -CodeCoverageResults $codeCoverageResults
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Generate-TestReport -OutputPath $OutputPath -JsonOutputPath $JsonOutputPath

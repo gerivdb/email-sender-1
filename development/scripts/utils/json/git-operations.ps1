@@ -1,4 +1,4 @@
-# Script pour exÃ©cuter des opÃ©rations Git de maniÃ¨re fiable
+﻿# Script pour exÃƒÂ©cuter des opÃƒÂ©rations Git de maniÃƒÂ¨re fiable
 # Utilisation : .\development\scripts\utils\git\git-operations.ps1 -Operation "add" -Files "file1.txt,file2.txt" -Message "Commit message"
 
 param (
@@ -15,20 +15,20 @@ param (
     [string]$Branch = "main"
 )
 
-# DÃ©finir le rÃ©pertoire de travail
+# DÃƒÂ©finir le rÃƒÂ©pertoire de travail
 $workingDir = $PSScriptRoot
 while (-not (Test-Path (Join-Path $workingDir ".git"))) {
     $workingDir = Split-Path $workingDir -Parent
     if ($null -eq $workingDir) {
-        Write-Error "Impossible de trouver le rÃ©pertoire Git"
+        Write-Error "Impossible de trouver le rÃƒÂ©pertoire Git"
         exit 1
     }
 }
 
-Write-Host "RÃ©pertoire Git trouvÃ© : $workingDir" -ForegroundColor Cyan
+Write-Host "RÃƒÂ©pertoire Git trouvÃƒÂ© : $workingDir" -ForegroundColor Cyan
 Set-Location $workingDir
 
-# Fonction pour exÃ©cuter une commande Git
+# Fonction pour exÃƒÂ©cuter une commande Git
 function Invoke-GitCommand {
     param (
         [string]$Command,
@@ -36,31 +36,31 @@ function Invoke-GitCommand {
     )
     
     $gitCommand = "git $Command $($Arguments -join ' ')"
-    Write-Host "ExÃ©cution de : $gitCommand" -ForegroundColor Yellow
+    Write-Host "ExÃƒÂ©cution de : $gitCommand" -ForegroundColor Yellow
     
     try {
         $output = & git $Command $Arguments 2>&1
         if ($LASTEXITCODE -ne 0) {
-            Write-Error "Erreur lors de l'exÃ©cution de la commande Git : $output"
+            Write-Error "Erreur lors de l'exÃƒÂ©cution de la commande Git : $output"
             return $false
         }
         Write-Host $output
         return $true
     }
     catch {
-        Write-Error "Exception lors de l'exÃ©cution de la commande Git : $_"
+        Write-Error "Exception lors de l'exÃƒÂ©cution de la commande Git : $_"
         return $false
     }
 }
 
-# ExÃ©cuter l'opÃ©ration demandÃ©e
+# ExÃƒÂ©cuter l'opÃƒÂ©ration demandÃƒÂ©e
 switch ($Operation) {
     "status" {
         Invoke-GitCommand "status"
     }
     "add" {
         if ($Files -eq "") {
-            Write-Error "Vous devez spÃ©cifier des fichiers Ã  ajouter"
+            Write-Error "Vous devez spÃƒÂ©cifier des fichiers ÃƒÂ  ajouter"
             exit 1
         }
         
@@ -72,7 +72,7 @@ switch ($Operation) {
     }
     "commit" {
         if ($Message -eq "") {
-            Write-Error "Vous devez spÃ©cifier un message de commit"
+            Write-Error "Vous devez spÃƒÂ©cifier un message de commit"
             exit 1
         }
         
@@ -89,12 +89,12 @@ switch ($Operation) {
     }
     "add-commit-push" {
         if ($Files -eq "") {
-            Write-Error "Vous devez spÃ©cifier des fichiers Ã  ajouter"
+            Write-Error "Vous devez spÃƒÂ©cifier des fichiers ÃƒÂ  ajouter"
             exit 1
         }
         
         if ($Message -eq "") {
-            Write-Error "Vous devez spÃ©cifier un message de commit"
+            Write-Error "Vous devez spÃƒÂ©cifier un message de commit"
             exit 1
         }
         
@@ -115,8 +115,8 @@ switch ($Operation) {
         Invoke-GitCommand "push" @("origin", $Branch)
     }
     default {
-        Write-Error "OpÃ©ration non reconnue : $Operation"
-        Write-Host "OpÃ©rations disponibles : status, add, commit, push, pull, log, add-commit-push"
+        Write-Error "OpÃƒÂ©ration non reconnue : $Operation"
+        Write-Host "OpÃƒÂ©rations disponibles : status, add, commit, push, pull, log, add-commit-push"
         exit 1
     }
 }

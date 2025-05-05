@@ -1,13 +1,13 @@
-BeforeAll {
+﻿BeforeAll {
     # Importer le module
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath '..\ConfigurationMetadataExtractor.psm1'
     Import-Module $modulePath -Force
 }
 
 Describe 'Get-ConfigurationDependencies' {
-    Context 'Extraction des dépendances explicites' {
-        It 'Extrait correctement les dépendances explicites' {
-            # Définir le contenu JSON directement dans le test
+    Context 'Extraction des dÃ©pendances explicites' {
+        It 'Extrait correctement les dÃ©pendances explicites' {
+            # DÃ©finir le contenu JSON directement dans le test
             $jsonContent = @'
 {
     "server": {
@@ -47,9 +47,9 @@ Describe 'Get-ConfigurationDependencies' {
         }
     }
 
-    Context 'Extraction des dépendances implicites' {
-        It 'Extrait correctement les dépendances implicites' {
-            # Définir le contenu JSON directement dans le test
+    Context 'Extraction des dÃ©pendances implicites' {
+        It 'Extrait correctement les dÃ©pendances implicites' {
+            # DÃ©finir le contenu JSON directement dans le test
             $jsonContent = @'
 {
     "server": {
@@ -83,9 +83,9 @@ Describe 'Get-ConfigurationDependencies' {
         }
     }
 
-    Context 'Détection des dépendances circulaires' {
-        It 'Détecte correctement les dépendances circulaires' {
-            # Définir le contenu JSON directement dans le test
+    Context 'DÃ©tection des dÃ©pendances circulaires' {
+        It 'DÃ©tecte correctement les dÃ©pendances circulaires' {
+            # DÃ©finir le contenu JSON directement dans le test
             $jsonContent = @'
 {
     "component1": {
@@ -106,7 +106,7 @@ Describe 'Get-ConfigurationDependencies' {
             $result.CircularDependencies | Should -Not -BeNullOrEmpty
             $result.CircularDependencies.Count | Should -BeGreaterThan 0
 
-            # Vérifier qu'au moins un cycle contient les trois composants
+            # VÃ©rifier qu'au moins un cycle contient les trois composants
             $foundCycle = $false
             foreach ($cycle in $result.CircularDependencies) {
                 if (($cycle -contains 'component1') -and ($cycle -contains 'component2') -and ($cycle -contains 'component3')) {
@@ -120,7 +120,7 @@ Describe 'Get-ConfigurationDependencies' {
     }
 
     Context 'Gestion des erreurs' {
-        It 'Génère une erreur pour un contenu JSON invalide' {
+        It 'GÃ©nÃ¨re une erreur pour un contenu JSON invalide' {
             $invalidJson = '{invalid json}'
             $tempJsonPath = [System.IO.Path]::GetTempFileName() + ".json"
             Set-Content -Path $tempJsonPath -Value $invalidJson
@@ -132,7 +132,7 @@ Describe 'Get-ConfigurationDependencies' {
             }
         }
 
-        It 'Génère une erreur pour un format non pris en charge' {
+        It 'GÃ©nÃ¨re une erreur pour un format non pris en charge' {
             $content = 'key = value'
             $tempPath = [System.IO.Path]::GetTempFileName() + ".txt"
             Set-Content -Path $tempPath -Value $content

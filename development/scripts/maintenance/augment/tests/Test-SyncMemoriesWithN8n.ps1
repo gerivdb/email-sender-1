@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le script de synchronisation des Memories avec n8n.
 
@@ -8,7 +8,7 @@
 
 .EXAMPLE
     Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-SyncMemoriesWithN8n.ps1"
-    # Exécute les tests unitaires pour le script de synchronisation des Memories avec n8n
+    # ExÃ©cute les tests unitaires pour le script de synchronisation des Memories avec n8n
 
 .NOTES
     Version: 1.0
@@ -16,17 +16,17 @@
     Auteur: Augment Agent
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Déterminer le chemin du script à tester
+# DÃ©terminer le chemin du script Ã  tester
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $scriptPath = Join-Path -Path $scriptRoot -ChildPath "sync-memories-with-n8n.ps1"
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $scriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -35,11 +35,11 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 
 Describe "Sync Memories With N8n Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $TestDrive -ChildPath "augment"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         
-        # Créer un fichier de Memories temporaire
+        # CrÃ©er un fichier de Memories temporaire
         $testMemoriesPath = Join-Path -Path $testDir -ChildPath "memories.json"
         $testMemoriesContent = @{
             version = "2.0.0"
@@ -53,7 +53,7 @@ Describe "Sync Memories With N8n Tests" {
         } | ConvertTo-Json -Depth 10
         $testMemoriesContent | Out-File -FilePath $testMemoriesPath -Encoding UTF8
         
-        # Définir des variables globales pour les tests
+        # DÃ©finir des variables globales pour les tests
         $Global:TestMemoriesPath = $testMemoriesPath
         
         # Mock pour Invoke-RestMethod
@@ -115,25 +115,25 @@ Describe "Sync Memories With N8n Tests" {
     
     Context "Script Loading" {
         It "Should load the script without errors" {
-            # Vérifier que le script existe
+            # VÃ©rifier que le script existe
             Test-Path -Path $scriptPath | Should -Be $true
             
-            # Charger le script dans un bloc de script pour éviter d'exécuter le script complet
+            # Charger le script dans un bloc de script pour Ã©viter d'exÃ©cuter le script complet
             $scriptContent = Get-Content -Path $scriptPath -Raw
             
-            # Remplacer la partie qui exécute le script par un commentaire
-            $scriptContent = $scriptContent -replace "# Vérifier si n8n est en cours d'exécution.*?# Afficher un résumé", "# Script execution disabled for testing"
+            # Remplacer la partie qui exÃ©cute le script par un commentaire
+            $scriptContent = $scriptContent -replace "# VÃ©rifier si n8n est en cours d'exÃ©cution.*?# Afficher un rÃ©sumÃ©", "# Script execution disabled for testing"
             
             $scriptBlock = [ScriptBlock]::Create($scriptContent)
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             { . $scriptBlock } | Should -Not -Throw
         }
     }
     
     Context "Test-N8nConnection" {
         It "Should return true when n8n is running" {
-            # Définir la fonction Test-N8nConnection pour le test
+            # DÃ©finir la fonction Test-N8nConnection pour le test
             function Test-N8nConnection {
                 param (
                     [string]$N8nUrl
@@ -155,7 +155,7 @@ Describe "Sync Memories With N8n Tests" {
     
     Context "Get-WorkflowId" {
         It "Should return the workflow ID when the workflow exists" {
-            # Définir la fonction Get-WorkflowId pour le test
+            # DÃ©finir la fonction Get-WorkflowId pour le test
             function Get-WorkflowId {
                 param (
                     [string]$N8nUrl,
@@ -172,7 +172,7 @@ Describe "Sync Memories With N8n Tests" {
                         return $null
                     }
                 } catch {
-                    Write-Error "Erreur lors de la récupération du workflow : $_"
+                    Write-Error "Erreur lors de la rÃ©cupÃ©ration du workflow : $_"
                     return $null
                 }
             }
@@ -183,7 +183,7 @@ Describe "Sync Memories With N8n Tests" {
         }
         
         It "Should return null when the workflow does not exist" {
-            # Définir la fonction Get-WorkflowId pour le test
+            # DÃ©finir la fonction Get-WorkflowId pour le test
             function Get-WorkflowId {
                 param (
                     [string]$N8nUrl,
@@ -200,7 +200,7 @@ Describe "Sync Memories With N8n Tests" {
                         return $null
                     }
                 } catch {
-                    Write-Error "Erreur lors de la récupération du workflow : $_"
+                    Write-Error "Erreur lors de la rÃ©cupÃ©ration du workflow : $_"
                     return $null
                 }
             }
@@ -213,7 +213,7 @@ Describe "Sync Memories With N8n Tests" {
     
     Context "Invoke-Workflow" {
         It "Should execute the workflow and return the result" {
-            # Définir la fonction Invoke-Workflow pour le test
+            # DÃ©finir la fonction Invoke-Workflow pour le test
             function Invoke-Workflow {
                 param (
                     [string]$N8nUrl,
@@ -229,7 +229,7 @@ Describe "Sync Memories With N8n Tests" {
                     $response = Invoke-RestMethod -Uri "$N8nUrl/workflows/$WorkflowId/execute" -Method Post -Body $body -ContentType "application/json"
                     return $response
                 } catch {
-                    Write-Error "Erreur lors de l'exécution du workflow : $_"
+                    Write-Error "Erreur lors de l'exÃ©cution du workflow : $_"
                     return $null
                 }
             }
@@ -257,17 +257,17 @@ Describe "Sync Memories With N8n Tests" {
     
     Context "Script Execution" {
         It "Should synchronize Memories with n8n" {
-            # Exécuter le script avec des paramètres spécifiques
+            # ExÃ©cuter le script avec des paramÃ¨tres spÃ©cifiques
             $params = @{
                 N8nUrl = "http://localhost:5678/api/v1"
                 MemoriesPath = $Global:TestMemoriesPath
                 WorkflowName = "augment-memories-sync"
             }
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             & $scriptPath @params
             
-            # Vérifier que le fichier a été mis à jour
+            # VÃ©rifier que le fichier a Ã©tÃ© mis Ã  jour
             $updatedContent = Get-Content -Path $Global:TestMemoriesPath -Raw | ConvertFrom-Json
             $updatedContent | Should -Not -BeNullOrEmpty
             $updatedContent.sections | Should -Not -BeNullOrEmpty

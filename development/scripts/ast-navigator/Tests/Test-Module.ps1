@@ -1,4 +1,4 @@
-# Script de test pour le module AstNavigator
+﻿# Script de test pour le module AstNavigator
 
 # Charger directement les fonctions
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".."
@@ -7,13 +7,13 @@ $publicFunctionsPath = Join-Path -Path $modulePath -ChildPath "Public"
 # Charger toutes les fonctions publiques
 $publicFunctions = Get-ChildItem -Path $publicFunctionsPath -Filter "*.ps1"
 Write-Host "`n=== Chargement des fonctions ===" -ForegroundColor Cyan
-Write-Host "Nombre de fonctions trouvées: $($publicFunctions.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de fonctions trouvÃ©es: $($publicFunctions.Count)" -ForegroundColor Yellow
 foreach ($function in $publicFunctions) {
     Write-Host "  Chargement de la fonction: $($function.Name)" -ForegroundColor Green
     . $function.FullName
 }
 
-# Créer un exemple de code PowerShell à analyser
+# CrÃ©er un exemple de code PowerShell Ã  analyser
 $sampleCode = @'
 function Get-Example {
     param (
@@ -39,7 +39,7 @@ $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [
 # Tester la fonction Invoke-AstTraversalDFS
 Write-Host "`n=== Test de Invoke-AstTraversalDFS ===" -ForegroundColor Cyan
 $functions = Invoke-AstTraversalDFS -Ast $ast -NodeType "FunctionDefinition"
-Write-Host "Nombre de fonctions trouvées: $($functions.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de fonctions trouvÃ©es: $($functions.Count)" -ForegroundColor Yellow
 foreach ($function in $functions) {
     Write-Host "  Fonction: $($function.Name) (Ligne $($function.Extent.StartLineNumber))" -ForegroundColor Green
 }
@@ -47,9 +47,9 @@ foreach ($function in $functions) {
 # Tester la fonction Invoke-AstTraversalDFS-Simple
 Write-Host "`n=== Test de Invoke-AstTraversalDFS-Simple ===" -ForegroundColor Cyan
 $functions = Invoke-AstTraversalDFS-Simple -Ast $ast -NodeType "FunctionDefinition"
-Write-Host "Nombre de fonctions trouvées: $($functions.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de fonctions trouvÃ©es: $($functions.Count)" -ForegroundColor Yellow
 foreach ($function in $functions) {
     Write-Host "  Fonction: $($function.Name) (Ligne $($function.Extent.StartLineNumber))" -ForegroundColor Green
 }
 
-Write-Host "`nTous les tests sont terminés." -ForegroundColor Green
+Write-Host "`nTous les tests sont terminÃ©s." -ForegroundColor Green

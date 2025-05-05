@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests pour le script Consolidate-AnalysisDirectories-Final.ps1.
 .DESCRIPTION
-    Ce script exécute des tests pour vérifier le bon fonctionnement du script
+    Ce script exÃ©cute des tests pour vÃ©rifier le bon fonctionnement du script
     Consolidate-AnalysisDirectories-Final.ps1.
 .PARAMETER DryRun
-    Si spécifié, le script exécute les tests en mode simulation.
+    Si spÃ©cifiÃ©, le script exÃ©cute les tests en mode simulation.
 .EXAMPLE
     .\Test-ConsolidateAnalysisDirectories-Final.ps1
 .EXAMPLE
@@ -22,16 +22,16 @@ param (
     [switch]$DryRun
 )
 
-# Définir le répertoire racine du dépôt
+# DÃ©finir le rÃ©pertoire racine du dÃ©pÃ´t
 $repoRoot = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\"
 $repoRoot = [System.IO.Path]::GetFullPath($repoRoot)
 
-# Vérifier que le répertoire racine existe
+# VÃ©rifier que le rÃ©pertoire racine existe
 if (-not (Test-Path -Path $repoRoot -PathType Container)) {
-    throw "Le répertoire racine n'existe pas : $repoRoot"
+    throw "Le rÃ©pertoire racine n'existe pas : $repoRoot"
 }
 
-# Définir les chemins des dossiers source et destination
+# DÃ©finir les chemins des dossiers source et destination
 $analysisPath = Join-Path -Path $repoRoot -ChildPath "development\scripts\analysis"
 $analyticsPath = Join-Path -Path $repoRoot -ChildPath "development\scripts\analytics"
 $unifiedPath = Join-Path -Path $repoRoot -ChildPath "development\scripts\analysis"
@@ -54,57 +54,57 @@ function Write-TestMessage {
     Write-Host $Message -ForegroundColor $color
 }
 
-# Vérifier que les dossiers source existent
-Write-TestMessage "Vérification des dossiers source..." -Type "Info"
+# VÃ©rifier que les dossiers source existent
+Write-TestMessage "VÃ©rification des dossiers source..." -Type "Info"
 
 $testsPassed = $true
 
 if (-not (Test-Path -Path $analysisPath -PathType Container)) {
-    Write-TestMessage "ÉCHEC : Le dossier analysis n'existe pas : $analysisPath" -Type "Error"
+    Write-TestMessage "Ã‰CHEC : Le dossier analysis n'existe pas : $analysisPath" -Type "Error"
     $testsPassed = $false
 } else {
-    Write-TestMessage "SUCCÈS : Le dossier analysis existe : $analysisPath" -Type "Success"
+    Write-TestMessage "SUCCÃˆS : Le dossier analysis existe : $analysisPath" -Type "Success"
 }
 
 if (-not (Test-Path -Path $analyticsPath -PathType Container)) {
-    Write-TestMessage "ÉCHEC : Le dossier analytics n'existe pas : $analyticsPath" -Type "Error"
+    Write-TestMessage "Ã‰CHEC : Le dossier analytics n'existe pas : $analyticsPath" -Type "Error"
     $testsPassed = $false
 } else {
-    Write-TestMessage "SUCCÈS : Le dossier analytics existe : $analyticsPath" -Type "Success"
+    Write-TestMessage "SUCCÃˆS : Le dossier analytics existe : $analyticsPath" -Type "Success"
 }
 
-# Vérifier que le script de consolidation existe
+# VÃ©rifier que le script de consolidation existe
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Consolidate-AnalysisDirectories-Final.ps1"
 
 if (-not (Test-Path -Path $scriptPath -PathType Leaf)) {
-    Write-TestMessage "ÉCHEC : Le script de consolidation n'existe pas : $scriptPath" -Type "Error"
+    Write-TestMessage "Ã‰CHEC : Le script de consolidation n'existe pas : $scriptPath" -Type "Error"
     $testsPassed = $false
 } else {
-    Write-TestMessage "SUCCÈS : Le script de consolidation existe : $scriptPath" -Type "Success"
+    Write-TestMessage "SUCCÃˆS : Le script de consolidation existe : $scriptPath" -Type "Success"
 }
 
-# Exécuter le script en mode DryRun pour tester
+# ExÃ©cuter le script en mode DryRun pour tester
 if ($testsPassed) {
-    Write-TestMessage "Exécution du script en mode DryRun pour tester..." -Type "Info"
+    Write-TestMessage "ExÃ©cution du script en mode DryRun pour tester..." -Type "Info"
     
     try {
         & $scriptPath -DryRun -Force
-        Write-TestMessage "SUCCÈS : Le script s'est exécuté sans erreur en mode DryRun" -Type "Success"
+        Write-TestMessage "SUCCÃˆS : Le script s'est exÃ©cutÃ© sans erreur en mode DryRun" -Type "Success"
     } catch {
-        Write-TestMessage "ÉCHEC : Le script a généré une erreur en mode DryRun : $_" -Type "Error"
+        Write-TestMessage "Ã‰CHEC : Le script a gÃ©nÃ©rÃ© une erreur en mode DryRun : $_" -Type "Error"
         $testsPassed = $false
     }
 }
 
-# Vérifier que les dossiers de destination existent après l'exécution réelle
+# VÃ©rifier que les dossiers de destination existent aprÃ¨s l'exÃ©cution rÃ©elle
 if ($testsPassed -and -not $DryRun) {
-    Write-TestMessage "Exécution du script en mode réel pour tester..." -Type "Info"
+    Write-TestMessage "ExÃ©cution du script en mode rÃ©el pour tester..." -Type "Info"
     
     try {
         & $scriptPath -Force
-        Write-TestMessage "SUCCÈS : Le script s'est exécuté sans erreur en mode réel" -Type "Success"
+        Write-TestMessage "SUCCÃˆS : Le script s'est exÃ©cutÃ© sans erreur en mode rÃ©el" -Type "Success"
         
-        # Vérifier que les dossiers de destination ont été créés
+        # VÃ©rifier que les dossiers de destination ont Ã©tÃ© crÃ©Ã©s
         $newFolders = @(
             "code",
             "performance",
@@ -119,44 +119,44 @@ if ($testsPassed -and -not $DryRun) {
             $folderPath = Join-Path -Path $unifiedPath -ChildPath $folder
             
             if (-not (Test-Path -Path $folderPath -PathType Container)) {
-                Write-TestMessage "ÉCHEC : Le dossier de destination n'a pas été créé : $folderPath" -Type "Error"
+                Write-TestMessage "Ã‰CHEC : Le dossier de destination n'a pas Ã©tÃ© crÃ©Ã© : $folderPath" -Type "Error"
                 $testsPassed = $false
             } else {
-                Write-TestMessage "SUCCÈS : Le dossier de destination a été créé : $folderPath" -Type "Success"
+                Write-TestMessage "SUCCÃˆS : Le dossier de destination a Ã©tÃ© crÃ©Ã© : $folderPath" -Type "Success"
             }
         }
         
-        # Vérifier que le fichier README.md a été créé
+        # VÃ©rifier que le fichier README.md a Ã©tÃ© crÃ©Ã©
         $readmePath = Join-Path -Path $unifiedPath -ChildPath "README.md"
         
         if (-not (Test-Path -Path $readmePath -PathType Leaf)) {
-            Write-TestMessage "ÉCHEC : Le fichier README.md n'a pas été créé : $readmePath" -Type "Error"
+            Write-TestMessage "Ã‰CHEC : Le fichier README.md n'a pas Ã©tÃ© crÃ©Ã© : $readmePath" -Type "Error"
             $testsPassed = $false
         } else {
-            Write-TestMessage "SUCCÈS : Le fichier README.md a été créé : $readmePath" -Type "Success"
+            Write-TestMessage "SUCCÃˆS : Le fichier README.md a Ã©tÃ© crÃ©Ã© : $readmePath" -Type "Success"
         }
         
-        # Vérifier que le fichier de redirection a été créé
+        # VÃ©rifier que le fichier de redirection a Ã©tÃ© crÃ©Ã©
         $redirectPath = Join-Path -Path $analyticsPath -ChildPath "README.md"
         
         if (-not (Test-Path -Path $redirectPath -PathType Leaf)) {
-            Write-TestMessage "ÉCHEC : Le fichier de redirection n'a pas été créé : $redirectPath" -Type "Error"
+            Write-TestMessage "Ã‰CHEC : Le fichier de redirection n'a pas Ã©tÃ© crÃ©Ã© : $redirectPath" -Type "Error"
             $testsPassed = $false
         } else {
-            Write-TestMessage "SUCCÈS : Le fichier de redirection a été créé : $redirectPath" -Type "Success"
+            Write-TestMessage "SUCCÃˆS : Le fichier de redirection a Ã©tÃ© crÃ©Ã© : $redirectPath" -Type "Success"
         }
     } catch {
-        Write-TestMessage "ÉCHEC : Le script a généré une erreur en mode réel : $_" -Type "Error"
+        Write-TestMessage "Ã‰CHEC : Le script a gÃ©nÃ©rÃ© une erreur en mode rÃ©el : $_" -Type "Error"
         $testsPassed = $false
     }
 }
 
-# Afficher le résultat final
+# Afficher le rÃ©sultat final
 if ($testsPassed) {
-    Write-TestMessage "TOUS LES TESTS ONT RÉUSSI" -Type "Success"
+    Write-TestMessage "TOUS LES TESTS ONT RÃ‰USSI" -Type "Success"
 } else {
-    Write-TestMessage "CERTAINS TESTS ONT ÉCHOUÉ" -Type "Error"
+    Write-TestMessage "CERTAINS TESTS ONT Ã‰CHOUÃ‰" -Type "Error"
 }
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $testsPassed

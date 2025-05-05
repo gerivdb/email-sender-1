@@ -1,7 +1,7 @@
-# Script de réorganisation de la documentation avec Hygen
-# Ce script utilise Hygen pour réorganiser la documentation
+﻿# Script de rÃ©organisation de la documentation avec Hygen
+# Ce script utilise Hygen pour rÃ©organiser la documentation
 
-# Vérifier si Hygen est installé
+# VÃ©rifier si Hygen est installÃ©
 $hygenInstalled = $null
 try {
     $hygenInstalled = Get-Command hygen -ErrorAction SilentlyContinue
@@ -10,11 +10,11 @@ try {
 }
 
 if ($null -eq $hygenInstalled) {
-    Write-Host "Hygen n'est pas installé. Installation en cours..."
+    Write-Host "Hygen n'est pas installÃ©. Installation en cours..."
     npm install -g hygen
 }
 
-# Définition des structures de dossiers
+# DÃ©finition des structures de dossiers
 $projetStructure = @(
     @{ Category = "architecture"; Subcategories = @("decisions", "diagrams") },
     @{ Category = "documentation"; Subcategories = @("api", "technique", "workflow") },
@@ -35,26 +35,26 @@ $developmentStructure = @(
     @{ Category = "tools"; Subcategories = @("scripts", "utilities") }
 )
 
-# Création de la structure pour le dossier projet
-Write-Host "Création de la structure pour le dossier 'projet'..."
+# CrÃ©ation de la structure pour le dossier projet
+Write-Host "CrÃ©ation de la structure pour le dossier 'projet'..."
 foreach ($category in $projetStructure) {
-    Write-Host "  Création de la catégorie: $($category.Category)"
+    Write-Host "  CrÃ©ation de la catÃ©gorie: $($category.Category)"
     hygen doc-structure new --docType "projet" --category $category.Category --subcategory ""
     
     foreach ($subcategory in $category.Subcategories) {
-        Write-Host "    Création de la sous-catégorie: $subcategory"
+        Write-Host "    CrÃ©ation de la sous-catÃ©gorie: $subcategory"
         hygen doc-structure new --docType "projet" --category $category.Category --subcategory $subcategory
     }
 }
 
-# Création de la structure pour le dossier development
-Write-Host "Création de la structure pour le dossier 'development'..."
+# CrÃ©ation de la structure pour le dossier development
+Write-Host "CrÃ©ation de la structure pour le dossier 'development'..."
 foreach ($category in $developmentStructure) {
-    Write-Host "  Création de la catégorie: $($category.Category)"
+    Write-Host "  CrÃ©ation de la catÃ©gorie: $($category.Category)"
     hygen doc-structure new --docType "development" --category $category.Category --subcategory ""
     
     foreach ($subcategory in $category.Subcategories) {
-        Write-Host "    Création de la sous-catégorie: $subcategory"
+        Write-Host "    CrÃ©ation de la sous-catÃ©gorie: $subcategory"
         hygen doc-structure new --docType "development" --category $category.Category --subcategory $subcategory
     }
 }
@@ -88,4 +88,4 @@ foreach ($mapping in $mappings) {
     }
 }
 
-Write-Host "Réorganisation de la documentation terminée." -ForegroundColor Green
+Write-Host "RÃ©organisation de la documentation terminÃ©e." -ForegroundColor Green

@@ -1,7 +1,7 @@
-# Module d'intégration avec Augment Code
+﻿# Module d'intÃ©gration avec Augment Code
 # Fournit des fonctions pour interagir avec Augment Code
 
-# Importer les dépendances
+# Importer les dÃ©pendances
 $scriptPath = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
 . "$scriptPath\AugmentMemoriesManager.ps1"
 
@@ -66,7 +66,7 @@ function Stop-AugmentMCPServers {
     if (Test-Path $stopPath) {
         & $stopPath -LogPath $LogPath
     } else {
-        Write-Warning "Script d'arrêt introuvable : $stopPath"
+        Write-Warning "Script d'arrÃªt introuvable : $stopPath"
     }
 }
 
@@ -134,16 +134,16 @@ function Get-AugmentModeDescription {
     )
     
     $descriptions = @{
-        "ARCHI" = "Structurer, modéliser, anticiper les dépendances"
-        "CHECK" = "Vérifier l'état d'avancement des tâches"
-        "C-BREAK" = "Détecter et résoudre les dépendances circulaires"
+        "ARCHI" = "Structurer, modÃ©liser, anticiper les dÃ©pendances"
+        "CHECK" = "VÃ©rifier l'Ã©tat d'avancement des tÃ¢ches"
+        "C-BREAK" = "DÃ©tecter et rÃ©soudre les dÃ©pendances circulaires"
         "DEBUG" = "Isoler, comprendre, corriger les anomalies"
-        "DEV-R" = "Implémenter ce qui est dans la roadmap"
-        "GRAN" = "Décomposer les blocs complexes"
-        "OPTI" = "Réduire complexité, taille ou temps d'exécution"
-        "PREDIC" = "Anticiper performances, détecter anomalies, analyser tendances"
-        "REVIEW" = "Vérifier lisibilité, standards, documentation"
-        "TEST" = "Maximiser couverture et fiabilité"
+        "DEV-R" = "ImplÃ©menter ce qui est dans la roadmap"
+        "GRAN" = "DÃ©composer les blocs complexes"
+        "OPTI" = "RÃ©duire complexitÃ©, taille ou temps d'exÃ©cution"
+        "PREDIC" = "Anticiper performances, dÃ©tecter anomalies, analyser tendances"
+        "REVIEW" = "VÃ©rifier lisibilitÃ©, standards, documentation"
+        "TEST" = "Maximiser couverture et fiabilitÃ©"
     }
     
     return $descriptions[$Mode]

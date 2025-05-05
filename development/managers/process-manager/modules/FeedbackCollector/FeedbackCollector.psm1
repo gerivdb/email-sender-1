@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Module de collecte et d'agrégation des messages de feedback pour le Process Manager.
+    Module de collecte et d'agrÃ©gation des messages de feedback pour le Process Manager.
 
 .DESCRIPTION
     Ce module fournit des fonctions pour collecter, stocker et analyser les messages
-    de feedback générés par le Process Manager et ses gestionnaires.
+    de feedback gÃ©nÃ©rÃ©s par le Process Manager et ses gestionnaires.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
-# Importer les dépendances
+# Importer les dÃ©pendances
 if (-not (Get-Module -Name "FeedbackManager")) {
     $feedbackManagerPath = Join-Path -Path $PSScriptRoot -Parent -ChildPath "FeedbackManager\FeedbackManager.psm1"
     if (Test-Path -Path $feedbackManagerPath) {
@@ -31,7 +31,7 @@ $script:LastRotationTime = Get-Date
 $script:PersistenceEnabled = $true
 $script:ImportantMessageTags = @("Critical", "Security", "Performance", "Error")
 
-# Structure de données pour la collection de messages
+# Structure de donnÃ©es pour la collection de messages
 class MessageCollection {
     [System.Collections.ArrayList]$Messages
     [int]$MaxSize
@@ -40,7 +40,7 @@ class MessageCollection {
     [datetime]$LastUpdateTime
     [hashtable]$Statistics
     
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     MessageCollection() {
         $this.Messages = [System.Collections.ArrayList]::new()
         $this.MaxSize = 10000
@@ -61,7 +61,7 @@ class MessageCollection {
         }
     }
     
-    # Constructeur avec paramètres
+    # Constructeur avec paramÃ¨tres
     MessageCollection([string]$Name, [int]$MaxSize) {
         $this.Messages = [System.Collections.ArrayList]::new()
         $this.MaxSize = $MaxSize
@@ -82,12 +82,12 @@ class MessageCollection {
         }
     }
     
-    # Méthode pour ajouter un message à la collection
+    # MÃ©thode pour ajouter un message Ã  la collection
     [void] AddMessage([FeedbackMessage]$Message) {
-        # Ajouter le message à la collection
+        # Ajouter le message Ã  la collection
         $this.Messages.Add($Message)
         
-        # Mettre à jour les statistiques
+        # Mettre Ã  jour les statistiques
         $this.Statistics.TotalMessages++
         
         switch ($Message.Type) {
@@ -99,7 +99,7 @@ class MessageCollection {
             "Verbose" { $this.Statistics.VerboseCount++ }
         }
         
-        # Mettre à jour les horodatages
+        # Mettre Ã  jour les horodatages
         if ($this.Statistics.OldestMessageTime -eq $null -or $Message.Timestamp -lt $this.Statistics.OldestMessageTime) {
             $this.Statistics.OldestMessageTime = $Message.Timestamp
         }
@@ -111,16 +111,16 @@ class MessageCollection {
         # Calculer la taille moyenne des messages
         $this.Statistics.AverageMessageSize = ($this.Statistics.AverageMessageSize * ($this.Statistics.TotalMessages - 1) + $Message.Message.Length) / $this.Statistics.TotalMessages
         
-        # Mettre à jour l'horodatage de dernière mise à jour
+        # Mettre Ã  jour l'horodatage de derniÃ¨re mise Ã  jour
         $this.LastUpdateTime = Get-Date
         
-        # Vérifier si la collection a dépassé sa taille maximale
+        # VÃ©rifier si la collection a dÃ©passÃ© sa taille maximale
         if ($this.Messages.Count -gt $this.MaxSize) {
             $this.Messages.RemoveAt(0)
         }
     }
     
-    # Méthode pour obtenir les messages filtrés
+    # MÃ©thode pour obtenir les messages filtrÃ©s
     [System.Collections.ArrayList] GetFilteredMessages([FeedbackFilter]$Filter) {
         $filteredMessages = [System.Collections.ArrayList]::new()
         
@@ -133,12 +133,12 @@ class MessageCollection {
         return $filteredMessages
     }
     
-    # Méthode pour obtenir les statistiques de la collection
+    # MÃ©thode pour obtenir les statistiques de la collection
     [hashtable] GetStatistics() {
         return $this.Statistics
     }
     
-    # Méthode pour vider la collection
+    # MÃ©thode pour vider la collection
     [void] Clear() {
         $this.Messages.Clear()
         $this.Statistics = @{
@@ -156,12 +156,12 @@ class MessageCollection {
         $this.LastUpdateTime = Get-Date
     }
     
-    # Méthode pour exporter la collection au format JSON
+    # MÃ©thode pour exporter la collection au format JSON
     [string] ExportToJson() {
         return ConvertTo-Json -InputObject $this -Depth 10
     }
     
-    # Méthode pour exporter la collection au format CSV
+    # MÃ©thode pour exporter la collection au format CSV
     [string] ExportToCsv() {
         $csv = "Timestamp,Type,Source,Severity,Message`n"
         
@@ -178,7 +178,7 @@ class MessageCollection {
         return $csv
     }
     
-    # Méthode pour importer une collection depuis un fichier JSON
+    # MÃ©thode pour importer une collection depuis un fichier JSON
     static [MessageCollection] ImportFromJson([string]$JsonContent) {
         $importedCollection = ConvertFrom-Json -InputObject $JsonContent
         
@@ -219,7 +219,7 @@ function Write-CollectorLog {
         [string]$Level = "Info"
     )
     
-    # Déterminer la couleur en fonction du niveau
+    # DÃ©terminer la couleur en fonction du niveau
     $color = switch ($Level) {
         "Debug" { "Gray" }
         "Info" { "White" }
@@ -229,7 +229,7 @@ function Write-CollectorLog {
         default { "White" }
     }
     
-    # Écrire le message dans la console
+    # Ã‰crire le message dans la console
     Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [FeedbackCollector] [$Level] $Message" -ForegroundColor $color
 }
 
@@ -260,10 +260,10 @@ function Initialize-FeedbackCollector {
     )
     
     try {
-        # Vérifier si le répertoire de stockage existe
+        # VÃ©rifier si le rÃ©pertoire de stockage existe
         if (-not (Test-Path -Path $StoragePath -PathType Container)) {
             New-Item -Path $StoragePath -ItemType Directory -Force | Out-Null
-            Write-CollectorLog -Message "Répertoire de stockage créé : $StoragePath" -Level Info
+            Write-CollectorLog -Message "RÃ©pertoire de stockage crÃ©Ã© : $StoragePath" -Level Info
         }
         
         # Charger la configuration si elle existe
@@ -290,10 +290,10 @@ function Initialize-FeedbackCollector {
                 $script:ImportantMessageTags = $config.ImportantMessageTags
             }
             
-            Write-CollectorLog -Message "Configuration chargée depuis $ConfigPath" -Level Info
+            Write-CollectorLog -Message "Configuration chargÃ©e depuis $ConfigPath" -Level Info
         }
         else {
-            # Créer la configuration par défaut
+            # CrÃ©er la configuration par dÃ©faut
             $config = @{
                 MaxCollectionSize = $MaxCollectionSize
                 RotationEnabled = $EnableRotation
@@ -303,7 +303,7 @@ function Initialize-FeedbackCollector {
                 StoragePath = $StoragePath
             }
             
-            # Créer le répertoire parent si nécessaire
+            # CrÃ©er le rÃ©pertoire parent si nÃ©cessaire
             $configDir = Split-Path -Path $ConfigPath -Parent
             if (-not (Test-Path -Path $configDir -PathType Container)) {
                 New-Item -Path $configDir -ItemType Directory -Force | Out-Null
@@ -311,10 +311,10 @@ function Initialize-FeedbackCollector {
             
             # Enregistrer la configuration
             $config | ConvertTo-Json -Depth 5 | Out-File -FilePath $ConfigPath -Encoding utf8
-            Write-CollectorLog -Message "Configuration par défaut créée : $ConfigPath" -Level Info
+            Write-CollectorLog -Message "Configuration par dÃ©faut crÃ©Ã©e : $ConfigPath" -Level Info
         }
         
-        # Mettre à jour les variables globales
+        # Mettre Ã  jour les variables globales
         $script:MaxCollectionSize = $MaxCollectionSize
         $script:DefaultStoragePath = $StoragePath
         $script:RotationEnabled = $EnableRotation
@@ -324,13 +324,13 @@ function Initialize-FeedbackCollector {
         # Initialiser la collection de messages
         $script:MessageCollection = [MessageCollection]::new("MainCollection", $script:MaxCollectionSize)
         
-        # Enregistrer le gestionnaire d'événements pour collecter les messages
+        # Enregistrer le gestionnaire d'Ã©vÃ©nements pour collecter les messages
         if (Get-Module -Name "FeedbackManager") {
-            # Créer une fonction de rappel pour collecter les messages
+            # CrÃ©er une fonction de rappel pour collecter les messages
             $collectMessageCallback = {
                 param($Message)
                 
-                # Ajouter le message à la collection
+                # Ajouter le message Ã  la collection
                 Add-MessageToCollection -Message $Message
             }
             
@@ -338,14 +338,14 @@ function Initialize-FeedbackCollector {
             $subscription = Subscribe-ProcessManagerNotifications -EventTypes @("FeedbackMessage") -Callback $collectMessageCallback
             
             if ($subscription) {
-                Write-CollectorLog -Message "Abonnement aux notifications de feedback créé" -Level Success
+                Write-CollectorLog -Message "Abonnement aux notifications de feedback crÃ©Ã©" -Level Success
             }
             else {
                 Write-CollectorLog -Message "Impossible de s'abonner aux notifications de feedback" -Level Warning
             }
         }
         
-        Write-CollectorLog -Message "Collecteur de feedback initialisé" -Level Success
+        Write-CollectorLog -Message "Collecteur de feedback initialisÃ©" -Level Success
         return $true
     }
     catch {
@@ -354,7 +354,7 @@ function Initialize-FeedbackCollector {
     }
 }
 
-# Fonction pour ajouter un message à la collection
+# Fonction pour ajouter un message Ã  la collection
 function Add-MessageToCollection {
     [CmdletBinding()]
     param (
@@ -366,7 +366,7 @@ function Add-MessageToCollection {
     )
     
     try {
-        # Vérifier si la rotation est nécessaire
+        # VÃ©rifier si la rotation est nÃ©cessaire
         if ($script:RotationEnabled) {
             $currentTime = Get-Date
             $timeSinceLastRotation = ($currentTime - $script:LastRotationTime).TotalSeconds
@@ -378,20 +378,20 @@ function Add-MessageToCollection {
             }
         }
         
-        # Ajouter le message à la collection
+        # Ajouter le message Ã  la collection
         $script:MessageCollection.AddMessage($Message)
         
-        # Vérifier si le message doit être persisté
+        # VÃ©rifier si le message doit Ãªtre persistÃ©
         if ($script:PersistenceEnabled) {
-            # Vérifier si le message est important
+            # VÃ©rifier si le message est important
             $isImportant = $false
             
-            # Vérifier le type de message
+            # VÃ©rifier le type de message
             if ($Message.Type -eq [FeedbackType]::Error -or $Message.Severity -le 2) {
                 $isImportant = $true
             }
             
-            # Vérifier les tags dans les données
+            # VÃ©rifier les tags dans les donnÃ©es
             if ($Message.Data -and $Message.Data.Tags) {
                 foreach ($tag in $Message.Data.Tags) {
                     if ($script:ImportantMessageTags -contains $tag) {
@@ -410,7 +410,7 @@ function Add-MessageToCollection {
         return $true
     }
     catch {
-        Write-CollectorLog -Message "Erreur lors de l'ajout du message à la collection : $_" -Level Error
+        Write-CollectorLog -Message "Erreur lors de l'ajout du message Ã  la collection : $_" -Level Error
         return $false
     }
 }
@@ -421,13 +421,13 @@ function Invoke-CollectionRotation {
     param ()
     
     try {
-        # Vérifier si la collection contient des messages
+        # VÃ©rifier si la collection contient des messages
         if ($script:MessageCollection.Messages.Count -eq 0) {
-            Write-CollectorLog -Message "Aucun message à archiver lors de la rotation" -Level Info
+            Write-CollectorLog -Message "Aucun message Ã  archiver lors de la rotation" -Level Info
             return $true
         }
         
-        # Créer le nom de fichier pour l'archive
+        # CrÃ©er le nom de fichier pour l'archive
         $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
         $archiveFileName = "feedback_archive_$timestamp.json"
         $archivePath = Join-Path -Path $script:DefaultStoragePath -ChildPath $archiveFileName
@@ -439,7 +439,7 @@ function Invoke-CollectionRotation {
         # Vider la collection
         $script:MessageCollection.Clear()
         
-        Write-CollectorLog -Message "Rotation de la collection effectuée, archive créée : $archivePath" -Level Success
+        Write-CollectorLog -Message "Rotation de la collection effectuÃ©e, archive crÃ©Ã©e : $archivePath" -Level Success
         return $true
     }
     catch {
@@ -457,14 +457,14 @@ function Save-ImportantMessage {
     )
     
     try {
-        # Créer le répertoire pour les messages importants
+        # CrÃ©er le rÃ©pertoire pour les messages importants
         $importantMessagesDir = Join-Path -Path $script:DefaultStoragePath -ChildPath "important"
         
         if (-not (Test-Path -Path $importantMessagesDir -PathType Container)) {
             New-Item -Path $importantMessagesDir -ItemType Directory -Force | Out-Null
         }
         
-        # Créer le nom de fichier pour le message
+        # CrÃ©er le nom de fichier pour le message
         $timestamp = $Message.Timestamp.ToString("yyyyMMdd_HHmmss")
         $messageType = $Message.Type.ToString().ToLower()
         $messageId = $Message.CorrelationId.Substring(0, 8)
@@ -475,7 +475,7 @@ function Save-ImportantMessage {
         $jsonContent = $Message | ConvertTo-Json -Depth 5
         $jsonContent | Out-File -FilePath $filePath -Encoding utf8
         
-        Write-CollectorLog -Message "Message important sauvegardé : $filePath" -Level Info
+        Write-CollectorLog -Message "Message important sauvegardÃ© : $filePath" -Level Info
         return $true
     }
     catch {

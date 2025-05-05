@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Enregistre les tests de réorganisation et standardisation du dépôt dans TestOmnibus
+    Enregistre les tests de rÃ©organisation et standardisation du dÃ©pÃ´t dans TestOmnibus
 .DESCRIPTION
-    Ce script enregistre les tests unitaires et d'intégration pour les scripts
-    de réorganisation et standardisation du dépôt dans le système TestOmnibus.
+    Ce script enregistre les tests unitaires et d'intÃ©gration pour les scripts
+    de rÃ©organisation et standardisation du dÃ©pÃ´t dans le systÃ¨me TestOmnibus.
 .PARAMETER TestOmnibusPath
     Chemin du module TestOmnibus
 .EXAMPLE
@@ -21,9 +21,9 @@ param(
     [string]$TestOmnibusPath = (Join-Path -Path (Get-Location).Path -ChildPath "modules\TestOmnibus")
 )
 
-# Vérifier que le module TestOmnibus existe
+# VÃ©rifier que le module TestOmnibus existe
 if (-not (Test-Path -Path $TestOmnibusPath -PathType Container)) {
-    Write-Error "Le module TestOmnibus n'existe pas à l'emplacement spécifié: $TestOmnibusPath"
+    Write-Error "Le module TestOmnibus n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $TestOmnibusPath"
     exit 1
 }
 
@@ -32,14 +32,14 @@ $modulePath = Join-Path -Path $TestOmnibusPath -ChildPath "TestOmnibus.psm1"
 if (Test-Path -Path $modulePath -PathType Leaf) {
     Import-Module $modulePath -Force
 } else {
-    Write-Error "Le fichier TestOmnibus.psm1 n'existe pas à l'emplacement spécifié: $modulePath"
+    Write-Error "Le fichier TestOmnibus.psm1 n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $modulePath"
     exit 1
 }
 
-# Définir les informations des tests
+# DÃ©finir les informations des tests
 $testSuite = @{
     Name = "RepoStructure"
-    Description = "Tests pour la réorganisation et standardisation du dépôt"
+    Description = "Tests pour la rÃ©organisation et standardisation du dÃ©pÃ´t"
     Category = "Infrastructure"
     Tags = @("RepoStructure", "Standardization", "Maintenance")
     Priority = "High"
@@ -47,22 +47,22 @@ $testSuite = @{
         @{
             Path = "tests\unit\Test-RepoStructureUnit.ps1"
             Type = "Unit"
-            Description = "Tests unitaires pour la validation de structure du dépôt"
+            Description = "Tests unitaires pour la validation de structure du dÃ©pÃ´t"
         },
         @{
             Path = "tests\unit\Test-RepositoryMigration.ps1"
             Type = "Unit"
-            Description = "Tests unitaires pour la migration du dépôt"
+            Description = "Tests unitaires pour la migration du dÃ©pÃ´t"
         },
         @{
             Path = "tests\unit\Test-RepositoryCleaning.ps1"
             Type = "Unit"
-            Description = "Tests unitaires pour le nettoyage du dépôt"
+            Description = "Tests unitaires pour le nettoyage du dÃ©pÃ´t"
         },
         @{
             Path = "tests\Test-RepoStructureIntegration.ps1"
             Type = "Integration"
-            Description = "Tests d'intégration pour la réorganisation et standardisation du dépôt"
+            Description = "Tests d'intÃ©gration pour la rÃ©organisation et standardisation du dÃ©pÃ´t"
             Parameters = @{
                 OutputFormat = "HTML"
                 CoverageReport = $true
@@ -77,25 +77,25 @@ $testSuite = @{
 # Enregistrer la suite de tests dans TestOmnibus
 if (Get-Command -Name Register-TestSuite -ErrorAction SilentlyContinue) {
     Register-TestSuite -TestSuite $testSuite
-    Write-Host "Suite de tests 'RepoStructure' enregistrée avec succès dans TestOmnibus." -ForegroundColor Green
+    Write-Host "Suite de tests 'RepoStructure' enregistrÃ©e avec succÃ¨s dans TestOmnibus." -ForegroundColor Green
 } else {
-    Write-Error "La commande Register-TestSuite n'est pas disponible. Vérifiez que le module TestOmnibus est correctement importé."
+    Write-Error "La commande Register-TestSuite n'est pas disponible. VÃ©rifiez que le module TestOmnibus est correctement importÃ©."
     exit 1
 }
 
-# Créer un script de raccourci pour exécuter les tests
+# CrÃ©er un script de raccourci pour exÃ©cuter les tests
 $shortcutScript = @"
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests de réorganisation et standardisation du dépôt
+    ExÃ©cute les tests de rÃ©organisation et standardisation du dÃ©pÃ´t
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires et d'intégration pour les scripts
-    de réorganisation et standardisation du dépôt.
+    Ce script exÃ©cute tous les tests unitaires et d'intÃ©gration pour les scripts
+    de rÃ©organisation et standardisation du dÃ©pÃ´t.
 .PARAMETER OutputFormat
     Format de sortie du rapport (NUnitXml, JUnitXml, HTML)
 .PARAMETER CoverageReport
-    Indique s'il faut générer un rapport de couverture
+    Indique s'il faut gÃ©nÃ©rer un rapport de couverture
 .EXAMPLE
     .\Run-RepoStructureTests.ps1 -OutputFormat HTML -CoverageReport
 #>
@@ -113,7 +113,7 @@ param(
 # Importer le module TestOmnibus
 Import-Module "$PSScriptRoot\..\..\modules\TestOmnibus\TestOmnibus.psm1" -Force
 
-# Exécuter la suite de tests
+# ExÃ©cuter la suite de tests
 Invoke-TestSuite -Name "RepoStructure" -Parameters @{
     OutputFormat = \$OutputFormat
     CoverageReport = \$CoverageReport
@@ -123,17 +123,17 @@ Invoke-TestSuite -Name "RepoStructure" -Parameters @{
 $shortcutPath = "tests\Run-RepoStructureTests.ps1"
 Set-Content -Path $shortcutPath -Value $shortcutScript -Encoding UTF8
 
-Write-Host "Script de raccourci créé: $shortcutPath" -ForegroundColor Green
+Write-Host "Script de raccourci crÃ©Ã©: $shortcutPath" -ForegroundColor Green
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'enregistrement:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'enregistrement:" -ForegroundColor Cyan
 Write-Host "- Suite de tests: RepoStructure" -ForegroundColor White
-Write-Host "- Catégorie: Infrastructure" -ForegroundColor White
-Write-Host "- Priorité: High" -ForegroundColor White
+Write-Host "- CatÃ©gorie: Infrastructure" -ForegroundColor White
+Write-Host "- PrioritÃ©: High" -ForegroundColor White
 Write-Host "- Nombre de tests: $($testSuite.TestFiles.Count)" -ForegroundColor White
 Write-Host "- Script de raccourci: $shortcutPath" -ForegroundColor White
 
-# Afficher les instructions d'exécution
-Write-Host "`nPour exécuter les tests, utilisez l'une des commandes suivantes:" -ForegroundColor Yellow
+# Afficher les instructions d'exÃ©cution
+Write-Host "`nPour exÃ©cuter les tests, utilisez l'une des commandes suivantes:" -ForegroundColor Yellow
 Write-Host "- Invoke-TestSuite -Name 'RepoStructure'" -ForegroundColor White
 Write-Host "- .\development\testing\tests\Run-RepoStructureTests.ps1" -ForegroundColor White

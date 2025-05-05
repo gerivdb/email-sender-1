@@ -1,5 +1,5 @@
-# Test pour la fonction Get-ExternalFunctionDependencies
-# Ce test vérifie que la fonction détecte correctement les dépendances de fonctions externes
+﻿# Test pour la fonction Get-ExternalFunctionDependencies
+# Ce test vÃ©rifie que la fonction dÃ©tecte correctement les dÃ©pendances de fonctions externes
 
 # Importer le module
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
@@ -8,18 +8,18 @@ $moduleFile = Join-Path -Path $modulePath -ChildPath "ModuleDependencyAnalyzer-F
 try {
     # Importer le module
     Import-Module -Name $moduleFile -Force -ErrorAction Stop
-    Write-Host "Module importé avec succès" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s" -ForegroundColor Green
 
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testDir = Join-Path -Path $env:TEMP -ChildPath "ExternalFunctionDependenciesTest"
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
     }
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-    # Créer un fichier de test avec des appels à des fonctions externes
+    # CrÃ©er un fichier de test avec des appels Ã  des fonctions externes
     $testScriptContent = @"
-# Définition d'une fonction interne
+# DÃ©finition d'une fonction interne
 function Test-InternalFunction {
     param (
         [string]`$Path
@@ -36,10 +36,10 @@ function Test-AnotherInternalFunction {
     Get-ChildItem -Path "C:\Windows"
     Get-Process -Name "explorer"
     
-    # Utilisation d'une méthode
+    # Utilisation d'une mÃ©thode
     [System.IO.Path]::GetFileName("C:\test.txt")
     
-    # Utilisation de structures de contrôle
+    # Utilisation de structures de contrÃ´le
     if (`$true) {
         foreach (`$item in @(1, 2, 3)) {
             Write-Output `$item
@@ -47,7 +47,7 @@ function Test-AnotherInternalFunction {
     }
 }
 
-# Appel à des fonctions externes
+# Appel Ã  des fonctions externes
 Get-Date
 Get-ChildItem
 Get-Process
@@ -57,17 +57,17 @@ Write-Host "Test"
     $testScriptPath = Join-Path -Path $testDir -ChildPath "TestScript.ps1"
     Set-Content -Path $testScriptPath -Value $testScriptContent
 
-    # Analyser les dépendances de fonctions externes
+    # Analyser les dÃ©pendances de fonctions externes
     Write-Host "`nTest: Get-ExternalFunctionDependencies" -ForegroundColor Cyan
     $result = Get-ExternalFunctionDependencies -ModulePath $testScriptPath
     
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     Write-Host "External function dependencies found: $($result.Count)"
     $result | ForEach-Object {
         Write-Host "  - $($_.FunctionName) from module $($_.Name) (Type: $($_.Type))"
     }
     
-    # Vérifier que les fonctions internes ne sont pas détectées comme externes
+    # VÃ©rifier que les fonctions internes ne sont pas dÃ©tectÃ©es comme externes
     $internalFunctions = $result | Where-Object { $_.FunctionName -eq "Test-InternalFunction" -or $_.FunctionName -eq "Test-AnotherInternalFunction" }
     if ($internalFunctions.Count -eq 0) {
         Write-Host "Internal functions correctly ignored" -ForegroundColor Green
@@ -75,7 +75,7 @@ Write-Host "Test"
         Write-Host "Error: Internal functions detected as external" -ForegroundColor Red
     }
     
-    # Vérifier que les fonctions externes sont correctement détectées
+    # VÃ©rifier que les fonctions externes sont correctement dÃ©tectÃ©es
     $expectedExternalFunctions = @("Get-Date", "Get-ChildItem", "Get-Process", "Write-Host")
     $missingFunctions = @()
     
@@ -97,7 +97,7 @@ Write-Host "Test"
     Remove-Module -Name "ModuleDependencyAnalyzer-Fixed" -Force -ErrorAction SilentlyContinue
 
     # Tout est OK
-    Write-Host "`nTest terminé avec succès !" -ForegroundColor Green
+    Write-Host "`nTest terminÃ© avec succÃ¨s !" -ForegroundColor Green
     exit 0
 } catch {
     # Une erreur s'est produite

@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
-    Initialise la configuration du système de roadmap.
+    Initialise la configuration du systÃ¨me de roadmap.
 .DESCRIPTION
     Cette fonction initialise la configuration en chargeant le fichier de configuration existant
-    ou en créant un nouveau fichier avec des valeurs par défaut si nécessaire.
+    ou en crÃ©ant un nouveau fichier avec des valeurs par dÃ©faut si nÃ©cessaire.
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration. Par défaut, il s'agit de config.json dans le répertoire config.
+    Chemin vers le fichier de configuration. Par dÃ©faut, il s'agit de config.json dans le rÃ©pertoire config.
 .PARAMETER CreateIfMissing
-    Si spécifié, crée un fichier de configuration avec des valeurs par défaut s'il n'existe pas.
+    Si spÃ©cifiÃ©, crÃ©e un fichier de configuration avec des valeurs par dÃ©faut s'il n'existe pas.
 .EXAMPLE
     $config = Initialize-Configuration -CreateIfMissing
-    Initialise la configuration et crée un fichier de configuration par défaut s'il n'existe pas.
+    Initialise la configuration et crÃ©e un fichier de configuration par dÃ©faut s'il n'existe pas.
 #>
 function Initialize-Configuration {
     [CmdletBinding()]
@@ -22,7 +22,7 @@ function Initialize-Configuration {
         [switch]$CreateIfMissing
     )
 
-    # Définir la configuration par défaut
+    # DÃ©finir la configuration par dÃ©faut
     $defaultConfig = @{
         General = @{
             RoadmapPath = "Roadmap\roadmap_complete_converted.md"
@@ -71,34 +71,34 @@ function Initialize-Configuration {
         }
     }
 
-    # Vérifier si le fichier de configuration existe
+    # VÃ©rifier si le fichier de configuration existe
     if (Test-Path $ConfigPath) {
         try {
             $config = Get-Content -Path $ConfigPath -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
-            Write-Verbose "Configuration chargée depuis $ConfigPath"
+            Write-Verbose "Configuration chargÃ©e depuis $ConfigPath"
         } catch {
             Write-Warning "Erreur lors du chargement de la configuration depuis $ConfigPath : $($_.Exception.Message)"
             if ($CreateIfMissing) {
                 $config = $defaultConfig
-                Write-Verbose "Utilisation de la configuration par défaut"
+                Write-Verbose "Utilisation de la configuration par dÃ©faut"
             } else {
-                throw "Échec du chargement de la configuration et CreateIfMissing n'est pas spécifié"
+                throw "Ã‰chec du chargement de la configuration et CreateIfMissing n'est pas spÃ©cifiÃ©"
             }
         }
     } else {
         if ($CreateIfMissing) {
-            # S'assurer que le répertoire existe
+            # S'assurer que le rÃ©pertoire existe
             $configDir = Split-Path -Path $ConfigPath -Parent
             if (-not (Test-Path $configDir)) {
                 New-Item -Path $configDir -ItemType Directory -Force | Out-Null
             }
 
-            # Créer le fichier de configuration avec les valeurs par défaut
+            # CrÃ©er le fichier de configuration avec les valeurs par dÃ©faut
             $defaultConfig | ConvertTo-Json -Depth 10 | Out-File -FilePath $ConfigPath -Encoding UTF8
-            Write-Verbose "Configuration par défaut créée à $ConfigPath"
+            Write-Verbose "Configuration par dÃ©faut crÃ©Ã©e Ã  $ConfigPath"
             $config = $defaultConfig
         } else {
-            throw "Fichier de configuration introuvable à $ConfigPath et CreateIfMissing n'est pas spécifié"
+            throw "Fichier de configuration introuvable Ã  $ConfigPath et CreateIfMissing n'est pas spÃ©cifiÃ©"
         }
     }
 

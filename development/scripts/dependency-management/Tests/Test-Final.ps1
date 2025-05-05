@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 # Importer le module SimpleCycleDetector
 $moduleRoot = Split-Path -Parent $PSScriptRoot
@@ -7,7 +7,7 @@ $simpleCycleDetectorPath = Join-Path -Path $moduleRoot -ChildPath "SimpleCycleDe
 Write-Host "Module path: $simpleCycleDetectorPath"
 
 if (-not (Test-Path -Path $simpleCycleDetectorPath)) {
-    throw "Le module SimpleCycleDetector.psm1 n'existe pas dans le chemin spécifié: $simpleCycleDetectorPath"
+    throw "Le module SimpleCycleDetector.psm1 n'existe pas dans le chemin spÃ©cifiÃ©: $simpleCycleDetectorPath"
 }
 
 Write-Host "Importing module..."
@@ -18,7 +18,7 @@ Get-Command -Module SimpleCycleDetector
 
 Write-Host "Testing cycle detection..."
 
-# Créer un graphe de dépendances simple avec un cycle
+# CrÃ©er un graphe de dÃ©pendances simple avec un cycle
 $graph = @{
     'A' = @('B')
     'B' = @('C')

@@ -1,4 +1,4 @@
-# RoadmapModule.psm1
+﻿# RoadmapModule.psm1
 # Module commun pour les scripts de gestion de roadmap
 # Version: 1.0
 # Date: 2025-05-02
@@ -6,7 +6,7 @@
 # Configuration
 $script:LogsPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\projet\logs"
 
-# Créer le répertoire de logs s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de logs s'il n'existe pas
 if (-not (Test-Path -Path $script:LogsPath)) {
     New-Item -Path $script:LogsPath -ItemType Directory -Force | Out-Null
 }
@@ -35,12 +35,12 @@ function Write-Log {
         "Debug" { Write-Verbose $logEntry }
     }
     
-    # Écrire dans le fichier de log
+    # Ã‰crire dans le fichier de log
     $logFile = Join-Path -Path $script:LogsPath -ChildPath "roadmap_$(Get-Date -Format 'yyyy-MM-dd').log"
     Add-Content -Path $logFile -Value $logEntry -Encoding UTF8
 }
 
-# Fonction pour vérifier si un fichier existe
+# Fonction pour vÃ©rifier si un fichier existe
 function Test-FileExists {
     [CmdletBinding()]
     param (
@@ -59,7 +59,7 @@ function Test-FileExists {
     return $true
 }
 
-# Fonction pour vérifier si un répertoire existe
+# Fonction pour vÃ©rifier si un rÃ©pertoire existe
 function Test-DirectoryExists {
     [CmdletBinding()]
     param (
@@ -70,17 +70,17 @@ function Test-DirectoryExists {
         [switch]$Create,
         
         [Parameter(Mandatory = $false)]
-        [string]$ErrorMessage = "Le répertoire n'existe pas: $DirectoryPath"
+        [string]$ErrorMessage = "Le rÃ©pertoire n'existe pas: $DirectoryPath"
     )
     
     if (-not (Test-Path -Path $DirectoryPath -PathType Container)) {
         if ($Create) {
             try {
                 New-Item -Path $DirectoryPath -ItemType Directory -Force | Out-Null
-                Write-Log -Message "Répertoire créé: $DirectoryPath" -Level Info
+                Write-Log -Message "RÃ©pertoire crÃ©Ã©: $DirectoryPath" -Level Info
                 return $true
             } catch {
-                Write-Log -Message "Impossible de créer le répertoire: $DirectoryPath. Erreur: $_" -Level Error
+                Write-Log -Message "Impossible de crÃ©er le rÃ©pertoire: $DirectoryPath. Erreur: $_" -Level Error
                 return $false
             }
         } else {
@@ -92,7 +92,7 @@ function Test-DirectoryExists {
     return $true
 }
 
-# Fonction pour extraire les tâches d'un fichier markdown
+# Fonction pour extraire les tÃ¢ches d'un fichier markdown
 function Get-RoadmapTasks {
     [CmdletBinding()]
     param (
@@ -107,7 +107,7 @@ function Get-RoadmapTasks {
     $content = Get-Content -Path $FilePath -Raw
     $tasks = New-Object System.Collections.ArrayList
     
-    # Expression régulière pour extraire les tâches
+    # Expression rÃ©guliÃ¨re pour extraire les tÃ¢ches
     $taskRegex = '- \[([ x])\] \*\*([0-9.]+)\*\* (.*)'
     
     $matches = [regex]::Matches($content, $taskRegex)
@@ -131,7 +131,7 @@ function Get-RoadmapTasks {
     return $tasks
 }
 
-# Fonction pour mettre à jour le statut d'une tâche dans un fichier markdown
+# Fonction pour mettre Ã  jour le statut d'une tÃ¢che dans un fichier markdown
 function Update-TaskStatus {
     [CmdletBinding()]
     param (
@@ -160,15 +160,15 @@ function Update-TaskStatus {
     
     if ($content -ne $newContent) {
         Set-Content -Path $FilePath -Value $newContent -Encoding UTF8
-        Write-Log -Message "Statut de la tâche $TaskId mis à jour: $Status" -Level Success
+        Write-Log -Message "Statut de la tÃ¢che $TaskId mis Ã  jour: $Status" -Level Success
         return $true
     } else {
-        Write-Log -Message "Tâche $TaskId non trouvée ou déjà dans l'état $Status" -Level Warning
+        Write-Log -Message "TÃ¢che $TaskId non trouvÃ©e ou dÃ©jÃ  dans l'Ã©tat $Status" -Level Warning
         return $false
     }
 }
 
-# Fonction pour convertir une tâche en vecteur
+# Fonction pour convertir une tÃ¢che en vecteur
 function ConvertTo-TaskVector {
     [CmdletBinding()]
     param (
@@ -179,7 +179,7 @@ function ConvertTo-TaskVector {
         [int]$VectorDimension = 1536
     )
     
-    # Génération d'un vecteur aléatoire (pour les tests)
+    # GÃ©nÃ©ration d'un vecteur alÃ©atoire (pour les tests)
     $vector = New-Object double[] $VectorDimension
     $random = New-Object System.Random
     

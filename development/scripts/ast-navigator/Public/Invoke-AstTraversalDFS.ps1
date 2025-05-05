@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
     Effectue un parcours en profondeur (DFS) de l'arbre syntaxique PowerShell.
 
 .DESCRIPTION
-    Cette fonction parcourt récursivement un arbre syntaxique PowerShell (AST) en utilisant l'algorithme de parcours en profondeur (DFS).
-    Elle permet de filtrer les nœuds par type et de limiter la profondeur de parcours.
+    Cette fonction parcourt rÃ©cursivement un arbre syntaxique PowerShell (AST) en utilisant l'algorithme de parcours en profondeur (DFS).
+    Elle permet de filtrer les nÅ“uds par type et de limiter la profondeur de parcours.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à parcourir. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  parcourir. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER NodeType
-    Type de nœud AST à filtrer. Si spécifié, seuls les nœuds de ce type seront inclus dans les résultats.
+    Type de nÅ“ud AST Ã  filtrer. Si spÃ©cifiÃ©, seuls les nÅ“uds de ce type seront inclus dans les rÃ©sultats.
 
 .PARAMETER MaxDepth
-    Profondeur maximale de parcours. Si 0 ou non spécifié, aucune limite de profondeur n'est appliquée.
+    Profondeur maximale de parcours. Si 0 ou non spÃ©cifiÃ©, aucune limite de profondeur n'est appliquÃ©e.
 
 .PARAMETER Predicate
-    Prédicat (ScriptBlock) pour filtrer les nœuds. Si spécifié, seuls les nœuds pour lesquels le prédicat retourne $true seront inclus dans les résultats.
+    PrÃ©dicat (ScriptBlock) pour filtrer les nÅ“uds. Si spÃ©cifiÃ©, seuls les nÅ“uds pour lesquels le prÃ©dicat retourne $true seront inclus dans les rÃ©sultats.
 
 .PARAMETER IncludeRoot
-    Si spécifié, inclut le nœud racine dans les résultats.
+    Si spÃ©cifiÃ©, inclut le nÅ“ud racine dans les rÃ©sultats.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -36,7 +36,7 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 function Invoke-AstTraversalDFS {
     [CmdletBinding()]
@@ -57,23 +57,23 @@ function Invoke-AstTraversalDFS {
         [switch]$IncludeRoot
     )
 
-    # Créer un prédicat de recherche en fonction des paramètres
+    # CrÃ©er un prÃ©dicat de recherche en fonction des paramÃ¨tres
     $searchPredicate = {
         param($node)
 
-        # Si aucun type n'est spécifié et aucun prédicat n'est fourni, inclure tous les nœuds
+        # Si aucun type n'est spÃ©cifiÃ© et aucun prÃ©dicat n'est fourni, inclure tous les nÅ“uds
         if (-not $NodeType -and -not $Predicate) {
             return $true
         }
 
-        # Vérifier si le nœud correspond au type spécifié
+        # VÃ©rifier si le nÅ“ud correspond au type spÃ©cifiÃ©
         $includeNode = $true
         if ($NodeType) {
             $nodeTypeName = $node.GetType().Name
             $includeNode = $nodeTypeName -eq $NodeType -or $nodeTypeName -eq "${NodeType}Ast"
         }
 
-        # Vérifier si le nœud correspond au prédicat spécifié
+        # VÃ©rifier si le nÅ“ud correspond au prÃ©dicat spÃ©cifiÃ©
         if ($includeNode -and $Predicate) {
             $includeNode = & $Predicate $node
         }
@@ -81,10 +81,10 @@ function Invoke-AstTraversalDFS {
         return $includeNode
     }
 
-    # Utiliser la méthode FindAll de l'AST pour rechercher les nœuds correspondants
+    # Utiliser la mÃ©thode FindAll de l'AST pour rechercher les nÅ“uds correspondants
     $results = $Ast.FindAll($searchPredicate, $true)
 
-    # Limiter la profondeur si nécessaire
+    # Limiter la profondeur si nÃ©cessaire
     if ($MaxDepth -gt 0) {
         $results = $results | Where-Object {
             $depth = 0
@@ -97,6 +97,6 @@ function Invoke-AstTraversalDFS {
         }
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return $results
 }

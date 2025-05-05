@@ -1,6 +1,6 @@
-# Script de test autonome pour la fonction Get-AstNodeTypeCount
+﻿# Script de test autonome pour la fonction Get-AstNodeTypeCount
 
-# Définir la fonction Get-AstNodeTypeCount
+# DÃ©finir la fonction Get-AstNodeTypeCount
 function Get-AstNodeTypeCount {
     [CmdletBinding()]
     param (
@@ -109,7 +109,7 @@ function Get-AstNodeTypeCount {
     }
 }
 
-# Créer un script PowerShell de test très simple
+# CrÃ©er un script PowerShell de test trÃ¨s simple
 $sampleCode = @'
 function Test-Function {
     "Hello, World!"
@@ -125,7 +125,7 @@ Write-Host "=== Test de Get-AstNodeTypeCount ===" -ForegroundColor Cyan
 $functionCount = Get-AstNodeTypeCount -Ast $ast -NodeType "FunctionDefinition" -Recurse
 Write-Host "Nombre de fonctions trouvees: $functionCount" -ForegroundColor Yellow
 
-# Obtenir un rapport détaillé
+# Obtenir un rapport dÃ©taillÃ©
 $detailedReport = Get-AstNodeTypeCount -Ast $ast -Recurse -Detailed
 Write-Host "Nombre total de noeuds: $($detailedReport.TotalCount)" -ForegroundColor Yellow
 Write-Host "Repartition par type:" -ForegroundColor Yellow

@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
-    Vérifie si un noeud est descendant d'un autre noeud dans l'arbre syntaxique PowerShell.
+    VÃ©rifie si un noeud est descendant d'un autre noeud dans l'arbre syntaxique PowerShell.
 
 .DESCRIPTION
-    Cette fonction vérifie si un noeud est descendant d'un autre noeud dans l'arbre syntaxique PowerShell (AST).
-    Un noeud est considéré comme descendant d'un autre noeud s'il est un enfant, un petit-enfant, etc. de ce noeud.
+    Cette fonction vÃ©rifie si un noeud est descendant d'un autre noeud dans l'arbre syntaxique PowerShell (AST).
+    Un noeud est considÃ©rÃ© comme descendant d'un autre noeud s'il est un enfant, un petit-enfant, etc. de ce noeud.
 
 .PARAMETER Node
-    Le noeud AST à vérifier.
+    Le noeud AST Ã  vÃ©rifier.
 
 .PARAMETER Ancestor
-    Le noeud AST ancêtre potentiel.
+    Le noeud AST ancÃªtre potentiel.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -40,22 +40,22 @@ function Test-AstNodeIsDescendant {
                 return $false
             }
 
-            # Remonter l'arbre depuis le noeud jusqu'à la racine
+            # Remonter l'arbre depuis le noeud jusqu'Ã  la racine
             $currentNode = $Node
             while ($null -ne $currentNode.Parent) {
                 $currentNode = $currentNode.Parent
                 
-                # Si on trouve l'ancêtre, retourner $true
+                # Si on trouve l'ancÃªtre, retourner $true
                 if ($currentNode -eq $Ancestor) {
                     return $true
                 }
             }
 
-            # Si on a atteint la racine sans trouver l'ancêtre, retourner $false
+            # Si on a atteint la racine sans trouver l'ancÃªtre, retourner $false
             return $false
         }
         catch {
-            Write-Error -Message "Erreur lors de la vérification de la relation de descendance : $_"
+            Write-Error -Message "Erreur lors de la vÃ©rification de la relation de descendance : $_"
             throw
         }
     }

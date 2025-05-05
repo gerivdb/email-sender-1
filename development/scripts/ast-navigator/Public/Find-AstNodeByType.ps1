@@ -1,39 +1,39 @@
-<#
+﻿<#
 .SYNOPSIS
-    Recherche des nœuds AST par type avec des options de filtrage avancées.
+    Recherche des nÅ“uds AST par type avec des options de filtrage avancÃ©es.
 
 .DESCRIPTION
-    Cette fonction recherche des nœuds dans un arbre syntaxique PowerShell (AST) en fonction de leur type,
-    avec des options de filtrage avancées comme l'inclusion/exclusion de types spécifiques,
-    la correspondance par expression régulière, et la possibilité de spécifier plusieurs types à la fois.
+    Cette fonction recherche des nÅ“uds dans un arbre syntaxique PowerShell (AST) en fonction de leur type,
+    avec des options de filtrage avancÃ©es comme l'inclusion/exclusion de types spÃ©cifiques,
+    la correspondance par expression rÃ©guliÃ¨re, et la possibilitÃ© de spÃ©cifier plusieurs types Ã  la fois.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à parcourir. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  parcourir. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER NodeType
-    Type de nœud AST à rechercher. Peut être un nom de type exact ou un tableau de noms de types.
-    Les noms de types peuvent être spécifiés avec ou sans le suffixe "Ast".
+    Type de nÅ“ud AST Ã  rechercher. Peut Ãªtre un nom de type exact ou un tableau de noms de types.
+    Les noms de types peuvent Ãªtre spÃ©cifiÃ©s avec ou sans le suffixe "Ast".
 
 .PARAMETER RegexPattern
-    Expression régulière pour filtrer les types de nœuds. Si spécifiée, seuls les nœuds dont le type correspond à l'expression régulière seront inclus.
+    Expression rÃ©guliÃ¨re pour filtrer les types de nÅ“uds. Si spÃ©cifiÃ©e, seuls les nÅ“uds dont le type correspond Ã  l'expression rÃ©guliÃ¨re seront inclus.
 
 .PARAMETER ExcludeType
-    Type(s) de nœud AST à exclure des résultats. Peut être un nom de type exact ou un tableau de noms de types.
+    Type(s) de nÅ“ud AST Ã  exclure des rÃ©sultats. Peut Ãªtre un nom de type exact ou un tableau de noms de types.
 
 .PARAMETER IncludeBaseTypes
-    Si spécifié, inclut également les nœuds dont le type est une classe de base des types spécifiés.
+    Si spÃ©cifiÃ©, inclut Ã©galement les nÅ“uds dont le type est une classe de base des types spÃ©cifiÃ©s.
 
 .PARAMETER MaxDepth
-    Profondeur maximale de recherche. Si 0 ou non spécifié, aucune limite de profondeur n'est appliquée.
+    Profondeur maximale de recherche. Si 0 ou non spÃ©cifiÃ©, aucune limite de profondeur n'est appliquÃ©e.
 
 .PARAMETER Predicate
-    Prédicat (ScriptBlock) supplémentaire pour filtrer les nœuds. Si spécifié, seuls les nœuds pour lesquels le prédicat retourne $true seront inclus.
+    PrÃ©dicat (ScriptBlock) supplÃ©mentaire pour filtrer les nÅ“uds. Si spÃ©cifiÃ©, seuls les nÅ“uds pour lesquels le prÃ©dicat retourne $true seront inclus.
 
 .PARAMETER IncludeRoot
-    Si spécifié, inclut le nœud racine dans les résultats.
+    Si spÃ©cifiÃ©, inclut le nÅ“ud racine dans les rÃ©sultats.
 
 .PARAMETER MaxResults
-    Nombre maximum de résultats à retourner. Si 0 ou non spécifié, tous les résultats sont retournés.
+    Nombre maximum de rÃ©sultats Ã  retourner. Si 0 ou non spÃ©cifiÃ©, tous les rÃ©sultats sont retournÃ©s.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -50,7 +50,7 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 function Find-AstNodeByType {
     [CmdletBinding(DefaultParameterSetName = 'ByType')]
@@ -84,10 +84,10 @@ function Find-AstNodeByType {
     )
 
     begin {
-        # Initialiser la liste des résultats
+        # Initialiser la liste des rÃ©sultats
         $results = New-Object System.Collections.ArrayList
         
-        # Normaliser les types de nœuds à rechercher
+        # Normaliser les types de nÅ“uds Ã  rechercher
         $normalizedNodeTypes = @()
         if ($PSCmdlet.ParameterSetName -eq 'ByType' -and $null -ne $NodeType) {
             foreach ($type in $NodeType) {
@@ -108,7 +108,7 @@ function Find-AstNodeByType {
             }
         }
         
-        # Normaliser les types de nœuds à exclure
+        # Normaliser les types de nÅ“uds Ã  exclure
         $normalizedExcludeTypes = @()
         if ($null -ne $ExcludeType) {
             foreach ($type in $ExcludeType) {
@@ -129,7 +129,7 @@ function Find-AstNodeByType {
             }
         }
         
-        # Fonction pour vérifier si un nœud correspond aux critères de type
+        # Fonction pour vÃ©rifier si un nÅ“ud correspond aux critÃ¨res de type
         function Test-NodeTypeMatch {
             param (
                 [Parameter(Mandatory = $true)]
@@ -138,23 +138,23 @@ function Find-AstNodeByType {
             
             $nodeTypeName = $Node.GetType().Name
             
-            # Vérifier si le type est exclu
+            # VÃ©rifier si le type est exclu
             if ($normalizedExcludeTypes.Count -gt 0 -and $normalizedExcludeTypes -contains $nodeTypeName) {
                 return $false
             }
             
-            # Vérifier si le type correspond à l'expression régulière
+            # VÃ©rifier si le type correspond Ã  l'expression rÃ©guliÃ¨re
             if ($PSCmdlet.ParameterSetName -eq 'ByRegex') {
                 return $nodeTypeName -match $RegexPattern
             }
             
-            # Vérifier si le type correspond à l'un des types spécifiés
+            # VÃ©rifier si le type correspond Ã  l'un des types spÃ©cifiÃ©s
             if ($normalizedNodeTypes.Count -gt 0) {
                 if ($normalizedNodeTypes -contains $nodeTypeName) {
                     return $true
                 }
                 
-                # Vérifier les types de base si demandé
+                # VÃ©rifier les types de base si demandÃ©
                 if ($IncludeBaseTypes) {
                     $nodeType = $Node.GetType()
                     $baseType = $nodeType.BaseType
@@ -170,11 +170,11 @@ function Find-AstNodeByType {
                 return $false
             }
             
-            # Si aucun type n'est spécifié, inclure tous les nœuds
+            # Si aucun type n'est spÃ©cifiÃ©, inclure tous les nÅ“uds
             return $true
         }
         
-        # Fonction pour calculer la profondeur d'un nœud
+        # Fonction pour calculer la profondeur d'un nÅ“ud
         function Get-NodeDepth {
             param (
                 [Parameter(Mandatory = $true)]
@@ -195,18 +195,18 @@ function Find-AstNodeByType {
 
     process {
         try {
-            # Créer le prédicat de recherche en fonction des paramètres
+            # CrÃ©er le prÃ©dicat de recherche en fonction des paramÃ¨tres
             $searchPredicate = {
                 param($node)
                 
-                # Vérifier si le nœud correspond aux critères de type
+                # VÃ©rifier si le nÅ“ud correspond aux critÃ¨res de type
                 $typeMatch = Test-NodeTypeMatch -Node $node
                 
                 if (-not $typeMatch) {
                     return $false
                 }
                 
-                # Vérifier si le nœud correspond au prédicat spécifié
+                # VÃ©rifier si le nÅ“ud correspond au prÃ©dicat spÃ©cifiÃ©
                 if ($null -ne $Predicate) {
                     return & $Predicate $node
                 }
@@ -214,15 +214,15 @@ function Find-AstNodeByType {
                 return $true
             }
             
-            # Utiliser la méthode FindAll de l'AST pour rechercher les nœuds correspondants
+            # Utiliser la mÃ©thode FindAll de l'AST pour rechercher les nÅ“uds correspondants
             $foundNodes = $Ast.FindAll($searchPredicate, $true)
             
-            # Filtrer le nœud racine si nécessaire
+            # Filtrer le nÅ“ud racine si nÃ©cessaire
             if (-not $IncludeRoot) {
                 $foundNodes = $foundNodes | Where-Object { $_ -ne $Ast }
             }
             
-            # Limiter la profondeur si nécessaire
+            # Limiter la profondeur si nÃ©cessaire
             if ($MaxDepth -gt 0) {
                 $foundNodes = $foundNodes | Where-Object {
                     $depth = Get-NodeDepth -Node $_
@@ -230,17 +230,17 @@ function Find-AstNodeByType {
                 }
             }
             
-            # Limiter le nombre de résultats si spécifié
+            # Limiter le nombre de rÃ©sultats si spÃ©cifiÃ©
             if ($MaxResults -gt 0 -and $foundNodes.Count -gt $MaxResults) {
                 $foundNodes = $foundNodes | Select-Object -First $MaxResults
             }
             
-            # Ajouter les nœuds trouvés aux résultats
+            # Ajouter les nÅ“uds trouvÃ©s aux rÃ©sultats
             foreach ($node in $foundNodes) {
                 [void]$results.Add($node)
             }
             
-            # Retourner les résultats
+            # Retourner les rÃ©sultats
             return $results
         }
         catch {

@@ -1,22 +1,22 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module pour la détection des modules requis implicitement dans les scripts PowerShell.
+    Module pour la dÃ©tection des modules requis implicitement dans les scripts PowerShell.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour détecter les modules requis implicitement dans les scripts PowerShell,
-    notamment les appels de cmdlets sans import explicite, les types .NET spécifiques à des modules,
-    et les variables globales spécifiques à des modules.
+    Ce module fournit des fonctions pour dÃ©tecter les modules requis implicitement dans les scripts PowerShell,
+    notamment les appels de cmdlets sans import explicite, les types .NET spÃ©cifiques Ã  des modules,
+    et les variables globales spÃ©cifiques Ã  des modules.
 
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-12-15
+    Date de crÃ©ation: 2023-12-15
 #>
 
 #region Private Functions
 
-# Base de données de correspondance entre cmdlets et modules
+# Base de donnÃ©es de correspondance entre cmdlets et modules
 $script:CmdletToModuleMapping = @{
     # Active Directory
     "Get-ADUser"             = "ActiveDirectory"
@@ -60,7 +60,7 @@ $script:CmdletToModuleMapping = @{
     "New-ExcelChart"         = "ImportExcel"
 }
 
-# Base de données de correspondance entre types .NET et modules
+# Base de donnÃ©es de correspondance entre types .NET et modules
 $script:TypeToModuleMapping = @{
     # Active Directory
     "Microsoft.ActiveDirectory.Management.ADUser"                          = "ActiveDirectory"
@@ -102,7 +102,7 @@ $script:TypeToModuleMapping = @{
     "OfficeOpenXml.Drawing.Chart.ExcelChart"                               = "ImportExcel"
 }
 
-# Base de données de correspondance entre variables globales et modules
+# Base de donnÃ©es de correspondance entre variables globales et modules
 $script:GlobalVariableToModuleMapping = @{
     # PowerShell Core
     "PSVersionTable"                = "Microsoft.PowerShell.Core"
@@ -154,7 +154,7 @@ $script:GlobalVariableToModuleMapping = @{
     "ExcelDefaultDateFormat"        = "ImportExcel"
 }
 
-# Base de données de correspondance entre alias de modules et modules
+# Base de donnÃ©es de correspondance entre alias de modules et modules
 $script:ModuleAliasToModuleMapping = @{
     # PowerShell Core
     "PSCore"   = "Microsoft.PowerShell.Core"
@@ -200,13 +200,13 @@ function Get-CmdletCallsFromAst {
                 $node -is [System.Management.Automation.Language.CommandAst]
             }, $true)
 
-        # Extraire les noms des cmdlets appelées
+        # Extraire les noms des cmdlets appelÃ©es
         $cmdletCalls = @()
         foreach ($call in $commandCalls) {
             if ($call.CommandElements.Count -gt 0) {
                 $cmdletName = $null
 
-                # Vérifier si le premier élément est un nom de cmdlet
+                # VÃ©rifier si le premier Ã©lÃ©ment est un nom de cmdlet
                 if ($call.CommandElements[0] -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
                     $cmdletName = $call.CommandElements[0].Value
                 }
@@ -229,7 +229,7 @@ function Get-CmdletCallsFromAst {
     }
 }
 
-# Fonction interne pour vérifier si un module est importé explicitement
+# Fonction interne pour vÃ©rifier si un module est importÃ© explicitement
 function Test-ModuleImported {
     [CmdletBinding()]
     param (
@@ -250,23 +250,23 @@ function Test-ModuleImported {
                 $node.CommandElements[0].Value -eq 'Import-Module'
             }, $true)
 
-        # Vérifier si le module spécifié est importé
+        # VÃ©rifier si le module spÃ©cifiÃ© est importÃ©
         foreach ($call in $importModuleCalls) {
-            # Vérifier les paramètres nommés
+            # VÃ©rifier les paramÃ¨tres nommÃ©s
             for ($i = 1; $i -lt $call.CommandElements.Count; $i++) {
                 $element = $call.CommandElements[$i]
 
-                # Vérifier si c'est un paramètre -Name ou -Path
+                # VÃ©rifier si c'est un paramÃ¨tre -Name ou -Path
                 if ($element -is [System.Management.Automation.Language.CommandParameterAst] -and
                     ($element.ParameterName -eq 'Name' -or $element.ParameterName -eq 'Path')) {
 
-                    # Vérifier si le paramètre a une valeur
+                    # VÃ©rifier si le paramÃ¨tre a une valeur
                     if ($i + 1 -lt $call.CommandElements.Count -and
                         -not ($call.CommandElements[$i + 1] -is [System.Management.Automation.Language.CommandParameterAst])) {
 
                         $paramValue = $call.CommandElements[$i + 1]
 
-                        # Extraire la valeur du paramètre
+                        # Extraire la valeur du paramÃ¨tre
                         $value = $null
                         if ($paramValue -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
                             $value = $paramValue.Value
@@ -276,13 +276,13 @@ function Test-ModuleImported {
                             $value = $paramValue.Extent.Text
                         }
 
-                        # Vérifier si la valeur correspond au module recherché
+                        # VÃ©rifier si la valeur correspond au module recherchÃ©
                         if ($value -eq $ModuleName) {
                             return $true
                         }
                     }
                 }
-                # Vérifier les paramètres positionnels
+                # VÃ©rifier les paramÃ¨tres positionnels
                 elseif (-not ($element -is [System.Management.Automation.Language.CommandParameterAst]) -and $i -eq 1) {
                     $value = $null
                     if ($element -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
@@ -302,12 +302,12 @@ function Test-ModuleImported {
 
         return $false
     } catch {
-        Write-Error "Erreur lors de la vérification des imports de modules : $_"
+        Write-Error "Erreur lors de la vÃ©rification des imports de modules : $_"
         return $false
     }
 }
 
-# Fonction interne pour extraire les références aux modules dans les commentaires
+# Fonction interne pour extraire les rÃ©fÃ©rences aux modules dans les commentaires
 function Get-ModuleReferencesFromComments {
     [CmdletBinding()]
     param (
@@ -450,12 +450,12 @@ function Get-ModuleReferencesFromComments {
 
         return $commentReferences
     } catch {
-        Write-Error "Erreur lors de l'extraction des références aux modules dans les commentaires : $_"
+        Write-Error "Erreur lors de l'extraction des rÃ©fÃ©rences aux modules dans les commentaires : $_"
         return @()
     }
 }
 
-# Fonction interne pour extraire les références aux alias de modules d'un AST
+# Fonction interne pour extraire les rÃ©fÃ©rences aux alias de modules d'un AST
 function Get-ModuleAliasReferencesFromAst {
     [CmdletBinding()]
     param (
@@ -464,10 +464,10 @@ function Get-ModuleAliasReferencesFromAst {
     )
 
     try {
-        # Trouver toutes les références aux alias de modules dans l'AST
+        # Trouver toutes les rÃ©fÃ©rences aux alias de modules dans l'AST
         $aliasReferences = @()
 
-        # 1. Rechercher les références dans les commentaires
+        # 1. Rechercher les rÃ©fÃ©rences dans les commentaires
         $commentTokens = $Ast.FindAll({
                 param($node)
                 $node -is [System.Management.Automation.Language.CommentAst]
@@ -494,7 +494,7 @@ function Get-ModuleAliasReferencesFromAst {
             }
         }
 
-        # 2. Rechercher les références dans les chaînes de caractères
+        # 2. Rechercher les rÃ©fÃ©rences dans les chaÃ®nes de caractÃ¨res
         $stringExpressions = $Ast.FindAll({
                 param($node)
                 $node -is [System.Management.Automation.Language.StringConstantExpressionAst] -or
@@ -506,7 +506,7 @@ function Get-ModuleAliasReferencesFromAst {
 
             # Parcourir tous les alias de modules connus
             foreach ($alias in $script:ModuleAliasToModuleMapping.Keys) {
-                # Rechercher les mentions de l'alias dans la chaîne
+                # Rechercher les mentions de l'alias dans la chaÃ®ne
                 # Utiliser une regex pour trouver l'alias comme mot entier
                 $matchResults = [regex]::Matches($stringValue, "\b$alias\b")
 
@@ -522,7 +522,7 @@ function Get-ModuleAliasReferencesFromAst {
             }
         }
 
-        # 3. Rechercher les références dans les noms de variables (ex: $ADUser)
+        # 3. Rechercher les rÃ©fÃ©rences dans les noms de variables (ex: $ADUser)
         $variableExpressions = $Ast.FindAll({
                 param($node)
                 $node -is [System.Management.Automation.Language.VariableExpressionAst]
@@ -533,7 +533,7 @@ function Get-ModuleAliasReferencesFromAst {
 
             # Parcourir tous les alias de modules connus
             foreach ($alias in $script:ModuleAliasToModuleMapping.Keys) {
-                # Vérifier si le nom de la variable commence par l'alias
+                # VÃ©rifier si le nom de la variable commence par l'alias
                 if ($variableName -match "^$alias") {
                     $aliasReferences += [PSCustomObject]@{
                         AliasName    = $alias
@@ -548,12 +548,12 @@ function Get-ModuleAliasReferencesFromAst {
 
         return $aliasReferences
     } catch {
-        Write-Error "Erreur lors de l'extraction des références aux alias de modules : $_"
+        Write-Error "Erreur lors de l'extraction des rÃ©fÃ©rences aux alias de modules : $_"
         return @()
     }
 }
 
-# Fonction interne pour extraire les références aux variables globales d'un AST
+# Fonction interne pour extraire les rÃ©fÃ©rences aux variables globales d'un AST
 function Get-GlobalVariableReferencesFromAst {
     [CmdletBinding()]
     param (
@@ -562,10 +562,10 @@ function Get-GlobalVariableReferencesFromAst {
     )
 
     try {
-        # Trouver toutes les références aux variables dans l'AST
+        # Trouver toutes les rÃ©fÃ©rences aux variables dans l'AST
         $variableReferences = @()
 
-        # Rechercher les références aux variables
+        # Rechercher les rÃ©fÃ©rences aux variables
         $variableExpressions = $Ast.FindAll({
                 param($node)
                 $node -is [System.Management.Automation.Language.VariableExpressionAst]
@@ -573,22 +573,22 @@ function Get-GlobalVariableReferencesFromAst {
 
         foreach ($varExpr in $variableExpressions) {
             # Exclure les variables locales (celles qui commencent par $)
-            # Nous ne voulons que les variables globales qui sont définies par des modules
+            # Nous ne voulons que les variables globales qui sont dÃ©finies par des modules
             if (-not [string]::IsNullOrEmpty($varExpr.VariablePath.UserPath)) {
                 $variableName = $varExpr.VariablePath.UserPath
 
-                # Ajouter la référence à la variable
+                # Ajouter la rÃ©fÃ©rence Ã  la variable
                 $variableReferences += [PSCustomObject]@{
                     VariableName = $variableName
                     LineNumber   = $varExpr.Extent.StartLineNumber
                     ColumnNumber = $varExpr.Extent.StartColumnNumber
                     Text         = $varExpr.Extent.Text
-                    Source       = "Direct" # Référence directe à la variable
+                    Source       = "Direct" # RÃ©fÃ©rence directe Ã  la variable
                 }
             }
         }
 
-        # Rechercher les références aux variables dans les expressions de membre
+        # Rechercher les rÃ©fÃ©rences aux variables dans les expressions de membre
         # Par exemple: $PSVersionTable.PSVersion ou $AzContext.Subscription
         $memberExpressions = $Ast.FindAll({
                 param($node)
@@ -601,19 +601,19 @@ function Get-GlobalVariableReferencesFromAst {
             if (-not [string]::IsNullOrEmpty($varExpr.VariablePath.UserPath)) {
                 $variableName = $varExpr.VariablePath.UserPath
 
-                # Ajouter la référence à la variable
+                # Ajouter la rÃ©fÃ©rence Ã  la variable
                 $variableReferences += [PSCustomObject]@{
                     VariableName = $variableName
                     LineNumber   = $memberExpr.Extent.StartLineNumber
                     ColumnNumber = $memberExpr.Extent.StartColumnNumber
                     Text         = $memberExpr.Extent.Text
-                    Source       = "Member" # Référence via une expression de membre
+                    Source       = "Member" # RÃ©fÃ©rence via une expression de membre
                     Member       = $memberExpr.Member.Value
                 }
             }
         }
 
-        # Rechercher les références aux variables dans les expressions d'index
+        # Rechercher les rÃ©fÃ©rences aux variables dans les expressions d'index
         # Par exemple: $PSVersionTable["PSVersion"] ou $AzContext["Subscription"]
         $indexExpressions = $Ast.FindAll({
                 param($node)
@@ -626,19 +626,19 @@ function Get-GlobalVariableReferencesFromAst {
             if (-not [string]::IsNullOrEmpty($varExpr.VariablePath.UserPath)) {
                 $variableName = $varExpr.VariablePath.UserPath
 
-                # Essayer d'extraire l'index si c'est une chaîne constante
+                # Essayer d'extraire l'index si c'est une chaÃ®ne constante
                 $indexValue = $null
                 if ($indexExpr.Index -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
                     $indexValue = $indexExpr.Index.Value
                 }
 
-                # Ajouter la référence à la variable
+                # Ajouter la rÃ©fÃ©rence Ã  la variable
                 $variableReferences += [PSCustomObject]@{
                     VariableName = $variableName
                     LineNumber   = $indexExpr.Extent.StartLineNumber
                     ColumnNumber = $indexExpr.Extent.StartColumnNumber
                     Text         = $indexExpr.Extent.Text
-                    Source       = "Index" # Référence via une expression d'index
+                    Source       = "Index" # RÃ©fÃ©rence via une expression d'index
                     Index        = $indexValue
                 }
             }
@@ -646,12 +646,12 @@ function Get-GlobalVariableReferencesFromAst {
 
         return $variableReferences
     } catch {
-        Write-Error "Erreur lors de l'extraction des références aux variables globales : $_"
+        Write-Error "Erreur lors de l'extraction des rÃ©fÃ©rences aux variables globales : $_"
         return @()
     }
 }
 
-# Fonction interne pour extraire les références de types .NET d'un AST
+# Fonction interne pour extraire les rÃ©fÃ©rences de types .NET d'un AST
 function Get-DotNetTypeReferencesFromAst {
     [CmdletBinding()]
     param (
@@ -660,10 +660,10 @@ function Get-DotNetTypeReferencesFromAst {
     )
 
     try {
-        # Trouver toutes les références de types dans l'AST
+        # Trouver toutes les rÃ©fÃ©rences de types dans l'AST
         $typeReferences = @()
 
-        # 1. Rechercher les références de types dans les expressions de type
+        # 1. Rechercher les rÃ©fÃ©rences de types dans les expressions de type
         $typeExpressions = $Ast.FindAll({
                 param($node)
                 $node -is [System.Management.Automation.Language.TypeExpressionAst]
@@ -678,7 +678,7 @@ function Get-DotNetTypeReferencesFromAst {
             }
         }
 
-        # 2. Rechercher les références de types dans les expressions [Type]::Member
+        # 2. Rechercher les rÃ©fÃ©rences de types dans les expressions [Type]::Member
         $staticMemberExpressions = $Ast.FindAll({
                 param($node)
                 $node -is [System.Management.Automation.Language.MemberExpressionAst] -and
@@ -696,7 +696,7 @@ function Get-DotNetTypeReferencesFromAst {
             }
         }
 
-        # 3. Rechercher les références de types dans les expressions de cast [Type]$var
+        # 3. Rechercher les rÃ©fÃ©rences de types dans les expressions de cast [Type]$var
         $conversionExpressions = $Ast.FindAll({
                 param($node)
                 $node -is [System.Management.Automation.Language.ConvertExpressionAst]
@@ -711,7 +711,7 @@ function Get-DotNetTypeReferencesFromAst {
             }
         }
 
-        # 4. Rechercher les références de types dans les expressions New-Object Type
+        # 4. Rechercher les rÃ©fÃ©rences de types dans les expressions New-Object Type
         $newObjectCalls = $Ast.FindAll({
                 param($node)
                 $node -is [System.Management.Automation.Language.CommandAst] -and
@@ -721,24 +721,24 @@ function Get-DotNetTypeReferencesFromAst {
             }, $true)
 
         foreach ($call in $newObjectCalls) {
-            # Vérifier les paramètres nommés
+            # VÃ©rifier les paramÃ¨tres nommÃ©s
             $typeName = $null
             $typeNameFound = $false
 
             for ($i = 1; $i -lt $call.CommandElements.Count; $i++) {
                 $element = $call.CommandElements[$i]
 
-                # Vérifier si c'est un paramètre -TypeName
+                # VÃ©rifier si c'est un paramÃ¨tre -TypeName
                 if ($element -is [System.Management.Automation.Language.CommandParameterAst] -and
                     $element.ParameterName -eq 'TypeName') {
 
-                    # Vérifier si le paramètre a une valeur
+                    # VÃ©rifier si le paramÃ¨tre a une valeur
                     if ($i + 1 -lt $call.CommandElements.Count -and
                         -not ($call.CommandElements[$i + 1] -is [System.Management.Automation.Language.CommandParameterAst])) {
 
                         $paramValue = $call.CommandElements[$i + 1]
 
-                        # Extraire la valeur du paramètre
+                        # Extraire la valeur du paramÃ¨tre
                         if ($paramValue -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
                             $typeName = $paramValue.Value
                             $typeNameFound = $true
@@ -750,7 +750,7 @@ function Get-DotNetTypeReferencesFromAst {
                         }
                     }
                 }
-                # Vérifier les paramètres positionnels
+                # VÃ©rifier les paramÃ¨tres positionnels
                 elseif (-not ($element -is [System.Management.Automation.Language.CommandParameterAst]) -and $i -eq 1) {
                     if ($element -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
                         $typeName = $element.Value
@@ -777,7 +777,7 @@ function Get-DotNetTypeReferencesFromAst {
 
         return $typeReferences
     } catch {
-        Write-Error "Erreur lors de l'extraction des références de types .NET : $_"
+        Write-Error "Erreur lors de l'extraction des rÃ©fÃ©rences de types .NET : $_"
         return @()
     }
 }
@@ -789,22 +789,22 @@ function Get-DotNetTypeReferencesFromAst {
 function Find-CmdletWithoutExplicitImport {
     <#
     .SYNOPSIS
-        Détecte les appels de cmdlets sans import explicite du module correspondant.
+        DÃ©tecte les appels de cmdlets sans import explicite du module correspondant.
 
     .DESCRIPTION
-        Cette fonction analyse un script PowerShell pour détecter les appels de cmdlets
-        qui nécessitent un module spécifique, mais pour lesquels le module n'est pas
-        explicitement importé dans le script.
+        Cette fonction analyse un script PowerShell pour dÃ©tecter les appels de cmdlets
+        qui nÃ©cessitent un module spÃ©cifique, mais pour lesquels le module n'est pas
+        explicitement importÃ© dans le script.
 
     .PARAMETER FilePath
-        Chemin du fichier PowerShell à analyser.
+        Chemin du fichier PowerShell Ã  analyser.
 
     .PARAMETER ScriptContent
-        Contenu du script PowerShell à analyser. Si ce paramètre est spécifié, FilePath est ignoré.
+        Contenu du script PowerShell Ã  analyser. Si ce paramÃ¨tre est spÃ©cifiÃ©, FilePath est ignorÃ©.
 
     .PARAMETER IncludeImportedModules
-        Indique si les cmdlets des modules déjà importés doivent être incluses dans les résultats.
-        Par défaut, seules les cmdlets des modules non importés sont retournées.
+        Indique si les cmdlets des modules dÃ©jÃ  importÃ©s doivent Ãªtre incluses dans les rÃ©sultats.
+        Par dÃ©faut, seules les cmdlets des modules non importÃ©s sont retournÃ©es.
 
     .EXAMPLE
         Find-CmdletWithoutExplicitImport -FilePath "C:\Scripts\MyScript.ps1"
@@ -835,18 +835,18 @@ function Find-CmdletWithoutExplicitImport {
 
         if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-                Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+                Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
                 return @()
             }
 
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($FilePath, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         } else {
             $ast = [System.Management.Automation.Language.Parser]::ParseInput($ScriptContent, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         }
 
@@ -858,12 +858,12 @@ function Find-CmdletWithoutExplicitImport {
         foreach ($call in $cmdletCalls) {
             $moduleName = $script:CmdletToModuleMapping[$call.Name]
 
-            # Vérifier si la cmdlet est dans notre base de données de correspondance
+            # VÃ©rifier si la cmdlet est dans notre base de donnÃ©es de correspondance
             if ($moduleName) {
-                # Vérifier si le module est importé explicitement
+                # VÃ©rifier si le module est importÃ© explicitement
                 $isImported = Test-ModuleImported -Ast $ast -ModuleName $moduleName
 
-                # Ajouter au résultat si le module n'est pas importé ou si on inclut tous les modules
+                # Ajouter au rÃ©sultat si le module n'est pas importÃ© ou si on inclut tous les modules
                 if (-not $isImported -or $IncludeImportedModules) {
                     $results += [PSCustomObject]@{
                         CmdletName   = $call.Name
@@ -879,7 +879,7 @@ function Find-CmdletWithoutExplicitImport {
 
         return $results
     } catch {
-        Write-Error "Erreur lors de la détection des cmdlets sans import explicite : $_"
+        Write-Error "Erreur lors de la dÃ©tection des cmdlets sans import explicite : $_"
         return @()
     }
 }
@@ -887,26 +887,26 @@ function Find-CmdletWithoutExplicitImport {
 function Find-ModuleReferenceInComments {
     <#
     .SYNOPSIS
-        Détecte les références à des modules dans les commentaires d'un script PowerShell.
+        DÃ©tecte les rÃ©fÃ©rences Ã  des modules dans les commentaires d'un script PowerShell.
 
     .DESCRIPTION
-        Cette fonction analyse les commentaires d'un script PowerShell pour détecter les références
-        à des modules, que ce soit par leur nom, leurs alias, leurs cmdlets, leurs types, ou leurs variables.
-        Elle permet de détecter les dépendances implicites mentionnées dans les commentaires.
+        Cette fonction analyse les commentaires d'un script PowerShell pour dÃ©tecter les rÃ©fÃ©rences
+        Ã  des modules, que ce soit par leur nom, leurs alias, leurs cmdlets, leurs types, ou leurs variables.
+        Elle permet de dÃ©tecter les dÃ©pendances implicites mentionnÃ©es dans les commentaires.
 
     .PARAMETER FilePath
-        Chemin du fichier PowerShell à analyser.
+        Chemin du fichier PowerShell Ã  analyser.
 
     .PARAMETER ScriptContent
-        Contenu du script PowerShell à analyser. Si ce paramètre est spécifié, FilePath est ignoré.
+        Contenu du script PowerShell Ã  analyser. Si ce paramÃ¨tre est spÃ©cifiÃ©, FilePath est ignorÃ©.
 
     .PARAMETER IncludeImportedModules
-        Indique si les modules déjà importés doivent être inclus dans les résultats.
-        Par défaut, seuls les modules non importés sont retournés.
+        Indique si les modules dÃ©jÃ  importÃ©s doivent Ãªtre inclus dans les rÃ©sultats.
+        Par dÃ©faut, seuls les modules non importÃ©s sont retournÃ©s.
 
     .PARAMETER IncludeRequiresDirectives
-        Indique si les directives #Requires -Modules doivent être incluses dans les résultats.
-        Par défaut, ces directives sont incluses.
+        Indique si les directives #Requires -Modules doivent Ãªtre incluses dans les rÃ©sultats.
+        Par dÃ©faut, ces directives sont incluses.
 
     .EXAMPLE
         Find-ModuleReferenceInComments -FilePath "C:\Scripts\MyScript.ps1"
@@ -940,44 +940,44 @@ function Find-ModuleReferenceInComments {
 
         if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-                Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+                Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
                 return @()
             }
 
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($FilePath, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         } else {
             $ast = [System.Management.Automation.Language.Parser]::ParseInput($ScriptContent, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         }
 
-        # Extraire les références aux modules dans les commentaires
+        # Extraire les rÃ©fÃ©rences aux modules dans les commentaires
         $commentReferences = Get-ModuleReferencesFromComments -Ast $ast
 
-        # Filtrer les résultats selon les paramètres
-        # Par défaut, on inclut les directives #Requires
+        # Filtrer les rÃ©sultats selon les paramÃ¨tres
+        # Par dÃ©faut, on inclut les directives #Requires
         if (-not $IncludeRequiresDirectives.IsPresent) {
-            # Ne rien faire, garder toutes les références
+            # Ne rien faire, garder toutes les rÃ©fÃ©rences
         } else {
-            # Si le paramètre est explicitement fourni et est $false, filtrer les directives #Requires
+            # Si le paramÃ¨tre est explicitement fourni et est $false, filtrer les directives #Requires
             if (-not $IncludeRequiresDirectives) {
                 $commentReferences = $commentReferences | Where-Object { $_.Type -ne "RequiresModule" }
             }
         }
 
-        # Identifier les modules requis pour chaque référence
+        # Identifier les modules requis pour chaque rÃ©fÃ©rence
         $results = @()
         foreach ($ref in $commentReferences) {
             $moduleName = $ref.ModuleName
 
-            # Vérifier si le module est importé explicitement
+            # VÃ©rifier si le module est importÃ© explicitement
             $isImported = Test-ModuleImported -Ast $ast -ModuleName $moduleName
 
-            # Ajouter au résultat si le module n'est pas importé ou si on inclut tous les modules
+            # Ajouter au rÃ©sultat si le module n'est pas importÃ© ou si on inclut tous les modules
             if (-not $isImported -or $IncludeImportedModules) {
                 $result = [PSCustomObject]@{
                     ModuleName   = $moduleName
@@ -989,7 +989,7 @@ function Find-ModuleReferenceInComments {
                     IsImported   = $isImported
                 }
 
-                # Ajouter des propriétés supplémentaires si elles existent
+                # Ajouter des propriÃ©tÃ©s supplÃ©mentaires si elles existent
                 if ($ref.PSObject.Properties.Name -contains "AliasName") {
                     $result | Add-Member -NotePropertyName "AliasName" -NotePropertyValue $ref.AliasName
                 }
@@ -1009,7 +1009,7 @@ function Find-ModuleReferenceInComments {
 
         return $results
     } catch {
-        Write-Error "Erreur lors de la détection des références aux modules dans les commentaires : $_"
+        Write-Error "Erreur lors de la dÃ©tection des rÃ©fÃ©rences aux modules dans les commentaires : $_"
         return @()
     }
 }
@@ -1017,23 +1017,23 @@ function Find-ModuleReferenceInComments {
 function Find-ModuleAliasWithoutExplicitImport {
     <#
     .SYNOPSIS
-        Détecte les références à des alias de modules sans import explicite du module correspondant.
+        DÃ©tecte les rÃ©fÃ©rences Ã  des alias de modules sans import explicite du module correspondant.
 
     .DESCRIPTION
-        Cette fonction analyse un script PowerShell pour détecter les références à des alias de modules
-        qui sont spécifiques à des modules PowerShell, mais pour lesquels le module n'est pas
-        explicitement importé dans le script. Les références peuvent être trouvées dans les commentaires,
-        les chaînes de caractères, ou les noms de variables.
+        Cette fonction analyse un script PowerShell pour dÃ©tecter les rÃ©fÃ©rences Ã  des alias de modules
+        qui sont spÃ©cifiques Ã  des modules PowerShell, mais pour lesquels le module n'est pas
+        explicitement importÃ© dans le script. Les rÃ©fÃ©rences peuvent Ãªtre trouvÃ©es dans les commentaires,
+        les chaÃ®nes de caractÃ¨res, ou les noms de variables.
 
     .PARAMETER FilePath
-        Chemin du fichier PowerShell à analyser.
+        Chemin du fichier PowerShell Ã  analyser.
 
     .PARAMETER ScriptContent
-        Contenu du script PowerShell à analyser. Si ce paramètre est spécifié, FilePath est ignoré.
+        Contenu du script PowerShell Ã  analyser. Si ce paramÃ¨tre est spÃ©cifiÃ©, FilePath est ignorÃ©.
 
     .PARAMETER IncludeImportedModules
-        Indique si les alias des modules déjà importés doivent être inclus dans les résultats.
-        Par défaut, seuls les alias des modules non importés sont retournés.
+        Indique si les alias des modules dÃ©jÃ  importÃ©s doivent Ãªtre inclus dans les rÃ©sultats.
+        Par dÃ©faut, seuls les alias des modules non importÃ©s sont retournÃ©s.
 
     .EXAMPLE
         Find-ModuleAliasWithoutExplicitImport -FilePath "C:\Scripts\MyScript.ps1"
@@ -1064,22 +1064,22 @@ function Find-ModuleAliasWithoutExplicitImport {
 
         if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-                Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+                Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
                 return @()
             }
 
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($FilePath, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         } else {
             $ast = [System.Management.Automation.Language.Parser]::ParseInput($ScriptContent, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         }
 
-        # Extraire les références aux alias de modules
+        # Extraire les rÃ©fÃ©rences aux alias de modules
         $aliasReferences = Get-ModuleAliasReferencesFromAst -Ast $ast
 
         # Identifier les modules requis pour chaque alias
@@ -1087,12 +1087,12 @@ function Find-ModuleAliasWithoutExplicitImport {
         foreach ($aliasRef in $aliasReferences) {
             $moduleName = $script:ModuleAliasToModuleMapping[$aliasRef.AliasName]
 
-            # Si un module est trouvé pour cet alias
+            # Si un module est trouvÃ© pour cet alias
             if ($moduleName) {
-                # Vérifier si le module est importé explicitement
+                # VÃ©rifier si le module est importÃ© explicitement
                 $isImported = Test-ModuleImported -Ast $ast -ModuleName $moduleName
 
-                # Ajouter au résultat si le module n'est pas importé ou si on inclut tous les modules
+                # Ajouter au rÃ©sultat si le module n'est pas importÃ© ou si on inclut tous les modules
                 if (-not $isImported -or $IncludeImportedModules) {
                     $results += [PSCustomObject]@{
                         AliasName    = $aliasRef.AliasName
@@ -1109,7 +1109,7 @@ function Find-ModuleAliasWithoutExplicitImport {
 
         return $results
     } catch {
-        Write-Error "Erreur lors de la détection des alias de modules sans import explicite : $_"
+        Write-Error "Erreur lors de la dÃ©tection des alias de modules sans import explicite : $_"
         return @()
     }
 }
@@ -1117,22 +1117,22 @@ function Find-ModuleAliasWithoutExplicitImport {
 function Find-DotNetTypeWithoutExplicitImport {
     <#
     .SYNOPSIS
-        Détecte les références à des types .NET spécifiques à des modules sans import explicite.
+        DÃ©tecte les rÃ©fÃ©rences Ã  des types .NET spÃ©cifiques Ã  des modules sans import explicite.
 
     .DESCRIPTION
-        Cette fonction analyse un script PowerShell pour détecter les références à des types .NET
-        qui sont spécifiques à des modules PowerShell, mais pour lesquels le module n'est pas
-        explicitement importé dans le script.
+        Cette fonction analyse un script PowerShell pour dÃ©tecter les rÃ©fÃ©rences Ã  des types .NET
+        qui sont spÃ©cifiques Ã  des modules PowerShell, mais pour lesquels le module n'est pas
+        explicitement importÃ© dans le script.
 
     .PARAMETER FilePath
-        Chemin du fichier PowerShell à analyser.
+        Chemin du fichier PowerShell Ã  analyser.
 
     .PARAMETER ScriptContent
-        Contenu du script PowerShell à analyser. Si ce paramètre est spécifié, FilePath est ignoré.
+        Contenu du script PowerShell Ã  analyser. Si ce paramÃ¨tre est spÃ©cifiÃ©, FilePath est ignorÃ©.
 
     .PARAMETER IncludeImportedModules
-        Indique si les types des modules déjà importés doivent être inclus dans les résultats.
-        Par défaut, seuls les types des modules non importés sont retournés.
+        Indique si les types des modules dÃ©jÃ  importÃ©s doivent Ãªtre inclus dans les rÃ©sultats.
+        Par dÃ©faut, seuls les types des modules non importÃ©s sont retournÃ©s.
 
     .EXAMPLE
         Find-DotNetTypeWithoutExplicitImport -FilePath "C:\Scripts\MyScript.ps1"
@@ -1163,22 +1163,22 @@ function Find-DotNetTypeWithoutExplicitImport {
 
         if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-                Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+                Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
                 return @()
             }
 
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($FilePath, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         } else {
             $ast = [System.Management.Automation.Language.Parser]::ParseInput($ScriptContent, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         }
 
-        # Extraire les références de types .NET
+        # Extraire les rÃ©fÃ©rences de types .NET
         $typeReferences = Get-DotNetTypeReferencesFromAst -Ast $ast
 
         # Identifier les modules requis pour chaque type
@@ -1186,10 +1186,10 @@ function Find-DotNetTypeWithoutExplicitImport {
         foreach ($typeRef in $typeReferences) {
             $moduleName = $null
 
-            # Vérifier si le type est dans notre base de données de correspondance
+            # VÃ©rifier si le type est dans notre base de donnÃ©es de correspondance
             $moduleName = $script:TypeToModuleMapping[$typeRef.TypeName]
 
-            # Si le type n'est pas trouvé directement, essayer de trouver une correspondance partielle
+            # Si le type n'est pas trouvÃ© directement, essayer de trouver une correspondance partielle
             if (-not $moduleName) {
                 foreach ($key in $script:TypeToModuleMapping.Keys) {
                     if ($typeRef.TypeName -like "$key*" -or $typeRef.TypeName -like "*.$key*") {
@@ -1199,12 +1199,12 @@ function Find-DotNetTypeWithoutExplicitImport {
                 }
             }
 
-            # Si un module est trouvé pour ce type
+            # Si un module est trouvÃ© pour ce type
             if ($moduleName) {
-                # Vérifier si le module est importé explicitement
+                # VÃ©rifier si le module est importÃ© explicitement
                 $isImported = Test-ModuleImported -Ast $ast -ModuleName $moduleName
 
-                # Ajouter au résultat si le module n'est pas importé ou si on inclut tous les modules
+                # Ajouter au rÃ©sultat si le module n'est pas importÃ© ou si on inclut tous les modules
                 if (-not $isImported -or $IncludeImportedModules) {
                     $result = [PSCustomObject]@{
                         TypeName     = $typeRef.TypeName
@@ -1215,7 +1215,7 @@ function Find-DotNetTypeWithoutExplicitImport {
                         IsImported   = $isImported
                     }
 
-                    # Ajouter des propriétés supplémentaires si elles existent
+                    # Ajouter des propriÃ©tÃ©s supplÃ©mentaires si elles existent
                     if ($typeRef.PSObject.Properties.Name -contains "Member") {
                         $result | Add-Member -NotePropertyName "Member" -NotePropertyValue $typeRef.Member
                     }
@@ -1230,7 +1230,7 @@ function Find-DotNetTypeWithoutExplicitImport {
 
         return $results
     } catch {
-        Write-Error "Erreur lors de la détection des types .NET sans import explicite : $_"
+        Write-Error "Erreur lors de la dÃ©tection des types .NET sans import explicite : $_"
         return @()
     }
 }
@@ -1240,28 +1240,28 @@ function Find-DotNetTypeWithoutExplicitImport {
 function New-ModuleMappingDatabase {
     <#
     .SYNOPSIS
-        Crée une base de données de correspondance entre cmdlets/types/variables et modules.
+        CrÃ©e une base de donnÃ©es de correspondance entre cmdlets/types/variables et modules.
 
     .DESCRIPTION
-        Cette fonction analyse les modules installés sur le système et crée une base de données
+        Cette fonction analyse les modules installÃ©s sur le systÃ¨me et crÃ©e une base de donnÃ©es
         de correspondance entre les cmdlets, types .NET et variables globales et leurs modules respectifs.
-        Cette base de données peut être utilisée pour détecter les dépendances implicites dans les scripts PowerShell.
+        Cette base de donnÃ©es peut Ãªtre utilisÃ©e pour dÃ©tecter les dÃ©pendances implicites dans les scripts PowerShell.
 
     .PARAMETER ModuleNames
-        Noms des modules à analyser. Si non spécifié, tous les modules disponibles seront analysés.
+        Noms des modules Ã  analyser. Si non spÃ©cifiÃ©, tous les modules disponibles seront analysÃ©s.
 
     .PARAMETER OutputPath
-        Chemin du fichier de sortie pour la base de données. Si non spécifié, la base de données
-        sera retournée sous forme d'objet PowerShell.
+        Chemin du fichier de sortie pour la base de donnÃ©es. Si non spÃ©cifiÃ©, la base de donnÃ©es
+        sera retournÃ©e sous forme d'objet PowerShell.
 
     .PARAMETER IncludeCmdlets
-        Indique si les cmdlets doivent être incluses dans la base de données.
+        Indique si les cmdlets doivent Ãªtre incluses dans la base de donnÃ©es.
 
     .PARAMETER IncludeTypes
-        Indique si les types .NET doivent être inclus dans la base de données.
+        Indique si les types .NET doivent Ãªtre inclus dans la base de donnÃ©es.
 
     .PARAMETER IncludeVariables
-        Indique si les variables globales doivent être incluses dans la base de données.
+        Indique si les variables globales doivent Ãªtre incluses dans la base de donnÃ©es.
 
     .EXAMPLE
         New-ModuleMappingDatabase -ModuleNames "ActiveDirectory", "SqlServer" -OutputPath "C:\Temp\ModuleMapping.psd1"
@@ -1296,7 +1296,7 @@ function New-ModuleMappingDatabase {
         $typeToModuleMapping = @{}
         $variableToModuleMapping = @{}
 
-        # Obtenir la liste des modules à analyser
+        # Obtenir la liste des modules Ã  analyser
         $modules = @()
         if ($ModuleNames) {
             foreach ($moduleName in $ModuleNames) {
@@ -1304,7 +1304,7 @@ function New-ModuleMappingDatabase {
                 if ($module) {
                     $modules += $module
                 } else {
-                    Write-Warning "Le module '$moduleName' n'a pas été trouvé."
+                    Write-Warning "Le module '$moduleName' n'a pas Ã©tÃ© trouvÃ©."
                 }
             }
         } else {
@@ -1316,7 +1316,7 @@ function New-ModuleMappingDatabase {
             $moduleName = $module.Name
             Write-Verbose "Analyse du module: $moduleName"
 
-            # Analyser les cmdlets si demandé
+            # Analyser les cmdlets si demandÃ©
             if ($IncludeCmdlets) {
                 Write-Verbose "  Analyse des cmdlets..."
                 $cmdlets = Get-Command -Module $moduleName -CommandType Cmdlet, Function, Alias -ErrorAction SilentlyContinue
@@ -1328,14 +1328,14 @@ function New-ModuleMappingDatabase {
                 }
             }
 
-            # Analyser les types .NET si demandé
+            # Analyser les types .NET si demandÃ©
             if ($IncludeTypes) {
                 Write-Verbose "  Analyse des types .NET..."
                 try {
-                    # Importer le module pour accéder à ses types
+                    # Importer le module pour accÃ©der Ã  ses types
                     Import-Module $moduleName -ErrorAction SilentlyContinue
 
-                    # Obtenir les types exportés par le module
+                    # Obtenir les types exportÃ©s par le module
                     $assembly = [System.AppDomain]::CurrentDomain.GetAssemblies() |
                         Where-Object { $_.GetName().Name -eq $moduleName -or $_.GetName().Name -like "$moduleName.*" }
 
@@ -1352,11 +1352,11 @@ function New-ModuleMappingDatabase {
                 }
             }
 
-            # Analyser les variables globales si demandé
+            # Analyser les variables globales si demandÃ©
             if ($IncludeVariables) {
                 Write-Verbose "  Analyse des variables globales..."
                 try {
-                    # Importer le module pour accéder à ses variables
+                    # Importer le module pour accÃ©der Ã  ses variables
                     $beforeVars = Get-Variable -Scope Global -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name
                     Import-Module $moduleName -ErrorAction SilentlyContinue
                     $afterVars = Get-Variable -Scope Global -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name
@@ -1374,18 +1374,18 @@ function New-ModuleMappingDatabase {
             }
         }
 
-        # Créer la base de données complète
+        # CrÃ©er la base de donnÃ©es complÃ¨te
         $database = @{
             CmdletToModuleMapping   = $cmdletToModuleMapping
             TypeToModuleMapping     = $typeToModuleMapping
             VariableToModuleMapping = $variableToModuleMapping
         }
 
-        # Exporter la base de données si un chemin de sortie est spécifié
+        # Exporter la base de donnÃ©es si un chemin de sortie est spÃ©cifiÃ©
         if ($OutputPath) {
             $databaseContent = @"
-# Base de données de correspondance entre cmdlets/types/variables et modules
-# Générée le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+# Base de donnÃ©es de correspondance entre cmdlets/types/variables et modules
+# GÃ©nÃ©rÃ©e le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 @{
     CmdletToModuleMapping = @{
@@ -1404,11 +1404,11 @@ $($variableToModuleMapping.GetEnumerator() | ForEach-Object { "        '$($_.Key
             Set-Content -Path $OutputPath -Value $databaseContent -Encoding UTF8
             Get-Item -Path $OutputPath
         } else {
-            # Retourner la base de données
+            # Retourner la base de donnÃ©es
             $database
         }
     } catch {
-        Write-Error "Erreur lors de la création de la base de données de correspondance : $_"
+        Write-Error "Erreur lors de la crÃ©ation de la base de donnÃ©es de correspondance : $_"
         if ($OutputPath) {
             return $null
         } else {
@@ -1424,30 +1424,30 @@ $($variableToModuleMapping.GetEnumerator() | ForEach-Object { "        '$($_.Key
 function Update-ModuleMappingDatabase {
     <#
     .SYNOPSIS
-        Met à jour la base de données de correspondance entre cmdlets/types/variables et modules.
+        Met Ã  jour la base de donnÃ©es de correspondance entre cmdlets/types/variables et modules.
 
     .DESCRIPTION
-        Cette fonction met à jour la base de données de correspondance existante avec de nouvelles
-        entrées provenant des modules spécifiés.
+        Cette fonction met Ã  jour la base de donnÃ©es de correspondance existante avec de nouvelles
+        entrÃ©es provenant des modules spÃ©cifiÃ©s.
 
     .PARAMETER DatabasePath
-        Chemin du fichier de base de données à mettre à jour.
+        Chemin du fichier de base de donnÃ©es Ã  mettre Ã  jour.
 
     .PARAMETER ModuleNames
-        Noms des modules à analyser. Si non spécifié, tous les modules disponibles seront analysés.
+        Noms des modules Ã  analyser. Si non spÃ©cifiÃ©, tous les modules disponibles seront analysÃ©s.
 
     .PARAMETER OutputPath
-        Chemin du fichier de sortie pour la base de données mise à jour. Si non spécifié, le fichier
-        d'entrée sera écrasé.
+        Chemin du fichier de sortie pour la base de donnÃ©es mise Ã  jour. Si non spÃ©cifiÃ©, le fichier
+        d'entrÃ©e sera Ã©crasÃ©.
 
     .PARAMETER IncludeCmdlets
-        Indique si les cmdlets doivent être incluses dans la base de données.
+        Indique si les cmdlets doivent Ãªtre incluses dans la base de donnÃ©es.
 
     .PARAMETER IncludeTypes
-        Indique si les types .NET doivent être inclus dans la base de données.
+        Indique si les types .NET doivent Ãªtre inclus dans la base de donnÃ©es.
 
     .PARAMETER IncludeVariables
-        Indique si les variables globales doivent être incluses dans la base de données.
+        Indique si les variables globales doivent Ãªtre incluses dans la base de donnÃ©es.
 
     .EXAMPLE
         Update-ModuleMappingDatabase -DatabasePath "C:\Temp\ModuleMapping.psd1" -ModuleNames "Az.Compute", "Az.Network"
@@ -1480,19 +1480,19 @@ function Update-ModuleMappingDatabase {
     )
 
     try {
-        # Vérifier si le fichier de base de données existe
+        # VÃ©rifier si le fichier de base de donnÃ©es existe
         if (-not (Test-Path -Path $DatabasePath -PathType Leaf)) {
-            Write-Error "Le fichier de base de données spécifié n'existe pas : $DatabasePath"
+            Write-Error "Le fichier de base de donnÃ©es spÃ©cifiÃ© n'existe pas : $DatabasePath"
             return $null
         }
 
-        # Charger la base de données existante
+        # Charger la base de donnÃ©es existante
         $existingDatabase = & ([ScriptBlock]::Create("return $(Get-Content -Path $DatabasePath -Raw)"))
 
-        # Créer une nouvelle base de données pour les modules spécifiés
+        # CrÃ©er une nouvelle base de donnÃ©es pour les modules spÃ©cifiÃ©s
         $newDatabase = New-ModuleMappingDatabase -ModuleNames $ModuleNames -IncludeCmdlets:$IncludeCmdlets -IncludeTypes:$IncludeTypes -IncludeVariables:$IncludeVariables
 
-        # Fusionner les bases de données
+        # Fusionner les bases de donnÃ©es
         $mergedDatabase = @{
             CmdletToModuleMapping   = @{}
             TypeToModuleMapping     = @{}
@@ -1523,13 +1523,13 @@ function Update-ModuleMappingDatabase {
             $mergedDatabase.VariableToModuleMapping[$key] = $newDatabase.VariableToModuleMapping[$key]
         }
 
-        # Déterminer le chemin de sortie
+        # DÃ©terminer le chemin de sortie
         $outputFilePath = if ($OutputPath) { $OutputPath } else { $DatabasePath }
 
-        # Exporter la base de données fusionnée
+        # Exporter la base de donnÃ©es fusionnÃ©e
         $databaseContent = @"
-# Base de données de correspondance entre cmdlets/types/variables et modules
-# Mise à jour le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+# Base de donnÃ©es de correspondance entre cmdlets/types/variables et modules
+# Mise Ã  jour le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
 @{
     CmdletToModuleMapping = @{
@@ -1548,7 +1548,7 @@ $($mergedDatabase.VariableToModuleMapping.GetEnumerator() | ForEach-Object { "  
         Set-Content -Path $outputFilePath -Value $databaseContent -Encoding UTF8
         Get-Item -Path $outputFilePath
     } catch {
-        Write-Error "Erreur lors de la mise à jour de la base de données de correspondance : $_"
+        Write-Error "Erreur lors de la mise Ã  jour de la base de donnÃ©es de correspondance : $_"
         return $null
     }
 }
@@ -1556,17 +1556,17 @@ $($mergedDatabase.VariableToModuleMapping.GetEnumerator() | ForEach-Object { "  
 function Import-ModuleMappingDatabase {
     <#
     .SYNOPSIS
-        Importe une base de données de correspondance entre cmdlets/types/variables et modules.
+        Importe une base de donnÃ©es de correspondance entre cmdlets/types/variables et modules.
 
     .DESCRIPTION
-        Cette fonction importe une base de données de correspondance à partir d'un fichier PSD1
-        et met à jour les variables globales du script avec les mappings importés.
+        Cette fonction importe une base de donnÃ©es de correspondance Ã  partir d'un fichier PSD1
+        et met Ã  jour les variables globales du script avec les mappings importÃ©s.
 
     .PARAMETER DatabasePath
-        Chemin du fichier de base de données à importer.
+        Chemin du fichier de base de donnÃ©es Ã  importer.
 
     .PARAMETER UpdateGlobalMappings
-        Indique si les mappings globaux du script doivent être mis à jour avec les mappings importés.
+        Indique si les mappings globaux du script doivent Ãªtre mis Ã  jour avec les mappings importÃ©s.
 
     .EXAMPLE
         Import-ModuleMappingDatabase -DatabasePath "C:\Temp\ModuleMapping.psd1"
@@ -1587,31 +1587,31 @@ function Import-ModuleMappingDatabase {
     )
 
     try {
-        # Vérifier si le fichier de base de données existe
+        # VÃ©rifier si le fichier de base de donnÃ©es existe
         if (-not (Test-Path -Path $DatabasePath -PathType Leaf)) {
-            Write-Error "Le fichier de base de données spécifié n'existe pas : $DatabasePath"
+            Write-Error "Le fichier de base de donnÃ©es spÃ©cifiÃ© n'existe pas : $DatabasePath"
             return $null
         }
 
-        # Charger la base de données
+        # Charger la base de donnÃ©es
         $database = & ([ScriptBlock]::Create("return $(Get-Content -Path $DatabasePath -Raw)"))
 
-        # Mettre à jour les mappings globaux si demandé
+        # Mettre Ã  jour les mappings globaux si demandÃ©
         if ($UpdateGlobalMappings) {
-            # Mettre à jour le mapping de cmdlets
+            # Mettre Ã  jour le mapping de cmdlets
             $script:CmdletToModuleMapping = $database.CmdletToModuleMapping
 
-            # Mettre à jour le mapping de types
+            # Mettre Ã  jour le mapping de types
             $script:TypeToModuleMapping = $database.TypeToModuleMapping
 
-            # Mettre à jour le mapping de variables
+            # Mettre Ã  jour le mapping de variables
             $script:GlobalVariableToModuleMapping = $database.VariableToModuleMapping
         }
 
-        # Retourner la base de données
+        # Retourner la base de donnÃ©es
         $database
     } catch {
-        Write-Error "Erreur lors de l'importation de la base de données de correspondance : $_"
+        Write-Error "Erreur lors de l'importation de la base de donnÃ©es de correspondance : $_"
         return $null
     }
 }
@@ -1619,35 +1619,35 @@ function Import-ModuleMappingDatabase {
 function Get-ModuleDependencyScore {
     <#
     .SYNOPSIS
-        Calcule un score de probabilité pour les dépendances de modules détectées.
+        Calcule un score de probabilitÃ© pour les dÃ©pendances de modules dÃ©tectÃ©es.
 
     .DESCRIPTION
-        Cette fonction analyse les résultats des fonctions de détection de dépendances
-        et calcule un score de probabilité pour chaque module détecté, en fonction
-        de différents critères comme le nombre de références, le type de références,
-        et la présence d'autres modules du même fournisseur.
+        Cette fonction analyse les rÃ©sultats des fonctions de dÃ©tection de dÃ©pendances
+        et calcule un score de probabilitÃ© pour chaque module dÃ©tectÃ©, en fonction
+        de diffÃ©rents critÃ¨res comme le nombre de rÃ©fÃ©rences, le type de rÃ©fÃ©rences,
+        et la prÃ©sence d'autres modules du mÃªme fournisseur.
 
     .PARAMETER CmdletReferences
-        Résultats de la fonction Find-CmdletWithoutExplicitImport.
+        RÃ©sultats de la fonction Find-CmdletWithoutExplicitImport.
 
     .PARAMETER TypeReferences
-        Résultats de la fonction Find-DotNetTypeWithoutExplicitImport.
+        RÃ©sultats de la fonction Find-DotNetTypeWithoutExplicitImport.
 
     .PARAMETER VariableReferences
-        Résultats de la fonction Find-GlobalVariableWithoutExplicitImport.
+        RÃ©sultats de la fonction Find-GlobalVariableWithoutExplicitImport.
 
     .PARAMETER AliasReferences
-        Résultats de la fonction Find-ModuleAliasWithoutExplicitImport.
+        RÃ©sultats de la fonction Find-ModuleAliasWithoutExplicitImport.
 
     .PARAMETER CommentReferences
-        Résultats de la fonction Find-ModuleReferenceInComments.
+        RÃ©sultats de la fonction Find-ModuleReferenceInComments.
 
     .PARAMETER ScoreThreshold
-        Seuil de score à partir duquel une dépendance est considérée comme probable.
-        Par défaut, ce seuil est fixé à 0.5 (50%).
+        Seuil de score Ã  partir duquel une dÃ©pendance est considÃ©rÃ©e comme probable.
+        Par dÃ©faut, ce seuil est fixÃ© Ã  0.5 (50%).
 
     .PARAMETER IncludeDetails
-        Indique si les détails du calcul du score doivent être inclus dans les résultats.
+        Indique si les dÃ©tails du calcul du score doivent Ãªtre inclus dans les rÃ©sultats.
 
     .EXAMPLE
         $cmdlets = Find-CmdletWithoutExplicitImport -FilePath "C:\Scripts\MyScript.ps1"
@@ -1685,25 +1685,25 @@ function Get-ModuleDependencyScore {
     )
 
     try {
-        # Vérifier si au moins un type de référence est fourni
+        # VÃ©rifier si au moins un type de rÃ©fÃ©rence est fourni
         if (-not $CmdletReferences -and -not $TypeReferences -and -not $VariableReferences -and -not $AliasReferences -and -not $CommentReferences) {
-            Write-Error "Au moins un type de référence doit être fourni."
+            Write-Error "Au moins un type de rÃ©fÃ©rence doit Ãªtre fourni."
             return @()
         }
 
-        # Initialiser les poids pour chaque type de référence
+        # Initialiser les poids pour chaque type de rÃ©fÃ©rence
         $weights = @{
-            Cmdlet   = 0.30  # Les cmdlets ont un poids important car elles sont souvent spécifiques à un module
-            Type     = 0.25  # Les types .NET ont un poids légèrement inférieur car ils peuvent être partagés
-            Variable = 0.20  # Les variables globales ont un poids plus faible car elles sont moins spécifiques
-            Alias    = 0.15  # Les alias ont le poids le plus faible car ils peuvent être ambigus
-            Comment  = 0.10  # Les références dans les commentaires ont le poids le plus faible car elles sont souvent documentaires
+            Cmdlet   = 0.30  # Les cmdlets ont un poids important car elles sont souvent spÃ©cifiques Ã  un module
+            Type     = 0.25  # Les types .NET ont un poids lÃ©gÃ¨rement infÃ©rieur car ils peuvent Ãªtre partagÃ©s
+            Variable = 0.20  # Les variables globales ont un poids plus faible car elles sont moins spÃ©cifiques
+            Alias    = 0.15  # Les alias ont le poids le plus faible car ils peuvent Ãªtre ambigus
+            Comment  = 0.10  # Les rÃ©fÃ©rences dans les commentaires ont le poids le plus faible car elles sont souvent documentaires
         }
 
-        # Regrouper toutes les références par module
+        # Regrouper toutes les rÃ©fÃ©rences par module
         $moduleReferences = @{}
 
-        # Traiter les références de cmdlets
+        # Traiter les rÃ©fÃ©rences de cmdlets
         if ($CmdletReferences) {
             foreach ($ref in $CmdletReferences) {
                 if (-not $moduleReferences.ContainsKey($ref.ModuleName)) {
@@ -1721,7 +1721,7 @@ function Get-ModuleDependencyScore {
             }
         }
 
-        # Traiter les références de types
+        # Traiter les rÃ©fÃ©rences de types
         if ($TypeReferences) {
             foreach ($ref in $TypeReferences) {
                 if (-not $moduleReferences.ContainsKey($ref.ModuleName)) {
@@ -1739,7 +1739,7 @@ function Get-ModuleDependencyScore {
             }
         }
 
-        # Traiter les références de variables
+        # Traiter les rÃ©fÃ©rences de variables
         if ($VariableReferences) {
             foreach ($ref in $VariableReferences) {
                 if (-not $moduleReferences.ContainsKey($ref.ModuleName)) {
@@ -1757,7 +1757,7 @@ function Get-ModuleDependencyScore {
             }
         }
 
-        # Traiter les références d'alias
+        # Traiter les rÃ©fÃ©rences d'alias
         if ($AliasReferences) {
             foreach ($ref in $AliasReferences) {
                 if (-not $moduleReferences.ContainsKey($ref.ModuleName)) {
@@ -1775,7 +1775,7 @@ function Get-ModuleDependencyScore {
             }
         }
 
-        # Traiter les références dans les commentaires
+        # Traiter les rÃ©fÃ©rences dans les commentaires
         if ($CommentReferences) {
             foreach ($ref in $CommentReferences) {
                 if (-not $moduleReferences.ContainsKey($ref.ModuleName)) {
@@ -1793,7 +1793,7 @@ function Get-ModuleDependencyScore {
             }
         }
 
-        # Calculer le nombre total de références
+        # Calculer le nombre total de rÃ©fÃ©rences
         $totalReferences = 0
         foreach ($module in $moduleReferences.Keys) {
             $totalReferences += $moduleReferences[$module].TotalReferences
@@ -1804,10 +1804,10 @@ function Get-ModuleDependencyScore {
         foreach ($module in $moduleReferences.Keys) {
             $moduleData = $moduleReferences[$module]
 
-            # Calculer le score de base en fonction du nombre de références
+            # Calculer le score de base en fonction du nombre de rÃ©fÃ©rences
             $baseScore = [Math]::Min(1.0, $moduleData.TotalReferences / 10.0)
 
-            # Calculer le score pondéré en fonction des types de références
+            # Calculer le score pondÃ©rÃ© en fonction des types de rÃ©fÃ©rences
             $weightedScore = 0
             if ($moduleData.Cmdlets.Count -gt 0) {
                 $weightedScore += $weights.Cmdlet * [Math]::Min(1.0, $moduleData.Cmdlets.Count / 5.0)
@@ -1825,7 +1825,7 @@ function Get-ModuleDependencyScore {
                 $weightedScore += $weights.Comment * [Math]::Min(1.0, $moduleData.Comments.Count / 3.0)
             }
 
-            # Calculer le score de diversité (bonus si plusieurs types de références sont présents)
+            # Calculer le score de diversitÃ© (bonus si plusieurs types de rÃ©fÃ©rences sont prÃ©sents)
             $diversityScore = 0
             $referenceTypes = 0
             if ($moduleData.Cmdlets.Count -gt 0) { $referenceTypes++ }
@@ -1838,10 +1838,10 @@ function Get-ModuleDependencyScore {
             # Calculer le score final
             $finalScore = ($baseScore * 0.3) + ($weightedScore * 0.5) + ($diversityScore * 0.2)
 
-            # Déterminer si le module est probablement requis
+            # DÃ©terminer si le module est probablement requis
             $isProbablyRequired = $finalScore -ge $ScoreThreshold
 
-            # Créer l'objet résultat
+            # CrÃ©er l'objet rÃ©sultat
             $result = [PSCustomObject]@{
                 ModuleName         = $module
                 Score              = [Math]::Round($finalScore, 2)
@@ -1854,7 +1854,7 @@ function Get-ModuleDependencyScore {
                 IsProbablyRequired = $isProbablyRequired
             }
 
-            # Ajouter les détails si demandé
+            # Ajouter les dÃ©tails si demandÃ©
             if ($IncludeDetails) {
                 $result | Add-Member -NotePropertyName "BaseScore" -NotePropertyValue ([Math]::Round($baseScore, 2))
                 $result | Add-Member -NotePropertyName "WeightedScore" -NotePropertyValue ([Math]::Round($weightedScore, 2))
@@ -1864,7 +1864,7 @@ function Get-ModuleDependencyScore {
                 $result | Add-Member -NotePropertyName "Variables" -NotePropertyValue ($moduleData.Variables | Select-Object -ExpandProperty VariableName -Unique)
                 $result | Add-Member -NotePropertyName "Aliases" -NotePropertyValue ($moduleData.Aliases | Select-Object -ExpandProperty AliasName -Unique)
 
-                # Ajouter les références de commentaires si elles existent
+                # Ajouter les rÃ©fÃ©rences de commentaires si elles existent
                 if ($moduleData.Comments.Count -gt 0) {
                     $commentTypes = $moduleData.Comments | Group-Object -Property Type | Select-Object -Property Name, Count
                     $result | Add-Member -NotePropertyName "CommentTypes" -NotePropertyValue $commentTypes
@@ -1874,12 +1874,12 @@ function Get-ModuleDependencyScore {
             $results += $result
         }
 
-        # Trier les résultats par score décroissant
+        # Trier les rÃ©sultats par score dÃ©croissant
         $results = $results | Sort-Object -Property Score -Descending
 
         return $results
     } catch {
-        Write-Error "Erreur lors du calcul des scores de dépendance : $_"
+        Write-Error "Erreur lors du calcul des scores de dÃ©pendance : $_"
         return @()
     }
 }
@@ -1887,27 +1887,27 @@ function Get-ModuleDependencyScore {
 function Find-GlobalVariableWithoutExplicitImport {
     <#
     .SYNOPSIS
-        Détecte les références aux variables globales spécifiques à des modules sans import explicite.
+        DÃ©tecte les rÃ©fÃ©rences aux variables globales spÃ©cifiques Ã  des modules sans import explicite.
 
     .DESCRIPTION
-        Cette fonction analyse un script PowerShell pour détecter les références aux variables globales
-        qui sont spécifiques à des modules PowerShell, mais pour lesquels le module n'est pas
-        explicitement importé dans le script. Elle détecte les références directes aux variables,
-        ainsi que les références via des expressions de membre ou d'index.
+        Cette fonction analyse un script PowerShell pour dÃ©tecter les rÃ©fÃ©rences aux variables globales
+        qui sont spÃ©cifiques Ã  des modules PowerShell, mais pour lesquels le module n'est pas
+        explicitement importÃ© dans le script. Elle dÃ©tecte les rÃ©fÃ©rences directes aux variables,
+        ainsi que les rÃ©fÃ©rences via des expressions de membre ou d'index.
 
     .PARAMETER FilePath
-        Chemin du fichier PowerShell à analyser.
+        Chemin du fichier PowerShell Ã  analyser.
 
     .PARAMETER ScriptContent
-        Contenu du script PowerShell à analyser. Si ce paramètre est spécifié, FilePath est ignoré.
+        Contenu du script PowerShell Ã  analyser. Si ce paramÃ¨tre est spÃ©cifiÃ©, FilePath est ignorÃ©.
 
     .PARAMETER IncludeImportedModules
-        Indique si les variables des modules déjà importés doivent être incluses dans les résultats.
-        Par défaut, seules les variables des modules non importés sont retournées.
+        Indique si les variables des modules dÃ©jÃ  importÃ©s doivent Ãªtre incluses dans les rÃ©sultats.
+        Par dÃ©faut, seules les variables des modules non importÃ©s sont retournÃ©es.
 
     .PARAMETER IncludeModulePatterns
-        Indique si les variables qui suivent des modèles de nommage de modules doivent être incluses
-        dans les résultats, même si elles ne sont pas explicitement mappées à un module.
+        Indique si les variables qui suivent des modÃ¨les de nommage de modules doivent Ãªtre incluses
+        dans les rÃ©sultats, mÃªme si elles ne sont pas explicitement mappÃ©es Ã  un module.
 
     .EXAMPLE
         Find-GlobalVariableWithoutExplicitImport -FilePath "C:\Scripts\MyScript.ps1"
@@ -1941,22 +1941,22 @@ function Find-GlobalVariableWithoutExplicitImport {
 
         if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-                Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+                Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
                 return @()
             }
 
             $ast = [System.Management.Automation.Language.Parser]::ParseFile($FilePath, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         } else {
             $ast = [System.Management.Automation.Language.Parser]::ParseInput($ScriptContent, [ref]$tokens, [ref]$errors)
             if ($errors.Count -gt 0) {
-                Write-Warning "Des erreurs de syntaxe ont été détectées dans le script : $($errors.Count) erreur(s)"
+                Write-Warning "Des erreurs de syntaxe ont Ã©tÃ© dÃ©tectÃ©es dans le script : $($errors.Count) erreur(s)"
             }
         }
 
-        # Extraire les références aux variables globales
+        # Extraire les rÃ©fÃ©rences aux variables globales
         $variableReferences = Get-GlobalVariableReferencesFromAst -Ast $ast
 
         # Identifier les modules requis pour chaque variable
@@ -1965,13 +1965,13 @@ function Find-GlobalVariableWithoutExplicitImport {
             $moduleName = $script:GlobalVariableToModuleMapping[$varRef.VariableName]
             $moduleNameFound = $false
 
-            # Si un module est trouvé pour cette variable dans le mapping explicite
+            # Si un module est trouvÃ© pour cette variable dans le mapping explicite
             if ($moduleName) {
                 $moduleNameFound = $true
             }
-            # Si on inclut les modèles de nommage de modules et qu'aucun module n'a été trouvé
+            # Si on inclut les modÃ¨les de nommage de modules et qu'aucun module n'a Ã©tÃ© trouvÃ©
             elseif ($IncludeModulePatterns -and -not $moduleNameFound) {
-                # Vérifier si la variable suit un modèle de nommage de module
+                # VÃ©rifier si la variable suit un modÃ¨le de nommage de module
                 # Par exemple: $AzureRm*, $Az*, $AD*, $SQL*, etc.
                 foreach ($alias in $script:ModuleAliasToModuleMapping.Keys) {
                     if ($varRef.VariableName -like "$alias*") {
@@ -1981,7 +1981,7 @@ function Find-GlobalVariableWithoutExplicitImport {
                     }
                 }
 
-                # Vérifier si la variable contient le nom d'un module connu
+                # VÃ©rifier si la variable contient le nom d'un module connu
                 if (-not $moduleNameFound) {
                     foreach ($knownModule in ($script:CmdletToModuleMapping.Values | Select-Object -Unique)) {
                         if ($varRef.VariableName -like "*$knownModule*") {
@@ -1993,12 +1993,12 @@ function Find-GlobalVariableWithoutExplicitImport {
                 }
             }
 
-            # Si un module a été trouvé pour cette variable
+            # Si un module a Ã©tÃ© trouvÃ© pour cette variable
             if ($moduleNameFound -and $moduleName) {
-                # Vérifier si le module est importé explicitement
+                # VÃ©rifier si le module est importÃ© explicitement
                 $isImported = Test-ModuleImported -Ast $ast -ModuleName $moduleName
 
-                # Ajouter au résultat si le module n'est pas importé ou si on inclut tous les modules
+                # Ajouter au rÃ©sultat si le module n'est pas importÃ© ou si on inclut tous les modules
                 if (-not $isImported -or $IncludeImportedModules) {
                     $result = [PSCustomObject]@{
                         VariableName = $varRef.VariableName
@@ -2010,7 +2010,7 @@ function Find-GlobalVariableWithoutExplicitImport {
                         IsImported   = $isImported
                     }
 
-                    # Ajouter des propriétés supplémentaires si elles existent
+                    # Ajouter des propriÃ©tÃ©s supplÃ©mentaires si elles existent
                     if ($varRef.PSObject.Properties.Name -contains "Member") {
                         $result | Add-Member -NotePropertyName "Member" -NotePropertyValue $varRef.Member
                     }
@@ -2025,7 +2025,7 @@ function Find-GlobalVariableWithoutExplicitImport {
 
         return $results
     } catch {
-        Write-Error "Erreur lors de la détection des variables globales sans import explicite : $_"
+        Write-Error "Erreur lors de la dÃ©tection des variables globales sans import explicite : $_"
         return @()
     }
 }
@@ -2033,28 +2033,28 @@ function Find-GlobalVariableWithoutExplicitImport {
 function Find-ImplicitModuleDependency {
     <#
     .SYNOPSIS
-        Détecte les dépendances implicites de modules dans un script PowerShell.
+        DÃ©tecte les dÃ©pendances implicites de modules dans un script PowerShell.
 
     .DESCRIPTION
-        Cette fonction combine toutes les fonctions de détection de dépendances
-        et calcule un score de probabilité pour chaque module détecté, en une seule étape.
+        Cette fonction combine toutes les fonctions de dÃ©tection de dÃ©pendances
+        et calcule un score de probabilitÃ© pour chaque module dÃ©tectÃ©, en une seule Ã©tape.
 
     .PARAMETER FilePath
-        Chemin du fichier PowerShell à analyser.
+        Chemin du fichier PowerShell Ã  analyser.
 
     .PARAMETER ScriptContent
-        Contenu du script PowerShell à analyser. Si ce paramètre est spécifié, FilePath est ignoré.
+        Contenu du script PowerShell Ã  analyser. Si ce paramÃ¨tre est spÃ©cifiÃ©, FilePath est ignorÃ©.
 
     .PARAMETER ScoreThreshold
-        Seuil de score à partir duquel une dépendance est considérée comme probable.
-        Par défaut, ce seuil est fixé à 0.5 (50%).
+        Seuil de score Ã  partir duquel une dÃ©pendance est considÃ©rÃ©e comme probable.
+        Par dÃ©faut, ce seuil est fixÃ© Ã  0.5 (50%).
 
     .PARAMETER IncludeImportedModules
-        Indique si les modules déjà importés doivent être inclus dans les résultats.
-        Par défaut, seuls les modules non importés sont analysés.
+        Indique si les modules dÃ©jÃ  importÃ©s doivent Ãªtre inclus dans les rÃ©sultats.
+        Par dÃ©faut, seuls les modules non importÃ©s sont analysÃ©s.
 
     .PARAMETER IncludeDetails
-        Indique si les détails du calcul du score doivent être inclus dans les résultats.
+        Indique si les dÃ©tails du calcul du score doivent Ãªtre inclus dans les rÃ©sultats.
 
     .EXAMPLE
         Find-ImplicitModuleDependency -FilePath "C:\Scripts\MyScript.ps1"
@@ -2085,42 +2085,42 @@ function Find-ImplicitModuleDependency {
     )
 
     try {
-        # Détecter les références de cmdlets
+        # DÃ©tecter les rÃ©fÃ©rences de cmdlets
         $cmdletReferences = if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             Find-CmdletWithoutExplicitImport -FilePath $FilePath -IncludeImportedModules:$IncludeImportedModules
         } else {
             Find-CmdletWithoutExplicitImport -ScriptContent $ScriptContent -IncludeImportedModules:$IncludeImportedModules
         }
 
-        # Détecter les références de types .NET
+        # DÃ©tecter les rÃ©fÃ©rences de types .NET
         $typeReferences = if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             Find-DotNetTypeWithoutExplicitImport -FilePath $FilePath -IncludeImportedModules:$IncludeImportedModules
         } else {
             Find-DotNetTypeWithoutExplicitImport -ScriptContent $ScriptContent -IncludeImportedModules:$IncludeImportedModules
         }
 
-        # Détecter les références de variables globales
+        # DÃ©tecter les rÃ©fÃ©rences de variables globales
         $variableReferences = if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             Find-GlobalVariableWithoutExplicitImport -FilePath $FilePath -IncludeImportedModules:$IncludeImportedModules -IncludeModulePatterns
         } else {
             Find-GlobalVariableWithoutExplicitImport -ScriptContent $ScriptContent -IncludeImportedModules:$IncludeImportedModules -IncludeModulePatterns
         }
 
-        # Détecter les références d'alias de modules
+        # DÃ©tecter les rÃ©fÃ©rences d'alias de modules
         $aliasReferences = if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             Find-ModuleAliasWithoutExplicitImport -FilePath $FilePath -IncludeImportedModules:$IncludeImportedModules
         } else {
             Find-ModuleAliasWithoutExplicitImport -ScriptContent $ScriptContent -IncludeImportedModules:$IncludeImportedModules
         }
 
-        # Détecter les références aux modules dans les commentaires
+        # DÃ©tecter les rÃ©fÃ©rences aux modules dans les commentaires
         $commentReferences = if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             Find-ModuleReferenceInComments -FilePath $FilePath -IncludeImportedModules:$IncludeImportedModules
         } else {
             Find-ModuleReferenceInComments -ScriptContent $ScriptContent -IncludeImportedModules:$IncludeImportedModules
         }
 
-        # Convertir les références d'alias en format compatible avec Get-ModuleDependencyScore
+        # Convertir les rÃ©fÃ©rences d'alias en format compatible avec Get-ModuleDependencyScore
         $aliasReferencesForScore = @()
         foreach ($ref in $aliasReferences) {
             $aliasReferencesForScore += [PSCustomObject]@{
@@ -2134,7 +2134,7 @@ function Find-ImplicitModuleDependency {
             }
         }
 
-        # Convertir les références de commentaires en format compatible avec Get-ModuleDependencyScore
+        # Convertir les rÃ©fÃ©rences de commentaires en format compatible avec Get-ModuleDependencyScore
         $commentReferencesForScore = @()
         foreach ($ref in $commentReferences) {
             $commentReferencesForScore += [PSCustomObject]@{
@@ -2148,13 +2148,13 @@ function Find-ImplicitModuleDependency {
             }
         }
 
-        # Calculer les scores de dépendance
+        # Calculer les scores de dÃ©pendance
         $scores = Get-ModuleDependencyScore -CmdletReferences $cmdletReferences -TypeReferences $typeReferences -VariableReferences $variableReferences -AliasReferences $aliasReferencesForScore -CommentReferences $commentReferencesForScore -ScoreThreshold $ScoreThreshold -IncludeDetails:$IncludeDetails
 
-        # Retourner les résultats
+        # Retourner les rÃ©sultats
         return $scores
     } catch {
-        Write-Error "Erreur lors de la détection des dépendances implicites : $_"
+        Write-Error "Erreur lors de la dÃ©tection des dÃ©pendances implicites : $_"
         return @()
     }
 }
@@ -2162,22 +2162,22 @@ function Find-ImplicitModuleDependency {
 function Test-ModuleAvailability {
     <#
     .SYNOPSIS
-        Vérifie la disponibilité des modules détectés.
+        VÃ©rifie la disponibilitÃ© des modules dÃ©tectÃ©s.
 
     .DESCRIPTION
-        Cette fonction vérifie si les modules détectés sont disponibles sur le système,
-        soit déjà importés, soit disponibles pour importation. Elle peut également
-        vérifier si les modules sont disponibles dans la galerie PowerShell.
+        Cette fonction vÃ©rifie si les modules dÃ©tectÃ©s sont disponibles sur le systÃ¨me,
+        soit dÃ©jÃ  importÃ©s, soit disponibles pour importation. Elle peut Ã©galement
+        vÃ©rifier si les modules sont disponibles dans la galerie PowerShell.
 
     .PARAMETER ModuleNames
-        Noms des modules à vérifier.
+        Noms des modules Ã  vÃ©rifier.
 
     .PARAMETER CheckGallery
-        Indique si la disponibilité des modules dans la galerie PowerShell doit être vérifiée.
-        Par défaut, seule la disponibilité locale est vérifiée.
+        Indique si la disponibilitÃ© des modules dans la galerie PowerShell doit Ãªtre vÃ©rifiÃ©e.
+        Par dÃ©faut, seule la disponibilitÃ© locale est vÃ©rifiÃ©e.
 
     .PARAMETER IncludeDetails
-        Indique si des détails supplémentaires sur les modules doivent être inclus dans les résultats.
+        Indique si des dÃ©tails supplÃ©mentaires sur les modules doivent Ãªtre inclus dans les rÃ©sultats.
 
     .EXAMPLE
         Test-ModuleAvailability -ModuleNames "ActiveDirectory", "Az.Accounts", "Pester"
@@ -2203,20 +2203,20 @@ function Test-ModuleAvailability {
     )
 
     try {
-        # Obtenir la liste des modules importés
+        # Obtenir la liste des modules importÃ©s
         $importedModules = Get-Module
 
         # Obtenir la liste des modules disponibles
         $availableModules = Get-Module -ListAvailable
 
-        # Initialiser les résultats
+        # Initialiser les rÃ©sultats
         $results = @()
 
         foreach ($moduleName in $ModuleNames) {
-            # Vérifier si le module est déjà importé
+            # VÃ©rifier si le module est dÃ©jÃ  importÃ©
             $isImported = $importedModules | Where-Object { $_.Name -eq $moduleName }
 
-            # Vérifier si le module est disponible localement
+            # VÃ©rifier si le module est disponible localement
             $isAvailable = $availableModules | Where-Object { $_.Name -eq $moduleName }
 
             # Initialiser les variables pour la galerie
@@ -2224,7 +2224,7 @@ function Test-ModuleAvailability {
             $galleryVersion = $null
             $galleryDetails = $null
 
-            # Vérifier si le module est disponible dans la galerie PowerShell
+            # VÃ©rifier si le module est disponible dans la galerie PowerShell
             if ($CheckGallery) {
                 try {
                     $galleryModule = Find-Module -Name $moduleName -ErrorAction SilentlyContinue
@@ -2240,7 +2240,7 @@ function Test-ModuleAvailability {
                 }
             }
 
-            # Créer l'objet résultat
+            # CrÃ©er l'objet rÃ©sultat
             $result = [PSCustomObject]@{
                 ModuleName         = $moduleName
                 IsImported         = ($null -ne $isImported)
@@ -2261,7 +2261,7 @@ function Test-ModuleAvailability {
                 InstallationNeeded = ($null -eq $isImported) -and ($null -eq $isAvailable) -and $isInGallery
             }
 
-            # Ajouter des détails supplémentaires si demandé
+            # Ajouter des dÃ©tails supplÃ©mentaires si demandÃ©
             if ($IncludeDetails) {
                 if ($null -ne $isImported) {
                     $result | Add-Member -NotePropertyName "ImportedModule" -NotePropertyValue $isImported
@@ -2279,7 +2279,7 @@ function Test-ModuleAvailability {
 
         return $results
     } catch {
-        Write-Error "Erreur lors de la vérification de la disponibilité des modules : $_"
+        Write-Error "Erreur lors de la vÃ©rification de la disponibilitÃ© des modules : $_"
         return @()
     }
 }
@@ -2287,32 +2287,32 @@ function Test-ModuleAvailability {
 function Confirm-ModuleDependencies {
     <#
     .SYNOPSIS
-        Valide les dépendances de modules détectées et propose des actions correctives.
+        Valide les dÃ©pendances de modules dÃ©tectÃ©es et propose des actions correctives.
 
     .DESCRIPTION
-        Cette fonction analyse les résultats de la détection de dépendances implicites,
-        vérifie la disponibilité des modules requis, et propose des actions correctives
+        Cette fonction analyse les rÃ©sultats de la dÃ©tection de dÃ©pendances implicites,
+        vÃ©rifie la disponibilitÃ© des modules requis, et propose des actions correctives
         comme l'ajout d'instructions Import-Module ou l'installation de modules manquants.
 
     .PARAMETER FilePath
-        Chemin du fichier PowerShell à analyser.
+        Chemin du fichier PowerShell Ã  analyser.
 
     .PARAMETER ScriptContent
-        Contenu du script PowerShell à analyser. Si ce paramètre est spécifié, FilePath est ignoré.
+        Contenu du script PowerShell Ã  analyser. Si ce paramÃ¨tre est spÃ©cifiÃ©, FilePath est ignorÃ©.
 
     .PARAMETER ScoreThreshold
-        Seuil de score à partir duquel une dépendance est considérée comme probable.
-        Par défaut, ce seuil est fixé à 0.5 (50%).
+        Seuil de score Ã  partir duquel une dÃ©pendance est considÃ©rÃ©e comme probable.
+        Par dÃ©faut, ce seuil est fixÃ© Ã  0.5 (50%).
 
     .PARAMETER CheckGallery
-        Indique si la disponibilité des modules dans la galerie PowerShell doit être vérifiée.
-        Par défaut, seule la disponibilité locale est vérifiée.
+        Indique si la disponibilitÃ© des modules dans la galerie PowerShell doit Ãªtre vÃ©rifiÃ©e.
+        Par dÃ©faut, seule la disponibilitÃ© locale est vÃ©rifiÃ©e.
 
     .PARAMETER GenerateImportStatements
-        Indique si des instructions Import-Module doivent être générées pour les modules manquants.
+        Indique si des instructions Import-Module doivent Ãªtre gÃ©nÃ©rÃ©es pour les modules manquants.
 
     .PARAMETER IncludeDetails
-        Indique si des détails supplémentaires doivent être inclus dans les résultats.
+        Indique si des dÃ©tails supplÃ©mentaires doivent Ãªtre inclus dans les rÃ©sultats.
 
     .EXAMPLE
         Confirm-ModuleDependencies -FilePath "C:\Scripts\MyScript.ps1"
@@ -2346,21 +2346,21 @@ function Confirm-ModuleDependencies {
     )
 
     try {
-        # Détecter les dépendances implicites
+        # DÃ©tecter les dÃ©pendances implicites
         $dependencies = if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             Find-ImplicitModuleDependency -FilePath $FilePath -ScoreThreshold $ScoreThreshold -IncludeDetails:$IncludeDetails
         } else {
             Find-ImplicitModuleDependency -ScriptContent $ScriptContent -ScoreThreshold $ScoreThreshold -IncludeDetails:$IncludeDetails
         }
 
-        # Filtrer les dépendances probables
+        # Filtrer les dÃ©pendances probables
         $probableDependencies = $dependencies | Where-Object { $_.IsProbablyRequired }
 
-        # Si aucune dépendance probable n'est trouvée
+        # Si aucune dÃ©pendance probable n'est trouvÃ©e
         if (-not $probableDependencies -or $probableDependencies.Count -eq 0) {
             return [PSCustomObject]@{
                 Status            = "NoDependenciesFound"
-                Message           = "Aucune dépendance implicite probable n'a été détectée."
+                Message           = "Aucune dÃ©pendance implicite probable n'a Ã©tÃ© dÃ©tectÃ©e."
                 Dependencies      = $dependencies
                 ValidatedModules  = @()
                 MissingModules    = @()
@@ -2373,14 +2373,14 @@ function Confirm-ModuleDependencies {
         # Extraire les noms de modules
         $moduleNames = $probableDependencies | Select-Object -ExpandProperty ModuleName
 
-        # Vérifier la disponibilité des modules
+        # VÃ©rifier la disponibilitÃ© des modules
         $moduleAvailability = Test-ModuleAvailability -ModuleNames $moduleNames -CheckGallery:$CheckGallery -IncludeDetails:$IncludeDetails
 
-        # Séparer les modules validés et manquants
+        # SÃ©parer les modules validÃ©s et manquants
         $validatedModules = $moduleAvailability | Where-Object { $_.ValidationPassed }
         $missingModules = $moduleAvailability | Where-Object { -not $_.ValidationPassed }
 
-        # Générer des instructions Import-Module si demandé
+        # GÃ©nÃ©rer des instructions Import-Module si demandÃ©
         $importStatements = @()
         if ($GenerateImportStatements) {
             foreach ($module in $validatedModules) {
@@ -2388,7 +2388,7 @@ function Confirm-ModuleDependencies {
             }
         }
 
-        # Générer des instructions d'installation pour les modules manquants
+        # GÃ©nÃ©rer des instructions d'installation pour les modules manquants
         $installStatements = @()
         foreach ($module in $missingModules) {
             if ($module.IsInGallery) {
@@ -2396,7 +2396,7 @@ function Confirm-ModuleDependencies {
             }
         }
 
-        # Déterminer le statut global
+        # DÃ©terminer le statut global
         $status = if ($missingModules.Count -eq 0) {
             "AllModulesAvailable"
         } elseif ($missingModules | Where-Object { $_.IsInGallery }) {
@@ -2405,20 +2405,20 @@ function Confirm-ModuleDependencies {
             "SomeModulesNotFound"
         }
 
-        # Créer le message approprié
+        # CrÃ©er le message appropriÃ©
         $message = switch ($status) {
             "AllModulesAvailable" {
                 "Tous les modules requis sont disponibles. Ajoutez des instructions Import-Module pour les utiliser explicitement."
             }
             "SomeModulesNeedInstallation" {
-                "Certains modules requis ne sont pas installés mais sont disponibles dans la galerie PowerShell. Installez-les avant d'utiliser le script."
+                "Certains modules requis ne sont pas installÃ©s mais sont disponibles dans la galerie PowerShell. Installez-les avant d'utiliser le script."
             }
             "SomeModulesNotFound" {
-                "Certains modules requis n'ont pas été trouvés, ni localement ni dans la galerie PowerShell. Vérifiez les noms des modules ou leur disponibilité."
+                "Certains modules requis n'ont pas Ã©tÃ© trouvÃ©s, ni localement ni dans la galerie PowerShell. VÃ©rifiez les noms des modules ou leur disponibilitÃ©."
             }
         }
 
-        # Créer l'objet résultat
+        # CrÃ©er l'objet rÃ©sultat
         $result = [PSCustomObject]@{
             Status            = $status
             Message           = $message
@@ -2432,7 +2432,7 @@ function Confirm-ModuleDependencies {
 
         return $result
     } catch {
-        Write-Error "Erreur lors de la validation des dépendances de modules : $_"
+        Write-Error "Erreur lors de la validation des dÃ©pendances de modules : $_"
         return $null
     }
 }

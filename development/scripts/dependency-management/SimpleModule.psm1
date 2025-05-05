@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module simplifié pour l'analyse des dépendances entre modules PowerShell.
+    Module simplifiÃ© pour l'analyse des dÃ©pendances entre modules PowerShell.
 
 .DESCRIPTION
-    Ce module fournit des fonctions de base pour analyser les dépendances entre modules PowerShell.
+    Ce module fournit des fonctions de base pour analyser les dÃ©pendances entre modules PowerShell.
 
 .NOTES
     Auteur: Dependency Management Team
@@ -18,7 +18,7 @@ function Test-SystemModule {
         [string]$ModuleName
     )
 
-    # Liste des modules système PowerShell
+    # Liste des modules systÃ¨me PowerShell
     $systemModules = @(
         'Microsoft.PowerShell.Archive',
         'Microsoft.PowerShell.Core',
@@ -50,14 +50,14 @@ function Get-PowerShellManifestStructure {
         [string]$ManifestPath
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ManifestPath -PathType Leaf)) {
         $errorMsg = "File not found: $ManifestPath"
         Write-Error $errorMsg
         return $null
     }
 
-    # Vérifier l'extension du fichier
+    # VÃ©rifier l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($ManifestPath)
     if ($extension -ne ".psd1") {
         $errorMsg = "File is not a PowerShell manifest (.psd1): $ManifestPath"
@@ -69,7 +69,7 @@ function Get-PowerShellManifestStructure {
         # Importer le manifeste
         $manifest = Import-PowerShellDataFile -Path $ManifestPath -ErrorAction Stop
 
-        # Créer l'objet résultat
+        # CrÃ©er l'objet rÃ©sultat
         $result = [PSCustomObject]@{
             ModuleName      = [System.IO.Path]::GetFileNameWithoutExtension($ManifestPath)
             ModuleVersion   = $manifest.ModuleVersion
@@ -81,7 +81,7 @@ function Get-PowerShellManifestStructure {
             NestedModules   = @()
         }
 
-        # Analyser les dépendances RequiredModules
+        # Analyser les dÃ©pendances RequiredModules
         if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
             $requiredModules = @()
             foreach ($module in $manifest.RequiredModules) {
@@ -102,7 +102,7 @@ function Get-PowerShellManifestStructure {
             $result.RequiredModules = $requiredModules
         }
 
-        # Analyser les dépendances NestedModules
+        # Analyser les dÃ©pendances NestedModules
         if ($manifest.ContainsKey('NestedModules') -and $manifest.NestedModules) {
             $nestedModules = @()
             foreach ($module in $manifest.NestedModules) {
@@ -142,16 +142,16 @@ function Get-ModuleDependenciesFromManifest {
         [switch]$SkipSystemModules
     )
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ManifestPath -PathType Leaf)) {
         Write-Warning "Manifest file does not exist: $ManifestPath"
         return $dependencies
     }
 
-    # Vérifier l'extension du fichier
+    # VÃ©rifier l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($ManifestPath)
     if ($extension -ne ".psd1") {
         Write-Warning "File is not a PowerShell manifest (.psd1): $ManifestPath"
@@ -162,14 +162,14 @@ function Get-ModuleDependenciesFromManifest {
         # Importer le manifeste
         $manifest = Import-PowerShellDataFile -Path $ManifestPath -ErrorAction Stop
 
-        # Extraire les dépendances RequiredModules
+        # Extraire les dÃ©pendances RequiredModules
         if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
             Write-Verbose "Analyzing RequiredModules in manifest: $ManifestPath"
 
-            # RequiredModules peut être une chaîne, un tableau de chaînes, ou un tableau d'objets
+            # RequiredModules peut Ãªtre une chaÃ®ne, un tableau de chaÃ®nes, ou un tableau d'objets
             $requiredModules = $manifest.RequiredModules
 
-            # Si RequiredModules est une chaîne unique, la convertir en tableau
+            # Si RequiredModules est une chaÃ®ne unique, la convertir en tableau
             if ($requiredModules -is [string]) {
                 $requiredModules = @($requiredModules)
             }
@@ -179,7 +179,7 @@ function Get-ModuleDependenciesFromManifest {
                 $moduleVersion = $null
                 $moduleGuid = $null
 
-                # Déterminer le format du module requis
+                # DÃ©terminer le format du module requis
                 if ($requiredModule -is [string]) {
                     # Format simple: 'ModuleName'
                     $moduleName = $requiredModule
@@ -189,7 +189,7 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleName = $requiredModule.ModuleName
                     }
 
-                    # Gérer les différentes façons de spécifier la version
+                    # GÃ©rer les diffÃ©rentes faÃ§ons de spÃ©cifier la version
                     if ($requiredModule.ContainsKey('ModuleVersion')) {
                         $moduleVersion = $requiredModule.ModuleVersion
                     }
@@ -197,19 +197,19 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleVersion = $requiredModule.RequiredVersion
                     }
 
-                    # Gérer le GUID du module
+                    # GÃ©rer le GUID du module
                     if ($requiredModule.ContainsKey('GUID')) {
                         $moduleGuid = $requiredModule.GUID
                     }
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
                     Write-Verbose "System module ignored: $moduleName"
                     continue
                 }
 
-                # Ajouter la dépendance à la liste
+                # Ajouter la dÃ©pendance Ã  la liste
                 [void]$dependencies.Add([PSCustomObject]@{
                         Name    = $moduleName
                         Version = $moduleVersion
@@ -237,22 +237,22 @@ function Get-ModuleDependenciesFromCode {
         [switch]$SkipSystemModules
     )
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $ModulePath)) {
         Write-Warning "Path does not exist: $ModulePath"
         return $dependencies
     }
 
-    # Déterminer les fichiers à analyser
+    # DÃ©terminer les fichiers Ã  analyser
     $filesToAnalyze = @()
     if (Test-Path -Path $ModulePath -PathType Leaf) {
         # C'est un fichier unique
         $filesToAnalyze += Get-Item -Path $ModulePath
     } else {
-        # C'est un répertoire
+        # C'est un rÃ©pertoire
         $filter = "*.ps1", "*.psm1", "*.psd1"
         $filesToAnalyze += Get-ChildItem -Path $ModulePath -Include $filter -File
     }
@@ -269,19 +269,19 @@ function Get-ModuleDependenciesFromCode {
             continue
         }
 
-        # Détecter les Import-Module
+        # DÃ©tecter les Import-Module
         $importMatches = [regex]::Matches($content, '(?m)^\s*Import-Module\s+([''"]?)([^''"\s]+)\1')
 
         foreach ($match in $importMatches) {
             $moduleName = $match.Groups[2].Value
 
-            # Ignorer les modules système si demandé
+            # Ignorer les modules systÃ¨me si demandÃ©
             if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
                 Write-Verbose "System module ignored: $moduleName"
                 continue
             }
 
-            # Ajouter la dépendance à la liste
+            # Ajouter la dÃ©pendance Ã  la liste
             [void]$dependencies.Add([PSCustomObject]@{
                     Name    = $moduleName
                     Version = $null

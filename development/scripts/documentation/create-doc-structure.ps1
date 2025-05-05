@@ -1,4 +1,4 @@
-# Create base folders
+﻿# Create base folders
 New-Item -Path ".\projet" -ItemType Directory -Force
 New-Item -Path ".\development" -ItemType Directory -Force
 

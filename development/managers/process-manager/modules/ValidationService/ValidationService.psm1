@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de service de validation pour le Process Manager.
 
 .DESCRIPTION
-    Ce module fournit des fonctionnalités pour valider les gestionnaires
+    Ce module fournit des fonctionnalitÃ©s pour valider les gestionnaires
     avant leur enregistrement dans le Process Manager.
 
 .NOTES
@@ -28,20 +28,20 @@ $script:PowerShellExtensions = @(
 
 #endregion
 
-#region Fonctions privées
+#region Fonctions privÃ©es
 
 <#
 .SYNOPSIS
-    Écrit un message dans le journal.
+    Ã‰crit un message dans le journal.
 
 .DESCRIPTION
-    Cette fonction écrit un message dans le journal avec un niveau de gravité spécifié.
+    Cette fonction Ã©crit un message dans le journal avec un niveau de gravitÃ© spÃ©cifiÃ©.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Level
-    Le niveau de gravité du message (Debug, Info, Warning, Error).
+    Le niveau de gravitÃ© du message (Debug, Info, Warning, Error).
 
 .EXAMPLE
     Write-ValidationLog -Message "Validation du gestionnaire 'ModeManager'" -Level Info
@@ -57,7 +57,7 @@ function Write-ValidationLog {
         [string]$Level = "Info"
     )
 
-    # Définir les niveaux de journalisation
+    # DÃ©finir les niveaux de journalisation
     $logLevels = @{
         Debug = 0
         Info = 1
@@ -65,7 +65,7 @@ function Write-ValidationLog {
         Error = 3
     }
 
-    # Définir la couleur en fonction du niveau
+    # DÃ©finir la couleur en fonction du niveau
     $color = switch ($Level) {
         "Debug" { "Gray" }
         "Info" { "White" }
@@ -82,10 +82,10 @@ function Write-ValidationLog {
 
 <#
 .SYNOPSIS
-    Vérifie la syntaxe d'un script PowerShell.
+    VÃ©rifie la syntaxe d'un script PowerShell.
 
 .DESCRIPTION
-    Cette fonction vérifie la syntaxe d'un script PowerShell.
+    Cette fonction vÃ©rifie la syntaxe d'un script PowerShell.
 
 .PARAMETER Path
     Le chemin vers le script PowerShell.
@@ -101,13 +101,13 @@ function Test-ScriptSyntax {
     )
 
     try {
-        # Vérifier que le fichier existe
+        # VÃ©rifier que le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-ValidationLog -Message "Le fichier n'existe pas : $Path" -Level Error
             return $false
         }
 
-        # Vérifier l'extension du fichier
+        # VÃ©rifier l'extension du fichier
         $extension = [System.IO.Path]::GetExtension($Path).ToLower()
         if ($script:PowerShellExtensions -notcontains $extension) {
             Write-ValidationLog -Message "Le fichier n'est pas un script PowerShell valide : $Path" -Level Error
@@ -117,14 +117,14 @@ function Test-ScriptSyntax {
         # Charger le contenu du fichier
         $content = Get-Content -Path $Path -Raw
         
-        # Vérifier la syntaxe du script
+        # VÃ©rifier la syntaxe du script
         $errors = $null
         $tokens = $null
         $ast = [System.Management.Automation.Language.Parser]::ParseInput($content, [ref]$tokens, [ref]$errors)
         
         if ($errors -and $errors.Count -gt 0) {
             foreach ($error in $errors) {
-                Write-ValidationLog -Message "Erreur de syntaxe à la ligne $($error.Extent.StartLineNumber), colonne $($error.Extent.StartColumnNumber) : $($error.Message)" -Level Error
+                Write-ValidationLog -Message "Erreur de syntaxe Ã  la ligne $($error.Extent.StartLineNumber), colonne $($error.Extent.StartColumnNumber) : $($error.Message)" -Level Error
             }
             return $false
         }
@@ -132,23 +132,23 @@ function Test-ScriptSyntax {
         return $true
     }
     catch {
-        Write-ValidationLog -Message "Erreur lors de la vérification de la syntaxe du script : $_" -Level Error
+        Write-ValidationLog -Message "Erreur lors de la vÃ©rification de la syntaxe du script : $_" -Level Error
         return $false
     }
 }
 
 <#
 .SYNOPSIS
-    Vérifie les fonctions requises dans un script PowerShell.
+    VÃ©rifie les fonctions requises dans un script PowerShell.
 
 .DESCRIPTION
-    Cette fonction vérifie si un script PowerShell contient les fonctions requises.
+    Cette fonction vÃ©rifie si un script PowerShell contient les fonctions requises.
 
 .PARAMETER Path
     Le chemin vers le script PowerShell.
 
 .PARAMETER RequiredFunctions
-    Les fonctions requises à vérifier. Peut contenir des caractères génériques.
+    Les fonctions requises Ã  vÃ©rifier. Peut contenir des caractÃ¨res gÃ©nÃ©riques.
 
 .EXAMPLE
     $result = Test-RequiredFunctions -Path "path/to/script.ps1" -RequiredFunctions @("Start-*", "Stop-*")
@@ -164,7 +164,7 @@ function Test-RequiredFunctions {
     )
 
     try {
-        # Vérifier que le fichier existe
+        # VÃ©rifier que le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-ValidationLog -Message "Le fichier n'existe pas : $Path" -Level Error
             return $false
@@ -179,20 +179,20 @@ function Test-RequiredFunctions {
         $ast = [System.Management.Automation.Language.Parser]::ParseInput($content, [ref]$tokens, [ref]$errors)
         
         if ($errors -and $errors.Count -gt 0) {
-            Write-ValidationLog -Message "Erreurs de syntaxe détectées lors de l'analyse des fonctions" -Level Error
+            Write-ValidationLog -Message "Erreurs de syntaxe dÃ©tectÃ©es lors de l'analyse des fonctions" -Level Error
             return $false
         }
         
-        # Extraire les fonctions définies dans le script
+        # Extraire les fonctions dÃ©finies dans le script
         $functionDefinitions = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
         $functionNames = $functionDefinitions | ForEach-Object { $_.Name }
         
-        # Vérifier chaque fonction requise
+        # VÃ©rifier chaque fonction requise
         $missingFunctions = @()
         foreach ($requiredFunction in $RequiredFunctions) {
             $found = $false
             
-            # Gérer les caractères génériques
+            # GÃ©rer les caractÃ¨res gÃ©nÃ©riques
             if ($requiredFunction -match '\*') {
                 $pattern = "^" + [regex]::Escape($requiredFunction).Replace('\*', '.*') + "$"
                 $found = $functionNames | Where-Object { $_ -match $pattern } | Select-Object -First 1
@@ -213,23 +213,23 @@ function Test-RequiredFunctions {
         return $true
     }
     catch {
-        Write-ValidationLog -Message "Erreur lors de la vérification des fonctions requises : $_" -Level Error
+        Write-ValidationLog -Message "Erreur lors de la vÃ©rification des fonctions requises : $_" -Level Error
         return $false
     }
 }
 
 <#
 .SYNOPSIS
-    Exécute un test fonctionnel sur un script PowerShell.
+    ExÃ©cute un test fonctionnel sur un script PowerShell.
 
 .DESCRIPTION
-    Cette fonction exécute un test fonctionnel sur un script PowerShell.
+    Cette fonction exÃ©cute un test fonctionnel sur un script PowerShell.
 
 .PARAMETER Path
     Le chemin vers le script PowerShell.
 
 .PARAMETER TestParameters
-    Les paramètres de test.
+    Les paramÃ¨tres de test.
 
 .EXAMPLE
     $result = Test-ScriptFunctionality -Path "path/to/script.ps1" -TestParameters @{ Command = "Status" }
@@ -245,7 +245,7 @@ function Test-ScriptFunctionality {
     )
 
     try {
-        # Vérifier que le fichier existe
+        # VÃ©rifier que le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-ValidationLog -Message "Le fichier n'existe pas : $Path" -Level Error
             return $false
@@ -254,11 +254,11 @@ function Test-ScriptFunctionality {
         # Construire la commande de test
         $command = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$Path`""
         
-        # Ajouter les paramètres de test
+        # Ajouter les paramÃ¨tres de test
         foreach ($key in $TestParameters.Keys) {
             $value = $TestParameters[$key]
             
-            # Gérer les types de valeurs
+            # GÃ©rer les types de valeurs
             if ($value -is [string]) {
                 $command += " -$key `"$value`""
             } elseif ($value -is [bool] -and $value) {
@@ -268,13 +268,13 @@ function Test-ScriptFunctionality {
             }
         }
         
-        # Exécuter la commande dans un processus séparé
-        Write-ValidationLog -Message "Exécution du test fonctionnel : $command" -Level Debug
+        # ExÃ©cuter la commande dans un processus sÃ©parÃ©
+        Write-ValidationLog -Message "ExÃ©cution du test fonctionnel : $command" -Level Debug
         
         $process = Start-Process -FilePath "cmd.exe" -ArgumentList "/c $command" -Wait -PassThru -NoNewWindow
         
         if ($process.ExitCode -ne 0) {
-            Write-ValidationLog -Message "Le test fonctionnel a échoué avec le code de sortie : $($process.ExitCode)" -Level Warning
+            Write-ValidationLog -Message "Le test fonctionnel a Ã©chouÃ© avec le code de sortie : $($process.ExitCode)" -Level Warning
             return $false
         }
         
@@ -295,7 +295,7 @@ function Test-ScriptFunctionality {
     Valide un gestionnaire.
 
 .DESCRIPTION
-    Cette fonction valide un gestionnaire en vérifiant sa syntaxe, ses fonctions requises et sa fonctionnalité.
+    Cette fonction valide un gestionnaire en vÃ©rifiant sa syntaxe, ses fonctions requises et sa fonctionnalitÃ©.
 
 .PARAMETER Path
     Le chemin vers le fichier du gestionnaire.
@@ -319,7 +319,7 @@ function Test-ManagerValidity {
         [hashtable]$ValidationOptions = @{}
     )
 
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $Path -PathType Leaf)) {
         Write-ValidationLog -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $false
@@ -329,70 +329,70 @@ function Test-ManagerValidity {
     $managerName = [System.IO.Path]::GetFileNameWithoutExtension($Path)
     Write-ValidationLog -Message "Validation du gestionnaire '$managerName'..." -Level Info
 
-    # Vérifier la syntaxe du script
-    Write-ValidationLog -Message "Vérification de la syntaxe..." -Level Debug
+    # VÃ©rifier la syntaxe du script
+    Write-ValidationLog -Message "VÃ©rification de la syntaxe..." -Level Debug
     if (-not (Test-ScriptSyntax -Path $Path)) {
-        Write-ValidationLog -Message "La validation de la syntaxe a échoué" -Level Error
+        Write-ValidationLog -Message "La validation de la syntaxe a Ã©chouÃ©" -Level Error
         return $false
     }
     Write-ValidationLog -Message "Syntaxe valide" -Level Debug
 
-    # Vérifier les fonctions requises
+    # VÃ©rifier les fonctions requises
     if (-not ($ValidationOptions.SkipRequiredFunctionsCheck)) {
-        Write-ValidationLog -Message "Vérification des fonctions requises..." -Level Debug
+        Write-ValidationLog -Message "VÃ©rification des fonctions requises..." -Level Debug
         
-        # Déterminer les fonctions requises
+        # DÃ©terminer les fonctions requises
         $requiredFunctions = $script:StandardRequiredFunctions
         if ($ValidationOptions.RequiredFunctions) {
             $requiredFunctions = $ValidationOptions.RequiredFunctions
         }
         
-        # Remplacer les caractères génériques par le nom du gestionnaire
+        # Remplacer les caractÃ¨res gÃ©nÃ©riques par le nom du gestionnaire
         $requiredFunctions = $requiredFunctions | ForEach-Object { $_ -replace '\*', $managerName }
         
         if (-not (Test-RequiredFunctions -Path $Path -RequiredFunctions $requiredFunctions)) {
-            Write-ValidationLog -Message "La validation des fonctions requises a échoué" -Level Warning
+            Write-ValidationLog -Message "La validation des fonctions requises a Ã©chouÃ©" -Level Warning
             
-            # Ne pas échouer si l'option IgnoreMissingFunctions est activée
+            # Ne pas Ã©chouer si l'option IgnoreMissingFunctions est activÃ©e
             if (-not $ValidationOptions.IgnoreMissingFunctions) {
                 return $false
             }
         }
-        Write-ValidationLog -Message "Fonctions requises validées" -Level Debug
+        Write-ValidationLog -Message "Fonctions requises validÃ©es" -Level Debug
     }
 
     # Effectuer un test fonctionnel
     if (-not ($ValidationOptions.SkipFunctionalTest)) {
-        Write-ValidationLog -Message "Exécution du test fonctionnel..." -Level Debug
+        Write-ValidationLog -Message "ExÃ©cution du test fonctionnel..." -Level Debug
         
-        # Déterminer les paramètres de test
+        # DÃ©terminer les paramÃ¨tres de test
         $testParameters = @{ Command = "Status" }
         if ($ValidationOptions.TestParameters) {
             $testParameters = $ValidationOptions.TestParameters
         }
         
         if (-not (Test-ScriptFunctionality -Path $Path -TestParameters $testParameters)) {
-            Write-ValidationLog -Message "Le test fonctionnel a échoué" -Level Warning
+            Write-ValidationLog -Message "Le test fonctionnel a Ã©chouÃ©" -Level Warning
             
-            # Ne pas échouer si l'option IgnoreFunctionalTestFailure est activée
+            # Ne pas Ã©chouer si l'option IgnoreFunctionalTestFailure est activÃ©e
             if (-not $ValidationOptions.IgnoreFunctionalTestFailure) {
                 return $false
             }
         }
-        Write-ValidationLog -Message "Test fonctionnel réussi" -Level Debug
+        Write-ValidationLog -Message "Test fonctionnel rÃ©ussi" -Level Debug
     }
 
-    # Toutes les validations ont réussi
+    # Toutes les validations ont rÃ©ussi
     Write-ValidationLog -Message "Le gestionnaire '$managerName' est valide" -Level Info
     return $true
 }
 
 <#
 .SYNOPSIS
-    Vérifie l'interface d'un gestionnaire.
+    VÃ©rifie l'interface d'un gestionnaire.
 
 .DESCRIPTION
-    Cette fonction vérifie si un gestionnaire implémente les fonctions requises pour une interface spécifique.
+    Cette fonction vÃ©rifie si un gestionnaire implÃ©mente les fonctions requises pour une interface spÃ©cifique.
 
 .PARAMETER Path
     Le chemin vers le fichier du gestionnaire.
@@ -413,7 +413,7 @@ function Test-ManagerInterface {
         [string[]]$RequiredFunctions = @()
     )
 
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $Path -PathType Leaf)) {
         Write-ValidationLog -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $false
@@ -421,36 +421,36 @@ function Test-ManagerInterface {
 
     # Extraire le nom du gestionnaire
     $managerName = [System.IO.Path]::GetFileNameWithoutExtension($Path)
-    Write-ValidationLog -Message "Vérification de l'interface du gestionnaire '$managerName'..." -Level Info
+    Write-ValidationLog -Message "VÃ©rification de l'interface du gestionnaire '$managerName'..." -Level Info
 
-    # Si aucune fonction requise n'est spécifiée, utiliser les fonctions standard
+    # Si aucune fonction requise n'est spÃ©cifiÃ©e, utiliser les fonctions standard
     if ($RequiredFunctions.Count -eq 0) {
         $RequiredFunctions = $script:StandardRequiredFunctions | ForEach-Object { $_ -replace '\*', $managerName }
     }
 
-    # Vérifier les fonctions requises
+    # VÃ©rifier les fonctions requises
     if (-not (Test-RequiredFunctions -Path $Path -RequiredFunctions $RequiredFunctions)) {
-        Write-ValidationLog -Message "Le gestionnaire '$managerName' n'implémente pas l'interface requise" -Level Warning
+        Write-ValidationLog -Message "Le gestionnaire '$managerName' n'implÃ©mente pas l'interface requise" -Level Warning
         return $false
     }
 
     # Interface valide
-    Write-ValidationLog -Message "Le gestionnaire '$managerName' implémente l'interface requise" -Level Info
+    Write-ValidationLog -Message "Le gestionnaire '$managerName' implÃ©mente l'interface requise" -Level Info
     return $true
 }
 
 <#
 .SYNOPSIS
-    Teste la fonctionnalité d'un gestionnaire.
+    Teste la fonctionnalitÃ© d'un gestionnaire.
 
 .DESCRIPTION
-    Cette fonction teste la fonctionnalité d'un gestionnaire en exécutant des commandes spécifiques.
+    Cette fonction teste la fonctionnalitÃ© d'un gestionnaire en exÃ©cutant des commandes spÃ©cifiques.
 
 .PARAMETER Path
     Le chemin vers le fichier du gestionnaire.
 
 .PARAMETER TestParameters
-    Les paramètres de test.
+    Les paramÃ¨tres de test.
 
 .EXAMPLE
     $result = Test-ManagerFunctionality -Path "development\managers\mode-manager\scripts\mode-manager.ps1" -TestParameters @{ Command = "Status" }
@@ -465,7 +465,7 @@ function Test-ManagerFunctionality {
         [hashtable]$TestParameters = @{ Command = "Status" }
     )
 
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $Path -PathType Leaf)) {
         Write-ValidationLog -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $false
@@ -473,16 +473,16 @@ function Test-ManagerFunctionality {
 
     # Extraire le nom du gestionnaire
     $managerName = [System.IO.Path]::GetFileNameWithoutExtension($Path)
-    Write-ValidationLog -Message "Test de la fonctionnalité du gestionnaire '$managerName'..." -Level Info
+    Write-ValidationLog -Message "Test de la fonctionnalitÃ© du gestionnaire '$managerName'..." -Level Info
 
-    # Exécuter le test fonctionnel
+    # ExÃ©cuter le test fonctionnel
     if (-not (Test-ScriptFunctionality -Path $Path -TestParameters $TestParameters)) {
-        Write-ValidationLog -Message "Le test de fonctionnalité du gestionnaire '$managerName' a échoué" -Level Warning
+        Write-ValidationLog -Message "Le test de fonctionnalitÃ© du gestionnaire '$managerName' a Ã©chouÃ©" -Level Warning
         return $false
     }
 
-    # Test réussi
-    Write-ValidationLog -Message "Le test de fonctionnalité du gestionnaire '$managerName' a réussi" -Level Info
+    # Test rÃ©ussi
+    Write-ValidationLog -Message "Le test de fonctionnalitÃ© du gestionnaire '$managerName' a rÃ©ussi" -Level Info
     return $true
 }
 

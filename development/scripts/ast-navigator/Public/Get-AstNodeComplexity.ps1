@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Calcule le niveau de complexité d'un noeud dans l'arbre syntaxique PowerShell.
+    Calcule le niveau de complexitÃ© d'un noeud dans l'arbre syntaxique PowerShell.
 
 .DESCRIPTION
-    Cette fonction calcule le niveau de complexité d'un noeud dans l'arbre syntaxique PowerShell (AST).
-    La complexité est calculée en fonction du nombre de noeuds enfants, de la profondeur de l'arbre,
-    et de la présence de structures de contrôle (if, switch, for, foreach, while, etc.).
+    Cette fonction calcule le niveau de complexitÃ© d'un noeud dans l'arbre syntaxique PowerShell (AST).
+    La complexitÃ© est calculÃ©e en fonction du nombre de noeuds enfants, de la profondeur de l'arbre,
+    et de la prÃ©sence de structures de contrÃ´le (if, switch, for, foreach, while, etc.).
 
 .PARAMETER Node
-    Le noeud AST pour lequel on souhaite calculer la complexité.
+    Le noeud AST pour lequel on souhaite calculer la complexitÃ©.
 
 .PARAMETER IncludeChildren
-    Si spécifié, inclut la complexité des noeuds enfants dans le calcul.
+    Si spÃ©cifiÃ©, inclut la complexitÃ© des noeuds enfants dans le calcul.
 
 .PARAMETER Detailed
-    Si spécifié, retourne un objet détaillé avec les différentes mesures de complexité.
+    Si spÃ©cifiÃ©, retourne un objet dÃ©taillÃ© avec les diffÃ©rentes mesures de complexitÃ©.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -46,7 +46,7 @@ function Get-AstNodeComplexity {
 
     process {
         try {
-            # Initialiser les compteurs de complexité
+            # Initialiser les compteurs de complexitÃ©
             $complexity = 0
             $childCount = 0
             $depth = 0
@@ -54,7 +54,7 @@ function Get-AstNodeComplexity {
             $operators = 0
             $expressions = 0
 
-            # Fonction récursive pour calculer la complexité
+            # Fonction rÃ©cursive pour calculer la complexitÃ©
             function Get-NodeComplexity {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -64,15 +64,15 @@ function Get-AstNodeComplexity {
                     [int]$CurrentDepth
                 )
 
-                # Mettre à jour la profondeur maximale
+                # Mettre Ã  jour la profondeur maximale
                 if ($CurrentDepth -gt $depth) {
                     $script:depth = $CurrentDepth
                 }
 
-                # Incrémenter le compteur d'enfants
+                # IncrÃ©menter le compteur d'enfants
                 $script:childCount++
 
-                # Vérifier le type de noeud pour les structures de contrôle
+                # VÃ©rifier le type de noeud pour les structures de contrÃ´le
                 if ($CurrentNode -is [System.Management.Automation.Language.IfStatementAst] -or
                     $CurrentNode -is [System.Management.Automation.Language.SwitchStatementAst] -or
                     $CurrentNode -is [System.Management.Automation.Language.ForStatementAst] -or
@@ -84,18 +84,18 @@ function Get-AstNodeComplexity {
                     $script:controlStructures++
                 }
 
-                # Vérifier le type de noeud pour les opérateurs
+                # VÃ©rifier le type de noeud pour les opÃ©rateurs
                 if ($CurrentNode -is [System.Management.Automation.Language.BinaryExpressionAst] -or
                     $CurrentNode -is [System.Management.Automation.Language.UnaryExpressionAst]) {
                     $script:operators++
                 }
 
-                # Vérifier le type de noeud pour les expressions
+                # VÃ©rifier le type de noeud pour les expressions
                 if ($CurrentNode -is [System.Management.Automation.Language.ExpressionAst]) {
                     $script:expressions++
                 }
 
-                # Parcourir récursivement les noeuds enfants si demandé
+                # Parcourir rÃ©cursivement les noeuds enfants si demandÃ©
                 if ($IncludeChildren) {
                     foreach ($child in $CurrentNode.FindAll({ $true }, $false)) {
                         Get-NodeComplexity -CurrentNode $child -CurrentDepth ($CurrentDepth + 1)
@@ -103,13 +103,13 @@ function Get-AstNodeComplexity {
                 }
             }
 
-            # Calculer la complexité du noeud
+            # Calculer la complexitÃ© du noeud
             Get-NodeComplexity -CurrentNode $Node -CurrentDepth 0
 
-            # Calculer la complexité totale
+            # Calculer la complexitÃ© totale
             $complexity = $childCount + $controlStructures * 2 + $operators + $expressions / 2
 
-            # Retourner les résultats
+            # Retourner les rÃ©sultats
             if ($Detailed) {
                 return [PSCustomObject]@{
                     TotalComplexity = [Math]::Round($complexity, 2)
@@ -125,7 +125,7 @@ function Get-AstNodeComplexity {
             }
         }
         catch {
-            Write-Error -Message "Erreur lors du calcul de la complexité du noeud : $_"
+            Write-Error -Message "Erreur lors du calcul de la complexitÃ© du noeud : $_"
             throw
         }
     }

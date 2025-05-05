@@ -1,4 +1,4 @@
-# test-path-utils.ps1
+﻿# test-path-utils.ps1
 # Script de test pour les utilitaires de gestion des chemins
 
 # Importer le module Path-Manager
@@ -22,7 +22,7 @@ if (Test-Path -Path $PathUtilsScript) {
 # Initialiser le gestionnaire de chemins
 Initialize-PathManager
 
-# Fonction pour exÃ©cuter les tests
+# Fonction pour exÃƒÂ©cuter les tests
 function Start-PathTests {
     Write-Host "=== Tests des utilitaires de gestion des chemins ===" -ForegroundColor Cyan
 
@@ -33,9 +33,9 @@ function Start-PathTests {
     Write-Host "Chemin relatif: $relativePath"
     Write-Host "Chemin absolu: $absolutePath"
     if (Test-Path -Path $absolutePath) {
-        Write-Host "âœ… Le chemin absolu existe." -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ Le chemin absolu existe." -ForegroundColor Green
     } else {
-        Write-Host "âŒ Le chemin absolu n'existe pas." -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ Le chemin absolu n'existe pas." -ForegroundColor Red
     }
 
     # Test 2: Get-RelativePath
@@ -45,9 +45,9 @@ function Start-PathTests {
     Write-Host "Chemin absolu: $absolutePath"
     Write-Host "Chemin relatif: $relativePath"
     if ($relativePath -eq "..\..\D") {
-        Write-Host "âœ… Le chemin relatif est correct." -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ Le chemin relatif est correct." -ForegroundColor Green
     } else {
-        Write-Host "âŒ Le chemin relatif est incorrect." -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ Le chemin relatif est incorrect." -ForegroundColor Red
     }
 
     # Test 3: Normalize-Path
@@ -55,11 +55,11 @@ function Start-PathTests {
     $path = "development/scripts/utils/path-utils.ps1"
     $normalizedPath = Normalize-Path -Path $path
     Write-Host "Chemin original: $path"
-    Write-Host "Chemin normalisÃ©: $normalizedPath"
+    Write-Host "Chemin normalisÃƒÂ©: $normalizedPath"
     if ($normalizedPath -eq "..\..\D") {
-        Write-Host "âœ… Le chemin normalisÃ© est correct." -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ Le chemin normalisÃƒÂ© est correct." -ForegroundColor Green
     } else {
-        Write-Host "âŒ Le chemin normalisÃ© est incorrect." -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ Le chemin normalisÃƒÂ© est incorrect." -ForegroundColor Red
     }
 
     # Test 4: Remove-PathAccents
@@ -70,9 +70,9 @@ function Start-PathTests {
     Write-Host "Chemin original: $path"
     Write-Host "Chemin sans accents: $pathWithoutAccents"
     if ($pathWithoutAccents -eq "development/scripts/utilites/path-utils.ps1") {
-        Write-Host "âœ… Le chemin sans accents est correct." -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ Le chemin sans accents est correct." -ForegroundColor Green
     } else {
-        Write-Host "âŒ Le chemin sans accents est incorrect." -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ Le chemin sans accents est incorrect." -ForegroundColor Red
     }
 
     # Test 5: ConvertTo-PathWithoutSpaces
@@ -83,9 +83,9 @@ function Start-PathTests {
     Write-Host "Chemin original: $path"
     Write-Host "Chemin sans espaces: $pathWithoutSpaces"
     if ($pathWithoutSpaces -eq "development/scripts/utils_test/path-utils.ps1") {
-        Write-Host "âœ… Le chemin sans espaces est correct." -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ Le chemin sans espaces est correct." -ForegroundColor Green
     } else {
-        Write-Host "âŒ Le chemin sans espaces est incorrect." -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ Le chemin sans espaces est incorrect." -ForegroundColor Red
     }
 
     # Test 6: ConvertTo-NormalizedPath
@@ -96,9 +96,9 @@ function Start-PathTests {
     Write-Host "Chemin original: $path"
     Write-Host "Chemin normalise: $normalizedPath"
     if ($normalizedPath -eq "..\..\D") {
-        Write-Host "âœ… Le chemin normalise est correct." -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ Le chemin normalise est correct." -ForegroundColor Green
     } else {
-        Write-Host "âŒ Le chemin normalise est incorrect." -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ Le chemin normalise est incorrect." -ForegroundColor Red
     }
 
     # Test 7: Test-PathAccents
@@ -113,9 +113,9 @@ function Start-PathTests {
     Write-Host "Chemin sans accents: $pathWithoutAccents"
     Write-Host "Contient des accents: $hasAccents2"
     if ($hasAccents1 -and $hasAccents2) {
-        Write-Host "âœ… La detection des accents est correcte." -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ La detection des accents est correcte." -ForegroundColor Green
     } else {
-        Write-Host "âŒ La detection des accents est incorrecte." -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ La detection des accents est incorrecte." -ForegroundColor Red
     }
 
     # Test 8: Test-PathSpaces
@@ -130,9 +130,9 @@ function Start-PathTests {
     Write-Host "Chemin sans espaces: $pathWithoutSpaces"
     Write-Host "Contient des espaces: $hasSpaces2"
     if ($hasSpaces1 -and -not $hasSpaces2) {
-        Write-Host "âœ… La detection des espaces est correcte." -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ La detection des espaces est correcte." -ForegroundColor Green
     } else {
-        Write-Host "âŒ La detection des espaces est incorrecte." -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ La detection des espaces est incorrecte." -ForegroundColor Red
     }
 
     # Test 9: Find-Files
@@ -141,14 +141,14 @@ function Start-PathTests {
     $files = Get-ChildItem -Path "scripts" -Filter "*.ps1" -Recurse -File
     Write-Host "Nombre de fichiers trouves: $($files.Count)"
     if ($files.Count -gt 0) {
-        Write-Host "âœ… La recherche de fichiers fonctionne." -ForegroundColor Green
+        Write-Host "Ã¢Å“â€¦ La recherche de fichiers fonctionne." -ForegroundColor Green
     } else {
-        Write-Host "âŒ La recherche de fichiers ne fonctionne pas." -ForegroundColor Red
+        Write-Host "Ã¢ÂÅ’ La recherche de fichiers ne fonctionne pas." -ForegroundColor Red
     }
 
     Write-Host "`n=== Fin des tests ===" -ForegroundColor Cyan
 }
 
-# ExÃ©cuter les tests
+# ExÃƒÂ©cuter les tests
 Start-PathTests
 

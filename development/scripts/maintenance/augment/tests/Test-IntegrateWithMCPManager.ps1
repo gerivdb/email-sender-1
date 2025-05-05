@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour le script d'intégration avec le MCP Manager.
+    Tests unitaires pour le script d'intÃ©gration avec le MCP Manager.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour le script d'intégration avec le MCP Manager,
+    Ce script contient des tests unitaires pour le script d'intÃ©gration avec le MCP Manager,
     utilisant le framework Pester.
 
 .EXAMPLE
     Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-IntegrateWithMCPManager.ps1"
-    # Exécute les tests unitaires pour le script d'intégration avec le MCP Manager
+    # ExÃ©cute les tests unitaires pour le script d'intÃ©gration avec le MCP Manager
 
 .NOTES
     Version: 1.0
@@ -16,17 +16,17 @@
     Auteur: Augment Agent
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Déterminer le chemin du script à tester
+# DÃ©terminer le chemin du script Ã  tester
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $scriptPath = Join-Path -Path $scriptRoot -ChildPath "integrate-with-mcp-manager.ps1"
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $scriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -35,11 +35,11 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 
 Describe "Integrate With MCP Manager Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $TestDrive -ChildPath "mcp"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         
-        # Créer un fichier de configuration du MCP Manager temporaire
+        # CrÃ©er un fichier de configuration du MCP Manager temporaire
         $testMcpManagerPath = Join-Path -Path $testDir -ChildPath "MCPManager.psm1"
         $testMcpManagerContent = @"
 #Requires -Version 5.1
@@ -47,12 +47,12 @@ Describe "Integrate With MCP Manager Tests" {
 .SYNOPSIS
     Module de gestion des serveurs MCP (Model Context Protocol).
 .DESCRIPTION
-    Ce module fournit des fonctions pour détecter, configurer et gérer les serveurs MCP
-    (Model Context Protocol) pour une intégration transparente avec les outils d'IA.
+    Ce module fournit des fonctions pour dÃ©tecter, configurer et gÃ©rer les serveurs MCP
+    (Model Context Protocol) pour une intÃ©gration transparente avec les outils d'IA.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-01
+    Date de crÃ©ation: 2025-05-01
 #>
 
 # Variables globales
@@ -71,7 +71,7 @@ Describe "Integrate With MCP Manager Tests" {
     }
 }
 
-# Ajouter le serveur GitHub s'il est configuré
+# Ajouter le serveur GitHub s'il est configurÃ©
 `$githubConfig = Join-Path -Path `$script:MCPServersDir -ChildPath "github\config.json"
 if (Test-Path -Path `$githubConfig) {
     `$config.mcpServers.github = @{
@@ -80,7 +80,7 @@ if (Test-Path -Path `$githubConfig) {
     }
 }
 
-# Ajouter le serveur GCP s'il est configuré
+# Ajouter le serveur GCP s'il est configurÃ©
 `$gcpToken = Join-Path -Path `$script:MCPServersDir -ChildPath "gcp\token.json"
 if (Test-Path -Path `$gcpToken) {
     `$config.mcpServers.gcp = @{
@@ -92,7 +92,7 @@ if (Test-Path -Path `$gcpToken) {
     }
 }
 
-# Fonction pour détecter les serveurs MCP
+# Fonction pour dÃ©tecter les serveurs MCP
 function Get-MCPServers {
     [CmdletBinding()]
     param ()
@@ -102,11 +102,11 @@ function Get-MCPServers {
 "@
         $testMcpManagerContent | Out-File -FilePath $testMcpManagerPath -Encoding UTF8
         
-        # Créer un répertoire pour les serveurs MCP
+        # CrÃ©er un rÃ©pertoire pour les serveurs MCP
         $testMcpServersDir = Join-Path -Path $testDir -ChildPath "mcp-servers"
         New-Item -Path $testMcpServersDir -ItemType Directory -Force | Out-Null
         
-        # Créer un fichier de configuration MCP temporaire
+        # CrÃ©er un fichier de configuration MCP temporaire
         $testMcpConfigPath = Join-Path -Path $testMcpServersDir -ChildPath "mcp-config.json"
         $testMcpConfigContent = @{
             mcpServers = @{
@@ -118,25 +118,25 @@ function Get-MCPServers {
         } | ConvertTo-Json -Depth 10
         $testMcpConfigContent | Out-File -FilePath $testMcpConfigPath -Encoding UTF8
         
-        # Créer un script de démarrage de tous les serveurs MCP temporaire
+        # CrÃ©er un script de dÃ©marrage de tous les serveurs MCP temporaire
         $testStartAllMcpServersPath = Join-Path -Path $testDir -ChildPath "start-all-mcp-servers.ps1"
         $testStartAllMcpServersContent = @"
-# Chemin du répertoire racine du projet
+# Chemin du rÃ©pertoire racine du projet
 `$projectRoot = Join-Path -Path `$PSScriptRoot -ChildPath "..\..\"
 `$projectRoot = (Resolve-Path `$projectRoot).Path
 
 Write-Host "=========================================================" -ForegroundColor Cyan
-Write-Host "      DÉMARRAGE DES SERVEURS MCP POUR EMAIL_SENDER_1     " -ForegroundColor Cyan
+Write-Host "      DÃ‰MARRAGE DES SERVEURS MCP POUR EMAIL_SENDER_1     " -ForegroundColor Cyan
 Write-Host "=========================================================" -ForegroundColor Cyan
 Write-Host ""
 
-# 1. Démarrer le serveur MCP Filesystem
-Write-Host "1. Démarrage du serveur MCP Filesystem..." -ForegroundColor Cyan
+# 1. DÃ©marrer le serveur MCP Filesystem
+Write-Host "1. DÃ©marrage du serveur MCP Filesystem..." -ForegroundColor Cyan
 `$filesystemSuccess = Start-McpServer -Name "Filesystem" -Command "npx" -Arguments @("@modelcontextprotocol/server-filesystem", `$projectRoot)
 "@
         $testStartAllMcpServersContent | Out-File -FilePath $testStartAllMcpServersPath -Encoding UTF8
         
-        # Définir des variables globales pour les tests
+        # DÃ©finir des variables globales pour les tests
         $Global:TestMcpManagerPath = $testMcpManagerPath
         $Global:TestMcpConfigPath = $testMcpConfigPath
         $Global:TestStartAllMcpServersPath = $testStartAllMcpServersPath
@@ -151,34 +151,34 @@ Write-Host "1. Démarrage du serveur MCP Filesystem..." -ForegroundColor Cyan
     
     Context "Script Loading" {
         It "Should load the script without errors" {
-            # Vérifier que le script existe
+            # VÃ©rifier que le script existe
             Test-Path -Path $scriptPath | Should -Be $true
             
-            # Charger le script dans un bloc de script pour éviter d'exécuter le script complet
+            # Charger le script dans un bloc de script pour Ã©viter d'exÃ©cuter le script complet
             $scriptContent = Get-Content -Path $scriptPath -Raw
             
-            # Remplacer la partie qui exécute le script par un commentaire
-            $scriptContent = $scriptContent -replace "# Lire le contenu du fichier de configuration du MCP Manager.*?# Mettre à jour le script de démarrage de tous les serveurs MCP", "# Script execution disabled for testing"
+            # Remplacer la partie qui exÃ©cute le script par un commentaire
+            $scriptContent = $scriptContent -replace "# Lire le contenu du fichier de configuration du MCP Manager.*?# Mettre Ã  jour le script de dÃ©marrage de tous les serveurs MCP", "# Script execution disabled for testing"
             
             $scriptBlock = [ScriptBlock]::Create($scriptContent)
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             { . $scriptBlock } | Should -Not -Throw
         }
     }
     
     Context "MCP Manager Integration" {
         It "Should update the MCP Manager configuration" {
-            # Exécuter le script avec des paramètres spécifiques
+            # ExÃ©cuter le script avec des paramÃ¨tres spÃ©cifiques
             $params = @{
                 ConfigPath = $Global:TestMcpManagerPath
                 Force = $true
             }
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             & $scriptPath @params
             
-            # Vérifier que le fichier a été mis à jour
+            # VÃ©rifier que le fichier a Ã©tÃ© mis Ã  jour
             $updatedContent = Get-Content -Path $Global:TestMcpManagerPath -Raw
             $updatedContent | Should -Match "augment-memories"
             $updatedContent | Should -Match "augment-mode-manager"
@@ -187,7 +187,7 @@ Write-Host "1. Démarrage du serveur MCP Filesystem..." -ForegroundColor Cyan
         }
         
         It "Should update the MCP configuration file" {
-            # Vérifier que le fichier a été mis à jour
+            # VÃ©rifier que le fichier a Ã©tÃ© mis Ã  jour
             $updatedConfig = Get-Content -Path $Global:TestMcpConfigPath -Raw | ConvertFrom-Json
             $updatedConfig.mcpServers.PSObject.Properties.Name | Should -Contain "augment-memories"
             $updatedConfig.mcpServers.PSObject.Properties.Name | Should -Contain "augment-mode-manager"
@@ -196,7 +196,7 @@ Write-Host "1. Démarrage du serveur MCP Filesystem..." -ForegroundColor Cyan
         }
         
         It "Should update the start-all-mcp-servers script" {
-            # Vérifier que le fichier a été mis à jour
+            # VÃ©rifier que le fichier a Ã©tÃ© mis Ã  jour
             $updatedContent = Get-Content -Path $Global:TestStartAllMcpServersPath -Raw
             $updatedContent | Should -Match "Augment Memories"
             $updatedContent | Should -Match "Augment Mode Manager"

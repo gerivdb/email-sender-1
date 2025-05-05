@@ -1,4 +1,4 @@
-# Script de test pour toutes les fonctions du module AstNavigator
+﻿# Script de test pour toutes les fonctions du module AstNavigator
 
 # Charger toutes les fonctions
 $publicFunctionsPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Public"
@@ -8,7 +8,7 @@ foreach ($function in $publicFunctions) {
     . $function.FullName
 }
 
-# Créer un exemple de code PowerShell à analyser
+# CrÃ©er un exemple de code PowerShell Ã  analyser
 $sampleCode = @'
 function Get-Example {
     [CmdletBinding()]
@@ -65,7 +65,7 @@ $result | ForEach-Object {
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [ref]$tokens, [ref]$errors)
 
-# Vérifier s'il y a des erreurs d'analyse
+# VÃ©rifier s'il y a des erreurs d'analyse
 if ($errors.Count -gt 0) {
     Write-Error "Erreurs d'analyse du code :"
     foreach ($error in $errors) {
@@ -100,7 +100,7 @@ Write-Host "`n=== Test de Find-AstNode ===" -ForegroundColor Cyan
 Write-Host "Recherche de la fonction 'Get-Example' :" -ForegroundColor Yellow
 $getExampleFunction = Find-AstNode -Ast $ast -NodeType "FunctionDefinition" -Name "Get-Example" -First
 if ($getExampleFunction) {
-    Write-Host "  Fonction trouvée: $($getExampleFunction.Name) (Ligne $($getExampleFunction.Extent.StartLineNumber))" -ForegroundColor Green
+    Write-Host "  Fonction trouvÃ©e: $($getExampleFunction.Name) (Ligne $($getExampleFunction.Extent.StartLineNumber))" -ForegroundColor Green
     
     # Tester la fonction Get-AstNodeParent
     Write-Host "`n=== Test de Get-AstNodeParent ===" -ForegroundColor Cyan
@@ -110,7 +110,7 @@ if ($getExampleFunction) {
     # Tester la fonction Get-AstNodeSiblings
     Write-Host "`n=== Test de Get-AstNodeSiblings ===" -ForegroundColor Cyan
     $siblings = Get-AstNodeSiblings -Node $getExampleFunction
-    Write-Host "  Frères de 'Get-Example':" -ForegroundColor Yellow
+    Write-Host "  FrÃ¨res de 'Get-Example':" -ForegroundColor Yellow
     foreach ($sibling in $siblings) {
         if ($sibling -is [System.Management.Automation.Language.FunctionDefinitionAst]) {
             Write-Host "    Fonction: $($sibling.Name) (Ligne $($sibling.Extent.StartLineNumber))" -ForegroundColor Green
@@ -141,22 +141,22 @@ if ($getExampleFunction) {
     # Tester la fonction Get-AstNodeComplexity
     Write-Host "`n=== Test de Get-AstNodeComplexity ===" -ForegroundColor Cyan
     $complexity = Get-AstNodeComplexity -Node $getExampleFunction -IncludeChildren -Detailed
-    Write-Host "  Complexité de 'Get-Example':" -ForegroundColor Yellow
-    Write-Host "    Complexité totale: $($complexity.TotalComplexity)" -ForegroundColor Green
+    Write-Host "  ComplexitÃ© de 'Get-Example':" -ForegroundColor Yellow
+    Write-Host "    ComplexitÃ© totale: $($complexity.TotalComplexity)" -ForegroundColor Green
     Write-Host "    Nombre d'enfants: $($complexity.ChildCount)" -ForegroundColor Green
     Write-Host "    Profondeur maximale: $($complexity.MaxDepth)" -ForegroundColor Green
-    Write-Host "    Structures de contrôle: $($complexity.ControlStructures)" -ForegroundColor Green
-    Write-Host "    Opérateurs: $($complexity.Operators)" -ForegroundColor Green
+    Write-Host "    Structures de contrÃ´le: $($complexity.ControlStructures)" -ForegroundColor Green
+    Write-Host "    OpÃ©rateurs: $($complexity.Operators)" -ForegroundColor Green
     Write-Host "    Expressions: $($complexity.Expressions)" -ForegroundColor Green
     
     # Tester la fonction ConvertTo-AstNodePath
     Write-Host "`n=== Test de ConvertTo-AstNodePath ===" -ForegroundColor Cyan
     $nodePath = Get-AstNodePath -Node $getExampleFunction
     $pathString = ConvertTo-AstNodePath -Path $nodePath -IncludeTypes -IncludePositions
-    Write-Host "  Chemin formaté de 'Get-Example': $pathString" -ForegroundColor Green
+    Write-Host "  Chemin formatÃ© de 'Get-Example': $pathString" -ForegroundColor Green
 }
 else {
-    Write-Error "Fonction 'Get-Example' non trouvée."
+    Write-Error "Fonction 'Get-Example' non trouvÃ©e."
 }
 
-Write-Host "`nTous les tests sont terminés." -ForegroundColor Green
+Write-Host "`nTous les tests sont terminÃ©s." -ForegroundColor Green

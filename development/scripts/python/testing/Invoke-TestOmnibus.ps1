@@ -1,40 +1,40 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    ExÃ©cute TestOmnibus pour l'analyse rapide des tests Python.
+    ExÃƒÂ©cute TestOmnibus pour l'analyse rapide des tests Python.
 .DESCRIPTION
     Ce script est un wrapper PowerShell pour l'outil TestOmnibus Python.
-    Il permet d'exÃ©cuter les tests Python, d'analyser les erreurs et de gÃ©nÃ©rer des rapports.
+    Il permet d'exÃƒÂ©cuter les tests Python, d'analyser les erreurs et de gÃƒÂ©nÃƒÂ©rer des rapports.
 .PARAMETER TestDirectory
-    Le rÃ©pertoire contenant les tests Python.
+    Le rÃƒÂ©pertoire contenant les tests Python.
 .PARAMETER Pattern
-    Le pattern des fichiers de test Ã  exÃ©cuter.
+    Le pattern des fichiers de test ÃƒÂ  exÃƒÂ©cuter.
 .PARAMETER Jobs
-    Le nombre de processus parallÃ¨les Ã  utiliser.
+    Le nombre de processus parallÃƒÂ¨les ÃƒÂ  utiliser.
 .PARAMETER Verbose
     Active le mode verbeux.
 .PARAMETER Pdb
-    Lance le dÃ©bogueur Python en cas d'Ã©chec.
+    Lance le dÃƒÂ©bogueur Python en cas d'ÃƒÂ©chec.
 .PARAMETER GenerateReport
-    GÃ©nÃ¨re un rapport HTML des rÃ©sultats.
+    GÃƒÂ©nÃƒÂ¨re un rapport HTML des rÃƒÂ©sultats.
 .PARAMETER ReportDirectory
-    Le rÃ©pertoire oÃ¹ stocker les rapports.
+    Le rÃƒÂ©pertoire oÃƒÂ¹ stocker les rapports.
 .PARAMETER Analyze
-    Analyse les erreurs pour dÃ©tecter des patterns.
+    Analyse les erreurs pour dÃƒÂ©tecter des patterns.
 .PARAMETER SaveErrors
-    Sauvegarde les erreurs dans la base de donnÃ©es.
+    Sauvegarde les erreurs dans la base de donnÃƒÂ©es.
 .PARAMETER ErrorDatabase
-    Chemin de la base de donnÃ©es d'erreurs.
+    Chemin de la base de donnÃƒÂ©es d'erreurs.
 .PARAMETER UseTestmon
-    Utilise pytest-testmon pour exÃ©cuter uniquement les tests affectÃ©s.
+    Utilise pytest-testmon pour exÃƒÂ©cuter uniquement les tests affectÃƒÂ©s.
 .PARAMETER GenerateCoverage
-    GÃ©nÃ¨re un rapport de couverture.
+    GÃƒÂ©nÃƒÂ¨re un rapport de couverture.
 .PARAMETER CoverageFormat
     Format du rapport de couverture (html, xml, term).
 .PARAMETER TracebackFormat
     Format des tracebacks (auto, short, long, native).
 .PARAMETER InstallDependencies
-    Installe automatiquement les dÃ©pendances nÃ©cessaires.
+    Installe automatiquement les dÃƒÂ©pendances nÃƒÂ©cessaires.
 .EXAMPLE
     .\Invoke-TestOmnibus.ps1 -TestDirectory "development/testing/tests/python" -GenerateReport
 .EXAMPLE
@@ -110,7 +110,7 @@ param(
     [switch]$OpenAllureReport
 )
 
-# Fonction pour vÃ©rifier si un module Python est installÃ©
+# Fonction pour vÃƒÂ©rifier si un module Python est installÃƒÂ©
 function Test-PythonModule {
     param (
         [Parameter(Mandatory = $true)]
@@ -121,24 +121,24 @@ function Test-PythonModule {
     return $result -eq "1"
 }
 
-# VÃ©rifier que Python est installÃ©
+# VÃƒÂ©rifier que Python est installÃƒÂ©
 if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
-    Write-Error "Python n'est pas installÃ© ou n'est pas dans le PATH."
+    Write-Error "Python n'est pas installÃƒÂ© ou n'est pas dans le PATH."
     return 1
 }
 
-# Installer les dÃ©pendances si nÃ©cessaire
+# Installer les dÃƒÂ©pendances si nÃƒÂ©cessaire
 if ($InstallDependencies) {
-    Write-Host "VÃ©rification des dÃ©pendances..." -ForegroundColor Cyan
+    Write-Host "VÃƒÂ©rification des dÃƒÂ©pendances..." -ForegroundColor Cyan
 
     $modules = @(
         @{Name = "pytest"; Description = "Framework de test Python"},
         @{Name = "pytest-cov"; Description = "Plugin de couverture de code pour pytest"},
-        @{Name = "pytest-xdist"; Description = "Plugin pour exÃ©cuter les tests en parallÃ¨le"}
+        @{Name = "pytest-xdist"; Description = "Plugin pour exÃƒÂ©cuter les tests en parallÃƒÂ¨le"}
     )
 
     if ($UseTestmon) {
-        $modules += @{Name = "pytest-testmon"; Description = "Plugin pour exÃ©cuter uniquement les tests affectÃ©s"}
+        $modules += @{Name = "pytest-testmon"; Description = "Plugin pour exÃƒÂ©cuter uniquement les tests affectÃƒÂ©s"}
     }
 
     foreach ($module in $modules) {
@@ -147,20 +147,20 @@ if ($InstallDependencies) {
             python -m pip install $module.Name
 
             if ($LASTEXITCODE -ne 0) {
-                Write-Warning "Impossible d'installer $($module.Name). Certaines fonctionnalitÃ©s pourraient ne pas fonctionner."
+                Write-Warning "Impossible d'installer $($module.Name). Certaines fonctionnalitÃƒÂ©s pourraient ne pas fonctionner."
             }
         } else {
-            Write-Host "$($module.Name) est dÃ©jÃ  installÃ©." -ForegroundColor Green
+            Write-Host "$($module.Name) est dÃƒÂ©jÃƒÂ  installÃƒÂ©." -ForegroundColor Green
         }
     }
 }
 
-# VÃ©rifier que pytest est installÃ©
+# VÃƒÂ©rifier que pytest est installÃƒÂ©
 if (-not (Test-PythonModule -ModuleName "pytest")) {
-    Write-Warning "pytest n'est pas installÃ©. Installation recommandÃ©e: python -m pip install pytest pytest-cov pytest-xdist"
+    Write-Warning "pytest n'est pas installÃƒÂ©. Installation recommandÃƒÂ©e: python -m pip install pytest pytest-cov pytest-xdist"
 
     if (-not $InstallDependencies) {
-        $installNow = Read-Host "Voulez-vous installer les dÃ©pendances maintenant? (O/N)"
+        $installNow = Read-Host "Voulez-vous installer les dÃƒÂ©pendances maintenant? (O/N)"
         if ($installNow -eq "O" -or $installNow -eq "o") {
             python -m pip install pytest pytest-cov pytest-xdist
 
@@ -175,7 +175,7 @@ if (-not (Test-PythonModule -ModuleName "pytest")) {
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "run_testomnibus.py"
 
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script run_testomnibus.py n'a pas Ã©tÃ© trouvÃ© dans $PSScriptRoot."
+    Write-Error "Le script run_testomnibus.py n'a pas ÃƒÂ©tÃƒÂ© trouvÃƒÂ© dans $PSScriptRoot."
     return 1
 }
 
@@ -225,39 +225,39 @@ if ($GenerateJenkinsReport) {
     $cmd += " --jenkins --jenkins-dir `"$JenkinsDirectory`""
 }
 
-# ExÃ©cuter la commande
-Write-Host "ExÃ©cution de TestOmnibus..." -ForegroundColor Cyan
+# ExÃƒÂ©cuter la commande
+Write-Host "ExÃƒÂ©cution de TestOmnibus..." -ForegroundColor Cyan
 Write-Host "Commande: $cmd" -ForegroundColor DarkGray
 Invoke-Expression $cmd
 
-# VÃ©rifier le code de retour
+# VÃƒÂ©rifier le code de retour
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "Tous les tests ont rÃ©ussi!" -ForegroundColor Green
+    Write-Host "Tous les tests ont rÃƒÂ©ussi!" -ForegroundColor Green
 } else {
-    Write-Host "Des tests ont Ã©chouÃ©. Consultez le rapport pour plus de dÃ©tails." -ForegroundColor Red
+    Write-Host "Des tests ont ÃƒÂ©chouÃƒÂ©. Consultez le rapport pour plus de dÃƒÂ©tails." -ForegroundColor Red
 }
 
-# Ouvrir le rapport HTML si gÃ©nÃ©rÃ© et demandÃ©
+# Ouvrir le rapport HTML si gÃƒÂ©nÃƒÂ©rÃƒÂ© et demandÃƒÂ©
 if ($GenerateReport -and $OpenReport) {
     $reportFiles = Get-ChildItem -Path $ReportDirectory -Filter "testomnibus_report_*.html" | Sort-Object LastWriteTime -Descending
 
     if ($reportFiles.Count -gt 0) {
         $latestReport = $reportFiles[0].FullName
-        Write-Host "Ouverture du rapport HTML le plus rÃ©cent: $latestReport" -ForegroundColor Yellow
+        Write-Host "Ouverture du rapport HTML le plus rÃƒÂ©cent: $latestReport" -ForegroundColor Yellow
         Start-Process $latestReport
     } else {
-        Write-Warning "Aucun rapport HTML n'a Ã©tÃ© trouvÃ© dans $ReportDirectory."
+        Write-Warning "Aucun rapport HTML n'a ÃƒÂ©tÃƒÂ© trouvÃƒÂ© dans $ReportDirectory."
     }
 }
 
-# Ouvrir le rapport Allure si gÃ©nÃ©rÃ© et demandÃ©
+# Ouvrir le rapport Allure si gÃƒÂ©nÃƒÂ©rÃƒÂ© et demandÃƒÂ©
 if ($GenerateAllureReport -and $OpenAllureReport) {
     $allureReportDir = Join-Path -Path (Split-Path -Parent $AllureDirectory) -ChildPath "allure-report"
 
     if (Test-Path -Path $allureReportDir) {
         Write-Host "Ouverture du rapport Allure: $allureReportDir" -ForegroundColor Yellow
 
-        # VÃ©rifier si allure est installÃ©
+        # VÃƒÂ©rifier si allure est installÃƒÂ©
         $allureCheck = $null
         try {
             $allureCheck = Get-Command allure -ErrorAction SilentlyContinue
@@ -269,28 +269,28 @@ if ($GenerateAllureReport -and $OpenAllureReport) {
             # Ouvrir le rapport avec allure
             Start-Process -FilePath "allure" -ArgumentList "open", "`"$allureReportDir`""
         } else {
-            # Ouvrir le rÃ©pertoire du rapport
+            # Ouvrir le rÃƒÂ©pertoire du rapport
             Start-Process $allureReportDir
-            Write-Warning "Allure n'est pas installÃ© ou n'est pas dans le PATH. Le rÃ©pertoire du rapport a Ã©tÃ© ouvert Ã  la place."
+            Write-Warning "Allure n'est pas installÃƒÂ© ou n'est pas dans le PATH. Le rÃƒÂ©pertoire du rapport a ÃƒÂ©tÃƒÂ© ouvert ÃƒÂ  la place."
             Write-Warning "Pour installer Allure, consultez https://docs.qameta.io/allure/"
         }
     } else {
-        Write-Warning "Aucun rapport Allure n'a Ã©tÃ© trouvÃ© dans $allureReportDir."
+        Write-Warning "Aucun rapport Allure n'a ÃƒÂ©tÃƒÂ© trouvÃƒÂ© dans $allureReportDir."
     }
 }
 
-# Afficher des informations sur les rapports Jenkins si gÃ©nÃ©rÃ©s
+# Afficher des informations sur les rapports Jenkins si gÃƒÂ©nÃƒÂ©rÃƒÂ©s
 if ($GenerateJenkinsReport) {
     $jenkinsFiles = Get-ChildItem -Path $JenkinsDirectory -Filter "*.xml" -ErrorAction SilentlyContinue
 
     if ($jenkinsFiles.Count -gt 0) {
-        Write-Host "Rapports JUnit pour Jenkins gÃ©nÃ©rÃ©s dans ${JenkinsDirectory}:" -ForegroundColor Yellow
+        Write-Host "Rapports JUnit pour Jenkins gÃƒÂ©nÃƒÂ©rÃƒÂ©s dans ${JenkinsDirectory}:" -ForegroundColor Yellow
         foreach ($file in $jenkinsFiles) {
             Write-Host "  - $($file.Name)" -ForegroundColor Gray
         }
-        Write-Host "Ces rapports peuvent Ãªtre utilisÃ©s par Jenkins pour afficher les rÃ©sultats des tests." -ForegroundColor Gray
+        Write-Host "Ces rapports peuvent ÃƒÂªtre utilisÃƒÂ©s par Jenkins pour afficher les rÃƒÂ©sultats des tests." -ForegroundColor Gray
     } else {
-        Write-Warning "Aucun rapport JUnit n'a Ã©tÃ© trouvÃ© dans $JenkinsDirectory."
+        Write-Warning "Aucun rapport JUnit n'a ÃƒÂ©tÃƒÂ© trouvÃƒÂ© dans $JenkinsDirectory."
     }
 }
 

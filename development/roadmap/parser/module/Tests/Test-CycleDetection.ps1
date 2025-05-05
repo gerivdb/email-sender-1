@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour les fonctions de détection de cycles de dépendances.
+    Tests pour les fonctions de dÃ©tection de cycles de dÃ©pendances.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctions de détection
-    de cycles de dépendances.
+    Ce script contient des tests unitaires pour les fonctions de dÃ©tection
+    de cycles de dÃ©pendances.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".."
 $cycleDetectionPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\CycleDetection\CycleDetectionAlgorithms.ps1"
 $dependencyAnalysisPath = Join-Path -Path $modulePath -ChildPath "Functions\Private\CycleDetection\DependencyAnalysisFunctions.ps1"
@@ -20,10 +20,10 @@ $dependencyAnalysisPath = Join-Path -Path $modulePath -ChildPath "Functions\Priv
 . $cycleDetectionPath
 . $dependencyAnalysisPath
 
-Describe "Fonctions de détection de cycles" {
+Describe "Fonctions de dÃ©tection de cycles" {
     Context "Find-CyclesDFS" {
-        It "Détecte un cycle simple" {
-            # Créer un graphe avec un cycle simple
+        It "DÃ©tecte un cycle simple" {
+            # CrÃ©er un graphe avec un cycle simple
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -36,8 +36,8 @@ Describe "Fonctions de détection de cycles" {
             $cycles[0].Files.Count | Should -BeGreaterThan 0
         }
         
-        It "Ne détecte pas de cycle dans un graphe acyclique" {
-            # Créer un graphe acyclique
+        It "Ne dÃ©tecte pas de cycle dans un graphe acyclique" {
+            # CrÃ©er un graphe acyclique
             $graph = @{
                 "A" = @("B", "C")
                 "B" = @("D")
@@ -50,7 +50,7 @@ Describe "Fonctions de détection de cycles" {
             $cycles.Count | Should -Be 0
         }
         
-        It "Gère correctement un graphe vide" {
+        It "GÃ¨re correctement un graphe vide" {
             $graph = @{}
             
             $cycles = Find-CyclesDFS -Graph $graph
@@ -60,8 +60,8 @@ Describe "Fonctions de détection de cycles" {
     }
     
     Context "Find-CyclesTarjan" {
-        It "Détecte un cycle simple" {
-            # Créer un graphe avec un cycle simple
+        It "DÃ©tecte un cycle simple" {
+            # CrÃ©er un graphe avec un cycle simple
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -74,8 +74,8 @@ Describe "Fonctions de détection de cycles" {
             $cycles[0].Files.Count | Should -BeGreaterThan 0
         }
         
-        It "Ne détecte pas de cycle dans un graphe acyclique" {
-            # Créer un graphe acyclique
+        It "Ne dÃ©tecte pas de cycle dans un graphe acyclique" {
+            # CrÃ©er un graphe acyclique
             $graph = @{
                 "A" = @("B", "C")
                 "B" = @("D")
@@ -88,7 +88,7 @@ Describe "Fonctions de détection de cycles" {
             $cycles.Count | Should -Be 0
         }
         
-        It "Gère correctement un graphe vide" {
+        It "GÃ¨re correctement un graphe vide" {
             $graph = @{}
             
             $cycles = Find-CyclesTarjan -Graph $graph
@@ -98,8 +98,8 @@ Describe "Fonctions de détection de cycles" {
     }
     
     Context "Find-CyclesJohnson" {
-        It "Détecte un cycle simple" {
-            # Créer un graphe avec un cycle simple
+        It "DÃ©tecte un cycle simple" {
+            # CrÃ©er un graphe avec un cycle simple
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -112,8 +112,8 @@ Describe "Fonctions de détection de cycles" {
             $cycles[0].Files.Count | Should -BeGreaterThan 0
         }
         
-        It "Ne détecte pas de cycle dans un graphe acyclique" {
-            # Créer un graphe acyclique
+        It "Ne dÃ©tecte pas de cycle dans un graphe acyclique" {
+            # CrÃ©er un graphe acyclique
             $graph = @{
                 "A" = @("B", "C")
                 "B" = @("D")
@@ -126,7 +126,7 @@ Describe "Fonctions de détection de cycles" {
             $cycles.Count | Should -Be 0
         }
         
-        It "Gère correctement un graphe vide" {
+        It "GÃ¨re correctement un graphe vide" {
             $graph = @{}
             
             $cycles = Find-CyclesJohnson -Graph $graph
@@ -136,8 +136,8 @@ Describe "Fonctions de détection de cycles" {
     }
     
     Context "Find-DependencyCycles" {
-        It "Détecte un cycle simple avec l'algorithme par défaut (Tarjan)" {
-            # Créer un graphe avec un cycle simple
+        It "DÃ©tecte un cycle simple avec l'algorithme par dÃ©faut (Tarjan)" {
+            # CrÃ©er un graphe avec un cycle simple
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -150,8 +150,8 @@ Describe "Fonctions de détection de cycles" {
             $result.FilteredCycles.Count | Should -BeGreaterThan 0
         }
         
-        It "Détecte un cycle simple avec l'algorithme DFS" {
-            # Créer un graphe avec un cycle simple
+        It "DÃ©tecte un cycle simple avec l'algorithme DFS" {
+            # CrÃ©er un graphe avec un cycle simple
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -164,8 +164,8 @@ Describe "Fonctions de détection de cycles" {
             $result.FilteredCycles.Count | Should -BeGreaterThan 0
         }
         
-        It "Détecte un cycle simple avec l'algorithme Johnson" {
-            # Créer un graphe avec un cycle simple
+        It "DÃ©tecte un cycle simple avec l'algorithme Johnson" {
+            # CrÃ©er un graphe avec un cycle simple
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -178,8 +178,8 @@ Describe "Fonctions de détection de cycles" {
             $result.FilteredCycles.Count | Should -BeGreaterThan 0
         }
         
-        It "Filtre les cycles selon la sévérité minimale" {
-            # Créer un graphe avec un cycle simple
+        It "Filtre les cycles selon la sÃ©vÃ©ritÃ© minimale" {
+            # CrÃ©er un graphe avec un cycle simple
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -194,21 +194,21 @@ Describe "Fonctions de détection de cycles" {
     }
 }
 
-Describe "Fonctions d'analyse de dépendances" {
+Describe "Fonctions d'analyse de dÃ©pendances" {
     Context "Get-FileDependencies" {
         BeforeAll {
-            # Créer des fichiers temporaires pour les tests
+            # CrÃ©er des fichiers temporaires pour les tests
             $tempDir = [System.IO.Path]::GetTempPath()
             $projectRoot = Join-Path -Path $tempDir -ChildPath "TestProject"
             
-            # Créer le répertoire du projet
+            # CrÃ©er le rÃ©pertoire du projet
             New-Item -Path $projectRoot -ItemType Directory -Force | Out-Null
             
-            # Créer des fichiers PowerShell
+            # CrÃ©er des fichiers PowerShell
             $ps1File1 = Join-Path -Path $projectRoot -ChildPath "File1.ps1"
             $ps1File2 = Join-Path -Path $projectRoot -ChildPath "File2.ps1"
             
-            # Créer le contenu des fichiers
+            # CrÃ©er le contenu des fichiers
             Set-Content -Path $ps1File1 -Value @"
 # Fichier 1
 . "$projectRoot\File2.ps1"
@@ -227,20 +227,20 @@ function Test-Function {
             Remove-Item -Path $projectRoot -Recurse -Force -ErrorAction SilentlyContinue
         }
         
-        It "Détecte les dépendances d'un fichier PowerShell" {
+        It "DÃ©tecte les dÃ©pendances d'un fichier PowerShell" {
             $dependencies = Get-FileDependencies -FilePath $ps1File1 -ProjectRoot $projectRoot
             
             $dependencies.Count | Should -Be 1
             $dependencies[0] | Should -Be $ps1File2
         }
         
-        It "Retourne un tableau vide pour un fichier sans dépendances" {
+        It "Retourne un tableau vide pour un fichier sans dÃ©pendances" {
             $dependencies = Get-FileDependencies -FilePath $ps1File2 -ProjectRoot $projectRoot
             
             $dependencies.Count | Should -Be 0
         }
         
-        It "Gère correctement un fichier inexistant" {
+        It "GÃ¨re correctement un fichier inexistant" {
             $dependencies = Get-FileDependencies -FilePath (Join-Path -Path $projectRoot -ChildPath "NonExistentFile.ps1") -ProjectRoot $projectRoot
             
             $dependencies.Count | Should -Be 0
@@ -249,19 +249,19 @@ function Test-Function {
     
     Context "Build-DependencyGraph" {
         BeforeAll {
-            # Créer des fichiers temporaires pour les tests
+            # CrÃ©er des fichiers temporaires pour les tests
             $tempDir = [System.IO.Path]::GetTempPath()
             $projectRoot = Join-Path -Path $tempDir -ChildPath "TestProject"
             
-            # Créer le répertoire du projet
+            # CrÃ©er le rÃ©pertoire du projet
             New-Item -Path $projectRoot -ItemType Directory -Force | Out-Null
             
-            # Créer des fichiers PowerShell
+            # CrÃ©er des fichiers PowerShell
             $ps1File1 = Join-Path -Path $projectRoot -ChildPath "File1.ps1"
             $ps1File2 = Join-Path -Path $projectRoot -ChildPath "File2.ps1"
             $ps1File3 = Join-Path -Path $projectRoot -ChildPath "File3.ps1"
             
-            # Créer le contenu des fichiers
+            # CrÃ©er le contenu des fichiers
             Set-Content -Path $ps1File1 -Value @"
 # Fichier 1
 . "$projectRoot\File2.ps1"
@@ -285,7 +285,7 @@ function Test-Function {
             Remove-Item -Path $projectRoot -Recurse -Force -ErrorAction SilentlyContinue
         }
         
-        It "Construit un graphe de dépendances correct" {
+        It "Construit un graphe de dÃ©pendances correct" {
             $files = Get-ChildItem -Path $projectRoot -Filter "*.ps1"
             $graph = Build-DependencyGraph -Files $files -ProjectRoot $projectRoot
             
@@ -297,7 +297,7 @@ function Test-Function {
             $graph[$ps1File3].Count | Should -Be 0
         }
         
-        It "Limite la profondeur des dépendances" {
+        It "Limite la profondeur des dÃ©pendances" {
             $files = Get-ChildItem -Path $projectRoot -Filter "*.ps1"
             $graph = Build-DependencyGraph -Files $files -ProjectRoot $projectRoot -MaxDepth 1
             

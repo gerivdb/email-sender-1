@@ -1,11 +1,11 @@
-# Tests simples pour les fonctions d'analyse des déclencheurs et des actions
-# Ce script teste les fonctions implémentées sans utiliser Pester
+﻿# Tests simples pour les fonctions d'analyse des dÃ©clencheurs et des actions
+# Ce script teste les fonctions implÃ©mentÃ©es sans utiliser Pester
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "WorkflowAnalyzer.psm1"
 Import-Module $modulePath -Force
 
-# Créer un workflow n8n de test simple
+# CrÃ©er un workflow n8n de test simple
 $testWorkflow = @{
     id = "test-workflow"
     name = "Test Workflow"
@@ -83,7 +83,7 @@ $testWorkflow = @{
     active = $true
 }
 
-# Fonction pour afficher les résultats des tests
+# Fonction pour afficher les rÃ©sultats des tests
 function Write-TestResult {
     param (
         [string]$TestName,

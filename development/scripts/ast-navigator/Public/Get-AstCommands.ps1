@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
     Extrait les appels de commandes d'un script PowerShell.
 
 .DESCRIPTION
     Cette fonction extrait les appels de commandes d'un script PowerShell en utilisant l'arbre syntaxique (AST).
-    Elle permet de filtrer les commandes par nom et d'obtenir des informations détaillées sur chaque commande.
+    Elle permet de filtrer les commandes par nom et d'obtenir des informations dÃ©taillÃ©es sur chaque commande.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à analyser. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  analyser. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER Name
-    Nom de la commande à rechercher. Peut contenir des caractères génériques.
+    Nom de la commande Ã  rechercher. Peut contenir des caractÃ¨res gÃ©nÃ©riques.
 
 .PARAMETER CommandType
-    Type de commande à rechercher (Cmdlet, Function, ExternalScript, Application, etc.).
+    Type de commande Ã  rechercher (Cmdlet, Function, ExternalScript, Application, etc.).
 
 .PARAMETER IncludeArguments
-    Si spécifié, inclut les arguments passés à chaque commande.
+    Si spÃ©cifiÃ©, inclut les arguments passÃ©s Ã  chaque commande.
 
 .PARAMETER IncludePipelines
-    Si spécifié, inclut les informations sur les pipelines de commandes.
+    Si spÃ©cifiÃ©, inclut les informations sur les pipelines de commandes.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -61,7 +61,7 @@ function Get-AstCommands {
                 $args[0] -is [System.Management.Automation.Language.CommandAst]
             }, $true)
 
-            # Filtrer par nom si spécifié
+            # Filtrer par nom si spÃ©cifiÃ©
             if ($Name) {
                 $commands = $commands | Where-Object { 
                     $commandName = $_.CommandElements[0].Value
@@ -69,7 +69,7 @@ function Get-AstCommands {
                 }
             }
 
-            # Rechercher les pipelines si demandé
+            # Rechercher les pipelines si demandÃ©
             $pipelines = @{}
             if ($IncludePipelines) {
                 $pipelineAsts = $Ast.FindAll({
@@ -94,7 +94,7 @@ function Get-AstCommands {
                 }
             }
 
-            # Préparer les résultats
+            # PrÃ©parer les rÃ©sultats
             $results = @()
 
             # Traiter chaque commande
@@ -102,13 +102,13 @@ function Get-AstCommands {
                 # Extraire le nom de la commande
                 $commandName = $command.CommandElements[0].Value
 
-                # Extraire les arguments si demandé
+                # Extraire les arguments si demandÃ©
                 $arguments = @()
                 if ($IncludeArguments -and $command.CommandElements.Count -gt 1) {
                     for ($i = 1; $i -lt $command.CommandElements.Count; $i++) {
                         $element = $command.CommandElements[$i]
                         
-                        # Déterminer si c'est un paramètre ou une valeur
+                        # DÃ©terminer si c'est un paramÃ¨tre ou une valeur
                         $isParameter = $false
                         $parameterName = $null
                         $value = $null
@@ -135,7 +135,7 @@ function Get-AstCommands {
                     }
                 }
 
-                # Extraire les informations de pipeline si demandé
+                # Extraire les informations de pipeline si demandÃ©
                 $pipelineInfo = $null
                 if ($IncludePipelines) {
                     $commandId = $command.Extent.StartOffset
@@ -150,7 +150,7 @@ function Get-AstCommands {
                     }
                 }
 
-                # Créer l'objet résultat
+                # CrÃ©er l'objet rÃ©sultat
                 $commandInfo = [PSCustomObject]@{
                     Name = $commandName
                     StartLine = $command.Extent.StartLineNumber

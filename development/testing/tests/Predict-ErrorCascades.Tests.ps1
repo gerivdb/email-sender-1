@@ -1,17 +1,17 @@
-BeforeAll {
-    # Importer le module à tester
+﻿BeforeAll {
+    # Importer le module Ã  tester
     $global:scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\Predict-ErrorCascades.ps1"
     $global:modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1"
 
-    # Créer un dossier temporaire pour les tests
+    # CrÃ©er un dossier temporaire pour les tests
     $global:testFolder = Join-Path -Path $TestDrive -ChildPath "ErrorCascadeTests"
     New-Item -Path $global:testFolder -ItemType Directory -Force | Out-Null
 
-    # Créer une base de données de test
+    # CrÃ©er une base de donnÃ©es de test
     $global:databasePath = Join-Path -Path $global:testFolder -ChildPath "test_error_database.json"
     $global:modelPath = Join-Path -Path $global:testFolder -ChildPath "test_error_model.xml"
 
-    # Fonction pour créer une base de données de test
+    # Fonction pour crÃ©er une base de donnÃ©es de test
     function New-TestDatabase {
         param (
             [Parameter(Mandatory = $false)]
@@ -24,11 +24,11 @@ BeforeAll {
         # Charger le module ErrorPatternAnalyzer
         . $global:modulePath
 
-        # Initialiser la base de données
+        # Initialiser la base de donnÃ©es
         $script:ErrorDatabasePath = $DatabasePath
         Initialize-ErrorDatabase -DatabasePath $DatabasePath -Force
 
-        # Créer des patterns de test
+        # CrÃ©er des patterns de test
         for ($i = 0; $i -lt $PatternCount; $i++) {
             $isInedited = ($i % 2 -eq 0)
             $exceptionType = if ($i % 3 -eq 0) { "System.NullReferenceException" } elseif ($i % 3 -eq 1) { "System.IndexOutOfRangeException" } else { "System.ArgumentException" }
@@ -74,7 +74,7 @@ BeforeAll {
             $script:ErrorDatabase.Patterns += $pattern
         }
 
-        # Ajouter des corrélations
+        # Ajouter des corrÃ©lations
         for ($i = 0; $i -lt $PatternCount - 1; $i++) {
             $correlation = @{
                 PatternId1   = $script:ErrorDatabase.Patterns[$i].Id
@@ -87,20 +87,20 @@ BeforeAll {
             $script:ErrorDatabase.Correlations += $correlation
         }
 
-        # Sauvegarder la base de données
+        # Sauvegarder la base de donnÃ©es
         Save-ErrorDatabase -DatabasePath $DatabasePath
 
         return $DatabasePath
     }
 
-    # Fonction pour créer un modèle de test
+    # Fonction pour crÃ©er un modÃ¨le de test
     function New-TestModel {
         param (
             [Parameter(Mandatory = $false)]
             [string]$ModelPath = $global:modelPath
         )
 
-        # Créer un modèle de test
+        # CrÃ©er un modÃ¨le de test
         $model = @{
             Weights          = @{
                 ExceptionType  = @{
@@ -128,7 +128,7 @@ BeforeAll {
             TrainingAccuracy = 0.8
         }
 
-        # Sauvegarder le modèle
+        # Sauvegarder le modÃ¨le
         $xmlWriter = New-Object System.Xml.XmlTextWriter($ModelPath, [System.Text.Encoding]::UTF8)
         $xmlWriter.Formatting = [System.Xml.Formatting]::Indented
         $xmlWriter.Indentation = 4
@@ -136,7 +136,7 @@ BeforeAll {
         $xmlWriter.WriteStartDocument()
         $xmlWriter.WriteStartElement("ErrorPatternModel")
 
-        # Écrire les métadonnées
+        # Ã‰crire les mÃ©tadonnÃ©es
         $xmlWriter.WriteStartElement("Metadata")
         $xmlWriter.WriteElementString("CreatedAt", (Get-Date -Format "yyyy-MM-ddTHH:mm:ss"))
         $xmlWriter.WriteElementString("Iterations", $model.Iterations.ToString())
@@ -144,16 +144,16 @@ BeforeAll {
         $xmlWriter.WriteElementString("TrainingAccuracy", $model.TrainingAccuracy.ToString())
         $xmlWriter.WriteEndElement() # Metadata
 
-        # Écrire les poids
+        # Ã‰crire les poids
         $xmlWriter.WriteStartElement("Weights")
 
-        # Écrire le biais
+        # Ã‰crire le biais
         $xmlWriter.WriteElementString("Bias", $model.Bias.ToString())
 
-        # Écrire les poids numériques
+        # Ã‰crire les poids numÃ©riques
         $xmlWriter.WriteElementString("Occurrences", $model.Weights.Occurrences.ToString())
 
-        # Écrire les poids catégoriels
+        # Ã‰crire les poids catÃ©goriels
         $xmlWriter.WriteStartElement("ExceptionTypes")
         foreach ($key in $model.Weights.ExceptionType.Keys) {
             $xmlWriter.WriteStartElement("ExceptionType")
@@ -194,18 +194,18 @@ BeforeAll {
 
 Describe "Predict-ErrorCascades" {
     BeforeEach {
-        # Créer une base de données de test
+        # CrÃ©er une base de donnÃ©es de test
         New-TestDatabase -DatabasePath $global:databasePath -PatternCount 10
 
-        # Créer un modèle de test
+        # CrÃ©er un modÃ¨le de test
         New-TestModel -ModelPath $global:modelPath
     }
 
-    It "Charge correctement un modèle" {
+    It "Charge correctement un modÃ¨le" {
         # Charger le script
         . $global:scriptPath -DatabasePath $global:databasePath -ModelPath $global:modelPath -CorrelationThreshold 0.6 -ReportPath "$global:testFolder\test_report.md"
 
-        # Charger le modèle
+        # Charger le modÃ¨le
         $model = Import-ErrorModel -ModelPath $global:modelPath
 
         $model | Should -Not -BeNullOrEmpty
@@ -216,20 +216,20 @@ Describe "Predict-ErrorCascades" {
         $model.TrainingAccuracy | Should -BeGreaterThan 0
     }
 
-    It "Construit correctement un graphe de dépendances" {
+    It "Construit correctement un graphe de dÃ©pendances" {
         # Charger le script
         . $global:scriptPath -DatabasePath $global:databasePath -ModelPath $global:modelPath -CorrelationThreshold 0.6 -ReportPath "$global:testFolder\test_report.md"
 
-        # Charger la base de données
+        # Charger la base de donnÃ©es
         $database = Get-Content -Path $global:databasePath -Raw | ConvertFrom-Json
 
-        # Construire le graphe de dépendances
+        # Construire le graphe de dÃ©pendances
         $graph = Build-ErrorDependencyGraph -Patterns $database.Patterns -Correlations $database.Correlations -CorrelationThreshold 0.6
 
         $graph | Should -Not -BeNullOrEmpty
         $graph.Count | Should -Be $database.Patterns.Count
 
-        # Vérifier que les dépendances ont été ajoutées
+        # VÃ©rifier que les dÃ©pendances ont Ã©tÃ© ajoutÃ©es
         $hasDependencies = $false
         foreach ($patternId in $graph.Keys) {
             if ($graph[$patternId].Dependencies.Count -gt 0) {
@@ -245,10 +245,10 @@ Describe "Predict-ErrorCascades" {
         # Charger le script
         . $global:scriptPath -DatabasePath $global:databasePath -ModelPath $global:modelPath -CorrelationThreshold 0.6 -ReportPath "$global:testFolder\test_report.md"
 
-        # Charger la base de données
+        # Charger la base de donnÃ©es
         $database = Get-Content -Path $global:databasePath -Raw | ConvertFrom-Json
 
-        # Construire le graphe de dépendances
+        # Construire le graphe de dÃ©pendances
         $graph = Build-ErrorDependencyGraph -Patterns $database.Patterns -Correlations $database.Correlations -CorrelationThreshold 0.6
 
         # Identifier les patterns racines
@@ -261,10 +261,10 @@ Describe "Predict-ErrorCascades" {
         # Charger le script
         . $global:scriptPath -DatabasePath $global:databasePath -ModelPath $global:modelPath -CorrelationThreshold 0.6 -ReportPath "$global:testFolder\test_report.md"
 
-        # Charger la base de données
+        # Charger la base de donnÃ©es
         $database = Get-Content -Path $global:databasePath -Raw | ConvertFrom-Json
 
-        # Construire le graphe de dépendances
+        # Construire le graphe de dÃ©pendances
         $graph = Build-ErrorDependencyGraph -Patterns $database.Patterns -Correlations $database.Correlations -CorrelationThreshold 0.6
 
         # Identifier les patterns feuilles
@@ -277,10 +277,10 @@ Describe "Predict-ErrorCascades" {
         # Charger le script
         . $global:scriptPath -DatabasePath $global:databasePath -ModelPath $global:modelPath -CorrelationThreshold 0.6 -ReportPath "$global:testFolder\test_report.md"
 
-        # Charger la base de données
+        # Charger la base de donnÃ©es
         $database = Get-Content -Path $global:databasePath -Raw | ConvertFrom-Json
 
-        # Construire le graphe de dépendances
+        # Construire le graphe de dÃ©pendances
         $graph = Build-ErrorDependencyGraph -Patterns $database.Patterns -Correlations $database.Correlations -CorrelationThreshold 0.6
 
         # Identifier les patterns racines
@@ -292,14 +292,14 @@ Describe "Predict-ErrorCascades" {
         $cascadePaths | Should -Not -BeNullOrEmpty
     }
 
-    It "Calcule correctement la probabilité d'une cascade" {
+    It "Calcule correctement la probabilitÃ© d'une cascade" {
         # Charger le script
         . $global:scriptPath -DatabasePath $global:databasePath -ModelPath $global:modelPath -CorrelationThreshold 0.6 -ReportPath "$global:testFolder\test_report.md"
 
-        # Charger la base de données
+        # Charger la base de donnÃ©es
         $database = Get-Content -Path $global:databasePath -Raw | ConvertFrom-Json
 
-        # Construire le graphe de dépendances
+        # Construire le graphe de dÃ©pendances
         $graph = Build-ErrorDependencyGraph -Patterns $database.Patterns -Correlations $database.Correlations -CorrelationThreshold 0.6
 
         # Identifier les patterns racines
@@ -309,7 +309,7 @@ Describe "Predict-ErrorCascades" {
         $cascadePaths = Get-CascadePaths -Graph $graph -RootPatterns $rootPatterns
 
         if ($cascadePaths.Count -gt 0) {
-            # Calculer la probabilité d'une cascade
+            # Calculer la probabilitÃ© d'une cascade
             $probability = Measure-CascadeProbability -Graph $graph -Path $cascadePaths[0]
 
             $probability | Should -BeOfType [double]
@@ -318,14 +318,14 @@ Describe "Predict-ErrorCascades" {
         }
     }
 
-    It "Génère correctement un rapport de prédiction" {
+    It "GÃ©nÃ¨re correctement un rapport de prÃ©diction" {
         # Charger le script
         . $global:scriptPath -DatabasePath $global:databasePath -ModelPath $global:modelPath -CorrelationThreshold 0.6 -ReportPath "$global:testFolder\test_report.md"
 
-        # Charger la base de données
+        # Charger la base de donnÃ©es
         $database = Get-Content -Path $global:databasePath -Raw | ConvertFrom-Json
 
-        # Construire le graphe de dépendances
+        # Construire le graphe de dÃ©pendances
         $graph = Build-ErrorDependencyGraph -Patterns $database.Patterns -Correlations $database.Correlations -CorrelationThreshold 0.6
 
         # Identifier les patterns racines
@@ -334,7 +334,7 @@ Describe "Predict-ErrorCascades" {
         # Identifier les chemins de cascade
         $cascadePaths = Get-CascadePaths -Graph $graph -RootPatterns $rootPatterns
 
-        # Générer un rapport de prédiction
+        # GÃ©nÃ©rer un rapport de prÃ©diction
         $reportPath = Join-Path -Path $global:testFolder -ChildPath "test_cascade_report.md"
         $result = New-CascadePredictionReport -Graph $graph -CascadePaths $cascadePaths -ReportPath $reportPath
 
@@ -342,30 +342,30 @@ Describe "Predict-ErrorCascades" {
         Test-Path -Path $reportPath | Should -Be $true
 
         $reportContent = Get-Content -Path $reportPath -Raw
-        $reportContent | Should -Match "Rapport de prédiction des erreurs en cascade"
-        $reportContent | Should -Match "Résumé"
+        $reportContent | Should -Match "Rapport de prÃ©diction des erreurs en cascade"
+        $reportContent | Should -Match "RÃ©sumÃ©"
         $reportContent | Should -Match "Cascades d'erreurs les plus probables"
     }
 }
 
 Describe "Predict-ErrorCascades Integration" {
     BeforeAll {
-        # Créer une base de données de test
+        # CrÃ©er une base de donnÃ©es de test
         New-TestDatabase -DatabasePath $global:databasePath -PatternCount 20
 
-        # Créer un modèle de test
+        # CrÃ©er un modÃ¨le de test
         New-TestModel -ModelPath $global:modelPath
     }
 
-    It "Exécute correctement le script complet" {
-        # Exécuter le script
+    It "ExÃ©cute correctement le script complet" {
+        # ExÃ©cuter le script
         $reportPath = Join-Path -Path $global:testFolder -ChildPath "integration_report.md"
         & $global:scriptPath -DatabasePath $global:databasePath -ModelPath $global:modelPath -CorrelationThreshold 0.6 -ReportPath $reportPath
 
-        # Vérifier que le rapport a été généré
+        # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
         Test-Path -Path $reportPath | Should -Be $true
 
         $reportContent = Get-Content -Path $reportPath -Raw
-        $reportContent | Should -Match "Rapport de prédiction des erreurs en cascade"
+        $reportContent | Should -Match "Rapport de prÃ©diction des erreurs en cascade"
     }
 }

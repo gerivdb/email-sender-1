@@ -1,28 +1,28 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Analyse des scripts PowerShell avec PSScriptAnalyzer et mise en cache des rÃ©sultats.
+    Analyse des scripts PowerShell avec PSScriptAnalyzer et mise en cache des rÃƒÂ©sultats.
 .DESCRIPTION
-    Ce script analyse des scripts PowerShell avec PSScriptAnalyzer et met en cache les rÃ©sultats
-    pour amÃ©liorer les performances lors des analyses ultÃ©rieures.
+    Ce script analyse des scripts PowerShell avec PSScriptAnalyzer et met en cache les rÃƒÂ©sultats
+    pour amÃƒÂ©liorer les performances lors des analyses ultÃƒÂ©rieures.
 .PARAMETER Path
-    Chemin du fichier ou du rÃ©pertoire Ã  analyser.
+    Chemin du fichier ou du rÃƒÂ©pertoire ÃƒÂ  analyser.
 .PARAMETER IncludeRule
-    Liste des rÃ¨gles Ã  inclure dans l'analyse.
+    Liste des rÃƒÂ¨gles ÃƒÂ  inclure dans l'analyse.
 .PARAMETER ExcludeRule
-    Liste des rÃ¨gles Ã  exclure de l'analyse.
+    Liste des rÃƒÂ¨gles ÃƒÂ  exclure de l'analyse.
 .PARAMETER Severity
-    Niveau de sÃ©vÃ©ritÃ© minimum des problÃ¨mes Ã  signaler.
+    Niveau de sÃƒÂ©vÃƒÂ©ritÃƒÂ© minimum des problÃƒÂ¨mes ÃƒÂ  signaler.
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les rÃ©sultats de l'analyse.
+    Chemin du fichier de sortie pour les rÃƒÂ©sultats de l'analyse.
 .PARAMETER Recurse
-    Indique si les sous-rÃ©pertoires doivent Ãªtre analysÃ©s.
+    Indique si les sous-rÃƒÂ©pertoires doivent ÃƒÂªtre analysÃƒÂ©s.
 .PARAMETER UseCache
-    Indique si le cache doit Ãªtre utilisÃ© pour amÃ©liorer les performances. Par dÃ©faut, le cache n'est pas utilisÃ©.
+    Indique si le cache doit ÃƒÂªtre utilisÃƒÂ© pour amÃƒÂ©liorer les performances. Par dÃƒÂ©faut, le cache n'est pas utilisÃƒÂ©.
 .PARAMETER CacheTTLHours
-    DurÃ©e de vie des Ã©lÃ©ments du cache en heures. Par dÃ©faut : 24 heures.
+    DurÃƒÂ©e de vie des ÃƒÂ©lÃƒÂ©ments du cache en heures. Par dÃƒÂ©faut : 24 heures.
 .PARAMETER ForceRefresh
-    Force l'actualisation du cache mÃªme si les rÃ©sultats sont dÃ©jÃ  en cache.
+    Force l'actualisation du cache mÃƒÂªme si les rÃƒÂ©sultats sont dÃƒÂ©jÃƒÂ  en cache.
 .EXAMPLE
     .\Invoke-CachedPSScriptAnalyzer.ps1 -Path ".\development\scripts" -OutputPath "results.json" -Recurse -UseCache
 .NOTES
@@ -60,9 +60,9 @@ param(
     [switch]$ForceRefresh
 )
 
-# VÃ©rifier si PSScriptAnalyzer est installÃ©
+# VÃƒÂ©rifier si PSScriptAnalyzer est installÃƒÂ©
 if (-not (Get-Module -Name PSScriptAnalyzer -ListAvailable)) {
-    Write-Warning "PSScriptAnalyzer n'est pas installÃ©. Installation en cours..."
+    Write-Warning "PSScriptAnalyzer n'est pas installÃƒÂ©. Installation en cours..."
     Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
 }
 
@@ -74,13 +74,13 @@ $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\pr-testing\modules"
 $cacheModulePath = Join-Path -Path $modulesPath -ChildPath "PRAnalysisCache.psm1"
 
 if (-not (Test-Path -Path $cacheModulePath)) {
-    Write-Error "Module PRAnalysisCache.psm1 non trouvÃ© Ã  l'emplacement: $cacheModulePath"
+    Write-Error "Module PRAnalysisCache.psm1 non trouvÃƒÂ© ÃƒÂ  l'emplacement: $cacheModulePath"
     exit 1
 }
 
 Import-Module $cacheModulePath -Force
 
-# Initialiser le cache si demandÃ©
+# Initialiser le cache si demandÃƒÂ©
 $cache = $null
 if ($UseCache) {
     $cache = New-PRAnalysisCache -MaxMemoryItems 1000
@@ -91,7 +91,7 @@ if ($UseCache) {
     }
 
     $cache.DiskCachePath = $cachePath
-    Write-Verbose "Cache initialisÃ© avec 1000 Ã©lÃ©ments maximum en mÃ©moire et stockage sur disque dans $cachePath"
+    Write-Verbose "Cache initialisÃƒÂ© avec 1000 ÃƒÂ©lÃƒÂ©ments maximum en mÃƒÂ©moire et stockage sur disque dans $cachePath"
 }
 
 # Fonction pour analyser un fichier avec mise en cache
@@ -111,7 +111,7 @@ function Invoke-CachedFileAnalysis {
         [string[]]$Severity = @("Error", "Warning", "Information")
     )
 
-    # VÃ©rifier si le fichier existe
+    # VÃƒÂ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Warning "Le fichier n'existe pas: $FilePath"
         return @()
@@ -120,14 +120,14 @@ function Invoke-CachedFileAnalysis {
     # Obtenir les informations sur le fichier
     $fileInfo = Get-Item -Path $FilePath
 
-    # GÃ©nÃ©rer une clÃ© de cache unique basÃ©e sur le chemin du fichier, sa date de modification et les paramÃ¨tres d'analyse
+    # GÃƒÂ©nÃƒÂ©rer une clÃƒÂ© de cache unique basÃƒÂ©e sur le chemin du fichier, sa date de modification et les paramÃƒÂ¨tres d'analyse
     $cacheKey = "PSScriptAnalyzer:$($FilePath):$($fileInfo.LastWriteTimeUtc.Ticks):$($IncludeRule -join ','):$($ExcludeRule -join ','):$($Severity -join ',')"
 
-    # VÃ©rifier le cache si activÃ©
+    # VÃƒÂ©rifier le cache si activÃƒÂ©
     if ($UseCache -and -not $ForceRefresh -and $null -ne $cache) {
         $cachedResult = $cache.GetItem($cacheKey)
         if ($null -ne $cachedResult) {
-            Write-Verbose "RÃ©sultats rÃ©cupÃ©rÃ©s du cache pour $FilePath"
+            Write-Verbose "RÃƒÂ©sultats rÃƒÂ©cupÃƒÂ©rÃƒÂ©s du cache pour $FilePath"
             return $cachedResult
         }
     }
@@ -153,7 +153,7 @@ function Invoke-CachedFileAnalysis {
 
     $results = Invoke-ScriptAnalyzer @params
 
-    # Convertir les rÃ©sultats vers un format sÃ©rialisable
+    # Convertir les rÃƒÂ©sultats vers un format sÃƒÂ©rialisable
     $serializableResults = $results | ForEach-Object {
         [PSCustomObject]@{
             RuleName             = $_.RuleName
@@ -176,16 +176,16 @@ function Invoke-CachedFileAnalysis {
         }
     }
 
-    # Stocker les rÃ©sultats dans le cache si activÃ©
+    # Stocker les rÃƒÂ©sultats dans le cache si activÃƒÂ©
     if ($UseCache -and $null -ne $cache) {
         $cache.SetItem($cacheKey, $serializableResults, (New-TimeSpan -Hours $CacheTTLHours))
-        Write-Verbose "RÃ©sultats stockÃ©s dans le cache pour $FilePath"
+        Write-Verbose "RÃƒÂ©sultats stockÃƒÂ©s dans le cache pour $FilePath"
     }
 
     return $serializableResults
 }
 
-# Fonction pour analyser un rÃ©pertoire
+# Fonction pour analyser un rÃƒÂ©pertoire
 function Invoke-DirectoryAnalysis {
     [CmdletBinding()]
     param(
@@ -205,9 +205,9 @@ function Invoke-DirectoryAnalysis {
         [switch]$Recurse
     )
 
-    # VÃ©rifier si le rÃ©pertoire existe
+    # VÃƒÂ©rifier si le rÃƒÂ©pertoire existe
     if (-not (Test-Path -Path $DirectoryPath -PathType Container)) {
-        Write-Warning "Le rÃ©pertoire n'existe pas: $DirectoryPath"
+        Write-Warning "Le rÃƒÂ©pertoire n'existe pas: $DirectoryPath"
         return @()
     }
 
@@ -225,7 +225,7 @@ function Invoke-DirectoryAnalysis {
 
         Write-Progress -Activity "Analyse des scripts PowerShell" -Status "Traitement du fichier $processedFiles/$totalFiles ($percentComplete%)" -PercentComplete $percentComplete
 
-        # VÃ©rifier si le fichier est dans le cache
+        # VÃƒÂ©rifier si le fichier est dans le cache
         $fileInfo = $file
         $cacheKey = "PSScriptAnalyzer:$($file.FullName):$($fileInfo.LastWriteTimeUtc.Ticks):$($IncludeRule -join ','):$($ExcludeRule -join ','):$($Severity -join ',')"
         $fromCache = $false
@@ -241,14 +241,14 @@ function Invoke-DirectoryAnalysis {
         # Analyser le fichier
         $fileResults = Invoke-CachedFileAnalysis -FilePath $file.FullName -IncludeRule $IncludeRule -ExcludeRule $ExcludeRule -Severity $Severity
 
-        # Ajouter les rÃ©sultats
+        # Ajouter les rÃƒÂ©sultats
         $results += $fileResults
 
         # Afficher des informations sur le fichier
         if ($fromCache) {
-            Write-Verbose "Fichier $($file.Name) analysÃ© (depuis le cache): $($fileResults.Count) problÃ¨mes trouvÃ©s"
+            Write-Verbose "Fichier $($file.Name) analysÃƒÂ© (depuis le cache): $($fileResults.Count) problÃƒÂ¨mes trouvÃƒÂ©s"
         } else {
-            Write-Verbose "Fichier $($file.Name) analysÃ©: $($fileResults.Count) problÃ¨mes trouvÃ©s"
+            Write-Verbose "Fichier $($file.Name) analysÃƒÂ©: $($fileResults.Count) problÃƒÂ¨mes trouvÃƒÂ©s"
         }
     }
 
@@ -288,26 +288,26 @@ function Start-Analysis {
 
     $allResults = @()
 
-    # Mesurer le temps d'exÃ©cution
+    # Mesurer le temps d'exÃƒÂ©cution
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-    # DÃ©terminer si le chemin est un fichier ou un rÃ©pertoire
+    # DÃƒÂ©terminer si le chemin est un fichier ou un rÃƒÂ©pertoire
     if (Test-Path -Path $Path -PathType Leaf) {
         # Analyser un seul fichier
         $allResults = Invoke-CachedFileAnalysis -FilePath $Path -IncludeRule $IncludeRule -ExcludeRule $ExcludeRule -Severity $Severity
     } else {
-        # Analyser un rÃ©pertoire
+        # Analyser un rÃƒÂ©pertoire
         $allResults = Invoke-DirectoryAnalysis -DirectoryPath $Path -IncludeRule $IncludeRule -ExcludeRule $ExcludeRule -Severity $Severity -Recurse:$Recurse
     }
 
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed
 
-    # Afficher un rÃ©sumÃ©
-    Write-Host "Analyse terminÃ©e en $($elapsedTime.TotalSeconds) secondes." -ForegroundColor Green
-    Write-Host "Nombre total de problÃ¨mes trouvÃ©s: $($allResults.Count)" -ForegroundColor Yellow
+    # Afficher un rÃƒÂ©sumÃƒÂ©
+    Write-Host "Analyse terminÃƒÂ©e en $($elapsedTime.TotalSeconds) secondes." -ForegroundColor Green
+    Write-Host "Nombre total de problÃƒÂ¨mes trouvÃƒÂ©s: $($allResults.Count)" -ForegroundColor Yellow
 
-    # Grouper les rÃ©sultats par sÃ©vÃ©ritÃ©
+    # Grouper les rÃƒÂ©sultats par sÃƒÂ©vÃƒÂ©ritÃƒÂ©
     $resultsBySeverity = $allResults | Group-Object -Property Severity -NoElement
     foreach ($group in $resultsBySeverity) {
         $color = switch ($group.Name) {
@@ -320,17 +320,17 @@ function Start-Analysis {
         Write-Host "$($group.Name): $($group.Count)" -ForegroundColor $color
     }
 
-    # Enregistrer les rÃ©sultats si demandÃ©
+    # Enregistrer les rÃƒÂ©sultats si demandÃƒÂ©
     if ($OutputPath) {
         $allResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding UTF8
-        Write-Host "RÃ©sultats enregistrÃ©s dans $OutputPath" -ForegroundColor Green
+        Write-Host "RÃƒÂ©sultats enregistrÃƒÂ©s dans $OutputPath" -ForegroundColor Green
     }
 
     return $allResults
 }
 
-# ExÃ©cuter l'analyse
+# ExÃƒÂ©cuter l'analyse
 $results = Start-Analysis -Path $Path -IncludeRule $IncludeRule -ExcludeRule $ExcludeRule -Severity $Severity -OutputPath $OutputPath -Recurse:$Recurse
 
-# Afficher les rÃ©sultats
+# Afficher les rÃƒÂ©sultats
 return $results

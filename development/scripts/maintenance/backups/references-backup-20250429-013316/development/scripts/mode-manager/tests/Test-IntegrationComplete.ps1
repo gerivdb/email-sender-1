@@ -1,51 +1,51 @@
-<#
+﻿<#
 .SYNOPSIS
-    Test d'intégration complète entre le mode manager et le roadmap manager.
+    Test d'intÃ©gration complÃ¨te entre le mode manager et le roadmap manager.
 
 .DESCRIPTION
-    Ce script teste l'intégration complète entre le mode manager et le roadmap manager
-    en vérifiant que tous les composants fonctionnent correctement ensemble.
+    Ce script teste l'intÃ©gration complÃ¨te entre le mode manager et le roadmap manager
+    en vÃ©rifiant que tous les composants fonctionnent correctement ensemble.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Définir les chemins
+# DÃ©finir les chemins
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))
 $integratedManagerPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\integrated-manager.ps1"
 $configPath = Join-Path -Path $projectRoot -ChildPath "development\config\unified-config.json"
 
-# Créer un répertoire de test temporaire
+# CrÃ©er un rÃ©pertoire de test temporaire
 $testDir = Join-Path -Path $scriptPath -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "integration-test-roadmap.md"
 @"
-# Roadmap d'intégration
+# Roadmap d'intÃ©gration
 
-## Tâche 1: Intégration Mode Manager et Roadmap Manager
+## TÃ¢che 1: IntÃ©gration Mode Manager et Roadmap Manager
 
 ### Description
-Cette tâche vise à intégrer le Mode Manager et le Roadmap Manager pour offrir une interface unifiée.
+Cette tÃ¢che vise Ã  intÃ©grer le Mode Manager et le Roadmap Manager pour offrir une interface unifiÃ©e.
 
-### Sous-tâches
-- [ ] **1.1** Créer le gestionnaire intégré
+### Sous-tÃ¢ches
+- [ ] **1.1** CrÃ©er le gestionnaire intÃ©grÃ©
 - [ ] **1.2** Adapter les modes existants
-- [ ] **1.3** Créer de nouveaux modes d'intégration
-- [ ] **1.4** Tester l'intégration complète
-- [ ] **1.5** Documenter l'intégration
+- [ ] **1.3** CrÃ©er de nouveaux modes d'intÃ©gration
+- [ ] **1.4** Tester l'intÃ©gration complÃ¨te
+- [ ] **1.5** Documenter l'intÃ©gration
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfigPath = Join-Path -Path $testDir -ChildPath "integration-test-config.json"
 @{
     General = @{
@@ -110,7 +110,7 @@ $testConfigPath = Join-Path -Path $testDir -ChildPath "integration-test-config.j
     Roadmaps = @{
         Test = @{
             Path = $testRoadmapPath
-            Description = "Roadmap de test d'intégration"
+            Description = "Roadmap de test d'intÃ©gration"
             Format = "Markdown"
             AutoUpdate = $true
             GitIntegration = $false
@@ -119,7 +119,7 @@ $testConfigPath = Join-Path -Path $testDir -ChildPath "integration-test-config.j
     }
     Workflows = @{
         IntegrationTest = @{
-            Description = "Workflow de test d'intégration"
+            Description = "Workflow de test d'intÃ©gration"
             Modes = @("CHECK", "GRAN", "ROADMAP-SYNC", "ROADMAP-REPORT", "ROADMAP-PLAN")
             AutoContinue = $true
             StopOnError = $true
@@ -137,9 +137,9 @@ $testConfigPath = Join-Path -Path $testDir -ChildPath "integration-test-config.j
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $testConfigPath -Encoding UTF8
 
-# Créer des mocks pour les tests
+# CrÃ©er des mocks pour les tests
 function Mock-RoadmapParser {
-    # Créer un module mock pour RoadmapParser
+    # CrÃ©er un module mock pour RoadmapParser
     $mockModulePath = Join-Path -Path $testDir -ChildPath "MockRoadmapParser.psm1"
     @"
 function Invoke-RoadmapCheck {
@@ -150,7 +150,7 @@ function Invoke-RoadmapCheck {
         [bool]`$GenerateReport = `$true
     )
     
-    # Simuler la vérification de la roadmap
+    # Simuler la vÃ©rification de la roadmap
     return @{
         Success = `$true
         FilePath = `$FilePath
@@ -186,16 +186,16 @@ function ConvertFrom-MarkdownToJson {
     
     # Simuler la conversion de Markdown vers JSON
     `$json = @{
-        Title = "Roadmap d'intégration"
+        Title = "Roadmap d'intÃ©gration"
         Tasks = @(
             @{
-                Title = "Tâche 1: Intégration Mode Manager et Roadmap Manager"
+                Title = "TÃ¢che 1: IntÃ©gration Mode Manager et Roadmap Manager"
                 SubTasks = @(
-                    @{ Title = "Créer le gestionnaire intégré"; IsCompleted = `$false },
+                    @{ Title = "CrÃ©er le gestionnaire intÃ©grÃ©"; IsCompleted = `$false },
                     @{ Title = "Adapter les modes existants"; IsCompleted = `$false },
-                    @{ Title = "Créer de nouveaux modes d'intégration"; IsCompleted = `$false },
-                    @{ Title = "Tester l'intégration complète"; IsCompleted = `$false },
-                    @{ Title = "Documenter l'intégration"; IsCompleted = `$false }
+                    @{ Title = "CrÃ©er de nouveaux modes d'intÃ©gration"; IsCompleted = `$false },
+                    @{ Title = "Tester l'intÃ©gration complÃ¨te"; IsCompleted = `$false },
+                    @{ Title = "Documenter l'intÃ©gration"; IsCompleted = `$false }
                 )
             }
         )
@@ -230,7 +230,7 @@ function New-HtmlReport {
         [bool]`$IncludePredictions
     )
     
-    # Simuler la génération d'un rapport HTML
+    # Simuler la gÃ©nÃ©ration d'un rapport HTML
     `$reportPath = Join-Path -Path `$OutputPath -ChildPath "roadmap-report.html"
     
     `$html = @"
@@ -241,9 +241,9 @@ function New-HtmlReport {
 </head>
 <body>
     <h1>Rapport de Roadmap</h1>
-    <p>Tâches totales: `$(`$Analysis.TotalTasks)</p>
-    <p>Tâches complétées: `$(`$Analysis.CompletedTasks)</p>
-    <p>Pourcentage de complétion: `$(`$Analysis.CompletionPercentage)%</p>
+    <p>TÃ¢ches totales: `$(`$Analysis.TotalTasks)</p>
+    <p>TÃ¢ches complÃ©tÃ©es: `$(`$Analysis.CompletedTasks)</p>
+    <p>Pourcentage de complÃ©tion: `$(`$Analysis.CompletionPercentage)%</p>
 </body>
 </html>
 "@
@@ -259,16 +259,16 @@ function New-ActionPlan {
         [int]`$DaysToForecast
     )
     
-    # Simuler la génération d'un plan d'action
+    # Simuler la gÃ©nÃ©ration d'un plan d'action
     return @{
         StartDate = (Get-Date).ToString("yyyy-MM-dd")
         EndDate = (Get-Date).AddDays(`$DaysToForecast).ToString("yyyy-MM-dd")
         DaysToForecast = `$DaysToForecast
         Tasks = @(
             @{
-                TaskGroup = "Tâche 1"
+                TaskGroup = "TÃ¢che 1"
                 SubTaskId = "1.1"
-                SubTaskTitle = "Créer le gestionnaire intégré"
+                SubTaskTitle = "CrÃ©er le gestionnaire intÃ©grÃ©"
                 StartDate = (Get-Date).ToString("yyyy-MM-dd")
                 EndDate = (Get-Date).AddDays(3).ToString("yyyy-MM-dd")
                 EstimatedDays = 3
@@ -283,17 +283,17 @@ function New-PlanReport {
         [string]`$OutputPath
     )
     
-    # Simuler la génération d'un rapport de plan d'action
+    # Simuler la gÃ©nÃ©ration d'un rapport de plan d'action
     `$markdown = @"
 # Plan d'action pour la roadmap
 
-## Période de planification
-- Date de début: `$(`$Plan.StartDate)
+## PÃ©riode de planification
+- Date de dÃ©but: `$(`$Plan.StartDate)
 - Date de fin: `$(`$Plan.EndDate)
 - Nombre de jours: `$(`$Plan.DaysToForecast)
 
-## Tâches planifiées
-| Groupe | ID | Tâche | Date de début | Date de fin | Jours estimés |
+## TÃ¢ches planifiÃ©es
+| Groupe | ID | TÃ¢che | Date de dÃ©but | Date de fin | Jours estimÃ©s |
 | ------ | -- | ----- | ------------- | ----------- | ------------- |
 "@
     
@@ -312,46 +312,46 @@ Export-ModuleMember -Function Invoke-RoadmapCheck, Invoke-RoadmapGranularization
     return $mockModulePath
 }
 
-# Créer les mocks
+# CrÃ©er les mocks
 $mockRoadmapParserPath = Mock-RoadmapParser
 
-# Définir les tests
-Describe "Intégration complète Mode Manager et Roadmap Manager" {
+# DÃ©finir les tests
+Describe "IntÃ©gration complÃ¨te Mode Manager et Roadmap Manager" {
     BeforeAll {
-        # Créer un mock pour Import-Module
+        # CrÃ©er un mock pour Import-Module
         Mock Import-Module {
             # Ne rien faire, juste simuler l'importation
         } -ModuleName "Test-IntegrationComplete"
         
-        # Créer un mock pour le module RoadmapParser
+        # CrÃ©er un mock pour le module RoadmapParser
         Mock Import-Module {
             Import-Module $mockRoadmapParserPath -Force
         } -ParameterFilter { $Name -match "RoadmapParser" }
     }
     
-    Context "Gestionnaire intégré" {
+    Context "Gestionnaire intÃ©grÃ©" {
         It "Devrait exister" {
             Test-Path -Path $integratedManagerPath | Should -Be $true
         }
         
-        It "Devrait pouvoir être exécuté sans erreur" {
+        It "Devrait pouvoir Ãªtre exÃ©cutÃ© sans erreur" {
             { & $integratedManagerPath -ListModes -ConfigPath $testConfigPath } | Should -Not -Throw
         }
     }
     
-    Context "Modes adaptés" {
-        It "Le mode CHECK adapté devrait exister" {
+    Context "Modes adaptÃ©s" {
+        It "Le mode CHECK adaptÃ© devrait exister" {
             $checkPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\check.ps1"
             Test-Path -Path $checkPath | Should -Be $true
         }
         
-        It "Le mode GRAN adapté devrait exister" {
+        It "Le mode GRAN adaptÃ© devrait exister" {
             $granPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\gran-mode.ps1"
             Test-Path -Path $granPath | Should -Be $true
         }
     }
     
-    Context "Nouveaux modes d'intégration" {
+    Context "Nouveaux modes d'intÃ©gration" {
         It "Le mode ROADMAP-SYNC devrait exister" {
             $syncPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\roadmap-sync-mode.ps1"
             Test-Path -Path $syncPath | Should -Be $true
@@ -368,34 +368,34 @@ Describe "Intégration complète Mode Manager et Roadmap Manager" {
         }
     }
     
-    Context "Exécution des modes via le gestionnaire intégré" {
-        It "Devrait pouvoir exécuter le mode CHECK" {
+    Context "ExÃ©cution des modes via le gestionnaire intÃ©grÃ©" {
+        It "Devrait pouvoir exÃ©cuter le mode CHECK" {
             { & $integratedManagerPath -Mode "CHECK" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.1" -ConfigPath $testConfigPath } | Should -Not -Throw
         }
         
-        It "Devrait pouvoir exécuter le mode GRAN" {
+        It "Devrait pouvoir exÃ©cuter le mode GRAN" {
             { & $integratedManagerPath -Mode "GRAN" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.1" -ConfigPath $testConfigPath } | Should -Not -Throw
         }
         
-        It "Devrait pouvoir exécuter le mode ROADMAP-SYNC" {
+        It "Devrait pouvoir exÃ©cuter le mode ROADMAP-SYNC" {
             { & $integratedManagerPath -Mode "ROADMAP-SYNC" -RoadmapPath $testRoadmapPath -ConfigPath $testConfigPath } | Should -Not -Throw
         }
         
-        It "Devrait pouvoir exécuter le mode ROADMAP-REPORT" {
+        It "Devrait pouvoir exÃ©cuter le mode ROADMAP-REPORT" {
             { & $integratedManagerPath -Mode "ROADMAP-REPORT" -RoadmapPath $testRoadmapPath -ConfigPath $testConfigPath } | Should -Not -Throw
         }
         
-        It "Devrait pouvoir exécuter le mode ROADMAP-PLAN" {
+        It "Devrait pouvoir exÃ©cuter le mode ROADMAP-PLAN" {
             { & $integratedManagerPath -Mode "ROADMAP-PLAN" -RoadmapPath $testRoadmapPath -ConfigPath $testConfigPath } | Should -Not -Throw
         }
     }
     
-    Context "Exécution du workflow de test d'intégration" {
-        It "Devrait pouvoir exécuter le workflow IntegrationTest" {
+    Context "ExÃ©cution du workflow de test d'intÃ©gration" {
+        It "Devrait pouvoir exÃ©cuter le workflow IntegrationTest" {
             { & $integratedManagerPath -Workflow "IntegrationTest" -RoadmapPath $testRoadmapPath -ConfigPath $testConfigPath } | Should -Not -Throw
         }
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $MyInvocation.MyCommand.Path -Output Detailed

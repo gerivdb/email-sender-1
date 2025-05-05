@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute des tests de mutation pour le script manager.
+    ExÃ©cute des tests de mutation pour le script manager.
 .DESCRIPTION
-    Ce script exécute des tests de mutation pour vérifier la qualité des tests existants.
-    Les tests de mutation modifient légèrement le code source et vérifient si les tests
-    détectent ces modifications.
+    Ce script exÃ©cute des tests de mutation pour vÃ©rifier la qualitÃ© des tests existants.
+    Les tests de mutation modifient lÃ©gÃ¨rement le code source et vÃ©rifient si les tests
+    dÃ©tectent ces modifications.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de tests.
 .PARAMETER GenerateHTML
-    Génère un rapport HTML des résultats des tests.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests.
 .PARAMETER MaxMutations
-    Nombre maximum de mutations à effectuer.
+    Nombre maximum de mutations Ã  effectuer.
 .EXAMPLE
     .\Run-MutationTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML -MaxMutations 10
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -32,7 +32,7 @@ param (
     [int]$MaxMutations = 5
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -57,22 +57,22 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Fonction pour créer une mutation du code source
+# Fonction pour crÃ©er une mutation du code source
 function New-CodeMutation {
     [CmdletBinding()]
     param (
@@ -106,7 +106,7 @@ function New-CodeMutation {
                 
                 return @{
                     MutatedCode = $mutatedCode
-                    Description = "Valeur de retour modifiée: '$originalValue' -> '$newValue'"
+                    Description = "Valeur de retour modifiÃ©e: '$originalValue' -> '$newValue'"
                     LineNumber = ($SourceCode.Substring(0, $match.Index).Split("`n")).Count
                     OriginalValue = $originalValue
                     NewValue = $newValue
@@ -130,7 +130,7 @@ function New-CodeMutation {
                 
                 return @{
                     MutatedCode = $mutatedCode
-                    Description = "Condition inversée: '$originalCondition' -> '$newCondition'"
+                    Description = "Condition inversÃ©e: '$originalCondition' -> '$newCondition'"
                     LineNumber = ($SourceCode.Substring(0, $match.Index).Split("`n")).Count
                     OriginalValue = $originalCondition
                     NewValue = $newCondition
@@ -157,15 +157,15 @@ function New-CodeMutation {
                 $lineToRemove = $nonEmptyLines[$randomIndex]
                 
                 $newLines = $lines.Clone()
-                $newLines[$lineToRemove.Index] = "# Ligne supprimée: $($lineToRemove.Line.Trim())"
+                $newLines[$lineToRemove.Index] = "# Ligne supprimÃ©e: $($lineToRemove.Line.Trim())"
                 $mutatedCode = $newLines -join "`n"
                 
                 return @{
                     MutatedCode = $mutatedCode
-                    Description = "Ligne supprimée: '$($lineToRemove.Line.Trim())'"
+                    Description = "Ligne supprimÃ©e: '$($lineToRemove.Line.Trim())'"
                     LineNumber = $lineToRemove.Index + 1
                     OriginalValue = $lineToRemove.Line.Trim()
-                    NewValue = "# Ligne supprimée: $($lineToRemove.Line.Trim())"
+                    NewValue = "# Ligne supprimÃ©e: $($lineToRemove.Line.Trim())"
                 }
             }
         }
@@ -187,7 +187,7 @@ function New-CodeMutation {
                 
                 return @{
                     MutatedCode = $mutatedCode
-                    Description = "Valeur de variable modifiée: '$variableName' = '$originalValue' -> '$newValue'"
+                    Description = "Valeur de variable modifiÃ©e: '$variableName' = '$originalValue' -> '$newValue'"
                     LineNumber = ($SourceCode.Substring(0, $match.Index).Split("`n")).Count
                     OriginalValue = $originalValue
                     NewValue = $newValue
@@ -195,7 +195,7 @@ function New-CodeMutation {
             }
         }
         "ChangeRegex" {
-            # Modifier une expression régulière
+            # Modifier une expression rÃ©guliÃ¨re
             $pattern = "-match\s+'([^']+)'"
             $matches = [regex]::Matches($SourceCode, $pattern)
             
@@ -211,7 +211,7 @@ function New-CodeMutation {
                 
                 return @{
                     MutatedCode = $mutatedCode
-                    Description = "Expression régulière modifiée: '$originalRegex' -> '$newRegex'"
+                    Description = "Expression rÃ©guliÃ¨re modifiÃ©e: '$originalRegex' -> '$newRegex'"
                     LineNumber = ($SourceCode.Substring(0, $match.Index).Split("`n")).Count
                     OriginalValue = $originalRegex
                     NewValue = $newRegex
@@ -223,7 +223,7 @@ function New-CodeMutation {
     return $null
 }
 
-# Fonction pour exécuter les tests sur une version mutée du code
+# Fonction pour exÃ©cuter les tests sur une version mutÃ©e du code
 function Test-MutatedCode {
     [CmdletBinding()]
     param (
@@ -237,22 +237,22 @@ function Test-MutatedCode {
         [string]$TestFilePath
     )
     
-    # Créer un fichier temporaire avec le code muté
+    # CrÃ©er un fichier temporaire avec le code mutÃ©
     $tempFilePath = [System.IO.Path]::GetTempFileName() + ".ps1"
     $MutatedCode | Out-File -FilePath $tempFilePath -Encoding utf8
     
     try {
-        # Exécuter les tests avec le code muté
+        # ExÃ©cuter les tests avec le code mutÃ©
         $pesterConfig = New-PesterConfiguration
         $pesterConfig.Run.Path = $TestFilePath
         $pesterConfig.Output.Verbosity = "None"
         $pesterConfig.Run.PassThru = $true
         
-        # Remplacer temporairement le fichier original par le fichier muté
+        # Remplacer temporairement le fichier original par le fichier mutÃ©
         $originalContent = Get-Content -Path $OriginalFilePath -Raw
         $MutatedCode | Out-File -FilePath $OriginalFilePath -Encoding utf8
         
-        # Exécuter les tests
+        # ExÃ©cuter les tests
         $testResults = Invoke-Pester -Configuration $pesterConfig
         
         # Restaurer le fichier original
@@ -261,7 +261,7 @@ function Test-MutatedCode {
         return $testResults
     }
     catch {
-        Write-Log "Erreur lors de l'exécution des tests: $_" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution des tests: $_" -Level "ERROR"
         return $null
     }
     finally {
@@ -270,14 +270,14 @@ function Test-MutatedCode {
             Remove-Item -Path $tempFilePath -Force
         }
         
-        # S'assurer que le fichier original est restauré
+        # S'assurer que le fichier original est restaurÃ©
         if (-not (Get-Content -Path $OriginalFilePath -Raw -eq $originalContent)) {
             $originalContent | Out-File -FilePath $OriginalFilePath -Encoding utf8
         }
     }
 }
 
-# Fichiers à tester
+# Fichiers Ã  tester
 $filesToTest = @(
     @{
         SourcePath = "$PSScriptRoot/../organization/Organize-ManagerScripts.ps1"
@@ -285,7 +285,7 @@ $filesToTest = @(
     }
 )
 
-# Types de mutations à effectuer
+# Types de mutations Ã  effectuer
 $mutationTypes = @(
     "ChangeReturnValue",
     "ChangeCondition",
@@ -294,14 +294,14 @@ $mutationTypes = @(
     "ChangeRegex"
 )
 
-# Exécuter les tests de mutation
+# ExÃ©cuter les tests de mutation
 $mutationResults = @()
 $mutationCount = 0
 
 foreach ($file in $filesToTest) {
     Write-Log "Test de mutation pour le fichier: $($file.SourcePath)" -Level "INFO"
     
-    # Vérifier si les fichiers existent
+    # VÃ©rifier si les fichiers existent
     if (-not (Test-Path -Path $file.SourcePath)) {
         Write-Log "Le fichier source n'existe pas: $($file.SourcePath)" -Level "ERROR"
         continue
@@ -315,7 +315,7 @@ foreach ($file in $filesToTest) {
     # Lire le contenu du fichier source
     $sourceCode = Get-Content -Path $file.SourcePath -Raw
     
-    # Exécuter les tests originaux pour vérifier qu'ils passent
+    # ExÃ©cuter les tests originaux pour vÃ©rifier qu'ils passent
     $pesterConfig = New-PesterConfiguration
     $pesterConfig.Run.Path = $file.TestPath
     $pesterConfig.Output.Verbosity = "None"
@@ -324,37 +324,37 @@ foreach ($file in $filesToTest) {
     $originalTestResults = Invoke-Pester -Configuration $pesterConfig
     
     if ($originalTestResults.FailedCount -gt 0) {
-        Write-Log "Les tests originaux échouent. Impossible de continuer les tests de mutation." -Level "ERROR"
+        Write-Log "Les tests originaux Ã©chouent. Impossible de continuer les tests de mutation." -Level "ERROR"
         continue
     }
     
-    # Créer des mutations et exécuter les tests
+    # CrÃ©er des mutations et exÃ©cuter les tests
     for ($i = 0; $i -lt $MaxMutations; $i++) {
-        # Sélectionner un type de mutation aléatoire
+        # SÃ©lectionner un type de mutation alÃ©atoire
         $mutationType = $mutationTypes | Get-Random
         
-        # Créer une mutation
+        # CrÃ©er une mutation
         $mutation = New-CodeMutation -SourceCode $sourceCode -MutationType $mutationType
         
         if ($null -eq $mutation) {
-            Write-Log "Impossible de créer une mutation de type '$mutationType'." -Level "WARNING"
+            Write-Log "Impossible de crÃ©er une mutation de type '$mutationType'." -Level "WARNING"
             continue
         }
         
         Write-Log "Mutation $($i + 1)/$MaxMutations: $($mutation.Description)" -Level "INFO"
         
-        # Exécuter les tests sur le code muté
+        # ExÃ©cuter les tests sur le code mutÃ©
         $mutatedTestResults = Test-MutatedCode -OriginalFilePath $file.SourcePath -MutatedCode $mutation.MutatedCode -TestFilePath $file.TestPath
         
         if ($null -eq $mutatedTestResults) {
-            Write-Log "Erreur lors de l'exécution des tests sur le code muté." -Level "ERROR"
+            Write-Log "Erreur lors de l'exÃ©cution des tests sur le code mutÃ©." -Level "ERROR"
             continue
         }
         
-        # Vérifier si les tests ont détecté la mutation
+        # VÃ©rifier si les tests ont dÃ©tectÃ© la mutation
         $mutationDetected = $mutatedTestResults.FailedCount -gt 0
         
-        # Ajouter les résultats
+        # Ajouter les rÃ©sultats
         $mutationResults += [PSCustomObject]@{
             SourceFile = $file.SourcePath
             TestFile = $file.TestPath
@@ -371,10 +371,10 @@ foreach ($file in $filesToTest) {
         $mutationCount++
         
         if ($mutationDetected) {
-            Write-Log "  Mutation détectée: $($mutatedTestResults.FailedCount) test(s) échoué(s)" -Level "SUCCESS"
+            Write-Log "  Mutation dÃ©tectÃ©e: $($mutatedTestResults.FailedCount) test(s) Ã©chouÃ©(s)" -Level "SUCCESS"
         }
         else {
-            Write-Log "  Mutation non détectée: tous les tests ont réussi" -Level "ERROR"
+            Write-Log "  Mutation non dÃ©tectÃ©e: tous les tests ont rÃ©ussi" -Level "ERROR"
         }
     }
 }
@@ -384,27 +384,27 @@ $totalMutations = $mutationResults.Count
 $detectedMutations = ($mutationResults | Where-Object { $_.Detected } | Measure-Object).Count
 $detectionRate = if ($totalMutations -gt 0) { [math]::Round(($detectedMutations / $totalMutations) * 100, 2) } else { 0 }
 
-Write-Log "`nRésumé des tests de mutation:" -Level "INFO"
+Write-Log "`nRÃ©sumÃ© des tests de mutation:" -Level "INFO"
 Write-Log "  Mutations totales: $totalMutations" -Level "INFO"
-Write-Log "  Mutations détectées: $detectedMutations" -Level "SUCCESS"
-Write-Log "  Mutations non détectées: $($totalMutations - $detectedMutations)" -Level "ERROR"
-Write-Log "  Taux de détection: $detectionRate%" -Level $(if ($detectionRate -ge 80) { "SUCCESS" } elseif ($detectionRate -ge 60) { "WARNING" } else { "ERROR" })
+Write-Log "  Mutations dÃ©tectÃ©es: $detectedMutations" -Level "SUCCESS"
+Write-Log "  Mutations non dÃ©tectÃ©es: $($totalMutations - $detectedMutations)" -Level "ERROR"
+Write-Log "  Taux de dÃ©tection: $detectionRate%" -Level $(if ($detectionRate -ge 80) { "SUCCESS" } elseif ($detectionRate -ge 60) { "WARNING" } else { "ERROR" })
 
-# Exporter les résultats au format JSON
+# Exporter les rÃ©sultats au format JSON
 $jsonPath = Join-Path -Path $OutputPath -ChildPath "MutationResults.json"
 $mutationResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $jsonPath -Encoding utf8
-Write-Log "Résultats exportés au format JSON: $jsonPath" -Level "SUCCESS"
+Write-Log "RÃ©sultats exportÃ©s au format JSON: $jsonPath" -Level "SUCCESS"
 
-# Exporter les résultats au format CSV
+# Exporter les rÃ©sultats au format CSV
 $csvPath = Join-Path -Path $OutputPath -ChildPath "MutationResults.csv"
 $mutationResults | Export-Csv -Path $csvPath -NoTypeInformation -Encoding utf8
-Write-Log "Résultats exportés au format CSV: $csvPath" -Level "SUCCESS"
+Write-Log "RÃ©sultats exportÃ©s au format CSV: $csvPath" -Level "SUCCESS"
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "MutationResults.html"
     
-    # Créer un rapport HTML
+    # CrÃ©er un rapport HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -427,29 +427,29 @@ if ($GenerateHTML) {
 </head>
 <body>
     <h1>Rapport de tests de mutation</h1>
-    <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p>Mutations totales: $totalMutations</p>
-        <p class="success">Mutations détectées: $detectedMutations</p>
-        <p class="error">Mutations non détectées: $($totalMutations - $detectedMutations)</p>
-        <p>Taux de détection: <span class="$(if ($detectionRate -ge 80) { "success" } elseif ($detectionRate -ge 60) { "warning" } else { "error" })">$detectionRate%</span></p>
+        <p class="success">Mutations dÃ©tectÃ©es: $detectedMutations</p>
+        <p class="error">Mutations non dÃ©tectÃ©es: $($totalMutations - $detectedMutations)</p>
+        <p>Taux de dÃ©tection: <span class="$(if ($detectionRate -ge 80) { "success" } elseif ($detectionRate -ge 60) { "warning" } else { "error" })">$detectionRate%</span></p>
     </div>
     
     <div class="chart-container">
         <canvas id="detectionRateChart"></canvas>
     </div>
     
-    <h2>Détails des mutations</h2>
+    <h2>DÃ©tails des mutations</h2>
     <table>
         <tr>
             <th>Fichier source</th>
             <th>Type de mutation</th>
             <th>Description</th>
             <th>Ligne</th>
-            <th>Détectée</th>
-            <th>Tests échoués</th>
+            <th>DÃ©tectÃ©e</th>
+            <th>Tests Ã©chouÃ©s</th>
             <th>Tests totaux</th>
         </tr>
 "@
@@ -472,7 +472,7 @@ if ($GenerateHTML) {
     </table>
     
     <h2>Qu'est-ce que les tests de mutation?</h2>
-    <p>Les tests de mutation sont une technique de test qui consiste à introduire des modifications (mutations) dans le code source et à vérifier si les tests existants détectent ces modifications. Si les tests détectent la mutation, cela signifie qu'ils sont efficaces. Si les tests ne détectent pas la mutation, cela signifie qu'ils ne sont pas assez robustes.</p>
+    <p>Les tests de mutation sont une technique de test qui consiste Ã  introduire des modifications (mutations) dans le code source et Ã  vÃ©rifier si les tests existants dÃ©tectent ces modifications. Si les tests dÃ©tectent la mutation, cela signifie qu'ils sont efficaces. Si les tests ne dÃ©tectent pas la mutation, cela signifie qu'ils ne sont pas assez robustes.</p>
     
     <h3>Types de mutations</h3>
     <ul>
@@ -480,19 +480,19 @@ if ($GenerateHTML) {
         <li><strong>ChangeCondition</strong>: Inverse une condition dans une instruction if</li>
         <li><strong>RemoveCode</strong>: Supprime une ligne de code</li>
         <li><strong>ChangeVariable</strong>: Modifie la valeur d'une variable</li>
-        <li><strong>ChangeRegex</strong>: Modifie une expression régulière</li>
+        <li><strong>ChangeRegex</strong>: Modifie une expression rÃ©guliÃ¨re</li>
     </ul>
     
-    <h3>Interprétation des résultats</h3>
-    <p>Un taux de détection élevé (> 80%) indique que les tests sont robustes et détectent efficacement les erreurs dans le code. Un taux de détection faible (< 60%) indique que les tests ne sont pas assez robustes et qu'ils devraient être améliorés.</p>
+    <h3>InterprÃ©tation des rÃ©sultats</h3>
+    <p>Un taux de dÃ©tection Ã©levÃ© (> 80%) indique que les tests sont robustes et dÃ©tectent efficacement les erreurs dans le code. Un taux de dÃ©tection faible (< 60%) indique que les tests ne sont pas assez robustes et qu'ils devraient Ãªtre amÃ©liorÃ©s.</p>
     
     <script>
-        // Données pour les graphiques
+        // DonnÃ©es pour les graphiques
         const detectionRateCtx = document.getElementById('detectionRateChart').getContext('2d');
         new Chart(detectionRateCtx, {
             type: 'pie',
             data: {
-                labels: ['Détectées', 'Non détectées'],
+                labels: ['DÃ©tectÃ©es', 'Non dÃ©tectÃ©es'],
                 datasets: [{
                     data: [$detectedMutations, $($totalMutations - $detectedMutations)],
                     backgroundColor: ['rgba(75, 192, 192, 0.5)', 'rgba(255, 99, 132, 0.5)'],
@@ -505,7 +505,7 @@ if ($GenerateHTML) {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Taux de détection des mutations'
+                        text: 'Taux de dÃ©tection des mutations'
                     }
                 }
             }
@@ -517,7 +517,7 @@ if ($GenerateHTML) {
     
     $htmlContent | Out-File -FilePath $htmlPath -Encoding utf8
     
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
-Write-Log "Tests de mutation terminés." -Level "SUCCESS"
+Write-Log "Tests de mutation terminÃ©s." -Level "SUCCESS"

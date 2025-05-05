@@ -1,7 +1,7 @@
-# Script d'application de la matrice d'évaluation des compétences
+﻿# Script d'application de la matrice d'Ã©valuation des compÃ©tences
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Paramètres
+# ParamÃ¨tres
 $ExpertiseLevelsPath = ".\development\data\planning\expertise-levels.md"
 $SkillsListPath = ".\development\data\planning\skills-list-formatted.md"
 $OutputPath = ".\development\data\planning\skills-evaluation.md"
@@ -9,35 +9,35 @@ $Format = "Markdown"
 $DetailLevel = "Detailed"
 $WeightingMethod = "Custom"
 
-# Afficher les informations de démarrage
-Write-Host "Démarrage de l'application de la matrice d'évaluation des compétences"
-Write-Host "Paramètres:"
+# Afficher les informations de dÃ©marrage
+Write-Host "DÃ©marrage de l'application de la matrice d'Ã©valuation des compÃ©tences"
+Write-Host "ParamÃ¨tres:"
 Write-Host "  - Fichier des niveaux d'expertise: $ExpertiseLevelsPath"
-Write-Host "  - Fichier des compétences: $SkillsListPath"
+Write-Host "  - Fichier des compÃ©tences: $SkillsListPath"
 Write-Host "  - Fichier de sortie: $OutputPath"
 Write-Host "  - Format: $Format"
-Write-Host "  - Niveau de détail: $DetailLevel"
-Write-Host "  - Méthode de pondération: $WeightingMethod"
+Write-Host "  - Niveau de dÃ©tail: $DetailLevel"
+Write-Host "  - MÃ©thode de pondÃ©ration: $WeightingMethod"
 
-# Validation des fichiers d'entrée
+# Validation des fichiers d'entrÃ©e
 if (-not (Test-Path $ExpertiseLevelsPath)) {
-    Write-Error "Fichier des niveaux d'expertise non trouvé: $ExpertiseLevelsPath"
+    Write-Error "Fichier des niveaux d'expertise non trouvÃ©: $ExpertiseLevelsPath"
     exit 1
 }
 
 if (-not (Test-Path $SkillsListPath)) {
-    Write-Error "Fichier des compétences non trouvé: $SkillsListPath"
+    Write-Error "Fichier des compÃ©tences non trouvÃ©: $SkillsListPath"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
-    Write-Host "Création du répertoire de sortie: $outputDir"
+    Write-Host "CrÃ©ation du rÃ©pertoire de sortie: $outputDir"
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Structure pour stocker les critères d'évaluation
+# Structure pour stocker les critÃ¨res d'Ã©valuation
 class EvaluationCriterion {
     [string]$Name
     [hashtable]$Levels
@@ -48,12 +48,12 @@ class EvaluationCriterion {
 
     EvaluationCriterion() {
         $this.Levels = @{}
-        $this.Weight = 0.25 # Poids par défaut
+        $this.Weight = 0.25 # Poids par dÃ©faut
         $this.Priority = 1
     }
 }
 
-# Structure pour stocker une compétence évaluée
+# Structure pour stocker une compÃ©tence Ã©valuÃ©e
 class EvaluatedSkill {
     [string]$Name
     [string]$Category
@@ -75,25 +75,25 @@ class EvaluatedSkill {
     }
 }
 
-# Fonction pour extraire les critères d'évaluation
+# Fonction pour extraire les critÃ¨res d'Ã©valuation
 function Get-EvaluationCriteria {
     param([string]$FilePath)
 
-    Write-Host "Extraction des critères d'évaluation depuis $FilePath"
+    Write-Host "Extraction des critÃ¨res d'Ã©valuation depuis $FilePath"
 
     $content = Get-Content -Path $FilePath -Raw
     $criteria = @()
 
-    # Extraction des sections de critères
-    $criteriaPattern = '(?ms)## Critères d''évaluation\r?\n(.*?)(?=##|\z)'
+    # Extraction des sections de critÃ¨res
+    $criteriaPattern = '(?ms)## CritÃ¨res d''Ã©valuation\r?\n(.*?)(?=##|\z)'
     $criteriaSection = [regex]::Match($content, $criteriaPattern).Groups[1].Value
 
     if ([string]::IsNullOrEmpty($criteriaSection)) {
-        Write-Warning "Aucune section 'Critères d'évaluation' trouvée dans le fichier."
+        Write-Warning "Aucune section 'CritÃ¨res d'Ã©valuation' trouvÃ©e dans le fichier."
         return $criteria
     }
 
-    # Extraction des catégories de critères
+    # Extraction des catÃ©gories de critÃ¨res
     $categoryPattern = '(?ms)### ([^\r\n]+)\r?\n((?:(?!###)[^\r\n]+\r?\n?)+)'
     $categoryMatches = [regex]::Matches($criteriaSection, $categoryPattern)
 
@@ -101,7 +101,7 @@ function Get-EvaluationCriteria {
         $category = $categoryMatch.Groups[1].Value.Trim()
         $categoryContent = $categoryMatch.Groups[2].Value
 
-        # Extraction des critères individuels
+        # Extraction des critÃ¨res individuels
         $criterionPattern = '(?ms)#### ([^\r\n]+)\r?\n((?:(?!####)[^\r\n]+\r?\n?)+)'
         $criterionMatches = [regex]::Matches($categoryContent, $criterionPattern)
 
@@ -127,8 +127,8 @@ function Get-EvaluationCriteria {
                 $criterion.Weight = [double]$weightMatch.Groups[1].Value
             }
 
-            # Extraction de la priorité
-            $priorityPattern = '(?ms)Priorité: ([0-9]+)'
+            # Extraction de la prioritÃ©
+            $priorityPattern = '(?ms)PrioritÃ©: ([0-9]+)'
             $priorityMatch = [regex]::Match($criterionContent, $priorityPattern)
             if ($priorityMatch.Success) {
                 $criterion.Priority = [int]$priorityMatch.Groups[1].Value
@@ -144,7 +144,7 @@ function Get-EvaluationCriteria {
                 $criterion.Levels[$level] = $description
             }
 
-            # Ajuster les poids en fonction de la méthode de pondération
+            # Ajuster les poids en fonction de la mÃ©thode de pondÃ©ration
             if ($WeightingMethod -eq "Equal") {
                 $criterion.Weight = 1.0
             }
@@ -153,16 +153,16 @@ function Get-EvaluationCriteria {
         }
     }
 
-    Write-Host "$($criteria.Count) critères d'évaluation extraits."
+    Write-Host "$($criteria.Count) critÃ¨res d'Ã©valuation extraits."
 
     return $criteria
 }
 
-# Fonction pour lire et parser les compétences
+# Fonction pour lire et parser les compÃ©tences
 function Get-SkillsList {
     param([string]$FilePath)
 
-    Write-Host "Extraction des compétences depuis $FilePath"
+    Write-Host "Extraction des compÃ©tences depuis $FilePath"
 
     $content = Get-Content -Path $FilePath -Raw
     $skills = @()
@@ -175,7 +175,7 @@ function Get-SkillsList {
         $managerName = $managerMatch.Groups[2].Value.Trim()
         $managerContent = $managerMatch.Groups[3].Value
 
-        # Pattern pour extraire les améliorations
+        # Pattern pour extraire les amÃ©liorations
         $improvementPattern = '(?ms)### ([^\r\n]+)\r?\n(.*?)(?=###|\z)'
         $improvementMatches = [regex]::Matches($managerContent, $improvementPattern)
 
@@ -183,8 +183,8 @@ function Get-SkillsList {
             $improvementName = $improvementMatch.Groups[1].Value.Trim()
             $improvementContent = $improvementMatch.Groups[2].Value
 
-            # Pattern pour extraire la table des compétences
-            $tablePattern = '(?ms)\| Catégorie \| Compétence \| Niveau \| Justification \|\r?\n\|[^\r\n]+\|\r?\n((?:\|[^\r\n]+\|\r?\n)+)'
+            # Pattern pour extraire la table des compÃ©tences
+            $tablePattern = '(?ms)\| CatÃ©gorie \| CompÃ©tence \| Niveau \| Justification \|\r?\n\|[^\r\n]+\|\r?\n((?:\|[^\r\n]+\|\r?\n)+)'
             $tableMatch = [regex]::Match($improvementContent, $tablePattern)
 
             if ($tableMatch.Success) {
@@ -213,26 +213,26 @@ function Get-SkillsList {
         }
     }
 
-    Write-Host "$($skills.Count) compétences extraites."
+    Write-Host "$($skills.Count) compÃ©tences extraites."
 
     return $skills
 }
 
-# Fonction pour évaluer une compétence
+# Fonction pour Ã©valuer une compÃ©tence
 function Evaluate-Skill {
     param(
         [EvaluatedSkill]$Skill,
         [array]$Criteria
     )
 
-    Write-Host "Évaluation de la compétence '$($Skill.Name)' dans la catégorie '$($Skill.Category)'"
+    Write-Host "Ã‰valuation de la compÃ©tence '$($Skill.Name)' dans la catÃ©gorie '$($Skill.Category)'"
 
     $totalScore = 0
     $totalWeight = 0
 
     foreach ($criterion in $Criteria) {
-        # Analyse de la justification pour déterminer le niveau
-        $score = 1 # Niveau par défaut
+        # Analyse de la justification pour dÃ©terminer le niveau
+        $score = 1 # Niveau par dÃ©faut
         foreach ($level in $criterion.Levels.Keys | Sort-Object) {
             $description = $criterion.Levels[$level]
             if ($Skill.Justification -match [regex]::Escape($description)) {
@@ -252,33 +252,33 @@ function Evaluate-Skill {
         $Skill.GlobalScore = 0
     }
 
-    # Détermination du niveau d'expertise
+    # DÃ©termination du niveau d'expertise
     $Skill.ExpertiseLevel = switch ($Skill.GlobalScore) {
-        { $_ -le 1.5 } { 'Débutant' }
-        { $_ -le 2.5 } { 'Intermédiaire' }
-        { $_ -le 3.5 } { 'Avancé' }
+        { $_ -le 1.5 } { 'DÃ©butant' }
+        { $_ -le 2.5 } { 'IntermÃ©diaire' }
+        { $_ -le 3.5 } { 'AvancÃ©' }
         default { 'Expert' }
     }
 
-    Write-Host "Compétence '$($Skill.Name)' évaluée avec un score global de $([math]::Round($Skill.GlobalScore, 2)) ($($Skill.ExpertiseLevel))"
+    Write-Host "CompÃ©tence '$($Skill.Name)' Ã©valuÃ©e avec un score global de $([math]::Round($Skill.GlobalScore, 2)) ($($Skill.ExpertiseLevel))"
 
     return $Skill
 }
 
-# Fonction pour générer le rapport
+# Fonction pour gÃ©nÃ©rer le rapport
 function New-EvaluationReport {
     param(
         [array]$EvaluatedSkills,
         [string]$OutputPath
     )
 
-    Write-Host "Génération du rapport d'évaluation au format $Format avec niveau de détail $DetailLevel"
+    Write-Host "GÃ©nÃ©ration du rapport d'Ã©valuation au format $Format avec niveau de dÃ©tail $DetailLevel"
 
     # Calcul de la distribution des niveaux
     $levelDistribution = @{
-        'Débutant'      = 0
-        'Intermédiaire' = 0
-        'Avancé'        = 0
+        'DÃ©butant'      = 0
+        'IntermÃ©diaire' = 0
+        'AvancÃ©'        = 0
         'Expert'        = 0
     }
 
@@ -286,25 +286,25 @@ function New-EvaluationReport {
         $levelDistribution[$skill.ExpertiseLevel]++
     }
 
-    # Génération du rapport
+    # GÃ©nÃ©ration du rapport
     $report = @"
-# Rapport d'Évaluation des Compétences
+# Rapport d'Ã‰valuation des CompÃ©tences
 
-## Table des Matières
-1. [Méthodologie](#méthodologie)
-2. [Résultats d'Évaluation](#résultats-dévaluation)
+## Table des MatiÃ¨res
+1. [MÃ©thodologie](#mÃ©thodologie)
+2. [RÃ©sultats d'Ã‰valuation](#rÃ©sultats-dÃ©valuation)
 3. [Distribution des Niveaux](#distribution-des-niveaux)
 4. [Recommandations](#recommandations)
 
-## Méthodologie
-L'évaluation des compétences est basée sur une analyse détaillée de chaque compétence selon plusieurs critères:
-- Complexité technique
+## MÃ©thodologie
+L'Ã©valuation des compÃ©tences est basÃ©e sur une analyse dÃ©taillÃ©e de chaque compÃ©tence selon plusieurs critÃ¨res:
+- ComplexitÃ© technique
 - Niveau de supervision requis
-- Capacité de résolution de problèmes
+- CapacitÃ© de rÃ©solution de problÃ¨mes
 - Impact sur le projet
 
-## Résultats d'Évaluation
-| Compétence | Catégorie | Manager | Amélioration | Score Global | Niveau d'Expertise | Justification |
+## RÃ©sultats d'Ã‰valuation
+| CompÃ©tence | CatÃ©gorie | Manager | AmÃ©lioration | Score Global | Niveau d'Expertise | Justification |
 |------------|-----------|---------|--------------|--------------|-------------------|---------------|
 "@
 
@@ -319,54 +319,54 @@ L'évaluation des compétences est basée sur une analyse détaillée de chaque 
 
     if ($EvaluatedSkills.Count -gt 0) {
         $report += @"
-- Débutant: $($levelDistribution['Débutant']) compétences ($([math]::Round(($levelDistribution['Débutant'] / $EvaluatedSkills.Count) * 100, 1))%)
-- Intermédiaire: $($levelDistribution['Intermédiaire']) compétences ($([math]::Round(($levelDistribution['Intermédiaire'] / $EvaluatedSkills.Count) * 100, 1))%)
-- Avancé: $($levelDistribution['Avancé']) compétences ($([math]::Round(($levelDistribution['Avancé'] / $EvaluatedSkills.Count) * 100, 1))%)
-- Expert: $($levelDistribution['Expert']) compétences ($([math]::Round(($levelDistribution['Expert'] / $EvaluatedSkills.Count) * 100, 1))%)
+- DÃ©butant: $($levelDistribution['DÃ©butant']) compÃ©tences ($([math]::Round(($levelDistribution['DÃ©butant'] / $EvaluatedSkills.Count) * 100, 1))%)
+- IntermÃ©diaire: $($levelDistribution['IntermÃ©diaire']) compÃ©tences ($([math]::Round(($levelDistribution['IntermÃ©diaire'] / $EvaluatedSkills.Count) * 100, 1))%)
+- AvancÃ©: $($levelDistribution['AvancÃ©']) compÃ©tences ($([math]::Round(($levelDistribution['AvancÃ©'] / $EvaluatedSkills.Count) * 100, 1))%)
+- Expert: $($levelDistribution['Expert']) compÃ©tences ($([math]::Round(($levelDistribution['Expert'] / $EvaluatedSkills.Count) * 100, 1))%)
 "@
     } else {
         $report += @"
-- Aucune compétence évaluée
+- Aucune compÃ©tence Ã©valuÃ©e
 "@
     }
 
     $report += @"
 
 ## Recommandations
-Basé sur l'évaluation:
-- Concentrer la formation sur les compétences de niveau Débutant/Intermédiaire
-- Allouer les ressources seniors aux tâches de niveau Expert
-- Revoir les compétences avec des scores faibles pour une potentielle automatisation
+BasÃ© sur l'Ã©valuation:
+- Concentrer la formation sur les compÃ©tences de niveau DÃ©butant/IntermÃ©diaire
+- Allouer les ressources seniors aux tÃ¢ches de niveau Expert
+- Revoir les compÃ©tences avec des scores faibles pour une potentielle automatisation
 "@
 
     # Utiliser BOM pour assurer l'encodage UTF-8 correct
     $utf8WithBom = New-Object System.Text.UTF8Encoding $true
     [System.IO.File]::WriteAllText($OutputPath, $report, $utf8WithBom)
 
-    Write-Host "Rapport d'évaluation généré avec succès à: $OutputPath"
+    Write-Host "Rapport d'Ã©valuation gÃ©nÃ©rÃ© avec succÃ¨s Ã : $OutputPath"
 }
 
-# Exécution principale
+# ExÃ©cution principale
 try {
-    # Extraction des critères et des compétences
+    # Extraction des critÃ¨res et des compÃ©tences
     $criteria = Get-EvaluationCriteria -FilePath $ExpertiseLevelsPath
     $skills = Get-SkillsList -FilePath $SkillsListPath
 
-    # Évaluation des compétences
+    # Ã‰valuation des compÃ©tences
     $evaluatedSkills = @()
     foreach ($skill in $skills) {
         $evaluatedSkill = Evaluate-Skill -Skill $skill -Criteria $criteria
         $evaluatedSkills += $evaluatedSkill
     }
 
-    # Génération du rapport
+    # GÃ©nÃ©ration du rapport
     New-EvaluationReport -EvaluatedSkills $evaluatedSkills -OutputPath $OutputPath
 
-    # Afficher un résumé des résultats
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
     $levelDistribution = @{
-        'Débutant'      = 0
-        'Intermédiaire' = 0
-        'Avancé'        = 0
+        'DÃ©butant'      = 0
+        'IntermÃ©diaire' = 0
+        'AvancÃ©'        = 0
         'Expert'        = 0
     }
 
@@ -374,28 +374,28 @@ try {
         $levelDistribution[$skill.ExpertiseLevel]++
     }
 
-    Write-Host "`nRésumé de l'évaluation des compétences :"
+    Write-Host "`nRÃ©sumÃ© de l'Ã©valuation des compÃ©tences :"
     Write-Host "---------------------------------------------------"
-    Write-Host "  Nombre total de compétences évaluées : $($evaluatedSkills.Count)"
+    Write-Host "  Nombre total de compÃ©tences Ã©valuÃ©es : $($evaluatedSkills.Count)"
 
     if ($evaluatedSkills.Count -gt 0) {
         Write-Host "  Distribution des niveaux d'expertise :"
-        Write-Host "    - Débutant      : $($levelDistribution['Débutant']) ($([math]::Round(($levelDistribution['Débutant'] / $evaluatedSkills.Count) * 100, 1))%)"
-        Write-Host "    - Intermédiaire : $($levelDistribution['Intermédiaire']) ($([math]::Round(($levelDistribution['Intermédiaire'] / $evaluatedSkills.Count) * 100, 1))%)"
-        Write-Host "    - Avancé        : $($levelDistribution['Avancé']) ($([math]::Round(($levelDistribution['Avancé'] / $evaluatedSkills.Count) * 100, 1))%)"
+        Write-Host "    - DÃ©butant      : $($levelDistribution['DÃ©butant']) ($([math]::Round(($levelDistribution['DÃ©butant'] / $evaluatedSkills.Count) * 100, 1))%)"
+        Write-Host "    - IntermÃ©diaire : $($levelDistribution['IntermÃ©diaire']) ($([math]::Round(($levelDistribution['IntermÃ©diaire'] / $evaluatedSkills.Count) * 100, 1))%)"
+        Write-Host "    - AvancÃ©        : $($levelDistribution['AvancÃ©']) ($([math]::Round(($levelDistribution['AvancÃ©'] / $evaluatedSkills.Count) * 100, 1))%)"
         Write-Host "    - Expert        : $($levelDistribution['Expert']) ($([math]::Round(($levelDistribution['Expert'] / $evaluatedSkills.Count) * 100, 1))%)"
     } else {
-        Write-Host "  Aucune compétence évaluée"
+        Write-Host "  Aucune compÃ©tence Ã©valuÃ©e"
     }
 
-    Write-Host "  Rapport généré à : $OutputPath"
+    Write-Host "  Rapport gÃ©nÃ©rÃ© Ã  : $OutputPath"
 
-    # Retourner un code de succès
+    # Retourner un code de succÃ¨s
     exit 0
 } catch {
-    Write-Error "Erreur lors de l'application de la matrice d'évaluation : $_"
+    Write-Error "Erreur lors de l'application de la matrice d'Ã©valuation : $_"
 
-    # Afficher la pile d'appels pour faciliter le débogage
+    # Afficher la pile d'appels pour faciliter le dÃ©bogage
     Write-Host "Pile d'appels :"
     Write-Host $_.ScriptStackTrace
 

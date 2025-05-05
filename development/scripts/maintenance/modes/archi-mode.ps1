@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour exécuter le mode ARCHI du système de roadmap.
+    Script pour exÃ©cuter le mode ARCHI du systÃ¨me de roadmap.
 .DESCRIPTION
-    Ce script exécute le mode ARCHI du système de roadmap, qui permet de générer des diagrammes d'architecture
-    et d'analyser les dépendances entre les composants du système.
+    Ce script exÃ©cute le mode ARCHI du systÃ¨me de roadmap, qui permet de gÃ©nÃ©rer des diagrammes d'architecture
+    et d'analyser les dÃ©pendances entre les composants du systÃ¨me.
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap à analyser.
+    Chemin vers le fichier de roadmap Ã  analyser.
 .PARAMETER OutputPath
-    Chemin vers le répertoire de sortie pour les diagrammes générés.
+    Chemin vers le rÃ©pertoire de sortie pour les diagrammes gÃ©nÃ©rÃ©s.
 .PARAMETER DiagramFormat
-    Format des diagrammes générés (PlantUML, Mermaid, etc.).
+    Format des diagrammes gÃ©nÃ©rÃ©s (PlantUML, Mermaid, etc.).
 .PARAMETER WhatIf
-    Si spécifié, simule les actions sans les exécuter.
+    Si spÃ©cifiÃ©, simule les actions sans les exÃ©cuter.
 .EXAMPLE
     .\archi-mode.ps1 -FilePath "Roadmap/roadmap.md" -OutputPath "output/diagrams" -DiagramFormat "PlantUML"
-    Génère des diagrammes d'architecture au format PlantUML à partir du fichier de roadmap spécifié.
+    GÃ©nÃ¨re des diagrammes d'architecture au format PlantUML Ã  partir du fichier de roadmap spÃ©cifiÃ©.
 #>
 [CmdletBinding(SupportsShouldProcess=$true)]
 param (
@@ -29,53 +29,53 @@ param (
     [string]$DiagramFormat = "PlantUML"
 )
 
-# Définir le chemin du script
+# DÃ©finir le chemin du script
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Join-Path -Path $scriptPath -ChildPath "roadmap-parser\module\Functions"
 $publicFunctionsPath = Join-Path -Path $modulePath -ChildPath "Public"
 
-# Importer les fonctions nécessaires
+# Importer les fonctions nÃ©cessaires
 $invokeRoadmapArchitecturePath = Join-Path -Path $publicFunctionsPath -ChildPath "Invoke-RoadmapArchitecture.ps1"
 
 if (Test-Path -Path $invokeRoadmapArchitecturePath) {
     . $invokeRoadmapArchitecturePath
 } else {
-    Write-Error "Le fichier Invoke-RoadmapArchitecture.ps1 est introuvable à l'emplacement : $invokeRoadmapArchitecturePath"
+    Write-Error "Le fichier Invoke-RoadmapArchitecture.ps1 est introuvable Ã  l'emplacement : $invokeRoadmapArchitecturePath"
     exit 1
 }
 
-# Afficher les informations de démarrage
-Write-Host "Exécution du mode ARCHI..." -ForegroundColor Cyan
+# Afficher les informations de dÃ©marrage
+Write-Host "ExÃ©cution du mode ARCHI..." -ForegroundColor Cyan
 Write-Host "Fichier de roadmap : $FilePath" -ForegroundColor Cyan
-Write-Host "Répertoire de sortie : $OutputPath" -ForegroundColor Cyan
+Write-Host "RÃ©pertoire de sortie : $OutputPath" -ForegroundColor Cyan
 Write-Host "Format des diagrammes : $DiagramFormat" -ForegroundColor Cyan
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
-    if ($PSCmdlet.ShouldProcess($OutputPath, "Créer le répertoire de sortie")) {
+    if ($PSCmdlet.ShouldProcess($OutputPath, "CrÃ©er le rÃ©pertoire de sortie")) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-        Write-Host "Répertoire de sortie créé : $OutputPath" -ForegroundColor Green
+        Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $OutputPath" -ForegroundColor Green
     }
 }
 
-# Exécuter le mode ARCHI
+# ExÃ©cuter le mode ARCHI
 try {
-    if ($PSCmdlet.ShouldProcess($FilePath, "Générer des diagrammes d'architecture")) {
+    if ($PSCmdlet.ShouldProcess($FilePath, "GÃ©nÃ©rer des diagrammes d'architecture")) {
         $result = Invoke-RoadmapArchitecture -FilePath $FilePath -OutputPath $OutputPath -DiagramFormat $DiagramFormat
         
         if ($result) {
-            Write-Host "Diagrammes d'architecture générés avec succès." -ForegroundColor Green
-            Write-Host "Nombre de diagrammes générés : $($result.DiagramCount)" -ForegroundColor Green
-            Write-Host "Nombre de composants analysés : $($result.ComponentCount)" -ForegroundColor Green
-            Write-Host "Nombre de dépendances détectées : $($result.DependencyCount)" -ForegroundColor Green
+            Write-Host "Diagrammes d'architecture gÃ©nÃ©rÃ©s avec succÃ¨s." -ForegroundColor Green
+            Write-Host "Nombre de diagrammes gÃ©nÃ©rÃ©s : $($result.DiagramCount)" -ForegroundColor Green
+            Write-Host "Nombre de composants analysÃ©s : $($result.ComponentCount)" -ForegroundColor Green
+            Write-Host "Nombre de dÃ©pendances dÃ©tectÃ©es : $($result.DependencyCount)" -ForegroundColor Green
         } else {
-            Write-Warning "Aucun diagramme n'a été généré."
+            Write-Warning "Aucun diagramme n'a Ã©tÃ© gÃ©nÃ©rÃ©."
         }
     }
 } catch {
-    Write-Error "Erreur lors de l'exécution du mode ARCHI : $_"
+    Write-Error "Erreur lors de l'exÃ©cution du mode ARCHI : $_"
     exit 1
 }
 
 # Afficher les informations de fin
-Write-Host "Mode ARCHI terminé." -ForegroundColor Cyan
+Write-Host "Mode ARCHI terminÃ©." -ForegroundColor Cyan

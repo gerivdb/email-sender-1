@@ -1,21 +1,21 @@
-# Tests avancés de workflows pour le mode manager
+﻿# Tests avancÃ©s de workflows pour le mode manager
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de configuration avec des workflows complexes
+# CrÃ©er un fichier de configuration avec des workflows complexes
 $tempConfigPath = Join-Path -Path $testDir -ChildPath "workflows-advanced-config.json"
 @{
     General = @{
@@ -64,28 +64,28 @@ $tempConfigPath = Join-Path -Path $testDir -ChildPath "workflows-advanced-config
     }
     Workflows = @{
         Development = @{
-            Description = "Workflow de développement complet"
+            Description = "Workflow de dÃ©veloppement complet"
             Modes = @("Gran", "Test", "Check")
             AutoContinue = $true
         }
         Debugging = @{
-            Description = "Workflow de débogage"
+            Description = "Workflow de dÃ©bogage"
             Modes = @("Debug", "Test", "Check")
             AutoContinue = $false
         }
         WithDisabled = @{
-            Description = "Workflow avec un mode désactivé"
+            Description = "Workflow avec un mode dÃ©sactivÃ©"
             Modes = @("Gran", "Disabled", "Check")
             AutoContinue = $true
         }
         WithDependencies = @{
-            Description = "Workflow avec des dépendances"
+            Description = "Workflow avec des dÃ©pendances"
             Modes = @("Check")
             AutoContinue = $true
             ResolveDependencies = $true
         }
         WithCircularDependencies = @{
-            Description = "Workflow avec des dépendances circulaires"
+            Description = "Workflow avec des dÃ©pendances circulaires"
             Modes = @("Circular1")
             AutoContinue = $true
             ResolveDependencies = $true
@@ -93,7 +93,7 @@ $tempConfigPath = Join-Path -Path $testDir -ChildPath "workflows-advanced-config
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $tempConfigPath -Encoding UTF8
 
-# Créer des scripts de mode simulés
+# CrÃ©er des scripts de mode simulÃ©s
 $mockCheckModePath = Join-Path -Path $PSScriptRoot -ChildPath "mock-check-mode.ps1"
 $mockCheckContent = @'
 param (
@@ -122,7 +122,7 @@ param (
     [string]$DependenciesResolved
 )
 
-Write-Host "Mode CHECK exécuté avec les paramètres suivants :"
+Write-Host "Mode CHECK exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -132,7 +132,7 @@ Write-Host "ConfigPath : $ConfigPath"
 Write-Host "WorkflowName : $WorkflowName"
 Write-Host "DependenciesResolved : $DependenciesResolved"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "check-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -171,7 +171,7 @@ param (
     [string]$DependenciesResolved
 )
 
-Write-Host "Mode GRAN exécuté avec les paramètres suivants :"
+Write-Host "Mode GRAN exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -179,7 +179,7 @@ Write-Host "ConfigPath : $ConfigPath"
 Write-Host "WorkflowName : $WorkflowName"
 Write-Host "DependenciesResolved : $DependenciesResolved"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "gran-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -216,7 +216,7 @@ param (
     [string]$DependenciesResolved
 )
 
-Write-Host "Mode DEBUG exécuté avec les paramètres suivants :"
+Write-Host "Mode DEBUG exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -224,7 +224,7 @@ Write-Host "ConfigPath : $ConfigPath"
 Write-Host "WorkflowName : $WorkflowName"
 Write-Host "DependenciesResolved : $DependenciesResolved"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "debug-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -235,9 +235,9 @@ WorkflowName : $WorkflowName
 DependenciesResolved : $DependenciesResolved
 "@ | Set-Content -Path $outputPath -Encoding UTF8
 
-# Simuler une erreur si le paramètre Force est spécifié
+# Simuler une erreur si le paramÃ¨tre Force est spÃ©cifiÃ©
 if ($Force) {
-    Write-Error "Erreur simulée dans le mode DEBUG"
+    Write-Error "Erreur simulÃ©e dans le mode DEBUG"
     exit 1
 }
 
@@ -267,7 +267,7 @@ param (
     [string]$DependenciesResolved
 )
 
-Write-Host "Mode TEST exécuté avec les paramètres suivants :"
+Write-Host "Mode TEST exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -275,7 +275,7 @@ Write-Host "ConfigPath : $ConfigPath"
 Write-Host "WorkflowName : $WorkflowName"
 Write-Host "DependenciesResolved : $DependenciesResolved"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "test-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -312,7 +312,7 @@ param (
     [string]$DependenciesResolved
 )
 
-Write-Host "Mode DISABLED exécuté avec les paramètres suivants :"
+Write-Host "Mode DISABLED exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -320,7 +320,7 @@ Write-Host "ConfigPath : $ConfigPath"
 Write-Host "WorkflowName : $WorkflowName"
 Write-Host "DependenciesResolved : $DependenciesResolved"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "disabled-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -335,7 +335,7 @@ exit 0
 '@
 Set-Content -Path $mockDisabledModePath -Value $mockDisabledContent -Encoding UTF8
 
-# Créer des scripts pour les modes avec des dépendances circulaires
+# CrÃ©er des scripts pour les modes avec des dÃ©pendances circulaires
 $mockCircular1ModePath = Join-Path -Path $PSScriptRoot -ChildPath "mock-circular1-mode.ps1"
 $mockCircular1Content = @'
 param (
@@ -358,7 +358,7 @@ param (
     [string]$DependenciesResolved
 )
 
-Write-Host "Mode CIRCULAR1 exécuté avec les paramètres suivants :"
+Write-Host "Mode CIRCULAR1 exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -366,7 +366,7 @@ Write-Host "ConfigPath : $ConfigPath"
 Write-Host "WorkflowName : $WorkflowName"
 Write-Host "DependenciesResolved : $DependenciesResolved"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "circular1-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -403,7 +403,7 @@ param (
     [string]$DependenciesResolved
 )
 
-Write-Host "Mode CIRCULAR2 exécuté avec les paramètres suivants :"
+Write-Host "Mode CIRCULAR2 exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -411,7 +411,7 @@ Write-Host "ConfigPath : $ConfigPath"
 Write-Host "WorkflowName : $WorkflowName"
 Write-Host "DependenciesResolved : $DependenciesResolved"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "circular2-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -448,7 +448,7 @@ param (
     [string]$DependenciesResolved
 )
 
-Write-Host "Mode CIRCULAR3 exécuté avec les paramètres suivants :"
+Write-Host "Mode CIRCULAR3 exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -456,7 +456,7 @@ Write-Host "ConfigPath : $ConfigPath"
 Write-Host "WorkflowName : $WorkflowName"
 Write-Host "DependenciesResolved : $DependenciesResolved"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "circular3-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -471,14 +471,14 @@ exit 0
 '@
 Set-Content -Path $mockCircular3ModePath -Value $mockCircular3Content -Encoding UTF8
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 "# Test Roadmap" | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
-# Test 1: Exécution d'un workflow avec résolution de dépendances
-Write-Host "Test 1: Exécution d'un workflow avec résolution de dépendances" -ForegroundColor Cyan
+# Test 1: ExÃ©cution d'un workflow avec rÃ©solution de dÃ©pendances
+Write-Host "Test 1: ExÃ©cution d'un workflow avec rÃ©solution de dÃ©pendances" -ForegroundColor Cyan
 try {
-    # Supprimer les fichiers de sortie des tests précédents
+    # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
     $outputFiles = @("gran-mode-output.txt", "test-mode-output.txt", "check-mode-output.txt")
     foreach ($file in $outputFiles) {
         $outputPath = Join-Path -Path $testDir -ChildPath $file
@@ -487,35 +487,35 @@ try {
         }
     }
     
-    # Exécuter le workflow WithDependencies
+    # ExÃ©cuter le workflow WithDependencies
     # Note: Nous utilisons -Mode CHECK car le script mode-manager.ps1 ne supporte pas encore les workflows
-    # Dans un scénario réel, nous utiliserions -Workflow WithDependencies
+    # Dans un scÃ©nario rÃ©el, nous utiliserions -Workflow WithDependencies
     & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath -ResolveDependencies
     
-    # Vérifier que les modes ont été exécutés dans le bon ordre
+    # VÃ©rifier que les modes ont Ã©tÃ© exÃ©cutÃ©s dans le bon ordre
     $success = $true
     $expectedModes = @("gran", "test", "check")
     
     foreach ($mode in $expectedModes) {
         $outputPath = Join-Path -Path $testDir -ChildPath "$mode-mode-output.txt"
         if (-not (Test-Path -Path $outputPath)) {
-            Write-Host "Test 1 échoué: Le fichier de sortie du mode $mode n'a pas été créé" -ForegroundColor Red
+            Write-Host "Test 1 Ã©chouÃ©: Le fichier de sortie du mode $mode n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
             $success = $false
         }
     }
     
     if ($success) {
-        Write-Host "Test 1 réussi: Le workflow avec résolution de dépendances a été exécuté avec succès" -ForegroundColor Green
+        Write-Host "Test 1 rÃ©ussi: Le workflow avec rÃ©solution de dÃ©pendances a Ã©tÃ© exÃ©cutÃ© avec succÃ¨s" -ForegroundColor Green
     }
 } catch {
-    Write-Host "Test 1 échoué: Une erreur s'est produite lors de l'exécution du workflow avec résolution de dépendances" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du workflow avec rÃ©solution de dÃ©pendances" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 2: Exécution d'un workflow avec des dépendances circulaires
-Write-Host "Test 2: Exécution d'un workflow avec des dépendances circulaires" -ForegroundColor Cyan
+# Test 2: ExÃ©cution d'un workflow avec des dÃ©pendances circulaires
+Write-Host "Test 2: ExÃ©cution d'un workflow avec des dÃ©pendances circulaires" -ForegroundColor Cyan
 try {
-    # Supprimer les fichiers de sortie des tests précédents
+    # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
     $outputFiles = @("circular1-mode-output.txt", "circular2-mode-output.txt", "circular3-mode-output.txt")
     foreach ($file in $outputFiles) {
         $outputPath = Join-Path -Path $testDir -ChildPath $file
@@ -524,42 +524,42 @@ try {
         }
     }
     
-    # Exécuter le workflow WithCircularDependencies
+    # ExÃ©cuter le workflow WithCircularDependencies
     # Note: Nous utilisons -Mode CIRCULAR1 car le script mode-manager.ps1 ne supporte pas encore les workflows
-    # Dans un scénario réel, nous utiliserions -Workflow WithCircularDependencies
+    # Dans un scÃ©nario rÃ©el, nous utiliserions -Workflow WithCircularDependencies
     & $scriptPath -Mode "CIRCULAR1" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath -ResolveDependencies
     
-    # Vérifier que le script a détecté les dépendances circulaires
-    # Dans un scénario réel, le script devrait générer une erreur ou un avertissement
-    # Pour ce test, nous vérifions simplement que les modes ont été exécutés
+    # VÃ©rifier que le script a dÃ©tectÃ© les dÃ©pendances circulaires
+    # Dans un scÃ©nario rÃ©el, le script devrait gÃ©nÃ©rer une erreur ou un avertissement
+    # Pour ce test, nous vÃ©rifions simplement que les modes ont Ã©tÃ© exÃ©cutÃ©s
     $success = $true
     $expectedModes = @("circular1", "circular2", "circular3")
     
     foreach ($mode in $expectedModes) {
         $outputPath = Join-Path -Path $testDir -ChildPath "$mode-mode-output.txt"
         if (-not (Test-Path -Path $outputPath)) {
-            Write-Host "Test 2 échoué: Le fichier de sortie du mode $mode n'a pas été créé" -ForegroundColor Red
+            Write-Host "Test 2 Ã©chouÃ©: Le fichier de sortie du mode $mode n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
             $success = $false
         }
     }
     
     if ($success) {
-        Write-Host "Test 2 réussi: Le workflow avec des dépendances circulaires a été exécuté avec succès" -ForegroundColor Green
+        Write-Host "Test 2 rÃ©ussi: Le workflow avec des dÃ©pendances circulaires a Ã©tÃ© exÃ©cutÃ© avec succÃ¨s" -ForegroundColor Green
     }
 } catch {
-    # Si le script génère une erreur pour les dépendances circulaires, c'est aussi acceptable
-    if ($_.Exception.Message -match "dépendance circulaire" -or $_.Exception.Message -match "circular dependency") {
-        Write-Host "Test 2 réussi: Le script a détecté les dépendances circulaires" -ForegroundColor Green
+    # Si le script gÃ©nÃ¨re une erreur pour les dÃ©pendances circulaires, c'est aussi acceptable
+    if ($_.Exception.Message -match "dÃ©pendance circulaire" -or $_.Exception.Message -match "circular dependency") {
+        Write-Host "Test 2 rÃ©ussi: Le script a dÃ©tectÃ© les dÃ©pendances circulaires" -ForegroundColor Green
     } else {
-        Write-Host "Test 2 échoué: Une erreur inattendue s'est produite lors de l'exécution du workflow avec des dépendances circulaires" -ForegroundColor Red
+        Write-Host "Test 2 Ã©chouÃ©: Une erreur inattendue s'est produite lors de l'exÃ©cution du workflow avec des dÃ©pendances circulaires" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
 
-# Test 3: Exécution d'un workflow avec AutoContinue=false et une erreur
-Write-Host "Test 3: Exécution d'un workflow avec AutoContinue=false et une erreur" -ForegroundColor Cyan
+# Test 3: ExÃ©cution d'un workflow avec AutoContinue=false et une erreur
+Write-Host "Test 3: ExÃ©cution d'un workflow avec AutoContinue=false et une erreur" -ForegroundColor Cyan
 try {
-    # Supprimer les fichiers de sortie des tests précédents
+    # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
     $outputFiles = @("debug-mode-output.txt", "test-mode-output.txt", "check-mode-output.txt")
     foreach ($file in $outputFiles) {
         $outputPath = Join-Path -Path $testDir -ChildPath $file
@@ -568,12 +568,12 @@ try {
         }
     }
     
-    # Exécuter le workflow Debugging avec Force pour provoquer une erreur dans le mode DEBUG
+    # ExÃ©cuter le workflow Debugging avec Force pour provoquer une erreur dans le mode DEBUG
     # Note: Nous utilisons -Chain "DEBUG,TEST,CHECK" car le script mode-manager.ps1 ne supporte pas encore les workflows
-    # Dans un scénario réel, nous utiliserions -Workflow Debugging
+    # Dans un scÃ©nario rÃ©el, nous utiliserions -Workflow Debugging
     & $scriptPath -Chain "DEBUG,TEST,CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath -Force -AutoContinue:$false
     
-    # Vérifier que seul le mode DEBUG a été exécuté (car AutoContinue=false)
+    # VÃ©rifier que seul le mode DEBUG a Ã©tÃ© exÃ©cutÃ© (car AutoContinue=false)
     $debugOutputPath = Join-Path -Path $testDir -ChildPath "debug-mode-output.txt"
     $testOutputPath = Join-Path -Path $testDir -ChildPath "test-mode-output.txt"
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
@@ -581,37 +581,37 @@ try {
     $success = $true
     
     if (-not (Test-Path -Path $debugOutputPath)) {
-        Write-Host "Test 3 échoué: Le fichier de sortie du mode DEBUG n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Le fichier de sortie du mode DEBUG n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
         $success = $false
     }
     
     if (Test-Path -Path $testOutputPath) {
-        Write-Host "Test 3 échoué: Le fichier de sortie du mode TEST a été créé alors qu'il ne devrait pas l'être" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Le fichier de sortie du mode TEST a Ã©tÃ© crÃ©Ã© alors qu'il ne devrait pas l'Ãªtre" -ForegroundColor Red
         $success = $false
     }
     
     if (Test-Path -Path $checkOutputPath) {
-        Write-Host "Test 3 échoué: Le fichier de sortie du mode CHECK a été créé alors qu'il ne devrait pas l'être" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Le fichier de sortie du mode CHECK a Ã©tÃ© crÃ©Ã© alors qu'il ne devrait pas l'Ãªtre" -ForegroundColor Red
         $success = $false
     }
     
     if ($success) {
-        Write-Host "Test 3 réussi: Le workflow a été interrompu après l'erreur dans le mode DEBUG" -ForegroundColor Green
+        Write-Host "Test 3 rÃ©ussi: Le workflow a Ã©tÃ© interrompu aprÃ¨s l'erreur dans le mode DEBUG" -ForegroundColor Green
     }
 } catch {
-    # Si le script génère une erreur, c'est aussi acceptable car le mode DEBUG échoue
-    if ($_.Exception.Message -match "Erreur simulée dans le mode DEBUG" -or $_.Exception.Message -match "Erreur lors de l'exécution du mode DEBUG") {
-        Write-Host "Test 3 réussi: Le script a généré une erreur pour le mode DEBUG" -ForegroundColor Green
+    # Si le script gÃ©nÃ¨re une erreur, c'est aussi acceptable car le mode DEBUG Ã©choue
+    if ($_.Exception.Message -match "Erreur simulÃ©e dans le mode DEBUG" -or $_.Exception.Message -match "Erreur lors de l'exÃ©cution du mode DEBUG") {
+        Write-Host "Test 3 rÃ©ussi: Le script a gÃ©nÃ©rÃ© une erreur pour le mode DEBUG" -ForegroundColor Green
     } else {
-        Write-Host "Test 3 échoué: Une erreur inattendue s'est produite lors de l'exécution du workflow avec AutoContinue=false" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Une erreur inattendue s'est produite lors de l'exÃ©cution du workflow avec AutoContinue=false" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
 
-# Test 4: Exécution d'un workflow avec AutoContinue=true et une erreur
-Write-Host "Test 4: Exécution d'un workflow avec AutoContinue=true et une erreur" -ForegroundColor Cyan
+# Test 4: ExÃ©cution d'un workflow avec AutoContinue=true et une erreur
+Write-Host "Test 4: ExÃ©cution d'un workflow avec AutoContinue=true et une erreur" -ForegroundColor Cyan
 try {
-    # Supprimer les fichiers de sortie des tests précédents
+    # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
     $outputFiles = @("debug-mode-output.txt", "test-mode-output.txt", "check-mode-output.txt")
     foreach ($file in $outputFiles) {
         $outputPath = Join-Path -Path $testDir -ChildPath $file
@@ -620,12 +620,12 @@ try {
         }
     }
     
-    # Exécuter le workflow Debugging avec Force pour provoquer une erreur dans le mode DEBUG
+    # ExÃ©cuter le workflow Debugging avec Force pour provoquer une erreur dans le mode DEBUG
     # Note: Nous utilisons -Chain "DEBUG,TEST,CHECK" car le script mode-manager.ps1 ne supporte pas encore les workflows
-    # Dans un scénario réel, nous utiliserions -Workflow Debugging
+    # Dans un scÃ©nario rÃ©el, nous utiliserions -Workflow Debugging
     & $scriptPath -Chain "DEBUG,TEST,CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath -Force -AutoContinue
     
-    # Vérifier que tous les modes ont été exécutés malgré l'erreur dans le mode DEBUG (car AutoContinue=true)
+    # VÃ©rifier que tous les modes ont Ã©tÃ© exÃ©cutÃ©s malgrÃ© l'erreur dans le mode DEBUG (car AutoContinue=true)
     $debugOutputPath = Join-Path -Path $testDir -ChildPath "debug-mode-output.txt"
     $testOutputPath = Join-Path -Path $testDir -ChildPath "test-mode-output.txt"
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
@@ -633,25 +633,25 @@ try {
     $success = $true
     
     if (-not (Test-Path -Path $debugOutputPath)) {
-        Write-Host "Test 4 échoué: Le fichier de sortie du mode DEBUG n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 4 Ã©chouÃ©: Le fichier de sortie du mode DEBUG n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
         $success = $false
     }
     
     if (-not (Test-Path -Path $testOutputPath)) {
-        Write-Host "Test 4 échoué: Le fichier de sortie du mode TEST n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 4 Ã©chouÃ©: Le fichier de sortie du mode TEST n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
         $success = $false
     }
     
     if (-not (Test-Path -Path $checkOutputPath)) {
-        Write-Host "Test 4 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 4 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
         $success = $false
     }
     
     if ($success) {
-        Write-Host "Test 4 réussi: Le workflow a continué malgré l'erreur dans le mode DEBUG" -ForegroundColor Green
+        Write-Host "Test 4 rÃ©ussi: Le workflow a continuÃ© malgrÃ© l'erreur dans le mode DEBUG" -ForegroundColor Green
     }
 } catch {
-    Write-Host "Test 4 échoué: Une erreur s'est produite lors de l'exécution du workflow avec AutoContinue=true" -ForegroundColor Red
+    Write-Host "Test 4 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du workflow avec AutoContinue=true" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
@@ -679,4 +679,4 @@ foreach ($file in $mockFiles) {
     }
 }
 
-Write-Host "Tests terminés." -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s." -ForegroundColor Cyan

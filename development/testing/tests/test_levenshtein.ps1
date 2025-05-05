@@ -1,4 +1,4 @@
-# Importer le module
+﻿# Importer le module
 . (Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1")
 
 # Tester la fonction Measure-LevenshteinDistance

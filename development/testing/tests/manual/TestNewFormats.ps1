@@ -1,6 +1,6 @@
-# Script de test manuel pour les nouveaux formats et la détection d'encodage
+﻿# Script de test manuel pour les nouveaux formats et la dÃ©tection d'encodage
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
@@ -8,26 +8,26 @@ $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmente
 # Importer le module
 . $unifiedSegmenterPath
 
-# Initialiser le segmenteur unifié
-Write-Host "Initialisation du segmenteur unifié..."
+# Initialiser le segmenteur unifiÃ©
+Write-Host "Initialisation du segmenteur unifiÃ©..."
 $initResult = Initialize-UnifiedSegmenter
-Write-Host "Initialisation réussie: $initResult"
+Write-Host "Initialisation rÃ©ussie: $initResult"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ManualTest"
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $jsonFilePath = Join-Path -Path $testDir -ChildPath "test.json"
 $xmlFilePath = Join-Path -Path $testDir -ChildPath "test.xml"
 $csvFilePath = Join-Path -Path $testDir -ChildPath "test.csv"
 $yamlFilePath = Join-Path -Path $testDir -ChildPath "test.yaml"
 $outputDir = Join-Path -Path $testDir -ChildPath "output"
 
-# Créer un fichier JSON de test
+# CrÃ©er un fichier JSON de test
 $jsonContent = @{
     "name" = "Test Object"
     "items" = @(
@@ -38,7 +38,7 @@ $jsonContent = @{
 } | ConvertTo-Json -Depth 10
 Set-Content -Path $jsonFilePath -Value $jsonContent -Encoding UTF8
 
-# Créer un fichier XML de test
+# CrÃ©er un fichier XML de test
 $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -58,7 +58,7 @@ $xmlContent = @"
 "@
 Set-Content -Path $xmlFilePath -Value $xmlContent -Encoding UTF8
 
-# Créer un fichier CSV de test
+# CrÃ©er un fichier CSV de test
 $csvContent = @"
 id,name,value
 1,Item 1,Value 1
@@ -67,7 +67,7 @@ id,name,value
 "@
 Set-Content -Path $csvFilePath -Value $csvContent -Encoding UTF8
 
-# Créer un fichier YAML de test
+# CrÃ©er un fichier YAML de test
 $yamlContent = @"
 name: Test Object
 items:
@@ -83,15 +83,15 @@ metadata:
 "@
 Set-Content -Path $yamlFilePath -Value $yamlContent -Encoding UTF8
 
-# Test 1: Détection de format
-Write-Host "`n=== Test 1: Détection de format ==="
+# Test 1: DÃ©tection de format
+Write-Host "`n=== Test 1: DÃ©tection de format ==="
 Write-Host "JSON: $(Get-FileFormat -FilePath $jsonFilePath)"
 Write-Host "XML: $(Get-FileFormat -FilePath $xmlFilePath)"
 Write-Host "CSV: $(Get-FileFormat -FilePath $csvFilePath)"
 Write-Host "YAML: $(Get-FileFormat -FilePath $yamlFilePath)"
 
-# Test 2: Détection d'encodage
-Write-Host "`n=== Test 2: Détection d'encodage ==="
+# Test 2: DÃ©tection d'encodage
+Write-Host "`n=== Test 2: DÃ©tection d'encodage ==="
 $jsonEncoding = Get-FileEncoding -FilePath $jsonFilePath
 Write-Host "JSON Encoding: $($jsonEncoding.encoding), Type: $($jsonEncoding.file_type)"
 
@@ -154,4 +154,4 @@ if ($yamlToJsonResult) {
 Write-Host "`nNettoyage des fichiers de test..."
 Remove-Item -Path $testDir -Recurse -Force
 
-Write-Host "`nTests terminés."
+Write-Host "`nTests terminÃ©s."

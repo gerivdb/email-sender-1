@@ -1,6 +1,6 @@
-# Script de test pour identifier les sections principales du document d'expertise
+﻿# Script de test pour identifier les sections principales du document d'expertise
 
-# Paramètres
+# ParamÃ¨tres
 $FilePath = ".\development\data\planning\expertise-levels.md"
 
 # Lire le contenu du fichier
@@ -33,14 +33,14 @@ $sections | ForEach-Object {
     Write-Host "$indent- $($_.Title) (Niveau $($_.Level))"
 }
 
-# Identifier les sections importantes pour l'évaluation
+# Identifier les sections importantes pour l'Ã©valuation
 Write-Host ""
-Write-Host "Sections importantes pour l'évaluation :"
+Write-Host "Sections importantes pour l'Ã©valuation :"
 Write-Host "======================================="
 Write-Host ""
 
 $evaluationSections = $sections | Where-Object { 
-    $_.Title -match "Critères|Évaluation|Matrice|Niveaux d'Expertise|Expertise" 
+    $_.Title -match "CritÃ¨res|Ã‰valuation|Matrice|Niveaux d'Expertise|Expertise" 
 }
 
 $evaluationSections | ForEach-Object {
@@ -48,13 +48,13 @@ $evaluationSections | ForEach-Object {
     Write-Host "$indent- $($_.Title) (Niveau $($_.Level))"
 }
 
-# Résumé
+# RÃ©sumÃ©
 Write-Host ""
-Write-Host "Résumé :"
+Write-Host "RÃ©sumÃ© :"
 Write-Host "========"
 Write-Host ""
 Write-Host "Nombre total de sections : $($sections.Count)"
 Write-Host "Nombre de sections de niveau 1 : $(($sections | Where-Object { $_.Level -eq 1 }).Count)"
 Write-Host "Nombre de sections de niveau 2 : $(($sections | Where-Object { $_.Level -eq 2 }).Count)"
 Write-Host "Nombre de sections de niveau 3 : $(($sections | Where-Object { $_.Level -eq 3 }).Count)"
-Write-Host "Nombre de sections importantes pour l'évaluation : $($evaluationSections.Count)"
+Write-Host "Nombre de sections importantes pour l'Ã©valuation : $($evaluationSections.Count)"

@@ -1,29 +1,29 @@
-# Tests unitaires pour le mode manager
+﻿# Tests unitaires pour le mode manager
 
-# Importer le module Pester si nécessaire
+# Importer le module Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
 Describe "Mode Manager - Tests unitaires" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
         if (-not (Test-Path -Path $testDir)) {
             New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         }
         
-        # Créer un fichier de configuration pour les tests
+        # CrÃ©er un fichier de configuration pour les tests
         $configPath = Join-Path -Path $testDir -ChildPath "test-config.json"
         @{
             General = @{
@@ -47,7 +47,7 @@ Describe "Mode Manager - Tests unitaires" {
             }
         } | ConvertTo-Json -Depth 5 | Set-Content -Path $configPath -Encoding UTF8
         
-        # Créer des scripts de mode simulés
+        # CrÃ©er des scripts de mode simulÃ©s
         $mockCheckModePath = Join-Path -Path $PSScriptRoot -ChildPath "mock-check-mode.ps1"
         $mockCheckContent = @'
 param (
@@ -70,7 +70,7 @@ param (
     [string]$ConfigPath
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "check-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -101,7 +101,7 @@ param (
     [string]$ConfigPath
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "gran-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -130,7 +130,7 @@ param (
     [string]$ConfigPath
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "disabled-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -143,23 +143,23 @@ exit 0
 '@
         Set-Content -Path $mockDisabledModePath -Value $mockDisabledContent -Encoding UTF8
         
-        # Créer un fichier de roadmap de test
+        # CrÃ©er un fichier de roadmap de test
         $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
         @"
 # Test Roadmap
 
-## Tâche 1.2.3
+## TÃ¢che 1.2.3
 
 ### Description
-Cette tâche est utilisée pour les tests unitaires.
+Cette tÃ¢che est utilisÃ©e pour les tests unitaires.
 
-### Sous-tâches
-- [ ] Sous-tâche 1
-- [ ] Sous-tâche 2
-- [ ] Sous-tâche 3
+### Sous-tÃ¢ches
+- [ ] Sous-tÃ¢che 1
+- [ ] Sous-tÃ¢che 2
+- [ ] Sous-tÃ¢che 3
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
         
-        # Définir les variables globales pour les tests
+        # DÃ©finir les variables globales pour les tests
         $script:testDir = $testDir
         $script:configPath = $configPath
         $script:testRoadmapPath = $testRoadmapPath
@@ -185,35 +185,35 @@ Cette tâche est utilisée pour les tests unitaires.
         }
     }
     
-    Context "Paramètres" {
-        It "Devrait accepter le paramètre Mode" {
+    Context "ParamÃ¨tres" {
+        It "Devrait accepter le paramÃ¨tre Mode" {
             $result = Get-Command -Name $scriptPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("Mode") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre FilePath" {
+        It "Devrait accepter le paramÃ¨tre FilePath" {
             $result = Get-Command -Name $scriptPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("FilePath") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre TaskIdentifier" {
+        It "Devrait accepter le paramÃ¨tre TaskIdentifier" {
             $result = Get-Command -Name $scriptPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("TaskIdentifier") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre Force" {
+        It "Devrait accepter le paramÃ¨tre Force" {
             $result = Get-Command -Name $scriptPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("Force") | Should -Be $true
         }
         
-        It "Devrait accepter le paramètre ConfigPath" {
+        It "Devrait accepter le paramÃ¨tre ConfigPath" {
             $result = Get-Command -Name $scriptPath | Select-Object -ExpandProperty Parameters
             $result.ContainsKey("ConfigPath") | Should -Be $true
         }
     }
     
-    Context "Exécution du mode CHECK" {
-        It "Devrait exécuter le mode CHECK avec succès" {
+    Context "ExÃ©cution du mode CHECK" {
+        It "Devrait exÃ©cuter le mode CHECK avec succÃ¨s" {
             $result = & $scriptPath -Mode "CHECK" -FilePath $script:testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $script:configPath
             $LASTEXITCODE | Should -Be 0
             
@@ -226,8 +226,8 @@ Cette tâche est utilisée pour les tests unitaires.
         }
     }
     
-    Context "Exécution du mode GRAN" {
-        It "Devrait exécuter le mode GRAN avec succès" {
+    Context "ExÃ©cution du mode GRAN" {
+        It "Devrait exÃ©cuter le mode GRAN avec succÃ¨s" {
             $result = & $scriptPath -Mode "GRAN" -FilePath $script:testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $script:configPath
             $LASTEXITCODE | Should -Be 0
             
@@ -240,8 +240,8 @@ Cette tâche est utilisée pour les tests unitaires.
         }
     }
     
-    Context "Exécution d'un mode désactivé" {
-        It "Devrait échouer lors de l'exécution d'un mode désactivé" {
+    Context "ExÃ©cution d'un mode dÃ©sactivÃ©" {
+        It "Devrait Ã©chouer lors de l'exÃ©cution d'un mode dÃ©sactivÃ©" {
             $result = & $scriptPath -Mode "DISABLED" -FilePath $script:testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $script:configPath
             $LASTEXITCODE | Should -Not -Be 0
             
@@ -250,22 +250,22 @@ Cette tâche est utilisée pour les tests unitaires.
         }
     }
     
-    Context "Exécution d'un mode inexistant" {
-        It "Devrait échouer lors de l'exécution d'un mode inexistant" {
+    Context "ExÃ©cution d'un mode inexistant" {
+        It "Devrait Ã©chouer lors de l'exÃ©cution d'un mode inexistant" {
             $result = & $scriptPath -Mode "NONEXISTENT" -FilePath $script:testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $script:configPath
             $LASTEXITCODE | Should -Not -Be 0
         }
     }
     
-    Context "Exécution sans configuration" {
-        It "Devrait échouer lors de l'exécution sans configuration" {
+    Context "ExÃ©cution sans configuration" {
+        It "Devrait Ã©chouer lors de l'exÃ©cution sans configuration" {
             $result = & $scriptPath -Mode "CHECK" -FilePath $script:testRoadmapPath -TaskIdentifier "1.2.3"
             $LASTEXITCODE | Should -Not -Be 0
         }
     }
     
-    Context "Exécution avec une configuration invalide" {
-        It "Devrait échouer lors de l'exécution avec une configuration invalide" {
+    Context "ExÃ©cution avec une configuration invalide" {
+        It "Devrait Ã©chouer lors de l'exÃ©cution avec une configuration invalide" {
             $invalidConfigPath = Join-Path -Path $script:testDir -ChildPath "invalid-config.json"
             "Invalid JSON" | Set-Content -Path $invalidConfigPath -Encoding UTF8
             
@@ -274,22 +274,22 @@ Cette tâche est utilisée pour les tests unitaires.
         }
     }
     
-    Context "Exécution avec un fichier de roadmap inexistant" {
-        It "Devrait échouer lors de l'exécution avec un fichier de roadmap inexistant" {
+    Context "ExÃ©cution avec un fichier de roadmap inexistant" {
+        It "Devrait Ã©chouer lors de l'exÃ©cution avec un fichier de roadmap inexistant" {
             $result = & $scriptPath -Mode "CHECK" -FilePath "nonexistent.md" -TaskIdentifier "1.2.3" -ConfigPath $script:configPath
             $LASTEXITCODE | Should -Not -Be 0
         }
     }
     
-    Context "Exécution avec un identifiant de tâche invalide" {
-        It "Devrait échouer lors de l'exécution avec un identifiant de tâche invalide" {
+    Context "ExÃ©cution avec un identifiant de tÃ¢che invalide" {
+        It "Devrait Ã©chouer lors de l'exÃ©cution avec un identifiant de tÃ¢che invalide" {
             $result = & $scriptPath -Mode "CHECK" -FilePath $script:testRoadmapPath -TaskIdentifier "invalid" -ConfigPath $script:configPath
             $LASTEXITCODE | Should -Not -Be 0
         }
     }
     
-    Context "Exécution avec le paramètre Force" {
-        It "Devrait exécuter le mode CHECK avec le paramètre Force" {
+    Context "ExÃ©cution avec le paramÃ¨tre Force" {
+        It "Devrait exÃ©cuter le mode CHECK avec le paramÃ¨tre Force" {
             $result = & $scriptPath -Mode "CHECK" -FilePath $script:testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $script:configPath -Force
             $LASTEXITCODE | Should -Be 0
             

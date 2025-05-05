@@ -1,7 +1,7 @@
-# Définir l'encodage UTF-8 pour les caractères accentués
+﻿# DÃ©finir l'encodage UTF-8 pour les caractÃ¨res accentuÃ©s
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Paramètres fixes
+# ParamÃ¨tres fixes
 $FilePath = "..\..\data\planning\expertise-levels.md"
 $OutputPath = "..\..\data\planning\title-punctuation-analysis.md"
 $IncludeExamples = $true
@@ -56,7 +56,7 @@ function Get-MarkdownTitles {
         }
     }
 
-    # Trier les titres par numéro de ligne
+    # Trier les titres par numÃ©ro de ligne
     return $titles | Sort-Object -Property LineNumber
 }
 
@@ -75,13 +75,13 @@ function Get-PunctuationAnalysis {
         SpecialCharacters = @{}
     }
 
-    # Définir les marques de ponctuation à rechercher
-    $punctuationMarks = @('.', ',', ';', ':', '!', '?', '-', '_', '(', ')', '[', ']', '{', '}', '"', "'", '«', '»', '...', '–', '—')
+    # DÃ©finir les marques de ponctuation Ã  rechercher
+    $punctuationMarks = @('.', ',', ';', ':', '!', '?', '-', '_', '(', ')', '[', ']', '{', '}', '"', "'", 'Â«', 'Â»', '...', 'â€“', 'â€”')
     
-    # Définir les caractères spéciaux à rechercher
+    # DÃ©finir les caractÃ¨res spÃ©ciaux Ã  rechercher
     $specialCharacters = @('#', '@', '$', '%', '&', '*', '+', '=', '<', '>', '/', '\', '|', '~', '^')
 
-    # Vérifier chaque marque de ponctuation
+    # VÃ©rifier chaque marque de ponctuation
     foreach ($mark in $punctuationMarks) {
         if ($Text.Contains($mark)) {
             $analysis.HasPunctuation = $true
@@ -90,7 +90,7 @@ function Get-PunctuationAnalysis {
         }
     }
 
-    # Vérifier les caractères spéciaux
+    # VÃ©rifier les caractÃ¨res spÃ©ciaux
     foreach ($char in $specialCharacters) {
         if ($Text.Contains($char)) {
             $analysis.ContainsSpecialCharacters = $true
@@ -99,7 +99,7 @@ function Get-PunctuationAnalysis {
         }
     }
 
-    # Vérifier si le titre commence par une ponctuation
+    # VÃ©rifier si le titre commence par une ponctuation
     foreach ($mark in $punctuationMarks) {
         if ($Text.StartsWith($mark)) {
             $analysis.StartsWith = $mark
@@ -107,7 +107,7 @@ function Get-PunctuationAnalysis {
         }
     }
 
-    # Vérifier si le titre se termine par une ponctuation
+    # VÃ©rifier si le titre se termine par une ponctuation
     foreach ($mark in $punctuationMarks) {
         if ($Text.EndsWith($mark)) {
             $analysis.EndsWith = $mark
@@ -150,7 +150,7 @@ function Get-TitlePunctuationAnalysis {
         if ($titleAnalysis.HasPunctuation) {
             $analysis.TitlesWithPunctuation++
             
-            # Ajouter un exemple si nécessaire
+            # Ajouter un exemple si nÃ©cessaire
             if ($analysis.Examples.WithPunctuation.Count -lt 5) {
                 $analysis.Examples.WithPunctuation += $title.Title
             }
@@ -181,20 +181,20 @@ function Get-TitlePunctuationAnalysis {
                 $analysis.PunctuationByPosition.EndsWith[$mark]++
             }
         } else {
-            # Ajouter un exemple si nécessaire
+            # Ajouter un exemple si nÃ©cessaire
             if ($analysis.Examples.WithoutPunctuation.Count -lt 5) {
                 $analysis.Examples.WithoutPunctuation += $title.Title
             }
         }
 
-        # Compter les caractères spéciaux
+        # Compter les caractÃ¨res spÃ©ciaux
         if ($titleAnalysis.ContainsSpecialCharacters) {
-            # Ajouter un exemple si nécessaire
+            # Ajouter un exemple si nÃ©cessaire
             if ($analysis.Examples.WithSpecialCharacters.Count -lt 5) {
                 $analysis.Examples.WithSpecialCharacters += $title.Title
             }
 
-            # Compter les caractères spéciaux
+            # Compter les caractÃ¨res spÃ©ciaux
             foreach ($char in $titleAnalysis.SpecialCharacters.Keys) {
                 $count = $titleAnalysis.SpecialCharacters[$char]
                 if (-not $analysis.SpecialCharacters.ContainsKey($char)) {
@@ -240,7 +240,7 @@ function Get-TitlePunctuationAnalysis {
     return $analysis
 }
 
-# Fonction pour générer un rapport d'analyse de la ponctuation
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse de la ponctuation
 function New-PunctuationAnalysisReport {
     param(
         [hashtable]$Analysis,
@@ -256,9 +256,9 @@ function New-PunctuationAnalysisReport {
     $report = @"
 # Analyse de l'Utilisation de la Ponctuation dans les Titres
 
-## Résumé
+## RÃ©sumÃ©
 
-- **Nombre total de titres analysés**: $($Analysis.TotalTitles)
+- **Nombre total de titres analysÃ©s**: $($Analysis.TotalTitles)
 - **Titres contenant de la ponctuation**: $($Analysis.TitlesWithPunctuation) ($percentageWithPunctuation%)
 
 ## Distribution des Marques de Ponctuation
@@ -267,7 +267,7 @@ function New-PunctuationAnalysisReport {
 
     # Ajouter la distribution des marques de ponctuation
     if ($Analysis.PunctuationByMark.Count -eq 0) {
-        $report += "`n- Aucune marque de ponctuation détectée dans les titres"
+        $report += "`n- Aucune marque de ponctuation dÃ©tectÃ©e dans les titres"
     } else {
         foreach ($mark in $Analysis.PunctuationByMark.Keys | Sort-Object) {
             $count = $Analysis.PunctuationByMark[$mark]
@@ -275,11 +275,11 @@ function New-PunctuationAnalysisReport {
         }
     }
 
-    # Ajouter la distribution des caractères spéciaux
-    $report += "`n`n## Caractères Spéciaux"
+    # Ajouter la distribution des caractÃ¨res spÃ©ciaux
+    $report += "`n`n## CaractÃ¨res SpÃ©ciaux"
     
     if ($Analysis.SpecialCharacters.Count -eq 0) {
-        $report += "`n- Aucun caractère spécial détecté dans les titres"
+        $report += "`n- Aucun caractÃ¨re spÃ©cial dÃ©tectÃ© dans les titres"
     } else {
         foreach ($char in $Analysis.SpecialCharacters.Keys | Sort-Object) {
             $count = $Analysis.SpecialCharacters[$char]
@@ -290,7 +290,7 @@ function New-PunctuationAnalysisReport {
     # Ajouter la distribution par position
     $report += "`n`n## Position des Marques de Ponctuation"
     
-    $report += "`n`n### Titres Commençant par une Ponctuation"
+    $report += "`n`n### Titres CommenÃ§ant par une Ponctuation"
     if ($Analysis.PunctuationByPosition.StartsWith.Count -eq 0) {
         $report += "`n- Aucun titre ne commence par une ponctuation"
     } else {
@@ -330,7 +330,7 @@ function New-PunctuationAnalysisReport {
         $report += "`n- **Titres avec ponctuation**: $($levelInfo.WithPunctuation) ($($levelInfo.Percentage)%)"
         
         if ($levelInfo.Marks.Count -gt 0) {
-            $report += "`n`n**Marques de ponctuation utilisées:**"
+            $report += "`n`n**Marques de ponctuation utilisÃ©es:**"
             foreach ($mark in $levelInfo.Marks.Keys | Sort-Object) {
                 $count = $levelInfo.Marks[$mark]
                 $report += "`n- **$mark**: $count occurrences"
@@ -338,7 +338,7 @@ function New-PunctuationAnalysisReport {
         }
     }
 
-    # Ajouter des exemples si demandé
+    # Ajouter des exemples si demandÃ©
     if ($IncludeExamples) {
         $report += "`n`n## Exemples"
         
@@ -360,7 +360,7 @@ function New-PunctuationAnalysisReport {
             }
         }
         
-        $report += "`n`n### Titres avec Caractères Spéciaux"
+        $report += "`n`n### Titres avec CaractÃ¨res SpÃ©ciaux"
         if ($Analysis.Examples.WithSpecialCharacters.Count -eq 0) {
             $report += "`n- Aucun exemple disponible"
         } else {
@@ -377,15 +377,15 @@ function New-PunctuationAnalysisReport {
 
 1. **Utilisation globale de la ponctuation**: $(
     if ($percentageWithPunctuation -lt 10) {
-        "La ponctuation est rarement utilisée dans les titres ($percentageWithPunctuation%), ce qui est généralement conforme aux bonnes pratiques de rédaction technique."
+        "La ponctuation est rarement utilisÃ©e dans les titres ($percentageWithPunctuation%), ce qui est gÃ©nÃ©ralement conforme aux bonnes pratiques de rÃ©daction technique."
     } elseif ($percentageWithPunctuation -lt 30) {
-        "La ponctuation est modérément utilisée dans les titres ($percentageWithPunctuation%). Vérifier si cette utilisation est cohérente et justifiée."
+        "La ponctuation est modÃ©rÃ©ment utilisÃ©e dans les titres ($percentageWithPunctuation%). VÃ©rifier si cette utilisation est cohÃ©rente et justifiÃ©e."
     } else {
-        "La ponctuation est fréquemment utilisée dans les titres ($percentageWithPunctuation%), ce qui peut nuire à la lisibilité. Envisager de réduire l'utilisation de la ponctuation."
+        "La ponctuation est frÃ©quemment utilisÃ©e dans les titres ($percentageWithPunctuation%), ce qui peut nuire Ã  la lisibilitÃ©. Envisager de rÃ©duire l'utilisation de la ponctuation."
     }
 )
 
-2. **Cohérence par niveau**: $(
+2. **CohÃ©rence par niveau**: $(
     $inconsistentLevels = @()
     foreach ($level in $Analysis.PunctuationByLevel.Keys) {
         $percentage = $Analysis.PunctuationByLevel[$level].Percentage
@@ -395,9 +395,9 @@ function New-PunctuationAnalysisReport {
     }
     
     if ($inconsistentLevels.Count -eq 0) {
-        "L'utilisation de la ponctuation est cohérente à chaque niveau de titre."
+        "L'utilisation de la ponctuation est cohÃ©rente Ã  chaque niveau de titre."
     } else {
-        "L'utilisation de la ponctuation est incohérente aux niveaux suivants : $($inconsistentLevels -join ", "). Envisager de standardiser l'utilisation de la ponctuation à ces niveaux."
+        "L'utilisation de la ponctuation est incohÃ©rente aux niveaux suivants : $($inconsistentLevels -join ", "). Envisager de standardiser l'utilisation de la ponctuation Ã  ces niveaux."
     }
 )
 
@@ -413,38 +413,38 @@ function New-PunctuationAnalysisReport {
     }
     
     if ($endPercentage -lt 10) {
-        "Peu de titres se terminent par une ponctuation ($endPercentage%), ce qui est généralement conforme aux bonnes pratiques."
+        "Peu de titres se terminent par une ponctuation ($endPercentage%), ce qui est gÃ©nÃ©ralement conforme aux bonnes pratiques."
     } elseif ($endPercentage -lt 30) {
-        "Un nombre modéré de titres se terminent par une ponctuation ($endPercentage%). Vérifier si cette utilisation est cohérente et justifiée."
+        "Un nombre modÃ©rÃ© de titres se terminent par une ponctuation ($endPercentage%). VÃ©rifier si cette utilisation est cohÃ©rente et justifiÃ©e."
     } else {
-        "Un nombre important de titres se terminent par une ponctuation ($endPercentage%). Envisager de standardiser cette pratique ou de la réduire."
+        "Un nombre important de titres se terminent par une ponctuation ($endPercentage%). Envisager de standardiser cette pratique ou de la rÃ©duire."
     }
 )
 
-4. **Caractères spéciaux**: $(
+4. **CaractÃ¨res spÃ©ciaux**: $(
     if ($Analysis.SpecialCharacters.Count -eq 0) {
-        "Aucun caractère spécial n'est utilisé dans les titres, ce qui est conforme aux bonnes pratiques."
+        "Aucun caractÃ¨re spÃ©cial n'est utilisÃ© dans les titres, ce qui est conforme aux bonnes pratiques."
     } else {
-        "Des caractères spéciaux sont utilisés dans les titres. Envisager de les remplacer par des alternatives plus standard pour améliorer la lisibilité et la compatibilité."
+        "Des caractÃ¨res spÃ©ciaux sont utilisÃ©s dans les titres. Envisager de les remplacer par des alternatives plus standard pour amÃ©liorer la lisibilitÃ© et la compatibilitÃ©."
     }
 )
 
-5. **Recommandations générales**:
-   - Éviter la ponctuation à la fin des titres, sauf pour les titres interrogatifs qui se terminent par un point d'interrogation.
-   - Utiliser les deux-points (:) de manière cohérente pour introduire des listes ou des explications.
-   - Éviter les points (.) à la fin des titres, car ils ne sont généralement pas nécessaires.
-   - Maintenir une cohérence dans l'utilisation de la ponctuation à travers les différents niveaux de titres.
-   - Éviter les caractères spéciaux dans les titres pour garantir une meilleure compatibilité et lisibilité.
+5. **Recommandations gÃ©nÃ©rales**:
+   - Ã‰viter la ponctuation Ã  la fin des titres, sauf pour les titres interrogatifs qui se terminent par un point d'interrogation.
+   - Utiliser les deux-points (:) de maniÃ¨re cohÃ©rente pour introduire des listes ou des explications.
+   - Ã‰viter les points (.) Ã  la fin des titres, car ils ne sont gÃ©nÃ©ralement pas nÃ©cessaires.
+   - Maintenir une cohÃ©rence dans l'utilisation de la ponctuation Ã  travers les diffÃ©rents niveaux de titres.
+   - Ã‰viter les caractÃ¨res spÃ©ciaux dans les titres pour garantir une meilleure compatibilitÃ© et lisibilitÃ©.
 "@
 
     return $report
 }
 
-# Exécution principale
+# ExÃ©cution principale
 try {
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-        throw "Le fichier à analyser n'existe pas : $FilePath"
+        throw "Le fichier Ã  analyser n'existe pas : $FilePath"
     }
 
     # Lire le contenu du fichier
@@ -456,10 +456,10 @@ try {
     # Analyser la ponctuation dans les titres
     $analysis = Get-TitlePunctuationAnalysis -Titles $titles
 
-    # Générer le rapport d'analyse
+    # GÃ©nÃ©rer le rapport d'analyse
     $report = New-PunctuationAnalysisReport -Analysis $analysis -IncludeExamples $IncludeExamples
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -469,18 +469,18 @@ try {
     $utf8WithBom = New-Object System.Text.UTF8Encoding $true
     [System.IO.File]::WriteAllText($OutputPath, $report, $utf8WithBom)
 
-    # Afficher un résumé
-    Write-Host "Analyse de la ponctuation dans les titres terminée."
-    Write-Host "Nombre total de titres analysés : $($analysis.TotalTitles)"
+    # Afficher un rÃ©sumÃ©
+    Write-Host "Analyse de la ponctuation dans les titres terminÃ©e."
+    Write-Host "Nombre total de titres analysÃ©s : $($analysis.TotalTitles)"
     Write-Host "Titres contenant de la ponctuation : $($analysis.TitlesWithPunctuation) ($(if ($analysis.TotalTitles -gt 0) { [math]::Round(($analysis.TitlesWithPunctuation / $analysis.TotalTitles) * 100, 2) } else { 0 })%)"
-    Write-Host "Rapport généré à : $OutputPath"
+    Write-Host "Rapport gÃ©nÃ©rÃ© Ã  : $OutputPath"
 
-    # Retourner l'analyse pour une utilisation ultérieure
+    # Retourner l'analyse pour une utilisation ultÃ©rieure
     return $analysis
 } catch {
     Write-Error "Erreur lors de l'analyse de la ponctuation dans les titres : $_"
 
-    # Afficher la pile d'appels pour faciliter le débogage
+    # Afficher la pile d'appels pour faciliter le dÃ©bogage
     Write-Host "Pile d'appels :"
     Write-Host $_.ScriptStackTrace
 

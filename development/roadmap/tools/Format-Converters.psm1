@@ -1,4 +1,4 @@
-# Format-Converters.psm1
+﻿# Format-Converters.psm1
 # Module pour convertir differents formats de texte en format roadmap et vice versa
 
 # Fonction pour convertir du Markdown en format roadmap
@@ -554,8 +554,8 @@ function ConvertTo-CsvFormat {
             $level = [Math]::Floor($indent.Length / 2)
             
             # Detecter si la tache est prioritaire
-            $isPriority = $taskText -match "\[PRIORITAIRE\]|\*\*.*\*\*.*🔴"
-            $taskText = $taskText -replace "\s*\[PRIORITAIRE\]|\s*🔴", ""
+            $isPriority = $taskText -match "\[PRIORITAIRE\]|\*\*.*\*\*.*ðŸ”´"
+            $taskText = $taskText -replace "\s*\[PRIORITAIRE\]|\s*ðŸ”´", ""
             
             # Detecter l'estimation de temps
             $timeEstimate = ""
@@ -653,8 +653,8 @@ function ConvertTo-JsonFormat {
             $level = [Math]::Floor($indent.Length / 2)
             
             # Detecter si la tache est prioritaire
-            $isPriority = $taskText -match "\[PRIORITAIRE\]|\*\*.*\*\*.*🔴"
-            $taskText = $taskText -replace "\s*\[PRIORITAIRE\]|\s*🔴", ""
+            $isPriority = $taskText -match "\[PRIORITAIRE\]|\*\*.*\*\*.*ðŸ”´"
+            $taskText = $taskText -replace "\s*\[PRIORITAIRE\]|\s*ðŸ”´", ""
             
             # Detecter l'estimation de temps
             $timeEstimate = ""

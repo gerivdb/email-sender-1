@@ -1,44 +1,44 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires pour les fonctions d'analyse des déclencheurs et des actions du module WorkflowAnalyzer.
+    Tests unitaires pour les fonctions d'analyse des dÃ©clencheurs et des actions du module WorkflowAnalyzer.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctions d'analyse des déclencheurs et des actions
+    Ce script contient des tests unitaires pour les fonctions d'analyse des dÃ©clencheurs et des actions
     dans les workflows n8n, notamment Get-N8nWorkflowTriggerConditions, Get-N8nWorkflowEventSources,
     Get-N8nWorkflowTriggerParameters, Get-N8nWorkflowActions, Get-N8nWorkflowActionParameters et
     Get-N8nWorkflowActionResults.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "WorkflowAnalyzer.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path $modulePath)) {
-    throw "Module WorkflowAnalyzer introuvable à $modulePath"
+    throw "Module WorkflowAnalyzer introuvable Ã  $modulePath"
 }
 
 # Importer le module
 Import-Module $modulePath -Force
 
-# Créer un dossier temporaire pour les fichiers de test
+# CrÃ©er un dossier temporaire pour les fichiers de test
 $testDataPath = Join-Path -Path $PSScriptRoot -ChildPath "TestData"
 if (-not (Test-Path -Path $testDataPath)) {
     New-Item -Path $testDataPath -ItemType Directory -Force | Out-Null
 }
 
-# Créer un workflow n8n de test avec différents types de déclencheurs et d'actions
+# CrÃ©er un workflow n8n de test avec diffÃ©rents types de dÃ©clencheurs et d'actions
 $testWorkflowPath = Join-Path -Path $testDataPath -ChildPath "test_workflow_triggers_actions.json"
 $testWorkflowJson = @"
 {
@@ -241,36 +241,36 @@ $pesterConfig = New-PesterConfiguration
 $pesterConfig.Run.Path = $PSScriptRoot
 $pesterConfig.Output.Verbosity = 'Detailed'
 
-# Tests pour les fonctions d'analyse des déclencheurs
-Describe "Tests des fonctions d'analyse des déclencheurs" {
+# Tests pour les fonctions d'analyse des dÃ©clencheurs
+Describe "Tests des fonctions d'analyse des dÃ©clencheurs" {
     Context "Get-N8nWorkflowTriggerConditions" {
         BeforeAll {
-            # Exécuter la fonction à tester
+            # ExÃ©cuter la fonction Ã  tester
             $triggerConditions = Get-N8nWorkflowTriggerConditions -Workflow $testWorkflow -IncludeDetails
         }
 
-        It "Devrait retourner un résultat non nul" {
+        It "Devrait retourner un rÃ©sultat non nul" {
             $triggerConditions | Should -Not -BeNullOrEmpty
         }
 
-        It "Devrait trouver tous les déclencheurs dans le workflow" {
+        It "Devrait trouver tous les dÃ©clencheurs dans le workflow" {
             $triggerConditions.Count | Should -Be 3
         }
 
-        It "Devrait identifier correctement les types de déclencheurs" {
+        It "Devrait identifier correctement les types de dÃ©clencheurs" {
             $triggerTypes = $triggerConditions | ForEach-Object { $_.TriggerType }
             $triggerTypes | Should -Contain "Schedule"
             $triggerTypes | Should -Contain "Webhook"
             $triggerTypes | Should -Contain "Manual"
         }
 
-        It "Devrait extraire les conditions pour chaque déclencheur" {
+        It "Devrait extraire les conditions pour chaque dÃ©clencheur" {
             foreach ($trigger in $triggerConditions) {
                 $trigger.Conditions | Should -Not -BeNullOrEmpty
             }
         }
 
-        It "Devrait inclure les détails si demandé" {
+        It "Devrait inclure les dÃ©tails si demandÃ©" {
             foreach ($trigger in $triggerConditions) {
                 $trigger.Parameters | Should -Not -BeNullOrEmpty
             }
@@ -279,26 +279,26 @@ Describe "Tests des fonctions d'analyse des déclencheurs" {
 
     Context "Get-N8nWorkflowEventSources" {
         BeforeAll {
-            # Exécuter la fonction à tester
+            # ExÃ©cuter la fonction Ã  tester
             $eventSources = Get-N8nWorkflowEventSources -Workflow $testWorkflow -IncludeDetails
         }
 
-        It "Devrait retourner un résultat non nul" {
+        It "Devrait retourner un rÃ©sultat non nul" {
             $eventSources | Should -Not -BeNullOrEmpty
         }
 
-        It "Devrait trouver toutes les sources d'événements dans le workflow" {
+        It "Devrait trouver toutes les sources d'Ã©vÃ©nements dans le workflow" {
             $eventSources.Count | Should -Be 3
         }
 
-        It "Devrait identifier correctement les types de sources d'événements" {
+        It "Devrait identifier correctement les types de sources d'Ã©vÃ©nements" {
             $sourceTypes = $eventSources | ForEach-Object { $_.SourceType }
             $sourceTypes | Should -Contain "Schedule"
             $sourceTypes | Should -Contain "HTTP"
             $sourceTypes | Should -Contain "Manual"
         }
 
-        It "Devrait extraire les détails pour chaque source d'événements" {
+        It "Devrait extraire les dÃ©tails pour chaque source d'Ã©vÃ©nements" {
             foreach ($source in $eventSources) {
                 $source.Details | Should -Not -BeNullOrEmpty
             }
@@ -307,25 +307,25 @@ Describe "Tests des fonctions d'analyse des déclencheurs" {
 
     Context "Get-N8nWorkflowTriggerParameters" {
         BeforeAll {
-            # Exécuter la fonction à tester
+            # ExÃ©cuter la fonction Ã  tester
             $triggerParameters = Get-N8nWorkflowTriggerParameters -Workflow $testWorkflow -IncludeDetails
         }
 
-        It "Devrait retourner un résultat non nul" {
+        It "Devrait retourner un rÃ©sultat non nul" {
             $triggerParameters | Should -Not -BeNullOrEmpty
         }
 
-        It "Devrait trouver tous les déclencheurs dans le workflow" {
+        It "Devrait trouver tous les dÃ©clencheurs dans le workflow" {
             $triggerParameters.Count | Should -Be 3
         }
 
-        It "Devrait extraire les paramètres pour chaque déclencheur" {
+        It "Devrait extraire les paramÃ¨tres pour chaque dÃ©clencheur" {
             foreach ($trigger in $triggerParameters) {
                 $trigger.Parameters | Should -Not -BeNullOrEmpty
             }
         }
 
-        It "Devrait analyser l'impact des paramètres de déclenchement" {
+        It "Devrait analyser l'impact des paramÃ¨tres de dÃ©clenchement" {
             foreach ($trigger in $triggerParameters) {
                 $trigger.Impact | Should -Not -BeNullOrEmpty
                 $trigger.Impact.Frequency | Should -Not -BeNullOrEmpty
@@ -342,11 +342,11 @@ Describe "Tests des fonctions d'analyse des déclencheurs" {
 Describe "Tests des fonctions d'analyse des actions" {
     Context "Get-N8nWorkflowActions" {
         BeforeAll {
-            # Exécuter la fonction à tester
+            # ExÃ©cuter la fonction Ã  tester
             $actions = Get-N8nWorkflowActions -Workflow $testWorkflow -IncludeDetails -IncludeRelationships
         }
 
-        It "Devrait retourner un résultat non nul" {
+        It "Devrait retourner un rÃ©sultat non nul" {
             $actions | Should -Not -BeNullOrEmpty
         }
 
@@ -363,13 +363,13 @@ Describe "Tests des fonctions d'analyse des actions" {
             $actionTypes | Should -Contain "ErrorHandling"
         }
 
-        It "Devrait extraire les paramètres pour chaque action" {
+        It "Devrait extraire les paramÃ¨tres pour chaque action" {
             foreach ($action in $actions) {
                 $action.Parameters | Should -Not -BeNullOrEmpty
             }
         }
 
-        It "Devrait inclure les relations si demandé" {
+        It "Devrait inclure les relations si demandÃ©" {
             foreach ($action in $actions) {
                 $action.InputNodes -or $action.OutputNodes | Should -Not -BeNullOrEmpty
             }
@@ -378,11 +378,11 @@ Describe "Tests des fonctions d'analyse des actions" {
 
     Context "Get-N8nWorkflowActionParameters" {
         BeforeAll {
-            # Exécuter la fonction à tester
+            # ExÃ©cuter la fonction Ã  tester
             $actionParameters = Get-N8nWorkflowActionParameters -Workflow $testWorkflow -IncludeDetails
         }
 
-        It "Devrait retourner un résultat non nul" {
+        It "Devrait retourner un rÃ©sultat non nul" {
             $actionParameters | Should -Not -BeNullOrEmpty
         }
 
@@ -390,13 +390,13 @@ Describe "Tests des fonctions d'analyse des actions" {
             $actionParameters.Count | Should -Be 5
         }
 
-        It "Devrait extraire les paramètres pour chaque action" {
+        It "Devrait extraire les paramÃ¨tres pour chaque action" {
             foreach ($action in $actionParameters) {
                 $action.Parameters | Should -Not -BeNullOrEmpty
             }
         }
 
-        It "Devrait analyser l'impact des paramètres d'action" {
+        It "Devrait analyser l'impact des paramÃ¨tres d'action" {
             foreach ($action in $actionParameters) {
                 $action.Impact | Should -Not -BeNullOrEmpty
                 $action.Impact.Performance | Should -Not -BeNullOrEmpty
@@ -410,11 +410,11 @@ Describe "Tests des fonctions d'analyse des actions" {
 
     Context "Get-N8nWorkflowActionResults" {
         BeforeAll {
-            # Exécuter la fonction à tester
+            # ExÃ©cuter la fonction Ã  tester
             $actionResults = Get-N8nWorkflowActionResults -Workflow $testWorkflow -IncludeDetails
         }
 
-        It "Devrait retourner un résultat non nul" {
+        It "Devrait retourner un rÃ©sultat non nul" {
             $actionResults | Should -Not -BeNullOrEmpty
         }
 
@@ -422,20 +422,20 @@ Describe "Tests des fonctions d'analyse des actions" {
             $actionResults.Count | Should -Be 5
         }
 
-        It "Devrait déterminer le type de sortie pour chaque action" {
+        It "Devrait dÃ©terminer le type de sortie pour chaque action" {
             foreach ($action in $actionResults) {
                 $action.OutputType | Should -Not -BeNullOrEmpty
             }
         }
 
         It "Devrait identifier les consommateurs pour chaque action" {
-            # Certaines actions peuvent ne pas avoir de consommateurs (nœuds terminaux)
+            # Certaines actions peuvent ne pas avoir de consommateurs (nÅ“uds terminaux)
             $actionsWithConsumers = $actionResults | Where-Object { $_.Consumers.Count -gt 0 }
             $actionsWithConsumers.Count | Should -BeGreaterThan 0
         }
 
-        It "Devrait analyser le flux de données entre les actions" {
-            # Certaines actions peuvent ne pas avoir de flux de données (nœuds terminaux)
+        It "Devrait analyser le flux de donnÃ©es entre les actions" {
+            # Certaines actions peuvent ne pas avoir de flux de donnÃ©es (nÅ“uds terminaux)
             $actionsWithDataFlow = $actionResults | Where-Object { $_.DataFlow.Count -gt 0 }
             $actionsWithDataFlow.Count | Should -BeGreaterThan 0
         }
@@ -445,17 +445,17 @@ Describe "Tests des fonctions d'analyse des actions" {
 # Tests pour les fonctions auxiliaires
 Describe "Tests des fonctions auxiliaires" {
     Context "Get-TriggerType" {
-        It "Devrait identifier correctement les déclencheurs de planification" {
+        It "Devrait identifier correctement les dÃ©clencheurs de planification" {
             $triggerType = Get-TriggerType -NodeType "n8n-nodes-base.cron"
             $triggerType | Should -Be "Schedule"
         }
 
-        It "Devrait identifier correctement les déclencheurs webhook" {
+        It "Devrait identifier correctement les dÃ©clencheurs webhook" {
             $triggerType = Get-TriggerType -NodeType "n8n-nodes-base.webhook"
             $triggerType | Should -Be "Webhook"
         }
 
-        It "Devrait identifier correctement les déclencheurs manuels" {
+        It "Devrait identifier correctement les dÃ©clencheurs manuels" {
             $triggerType = Get-TriggerType -NodeType "n8n-nodes-base.manualTrigger"
             $triggerType | Should -Be "Manual"
         }
@@ -472,17 +472,17 @@ Describe "Tests des fonctions auxiliaires" {
             $actionType | Should -Be "HTTP"
         }
 
-        It "Devrait identifier correctement les actions de manipulation de données" {
+        It "Devrait identifier correctement les actions de manipulation de donnÃ©es" {
             $actionType = Get-ActionType -NodeType "n8n-nodes-base.set"
             $actionType | Should -Be "DataManipulation"
         }
 
-        It "Devrait identifier correctement les actions d'exécution de code" {
+        It "Devrait identifier correctement les actions d'exÃ©cution de code" {
             $actionType = Get-ActionType -NodeType "n8n-nodes-base.function"
             $actionType | Should -Be "CodeExecution"
         }
 
-        It "Devrait identifier correctement les actions de contrôle de flux" {
+        It "Devrait identifier correctement les actions de contrÃ´le de flux" {
             $actionType = Get-ActionType -NodeType "n8n-nodes-base.if"
             $actionType | Should -Be "FlowControl"
         }
@@ -494,17 +494,17 @@ Describe "Tests des fonctions auxiliaires" {
     }
 
     Context "Get-EventSourceType" {
-        It "Devrait identifier correctement les sources d'événements de planification" {
+        It "Devrait identifier correctement les sources d'Ã©vÃ©nements de planification" {
             $sourceType = Get-EventSourceType -NodeType "n8n-nodes-base.cron"
             $sourceType | Should -Be "Schedule"
         }
 
-        It "Devrait identifier correctement les sources d'événements HTTP" {
+        It "Devrait identifier correctement les sources d'Ã©vÃ©nements HTTP" {
             $sourceType = Get-EventSourceType -NodeType "n8n-nodes-base.webhook"
             $sourceType | Should -Be "HTTP"
         }
 
-        It "Devrait identifier correctement les sources d'événements manuelles" {
+        It "Devrait identifier correctement les sources d'Ã©vÃ©nements manuelles" {
             $sourceType = Get-EventSourceType -NodeType "n8n-nodes-base.manualTrigger"
             $sourceType | Should -Be "Manual"
         }
@@ -521,17 +521,17 @@ Describe "Tests des fonctions auxiliaires" {
             $outputType | Should -Be "JSON/Text"
         }
 
-        It "Devrait identifier correctement les types de sortie de manipulation de données" {
+        It "Devrait identifier correctement les types de sortie de manipulation de donnÃ©es" {
             $outputType = Get-ActionOutputType -Node @{type = "n8n-nodes-base.set"} -ActionType "DataManipulation"
             $outputType | Should -Be "JSON"
         }
 
-        It "Devrait identifier correctement les types de sortie d'exécution de code" {
+        It "Devrait identifier correctement les types de sortie d'exÃ©cution de code" {
             $outputType = Get-ActionOutputType -Node @{type = "n8n-nodes-base.function"} -ActionType "CodeExecution"
             $outputType | Should -Be "JSON"
         }
 
-        It "Devrait identifier correctement les types de sortie de contrôle de flux" {
+        It "Devrait identifier correctement les types de sortie de contrÃ´le de flux" {
             $outputType = Get-ActionOutputType -Node @{type = "n8n-nodes-base.if"} -ActionType "FlowControl"
             $outputType | Should -Be "Boolean"
         }
@@ -543,10 +543,10 @@ Describe "Tests des fonctions auxiliaires" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Configuration $pesterConfig
 
-# Nettoyer les fichiers de test après l'exécution des tests
+# Nettoyer les fichiers de test aprÃ¨s l'exÃ©cution des tests
 AfterAll {
     # Supprimer les fichiers de test
     if (Test-Path -Path $testDataPath) {

@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module pour la détection des dépendances de modules PowerShell.
+    Module pour la dÃ©tection des dÃ©pendances de modules PowerShell.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour détecter les dépendances de modules PowerShell
-    dans les scripts, en utilisant l'analyse AST (Abstract Syntax Tree) pour une détection
-    précise des instructions Import-Module et leurs paramètres.
+    Ce module fournit des fonctions pour dÃ©tecter les dÃ©pendances de modules PowerShell
+    dans les scripts, en utilisant l'analyse AST (Abstract Syntax Tree) pour une dÃ©tection
+    prÃ©cise des instructions Import-Module et leurs paramÃ¨tres.
 
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 #region Private Functions
@@ -19,17 +19,17 @@
 function Get-ImportModuleAst {
     <#
     .SYNOPSIS
-        Détecte les instructions Import-Module dans un script PowerShell en utilisant l'AST.
+        DÃ©tecte les instructions Import-Module dans un script PowerShell en utilisant l'AST.
 
     .DESCRIPTION
         Cette fonction analyse un script PowerShell en utilisant l'AST (Abstract Syntax Tree)
-        pour détecter les instructions Import-Module et extraire les informations sur les modules importés.
+        pour dÃ©tecter les instructions Import-Module et extraire les informations sur les modules importÃ©s.
 
     .PARAMETER FilePath
-        Chemin du fichier PowerShell à analyser.
+        Chemin du fichier PowerShell Ã  analyser.
 
     .PARAMETER ScriptContent
-        Contenu du script PowerShell à analyser. Si ce paramètre est spécifié, FilePath est ignoré.
+        Contenu du script PowerShell Ã  analyser. Si ce paramÃ¨tre est spÃ©cifiÃ©, FilePath est ignorÃ©.
 
     .EXAMPLE
         Get-ImportModuleAst -FilePath "C:\Scripts\MyScript.ps1"
@@ -59,7 +59,7 @@ function Get-ImportModuleAst {
         # Analyser le script avec l'AST
         if ($PSCmdlet.ParameterSetName -eq "ByPath") {
             if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-                Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+                Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
                 return @()
             }
 
@@ -76,15 +76,15 @@ function Get-ImportModuleAst {
             )
         }
 
-        # Vérifier les erreurs d'analyse
+        # VÃ©rifier les erreurs d'analyse
         if ($parseErrors -and $parseErrors.Count -gt 0) {
-            Write-Warning "Des erreurs d'analyse ont été détectées dans le script :"
+            Write-Warning "Des erreurs d'analyse ont Ã©tÃ© dÃ©tectÃ©es dans le script :"
             foreach ($error in $parseErrors) {
                 Write-Warning "  Ligne $($error.Extent.StartLineNumber), Colonne $($error.Extent.StartColumnNumber): $($error.Message)"
             }
         }
 
-        # Initialiser la liste des résultats
+        # Initialiser la liste des rÃ©sultats
         $results = [System.Collections.Generic.List[PSObject]]::new()
 
         # 1. Trouver toutes les instructions Import-Module
@@ -113,33 +113,33 @@ function Get-ImportModuleAst {
                 ImportType   = "Import-Module"
             }
 
-            # Analyser les éléments de la commande
+            # Analyser les Ã©lÃ©ments de la commande
             $namedParameters = @{}
             $positionalParameters = @()
 
             for ($i = 1; $i -lt $call.CommandElements.Count; $i++) {
                 $element = $call.CommandElements[$i]
 
-                # Vérifier si c'est un paramètre nommé
+                # VÃ©rifier si c'est un paramÃ¨tre nommÃ©
                 if ($element -is [System.Management.Automation.Language.CommandParameterAst]) {
                     $paramName = $element.ParameterName
 
-                    # Vérifier si le paramètre a une valeur associée
+                    # VÃ©rifier si le paramÃ¨tre a une valeur associÃ©e
                     if ($i + 1 -lt $call.CommandElements.Count -and
                         -not ($call.CommandElements[$i + 1] -is [System.Management.Automation.Language.CommandParameterAst])) {
                         $namedParameters[$paramName] = $call.CommandElements[$i + 1]
-                        $i++  # Sauter l'élément suivant car c'est la valeur du paramètre
+                        $i++  # Sauter l'Ã©lÃ©ment suivant car c'est la valeur du paramÃ¨tre
                     } else {
-                        # Paramètre switch sans valeur
+                        # ParamÃ¨tre switch sans valeur
                         $namedParameters[$paramName] = $true
                     }
                 } else {
-                    # Paramètre positionnel
+                    # ParamÃ¨tre positionnel
                     $positionalParameters += $element
                 }
             }
 
-            # Traiter les paramètres nommés
+            # Traiter les paramÃ¨tres nommÃ©s
             if ($namedParameters.ContainsKey("Name")) {
                 $moduleInfo.Name = GetParameterValue -Parameter $namedParameters["Name"]
                 $moduleInfo.ArgumentType = "Named"
@@ -149,7 +149,7 @@ function Get-ImportModuleAst {
                 $moduleInfo.ArgumentType = "Path"
             }
 
-            # Traiter les autres paramètres nommés
+            # Traiter les autres paramÃ¨tres nommÃ©s
             if ($namedParameters.ContainsKey("Global")) {
                 $moduleInfo.Global = $true
             }
@@ -168,21 +168,21 @@ function Get-ImportModuleAst {
                 if ($namedParameters.ContainsKey("RequiredVersion")) {
                     $moduleInfo.Version = GetParameterValue -Parameter $namedParameters["RequiredVersion"]
                 } elseif ($namedParameters.ContainsKey("MinimumVersion")) {
-                    $moduleInfo.Version = "≥ " + (GetParameterValue -Parameter $namedParameters["MinimumVersion"])
+                    $moduleInfo.Version = "â‰¥ " + (GetParameterValue -Parameter $namedParameters["MinimumVersion"])
 
                     if ($namedParameters.ContainsKey("MaximumVersion")) {
-                        $moduleInfo.Version += ", ≤ " + (GetParameterValue -Parameter $namedParameters["MaximumVersion"])
+                        $moduleInfo.Version += ", â‰¤ " + (GetParameterValue -Parameter $namedParameters["MaximumVersion"])
                     }
                 } elseif ($namedParameters.ContainsKey("MaximumVersion")) {
-                    $moduleInfo.Version = "≤ " + (GetParameterValue -Parameter $namedParameters["MaximumVersion"])
+                    $moduleInfo.Version = "â‰¤ " + (GetParameterValue -Parameter $namedParameters["MaximumVersion"])
                 }
             }
 
-            # Traiter les paramètres positionnels
+            # Traiter les paramÃ¨tres positionnels
             if (-not $moduleInfo.Name -and -not $moduleInfo.Path -and $positionalParameters.Count -gt 0) {
                 $firstParam = GetParameterValue -Parameter $positionalParameters[0]
 
-                # Déterminer si c'est un nom ou un chemin
+                # DÃ©terminer si c'est un nom ou un chemin
                 if ($firstParam -match '[/\\]' -or $firstParam -match '^\.\.?[/\\]') {
                     # C'est probablement un chemin
                     $moduleInfo.Path = $firstParam
@@ -195,12 +195,12 @@ function Get-ImportModuleAst {
                 }
             }
 
-            # Ajouter le résultat à la liste
+            # Ajouter le rÃ©sultat Ã  la liste
             $results.Add($moduleInfo)
         }
 
         # 2. Trouver toutes les instructions using module
-        # Utiliser uniquement des expressions régulières (plus fiable)
+        # Utiliser uniquement des expressions rÃ©guliÃ¨res (plus fiable)
         try {
             # Obtenir le contenu du script
             $scriptText = if ($PSCmdlet.ParameterSetName -eq "ByPath") {
@@ -215,13 +215,13 @@ function Get-ImportModuleAst {
                 $regexMatches = $regex.Matches($scriptText)
 
                 Write-Verbose "Recherche d'instructions using module avec regex dans le script"
-                Write-Verbose "Contenu du script (premiers 100 caractères) : $($scriptText.Substring(0, [Math]::Min(100, $scriptText.Length)))"
-                Write-Verbose "Nombre de correspondances trouvées : $($regexMatches.Count)"
+                Write-Verbose "Contenu du script (premiers 100 caractÃ¨res) : $($scriptText.Substring(0, [Math]::Min(100, $scriptText.Length)))"
+                Write-Verbose "Nombre de correspondances trouvÃ©es : $($regexMatches.Count)"
 
                 foreach ($match in $regexMatches) {
                     $moduleName = $match.Groups[1].Value.Trim()
 
-                    # Déterminer le numéro de ligne
+                    # DÃ©terminer le numÃ©ro de ligne
                     $lineNumber = 1
                     $position = $match.Index
                     $lines = $scriptText.Substring(0, $position).Split("`n")
@@ -232,7 +232,7 @@ function Get-ImportModuleAst {
                         Name         = $moduleName
                         Path         = $null
                         Version      = $null
-                        Global       = $true  # Les instructions using module ont une portée globale
+                        Global       = $true  # Les instructions using module ont une portÃ©e globale
                         Force        = $false
                         Prefix       = $null
                         ArgumentType = "UsingModule"
@@ -242,18 +242,18 @@ function Get-ImportModuleAst {
                         ImportType   = "using module"
                     }
 
-                    Write-Verbose "Création d'une instruction using module : $moduleName à la ligne $lineNumber"
+                    Write-Verbose "CrÃ©ation d'une instruction using module : $moduleName Ã  la ligne $lineNumber"
 
-                    # Déterminer si c'est un nom ou un chemin
+                    # DÃ©terminer si c'est un nom ou un chemin
                     if ($moduleName -match '[/\\]' -or $moduleName -match '^\.\.?[/\\]') {
                         # C'est probablement un chemin
                         $moduleInfo.Path = $moduleName
                         $moduleInfo.Name = [System.IO.Path]::GetFileNameWithoutExtension($moduleName)
                     }
 
-                    # Ajouter le résultat à la liste
+                    # Ajouter le rÃ©sultat Ã  la liste
                     $results.Add($moduleInfo)
-                    Write-Verbose "Instruction using module trouvée : $moduleName à la ligne $lineNumber"
+                    Write-Verbose "Instruction using module trouvÃ©e : $moduleName Ã  la ligne $lineNumber"
                 }
             } else {
                 Write-Warning "Le contenu du script est vide ou null"
@@ -272,13 +272,13 @@ function Get-ImportModuleAst {
 function GetParameterValue {
     <#
     .SYNOPSIS
-        Extrait la valeur d'un paramètre AST.
+        Extrait la valeur d'un paramÃ¨tre AST.
 
     .DESCRIPTION
-        Cette fonction interne extrait la valeur d'un paramètre AST en fonction de son type.
+        Cette fonction interne extrait la valeur d'un paramÃ¨tre AST en fonction de son type.
 
     .PARAMETER Parameter
-        Le paramètre AST à analyser.
+        Le paramÃ¨tre AST Ã  analyser.
 
     .OUTPUTS
         System.Object
@@ -305,25 +305,25 @@ function GetParameterValue {
 function Resolve-ModulePath {
     <#
     .SYNOPSIS
-        Résout le chemin complet d'un module PowerShell.
+        RÃ©sout le chemin complet d'un module PowerShell.
 
     .DESCRIPTION
-        Cette fonction tente de résoudre le chemin complet d'un module PowerShell
+        Cette fonction tente de rÃ©soudre le chemin complet d'un module PowerShell
         en fonction de son nom ou de son chemin relatif.
 
     .PARAMETER Name
-        Nom du module à résoudre.
+        Nom du module Ã  rÃ©soudre.
 
     .PARAMETER Path
-        Chemin relatif ou absolu du module à résoudre.
+        Chemin relatif ou absolu du module Ã  rÃ©soudre.
 
     .PARAMETER BaseDirectory
-        Répertoire de base pour résoudre les chemins relatifs.
-        Par défaut, utilise le répertoire courant.
+        RÃ©pertoire de base pour rÃ©soudre les chemins relatifs.
+        Par dÃ©faut, utilise le rÃ©pertoire courant.
 
     .PARAMETER SearchDepth
-        Profondeur de recherche pour trouver les modules dans les sous-répertoires.
-        Par défaut, la valeur est 3.
+        Profondeur de recherche pour trouver les modules dans les sous-rÃ©pertoires.
+        Par dÃ©faut, la valeur est 3.
 
     .EXAMPLE
         Resolve-ModulePath -Name "PSScriptAnalyzer"
@@ -358,7 +358,7 @@ function Resolve-ModulePath {
                 return $module[0].Path
             }
 
-            # 2. Rechercher dans les chemins de modules personnalisés
+            # 2. Rechercher dans les chemins de modules personnalisÃ©s
             $psModulePaths = $env:PSModulePath -split [System.IO.Path]::PathSeparator
             foreach ($modulePath in $psModulePaths) {
                 if (Test-Path -Path $modulePath) {
@@ -370,16 +370,16 @@ function Resolve-ModulePath {
                 }
             }
 
-            # 3. Rechercher dans le répertoire de base et ses sous-répertoires
+            # 3. Rechercher dans le rÃ©pertoire de base et ses sous-rÃ©pertoires
             $moduleFiles = Get-ChildItem -Path $BaseDirectory -Recurse -Include "$Name.psm1", "$Name.psd1" -File -ErrorAction SilentlyContinue -Depth $SearchDepth
 
             if ($moduleFiles) {
                 return $moduleFiles[0].FullName
             }
 
-            # 4. Rechercher dans les répertoires communs de modules
+            # 4. Rechercher dans les rÃ©pertoires communs de modules
             $commonModulePaths = @(
-                # Répertoires communs pour les modules PowerShell
+                # RÃ©pertoires communs pour les modules PowerShell
                 (Join-Path -Path $BaseDirectory -ChildPath "modules"),
                 (Join-Path -Path $BaseDirectory -ChildPath "Modules"),
                 (Join-Path -Path (Split-Path -Parent $BaseDirectory) -ChildPath "modules"),
@@ -404,7 +404,7 @@ function Resolve-ModulePath {
 
             return $null
         } else {
-            # Résoudre le chemin relatif ou absolu
+            # RÃ©soudre le chemin relatif ou absolu
             if ([System.IO.Path]::IsPathRooted($Path)) {
                 # Chemin absolu
                 if (Test-Path -Path $Path -PathType Leaf) {
@@ -438,7 +438,7 @@ function Resolve-ModulePath {
                     }
                 }
 
-                # Essayer de résoudre le chemin en utilisant des chemins relatifs courants
+                # Essayer de rÃ©soudre le chemin en utilisant des chemins relatifs courants
                 $commonRelativePaths = @(
                     $Path,
                     "modules\$Path",
@@ -475,7 +475,7 @@ function Resolve-ModulePath {
             return $null
         }
     } catch {
-        Write-Error "Erreur lors de la résolution du chemin du module : $_"
+        Write-Error "Erreur lors de la rÃ©solution du chemin du module : $_"
         return $null
     }
 }
@@ -487,25 +487,25 @@ function Resolve-ModulePath {
 function Find-ImportModuleInstruction {
     <#
     .SYNOPSIS
-        Détecte les instructions Import-Module dans un script PowerShell.
+        DÃ©tecte les instructions Import-Module dans un script PowerShell.
 
     .DESCRIPTION
-        Cette fonction analyse un script PowerShell pour détecter les instructions Import-Module
-        et extraire les informations sur les modules importés, en utilisant l'analyse AST pour
-        une détection précise.
+        Cette fonction analyse un script PowerShell pour dÃ©tecter les instructions Import-Module
+        et extraire les informations sur les modules importÃ©s, en utilisant l'analyse AST pour
+        une dÃ©tection prÃ©cise.
 
     .PARAMETER FilePath
-        Chemin du fichier PowerShell à analyser.
+        Chemin du fichier PowerShell Ã  analyser.
 
     .PARAMETER ScriptContent
-        Contenu du script PowerShell à analyser. Si ce paramètre est spécifié, FilePath est ignoré.
+        Contenu du script PowerShell Ã  analyser. Si ce paramÃ¨tre est spÃ©cifiÃ©, FilePath est ignorÃ©.
 
     .PARAMETER ResolveModulePaths
-        Indique si les chemins des modules doivent être résolus.
+        Indique si les chemins des modules doivent Ãªtre rÃ©solus.
 
     .PARAMETER BaseDirectory
-        Répertoire de base pour résoudre les chemins relatifs des modules.
-        Par défaut, utilise le répertoire du script ou le répertoire courant.
+        RÃ©pertoire de base pour rÃ©soudre les chemins relatifs des modules.
+        Par dÃ©faut, utilise le rÃ©pertoire du script ou le rÃ©pertoire courant.
 
     .EXAMPLE
         Find-ImportModuleInstruction -FilePath "C:\Scripts\MyScript.ps1"
@@ -533,7 +533,7 @@ function Find-ImportModuleInstruction {
     )
 
     try {
-        # Déterminer le répertoire de base
+        # DÃ©terminer le rÃ©pertoire de base
         if (-not $BaseDirectory) {
             if ($PSCmdlet.ParameterSetName -eq "ByPath") {
                 $BaseDirectory = Split-Path -Path $FilePath -Parent
@@ -549,7 +549,7 @@ function Find-ImportModuleInstruction {
             $importModules = Get-ImportModuleAst -ScriptContent $ScriptContent
         }
 
-        # Résoudre les chemins des modules si demandé
+        # RÃ©soudre les chemins des modules si demandÃ©
         if ($ResolveModulePaths) {
             foreach ($module in $importModules) {
                 if ($module.Path) {

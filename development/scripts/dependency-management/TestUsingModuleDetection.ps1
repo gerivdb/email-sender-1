@@ -1,4 +1,4 @@
-# Script pour tester la détection des instructions using module
+﻿# Script pour tester la dÃ©tection des instructions using module
 $testFilePath = Join-Path -Path $PSScriptRoot -ChildPath "TestImport.ps1"
 
 # Lire le contenu du fichier
@@ -8,17 +8,17 @@ $content = Get-Content -Path $testFilePath -Raw
 Write-Host "Contenu du fichier :"
 Write-Host $content
 
-# Utiliser une expression régulière pour détecter les instructions using module
+# Utiliser une expression rÃ©guliÃ¨re pour dÃ©tecter les instructions using module
 $regex = [regex]::new('using\s+module\s+(\S+)')
 $matches = $regex.Matches($content)
 
-Write-Host "`nNombre d'instructions using module trouvées : $($matches.Count)"
+Write-Host "`nNombre d'instructions using module trouvÃ©es : $($matches.Count)"
 foreach ($match in $matches) {
     $moduleName = $match.Groups[1].Value
     Write-Host "  Module : $moduleName"
 }
 
-# Créer un fichier temporaire avec une instruction using module
+# CrÃ©er un fichier temporaire avec une instruction using module
 $tempFilePath = Join-Path -Path $env:TEMP -ChildPath "TestUsingModule.ps1"
 Set-Content -Path $tempFilePath -Value "using module PSScriptAnalyzer`nImport-Module Pester"
 
@@ -29,10 +29,10 @@ $tempContent = Get-Content -Path $tempFilePath -Raw
 Write-Host "`nContenu du fichier temporaire :"
 Write-Host $tempContent
 
-# Utiliser une expression régulière pour détecter les instructions using module dans le fichier temporaire
+# Utiliser une expression rÃ©guliÃ¨re pour dÃ©tecter les instructions using module dans le fichier temporaire
 $matches = $regex.Matches($tempContent)
 
-Write-Host "`nNombre d'instructions using module trouvées dans le fichier temporaire : $($matches.Count)"
+Write-Host "`nNombre d'instructions using module trouvÃ©es dans le fichier temporaire : $($matches.Count)"
 foreach ($match in $matches) {
     $moduleName = $match.Groups[1].Value
     Write-Host "  Module : $moduleName"

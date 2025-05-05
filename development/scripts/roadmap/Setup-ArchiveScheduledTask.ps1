@@ -1,5 +1,5 @@
-# Setup-ArchiveScheduledTask.ps1
-# Script pour configurer une tâche planifiée Windows qui archive les tâches terminées
+﻿# Setup-ArchiveScheduledTask.ps1
+# Script pour configurer une tÃ¢che planifiÃ©e Windows qui archive les tÃ¢ches terminÃ©es
 # Version: 1.0
 # Date: 2025-05-03
 
@@ -18,7 +18,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour créer un raccourci Windows
+# Fonction pour crÃ©er un raccourci Windows
 function New-Shortcut {
     param (
         [string]$TargetPath,
@@ -45,16 +45,16 @@ function New-Shortcut {
     return $ShortcutPath
 }
 
-# Obtenir le chemin du script d'exécution
+# Obtenir le chemin du script d'exÃ©cution
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $executionScriptPath = Join-Path -Path $scriptPath -ChildPath "Execute-ArchiveIfNeeded.ps1"
 
 if (-not (Test-Path -Path $executionScriptPath)) {
-    Write-Error "Script d'exécution introuvable: $executionScriptPath"
+    Write-Error "Script d'exÃ©cution introuvable: $executionScriptPath"
     exit 1
 }
 
-# Construire les paramètres pour le script d'exécution
+# Construire les paramÃ¨tres pour le script d'exÃ©cution
 $params = @{
     RoadmapPath = $RoadmapPath
 }
@@ -67,7 +67,7 @@ if ($Force) {
     $params.Add("Force", $true)
 }
 
-# Convertir les paramètres en chaîne de commande
+# Convertir les paramÃ¨tres en chaÃ®ne de commande
 $paramString = ""
 foreach ($key in $params.Keys) {
     $value = $params[$key]
@@ -78,13 +78,13 @@ foreach ($key in $params.Keys) {
     }
 }
 
-# Créer le dossier de démarrage si nécessaire
+# CrÃ©er le dossier de dÃ©marrage si nÃ©cessaire
 $startupFolder = [Environment]::GetFolderPath("Startup")
 if (-not (Test-Path -Path $startupFolder)) {
     New-Item -Path $startupFolder -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier batch qui exécute le script PowerShell
+# CrÃ©er un fichier batch qui exÃ©cute le script PowerShell
 $batchFilePath = Join-Path -Path $scriptPath -ChildPath "RunArchiveTask.bat"
 $batchContent = @"
 @echo off
@@ -94,11 +94,11 @@ exit
 
 Set-Content -Path $batchFilePath -Value $batchContent -Encoding ASCII
 
-# Créer un raccourci dans le dossier de démarrage
+# CrÃ©er un raccourci dans le dossier de dÃ©marrage
 $shortcutPath = Join-Path -Path $startupFolder -ChildPath "ArchiveRoadmapTasks.lnk"
-New-Shortcut -TargetPath "C:\Windows\System32\wscript.exe" -ShortcutPath $shortcutPath -Arguments "`"$scriptPath\RunArchiveTaskHidden.vbs`"" -Description "Archive automatiquement les tâches terminées de la roadmap" -WorkingDirectory $scriptPath -Hidden
+New-Shortcut -TargetPath "C:\Windows\System32\wscript.exe" -ShortcutPath $shortcutPath -Arguments "`"$scriptPath\RunArchiveTaskHidden.vbs`"" -Description "Archive automatiquement les tÃ¢ches terminÃ©es de la roadmap" -WorkingDirectory $scriptPath -Hidden
 
-# Créer un script VBS pour exécuter le batch file en arrière-plan
+# CrÃ©er un script VBS pour exÃ©cuter le batch file en arriÃ¨re-plan
 $vbsFilePath = Join-Path -Path $scriptPath -ChildPath "RunArchiveTaskHidden.vbs"
 $vbsContent = @"
 Set WshShell = CreateObject("WScript.Shell")
@@ -108,13 +108,13 @@ Set WshShell = Nothing
 
 Set-Content -Path $vbsFilePath -Value $vbsContent -Encoding ASCII
 
-# Créer un fichier XML pour la tâche planifiée
+# CrÃ©er un fichier XML pour la tÃ¢che planifiÃ©e
 $taskXmlPath = Join-Path -Path $scriptPath -ChildPath "ArchiveTask.xml"
 $taskXml = @"
 <?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
-    <Description>Archive automatiquement les tâches terminées de la roadmap toutes les $IntervalMinutes minutes si l'IDE est ouvert et si le fichier a été modifié.</Description>
+    <Description>Archive automatiquement les tÃ¢ches terminÃ©es de la roadmap toutes les $IntervalMinutes minutes si l'IDE est ouvert et si le fichier a Ã©tÃ© modifiÃ©.</Description>
   </RegistrationInfo>
   <Triggers>
     <TimeTrigger>
@@ -162,7 +162,7 @@ $taskXml = @"
 
 Set-Content -Path $taskXmlPath -Value $taskXml -Encoding Unicode
 
-# Créer un script pour enregistrer la tâche planifiée
+# CrÃ©er un script pour enregistrer la tÃ¢che planifiÃ©e
 $registerTaskScriptPath = Join-Path -Path $scriptPath -ChildPath "RegisterTask.bat"
 $registerTaskContent = @"
 @echo off
@@ -171,7 +171,7 @@ schtasks /create /tn "ArchiveRoadmapTasks" /xml "$taskXmlPath" /f
 
 Set-Content -Path $registerTaskScriptPath -Value $registerTaskContent -Encoding ASCII
 
-# Créer un script pour supprimer la tâche planifiée
+# CrÃ©er un script pour supprimer la tÃ¢che planifiÃ©e
 $unregisterTaskScriptPath = Join-Path -Path $scriptPath -ChildPath "UnregisterTask.bat"
 $unregisterTaskContent = @"
 @echo off
@@ -180,25 +180,25 @@ schtasks /delete /tn "ArchiveRoadmapTasks" /f
 
 Set-Content -Path $unregisterTaskScriptPath -Value $unregisterTaskContent -Encoding ASCII
 
-# Enregistrer la tâche planifiée
+# Enregistrer la tÃ¢che planifiÃ©e
 try {
     $process = Start-Process -FilePath $registerTaskScriptPath -NoNewWindow -Wait -PassThru
     if ($process.ExitCode -eq 0) {
-        Write-Host "Tâche planifiée 'ArchiveRoadmapTasks' enregistrée avec succès."
+        Write-Host "TÃ¢che planifiÃ©e 'ArchiveRoadmapTasks' enregistrÃ©e avec succÃ¨s."
     } else {
-        Write-Warning "Erreur lors de l'enregistrement de la tâche planifiée. Code de sortie: $($process.ExitCode)"
-        Write-Host "Vous pouvez enregistrer la tâche manuellement en exécutant le fichier: $registerTaskScriptPath"
+        Write-Warning "Erreur lors de l'enregistrement de la tÃ¢che planifiÃ©e. Code de sortie: $($process.ExitCode)"
+        Write-Host "Vous pouvez enregistrer la tÃ¢che manuellement en exÃ©cutant le fichier: $registerTaskScriptPath"
     }
 } catch {
-    Write-Warning "Erreur lors de l'enregistrement de la tâche planifiée: $_"
-    Write-Host "Vous pouvez enregistrer la tâche manuellement en exécutant le fichier: $registerTaskScriptPath"
+    Write-Warning "Erreur lors de l'enregistrement de la tÃ¢che planifiÃ©e: $_"
+    Write-Host "Vous pouvez enregistrer la tÃ¢che manuellement en exÃ©cutant le fichier: $registerTaskScriptPath"
 }
 
-Write-Host "Configuration terminée."
-Write-Host "La tâche s'exécutera toutes les $IntervalMinutes minutes et vérifiera si l'IDE est ouvert et si le fichier a été modifié."
+Write-Host "Configuration terminÃ©e."
+Write-Host "La tÃ¢che s'exÃ©cutera toutes les $IntervalMinutes minutes et vÃ©rifiera si l'IDE est ouvert et si le fichier a Ã©tÃ© modifiÃ©."
 Write-Host "Fichier de roadmap: $RoadmapPath"
-Write-Host "Mise à jour de la base vectorielle: $UpdateVectorDB"
-Write-Host "Mode forcé: $Force"
+Write-Host "Mise Ã  jour de la base vectorielle: $UpdateVectorDB"
+Write-Host "Mode forcÃ©: $Force"
 Write-Host ""
-Write-Host "Pour supprimer la tâche planifiée, exécutez le fichier: $unregisterTaskScriptPath"
-Write-Host "Pour exécuter la tâche manuellement, exécutez le fichier: $batchFilePath"
+Write-Host "Pour supprimer la tÃ¢che planifiÃ©e, exÃ©cutez le fichier: $unregisterTaskScriptPath"
+Write-Host "Pour exÃ©cuter la tÃ¢che manuellement, exÃ©cutez le fichier: $batchFilePath"

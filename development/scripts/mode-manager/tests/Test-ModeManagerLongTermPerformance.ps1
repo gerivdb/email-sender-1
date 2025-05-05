@@ -1,21 +1,21 @@
-# Tests de performance à long terme pour le mode manager
+﻿# Tests de performance Ã  long terme pour le mode manager
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour mesurer le temps d'exécution
+# Fonction pour mesurer le temps d'exÃ©cution
 function Measure-ExecutionTime {
     param (
         [ScriptBlock]$ScriptBlock
@@ -27,7 +27,7 @@ function Measure-ExecutionTime {
     return $stopwatch.ElapsedMilliseconds
 }
 
-# Fonction pour mesurer l'utilisation de la mémoire
+# Fonction pour mesurer l'utilisation de la mÃ©moire
 function Measure-MemoryUsage {
     param (
         [ScriptBlock]$ScriptBlock
@@ -41,25 +41,25 @@ function Measure-MemoryUsage {
     return ($finalMemory - $initialMemory) / 1MB
 }
 
-# Fonction pour créer un fichier de roadmap
+# Fonction pour crÃ©er un fichier de roadmap
 function Create-Roadmap {
     param (
         [string]$FilePath,
         [int]$TaskCount = 100
     )
 
-    $content = "# Fichier de roadmap pour tests de performance à long terme`n`n"
+    $content = "# Fichier de roadmap pour tests de performance Ã  long terme`n`n"
 
     for ($i = 1; $i -le $TaskCount; $i++) {
-        $content += "## Tâche $i`n`n"
+        $content += "## TÃ¢che $i`n`n"
 
         for ($j = 1; $j -le 5; $j++) {
-            $content += "### Sous-tâche $i.$j`n`n"
+            $content += "### Sous-tÃ¢che $i.$j`n`n"
 
             for ($k = 1; $k -le 3; $k++) {
-                $content += "- [ ] Élément $i.$j.$k`n"
-                $content += "  - Description de l'élément $i.$j.$k`n"
-                $content += "  - Détails supplémentaires pour l'élément $i.$j.$k`n`n"
+                $content += "- [ ] Ã‰lÃ©ment $i.$j.$k`n"
+                $content += "  - Description de l'Ã©lÃ©ment $i.$j.$k`n"
+                $content += "  - DÃ©tails supplÃ©mentaires pour l'Ã©lÃ©ment $i.$j.$k`n`n"
             }
         }
     }
@@ -68,7 +68,7 @@ function Create-Roadmap {
     return $FilePath
 }
 
-# Fonction pour créer une configuration
+# Fonction pour crÃ©er une configuration
 function Create-Config {
     param (
         [string]$FilePath,
@@ -93,7 +93,7 @@ function Create-Config {
         }
     }
 
-    # Ajouter des modes supplémentaires
+    # Ajouter des modes supplÃ©mentaires
     for ($i = 1; $i -le $ModeCount; $i++) {
         $modeName = "MODE$i"
         $config.Modes[$modeName] = @{
@@ -112,7 +112,7 @@ function Create-Config {
     return $FilePath
 }
 
-# Fonction pour créer des scripts de mode simulés
+# Fonction pour crÃ©er des scripts de mode simulÃ©s
 function Create-MockScripts {
     param (
         [string]$TestDir,
@@ -121,7 +121,7 @@ function Create-MockScripts {
 
     $mockScripts = @()
 
-    # Créer les scripts de mode standard
+    # CrÃ©er les scripts de mode standard
     $standardModes = @("check", "gran", "debug", "test")
     foreach ($mode in $standardModes) {
         $mockScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "mock-$mode-mode.ps1"
@@ -143,7 +143,7 @@ param (
     [string]`$WorkflowName
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$TestDir" -ChildPath "$mode-mode-output.txt"
 @"
 FilePath : `$FilePath
@@ -159,7 +159,7 @@ WorkflowName : `$WorkflowName
         $mockScripts += $mockScriptPath
     }
 
-    # Créer des scripts de mode supplémentaires
+    # CrÃ©er des scripts de mode supplÃ©mentaires
     for ($i = 1; $i -le $ModeCount; $i++) {
         $mockScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "mock-mode$i-mode.ps1"
         $mockScriptContent = @'
@@ -189,7 +189,7 @@ param (
     [string]$Param3
 )
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "TESTDIR_PLACEHOLDER" -ChildPath "mode{ 0 }-output.txt" -f $i
 @"
         FilePath : $FilePath
@@ -211,50 +211,50 @@ exit 0
     return $mockScripts
 }
 
-# Créer un fichier de roadmap
+# CrÃ©er un fichier de roadmap
 $roadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 Create-Roadmap -FilePath $roadmapPath -TaskCount 100
 
-# Créer une configuration
+# CrÃ©er une configuration
 $configPath = Join-Path -Path $testDir -ChildPath "test-config.json"
 Create-Config -FilePath $configPath -ModeCount 10
 
-# Créer des scripts de mode simulés
+# CrÃ©er des scripts de mode simulÃ©s
 $mockScripts = Create-MockScripts -TestDir $testDir -ModeCount 10
 
-# Créer un fichier de résultats
+# CrÃ©er un fichier de rÃ©sultats
 $resultsPath = Join-Path -Path $testDir -ChildPath "long-term-performance-results.csv"
 "Iteration, ExecutionTime, MemoryUsage" | Set-Content -Path $resultsPath -Encoding UTF8
 
-# Test 1: Performance à long terme - Exécution répétée
-Write-Host "Test 1: Performance à long terme - Exécution répétée" -ForegroundColor Cyan
+# Test 1: Performance Ã  long terme - ExÃ©cution rÃ©pÃ©tÃ©e
+Write-Host "Test 1: Performance Ã  long terme - ExÃ©cution rÃ©pÃ©tÃ©e" -ForegroundColor Cyan
 $iterations = 20
 $executionTimes = @()
 $memoryUsages = @()
 
 for ($i = 1; $i -le $iterations; $i++) {
-    Write-Host "Itération $i/$iterations" -ForegroundColor Cyan
+    Write-Host "ItÃ©ration $i/$iterations" -ForegroundColor Cyan
 
-    # Mesurer le temps d'exécution
+    # Mesurer le temps d'exÃ©cution
     $executionTime = Measure-ExecutionTime {
         & $scriptPath -Mode "CHECK" -FilePath $roadmapPath -TaskIdentifier "1.2.3" -ConfigPath $configPath
     }
     $executionTimes += $executionTime
 
-    # Mesurer l'utilisation de la mémoire
+    # Mesurer l'utilisation de la mÃ©moire
     $memoryUsage = Measure-MemoryUsage {
         & $scriptPath -Mode "CHECK" -FilePath $roadmapPath -TaskIdentifier "1.2.3" -ConfigPath $configPath
     }
     $memoryUsages += $memoryUsage
 
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     "$i, $executionTime, $memoryUsage" | Add-Content -Path $resultsPath -Encoding UTF8
 
-    Write-Host "Temps d'exécution : $executionTime ms" -ForegroundColor Cyan
-    Write-Host "Utilisation de la mémoire : $memoryUsage MB" -ForegroundColor Cyan
+    Write-Host "Temps d'exÃ©cution : $executionTime ms" -ForegroundColor Cyan
+    Write-Host "Utilisation de la mÃ©moire : $memoryUsage MB" -ForegroundColor Cyan
 }
 
-# Analyser les résultats
+# Analyser les rÃ©sultats
 $averageExecutionTime = ($executionTimes | Measure-Object -Average).Average
 $minExecutionTime = ($executionTimes | Measure-Object -Minimum).Minimum
 $maxExecutionTime = ($executionTimes | Measure-Object -Maximum).Maximum
@@ -265,18 +265,18 @@ $minMemoryUsage = ($memoryUsages | Measure-Object -Minimum).Minimum
 $maxMemoryUsage = ($memoryUsages | Measure-Object -Maximum).Maximum
 $stdDevMemoryUsage = [Math]::Sqrt(($memoryUsages | ForEach-Object { [Math]::Pow($_ - $averageMemoryUsage, 2) } | Measure-Object -Average).Average)
 
-Write-Host "`nRésultats du test de performance à long terme :" -ForegroundColor Cyan
-Write-Host "Nombre d'itérations : $iterations" -ForegroundColor Cyan
-Write-Host "Temps d'exécution moyen : $averageExecutionTime ms" -ForegroundColor Cyan
-Write-Host "Temps d'exécution minimum : $minExecutionTime ms" -ForegroundColor Cyan
-Write-Host "Temps d'exécution maximum : $maxExecutionTime ms" -ForegroundColor Cyan
-Write-Host "Écart-type du temps d'exécution : $stdDevExecutionTime ms" -ForegroundColor Cyan
-Write-Host "Utilisation de la mémoire moyenne : $averageMemoryUsage MB" -ForegroundColor Cyan
-Write-Host "Utilisation de la mémoire minimum : $minMemoryUsage MB" -ForegroundColor Cyan
-Write-Host "Utilisation de la mémoire maximum : $maxMemoryUsage MB" -ForegroundColor Cyan
-Write-Host "Écart-type de l'utilisation de la mémoire : $stdDevMemoryUsage MB" -ForegroundColor Cyan
+Write-Host "`nRÃ©sultats du test de performance Ã  long terme :" -ForegroundColor Cyan
+Write-Host "Nombre d'itÃ©rations : $iterations" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution moyen : $averageExecutionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution minimum : $minExecutionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution maximum : $maxExecutionTime ms" -ForegroundColor Cyan
+Write-Host "Ã‰cart-type du temps d'exÃ©cution : $stdDevExecutionTime ms" -ForegroundColor Cyan
+Write-Host "Utilisation de la mÃ©moire moyenne : $averageMemoryUsage MB" -ForegroundColor Cyan
+Write-Host "Utilisation de la mÃ©moire minimum : $minMemoryUsage MB" -ForegroundColor Cyan
+Write-Host "Utilisation de la mÃ©moire maximum : $maxMemoryUsage MB" -ForegroundColor Cyan
+Write-Host "Ã‰cart-type de l'utilisation de la mÃ©moire : $stdDevMemoryUsage MB" -ForegroundColor Cyan
 
-# Vérifier si les performances se dégradent au fil du temps
+# VÃ©rifier si les performances se dÃ©gradent au fil du temps
 $firstHalfExecutionTimes = $executionTimes[0..($iterations / 2 - 1)]
 $secondHalfExecutionTimes = $executionTimes[($iterations / 2)..($iterations - 1)]
 $firstHalfAverage = ($firstHalfExecutionTimes | Measure-Object -Average).Average
@@ -287,56 +287,56 @@ $secondHalfMemoryUsages = $memoryUsages[($iterations / 2)..($iterations - 1)]
 $firstHalfMemoryAverage = ($firstHalfMemoryUsages | Measure-Object -Average).Average
 $secondHalfMemoryAverage = ($secondHalfMemoryUsages | Measure-Object -Average).Average
 
-Write-Host "`nAnalyse de la dégradation des performances :" -ForegroundColor Cyan
-Write-Host "Temps d'exécution moyen (première moitié) : $firstHalfAverage ms" -ForegroundColor Cyan
-Write-Host "Temps d'exécution moyen (seconde moitié) : $secondHalfAverage ms" -ForegroundColor Cyan
-Write-Host "Différence : $($secondHalfAverage - $firstHalfAverage) ms" -ForegroundColor Cyan
-Write-Host "Utilisation de la mémoire moyenne (première moitié) : $firstHalfMemoryAverage MB" -ForegroundColor Cyan
-Write-Host "Utilisation de la mémoire moyenne (seconde moitié) : $secondHalfMemoryAverage MB" -ForegroundColor Cyan
-Write-Host "Différence : $($secondHalfMemoryAverage - $firstHalfMemoryAverage) MB" -ForegroundColor Cyan
+Write-Host "`nAnalyse de la dÃ©gradation des performances :" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution moyen (premiÃ¨re moitiÃ©) : $firstHalfAverage ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution moyen (seconde moitiÃ©) : $secondHalfAverage ms" -ForegroundColor Cyan
+Write-Host "DiffÃ©rence : $($secondHalfAverage - $firstHalfAverage) ms" -ForegroundColor Cyan
+Write-Host "Utilisation de la mÃ©moire moyenne (premiÃ¨re moitiÃ©) : $firstHalfMemoryAverage MB" -ForegroundColor Cyan
+Write-Host "Utilisation de la mÃ©moire moyenne (seconde moitiÃ©) : $secondHalfMemoryAverage MB" -ForegroundColor Cyan
+Write-Host "DiffÃ©rence : $($secondHalfMemoryAverage - $firstHalfMemoryAverage) MB" -ForegroundColor Cyan
 
 if ($secondHalfAverage -gt $firstHalfAverage * 1.1) {
-    Write-Host "Test 1 échoué: Les performances se dégradent au fil du temps (temps d'exécution)" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Les performances se dÃ©gradent au fil du temps (temps d'exÃ©cution)" -ForegroundColor Red
 } else {
-    Write-Host "Test 1 réussi: Les performances ne se dégradent pas au fil du temps (temps d'exécution)" -ForegroundColor Green
+    Write-Host "Test 1 rÃ©ussi: Les performances ne se dÃ©gradent pas au fil du temps (temps d'exÃ©cution)" -ForegroundColor Green
 }
 
 if ($secondHalfMemoryAverage -gt $firstHalfMemoryAverage * 1.1) {
-    Write-Host "Test 1 échoué: Les performances se dégradent au fil du temps (utilisation de la mémoire)" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Les performances se dÃ©gradent au fil du temps (utilisation de la mÃ©moire)" -ForegroundColor Red
 } else {
-    Write-Host "Test 1 réussi: Les performances ne se dégradent pas au fil du temps (utilisation de la mémoire)" -ForegroundColor Green
+    Write-Host "Test 1 rÃ©ussi: Les performances ne se dÃ©gradent pas au fil du temps (utilisation de la mÃ©moire)" -ForegroundColor Green
 }
 
-# Test 2: Performance à long terme - Modification du fichier de roadmap
-Write-Host "`nTest 2: Performance à long terme - Modification du fichier de roadmap" -ForegroundColor Cyan
+# Test 2: Performance Ã  long terme - Modification du fichier de roadmap
+Write-Host "`nTest 2: Performance Ã  long terme - Modification du fichier de roadmap" -ForegroundColor Cyan
 $iterations = 10
 $executionTimes = @()
 $memoryUsages = @()
 
 for ($i = 1; $i -le $iterations; $i++) {
-    Write-Host "Itération $i/$iterations" -ForegroundColor Cyan
+    Write-Host "ItÃ©ration $i/$iterations" -ForegroundColor Cyan
 
     # Modifier le fichier de roadmap
     $modifiedRoadmapPath = Join-Path -Path $testDir -ChildPath "modified-roadmap-$i.md"
     Create-Roadmap -FilePath $modifiedRoadmapPath -TaskCount (100 + $i * 10)
 
-    # Mesurer le temps d'exécution
+    # Mesurer le temps d'exÃ©cution
         $executionTime = Measure-ExecutionTime {
             & $scriptPath -Mode "CHECK" -FilePath $modifiedRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $configPath
         }
         $executionTimes += $executionTime
 
-        # Mesurer l'utilisation de la mémoire
+        # Mesurer l'utilisation de la mÃ©moire
         $memoryUsage = Measure-MemoryUsage {
             & $scriptPath -Mode "CHECK" -FilePath $modifiedRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $configPath
         }
         $memoryUsages += $memoryUsage
 
-        Write-Host "Temps d'exécution : $executionTime ms" -ForegroundColor Cyan
-        Write-Host "Utilisation de la mémoire : $memoryUsage MB" -ForegroundColor Cyan
+        Write-Host "Temps d'exÃ©cution : $executionTime ms" -ForegroundColor Cyan
+        Write-Host "Utilisation de la mÃ©moire : $memoryUsage MB" -ForegroundColor Cyan
     }
 
-    # Analyser les résultats
+    # Analyser les rÃ©sultats
     $averageExecutionTime = ($executionTimes | Measure-Object -Average).Average
     $minExecutionTime = ($executionTimes | Measure-Object -Minimum).Minimum
     $maxExecutionTime = ($executionTimes | Measure-Object -Maximum).Maximum
@@ -347,28 +347,28 @@ for ($i = 1; $i -le $iterations; $i++) {
     $maxMemoryUsage = ($memoryUsages | Measure-Object -Maximum).Maximum
     $stdDevMemoryUsage = [Math]::Sqrt(($memoryUsages | ForEach-Object { [Math]::Pow($_ - $averageMemoryUsage, 2) } | Measure-Object -Average).Average)
 
-    Write-Host "`nRésultats du test de performance à long terme avec modification du fichier de roadmap :" -ForegroundColor Cyan
-    Write-Host "Nombre d'itérations : $iterations" -ForegroundColor Cyan
-    Write-Host "Temps d'exécution moyen : $averageExecutionTime ms" -ForegroundColor Cyan
-    Write-Host "Temps d'exécution minimum : $minExecutionTime ms" -ForegroundColor Cyan
-    Write-Host "Temps d'exécution maximum : $maxExecutionTime ms" -ForegroundColor Cyan
-    Write-Host "Écart-type du temps d'exécution : $stdDevExecutionTime ms" -ForegroundColor Cyan
-    Write-Host "Utilisation de la mémoire moyenne : $averageMemoryUsage MB" -ForegroundColor Cyan
-    Write-Host "Utilisation de la mémoire minimum : $minMemoryUsage MB" -ForegroundColor Cyan
-    Write-Host "Utilisation de la mémoire maximum : $maxMemoryUsage MB" -ForegroundColor Cyan
-    Write-Host "Écart-type de l'utilisation de la mémoire : $stdDevMemoryUsage MB" -ForegroundColor Cyan
+    Write-Host "`nRÃ©sultats du test de performance Ã  long terme avec modification du fichier de roadmap :" -ForegroundColor Cyan
+    Write-Host "Nombre d'itÃ©rations : $iterations" -ForegroundColor Cyan
+    Write-Host "Temps d'exÃ©cution moyen : $averageExecutionTime ms" -ForegroundColor Cyan
+    Write-Host "Temps d'exÃ©cution minimum : $minExecutionTime ms" -ForegroundColor Cyan
+    Write-Host "Temps d'exÃ©cution maximum : $maxExecutionTime ms" -ForegroundColor Cyan
+    Write-Host "Ã‰cart-type du temps d'exÃ©cution : $stdDevExecutionTime ms" -ForegroundColor Cyan
+    Write-Host "Utilisation de la mÃ©moire moyenne : $averageMemoryUsage MB" -ForegroundColor Cyan
+    Write-Host "Utilisation de la mÃ©moire minimum : $minMemoryUsage MB" -ForegroundColor Cyan
+    Write-Host "Utilisation de la mÃ©moire maximum : $maxMemoryUsage MB" -ForegroundColor Cyan
+    Write-Host "Ã‰cart-type de l'utilisation de la mÃ©moire : $stdDevMemoryUsage MB" -ForegroundColor Cyan
 
-    # Vérifier si les performances se dégradent avec la taille du fichier de roadmap
+    # VÃ©rifier si les performances se dÃ©gradent avec la taille du fichier de roadmap
     $correlation = [Math]::Abs(($executionTimes | ForEach-Object { $_ } | Measure-Object -Average).Average / ($executionTimes | ForEach-Object { $_ } | Measure-Object -Maximum).Maximum)
 
     if ($correlation -gt 0.8) {
-        Write-Host "Test 2 réussi: Les performances ne se dégradent pas de manière significative avec la taille du fichier de roadmap" -ForegroundColor Green
+        Write-Host "Test 2 rÃ©ussi: Les performances ne se dÃ©gradent pas de maniÃ¨re significative avec la taille du fichier de roadmap" -ForegroundColor Green
     } else {
-        Write-Host "Test 2 échoué: Les performances se dégradent de manière significative avec la taille du fichier de roadmap" -ForegroundColor Red
+        Write-Host "Test 2 Ã©chouÃ©: Les performances se dÃ©gradent de maniÃ¨re significative avec la taille du fichier de roadmap" -ForegroundColor Red
     }
 
-    # Test 3: Performance à long terme - Exécution de différents modes
-    Write-Host "`nTest 3: Performance à long terme - Exécution de différents modes" -ForegroundColor Cyan
+    # Test 3: Performance Ã  long terme - ExÃ©cution de diffÃ©rents modes
+    Write-Host "`nTest 3: Performance Ã  long terme - ExÃ©cution de diffÃ©rents modes" -ForegroundColor Cyan
     $modes = @("CHECK", "GRAN", "DEBUG", "TEST")
     $executionTimes = @{}
     $memoryUsages = @{}
@@ -379,40 +379,40 @@ for ($i = 1; $i -le $iterations; $i++) {
         $modeMemoryUsages = @()
 
         for ($i = 1; $i -le 5; $i++) {
-            Write-Host "Itération $i/5" -ForegroundColor Cyan
+            Write-Host "ItÃ©ration $i/5" -ForegroundColor Cyan
 
-            # Mesurer le temps d'exécution
+            # Mesurer le temps d'exÃ©cution
             $executionTime = Measure-ExecutionTime {
                 & $scriptPath -Mode $mode -FilePath $roadmapPath -TaskIdentifier "1.2.3" -ConfigPath $configPath
             }
             $modeExecutionTimes += $executionTime
 
-            # Mesurer l'utilisation de la mémoire
+            # Mesurer l'utilisation de la mÃ©moire
             $memoryUsage = Measure-MemoryUsage {
                 & $scriptPath -Mode $mode -FilePath $roadmapPath -TaskIdentifier "1.2.3" -ConfigPath $configPath
             }
             $modeMemoryUsages += $memoryUsage
 
-            Write-Host "Temps d'exécution : $executionTime ms" -ForegroundColor Cyan
-            Write-Host "Utilisation de la mémoire : $memoryUsage MB" -ForegroundColor Cyan
+            Write-Host "Temps d'exÃ©cution : $executionTime ms" -ForegroundColor Cyan
+            Write-Host "Utilisation de la mÃ©moire : $memoryUsage MB" -ForegroundColor Cyan
         }
 
         $executionTimes[$mode] = $modeExecutionTimes
         $memoryUsages[$mode] = $modeMemoryUsages
     }
 
-    # Analyser les résultats
-    Write-Host "`nRésultats du test de performance à long terme avec différents modes :" -ForegroundColor Cyan
+    # Analyser les rÃ©sultats
+    Write-Host "`nRÃ©sultats du test de performance Ã  long terme avec diffÃ©rents modes :" -ForegroundColor Cyan
     foreach ($mode in $modes) {
         $averageExecutionTime = ($executionTimes[$mode] | Measure-Object -Average).Average
         $averageMemoryUsage = ($memoryUsages[$mode] | Measure-Object -Average).Average
 
         Write-Host "Mode $mode :" -ForegroundColor Cyan
-        Write-Host "Temps d'exécution moyen : $averageExecutionTime ms" -ForegroundColor Cyan
-        Write-Host "Utilisation de la mémoire moyenne : $averageMemoryUsage MB" -ForegroundColor Cyan
+        Write-Host "Temps d'exÃ©cution moyen : $averageExecutionTime ms" -ForegroundColor Cyan
+        Write-Host "Utilisation de la mÃ©moire moyenne : $averageMemoryUsage MB" -ForegroundColor Cyan
     }
 
-    # Vérifier si les performances sont cohérentes entre les modes
+    # VÃ©rifier si les performances sont cohÃ©rentes entre les modes
     $averageExecutionTimes = $modes | ForEach-Object { ($executionTimes[$_] | Measure-Object -Average).Average }
     $averageMemoryUsages = $modes | ForEach-Object { ($memoryUsages[$_] | Measure-Object -Average).Average }
 
@@ -422,15 +422,15 @@ for ($i = 1; $i -le $iterations; $i++) {
     $minMemoryUsage = ($averageMemoryUsages | Measure-Object -Minimum).Minimum
 
     if ($maxExecutionTime -lt $minExecutionTime * 2) {
-        Write-Host "Test 3 réussi: Les performances sont cohérentes entre les modes (temps d'exécution)" -ForegroundColor Green
+        Write-Host "Test 3 rÃ©ussi: Les performances sont cohÃ©rentes entre les modes (temps d'exÃ©cution)" -ForegroundColor Green
     } else {
-        Write-Host "Test 3 échoué: Les performances ne sont pas cohérentes entre les modes (temps d'exécution)" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Les performances ne sont pas cohÃ©rentes entre les modes (temps d'exÃ©cution)" -ForegroundColor Red
     }
 
     if ($maxMemoryUsage -lt $minMemoryUsage * 2) {
-        Write-Host "Test 3 réussi: Les performances sont cohérentes entre les modes (utilisation de la mémoire)" -ForegroundColor Green
+        Write-Host "Test 3 rÃ©ussi: Les performances sont cohÃ©rentes entre les modes (utilisation de la mÃ©moire)" -ForegroundColor Green
     } else {
-        Write-Host "Test 3 échoué: Les performances ne sont pas cohérentes entre les modes (utilisation de la mémoire)" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Les performances ne sont pas cohÃ©rentes entre les modes (utilisation de la mÃ©moire)" -ForegroundColor Red
     }
 
     # Nettoyer les fichiers temporaires
@@ -445,4 +445,4 @@ for ($i = 1; $i -le $iterations; $i++) {
         }
     }
 
-    Write-Host "Tests terminés." -ForegroundColor Cyan
+    Write-Host "Tests terminÃ©s." -ForegroundColor Cyan

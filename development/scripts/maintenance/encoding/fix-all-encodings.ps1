@@ -1,7 +1,7 @@
-# Script global pour corriger tous les problÃ¨mes d'encodage dans le projet
+﻿# Script global pour corriger tous les problÃƒÂ¨mes d'encodage dans le projet
 # Ce script corrige l'encodage des fichiers PowerShell, CMD, Markdown et autres fichiers texte
 
-Write-Host "=== Correction de tous les problÃ¨mes d'encodage ===" -ForegroundColor Cyan
+Write-Host "=== Correction de tous les problÃƒÂ¨mes d'encodage ===" -ForegroundColor Cyan
 
 # 1. Corriger l'encodage des fichiers PowerShell
 Write-Host "`n[1] Correction de l'encodage des fichiers PowerShell" -ForegroundColor Yellow
@@ -68,19 +68,19 @@ if (Test-Path ".git") {
 echo "Correction de l'encodage des fichiers avant commit..."
 powershell -ExecutionPolicy Bypass -File "..\..\D"
 
-# Ajouter les fichiers modifiÃ©s au commit
+# Ajouter les fichiers modifiÃƒÂ©s au commit
 git add -u
 "@
 
     Set-Content -Path $preCommitHookPath -Value $preCommitHookContent -Encoding UTF8
-    Write-Host "Hook Git pre-commit configurÃ© pour corriger automatiquement l'encodage" -ForegroundColor Green
+    Write-Host "Hook Git pre-commit configurÃƒÂ© pour corriger automatiquement l'encodage" -ForegroundColor Green
 } else {
-    Write-Host "DÃ©pÃ´t Git non trouvÃ©, impossible de configurer le hook pre-commit" -ForegroundColor Yellow
+    Write-Host "DÃƒÂ©pÃƒÂ´t Git non trouvÃƒÂ©, impossible de configurer le hook pre-commit" -ForegroundColor Yellow
 }
 
-Write-Host "`n=== Correction de tous les problÃ¨mes d'encodage terminÃ©e ===" -ForegroundColor Cyan
-Write-Host "Tous les fichiers du projet ont Ã©tÃ© convertis avec l'encodage appropriÃ©." -ForegroundColor Green
+Write-Host "`n=== Correction de tous les problÃƒÂ¨mes d'encodage terminÃƒÂ©e ===" -ForegroundColor Cyan
+Write-Host "Tous les fichiers du projet ont ÃƒÂ©tÃƒÂ© convertis avec l'encodage appropriÃƒÂ©." -ForegroundColor Green
 Write-Host "Les fichiers PowerShell et Markdown sont en UTF-8 avec BOM." -ForegroundColor Green
 Write-Host "Les fichiers CMD sont en ANSI (Windows-1252)." -ForegroundColor Green
-Write-Host "Un hook Git a Ã©tÃ© configurÃ© pour maintenir l'encodage correct." -ForegroundColor Green
+Write-Host "Un hook Git a ÃƒÂ©tÃƒÂ© configurÃƒÂ© pour maintenir l'encodage correct." -ForegroundColor Green
 

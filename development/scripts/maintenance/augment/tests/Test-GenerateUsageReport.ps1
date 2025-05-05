@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour le script de génération de rapport d'utilisation.
+    Tests unitaires pour le script de gÃ©nÃ©ration de rapport d'utilisation.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour le script de génération de rapport d'utilisation,
+    Ce script contient des tests unitaires pour le script de gÃ©nÃ©ration de rapport d'utilisation,
     utilisant le framework Pester.
 
 .EXAMPLE
     Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-GenerateUsageReport.ps1"
-    # Exécute les tests unitaires pour le script de génération de rapport d'utilisation
+    # ExÃ©cute les tests unitaires pour le script de gÃ©nÃ©ration de rapport d'utilisation
 
 .NOTES
     Version: 1.0
@@ -16,17 +16,17 @@
     Auteur: Augment Agent
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Déterminer le chemin du script à tester
+# DÃ©terminer le chemin du script Ã  tester
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $scriptPath = Join-Path -Path $scriptRoot -ChildPath "generate-usage-report.ps1"
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $scriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -35,15 +35,15 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 
 Describe "Generate Usage Report Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $TestDrive -ChildPath "augment"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         
-        # Créer un sous-répertoire pour les logs
+        # CrÃ©er un sous-rÃ©pertoire pour les logs
         $testLogsDir = Join-Path -Path $testDir -ChildPath "logs"
         New-Item -Path $testLogsDir -ItemType Directory -Force | Out-Null
         
-        # Créer un fichier de log temporaire
+        # CrÃ©er un fichier de log temporaire
         $testLogPath = Join-Path -Path $testLogsDir -ChildPath "augment.log"
         $testLogContent = @"
 2025-06-01T10:00:00.000Z|REQUEST|{"input":"Test input 1","input_size":11,"mode":"GRAN"}
@@ -55,7 +55,7 @@ Describe "Generate Usage Report Tests" {
 "@
         $testLogContent | Out-File -FilePath $testLogPath -Encoding UTF8
         
-        # Créer un fichier de Memories temporaire
+        # CrÃ©er un fichier de Memories temporaire
         $testMemoriesDir = Join-Path -Path $testDir -ChildPath ".augment\memories"
         New-Item -Path $testMemoriesDir -ItemType Directory -Force | Out-Null
         
@@ -72,18 +72,18 @@ Describe "Generate Usage Report Tests" {
         } | ConvertTo-Json -Depth 10
         $testMemoriesContent | Out-File -FilePath $testMemoriesPath -Encoding UTF8
         
-        # Créer un répertoire de sortie temporaire
+        # CrÃ©er un rÃ©pertoire de sortie temporaire
         $testOutputDir = Join-Path -Path $testDir -ChildPath "reports\augment"
         New-Item -Path $testOutputDir -ItemType Directory -Force | Out-Null
         
         $testOutputPath = Join-Path -Path $testOutputDir -ChildPath "usage-report.md"
         
-        # Définir des variables globales pour les tests
+        # DÃ©finir des variables globales pour les tests
         $Global:TestLogPath = $testLogPath
         $Global:TestMemoriesPath = $testMemoriesPath
         $Global:TestOutputPath = $testOutputPath
         
-        # Créer des fonctions de mock pour les fonctions du script
+        # CrÃ©er des fonctions de mock pour les fonctions du script
         function Get-UsageStats {
             return @{
                 TotalRequests = 3
@@ -110,18 +110,18 @@ Describe "Generate Usage Report Tests" {
     
     Context "Script Loading" {
         It "Should load the script without errors" {
-            # Vérifier que le script existe
+            # VÃ©rifier que le script existe
             Test-Path -Path $scriptPath | Should -Be $true
             
-            # Charger le script dans un bloc de script pour éviter d'exécuter le script complet
+            # Charger le script dans un bloc de script pour Ã©viter d'exÃ©cuter le script complet
             $scriptContent = Get-Content -Path $scriptPath -Raw
             
-            # Remplacer la partie qui exécute le script par un commentaire
-            $scriptContent = $scriptContent -replace "# Générer le rapport.*?# Enregistrer le rapport", "# Script execution disabled for testing"
+            # Remplacer la partie qui exÃ©cute le script par un commentaire
+            $scriptContent = $scriptContent -replace "# GÃ©nÃ©rer le rapport.*?# Enregistrer le rapport", "# Script execution disabled for testing"
             
             $scriptBlock = [ScriptBlock]::Create($scriptContent)
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             { . $scriptBlock } | Should -Not -Throw
         }
     }
@@ -142,25 +142,25 @@ Describe "Generate Usage Report Tests" {
     
     Context "Script Execution" {
         It "Should generate a usage report" {
-            # Exécuter le script avec des paramètres spécifiques
+            # ExÃ©cuter le script avec des paramÃ¨tres spÃ©cifiques
             $params = @{
                 OutputPath = $Global:TestOutputPath
             }
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             & $scriptPath @params
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $Global:TestOutputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier
+            # VÃ©rifier le contenu du fichier
             $content = Get-Content -Path $Global:TestOutputPath -Raw
             $content | Should -Not -BeNullOrEmpty
             $content | Should -Match "Rapport d'utilisation d'Augment Code"
             $content | Should -Match "Statistiques globales"
             $content | Should -Match "Utilisation par mode"
             $content | Should -Match "Recommandations"
-            $content | Should -Match "Prochaines étapes"
+            $content | Should -Match "Prochaines Ã©tapes"
         }
     }
 }

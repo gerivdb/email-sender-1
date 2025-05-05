@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exécute tous les scripts de mise à jour des références.
+    ExÃ©cute tous les scripts de mise Ã  jour des rÃ©fÃ©rences.
 
 .DESCRIPTION
-    Ce script exécute tous les scripts de mise à jour des références pour maintenir
-    la cohérence après la réorganisation de la structure du projet.
+    Ce script exÃ©cute tous les scripts de mise Ã  jour des rÃ©fÃ©rences pour maintenir
+    la cohÃ©rence aprÃ¨s la rÃ©organisation de la structure du projet.
 
 .EXAMPLE
     .\update-all-references.ps1
 
 .NOTES
     Auteur: Augment Agent
-    Date de création: 28/04/2025
+    Date de crÃ©ation: 28/04/2025
 #>
 
 # Fonction principale
@@ -20,30 +20,30 @@ function Update-AllReferences {
     param()
 
     begin {
-        Write-Host "Exécution de tous les scripts de mise à jour des références..." -ForegroundColor Cyan
+        Write-Host "ExÃ©cution de tous les scripts de mise Ã  jour des rÃ©fÃ©rences..." -ForegroundColor Cyan
         $ErrorActionPreference = "Stop"
 
-        # Définir les scripts à exécuter
+        # DÃ©finir les scripts Ã  exÃ©cuter
         $scripts = @(
             @{
                 Path        = Join-Path -Path $PSScriptRoot -ChildPath "update-tools-references.ps1"
-                Description = "Mise à jour des références pour les dossiers tools"
+                Description = "Mise Ã  jour des rÃ©fÃ©rences pour les dossiers tools"
             },
             @{
                 Path        = Join-Path -Path $PSScriptRoot -ChildPath "update-project-structure-references.ps1"
-                Description = "Mise à jour des références pour la structure du projet"
+                Description = "Mise Ã  jour des rÃ©fÃ©rences pour la structure du projet"
             },
             @{
                 Path        = Join-Path -Path $PSScriptRoot -ChildPath "update-config-references.ps1"
-                Description = "Mise à jour des références dans les fichiers de configuration"
+                Description = "Mise Ã  jour des rÃ©fÃ©rences dans les fichiers de configuration"
             },
             @{
                 Path        = Join-Path -Path $PSScriptRoot -ChildPath "update-source-references.ps1"
-                Description = "Mise à jour des références dans les fichiers de code source"
+                Description = "Mise Ã  jour des rÃ©fÃ©rences dans les fichiers de code source"
             },
             @{
                 Path        = Join-Path -Path $PSScriptRoot -ChildPath "update-documentation-references.ps1"
-                Description = "Mise à jour des références dans les fichiers de documentation"
+                Description = "Mise Ã  jour des rÃ©fÃ©rences dans les fichiers de documentation"
             }
         )
     }
@@ -58,43 +58,43 @@ function Update-AllReferences {
                 $processedScripts++
 
                 Write-Host "
-Exécution du script $processedScripts/$totalScripts : $($script.Description)" -ForegroundColor Yellow
+ExÃ©cution du script $processedScripts/$totalScripts : $($script.Description)" -ForegroundColor Yellow
 
-                # Vérifier si le script existe
+                # VÃ©rifier si le script existe
                 if (-not (Test-Path -Path $script.Path)) {
                     Write-Warning "Le script $($script.Path) n'existe pas. Passage au script suivant."
                     continue
                 }
 
-                # Exécuter le script
-                if ($PSCmdlet.ShouldProcess($script.Path, "Exécuter")) {
+                # ExÃ©cuter le script
+                if ($PSCmdlet.ShouldProcess($script.Path, "ExÃ©cuter")) {
                     try {
                         & $script.Path
                         $successfulScripts++
-                        Write-Host "  Script exécuté avec succès." -ForegroundColor Green
+                        Write-Host "  Script exÃ©cutÃ© avec succÃ¨s." -ForegroundColor Green
                     } catch {
-                        Write-Error "Erreur lors de l'exécution du script $($script.Path) : $_"
+                        Write-Error "Erreur lors de l'exÃ©cution du script $($script.Path) : $_"
                     }
                 }
 
                 # Afficher la progression
                 $progress = [math]::Round(($processedScripts / $totalScripts) * 100)
-                Write-Progress -Activity "Exécution des scripts de mise à jour des références" -Status "$processedScripts / $totalScripts scripts traités ($progress%)" -PercentComplete $progress
+                Write-Progress -Activity "ExÃ©cution des scripts de mise Ã  jour des rÃ©fÃ©rences" -Status "$processedScripts / $totalScripts scripts traitÃ©s ($progress%)" -PercentComplete $progress
             }
 
-            Write-Progress -Activity "Exécution des scripts de mise à jour des références" -Completed
+            Write-Progress -Activity "ExÃ©cution des scripts de mise Ã  jour des rÃ©fÃ©rences" -Completed
 
             Write-Host "
-Exécution terminée !" -ForegroundColor Cyan
-            Write-Host "  $successfulScripts scripts exécutés avec succès sur $totalScripts scripts." -ForegroundColor Cyan
+ExÃ©cution terminÃ©e !" -ForegroundColor Cyan
+            Write-Host "  $successfulScripts scripts exÃ©cutÃ©s avec succÃ¨s sur $totalScripts scripts." -ForegroundColor Cyan
         } catch {
-            Write-Error "Une erreur s'est produite lors de l'exécution des scripts de mise à jour des références : $_"
+            Write-Error "Une erreur s'est produite lors de l'exÃ©cution des scripts de mise Ã  jour des rÃ©fÃ©rences : $_"
         }
     }
 
     end {
         Write-Host "
-Récapitulatif des scripts exécutés :" -ForegroundColor Yellow
+RÃ©capitulatif des scripts exÃ©cutÃ©s :" -ForegroundColor Yellow
         foreach ($script in $scripts) {
             Write-Host "  - $($script.Description) : $($script.Path)" -ForegroundColor Yellow
         }

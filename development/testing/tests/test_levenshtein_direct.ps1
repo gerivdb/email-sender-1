@@ -1,4 +1,4 @@
-# Définir la fonction Measure-LevenshteinDistance
+﻿# DÃ©finir la fonction Measure-LevenshteinDistance
 function Measure-LevenshteinDistance {
     [CmdletBinding()]
     param (
@@ -18,7 +18,7 @@ function Measure-LevenshteinDistance {
     $len1 = $String1.Length
     $len2 = $String2.Length
 
-    # Créer deux tableaux pour stocker les distances
+    # CrÃ©er deux tableaux pour stocker les distances
     $d0 = New-Object int[] ($len2 + 1)
     $d1 = New-Object int[] ($len2 + 1)
 
@@ -42,7 +42,7 @@ function Measure-LevenshteinDistance {
             )
         }
 
-        # Échanger les tableaux pour la prochaine itération
+        # Ã‰changer les tableaux pour la prochaine itÃ©ration
         $temp = $d0
         $d0 = $d1
         $d1 = $temp
@@ -58,19 +58,19 @@ $string2 = "sitting"
 $distance = Measure-LevenshteinDistance -String1 $string1 -String2 $string2
 Write-Host "Distance between '$string1' and '$string2': $distance"
 
-# Tester avec des chaînes identiques
+# Tester avec des chaÃ®nes identiques
 $string1 = "test"
 $string2 = "test"
 $distance = Measure-LevenshteinDistance -String1 $string1 -String2 $string2
 Write-Host "Distance between '$string1' and '$string2': $distance"
 
-# Tester avec une chaîne vide
+# Tester avec une chaÃ®ne vide
 $string1 = ""
 $string2 = "test"
 $distance = Measure-LevenshteinDistance -String1 $string1 -String2 $string2
 Write-Host "Distance between '$string1' and '$string2': $distance"
 
-# Tester avec des chaînes longues
+# Tester avec des chaÃ®nes longues
 $string1 = "This is a long string to test the Levenshtein distance algorithm"
 $string2 = "This is another long string to test the algorithm"
 $distance = Measure-LevenshteinDistance -String1 $string1 -String2 $string2

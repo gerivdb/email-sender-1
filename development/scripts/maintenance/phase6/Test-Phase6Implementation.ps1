@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste les amÃ©liorations apportÃ©es par la Phase 6 de la roadmap.
+    Teste les amÃƒÂ©liorations apportÃƒÂ©es par la Phase 6 de la roadmap.
 
 .DESCRIPTION
-    Ce script teste les amÃ©liorations apportÃ©es par la Phase 6 de la roadmap, notamment :
+    Ce script teste les amÃƒÂ©liorations apportÃƒÂ©es par la Phase 6 de la roadmap, notamment :
     - La gestion d'erreurs dans les scripts
-    - La compatibilitÃ© entre environnements
+    - La compatibilitÃƒÂ© entre environnements
 
 .PARAMETER ScriptsDirectory
-    Le rÃ©pertoire contenant les scripts Ã  tester.
+    Le rÃƒÂ©pertoire contenant les scripts ÃƒÂ  tester.
 
 .PARAMETER TestErrorHandling
     Indique s'il faut tester la gestion d'erreurs.
 
 .PARAMETER TestCompatibility
-    Indique s'il faut tester la compatibilitÃ© entre environnements.
+    Indique s'il faut tester la compatibilitÃƒÂ© entre environnements.
 
 .PARAMETER LogFilePath
-    Le chemin du fichier journal pour enregistrer les rÃ©sultats des tests.
+    Le chemin du fichier journal pour enregistrer les rÃƒÂ©sultats des tests.
 
 .EXAMPLE
     .\Test-Phase6Implementation.ps1 -ScriptsDirectory "..\..\development\scripts" -TestErrorHandling -TestCompatibility -LogFilePath "phase6_tests.log"
 
 .NOTES
-    Auteur: SystÃ¨me d'analyse d'erreurs
-    Date de crÃ©ation: 09/04/2025
+    Auteur: SystÃƒÂ¨me d'analyse d'erreurs
+    Date de crÃƒÂ©ation: 09/04/2025
     Version: 1.0
 #>
 
@@ -67,9 +67,9 @@ function Write-Log {
         "SUCCESS" { Write-Host $logEntry -ForegroundColor Green }
     }
     
-    # Ã‰crire dans le fichier journal
+    # Ãƒâ€°crire dans le fichier journal
     try {
-        # CrÃ©er le dossier de logs si nÃ©cessaire
+        # CrÃƒÂ©er le dossier de logs si nÃƒÂ©cessaire
         $logDir = Split-Path -Path $LogFilePath -Parent
         if (-not (Test-Path -Path $logDir -PathType Container)) {
             New-Item -Path $logDir -ItemType Directory -Force | Out-Null
@@ -78,7 +78,7 @@ function Write-Log {
         Add-Content -Path $LogFilePath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        Write-Warning "Impossible d'Ã©crire dans le fichier journal : $_"
+        Write-Warning "Impossible d'ÃƒÂ©crire dans le fichier journal : $_"
     }
 }
 
@@ -90,7 +90,7 @@ function Test-ErrorHandling {
         [string]$ScriptsDirectory
     )
     
-    Write-Log "DÃ©marrage des tests de gestion d'erreurs"
+    Write-Log "DÃƒÂ©marrage des tests de gestion d'erreurs"
     
     $results = @{
         Total = 0
@@ -99,11 +99,11 @@ function Test-ErrorHandling {
         Details = @()
     }
     
-    # RÃ©cupÃ©rer tous les scripts PowerShell dans le rÃ©pertoire
+    # RÃƒÂ©cupÃƒÂ©rer tous les scripts PowerShell dans le rÃƒÂ©pertoire
     $scripts = Get-ChildItem -Path $ScriptsDirectory -Recurse -File -Filter "*.ps1" | Where-Object { -not $_.FullName.Contains(".bak") }
     $results.Total = $scripts.Count
     
-    Write-Log "Nombre de scripts Ã  tester : $($scripts.Count)"
+    Write-Log "Nombre de scripts ÃƒÂ  tester : $($scripts.Count)"
     
     foreach ($script in $scripts) {
         Write-Verbose "Test de la gestion d'erreurs pour : $($script.FullName)"
@@ -122,13 +122,13 @@ function Test-ErrorHandling {
             continue
         }
         
-        # VÃ©rifier la prÃ©sence de blocs try/catch
+        # VÃƒÂ©rifier la prÃƒÂ©sence de blocs try/catch
         $hasTryCatch = $content -match "try\s*{" -and $content -match "catch\s*{"
         
-        # VÃ©rifier la prÃ©sence de ErrorActionPreference
+        # VÃƒÂ©rifier la prÃƒÂ©sence de ErrorActionPreference
         $hasErrorActionPreference = $content -match "\`$ErrorActionPreference\s*=\s*['""]Stop['""]"
         
-        # VÃ©rifier la prÃ©sence de gestion d'erreurs pour les commandes critiques
+        # VÃƒÂ©rifier la prÃƒÂ©sence de gestion d'erreurs pour les commandes critiques
         $criticalCommands = @(
             "Remove-Item",
             "Set-Content",
@@ -150,7 +150,7 @@ function Test-ErrorHandling {
             if ($content -match $command) {
                 $hasCriticalCommands = $true
                 
-                # VÃ©rifier si la commande est entourÃ©e d'un bloc try/catch ou a un paramÃ¨tre ErrorAction
+                # VÃƒÂ©rifier si la commande est entourÃƒÂ©e d'un bloc try/catch ou a un paramÃƒÂ¨tre ErrorAction
                 $commandWithErrorHandling = $content -match "try\s*{[^}]*$command" -or $content -match "$command[^}]*-ErrorAction"
                 
                 if (-not $commandWithErrorHandling) {
@@ -160,35 +160,35 @@ function Test-ErrorHandling {
             }
         }
         
-        # DÃ©terminer si le script passe le test
+        # DÃƒÂ©terminer si le script passe le test
         $passed = $hasTryCatch -or $hasErrorActionPreference -or (-not $hasCriticalCommands) -or $hasCriticalCommandsWithErrorHandling
         
         if ($passed) {
-            Write-Log "Test de gestion d'erreurs rÃ©ussi pour : $($script.FullName)" -Level "SUCCESS"
+            Write-Log "Test de gestion d'erreurs rÃƒÂ©ussi pour : $($script.FullName)" -Level "SUCCESS"
             $results.Passed++
             $results.Details += [PSCustomObject]@{
                 Path = $script.FullName
                 Status = "Passed"
-                Message = "Le script a une gestion d'erreurs adÃ©quate"
+                Message = "Le script a une gestion d'erreurs adÃƒÂ©quate"
             }
         }
         else {
-            Write-Log "Test de gestion d'erreurs Ã©chouÃ© pour : $($script.FullName)" -Level "ERROR"
+            Write-Log "Test de gestion d'erreurs ÃƒÂ©chouÃƒÂ© pour : $($script.FullName)" -Level "ERROR"
             $results.Failed++
             $results.Details += [PSCustomObject]@{
                 Path = $script.FullName
                 Status = "Failed"
-                Message = "Le script n'a pas de gestion d'erreurs adÃ©quate"
+                Message = "Le script n'a pas de gestion d'erreurs adÃƒÂ©quate"
             }
         }
     }
     
-    Write-Log "Tests de gestion d'erreurs terminÃ©s : $($results.Passed)/$($results.Total) rÃ©ussis"
+    Write-Log "Tests de gestion d'erreurs terminÃƒÂ©s : $($results.Passed)/$($results.Total) rÃƒÂ©ussis"
     
     return $results
 }
 
-# Fonction pour tester la compatibilitÃ© entre environnements
+# Fonction pour tester la compatibilitÃƒÂ© entre environnements
 function Test-EnvironmentCompatibility {
     [CmdletBinding()]
     param (
@@ -196,7 +196,7 @@ function Test-EnvironmentCompatibility {
         [string]$ScriptsDirectory
     )
     
-    Write-Log "DÃ©marrage des tests de compatibilitÃ© entre environnements"
+    Write-Log "DÃƒÂ©marrage des tests de compatibilitÃƒÂ© entre environnements"
     
     $results = @{
         Total = 0
@@ -205,14 +205,14 @@ function Test-EnvironmentCompatibility {
         Details = @()
     }
     
-    # RÃ©cupÃ©rer tous les scripts PowerShell dans le rÃ©pertoire
+    # RÃƒÂ©cupÃƒÂ©rer tous les scripts PowerShell dans le rÃƒÂ©pertoire
     $scripts = Get-ChildItem -Path $ScriptsDirectory -Recurse -File -Filter "*.ps1" | Where-Object { -not $_.FullName.Contains(".bak") }
     $results.Total = $scripts.Count
     
-    Write-Log "Nombre de scripts Ã  tester : $($scripts.Count)"
+    Write-Log "Nombre de scripts ÃƒÂ  tester : $($scripts.Count)"
     
     foreach ($script in $scripts) {
-        Write-Verbose "Test de la compatibilitÃ© entre environnements pour : $($script.FullName)"
+        Write-Verbose "Test de la compatibilitÃƒÂ© entre environnements pour : $($script.FullName)"
         
         # Lire le contenu du script
         $content = Get-Content -Path $script.FullName -Raw -ErrorAction SilentlyContinue
@@ -228,39 +228,39 @@ function Test-EnvironmentCompatibility {
             continue
         }
         
-        # VÃ©rifier la prÃ©sence de chemins absolus Windows
+        # VÃƒÂ©rifier la prÃƒÂ©sence de chemins absolus Windows
         $hasWindowsPaths = $content -match "\\\\|[A-Za-z]:\\|\.exe\b|\.bat\b|\.cmd\b"
         
-        # VÃ©rifier l'utilisation de fonctions de gestion de chemins
+        # VÃƒÂ©rifier l'utilisation de fonctions de gestion de chemins
         $hasPathFunctions = $content -match "Join-Path|Split-Path|Test-Path.*-PathType|System\.IO\.Path|Get-NormalizedPath"
         
-        # VÃ©rifier la prÃ©sence de dÃ©tection d'environnement
+        # VÃƒÂ©rifier la prÃƒÂ©sence de dÃƒÂ©tection d'environnement
         $hasEnvironmentDetection = $content -match "Get-ScriptEnvironment|Test-Environment|\$IsWindows|\$IsLinux|\$IsMacOS"
         
-        # DÃ©terminer si le script passe le test
+        # DÃƒÂ©terminer si le script passe le test
         $passed = (-not $hasWindowsPaths) -or $hasPathFunctions -or $hasEnvironmentDetection
         
         if ($passed) {
-            Write-Log "Test de compatibilitÃ© entre environnements rÃ©ussi pour : $($script.FullName)" -Level "SUCCESS"
+            Write-Log "Test de compatibilitÃƒÂ© entre environnements rÃƒÂ©ussi pour : $($script.FullName)" -Level "SUCCESS"
             $results.Passed++
             $results.Details += [PSCustomObject]@{
                 Path = $script.FullName
                 Status = "Passed"
-                Message = "Le script est compatible avec diffÃ©rents environnements"
+                Message = "Le script est compatible avec diffÃƒÂ©rents environnements"
             }
         }
         else {
-            Write-Log "Test de compatibilitÃ© entre environnements Ã©chouÃ© pour : $($script.FullName)" -Level "ERROR"
+            Write-Log "Test de compatibilitÃƒÂ© entre environnements ÃƒÂ©chouÃƒÂ© pour : $($script.FullName)" -Level "ERROR"
             $results.Failed++
             $results.Details += [PSCustomObject]@{
                 Path = $script.FullName
                 Status = "Failed"
-                Message = "Le script n'est pas compatible avec diffÃ©rents environnements"
+                Message = "Le script n'est pas compatible avec diffÃƒÂ©rents environnements"
             }
         }
     }
     
-    Write-Log "Tests de compatibilitÃ© entre environnements terminÃ©s : $($results.Passed)/$($results.Total) rÃ©ussis"
+    Write-Log "Tests de compatibilitÃƒÂ© entre environnements terminÃƒÂ©s : $($results.Passed)/$($results.Total) rÃƒÂ©ussis"
     
     return $results
 }
@@ -279,12 +279,12 @@ function Test-Phase6Implementation {
         [switch]$TestCompatibility
     )
     
-    Write-Log "DÃ©marrage des tests de la Phase 6"
-    Write-Log "RÃ©pertoire des scripts : $ScriptsDirectory"
+    Write-Log "DÃƒÂ©marrage des tests de la Phase 6"
+    Write-Log "RÃƒÂ©pertoire des scripts : $ScriptsDirectory"
     
-    # VÃ©rifier si le rÃ©pertoire des scripts existe
+    # VÃƒÂ©rifier si le rÃƒÂ©pertoire des scripts existe
     if (-not (Test-Path -Path $ScriptsDirectory -PathType Container)) {
-        Write-Log "Le rÃ©pertoire des scripts n'existe pas : $ScriptsDirectory" -Level "ERROR"
+        Write-Log "Le rÃƒÂ©pertoire des scripts n'existe pas : $ScriptsDirectory" -Level "ERROR"
         return $false
     }
     
@@ -298,12 +298,12 @@ function Test-Phase6Implementation {
         $results.ErrorHandling = Test-ErrorHandling -ScriptsDirectory $ScriptsDirectory
     }
     
-    # Tester la compatibilitÃ© entre environnements
+    # Tester la compatibilitÃƒÂ© entre environnements
     if ($TestCompatibility) {
         $results.Compatibility = Test-EnvironmentCompatibility -ScriptsDirectory $ScriptsDirectory
     }
     
-    # GÃ©nÃ©rer un rapport
+    # GÃƒÂ©nÃƒÂ©rer un rapport
     $report = [PSCustomObject]@{
         Date = Get-Date
         ScriptsDirectory = $ScriptsDirectory
@@ -314,36 +314,36 @@ function Test-Phase6Implementation {
     # Enregistrer le rapport
     $reportPath = Join-Path -Path $PSScriptRoot -ChildPath "phase6_test_report.json"
     $report | ConvertTo-Json -Depth 5 | Set-Content -Path $reportPath
-    Write-Log "Rapport enregistrÃ© : $reportPath"
+    Write-Log "Rapport enregistrÃƒÂ© : $reportPath"
     
-    Write-Log "Tests de la Phase 6 terminÃ©s"
+    Write-Log "Tests de la Phase 6 terminÃƒÂ©s"
     
     return $report
 }
 
-# ExÃ©cuter la fonction principale
+# ExÃƒÂ©cuter la fonction principale
 $result = Test-Phase6Implementation -ScriptsDirectory $ScriptsDirectory -TestErrorHandling:$TestErrorHandling -TestCompatibility:$TestCompatibility
 
-# Afficher un rÃ©sumÃ©
-Write-Host "`nRÃ©sumÃ© des tests de la Phase 6 :" -ForegroundColor Cyan
+# Afficher un rÃƒÂ©sumÃƒÂ©
+Write-Host "`nRÃƒÂ©sumÃƒÂ© des tests de la Phase 6 :" -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Cyan
 
 if ($TestErrorHandling) {
     Write-Host "Gestion d'erreurs :" -ForegroundColor Yellow
-    Write-Host "  - Scripts testÃ©s : $($result.ErrorHandling.Total)" -ForegroundColor White
-    Write-Host "  - Tests rÃ©ussis : $($result.ErrorHandling.Passed)" -ForegroundColor Green
-    Write-Host "  - Tests Ã©chouÃ©s : $($result.ErrorHandling.Failed)" -ForegroundColor Red
-    Write-Host "  - Taux de rÃ©ussite : $(if ($result.ErrorHandling.Total -gt 0) { [math]::Round(($result.ErrorHandling.Passed / $result.ErrorHandling.Total) * 100, 2) } else { 0 })%" -ForegroundColor $(if ($result.ErrorHandling.Total -gt 0 -and ($result.ErrorHandling.Passed / $result.ErrorHandling.Total) -ge 0.8) { "Green" } else { "Yellow" })
+    Write-Host "  - Scripts testÃƒÂ©s : $($result.ErrorHandling.Total)" -ForegroundColor White
+    Write-Host "  - Tests rÃƒÂ©ussis : $($result.ErrorHandling.Passed)" -ForegroundColor Green
+    Write-Host "  - Tests ÃƒÂ©chouÃƒÂ©s : $($result.ErrorHandling.Failed)" -ForegroundColor Red
+    Write-Host "  - Taux de rÃƒÂ©ussite : $(if ($result.ErrorHandling.Total -gt 0) { [math]::Round(($result.ErrorHandling.Passed / $result.ErrorHandling.Total) * 100, 2) } else { 0 })%" -ForegroundColor $(if ($result.ErrorHandling.Total -gt 0 -and ($result.ErrorHandling.Passed / $result.ErrorHandling.Total) -ge 0.8) { "Green" } else { "Yellow" })
 }
 
 if ($TestCompatibility) {
-    Write-Host "`nCompatibilitÃ© entre environnements :" -ForegroundColor Yellow
-    Write-Host "  - Scripts testÃ©s : $($result.Compatibility.Total)" -ForegroundColor White
-    Write-Host "  - Tests rÃ©ussis : $($result.Compatibility.Passed)" -ForegroundColor Green
-    Write-Host "  - Tests Ã©chouÃ©s : $($result.Compatibility.Failed)" -ForegroundColor Red
-    Write-Host "  - Taux de rÃ©ussite : $(if ($result.Compatibility.Total -gt 0) { [math]::Round(($result.Compatibility.Passed / $result.Compatibility.Total) * 100, 2) } else { 0 })%" -ForegroundColor $(if ($result.Compatibility.Total -gt 0 -and ($result.Compatibility.Passed / $result.Compatibility.Total) -ge 0.8) { "Green" } else { "Yellow" })
+    Write-Host "`nCompatibilitÃƒÂ© entre environnements :" -ForegroundColor Yellow
+    Write-Host "  - Scripts testÃƒÂ©s : $($result.Compatibility.Total)" -ForegroundColor White
+    Write-Host "  - Tests rÃƒÂ©ussis : $($result.Compatibility.Passed)" -ForegroundColor Green
+    Write-Host "  - Tests ÃƒÂ©chouÃƒÂ©s : $($result.Compatibility.Failed)" -ForegroundColor Red
+    Write-Host "  - Taux de rÃƒÂ©ussite : $(if ($result.Compatibility.Total -gt 0) { [math]::Round(($result.Compatibility.Passed / $result.Compatibility.Total) * 100, 2) } else { 0 })%" -ForegroundColor $(if ($result.Compatibility.Total -gt 0 -and ($result.Compatibility.Passed / $result.Compatibility.Total) -ge 0.8) { "Green" } else { "Yellow" })
 }
 
-Write-Host "`nRapport dÃ©taillÃ© : $reportPath" -ForegroundColor Cyan
+Write-Host "`nRapport dÃƒÂ©taillÃƒÂ© : $reportPath" -ForegroundColor Cyan
 Write-Host "Journal : $LogFilePath" -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Cyan

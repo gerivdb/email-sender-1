@@ -1,10 +1,10 @@
-# Déplacement des fichiers de development/scripts/utils vers development/tools
+﻿# DÃ©placement des fichiers de development/scripts/utils vers development/tools
 
-# Définir les chemins
+# DÃ©finir les chemins
 $toolsRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\tools"
 $utilsRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\scripts\utils"
 
-# Vérifier que les dossiers existent
+# VÃ©rifier que les dossiers existent
 if (-not (Test-Path $toolsRoot)) {
     Write-Error "Le dossier development\tools n'existe pas : $toolsRoot"
     exit 1
@@ -15,7 +15,7 @@ if (-not (Test-Path $utilsRoot)) {
     exit 1
 }
 
-# Définir les mappages de dossiers
+# DÃ©finir les mappages de dossiers
 $folderMappings = @{
     "analysis" = "analysis"
     "automation" = "utilities"
@@ -41,7 +41,7 @@ $folderMappings = @{
     "utils" = "utilities"
 }
 
-# Définir les fichiers à déplacer
+# DÃ©finir les fichiers Ã  dÃ©placer
 $fileMappings = @{
     "Compare-ImplementationPerformance.ps1" = "analysis"
     "copy-files.ps1" = "utilities"
@@ -58,7 +58,7 @@ $fileMappings = @{
     "Test-SimpleFileContentIndexer.ps1" = "testing"
 }
 
-# Déplacer les dossiers
+# DÃ©placer les dossiers
 foreach ($sourceFolder in $folderMappings.Keys) {
     $sourcePath = Join-Path -Path $utilsRoot -ChildPath $sourceFolder
     $targetFolder = $folderMappings[$sourceFolder]
@@ -75,37 +75,37 @@ foreach ($sourceFolder in $folderMappings.Keys) {
             $destinationPath = Join-Path -Path $targetPath -ChildPath $relativePath
             $destinationDir = Split-Path -Path $destinationPath -Parent
             
-            # Créer le dossier de destination s'il n'existe pas
+            # CrÃ©er le dossier de destination s'il n'existe pas
             if (-not (Test-Path $destinationDir -PathType Container)) {
                 New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
-                Write-Host "  Dossier créé : $destinationDir" -ForegroundColor Yellow
+                Write-Host "  Dossier crÃ©Ã© : $destinationDir" -ForegroundColor Yellow
             }
             
-            # Vérifier si le fichier existe déjà dans la destination
+            # VÃ©rifier si le fichier existe dÃ©jÃ  dans la destination
             if (Test-Path $destinationPath -PathType Leaf) {
                 $destFile = Get-Item -Path $destinationPath
                 
                 # Comparer les dates de modification
                 if ($file.LastWriteTime -gt $destFile.LastWriteTime) {
                     Copy-Item -Path $file.FullName -Destination $destinationPath -Force
-                    Write-Host "  Fichier remplacé (plus récent) : $($file.FullName) -> $destinationPath" -ForegroundColor Green
+                    Write-Host "  Fichier remplacÃ© (plus rÃ©cent) : $($file.FullName) -> $destinationPath" -ForegroundColor Green
                 }
                 else {
-                    Write-Host "  Fichier ignoré (plus ancien ou identique) : $($file.FullName)" -ForegroundColor Gray
+                    Write-Host "  Fichier ignorÃ© (plus ancien ou identique) : $($file.FullName)" -ForegroundColor Gray
                 }
             }
             else {
                 Copy-Item -Path $file.FullName -Destination $destinationPath -Force
-                Write-Host "  Fichier copié : $($file.FullName) -> $destinationPath" -ForegroundColor Green
+                Write-Host "  Fichier copiÃ© : $($file.FullName) -> $destinationPath" -ForegroundColor Green
             }
         }
     }
     else {
-        Write-Host "Dossier source non trouvé : $sourcePath" -ForegroundColor Yellow
+        Write-Host "Dossier source non trouvÃ© : $sourcePath" -ForegroundColor Yellow
     }
 }
 
-# Déplacer les fichiers à la racine
+# DÃ©placer les fichiers Ã  la racine
 foreach ($file in $fileMappings.Keys) {
     $sourcePath = Join-Path -Path $utilsRoot -ChildPath $file
     $targetFolder = $fileMappings[$file]
@@ -114,13 +114,13 @@ foreach ($file in $fileMappings.Keys) {
     if (Test-Path $sourcePath -PathType Leaf) {
         $targetDir = Split-Path -Path $targetPath -Parent
         
-        # Créer le dossier de destination s'il n'existe pas
+        # CrÃ©er le dossier de destination s'il n'existe pas
         if (-not (Test-Path $targetDir -PathType Container)) {
             New-Item -Path $targetDir -ItemType Directory -Force | Out-Null
-            Write-Host "  Dossier créé : $targetDir" -ForegroundColor Yellow
+            Write-Host "  Dossier crÃ©Ã© : $targetDir" -ForegroundColor Yellow
         }
         
-        # Vérifier si le fichier existe déjà dans la destination
+        # VÃ©rifier si le fichier existe dÃ©jÃ  dans la destination
         if (Test-Path $targetPath -PathType Leaf) {
             $sourceFile = Get-Item -Path $sourcePath
             $destFile = Get-Item -Path $targetPath
@@ -128,20 +128,20 @@ foreach ($file in $fileMappings.Keys) {
             # Comparer les dates de modification
             if ($sourceFile.LastWriteTime -gt $destFile.LastWriteTime) {
                 Copy-Item -Path $sourcePath -Destination $targetPath -Force
-                Write-Host "  Fichier remplacé (plus récent) : $sourcePath -> $targetPath" -ForegroundColor Green
+                Write-Host "  Fichier remplacÃ© (plus rÃ©cent) : $sourcePath -> $targetPath" -ForegroundColor Green
             }
             else {
-                Write-Host "  Fichier ignoré (plus ancien ou identique) : $sourcePath" -ForegroundColor Gray
+                Write-Host "  Fichier ignorÃ© (plus ancien ou identique) : $sourcePath" -ForegroundColor Gray
             }
         }
         else {
             Copy-Item -Path $sourcePath -Destination $targetPath -Force
-            Write-Host "  Fichier copié : $sourcePath -> $targetPath" -ForegroundColor Green
+            Write-Host "  Fichier copiÃ© : $sourcePath -> $targetPath" -ForegroundColor Green
         }
     }
     else {
-        Write-Host "Fichier source non trouvé : $sourcePath" -ForegroundColor Yellow
+        Write-Host "Fichier source non trouvÃ© : $sourcePath" -ForegroundColor Yellow
     }
 }
 
-Write-Host "`nDéplacement des fichiers terminé !" -ForegroundColor Cyan
+Write-Host "`nDÃ©placement des fichiers terminÃ© !" -ForegroundColor Cyan

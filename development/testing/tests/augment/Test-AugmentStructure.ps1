@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Test simple de la structure de documentation Augment.
 
 .DESCRIPTION
-    Ce script vérifie que la structure de documentation Augment est correctement
-    implémentée, sans dépendre de Pester.
+    Ce script vÃ©rifie que la structure de documentation Augment est correctement
+    implÃ©mentÃ©e, sans dÃ©pendre de Pester.
 
 .NOTES
     Version: 1.0
@@ -16,7 +16,7 @@
 [CmdletBinding()]
 param()
 
-# Définir le chemin racine du projet
+# DÃ©finir le chemin racine du projet
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $testsPassed = 0
 $testsFailed = 0
@@ -35,17 +35,17 @@ function Test-Condition {
     try {
         $result = & $Condition
         if ($result) {
-            Write-Host "  Résultat: Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©sultat: RÃ©ussi" -ForegroundColor Green
             $script:testsPassed++
             return $true
         } else {
-            Write-Host "  Résultat: Échoué" -ForegroundColor Red
+            Write-Host "  RÃ©sultat: Ã‰chouÃ©" -ForegroundColor Red
             Write-Host "  $FailureMessage" -ForegroundColor Yellow
             $script:testsFailed++
             return $false
         }
     } catch {
-        Write-Host "  Résultat: Erreur" -ForegroundColor Red
+        Write-Host "  RÃ©sultat: Erreur" -ForegroundColor Red
         Write-Host "  $_" -ForegroundColor Yellow
         $script:testsFailed++
         return $false
@@ -154,18 +154,18 @@ Test-Condition -Name "Le fichier config.json contient les fournisseurs de contex
     }
 } -FailureMessage "Le fichier config.json ne contient pas les fournisseurs de contexte guidelines et context"
 
-# Test de l'intégration à la roadmap
-Test-Condition -Name "Le fichier de tâche dans la roadmap existe" -Condition {
+# Test de l'intÃ©gration Ã  la roadmap
+Test-Condition -Name "Le fichier de tÃ¢che dans la roadmap existe" -Condition {
     Test-Path -Path "$projectRoot\Roadmap\tasks\augment_documentation_structure.md" -PathType Leaf
-} -FailureMessage "Le fichier de tâche dans la roadmap n'existe pas"
+} -FailureMessage "Le fichier de tÃ¢che dans la roadmap n'existe pas"
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
-Write-Host "Tests exécutés: $testsTotal" -ForegroundColor White
-Write-Host "Tests réussis: $testsPassed" -ForegroundColor Green
-Write-Host "Tests échoués: $testsFailed" -ForegroundColor Red
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+Write-Host "Tests exÃ©cutÃ©s: $testsTotal" -ForegroundColor White
+Write-Host "Tests rÃ©ussis: $testsPassed" -ForegroundColor Green
+Write-Host "Tests Ã©chouÃ©s: $testsFailed" -ForegroundColor Red
 
-# Générer un rapport simple
+# GÃ©nÃ©rer un rapport simple
 $reportPath = "$projectRoot\tests\augment\reports"
 if (-not (Test-Path -Path $reportPath)) {
     New-Item -ItemType Directory -Path $reportPath -Force | Out-Null
@@ -173,17 +173,17 @@ if (-not (Test-Path -Path $reportPath)) {
 
 $reportFile = "$reportPath\AugmentStructure-Results.txt"
 Set-Content -Path $reportFile -Value "Rapport des tests de structure Augment - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`n`n"
-Add-Content -Path $reportFile -Value "Tests exécutés: $testsTotal"
-Add-Content -Path $reportFile -Value "Tests réussis: $testsPassed"
-Add-Content -Path $reportFile -Value "Tests échoués: $testsFailed"
+Add-Content -Path $reportFile -Value "Tests exÃ©cutÃ©s: $testsTotal"
+Add-Content -Path $reportFile -Value "Tests rÃ©ussis: $testsPassed"
+Add-Content -Path $reportFile -Value "Tests Ã©chouÃ©s: $testsFailed"
 
-Write-Host "`nRapport généré: $reportFile" -ForegroundColor Green
+Write-Host "`nRapport gÃ©nÃ©rÃ©: $reportFile" -ForegroundColor Green
 
-# Retourner un code de sortie basé sur les résultats
+# Retourner un code de sortie basÃ© sur les rÃ©sultats
 if ($testsFailed -gt 0) {
-    Write-Host "`nDes tests ont échoué. Veuillez consulter le rapport pour plus de détails." -ForegroundColor Red
+    Write-Host "`nDes tests ont Ã©chouÃ©. Veuillez consulter le rapport pour plus de dÃ©tails." -ForegroundColor Red
     exit 1
 } else {
-    Write-Host "`nTous les tests ont réussi!" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi!" -ForegroundColor Green
     exit 0
 }

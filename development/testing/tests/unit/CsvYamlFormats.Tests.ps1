@@ -1,44 +1,44 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les formats CSV et YAML.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctionnalités CSV et YAML
+    Ce script contient des tests unitaires pour les fonctionnalitÃ©s CSV et YAML
     du module UnifiedSegmenter.ps1.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "CsvYamlTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $csvFilePath = Join-Path -Path $testTempDir -ChildPath "test.csv"
 $yamlFilePath = Join-Path -Path $testTempDir -ChildPath "test.yaml"
 $jsonFilePath = Join-Path -Path $testTempDir -ChildPath "test.json"
 $outputDir = Join-Path -Path $testTempDir -ChildPath "output"
 New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 
-# Créer un fichier CSV valide
+# CrÃ©er un fichier CSV valide
 $csvContent = @"
 id,name,value,description
 1,Item 1,Value 1,"Description 1"
@@ -47,7 +47,7 @@ id,name,value,description
 "@
 Set-Content -Path $csvFilePath -Value $csvContent -Encoding UTF8
 
-# Créer un fichier CSV invalide (colonnes incohérentes)
+# CrÃ©er un fichier CSV invalide (colonnes incohÃ©rentes)
 $invalidCsvPath = Join-Path -Path $testTempDir -ChildPath "invalid.csv"
 $invalidCsvContent = @"
 id,name,value,description
@@ -57,7 +57,7 @@ id,name,value,description
 "@
 Set-Content -Path $invalidCsvPath -Value $invalidCsvContent -Encoding UTF8
 
-# Créer un fichier YAML valide
+# CrÃ©er un fichier YAML valide
 $yamlContent = @"
 name: Test Object
 items:
@@ -76,7 +76,7 @@ metadata:
 "@
 Set-Content -Path $yamlFilePath -Value $yamlContent -Encoding UTF8
 
-# Créer un fichier YAML invalide
+# CrÃ©er un fichier YAML invalide
 $invalidYamlPath = Join-Path -Path $testTempDir -ChildPath "invalid.yaml"
 $invalidYamlContent = @"
 name: Test Object
@@ -93,7 +93,7 @@ items:
 "@
 Set-Content -Path $invalidYamlPath -Value $invalidYamlContent -Encoding UTF8
 
-# Créer un fichier JSON pour les tests de conversion
+# CrÃ©er un fichier JSON pour les tests de conversion
 $jsonContent = @"
 {
   "name": "Test Object",
@@ -122,7 +122,7 @@ $jsonContent = @"
 "@
 Set-Content -Path $jsonFilePath -Value $jsonContent -Encoding UTF8
 
-# Créer un fichier JSON avec un tableau pour les tests de conversion CSV
+# CrÃ©er un fichier JSON avec un tableau pour les tests de conversion CSV
 $jsonArrayPath = Join-Path -Path $testTempDir -ChildPath "array.json"
 $jsonArrayContent = @"
 [
@@ -148,34 +148,34 @@ $jsonArrayContent = @"
 "@
 Set-Content -Path $jsonArrayPath -Value $jsonArrayContent -Encoding UTF8
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests des formats CSV et YAML" {
     BeforeAll {
         # Importer le module UnifiedSegmenter
         . $unifiedSegmenterPath
         
-        # Initialiser le segmenteur unifié
+        # Initialiser le segmenteur unifiÃ©
         $initResult = Initialize-UnifiedSegmenter
         $initResult | Should -Be $true
     }
     
-    Context "Tests de détection de format" {
-        It "Détecte correctement le format CSV" {
+    Context "Tests de dÃ©tection de format" {
+        It "DÃ©tecte correctement le format CSV" {
             $format = Get-FileFormat -FilePath $csvFilePath
             $format | Should -Be "CSV"
         }
         
-        It "Détecte correctement le format YAML" {
+        It "DÃ©tecte correctement le format YAML" {
             $format = Get-FileFormat -FilePath $yamlFilePath
             $format | Should -Be "YAML"
         }
         
-        It "Détecte correctement le format CSV avec EncodingDetector" {
+        It "DÃ©tecte correctement le format CSV avec EncodingDetector" {
             $format = Get-FileFormat -FilePath $csvFilePath -UseEncodingDetector
             $format | Should -Be "CSV"
         }
         
-        It "Détecte correctement le format YAML avec EncodingDetector" {
+        It "DÃ©tecte correctement le format YAML avec EncodingDetector" {
             $format = Get-FileFormat -FilePath $yamlFilePath -UseEncodingDetector
             $format | Should -Be "YAML"
         }
@@ -187,7 +187,7 @@ Describe "Tests des formats CSV et YAML" {
             $isValid | Should -Be $true
         }
         
-        It "Détecte correctement un fichier CSV invalide" {
+        It "DÃ©tecte correctement un fichier CSV invalide" {
             $isValid = Test-FileValidity -FilePath $invalidCsvPath -Format "CSV"
             $isValid | Should -Be $false
         }
@@ -197,7 +197,7 @@ Describe "Tests des formats CSV et YAML" {
             $isValid | Should -Be $true
         }
         
-        It "Détecte correctement un fichier YAML invalide" {
+        It "DÃ©tecte correctement un fichier YAML invalide" {
             $isValid = Test-FileValidity -FilePath $invalidYamlPath -Format "YAML"
             $isValid | Should -Be $false
         }
@@ -210,11 +210,11 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier JSON est valide
+            # VÃ©rifier que le fichier JSON est valide
             $isValid = Test-FileValidity -FilePath $outputPath -Format "JSON"
             $isValid | Should -Be $true
             
-            # Vérifier le contenu
+            # VÃ©rifier le contenu
             $content = Get-Content -Path $outputPath -Raw | ConvertFrom-Json
             $content | Should -Not -BeNullOrEmpty
             $content.Count | Should -Be 3
@@ -228,7 +228,7 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier XML est valide
+            # VÃ©rifier que le fichier XML est valide
             $isValid = Test-FileValidity -FilePath $outputPath -Format "XML"
             $isValid | Should -Be $true
         }
@@ -239,7 +239,7 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier YAML est valide
+            # VÃ©rifier que le fichier YAML est valide
             $isValid = Test-FileValidity -FilePath $outputPath -Format "YAML"
             $isValid | Should -Be $true
         }
@@ -252,11 +252,11 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier JSON est valide
+            # VÃ©rifier que le fichier JSON est valide
             $isValid = Test-FileValidity -FilePath $outputPath -Format "JSON"
             $isValid | Should -Be $true
             
-            # Vérifier le contenu
+            # VÃ©rifier le contenu
             $content = Get-Content -Path $outputPath -Raw | ConvertFrom-Json
             $content | Should -Not -BeNullOrEmpty
             $content.name | Should -Be "Test Object"
@@ -269,7 +269,7 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier XML est valide
+            # VÃ©rifier que le fichier XML est valide
             $isValid = Test-FileValidity -FilePath $outputPath -Format "XML"
             $isValid | Should -Be $true
         }
@@ -280,7 +280,7 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier CSV est valide
+            # VÃ©rifier que le fichier CSV est valide
             $isValid = Test-FileValidity -FilePath $outputPath -Format "CSV"
             $isValid | Should -Be $true
         }
@@ -293,7 +293,7 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier CSV est valide
+            # VÃ©rifier que le fichier CSV est valide
             $isValid = Test-FileValidity -FilePath $outputPath -Format "CSV"
             $isValid | Should -Be $true
         }
@@ -304,11 +304,11 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier CSV est valide
+            # VÃ©rifier que le fichier CSV est valide
             $isValid = Test-FileValidity -FilePath $outputPath -Format "CSV"
             $isValid | Should -Be $true
             
-            # Vérifier le contenu
+            # VÃ©rifier le contenu
             $content = Get-Content -Path $outputPath
             $content.Count | Should -BeGreaterThan 1
             $content[0] | Should -Match "id,name,value,description"
@@ -320,7 +320,7 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier YAML est valide
+            # VÃ©rifier que le fichier YAML est valide
             $isValid = Test-FileValidity -FilePath $outputPath -Format "YAML"
             $isValid | Should -Be $true
         }
@@ -333,10 +333,10 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $outputPath
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu de l'analyse
+            # VÃ©rifier le contenu de l'analyse
             $analysis = Get-Content -Path $outputPath -Raw | ConvertFrom-Json
             $analysis | Should -Not -BeNullOrEmpty
-            $analysis.total_rows | Should -Be 4  # En-tête + 3 lignes
+            $analysis.total_rows | Should -Be 4  # En-tÃªte + 3 lignes
             $analysis.columns | Should -Be 4     # 4 colonnes
         }
         
@@ -346,7 +346,7 @@ Describe "Tests des formats CSV et YAML" {
             $result | Should -Be $outputPath
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu de l'analyse
+            # VÃ©rifier le contenu de l'analyse
             $analysis = Get-Content -Path $outputPath -Raw | ConvertFrom-Json
             $analysis | Should -Not -BeNullOrEmpty
             $analysis.structure | Should -Not -BeNullOrEmpty
@@ -361,11 +361,11 @@ Describe "Tests des formats CSV et YAML" {
             $result = Split-File -FilePath $csvFilePath -Format "CSV" -OutputDir $csvSegmentDir -ChunkSizeKB 1
             $result | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $csvSegmentDir -Filter "*.csv"
             $segmentFiles.Count | Should -BeGreaterThan 0
             
-            # Vérifier que chaque segment est un CSV valide
+            # VÃ©rifier que chaque segment est un CSV valide
             foreach ($file in $segmentFiles) {
                 $isValid = Test-FileValidity -FilePath $file.FullName -Format "CSV"
                 $isValid | Should -Be $true
@@ -379,11 +379,11 @@ Describe "Tests des formats CSV et YAML" {
             $result = Split-File -FilePath $yamlFilePath -Format "YAML" -OutputDir $yamlSegmentDir -ChunkSizeKB 1
             $result | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $yamlSegmentDir -Filter "*.yaml"
             $segmentFiles.Count | Should -BeGreaterThan 0
             
-            # Vérifier que chaque segment est un YAML valide
+            # VÃ©rifier que chaque segment est un YAML valide
             foreach ($file in $segmentFiles) {
                 $isValid = Test-FileValidity -FilePath $file.FullName -Format "YAML"
                 $isValid | Should -Be $true

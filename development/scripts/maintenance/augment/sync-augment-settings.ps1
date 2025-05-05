@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Synchronise les fichiers de configuration Augment.
 
@@ -19,7 +19,7 @@
     
 .NOTES
     Auteur: Augment Agent
-    Date de création: 28/04/2025
+    Date de crÃ©ation: 28/04/2025
 #>
 param (
     [Parameter(Mandatory=$true)]
@@ -40,9 +40,9 @@ function Sync-AugmentSettings {
         $rootFile = Join-Path -Path (Get-Location).Path -ChildPath "augment-optimized-settings.json"
         $developmentFile = Join-Path -Path (Get-Location).Path -ChildPath "development\tools\augment\augment-optimized-settings.json"
         
-        # Vérifier que les fichiers existent
+        # VÃ©rifier que les fichiers existent
         if (-not (Test-Path $rootFile)) {
-            Write-Error "Le fichier à la racine n'existe pas : $rootFile"
+            Write-Error "Le fichier Ã  la racine n'existe pas : $rootFile"
             return $false
         }
         
@@ -56,26 +56,26 @@ function Sync-AugmentSettings {
         try {
             if ($Direction -eq 'ToRoot') {
                 # Copier de development vers la racine
-                if ($PSCmdlet.ShouldProcess($rootFile, "Mettre à jour depuis $developmentFile")) {
+                if ($PSCmdlet.ShouldProcess($rootFile, "Mettre Ã  jour depuis $developmentFile")) {
                     $content = Get-Content -Path $developmentFile -Raw
                     
                     # Ajouter un commentaire indiquant qu'il s'agit d'une copie
-                    $content = $content -replace '{\s*', "{\n    // ATTENTION: Ce fichier est une copie de development/tools/augment-tools/augment-optimized-settings.json`n    // Veuillez modifier le fichier original plutôt que cette copie`n    `n    "
+                    $content = $content -replace '{\s*', "{\n    // ATTENTION: Ce fichier est une copie de development/tools/augment-tools/augment-optimized-settings.json`n    // Veuillez modifier le fichier original plutÃ´t que cette copie`n    `n    "
                     
                     Set-Content -Path $rootFile -Value $content -Force
-                    Write-Host "Le fichier à la racine a été mis à jour depuis le fichier dans development." -ForegroundColor Green
+                    Write-Host "Le fichier Ã  la racine a Ã©tÃ© mis Ã  jour depuis le fichier dans development." -ForegroundColor Green
                 }
             }
             else {
                 # Copier de la racine vers development
-                if ($PSCmdlet.ShouldProcess($developmentFile, "Mettre à jour depuis $rootFile")) {
+                if ($PSCmdlet.ShouldProcess($developmentFile, "Mettre Ã  jour depuis $rootFile")) {
                     $content = Get-Content -Path $rootFile -Raw
                     
                     # Supprimer le commentaire d'avertissement s'il existe
                     $content = $content -replace '{\s*//\s*ATTENTION:.*?copie\s*\n\s*//.*?original.*?\n\s*\n\s*', "{\n    "
                     
                     Set-Content -Path $developmentFile -Value $content -Force
-                    Write-Host "Le fichier dans development a été mis à jour depuis le fichier à la racine." -ForegroundColor Green
+                    Write-Host "Le fichier dans development a Ã©tÃ© mis Ã  jour depuis le fichier Ã  la racine." -ForegroundColor Green
                 }
             }
             
@@ -88,7 +88,7 @@ function Sync-AugmentSettings {
     }
     
     end {
-        Write-Host "Synchronisation terminée." -ForegroundColor Cyan
+        Write-Host "Synchronisation terminÃ©e." -ForegroundColor Cyan
     }
 }
 

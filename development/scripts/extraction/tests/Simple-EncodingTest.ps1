@@ -1,0 +1,5 @@
+Write-Output "Testing file encoding"
+$modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "ExtractedInfoModuleV2.psm1"
+Write-Output "Module path: $modulePath"
+Write-Output "File exists: $(Test-Path $modulePath)"
+Write-Output "Test completed"

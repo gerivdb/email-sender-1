@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 <#
 .SYNOPSIS
-    Module pour l'extraction des métadonnées de configuration.
+    Module pour l'extraction des mÃ©tadonnÃ©es de configuration.
 .DESCRIPTION
     Ce module fournit des fonctions pour analyser les fichiers de configuration,
-    extraire leurs options, dépendances et contraintes.
+    extraire leurs options, dÃ©pendances et contraintes.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
@@ -15,7 +15,7 @@
 $script:SupportedFormats = @("JSON", "YAML", "XML", "INI", "PSD1")
 $script:ConfigurationCache = @{}
 
-# Importer les fonctions privées
+# Importer les fonctions privÃ©es
 $privateFunctionsPath = Join-Path -Path $PSScriptRoot -ChildPath "Private"
 if (Test-Path -Path $privateFunctionsPath) {
     $privateFiles = Get-ChildItem -Path $privateFunctionsPath -Filter "*.ps1" -File

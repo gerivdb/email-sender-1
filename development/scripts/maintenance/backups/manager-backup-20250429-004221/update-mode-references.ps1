@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script pour mettre à jour les références aux modes dans les fichiers de documentation.
+    Script pour mettre Ã  jour les rÃ©fÃ©rences aux modes dans les fichiers de documentation.
 
 .DESCRIPTION
-    Ce script met à jour les références aux modes dans les fichiers de documentation pour utiliser le mode MANAGER.
-    Il remplace les références directes aux scripts de mode par des références au mode MANAGER.
+    Ce script met Ã  jour les rÃ©fÃ©rences aux modes dans les fichiers de documentation pour utiliser le mode MANAGER.
+    Il remplace les rÃ©fÃ©rences directes aux scripts de mode par des rÃ©fÃ©rences au mode MANAGER.
 
 .PARAMETER Force
-    Indique si les modifications doivent être appliquées sans confirmation.
-    Par défaut : $false (mode simulation).
+    Indique si les modifications doivent Ãªtre appliquÃ©es sans confirmation.
+    Par dÃ©faut : $false (mode simulation).
 
 .PARAMETER BackupFiles
-    Indique si des copies de sauvegarde des fichiers originaux doivent être créées.
-    Par défaut : $true.
+    Indique si des copies de sauvegarde des fichiers originaux doivent Ãªtre crÃ©Ã©es.
+    Par dÃ©faut : $true.
 
 .EXAMPLE
     .\update-mode-references.ps1 -Force
@@ -20,7 +20,7 @@
 .NOTES
     Auteur: Mode Manager Team
     Version: 1.0
-    Date de création: 2023-08-15
+    Date de crÃ©ation: 2023-08-15
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -41,22 +41,22 @@ if (-not (Test-Path -Path $basePath)) {
     }
 }
 
-# Afficher les informations de démarrage
-Write-Host "Mise à jour des références aux modes" -ForegroundColor Cyan
+# Afficher les informations de dÃ©marrage
+Write-Host "Mise Ã  jour des rÃ©fÃ©rences aux modes" -ForegroundColor Cyan
 Write-Host "Mode : " -NoNewline
 if ($Force) {
-    Write-Host "Mise à jour" -ForegroundColor Yellow
+    Write-Host "Mise Ã  jour" -ForegroundColor Yellow
 } else {
     Write-Host "Simulation (utilisez -Force pour appliquer les modifications)" -ForegroundColor Gray
 }
 Write-Host "Sauvegarde des fichiers originaux : " -NoNewline
 if ($BackupFiles) {
-    Write-Host "Activée" -ForegroundColor Green
+    Write-Host "ActivÃ©e" -ForegroundColor Green
 } else {
-    Write-Host "Désactivée" -ForegroundColor Yellow
+    Write-Host "DÃ©sactivÃ©e" -ForegroundColor Yellow
 }
 
-# Fonction pour créer une sauvegarde d'un fichier
+# Fonction pour crÃ©er une sauvegarde d'un fichier
 function Backup-File {
     [CmdletBinding()]
     param (
@@ -65,7 +65,7 @@ function Backup-File {
     )
 
     if (-not (Test-Path -Path $FilePath)) {
-        Write-Warning "Le fichier à sauvegarder n'existe pas : $FilePath"
+        Write-Warning "Le fichier Ã  sauvegarder n'existe pas : $FilePath"
         return
     }
 
@@ -76,13 +76,13 @@ function Backup-File {
         $i++
     }
 
-    if ($PSCmdlet.ShouldProcess($FilePath, "Créer une sauvegarde")) {
+    if ($PSCmdlet.ShouldProcess($FilePath, "CrÃ©er une sauvegarde")) {
         Copy-Item -Path $FilePath -Destination $backupPath -Force
-        Write-Host "Sauvegarde créée : $backupPath" -ForegroundColor Green
+        Write-Host "Sauvegarde crÃ©Ã©e : $backupPath" -ForegroundColor Green
     }
 }
 
-# Fonction pour mettre à jour les références dans un fichier
+# Fonction pour mettre Ã  jour les rÃ©fÃ©rences dans un fichier
 function Update-ModeReferences {
     [CmdletBinding()]
     param (
@@ -98,7 +98,7 @@ function Update-ModeReferences {
         return
     }
 
-    # Créer une sauvegarde si la sauvegarde est activée
+    # CrÃ©er une sauvegarde si la sauvegarde est activÃ©e
     if ($CreateBackup) {
         Backup-File -FilePath $FilePath
     }
@@ -107,7 +107,7 @@ function Update-ModeReferences {
         # Lire le contenu du fichier
         $content = Get-Content -Path $FilePath -Raw
 
-        # Définir les modèles de remplacement
+        # DÃ©finir les modÃ¨les de remplacement
         $replacements = @(
             @{
                 OldPattern = '\.\\gran-mode\.ps1'
@@ -162,17 +162,17 @@ function Update-ModeReferences {
             }
         }
 
-        # Enregistrer les modifications si le contenu a été modifié
+        # Enregistrer les modifications si le contenu a Ã©tÃ© modifiÃ©
         if ($modified) {
-            if ($PSCmdlet.ShouldProcess($FilePath, "Mettre à jour les références aux modes")) {
+            if ($PSCmdlet.ShouldProcess($FilePath, "Mettre Ã  jour les rÃ©fÃ©rences aux modes")) {
                 Set-Content -Path $FilePath -Value $newContent -NoNewline
-                Write-Host "Références mises à jour : $FilePath" -ForegroundColor Green
+                Write-Host "RÃ©fÃ©rences mises Ã  jour : $FilePath" -ForegroundColor Green
             }
         } else {
-            Write-Host "Aucune référence à mettre à jour : $FilePath" -ForegroundColor Yellow
+            Write-Host "Aucune rÃ©fÃ©rence Ã  mettre Ã  jour : $FilePath" -ForegroundColor Yellow
         }
     } catch {
-        Write-Error "Erreur lors de la mise à jour des références : $_"
+        Write-Error "Erreur lors de la mise Ã  jour des rÃ©fÃ©rences : $_"
     }
 }
 
@@ -180,13 +180,13 @@ function Update-ModeReferences {
 $docFiles = Get-ChildItem -Path $basePath -Include "*.md" -Recurse -File |
     Where-Object { $_.FullName -like "*\methodologies\*" -or $_.FullName -like "*\guides\*" }
 
-# Mettre à jour les références dans les fichiers de documentation
+# Mettre Ã  jour les rÃ©fÃ©rences dans les fichiers de documentation
 foreach ($docFile in $docFiles) {
     Update-ModeReferences -FilePath $docFile.FullName -CreateBackup:$BackupFiles
 }
 
 # Afficher un message de fin
-Write-Host "`nMise à jour des références aux modes terminée." -ForegroundColor Cyan
+Write-Host "`nMise Ã  jour des rÃ©fÃ©rences aux modes terminÃ©e." -ForegroundColor Cyan
 if (-not $Force) {
-    Write-Host "Exécutez ce script avec le paramètre -Force pour appliquer les modifications." -ForegroundColor Yellow
+    Write-Host "ExÃ©cutez ce script avec le paramÃ¨tre -Force pour appliquer les modifications." -ForegroundColor Yellow
 }

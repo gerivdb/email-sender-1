@@ -1,12 +1,12 @@
-# Script pour exécuter les nouveaux tests
+﻿# Script pour exÃ©cuter les nouveaux tests
 
-# Définir les couleurs pour les messages
+# DÃ©finir les couleurs pour les messages
 $successColor = "Green"
 $errorColor = "Red"
 $infoColor = "Cyan"
 $warningColor = "Yellow"
 
-# Liste des tests à exécuter
+# Liste des tests Ã  exÃ©cuter
 $tests = @(
     "Test-FunctionCallDependencies.ps1",
     "Test-FunctionUsageAnalysis.ps1",
@@ -15,49 +15,49 @@ $tests = @(
 
 # Compter le nombre de tests
 $totalTests = $tests.Count
-Write-Host "Nombre de tests à exécuter: $totalTests" -ForegroundColor $infoColor
+Write-Host "Nombre de tests Ã  exÃ©cuter: $totalTests" -ForegroundColor $infoColor
 
 # Initialiser les compteurs
 $successCount = 0
 $failureCount = 0
 
-# Exécuter chaque test
+# ExÃ©cuter chaque test
 foreach ($test in $tests) {
     $testPath = Join-Path -Path $PSScriptRoot -ChildPath $test
     
-    Write-Host "`n========== Exécution du test: $testPath ==========" -ForegroundColor $infoColor
+    Write-Host "`n========== ExÃ©cution du test: $testPath ==========" -ForegroundColor $infoColor
     
     try {
-        # Exécuter le test
+        # ExÃ©cuter le test
         & $testPath
         
-        # Vérifier le code de retour
+        # VÃ©rifier le code de retour
         if ($LASTEXITCODE -eq 0) {
-            Write-Host "Test réussi: $testPath" -ForegroundColor $successColor
+            Write-Host "Test rÃ©ussi: $testPath" -ForegroundColor $successColor
             $successCount++
         } else {
-            Write-Host "Test échoué: $testPath" -ForegroundColor $errorColor
+            Write-Host "Test Ã©chouÃ©: $testPath" -ForegroundColor $errorColor
             $failureCount++
         }
     } catch {
-        Write-Host "Erreur lors de l'exécution du test: $_" -ForegroundColor $errorColor
+        Write-Host "Erreur lors de l'exÃ©cution du test: $_" -ForegroundColor $errorColor
         $failureCount++
     }
 }
 
-# Afficher le résumé
-Write-Host "`n========== Résumé des tests ==========" -ForegroundColor $infoColor
-Write-Host "Tests réussis: $successCount" -ForegroundColor $successColor
-Write-Host "Tests échoués: $failureCount" -ForegroundColor $errorColor
+# Afficher le rÃ©sumÃ©
+Write-Host "`n========== RÃ©sumÃ© des tests ==========" -ForegroundColor $infoColor
+Write-Host "Tests rÃ©ussis: $successCount" -ForegroundColor $successColor
+Write-Host "Tests Ã©chouÃ©s: $failureCount" -ForegroundColor $errorColor
 Write-Host "Total des tests: $totalTests" -ForegroundColor $infoColor
 
-# Calculer le pourcentage de réussite
+# Calculer le pourcentage de rÃ©ussite
 $successPercentage = [math]::Round(($successCount / $totalTests) * 100)
-Write-Host "Pourcentage de réussite: $successPercentage%" -ForegroundColor $(if ($successPercentage -eq 100) { $successColor } else { $warningColor })
+Write-Host "Pourcentage de rÃ©ussite: $successPercentage%" -ForegroundColor $(if ($successPercentage -eq 100) { $successColor } else { $warningColor })
 
 # Afficher un message final
 if ($failureCount -eq 0) {
-    Write-Host "`nTous les tests ont réussi !" -ForegroundColor $successColor
+    Write-Host "`nTous les tests ont rÃ©ussi !" -ForegroundColor $successColor
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor $errorColor
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor $errorColor
 }

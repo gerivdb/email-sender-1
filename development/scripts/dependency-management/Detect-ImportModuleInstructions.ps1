@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Détecte les instructions Import-Module dans un script PowerShell.
+    DÃ©tecte les instructions Import-Module dans un script PowerShell.
 
 .DESCRIPTION
-    Ce script analyse un fichier PowerShell pour détecter les instructions Import-Module
-    et affiche des informations détaillées sur chaque module importé.
+    Ce script analyse un fichier PowerShell pour dÃ©tecter les instructions Import-Module
+    et affiche des informations dÃ©taillÃ©es sur chaque module importÃ©.
 
 .PARAMETER FilePath
-    Chemin du fichier PowerShell à analyser.
+    Chemin du fichier PowerShell Ã  analyser.
 
 .PARAMETER ResolveModulePaths
-    Indique si les chemins des modules doivent être résolus.
+    Indique si les chemins des modules doivent Ãªtre rÃ©solus.
 
 .PARAMETER OutputFormat
-    Format de sortie des résultats (Text, JSON, CSV).
+    Format de sortie des rÃ©sultats (Text, JSON, CSV).
 
 .EXAMPLE
     .\Detect-ImportModuleInstructions.ps1 -FilePath "C:\Scripts\MyScript.ps1"
@@ -25,7 +25,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -45,17 +45,17 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "ModuleDependencyDetector.psm1"
 Import-Module $modulePath -Force
 
-# Vérifier que le fichier existe
+# VÃ©rifier que le fichier existe
 if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-    Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+    Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
     exit 1
 }
 
-# Analyser le fichier pour détecter les instructions Import-Module
+# Analyser le fichier pour dÃ©tecter les instructions Import-Module
 try {
     $moduleImports = Find-ImportModuleInstruction -FilePath $FilePath -ResolveModulePaths:$ResolveModulePaths
 
-    # Afficher les résultats selon le format demandé
+    # Afficher les rÃ©sultats selon le format demandÃ©
     switch ($OutputFormat) {
         "JSON" {
             $moduleImports | ConvertTo-Json -Depth 5
@@ -64,36 +64,36 @@ try {
             $moduleImports | ConvertTo-Csv -NoTypeInformation
         }
         default {
-            # Format texte par défaut
-            Write-Host "Instructions d'importation de modules détectées dans $FilePath :" -ForegroundColor Cyan
+            # Format texte par dÃ©faut
+            Write-Host "Instructions d'importation de modules dÃ©tectÃ©es dans $FilePath :" -ForegroundColor Cyan
 
             if ($moduleImports.Count -eq 0) {
-                Write-Host "  Aucune instruction d'importation de module détectée." -ForegroundColor Yellow
+                Write-Host "  Aucune instruction d'importation de module dÃ©tectÃ©e." -ForegroundColor Yellow
             } else {
-                # Compter les différents types d'importation
+                # Compter les diffÃ©rents types d'importation
                 $importModules = @($moduleImports | Where-Object { $_.ImportType -eq "Import-Module" })
                 $usingModules = @($moduleImports | Where-Object { $_.ImportType -eq "using module" })
                 $importModuleCount = $importModules.Count
                 $usingModuleCount = $usingModules.Count
 
-                Write-Verbose "Nombre total d'instructions trouvées : $($moduleImports.Count)"
+                Write-Verbose "Nombre total d'instructions trouvÃ©es : $($moduleImports.Count)"
                 Write-Verbose "Instructions Import-Module : $importModuleCount"
                 Write-Verbose "Instructions using module : $usingModuleCount"
 
-                # Afficher les détails de chaque instruction pour le débogage
-                Write-Verbose "Détails de toutes les instructions détectées :"
+                # Afficher les dÃ©tails de chaque instruction pour le dÃ©bogage
+                Write-Verbose "DÃ©tails de toutes les instructions dÃ©tectÃ©es :"
                 foreach ($module in $moduleImports) {
                     Write-Verbose "Module : $($module.Name), Type : $($module.ImportType), Ligne : $($module.LineNumber), ArgumentType : $($module.ArgumentType)"
                 }
 
-                # Afficher les détails des instructions using module
-                Write-Verbose "Détails des instructions using module :"
+                # Afficher les dÃ©tails des instructions using module
+                Write-Verbose "DÃ©tails des instructions using module :"
                 $usingModules = $moduleImports | Where-Object { $_.ImportType -eq "using module" }
                 foreach ($module in $usingModules) {
                     Write-Verbose "  Module : $($module.Name), Ligne : $($module.LineNumber), ArgumentType : $($module.ArgumentType)"
                 }
 
-                Write-Host "  Nombre total d'instructions trouvées : $($moduleImports.Count)" -ForegroundColor Yellow
+                Write-Host "  Nombre total d'instructions trouvÃ©es : $($moduleImports.Count)" -ForegroundColor Yellow
                 Write-Host "    - Instructions Import-Module : $importModuleCount" -ForegroundColor Yellow
                 Write-Host "    - Instructions using module : $usingModuleCount" -ForegroundColor Yellow
 
@@ -106,11 +106,11 @@ try {
                         Write-Host "      Instruction : $($module.RawCommand)" -ForegroundColor Gray
 
                         if ($module.Path) {
-                            Write-Host "      Chemin résolu : $($module.Path)" -ForegroundColor Gray
+                            Write-Host "      Chemin rÃ©solu : $($module.Path)" -ForegroundColor Gray
                         }
                     }
                 } else {
-                    Write-Verbose "Aucune instruction using module trouvée à afficher"
+                    Write-Verbose "Aucune instruction using module trouvÃ©e Ã  afficher"
                 }
 
                 # Afficher les instructions Import-Module ensuite
@@ -122,7 +122,7 @@ try {
                         Write-Host "      Commande : $($module.RawCommand)" -ForegroundColor Gray
 
                         if ($module.Path) {
-                            Write-Host "      Chemin résolu : $($module.Path)" -ForegroundColor Gray
+                            Write-Host "      Chemin rÃ©solu : $($module.Path)" -ForegroundColor Gray
                         }
 
                         if ($module.Version) {
@@ -130,7 +130,7 @@ try {
                         }
 
                         if ($module.Global) {
-                            Write-Host "      Portée : Globale" -ForegroundColor Gray
+                            Write-Host "      PortÃ©e : Globale" -ForegroundColor Gray
                         }
 
                         if ($module.Force) {
@@ -138,7 +138,7 @@ try {
                         }
 
                         if ($module.Prefix) {
-                            Write-Host "      Préfixe : $($module.Prefix)" -ForegroundColor Gray
+                            Write-Host "      PrÃ©fixe : $($module.Prefix)" -ForegroundColor Gray
                         }
 
                         Write-Host "      Type d'argument : $($module.ArgumentType)" -ForegroundColor Gray

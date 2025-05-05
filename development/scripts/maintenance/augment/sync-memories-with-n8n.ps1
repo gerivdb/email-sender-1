@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
     Synchronise les Memories d'Augment avec n8n.
 
 .DESCRIPTION
     Ce script synchronise les Memories d'Augment avec n8n, permettant d'utiliser
-    les workflows n8n pour gérer et enrichir les Memories.
+    les workflows n8n pour gÃ©rer et enrichir les Memories.
 
 .PARAMETER N8nUrl
-    URL de l'API n8n. Par défaut : "http://localhost:5678/api/v1".
+    URL de l'API n8n. Par dÃ©faut : "http://localhost:5678/api/v1".
 
 .PARAMETER MemoriesPath
-    Chemin vers le fichier des Memories. Par défaut : ".augment\memories\journal_memories.json".
+    Chemin vers le fichier des Memories. Par dÃ©faut : ".augment\memories\journal_memories.json".
 
 .PARAMETER WorkflowName
-    Nom du workflow n8n à utiliser. Par défaut : "augment-memories-sync".
+    Nom du workflow n8n Ã  utiliser. Par dÃ©faut : "augment-memories-sync".
 
 .EXAMPLE
     .\sync-memories-with-n8n.ps1
-    # Synchronise les Memories avec n8n en utilisant les paramètres par défaut
+    # Synchronise les Memories avec n8n en utilisant les paramÃ¨tres par dÃ©faut
 
 .NOTES
     Version: 1.0
@@ -37,7 +37,7 @@ param (
     [string]$WorkflowName = "augment-memories-sync"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -47,7 +47,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
@@ -55,7 +55,7 @@ if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -
 # Chemin complet vers le fichier des Memories
 $memoriesPath = Join-Path -Path $projectRoot -ChildPath $MemoriesPath
 
-# Vérifier si le fichier des Memories existe
+# VÃ©rifier si le fichier des Memories existe
 if (-not (Test-Path -Path $memoriesPath)) {
     Write-Error "Fichier des Memories introuvable : $memoriesPath"
     exit 1
@@ -82,12 +82,12 @@ function Get-WorkflowId {
             return $null
         }
     } catch {
-        Write-Error "Erreur lors de la récupération du workflow : $_"
+        Write-Error "Erreur lors de la rÃ©cupÃ©ration du workflow : $_"
         return $null
     }
 }
 
-# Fonction pour exécuter un workflow
+# Fonction pour exÃ©cuter un workflow
 function Invoke-Workflow {
     [CmdletBinding()]
     param (
@@ -109,12 +109,12 @@ function Invoke-Workflow {
         $response = Invoke-RestMethod -Uri "$N8nUrl/workflows/$WorkflowId/execute" -Method Post -Body $body -ContentType "application/json"
         return $response
     } catch {
-        Write-Error "Erreur lors de l'exécution du workflow : $_"
+        Write-Error "Erreur lors de l'exÃ©cution du workflow : $_"
         return $null
     }
 }
 
-# Fonction pour vérifier si n8n est en cours d'exécution
+# Fonction pour vÃ©rifier si n8n est en cours d'exÃ©cution
 function Test-N8nConnection {
     [CmdletBinding()]
     param (
@@ -130,10 +130,10 @@ function Test-N8nConnection {
     }
 }
 
-# Vérifier si n8n est en cours d'exécution
-Write-Host "Vérification de la connexion à n8n..." -ForegroundColor Cyan
+# VÃ©rifier si n8n est en cours d'exÃ©cution
+Write-Host "VÃ©rification de la connexion Ã  n8n..." -ForegroundColor Cyan
 if (-not (Test-N8nConnection -N8nUrl $N8nUrl)) {
-    Write-Error "Impossible de se connecter à n8n. Assurez-vous que n8n est en cours d'exécution sur $N8nUrl."
+    Write-Error "Impossible de se connecter Ã  n8n. Assurez-vous que n8n est en cours d'exÃ©cution sur $N8nUrl."
     exit 1
 }
 
@@ -154,30 +154,30 @@ try {
     exit 1
 }
 
-# Exécuter le workflow
-Write-Host "Exécution du workflow '$WorkflowName'..." -ForegroundColor Cyan
+# ExÃ©cuter le workflow
+Write-Host "ExÃ©cution du workflow '$WorkflowName'..." -ForegroundColor Cyan
 $result = Invoke-Workflow -N8nUrl $N8nUrl -WorkflowId $workflowId -Data $memories
 if (-not $result) {
-    Write-Error "Erreur lors de l'exécution du workflow."
+    Write-Error "Erreur lors de l'exÃ©cution du workflow."
     exit 1
 }
 
-# Vérifier si le workflow a retourné des Memories mises à jour
+# VÃ©rifier si le workflow a retournÃ© des Memories mises Ã  jour
 if ($result.data -and $result.data.memories) {
-    # Sauvegarder les Memories mises à jour
-    Write-Host "Sauvegarde des Memories mises à jour..." -ForegroundColor Cyan
+    # Sauvegarder les Memories mises Ã  jour
+    Write-Host "Sauvegarde des Memories mises Ã  jour..." -ForegroundColor Cyan
     $result.data.memories | ConvertTo-Json -Depth 10 | Out-File -FilePath $memoriesPath -Encoding UTF8
-    Write-Host "Memories mises à jour avec succès." -ForegroundColor Green
+    Write-Host "Memories mises Ã  jour avec succÃ¨s." -ForegroundColor Green
 } else {
-    Write-Warning "Le workflow n'a pas retourné de Memories mises à jour."
+    Write-Warning "Le workflow n'a pas retournÃ© de Memories mises Ã  jour."
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de la synchronisation :" -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de la synchronisation :" -ForegroundColor Green
 Write-Host "Workflow : $WorkflowName (ID: $workflowId)" -ForegroundColor Gray
 Write-Host "Fichier des Memories : $memoriesPath" -ForegroundColor Gray
-Write-Host "Statut de l'exécution : $($result.status)" -ForegroundColor Gray
+Write-Host "Statut de l'exÃ©cution : $($result.status)" -ForegroundColor Gray
 if ($result.data -and $result.data.sections) {
     Write-Host "Nombre de sections : $($result.data.sections.Count)" -ForegroundColor Gray
 }
-Write-Host "`nSynchronisation terminée." -ForegroundColor Green
+Write-Host "`nSynchronisation terminÃ©e." -ForegroundColor Green

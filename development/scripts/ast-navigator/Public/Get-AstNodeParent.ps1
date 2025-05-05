@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Obtient le noeud parent d'un noeud donne dans l'arbre syntaxique PowerShell.
 

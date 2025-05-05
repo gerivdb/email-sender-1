@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Extrait les dépendances d'un fichier de configuration.
+    Extrait les dÃ©pendances d'un fichier de configuration.
 .DESCRIPTION
-    Cette fonction analyse un fichier de configuration et extrait les dépendances
-    entre les différentes options, ainsi que les dépendances externes.
+    Cette fonction analyse un fichier de configuration et extrait les dÃ©pendances
+    entre les diffÃ©rentes options, ainsi que les dÃ©pendances externes.
 .PARAMETER Path
-    Chemin vers le fichier de configuration à analyser.
+    Chemin vers le fichier de configuration Ã  analyser.
 .PARAMETER Content
-    Contenu du fichier de configuration à analyser. Si spécifié, Path est ignoré.
+    Contenu du fichier de configuration Ã  analyser. Si spÃ©cifiÃ©, Path est ignorÃ©.
 .PARAMETER Format
-    Format du fichier de configuration. Si non spécifié, il sera détecté automatiquement.
+    Format du fichier de configuration. Si non spÃ©cifiÃ©, il sera dÃ©tectÃ© automatiquement.
 .PARAMETER DetectionMode
-    Mode de détection des dépendances. Les valeurs possibles sont "Explicit", "Implicit" ou "All".
+    Mode de dÃ©tection des dÃ©pendances. Les valeurs possibles sont "Explicit", "Implicit" ou "All".
 .PARAMETER ExternalPaths
-    Chemins vers des fichiers de configuration externes à analyser pour les dépendances.
+    Chemins vers des fichiers de configuration externes Ã  analyser pour les dÃ©pendances.
 .EXAMPLE
     Get-ConfigurationDependencies -Path "config.json"
-    Extrait les dépendances du fichier config.json.
+    Extrait les dÃ©pendances du fichier config.json.
 .EXAMPLE
     Get-ConfigurationDependencies -Content '{"key": "value"}' -Format "JSON" -DetectionMode "All"
-    Extrait toutes les dépendances du contenu JSON fourni.
+    Extrait toutes les dÃ©pendances du contenu JSON fourni.
 .OUTPUTS
     System.Collections.Hashtable
 #>
@@ -45,17 +45,17 @@ function Get-ConfigurationDependencies {
     )
     
     try {
-        # Si le chemin est spécifié, lire le contenu du fichier
+        # Si le chemin est spÃ©cifiÃ©, lire le contenu du fichier
         if ($PSCmdlet.ParameterSetName -eq "Path") {
             if (-not (Test-Path -Path $Path -PathType Leaf)) {
-                Write-Error "Le fichier spécifié n'existe pas: $Path"
+                Write-Error "Le fichier spÃ©cifiÃ© n'existe pas: $Path"
                 return $null
             }
             
             $Content = Get-Content -Path $Path -Raw -ErrorAction Stop
         }
         
-        # Déterminer le format si nécessaire
+        # DÃ©terminer le format si nÃ©cessaire
         if ($Format -eq "AUTO") {
             if ($PSCmdlet.ParameterSetName -eq "Path") {
                 $Format = Get-ConfigurationFormat -Path $Path
@@ -65,7 +65,7 @@ function Get-ConfigurationDependencies {
             }
             
             if ($Format -eq "UNKNOWN") {
-                Write-Error "Impossible de déterminer le format de configuration."
+                Write-Error "Impossible de dÃ©terminer le format de configuration."
                 return $null
             }
         }
@@ -78,7 +78,7 @@ function Get-ConfigurationDependencies {
             return $null
         }
         
-        # Initialiser le résultat
+        # Initialiser le rÃ©sultat
         $result = @{
             InternalDependencies = @{}
             ExternalDependencies = @{}
@@ -87,28 +87,28 @@ function Get-ConfigurationDependencies {
             ValidationIssues = @()
         }
         
-        # Extraire les dépendances explicites si demandé
+        # Extraire les dÃ©pendances explicites si demandÃ©
         if ($DetectionMode -eq "Explicit" -or $DetectionMode -eq "All") {
             $result = Extract-ExplicitDependencies -Config $config -Result $result
         }
         
-        # Extraire les dépendances implicites si demandé
+        # Extraire les dÃ©pendances implicites si demandÃ©
         if ($DetectionMode -eq "Implicit" -or $DetectionMode -eq "All") {
             $result = Extract-ImplicitDependencies -Config $config -Result $result
         }
         
-        # Analyser les dépendances externes si spécifiées
+        # Analyser les dÃ©pendances externes si spÃ©cifiÃ©es
         if ($ExternalPaths.Count -gt 0) {
             $result = Extract-ExternalDependencies -Config $config -ExternalPaths $ExternalPaths -Result $result
         }
         
-        # Détecter les dépendances circulaires
+        # DÃ©tecter les dÃ©pendances circulaires
         $result = Detect-CircularDependencies -Dependencies $result.InternalDependencies -Result $result
         
         return $result
     }
     catch {
-        Write-Error "Erreur lors de l'extraction des dépendances de configuration: $_"
+        Write-Error "Erreur lors de l'extraction des dÃ©pendances de configuration: $_"
         return $null
     }
 }
@@ -126,7 +126,7 @@ function Extract-ExplicitDependencies {
         [string]$Prefix = ""
     )
     
-    # Si l'objet est un hashtable ou un PSCustomObject, analyser ses propriétés
+    # Si l'objet est un hashtable ou un PSCustomObject, analyser ses propriÃ©tÃ©s
     if ($Config -is [hashtable] -or $Config -is [PSCustomObject]) {
         $properties = @()
         
@@ -141,7 +141,7 @@ function Extract-ExplicitDependencies {
             $value = if ($Config -is [hashtable]) { $Config[$key] } else { $Config.$key }
             $fullKey = if ($Prefix -eq "") { $key } else { "$Prefix.$key" }
             
-            # Rechercher les dépendances explicites dans les propriétés spéciales
+            # Rechercher les dÃ©pendances explicites dans les propriÃ©tÃ©s spÃ©ciales
             if ($key -match "^depends(On|_on|_On|Requires|_requires|_Requires)$" -and ($value -is [string] -or $value -is [array])) {
                 $dependencies = @()
                 
@@ -153,7 +153,7 @@ function Extract-ExplicitDependencies {
                 }
                 
                 foreach ($dependency in $dependencies) {
-                    # Ajouter la dépendance au résultat
+                    # Ajouter la dÃ©pendance au rÃ©sultat
                     if (-not $Result.InternalDependencies.ContainsKey($Prefix)) {
                         $Result.InternalDependencies[$Prefix] = @()
                     }
@@ -163,18 +163,18 @@ function Extract-ExplicitDependencies {
                     }
                 }
             }
-            # Rechercher les références à des fichiers externes
+            # Rechercher les rÃ©fÃ©rences Ã  des fichiers externes
             elseif ($key -match "^(path|file|config|configuration)(Path|File|_path|_file)$" -and $value -is [string]) {
                 if (-not $Result.ReferencedPaths.ContainsKey($fullKey)) {
                     $Result.ReferencedPaths[$fullKey] = $value
                 }
             }
             
-            # Si la valeur est un hashtable ou un PSCustomObject, analyser récursivement
+            # Si la valeur est un hashtable ou un PSCustomObject, analyser rÃ©cursivement
             if ($value -is [hashtable] -or $value -is [PSCustomObject]) {
                 $Result = Extract-ExplicitDependencies -Config $value -Result $Result -Prefix $fullKey
             }
-            # Si la valeur est un tableau, analyser chaque élément
+            # Si la valeur est un tableau, analyser chaque Ã©lÃ©ment
             elseif ($value -is [array]) {
                 for ($i = 0; $i -lt $value.Count; $i++) {
                     $item = $value[$i]
@@ -186,7 +186,7 @@ function Extract-ExplicitDependencies {
             }
         }
     }
-    # Si l'objet est un tableau, analyser chaque élément
+    # Si l'objet est un tableau, analyser chaque Ã©lÃ©ment
     elseif ($Config -is [array]) {
         for ($i = 0; $i -lt $Config.Count; $i++) {
             $item = $Config[$i]
@@ -213,17 +213,17 @@ function Extract-ImplicitDependencies {
         [string]$Prefix = ""
     )
     
-    # Obtenir toutes les clés plates
+    # Obtenir toutes les clÃ©s plates
     $flatOptions = Extract-FlatOptions -Config $Config -IncludeValues
     
-    # Rechercher les références dans les valeurs de chaîne
+    # Rechercher les rÃ©fÃ©rences dans les valeurs de chaÃ®ne
     foreach ($key in $flatOptions.Keys) {
         $option = $flatOptions[$key]
         
         if ($option.Type -eq "String" -and $option.Value -is [string]) {
             $value = $option.Value
             
-            # Rechercher les références à d'autres clés (format ${key} ou $(key) ou %key%)
+            # Rechercher les rÃ©fÃ©rences Ã  d'autres clÃ©s (format ${key} ou $(key) ou %key%)
             $matches = [regex]::Matches($value, '\$\{([^}]+)\}|\$\(([^)]+)\)|%([^%]+)%')
             
             foreach ($match in $matches) {
@@ -231,7 +231,7 @@ function Extract-ImplicitDependencies {
                                 elseif ($match.Groups[2].Success) { $match.Groups[2].Value }
                                 else { $match.Groups[3].Value }
                 
-                # Ajouter la dépendance au résultat
+                # Ajouter la dÃ©pendance au rÃ©sultat
                 if (-not $Result.InternalDependencies.ContainsKey($key)) {
                     $Result.InternalDependencies[$key] = @()
                 }
@@ -259,22 +259,22 @@ function Extract-ExternalDependencies {
         [hashtable]$Result
     )
     
-    # Obtenir toutes les clés plates avec leurs valeurs
+    # Obtenir toutes les clÃ©s plates avec leurs valeurs
     $flatOptions = Extract-FlatOptions -Config $Config -IncludeValues
     
     # Analyser chaque fichier externe
     foreach ($externalPath in $ExternalPaths) {
         if (-not (Test-Path -Path $externalPath -PathType Leaf)) {
-            $Result.ValidationIssues += "Le fichier externe spécifié n'existe pas: $externalPath"
+            $Result.ValidationIssues += "Le fichier externe spÃ©cifiÃ© n'existe pas: $externalPath"
             continue
         }
         
         try {
-            # Déterminer le format du fichier externe
+            # DÃ©terminer le format du fichier externe
             $externalFormat = Get-ConfigurationFormat -Path $externalPath
             
             if ($externalFormat -eq "UNKNOWN") {
-                $Result.ValidationIssues += "Impossible de déterminer le format du fichier externe: $externalPath"
+                $Result.ValidationIssues += "Impossible de dÃ©terminer le format du fichier externe: $externalPath"
                 continue
             }
             
@@ -287,20 +287,20 @@ function Extract-ExternalDependencies {
                 continue
             }
             
-            # Obtenir toutes les clés plates du fichier externe
+            # Obtenir toutes les clÃ©s plates du fichier externe
             $externalFlatOptions = Extract-FlatOptions -Config $externalConfig -IncludeValues
             
-            # Rechercher les références entre les fichiers
+            # Rechercher les rÃ©fÃ©rences entre les fichiers
             foreach ($key in $flatOptions.Keys) {
                 $option = $flatOptions[$key]
                 
                 if ($option.Type -eq "String" -and $option.Value -is [string]) {
                     $value = $option.Value
                     
-                    # Rechercher les références à des clés du fichier externe
+                    # Rechercher les rÃ©fÃ©rences Ã  des clÃ©s du fichier externe
                     foreach ($externalKey in $externalFlatOptions.Keys) {
                         if ($value -match [regex]::Escape($externalKey)) {
-                            # Ajouter la dépendance externe au résultat
+                            # Ajouter la dÃ©pendance externe au rÃ©sultat
                             if (-not $Result.ExternalDependencies.ContainsKey($key)) {
                                 $Result.ExternalDependencies[$key] = @{}
                             }
@@ -335,14 +335,14 @@ function Detect-CircularDependencies {
         [hashtable]$Result
     )
     
-    # Construire le graphe de dépendances
+    # Construire le graphe de dÃ©pendances
     $graph = @{}
     
     foreach ($key in $Dependencies.Keys) {
         $graph[$key] = $Dependencies[$key]
     }
     
-    # Détecter les cycles en utilisant l'algorithme DFS
+    # DÃ©tecter les cycles en utilisant l'algorithme DFS
     $visited = @{}
     $recursionStack = @{}
     
@@ -378,17 +378,17 @@ function Find-Cycle {
         [System.Collections.ArrayList]$Path = @()
     )
     
-    # Marquer le nœud comme visité et l'ajouter à la pile de récursion
+    # Marquer le nÅ“ud comme visitÃ© et l'ajouter Ã  la pile de rÃ©cursion
     $Visited[$Node] = $true
     $RecursionStack[$Node] = $true
     
-    # Ajouter le nœud au chemin
+    # Ajouter le nÅ“ud au chemin
     $Path += $Node
     
-    # Parcourir tous les nœuds adjacents
+    # Parcourir tous les nÅ“uds adjacents
     if ($Graph.ContainsKey($Node)) {
         foreach ($adjacent in $Graph[$Node]) {
-            # Si le nœud adjacent n'a pas été visité, l'explorer
+            # Si le nÅ“ud adjacent n'a pas Ã©tÃ© visitÃ©, l'explorer
             if (-not $Visited.ContainsKey($adjacent)) {
                 $cycle = Find-Cycle -Graph $Graph -Node $adjacent -Visited $Visited -RecursionStack $RecursionStack -Path $Path
                 
@@ -396,20 +396,20 @@ function Find-Cycle {
                     return $cycle
                 }
             }
-            # Si le nœud adjacent est dans la pile de récursion, un cycle a été trouvé
+            # Si le nÅ“ud adjacent est dans la pile de rÃ©cursion, un cycle a Ã©tÃ© trouvÃ©
             elseif ($RecursionStack.ContainsKey($adjacent)) {
-                # Trouver l'index du nœud adjacent dans le chemin
+                # Trouver l'index du nÅ“ud adjacent dans le chemin
                 $index = $Path.IndexOf($adjacent)
                 
-                # Retourner le cycle (sous-chemin du nœud adjacent au nœud actuel)
+                # Retourner le cycle (sous-chemin du nÅ“ud adjacent au nÅ“ud actuel)
                 return $Path[$index..$Path.Count]
             }
         }
     }
     
-    # Retirer le nœud de la pile de récursion
+    # Retirer le nÅ“ud de la pile de rÃ©cursion
     $RecursionStack.Remove($Node)
     
-    # Aucun cycle trouvé
+    # Aucun cycle trouvÃ©
     return @()
 }

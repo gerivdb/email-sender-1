@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module d'analyse des dépendances entre modules PowerShell.
+    Module d'analyse des dÃ©pendances entre modules PowerShell.
 
 .DESCRIPTION
-    Ce module permet d'analyser les dépendances entre modules PowerShell,
-    en détectant les dépendances via les manifestes (.psd1) et l'analyse du code.
+    Ce module permet d'analyser les dÃ©pendances entre modules PowerShell,
+    en dÃ©tectant les dÃ©pendances via les manifestes (.psd1) et l'analyse du code.
 
 .NOTES
     Auteur: Dependency Management Team

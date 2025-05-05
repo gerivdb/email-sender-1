@@ -1,4 +1,4 @@
-# Script to update additional path references
+﻿# Script to update additional path references
 Write-Host "Updating additional path references..." -ForegroundColor Green
 
 # Define path mappings

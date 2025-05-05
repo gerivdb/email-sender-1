@@ -1,26 +1,26 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Script principal pour l'analyse de code avec diffÃ©rents outils.
+    Script principal pour l'analyse de code avec diffÃƒÂ©rents outils.
 .PARAMETER Path
-    Chemin du fichier ou du rÃ©pertoire Ã  analyser.
+    Chemin du fichier ou du rÃƒÂ©pertoire ÃƒÂ  analyser.
 .PARAMETER Tools
-    Outils d'analyse Ã  utiliser (PSScriptAnalyzer, ESLint, Pylint, TodoAnalyzer, All).
+    Outils d'analyse ÃƒÂ  utiliser (PSScriptAnalyzer, ESLint, Pylint, TodoAnalyzer, All).
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les rÃ©sultats.
+    Chemin du fichier de sortie pour les rÃƒÂ©sultats.
 .PARAMETER GenerateHtmlReport
-    GÃ©nÃ©rer un rapport HTML en plus du fichier JSON.
+    GÃƒÂ©nÃƒÂ©rer un rapport HTML en plus du fichier JSON.
 .PARAMETER OpenReport
-    Ouvrir le rapport HTML dans le navigateur par dÃ©faut.
+    Ouvrir le rapport HTML dans le navigateur par dÃƒÂ©faut.
 .PARAMETER Recurse
-    Analyser rÃ©cursivement les sous-rÃ©pertoires.
+    Analyser rÃƒÂ©cursivement les sous-rÃƒÂ©pertoires.
 .PARAMETER MaxThreads
-    Nombre maximum de threads Ã  utiliser pour l'analyse en parallÃ¨le (par dÃ©faut: 4).
+    Nombre maximum de threads ÃƒÂ  utiliser pour l'analyse en parallÃƒÂ¨le (par dÃƒÂ©faut: 4).
 .PARAMETER UseParallel
-    Utiliser l'analyse en parallÃ¨le pour amÃ©liorer les performances.
+    Utiliser l'analyse en parallÃƒÂ¨le pour amÃƒÂ©liorer les performances.
 .EXAMPLE
     .\Start-CodeAnalysis.ps1 -Path ".\development\scripts" -Tools All -Recurse -UseParallel -MaxThreads 8
-    Analyse tous les fichiers dans le rÃ©pertoire scripts et ses sous-rÃ©pertoires avec tous les outils disponibles en utilisant 8 threads en parallÃ¨le.
+    Analyse tous les fichiers dans le rÃƒÂ©pertoire scripts et ses sous-rÃƒÂ©pertoires avec tous les outils disponibles en utilisant 8 threads en parallÃƒÂ¨le.
 #>
 
 [CmdletBinding()]
@@ -61,15 +61,15 @@ if (Test-Path -Path $unifiedResultsFormatPath) {
     throw "Module UnifiedResultsFormat.psm1 introuvable."
 }
 
-# VÃ©rifier si le chemin existe
+# VÃƒÂ©rifier si le chemin existe
 if (-not (Test-Path -Path $Path)) {
     throw "Le chemin '$Path' n'existe pas."
 }
 
-# DÃ©terminer si le chemin est un fichier ou un rÃ©pertoire
+# DÃƒÂ©terminer si le chemin est un fichier ou un rÃƒÂ©pertoire
 $isDirectory = (Get-Item -Path $Path) -is [System.IO.DirectoryInfo]
 
-# GÃ©nÃ©rer le nom de fichier de sortie par dÃ©faut si non spÃ©cifiÃ©
+# GÃƒÂ©nÃƒÂ©rer le nom de fichier de sortie par dÃƒÂ©faut si non spÃƒÂ©cifiÃƒÂ©
 if (-not $OutputPath) {
     $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
     $baseName = if ($isDirectory) { Split-Path -Path $Path -Leaf } else { [System.IO.Path]::GetFileNameWithoutExtension($Path) }
@@ -82,14 +82,14 @@ if (-not $OutputPath) {
     $OutputPath = Join-Path -Path $outputDirectory -ChildPath "$baseName-analysis-$timestamp.json"
 }
 
-# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
+# CrÃƒÂ©er le rÃƒÂ©pertoire de sortie s'il n'existe pas
 $outputDirectory = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $outputDirectory -PathType Container)) {
     try {
         New-Item -Path $outputDirectory -ItemType Directory -Force | Out-Null
-        Write-Verbose "RÃ©pertoire de sortie '$outputDirectory' crÃ©Ã©."
+        Write-Verbose "RÃƒÂ©pertoire de sortie '$outputDirectory' crÃƒÂ©ÃƒÂ©."
     } catch {
-        Write-Error "Impossible de crÃ©er le rÃ©pertoire de sortie '$outputDirectory': $_"
+        Write-Error "Impossible de crÃƒÂ©er le rÃƒÂ©pertoire de sortie '$outputDirectory': $_"
         return
     }
 }
@@ -104,7 +104,7 @@ function Invoke-PSScriptAnalyzerAnalysis {
 
     Write-Verbose "Analyse de '$FilePath' avec PSScriptAnalyzer..."
 
-    # VÃ©rifier si PSScriptAnalyzer est disponible
+    # VÃƒÂ©rifier si PSScriptAnalyzer est disponible
     if (-not (Get-Module -Name PSScriptAnalyzer -ListAvailable)) {
         Write-Warning "PSScriptAnalyzer n'est pas disponible. Installez-le avec 'Install-Module -Name PSScriptAnalyzer'."
         return @()
@@ -116,7 +116,7 @@ function Invoke-PSScriptAnalyzerAnalysis {
     # Analyser le fichier
     $results = Invoke-ScriptAnalyzer -Path $FilePath
 
-    # Convertir les rÃ©sultats vers le format unifiÃ©
+    # Convertir les rÃƒÂ©sultats vers le format unifiÃƒÂ©
     $unifiedResults = ConvertFrom-PSScriptAnalyzerResult -Results $results
 
     return $unifiedResults
@@ -132,7 +132,7 @@ function Invoke-TodoAnalyzerAnalysis {
 
     Write-Verbose "Analyse de '$FilePath' avec TodoAnalyzer..."
 
-    # VÃ©rifier si le fichier existe
+    # VÃƒÂ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Error "Le fichier '$FilePath' n'existe pas."
         return @()
@@ -147,7 +147,7 @@ function Invoke-TodoAnalyzerAnalysis {
         $line = $content[$i]
         $lineNumber = $i + 1
 
-        # VÃ©rifier si la ligne contient un commentaire TODO
+        # VÃƒÂ©rifier si la ligne contient un commentaire TODO
         $keywords = @("TODO", "FIXME", "HACK", "NOTE", "BUG")
         foreach ($keyword in $keywords) {
             if ($line -match "(?i)(?:#|\/\/|\/\*|\*|--|<!--)\s*($keyword)(?:\s*:)?\s*(.*)") {
@@ -162,7 +162,7 @@ function Invoke-TodoAnalyzerAnalysis {
                     -Severity "Information" `
                     -Message "${todoKeyword}: $todoComment" `
                     -Category "Documentation" `
-                    -Suggestion "RÃ©solvez ce $todoKeyword ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes."
+                    -Suggestion "RÃƒÂ©solvez ce $todoKeyword ou convertissez-le en tÃƒÂ¢che dans le systÃƒÂ¨me de suivi des problÃƒÂ¨mes."
 
                 $results += $result
             }
@@ -182,7 +182,7 @@ function Invoke-ESLintAnalysis {
 
     Write-Verbose "Analyse de '$FilePath' avec ESLint..."
 
-    # VÃ©rifier si ESLint est disponible
+    # VÃƒÂ©rifier si ESLint est disponible
     $eslint = Get-Command -Name eslint -ErrorAction SilentlyContinue
     if ($null -eq $eslint) {
         $eslint = Get-Command -Name "node_modules\.bin\eslint.cmd" -ErrorAction SilentlyContinue
@@ -193,28 +193,28 @@ function Invoke-ESLintAnalysis {
         return @()
     }
 
-    # ExÃ©cuter ESLint
+    # ExÃƒÂ©cuter ESLint
     try {
         $output = & $eslint.Source --format json $FilePath 2>&1
 
-        # VÃ©rifier si l'exÃ©cution a rÃ©ussi
+        # VÃƒÂ©rifier si l'exÃƒÂ©cution a rÃƒÂ©ussi
         if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 1) {
-            # ESLint retourne 1 s'il trouve des problÃ¨mes, ce qui est normal
-            Write-Warning "Erreur lors de l'exÃ©cution d'ESLint (code $LASTEXITCODE): $output"
+            # ESLint retourne 1 s'il trouve des problÃƒÂ¨mes, ce qui est normal
+            Write-Warning "Erreur lors de l'exÃƒÂ©cution d'ESLint (code $LASTEXITCODE): $output"
             return @()
         }
 
         # Convertir la sortie JSON en objet PowerShell
         $results = $output | ConvertFrom-Json
 
-        # Convertir les rÃ©sultats vers le format unifiÃ©
+        # Convertir les rÃƒÂ©sultats vers le format unifiÃƒÂ©
         $unifiedResults = @()
 
         foreach ($file in $results) {
             $filePath = $file.filePath
 
             foreach ($message in $file.messages) {
-                # Mapper la sÃ©vÃ©ritÃ© d'ESLint vers notre format unifiÃ©
+                # Mapper la sÃƒÂ©vÃƒÂ©ritÃƒÂ© d'ESLint vers notre format unifiÃƒÂ©
                 $severity = switch ($message.severity) {
                     2 { "Error" }
                     1 { "Warning" }
@@ -252,7 +252,7 @@ function Invoke-PylintAnalysis {
 
     Write-Verbose "Analyse de '$FilePath' avec Pylint..."
 
-    # VÃ©rifier si Pylint est disponible
+    # VÃƒÂ©rifier si Pylint est disponible
     $pylint = Get-Command -Name pylint -ErrorAction SilentlyContinue
     if ($null -eq $pylint) {
         $pylint = Get-Command -Name "python" -ErrorAction SilentlyContinue
@@ -273,25 +273,25 @@ function Invoke-PylintAnalysis {
         }
     }
 
-    # ExÃ©cuter Pylint
+    # ExÃƒÂ©cuter Pylint
     try {
         $output = & pylint --output-format=text $FilePath 2>&1
 
-        # Pylint retourne diffÃ©rents codes selon le nombre d'erreurs trouvÃ©es
+        # Pylint retourne diffÃƒÂ©rents codes selon le nombre d'erreurs trouvÃƒÂ©es
         # 0 = pas d'erreur, 1-15 = erreurs, 16 = erreur fatale, 32 = erreur d'utilisation
         if ($LASTEXITCODE -gt 15) {
-            Write-Warning "Erreur lors de l'exÃ©cution de Pylint (code $LASTEXITCODE): $output"
+            Write-Warning "Erreur lors de l'exÃƒÂ©cution de Pylint (code $LASTEXITCODE): $output"
             return @()
         }
 
         # Filtrer les lignes de sortie pour ne garder que les messages d'erreur
         $results = $output | Where-Object { $_ -match '.*?:\d+:\d+: \[.*?\]' }
 
-        # Convertir les rÃ©sultats vers le format unifiÃ©
+        # Convertir les rÃƒÂ©sultats vers le format unifiÃƒÂ©
         $unifiedResults = @()
 
         foreach ($result in $results) {
-            # Extraire les informations du rÃ©sultat Pylint
+            # Extraire les informations du rÃƒÂ©sultat Pylint
             # Format typique: "file.py:line:column: [C0111] Missing docstring (missing-docstring)"
             if ($result -match '(.*?):(\d+):(\d+): \[(.*?)\] (.*?) \((.*?)\)') {
                 $filePath = $Matches[1]
@@ -301,7 +301,7 @@ function Invoke-PylintAnalysis {
                 $message = $Matches[5]
                 $category = $Matches[6]
 
-                # Mapper la sÃ©vÃ©ritÃ© de Pylint vers notre format unifiÃ©
+                # Mapper la sÃƒÂ©vÃƒÂ©ritÃƒÂ© de Pylint vers notre format unifiÃƒÂ©
                 $severity = switch ($ruleId[0]) {
                     "E" { "Error" }
                     "F" { "Error" }
@@ -332,7 +332,7 @@ function Invoke-PylintAnalysis {
     }
 }
 
-# Fonction pour gÃ©nÃ©rer un rapport HTML
+# Fonction pour gÃƒÂ©nÃƒÂ©rer un rapport HTML
 function New-HtmlReport {
     [CmdletBinding()]
     param (
@@ -343,7 +343,7 @@ function New-HtmlReport {
         [string]$OutputPath
     )
 
-    # CrÃ©er le contenu HTML
+    # CrÃƒÂ©er le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -428,7 +428,7 @@ function New-HtmlReport {
     <h1>Rapport d'analyse</h1>
 
     <div class="summary">
-        <h2>RÃ©sumÃ©</h2>
+        <h2>RÃƒÂ©sumÃƒÂ©</h2>
         <div class="summary-item error-count">
             <strong>Erreurs:</strong> <span id="error-count">$($Results | Where-Object { $_.Severity -eq "Error" } | Measure-Object).Count</span>
         </div>
@@ -446,7 +446,7 @@ function New-HtmlReport {
     <div class="filters">
         <h2>Filtres</h2>
         <div class="filter-group">
-            <label>SÃ©vÃ©ritÃ©:</label>
+            <label>SÃƒÂ©vÃƒÂ©ritÃƒÂ©:</label>
             <input type="checkbox" id="filter-error" checked> Erreurs
             <input type="checkbox" id="filter-warning" checked> Avertissements
             <input type="checkbox" id="filter-info" checked> Informations
@@ -464,7 +464,7 @@ $(
             </select>
         </div>
         <div class="filter-group">
-            <label>CatÃ©gorie:</label>
+            <label>CatÃƒÂ©gorie:</label>
             <select id="filter-category">
                 <option value="all">Toutes</option>
 $(
@@ -477,17 +477,17 @@ $(
         </div>
     </div>
 
-    <h2>RÃ©sultats dÃ©taillÃ©s</h2>
+    <h2>RÃƒÂ©sultats dÃƒÂ©taillÃƒÂ©s</h2>
     <table id="results-table">
         <thead>
             <tr>
                 <th>Fichier</th>
                 <th>Ligne</th>
                 <th>Colonne</th>
-                <th>SÃ©vÃ©ritÃ©</th>
+                <th>SÃƒÂ©vÃƒÂ©ritÃƒÂ©</th>
                 <th>Outil</th>
-                <th>RÃ¨gle</th>
-                <th>CatÃ©gorie</th>
+                <th>RÃƒÂ¨gle</th>
+                <th>CatÃƒÂ©gorie</th>
                 <th>Message</th>
             </tr>
         </thead>
@@ -511,7 +511,7 @@ $(
     </table>
 
     <script>
-        // Filtrage des rÃ©sultats
+        // Filtrage des rÃƒÂ©sultats
         function applyFilters() {
             const showError = document.getElementById('filter-error').checked;
             const showWarning = document.getElementById('filter-warning').checked;
@@ -555,7 +555,7 @@ $(
             document.getElementById('total-count').textContent = visibleCount;
         }
 
-        // Ajouter les Ã©couteurs d'Ã©vÃ©nements
+        // Ajouter les ÃƒÂ©couteurs d'ÃƒÂ©vÃƒÂ©nements
         document.getElementById('filter-error').addEventListener('change', applyFilters);
         document.getElementById('filter-warning').addEventListener('change', applyFilters);
         document.getElementById('filter-info').addEventListener('change', applyFilters);
@@ -569,13 +569,13 @@ $(
 </html>
 "@
 
-    # Ã‰crire le fichier HTML avec l'encodage UTF-8 avec BOM pour assurer la compatibilitÃ© avec les navigateurs
+    # Ãƒâ€°crire le fichier HTML avec l'encodage UTF-8 avec BOM pour assurer la compatibilitÃƒÂ© avec les navigateurs
     [System.IO.File]::WriteAllText($OutputPath, $htmlContent, [System.Text.Encoding]::UTF8)
 
     return $true
 }
 
-# Fonction pour analyser un fichier avec tous les outils spÃ©cifiÃ©s
+# Fonction pour analyser un fichier avec tous les outils spÃƒÂ©cifiÃƒÂ©s
 function Invoke-FileAnalysis {
     [CmdletBinding()]
     param (
@@ -588,14 +588,14 @@ function Invoke-FileAnalysis {
 
     $results = @()
 
-    # DÃ©terminer les outils Ã  utiliser
+    # DÃƒÂ©terminer les outils ÃƒÂ  utiliser
     $useAll = $Tools -contains "All"
     $usePSScriptAnalyzer = $useAll -or ($Tools -contains "PSScriptAnalyzer")
     $useESLint = $useAll -or ($Tools -contains "ESLint")
     $usePylint = $useAll -or ($Tools -contains "Pylint")
     $useTodoAnalyzer = $useAll -or ($Tools -contains "TodoAnalyzer")
 
-    # DÃ©terminer le type de fichier
+    # DÃƒÂ©terminer le type de fichier
     $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
 
     # Analyser avec PSScriptAnalyzer si applicable
@@ -616,7 +616,7 @@ function Invoke-FileAnalysis {
         $results += $pylintResults
     }
 
-    # Analyser avec TodoAnalyzer (applicable Ã  tous les types de fichiers)
+    # Analyser avec TodoAnalyzer (applicable ÃƒÂ  tous les types de fichiers)
     if ($useTodoAnalyzer) {
         $todoResults = Invoke-TodoAnalyzerAnalysis -FilePath $FilePath
         $results += $todoResults
@@ -625,7 +625,7 @@ function Invoke-FileAnalysis {
     return $results
 }
 
-# Fonction pour analyser un rÃ©pertoire avec tous les outils spÃ©cifiÃ©s
+# Fonction pour analyser un rÃƒÂ©pertoire avec tous les outils spÃƒÂ©cifiÃƒÂ©s
 function Invoke-DirectoryAnalysis {
     [CmdletBinding()]
     param (
@@ -647,7 +647,7 @@ function Invoke-DirectoryAnalysis {
 
     $results = @()
 
-    # DÃ©terminer les extensions Ã  rechercher en fonction des outils
+    # DÃƒÂ©terminer les extensions ÃƒÂ  rechercher en fonction des outils
     $extensions = @()
 
     if ($Tools -contains "All" -or $Tools -contains "PSScriptAnalyzer") {
@@ -673,7 +673,7 @@ function Invoke-DirectoryAnalysis {
     # Construire le filtre pour Get-ChildItem
     $filter = $extensions | ForEach-Object { "*$_" }
 
-    # RÃ©cupÃ©rer tous les fichiers correspondant aux extensions
+    # RÃƒÂ©cupÃƒÂ©rer tous les fichiers correspondant aux extensions
     $getChildItemParams = @{
         Path    = $DirectoryPath
         Include = $filter
@@ -686,14 +686,14 @@ function Invoke-DirectoryAnalysis {
 
     $files = Get-ChildItem @getChildItemParams
 
-    Write-Host "Nombre de fichiers Ã  analyser: $($files.Count)" -ForegroundColor Yellow
+    Write-Host "Nombre de fichiers ÃƒÂ  analyser: $($files.Count)" -ForegroundColor Yellow
 
-    # Analyser les fichiers en parallÃ¨le ou en sÃ©quentiel
+    # Analyser les fichiers en parallÃƒÂ¨le ou en sÃƒÂ©quentiel
     if ($UseParallel) {
-        Write-Host "Analyse en parallÃ¨le avec $MaxThreads threads..." -ForegroundColor Cyan
+        Write-Host "Analyse en parallÃƒÂ¨le avec $MaxThreads threads..." -ForegroundColor Cyan
         $results = Invoke-ParallelAnalysis -Files $files -Tools $Tools -MaxThreads $MaxThreads
     } else {
-        # Analyser chaque fichier sÃ©quentiellement
+        # Analyser chaque fichier sÃƒÂ©quentiellement
         foreach ($file in $files) {
             Write-Host "Analyse de '$($file.FullName)'..." -ForegroundColor Cyan
             $fileResults = Invoke-FileAnalysis -FilePath $file.FullName -Tools $Tools
@@ -704,7 +704,7 @@ function Invoke-DirectoryAnalysis {
     return $results
 }
 
-# Fonction pour analyser les fichiers en parallÃ¨le
+# Fonction pour analyser les fichiers en parallÃƒÂ¨le
 function Invoke-ParallelAnalysis {
     [CmdletBinding()]
     param (
@@ -721,7 +721,7 @@ function Invoke-ParallelAnalysis {
     $results = @()
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-    # DÃ©terminer si nous utilisons PowerShell 7+ (qui a ForEach-Object -Parallel)
+    # DÃƒÂ©terminer si nous utilisons PowerShell 7+ (qui a ForEach-Object -Parallel)
     $isPowerShell7 = $PSVersionTable.PSVersion.Major -ge 7
 
     if ($isPowerShell7) {
@@ -740,30 +740,30 @@ function Invoke-ParallelAnalysis {
             Write-Host "Analyse de '$($file.FullName)'..." -ForegroundColor Cyan
 
             # Appeler la fonction Invoke-FileAnalysis
-            # Comme elle n'est pas disponible dans ce runspace, nous devons la dÃ©finir Ã  nouveau
+            # Comme elle n'est pas disponible dans ce runspace, nous devons la dÃƒÂ©finir ÃƒÂ  nouveau
             function Invoke-FileAnalysis {
                 param (
                     [string]$FilePath,
                     [string[]]$Tools
                 )
 
-                # Appeler les fonctions d'analyse appropriÃ©es
-                # Cette partie est simplifiÃ©e pour l'exemple
+                # Appeler les fonctions d'analyse appropriÃƒÂ©es
+                # Cette partie est simplifiÃƒÂ©e pour l'exemple
                 $results = @()
 
-                # DÃ©terminer les outils Ã  utiliser
+                # DÃƒÂ©terminer les outils ÃƒÂ  utiliser
                 $useAll = $Tools -contains "All"
                 $usePSScriptAnalyzer = $useAll -or ($Tools -contains "PSScriptAnalyzer")
                 $useTodoAnalyzer = $useAll -or ($Tools -contains "TodoAnalyzer")
 
                 # Analyser avec PSScriptAnalyzer si applicable
                 if ($usePSScriptAnalyzer -and $FilePath -match "\.(ps1|psm1|psd1)$") {
-                    # VÃ©rifier si PSScriptAnalyzer est disponible
+                    # VÃƒÂ©rifier si PSScriptAnalyzer est disponible
                     if (Get-Module -Name PSScriptAnalyzer -ListAvailable) {
                         Import-Module -Name PSScriptAnalyzer -Force
                         $psaResults = Invoke-ScriptAnalyzer -Path $FilePath
 
-                        # Convertir les rÃ©sultats vers le format unifiÃ©
+                        # Convertir les rÃƒÂ©sultats vers le format unifiÃƒÂ©
                         foreach ($result in $psaResults) {
                             $unifiedResult = New-UnifiedAnalysisResult -ToolName "PSScriptAnalyzer" `
                                 -FilePath $result.ScriptPath `
@@ -790,7 +790,7 @@ function Invoke-ParallelAnalysis {
                         $line = $content[$i]
                         $lineNumber = $i + 1
 
-                        # VÃ©rifier si la ligne contient un commentaire TODO
+                        # VÃƒÂ©rifier si la ligne contient un commentaire TODO
                         $keywords = @("TODO", "FIXME", "HACK", "NOTE", "BUG")
                         foreach ($keyword in $keywords) {
                             if ($line -match "(?i)(?:#|\/\/|\/\*|\*|--|<!--)\s*($keyword)(?:\s*:)?\s*(.*)") {
@@ -805,7 +805,7 @@ function Invoke-ParallelAnalysis {
                                     -Severity "Information" `
                                     -Message "${todoKeyword}: $todoComment" `
                                     -Category "Documentation" `
-                                    -Suggestion "RÃ©solvez ce $todoKeyword ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes."
+                                    -Suggestion "RÃƒÂ©solvez ce $todoKeyword ou convertissez-le en tÃƒÂ¢che dans le systÃƒÂ¨me de suivi des problÃƒÂ¨mes."
 
                                 $results += $result
                             }
@@ -823,15 +823,15 @@ function Invoke-ParallelAnalysis {
         # Utiliser des Runspace Pools pour PowerShell 5.1
         Write-Verbose "Utilisation de Runspace Pools (PowerShell 5.1)"
 
-        # CrÃ©er un pool de runspaces
+        # CrÃƒÂ©er un pool de runspaces
         $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
         $pool = [System.Management.Automation.Runspaces.RunspaceFactory]::CreateRunspacePool(1, $MaxThreads, $sessionState, $Host)
         $pool.Open()
 
-        # CrÃ©er un tableau pour stocker les runspaces
+        # CrÃƒÂ©er un tableau pour stocker les runspaces
         $runspaces = @()
 
-        # CrÃ©er un runspace pour chaque fichier
+        # CrÃƒÂ©er un runspace pour chaque fichier
         foreach ($file in $Files) {
             $scriptBlock = {
                 param($filePath, $tools, $modulePath)
@@ -842,19 +842,19 @@ function Invoke-ParallelAnalysis {
                 # Analyser le fichier
                 $fileResults = @()
 
-                # DÃ©terminer les outils Ã  utiliser
+                # DÃƒÂ©terminer les outils ÃƒÂ  utiliser
                 $useAll = $tools -contains "All"
                 $usePSScriptAnalyzer = $useAll -or ($tools -contains "PSScriptAnalyzer")
                 $useTodoAnalyzer = $useAll -or ($tools -contains "TodoAnalyzer")
 
                 # Analyser avec PSScriptAnalyzer si applicable
                 if ($usePSScriptAnalyzer -and $filePath -match "\.(ps1|psm1|psd1)$") {
-                    # VÃ©rifier si PSScriptAnalyzer est disponible
+                    # VÃƒÂ©rifier si PSScriptAnalyzer est disponible
                     if (Get-Module -Name PSScriptAnalyzer -ListAvailable) {
                         Import-Module -Name PSScriptAnalyzer -Force
                         $psaResults = Invoke-ScriptAnalyzer -Path $filePath
 
-                        # Convertir les rÃ©sultats vers le format unifiÃ©
+                        # Convertir les rÃƒÂ©sultats vers le format unifiÃƒÂ©
                         foreach ($result in $psaResults) {
                             $unifiedResult = New-UnifiedAnalysisResult -ToolName "PSScriptAnalyzer" `
                                 -FilePath $result.ScriptPath `
@@ -881,7 +881,7 @@ function Invoke-ParallelAnalysis {
                         $line = $content[$i]
                         $lineNumber = $i + 1
 
-                        # VÃ©rifier si la ligne contient un commentaire TODO
+                        # VÃƒÂ©rifier si la ligne contient un commentaire TODO
                         $keywords = @("TODO", "FIXME", "HACK", "NOTE", "BUG")
                         foreach ($keyword in $keywords) {
                             if ($line -match "(?i)(?:#|\/\/|\/\*|\*|--|<!--)\s*($keyword)(?:\s*:)?\s*(.*)") {
@@ -896,7 +896,7 @@ function Invoke-ParallelAnalysis {
                                     -Severity "Information" `
                                     -Message "${todoKeyword}: $todoComment" `
                                     -Category "Documentation" `
-                                    -Suggestion "RÃ©solvez ce $todoKeyword ou convertissez-le en tÃ¢che dans le systÃ¨me de suivi des problÃ¨mes."
+                                    -Suggestion "RÃƒÂ©solvez ce $todoKeyword ou convertissez-le en tÃƒÂ¢che dans le systÃƒÂ¨me de suivi des problÃƒÂ¨mes."
 
                                 $fileResults += $result
                             }
@@ -910,13 +910,13 @@ function Invoke-ParallelAnalysis {
             $powershell = [System.Management.Automation.PowerShell]::Create()
             $powershell.RunspacePool = $pool
 
-            # Ajouter le script et les paramÃ¨tres
+            # Ajouter le script et les paramÃƒÂ¨tres
             [void]$powershell.AddScript($scriptBlock)
             [void]$powershell.AddArgument($file.FullName)
             [void]$powershell.AddArgument($Tools)
             [void]$powershell.AddArgument($unifiedResultsFormatPath)
 
-            # DÃ©marrer l'exÃ©cution asynchrone
+            # DÃƒÂ©marrer l'exÃƒÂ©cution asynchrone
             $handle = $powershell.BeginInvoke()
 
             # Ajouter le runspace au tableau
@@ -927,25 +927,25 @@ function Invoke-ParallelAnalysis {
             }
         }
 
-        # Attendre que tous les runspaces soient terminÃ©s et rÃ©cupÃ©rer les rÃ©sultats
+        # Attendre que tous les runspaces soient terminÃƒÂ©s et rÃƒÂ©cupÃƒÂ©rer les rÃƒÂ©sultats
         $completedCount = 0
         $totalCount = $runspaces.Count
 
         while ($runspaces.Where({ -not $_.Handle.IsCompleted }).Count -gt 0) {
-            # Mettre Ã  jour le compteur de progression
+            # Mettre ÃƒÂ  jour le compteur de progression
             $newCompletedCount = $runspaces.Where({ $_.Handle.IsCompleted }).Count
             if ($newCompletedCount -gt $completedCount) {
                 $completedCount = $newCompletedCount
-                Write-Progress -Activity "Analyse des fichiers" -Status "$completedCount / $totalCount fichiers analysÃ©s" -PercentComplete (($completedCount / $totalCount) * 100)
+                Write-Progress -Activity "Analyse des fichiers" -Status "$completedCount / $totalCount fichiers analysÃƒÂ©s" -PercentComplete (($completedCount / $totalCount) * 100)
             }
 
-            # Attendre un peu avant de vÃ©rifier Ã  nouveau
+            # Attendre un peu avant de vÃƒÂ©rifier ÃƒÂ  nouveau
             Start-Sleep -Milliseconds 100
         }
 
-        Write-Progress -Activity "Analyse des fichiers" -Status "$totalCount / $totalCount fichiers analysÃ©s" -PercentComplete 100 -Completed
+        Write-Progress -Activity "Analyse des fichiers" -Status "$totalCount / $totalCount fichiers analysÃƒÂ©s" -PercentComplete 100 -Completed
 
-        # RÃ©cupÃ©rer les rÃ©sultats
+        # RÃƒÂ©cupÃƒÂ©rer les rÃƒÂ©sultats
         foreach ($runspace in $runspaces) {
             $fileResults = $runspace.PowerShell.EndInvoke($runspace.Handle)
             $results += $fileResults
@@ -958,12 +958,12 @@ function Invoke-ParallelAnalysis {
     }
 
     $stopwatch.Stop()
-    Write-Host "Analyse terminÃ©e en $($stopwatch.Elapsed.TotalSeconds) secondes." -ForegroundColor Green
+    Write-Host "Analyse terminÃƒÂ©e en $($stopwatch.Elapsed.TotalSeconds) secondes." -ForegroundColor Green
 
     return $results
 }
 
-# Analyser le chemin spÃ©cifiÃ©
+# Analyser le chemin spÃƒÂ©cifiÃƒÂ©
 $allResults = @()
 
 if ($isDirectory) {
@@ -972,38 +972,38 @@ if ($isDirectory) {
     $allResults = Invoke-FileAnalysis -FilePath $Path -Tools $Tools
 }
 
-# Enregistrer les rÃ©sultats
+# Enregistrer les rÃƒÂ©sultats
 $allResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding utf8 -Force
-Write-Host "RÃ©sultats enregistrÃ©s dans '$OutputPath'." -ForegroundColor Green
+Write-Host "RÃƒÂ©sultats enregistrÃƒÂ©s dans '$OutputPath'." -ForegroundColor Green
 
-# GÃ©nÃ©rer un rapport HTML si demandÃ©
+# GÃƒÂ©nÃƒÂ©rer un rapport HTML si demandÃƒÂ©
 if ($GenerateHtmlReport) {
     $htmlPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
     New-HtmlReport -Results $allResults -OutputPath $htmlPath
-    Write-Host "Rapport HTML gÃ©nÃ©rÃ© dans '$htmlPath'." -ForegroundColor Green
+    Write-Host "Rapport HTML gÃƒÂ©nÃƒÂ©rÃƒÂ© dans '$htmlPath'." -ForegroundColor Green
 
-    # Ouvrir le rapport HTML dans le navigateur par dÃ©faut si demandÃ©
+    # Ouvrir le rapport HTML dans le navigateur par dÃƒÂ©faut si demandÃƒÂ©
     if ($OpenReport) {
         Start-Process $htmlPath
     }
 }
 
-# Afficher un rÃ©sumÃ© des rÃ©sultats
+# Afficher un rÃƒÂ©sumÃƒÂ© des rÃƒÂ©sultats
 $totalIssues = $allResults.Count
 $errorCount = ($allResults | Where-Object { $_.Severity -eq "Error" }).Count
 $warningCount = ($allResults | Where-Object { $_.Severity -eq "Warning" }).Count
 $infoCount = ($allResults | Where-Object { $_.Severity -eq "Information" }).Count
 
-Write-Host "`nRÃ©sumÃ© des rÃ©sultats:" -ForegroundColor Cyan
+Write-Host "`nRÃƒÂ©sumÃƒÂ© des rÃƒÂ©sultats:" -ForegroundColor Cyan
 Write-Host "  - Erreurs: $errorCount" -ForegroundColor $(if ($errorCount -gt 0) { "Red" } else { "Green" })
 Write-Host "  - Avertissements: $warningCount" -ForegroundColor $(if ($warningCount -gt 0) { "Yellow" } else { "Green" })
 Write-Host "  - Informations: $infoCount" -ForegroundColor "Blue"
 Write-Host "  - Total: $totalIssues" -ForegroundColor "White"
 
-# Afficher la rÃ©partition par outil
+# Afficher la rÃƒÂ©partition par outil
 $toolCounts = $allResults | Group-Object -Property ToolName | Select-Object Name, Count
 
-Write-Host "`nRÃ©partition par outil:" -ForegroundColor Cyan
+Write-Host "`nRÃƒÂ©partition par outil:" -ForegroundColor Cyan
 foreach ($toolCount in $toolCounts) {
     Write-Host "  - $($toolCount.Name): $($toolCount.Count)" -ForegroundColor "White"
 }

@@ -1,13 +1,13 @@
-# Test de la configuration du navigateur
+﻿# Test de la configuration du navigateur
 $browserConfig = Get-Content -Path ".augment/browser-config.json" | ConvertFrom-Json
 
 # Afficher la configuration actuelle
 Write-Host "Configuration du navigateur :" -ForegroundColor Cyan
 Write-Host "- Type: $($browserConfig.browser.type)"
-Write-Host "- Profil configuré: $($browserConfig.browser.profile)"
+Write-Host "- Profil configurÃ©: $($browserConfig.browser.profile)"
 Write-Host "- Dossier User Data: $($browserConfig.browser.userDataDir)"
 
-# Vérifier les profils disponibles
+# VÃ©rifier les profils disponibles
 $userDataDir = $browserConfig.browser.userDataDir
 if (Test-Path $userDataDir) {
     Write-Host "`nProfils Chrome disponibles :" -ForegroundColor Cyan
@@ -23,15 +23,15 @@ if (Test-Path $userDataDir) {
     }
 }
 
-# Vérifier le profil actuellement utilisé
+# VÃ©rifier le profil actuellement utilisÃ©
 $userProfilePath = Join-Path $browserConfig.browser.userDataDir "Profile 2"
 if (Test-Path $userProfilePath) {
-    Write-Host "`nProfil actuellement utilisé :" -ForegroundColor Green
+    Write-Host "`nProfil actuellement utilisÃ© :" -ForegroundColor Green
     Write-Host "- Path: $userProfilePath"
 } else {
-    Write-Host "`nProfil 'Profile 2' non trouvé!" -ForegroundColor Red
+    Write-Host "`nProfil 'Profile 2' non trouvÃ©!" -ForegroundColor Red
 }
 
-Write-Host "Configuration du navigateur validée"
+Write-Host "Configuration du navigateur validÃ©e"
 
 

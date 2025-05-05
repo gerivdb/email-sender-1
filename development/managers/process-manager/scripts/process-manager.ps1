@@ -1,38 +1,38 @@
-<#
+﻿<#
 .SYNOPSIS
-    Process Manager - Gestionnaire central des processus et gestionnaires du système.
+    Process Manager - Gestionnaire central des processus et gestionnaires du systÃ¨me.
 
 .DESCRIPTION
-    Le Process Manager est un composant central qui coordonne et gère tous les gestionnaires
-    et processus du système. Il fournit des fonctionnalités de découverte, d'enregistrement,
+    Le Process Manager est un composant central qui coordonne et gÃ¨re tous les gestionnaires
+    et processus du systÃ¨me. Il fournit des fonctionnalitÃ©s de dÃ©couverte, d'enregistrement,
     de configuration et de journalisation pour tous les gestionnaires.
 
 .PARAMETER Command
-    La commande à exécuter. Les commandes disponibles sont :
+    La commande Ã  exÃ©cuter. Les commandes disponibles sont :
     - Register : Enregistre un nouveau gestionnaire
-    - Discover : Découvre automatiquement les gestionnaires disponibles
-    - List : Liste tous les gestionnaires enregistrés
-    - Run : Exécute une commande sur un gestionnaire spécifique
-    - Status : Affiche l'état d'un gestionnaire spécifique
-    - Configure : Configure un gestionnaire spécifique
+    - Discover : DÃ©couvre automatiquement les gestionnaires disponibles
+    - List : Liste tous les gestionnaires enregistrÃ©s
+    - Run : ExÃ©cute une commande sur un gestionnaire spÃ©cifique
+    - Status : Affiche l'Ã©tat d'un gestionnaire spÃ©cifique
+    - Configure : Configure un gestionnaire spÃ©cifique
 
 .PARAMETER ManagerName
-    Le nom du gestionnaire sur lequel exécuter la commande.
+    Le nom du gestionnaire sur lequel exÃ©cuter la commande.
 
 .PARAMETER ManagerPath
-    Le chemin vers le script du gestionnaire à enregistrer.
+    Le chemin vers le script du gestionnaire Ã  enregistrer.
 
 .PARAMETER ManagerCommand
-    La commande à exécuter sur le gestionnaire spécifié.
+    La commande Ã  exÃ©cuter sur le gestionnaire spÃ©cifiÃ©.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration à utiliser.
+    Le chemin vers le fichier de configuration Ã  utiliser.
 
 .PARAMETER LogLevel
-    Le niveau de journalisation à utiliser (Debug, Info, Warning, Error).
+    Le niveau de journalisation Ã  utiliser (Debug, Info, Warning, Error).
 
 .PARAMETER Force
-    Force l'exécution de la commande sans demander de confirmation.
+    Force l'exÃ©cution de la commande sans demander de confirmation.
 
 .EXAMPLE
     .\process-manager.ps1 -Command Register -ManagerName "ModeManager" -ManagerPath "development\managers\mode-manager\scripts\mode-manager.ps1"
@@ -40,20 +40,20 @@
 
 .EXAMPLE
     .\process-manager.ps1 -Command Discover
-    Découvre automatiquement tous les gestionnaires disponibles.
+    DÃ©couvre automatiquement tous les gestionnaires disponibles.
 
 .EXAMPLE
     .\process-manager.ps1 -Command List
-    Liste tous les gestionnaires enregistrés.
+    Liste tous les gestionnaires enregistrÃ©s.
 
 .EXAMPLE
     .\process-manager.ps1 -Command Run -ManagerName "ModeManager" -ManagerCommand "SetMode" -Mode "CHECK"
-    Exécute la commande SetMode sur le gestionnaire de modes.
+    ExÃ©cute la commande SetMode sur le gestionnaire de modes.
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2025-05-02
+    Date de crÃ©ation: 2025-05-02
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -96,12 +96,12 @@ param (
     [string[]]$SearchPaths
 )
 
-# Importer les fonctions nécessaires
+# Importer les fonctions nÃ©cessaires
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "modules"
 $configPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptPath)) -ChildPath "config"
 
-# Créer les chemins s'ils n'existent pas
+# CrÃ©er les chemins s'ils n'existent pas
 if (-not (Test-Path -Path $modulePath)) {
     New-Item -Path $modulePath -ItemType Directory -Force | Out-Null
 }
@@ -114,20 +114,20 @@ if (-not (Test-Path -Path $configPath)) {
 try {
     Import-Module -Name "ProcessManager" -ErrorAction Stop
     $processManagerModuleAvailable = $true
-    Write-Host "Module ProcessManager importé avec succès." -ForegroundColor Green
+    Write-Host "Module ProcessManager importÃ© avec succÃ¨s." -ForegroundColor Green
 } catch {
     $processManagerModuleAvailable = $false
-    Write-Host "Module ProcessManager non disponible. Utilisation des fonctions intégrées." -ForegroundColor Yellow
-    Write-Host "Pour installer le module, exécutez le script integrate-modules.ps1." -ForegroundColor Yellow
+    Write-Host "Module ProcessManager non disponible. Utilisation des fonctions intÃ©grÃ©es." -ForegroundColor Yellow
+    Write-Host "Pour installer le module, exÃ©cutez le script integrate-modules.ps1." -ForegroundColor Yellow
 }
 
-# Définir le chemin du fichier de configuration par défaut
+# DÃ©finir le chemin du fichier de configuration par dÃ©faut
 $defaultConfigPath = Join-Path -Path $configPath -ChildPath "process-manager.config.json"
 
-# Utiliser le chemin de configuration spécifié ou le chemin par défaut
+# Utiliser le chemin de configuration spÃ©cifiÃ© ou le chemin par dÃ©faut
 $configFilePath = if ($ConfigPath) { $ConfigPath } else { $defaultConfigPath }
 
-# Créer le fichier de configuration s'il n'existe pas
+# CrÃ©er le fichier de configuration s'il n'existe pas
 if (-not (Test-Path -Path $configFilePath)) {
     $defaultConfig = @{
         Enabled  = $true
@@ -136,23 +136,23 @@ if (-not (Test-Path -Path $configFilePath)) {
         Managers = @{}
     }
     $defaultConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $configFilePath -Encoding UTF8
-    Write-Host "Fichier de configuration créé : $configFilePath" -ForegroundColor Green
+    Write-Host "Fichier de configuration crÃ©Ã© : $configFilePath" -ForegroundColor Green
 }
 
 # Charger la configuration
 try {
     $config = Get-Content -Path $configFilePath -Raw | ConvertFrom-Json
-    Write-Host "Configuration chargée depuis : $configFilePath" -ForegroundColor Green
+    Write-Host "Configuration chargÃ©e depuis : $configFilePath" -ForegroundColor Green
 } catch {
     Write-Error "Erreur lors du chargement de la configuration : $_"
     exit 1
 }
 
-# Créer le répertoire de journalisation s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de journalisation s'il n'existe pas
 $logPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))) -ChildPath $config.LogPath
 if (-not (Test-Path -Path $logPath)) {
     New-Item -Path $logPath -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire de journalisation créé : $logPath" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de journalisation crÃ©Ã© : $logPath" -ForegroundColor Green
 }
 
 # Fonction de journalisation
@@ -167,7 +167,7 @@ function Write-Log {
         [string]$Level = "Info"
     )
 
-    # Définir les niveaux de journalisation
+    # DÃ©finir les niveaux de journalisation
     $logLevels = @{
         Debug   = 0
         Info    = 1
@@ -175,12 +175,12 @@ function Write-Log {
         Error   = 3
     }
 
-    # Vérifier si le niveau de journalisation est suffisant
+    # VÃ©rifier si le niveau de journalisation est suffisant
     if ($logLevels[$Level] -ge $logLevels[$config.LogLevel]) {
         $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         $logMessage = "[$timestamp] [$Level] $Message"
 
-        # Définir la couleur en fonction du niveau
+        # DÃ©finir la couleur en fonction du niveau
         $color = switch ($Level) {
             "Debug" { "Gray" }
             "Info" { "White" }
@@ -192,7 +192,7 @@ function Write-Log {
         # Afficher le message dans la console
         Write-Host $logMessage -ForegroundColor $color
 
-        # Écrire le message dans le fichier de journal
+        # Ã‰crire le message dans le fichier de journal
         $logFile = Join-Path -Path $logPath -ChildPath "process-manager_$(Get-Date -Format 'yyyy-MM-dd').log"
         Add-Content -Path $logFile -Value $logMessage -Encoding UTF8
     }
@@ -260,24 +260,24 @@ function Register-Manager {
                 return $result
             } catch {
                 Write-Log -Message "Erreur lors de l'enregistrement du gestionnaire avec le module ProcessManager : $_" -Level Error
-                Write-Log -Message "Utilisation de la méthode d'enregistrement intégrée." -Level Warning
-                # Continuer avec la méthode intégrée
+                Write-Log -Message "Utilisation de la mÃ©thode d'enregistrement intÃ©grÃ©e." -Level Warning
+                # Continuer avec la mÃ©thode intÃ©grÃ©e
             }
         }
     }
 
-    # Méthode d'enregistrement intégrée (fallback)
-    Write-Log -Message "Utilisation de la méthode d'enregistrement intégrée pour le gestionnaire '$Name'." -Level Info
+    # MÃ©thode d'enregistrement intÃ©grÃ©e (fallback)
+    Write-Log -Message "Utilisation de la mÃ©thode d'enregistrement intÃ©grÃ©e pour le gestionnaire '$Name'." -Level Info
 
-    # Vérifier que le fichier du gestionnaire existe
+    # VÃ©rifier que le fichier du gestionnaire existe
     if (-not (Test-Path -Path $Path)) {
         Write-Log -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $false
     }
 
-    # Vérifier si le gestionnaire est déjà enregistré
+    # VÃ©rifier si le gestionnaire est dÃ©jÃ  enregistrÃ©
     if ($config.Managers.$Name -and -not $Force) {
-        Write-Log -Message "Le gestionnaire '$Name' est déjà enregistré. Utilisez -Force pour le remplacer." -Level Warning
+        Write-Log -Message "Le gestionnaire '$Name' est dÃ©jÃ  enregistrÃ©. Utilisez -Force pour le remplacer." -Level Warning
         return $false
     }
 
@@ -289,14 +289,14 @@ function Register-Manager {
             RegisteredAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         }
 
-        # Ajouter la version si spécifiée
+        # Ajouter la version si spÃ©cifiÃ©e
         if ($PSBoundParameters.ContainsKey('Version')) {
             $managerEntry.Version = $Version
         }
 
-        # Mettre à jour la configuration
+        # Mettre Ã  jour la configuration
         if ($config.Managers.PSObject.Properties.Name -contains $Name) {
-            # Mettre à jour un gestionnaire existant
+            # Mettre Ã  jour un gestionnaire existant
             $config.Managers.$Name = $managerEntry
         } else {
             # Ajouter un nouveau gestionnaire
@@ -305,14 +305,14 @@ function Register-Manager {
 
         # Enregistrer la configuration
         $config | ConvertTo-Json -Depth 10 | Set-Content -Path $configFilePath -Encoding UTF8
-        Write-Log -Message "Gestionnaire '$Name' enregistré avec succès." -Level Info
+        Write-Log -Message "Gestionnaire '$Name' enregistrÃ© avec succÃ¨s." -Level Info
         return $true
     }
 
     return $false
 }
 
-# Fonction pour découvrir automatiquement les gestionnaires
+# Fonction pour dÃ©couvrir automatiquement les gestionnaires
 function Discover-Managers {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -332,7 +332,7 @@ function Discover-Managers {
         [string[]]$SearchPaths = @("development\managers")
     )
 
-    Write-Log -Message "Découverte automatique des gestionnaires..." -Level Info
+    Write-Log -Message "DÃ©couverte automatique des gestionnaires..." -Level Info
 
     $managersFound = 0
     $managersRegistered = 0
@@ -344,7 +344,7 @@ function Discover-Managers {
         if (Test-Path -Path $fullSearchPath) {
             Write-Log -Message "Recherche dans $fullSearchPath..." -Level Debug
 
-            # Rechercher les répertoires de gestionnaires
+            # Rechercher les rÃ©pertoires de gestionnaires
             $managerDirs = Get-ChildItem -Path $fullSearchPath -Directory | Where-Object { $_.Name -like "*-manager" }
 
             foreach ($managerDir in $managerDirs) {
@@ -354,16 +354,16 @@ function Discover-Managers {
 
                 if (Test-Path -Path $managerScriptPath) {
                     $managersFound++
-                    Write-Log -Message "Gestionnaire trouvé : $managerName ($managerScriptPath)" -Level Debug
+                    Write-Log -Message "Gestionnaire trouvÃ© : $managerName ($managerScriptPath)" -Level Debug
 
-                    # Préparer les paramètres d'enregistrement
+                    # PrÃ©parer les paramÃ¨tres d'enregistrement
                     $registerParams = @{
                         Name  = $managerName
                         Path  = $managerScriptPath
                         Force = $Force
                     }
 
-                    # Ajouter les paramètres optionnels
+                    # Ajouter les paramÃ¨tres optionnels
                     if ($SkipDependencyCheck) {
                         $registerParams.SkipDependencyCheck = $true
                     }
@@ -398,11 +398,11 @@ function Discover-Managers {
         }
     }
 
-    Write-Log -Message "$managersFound gestionnaires trouvés, $managersRegistered gestionnaires enregistrés." -Level Info
+    Write-Log -Message "$managersFound gestionnaires trouvÃ©s, $managersRegistered gestionnaires enregistrÃ©s." -Level Info
     return $managersRegistered
 }
 
-# Fonction pour lister les gestionnaires enregistrés
+# Fonction pour lister les gestionnaires enregistrÃ©s
 function List-Managers {
     [CmdletBinding()]
     param (
@@ -410,10 +410,10 @@ function List-Managers {
         [switch]$Detailed
     )
 
-    Write-Log -Message "Liste des gestionnaires enregistrés :" -Level Info
+    Write-Log -Message "Liste des gestionnaires enregistrÃ©s :" -Level Info
 
     if (-not $config.Managers -or $config.Managers.PSObject.Properties.Count -eq 0) {
-        Write-Log -Message "Aucun gestionnaire enregistré." -Level Warning
+        Write-Log -Message "Aucun gestionnaire enregistrÃ©." -Level Warning
         return @()
     }
 
@@ -421,18 +421,18 @@ function List-Managers {
 
     foreach ($managerName in $config.Managers.PSObject.Properties.Name) {
         $manager = $config.Managers.$managerName
-        $managerStatus = if ($manager.Enabled) { "Activé" } else { "Désactivé" }
+        $managerStatus = if ($manager.Enabled) { "ActivÃ©" } else { "DÃ©sactivÃ©" }
 
         if ($Detailed) {
             Write-Log -Message "- $managerName ($managerStatus)" -Level Info
             Write-Log -Message "  Chemin : $($manager.Path)" -Level Info
-            Write-Log -Message "  Enregistré le : $($manager.RegisteredAt)" -Level Info
+            Write-Log -Message "  EnregistrÃ© le : $($manager.RegisteredAt)" -Level Info
 
-            # Vérifier si le gestionnaire existe
+            # VÃ©rifier si le gestionnaire existe
             if (Test-Path -Path $manager.Path) {
-                Write-Log -Message "  État : Disponible" -Level Info
+                Write-Log -Message "  Ã‰tat : Disponible" -Level Info
             } else {
-                Write-Log -Message "  État : Non disponible" -Level Warning
+                Write-Log -Message "  Ã‰tat : Non disponible" -Level Warning
             }
 
             Write-Log -Message "" -Level Info
@@ -452,7 +452,7 @@ function List-Managers {
     return $managers
 }
 
-# Fonction pour exécuter une commande sur un gestionnaire
+# Fonction pour exÃ©cuter une commande sur un gestionnaire
 function Run-ManagerCommand {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -466,19 +466,19 @@ function Run-ManagerCommand {
         [hashtable]$Parameters = @{}
     )
 
-    # Vérifier que le gestionnaire est enregistré
+    # VÃ©rifier que le gestionnaire est enregistrÃ©
     if (-not $config.Managers.$ManagerName) {
-        Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistré." -Level Error
+        Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistrÃ©." -Level Error
         return $false
     }
 
-    # Vérifier que le gestionnaire est activé
+    # VÃ©rifier que le gestionnaire est activÃ©
     if (-not $config.Managers.$ManagerName.Enabled) {
-        Write-Log -Message "Le gestionnaire '$ManagerName' est désactivé." -Level Warning
+        Write-Log -Message "Le gestionnaire '$ManagerName' est dÃ©sactivÃ©." -Level Warning
         return $false
     }
 
-    # Vérifier que le fichier du gestionnaire existe
+    # VÃ©rifier que le fichier du gestionnaire existe
     $managerPath = $config.Managers.$ManagerName.Path
     if (-not (Test-Path -Path $managerPath)) {
         Write-Log -Message "Le fichier du gestionnaire '$ManagerName' n'existe pas : $managerPath" -Level Error
@@ -490,16 +490,16 @@ function Run-ManagerCommand {
         FilePath = $managerPath
     }
 
-    # Ajouter le paramètre Command si spécifié
+    # Ajouter le paramÃ¨tre Command si spÃ©cifiÃ©
     if ($Command) {
         $commandParams.ArgumentList = "-Command $Command"
     }
 
-    # Ajouter les autres paramètres
+    # Ajouter les autres paramÃ¨tres
     foreach ($param in $Parameters.Keys) {
         $value = $Parameters[$param]
 
-        # Gérer les types de paramètres
+        # GÃ©rer les types de paramÃ¨tres
         if ($value -is [switch]) {
             if ($value) {
                 $commandParams.ArgumentList += " -$param"
@@ -512,22 +512,22 @@ function Run-ManagerCommand {
         }
     }
 
-    # Exécuter la commande
-    if ($PSCmdlet.ShouldProcess($ManagerName, "Exécuter la commande $Command")) {
-        Write-Log -Message "Exécution de la commande sur le gestionnaire '$ManagerName' : $Command" -Level Info
+    # ExÃ©cuter la commande
+    if ($PSCmdlet.ShouldProcess($ManagerName, "ExÃ©cuter la commande $Command")) {
+        Write-Log -Message "ExÃ©cution de la commande sur le gestionnaire '$ManagerName' : $Command" -Level Info
 
         try {
             $result = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $($commandParams.FilePath) $($commandParams.ArgumentList)" -Wait -PassThru -NoNewWindow
 
             if ($result.ExitCode -eq 0) {
-                Write-Log -Message "Commande exécutée avec succès." -Level Info
+                Write-Log -Message "Commande exÃ©cutÃ©e avec succÃ¨s." -Level Info
                 return $true
             } else {
-                Write-Log -Message "Erreur lors de l'exécution de la commande. Code de sortie : $($result.ExitCode)" -Level Error
+                Write-Log -Message "Erreur lors de l'exÃ©cution de la commande. Code de sortie : $($result.ExitCode)" -Level Error
                 return $false
             }
         } catch {
-            Write-Log -Message "Erreur lors de l'exécution de la commande : $_" -Level Error
+            Write-Log -Message "Erreur lors de l'exÃ©cution de la commande : $_" -Level Error
             return $false
         }
     }
@@ -535,7 +535,7 @@ function Run-ManagerCommand {
     return $false
 }
 
-# Fonction pour obtenir l'état d'un gestionnaire
+# Fonction pour obtenir l'Ã©tat d'un gestionnaire
 function Get-ManagerStatus {
     [CmdletBinding()]
     param (
@@ -543,9 +543,9 @@ function Get-ManagerStatus {
         [string]$ManagerName
     )
 
-    # Vérifier que le gestionnaire est enregistré
+    # VÃ©rifier que le gestionnaire est enregistrÃ©
     if (-not $config.Managers.$ManagerName) {
-        Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistré." -Level Error
+        Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistrÃ©." -Level Error
         return $null
     }
 
@@ -562,11 +562,11 @@ function Get-ManagerStatus {
         RegisteredAt = $manager.RegisteredAt
     }
 
-    Write-Log -Message "État du gestionnaire '$ManagerName' :" -Level Info
+    Write-Log -Message "Ã‰tat du gestionnaire '$ManagerName' :" -Level Info
     Write-Log -Message "- Chemin : $managerPath" -Level Info
-    Write-Log -Message "- Activé : $managerEnabled" -Level Info
+    Write-Log -Message "- ActivÃ© : $managerEnabled" -Level Info
     Write-Log -Message "- Disponible : $managerAvailable" -Level Info
-    Write-Log -Message "- Enregistré le : $($manager.RegisteredAt)" -Level Info
+    Write-Log -Message "- EnregistrÃ© le : $($manager.RegisteredAt)" -Level Info
 
     return $status
 }
@@ -585,30 +585,30 @@ function Configure-Manager {
         [string]$Path
     )
 
-    # Vérifier que le gestionnaire est enregistré
+    # VÃ©rifier que le gestionnaire est enregistrÃ©
     if (-not $config.Managers.$ManagerName) {
-        Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistré." -Level Error
+        Write-Log -Message "Le gestionnaire '$ManagerName' n'est pas enregistrÃ©." -Level Error
         return $false
     }
 
-    # Mettre à jour la configuration
+    # Mettre Ã  jour la configuration
     if ($PSCmdlet.ShouldProcess($ManagerName, "Configurer le gestionnaire")) {
         $modified = $false
 
         if ($PSBoundParameters.ContainsKey('Enabled')) {
             $config.Managers.$ManagerName.Enabled = $Enabled
-            Write-Log -Message "État du gestionnaire '$ManagerName' mis à jour : $Enabled" -Level Info
+            Write-Log -Message "Ã‰tat du gestionnaire '$ManagerName' mis Ã  jour : $Enabled" -Level Info
             $modified = $true
         }
 
         if ($PSBoundParameters.ContainsKey('Path')) {
-            # Vérifier que le fichier existe
+            # VÃ©rifier que le fichier existe
             if (Test-Path -Path $Path) {
                 $config.Managers.$ManagerName.Path = $Path
-                Write-Log -Message "Chemin du gestionnaire '$ManagerName' mis à jour : $Path" -Level Info
+                Write-Log -Message "Chemin du gestionnaire '$ManagerName' mis Ã  jour : $Path" -Level Info
                 $modified = $true
             } else {
-                Write-Log -Message "Le fichier spécifié n'existe pas : $Path" -Level Error
+                Write-Log -Message "Le fichier spÃ©cifiÃ© n'existe pas : $Path" -Level Error
                 return $false
             }
         }
@@ -616,10 +616,10 @@ function Configure-Manager {
         if ($modified) {
             # Enregistrer la configuration
             $config | ConvertTo-Json -Depth 10 | Set-Content -Path $configFilePath -Encoding UTF8
-            Write-Log -Message "Configuration du gestionnaire '$ManagerName' mise à jour avec succès." -Level Info
+            Write-Log -Message "Configuration du gestionnaire '$ManagerName' mise Ã  jour avec succÃ¨s." -Level Info
             return $true
         } else {
-            Write-Log -Message "Aucune modification apportée à la configuration du gestionnaire '$ManagerName'." -Level Warning
+            Write-Log -Message "Aucune modification apportÃ©e Ã  la configuration du gestionnaire '$ManagerName'." -Level Warning
             return $false
         }
     }
@@ -627,22 +627,22 @@ function Configure-Manager {
     return $false
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch ($Command) {
     "Register" {
         if (-not $ManagerName -or -not $ManagerPath) {
-            Write-Log -Message "Les paramètres ManagerName et ManagerPath sont requis pour la commande Register." -Level Error
+            Write-Log -Message "Les paramÃ¨tres ManagerName et ManagerPath sont requis pour la commande Register." -Level Error
             exit 1
         }
 
-        # Extraire les paramètres supplémentaires
+        # Extraire les paramÃ¨tres supplÃ©mentaires
         $registerParams = @{
             Name  = $ManagerName
             Path  = $ManagerPath
             Force = $Force
         }
 
-        # Ajouter les paramètres optionnels
+        # Ajouter les paramÃ¨tres optionnels
         if ($PSBoundParameters.ContainsKey('Version')) {
             $registerParams.Version = $Version
         }
@@ -663,12 +663,12 @@ switch ($Command) {
     }
 
     "Discover" {
-        # Extraire les paramètres supplémentaires
+        # Extraire les paramÃ¨tres supplÃ©mentaires
         $discoverParams = @{
             Force = $Force
         }
 
-        # Ajouter les paramètres optionnels
+        # Ajouter les paramÃ¨tres optionnels
         if ($PSBoundParameters.ContainsKey('SkipDependencyCheck')) {
             $discoverParams.SkipDependencyCheck = $SkipDependencyCheck
         }
@@ -694,11 +694,11 @@ switch ($Command) {
 
     "Run" {
         if (-not $ManagerName -or -not $ManagerCommand) {
-            Write-Log -Message "Les paramètres ManagerName et ManagerCommand sont requis pour la commande Run." -Level Error
+            Write-Log -Message "Les paramÃ¨tres ManagerName et ManagerCommand sont requis pour la commande Run." -Level Error
             exit 1
         }
 
-        # Extraire les paramètres supplémentaires
+        # Extraire les paramÃ¨tres supplÃ©mentaires
         $params = @{}
         foreach ($param in $PSBoundParameters.Keys) {
             if ($param -notin @("Command", "ManagerName", "ManagerCommand", "ConfigPath", "LogLevel", "Force")) {
@@ -711,7 +711,7 @@ switch ($Command) {
 
     "Status" {
         if (-not $ManagerName) {
-            Write-Log -Message "Le paramètre ManagerName est requis pour la commande Status." -Level Error
+            Write-Log -Message "Le paramÃ¨tre ManagerName est requis pour la commande Status." -Level Error
             exit 1
         }
 
@@ -720,11 +720,11 @@ switch ($Command) {
 
     "Configure" {
         if (-not $ManagerName) {
-            Write-Log -Message "Le paramètre ManagerName est requis pour la commande Configure." -Level Error
+            Write-Log -Message "Le paramÃ¨tre ManagerName est requis pour la commande Configure." -Level Error
             exit 1
         }
 
-        # Extraire les paramètres de configuration
+        # Extraire les paramÃ¨tres de configuration
         $configParams = @{
             ManagerName = $ManagerName
         }

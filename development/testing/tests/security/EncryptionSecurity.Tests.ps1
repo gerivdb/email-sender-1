@@ -1,62 +1,62 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests de sécurité pour le module EncryptionUtils.ps1.
+    Tests de sÃ©curitÃ© pour le module EncryptionUtils.ps1.
 .DESCRIPTION
-    Ce script contient des tests de sécurité pour vérifier la robustesse du module EncryptionUtils.ps1.
+    Ce script contient des tests de sÃ©curitÃ© pour vÃ©rifier la robustesse du module EncryptionUtils.ps1.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $encryptionUtilsPath = Join-Path -Path $modulesPath -ChildPath "EncryptionUtils.ps1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "EncryptionSecurityTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Définir les tests
-Describe "Tests de sécurité pour le module EncryptionUtils" {
+# DÃ©finir les tests
+Describe "Tests de sÃ©curitÃ© pour le module EncryptionUtils" {
     BeforeAll {
         # Importer le module
         . $encryptionUtilsPath
         
-        # Créer des fichiers de test
+        # CrÃ©er des fichiers de test
         $testFilePath = Join-Path -Path $testTempDir -ChildPath "test.txt"
         $sensitiveDataPath = Join-Path -Path $testTempDir -ChildPath "sensitive.txt"
         
-        # Créer un fichier de test
+        # CrÃ©er un fichier de test
         $testContent = "Ceci est un fichier de test pour le chiffrement."
         Set-Content -Path $testFilePath -Value $testContent -Encoding UTF8
         
-        # Créer un fichier avec des données sensibles
+        # CrÃ©er un fichier avec des donnÃ©es sensibles
         $sensitiveContent = @"
-Données sensibles :
+DonnÃ©es sensibles :
 Nom d'utilisateur : admin
 Mot de passe : P@ssw0rd
-Numéro de carte de crédit : 1234-5678-9012-3456
-Clé API : abcdef1234567890
+NumÃ©ro de carte de crÃ©dit : 1234-5678-9012-3456
+ClÃ© API : abcdef1234567890
 "@
         Set-Content -Path $sensitiveDataPath -Value $sensitiveContent -Encoding UTF8
     }
     
-    Context "Tests de robustesse des clés de chiffrement" {
-        It "Génère des clés différentes pour des mots de passe différents" {
+    Context "Tests de robustesse des clÃ©s de chiffrement" {
+        It "GÃ©nÃ¨re des clÃ©s diffÃ©rentes pour des mots de passe diffÃ©rents" {
             $password1 = ConvertTo-SecureString -String "MotDePasse1" -AsPlainText -Force
             $password2 = ConvertTo-SecureString -String "MotDePasse2" -AsPlainText -Force
             
@@ -66,7 +66,7 @@ Clé API : abcdef1234567890
             $key1.KeyBase64 | Should -Not -Be $key2.KeyBase64
         }
         
-        It "Génère des clés identiques pour le même mot de passe et sel" {
+        It "GÃ©nÃ¨re des clÃ©s identiques pour le mÃªme mot de passe et sel" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $salt = "TestSalt"
             
@@ -76,7 +76,7 @@ Clé API : abcdef1234567890
             $key1.KeyBase64 | Should -Be $key2.KeyBase64
         }
         
-        It "Génère des clés différentes pour le même mot de passe mais des sels différents" {
+        It "GÃ©nÃ¨re des clÃ©s diffÃ©rentes pour le mÃªme mot de passe mais des sels diffÃ©rents" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             
             $key1 = New-EncryptionKey -Password $password -Salt "Salt1"
@@ -85,7 +85,7 @@ Clé API : abcdef1234567890
             $key1.KeyBase64 | Should -Not -Be $key2.KeyBase64
         }
         
-        It "Génère des clés de la taille spécifiée" {
+        It "GÃ©nÃ¨re des clÃ©s de la taille spÃ©cifiÃ©e" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             
             $key128 = New-EncryptionKey -Password $password -KeySize 128
@@ -95,7 +95,7 @@ Clé API : abcdef1234567890
             $key256.Key.Length | Should -Be 32  # 256 bits = 32 octets
         }
         
-        It "Utilise le nombre d'itérations spécifié" {
+        It "Utilise le nombre d'itÃ©rations spÃ©cifiÃ©" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             
             $key1 = New-EncryptionKey -Password $password -Iterations 1000
@@ -107,42 +107,42 @@ Clé API : abcdef1234567890
         }
     }
     
-    Context "Tests de robustesse du chiffrement de chaînes" {
-        It "Produit des chaînes chiffrées différentes pour la même entrée" {
+    Context "Tests de robustesse du chiffrement de chaÃ®nes" {
+        It "Produit des chaÃ®nes chiffrÃ©es diffÃ©rentes pour la mÃªme entrÃ©e" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
-            $inputString = "Données sensibles"
+            $inputString = "DonnÃ©es sensibles"
             
             $encrypted1 = Protect-String -InputString $inputString -EncryptionKey $key
             $encrypted2 = Protect-String -InputString $inputString -EncryptionKey $key
             
-            $encrypted1 | Should -Not -Be $encrypted2  # Les IVs sont générés aléatoirement
+            $encrypted1 | Should -Not -Be $encrypted2  # Les IVs sont gÃ©nÃ©rÃ©s alÃ©atoirement
         }
         
-        It "Ne peut pas déchiffrer avec une clé incorrecte" {
+        It "Ne peut pas dÃ©chiffrer avec une clÃ© incorrecte" {
             $password1 = ConvertTo-SecureString -String "MotDePasse1" -AsPlainText -Force
             $password2 = ConvertTo-SecureString -String "MotDePasse2" -AsPlainText -Force
             
             $key1 = New-EncryptionKey -Password $password1
             $key2 = New-EncryptionKey -Password $password2
             
-            $inputString = "Données sensibles"
+            $inputString = "DonnÃ©es sensibles"
             $encrypted = Protect-String -InputString $inputString -EncryptionKey $key1
             
-            # Tenter de déchiffrer avec la mauvaise clé
+            # Tenter de dÃ©chiffrer avec la mauvaise clÃ©
             { Unprotect-String -EncryptedString $encrypted -EncryptionKey $key2 } | Should -Throw
         }
         
-        It "Chiffre correctement des chaînes de différentes longueurs" {
+        It "Chiffre correctement des chaÃ®nes de diffÃ©rentes longueurs" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
             $shortString = "Court"
-            $mediumString = "Chaîne de longueur moyenne"
-            $longString = "Chaîne très longue " * 100  # Environ 2000 caractères
+            $mediumString = "ChaÃ®ne de longueur moyenne"
+            $longString = "ChaÃ®ne trÃ¨s longue " * 100  # Environ 2000 caractÃ¨res
             
-            # Chiffrer et déchiffrer les chaînes
+            # Chiffrer et dÃ©chiffrer les chaÃ®nes
             $encryptedShort = Protect-String -InputString $shortString -EncryptionKey $key
             $encryptedMedium = Protect-String -InputString $mediumString -EncryptionKey $key
             $encryptedLong = Protect-String -InputString $longString -EncryptionKey $key
@@ -156,13 +156,13 @@ Clé API : abcdef1234567890
             $decryptedLong | Should -Be $longString
         }
         
-        It "Chiffre correctement des chaînes avec des caractères spéciaux" {
+        It "Chiffre correctement des chaÃ®nes avec des caractÃ¨res spÃ©ciaux" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
-            $specialChars = "!@#$%^&*()_+-=[]{}|;':,./<>?`~éèêëàâäôöùûüÿçÉÈÊËÀÂÄÔÖÙÛÜŸÇ"
+            $specialChars = "!@#$%^&*()_+-=[]{}|;':,./<>?`~Ã©Ã¨ÃªÃ«Ã Ã¢Ã¤Ã´Ã¶Ã¹Ã»Ã¼Ã¿Ã§Ã‰ÃˆÃŠÃ‹Ã€Ã‚Ã„Ã”Ã–Ã™Ã›ÃœÅ¸Ã‡"
             
-            # Chiffrer et déchiffrer la chaîne
+            # Chiffrer et dÃ©chiffrer la chaÃ®ne
             $encrypted = Protect-String -InputString $specialChars -EncryptionKey $key
             $decrypted = Unprotect-String -EncryptedString $encrypted -EncryptionKey $key
             
@@ -171,7 +171,7 @@ Clé API : abcdef1234567890
     }
     
     Context "Tests de robustesse du chiffrement de fichiers" {
-        It "Produit des fichiers chiffrés différents pour le même fichier d'entrée" {
+        It "Produit des fichiers chiffrÃ©s diffÃ©rents pour le mÃªme fichier d'entrÃ©e" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -183,14 +183,14 @@ Clé API : abcdef1234567890
             Protect-File -InputFile $testFilePath -OutputFile $encryptedPath1 -EncryptionKey $key
             Protect-File -InputFile $testFilePath -OutputFile $encryptedPath2 -EncryptionKey $key
             
-            # Vérifier que les fichiers chiffrés sont différents
+            # VÃ©rifier que les fichiers chiffrÃ©s sont diffÃ©rents
             $encryptedContent1 = Get-Content -Path $encryptedPath1 -Raw -Encoding Byte
             $encryptedContent2 = Get-Content -Path $encryptedPath2 -Raw -Encoding Byte
             
-            $encryptedContent1 | Should -Not -Be $encryptedContent2  # Les IVs sont générés aléatoirement
+            $encryptedContent1 | Should -Not -Be $encryptedContent2  # Les IVs sont gÃ©nÃ©rÃ©s alÃ©atoirement
         }
         
-        It "Ne peut pas déchiffrer avec une clé incorrecte" {
+        It "Ne peut pas dÃ©chiffrer avec une clÃ© incorrecte" {
             $password1 = ConvertTo-SecureString -String "MotDePasse1" -AsPlainText -Force
             $password2 = ConvertTo-SecureString -String "MotDePasse2" -AsPlainText -Force
             
@@ -201,31 +201,31 @@ Clé API : abcdef1234567890
             $encryptedPath = Join-Path -Path $testTempDir -ChildPath "test.enc"
             $decryptedPath = Join-Path -Path $testTempDir -ChildPath "test_decrypted.txt"
             
-            # Chiffrer le fichier avec la première clé
+            # Chiffrer le fichier avec la premiÃ¨re clÃ©
             Protect-File -InputFile $testFilePath -OutputFile $encryptedPath -EncryptionKey $key1
             
-            # Tenter de déchiffrer avec la mauvaise clé
+            # Tenter de dÃ©chiffrer avec la mauvaise clÃ©
             { Unprotect-File -InputFile $encryptedPath -OutputFile $decryptedPath -EncryptionKey $key2 } | Should -Throw
         }
         
-        It "Chiffre correctement des fichiers de différentes tailles" {
+        It "Chiffre correctement des fichiers de diffÃ©rentes tailles" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
-            # Créer des fichiers de différentes tailles
+            # CrÃ©er des fichiers de diffÃ©rentes tailles
             $smallFilePath = Join-Path -Path $testTempDir -ChildPath "small.txt"
             $mediumFilePath = Join-Path -Path $testTempDir -ChildPath "medium.txt"
             $largeFilePath = Join-Path -Path $testTempDir -ChildPath "large.txt"
             
             $smallContent = "Petit fichier"
-            $mediumContent = "Contenu de taille moyenne " * 100  # Environ 2500 caractères
-            $largeContent = "Contenu volumineux " * 1000  # Environ 20000 caractères
+            $mediumContent = "Contenu de taille moyenne " * 100  # Environ 2500 caractÃ¨res
+            $largeContent = "Contenu volumineux " * 1000  # Environ 20000 caractÃ¨res
             
             Set-Content -Path $smallFilePath -Value $smallContent -Encoding UTF8
             Set-Content -Path $mediumFilePath -Value $mediumContent -Encoding UTF8
             Set-Content -Path $largeFilePath -Value $largeContent -Encoding UTF8
             
-            # Chiffrer et déchiffrer les fichiers
+            # Chiffrer et dÃ©chiffrer les fichiers
             $encryptedSmallPath = Join-Path -Path $testTempDir -ChildPath "small.enc"
             $encryptedMediumPath = Join-Path -Path $testTempDir -ChildPath "medium.enc"
             $encryptedLargePath = Join-Path -Path $testTempDir -ChildPath "large.enc"
@@ -242,7 +242,7 @@ Clé API : abcdef1234567890
             Unprotect-File -InputFile $encryptedMediumPath -OutputFile $decryptedMediumPath -EncryptionKey $key
             Unprotect-File -InputFile $encryptedLargePath -OutputFile $decryptedLargePath -EncryptionKey $key
             
-            # Vérifier que les fichiers déchiffrés sont identiques aux originaux
+            # VÃ©rifier que les fichiers dÃ©chiffrÃ©s sont identiques aux originaux
             $decryptedSmallContent = Get-Content -Path $decryptedSmallPath -Raw
             $decryptedMediumContent = Get-Content -Path $decryptedMediumPath -Raw
             $decryptedLargeContent = Get-Content -Path $decryptedLargePath -Raw
@@ -254,7 +254,7 @@ Clé API : abcdef1234567890
     }
     
     Context "Tests de robustesse des signatures" {
-        It "Détecte correctement une modification du fichier" {
+        It "DÃ©tecte correctement une modification du fichier" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -265,22 +265,22 @@ Clé API : abcdef1234567890
             # Signer le fichier
             New-FileSignature -FilePath $testFilePath -EncryptionKey $key -SignatureFile $signatureFilePath
             
-            # Créer une copie modifiée du fichier
+            # CrÃ©er une copie modifiÃ©e du fichier
             $originalContent = Get-Content -Path $testFilePath -Raw
-            $modifiedContent = $originalContent + " Contenu modifié."
+            $modifiedContent = $originalContent + " Contenu modifiÃ©."
             Set-Content -Path $modifiedFilePath -Value $modifiedContent -Encoding UTF8
             
-            # Vérifier la signature avec le fichier original
+            # VÃ©rifier la signature avec le fichier original
             $originalResult = Test-FileSignature -FilePath $testFilePath -EncryptionKey $key -SignatureFile $signatureFilePath
             
-            # Vérifier la signature avec le fichier modifié
+            # VÃ©rifier la signature avec le fichier modifiÃ©
             $modifiedResult = Test-FileSignature -FilePath $modifiedFilePath -EncryptionKey $key -SignatureFile $signatureFilePath
             
             $originalResult.IsValid | Should -Be $true
             $modifiedResult.IsValid | Should -Be $false
         }
         
-        It "Détecte correctement une modification mineure du fichier" {
+        It "DÃ©tecte correctement une modification mineure du fichier" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -291,18 +291,18 @@ Clé API : abcdef1234567890
             # Signer le fichier
             New-FileSignature -FilePath $testFilePath -EncryptionKey $key -SignatureFile $signatureFilePath
             
-            # Créer une copie légèrement modifiée du fichier (un seul caractère)
+            # CrÃ©er une copie lÃ©gÃ¨rement modifiÃ©e du fichier (un seul caractÃ¨re)
             $originalContent = Get-Content -Path $testFilePath -Raw
             $modifiedContent = $originalContent.Replace("e", "E")  # Remplacer un 'e' par un 'E'
             Set-Content -Path $modifiedFilePath -Value $modifiedContent -Encoding UTF8
             
-            # Vérifier la signature avec le fichier modifié
+            # VÃ©rifier la signature avec le fichier modifiÃ©
             $modifiedResult = Test-FileSignature -FilePath $modifiedFilePath -EncryptionKey $key -SignatureFile $signatureFilePath
             
             $modifiedResult.IsValid | Should -Be $false
         }
         
-        It "Vérifie correctement les signatures avec différents algorithmes de hachage" {
+        It "VÃ©rifie correctement les signatures avec diffÃ©rents algorithmes de hachage" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -313,10 +313,10 @@ Clé API : abcdef1234567890
             foreach ($algorithm in $algorithms) {
                 $signatureFilePath = Join-Path -Path $testTempDir -ChildPath "test_$algorithm.sig"
                 
-                # Signer le fichier avec l'algorithme spécifié
+                # Signer le fichier avec l'algorithme spÃ©cifiÃ©
                 New-FileSignature -FilePath $testFilePath -EncryptionKey $key -SignatureFile $signatureFilePath -Algorithm $algorithm
                 
-                # Vérifier la signature
+                # VÃ©rifier la signature
                 $result = Test-FileSignature -FilePath $testFilePath -EncryptionKey $key -SignatureFile $signatureFilePath
                 
                 $result.IsValid | Should -Be $true
@@ -325,8 +325,8 @@ Clé API : abcdef1234567890
         }
     }
     
-    Context "Tests de sécurité des données sensibles" {
-        It "Chiffre correctement les données sensibles" {
+    Context "Tests de sÃ©curitÃ© des donnÃ©es sensibles" {
+        It "Chiffre correctement les donnÃ©es sensibles" {
             $password = ConvertTo-SecureString -String "MotDePasse" -AsPlainText -Force
             $key = New-EncryptionKey -Password $password
             
@@ -337,17 +337,17 @@ Clé API : abcdef1234567890
             # Chiffrer le fichier
             Protect-File -InputFile $sensitiveDataPath -OutputFile $encryptedPath -EncryptionKey $key
             
-            # Vérifier que le fichier chiffré ne contient pas de données sensibles en clair
+            # VÃ©rifier que le fichier chiffrÃ© ne contient pas de donnÃ©es sensibles en clair
             $encryptedContent = Get-Content -Path $encryptedPath -Raw
             $encryptedContent | Should -Not -Match "admin"
             $encryptedContent | Should -Not -Match "P@ssw0rd"
             $encryptedContent | Should -Not -Match "1234-5678-9012-3456"
             $encryptedContent | Should -Not -Match "abcdef1234567890"
             
-            # Déchiffrer le fichier
+            # DÃ©chiffrer le fichier
             Unprotect-File -InputFile $encryptedPath -OutputFile $decryptedPath -EncryptionKey $key
             
-            # Vérifier que le fichier déchiffré contient les données sensibles
+            # VÃ©rifier que le fichier dÃ©chiffrÃ© contient les donnÃ©es sensibles
             $decryptedContent = Get-Content -Path $decryptedPath -Raw
             $decryptedContent | Should -Match "admin"
             $decryptedContent | Should -Match "P@ssw0rd"

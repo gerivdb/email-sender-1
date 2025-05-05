@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Génère un rapport de couverture de code pour les scripts de maintenance.
+    GÃ©nÃ¨re un rapport de couverture de code pour les scripts de maintenance.
 .DESCRIPTION
-    Ce script génère un rapport de couverture de code pour les scripts de maintenance,
+    Ce script gÃ©nÃ¨re un rapport de couverture de code pour les scripts de maintenance,
     en utilisant le framework Pester.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de couverture.
 .PARAMETER GenerateHTML
-    Génère un rapport HTML en plus du rapport XML.
+    GÃ©nÃ¨re un rapport HTML en plus du rapport XML.
 .EXAMPLE
     .\Get-CodeCoverage.ps1 -OutputPath ".\reports\coverage" -GenerateHTML
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-10
+    Date de crÃ©ation: 2023-06-10
 #>
 
 [CmdletBinding()]
@@ -26,7 +26,7 @@ param (
     [switch]$GenerateHTML
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -51,26 +51,26 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Récupérer tous les fichiers de test
+# RÃ©cupÃ©rer tous les fichiers de test
 $testDir = $PSScriptRoot
 $testFiles = Get-ChildItem -Path $testDir -Filter "*.Tests.ps1" | Where-Object { $_.Name -ne "Run-AllTests.ps1" -and $_.Name -ne "Get-CodeCoverage.ps1" }
 
-# Récupérer tous les scripts à tester
+# RÃ©cupÃ©rer tous les scripts Ã  tester
 $maintenanceDir = Split-Path -Parent $testDir
 $scriptFiles = Get-ChildItem -Path $maintenanceDir -Recurse -Filter "*.ps1" | Where-Object { 
     $_.FullName -notlike "*\test\*" -and 
@@ -78,7 +78,7 @@ $scriptFiles = Get-ChildItem -Path $maintenanceDir -Recurse -Filter "*.ps1" | Wh
     $_.Name -ne "README.md"
 }
 
-Write-Log "Génération de la couverture de code pour $($scriptFiles.Count) scripts..." -Level "INFO"
+Write-Log "GÃ©nÃ©ration de la couverture de code pour $($scriptFiles.Count) scripts..." -Level "INFO"
 
 # Configuration de Pester
 $pesterConfig = New-PesterConfiguration
@@ -92,41 +92,41 @@ $pesterConfig.CodeCoverage.Path = $scriptFiles.FullName
 $pesterConfig.CodeCoverage.OutputPath = Join-Path -Path $OutputPath -ChildPath "Coverage.xml"
 $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 
-# Exécuter les tests avec couverture de code
+# ExÃ©cuter les tests avec couverture de code
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Log "`nRésumé de la couverture de code:" -Level "INFO"
-Write-Log "  Scripts analysés: $($scriptFiles.Count)" -Level "INFO"
-Write-Log "  Lignes analysées: $($testResults.CodeCoverage.NumberOfCommandsAnalyzed)" -Level "INFO"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Log "`nRÃ©sumÃ© de la couverture de code:" -Level "INFO"
+Write-Log "  Scripts analysÃ©s: $($scriptFiles.Count)" -Level "INFO"
+Write-Log "  Lignes analysÃ©es: $($testResults.CodeCoverage.NumberOfCommandsAnalyzed)" -Level "INFO"
 Write-Log "  Lignes couvertes: $($testResults.CodeCoverage.NumberOfCommandsExecuted)" -Level "INFO"
 Write-Log "  Couverture: $($testResults.CodeCoverage.CoveragePercent)%" -Level $(if ($testResults.CodeCoverage.CoveragePercent -ge 80) { "SUCCESS" } elseif ($testResults.CodeCoverage.CoveragePercent -ge 50) { "WARNING" } else { "ERROR" })
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "Coverage.html"
     
-    # Vérifier si ReportGenerator est installé
+    # VÃ©rifier si ReportGenerator est installÃ©
     $reportGeneratorPath = Join-Path -Path $env:TEMP -ChildPath "ReportGenerator"
     if (-not (Test-Path -Path $reportGeneratorPath)) {
         Write-Log "Installation de ReportGenerator..." -Level "INFO"
         dotnet tool install dotnet-reportgenerator-globaltool --tool-path $reportGeneratorPath
     }
     
-    # Générer le rapport HTML
-    Write-Log "Génération du rapport HTML..." -Level "INFO"
+    # GÃ©nÃ©rer le rapport HTML
+    Write-Log "GÃ©nÃ©ration du rapport HTML..." -Level "INFO"
     $reportGeneratorExe = Join-Path -Path $reportGeneratorPath -ChildPath "reportgenerator.exe"
     & $reportGeneratorExe "-reports:$($pesterConfig.CodeCoverage.OutputPath)" "-targetdir:$OutputPath" "-reporttypes:Html"
     
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
 # Afficher le chemin du rapport XML
-Write-Log "Rapport XML généré: $($pesterConfig.CodeCoverage.OutputPath)" -Level "SUCCESS"
+Write-Log "Rapport XML gÃ©nÃ©rÃ©: $($pesterConfig.CodeCoverage.OutputPath)" -Level "SUCCESS"
 
-# Retourner le code de sortie en fonction des résultats
+# Retourner le code de sortie en fonction des rÃ©sultats
 if ($testResults.CodeCoverage.CoveragePercent -lt 50) {
-    Write-Log "La couverture de code est inférieure à 50%. Veuillez améliorer les tests." -Level "ERROR"
+    Write-Log "La couverture de code est infÃ©rieure Ã  50%. Veuillez amÃ©liorer les tests." -Level "ERROR"
     exit 1
 }
 else {

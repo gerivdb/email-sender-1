@@ -1,5 +1,5 @@
-# Search-TasksSemanticQdrant.ps1
-# Script pour effectuer des recherches sémantiques dans les tâches de la roadmap avec Qdrant
+﻿# Search-TasksSemanticQdrant.ps1
+# Script pour effectuer des recherches sÃ©mantiques dans les tÃ¢ches de la roadmap avec Qdrant
 
 [CmdletBinding()]
 param (
@@ -32,7 +32,7 @@ param (
     [string]$OutputPath
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -55,24 +55,24 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         } else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     } catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("qdrant_client", "numpy", "requests")
     $missingPackages = @()
@@ -93,23 +93,23 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         } else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
 
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour la recherche sémantique
+# Fonction pour crÃ©er un script Python temporaire pour la recherche sÃ©mantique
 function New-SemanticSearchScript {
     [CmdletBinding()]
     param (
@@ -151,8 +151,8 @@ from qdrant_client.http.exceptions import UnexpectedResponse
 def get_embedding(text, api_key, endpoint, model):
     """Obtenir un vecteur d'embedding via l'API OpenRouter"""
     if not api_key:
-        # Générer un vecteur aléatoire si pas de clé API
-        print("Clé API non fournie. Génération d'un vecteur aléatoire.")
+        # GÃ©nÃ©rer un vecteur alÃ©atoire si pas de clÃ© API
+        print("ClÃ© API non fournie. GÃ©nÃ©ration d'un vecteur alÃ©atoire.")
         return np.random.uniform(-1, 1, 1536).tolist()
 
     try:
@@ -174,14 +174,14 @@ def get_embedding(text, api_key, endpoint, model):
         if 'data' in result and 'embedding' in result['data'][0]:
             return result['data'][0]['embedding']
         else:
-            print("Réponse API invalide. Génération d'un vecteur aléatoire.")
+            print("RÃ©ponse API invalide. GÃ©nÃ©ration d'un vecteur alÃ©atoire.")
             return np.random.uniform(-1, 1, 1536).tolist()
     except Exception as e:
-        print(f"Erreur lors de l'appel à l'API d'embedding: {e}")
+        print(f"Erreur lors de l'appel Ã  l'API d'embedding: {e}")
         return np.random.uniform(-1, 1, 1536).tolist()
 
 def main():
-    # Paramètres
+    # ParamÃ¨tres
     query = r'$Query'
     qdrant_url = r'$QdrantUrl'
     collection_name = '$CollectionName'
@@ -190,20 +190,20 @@ def main():
     model_name = '$ModelName'
     max_results = $MaxResults
 
-    print(f"Recherche sémantique pour: '{query}'")
+    print(f"Recherche sÃ©mantique pour: '{query}'")
 
     # Initialiser le client Qdrant
     try:
         client = QdrantClient(url=qdrant_url)
 
-        # Vérifier si Qdrant est accessible
+        # VÃ©rifier si Qdrant est accessible
         client.get_collections()
     except Exception as e:
-        print(f"Erreur lors de la connexion à Qdrant: {e}")
-        print("Assurez-vous que Qdrant est en cours d'exécution et accessible à l'URL spécifiée.")
+        print(f"Erreur lors de la connexion Ã  Qdrant: {e}")
+        print("Assurez-vous que Qdrant est en cours d'exÃ©cution et accessible Ã  l'URL spÃ©cifiÃ©e.")
         sys.exit(1)
 
-    # Vérifier si la collection existe
+    # VÃ©rifier si la collection existe
     try:
         collections = client.get_collections().collections
         collection_exists = any(c.name == collection_name for c in collections)
@@ -212,12 +212,12 @@ def main():
             print(f"La collection {collection_name} n'existe pas dans Qdrant.")
             sys.exit(1)
 
-        # Obtenir l'embedding de la requête
-        print("Génération de l'embedding pour la requête...")
+        # Obtenir l'embedding de la requÃªte
+        print("GÃ©nÃ©ration de l'embedding pour la requÃªte...")
         query_embedding = get_embedding(query, api_key, model_endpoint, model_name)
 
         # Effectuer la recherche
-        print(f"Recherche des {max_results} tâches les plus pertinentes...")
+        print(f"Recherche des {max_results} tÃ¢ches les plus pertinentes...")
         search_results = client.search(
             collection_name=collection_name,
             query_vector=query_embedding,
@@ -225,12 +225,12 @@ def main():
             with_payload=True
         )
 
-        # Préparer les résultats
+        # PrÃ©parer les rÃ©sultats
         results = []
 
         for point in search_results:
             payload = point.payload
-            similarity = point.score  # Qdrant retourne déjà un score de similarité
+            similarity = point.score  # Qdrant retourne dÃ©jÃ  un score de similaritÃ©
 
             result = {
                 "taskId": point.id,
@@ -241,16 +241,16 @@ def main():
                 "lastUpdated": payload.get("lastUpdated", ""),
                 "parentId": payload.get("parentId", ""),
                 "document": payload.get("text", ""),
-                "similarity": round(similarity * 100, 2)  # Pourcentage de similarité
+                "similarity": round(similarity * 100, 2)  # Pourcentage de similaritÃ©
             }
 
             results.append(result)
 
-        # Afficher les résultats au format JSON
+        # Afficher les rÃ©sultats au format JSON
         print(json.dumps(results, indent=2, ensure_ascii=False))
 
     except Exception as e:
-        print(f"Erreur lors de la recherche sémantique: {e}")
+        print(f"Erreur lors de la recherche sÃ©mantique: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
@@ -261,7 +261,7 @@ if __name__ == "__main__":
     return $scriptPath
 }
 
-# Fonction pour formater les résultats en Markdown
+# Fonction pour formater les rÃ©sultats en Markdown
 function Format-ResultsAsMarkdown {
     [CmdletBinding()]
     param (
@@ -274,15 +274,15 @@ function Format-ResultsAsMarkdown {
 
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $markdown = @"
-# Résultats de recherche sémantique
+# RÃ©sultats de recherche sÃ©mantique
 
-**Requête:** "$Query"
+**RequÃªte:** "$Query"
 **Date:** $timestamp
-**Nombre de résultats:** $($Results.Count)
+**Nombre de rÃ©sultats:** $($Results.Count)
 
-## Résultats
+## RÃ©sultats
 
-| ID | Description | Section | Statut | Similarité |
+| ID | Description | Section | Statut | SimilaritÃ© |
 |---|---|---|---|---|
 "@
 
@@ -292,7 +292,7 @@ function Format-ResultsAsMarkdown {
 
     $markdown += @"
 
-## Détails des résultats
+## DÃ©tails des rÃ©sultats
 
 "@
 
@@ -301,10 +301,10 @@ function Format-ResultsAsMarkdown {
 
 ### $($result.taskId) - $($result.description)
 
-- **Similarité:** $($result.similarity)%
+- **SimilaritÃ©:** $($result.similarity)%
 - **Statut:** $($result.status)
 - **Section:** $($result.section)
-- **Dernière mise à jour:** $($result.lastUpdated)
+- **DerniÃ¨re mise Ã  jour:** $($result.lastUpdated)
 - **ID parent:** $($result.parentId)
 - **Niveau d'indentation:** $($result.indentLevel)
 
@@ -314,7 +314,7 @@ function Format-ResultsAsMarkdown {
     return $markdown
 }
 
-# Fonction pour afficher les résultats dans la console
+# Fonction pour afficher les rÃ©sultats dans la console
 function Show-ResultsInConsole {
     [CmdletBinding()]
     param (
@@ -325,14 +325,14 @@ function Show-ResultsInConsole {
         [string]$Query
     )
 
-    Write-Host "`nRésultats de recherche sémantique pour: '$Query'" -ForegroundColor Cyan
-    Write-Host "Nombre de résultats: $($Results.Count)" -ForegroundColor Cyan
+    Write-Host "`nRÃ©sultats de recherche sÃ©mantique pour: '$Query'" -ForegroundColor Cyan
+    Write-Host "Nombre de rÃ©sultats: $($Results.Count)" -ForegroundColor Cyan
     Write-Host "------------------------------------------------------------" -ForegroundColor Cyan
 
     foreach ($result in $Results) {
         Write-Host "ID: " -NoNewline
         Write-Host "$($result.taskId)" -ForegroundColor Yellow -NoNewline
-        Write-Host " - Similarité: " -NoNewline
+        Write-Host " - SimilaritÃ©: " -NoNewline
         Write-Host "$($result.similarity)%" -ForegroundColor Green
 
         Write-Host "Description: $($result.description)"
@@ -342,7 +342,7 @@ function Show-ResultsInConsole {
     }
 }
 
-# Fonction pour vérifier et démarrer le conteneur Docker de Qdrant
+# Fonction pour vÃ©rifier et dÃ©marrer le conteneur Docker de Qdrant
 function Start-QdrantContainerIfNeeded {
     [CmdletBinding()]
     param (
@@ -356,31 +356,31 @@ function Start-QdrantContainerIfNeeded {
         [switch]$Force
     )
 
-    # Vérifier si le conteneur est accessible
+    # VÃ©rifier si le conteneur est accessible
     try {
         $testUrl = "$QdrantUrl/dashboard"
         $response = Invoke-WebRequest -Uri $testUrl -Method Head -TimeoutSec 2 -ErrorAction SilentlyContinue
 
         if ($response.StatusCode -eq 200) {
-            Write-Log "Qdrant est accessible à l'URL: $QdrantUrl" -Level Success
+            Write-Log "Qdrant est accessible Ã  l'URL: $QdrantUrl" -Level Success
             return $true
         }
     } catch {
-        Write-Log "Qdrant n'est pas accessible à l'URL: $QdrantUrl" -Level Warning
+        Write-Log "Qdrant n'est pas accessible Ã  l'URL: $QdrantUrl" -Level Warning
     }
 
-    # Tenter de démarrer le conteneur Docker
-    Write-Log "Tentative de démarrage du conteneur Docker pour Qdrant..." -Level Info
+    # Tenter de dÃ©marrer le conteneur Docker
+    Write-Log "Tentative de dÃ©marrage du conteneur Docker pour Qdrant..." -Level Info
 
     $qdrantContainerScript = Join-Path -Path $PSScriptRoot -ChildPath "Start-QdrantContainer.ps1"
     if (Test-Path -Path $qdrantContainerScript) {
         & $qdrantContainerScript -Action Start -DataPath $DataPath -Force:$Force
 
         if ($LASTEXITCODE -eq 0) {
-            Write-Log "Conteneur Docker pour Qdrant démarré avec succès." -Level Success
+            Write-Log "Conteneur Docker pour Qdrant dÃ©marrÃ© avec succÃ¨s." -Level Success
 
-            # Attendre que le service soit prêt
-            Write-Log "Attente du démarrage du service Qdrant..." -Level Info
+            # Attendre que le service soit prÃªt
+            Write-Log "Attente du dÃ©marrage du service Qdrant..." -Level Info
             $maxRetries = 10
             $retryCount = 0
             $serviceReady = $false
@@ -395,27 +395,27 @@ function Start-QdrantContainerIfNeeded {
 
                     if ($response.StatusCode -eq 200) {
                         $serviceReady = $true
-                        Write-Log "Service Qdrant prêt après $retryCount tentatives." -Level Success
+                        Write-Log "Service Qdrant prÃªt aprÃ¨s $retryCount tentatives." -Level Success
                     }
                 } catch {
-                    Write-Log "Tentative $retryCount sur $maxRetries - Service Qdrant pas encore prêt..." -Level Info
+                    Write-Log "Tentative $retryCount sur $maxRetries - Service Qdrant pas encore prÃªt..." -Level Info
                 }
             }
 
             if ($serviceReady) {
                 return $true
             } else {
-                Write-Log "Le service Qdrant n'est pas devenu accessible après $maxRetries tentatives." -Level Warning
+                Write-Log "Le service Qdrant n'est pas devenu accessible aprÃ¨s $maxRetries tentatives." -Level Warning
                 return $false
             }
         } else {
-            Write-Log "Erreur lors du démarrage du conteneur Docker pour Qdrant." -Level Error
-            Write-Log "Assurez-vous que Docker est installé et en cours d'exécution." -Level Error
+            Write-Log "Erreur lors du dÃ©marrage du conteneur Docker pour Qdrant." -Level Error
+            Write-Log "Assurez-vous que Docker est installÃ© et en cours d'exÃ©cution." -Level Error
             return $false
         }
     } else {
-        Write-Log "Script de gestion du conteneur Docker pour Qdrant non trouvé: $qdrantContainerScript" -Level Error
-        Write-Log "Veuillez démarrer le conteneur manuellement avec Docker:" -Level Error
+        Write-Log "Script de gestion du conteneur Docker pour Qdrant non trouvÃ©: $qdrantContainerScript" -Level Error
+        Write-Log "Veuillez dÃ©marrer le conteneur manuellement avec Docker:" -Level Error
         Write-Log "docker run -d -p 6333:6333 -p 6334:6334 -v `"$(Resolve-Path $DataPath):/qdrant/storage`" qdrant/qdrant" -Level Error
         return $false
     }
@@ -423,37 +423,37 @@ function Start-QdrantContainerIfNeeded {
 
 # Fonction principale
 function Main {
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
 
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
 
-    # Vérifier et démarrer le conteneur Docker de Qdrant si nécessaire
+    # VÃ©rifier et dÃ©marrer le conteneur Docker de Qdrant si nÃ©cessaire
     $qdrantDataPath = "projet\roadmaps\vectors\qdrant_data"
     if (-not (Start-QdrantContainerIfNeeded -QdrantUrl $QdrantUrl -DataPath $qdrantDataPath -Force:$false)) {
-        Write-Log "Impossible d'assurer que le conteneur Docker de Qdrant est en cours d'exécution. Le script ne peut pas continuer." -Level Error
+        Write-Log "Impossible d'assurer que le conteneur Docker de Qdrant est en cours d'exÃ©cution. Le script ne peut pas continuer." -Level Error
         return
     }
 
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour la recherche sémantique..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour la recherche sÃ©mantique..." -Level Info
     $pythonScript = New-SemanticSearchScript -Query $Query -QdrantUrl $QdrantUrl -CollectionName $CollectionName -ModelEndpoint $ModelEndpoint -ApiKey $ApiKey -ModelName $ModelName -MaxResults $MaxResults
 
-    # Exécuter le script Python et capturer la sortie JSON
-    Write-Log "Exécution de la recherche sémantique pour: '$Query'..." -Level Info
+    # ExÃ©cuter le script Python et capturer la sortie JSON
+    Write-Log "ExÃ©cution de la recherche sÃ©mantique pour: '$Query'..." -Level Info
     $output = python $pythonScript 2>&1
 
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
 
-    # Extraire les résultats JSON de la sortie
+    # Extraire les rÃ©sultats JSON de la sortie
     $jsonStartIndex = $output.IndexOf("[")
     $jsonEndIndex = $output.LastIndexOf("]")
 
@@ -461,7 +461,7 @@ function Main {
         $jsonString = $output.Substring($jsonStartIndex, $jsonEndIndex - $jsonStartIndex + 1)
         $results = $jsonString | ConvertFrom-Json
 
-        # Traiter les résultats selon le format demandé
+        # Traiter les rÃ©sultats selon le format demandÃ©
         switch ($OutputFormat) {
             "console" {
                 Show-ResultsInConsole -Results $results -Query $Query
@@ -475,7 +475,7 @@ function Main {
 
                 if ($OutputPath) {
                     $jsonOutput | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Résultats sauvegardés au format JSON dans $OutputPath" -Level Success
+                    Write-Log "RÃ©sultats sauvegardÃ©s au format JSON dans $OutputPath" -Level Success
                 } else {
                     Write-Output $jsonOutput
                 }
@@ -485,18 +485,18 @@ function Main {
 
                 if ($OutputPath) {
                     $markdownOutput | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Résultats sauvegardés au format Markdown dans $OutputPath" -Level Success
+                    Write-Log "RÃ©sultats sauvegardÃ©s au format Markdown dans $OutputPath" -Level Success
                 } else {
                     Write-Output $markdownOutput
                 }
             }
         }
 
-        Write-Log "Recherche terminée. $($results.Count) résultats trouvés." -Level Success
+        Write-Log "Recherche terminÃ©e. $($results.Count) rÃ©sultats trouvÃ©s." -Level Success
     } else {
-        Write-Log "Aucun résultat trouvé ou erreur lors de la recherche." -Level Warning
+        Write-Log "Aucun rÃ©sultat trouvÃ© ou erreur lors de la recherche." -Level Warning
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

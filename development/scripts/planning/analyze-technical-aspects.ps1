@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Analyse les aspects techniques des améliorations.
+    Analyse les aspects techniques des amÃ©liorations.
 
 .DESCRIPTION
-    Ce script analyse les aspects techniques des améliorations en identifiant
-    les composants techniques, les technologies impliquées, les interfaces
-    et les dépendances techniques.
+    Ce script analyse les aspects techniques des amÃ©liorations en identifiant
+    les composants techniques, les technologies impliquÃ©es, les interfaces
+    et les dÃ©pendances techniques.
 
 .PARAMETER InputFile
-    Chemin vers le fichier JSON contenant les améliorations à analyser.
+    Chemin vers le fichier JSON contenant les amÃ©liorations Ã  analyser.
 
 .PARAMETER OutputFile
     Chemin vers le fichier de sortie pour le rapport d'analyse technique.
 
 .PARAMETER Format
     Format du rapport de sortie. Les valeurs possibles sont : JSON, Markdown.
-    Par défaut : Markdown
+    Par dÃ©faut : Markdown
 
 .EXAMPLE
     .\analyze-technical-aspects.ps1 -InputFile "data\improvements.json" -OutputFile "data\planning\technical-analysis.md"
-    Génère un rapport d'analyse technique au format Markdown.
+    GÃ©nÃ¨re un rapport d'analyse technique au format Markdown.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-08
+    Date de crÃ©ation: 2025-05-08
 #>
 [CmdletBinding()]
 param (
@@ -39,23 +39,23 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $InputFile)) {
-    Write-Error "Le fichier d'entrée n'existe pas : $InputFile"
+    Write-Error "Le fichier d'entrÃ©e n'existe pas : $InputFile"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputFile -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Charger les données des améliorations
+# Charger les donnÃ©es des amÃ©liorations
 try {
     $improvementsData = Get-Content -Path $InputFile -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "Erreur lors du chargement du fichier d'entrée : $_"
+    Write-Error "Erreur lors du chargement du fichier d'entrÃ©e : $_"
     exit 1
 }
 
@@ -72,39 +72,39 @@ function Analyze-TechnicalComponents {
     # Analyser la description pour identifier les composants techniques
     $description = $Improvement.Description
     
-    # Liste des mots-clés pour les composants techniques
+    # Liste des mots-clÃ©s pour les composants techniques
     $componentKeywords = @(
-        "API", "Interface", "Base de données", "Serveur", "Client", "Frontend", "Backend",
-        "Microservice", "Service", "Module", "Composant", "Bibliothèque", "Framework",
-        "Classe", "Objet", "Fonction", "Méthode", "Procédure", "Algorithme", "Structure de données",
-        "Cache", "File d'attente", "Message", "Événement", "Notification", "Authentification",
-        "Autorisation", "Validation", "Transformation", "Traitement", "Stockage", "Récupération",
-        "Indexation", "Recherche", "Tri", "Filtrage", "Pagination", "Agrégation", "Rapport"
+        "API", "Interface", "Base de donnÃ©es", "Serveur", "Client", "Frontend", "Backend",
+        "Microservice", "Service", "Module", "Composant", "BibliothÃ¨que", "Framework",
+        "Classe", "Objet", "Fonction", "MÃ©thode", "ProcÃ©dure", "Algorithme", "Structure de donnÃ©es",
+        "Cache", "File d'attente", "Message", "Ã‰vÃ©nement", "Notification", "Authentification",
+        "Autorisation", "Validation", "Transformation", "Traitement", "Stockage", "RÃ©cupÃ©ration",
+        "Indexation", "Recherche", "Tri", "Filtrage", "Pagination", "AgrÃ©gation", "Rapport"
     )
     
-    # Rechercher les mots-clés dans la description
+    # Rechercher les mots-clÃ©s dans la description
     foreach ($keyword in $componentKeywords) {
         if ($description -match $keyword) {
             $components += $keyword
         }
     }
     
-    # Ajouter des composants spécifiques en fonction du type d'amélioration
+    # Ajouter des composants spÃ©cifiques en fonction du type d'amÃ©lioration
     switch ($Improvement.Type) {
-        "Fonctionnalité" {
-            $components += "Implémentation de fonctionnalité"
+        "FonctionnalitÃ©" {
+            $components += "ImplÃ©mentation de fonctionnalitÃ©"
         }
-        "Amélioration" {
-            $components += "Amélioration de composant existant"
+        "AmÃ©lioration" {
+            $components += "AmÃ©lioration de composant existant"
         }
         "Optimisation" {
             $components += "Optimisation de performance"
         }
-        "Intégration" {
-            $components += "Intégration de systèmes"
+        "IntÃ©gration" {
+            $components += "IntÃ©gration de systÃ¨mes"
         }
-        "Sécurité" {
-            $components += "Mécanisme de sécurité"
+        "SÃ©curitÃ©" {
+            $components += "MÃ©canisme de sÃ©curitÃ©"
         }
     }
     
@@ -114,7 +114,7 @@ function Analyze-TechnicalComponents {
     return $components
 }
 
-# Fonction pour analyser les technologies impliquées
+# Fonction pour analyser les technologies impliquÃ©es
 function Analyze-Technologies {
     [CmdletBinding()]
     param (
@@ -130,35 +130,35 @@ function Analyze-Technologies {
     # Liste des technologies par gestionnaire
     $managerTechnologies = @{
         "Process Manager" = @("PowerShell", "Runspace Pools", "Threads", "Processus", "Synchronisation")
-        "Mode Manager" = @("PowerShell", "Configuration", "État", "Transition")
-        "Roadmap Manager" = @("Markdown", "Parser", "Graphe", "Dépendances")
-        "Integrated Manager" = @("API", "REST", "JSON", "Intégration", "Connecteurs")
-        "Script Manager" = @("PowerShell", "Scripts", "Modules", "Exécution")
-        "Error Manager" = @("Exceptions", "Journalisation", "Diagnostic", "Récupération")
+        "Mode Manager" = @("PowerShell", "Configuration", "Ã‰tat", "Transition")
+        "Roadmap Manager" = @("Markdown", "Parser", "Graphe", "DÃ©pendances")
+        "Integrated Manager" = @("API", "REST", "JSON", "IntÃ©gration", "Connecteurs")
+        "Script Manager" = @("PowerShell", "Scripts", "Modules", "ExÃ©cution")
+        "Error Manager" = @("Exceptions", "Journalisation", "Diagnostic", "RÃ©cupÃ©ration")
         "Configuration Manager" = @("JSON", "YAML", "Environnements", "Variables")
         "Logging Manager" = @("Journalisation", "Rotation", "Niveaux de log", "Formatage")
     }
     
-    # Ajouter les technologies spécifiques au gestionnaire
+    # Ajouter les technologies spÃ©cifiques au gestionnaire
     if ($managerTechnologies.ContainsKey($ManagerName)) {
         $technologies += $managerTechnologies[$ManagerName]
     }
     
-    # Ajouter des technologies spécifiques en fonction du type d'amélioration
+    # Ajouter des technologies spÃ©cifiques en fonction du type d'amÃ©lioration
     switch ($Improvement.Type) {
-        "Fonctionnalité" {
-            $technologies += "Développement"
+        "FonctionnalitÃ©" {
+            $technologies += "DÃ©veloppement"
         }
-        "Amélioration" {
+        "AmÃ©lioration" {
             $technologies += "Refactoring"
         }
         "Optimisation" {
             $technologies += "Profilage", "Optimisation"
         }
-        "Intégration" {
+        "IntÃ©gration" {
             $technologies += "API", "Connecteurs"
         }
-        "Sécurité" {
+        "SÃ©curitÃ©" {
             $technologies += "Cryptographie", "Authentification", "Autorisation"
         }
     }
@@ -186,20 +186,20 @@ function Analyze-Interfaces {
     $managerInterfaces = @{
         "Process Manager" = @("Interface de gestion des processus", "Interface de surveillance")
         "Mode Manager" = @("Interface de configuration des modes", "Interface de transition")
-        "Roadmap Manager" = @("Interface de gestion des tâches", "Interface de visualisation")
-        "Integrated Manager" = @("Interface d'intégration", "API externe")
-        "Script Manager" = @("Interface d'exécution de scripts", "Interface de gestion des scripts")
+        "Roadmap Manager" = @("Interface de gestion des tÃ¢ches", "Interface de visualisation")
+        "Integrated Manager" = @("Interface d'intÃ©gration", "API externe")
+        "Script Manager" = @("Interface d'exÃ©cution de scripts", "Interface de gestion des scripts")
         "Error Manager" = @("Interface de gestion des erreurs", "Interface de diagnostic")
         "Configuration Manager" = @("Interface de configuration", "Interface d'environnement")
         "Logging Manager" = @("Interface de journalisation", "Interface de consultation des logs")
     }
     
-    # Ajouter les interfaces spécifiques au gestionnaire
+    # Ajouter les interfaces spÃ©cifiques au gestionnaire
     if ($managerInterfaces.ContainsKey($ManagerName)) {
         $interfaces += $managerInterfaces[$ManagerName]
     }
     
-    # Ajouter des interfaces spécifiques en fonction du type d'amélioration
+    # Ajouter des interfaces spÃ©cifiques en fonction du type d'amÃ©lioration
     if ($Improvement.Description -match "interface utilisateur|UI|GUI|interface graphique") {
         $interfaces += "Interface utilisateur"
     }
@@ -208,16 +208,16 @@ function Analyze-Interfaces {
         $interfaces += "API"
     }
     
-    if ($Improvement.Description -match "base de données|BD|SQL|NoSQL|stockage") {
-        $interfaces += "Interface de base de données"
+    if ($Improvement.Description -match "base de donnÃ©es|BD|SQL|NoSQL|stockage") {
+        $interfaces += "Interface de base de donnÃ©es"
     }
     
-    if ($Improvement.Description -match "fichier|système de fichiers|I/O|entrée/sortie") {
+    if ($Improvement.Description -match "fichier|systÃ¨me de fichiers|I/O|entrÃ©e/sortie") {
         $interfaces += "Interface de fichier"
     }
     
-    if ($Improvement.Description -match "réseau|communication|socket|HTTP|TCP|UDP") {
-        $interfaces += "Interface réseau"
+    if ($Improvement.Description -match "rÃ©seau|communication|socket|HTTP|TCP|UDP") {
+        $interfaces += "Interface rÃ©seau"
     }
     
     # Supprimer les doublons
@@ -226,7 +226,7 @@ function Analyze-Interfaces {
     return $interfaces
 }
 
-# Fonction pour analyser les dépendances techniques
+# Fonction pour analyser les dÃ©pendances techniques
 function Analyze-Dependencies {
     [CmdletBinding()]
     param (
@@ -236,28 +236,28 @@ function Analyze-Dependencies {
 
     $dependencies = @()
     
-    # Ajouter les dépendances explicites
+    # Ajouter les dÃ©pendances explicites
     if ($Improvement.Dependencies -and $Improvement.Dependencies.Count -gt 0) {
         $dependencies += $Improvement.Dependencies
     }
     
-    # Identifier les dépendances implicites
+    # Identifier les dÃ©pendances implicites
     $description = $Improvement.Description
     
-    if ($description -match "dépend|nécessite|requiert|utilise|basé sur") {
-        $dependencies += "Dépendances implicites identifiées dans la description"
+    if ($description -match "dÃ©pend|nÃ©cessite|requiert|utilise|basÃ© sur") {
+        $dependencies += "DÃ©pendances implicites identifiÃ©es dans la description"
     }
     
-    # Ajouter des dépendances spécifiques en fonction du type d'amélioration
+    # Ajouter des dÃ©pendances spÃ©cifiques en fonction du type d'amÃ©lioration
     switch ($Improvement.Type) {
-        "Intégration" {
-            $dependencies += "Systèmes externes"
+        "IntÃ©gration" {
+            $dependencies += "SystÃ¨mes externes"
         }
-        "Amélioration" {
+        "AmÃ©lioration" {
             $dependencies += "Composant existant"
         }
         "Optimisation" {
-            $dependencies += "Composant à optimiser"
+            $dependencies += "Composant Ã  optimiser"
         }
     }
     
@@ -267,7 +267,7 @@ function Analyze-Dependencies {
     return $dependencies
 }
 
-# Fonction pour générer le rapport au format Markdown
+# Fonction pour gÃ©nÃ©rer le rapport au format Markdown
 function Generate-MarkdownReport {
     [CmdletBinding()]
     param (
@@ -275,21 +275,21 @@ function Generate-MarkdownReport {
         [PSCustomObject]$AnalysisResults
     )
 
-    $markdown = "# Analyse des Aspects Techniques des Améliorations`n`n"
-    $markdown += "Ce document présente l'analyse des aspects techniques des améliorations identifiées pour les différents gestionnaires.`n`n"
+    $markdown = "# Analyse des Aspects Techniques des AmÃ©liorations`n`n"
+    $markdown += "Ce document prÃ©sente l'analyse des aspects techniques des amÃ©liorations identifiÃ©es pour les diffÃ©rents gestionnaires.`n`n"
     
-    $markdown += "## Table des Matières`n`n"
+    $markdown += "## Table des MatiÃ¨res`n`n"
     
     foreach ($manager in $AnalysisResults.Managers) {
         $markdown += "- [$($manager.Name)](#$($manager.Name.ToLower().Replace(' ', '-')))`n"
     }
     
-    $markdown += "`n## Méthodologie`n`n"
-    $markdown += "L'analyse des aspects techniques a été réalisée en identifiant :`n`n"
-    $markdown += "1. **Composants techniques** : Les composants logiciels impliqués dans l'amélioration`n"
-    $markdown += "2. **Technologies impliquées** : Les technologies et outils nécessaires pour l'implémentation`n"
-    $markdown += "3. **Interfaces** : Les interfaces avec d'autres systèmes ou composants`n"
-    $markdown += "4. **Dépendances techniques** : Les dépendances vis-à-vis d'autres composants ou systèmes`n`n"
+    $markdown += "`n## MÃ©thodologie`n`n"
+    $markdown += "L'analyse des aspects techniques a Ã©tÃ© rÃ©alisÃ©e en identifiant :`n`n"
+    $markdown += "1. **Composants techniques** : Les composants logiciels impliquÃ©s dans l'amÃ©lioration`n"
+    $markdown += "2. **Technologies impliquÃ©es** : Les technologies et outils nÃ©cessaires pour l'implÃ©mentation`n"
+    $markdown += "3. **Interfaces** : Les interfaces avec d'autres systÃ¨mes ou composants`n"
+    $markdown += "4. **DÃ©pendances techniques** : Les dÃ©pendances vis-Ã -vis d'autres composants ou systÃ¨mes`n`n"
     
     foreach ($manager in $AnalysisResults.Managers) {
         $markdown += "## <a name='$($manager.Name.ToLower().Replace(' ', '-'))'></a>$($manager.Name)`n`n"
@@ -305,16 +305,16 @@ function Generate-MarkdownReport {
                     $markdown += "- $component`n"
                 }
             } else {
-                $markdown += "Aucun composant technique spécifique identifié.`n"
+                $markdown += "Aucun composant technique spÃ©cifique identifiÃ©.`n"
             }
             
-            $markdown += "`n#### Technologies Impliquées`n`n"
+            $markdown += "`n#### Technologies ImpliquÃ©es`n`n"
             if ($improvement.Technologies.Count -gt 0) {
                 foreach ($technology in $improvement.Technologies) {
                     $markdown += "- $technology`n"
                 }
             } else {
-                $markdown += "Aucune technologie spécifique identifiée.`n"
+                $markdown += "Aucune technologie spÃ©cifique identifiÃ©e.`n"
             }
             
             $markdown += "`n#### Interfaces`n`n"
@@ -323,32 +323,32 @@ function Generate-MarkdownReport {
                     $markdown += "- $interface`n"
                 }
             } else {
-                $markdown += "Aucune interface spécifique identifiée.`n"
+                $markdown += "Aucune interface spÃ©cifique identifiÃ©e.`n"
             }
             
-            $markdown += "`n#### Dépendances Techniques`n`n"
+            $markdown += "`n#### DÃ©pendances Techniques`n`n"
             if ($improvement.Dependencies.Count -gt 0) {
                 foreach ($dependency in $improvement.Dependencies) {
                     $markdown += "- $dependency`n"
                 }
             } else {
-                $markdown += "Aucune dépendance technique spécifique identifiée.`n"
+                $markdown += "Aucune dÃ©pendance technique spÃ©cifique identifiÃ©e.`n"
             }
             
             $markdown += "`n"
         }
     }
     
-    $markdown += "## Résumé`n`n"
+    $markdown += "## RÃ©sumÃ©`n`n"
     
     $totalImprovements = 0
     foreach ($manager in $AnalysisResults.Managers) {
         $totalImprovements += $manager.Improvements.Count
     }
     
-    $markdown += "Cette analyse a couvert $totalImprovements améliorations réparties sur $($AnalysisResults.Managers.Count) gestionnaires.`n`n"
+    $markdown += "Cette analyse a couvert $totalImprovements amÃ©liorations rÃ©parties sur $($AnalysisResults.Managers.Count) gestionnaires.`n`n"
     
-    $markdown += "### Répartition par Type`n`n"
+    $markdown += "### RÃ©partition par Type`n`n"
     $markdown += "| Type | Nombre |`n"
     $markdown += "|------|--------|`n"
     
@@ -369,7 +369,7 @@ function Generate-MarkdownReport {
     return $markdown
 }
 
-# Fonction pour générer le rapport au format JSON
+# Fonction pour gÃ©nÃ©rer le rapport au format JSON
 function Generate-JsonReport {
     [CmdletBinding()]
     param (
@@ -380,7 +380,7 @@ function Generate-JsonReport {
     return $AnalysisResults | ConvertTo-Json -Depth 10
 }
 
-# Analyser les aspects techniques des améliorations
+# Analyser les aspects techniques des amÃ©liorations
 $analysisResults = [PSCustomObject]@{
     GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     Managers = @()
@@ -415,7 +415,7 @@ foreach ($manager in $improvementsData.Managers) {
     $analysisResults.Managers += $managerAnalysis
 }
 
-# Générer le rapport dans le format spécifié
+# GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $reportContent = Generate-MarkdownReport -AnalysisResults $analysisResults
@@ -428,21 +428,21 @@ switch ($Format) {
 # Enregistrer le rapport
 try {
     $reportContent | Out-File -FilePath $OutputFile -Encoding UTF8
-    Write-Host "Rapport d'analyse technique généré avec succès : $OutputFile"
+    Write-Host "Rapport d'analyse technique gÃ©nÃ©rÃ© avec succÃ¨s : $OutputFile"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du rapport : $_"
     exit 1
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'analyse technique :"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'analyse technique :"
 Write-Host "--------------------------------"
 
 $totalImprovements = 0
 foreach ($manager in $analysisResults.Managers) {
     $managerImprovements = $manager.Improvements.Count
     $totalImprovements += $managerImprovements
-    Write-Host "  $($manager.Name) : $managerImprovements améliorations"
+    Write-Host "  $($manager.Name) : $managerImprovements amÃ©liorations"
 }
 
-Write-Host "  Total : $totalImprovements améliorations"
+Write-Host "  Total : $totalImprovements amÃ©liorations"

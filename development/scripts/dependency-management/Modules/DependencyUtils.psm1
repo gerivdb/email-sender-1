@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module d'utilitaires pour l'analyse des dépendances.
+    Module d'utilitaires pour l'analyse des dÃ©pendances.
 
 .DESCRIPTION
-    Ce module fournit des fonctions utilitaires pour l'analyse des dépendances,
-    comme la détection des modules système, la résolution des chemins, etc.
+    Ce module fournit des fonctions utilitaires pour l'analyse des dÃ©pendances,
+    comme la dÃ©tection des modules systÃ¨me, la rÃ©solution des chemins, etc.
 
 .NOTES
     Auteur: Dependency Management Team
@@ -19,7 +19,7 @@ function Test-SystemModule {
         [string]$ModuleName
     )
 
-    # Liste des modules système PowerShell
+    # Liste des modules systÃ¨me PowerShell
     $systemModules = @(
         'Microsoft.PowerShell.Archive',
         'Microsoft.PowerShell.Core',
@@ -58,12 +58,12 @@ function Find-ModulePath {
     $module = $null
 
     if ($ModuleVersion) {
-        # Rechercher une version spécifique
+        # Rechercher une version spÃ©cifique
         $module = Get-Module -Name $ModuleName -ListAvailable | 
             Where-Object { $_.Version -eq $ModuleVersion } | 
             Select-Object -First 1
     } else {
-        # Rechercher la dernière version
+        # Rechercher la derniÃ¨re version
         $module = Get-Module -Name $ModuleName -ListAvailable | 
             Sort-Object -Property Version -Descending | 
             Select-Object -First 1
@@ -73,7 +73,7 @@ function Find-ModulePath {
         return $module.Path
     }
 
-    # Si le module n'est pas trouvé, retourner $null
+    # Si le module n'est pas trouvÃ©, retourner $null
     return $null
 }
 
@@ -99,30 +99,30 @@ function Get-ModuleDependencyGraph {
         [int]$CurrentDepth = 0
     )
 
-    # Initialiser la liste des modules traités si c'est le premier appel
+    # Initialiser la liste des modules traitÃ©s si c'est le premier appel
     if ($null -eq $ProcessedModules) {
         $ProcessedModules = [System.Collections.ArrayList]::new()
     }
 
-    # Vérifier la profondeur maximale
+    # VÃ©rifier la profondeur maximale
     if ($CurrentDepth -gt $MaxDepth) {
         Write-Warning "Maximum depth reached ($MaxDepth). Stopping recursion."
         return @()
     }
 
-    # Initialiser le graphe de dépendances
+    # Initialiser le graphe de dÃ©pendances
     $dependencyGraph = [System.Collections.ArrayList]::new()
 
-    # Vérifier si le module existe
+    # VÃ©rifier si le module existe
     if (-not (Test-Path -Path $RootModulePath)) {
         Write-Warning "Module path does not exist: $RootModulePath"
         return $dependencyGraph
     }
 
-    # Déterminer le type de module
+    # DÃ©terminer le type de module
     $moduleType = if ($RootModulePath -match '\.psd1$') { "Manifest" } else { "Script" }
 
-    # Obtenir les dépendances du module
+    # Obtenir les dÃ©pendances du module
     $dependencies = @()
     if ($moduleType -eq "Manifest") {
         $dependencies = Get-ModuleDependenciesFromManifest -ManifestPath $RootModulePath -SkipSystemModules:$SkipSystemModules -ResolveModulePaths:$ResolveModulePaths
@@ -130,13 +130,13 @@ function Get-ModuleDependencyGraph {
         $dependencies = Get-ModuleDependenciesFromCode -ModulePath $RootModulePath -SkipSystemModules:$SkipSystemModules -ResolveModulePaths:$ResolveModulePaths
     }
 
-    # Ajouter le module actuel à la liste des modules traités
+    # Ajouter le module actuel Ã  la liste des modules traitÃ©s
     $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($RootModulePath)
     [void]$ProcessedModules.Add($moduleName)
 
-    # Ajouter les dépendances au graphe
+    # Ajouter les dÃ©pendances au graphe
     foreach ($dependency in $dependencies) {
-        # Ajouter la dépendance au graphe
+        # Ajouter la dÃ©pendance au graphe
         [void]$dependencyGraph.Add([PSCustomObject]@{
                 Source      = $moduleName
                 Target      = $dependency.Name
@@ -147,13 +147,13 @@ function Get-ModuleDependencyGraph {
                 Depth       = $CurrentDepth
             })
 
-        # Éviter les boucles infinies en vérifiant si le module a déjà été traité
+        # Ã‰viter les boucles infinies en vÃ©rifiant si le module a dÃ©jÃ  Ã©tÃ© traitÃ©
         if ($ProcessedModules -contains $dependency.Name) {
             Write-Verbose "Module already processed: $($dependency.Name). Skipping to avoid circular dependencies."
             continue
         }
 
-        # Récursivement obtenir les dépendances des dépendances
+        # RÃ©cursivement obtenir les dÃ©pendances des dÃ©pendances
         if ($dependency.Path -and (Test-Path -Path $dependency.Path)) {
             $subDependencies = Get-ModuleDependencyGraph -RootModulePath $dependency.Path -SkipSystemModules:$SkipSystemModules -ResolveModulePaths:$ResolveModulePaths -MaxDepth $MaxDepth -ProcessedModules $ProcessedModules -CurrentDepth ($CurrentDepth + 1)
             $dependencyGraph.AddRange($subDependencies)
@@ -176,7 +176,7 @@ function Export-DependencyGraphToJson {
     # Convertir le graphe en JSON
     $json = $DependencyGraph | ConvertTo-Json -Depth 10
 
-    # Écrire le JSON dans un fichier
+    # Ã‰crire le JSON dans un fichier
     $json | Out-File -FilePath $OutputPath -Encoding utf8
 }
 
@@ -190,7 +190,7 @@ function Export-DependencyGraphToDOT {
         [string]$OutputPath
     )
 
-    # Créer le contenu DOT
+    # CrÃ©er le contenu DOT
     $dotContent = @"
 digraph DependencyGraph {
     rankdir=LR;
@@ -198,7 +198,7 @@ digraph DependencyGraph {
 
 "@
 
-    # Ajouter les nœuds et les arêtes
+    # Ajouter les nÅ“uds et les arÃªtes
     foreach ($edge in $DependencyGraph) {
         $source = $edge.Source -replace '"', '\"'
         $target = $edge.Target -replace '"', '\"'
@@ -210,7 +210,7 @@ digraph DependencyGraph {
 
     $dotContent += "}"
 
-    # Écrire le contenu DOT dans un fichier
+    # Ã‰crire le contenu DOT dans un fichier
     $dotContent | Out-File -FilePath $OutputPath -Encoding utf8
 }
 
@@ -224,7 +224,7 @@ function Export-DependencyGraphToHTML {
         [string]$OutputPath
     )
 
-    # Créer le contenu HTML avec D3.js pour la visualisation
+    # CrÃ©er le contenu HTML avec D3.js pour la visualisation
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -263,23 +263,23 @@ function Export-DependencyGraphToHTML {
     <h1>Module Dependency Graph</h1>
     <div id="graph"></div>
     <script>
-        // Données du graphe
+        // DonnÃ©es du graphe
         const graphData = {
             nodes: [],
             links: []
         };
 
-        // Convertir les données JSON en format D3
+        // Convertir les donnÃ©es JSON en format D3
         const dependencyGraph = $($DependencyGraph | ConvertTo-Json -Depth 10);
         
-        // Créer un ensemble unique de nœuds
+        // CrÃ©er un ensemble unique de nÅ“uds
         const nodeSet = new Set();
         dependencyGraph.forEach(edge => {
             nodeSet.add(edge.Source);
             nodeSet.add(edge.Target);
         });
         
-        // Ajouter les nœuds au graphe
+        // Ajouter les nÅ“uds au graphe
         nodeSet.forEach(node => {
             graphData.nodes.push({ id: node });
         });
@@ -294,7 +294,7 @@ function Export-DependencyGraphToHTML {
             });
         });
         
-        // Créer la visualisation
+        // CrÃ©er la visualisation
         const width = document.getElementById('graph').clientWidth;
         const height = document.getElementById('graph').clientHeight;
         
@@ -317,7 +317,7 @@ function Export-DependencyGraphToHTML {
             .attr("class", "link")
             .attr("stroke-width", 1);
         
-        // Ajouter les nœuds
+        // Ajouter les nÅ“uds
         const node = svg.append("g")
             .selectAll("circle")
             .data(graphData.nodes)
@@ -330,7 +330,7 @@ function Export-DependencyGraphToHTML {
                 .on("drag", dragged)
                 .on("end", dragended));
         
-        // Ajouter les étiquettes
+        // Ajouter les Ã©tiquettes
         const label = svg.append("g")
             .selectAll("text")
             .data(graphData.nodes)
@@ -348,7 +348,7 @@ function Export-DependencyGraphToHTML {
         node.append("title")
             .text(d => d.id);
         
-        // Mettre à jour la position des éléments à chaque tick
+        // Mettre Ã  jour la position des Ã©lÃ©ments Ã  chaque tick
         simulation.on("tick", () => {
             link
                 .attr("x1", d => d.source.x)
@@ -365,7 +365,7 @@ function Export-DependencyGraphToHTML {
                 .attr("y", d => d.y);
         });
         
-        // Fonctions pour le glisser-déposer
+        // Fonctions pour le glisser-dÃ©poser
         function dragstarted(event, d) {
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
@@ -387,7 +387,7 @@ function Export-DependencyGraphToHTML {
 </html>
 "@
 
-    # Écrire le contenu HTML dans un fichier
+    # Ã‰crire le contenu HTML dans un fichier
     $htmlContent | Out-File -FilePath $OutputPath -Encoding utf8
 }
 

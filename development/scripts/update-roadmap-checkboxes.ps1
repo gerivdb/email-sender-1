@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
-    Met à jour les cases à cocher dans la roadmap pour les tâches implémentées et testées à 100%.
+    Met Ã  jour les cases Ã  cocher dans la roadmap pour les tÃ¢ches implÃ©mentÃ©es et testÃ©es Ã  100%.
 
 .DESCRIPTION
-    Ce script met à jour les cases à cocher dans la roadmap pour les tâches qui ont été implémentées
-    et testées avec succès à 100%. Il utilise une approche simplifiée pour identifier les tâches
-    complétées et mettre à jour les cases à cocher correspondantes.
+    Ce script met Ã  jour les cases Ã  cocher dans la roadmap pour les tÃ¢ches qui ont Ã©tÃ© implÃ©mentÃ©es
+    et testÃ©es avec succÃ¨s Ã  100%. Il utilise une approche simplifiÃ©e pour identifier les tÃ¢ches
+    complÃ©tÃ©es et mettre Ã  jour les cases Ã  cocher correspondantes.
 
 .PARAMETER RoadmapPath
-    Chemin vers le fichier de roadmap à mettre à jour.
+    Chemin vers le fichier de roadmap Ã  mettre Ã  jour.
 
 .PARAMETER Force
-    Indique si les modifications doivent être appliquées sans confirmation.
+    Indique si les modifications doivent Ãªtre appliquÃ©es sans confirmation.
 
 .EXAMPLE
     .\update-roadmap-checkboxes.ps1 -RoadmapPath "projet\roadmaps\roadmap_complete_converted.md"
@@ -22,7 +22,7 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-05-02
+    Date de crÃ©ation: 2025-05-02
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -33,13 +33,13 @@ param (
     [switch]$Force
 )
 
-# Vérifier que le fichier de roadmap existe
+# VÃ©rifier que le fichier de roadmap existe
 if (-not (Test-Path -Path $RoadmapPath)) {
-    Write-Error "Le fichier de roadmap spécifié n'existe pas : $RoadmapPath"
+    Write-Error "Le fichier de roadmap spÃ©cifiÃ© n'existe pas : $RoadmapPath"
     exit 1
 }
 
-# Liste des tâches complétées (à titre d'exemple, cette liste devrait être générée dynamiquement)
+# Liste des tÃ¢ches complÃ©tÃ©es (Ã  titre d'exemple, cette liste devrait Ãªtre gÃ©nÃ©rÃ©e dynamiquement)
 $completedTasks = @(
     "1.1.1",
     "1.1.2",
@@ -100,46 +100,46 @@ $tasksUpdated = 0
 foreach ($line in $content) {
     $updated = $false
     
-    # Vérifier si la ligne contient une case à cocher non cochée
+    # VÃ©rifier si la ligne contient une case Ã  cocher non cochÃ©e
     if ($line -match '^\s*-\s+\[\s*\]') {
-        # Pour chaque tâche complétée
+        # Pour chaque tÃ¢che complÃ©tÃ©e
         foreach ($taskId in $completedTasks) {
-            # Échapper les caractères spéciaux dans l'ID de la tâche pour la regex
+            # Ã‰chapper les caractÃ¨res spÃ©ciaux dans l'ID de la tÃ¢che pour la regex
             $escapedTaskId = [regex]::Escape($taskId)
             
-            # Vérifier si la ligne contient l'ID de la tâche
+            # VÃ©rifier si la ligne contient l'ID de la tÃ¢che
             if ($line -match "\*\*$escapedTaskId\*\*" -or
                 $line -match "\b$escapedTaskId\b" -or
                 $line -match "\[$escapedTaskId\]" -or
                 $line -match "\($escapedTaskId\)") {
                 
-                # Mettre à jour la case à cocher
+                # Mettre Ã  jour la case Ã  cocher
                 $updatedLine = $line -replace '\[\s*\]', '[x]'
                 $updatedContent += $updatedLine
                 $tasksUpdated++
                 $updated = $true
                 
-                Write-Host "Tâche $taskId : Case à cocher mise à jour" -ForegroundColor Green
+                Write-Host "TÃ¢che $taskId : Case Ã  cocher mise Ã  jour" -ForegroundColor Green
                 break
             }
         }
     }
     
-    # Si la ligne n'a pas été mise à jour, l'ajouter telle quelle
+    # Si la ligne n'a pas Ã©tÃ© mise Ã  jour, l'ajouter telle quelle
     if (-not $updated) {
         $updatedContent += $line
     }
 }
 
-# Si des tâches ont été mises à jour, enregistrer le fichier
+# Si des tÃ¢ches ont Ã©tÃ© mises Ã  jour, enregistrer le fichier
 if ($tasksUpdated -gt 0) {
-    if ($Force -or $PSCmdlet.ShouldProcess($RoadmapPath, "Mettre à jour $tasksUpdated cases à cocher")) {
+    if ($Force -or $PSCmdlet.ShouldProcess($RoadmapPath, "Mettre Ã  jour $tasksUpdated cases Ã  cocher")) {
         $updatedContent | Set-Content -Path $RoadmapPath -Encoding UTF8
-        Write-Host "$tasksUpdated cases à cocher ont été mises à jour dans la roadmap." -ForegroundColor Green
+        Write-Host "$tasksUpdated cases Ã  cocher ont Ã©tÃ© mises Ã  jour dans la roadmap." -ForegroundColor Green
     } else {
-        Write-Host "$tasksUpdated cases à cocher seraient mises à jour dans la roadmap (mode simulation)." -ForegroundColor Yellow
+        Write-Host "$tasksUpdated cases Ã  cocher seraient mises Ã  jour dans la roadmap (mode simulation)." -ForegroundColor Yellow
         Write-Host "Utilisez -Force pour appliquer les modifications." -ForegroundColor Yellow
     }
 } else {
-    Write-Host "Aucune case à cocher n'a été mise à jour dans la roadmap." -ForegroundColor Yellow
+    Write-Host "Aucune case Ã  cocher n'a Ã©tÃ© mise Ã  jour dans la roadmap." -ForegroundColor Yellow
 }

@@ -1,5 +1,5 @@
-# Register-ArchiveTask.ps1
-# Script pour enregistrer une tâche planifiée Windows qui archive les tâches terminées
+﻿# Register-ArchiveTask.ps1
+# Script pour enregistrer une tÃ¢che planifiÃ©e Windows qui archive les tÃ¢ches terminÃ©es
 # Version: 1.0
 # Date: 2025-05-03
 
@@ -27,12 +27,12 @@ if (-not (Test-Path -Path $archiveScriptPath)) {
     exit 1
 }
 
-# Créer le script d'exécution qui vérifie si l'IDE est ouvert et si le fichier a été modifié
+# CrÃ©er le script d'exÃ©cution qui vÃ©rifie si l'IDE est ouvert et si le fichier a Ã©tÃ© modifiÃ©
 $executionScriptPath = Join-Path -Path $scriptPath -ChildPath "Execute-ArchiveIfNeeded.ps1"
 
 $executionScriptContent = @"
 # Execute-ArchiveIfNeeded.ps1
-# Script exécuté par la tâche planifiée pour archiver les tâches terminées si nécessaire
+# Script exÃ©cutÃ© par la tÃ¢che planifiÃ©e pour archiver les tÃ¢ches terminÃ©es si nÃ©cessaire
 # Version: 1.0
 # Date: 2025-05-03
 
@@ -48,13 +48,13 @@ param (
     [switch]`$Force
 )
 
-# Vérifier si l'IDE est ouvert
+# VÃ©rifier si l'IDE est ouvert
 function Test-IDERunning {
     `$process = Get-Process -Name "Code" -ErrorAction SilentlyContinue
     return `$null -ne `$process
 }
 
-# Vérifier si le fichier a été modifié depuis la dernière exécution
+# VÃ©rifier si le fichier a Ã©tÃ© modifiÃ© depuis la derniÃ¨re exÃ©cution
 function Test-FileChanged {
     param (
         [string]`$FilePath,
@@ -76,7 +76,7 @@ function Test-FileChanged {
     return `$true
 }
 
-# Mettre à jour le fichier de dernière exécution
+# Mettre Ã  jour le fichier de derniÃ¨re exÃ©cution
 function Update-LastRunTime {
     param (
         [string]`$LastRunFilePath
@@ -89,10 +89,10 @@ function Update-LastRunTime {
     `$lastRun | ConvertTo-Json | Set-Content -Path `$LastRunFilePath -Encoding UTF8
 }
 
-# Chemin du fichier de dernière exécution
+# Chemin du fichier de derniÃ¨re exÃ©cution
 `$lastRunFilePath = Join-Path -Path "`$PSScriptRoot" -ChildPath "last_archive_run.json"
 
-# Vérifier si l'IDE est ouvert
+# VÃ©rifier si l'IDE est ouvert
 `$ideRunning = Test-IDERunning
 
 if (-not `$ideRunning) {
@@ -100,15 +100,15 @@ if (-not `$ideRunning) {
     exit 0
 }
 
-# Vérifier si le fichier a été modifié
+# VÃ©rifier si le fichier a Ã©tÃ© modifiÃ©
 `$fileChanged = Test-FileChanged -FilePath `$RoadmapPath -LastRunFilePath `$lastRunFilePath
 
 if (-not `$fileChanged) {
-    # Le fichier n'a pas été modifié, ne rien faire
+    # Le fichier n'a pas Ã©tÃ© modifiÃ©, ne rien faire
     exit 0
 }
 
-# L'IDE est ouvert et le fichier a été modifié, exécuter l'archivage
+# L'IDE est ouvert et le fichier a Ã©tÃ© modifiÃ©, exÃ©cuter l'archivage
 `$archiveScriptPath = Join-Path -Path "`$PSScriptRoot" -ChildPath "Archive-CompletedTasks.ps1"
 
 if (-not (Test-Path -Path `$archiveScriptPath)) {
@@ -116,7 +116,7 @@ if (-not (Test-Path -Path `$archiveScriptPath)) {
     exit 1
 }
 
-# Construire les paramètres pour le script d'archivage
+# Construire les paramÃ¨tres pour le script d'archivage
 `$params = @{
     RoadmapPath = `$RoadmapPath
 }
@@ -129,16 +129,16 @@ if (`$Force) {
     `$params.Add("Force", `$true)
 }
 
-# Exécuter le script d'archivage
+# ExÃ©cuter le script d'archivage
 & `$archiveScriptPath @params
 
-# Mettre à jour le fichier de dernière exécution
+# Mettre Ã  jour le fichier de derniÃ¨re exÃ©cution
 Update-LastRunTime -LastRunFilePath `$lastRunFilePath
 "@
 
 Set-Content -Path $executionScriptPath -Value $executionScriptContent -Encoding UTF8
 
-# Construire les paramètres pour le script d'exécution
+# Construire les paramÃ¨tres pour le script d'exÃ©cution
 $params = @{
     RoadmapPath = $RoadmapPath
 }
@@ -151,7 +151,7 @@ if ($Force) {
     $params.Add("Force", $true)
 }
 
-# Convertir les paramètres en chaîne de commande
+# Convertir les paramÃ¨tres en chaÃ®ne de commande
 $paramString = ""
 foreach ($key in $params.Keys) {
     $value = $params[$key]
@@ -162,30 +162,30 @@ foreach ($key in $params.Keys) {
     }
 }
 
-# Créer la commande PowerShell à exécuter par la tâche planifiée
+# CrÃ©er la commande PowerShell Ã  exÃ©cuter par la tÃ¢che planifiÃ©e
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$executionScriptPath`"$paramString"
 
-# Créer le déclencheur pour exécuter la tâche toutes les X minutes
+# CrÃ©er le dÃ©clencheur pour exÃ©cuter la tÃ¢che toutes les X minutes
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes) -RepetitionDuration (New-TimeSpan -Days 3650)
 
-# Créer les paramètres de la tâche
+# CrÃ©er les paramÃ¨tres de la tÃ¢che
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -RunOnlyIfNetworkAvailable -Hidden
 
-# Créer la tâche planifiée
+# CrÃ©er la tÃ¢che planifiÃ©e
 $taskName = "ArchiveRoadmapTasks"
-$description = "Archive automatiquement les tâches terminées de la roadmap toutes les $IntervalMinutes minutes si l'IDE est ouvert et si le fichier a été modifié."
+$description = "Archive automatiquement les tÃ¢ches terminÃ©es de la roadmap toutes les $IntervalMinutes minutes si l'IDE est ouvert et si le fichier a Ã©tÃ© modifiÃ©."
 
-# Supprimer la tâche si elle existe déjà
+# Supprimer la tÃ¢che si elle existe dÃ©jÃ 
 $existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 if ($existingTask) {
     Unregister-ScheduledTask -TaskName $taskName -Confirm:$false
 }
 
-# Enregistrer la tâche
+# Enregistrer la tÃ¢che
 Register-ScheduledTask -Action $action -Trigger $trigger -Settings $settings -TaskName $taskName -Description $description -RunLevel Highest
 
-Write-Host "Tâche planifiée '$taskName' enregistrée avec succès."
-Write-Host "La tâche s'exécutera toutes les $IntervalMinutes minutes et vérifiera si l'IDE est ouvert et si le fichier a été modifié."
+Write-Host "TÃ¢che planifiÃ©e '$taskName' enregistrÃ©e avec succÃ¨s."
+Write-Host "La tÃ¢che s'exÃ©cutera toutes les $IntervalMinutes minutes et vÃ©rifiera si l'IDE est ouvert et si le fichier a Ã©tÃ© modifiÃ©."
 Write-Host "Fichier de roadmap: $RoadmapPath"
-Write-Host "Mise à jour de la base vectorielle: $UpdateVectorDB"
-Write-Host "Mode forcé: $Force"
+Write-Host "Mise Ã  jour de la base vectorielle: $UpdateVectorDB"
+Write-Host "Mode forcÃ©: $Force"

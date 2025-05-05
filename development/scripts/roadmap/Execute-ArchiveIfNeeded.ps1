@@ -1,5 +1,5 @@
-# Execute-ArchiveIfNeeded.ps1
-# Script exécuté par la tâche planifiée pour archiver les tâches terminées si nécessaire
+﻿# Execute-ArchiveIfNeeded.ps1
+# Script exÃ©cutÃ© par la tÃ¢che planifiÃ©e pour archiver les tÃ¢ches terminÃ©es si nÃ©cessaire
 # Version: 1.0
 # Date: 2025-05-03
 
@@ -15,13 +15,13 @@ param (
     [switch]$Force
 )
 
-# Vérifier si l'IDE est ouvert
+# VÃ©rifier si l'IDE est ouvert
 function Test-IDERunning {
     $process = Get-Process -Name "Code" -ErrorAction SilentlyContinue
     return $null -ne $process
 }
 
-# Vérifier si le fichier a été modifié depuis la dernière exécution
+# VÃ©rifier si le fichier a Ã©tÃ© modifiÃ© depuis la derniÃ¨re exÃ©cution
 function Test-FileChanged {
     param (
         [string]$FilePath,
@@ -43,7 +43,7 @@ function Test-FileChanged {
     return $true
 }
 
-# Mettre à jour le fichier de dernière exécution
+# Mettre Ã  jour le fichier de derniÃ¨re exÃ©cution
 function Update-LastRunTime {
     param (
         [string]$LastRunFilePath
@@ -56,10 +56,10 @@ function Update-LastRunTime {
     $lastRun | ConvertTo-Json | Set-Content -Path $LastRunFilePath -Encoding UTF8
 }
 
-# Chemin du fichier de dernière exécution
+# Chemin du fichier de derniÃ¨re exÃ©cution
 $lastRunFilePath = Join-Path -Path "$PSScriptRoot" -ChildPath "last_archive_run.json"
 
-# Vérifier si l'IDE est ouvert
+# VÃ©rifier si l'IDE est ouvert
 $ideRunning = Test-IDERunning
 
 if (-not $ideRunning) {
@@ -67,15 +67,15 @@ if (-not $ideRunning) {
     exit 0
 }
 
-# Vérifier si le fichier a été modifié
+# VÃ©rifier si le fichier a Ã©tÃ© modifiÃ©
 $fileChanged = Test-FileChanged -FilePath $RoadmapPath -LastRunFilePath $lastRunFilePath
 
 if (-not $fileChanged) {
-    # Le fichier n'a pas été modifié, ne rien faire
+    # Le fichier n'a pas Ã©tÃ© modifiÃ©, ne rien faire
     exit 0
 }
 
-# L'IDE est ouvert et le fichier a été modifié, exécuter l'archivage
+# L'IDE est ouvert et le fichier a Ã©tÃ© modifiÃ©, exÃ©cuter l'archivage
 $archiveScriptPath = Join-Path -Path "$PSScriptRoot" -ChildPath "Archive-CompletedTasks.ps1"
 
 if (-not (Test-Path -Path $archiveScriptPath)) {
@@ -83,7 +83,7 @@ if (-not (Test-Path -Path $archiveScriptPath)) {
     exit 1
 }
 
-# Construire les paramètres pour le script d'archivage
+# Construire les paramÃ¨tres pour le script d'archivage
 $params = @{
     RoadmapPath = $RoadmapPath
 }
@@ -96,8 +96,8 @@ if ($Force) {
     $params.Add("Force", $true)
 }
 
-# Exécuter le script d'archivage
+# ExÃ©cuter le script d'archivage
 & $archiveScriptPath @params
 
-# Mettre à jour le fichier de dernière exécution
+# Mettre Ã  jour le fichier de derniÃ¨re exÃ©cution
 Update-LastRunTime -LastRunFilePath $lastRunFilePath

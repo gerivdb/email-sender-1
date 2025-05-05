@@ -1,9 +1,9 @@
-# Script pour vérifier l'encodage des fichiers
+﻿# Script pour vÃ©rifier l'encodage des fichiers
 
-# Définir l'encodage de la console
+# DÃ©finir l'encodage de la console
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Fonction pour vérifier l'encodage d'un fichier
+# Fonction pour vÃ©rifier l'encodage d'un fichier
 function Get-FileEncoding {
     [CmdletBinding()]
     param (
@@ -14,35 +14,35 @@ function Get-FileEncoding {
     # Lire les premiers octets du fichier
     $bytes = [System.IO.File]::ReadAllBytes($FilePath)
     
-    # Vérifier la présence du BOM UTF-8
+    # VÃ©rifier la prÃ©sence du BOM UTF-8
     if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
         return "UTF-8 with BOM"
     }
     
-    # Vérifier la présence du BOM UTF-16 LE
+    # VÃ©rifier la prÃ©sence du BOM UTF-16 LE
     if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE) {
         return "UTF-16 LE with BOM"
     }
     
-    # Vérifier la présence du BOM UTF-16 BE
+    # VÃ©rifier la prÃ©sence du BOM UTF-16 BE
     if ($bytes.Length -ge 2 -and $bytes[0] -eq 0xFE -and $bytes[1] -eq 0xFF) {
         return "UTF-16 BE with BOM"
     }
     
-    # Vérifier la présence du BOM UTF-32 LE
+    # VÃ©rifier la prÃ©sence du BOM UTF-32 LE
     if ($bytes.Length -ge 4 -and $bytes[0] -eq 0xFF -and $bytes[1] -eq 0xFE -and $bytes[2] -eq 0x00 -and $bytes[3] -eq 0x00) {
         return "UTF-32 LE with BOM"
     }
     
-    # Vérifier la présence du BOM UTF-32 BE
+    # VÃ©rifier la prÃ©sence du BOM UTF-32 BE
     if ($bytes.Length -ge 4 -and $bytes[0] -eq 0x00 -and $bytes[1] -eq 0x00 -and $bytes[2] -eq 0xFE -and $bytes[3] -eq 0xFF) {
         return "UTF-32 BE with BOM"
     }
     
-    # Si aucun BOM n'est détecté, essayer de déterminer l'encodage
+    # Si aucun BOM n'est dÃ©tectÃ©, essayer de dÃ©terminer l'encodage
     $encoding = "Unknown"
     
-    # Vérifier si le fichier est probablement UTF-8 sans BOM
+    # VÃ©rifier si le fichier est probablement UTF-8 sans BOM
     $isUtf8 = $true
     $i = 0
     while ($i -lt $bytes.Length) {
@@ -69,7 +69,7 @@ function Get-FileEncoding {
     return $encoding
 }
 
-# Vérifier l'encodage des fichiers PowerShell
+# VÃ©rifier l'encodage des fichiers PowerShell
 $psFiles = @(
     ".\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1",
     ".\development\scripts\maintenance\error-learning\Train-ErrorPatternModel.ps1",
@@ -90,7 +90,7 @@ foreach ($file in $psFiles) {
     }
 }
 
-# Vérifier l'encodage des fichiers Markdown
+# VÃ©rifier l'encodage des fichiers Markdown
 $mdFiles = @(
     ".\development\testing\tests\test_integration_report.md",
     ".\development\testing\tests\test_cascade_report.md"
@@ -105,4 +105,4 @@ foreach ($file in $mdFiles) {
     }
 }
 
-Write-Host "Vérification de l'encodage terminée" -ForegroundColor Green
+Write-Host "VÃ©rification de l'encodage terminÃ©e" -ForegroundColor Green

@@ -1,4 +1,4 @@
-# Script de test pour les fonctions d'extraction d'elements specifiques
+﻿# Script de test pour les fonctions d'extraction d'elements specifiques
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"

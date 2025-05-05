@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module ParallelProcessing.ps1.
@@ -7,38 +7,38 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $parallelProcessingPath = Join-Path -Path $modulesPath -ChildPath "ParallelProcessing.ps1"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "ParallelProcessingTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $testFiles = @()
 $inputDir = Join-Path -Path $testTempDir -ChildPath "input"
 $outputDir = Join-Path -Path $testTempDir -ChildPath "output"
 New-Item -Path $inputDir -ItemType Directory -Force | Out-Null
 New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers CSV de test
+# CrÃ©er des fichiers CSV de test
 for ($i = 1; $i -le 5; $i++) {
     $csvPath = Join-Path -Path $inputDir -ChildPath "test$i.csv"
     $csvContent = "id,name,value`n"
@@ -50,21 +50,21 @@ for ($i = 1; $i -le 5; $i++) {
     $testFiles += $csvPath
 }
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests du module ParallelProcessing" {
     BeforeAll {
         # Importer les modules
         . $parallelProcessingPath
         . $unifiedSegmenterPath
         
-        # Initialiser le segmenteur unifié
+        # Initialiser le segmenteur unifiÃ©
         $initResult = Initialize-UnifiedSegmenter
         $initResult | Should -Be $true
     }
     
     Context "Tests de la fonction Invoke-ParallelFileProcessing" {
-        It "Traite correctement les fichiers en parallèle" {
-            # Définir le script block de test
+        It "Traite correctement les fichiers en parallÃ¨le" {
+            # DÃ©finir le script block de test
             $scriptBlock = {
                 param($FilePath)
                 
@@ -78,10 +78,10 @@ Describe "Tests du module ParallelProcessing" {
                 }
             }
             
-            # Exécuter le traitement parallèle
+            # ExÃ©cuter le traitement parallÃ¨le
             $results = Invoke-ParallelFileProcessing -FilePaths $testFiles -ScriptBlock $scriptBlock -ThrottleLimit 3
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -Be $testFiles.Count
             
@@ -91,12 +91,12 @@ Describe "Tests du module ParallelProcessing" {
             }
         }
         
-        It "Passe correctement les paramètres au script block" {
-            # Définir le script block de test
+        It "Passe correctement les paramÃ¨tres au script block" {
+            # DÃ©finir le script block de test
             $scriptBlock = {
                 param($FilePath, $Prefix, $Suffix)
                 
-                # Retourner un objet avec les paramètres
+                # Retourner un objet avec les paramÃ¨tres
                 return [PSCustomObject]@{
                     FilePath = $FilePath
                     Prefix = $Prefix
@@ -104,16 +104,16 @@ Describe "Tests du module ParallelProcessing" {
                 }
             }
             
-            # Définir les paramètres
+            # DÃ©finir les paramÃ¨tres
             $parameters = @{
                 Prefix = "Test"
                 Suffix = "Suffix"
             }
             
-            # Exécuter le traitement parallèle
+            # ExÃ©cuter le traitement parallÃ¨le
             $results = Invoke-ParallelFileProcessing -FilePaths $testFiles -ScriptBlock $scriptBlock -ThrottleLimit 3 -Parameters $parameters
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -Be $testFiles.Count
             
@@ -127,10 +127,10 @@ Describe "Tests du module ParallelProcessing" {
     
     Context "Tests de la fonction Convert-FilesInParallel" {
         It "Convertit correctement les fichiers CSV en JSON" {
-            # Exécuter la conversion parallèle
+            # ExÃ©cuter la conversion parallÃ¨le
             $results = Convert-FilesInParallel -InputFiles $testFiles -OutputDir $outputDir -InputFormat "CSV" -OutputFormat "JSON" -ThrottleLimit 3
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -Be $testFiles.Count
             
@@ -138,25 +138,25 @@ Describe "Tests du module ParallelProcessing" {
                 $result.InputFile | Should -BeIn $testFiles
                 $result.Success | Should -Be $true
                 
-                # Vérifier que le fichier de sortie existe
+                # VÃ©rifier que le fichier de sortie existe
                 Test-Path -Path $result.OutputFile | Should -Be $true
                 
-                # Vérifier que le fichier de sortie est un JSON valide
+                # VÃ©rifier que le fichier de sortie est un JSON valide
                 $jsonContent = Get-Content -Path $result.OutputFile -Raw
                 { $jsonContent | ConvertFrom-Json } | Should -Not -Throw
             }
         }
         
-        It "Gère correctement les erreurs de conversion" {
-            # Créer un fichier CSV invalide
+        It "GÃ¨re correctement les erreurs de conversion" {
+            # CrÃ©er un fichier CSV invalide
             $invalidCsvPath = Join-Path -Path $inputDir -ChildPath "invalid.csv"
             $invalidCsvContent = "id,name,value`n1,Name 1,Value 1`n2,Name 2"  # Ligne invalide
             Set-Content -Path $invalidCsvPath -Value $invalidCsvContent -Encoding UTF8
             
-            # Exécuter la conversion parallèle
+            # ExÃ©cuter la conversion parallÃ¨le
             $results = Convert-FilesInParallel -InputFiles @($invalidCsvPath) -OutputDir $outputDir -InputFormat "CSV" -OutputFormat "JSON" -ThrottleLimit 3
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -Be 1
             $results[0].InputFile | Should -Be $invalidCsvPath
@@ -166,10 +166,10 @@ Describe "Tests du module ParallelProcessing" {
     
     Context "Tests de la fonction Get-FileAnalysisInParallel" {
         It "Analyse correctement les fichiers CSV" {
-            # Exécuter l'analyse parallèle
+            # ExÃ©cuter l'analyse parallÃ¨le
             $results = Get-FileAnalysisInParallel -FilePaths $testFiles -Format "CSV" -OutputDir $outputDir -ThrottleLimit 3
             
-            # Vérifier les résultats
+            # VÃ©rifier les rÃ©sultats
             $results | Should -Not -BeNullOrEmpty
             $results.Count | Should -Be $testFiles.Count
             
@@ -177,10 +177,10 @@ Describe "Tests du module ParallelProcessing" {
                 $result.InputFile | Should -BeIn $testFiles
                 $result.Success | Should -Be $true
                 
-                # Vérifier que le fichier de sortie existe
+                # VÃ©rifier que le fichier de sortie existe
                 Test-Path -Path $result.OutputFile | Should -Be $true
                 
-                # Vérifier que le fichier de sortie est un JSON valide
+                # VÃ©rifier que le fichier de sortie est un JSON valide
                 $jsonContent = Get-Content -Path $result.OutputFile -Raw
                 { $jsonContent | ConvertFrom-Json } | Should -Not -Throw
             }
@@ -188,8 +188,8 @@ Describe "Tests du module ParallelProcessing" {
     }
     
     Context "Tests de performance" {
-        It "Le traitement parallèle est plus rapide que le traitement séquentiel" {
-            # Définir le script block de test
+        It "Le traitement parallÃ¨le est plus rapide que le traitement sÃ©quentiel" {
+            # DÃ©finir le script block de test
             $scriptBlock = {
                 param($FilePath)
                 
@@ -200,7 +200,7 @@ Describe "Tests du module ParallelProcessing" {
                 return $FilePath
             }
             
-            # Mesurer le temps de traitement séquentiel
+            # Mesurer le temps de traitement sÃ©quentiel
             $sequentialStart = Get-Date
             foreach ($file in $testFiles) {
                 & $scriptBlock $file
@@ -208,16 +208,16 @@ Describe "Tests du module ParallelProcessing" {
             $sequentialEnd = Get-Date
             $sequentialDuration = ($sequentialEnd - $sequentialStart).TotalMilliseconds
             
-            # Mesurer le temps de traitement parallèle
+            # Mesurer le temps de traitement parallÃ¨le
             $parallelStart = Get-Date
             $parallelResults = Invoke-ParallelFileProcessing -FilePaths $testFiles -ScriptBlock $scriptBlock -ThrottleLimit 3
             $parallelEnd = Get-Date
             $parallelDuration = ($parallelEnd - $parallelStart).TotalMilliseconds
             
-            # Vérifier que le traitement parallèle est plus rapide
+            # VÃ©rifier que le traitement parallÃ¨le est plus rapide
             $parallelDuration | Should -BeLessThan $sequentialDuration
             
-            # Vérifier que tous les fichiers ont été traités
+            # VÃ©rifier que tous les fichiers ont Ã©tÃ© traitÃ©s
             $parallelResults.Count | Should -Be $testFiles.Count
         }
     }

@@ -1,9 +1,9 @@
-# Script de test pour la fonction Invoke-AstTraversalDFS-Simple
+﻿# Script de test pour la fonction Invoke-AstTraversalDFS-Simple
 
 # Charger la fonction
 . "$PSScriptRoot\..\Public\Invoke-AstTraversalDFS-Simple.ps1"
 
-# Créer un exemple de code PowerShell à analyser
+# CrÃ©er un exemple de code PowerShell Ã  analyser
 $sampleCode = @'
 function Get-Example {
     [CmdletBinding()]
@@ -60,7 +60,7 @@ $result | ForEach-Object {
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [ref]$tokens, [ref]$errors)
 
-# Vérifier s'il y a des erreurs d'analyse
+# VÃ©rifier s'il y a des erreurs d'analyse
 if ($errors.Count -gt 0) {
     Write-Error "Erreurs d'analyse du code :"
     foreach ($error in $errors) {
@@ -72,7 +72,7 @@ if ($errors.Count -gt 0) {
 # Test 1: Recherche de toutes les fonctions sans limite de profondeur
 Write-Host "`n=== Test 1: Recherche de toutes les fonctions sans limite de profondeur ===" -ForegroundColor Cyan
 $functions = Invoke-AstTraversalDFS-Simple -Ast $ast -NodeType "FunctionDefinition"
-Write-Host "Nombre de fonctions trouvées: $($functions.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de fonctions trouvÃ©es: $($functions.Count)" -ForegroundColor Yellow
 foreach ($function in $functions) {
     Write-Host "  Fonction: $($function.Name) (Ligne $($function.Extent.StartLineNumber))" -ForegroundColor Green
 }
@@ -80,7 +80,7 @@ foreach ($function in $functions) {
 # Test 2: Recherche de toutes les variables avec limite de profondeur
 Write-Host "`n=== Test 2: Recherche de toutes les variables avec limite de profondeur 3 ===" -ForegroundColor Cyan
 $variables = Invoke-AstTraversalDFS-Simple -Ast $ast -NodeType "VariableExpression" -MaxDepth 3
-Write-Host "Nombre de variables trouvées: $($variables.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de variables trouvÃ©es: $($variables.Count)" -ForegroundColor Yellow
 $uniqueVars = @{}
 foreach ($variable in $variables) {
     $varName = $variable.VariablePath.UserPath
@@ -90,37 +90,37 @@ foreach ($variable in $variables) {
     }
 }
 
-# Test 3: Recherche avec prédicat personnalisé
-Write-Host "`n=== Test 3: Recherche avec prédicat personnalisé ===" -ForegroundColor Cyan
+# Test 3: Recherche avec prÃ©dicat personnalisÃ©
+Write-Host "`n=== Test 3: Recherche avec prÃ©dicat personnalisÃ© ===" -ForegroundColor Cyan
 $predicate = {
     param($node)
     $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -like "Get-*"
 }
 $getFunctions = Invoke-AstTraversalDFS-Simple -Ast $ast -Predicate $predicate
-Write-Host "Nombre de fonctions 'Get-*' trouvées: $($getFunctions.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de fonctions 'Get-*' trouvÃ©es: $($getFunctions.Count)" -ForegroundColor Yellow
 foreach ($function in $getFunctions) {
     Write-Host "  Fonction: $($function.Name) (Ligne $($function.Extent.StartLineNumber))" -ForegroundColor Green
 }
 
-# Test 4: Recherche avec inclusion du nœud racine
+# Test 4: Recherche avec inclusion du nÅ“ud racine
 Write-Host "`n=== Test 4: Recherche avec inclusion du noeud racine ===" -ForegroundColor Cyan
 $rootIncluded = Invoke-AstTraversalDFS-Simple -Ast $ast -IncludeRoot
 Write-Host "Type du noeud racine: $($ast.GetType().Name)" -ForegroundColor Yellow
 Write-Host "Nombre de noeuds trouves (avec racine): $($rootIncluded.Count)" -ForegroundColor Yellow
 Write-Host "Premier noeud: $($rootIncluded[0].GetType().Name)" -ForegroundColor Green
 
-# Test 5: Comparaison des performances avec la méthode FindAll native
+# Test 5: Comparaison des performances avec la mÃ©thode FindAll native
 Write-Host "`n=== Test 5: Comparaison des performances ===" -ForegroundColor Cyan
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $nativeResults = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
 $stopwatch.Stop()
 $nativeTime = $stopwatch.ElapsedMilliseconds
-Write-Host "Méthode FindAll native: $nativeTime ms, $($nativeResults.Count) résultats" -ForegroundColor Yellow
+Write-Host "MÃ©thode FindAll native: $nativeTime ms, $($nativeResults.Count) rÃ©sultats" -ForegroundColor Yellow
 
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $simpleResults = Invoke-AstTraversalDFS-Simple -Ast $ast -NodeType "FunctionDefinition"
 $stopwatch.Stop()
 $simpleTime = $stopwatch.ElapsedMilliseconds
-Write-Host "Méthode simple: $simpleTime ms, $($simpleResults.Count) résultats" -ForegroundColor Yellow
+Write-Host "MÃ©thode simple: $simpleTime ms, $($simpleResults.Count) rÃ©sultats" -ForegroundColor Yellow
 
-Write-Host "`nTous les tests sont terminés." -ForegroundColor Green
+Write-Host "`nTous les tests sont terminÃ©s." -ForegroundColor Green

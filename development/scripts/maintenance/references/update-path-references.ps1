@@ -1,4 +1,4 @@
-# Script to update path references after reorganization
+﻿# Script to update path references after reorganization
 Write-Host "Updating path references after reorganization..." -ForegroundColor Green
 
 # Define path mappings

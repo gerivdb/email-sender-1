@@ -1,6 +1,6 @@
-# Script de test minimal pour la fonction Get-AstNodeTypeCount
+﻿# Script de test minimal pour la fonction Get-AstNodeTypeCount
 
-# Créer un script PowerShell de test très simple
+# CrÃ©er un script PowerShell de test trÃ¨s simple
 $sampleCode = @'
 function Test-Function {
     "Hello, World!"
@@ -11,7 +11,7 @@ function Test-Function {
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [ref]$tokens, [ref]$errors)
 
-# Définir une fonction simple pour compter les noeuds
+# DÃ©finir une fonction simple pour compter les noeuds
 function Get-NodeCount {
     param (
         [Parameter(Mandatory = $true)]

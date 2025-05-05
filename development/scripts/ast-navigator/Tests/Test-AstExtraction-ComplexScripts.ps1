@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests d'extraction AST avec des scripts PowerShell complexes.
 
@@ -10,16 +10,16 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-12-15
+    Date de crÃ©ation: 2023-12-15
 #>
 
-# Importer les fonctions à tester
+# Importer les fonctions Ã  tester
 . "$PSScriptRoot\..\Public\Get-AstFunctions.ps1"
 . "$PSScriptRoot\..\Public\Get-AstParameters.ps1"
 . "$PSScriptRoot\..\Public\Get-AstVariables.ps1"
 . "$PSScriptRoot\..\Public\Get-AstCommands.ps1"
 
-# Fonction pour vérifier une condition
+# Fonction pour vÃ©rifier une condition
 function Assert-Condition {
     param (
         [Parameter(Mandatory = $true)]
@@ -45,7 +45,7 @@ function Assert-Condition {
     }
 }
 
-# Fonction pour exécuter les tests sur un script complexe
+# Fonction pour exÃ©cuter les tests sur un script complexe
 function Test-ComplexScript {
     [CmdletBinding()]
     param (
@@ -56,7 +56,7 @@ function Test-ComplexScript {
         [string]$ScriptContent,
         
         [Parameter(Mandatory = $false)]
-        [string]$ScriptType = "Général"
+        [string]$ScriptType = "GÃ©nÃ©ral"
     )
     
     Write-Host "=== Test du script complexe: $ScriptName (Type: $ScriptType) ===" -ForegroundColor Cyan
@@ -65,8 +65,8 @@ function Test-ComplexScript {
     $tokens = $errors = $null
     $ast = [System.Management.Automation.Language.Parser]::ParseInput($ScriptContent, [ref]$tokens, [ref]$errors)
     
-    # Vérifier que l'analyse AST s'est bien déroulée
-    if (-not (Assert-Condition -Condition ($null -ne $ast) -Message "L'AST a été créé avec succès" -Critical)) {
+    # VÃ©rifier que l'analyse AST s'est bien dÃ©roulÃ©e
+    if (-not (Assert-Condition -Condition ($null -ne $ast) -Message "L'AST a Ã©tÃ© crÃ©Ã© avec succÃ¨s" -Critical)) {
         Write-Host "  Erreurs d'analyse: $errors" -ForegroundColor Red
         return $false
     }
@@ -74,36 +74,36 @@ function Test-ComplexScript {
     # Test 1: Extraction des fonctions
     Write-Host "`n  Test 1: Extraction des fonctions" -ForegroundColor Yellow
     $functions = Get-AstFunctions -Ast $ast
-    $functionsSuccess = Assert-Condition -Condition ($null -ne $functions) -Message "Les fonctions ont été extraites avec succès"
+    $functionsSuccess = Assert-Condition -Condition ($null -ne $functions) -Message "Les fonctions ont Ã©tÃ© extraites avec succÃ¨s"
     
     if ($functionsSuccess -and $functions.Count -gt 0) {
-        Write-Host "    Fonctions trouvées: $($functions.Count)" -ForegroundColor Cyan
+        Write-Host "    Fonctions trouvÃ©es: $($functions.Count)" -ForegroundColor Cyan
         foreach ($function in $functions) {
             Write-Host "      - $($function.Name) (Lignes $($function.StartLine)-$($function.EndLine))" -ForegroundColor Gray
         }
     }
     
-    # Test 2: Extraction des paramètres
-    Write-Host "`n  Test 2: Extraction des paramètres" -ForegroundColor Yellow
+    # Test 2: Extraction des paramÃ¨tres
+    Write-Host "`n  Test 2: Extraction des paramÃ¨tres" -ForegroundColor Yellow
     $scriptParams = Get-AstParameters -Ast $ast
-    $scriptParamsSuccess = Assert-Condition -Condition ($null -ne $scriptParams) -Message "Les paramètres du script ont été extraits avec succès"
+    $scriptParamsSuccess = Assert-Condition -Condition ($null -ne $scriptParams) -Message "Les paramÃ¨tres du script ont Ã©tÃ© extraits avec succÃ¨s"
     
     if ($scriptParamsSuccess -and $scriptParams.Count -gt 0) {
-        Write-Host "    Paramètres du script trouvés: $($scriptParams.Count)" -ForegroundColor Cyan
+        Write-Host "    ParamÃ¨tres du script trouvÃ©s: $($scriptParams.Count)" -ForegroundColor Cyan
         foreach ($param in $scriptParams) {
             $defaultValue = if ($param.DefaultValue) { " = $($param.DefaultValue)" } else { "" }
             Write-Host "      - [$($param.Type)]`$$($param.Name)$defaultValue" -ForegroundColor Gray
         }
     }
     
-    # Extraction des paramètres de fonction (si des fonctions ont été trouvées)
+    # Extraction des paramÃ¨tres de fonction (si des fonctions ont Ã©tÃ© trouvÃ©es)
     if ($functionsSuccess -and $functions.Count -gt 0) {
         $firstFunction = $functions[0].Name
         $functionParams = Get-AstParameters -Ast $ast -FunctionName $firstFunction
-        $functionParamsSuccess = Assert-Condition -Condition ($null -ne $functionParams) -Message "Les paramètres de la fonction '$firstFunction' ont été extraits avec succès"
+        $functionParamsSuccess = Assert-Condition -Condition ($null -ne $functionParams) -Message "Les paramÃ¨tres de la fonction '$firstFunction' ont Ã©tÃ© extraits avec succÃ¨s"
         
         if ($functionParamsSuccess -and $functionParams.Count -gt 0) {
-            Write-Host "    Paramètres de la fonction '$firstFunction' trouvés: $($functionParams.Count)" -ForegroundColor Cyan
+            Write-Host "    ParamÃ¨tres de la fonction '$firstFunction' trouvÃ©s: $($functionParams.Count)" -ForegroundColor Cyan
             foreach ($param in $functionParams) {
                 $defaultValue = if ($param.DefaultValue) { " = $($param.DefaultValue)" } else { "" }
                 Write-Host "      - [$($param.Type)]`$$($param.Name)$defaultValue" -ForegroundColor Gray
@@ -114,10 +114,10 @@ function Test-ComplexScript {
     # Test 3: Extraction des variables
     Write-Host "`n  Test 3: Extraction des variables" -ForegroundColor Yellow
     $variables = Get-AstVariables -Ast $ast
-    $variablesSuccess = Assert-Condition -Condition ($null -ne $variables) -Message "Les variables ont été extraites avec succès"
+    $variablesSuccess = Assert-Condition -Condition ($null -ne $variables) -Message "Les variables ont Ã©tÃ© extraites avec succÃ¨s"
     
     if ($variablesSuccess -and $variables.Count -gt 0) {
-        Write-Host "    Variables trouvées: $($variables.Count)" -ForegroundColor Cyan
+        Write-Host "    Variables trouvÃ©es: $($variables.Count)" -ForegroundColor Cyan
         $uniqueVars = $variables | Select-Object -Property Name, Scope -Unique | Sort-Object -Property Name
         foreach ($var in $uniqueVars | Select-Object -First 10) {
             $scope = if ($var.Scope) { "$($var.Scope):" } else { "" }
@@ -131,10 +131,10 @@ function Test-ComplexScript {
     # Test 4: Extraction des commandes
     Write-Host "`n  Test 4: Extraction des commandes" -ForegroundColor Yellow
     $commands = Get-AstCommands -Ast $ast
-    $commandsSuccess = Assert-Condition -Condition ($null -ne $commands) -Message "Les commandes ont été extraites avec succès"
+    $commandsSuccess = Assert-Condition -Condition ($null -ne $commands) -Message "Les commandes ont Ã©tÃ© extraites avec succÃ¨s"
     
     if ($commandsSuccess -and $commands.Count -gt 0) {
-        Write-Host "    Commandes trouvées: $($commands.Count)" -ForegroundColor Cyan
+        Write-Host "    Commandes trouvÃ©es: $($commands.Count)" -ForegroundColor Cyan
         $uniqueCommands = $commands | Select-Object -Property Name -Unique | Sort-Object -Property Name
         foreach ($cmd in $uniqueCommands | Select-Object -First 10) {
             Write-Host "      - $($cmd.Name)" -ForegroundColor Gray
@@ -144,15 +144,15 @@ function Test-ComplexScript {
         }
     }
     
-    # Test 5: Extraction détaillée
-    Write-Host "`n  Test 5: Extraction détaillée" -ForegroundColor Yellow
+    # Test 5: Extraction dÃ©taillÃ©e
+    Write-Host "`n  Test 5: Extraction dÃ©taillÃ©e" -ForegroundColor Yellow
     $detailedFunctions = Get-AstFunctions -Ast $ast -Detailed
-    $detailedSuccess = Assert-Condition -Condition ($null -ne $detailedFunctions) -Message "Les fonctions détaillées ont été extraites avec succès"
+    $detailedSuccess = Assert-Condition -Condition ($null -ne $detailedFunctions) -Message "Les fonctions dÃ©taillÃ©es ont Ã©tÃ© extraites avec succÃ¨s"
     
     if ($detailedSuccess -and $detailedFunctions.Count -gt 0) {
         $firstDetailedFunction = $detailedFunctions[0]
-        Write-Host "    Détails de la fonction '$($firstDetailedFunction.Name)':" -ForegroundColor Cyan
-        Write-Host "      - Paramètres: $($firstDetailedFunction.Parameters.Count)" -ForegroundColor Gray
+        Write-Host "    DÃ©tails de la fonction '$($firstDetailedFunction.Name)':" -ForegroundColor Cyan
+        Write-Host "      - ParamÃ¨tres: $($firstDetailedFunction.Parameters.Count)" -ForegroundColor Gray
         Write-Host "      - Type de retour: $($firstDetailedFunction.ReturnType)" -ForegroundColor Gray
         Write-Host "      - Lignes: $($firstDetailedFunction.StartLine)-$($firstDetailedFunction.EndLine)" -ForegroundColor Gray
     }
@@ -160,7 +160,7 @@ function Test-ComplexScript {
     # Test 6: Extraction avec arguments
     Write-Host "`n  Test 6: Extraction avec arguments" -ForegroundColor Yellow
     $commandsWithArgs = Get-AstCommands -Ast $ast -IncludeArguments
-    $argsSuccess = Assert-Condition -Condition ($null -ne $commandsWithArgs) -Message "Les commandes avec arguments ont été extraites avec succès"
+    $argsSuccess = Assert-Condition -Condition ($null -ne $commandsWithArgs) -Message "Les commandes avec arguments ont Ã©tÃ© extraites avec succÃ¨s"
     
     if ($argsSuccess -and $commandsWithArgs.Count -gt 0) {
         $commandWithArgs = $commandsWithArgs | Where-Object { $_.Arguments -and $_.Arguments.Count -gt 0 } | Select-Object -First 1
@@ -168,7 +168,7 @@ function Test-ComplexScript {
             Write-Host "    Arguments de la commande '$($commandWithArgs.Name)':" -ForegroundColor Cyan
             foreach ($arg in $commandWithArgs.Arguments) {
                 if ($arg.IsParameter) {
-                    Write-Host "      - Paramètre: -$($arg.ParameterName) = $($arg.Value)" -ForegroundColor Gray
+                    Write-Host "      - ParamÃ¨tre: -$($arg.ParameterName) = $($arg.Value)" -ForegroundColor Gray
                 } else {
                     Write-Host "      - Valeur: $($arg.Value)" -ForegroundColor Gray
                 }
@@ -176,33 +176,33 @@ function Test-ComplexScript {
         }
     }
     
-    # Tests spécifiques au type de script
+    # Tests spÃ©cifiques au type de script
     switch ($ScriptType) {
         "Classe" {
-            Write-Host "`n  Test 7: Extraction spécifique aux classes" -ForegroundColor Yellow
-            # Note: L'extraction des classes n'est pas directement supportée par les fonctions actuelles
-            # Mais nous pouvons vérifier si les méthodes sont correctement extraites comme des fonctions
+            Write-Host "`n  Test 7: Extraction spÃ©cifique aux classes" -ForegroundColor Yellow
+            # Note: L'extraction des classes n'est pas directement supportÃ©e par les fonctions actuelles
+            # Mais nous pouvons vÃ©rifier si les mÃ©thodes sont correctement extraites comme des fonctions
             $classMethods = $functions | Where-Object { $_.Name -like "*-*" }
-            Assert-Condition -Condition ($classMethods.Count -gt 0) -Message "Les méthodes de classe ont été extraites comme des fonctions"
+            Assert-Condition -Condition ($classMethods.Count -gt 0) -Message "Les mÃ©thodes de classe ont Ã©tÃ© extraites comme des fonctions"
         }
         "DSC" {
-            Write-Host "`n  Test 7: Extraction spécifique à DSC" -ForegroundColor Yellow
-            # Vérifier si les ressources DSC sont correctement extraites
+            Write-Host "`n  Test 7: Extraction spÃ©cifique Ã  DSC" -ForegroundColor Yellow
+            # VÃ©rifier si les ressources DSC sont correctement extraites
             $dscResources = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.ConfigurationDefinitionAst] }, $true)
-            Assert-Condition -Condition ($dscResources.Count -gt 0) -Message "Les configurations DSC ont été trouvées dans l'AST"
+            Assert-Condition -Condition ($dscResources.Count -gt 0) -Message "Les configurations DSC ont Ã©tÃ© trouvÃ©es dans l'AST"
             
             if ($dscResources.Count -gt 0) {
-                Write-Host "    Configurations DSC trouvées: $($dscResources.Count)" -ForegroundColor Cyan
+                Write-Host "    Configurations DSC trouvÃ©es: $($dscResources.Count)" -ForegroundColor Cyan
                 foreach ($resource in $dscResources) {
                     Write-Host "      - $($resource.Name)" -ForegroundColor Gray
                 }
             }
         }
         "Workflow" {
-            Write-Host "`n  Test 7: Extraction spécifique aux workflows" -ForegroundColor Yellow
-            # Vérifier si les workflows sont correctement extraits comme des fonctions
+            Write-Host "`n  Test 7: Extraction spÃ©cifique aux workflows" -ForegroundColor Yellow
+            # VÃ©rifier si les workflows sont correctement extraits comme des fonctions
             $workflows = $functions | Where-Object { $_.Name -like "*-*" }
-            Assert-Condition -Condition ($workflows.Count -gt 0) -Message "Les workflows ont été extraits comme des fonctions"
+            Assert-Condition -Condition ($workflows.Count -gt 0) -Message "Les workflows ont Ã©tÃ© extraits comme des fonctions"
         }
     }
     
@@ -221,7 +221,7 @@ using namespace System.Collections.Generic
 using namespace System.IO
 using namespace System.Text.RegularExpressions
 
-# Classe de base pour les entités
+# Classe de base pour les entitÃ©s
 class Entity {
     [string]$Id
     [string]$Name
@@ -239,11 +239,11 @@ class Entity {
     }
     
     [string] ToString() {
-        return "$($this.Id): $($this.Name) (Créé le $($this.CreatedDate.ToString('yyyy-MM-dd')))"
+        return "$($this.Id): $($this.Name) (CrÃ©Ã© le $($this.CreatedDate.ToString('yyyy-MM-dd')))"
     }
 }
 
-# Classe dérivée pour les utilisateurs
+# Classe dÃ©rivÃ©e pour les utilisateurs
 class User : Entity {
     [string]$Email
     [string]$Department
@@ -329,13 +329,13 @@ class UserManager {
     }
 }
 
-# Fonction pour démontrer l'utilisation des classes
+# Fonction pour dÃ©montrer l'utilisation des classes
 function Demo-UserManagement {
     param (
         [string]$ExportPath = "C:\Temp\users.csv"
     )
     
-    # Créer un gestionnaire d'utilisateurs
+    # CrÃ©er un gestionnaire d'utilisateurs
     $manager = [UserManager]::new()
     
     # Ajouter des utilisateurs
@@ -364,10 +364,10 @@ function Demo-UserManagement {
     
     # Exporter les utilisateurs
     $manager.ExportToCsv($ExportPath)
-    Write-Output "`nUtilisateurs exportés vers: $ExportPath"
+    Write-Output "`nUtilisateurs exportÃ©s vers: $ExportPath"
 }
 
-# Appeler la fonction de démonstration
+# Appeler la fonction de dÃ©monstration
 Demo-UserManagement
 '@
 
@@ -378,7 +378,7 @@ $dscScript = @'
     Script complexe avec une configuration DSC (Desired State Configuration).
 #>
 
-# Paramètres de la configuration
+# ParamÃ¨tres de la configuration
 param (
     [Parameter(Mandatory = $true)]
     [string]$NodeName = "localhost",
@@ -397,7 +397,7 @@ param (
     [int]$Port = 80
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 Import-DscResource -ModuleName PSDesiredStateConfiguration
 Import-DscResource -ModuleName xWebAdministration
 
@@ -433,9 +433,9 @@ Configuration WebServerConfig {
         [int]$Port
     )
     
-    # Nœud à configurer
+    # NÅ“ud Ã  configurer
     Node $NodeName {
-        # Installer les fonctionnalités Windows nécessaires
+        # Installer les fonctionnalitÃ©s Windows nÃ©cessaires
         WindowsFeature WebServer {
             Ensure = "Present"
             Name = "Web-Server"
@@ -453,7 +453,7 @@ Configuration WebServerConfig {
             DependsOn = "[WindowsFeature]WebServer"
         }
         
-        # Créer le répertoire de destination
+        # CrÃ©er le rÃ©pertoire de destination
         File WebsiteDirectory {
             Ensure = "Present"
             Type = "Directory"
@@ -520,11 +520,11 @@ Configuration WebServerConfig {
     }
 }
 
-# Valider les paramètres
+# Valider les paramÃ¨tres
 try {
     Test-PathValid -Path $SourcePath
     
-    # Générer la configuration
+    # GÃ©nÃ©rer la configuration
     $configPath = "C:\Temp\DSC"
     if (-not (Test-Path -Path $configPath)) {
         New-Item -Path $configPath -ItemType Directory -Force | Out-Null
@@ -532,11 +532,11 @@ try {
     
     WebServerConfig -NodeName $NodeName -WebsiteName $WebsiteName -SourcePath $SourcePath -DestinationPath $DestinationPath -Port $Port -OutputPath $configPath
     
-    Write-Output "Configuration DSC générée avec succès dans: $configPath"
-    Write-Output "Pour appliquer la configuration, exécutez: Start-DscConfiguration -Path $configPath -Wait -Verbose -Force"
+    Write-Output "Configuration DSC gÃ©nÃ©rÃ©e avec succÃ¨s dans: $configPath"
+    Write-Output "Pour appliquer la configuration, exÃ©cutez: Start-DscConfiguration -Path $configPath -Wait -Verbose -Force"
 }
 catch {
-    Write-Error "Erreur lors de la génération de la configuration DSC: $_"
+    Write-Error "Erreur lors de la gÃ©nÃ©ration de la configuration DSC: $_"
 }
 '@
 
@@ -547,14 +547,14 @@ $workflowScript = @'
     Script complexe avec un workflow PowerShell.
 #>
 
-# Paramètres du script
+# ParamÃ¨tres du script
 param (
     [string[]]$ComputerNames = @("localhost"),
     [int]$ThrottleLimit = 10,
     [switch]$Detailed
 )
 
-# Fonction pour formater les résultats
+# Fonction pour formater les rÃ©sultats
 function Format-Result {
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -581,7 +581,7 @@ function Format-Result {
     }
 }
 
-# Workflow pour collecter des informations système
+# Workflow pour collecter des informations systÃ¨me
 workflow Get-SystemInfo {
     param (
         [Parameter(Mandatory = $true)]
@@ -593,10 +593,10 @@ workflow Get-SystemInfo {
     # Configurer les options du workflow
     $PSPersist = $true
     $PSComputerName = $null
-    $PSRunningActivity = "Collecte des informations système"
+    $PSRunningActivity = "Collecte des informations systÃ¨me"
     $PSProgressMessage = "Traitement des ordinateurs"
     
-    # Fonction interne pour vérifier la connectivité
+    # Fonction interne pour vÃ©rifier la connectivitÃ©
     function Test-ServerConnection {
         param ([string]$ComputerName)
         
@@ -604,9 +604,9 @@ workflow Get-SystemInfo {
         return $ping
     }
     
-    # Traiter chaque ordinateur en parallèle
+    # Traiter chaque ordinateur en parallÃ¨le
     foreach -parallel -ThrottleLimit $ThrottleLimit ($computer in $ComputerNames) {
-        # Initialiser le résultat
+        # Initialiser le rÃ©sultat
         $result = [PSCustomObject]@{
             ComputerName = $computer
             Status = "Offline"
@@ -619,14 +619,14 @@ workflow Get-SystemInfo {
             Error = $null
         }
         
-        # Vérifier la connectivité
+        # VÃ©rifier la connectivitÃ©
         $connected = InlineScript {
             Test-ServerConnection -ComputerName $using:computer
         }
         
         if ($connected) {
             try {
-                # Mettre à jour le statut
+                # Mettre Ã  jour le statut
                 $result.Status = "Online"
                 
                 # Collecter les informations sur les processus
@@ -639,13 +639,13 @@ workflow Get-SystemInfo {
                     Get-Service -ComputerName $using:computer | Select-Object Name, DisplayName, Status, StartType
                 }
                 
-                # Collecter les informations sur la mémoire
+                # Collecter les informations sur la mÃ©moire
                 $result.Memory = InlineScript {
                     Get-WmiObject -Class Win32_OperatingSystem -ComputerName $using:computer | 
                     Select-Object TotalVisibleMemorySize, FreePhysicalMemory, TotalVirtualMemorySize, FreeVirtualMemory
                 }
                 
-                # Collecter les informations sur le système d'exploitation
+                # Collecter les informations sur le systÃ¨me d'exploitation
                 $result.OS = InlineScript {
                     Get-WmiObject -Class Win32_OperatingSystem -ComputerName $using:computer | 
                     Select-Object Caption, Version, BuildNumber, ServicePackMajorVersion, LastBootUpTime
@@ -658,13 +658,13 @@ workflow Get-SystemInfo {
                 }
             }
             catch {
-                # En cas d'erreur, mettre à jour le statut et enregistrer l'erreur
+                # En cas d'erreur, mettre Ã  jour le statut et enregistrer l'erreur
                 $result.Status = "Error"
                 $result.Error = $_.Exception.Message
             }
         }
         
-        # Retourner le résultat
+        # Retourner le rÃ©sultat
         $result
     }
 }
@@ -680,22 +680,22 @@ function Start-SystemInfoCollection {
         [switch]$Detailed
     )
     
-    Write-Output "Démarrage de la collecte d'informations système..."
-    Write-Output "Ordinateurs à traiter: $($ComputerNames.Count)"
-    Write-Output "Limite de parallélisme: $ThrottleLimit"
+    Write-Output "DÃ©marrage de la collecte d'informations systÃ¨me..."
+    Write-Output "Ordinateurs Ã  traiter: $($ComputerNames.Count)"
+    Write-Output "Limite de parallÃ©lisme: $ThrottleLimit"
     
-    # Exécuter le workflow
+    # ExÃ©cuter le workflow
     $results = Get-SystemInfo -ComputerNames $ComputerNames -ThrottleLimit $ThrottleLimit
     
-    # Formater et afficher les résultats
+    # Formater et afficher les rÃ©sultats
     $formattedResults = $results | Format-Result -Detailed:$Detailed
     
-    # Résumé
+    # RÃ©sumÃ©
     $online = ($results | Where-Object { $_.Status -eq "Online" }).Count
     $offline = ($results | Where-Object { $_.Status -eq "Offline" }).Count
     $errors = ($results | Where-Object { $_.Status -eq "Error" }).Count
     
-    Write-Output "`nRésumé de la collecte:"
+    Write-Output "`nRÃ©sumÃ© de la collecte:"
     Write-Output "  Total: $($ComputerNames.Count)"
     Write-Output "  En ligne: $online"
     Write-Output "  Hors ligne: $offline"
@@ -704,20 +704,20 @@ function Start-SystemInfoCollection {
     return $formattedResults
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 $results = Start-SystemInfoCollection -ComputerNames $ComputerNames -ThrottleLimit $ThrottleLimit -Detailed:$Detailed
 
-# Exporter les résultats
+# Exporter les rÃ©sultats
 $exportPath = "C:\Temp\SystemInfo_$(Get-Date -Format 'yyyyMMdd_HHmmss').csv"
 $results | Export-Csv -Path $exportPath -NoTypeInformation -Encoding UTF8
-Write-Output "`nRésultats exportés vers: $exportPath"
+Write-Output "`nRÃ©sultats exportÃ©s vers: $exportPath"
 '@
 
-# Exécuter les tests sur les scripts complexes
+# ExÃ©cuter les tests sur les scripts complexes
 Test-ComplexScript -ScriptName "Script avec classes PowerShell" -ScriptContent $classScript -ScriptType "Classe"
 Write-Host "`n"
 Test-ComplexScript -ScriptName "Configuration DSC" -ScriptContent $dscScript -ScriptType "DSC"
 Write-Host "`n"
 Test-ComplexScript -ScriptName "Script avec workflow PowerShell" -ScriptContent $workflowScript -ScriptType "Workflow"
 
-Write-Host "`n=== Tous les tests sur les scripts complexes sont terminés ===" -ForegroundColor Green
+Write-Host "`n=== Tous les tests sur les scripts complexes sont terminÃ©s ===" -ForegroundColor Green

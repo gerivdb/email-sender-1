@@ -1,6 +1,6 @@
-# Script pour générer un badge de couverture de code pour le README.md
+﻿# Script pour gÃ©nÃ©rer un badge de couverture de code pour le README.md
 
-# Définir les paramètres
+# DÃ©finir les paramÃ¨tres
 param (
     [Parameter(Mandatory = $false)]
     [string]$CoverageReportPath = (Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\..\reports\tests\mode-manager-coverage.xml"),
@@ -12,13 +12,13 @@ param (
     [string]$ReadmePath = (Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\..\README.md")
 )
 
-# Vérifier que le fichier de rapport de couverture existe
+# VÃ©rifier que le fichier de rapport de couverture existe
 if (-not (Test-Path -Path $CoverageReportPath)) {
-    Write-Error "Le fichier de rapport de couverture est introuvable à l'emplacement : $CoverageReportPath"
+    Write-Error "Le fichier de rapport de couverture est introuvable Ã  l'emplacement : $CoverageReportPath"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
@@ -43,7 +43,7 @@ foreach ($package in $coverageReport.report.package) {
 
 $coveragePercentage = if ($totalLines -gt 0) { [math]::Round(($coveredLines / $totalLines) * 100, 2) } else { 0 }
 
-# Déterminer la couleur du badge
+# DÃ©terminer la couleur du badge
 $color = switch ($coveragePercentage) {
     { $_ -ge 90 } { "brightgreen" }
     { $_ -ge 80 } { "green" }
@@ -53,26 +53,26 @@ $color = switch ($coveragePercentage) {
     default { "red" }
 }
 
-# Générer l'URL du badge
+# GÃ©nÃ©rer l'URL du badge
 $badgeUrl = "https://img.shields.io/badge/coverage-$coveragePercentage%25-$color"
 
-# Télécharger le badge
+# TÃ©lÃ©charger le badge
 $badgePath = Join-Path -Path $OutputPath -ChildPath "coverage-badge.svg"
 Invoke-WebRequest -Uri $badgeUrl -OutFile $badgePath
 
 # Afficher les informations
 Write-Host "Couverture de code : $coveragePercentage%" -ForegroundColor Cyan
-Write-Host "Badge généré : $badgePath" -ForegroundColor Cyan
+Write-Host "Badge gÃ©nÃ©rÃ© : $badgePath" -ForegroundColor Cyan
 
-# Mettre à jour le README.md si le fichier existe
+# Mettre Ã  jour le README.md si le fichier existe
 if (Test-Path -Path $ReadmePath) {
     $readme = Get-Content -Path $ReadmePath -Raw
     
-    # Vérifier si le badge existe déjà
+    # VÃ©rifier si le badge existe dÃ©jÃ 
     $badgePattern = "!\[Coverage\]\(https://img\.shields\.io/badge/coverage-[0-9\.]+%25-[a-z]+\)"
     
     if ($readme -match $badgePattern) {
-        # Mettre à jour le badge existant
+        # Mettre Ã  jour le badge existant
         $newBadge = "![Coverage]($badgeUrl)"
         $readme = $readme -replace $badgePattern, $newBadge
     } else {
@@ -84,10 +84,10 @@ if (Test-Path -Path $ReadmePath) {
     # Enregistrer le README.md
     $readme | Set-Content -Path $ReadmePath -Encoding UTF8
     
-    Write-Host "README.md mis à jour avec le badge de couverture" -ForegroundColor Green
+    Write-Host "README.md mis Ã  jour avec le badge de couverture" -ForegroundColor Green
 }
 
-# Générer un fichier JSON pour les services de badge
+# GÃ©nÃ©rer un fichier JSON pour les services de badge
 $jsonPath = Join-Path -Path $OutputPath -ChildPath "coverage.json"
 @{
     schemaVersion = 1
@@ -96,6 +96,6 @@ $jsonPath = Join-Path -Path $OutputPath -ChildPath "coverage.json"
     color = $color
 } | ConvertTo-Json | Set-Content -Path $jsonPath -Encoding UTF8
 
-Write-Host "Fichier JSON généré : $jsonPath" -ForegroundColor Cyan
+Write-Host "Fichier JSON gÃ©nÃ©rÃ© : $jsonPath" -ForegroundColor Cyan
 
 exit 0

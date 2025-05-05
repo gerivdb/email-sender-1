@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour vérifier le rapport d'évaluation de la difficulté d'implémentation.
+    Tests unitaires pour vÃ©rifier le rapport d'Ã©valuation de la difficultÃ© d'implÃ©mentation.
 
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier que le rapport d'évaluation
-    de la difficulté d'implémentation a été correctement créé et contient toutes les informations nécessaires.
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier que le rapport d'Ã©valuation
+    de la difficultÃ© d'implÃ©mentation a Ã©tÃ© correctement crÃ©Ã© et contient toutes les informations nÃ©cessaires.
 
 .PARAMETER DocumentPath
-    Chemin vers le rapport d'évaluation de la difficulté d'implémentation.
+    Chemin vers le rapport d'Ã©valuation de la difficultÃ© d'implÃ©mentation.
 
 .EXAMPLE
     .\Test-ImplementationDifficulty.ps1 -DocumentPath "..\..\data\planning\implementation-difficulty.md"
-    Exécute les tests unitaires pour le rapport d'évaluation de la difficulté d'implémentation.
+    ExÃ©cute les tests unitaires pour le rapport d'Ã©valuation de la difficultÃ© d'implÃ©mentation.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-08
+    Date de crÃ©ation: 2025-05-08
 #>
 [CmdletBinding()]
 param (
@@ -24,13 +24,13 @@ param (
     [string]$DocumentPath
 )
 
-# Vérifier que le document existe
+# VÃ©rifier que le document existe
 if (-not (Test-Path -Path $DocumentPath)) {
     Write-Error "Le document est introuvable : $DocumentPath"
     exit 1
 }
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Function {
     [CmdletBinding()]
     param (
@@ -47,10 +47,10 @@ function Test-Function {
         $result = & $Test
         
         if ($result -eq $true) {
-            Write-Host "  Résultat : Succès" -ForegroundColor Green
+            Write-Host "  RÃ©sultat : SuccÃ¨s" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Résultat : Échec" -ForegroundColor Red
+            Write-Host "  RÃ©sultat : Ã‰chec" -ForegroundColor Red
             return $false
         }
     } catch {
@@ -71,122 +71,122 @@ $tests = @(
         }
     },
     @{
-        Name = "Test de la présence du titre principal"
+        Name = "Test de la prÃ©sence du titre principal"
         Test = {
-            return ($documentContent -match "# Évaluation de la Difficulté d'Implémentation des Améliorations")
+            return ($documentContent -match "# Ã‰valuation de la DifficultÃ© d'ImplÃ©mentation des AmÃ©liorations")
         }
     },
     @{
-        Name = "Test de la présence de la table des matières"
+        Name = "Test de la prÃ©sence de la table des matiÃ¨res"
         Test = {
-            return ($documentContent -match "## Table des Matières")
+            return ($documentContent -match "## Table des MatiÃ¨res")
         }
     },
     @{
-        Name = "Test de la présence de la méthodologie"
+        Name = "Test de la prÃ©sence de la mÃ©thodologie"
         Test = {
-            return ($documentContent -match "## Méthodologie")
+            return ($documentContent -match "## MÃ©thodologie")
         }
     },
     @{
-        Name = "Test de la présence des niveaux de difficulté"
+        Name = "Test de la prÃ©sence des niveaux de difficultÃ©"
         Test = {
-            return ($documentContent -match "### Niveaux de Difficulté")
+            return ($documentContent -match "### Niveaux de DifficultÃ©")
         }
     },
     @{
-        Name = "Test de la présence du tableau des niveaux de difficulté"
+        Name = "Test de la prÃ©sence du tableau des niveaux de difficultÃ©"
         Test = {
             return ($documentContent -match "\| Niveau \| Score \| Description \|")
         }
     },
     @{
-        Name = "Test de la présence de l'évaluation de la difficulté"
+        Name = "Test de la prÃ©sence de l'Ã©valuation de la difficultÃ©"
         Test = {
-            return ($documentContent -match "#### Évaluation de la Difficulté")
+            return ($documentContent -match "#### Ã‰valuation de la DifficultÃ©")
         }
     },
     @{
-        Name = "Test de la présence des facteurs de difficulté"
+        Name = "Test de la prÃ©sence des facteurs de difficultÃ©"
         Test = {
-            return ($documentContent -match "\*\*Facteurs de difficulté :\*\*")
+            return ($documentContent -match "\*\*Facteurs de difficultÃ© :\*\*")
         }
     },
     @{
-        Name = "Test de la présence du tableau des facteurs"
+        Name = "Test de la prÃ©sence du tableau des facteurs"
         Test = {
-            return ($documentContent -match "\| Facteur \| Poids \| Score \| Score pondéré \|")
+            return ($documentContent -match "\| Facteur \| Poids \| Score \| Score pondÃ©rÃ© \|")
         }
     },
     @{
-        Name = "Test de la présence de la justification"
+        Name = "Test de la prÃ©sence de la justification"
         Test = {
             return ($documentContent -match "#### Justification")
         }
     },
     @{
-        Name = "Test de la présence de la justification pour la complexité technique"
+        Name = "Test de la prÃ©sence de la justification pour la complexitÃ© technique"
         Test = {
-            return ($documentContent -match "\*\*Complexité technique \(Score : \d+\) :\*\*")
+            return ($documentContent -match "\*\*ComplexitÃ© technique \(Score : \d+\) :\*\*")
         }
     },
     @{
-        Name = "Test de la présence de la justification pour l'expertise requise"
+        Name = "Test de la prÃ©sence de la justification pour l'expertise requise"
         Test = {
             return ($documentContent -match "\*\*Expertise requise \(Score : \d+\) :\*\*")
         }
     },
     @{
-        Name = "Test de la présence de la justification pour les contraintes de temps"
+        Name = "Test de la prÃ©sence de la justification pour les contraintes de temps"
         Test = {
             return ($documentContent -match "\*\*Contraintes de temps \(Score : \d+\) :\*\*")
         }
     },
     @{
-        Name = "Test de la présence de la justification pour les dépendances"
+        Name = "Test de la prÃ©sence de la justification pour les dÃ©pendances"
         Test = {
-            return ($documentContent -match "\*\*Dépendances \(Score : \d+\) :\*\*")
+            return ($documentContent -match "\*\*DÃ©pendances \(Score : \d+\) :\*\*")
         }
     },
     @{
-        Name = "Test de la présence du résumé"
+        Name = "Test de la prÃ©sence du rÃ©sumÃ©"
         Test = {
-            return ($documentContent -match "## Résumé")
+            return ($documentContent -match "## RÃ©sumÃ©")
         }
     },
     @{
-        Name = "Test de la présence de la répartition par niveau de difficulté"
+        Name = "Test de la prÃ©sence de la rÃ©partition par niveau de difficultÃ©"
         Test = {
-            return ($documentContent -match "### Répartition par Niveau de Difficulté")
+            return ($documentContent -match "### RÃ©partition par Niveau de DifficultÃ©")
         }
     },
     @{
-        Name = "Test de la présence du tableau de répartition"
+        Name = "Test de la prÃ©sence du tableau de rÃ©partition"
         Test = {
             return ($documentContent -match "\| Niveau \| Nombre \| Pourcentage \|")
         }
     },
     @{
-        Name = "Test de la présence du Process Manager"
+        Name = "Test de la prÃ©sence du Process Manager"
         Test = {
             return ($documentContent -match "## <a name='process-manager'></a>Process Manager")
         }
     },
     @{
-        Name = "Test de la présence du Mode Manager"
+        Name = "Test de la prÃ©sence du Mode Manager"
         Test = {
             return ($documentContent -match "## <a name='mode-manager'></a>Mode Manager")
         }
     },
     @{
-        Name = "Test de la présence du Roadmap Manager"
+        Name = "Test de la prÃ©sence du Roadmap Manager"
         Test = {
             return ($documentContent -match "## <a name='roadmap-manager'></a>Roadmap Manager")
         }
     }
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $totalTests = $tests.Count
 $passedTests = 0
 
@@ -198,17 +198,17 @@ foreach ($test in $tests) {
     }
 }
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor Cyan
-Write-Host "  Tests réussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
-Write-Host "  Tests échoués : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
+Write-Host "  Tests Ã©chouÃ©s : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi." -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi." -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

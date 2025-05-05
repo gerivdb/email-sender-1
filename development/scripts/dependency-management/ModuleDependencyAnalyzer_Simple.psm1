@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 # Variables globales pour le module
 $script:VisitedModules = @{}
@@ -19,19 +19,19 @@ function Get-ModuleDependenciesFromManifest {
         [switch]$ResolveModulePaths
     )
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ManifestPath -PathType Leaf)) {
         Write-Warning "Le fichier manifeste n'existe pas: $ManifestPath"
         return $dependencies
     }
 
-    # Vérifier l'extension du fichier
+    # VÃ©rifier l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($ManifestPath)
     if ($extension -ne ".psd1") {
-        Write-Warning "Le fichier spécifié n'est pas un fichier .psd1: $ManifestPath"
+        Write-Warning "Le fichier spÃ©cifiÃ© n'est pas un fichier .psd1: $ManifestPath"
         return $dependencies
     }
 
@@ -39,17 +39,17 @@ function Get-ModuleDependenciesFromManifest {
         # Importer le manifeste
         $manifest = Import-PowerShellDataFile -Path $ManifestPath -ErrorAction Stop
 
-        # Extraire les dépendances RequiredModules
+        # Extraire les dÃ©pendances RequiredModules
         if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
             Write-Verbose "Analyse des RequiredModules dans le manifeste: $ManifestPath"
 
-            # RequiredModules peut être une chaîne, un tableau de chaînes, ou un tableau d'objets
+            # RequiredModules peut Ãªtre une chaÃ®ne, un tableau de chaÃ®nes, ou un tableau d'objets
             foreach ($requiredModule in $manifest.RequiredModules) {
                 $moduleName = $null
                 $moduleVersion = $null
                 $modulePath = $null
 
-                # Déterminer le format du module requis
+                # DÃ©terminer le format du module requis
                 if ($requiredModule -is [string]) {
                     # Format simple: 'ModuleName'
                     $moduleName = $requiredModule
@@ -71,7 +71,7 @@ function Get-ModuleDependenciesFromManifest {
                     $modulePath = $requiredModule.Path
                 }
 
-                # Ajouter la dépendance à la liste
+                # Ajouter la dÃ©pendance Ã  la liste
                 [void]$dependencies.Add([PSCustomObject]@{
                         Name    = $moduleName
                         Version = $moduleVersion
@@ -105,10 +105,10 @@ function Get-ModuleDependenciesFromCode {
         [switch]$IncludeScriptDependencies
     )
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ModulePath -PathType Leaf)) {
         Write-Warning "Le fichier module n'existe pas: $ModulePath"
         return $dependencies
@@ -118,12 +118,12 @@ function Get-ModuleDependenciesFromCode {
         # Charger le contenu du fichier
         $content = Get-Content -Path $ModulePath -Raw -ErrorAction Stop
 
-        # Détecter les Import-Module
+        # DÃ©tecter les Import-Module
         $importMatches = [regex]::Matches($content, '(?m)^\s*Import-Module\s+(?:-Name\s+)?([''"]?)([^''"\s]+)\1')
         foreach ($match in $importMatches) {
             $moduleName = $match.Groups[2].Value
 
-            # Ajouter la dépendance à la liste
+            # Ajouter la dÃ©pendance Ã  la liste
             [void]$dependencies.Add([PSCustomObject]@{
                     Name    = $moduleName
                     Version = $null
@@ -133,12 +133,12 @@ function Get-ModuleDependenciesFromCode {
                 })
         }
 
-        # Détecter les using module
+        # DÃ©tecter les using module
         $usingMatches = [regex]::Matches($content, '(?m)^\s*using\s+module\s+([''"]?)([^''"\s]+)\1')
         foreach ($match in $usingMatches) {
             $moduleName = $match.Groups[2].Value
 
-            # Ajouter la dépendance à la liste
+            # Ajouter la dÃ©pendance Ã  la liste
             [void]$dependencies.Add([PSCustomObject]@{
                     Name    = $moduleName
                     Version = $null
@@ -170,7 +170,7 @@ function Find-ModuleDependencyCycles {
     $recursionStack = @{}
     $cycles = [System.Collections.ArrayList]::new()
 
-    # Fonction récursive pour la détection de cycles (DFS)
+    # Fonction rÃ©cursive pour la dÃ©tection de cycles (DFS)
     function Find-CyclesDFS {
         param (
             [Parameter(Mandatory = $true)]
@@ -180,34 +180,34 @@ function Find-ModuleDependencyCycles {
             [System.Collections.ArrayList]$Path = $null
         )
 
-        # Initialiser le chemin si nécessaire
+        # Initialiser le chemin si nÃ©cessaire
         if ($null -eq $Path) {
             $Path = [System.Collections.ArrayList]::new()
         }
 
-        # Marquer le nœud comme visité et l'ajouter à la pile de récursion
+        # Marquer le nÅ“ud comme visitÃ© et l'ajouter Ã  la pile de rÃ©cursion
         $visited[$Node] = $true
         $recursionStack[$Node] = $true
         [void]$Path.Add($Node)
 
-        # Parcourir les voisins du nœud
+        # Parcourir les voisins du nÅ“ud
         if ($DependencyGraph.ContainsKey($Node)) {
             foreach ($neighbor in $DependencyGraph[$Node]) {
-                # Si le voisin n'a pas été visité, le visiter
+                # Si le voisin n'a pas Ã©tÃ© visitÃ©, le visiter
                 if (-not $visited.ContainsKey($neighbor) -or -not $visited[$neighbor]) {
                     $cycleFound = Find-CyclesDFS -Node $neighbor -Path $Path
                     if ($cycleFound -and -not $IncludeAllCycles) {
                         return $true
                     }
                 }
-                # Si le voisin est dans la pile de récursion, un cycle a été détecté
+                # Si le voisin est dans la pile de rÃ©cursion, un cycle a Ã©tÃ© dÃ©tectÃ©
                 elseif ($recursionStack.ContainsKey($neighbor) -and $recursionStack[$neighbor]) {
-                    # Déterminer le cycle
+                    # DÃ©terminer le cycle
                     $cycleStartIndex = $Path.IndexOf($neighbor)
                     $cycle = $Path.GetRange($cycleStartIndex, $Path.Count - $cycleStartIndex)
                     $cycle.Add($neighbor)
 
-                    # Ajouter le cycle à la liste des cycles
+                    # Ajouter le cycle Ã  la liste des cycles
                     [void]$cycles.Add([PSCustomObject]@{
                             Nodes  = $cycle.ToArray()
                             Length = $cycle.Count
@@ -220,14 +220,14 @@ function Find-ModuleDependencyCycles {
             }
         }
 
-        # Retirer le nœud de la pile de récursion et du chemin
+        # Retirer le nÅ“ud de la pile de rÃ©cursion et du chemin
         $recursionStack[$Node] = $false
         [void]$Path.RemoveAt($Path.Count - 1)
 
         return $false
     }
 
-    # Parcourir tous les nœuds du graphe
+    # Parcourir tous les nÅ“uds du graphe
     foreach ($node in $DependencyGraph.Keys) {
         if (-not $visited.ContainsKey($node) -or -not $visited[$node]) {
             $cycleFound = Find-CyclesDFS -Node $node

@@ -1,26 +1,26 @@
-<#
+﻿<#
 .SYNOPSIS
     Adaptateur pour le Script Manager.
 
 .DESCRIPTION
-    Cet adaptateur permet d'intégrer le Script Manager avec le Process Manager.
-    Il fournit une interface standardisée pour interagir avec le Script Manager.
+    Cet adaptateur permet d'intÃ©grer le Script Manager avec le Process Manager.
+    Il fournit une interface standardisÃ©e pour interagir avec le Script Manager.
 
 .PARAMETER Command
-    La commande à exécuter. Les commandes disponibles sont :
-    - ExecuteScript : Exécute un script
+    La commande Ã  exÃ©cuter. Les commandes disponibles sont :
+    - ExecuteScript : ExÃ©cute un script
     - ListScripts : Liste tous les scripts disponibles
-    - GetScriptInfo : Obtient des informations sur un script spécifique
-    - OrganizeScripts : Organise les scripts dans le répertoire approprié
+    - GetScriptInfo : Obtient des informations sur un script spÃ©cifique
+    - OrganizeScripts : Organise les scripts dans le rÃ©pertoire appropriÃ©
 
 .PARAMETER ScriptName
-    Le nom du script à utiliser pour la commande.
+    Le nom du script Ã  utiliser pour la commande.
 
 .PARAMETER ScriptPath
-    Le chemin vers le script à utiliser pour la commande.
+    Le chemin vers le script Ã  utiliser pour la commande.
 
 .PARAMETER Parameters
-    Les paramètres supplémentaires à passer à la commande.
+    Les paramÃ¨tres supplÃ©mentaires Ã  passer Ã  la commande.
 
 .EXAMPLE
     .\script-manager-adapter.ps1 -Command ListScripts
@@ -28,12 +28,12 @@
 
 .EXAMPLE
     .\script-manager-adapter.ps1 -Command ExecuteScript -ScriptName "update-roadmap-checkboxes.ps1" -Parameters @{RoadmapPath = "projet\roadmaps\roadmap_complete_converted.md"; Force = $true}
-    Exécute le script "update-roadmap-checkboxes.ps1" avec les paramètres spécifiés.
+    ExÃ©cute le script "update-roadmap-checkboxes.ps1" avec les paramÃ¨tres spÃ©cifiÃ©s.
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2025-05-03
+    Date de crÃ©ation: 2025-05-03
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -51,16 +51,16 @@ param (
     [hashtable]$Parameters = @{}
 )
 
-# Définir le chemin vers le Script Manager
+# DÃ©finir le chemin vers le Script Manager
 $scriptManagerPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path))) -ChildPath "script-manager\scripts\script-manager.ps1"
 
-# Vérifier que le Script Manager existe
+# VÃ©rifier que le Script Manager existe
 if (-not (Test-Path -Path $scriptManagerPath)) {
-    Write-Error "Le Script Manager est introuvable à l'emplacement : $scriptManagerPath"
+    Write-Error "Le Script Manager est introuvable Ã  l'emplacement : $scriptManagerPath"
     exit 1
 }
 
-# Fonction pour exécuter une commande sur le Script Manager
+# Fonction pour exÃ©cuter une commande sur le Script Manager
 function Invoke-ScriptManagerCommand {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -77,11 +77,11 @@ function Invoke-ScriptManagerCommand {
         ArgumentList = "-Command $Command"
     }
 
-    # Ajouter les paramètres
+    # Ajouter les paramÃ¨tres
     foreach ($param in $Parameters.Keys) {
         $value = $Parameters[$param]
         
-        # Gérer les types de paramètres
+        # GÃ©rer les types de paramÃ¨tres
         if ($value -is [switch]) {
             if ($value) {
                 $commandParams.ArgumentList += " -$param"
@@ -94,19 +94,19 @@ function Invoke-ScriptManagerCommand {
         }
     }
 
-    # Exécuter la commande
-    if ($PSCmdlet.ShouldProcess("Script Manager", "Exécuter la commande $Command")) {
+    # ExÃ©cuter la commande
+    if ($PSCmdlet.ShouldProcess("Script Manager", "ExÃ©cuter la commande $Command")) {
         try {
             $result = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $($commandParams.FilePath) $($commandParams.ArgumentList)" -Wait -PassThru -NoNewWindow
             
             if ($result.ExitCode -eq 0) {
                 return $true
             } else {
-                Write-Error "Erreur lors de l'exécution de la commande. Code de sortie : $($result.ExitCode)"
+                Write-Error "Erreur lors de l'exÃ©cution de la commande. Code de sortie : $($result.ExitCode)"
                 return $false
             }
         } catch {
-            Write-Error "Erreur lors de l'exécution de la commande : $_"
+            Write-Error "Erreur lors de l'exÃ©cution de la commande : $_"
             return $false
         }
     }
@@ -114,16 +114,16 @@ function Invoke-ScriptManagerCommand {
     return $false
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch ($Command) {
     "ExecuteScript" {
-        # Vérifier que le nom du script ou le chemin du script est spécifié
+        # VÃ©rifier que le nom du script ou le chemin du script est spÃ©cifiÃ©
         if (-not $ScriptName -and -not $ScriptPath) {
-            Write-Error "Le paramètre ScriptName ou ScriptPath est requis pour la commande ExecuteScript."
+            Write-Error "Le paramÃ¨tre ScriptName ou ScriptPath est requis pour la commande ExecuteScript."
             exit 1
         }
         
-        # Exécuter le script
+        # ExÃ©cuter le script
         $params = @{}
         
         if ($ScriptName) {
@@ -134,7 +134,7 @@ switch ($Command) {
             $params.ScriptPath = $ScriptPath
         }
         
-        # Ajouter les paramètres supplémentaires
+        # Ajouter les paramÃ¨tres supplÃ©mentaires
         foreach ($param in $Parameters.Keys) {
             $params[$param] = $Parameters[$param]
         }
@@ -150,9 +150,9 @@ switch ($Command) {
     }
     
     "GetScriptInfo" {
-        # Vérifier que le nom du script ou le chemin du script est spécifié
+        # VÃ©rifier que le nom du script ou le chemin du script est spÃ©cifiÃ©
         if (-not $ScriptName -and -not $ScriptPath) {
-            Write-Error "Le paramètre ScriptName ou ScriptPath est requis pour la commande GetScriptInfo."
+            Write-Error "Le paramÃ¨tre ScriptName ou ScriptPath est requis pour la commande GetScriptInfo."
             exit 1
         }
         
@@ -175,7 +175,7 @@ switch ($Command) {
         # Organiser les scripts
         $params = @{}
         
-        # Ajouter les paramètres supplémentaires
+        # Ajouter les paramÃ¨tres supplÃ©mentaires
         foreach ($param in $Parameters.Keys) {
             $params[$param] = $Parameters[$param]
         }

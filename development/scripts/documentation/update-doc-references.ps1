@@ -1,4 +1,4 @@
-# Script to update references in files after migration
+﻿# Script to update references in files after migration
 # This script searches and replaces paths from the old structure to the new one
 
 # Path mappings definition

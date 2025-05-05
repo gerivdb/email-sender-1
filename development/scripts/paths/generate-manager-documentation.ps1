@@ -1,25 +1,25 @@
-# Génère la documentation pour tous les gestionnaires
+﻿# GÃ©nÃ¨re la documentation pour tous les gestionnaires
 
-# Définir les chemins
+# DÃ©finir les chemins
 $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 $managersRoot = Join-Path -Path $projectRoot -ChildPath "development\managers"
 $docsRoot = Join-Path -Path $projectRoot -ChildPath "development\docs\guides\methodologies"
 $templatePath = Join-Path -Path $docsRoot -ChildPath "manager_documentation_template.md"
 $configRoot = Join-Path -Path $projectRoot -ChildPath "projet\config\managers"
 
-# Vérifier que le modèle de documentation existe
+# VÃ©rifier que le modÃ¨le de documentation existe
 if (-not (Test-Path -Path $templatePath -PathType Leaf)) {
-    Write-Error "Le modèle de documentation est introuvable : $templatePath"
+    Write-Error "Le modÃ¨le de documentation est introuvable : $templatePath"
     exit 1
 }
 
-# Lire le contenu du modèle
+# Lire le contenu du modÃ¨le
 $templateContent = Get-Content -Path $templatePath -Raw
 
 # Obtenir la liste des gestionnaires
 $managers = Get-ChildItem -Path $managersRoot -Directory | Where-Object { $_.Name -like "*-manager" }
 
-# Générer la documentation pour chaque gestionnaire
+# GÃ©nÃ©rer la documentation pour chaque gestionnaire
 foreach ($manager in $managers) {
     $managerName = $manager.Name
     $managerDisplayName = ($managerName -replace "-manager", " Manager")
@@ -28,39 +28,39 @@ foreach ($manager in $managers) {
     $managerDisplayName = $firstChar + $restOfString
     $managerScriptName = $managerName
 
-    # Vérifier si le script principal du gestionnaire existe
+    # VÃ©rifier si le script principal du gestionnaire existe
     $managerScriptPath = Join-Path -Path $manager.FullName -ChildPath "scripts\$managerScriptName.ps1"
     if (-not (Test-Path -Path $managerScriptPath -PathType Leaf)) {
         Write-Warning "Le script principal du gestionnaire est introuvable : $managerScriptPath"
         continue
     }
 
-    # Définir le chemin du fichier de documentation
+    # DÃ©finir le chemin du fichier de documentation
     $docFileName = $managerName -replace "-", "_"
     $docPath = Join-Path -Path $docsRoot -ChildPath "$docFileName.md"
 
-    # Créer le contenu de la documentation
+    # CrÃ©er le contenu de la documentation
     $docContent = $templateContent
 
     # Remplacer les placeholders
     $docContent = $docContent -replace '\[NOM_DU_GESTIONNAIRE\]', $managerDisplayName
     $docContent = $docContent -replace '\[nom-du-gestionnaire\]', $managerName
-    $docContent = $docContent -replace '\[DESCRIPTION_COURTE\]', "gère les fonctionnalités liées à $($managerDisplayName.ToLower())"
-    $docContent = $docContent -replace '\[OBJECTIF_PRINCIPAL\]', "fournir des fonctionnalités liées à $($managerDisplayName.ToLower())"
+    $docContent = $docContent -replace '\[DESCRIPTION_COURTE\]', "gÃ¨re les fonctionnalitÃ©s liÃ©es Ã  $($managerDisplayName.ToLower())"
+    $docContent = $docContent -replace '\[OBJECTIF_PRINCIPAL\]', "fournir des fonctionnalitÃ©s liÃ©es Ã  $($managerDisplayName.ToLower())"
 
-    # Remplacer les fonctionnalités
-    $functionalitiesReplacement = "- Gestion des fonctionnalités liées à $($managerDisplayName.ToLower())`n"
+    # Remplacer les fonctionnalitÃ©s
+    $functionalitiesReplacement = "- Gestion des fonctionnalitÃ©s liÃ©es Ã  $($managerDisplayName.ToLower())`n"
     $functionalitiesReplacement += "- Configuration et personnalisation du gestionnaire`n"
-    $functionalitiesReplacement += "- Intégration avec d'autres gestionnaires`n"
-    $functionalitiesReplacement += "- Journalisation et surveillance des activités"
+    $functionalitiesReplacement += "- IntÃ©gration avec d'autres gestionnaires`n"
+    $functionalitiesReplacement += "- Journalisation et surveillance des activitÃ©s"
 
-    $docContent = $docContent -replace '- \[FONCTIONNALITÉ_1\]\s*- \[FONCTIONNALITÉ_2\]\s*- \[FONCTIONNALITÉ_3\]\s*- \[FONCTIONNALITÉ_4\]', $functionalitiesReplacement
+    $docContent = $docContent -replace '- \[FONCTIONNALITÃ‰_1\]\s*- \[FONCTIONNALITÃ‰_2\]\s*- \[FONCTIONNALITÃ‰_3\]\s*- \[FONCTIONNALITÃ‰_4\]', $functionalitiesReplacement
 
-    # Remplacer les prérequis
-    $docContent = $docContent -replace '1\. \[PRÉREQUIS_1\]\s*2\. \[PRÉREQUIS_2\]\s*3\. \[PRÉREQUIS_3\]', "1. PowerShell 5.1 ou supérieur est installé sur votre système`n2. Le gestionnaire intégré est installé`n3. Les droits d'accès appropriés sont configurés"
+    # Remplacer les prÃ©requis
+    $docContent = $docContent -replace '1\. \[PRÃ‰REQUIS_1\]\s*2\. \[PRÃ‰REQUIS_2\]\s*3\. \[PRÃ‰REQUIS_3\]', "1. PowerShell 5.1 ou supÃ©rieur est installÃ© sur votre systÃ¨me`n2. Le gestionnaire intÃ©grÃ© est installÃ©`n3. Les droits d'accÃ¨s appropriÃ©s sont configurÃ©s"
 
-    # Remplacer les étapes d'installation manuelle
-    $docContent = $docContent -replace '1\. \[ÉTAPE_1\]\s*2\. \[ÉTAPE_2\]\s*3\. \[ÉTAPE_3\]', "1. Copiez les fichiers du gestionnaire dans le répertoire approprié`n2. Créez le fichier de configuration dans le répertoire approprié`n3. Vérifiez que le gestionnaire fonctionne correctement"
+    # Remplacer les Ã©tapes d'installation manuelle
+    $docContent = $docContent -replace '1\. \[Ã‰TAPE_1\]\s*2\. \[Ã‰TAPE_2\]\s*3\. \[Ã‰TAPE_3\]', "1. Copiez les fichiers du gestionnaire dans le rÃ©pertoire appropriÃ©`n2. CrÃ©ez le fichier de configuration dans le rÃ©pertoire appropriÃ©`n3. VÃ©rifiez que le gestionnaire fonctionne correctement"
 
     # Remplacer les commandes
     $commandsReplacement = "#### Commande 1 : Help`n`n"
@@ -102,57 +102,57 @@ foreach ($manager in $managers) {
     # Remplacer les sections d'exemples
     $docContent = $docContent -replace '#### Exemple 1 : \[TITRE_EXEMPLE_1\].*?#### Exemple 2 : \[TITRE_EXEMPLE_2\].*?```powershell.*?```', $examplesReplacement
 
-    # Remplacer les problèmes courants
-    $problemsReplacement = "#### Problème 1 : Le gestionnaire ne démarre pas`n`n"
-    $problemsReplacement += "**Symptômes :**`n"
-    $problemsReplacement += "- Le gestionnaire ne répond pas`n"
+    # Remplacer les problÃ¨mes courants
+    $problemsReplacement = "#### ProblÃ¨me 1 : Le gestionnaire ne dÃ©marre pas`n`n"
+    $problemsReplacement += "**SymptÃ´mes :**`n"
+    $problemsReplacement += "- Le gestionnaire ne rÃ©pond pas`n"
     $problemsReplacement += "- Des erreurs s'affichent dans la console`n`n"
     $problemsReplacement += "**Causes possibles :**`n"
     $problemsReplacement += "- Le fichier de configuration est manquant ou corrompu`n"
-    $problemsReplacement += "- Les dépendances ne sont pas installées`n`n"
+    $problemsReplacement += "- Les dÃ©pendances ne sont pas installÃ©es`n`n"
     $problemsReplacement += "**Solutions :**`n"
-    $problemsReplacement += "1. Vérifiez que le fichier de configuration existe et est valide`n"
-    $problemsReplacement += "2. Installez les dépendances manquantes`n"
-    $problemsReplacement += "3. Vérifiez les journaux pour plus d'informations`n`n"
+    $problemsReplacement += "1. VÃ©rifiez que le fichier de configuration existe et est valide`n"
+    $problemsReplacement += "2. Installez les dÃ©pendances manquantes`n"
+    $problemsReplacement += "3. VÃ©rifiez les journaux pour plus d'informations`n`n"
 
-    $problemsReplacement += "#### Problème 2 : Erreurs de permission`n`n"
-    $problemsReplacement += "**Symptômes :**`n"
-    $problemsReplacement += "- Des erreurs d'accès refusé s'affichent`n"
-    $problemsReplacement += "- Le gestionnaire ne peut pas accéder aux fichiers`n`n"
+    $problemsReplacement += "#### ProblÃ¨me 2 : Erreurs de permission`n`n"
+    $problemsReplacement += "**SymptÃ´mes :**`n"
+    $problemsReplacement += "- Des erreurs d'accÃ¨s refusÃ© s'affichent`n"
+    $problemsReplacement += "- Le gestionnaire ne peut pas accÃ©der aux fichiers`n`n"
     $problemsReplacement += "**Causes possibles :**`n"
     $problemsReplacement += "- Permissions insuffisantes`n"
-    $problemsReplacement += "- Fichiers verrouillés par un autre processus`n`n"
+    $problemsReplacement += "- Fichiers verrouillÃ©s par un autre processus`n`n"
     $problemsReplacement += "**Solutions :**`n"
-    $problemsReplacement += "1. Exécutez PowerShell en tant qu'administrateur`n"
-    $problemsReplacement += "2. Vérifiez que les fichiers ne sont pas utilisés par un autre processus`n"
-    $problemsReplacement += "3. Configurez les permissions appropriées sur les fichiers et répertoires`n`n"
+    $problemsReplacement += "1. ExÃ©cutez PowerShell en tant qu'administrateur`n"
+    $problemsReplacement += "2. VÃ©rifiez que les fichiers ne sont pas utilisÃ©s par un autre processus`n"
+    $problemsReplacement += "3. Configurez les permissions appropriÃ©es sur les fichiers et rÃ©pertoires`n`n"
 
-    # Remplacer les sections de problèmes
-    $docContent = $docContent -replace '#### Problème 1 : \[TITRE_PROBLÈME_1\].*?#### Problème 2 : \[TITRE_PROBLÈME_2\].*?(?=##)', $problemsReplacement
+    # Remplacer les sections de problÃ¨mes
+    $docContent = $docContent -replace '#### ProblÃ¨me 1 : \[TITRE_PROBLÃˆME_1\].*?#### ProblÃ¨me 2 : \[TITRE_PROBLÃˆME_2\].*?(?=##)', $problemsReplacement
 
     # Remplacer les recommandations
-    $docContent = $docContent -replace '1\. \[RECOMMANDATION_1\]\s*2\. \[RECOMMANDATION_2\]\s*3\. \[RECOMMANDATION_3\]', "1. Utilisez le gestionnaire intégré pour accéder à ce gestionnaire lorsque c'est possible`n2. Configurez correctement le fichier de configuration avant d'utiliser le gestionnaire`n3. Consultez les journaux en cas de problème"
+    $docContent = $docContent -replace '1\. \[RECOMMANDATION_1\]\s*2\. \[RECOMMANDATION_2\]\s*3\. \[RECOMMANDATION_3\]', "1. Utilisez le gestionnaire intÃ©grÃ© pour accÃ©der Ã  ce gestionnaire lorsque c'est possible`n2. Configurez correctement le fichier de configuration avant d'utiliser le gestionnaire`n3. Consultez les journaux en cas de problÃ¨me"
 
-    # Remplacer les recommandations de sécurité
-    $docContent = $docContent -replace '1\. \[RECOMMANDATION_SÉCURITÉ_1\]\s*2\. \[RECOMMANDATION_SÉCURITÉ_2\]\s*3\. \[RECOMMANDATION_SÉCURITÉ_3\]', "1. N'exécutez pas le gestionnaire avec des privilèges administrateur sauf si nécessaire`n2. Protégez l'accès aux fichiers de configuration`n3. Utilisez des mots de passe forts pour les services associés"
+    # Remplacer les recommandations de sÃ©curitÃ©
+    $docContent = $docContent -replace '1\. \[RECOMMANDATION_SÃ‰CURITÃ‰_1\]\s*2\. \[RECOMMANDATION_SÃ‰CURITÃ‰_2\]\s*3\. \[RECOMMANDATION_SÃ‰CURITÃ‰_3\]', "1. N'exÃ©cutez pas le gestionnaire avec des privilÃ¨ges administrateur sauf si nÃ©cessaire`n2. ProtÃ©gez l'accÃ¨s aux fichiers de configuration`n3. Utilisez des mots de passe forts pour les services associÃ©s"
 
-    # Remplacer les références
-    $docContent = $docContent -replace '- \[RÉFÉRENCE_1\]\s*- \[RÉFÉRENCE_2\]\s*- \[RÉFÉRENCE_3\]', "- [Documentation du gestionnaire intégré](integrated_manager.md)`n- [Documentation du gestionnaire de modes](mode_manager.md)`n- [Guide des bonnes pratiques](../best-practices/powershell_best_practices.md)"
+    # Remplacer les rÃ©fÃ©rences
+    $docContent = $docContent -replace '- \[RÃ‰FÃ‰RENCE_1\]\s*- \[RÃ‰FÃ‰RENCE_2\]\s*- \[RÃ‰FÃ‰RENCE_3\]', "- [Documentation du gestionnaire intÃ©grÃ©](integrated_manager.md)`n- [Documentation du gestionnaire de modes](mode_manager.md)`n- [Guide des bonnes pratiques](../best-practices/powershell_best_practices.md)"
 
     # Remplacer l'historique des versions
     $today = Get-Date -Format "yyyy-MM-dd"
     $docContent = $docContent -replace '\| 1\.0\.0 \| YYYY-MM-DD \| Version initiale \|\s*\| 1\.1\.0 \| YYYY-MM-DD \| \[DESCRIPTION_CHANGEMENTS\] \|\s*\| 1\.2\.0 \| YYYY-MM-DD \| \[DESCRIPTION_CHANGEMENTS\] \|', "| 1.0.0 | $today | Version initiale |"
 
-    # Écrire le fichier de documentation
+    # Ã‰crire le fichier de documentation
     try {
-        # Utiliser UTF-8 avec BOM pour assurer la compatibilité avec les caractères spéciaux
+        # Utiliser UTF-8 avec BOM pour assurer la compatibilitÃ© avec les caractÃ¨res spÃ©ciaux
         $utf8WithBom = New-Object System.Text.UTF8Encoding $true
         [System.IO.File]::WriteAllText($docPath, $docContent, $utf8WithBom)
-        Write-Host "Documentation générée pour $managerDisplayName : $docPath" -ForegroundColor Green
+        Write-Host "Documentation gÃ©nÃ©rÃ©e pour $managerDisplayName : $docPath" -ForegroundColor Green
     } catch {
-        Write-Error "Erreur lors de l'écriture du fichier de documentation : $docPath"
+        Write-Error "Erreur lors de l'Ã©criture du fichier de documentation : $docPath"
         Write-Error "Erreur : $_"
     }
 }
 
-Write-Host "Génération de la documentation terminée." -ForegroundColor Green
+Write-Host "GÃ©nÃ©ration de la documentation terminÃ©e." -ForegroundColor Green

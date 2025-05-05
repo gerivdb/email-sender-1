@@ -1,24 +1,24 @@
-<#
+﻿<#
 .SYNOPSIS
-    RÃ©organise les scripts de roadmap-parser dans une nouvelle structure de dossiers.
+    RÃƒÂ©organise les scripts de roadmap-parser dans une nouvelle structure de dossiers.
 
 .DESCRIPTION
-    Ce script dÃ©place les fichiers existants dans le dossier development/roadmap/scripts-parser vers la nouvelle structure
-    de dossiers organisÃ©e par catÃ©gories et sous-catÃ©gories.
+    Ce script dÃƒÂ©place les fichiers existants dans le dossier development/roadmap/scripts-parser vers la nouvelle structure
+    de dossiers organisÃƒÂ©e par catÃƒÂ©gories et sous-catÃƒÂ©gories.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de crÃ©ation: 2023-08-15
+    Date de crÃƒÂ©ation: 2023-08-15
 #>
 
-# CrÃ©er la structure de dossiers
+# CrÃƒÂ©er la structure de dossiers
 $basePath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\scripts\roadmap-parser"
 
-# CatÃ©gories principales
+# CatÃƒÂ©gories principales
 $categories = @("core", "modes", "analysis", "utils", "tests", "docs")
 
-# Sous-catÃ©gories
+# Sous-catÃƒÂ©gories
 $subcategories = @{
     "core" = @("parser", "model", "converter", "structure")
     "modes" = @("debug", "test", "archi", "check", "gran", "dev-r", "review", "opti")
@@ -28,13 +28,13 @@ $subcategories = @{
     "docs" = @("examples", "guides", "api")
 }
 
-# CrÃ©er les dossiers
+# CrÃƒÂ©er les dossiers
 foreach ($category in $categories) {
     $categoryPath = Join-Path -Path $basePath -ChildPath $category
     
     if (-not (Test-Path -Path $categoryPath)) {
         New-Item -Path $categoryPath -ItemType Directory -Force | Out-Null
-        Write-Host "Dossier crÃ©Ã© : $categoryPath"
+        Write-Host "Dossier crÃƒÂ©ÃƒÂ© : $categoryPath"
     }
     
     foreach ($subcategory in $subcategories[$category]) {
@@ -42,12 +42,12 @@ foreach ($category in $categories) {
         
         if (-not (Test-Path -Path $subcategoryPath)) {
             New-Item -Path $subcategoryPath -ItemType Directory -Force | Out-Null
-            Write-Host "Dossier crÃ©Ã© : $subcategoryPath"
+            Write-Host "Dossier crÃƒÂ©ÃƒÂ© : $subcategoryPath"
         }
     }
 }
 
-# DÃ©finir les mappages de fichiers vers les nouveaux emplacements
+# DÃƒÂ©finir les mappages de fichiers vers les nouveaux emplacements
 $fileMappings = @{
     # Modes
     "archi-mode.ps1" = "modes/archi/archi-mode.ps1"
@@ -112,7 +112,7 @@ $fileMappings = @{
     "Test-RoadmapModel2-Dependencies.ps1" = "development/testing/tests/performance/Test-RoadmapModel2-Dependencies.ps1"
 }
 
-# Fonction pour dÃ©placer un fichier
+# Fonction pour dÃƒÂ©placer un fichier
 function Move-FileToNewLocation {
     param (
         [string]$SourceFile,
@@ -122,35 +122,35 @@ function Move-FileToNewLocation {
     $sourcePath = Join-Path -Path $basePath -ChildPath $SourceFile
     $destinationPath = Join-Path -Path $basePath -ChildPath $DestinationPath
     
-    # VÃ©rifier si le fichier source existe
+    # VÃƒÂ©rifier si le fichier source existe
     if (-not (Test-Path -Path $sourcePath)) {
         Write-Warning "Le fichier source n'existe pas : $sourcePath"
         return
     }
     
-    # CrÃ©er le dossier de destination s'il n'existe pas
+    # CrÃƒÂ©er le dossier de destination s'il n'existe pas
     $destinationDir = Split-Path -Path $destinationPath -Parent
     if (-not (Test-Path -Path $destinationDir)) {
         New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
-        Write-Host "Dossier crÃ©Ã© : $destinationDir"
+        Write-Host "Dossier crÃƒÂ©ÃƒÂ© : $destinationDir"
     }
     
-    # DÃ©placer le fichier
+    # DÃƒÂ©placer le fichier
     try {
         Copy-Item -Path $sourcePath -Destination $destinationPath -Force
-        Write-Host "Fichier copiÃ© : $SourceFile -> $DestinationPath"
+        Write-Host "Fichier copiÃƒÂ© : $SourceFile -> $DestinationPath"
     }
     catch {
         Write-Error "Erreur lors de la copie du fichier $SourceFile : $_"
     }
 }
 
-# DÃ©placer les fichiers
+# DÃƒÂ©placer les fichiers
 foreach ($file in $fileMappings.Keys) {
     Move-FileToNewLocation -SourceFile $file -DestinationPath $fileMappings[$file]
 }
 
-# CrÃ©er un README.md pour chaque sous-catÃ©gorie
+# CrÃƒÂ©er un README.md pour chaque sous-catÃƒÂ©gorie
 foreach ($category in $categories) {
     foreach ($subcategory in $subcategories[$category]) {
         $readmePath = Join-Path -Path $basePath -ChildPath "$category\$subcategory\README.md"
@@ -159,7 +159,7 @@ foreach ($category in $categories) {
             $readmeContent = @"
 # $subcategory - $category
 
-Cette section contient les scripts liÃ©s Ã  $subcategory dans la catÃ©gorie $category.
+Cette section contient les scripts liÃƒÂ©s ÃƒÂ  $subcategory dans la catÃƒÂ©gorie $category.
 
 ## Scripts disponibles
 
@@ -183,9 +183,9 @@ $(
 .\<nom-du-script>.ps1 -InputPath "Roadmap/roadmap.md" -OutputPath "Roadmap/output.md"
 ```
 
-## DÃ©pendances
+## DÃƒÂ©pendances
 
-Ces scripts peuvent dÃ©pendre des modules suivants :
+Ces scripts peuvent dÃƒÂ©pendre des modules suivants :
 - `roadmap-parser` - Module principal de parsing de roadmap
 
 ## Tests
@@ -194,11 +194,11 @@ Les tests unitaires pour ces scripts se trouvent dans le dossier `development/te
 "@
             
             Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
-            Write-Host "README.md crÃ©Ã© : $readmePath"
+            Write-Host "README.md crÃƒÂ©ÃƒÂ© : $readmePath"
         }
     }
 }
 
-Write-Host "RÃ©organisation terminÃ©e. Les fichiers ont Ã©tÃ© copiÃ©s vers leurs nouveaux emplacements."
-Write-Host "Vous pouvez maintenant vÃ©rifier que tout fonctionne correctement avant de supprimer les fichiers originaux."
+Write-Host "RÃƒÂ©organisation terminÃƒÂ©e. Les fichiers ont ÃƒÂ©tÃƒÂ© copiÃƒÂ©s vers leurs nouveaux emplacements."
+Write-Host "Vous pouvez maintenant vÃƒÂ©rifier que tout fonctionne correctement avant de supprimer les fichiers originaux."
 

@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests simplifiés du script manager.
+    ExÃ©cute les tests simplifiÃ©s du script manager.
 .DESCRIPTION
-    Ce script exécute les tests simplifiés du script manager,
-    en évitant les tests qui nécessitent des modifications.
+    Ce script exÃ©cute les tests simplifiÃ©s du script manager,
+    en Ã©vitant les tests qui nÃ©cessitent des modifications.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de tests.
 .PARAMETER GenerateHTML
-    Génère un rapport HTML des résultats des tests.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests.
 .EXAMPLE
     .\Run-SimplifiedTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -26,7 +26,7 @@ param (
     [switch]$GenerateHTML
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -51,22 +51,22 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Exécuter le test simplifié
+# ExÃ©cuter le test simplifiÃ©
 $testPath = Join-Path -Path $PSScriptRoot -ChildPath "Test-ManagerStructureSimple.ps1"
 $testParams = @{
     OutputPath = $OutputPath
@@ -76,15 +76,15 @@ if ($GenerateHTML) {
     $testParams.Add("GenerateHTML", $true)
 }
 
-Write-Log "Exécution des tests simplifiés..." -Level "INFO"
+Write-Log "ExÃ©cution des tests simplifiÃ©s..." -Level "INFO"
 & $testPath @testParams
 
-# Vérifier le code de sortie
+# VÃ©rifier le code de sortie
 if ($LASTEXITCODE -eq 0) {
-    Write-Log "Tous les tests simplifiés ont réussi!" -Level "SUCCESS"
+    Write-Log "Tous les tests simplifiÃ©s ont rÃ©ussi!" -Level "SUCCESS"
     exit 0
 }
 else {
-    Write-Log "Des tests simplifiés ont échoué. Veuillez consulter les rapports pour plus de détails." -Level "ERROR"
+    Write-Log "Des tests simplifiÃ©s ont Ã©chouÃ©. Veuillez consulter les rapports pour plus de dÃ©tails." -Level "ERROR"
     exit 1
 }

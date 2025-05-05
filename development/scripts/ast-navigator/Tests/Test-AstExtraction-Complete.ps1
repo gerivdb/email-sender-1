@@ -1,10 +1,10 @@
-# Script de test pour les fonctions d'extraction d'éléments spécifiques
+﻿# Script de test pour les fonctions d'extraction d'Ã©lÃ©ments spÃ©cifiques
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script PowerShell de test
+# CrÃ©er un script PowerShell de test
 $sampleCode = @'
 param (
     [string]$InputPath,
@@ -72,12 +72,12 @@ try {
         $processedData | Export-Csv -Path $OutputPath -NoTypeInformation -Force:$Force
     }
     
-    # Test de structures de contrôle
+    # Test de structures de contrÃ´le
     if ($MaxItems -gt 0) {
-        Write-Output "Traitement de $MaxItems éléments"
+        Write-Output "Traitement de $MaxItems Ã©lÃ©ments"
     }
     else {
-        Write-Output "Aucun élément à traiter"
+        Write-Output "Aucun Ã©lÃ©ment Ã  traiter"
     }
     
     switch ($MaxItems) {
@@ -88,13 +88,13 @@ try {
     
     $i = 0
     while ($i -lt 5) {
-        Write-Output "Itération $i"
+        Write-Output "ItÃ©ration $i"
         $i++
     }
     
     do {
         $i--
-        Write-Output "Compte à rebours: $i"
+        Write-Output "Compte Ã  rebours: $i"
     } while ($i -gt 0)
 }
 catch {
@@ -102,7 +102,7 @@ catch {
     Write-Error "Erreur lors du traitement: $_"
 }
 finally {
-    Write-Output "Traitement terminé avec $script:errorCount erreurs."
+    Write-Output "Traitement terminÃ© avec $script:errorCount erreurs."
 }
 '@
 
@@ -113,50 +113,50 @@ $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [
 # Test 1: Extraire les fonctions
 Write-Host "Test 1: Extraire les fonctions" -ForegroundColor Cyan
 $functions = Get-AstFunctions -Ast $ast
-Write-Host "  Nombre de fonctions trouvées: $($functions.Count)" -ForegroundColor Yellow
+Write-Host "  Nombre de fonctions trouvÃ©es: $($functions.Count)" -ForegroundColor Yellow
 foreach ($function in $functions) {
     Write-Host "    $($function.Name) (Lignes $($function.StartLine)-$($function.EndLine))" -ForegroundColor Green
 }
 
-# Test 2: Extraire les fonctions avec détails
-Write-Host "`nTest 2: Extraire les fonctions avec détails" -ForegroundColor Cyan
+# Test 2: Extraire les fonctions avec dÃ©tails
+Write-Host "`nTest 2: Extraire les fonctions avec dÃ©tails" -ForegroundColor Cyan
 $detailedFunctions = Get-AstFunctions -Ast $ast -Detailed
 foreach ($function in $detailedFunctions) {
     Write-Host "    $($function.Name) (Lignes $($function.StartLine)-$($function.EndLine))" -ForegroundColor Green
-    Write-Host "      Paramètres:" -ForegroundColor Green
+    Write-Host "      ParamÃ¨tres:" -ForegroundColor Green
     foreach ($param in $function.Parameters) {
         $mandatory = if ($param.Mandatory) { "Obligatoire" } else { "Optionnel" }
         Write-Host "        $($param.Name) ($($param.Type)) - $mandatory" -ForegroundColor Green
         if ($param.DefaultValue) {
-            Write-Host "          Valeur par défaut: $($param.DefaultValue)" -ForegroundColor Green
+            Write-Host "          Valeur par dÃ©faut: $($param.DefaultValue)" -ForegroundColor Green
         }
     }
 }
 
-# Test 3: Extraire les paramètres du script
-Write-Host "`nTest 3: Extraire les paramètres du script" -ForegroundColor Cyan
+# Test 3: Extraire les paramÃ¨tres du script
+Write-Host "`nTest 3: Extraire les paramÃ¨tres du script" -ForegroundColor Cyan
 $scriptParams = Get-AstParameters -Ast $ast
-Write-Host "  Nombre de paramètres trouvés: $($scriptParams.Count)" -ForegroundColor Yellow
+Write-Host "  Nombre de paramÃ¨tres trouvÃ©s: $($scriptParams.Count)" -ForegroundColor Yellow
 foreach ($param in $scriptParams) {
     Write-Host "    $($param.Name) ($($param.Type))" -ForegroundColor Green
     if ($param.DefaultValue) {
-        Write-Host "      Valeur par défaut: $($param.DefaultValue)" -ForegroundColor Green
+        Write-Host "      Valeur par dÃ©faut: $($param.DefaultValue)" -ForegroundColor Green
     }
 }
 
 # Test 4: Extraire les variables
 Write-Host "`nTest 4: Extraire les variables" -ForegroundColor Cyan
 $variables = Get-AstVariables -Ast $ast -ExcludeAutomaticVariables
-Write-Host "  Nombre de variables trouvées: $($variables.Count)" -ForegroundColor Yellow
+Write-Host "  Nombre de variables trouvÃ©es: $($variables.Count)" -ForegroundColor Yellow
 foreach ($var in $variables) {
     $scope = if ($var.Scope) { $var.Scope } else { "Local" }
-    Write-Host "    $($scope):$($var.Name) (Première utilisation: ligne $($var.FirstUsage.Line))" -ForegroundColor Green
+    Write-Host "    $($scope):$($var.Name) (PremiÃ¨re utilisation: ligne $($var.FirstUsage.Line))" -ForegroundColor Green
 }
 
 # Test 5: Extraire les commandes
 Write-Host "`nTest 5: Extraire les commandes" -ForegroundColor Cyan
 $commands = Get-AstCommands -Ast $ast
-Write-Host "  Nombre de commandes trouvées: $($commands.Count)" -ForegroundColor Yellow
+Write-Host "  Nombre de commandes trouvÃ©es: $($commands.Count)" -ForegroundColor Yellow
 foreach ($command in $commands) {
     Write-Host "    $($command.Name) (Lignes $($command.StartLine)-$($command.EndLine))" -ForegroundColor Green
 }
@@ -179,14 +179,14 @@ foreach ($command in $commandsWithArgs) {
     }
 }
 
-# Test 7: Extraire les structures de contrôle
-Write-Host "`nTest 7: Extraire les structures de contrôle" -ForegroundColor Cyan
+# Test 7: Extraire les structures de contrÃ´le
+Write-Host "`nTest 7: Extraire les structures de contrÃ´le" -ForegroundColor Cyan
 $controlStructures = Get-AstControlStructures -Ast $ast
-Write-Host "  Nombre de structures de contrôle trouvées: $($controlStructures.Count)" -ForegroundColor Yellow
+Write-Host "  Nombre de structures de contrÃ´le trouvÃ©es: $($controlStructures.Count)" -ForegroundColor Yellow
 foreach ($structure in $controlStructures) {
     Write-Host "    $($structure.Type) (Lignes $($structure.StartLine)-$($structure.EndLine))" -ForegroundColor Green
     
-    # Afficher des détails spécifiques selon le type de structure
+    # Afficher des dÃ©tails spÃ©cifiques selon le type de structure
     switch ($structure.Type) {
         "If" {
             Write-Host "      Condition: $($structure.Condition)" -ForegroundColor Green
@@ -194,14 +194,14 @@ foreach ($structure in $controlStructures) {
                 Write-Host "      Nombre de clauses ElseIf: $($structure.ElseIfCount)" -ForegroundColor Green
             }
             if ($structure.HasElse) {
-                Write-Host "      Possède une clause Else" -ForegroundColor Green
+                Write-Host "      PossÃ¨de une clause Else" -ForegroundColor Green
             }
         }
         "Switch" {
             Write-Host "      Condition: $($structure.Condition)" -ForegroundColor Green
             Write-Host "      Nombre de cas: $($structure.CaseCount)" -ForegroundColor Green
             if ($structure.HasDefault) {
-                Write-Host "      Possède une clause Default" -ForegroundColor Green
+                Write-Host "      PossÃ¨de une clause Default" -ForegroundColor Green
             }
         }
         "Foreach" {
@@ -220,18 +220,18 @@ foreach ($structure in $controlStructures) {
         "Try" {
             Write-Host "      Nombre de clauses Catch: $($structure.CatchCount)" -ForegroundColor Green
             if ($structure.HasFinally) {
-                Write-Host "      Possède une clause Finally" -ForegroundColor Green
+                Write-Host "      PossÃ¨de une clause Finally" -ForegroundColor Green
             }
         }
     }
 }
 
-# Test 8: Analyser la complexité des structures de contrôle
-Write-Host "`nTest 8: Analyser la complexité des structures de contrôle" -ForegroundColor Cyan
+# Test 8: Analyser la complexitÃ© des structures de contrÃ´le
+Write-Host "`nTest 8: Analyser la complexitÃ© des structures de contrÃ´le" -ForegroundColor Cyan
 $complexStructures = Get-AstControlStructures -Ast $ast -AnalyzeComplexity
 foreach ($structure in $complexStructures) {
     Write-Host "    $($structure.Type) (Lignes $($structure.StartLine)-$($structure.EndLine))" -ForegroundColor Green
-    Write-Host "      Complexité: $($structure.Complexity)" -ForegroundColor Green
+    Write-Host "      ComplexitÃ©: $($structure.Complexity)" -ForegroundColor Green
 }
 
-Write-Host "`nTests terminés avec succès!" -ForegroundColor Green
+Write-Host "`nTests terminÃ©s avec succÃ¨s!" -ForegroundColor Green

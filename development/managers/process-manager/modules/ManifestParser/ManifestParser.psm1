@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de parsing de manifestes pour le Process Manager.
 
 .DESCRIPTION
-    Ce module fournit des fonctionnalités pour analyser, valider et manipuler
+    Ce module fournit des fonctionnalitÃ©s pour analyser, valider et manipuler
     les manifestes des gestionnaires dans le Process Manager.
 
 .NOTES
@@ -13,7 +13,7 @@
 
 #region Variables globales
 
-# Schéma de validation du manifeste
+# SchÃ©ma de validation du manifeste
 $script:ManifestSchema = @{
     Name = @{
         Type = "string"
@@ -93,20 +93,20 @@ $script:ManifestSchema = @{
 
 #endregion
 
-#region Fonctions privées
+#region Fonctions privÃ©es
 
 <#
 .SYNOPSIS
-    Écrit un message dans le journal.
+    Ã‰crit un message dans le journal.
 
 .DESCRIPTION
-    Cette fonction écrit un message dans le journal avec un niveau de gravité spécifié.
+    Cette fonction Ã©crit un message dans le journal avec un niveau de gravitÃ© spÃ©cifiÃ©.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Level
-    Le niveau de gravité du message (Debug, Info, Warning, Error).
+    Le niveau de gravitÃ© du message (Debug, Info, Warning, Error).
 
 .EXAMPLE
     Write-ManifestLog -Message "Analyse du manifeste du gestionnaire 'ModeManager'" -Level Info
@@ -122,7 +122,7 @@ function Write-ManifestLog {
         [string]$Level = "Info"
     )
 
-    # Définir les niveaux de journalisation
+    # DÃ©finir les niveaux de journalisation
     $logLevels = @{
         Debug = 0
         Info = 1
@@ -130,7 +130,7 @@ function Write-ManifestLog {
         Error = 3
     }
 
-    # Définir la couleur en fonction du niveau
+    # DÃ©finir la couleur en fonction du niveau
     $color = switch ($Level) {
         "Debug" { "Gray" }
         "Info" { "White" }
@@ -166,7 +166,7 @@ function Get-ManifestFromJson {
     )
 
     try {
-        # Vérifier que le fichier existe
+        # VÃ©rifier que le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-ManifestLog -Message "Le fichier JSON n'existe pas : $Path" -Level Error
             return $null
@@ -207,7 +207,7 @@ function Get-ManifestFromPsd1 {
     )
 
     try {
-        # Vérifier que le fichier existe
+        # VÃ©rifier que le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-ManifestLog -Message "Le fichier PSD1 n'existe pas : $Path" -Level Error
             return $null
@@ -216,7 +216,7 @@ function Get-ManifestFromPsd1 {
         # Importer le contenu du fichier
         $manifest = Import-PowerShellDataFile -Path $Path
         
-        # Convertir les propriétés spécifiques au Process Manager
+        # Convertir les propriÃ©tÃ©s spÃ©cifiques au Process Manager
         $processManagerManifest = @{
             Name = $manifest.RootModule -replace '\.psm1$', ''
             Description = $manifest.Description
@@ -225,7 +225,7 @@ function Get-ManifestFromPsd1 {
             RequiredPowerShellVersion = $manifest.PowerShellVersion
         }
         
-        # Ajouter les propriétés spécifiques au Process Manager si elles existent
+        # Ajouter les propriÃ©tÃ©s spÃ©cifiques au Process Manager si elles existent
         if ($manifest.PrivateData -and $manifest.PrivateData.ProcessManager) {
             $processManagerData = $manifest.PrivateData.ProcessManager
             
@@ -283,7 +283,7 @@ function Get-ManifestFromScriptComments {
     )
 
     try {
-        # Vérifier que le fichier existe
+        # VÃ©rifier que le fichier existe
         if (-not (Test-Path -Path $Path -PathType Leaf)) {
             Write-ManifestLog -Message "Le script n'existe pas : $Path" -Level Error
             return $null
@@ -297,7 +297,7 @@ function Get-ManifestFromScriptComments {
         $manifestMatch = [regex]::Match($content, $manifestPattern)
         
         if (-not $manifestMatch.Success) {
-            Write-ManifestLog -Message "Aucun bloc de manifeste trouvé dans le script : $Path" -Level Warning
+            Write-ManifestLog -Message "Aucun bloc de manifeste trouvÃ© dans le script : $Path" -Level Warning
             return $null
         }
         
@@ -322,13 +322,13 @@ function Get-ManifestFromScriptComments {
 
 <#
 .SYNOPSIS
-    Valide un manifeste selon le schéma.
+    Valide un manifeste selon le schÃ©ma.
 
 .DESCRIPTION
-    Cette fonction valide un manifeste selon le schéma défini.
+    Cette fonction valide un manifeste selon le schÃ©ma dÃ©fini.
 
 .PARAMETER Manifest
-    Le manifeste à valider.
+    Le manifeste Ã  valider.
 
 .EXAMPLE
     $isValid = Test-ManifestSchema -Manifest $manifest
@@ -340,92 +340,92 @@ function Test-ManifestSchema {
         [PSCustomObject]$Manifest
     )
 
-    # Vérifier les propriétés requises
+    # VÃ©rifier les propriÃ©tÃ©s requises
     foreach ($propertyName in $script:ManifestSchema.Keys) {
         $propertySchema = $script:ManifestSchema[$propertyName]
         
-        # Vérifier si la propriété est requise
+        # VÃ©rifier si la propriÃ©tÃ© est requise
         if ($propertySchema.Required -and -not ($Manifest.PSObject.Properties.Name -contains $propertyName)) {
-            Write-ManifestLog -Message "Propriété requise manquante dans le manifeste : $propertyName" -Level Error
+            Write-ManifestLog -Message "PropriÃ©tÃ© requise manquante dans le manifeste : $propertyName" -Level Error
             return $false
         }
         
-        # Vérifier le type de la propriété si elle existe
+        # VÃ©rifier le type de la propriÃ©tÃ© si elle existe
         if ($Manifest.PSObject.Properties.Name -contains $propertyName) {
             $propertyValue = $Manifest.$propertyName
             
-            # Vérifier le type
+            # VÃ©rifier le type
             switch ($propertySchema.Type) {
                 "string" {
                     if ($propertyValue -isnot [string]) {
-                        Write-ManifestLog -Message "La propriété '$propertyName' doit être une chaîne de caractères" -Level Error
+                        Write-ManifestLog -Message "La propriÃ©tÃ© '$propertyName' doit Ãªtre une chaÃ®ne de caractÃ¨res" -Level Error
                         return $false
                     }
                     
-                    # Vérifier le pattern si spécifié
+                    # VÃ©rifier le pattern si spÃ©cifiÃ©
                     if ($propertySchema.Pattern -and -not ($propertyValue -match $propertySchema.Pattern)) {
-                        Write-ManifestLog -Message "La propriété '$propertyName' ne correspond pas au pattern requis : $($propertySchema.Pattern)" -Level Error
+                        Write-ManifestLog -Message "La propriÃ©tÃ© '$propertyName' ne correspond pas au pattern requis : $($propertySchema.Pattern)" -Level Error
                         return $false
                     }
                 }
                 "array" {
                     if ($propertyValue -isnot [array]) {
-                        Write-ManifestLog -Message "La propriété '$propertyName' doit être un tableau" -Level Error
+                        Write-ManifestLog -Message "La propriÃ©tÃ© '$propertyName' doit Ãªtre un tableau" -Level Error
                         return $false
                     }
                     
-                    # Vérifier le type des éléments si spécifié
+                    # VÃ©rifier le type des Ã©lÃ©ments si spÃ©cifiÃ©
                     if ($propertySchema.ItemType) {
                         foreach ($item in $propertyValue) {
                             switch ($propertySchema.ItemType) {
                                 "string" {
                                     if ($item -isnot [string]) {
-                                        Write-ManifestLog -Message "Les éléments de la propriété '$propertyName' doivent être des chaînes de caractères" -Level Error
+                                        Write-ManifestLog -Message "Les Ã©lÃ©ments de la propriÃ©tÃ© '$propertyName' doivent Ãªtre des chaÃ®nes de caractÃ¨res" -Level Error
                                         return $false
                                     }
                                 }
-                                # Ajouter d'autres types si nécessaire
+                                # Ajouter d'autres types si nÃ©cessaire
                             }
                         }
                     }
                     
-                    # Vérifier le schéma des éléments si spécifié
+                    # VÃ©rifier le schÃ©ma des Ã©lÃ©ments si spÃ©cifiÃ©
                     if ($propertySchema.ItemSchema) {
                         foreach ($item in $propertyValue) {
                             foreach ($itemPropertyName in $propertySchema.ItemSchema.Keys) {
                                 $itemPropertySchema = $propertySchema.ItemSchema[$itemPropertyName]
                                 
-                                # Vérifier si la propriété est requise
+                                # VÃ©rifier si la propriÃ©tÃ© est requise
                                 if ($itemPropertySchema.Required -and -not ($item.PSObject.Properties.Name -contains $itemPropertyName)) {
-                                    Write-ManifestLog -Message "Propriété requise manquante dans un élément de '$propertyName' : $itemPropertyName" -Level Error
+                                    Write-ManifestLog -Message "PropriÃ©tÃ© requise manquante dans un Ã©lÃ©ment de '$propertyName' : $itemPropertyName" -Level Error
                                     return $false
                                 }
                                 
-                                # Vérifier le type de la propriété si elle existe
+                                # VÃ©rifier le type de la propriÃ©tÃ© si elle existe
                                 if ($item.PSObject.Properties.Name -contains $itemPropertyName) {
                                     $itemPropertyValue = $item.$itemPropertyName
                                     
-                                    # Vérifier le type
+                                    # VÃ©rifier le type
                                     switch ($itemPropertySchema.Type) {
                                         "string" {
                                             if ($itemPropertyValue -isnot [string]) {
-                                                Write-ManifestLog -Message "La propriété '$itemPropertyName' d'un élément de '$propertyName' doit être une chaîne de caractères" -Level Error
+                                                Write-ManifestLog -Message "La propriÃ©tÃ© '$itemPropertyName' d'un Ã©lÃ©ment de '$propertyName' doit Ãªtre une chaÃ®ne de caractÃ¨res" -Level Error
                                                 return $false
                                             }
                                             
-                                            # Vérifier le pattern si spécifié
+                                            # VÃ©rifier le pattern si spÃ©cifiÃ©
                                             if ($itemPropertySchema.Pattern -and -not ($itemPropertyValue -match $itemPropertySchema.Pattern)) {
-                                                Write-ManifestLog -Message "La propriété '$itemPropertyName' d'un élément de '$propertyName' ne correspond pas au pattern requis : $($itemPropertySchema.Pattern)" -Level Error
+                                                Write-ManifestLog -Message "La propriÃ©tÃ© '$itemPropertyName' d'un Ã©lÃ©ment de '$propertyName' ne correspond pas au pattern requis : $($itemPropertySchema.Pattern)" -Level Error
                                                 return $false
                                             }
                                         }
                                         "boolean" {
                                             if ($itemPropertyValue -isnot [bool]) {
-                                                Write-ManifestLog -Message "La propriété '$itemPropertyName' d'un élément de '$propertyName' doit être un booléen" -Level Error
+                                                Write-ManifestLog -Message "La propriÃ©tÃ© '$itemPropertyName' d'un Ã©lÃ©ment de '$propertyName' doit Ãªtre un boolÃ©en" -Level Error
                                                 return $false
                                             }
                                         }
-                                        # Ajouter d'autres types si nécessaire
+                                        # Ajouter d'autres types si nÃ©cessaire
                                     }
                                 }
                             }
@@ -434,17 +434,17 @@ function Test-ManifestSchema {
                 }
                 "object" {
                     if ($propertyValue -isnot [PSCustomObject] -and $propertyValue -isnot [hashtable]) {
-                        Write-ManifestLog -Message "La propriété '$propertyName' doit être un objet" -Level Error
+                        Write-ManifestLog -Message "La propriÃ©tÃ© '$propertyName' doit Ãªtre un objet" -Level Error
                         return $false
                     }
                 }
                 "boolean" {
                     if ($propertyValue -isnot [bool]) {
-                        Write-ManifestLog -Message "La propriété '$propertyName' doit être un booléen" -Level Error
+                        Write-ManifestLog -Message "La propriÃ©tÃ© '$propertyName' doit Ãªtre un boolÃ©en" -Level Error
                         return $false
                     }
                 }
-                # Ajouter d'autres types si nécessaire
+                # Ajouter d'autres types si nÃ©cessaire
             }
         }
     }
@@ -461,13 +461,13 @@ function Test-ManifestSchema {
     Extrait le manifeste d'un gestionnaire.
 
 .DESCRIPTION
-    Cette fonction extrait le manifeste d'un gestionnaire à partir de différentes sources.
+    Cette fonction extrait le manifeste d'un gestionnaire Ã  partir de diffÃ©rentes sources.
 
 .PARAMETER Path
     Le chemin vers le fichier du gestionnaire.
 
 .PARAMETER ManifestPath
-    Le chemin vers le fichier de manifeste. Si non spécifié, tente de le déduire à partir du chemin du gestionnaire.
+    Le chemin vers le fichier de manifeste. Si non spÃ©cifiÃ©, tente de le dÃ©duire Ã  partir du chemin du gestionnaire.
 
 .EXAMPLE
     $manifest = Get-ManagerManifest -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
@@ -485,15 +485,15 @@ function Get-ManagerManifest {
         [string]$ManifestPath
     )
 
-    # Vérifier que le fichier du gestionnaire existe
+    # VÃ©rifier que le fichier du gestionnaire existe
     if (-not (Test-Path -Path $Path -PathType Leaf)) {
         Write-ManifestLog -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $null
     }
 
-    # Si un chemin de manifeste est spécifié, essayer de l'extraire
+    # Si un chemin de manifeste est spÃ©cifiÃ©, essayer de l'extraire
     if ($ManifestPath) {
-        # Déterminer le type de fichier
+        # DÃ©terminer le type de fichier
         $extension = [System.IO.Path]::GetExtension($ManifestPath).ToLower()
         
         switch ($extension) {
@@ -517,7 +517,7 @@ function Get-ManagerManifest {
         }
     }
 
-    # Essayer de déduire le chemin du manifeste à partir du chemin du gestionnaire
+    # Essayer de dÃ©duire le chemin du manifeste Ã  partir du chemin du gestionnaire
     $directory = Split-Path -Path $Path -Parent
     $baseName = [System.IO.Path]::GetFileNameWithoutExtension($Path)
     
@@ -526,7 +526,7 @@ function Get-ManagerManifest {
     if (Test-Path -Path $jsonPath -PathType Leaf) {
         $manifest = Get-ManifestFromJson -Path $jsonPath
         if ($manifest) {
-            Write-ManifestLog -Message "Manifeste extrait du fichier JSON déduit : $jsonPath" -Level Info
+            Write-ManifestLog -Message "Manifeste extrait du fichier JSON dÃ©duit : $jsonPath" -Level Info
             return $manifest
         }
     }
@@ -536,7 +536,7 @@ function Get-ManagerManifest {
     if (Test-Path -Path $psd1Path -PathType Leaf) {
         $manifest = Get-ManifestFromPsd1 -Path $psd1Path
         if ($manifest) {
-            Write-ManifestLog -Message "Manifeste extrait du fichier PSD1 déduit : $psd1Path" -Level Info
+            Write-ManifestLog -Message "Manifeste extrait du fichier PSD1 dÃ©duit : $psd1Path" -Level Info
             return $manifest
         }
     }
@@ -548,8 +548,8 @@ function Get-ManagerManifest {
         return $manifest
     }
     
-    # Aucun manifeste trouvé, créer un manifeste par défaut
-    Write-ManifestLog -Message "Aucun manifeste trouvé pour le gestionnaire : $Path. Création d'un manifeste par défaut." -Level Warning
+    # Aucun manifeste trouvÃ©, crÃ©er un manifeste par dÃ©faut
+    Write-ManifestLog -Message "Aucun manifeste trouvÃ© pour le gestionnaire : $Path. CrÃ©ation d'un manifeste par dÃ©faut." -Level Warning
     
     $defaultManifest = @{
         Name = $baseName
@@ -568,10 +568,10 @@ function Get-ManagerManifest {
     Valide un manifeste de gestionnaire.
 
 .DESCRIPTION
-    Cette fonction valide un manifeste de gestionnaire selon le schéma défini.
+    Cette fonction valide un manifeste de gestionnaire selon le schÃ©ma dÃ©fini.
 
 .PARAMETER Manifest
-    Le manifeste à valider.
+    Le manifeste Ã  valider.
 
 .EXAMPLE
     $isValid = Test-ManifestValidity -Manifest $manifest
@@ -583,51 +583,51 @@ function Test-ManifestValidity {
         [PSCustomObject]$Manifest
     )
 
-    # Valider le manifeste selon le schéma
+    # Valider le manifeste selon le schÃ©ma
     $isValid = Test-ManifestSchema -Manifest $Manifest
     
     if (-not $isValid) {
-        Write-ManifestLog -Message "Le manifeste n'est pas valide selon le schéma défini." -Level Error
+        Write-ManifestLog -Message "Le manifeste n'est pas valide selon le schÃ©ma dÃ©fini." -Level Error
         return $false
     }
     
-    # Vérifications supplémentaires spécifiques
+    # VÃ©rifications supplÃ©mentaires spÃ©cifiques
     
-    # Vérifier que le nom ne contient pas de caractères spéciaux
+    # VÃ©rifier que le nom ne contient pas de caractÃ¨res spÃ©ciaux
     if ($Manifest.Name -match '[^\w\-]') {
         Write-ManifestLog -Message "Le nom du gestionnaire ne doit contenir que des lettres, des chiffres, des tirets et des underscores." -Level Error
         return $false
     }
     
-    # Vérifier que la version est au format sémantique
+    # VÃ©rifier que la version est au format sÃ©mantique
     if ($Manifest.Version -notmatch '^\d+\.\d+\.\d+$') {
-        Write-ManifestLog -Message "La version doit être au format sémantique (X.Y.Z)." -Level Error
+        Write-ManifestLog -Message "La version doit Ãªtre au format sÃ©mantique (X.Y.Z)." -Level Error
         return $false
     }
     
-    # Vérifier les dépendances si elles existent
+    # VÃ©rifier les dÃ©pendances si elles existent
     if ($Manifest.Dependencies) {
         foreach ($dependency in $Manifest.Dependencies) {
-            # Vérifier que le nom de la dépendance est spécifié
+            # VÃ©rifier que le nom de la dÃ©pendance est spÃ©cifiÃ©
             if (-not $dependency.Name) {
-                Write-ManifestLog -Message "Une dépendance doit avoir un nom." -Level Error
+                Write-ManifestLog -Message "Une dÃ©pendance doit avoir un nom." -Level Error
                 return $false
             }
             
-            # Vérifier que les versions sont au format sémantique
+            # VÃ©rifier que les versions sont au format sÃ©mantique
             if ($dependency.MinimumVersion -and $dependency.MinimumVersion -notmatch '^\d+\.\d+\.\d+$') {
-                Write-ManifestLog -Message "La version minimale de la dépendance '$($dependency.Name)' doit être au format sémantique (X.Y.Z)." -Level Error
+                Write-ManifestLog -Message "La version minimale de la dÃ©pendance '$($dependency.Name)' doit Ãªtre au format sÃ©mantique (X.Y.Z)." -Level Error
                 return $false
             }
             
             if ($dependency.MaximumVersion -and $dependency.MaximumVersion -notmatch '^\d+\.\d+\.\d+$') {
-                Write-ManifestLog -Message "La version maximale de la dépendance '$($dependency.Name)' doit être au format sémantique (X.Y.Z)." -Level Error
+                Write-ManifestLog -Message "La version maximale de la dÃ©pendance '$($dependency.Name)' doit Ãªtre au format sÃ©mantique (X.Y.Z)." -Level Error
                 return $false
             }
         }
     }
     
-    # Toutes les vérifications sont passées
+    # Toutes les vÃ©rifications sont passÃ©es
     Write-ManifestLog -Message "Le manifeste est valide." -Level Info
     return $true
 }
@@ -637,13 +637,13 @@ function Test-ManifestValidity {
     Convertit un gestionnaire en manifeste.
 
 .DESCRIPTION
-    Cette fonction analyse un gestionnaire et génère un manifeste à partir de ses métadonnées.
+    Cette fonction analyse un gestionnaire et gÃ©nÃ¨re un manifeste Ã  partir de ses mÃ©tadonnÃ©es.
 
 .PARAMETER Path
     Le chemin vers le fichier du gestionnaire.
 
 .PARAMETER OutputPath
-    Le chemin où enregistrer le manifeste généré. Si non spécifié, retourne le manifeste sans l'enregistrer.
+    Le chemin oÃ¹ enregistrer le manifeste gÃ©nÃ©rÃ©. Si non spÃ©cifiÃ©, retourne le manifeste sans l'enregistrer.
 
 .EXAMPLE
     $manifest = Convert-ToManifest -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
@@ -661,7 +661,7 @@ function Convert-ToManifest {
         [string]$OutputPath
     )
 
-    # Vérifier que le fichier du gestionnaire existe
+    # VÃ©rifier que le fichier du gestionnaire existe
     if (-not (Test-Path -Path $Path -PathType Leaf)) {
         Write-ManifestLog -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $null
@@ -701,7 +701,7 @@ function Convert-ToManifest {
         $version = $versionMatch.Groups[1].Value.Trim()
     }
     
-    # Détecter les dépendances potentielles
+    # DÃ©tecter les dÃ©pendances potentielles
     $importPattern = 'Import-Module\s+([''"])(.*?)\1'
     $importMatches = [regex]::Matches($content, $importPattern)
     foreach ($match in $importMatches) {
@@ -712,7 +712,7 @@ function Convert-ToManifest {
         }
     }
     
-    # Détecter les capacités potentielles
+    # DÃ©tecter les capacitÃ©s potentielles
     $functionPattern = 'function\s+([A-Za-z0-9\-_]+)'
     $functionMatches = [regex]::Matches($content, $functionPattern)
     $functions = @()
@@ -720,7 +720,7 @@ function Convert-ToManifest {
         $functions += $match.Groups[1].Value
     }
     
-    # Déduire les capacités à partir des fonctions
+    # DÃ©duire les capacitÃ©s Ã  partir des fonctions
     if ($functions -contains "Start-$baseName") {
         $capabilities += "Startable"
     }
@@ -737,7 +737,7 @@ function Convert-ToManifest {
         $capabilities += "Configurable"
     }
     
-    # Créer le manifeste
+    # CrÃ©er le manifeste
     $manifest = @{
         Name = $baseName
         Description = $description
@@ -747,10 +747,10 @@ function Convert-ToManifest {
         Capabilities = $capabilities
     }
     
-    # Enregistrer le manifeste si un chemin de sortie est spécifié
+    # Enregistrer le manifeste si un chemin de sortie est spÃ©cifiÃ©
     if ($OutputPath) {
         try {
-            # Créer le répertoire de sortie s'il n'existe pas
+            # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
             $outputDir = Split-Path -Path $OutputPath -Parent
             if (-not (Test-Path -Path $outputDir -PathType Container)) {
                 New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -758,7 +758,7 @@ function Convert-ToManifest {
             
             # Enregistrer le manifeste
             $manifest | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-            Write-ManifestLog -Message "Manifeste généré et enregistré : $OutputPath" -Level Info
+            Write-ManifestLog -Message "Manifeste gÃ©nÃ©rÃ© et enregistrÃ© : $OutputPath" -Level Info
         }
         catch {
             Write-ManifestLog -Message "Erreur lors de l'enregistrement du manifeste : $_" -Level Error

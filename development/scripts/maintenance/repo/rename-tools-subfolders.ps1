@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
     Renomme les sous-dossiers du dossier development/tools en ajoutant le suffixe -tools.
 
 .DESCRIPTION
     Ce script renomme tous les sous-dossiers du dossier development/tools en ajoutant
-    le suffixe -tools à chaque nom. Cela permet de différencier clairement ces dossiers
-    des autres dossiers portant le même nom dans le projet.
+    le suffixe -tools Ã  chaque nom. Cela permet de diffÃ©rencier clairement ces dossiers
+    des autres dossiers portant le mÃªme nom dans le projet.
 
 .EXAMPLE
     .\rename-tools-subfolders.ps1
     
 .NOTES
     Auteur: Augment Agent
-    Date de création: 28/04/2025
+    Date de crÃ©ation: 28/04/2025
 #>
 
 # Fonction principale
@@ -24,10 +24,10 @@ function Rename-ToolsSubfolders {
         Write-Host "Renommage des sous-dossiers du dossier development/tools..." -ForegroundColor Cyan
         $ErrorActionPreference = "Stop"
         
-        # Définir le chemin du dossier tools
+        # DÃ©finir le chemin du dossier tools
         $toolsRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\tools"
         
-        # Vérifier que le dossier existe
+        # VÃ©rifier que le dossier existe
         if (-not (Test-Path $toolsRoot)) {
             Write-Error "Le dossier development\tools n'existe pas : $toolsRoot"
             return $false
@@ -36,7 +36,7 @@ function Rename-ToolsSubfolders {
         # Obtenir la liste des sous-dossiers
         $subfolders = Get-ChildItem -Path $toolsRoot -Directory | Sort-Object Name
         
-        # Créer un tableau pour stocker les mappages de noms
+        # CrÃ©er un tableau pour stocker les mappages de noms
         $folderMappings = @{}
         
         # Remplir le tableau avec les mappages de noms
@@ -58,15 +58,15 @@ function Rename-ToolsSubfolders {
                 if (Test-Path $oldPath) {
                     if ($PSCmdlet.ShouldProcess("$oldPath -> $newPath", "Renommer le dossier")) {
                         Rename-Item -Path $oldPath -NewName $newName -Force
-                        Write-Host "  Dossier renommé : $oldPath -> $newPath" -ForegroundColor Green
+                        Write-Host "  Dossier renommÃ© : $oldPath -> $newPath" -ForegroundColor Green
                     }
                 }
                 else {
-                    Write-Host "  Dossier non trouvé : $oldPath" -ForegroundColor Yellow
+                    Write-Host "  Dossier non trouvÃ© : $oldPath" -ForegroundColor Yellow
                 }
             }
             
-            # Mettre à jour le fichier README.md
+            # Mettre Ã  jour le fichier README.md
             $readmePath = Join-Path -Path $toolsRoot -ChildPath "README.md"
             
             if (Test-Path $readmePath) {
@@ -78,32 +78,32 @@ function Rename-ToolsSubfolders {
                     $readmeContent = $readmeContent -replace "- \*\*$oldName/\*\*", "- **$newName/**"
                 }
                 
-                if ($PSCmdlet.ShouldProcess($readmePath, "Mettre à jour le fichier README.md")) {
+                if ($PSCmdlet.ShouldProcess($readmePath, "Mettre Ã  jour le fichier README.md")) {
                     Set-Content -Path $readmePath -Value $readmeContent -Force
-                    Write-Host "  Fichier README.md mis à jour : $readmePath" -ForegroundColor Green
+                    Write-Host "  Fichier README.md mis Ã  jour : $readmePath" -ForegroundColor Green
                 }
             }
             else {
-                Write-Host "  Fichier README.md non trouvé : $readmePath" -ForegroundColor Yellow
+                Write-Host "  Fichier README.md non trouvÃ© : $readmePath" -ForegroundColor Yellow
             }
             
-            # Créer un script pour mettre à jour les références
+            # CrÃ©er un script pour mettre Ã  jour les rÃ©fÃ©rences
             $updateReferencesScriptPath = Join-Path -Path (Get-Location).Path -ChildPath "development\scripts\maintenance\references\update-tools-references.ps1"
             $updateReferencesScriptContent = @"
 <#
 .SYNOPSIS
-    Met à jour les références après le renommage des sous-dossiers du dossier development/tools.
+    Met Ã  jour les rÃ©fÃ©rences aprÃ¨s le renommage des sous-dossiers du dossier development/tools.
 
 .DESCRIPTION
-    Ce script met à jour les références dans les fichiers du projet après le renommage
-    des sous-dossiers du dossier development/tools en ajoutant le suffixe -tools à chaque nom.
+    Ce script met Ã  jour les rÃ©fÃ©rences dans les fichiers du projet aprÃ¨s le renommage
+    des sous-dossiers du dossier development/tools en ajoutant le suffixe -tools Ã  chaque nom.
 
 .EXAMPLE
     .\update-tools-references.ps1
     
 .NOTES
     Auteur: Augment Agent
-    Date de création: 28/04/2025
+    Date de crÃ©ation: 28/04/2025
 #>
 
 # Fonction principale
@@ -112,10 +112,10 @@ function Update-ToolsReferences {
     param()
     
     begin {
-        Write-Host "Mise à jour des références après le renommage des sous-dossiers du dossier development/tools..." -ForegroundColor Cyan
+        Write-Host "Mise Ã  jour des rÃ©fÃ©rences aprÃ¨s le renommage des sous-dossiers du dossier development/tools..." -ForegroundColor Cyan
         `$ErrorActionPreference = "Stop"
         
-        # Définir les mappages de chemins
+        # DÃ©finir les mappages de chemins
         `$pathMappings = @(
 "@
             
@@ -130,7 +130,7 @@ function Update-ToolsReferences {
 "@
             }
             
-            # Supprimer la dernière virgule
+            # Supprimer la derniÃ¨re virgule
             $updateReferencesScriptContent = $updateReferencesScriptContent.TrimEnd(",`r`n")
             
             $updateReferencesScriptContent += @"
@@ -144,13 +144,13 @@ function Update-ToolsReferences {
             `$excludedPaths = @("*\node_modules\*", "*\.git\*", "*\dist\*", "*\cache\*", "*\logs\*", "*\temp\*", "*\tmp\*")
             `$textFiles = @()
             
-            # Dossiers à exclure
+            # Dossiers Ã  exclure
             `$excludedDirs = @("node_modules", ".git", "dist", "cache", "logs", "temp", "tmp")
             
-            # Extensions à inclure
+            # Extensions Ã  inclure
             `$includedExtensions = @(".md", ".ps1", ".psm1", ".psd1", ".json", ".yaml", ".yml", ".html", ".css", ".js", ".ts", ".py", ".txt")
             
-            # Fonction pour vérifier si un chemin contient un dossier exclu
+            # Fonction pour vÃ©rifier si un chemin contient un dossier exclu
             function Test-ExcludedPath {
                 param (
                     [string]`$Path
@@ -165,7 +165,7 @@ function Update-ToolsReferences {
                 return `$false
             }
             
-            # Obtenir les fichiers de manière sécurisée
+            # Obtenir les fichiers de maniÃ¨re sÃ©curisÃ©e
             Get-ChildItem -Path "." -Recurse -File -ErrorAction SilentlyContinue | ForEach-Object {
                 try {
                     if (-not (Test-ExcludedPath -Path `$_.FullName)) {
@@ -195,7 +195,7 @@ function Update-ToolsReferences {
                     `$oldPath = `$mapping.OldPath.Replace("/", "\\")
                     `$newPath = `$mapping.NewPath.Replace("/", "\\")
                     
-                    # Remplacer les chemins avec des barres obliques inversées
+                    # Remplacer les chemins avec des barres obliques inversÃ©es
                     `$content = `$content -replace [regex]::Escape(`$oldPath), `$newPath
                     
                     # Remplacer les chemins avec des barres obliques
@@ -204,34 +204,34 @@ function Update-ToolsReferences {
                     `$content = `$content -replace [regex]::Escape(`$oldPathForward), `$newPathForward
                 }
                 
-                # Vérifier si le contenu a été modifié
+                # VÃ©rifier si le contenu a Ã©tÃ© modifiÃ©
                 if (`$content -ne `$originalContent) {
                     `$updatedFiles++
                     
-                    # Écrire le contenu mis à jour dans le fichier
-                    if (`$PSCmdlet.ShouldProcess(`$file.FullName, "Mettre à jour les références")) {
+                    # Ã‰crire le contenu mis Ã  jour dans le fichier
+                    if (`$PSCmdlet.ShouldProcess(`$file.FullName, "Mettre Ã  jour les rÃ©fÃ©rences")) {
                         Set-Content -Path `$file.FullName -Value `$content -Force
-                        Write-Host "  Mise à jour des références dans `$(`$file.FullName)" -ForegroundColor Green
+                        Write-Host "  Mise Ã  jour des rÃ©fÃ©rences dans `$(`$file.FullName)" -ForegroundColor Green
                     }
                 }
                 
                 # Afficher la progression
                 `$progress = [math]::Round((`$processedFiles / `$totalFiles) * 100)
-                Write-Progress -Activity "Mise à jour des références" -Status "`$processedFiles / `$totalFiles fichiers traités (`$progress%)" -PercentComplete `$progress
+                Write-Progress -Activity "Mise Ã  jour des rÃ©fÃ©rences" -Status "`$processedFiles / `$totalFiles fichiers traitÃ©s (`$progress%)" -PercentComplete `$progress
             }
             
-            Write-Progress -Activity "Mise à jour des références" -Completed
+            Write-Progress -Activity "Mise Ã  jour des rÃ©fÃ©rences" -Completed
             
-            Write-Host "`nMise à jour terminée !" -ForegroundColor Cyan
-            Write-Host "  `$updatedFiles fichiers mis à jour sur `$totalFiles fichiers traités." -ForegroundColor Cyan
+            Write-Host "`nMise Ã  jour terminÃ©e !" -ForegroundColor Cyan
+            Write-Host "  `$updatedFiles fichiers mis Ã  jour sur `$totalFiles fichiers traitÃ©s." -ForegroundColor Cyan
         }
         catch {
-            Write-Error "Une erreur s'est produite lors de la mise à jour des références : `$_"
+            Write-Error "Une erreur s'est produite lors de la mise Ã  jour des rÃ©fÃ©rences : `$_"
         }
     }
     
     end {
-        Write-Host "`nRécapitulatif des modifications :" -ForegroundColor Yellow
+        Write-Host "`nRÃ©capitulatif des modifications :" -ForegroundColor Yellow
         foreach (`$mapping in `$pathMappings) {
             Write-Host "  - `$(`$mapping.Description) : `$(`$mapping.OldPath) -> `$(`$mapping.NewPath)" -ForegroundColor Yellow
         }
@@ -242,9 +242,9 @@ function Update-ToolsReferences {
 Update-ToolsReferences
 "@
             
-            if ($PSCmdlet.ShouldProcess($updateReferencesScriptPath, "Créer le script de mise à jour des références")) {
+            if ($PSCmdlet.ShouldProcess($updateReferencesScriptPath, "CrÃ©er le script de mise Ã  jour des rÃ©fÃ©rences")) {
                 Set-Content -Path $updateReferencesScriptPath -Value $updateReferencesScriptContent -Force
-                Write-Host "  Script de mise à jour des références créé : $updateReferencesScriptPath" -ForegroundColor Green
+                Write-Host "  Script de mise Ã  jour des rÃ©fÃ©rences crÃ©Ã© : $updateReferencesScriptPath" -ForegroundColor Green
             }
         }
         catch {
@@ -254,8 +254,8 @@ Update-ToolsReferences
     }
     
     end {
-        Write-Host "`nRenommage des sous-dossiers terminé !" -ForegroundColor Cyan
-        Write-Host "`nPour mettre à jour les références dans les fichiers du projet, exécutez le script suivant :" -ForegroundColor Yellow
+        Write-Host "`nRenommage des sous-dossiers terminÃ© !" -ForegroundColor Cyan
+        Write-Host "`nPour mettre Ã  jour les rÃ©fÃ©rences dans les fichiers du projet, exÃ©cutez le script suivant :" -ForegroundColor Yellow
         Write-Host "  .\development\scripts\maintenance\references\update-tools-references.ps1" -ForegroundColor Yellow
         return $true
     }

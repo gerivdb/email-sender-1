@@ -1,4 +1,4 @@
-# Définir les fonctions nécessaires
+﻿# DÃ©finir les fonctions nÃ©cessaires
 function Get-MessagePattern {
     [CmdletBinding()]
     param (
@@ -6,7 +6,7 @@ function Get-MessagePattern {
         [string]$Message
     )
     
-    # Remplacer les valeurs spécifiques par des placeholders
+    # Remplacer les valeurs spÃ©cifiques par des placeholders
     $pattern = $Message
     
     # Remplacer les chemins de fichiers
@@ -35,10 +35,10 @@ function Get-LinePattern {
         return ""
     }
     
-    # Remplacer les valeurs spécifiques par des placeholders
+    # Remplacer les valeurs spÃ©cifiques par des placeholders
     $pattern = $Line
     
-    # Remplacer les chaînes de caractères
+    # Remplacer les chaÃ®nes de caractÃ¨res
     $pattern = $pattern -replace '"[^"]*"', '<STRING>'
     
     # Remplacer les nombres
@@ -69,7 +69,7 @@ function Measure-LevenshteinDistance {
     $len1 = $String1.Length
     $len2 = $String2.Length
     
-    # Créer deux tableaux pour stocker les distances
+    # CrÃ©er deux tableaux pour stocker les distances
     $d0 = New-Object int[] ($len2 + 1)
     $d1 = New-Object int[] ($len2 + 1)
     
@@ -93,7 +93,7 @@ function Measure-LevenshteinDistance {
             )
         }
         
-        # Échanger les tableaux pour la prochaine itération
+        # Ã‰changer les tableaux pour la prochaine itÃ©ration
         $temp = $d0
         $d0 = $d1
         $d1 = $temp
@@ -132,7 +132,7 @@ function Measure-PatternSimilarity {
     if ($Pattern1.MessagePattern -eq $Pattern2.MessagePattern) {
         $similarityScore += 0.3
     } elseif ($Pattern1.MessagePattern -and $Pattern2.MessagePattern) {
-        # Calculer la similarité de Levenshtein
+        # Calculer la similaritÃ© de Levenshtein
         $levenshtein = Measure-LevenshteinDistance -String1 $Pattern1.MessagePattern -String2 $Pattern2.MessagePattern
         $maxLength = [Math]::Max($Pattern1.MessagePattern.Length, $Pattern2.MessagePattern.Length)
         
@@ -153,7 +153,7 @@ function Measure-PatternSimilarity {
     if ($Pattern1.LinePattern -eq $Pattern2.LinePattern) {
         $similarityScore += 0.1
     } elseif ($Pattern1.LinePattern -and $Pattern2.LinePattern) {
-        # Calculer la similarité de Levenshtein
+        # Calculer la similaritÃ© de Levenshtein
         $levenshtein = Measure-LevenshteinDistance -String1 $Pattern1.LinePattern -String2 $Pattern2.LinePattern
         $maxLength = [Math]::Max($Pattern1.LinePattern.Length, $Pattern2.LinePattern.Length)
         

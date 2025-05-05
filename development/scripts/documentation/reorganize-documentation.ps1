@@ -1,12 +1,12 @@
-# Script de réorganisation de la documentation
-# Ce script déplace les fichiers de documentation de l'ancienne structure vers la nouvelle
+﻿# Script de rÃ©organisation de la documentation
+# Ce script dÃ©place les fichiers de documentation de l'ancienne structure vers la nouvelle
 
-# Définition des chemins
+# DÃ©finition des chemins
 $docsPath = ".\docs"
 $projetPath = ".\projet"
 $developmentPath = ".\development"
 
-# Création des dossiers principaux s'ils n'existent pas déjà
+# CrÃ©ation des dossiers principaux s'ils n'existent pas dÃ©jÃ 
 if (-not (Test-Path -Path $projetPath)) {
     New-Item -Path $projetPath -ItemType Directory -Force
 }
@@ -15,7 +15,7 @@ if (-not (Test-Path -Path $developmentPath)) {
     New-Item -Path $developmentPath -ItemType Directory -Force
 }
 
-# Création de la structure de base pour le dossier projet
+# CrÃ©ation de la structure de base pour le dossier projet
 $projetCategories = @(
     "architecture",
     "documentation",
@@ -29,7 +29,7 @@ foreach ($category in $projetCategories) {
     $path = Join-Path -Path $projetPath -ChildPath $category
     if (-not (Test-Path -Path $path)) {
         New-Item -Path $path -ItemType Directory -Force
-        # Création du fichier README.md
+        # CrÃ©ation du fichier README.md
         $readmePath = Join-Path -Path $path -ChildPath "README.md"
         $readmeContent = @"
 # $(($category.charAt(0).ToString().ToUpper() + $category.Substring(1)))
@@ -38,21 +38,21 @@ Cette documentation fait partie de la section Projet.
 
 ## Contenu
 
-Cette section contient la documentation relative à $category.
+Cette section contient la documentation relative Ã  $category.
 
 ## Structure
 
 ```
 projet/$category/
-├── README.md (ce fichier)
-└── ...
+â”œâ”€â”€ README.md (ce fichier)
+â””â”€â”€ ...
 ```
 "@
         Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
     }
 }
 
-# Création de la structure de base pour le dossier development
+# CrÃ©ation de la structure de base pour le dossier development
 $developmentCategories = @(
     "api",
     "communications",
@@ -68,7 +68,7 @@ foreach ($category in $developmentCategories) {
     $path = Join-Path -Path $developmentPath -ChildPath $category
     if (-not (Test-Path -Path $path)) {
         New-Item -Path $path -ItemType Directory -Force
-        # Création du fichier README.md
+        # CrÃ©ation du fichier README.md
         $readmePath = Join-Path -Path $path -ChildPath "README.md"
         $readmeContent = @"
 # $(($category.charAt(0).ToString().ToUpper() + $category.Substring(1)))
@@ -77,21 +77,21 @@ Cette documentation fait partie de la section Development.
 
 ## Contenu
 
-Cette section contient la documentation relative à $category.
+Cette section contient la documentation relative Ã  $category.
 
 ## Structure
 
 ```
 development/$category/
-├── README.md (ce fichier)
-└── ...
+â”œâ”€â”€ README.md (ce fichier)
+â””â”€â”€ ...
 ```
 "@
         Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
     }
 }
 
-# Fonction pour déplacer les fichiers d'un dossier source vers un dossier cible
+# Fonction pour dÃ©placer les fichiers d'un dossier source vers un dossier cible
 function Move-DocumentationFiles {
     param (
         [string]$sourcePath,
@@ -108,20 +108,20 @@ function Move-DocumentationFiles {
         New-Item -Path $targetPath -ItemType Directory -Force
     }
 
-    # Déplacer les fichiers
+    # DÃ©placer les fichiers
     $files = Get-ChildItem -Path $sourcePath -File
     foreach ($file in $files) {
         $targetFile = Join-Path -Path $targetPath -ChildPath $file.Name
         if (-not (Test-Path -Path $targetFile)) {
             Move-Item -Path $file.FullName -Destination $targetPath -Force
-            Write-Host "Déplacé: $($file.FullName) -> $targetPath"
+            Write-Host "DÃ©placÃ©: $($file.FullName) -> $targetPath"
         }
         else {
-            Write-Warning "Le fichier existe déjà dans la cible: $targetFile"
+            Write-Warning "Le fichier existe dÃ©jÃ  dans la cible: $targetFile"
         }
     }
 
-    # Déplacer les sous-dossiers si récursif
+    # DÃ©placer les sous-dossiers si rÃ©cursif
     if ($recurse) {
         $directories = Get-ChildItem -Path $sourcePath -Directory
         foreach ($dir in $directories) {
@@ -131,7 +131,7 @@ function Move-DocumentationFiles {
     }
 }
 
-# Mappings pour déplacer les fichiers
+# Mappings pour dÃ©placer les fichiers
 $mappings = @(
     # Projet
     @{
@@ -193,10 +193,10 @@ $mappings = @(
     }
 )
 
-# Exécuter les mappings
+# ExÃ©cuter les mappings
 foreach ($mapping in $mappings) {
     Write-Host "Traitement du mapping: $($mapping.Source) -> $($mapping.Target)"
     Move-DocumentationFiles -sourcePath $mapping.Source -targetPath $mapping.Target -recurse:$mapping.Recurse
 }
 
-Write-Host "Réorganisation de la documentation terminée."
+Write-Host "RÃ©organisation de la documentation terminÃ©e."

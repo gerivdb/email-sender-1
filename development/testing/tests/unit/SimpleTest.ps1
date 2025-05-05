@@ -1,4 +1,4 @@
-# Importer le module UnifiedSegmenter
+﻿# Importer le module UnifiedSegmenter
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
@@ -6,13 +6,13 @@ $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmente
 # Importer le module
 . $unifiedSegmenterPath
 
-# Initialiser le segmenteur unifié
+# Initialiser le segmenteur unifiÃ©
 $initResult = Initialize-UnifiedSegmenter
 
-# Vérifier que l'initialisation a réussi
-Write-Host "Initialisation réussie: $initResult"
+# VÃ©rifier que l'initialisation a rÃ©ussi
+Write-Host "Initialisation rÃ©ussie: $initResult"
 
-# Créer un fichier de test
+# CrÃ©er un fichier de test
 $testDir = Join-Path -Path $env:TEMP -ChildPath "SimpleTest"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
@@ -29,14 +29,14 @@ $jsonContent = @{
 } | ConvertTo-Json -Depth 10
 Set-Content -Path $jsonFilePath -Value $jsonContent -Encoding UTF8
 
-# Tester la détection de format
+# Tester la dÃ©tection de format
 $format = Get-FileFormat -FilePath $jsonFilePath
-Write-Host "Format détecté: $format"
+Write-Host "Format dÃ©tectÃ©: $format"
 
-# Tester la détection d'encodage
+# Tester la dÃ©tection d'encodage
 $encodingInfo = Get-FileEncoding -FilePath $jsonFilePath
-Write-Host "Encodage détecté: $($encodingInfo.encoding)"
-Write-Host "Type de fichier détecté: $($encodingInfo.file_type)"
+Write-Host "Encodage dÃ©tectÃ©: $($encodingInfo.encoding)"
+Write-Host "Type de fichier dÃ©tectÃ©: $($encodingInfo.file_type)"
 
 # Nettoyer
 Remove-Item -Path $testDir -Recurse -Force

@@ -1,10 +1,10 @@
-# Réorganisation des dossiers development/tools et development/scripts/utils
+﻿# RÃ©organisation des dossiers development/tools et development/scripts/utils
 
-# Définir les chemins
+# DÃ©finir les chemins
 $toolsRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\tools"
 $utilsRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\scripts\utils"
 
-# Vérifier que les dossiers existent
+# VÃ©rifier que les dossiers existent
 if (-not (Test-Path $toolsRoot)) {
     Write-Error "Le dossier development\tools n'existe pas : $toolsRoot"
     exit 1
@@ -15,7 +15,7 @@ if (-not (Test-Path $utilsRoot)) {
     exit 1
 }
 
-# Définir la nouvelle structure de dossiers dans tools
+# DÃ©finir la nouvelle structure de dossiers dans tools
 $newFolders = @(
     "analysis",
     "augment",
@@ -36,19 +36,19 @@ $newFolders = @(
     "utilities"
 )
 
-# Créer les nouveaux dossiers dans tools
+# CrÃ©er les nouveaux dossiers dans tools
 foreach ($folder in $newFolders) {
     $folderPath = Join-Path -Path $toolsRoot -ChildPath $folder
     
     if (-not (Test-Path $folderPath)) {
         New-Item -Path $folderPath -ItemType Directory -Force | Out-Null
-        Write-Host "  Dossier créé : $folderPath" -ForegroundColor Yellow
+        Write-Host "  Dossier crÃ©Ã© : $folderPath" -ForegroundColor Yellow
     }
 }
 
-# Mettre à jour le fichier README.md dans tools
+# Mettre Ã  jour le fichier README.md dans tools
 $readmePath = Join-Path -Path $toolsRoot -ChildPath "README.md"
-$readmeContent = "# Outils de développement`n`nCe dossier contient tous les outils utilisés pour le développement du projet.`n`n## Structure`n`n"
+$readmeContent = "# Outils de dÃ©veloppement`n`nCe dossier contient tous les outils utilisÃ©s pour le dÃ©veloppement du projet.`n`n## Structure`n`n"
 
 foreach ($folder in $newFolders | Sort-Object) {
     $description = ""
@@ -57,16 +57,16 @@ foreach ($folder in $newFolders | Sort-Object) {
         "augment" { $description = "Configuration et outils pour Augment" }
         "cache" { $description = "Gestionnaires de cache et outils de mise en cache" }
         "converters" { $description = "Convertisseurs de formats (CSV, YAML, JSON, etc.)" }
-        "detectors" { $description = "Détecteurs de problèmes et d'anomalies" }
-        "documentation" { $description = "Outils de génération de documentation" }
+        "detectors" { $description = "DÃ©tecteurs de problÃ¨mes et d'anomalies" }
+        "documentation" { $description = "Outils de gÃ©nÃ©ration de documentation" }
         "error-handling" { $description = "Outils de gestion des erreurs" }
         "examples" { $description = "Exemples d'utilisation des outils" }
         "git" { $description = "Outils pour Git" }
-        "integrations" { $description = "Intégrations avec d'autres systèmes" }
+        "integrations" { $description = "IntÃ©grations avec d'autres systÃ¨mes" }
         "json" { $description = "Outils de manipulation de JSON" }
         "markdown" { $description = "Outils de manipulation de Markdown" }
         "optimization" { $description = "Outils d'optimisation" }
-        "reports" { $description = "Générateurs de rapports" }
+        "reports" { $description = "GÃ©nÃ©rateurs de rapports" }
         "roadmap" { $description = "Outils pour la roadmap" }
         "testing" { $description = "Outils de test" }
         "utilities" { $description = "Utilitaires divers" }
@@ -76,14 +76,14 @@ foreach ($folder in $newFolders | Sort-Object) {
     $readmeContent += "- **$folder/** - $description`n"
 }
 
-$readmeContent += "`n## Utilisation`n`nLes outils de ce dossier sont utilisés par les scripts du projet. Ils peuvent également être utilisés directement par les développeurs.`n`n## Développement`n`nPour ajouter un nouvel outil, créez un fichier dans le sous-dossier approprié et documentez son utilisation dans le README.md du sous-dossier."
+$readmeContent += "`n## Utilisation`n`nLes outils de ce dossier sont utilisÃ©s par les scripts du projet. Ils peuvent Ã©galement Ãªtre utilisÃ©s directement par les dÃ©veloppeurs.`n`n## DÃ©veloppement`n`nPour ajouter un nouvel outil, crÃ©ez un fichier dans le sous-dossier appropriÃ© et documentez son utilisation dans le README.md du sous-dossier."
 
 Set-Content -Path $readmePath -Value $readmeContent -Force
-Write-Host "  Fichier README.md mis à jour : $readmePath" -ForegroundColor Green
+Write-Host "  Fichier README.md mis Ã  jour : $readmePath" -ForegroundColor Green
 
-# Créer un fichier README.md dans utils pour expliquer la migration
+# CrÃ©er un fichier README.md dans utils pour expliquer la migration
 $utilsReadmePath = Join-Path -Path $utilsRoot -ChildPath "README.md"
-$utilsReadmeContent = "# Utilitaires (Déprécié)`n`nCe dossier est déprécié. Tous les utilitaires ont été déplacés vers le dossier `development/tools`.`n`nVeuillez utiliser les outils dans le dossier `development/tools` à la place.`n`n## Migration`n`nLes fichiers de ce dossier ont été migrés vers les sous-dossiers suivants dans `development/tools` :`n`n"
+$utilsReadmeContent = "# Utilitaires (DÃ©prÃ©ciÃ©)`n`nCe dossier est dÃ©prÃ©ciÃ©. Tous les utilitaires ont Ã©tÃ© dÃ©placÃ©s vers le dossier `development/tools`.`n`nVeuillez utiliser les outils dans le dossier `development/tools` Ã  la place.`n`n## Migration`n`nLes fichiers de ce dossier ont Ã©tÃ© migrÃ©s vers les sous-dossiers suivants dans `development/tools` :`n`n"
 
 $utilsReadmeContent += "- **analysis/** -> `development/tools/analysis-tools/``n"
 $utilsReadmeContent += "- **automation/** -> `development/tools/utilities-tools/``n"
@@ -109,7 +109,7 @@ $utilsReadmeContent += "- **UsageMonitor/** -> `development/tools/utilities-tool
 $utilsReadmeContent += "- **utils/** -> `development/tools/utilities-tools/``n"
 
 Set-Content -Path $utilsReadmePath -Value $utilsReadmeContent -Force
-Write-Host "  Fichier README.md créé : $utilsReadmePath" -ForegroundColor Green
+Write-Host "  Fichier README.md crÃ©Ã© : $utilsReadmePath" -ForegroundColor Green
 
-Write-Host "`nRéorganisation des dossiers terminée !" -ForegroundColor Cyan
+Write-Host "`nRÃ©organisation des dossiers terminÃ©e !" -ForegroundColor Cyan
 

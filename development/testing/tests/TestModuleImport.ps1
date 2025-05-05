@@ -1,4 +1,4 @@
-# Script pour tester l'importation des modules
+﻿# Script pour tester l'importation des modules
 
 # Chemin des modules
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
@@ -8,7 +8,7 @@ $cycleResolverPath = Join-Path -Path $modulesPath -ChildPath "DependencyCycleRes
 Write-Host "Chemin du module CycleDetector: $cycleDetectorPath"
 Write-Host "Chemin du module DependencyCycleResolver: $cycleResolverPath"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (Test-Path -Path $cycleDetectorPath) {
     Write-Host "Le fichier CycleDetector.psm1 existe." -ForegroundColor Green
 } else {
@@ -25,41 +25,41 @@ if (Test-Path -Path $cycleResolverPath) {
 Write-Host "`nImportation des modules..."
 try {
     Import-Module $cycleDetectorPath -Force -Verbose
-    Write-Host "Module CycleDetector importé avec succès." -ForegroundColor Green
+    Write-Host "Module CycleDetector importÃ© avec succÃ¨s." -ForegroundColor Green
 } catch {
     Write-Host "Erreur lors de l'importation du module CycleDetector: $_" -ForegroundColor Red
 }
 
 try {
     Import-Module $cycleResolverPath -Force -Verbose
-    Write-Host "Module DependencyCycleResolver importé avec succès." -ForegroundColor Green
+    Write-Host "Module DependencyCycleResolver importÃ© avec succÃ¨s." -ForegroundColor Green
 } catch {
     Write-Host "Erreur lors de l'importation du module DependencyCycleResolver: $_" -ForegroundColor Red
 }
 
-# Lister les fonctions exportées
-Write-Host "`nFonctions exportées par le module CycleDetector:"
+# Lister les fonctions exportÃ©es
+Write-Host "`nFonctions exportÃ©es par le module CycleDetector:"
 Get-Command -Module CycleDetector | Format-Table -Property Name, CommandType
 
-Write-Host "`nFonctions exportées par le module DependencyCycleResolver:"
+Write-Host "`nFonctions exportÃ©es par le module DependencyCycleResolver:"
 Get-Command -Module DependencyCycleResolver | Format-Table -Property Name, CommandType
 
 # Tester une fonction du module CycleDetector
 Write-Host "`nTest de la fonction Initialize-CycleDetector:"
 try {
     $result = Initialize-CycleDetector -Enabled $true -MaxDepth 100 -CacheEnabled $true
-    Write-Host "Résultat: $result" -ForegroundColor Green
+    Write-Host "RÃ©sultat: $result" -ForegroundColor Green
 } catch {
-    Write-Host "Erreur lors de l'exécution de Initialize-CycleDetector: $_" -ForegroundColor Red
+    Write-Host "Erreur lors de l'exÃ©cution de Initialize-CycleDetector: $_" -ForegroundColor Red
 }
 
 # Tester une fonction du module DependencyCycleResolver
 Write-Host "`nTest de la fonction Initialize-DependencyCycleResolver:"
 try {
     $result = Initialize-DependencyCycleResolver -Enabled $true -MaxIterations 10 -Strategy "MinimumImpact"
-    Write-Host "Résultat: $result" -ForegroundColor Green
+    Write-Host "RÃ©sultat: $result" -ForegroundColor Green
 } catch {
-    Write-Host "Erreur lors de l'exécution de Initialize-DependencyCycleResolver: $_" -ForegroundColor Red
+    Write-Host "Erreur lors de l'exÃ©cution de Initialize-DependencyCycleResolver: $_" -ForegroundColor Red
 }
 
 # Tester la fonction Find-Cycle
@@ -71,7 +71,7 @@ try {
         "C" = @("A")
     }
     $cycleResult = Find-Cycle -Graph $graph
-    Write-Host "Résultat: $($cycleResult | ConvertTo-Json)" -ForegroundColor Green
+    Write-Host "RÃ©sultat: $($cycleResult | ConvertTo-Json)" -ForegroundColor Green
 } catch {
-    Write-Host "Erreur lors de l'exécution de Find-Cycle: $_" -ForegroundColor Red
+    Write-Host "Erreur lors de l'exÃ©cution de Find-Cycle: $_" -ForegroundColor Red
 }

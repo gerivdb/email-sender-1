@@ -1,6 +1,6 @@
-# Script de test autonome pour la fonction de parcours en largeur (BFS) de l'AST
+﻿# Script de test autonome pour la fonction de parcours en largeur (BFS) de l'AST
 
-# Définir la fonction de parcours en largeur (BFS) de l'AST
+# DÃ©finir la fonction de parcours en largeur (BFS) de l'AST
 function Invoke-AstTraversalBFSAdvanced {
     [CmdletBinding()]
     param (
@@ -35,7 +35,7 @@ function Invoke-AstTraversalBFSAdvanced {
         [int]$ProgressInterval = 0
     )
 
-    # Initialiser les structures de données
+    # Initialiser les structures de donnÃ©es
     $results = New-Object System.Collections.ArrayList
     $visitedNodes = New-Object System.Collections.Generic.HashSet[System.Management.Automation.Language.Ast]
     $queue = New-Object System.Collections.Generic.Queue[PSObject]
@@ -46,21 +46,21 @@ function Invoke-AstTraversalBFSAdvanced {
     $batchCount = 0
     $memoryUsage = 0
     
-    # Démarrer un chronomètre pour mesurer les performances
+    # DÃ©marrer un chronomÃ¨tre pour mesurer les performances
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
     try {
-        # Structure pour stocker les nœuds avec leur profondeur
+        # Structure pour stocker les nÅ“uds avec leur profondeur
         $nodeInfo = [PSCustomObject]@{
             Node = $Ast
             Depth = 0
         }
         
-        # Ajouter le nœud racine à la file d'attente
+        # Ajouter le nÅ“ud racine Ã  la file d'attente
         $queue.Enqueue($nodeInfo)
         [void]$visitedNodes.Add($Ast)
         
-        # Vérifier si le nœud racine doit être inclus
+        # VÃ©rifier si le nÅ“ud racine doit Ãªtre inclus
         if ($IncludeRoot) {
             $includeRoot = $true
             
@@ -85,28 +85,28 @@ function Invoke-AstTraversalBFSAdvanced {
         
         # Parcourir la file d'attente
         while ($queue.Count -gt 0) {
-            # Récupérer le prochain nœud de la file d'attente
+            # RÃ©cupÃ©rer le prochain nÅ“ud de la file d'attente
             $currentNodeInfo = $queue.Dequeue()
             $currentNode = $currentNodeInfo.Node
             $currentDepth = $currentNodeInfo.Depth
             
-            # Vérifier la profondeur maximale
+            # VÃ©rifier la profondeur maximale
             if ($MaxDepth -gt 0 -and $currentDepth -ge $MaxDepth) {
                 continue
             }
             
-            # Vérifier la profondeur minimale
+            # VÃ©rifier la profondeur minimale
             $checkDepth = $MinDepth -eq 0 -or $currentDepth -ge $MinDepth
             
-            # Obtenir les nœuds enfants
+            # Obtenir les nÅ“uds enfants
             $children = $currentNode.FindAll({ $true }, $false)
             
-            # Ajouter les nœuds enfants à la file d'attente
+            # Ajouter les nÅ“uds enfants Ã  la file d'attente
             foreach ($child in $children) {
-                # Incrémenter le compteur de nœuds
+                # IncrÃ©menter le compteur de nÅ“uds
                 $nodeCount++
                 
-                # Vérifier si le nœud doit être ignoré
+                # VÃ©rifier si le nÅ“ud doit Ãªtre ignorÃ©
                 $skipNode = $false
                 if ($SkipNodeTypes) {
                     $childTypeName = $child.GetType().Name
@@ -126,21 +126,21 @@ function Invoke-AstTraversalBFSAdvanced {
                     continue
                 }
                 
-                # Vérifier si le nœud a déjà été visité
+                # VÃ©rifier si le nÅ“ud a dÃ©jÃ  Ã©tÃ© visitÃ©
                 if (-not $visitedNodes.Contains($child)) {
-                    # Marquer le nœud comme visité
+                    # Marquer le nÅ“ud comme visitÃ©
                     [void]$visitedNodes.Add($child)
                     
-                    # Créer l'info du nœud enfant
+                    # CrÃ©er l'info du nÅ“ud enfant
                     $childInfo = [PSCustomObject]@{
                         Node = $child
                         Depth = $currentDepth + 1
                     }
                     
-                    # Ajouter le nœud enfant à la file d'attente
+                    # Ajouter le nÅ“ud enfant Ã  la file d'attente
                     $queue.Enqueue($childInfo)
                     
-                    # Vérifier si le nœud enfant correspond aux critères
+                    # VÃ©rifier si le nÅ“ud enfant correspond aux critÃ¨res
                     if ($checkDepth) {
                         $includeNode = $true
                         
@@ -164,17 +164,17 @@ function Invoke-AstTraversalBFSAdvanced {
                     }
                 }
                 
-                # Gestion de la mémoire par lots
+                # Gestion de la mÃ©moire par lots
                 if ($BatchSize -gt 0 -and $nodeCount % $BatchSize -eq 0) {
                     $batchCount++
                     
-                    # Surveiller l'utilisation de la mémoire
+                    # Surveiller l'utilisation de la mÃ©moire
                     if ($MemoryLimit -gt 0) {
                         $process = Get-Process -Id $PID
                         $memoryUsageMB = [Math]::Round($process.WorkingSet64 / 1MB, 2)
                         
                         if ($memoryUsageMB -gt $MemoryLimit) {
-                            Write-Verbose "Limite de mémoire atteinte ($memoryUsageMB MB). Collecte des déchets..."
+                            Write-Verbose "Limite de mÃ©moire atteinte ($memoryUsageMB MB). Collecte des dÃ©chets..."
                             [System.GC]::Collect()
                             $memoryUsage = $memoryUsageMB
                         }
@@ -182,26 +182,26 @@ function Invoke-AstTraversalBFSAdvanced {
                     
                     # Afficher la progression
                     if ($ProgressInterval -gt 0 -and $nodeCount % $ProgressInterval -eq 0) {
-                        Write-Progress -Activity "Parcours en largeur de l'AST" -Status "Nœuds traités: $nodeCount" -PercentComplete -1
+                        Write-Progress -Activity "Parcours en largeur de l'AST" -Status "NÅ“uds traitÃ©s: $nodeCount" -PercentComplete -1
                     }
                 }
             }
         }
         
-        # Arrêter le chronomètre
+        # ArrÃªter le chronomÃ¨tre
         $stopwatch.Stop()
         $elapsedTime = $stopwatch.Elapsed
         
         # Afficher les statistiques de performance
-        Write-Verbose "Parcours terminé en $($elapsedTime.TotalSeconds) secondes"
-        Write-Verbose "Nœuds traités: $nodeCount"
-        Write-Verbose "Nœuds correspondants: $matchedNodeCount"
-        Write-Verbose "Lots traités: $batchCount"
+        Write-Verbose "Parcours terminÃ© en $($elapsedTime.TotalSeconds) secondes"
+        Write-Verbose "NÅ“uds traitÃ©s: $nodeCount"
+        Write-Verbose "NÅ“uds correspondants: $matchedNodeCount"
+        Write-Verbose "Lots traitÃ©s: $batchCount"
         if ($memoryUsage -gt 0) {
-            Write-Verbose "Utilisation maximale de la mémoire: $memoryUsage MB"
+            Write-Verbose "Utilisation maximale de la mÃ©moire: $memoryUsage MB"
         }
         
-        # Retourner les résultats
+        # Retourner les rÃ©sultats
         return $results
     }
     catch {
@@ -218,14 +218,14 @@ function Invoke-AstTraversalBFSAdvanced {
             $visitedNodes.Clear()
         }
         
-        # Arrêter l'indicateur de progression
+        # ArrÃªter l'indicateur de progression
         if ($ProgressInterval -gt 0) {
             Write-Progress -Activity "Parcours en largeur de l'AST" -Completed
         }
     }
 }
 
-# Définir la fonction de parcours en largeur (BFS) originale pour comparaison
+# DÃ©finir la fonction de parcours en largeur (BFS) originale pour comparaison
 function Invoke-AstTraversalBFS {
     [CmdletBinding()]
     param (
@@ -245,25 +245,25 @@ function Invoke-AstTraversalBFS {
         [switch]$IncludeRoot
     )
 
-    # Initialiser la liste des résultats
+    # Initialiser la liste des rÃ©sultats
     $results = New-Object System.Collections.ArrayList
 
-    # Créer une file d'attente pour le parcours en largeur
+    # CrÃ©er une file d'attente pour le parcours en largeur
     $queue = New-Object System.Collections.Queue
 
     try {
-        # Structure pour stocker les nœuds avec leur profondeur
+        # Structure pour stocker les nÅ“uds avec leur profondeur
         $nodeInfo = @{
             Node = $Ast
             Depth = 0
         }
 
-        # Ajouter le nœud racine à la file d'attente
+        # Ajouter le nÅ“ud racine Ã  la file d'attente
         $queue.Enqueue($nodeInfo)
 
-        # Vérifier si le nœud racine doit être inclus
+        # VÃ©rifier si le nÅ“ud racine doit Ãªtre inclus
         if ($IncludeRoot) {
-            # Vérifier si le nœud racine correspond au type spécifié
+            # VÃ©rifier si le nÅ“ud racine correspond au type spÃ©cifiÃ©
             $includeRoot = $true
             
             if ($NodeType) {
@@ -271,12 +271,12 @@ function Invoke-AstTraversalBFS {
                 $includeRoot = $rootTypeName -eq $NodeType -or $rootTypeName -eq "${NodeType}Ast"
             }
 
-            # Vérifier si le nœud racine correspond au prédicat spécifié
+            # VÃ©rifier si le nÅ“ud racine correspond au prÃ©dicat spÃ©cifiÃ©
             if ($includeRoot -and $Predicate) {
                 $includeRoot = & $Predicate $Ast
             }
 
-            # Ajouter le nœud racine aux résultats s'il correspond aux critères
+            # Ajouter le nÅ“ud racine aux rÃ©sultats s'il correspond aux critÃ¨res
             if ($includeRoot) {
                 [void]$results.Add($Ast)
             }
@@ -284,17 +284,17 @@ function Invoke-AstTraversalBFS {
 
         # Parcourir la file d'attente
         while ($queue.Count -gt 0) {
-            # Récupérer le prochain nœud de la file d'attente
+            # RÃ©cupÃ©rer le prochain nÅ“ud de la file d'attente
             $currentNodeInfo = $queue.Dequeue()
             $currentNode = $currentNodeInfo.Node
             $currentDepth = $currentNodeInfo.Depth
 
-            # Vérifier la profondeur maximale
+            # VÃ©rifier la profondeur maximale
             if ($MaxDepth -gt 0 -and $currentDepth -ge $MaxDepth) {
                 continue
             }
 
-            # Ajouter les nœuds enfants à la file d'attente
+            # Ajouter les nÅ“uds enfants Ã  la file d'attente
             $children = $currentNode.FindAll({ $true }, $false)
             foreach ($child in $children) {
                 $childInfo = @{
@@ -303,7 +303,7 @@ function Invoke-AstTraversalBFS {
                 }
                 $queue.Enqueue($childInfo)
 
-                # Vérifier si le nœud enfant correspond au type spécifié
+                # VÃ©rifier si le nÅ“ud enfant correspond au type spÃ©cifiÃ©
                 $includeChild = $true
                 
                 if ($NodeType) {
@@ -311,19 +311,19 @@ function Invoke-AstTraversalBFS {
                     $includeChild = $childTypeName -eq $NodeType -or $childTypeName -eq "${NodeType}Ast"
                 }
 
-                # Vérifier si le nœud enfant correspond au prédicat spécifié
+                # VÃ©rifier si le nÅ“ud enfant correspond au prÃ©dicat spÃ©cifiÃ©
                 if ($includeChild -and $Predicate) {
                     $includeChild = & $Predicate $child
                 }
 
-                # Ajouter le nœud enfant aux résultats s'il correspond aux critères
+                # Ajouter le nÅ“ud enfant aux rÃ©sultats s'il correspond aux critÃ¨res
                 if ($includeChild) {
                     [void]$results.Add($child)
                 }
             }
         }
 
-        # Retourner les résultats
+        # Retourner les rÃ©sultats
         return $results
     }
     catch {
@@ -338,7 +338,7 @@ function Invoke-AstTraversalBFS {
     }
 }
 
-# Créer un script PowerShell de test très simple
+# CrÃ©er un script PowerShell de test trÃ¨s simple
 $sampleCode = @'
 function Test-Function {
     "Hello, World!"

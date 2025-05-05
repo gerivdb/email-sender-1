@@ -1,4 +1,4 @@
-# Test d'importation de modules
+﻿# Test d'importation de modules
 using module PSScriptAnalyzer
 
 # Import-Module simple

@@ -1,11 +1,11 @@
-# Tests unitaires pour les fonctions d'analyse prédictive du module PerformanceAnalyzer
+﻿# Tests unitaires pour les fonctions d'analyse prÃ©dictive du module PerformanceAnalyzer
 # Utilise Pester 5.x
 
 BeforeAll {
-    # Chemin du module à tester
+    # Chemin du module Ã  tester
     $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\PerformanceAnalyzer.psm1"
 
-    # Vérifier si le module existe
+    # VÃ©rifier si le module existe
     $ModuleExists = Test-Path -Path $ModulePath
 
     Write-Host "Module PerformanceAnalyzer exists: $ModuleExists"
@@ -16,7 +16,7 @@ BeforeAll {
         Import-Module -Name $ModulePath -Force -Verbose
     }
 
-    # Créer des données de test
+    # CrÃ©er des donnÃ©es de test
     $TestMetrics = @(
         @{
             CPU         = @{
@@ -350,7 +350,7 @@ BeforeAll {
         }
     )
 
-    # Créer des mocks pour les fonctions externes
+    # CrÃ©er des mocks pour les fonctions externes
     Mock Invoke-PredictiveModel {
         param (
             [string]$Action,
@@ -465,13 +465,13 @@ BeforeAll {
                         }
                         trend       = @{
                             direction      = "croissante"
-                            strength       = "modérée"
+                            strength       = "modÃ©rÃ©e"
                             slope          = 0.25
                             intercept      = 45.2
                             r2             = 0.65
                             percent_change = 15.8
                         }
-                        seasonality = "détectée"
+                        seasonality = "dÃ©tectÃ©e"
                     }
                     "Memory.Usage" = @{
                         status      = "success"
@@ -491,7 +491,7 @@ BeforeAll {
                             r2             = 0.78
                             percent_change = 20.5
                         }
-                        seasonality = "non détectée"
+                        seasonality = "non dÃ©tectÃ©e"
                     }
                 }
             }
@@ -505,7 +505,7 @@ BeforeAll {
             [string]$OutputPath
         )
 
-        # Simuler la création d'un fichier temporaire
+        # Simuler la crÃ©ation d'un fichier temporaire
         $tempFile = [System.IO.Path]::GetTempFileName() -replace '\.tmp$', '.json'
         "Metrics exported to $tempFile" | Out-File -FilePath $tempFile -Encoding utf8
         return $tempFile
@@ -631,7 +631,7 @@ Describe "PerformanceAnalyzer Predictive Module Tests" {
 }
 
 AfterAll {
-    # Nettoyer les modules importés
+    # Nettoyer les modules importÃ©s
     if ($ModuleExists) {
         Remove-Module -Name "PerformanceAnalyzer" -Force -ErrorAction SilentlyContinue
     }

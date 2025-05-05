@@ -1,41 +1,41 @@
-# Tests pour le mode C-BREAK
+﻿# Tests pour le mode C-BREAK
 
-# Chemin vers le script à tester
+# Chemin vers le script Ã  tester
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $modulePath = Split-Path -Parent (Split-Path -Parent $scriptPath)
 $projectRoot = Split-Path -Parent $modulePath
 $cBreakModePath = Join-Path -Path $projectRoot -ChildPath "c-break-mode.ps1"
 
-# Chemin vers les fonctions à tester
+# Chemin vers les fonctions Ã  tester
 $invokeCycleBreakerPath = Join-Path -Path $modulePath -ChildPath "Functions\Public\Invoke-RoadmapCycleBreaker.ps1"
 
-# Vérifier si les fichiers existent
+# VÃ©rifier si les fichiers existent
 if (-not (Test-Path -Path $cBreakModePath)) {
-    Write-Warning "Le script c-break-mode.ps1 est introuvable à l'emplacement : $cBreakModePath"
+    Write-Warning "Le script c-break-mode.ps1 est introuvable Ã  l'emplacement : $cBreakModePath"
 }
 
 if (-not (Test-Path -Path $invokeCycleBreakerPath)) {
-    Write-Warning "Le fichier Invoke-RoadmapCycleBreaker.ps1 est introuvable à l'emplacement : $invokeCycleBreakerPath"
+    Write-Warning "Le fichier Invoke-RoadmapCycleBreaker.ps1 est introuvable Ã  l'emplacement : $invokeCycleBreakerPath"
 }
 
 # Importer les fonctions si elles existent
 if (Test-Path -Path $invokeCycleBreakerPath) {
     . $invokeCycleBreakerPath
-    Write-Host "Fonction Invoke-RoadmapCycleBreaker importée." -ForegroundColor Green
+    Write-Host "Fonction Invoke-RoadmapCycleBreaker importÃ©e." -ForegroundColor Green
 }
 
-# Créer un fichier temporaire pour les tests
+# CrÃ©er un fichier temporaire pour les tests
 $testFilePath = Join-Path -Path $env:TEMP -ChildPath "TestRoadmap_$(Get-Random).md"
 
-# Créer un module de test avec des dépendances circulaires
+# CrÃ©er un module de test avec des dÃ©pendances circulaires
 $testModulePath = Join-Path -Path $env:TEMP -ChildPath "TestModule_$(Get-Random)"
 New-Item -Path $testModulePath -ItemType Directory -Force | Out-Null
 
-# Créer un répertoire de sortie pour les tests
+# CrÃ©er un rÃ©pertoire de sortie pour les tests
 $testOutputPath = Join-Path -Path $env:TEMP -ChildPath "TestOutput_$(Get-Random)"
 New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
 
-# Créer un fichier de test avec une structure de roadmap simple
+# CrÃ©er un fichier de test avec une structure de roadmap simple
 @"
 # Roadmap de test
 
@@ -49,12 +49,12 @@ New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
   - [ ] **1.2.2** Test Subtask 2.2
 "@ | Out-File -FilePath $testFilePath -Encoding UTF8
 
-# Créer des fichiers avec des dépendances circulaires pour les tests
+# CrÃ©er des fichiers avec des dÃ©pendances circulaires pour les tests
 $file1Path = Join-Path -Path $testModulePath -ChildPath "File1.ps1"
 $file2Path = Join-Path -Path $testModulePath -ChildPath "File2.ps1"
 $file3Path = Join-Path -Path $testModulePath -ChildPath "File3.ps1"
 
-# Fichier 1 dépend de Fichier 3 (cycle)
+# Fichier 1 dÃ©pend de Fichier 3 (cycle)
 @"
 # Fichier 1
 . "$file3Path"
@@ -64,7 +64,7 @@ function Test-Function1 {
 }
 "@ | Out-File -FilePath $file1Path -Encoding UTF8
 
-# Fichier 2 dépend de Fichier 1
+# Fichier 2 dÃ©pend de Fichier 1
 @"
 # Fichier 2
 . "$file1Path"
@@ -74,7 +74,7 @@ function Test-Function2 {
 }
 "@ | Out-File -FilePath $file2Path -Encoding UTF8
 
-# Fichier 3 dépend de Fichier 1 (cycle)
+# Fichier 3 dÃ©pend de Fichier 1 (cycle)
 @"
 # Fichier 3
 . "$file1Path"
@@ -87,11 +87,11 @@ function Test-Function3 {
 # Tests unitaires avec Pester
 Describe "Invoke-RoadmapCycleBreaker" {
     BeforeAll {
-        # Préparation avant tous les tests
+        # PrÃ©paration avant tous les tests
     }
 
     AfterAll {
-        # Nettoyage après tous les tests
+        # Nettoyage aprÃ¨s tous les tests
         if (Test-Path -Path $testFilePath) {
             Remove-Item -Path $testFilePath -Force
         }
@@ -103,7 +103,7 @@ Describe "Invoke-RoadmapCycleBreaker" {
         }
     }
 
-    It "Devrait exécuter correctement avec des paramètres valides" -Skip {
+    It "Devrait exÃ©cuter correctement avec des paramÃ¨tres valides" -Skip {
         # Appeler la fonction
         if (Get-Command -Name Invoke-RoadmapCycleBreaker -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapCycleBreaker -FilePath $testFilePath -OutputPath $testOutputPath
@@ -113,7 +113,7 @@ Describe "Invoke-RoadmapCycleBreaker" {
         }
     }
 
-    It "Devrait détecter les cycles de dépendances" -Skip {
+    It "Devrait dÃ©tecter les cycles de dÃ©pendances" -Skip {
         # Appeler la fonction
         if (Get-Command -Name Invoke-RoadmapCycleBreaker -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapCycleBreaker -FilePath $testFilePath -OutputPath $testOutputPath
@@ -124,7 +124,7 @@ Describe "Invoke-RoadmapCycleBreaker" {
         }
     }
 
-    It "Devrait générer un rapport de détection" -Skip {
+    It "Devrait gÃ©nÃ©rer un rapport de dÃ©tection" -Skip {
         # Appeler la fonction
         if (Get-Command -Name Invoke-RoadmapCycleBreaker -ErrorAction SilentlyContinue) {
             $result = Invoke-RoadmapCycleBreaker -FilePath $testFilePath -OutputPath $testOutputPath
@@ -137,14 +137,14 @@ Describe "Invoke-RoadmapCycleBreaker" {
     }
 }
 
-# Test d'intégration du script c-break-mode.ps1
+# Test d'intÃ©gration du script c-break-mode.ps1
 Describe "c-break-mode.ps1 Integration" {
     BeforeAll {
-        # Préparation avant tous les tests
+        # PrÃ©paration avant tous les tests
     }
 
     AfterAll {
-        # Nettoyage après tous les tests
+        # Nettoyage aprÃ¨s tous les tests
         if (Test-Path -Path $testFilePath) {
             Remove-Item -Path $testFilePath -Force
         }
@@ -156,24 +156,24 @@ Describe "c-break-mode.ps1 Integration" {
         }
     }
 
-    It "Devrait s'exécuter correctement avec des paramètres valides" -Skip {
+    It "Devrait s'exÃ©cuter correctement avec des paramÃ¨tres valides" -Skip {
         if (Test-Path -Path $cBreakModePath) {
-            # Exécuter le script
+            # ExÃ©cuter le script
             $output = & $cBreakModePath -FilePath $testFilePath -OutputPath $testOutputPath -MaxIterations 5
             
-            # Vérifier que le script s'est exécuté sans erreur
+            # VÃ©rifier que le script s'est exÃ©cutÃ© sans erreur
             $LASTEXITCODE | Should -Be 0
         } else {
             Set-ItResult -Skipped -Because "Le script c-break-mode.ps1 n'est pas disponible"
         }
     }
 
-    It "Devrait générer un rapport de détection des cycles" -Skip {
+    It "Devrait gÃ©nÃ©rer un rapport de dÃ©tection des cycles" -Skip {
         if (Test-Path -Path $cBreakModePath) {
-            # Exécuter le script
+            # ExÃ©cuter le script
             $output = & $cBreakModePath -FilePath $testFilePath -OutputPath $testOutputPath -MaxIterations 5
             
-            # Vérifier que les fichiers attendus existent
+            # VÃ©rifier que les fichiers attendus existent
             $reportPath = Join-Path -Path $testOutputPath -ChildPath "cycle-detection-report.md"
             Test-Path -Path $reportPath | Should -Be $true
         } else {

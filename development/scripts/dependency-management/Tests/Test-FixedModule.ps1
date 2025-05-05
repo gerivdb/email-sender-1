@@ -1,5 +1,5 @@
-# Test pour le module ModuleDependencyAnalyzer-Fixed
-# Ce test vérifie les fonctionnalités de base du module
+﻿# Test pour le module ModuleDependencyAnalyzer-Fixed
+# Ce test vÃ©rifie les fonctionnalitÃ©s de base du module
 
 # Importer le module
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
@@ -10,19 +10,19 @@ try {
     Import-Module -Name $moduleFile -Force -ErrorAction Stop
     Write-Host "Module importe avec succes" -ForegroundColor Green
 
-    # Vérifier que les fonctions sont disponibles
+    # VÃ©rifier que les fonctions sont disponibles
     $functions = Get-Command -Module ModuleDependencyAnalyzer-Fixed
     Write-Host "Fonctions disponibles : $($functions.Count)" -ForegroundColor Green
     $functions | ForEach-Object { Write-Host "  - $($_.Name)" }
 
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testDir = Join-Path -Path $env:TEMP -ChildPath "ModuleDependencyAnalyzerTests"
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
     }
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-    # Créer des fichiers de test
+    # CrÃ©er des fichiers de test
     $manifestContent = @"
 @{
     ModuleVersion = '1.0.0'

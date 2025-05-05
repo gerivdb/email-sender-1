@@ -1,10 +1,10 @@
-# Script de test simple pour la fonction Invoke-AstTraversalDFS-Optimized
+﻿# Script de test simple pour la fonction Invoke-AstTraversalDFS-Optimized
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script PowerShell de test très simple
+# CrÃ©er un script PowerShell de test trÃ¨s simple
 $sampleCode = @'
 function Get-Example {
     param (
@@ -43,7 +43,7 @@ foreach ($function in $functions) {
     Write-Host "  Fonction: $($function.Name) (Ligne $($function.Extent.StartLineNumber))" -ForegroundColor Green
 }
 
-# Comparer avec la version précédente
+# Comparer avec la version prÃ©cÃ©dente
 Write-Host "`n=== Comparaison avec Invoke-AstTraversalDFS-Enhanced ===" -ForegroundColor Cyan
 
 $functions = Invoke-AstTraversalDFS-Enhanced -Ast $ast -NodeType "FunctionDefinition"

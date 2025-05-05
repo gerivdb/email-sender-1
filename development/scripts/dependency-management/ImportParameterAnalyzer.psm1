@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module pour l'analyse des paramètres d'importation dans les scripts PowerShell.
+    Module pour l'analyse des paramÃ¨tres d'importation dans les scripts PowerShell.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour analyser les paramètres d'importation dans les scripts PowerShell,
-    en particulier pour les commandes Import-Module. Il permet de détecter les paramètres nommés,
-    d'extraire les valeurs de paramètres, et de gérer les paramètres avec caractères spéciaux.
+    Ce module fournit des fonctions pour analyser les paramÃ¨tres d'importation dans les scripts PowerShell,
+    en particulier pour les commandes Import-Module. Il permet de dÃ©tecter les paramÃ¨tres nommÃ©s,
+    d'extraire les valeurs de paramÃ¨tres, et de gÃ©rer les paramÃ¨tres avec caractÃ¨res spÃ©ciaux.
 
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-12-15
+    Date de crÃ©ation: 2023-12-15
 #>
 
 #region Private Functions
@@ -23,14 +23,14 @@
 function Get-ImportParameterTypes {
     <#
     .SYNOPSIS
-        Analyse les différents types de paramètres d'importation dans une commande PowerShell.
+        Analyse les diffÃ©rents types de paramÃ¨tres d'importation dans une commande PowerShell.
 
     .DESCRIPTION
-        Cette fonction analyse une commande PowerShell (généralement Import-Module) et identifie
-        les différents types de paramètres utilisés : nommés, positionnels, switches, etc.
+        Cette fonction analyse une commande PowerShell (gÃ©nÃ©ralement Import-Module) et identifie
+        les diffÃ©rents types de paramÃ¨tres utilisÃ©s : nommÃ©s, positionnels, switches, etc.
 
     .PARAMETER CommandAst
-        L'objet AST de la commande à analyser.
+        L'objet AST de la commande Ã  analyser.
 
     .EXAMPLE
         $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\script.ps1", [ref]$null, [ref]$null)
@@ -48,7 +48,7 @@ function Get-ImportParameterTypes {
     )
 
     try {
-        # Initialiser l'objet résultat
+        # Initialiser l'objet rÃ©sultat
         $result = [PSCustomObject]@{
             NamedParameters = @{}
             PositionalParameters = @()
@@ -62,14 +62,14 @@ function Get-ImportParameterTypes {
             AllParameters = @()
         }
 
-        # Vérifier que c'est bien une commande Import-Module
+        # VÃ©rifier que c'est bien une commande Import-Module
         if ($CommandAst.CommandElements.Count -eq 0 -or 
             $CommandAst.CommandElements[0].Value -ne 'Import-Module') {
-            Write-Warning "La commande analysée n'est pas une commande Import-Module."
+            Write-Warning "La commande analysÃ©e n'est pas une commande Import-Module."
             return $result
         }
 
-        # Analyser les éléments de la commande
+        # Analyser les Ã©lÃ©ments de la commande
         $namedParameters = @{}
         $positionalParameters = @()
         $switchParameters = @()
@@ -78,40 +78,40 @@ function Get-ImportParameterTypes {
         for ($i = 1; $i -lt $CommandAst.CommandElements.Count; $i++) {
             $element = $CommandAst.CommandElements[$i]
 
-            # Vérifier si c'est un paramètre nommé
+            # VÃ©rifier si c'est un paramÃ¨tre nommÃ©
             if ($element -is [System.Management.Automation.Language.CommandParameterAst]) {
                 $paramName = $element.ParameterName
                 $allParameters += $paramName
 
-                # Vérifier si le paramètre a une valeur associée
+                # VÃ©rifier si le paramÃ¨tre a une valeur associÃ©e
                 if ($i + 1 -lt $CommandAst.CommandElements.Count -and
                     -not ($CommandAst.CommandElements[$i + 1] -is [System.Management.Automation.Language.CommandParameterAst])) {
                     $namedParameters[$paramName] = $CommandAst.CommandElements[$i + 1]
-                    $i++  # Sauter l'élément suivant car c'est la valeur du paramètre
+                    $i++  # Sauter l'Ã©lÃ©ment suivant car c'est la valeur du paramÃ¨tre
                 } else {
-                    # Paramètre switch sans valeur
+                    # ParamÃ¨tre switch sans valeur
                     $switchParameters += $paramName
                 }
             } else {
-                # Paramètre positionnel
+                # ParamÃ¨tre positionnel
                 $positionalParameters += $element
             }
         }
 
-        # Remplir l'objet résultat
+        # Remplir l'objet rÃ©sultat
         $result.NamedParameters = $namedParameters
         $result.PositionalParameters = $positionalParameters
         $result.SwitchParameters = $switchParameters
         $result.AllParameters = $allParameters
 
-        # Vérifier les paramètres spécifiques
+        # VÃ©rifier les paramÃ¨tres spÃ©cifiques
         $result.HasNameParameter = $namedParameters.ContainsKey("Name")
         $result.HasPathParameter = $namedParameters.ContainsKey("Path")
         $result.HasVersionParameter = $namedParameters.ContainsKey("RequiredVersion") -or 
                                      $namedParameters.ContainsKey("MinimumVersion") -or 
                                      $namedParameters.ContainsKey("MaximumVersion")
 
-        # Vérifier les paramètres avec caractères spéciaux
+        # VÃ©rifier les paramÃ¨tres avec caractÃ¨res spÃ©ciaux
         foreach ($param in $namedParameters.Keys) {
             $value = $namedParameters[$param]
             if ($value -is [System.Management.Automation.Language.StringConstantExpressionAst] -or 
@@ -124,8 +124,8 @@ function Get-ImportParameterTypes {
             }
         }
 
-        # Déterminer les paramètres optionnels et requis
-        # Pour Import-Module, seul le paramètre Name ou Path est requis (et ils sont mutuellement exclusifs)
+        # DÃ©terminer les paramÃ¨tres optionnels et requis
+        # Pour Import-Module, seul le paramÃ¨tre Name ou Path est requis (et ils sont mutuellement exclusifs)
         $requiredParams = @()
         $optionalParams = @()
 
@@ -137,7 +137,7 @@ function Get-ImportParameterTypes {
             }
         }
 
-        # Si aucun paramètre nommé Name ou Path n'est présent, le premier paramètre positionnel est considéré comme requis
+        # Si aucun paramÃ¨tre nommÃ© Name ou Path n'est prÃ©sent, le premier paramÃ¨tre positionnel est considÃ©rÃ© comme requis
         if ($requiredParams.Count -eq 0 -and $positionalParameters.Count -gt 0) {
             $requiredParams += "PositionalName"
         }
@@ -147,7 +147,7 @@ function Get-ImportParameterTypes {
 
         return $result
     } catch {
-        Write-Error "Erreur lors de l'analyse des paramètres d'importation : $_"
+        Write-Error "Erreur lors de l'analyse des paramÃ¨tres d'importation : $_"
         return $null
     }
 }
@@ -155,14 +155,14 @@ function Get-ImportParameterTypes {
 function Get-NamedParameters {
     <#
     .SYNOPSIS
-        Détecte les paramètres nommés dans une commande PowerShell.
+        DÃ©tecte les paramÃ¨tres nommÃ©s dans une commande PowerShell.
 
     .DESCRIPTION
-        Cette fonction analyse une commande PowerShell et détecte tous les paramètres nommés
-        (paramètres précédés d'un tiret, comme -Name, -Path, etc.).
+        Cette fonction analyse une commande PowerShell et dÃ©tecte tous les paramÃ¨tres nommÃ©s
+        (paramÃ¨tres prÃ©cÃ©dÃ©s d'un tiret, comme -Name, -Path, etc.).
 
     .PARAMETER CommandAst
-        L'objet AST de la commande à analyser.
+        L'objet AST de la commande Ã  analyser.
 
     .EXAMPLE
         $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\script.ps1", [ref]$null, [ref]$null)
@@ -180,18 +180,18 @@ function Get-NamedParameters {
     )
 
     try {
-        # Initialiser le hashtable pour les paramètres nommés
+        # Initialiser le hashtable pour les paramÃ¨tres nommÃ©s
         $namedParameters = @{}
 
-        # Parcourir les éléments de la commande
+        # Parcourir les Ã©lÃ©ments de la commande
         for ($i = 1; $i -lt $CommandAst.CommandElements.Count; $i++) {
             $element = $CommandAst.CommandElements[$i]
 
-            # Vérifier si c'est un paramètre nommé
+            # VÃ©rifier si c'est un paramÃ¨tre nommÃ©
             if ($element -is [System.Management.Automation.Language.CommandParameterAst]) {
                 $paramName = $element.ParameterName
 
-                # Vérifier si le paramètre a une valeur associée
+                # VÃ©rifier si le paramÃ¨tre a une valeur associÃ©e
                 if ($i + 1 -lt $CommandAst.CommandElements.Count -and
                     -not ($CommandAst.CommandElements[$i + 1] -is [System.Management.Automation.Language.CommandParameterAst])) {
                     $namedParameters[$paramName] = @{
@@ -199,9 +199,9 @@ function Get-NamedParameters {
                         Position = $i
                         HasValue = $true
                     }
-                    $i++  # Sauter l'élément suivant car c'est la valeur du paramètre
+                    $i++  # Sauter l'Ã©lÃ©ment suivant car c'est la valeur du paramÃ¨tre
                 } else {
-                    # Paramètre switch sans valeur
+                    # ParamÃ¨tre switch sans valeur
                     $namedParameters[$paramName] = @{
                         Value = $true
                         Position = $i
@@ -213,7 +213,7 @@ function Get-NamedParameters {
 
         return $namedParameters
     } catch {
-        Write-Error "Erreur lors de la détection des paramètres nommés : $_"
+        Write-Error "Erreur lors de la dÃ©tection des paramÃ¨tres nommÃ©s : $_"
         return @{}
     }
 }
@@ -221,17 +221,17 @@ function Get-NamedParameters {
 function Get-ParameterValue {
     <#
     .SYNOPSIS
-        Extrait la valeur d'un paramètre dans une commande PowerShell.
+        Extrait la valeur d'un paramÃ¨tre dans une commande PowerShell.
 
     .DESCRIPTION
-        Cette fonction extrait la valeur d'un paramètre spécifié dans une commande PowerShell,
-        en tenant compte des différents types de valeurs possibles (chaînes, variables, etc.).
+        Cette fonction extrait la valeur d'un paramÃ¨tre spÃ©cifiÃ© dans une commande PowerShell,
+        en tenant compte des diffÃ©rents types de valeurs possibles (chaÃ®nes, variables, etc.).
 
     .PARAMETER CommandAst
-        L'objet AST de la commande à analyser.
+        L'objet AST de la commande Ã  analyser.
 
     .PARAMETER ParameterName
-        Le nom du paramètre dont on veut extraire la valeur.
+        Le nom du paramÃ¨tre dont on veut extraire la valeur.
 
     .EXAMPLE
         $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\script.ps1", [ref]$null, [ref]$null)
@@ -252,18 +252,18 @@ function Get-ParameterValue {
     )
 
     try {
-        # Obtenir les paramètres nommés
+        # Obtenir les paramÃ¨tres nommÃ©s
         $namedParameters = Get-NamedParameters -CommandAst $CommandAst
 
-        # Vérifier si le paramètre existe
+        # VÃ©rifier si le paramÃ¨tre existe
         if (-not $namedParameters.ContainsKey($ParameterName)) {
-            # Si c'est le paramètre Name et qu'il n'est pas spécifié explicitement,
-            # vérifier s'il y a un paramètre positionnel qui pourrait être le nom du module
+            # Si c'est le paramÃ¨tre Name et qu'il n'est pas spÃ©cifiÃ© explicitement,
+            # vÃ©rifier s'il y a un paramÃ¨tre positionnel qui pourrait Ãªtre le nom du module
             if ($ParameterName -eq "Name" -and $CommandAst.CommandElements.Count -gt 1) {
                 for ($i = 1; $i -lt $CommandAst.CommandElements.Count; $i++) {
                     $element = $CommandAst.CommandElements[$i]
                     if (-not ($element -is [System.Management.Automation.Language.CommandParameterAst])) {
-                        # C'est probablement un paramètre positionnel pour le nom du module
+                        # C'est probablement un paramÃ¨tre positionnel pour le nom du module
                         return ExtractParameterValue -Parameter $element
                     }
                 }
@@ -271,15 +271,15 @@ function Get-ParameterValue {
             return $null
         }
 
-        # Extraire la valeur du paramètre
+        # Extraire la valeur du paramÃ¨tre
         $paramInfo = $namedParameters[$ParameterName]
         if ($paramInfo.HasValue) {
             return ExtractParameterValue -Parameter $paramInfo.Value
         } else {
-            return $true  # Pour les paramètres switch
+            return $true  # Pour les paramÃ¨tres switch
         }
     } catch {
-        Write-Error "Erreur lors de l'extraction de la valeur du paramètre '$ParameterName' : $_"
+        Write-Error "Erreur lors de l'extraction de la valeur du paramÃ¨tre '$ParameterName' : $_"
         return $null
     }
 }
@@ -287,13 +287,13 @@ function Get-ParameterValue {
 function ExtractParameterValue {
     <#
     .SYNOPSIS
-        Extrait la valeur d'un paramètre AST.
+        Extrait la valeur d'un paramÃ¨tre AST.
 
     .DESCRIPTION
-        Cette fonction interne extrait la valeur d'un paramètre AST en fonction de son type.
+        Cette fonction interne extrait la valeur d'un paramÃ¨tre AST en fonction de son type.
 
     .PARAMETER Parameter
-        Le paramètre AST à analyser.
+        Le paramÃ¨tre AST Ã  analyser.
 
     .OUTPUTS
         System.Object
@@ -320,17 +320,17 @@ function ExtractParameterValue {
 function Test-SpecialCharactersInParameter {
     <#
     .SYNOPSIS
-        Vérifie si un paramètre contient des caractères spéciaux.
+        VÃ©rifie si un paramÃ¨tre contient des caractÃ¨res spÃ©ciaux.
 
     .DESCRIPTION
-        Cette fonction vérifie si la valeur d'un paramètre spécifié dans une commande PowerShell
-        contient des caractères spéciaux qui pourraient nécessiter un traitement particulier.
+        Cette fonction vÃ©rifie si la valeur d'un paramÃ¨tre spÃ©cifiÃ© dans une commande PowerShell
+        contient des caractÃ¨res spÃ©ciaux qui pourraient nÃ©cessiter un traitement particulier.
 
     .PARAMETER CommandAst
-        L'objet AST de la commande à analyser.
+        L'objet AST de la commande Ã  analyser.
 
     .PARAMETER ParameterName
-        Le nom du paramètre à vérifier.
+        Le nom du paramÃ¨tre Ã  vÃ©rifier.
 
     .EXAMPLE
         $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\script.ps1", [ref]$null, [ref]$null)
@@ -351,17 +351,17 @@ function Test-SpecialCharactersInParameter {
     )
 
     try {
-        # Obtenir la valeur du paramètre
+        # Obtenir la valeur du paramÃ¨tre
         $paramValue = Get-ParameterValue -CommandAst $CommandAst -ParameterName $ParameterName
 
-        # Vérifier si la valeur contient des caractères spéciaux
+        # VÃ©rifier si la valeur contient des caractÃ¨res spÃ©ciaux
         if ($paramValue -is [string]) {
             return $paramValue -match '[`~!@#$%^&*()+={}[\]|\\:;"''<>,.?/]'
         }
 
         return $false
     } catch {
-        Write-Error "Erreur lors de la vérification des caractères spéciaux dans le paramètre '$ParameterName' : $_"
+        Write-Error "Erreur lors de la vÃ©rification des caractÃ¨res spÃ©ciaux dans le paramÃ¨tre '$ParameterName' : $_"
         return $false
     }
 }
@@ -369,14 +369,14 @@ function Test-SpecialCharactersInParameter {
 function Get-OptionalParameters {
     <#
     .SYNOPSIS
-        Détecte les paramètres optionnels dans une commande Import-Module.
+        DÃ©tecte les paramÃ¨tres optionnels dans une commande Import-Module.
 
     .DESCRIPTION
-        Cette fonction analyse une commande Import-Module et identifie tous les paramètres
-        qui sont optionnels (non requis pour l'exécution de la commande).
+        Cette fonction analyse une commande Import-Module et identifie tous les paramÃ¨tres
+        qui sont optionnels (non requis pour l'exÃ©cution de la commande).
 
     .PARAMETER CommandAst
-        L'objet AST de la commande à analyser.
+        L'objet AST de la commande Ã  analyser.
 
     .EXAMPLE
         $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\script.ps1", [ref]$null, [ref]$null)
@@ -394,13 +394,13 @@ function Get-OptionalParameters {
     )
 
     try {
-        # Obtenir tous les paramètres de la commande
+        # Obtenir tous les paramÃ¨tres de la commande
         $parameterTypes = Get-ImportParameterTypes -CommandAst $CommandAst
 
-        # Retourner les paramètres optionnels
+        # Retourner les paramÃ¨tres optionnels
         return $parameterTypes.OptionalParameters
     } catch {
-        Write-Error "Erreur lors de la détection des paramètres optionnels : $_"
+        Write-Error "Erreur lors de la dÃ©tection des paramÃ¨tres optionnels : $_"
         return @()
     }
 }

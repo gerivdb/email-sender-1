@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Adaptateur TestOmnibus pour les tests de gestion des compteurs de performance.
 .DESCRIPTION
-    Cet adaptateur permet d'exÃ©cuter les tests de gestion des compteurs de performance
-    dans le cadre de TestOmnibus, en utilisant les mocks nÃ©cessaires.
+    Cet adaptateur permet d'exÃƒÂ©cuter les tests de gestion des compteurs de performance
+    dans le cadre de TestOmnibus, en utilisant les mocks nÃƒÂ©cessaires.
 .NOTES
     Auteur: Augment Agent
     Date: 2025-04-15
@@ -26,14 +26,14 @@ function Invoke-PerformanceCounterManagerTests {
         [switch]$ShowDetailedResults
     )
 
-    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
+    # CrÃƒÂ©er le rÃƒÂ©pertoire de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputPath)) {
         New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
     }
 
-    # Importer Pester si nÃ©cessaire
+    # Importer Pester si nÃƒÂ©cessaire
     if (-not (Get-Module -Name Pester -ListAvailable)) {
-        Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
+        Write-Warning "Le module Pester n'est pas installÃƒÂ©. Installation en cours..."
         Install-Module -Name Pester -Force -SkipPublisherCheck
     }
 
@@ -45,15 +45,15 @@ function Invoke-PerformanceCounterManagerTests {
     $pesterConfig.TestResult.Enabled = $true
     $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputPath -ChildPath "PerformanceCounterManager-TestResults.xml"
 
-    # ExÃ©cuter les tests
-    Write-Host "ExÃ©cution des tests de gestion des compteurs de performance..." -ForegroundColor Cyan
+    # ExÃƒÂ©cuter les tests
+    Write-Host "ExÃƒÂ©cution des tests de gestion des compteurs de performance..." -ForegroundColor Cyan
     $results = Invoke-Pester -Configuration $pesterConfig
 
-    # GÃ©nÃ©rer un rapport HTML si demandÃ©
+    # GÃƒÂ©nÃƒÂ©rer un rapport HTML si demandÃƒÂ©
     if ($GenerateHtmlReport) {
         $reportPath = Join-Path -Path $OutputPath -ChildPath "PerformanceCounterManager-TestReport.html"
         
-        # CrÃ©er un rapport HTML simple
+        # CrÃƒÂ©er un rapport HTML simple
         $htmlReport = @"
 <!DOCTYPE html>
 <html>
@@ -80,19 +80,19 @@ function Invoke-PerformanceCounterManagerTests {
     <h1>Rapport de tests - Gestion des compteurs de performance</h1>
     
     <div class="summary">
-        <h2>RÃ©sumÃ©</h2>
-        <p>Tests exÃ©cutÃ©s : $($results.TotalCount)</p>
-        <p>Tests rÃ©ussis : <span class="success">$($results.PassedCount)</span></p>
-        <p>Tests Ã©chouÃ©s : <span class="failure">$($results.FailedCount)</span></p>
-        <p>DurÃ©e totale : $($results.Duration.TotalSeconds) secondes</p>
+        <h2>RÃƒÂ©sumÃƒÂ©</h2>
+        <p>Tests exÃƒÂ©cutÃƒÂ©s : $($results.TotalCount)</p>
+        <p>Tests rÃƒÂ©ussis : <span class="success">$($results.PassedCount)</span></p>
+        <p>Tests ÃƒÂ©chouÃƒÂ©s : <span class="failure">$($results.FailedCount)</span></p>
+        <p>DurÃƒÂ©e totale : $($results.Duration.TotalSeconds) secondes</p>
     </div>
     
-    <h2>DÃ©tails des tests</h2>
+    <h2>DÃƒÂ©tails des tests</h2>
     <table>
         <tr>
             <th>Nom du test</th>
-            <th>RÃ©sultat</th>
-            <th>DurÃ©e (ms)</th>
+            <th>RÃƒÂ©sultat</th>
+            <th>DurÃƒÂ©e (ms)</th>
         </tr>
 "@
 
@@ -115,17 +115,17 @@ function Invoke-PerformanceCounterManagerTests {
 
         # Enregistrer le rapport HTML
         $htmlReport | Out-File -FilePath $reportPath -Encoding utf8
-        Write-Host "Rapport HTML gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃƒÂ©nÃƒÂ©rÃƒÂ© : $reportPath" -ForegroundColor Green
     }
 
-    # Afficher un rÃ©sumÃ© des rÃ©sultats
-    Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
-    Write-Host "Tests exÃ©cutÃ©s : $($results.TotalCount)" -ForegroundColor White
-    Write-Host "Tests rÃ©ussis : $($results.PassedCount)" -ForegroundColor Green
-    Write-Host "Tests Ã©chouÃ©s : $($results.FailedCount)" -ForegroundColor Red
-    Write-Host "DurÃ©e totale : $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
+    # Afficher un rÃƒÂ©sumÃƒÂ© des rÃƒÂ©sultats
+    Write-Host "`nRÃƒÂ©sumÃƒÂ© des tests :" -ForegroundColor Cyan
+    Write-Host "Tests exÃƒÂ©cutÃƒÂ©s : $($results.TotalCount)" -ForegroundColor White
+    Write-Host "Tests rÃƒÂ©ussis : $($results.PassedCount)" -ForegroundColor Green
+    Write-Host "Tests ÃƒÂ©chouÃƒÂ©s : $($results.FailedCount)" -ForegroundColor Red
+    Write-Host "DurÃƒÂ©e totale : $($results.Duration.TotalSeconds) secondes" -ForegroundColor White
 
-    # Retourner les rÃ©sultats
+    # Retourner les rÃƒÂ©sultats
     return [PSCustomObject]@{
         Success     = $results.FailedCount -eq 0
         TestsRun    = $results.TotalCount

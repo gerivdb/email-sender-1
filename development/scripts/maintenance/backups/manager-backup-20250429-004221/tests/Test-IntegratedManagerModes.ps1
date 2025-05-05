@@ -1,21 +1,21 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests pour vérifier l'intégration entre le gestionnaire intégré et les modes adaptés.
+    Tests pour vÃ©rifier l'intÃ©gration entre le gestionnaire intÃ©grÃ© et les modes adaptÃ©s.
 
 .DESCRIPTION
-    Ce script contient des tests pour vérifier que le gestionnaire intégré fonctionne correctement
-    avec les modes adaptés pour utiliser la configuration unifiée.
+    Ce script contient des tests pour vÃ©rifier que le gestionnaire intÃ©grÃ© fonctionne correctement
+    avec les modes adaptÃ©s pour utiliser la configuration unifiÃ©e.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Définir les chemins
+# DÃ©finir les chemins
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $scriptPath))
 $integratedManagerPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\integrated-manager.ps1"
@@ -23,39 +23,39 @@ $configPath = Join-Path -Path $projectRoot -ChildPath "development\config\unifie
 $checkModePath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\check.ps1"
 $granModePath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\modes\gran-mode.ps1"
 
-# Créer un répertoire de test temporaire
+# CrÃ©er un rÃ©pertoire de test temporaire
 $testDir = Join-Path -Path $scriptPath -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 @"
 # Test Roadmap
 
-## Tâche 1.2.3
+## TÃ¢che 1.2.3
 
 ### Description
-Cette tâche est utilisée pour les tests du gestionnaire intégré.
+Cette tÃ¢che est utilisÃ©e pour les tests du gestionnaire intÃ©grÃ©.
 
-### Sous-tâches
-- [ ] **1.2.3.1** Sous-tâche 1
-- [ ] **1.2.3.2** Sous-tâche 2
-- [ ] **1.2.3.3** Sous-tâche 3
+### Sous-tÃ¢ches
+- [ ] **1.2.3.1** Sous-tÃ¢che 1
+- [ ] **1.2.3.2** Sous-tÃ¢che 2
+- [ ] **1.2.3.3** Sous-tÃ¢che 3
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
-# Créer un fichier de sous-tâches de test
+# CrÃ©er un fichier de sous-tÃ¢ches de test
 $testSubTasksPath = Join-Path -Path $testDir -ChildPath "test-subtasks.txt"
 @"
 Analyser les besoins
 Concevoir la solution
-Implémenter le code
+ImplÃ©menter le code
 Tester la solution
-Documenter l'implémentation
+Documenter l'implÃ©mentation
 "@ | Set-Content -Path $testSubTasksPath -Encoding UTF8
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfigPath = Join-Path -Path $testDir -ChildPath "test-config.json"
 @{
     General = @{
@@ -157,7 +157,7 @@ $testConfigPath = Join-Path -Path $testDir -ChildPath "test-config.json"
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $testConfigPath -Encoding UTF8
 
-# Créer des scripts mock pour les tests
+# CrÃ©er des scripts mock pour les tests
 $mockRoadmapParserModulePath = Join-Path -Path $testDir -ChildPath "RoadmapParser.psm1"
 @"
 function Invoke-RoadmapCheck {
@@ -182,7 +182,7 @@ function Invoke-RoadmapCheck {
         [bool]`$GenerateReport = `$true
     )
 
-    # Créer un fichier de sortie pour vérifier que la fonction a été appelée
+    # CrÃ©er un fichier de sortie pour vÃ©rifier que la fonction a Ã©tÃ© appelÃ©e
     `$outputPath = Join-Path -Path "$testDir" -ChildPath "invoke-roadmap-check-output.txt"
     @"
 FilePath: `$FilePath
@@ -193,12 +193,12 @@ UpdateRoadmap: `$UpdateRoadmap
 GenerateReport: `$GenerateReport
 "@ | Set-Content -Path `$outputPath -Encoding UTF8
 
-    # Retourner un résultat simulé
+    # Retourner un rÃ©sultat simulÃ©
     return @{
         Tasks = @(
             @{
                 Id = "1.2.3.1"
-                Title = "Sous-tâche 1"
+                Title = "Sous-tÃ¢che 1"
                 IsChecked = `$false
                 Implementation = @{
                     ImplementationComplete = `$true
@@ -217,7 +217,7 @@ GenerateReport: `$GenerateReport
             },
             @{
                 Id = "1.2.3.2"
-                Title = "Sous-tâche 2"
+                Title = "Sous-tÃ¢che 2"
                 IsChecked = `$false
                 Implementation = @{
                     ImplementationComplete = `$true
@@ -236,7 +236,7 @@ GenerateReport: `$GenerateReport
             },
             @{
                 Id = "1.2.3.3"
-                Title = "Sous-tâche 3"
+                Title = "Sous-tÃ¢che 3"
                 IsChecked = `$false
                 Implementation = @{
                     ImplementationComplete = `$false
@@ -275,7 +275,7 @@ function Update-ActiveDocumentCheckboxes {
         [switch]`$Force
     )
 
-    # Créer un fichier de sortie pour vérifier que la fonction a été appelée
+    # CrÃ©er un fichier de sortie pour vÃ©rifier que la fonction a Ã©tÃ© appelÃ©e
     `$outputPath = Join-Path -Path "$testDir" -ChildPath "update-active-document-checkboxes-output.txt"
     @"
 FilePath: `$FilePath
@@ -284,7 +284,7 @@ TestResults: `$(`$TestResults.Keys -join ", ")
 Force: `$Force
 "@ | Set-Content -Path `$outputPath -Encoding UTF8
 
-    # Retourner un résultat simulé
+    # Retourner un rÃ©sultat simulÃ©
     return @{
         FilePath = `$FilePath
         CheckboxesUpdated = 2
@@ -313,7 +313,7 @@ function Invoke-RoadmapGranularization {
         [string]`$CheckboxStyle = "Auto"
     )
 
-    # Créer un fichier de sortie pour vérifier que la fonction a été appelée
+    # CrÃ©er un fichier de sortie pour vÃ©rifier que la fonction a Ã©tÃ© appelÃ©e
     `$outputPath = Join-Path -Path "$testDir" -ChildPath "invoke-roadmap-granularization-output.txt"
     @"
 FilePath: `$FilePath
@@ -357,7 +357,7 @@ CheckboxStyle: `$CheckboxStyle
         }
     }
 
-    # Retourner un résultat simulé
+    # Retourner un rÃ©sultat simulÃ©
     return @{
         FilePath = `$FilePath
         TaskIdentifier = `$TaskIdentifier
@@ -386,7 +386,7 @@ function Split-RoadmapTask {
         [string]`$CheckboxStyle = "Auto"
     )
 
-    # Créer un fichier de sortie pour vérifier que la fonction a été appelée
+    # CrÃ©er un fichier de sortie pour vÃ©rifier que la fonction a Ã©tÃ© appelÃ©e
     `$outputPath = Join-Path -Path "$testDir" -ChildPath "split-roadmap-task-output.txt"
     @"
 FilePath: `$FilePath
@@ -429,7 +429,7 @@ CheckboxStyle: `$CheckboxStyle
         }
     }
 
-    # Retourner un résultat simulé
+    # Retourner un rÃ©sultat simulÃ©
     return @{
         FilePath = `$FilePath
         TaskIdentifier = `$TaskIdentifier
@@ -440,23 +440,23 @@ CheckboxStyle: `$CheckboxStyle
 Export-ModuleMember -Function Invoke-RoadmapCheck, Update-ActiveDocumentCheckboxes, Invoke-RoadmapGranularization, Split-RoadmapTask
 "@ | Set-Content -Path $mockRoadmapParserModulePath -Encoding UTF8
 
-# Définir les tests
-Describe "Gestionnaire Intégré avec Modes Adaptés" {
+# DÃ©finir les tests
+Describe "Gestionnaire IntÃ©grÃ© avec Modes AdaptÃ©s" {
     BeforeAll {
-        # Créer un mock pour Import-Module
+        # CrÃ©er un mock pour Import-Module
         Mock Import-Module {
             # Ne rien faire, juste simuler l'importation
         } -ModuleName "Test-IntegratedManagerModes"
         
-        # Créer un mock pour le module RoadmapParser
+        # CrÃ©er un mock pour le module RoadmapParser
         Mock Import-Module {
             Import-Module $mockRoadmapParserModulePath -Force
         } -ParameterFilter { $Name -eq $modulePath }
     }
     
-    Context "Mode CHECK via Gestionnaire Intégré" {
+    Context "Mode CHECK via Gestionnaire IntÃ©grÃ©" {
         BeforeEach {
-            # Supprimer les fichiers de sortie des tests précédents
+            # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
             $outputPaths = @(
                 (Join-Path -Path $testDir -ChildPath "invoke-roadmap-check-output.txt"),
                 (Join-Path -Path $testDir -ChildPath "update-active-document-checkboxes-output.txt")
@@ -469,24 +469,24 @@ Describe "Gestionnaire Intégré avec Modes Adaptés" {
             }
         }
         
-        It "Devrait exécuter le mode CHECK via le gestionnaire intégré" {
-            # Exécuter le gestionnaire intégré avec le mode CHECK
+        It "Devrait exÃ©cuter le mode CHECK via le gestionnaire intÃ©grÃ©" {
+            # ExÃ©cuter le gestionnaire intÃ©grÃ© avec le mode CHECK
             & $integratedManagerPath -Mode "CHECK" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath
             
-            # Vérifier que la fonction Invoke-RoadmapCheck a été appelée
+            # VÃ©rifier que la fonction Invoke-RoadmapCheck a Ã©tÃ© appelÃ©e
             $outputPath = Join-Path -Path $testDir -ChildPath "invoke-roadmap-check-output.txt"
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier de sortie
+            # VÃ©rifier le contenu du fichier de sortie
             $output = Get-Content -Path $outputPath -Raw
             $output | Should -Match "FilePath: $([regex]::Escape($testRoadmapPath))"
             $output | Should -Match "TaskIdentifier: 1.2.3"
         }
     }
     
-    Context "Mode GRAN via Gestionnaire Intégré" {
+    Context "Mode GRAN via Gestionnaire IntÃ©grÃ©" {
         BeforeEach {
-            # Supprimer les fichiers de sortie des tests précédents
+            # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
             $outputPaths = @(
                 (Join-Path -Path $testDir -ChildPath "invoke-roadmap-granularization-output.txt"),
                 (Join-Path -Path $testDir -ChildPath "split-roadmap-task-output.txt")
@@ -498,45 +498,45 @@ Describe "Gestionnaire Intégré avec Modes Adaptés" {
                 }
             }
             
-            # Réinitialiser le fichier de roadmap de test
+            # RÃ©initialiser le fichier de roadmap de test
             @"
 # Test Roadmap
 
-## Tâche 1.2.3
+## TÃ¢che 1.2.3
 
 ### Description
-Cette tâche est utilisée pour les tests du gestionnaire intégré.
+Cette tÃ¢che est utilisÃ©e pour les tests du gestionnaire intÃ©grÃ©.
 
-### Sous-tâches
-- [ ] **1.2.3.1** Sous-tâche 1
-- [ ] **1.2.3.2** Sous-tâche 2
-- [ ] **1.2.3.3** Sous-tâche 3
+### Sous-tÃ¢ches
+- [ ] **1.2.3.1** Sous-tÃ¢che 1
+- [ ] **1.2.3.2** Sous-tÃ¢che 2
+- [ ] **1.2.3.3** Sous-tÃ¢che 3
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
         }
         
-        It "Devrait exécuter le mode GRAN via le gestionnaire intégré" {
-            # Exécuter le gestionnaire intégré avec le mode GRAN
+        It "Devrait exÃ©cuter le mode GRAN via le gestionnaire intÃ©grÃ©" {
+            # ExÃ©cuter le gestionnaire intÃ©grÃ© avec le mode GRAN
             & $integratedManagerPath -Mode "GRAN" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath
             
-            # Vérifier que la fonction Invoke-RoadmapGranularization a été appelée
+            # VÃ©rifier que la fonction Invoke-RoadmapGranularization a Ã©tÃ© appelÃ©e
             $outputPath = Join-Path -Path $testDir -ChildPath "invoke-roadmap-granularization-output.txt"
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier de sortie
+            # VÃ©rifier le contenu du fichier de sortie
             $output = Get-Content -Path $outputPath -Raw
             $output | Should -Match "FilePath: $([regex]::Escape($testRoadmapPath))"
             $output | Should -Match "TaskIdentifier: 1.2.3"
         }
         
-        It "Devrait exécuter le mode GRAN avec un fichier de sous-tâches via le gestionnaire intégré" {
-            # Exécuter le gestionnaire intégré avec le mode GRAN et un fichier de sous-tâches
+        It "Devrait exÃ©cuter le mode GRAN avec un fichier de sous-tÃ¢ches via le gestionnaire intÃ©grÃ©" {
+            # ExÃ©cuter le gestionnaire intÃ©grÃ© avec le mode GRAN et un fichier de sous-tÃ¢ches
             & $integratedManagerPath -Mode "GRAN" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath -SubTasksFile $testSubTasksPath
             
-            # Vérifier que la fonction Invoke-RoadmapGranularization a été appelée
+            # VÃ©rifier que la fonction Invoke-RoadmapGranularization a Ã©tÃ© appelÃ©e
             $outputPath = Join-Path -Path $testDir -ChildPath "invoke-roadmap-granularization-output.txt"
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier de sortie
+            # VÃ©rifier le contenu du fichier de sortie
             $output = Get-Content -Path $outputPath -Raw
             $output | Should -Match "FilePath: $([regex]::Escape($testRoadmapPath))"
             $output | Should -Match "TaskIdentifier: 1.2.3"
@@ -544,9 +544,9 @@ Cette tâche est utilisée pour les tests du gestionnaire intégré.
         }
     }
     
-    Context "Workflow via Gestionnaire Intégré" {
+    Context "Workflow via Gestionnaire IntÃ©grÃ©" {
         BeforeEach {
-            # Supprimer les fichiers de sortie des tests précédents
+            # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
             $outputPaths = @(
                 (Join-Path -Path $testDir -ChildPath "invoke-roadmap-check-output.txt"),
                 (Join-Path -Path $testDir -ChildPath "update-active-document-checkboxes-output.txt"),
@@ -560,34 +560,34 @@ Cette tâche est utilisée pour les tests du gestionnaire intégré.
                 }
             }
             
-            # Réinitialiser le fichier de roadmap de test
+            # RÃ©initialiser le fichier de roadmap de test
             @"
 # Test Roadmap
 
-## Tâche 1.2.3
+## TÃ¢che 1.2.3
 
 ### Description
-Cette tâche est utilisée pour les tests du gestionnaire intégré.
+Cette tÃ¢che est utilisÃ©e pour les tests du gestionnaire intÃ©grÃ©.
 
-### Sous-tâches
-- [ ] **1.2.3.1** Sous-tâche 1
-- [ ] **1.2.3.2** Sous-tâche 2
-- [ ] **1.2.3.3** Sous-tâche 3
+### Sous-tÃ¢ches
+- [ ] **1.2.3.1** Sous-tÃ¢che 1
+- [ ] **1.2.3.2** Sous-tÃ¢che 2
+- [ ] **1.2.3.3** Sous-tÃ¢che 3
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
         }
         
-        It "Devrait exécuter le workflow Test via le gestionnaire intégré" {
-            # Exécuter le gestionnaire intégré avec le workflow Test
+        It "Devrait exÃ©cuter le workflow Test via le gestionnaire intÃ©grÃ©" {
+            # ExÃ©cuter le gestionnaire intÃ©grÃ© avec le workflow Test
             & $integratedManagerPath -Workflow "Test" -RoadmapPath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $testConfigPath
             
-            # Vérifier que les fonctions ont été appelées
+            # VÃ©rifier que les fonctions ont Ã©tÃ© appelÃ©es
             $checkOutputPath = Join-Path -Path $testDir -ChildPath "invoke-roadmap-check-output.txt"
             $granOutputPath = Join-Path -Path $testDir -ChildPath "invoke-roadmap-granularization-output.txt"
             
             Test-Path -Path $checkOutputPath | Should -Be $true
             Test-Path -Path $granOutputPath | Should -Be $true
             
-            # Vérifier le contenu des fichiers de sortie
+            # VÃ©rifier le contenu des fichiers de sortie
             $checkOutput = Get-Content -Path $checkOutputPath -Raw
             $checkOutput | Should -Match "FilePath: $([regex]::Escape($testRoadmapPath))"
             $checkOutput | Should -Match "TaskIdentifier: 1.2.3"
@@ -599,5 +599,5 @@ Cette tâche est utilisée pour les tests du gestionnaire intégré.
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Script $MyInvocation.MyCommand.Path -Output Detailed

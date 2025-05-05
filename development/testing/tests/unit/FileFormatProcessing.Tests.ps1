@@ -1,36 +1,36 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le traitement des formats CSV et YAML.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour les fonctionnalités de traitement des formats CSV et YAML.
+    Ce script contient des tests unitaires pour les fonctionnalitÃ©s de traitement des formats CSV et YAML.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "FileFormatProcessingTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer des sous-répertoires pour les tests
+# CrÃ©er des sous-rÃ©pertoires pour les tests
 $inputDir = Join-Path -Path $testTempDir -ChildPath "input"
 $outputDir = Join-Path -Path $testTempDir -ChildPath "output"
 $analysisDir = Join-Path -Path $testTempDir -ChildPath "analysis"
@@ -38,7 +38,7 @@ New-Item -Path $inputDir -ItemType Directory -Force | Out-Null
 New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 New-Item -Path $analysisDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $csvSimplePath = Join-Path -Path $inputDir -ChildPath "simple.csv"
 $csvComplexPath = Join-Path -Path $inputDir -ChildPath "complex.csv"
 $yamlSimplePath = Join-Path -Path $inputDir -ChildPath "simple.yaml"
@@ -46,7 +46,7 @@ $yamlComplexPath = Join-Path -Path $inputDir -ChildPath "complex.yaml"
 $invalidCsvPath = Join-Path -Path $inputDir -ChildPath "invalid.csv"
 $invalidYamlPath = Join-Path -Path $inputDir -ChildPath "invalid.yaml"
 
-# Créer un fichier CSV simple
+# CrÃ©er un fichier CSV simple
 $csvSimpleContent = @"
 id,name,value
 1,Item 1,Value 1
@@ -55,7 +55,7 @@ id,name,value
 "@
 Set-Content -Path $csvSimplePath -Value $csvSimpleContent -Encoding UTF8
 
-# Créer un fichier CSV complexe
+# CrÃ©er un fichier CSV complexe
 $csvComplexContent = @"
 id,name,value,description,date,numeric,boolean
 1,"Item 1, with comma",123.45,"Description with ""quotes""",2025-01-01,1000,true
@@ -65,7 +65,7 @@ description",2025-02-01,2000,false
 "@
 Set-Content -Path $csvComplexPath -Value $csvComplexContent -Encoding UTF8
 
-# Créer un fichier YAML simple
+# CrÃ©er un fichier YAML simple
 $yamlSimpleContent = @"
 name: Simple Object
 items:
@@ -78,7 +78,7 @@ items:
 "@
 Set-Content -Path $yamlSimplePath -Value $yamlSimpleContent -Encoding UTF8
 
-# Créer un fichier YAML complexe
+# CrÃ©er un fichier YAML complexe
 $yamlComplexContent = @"
 name: Complex Object
 metadata:
@@ -117,7 +117,7 @@ settings:
 "@
 Set-Content -Path $yamlComplexPath -Value $yamlComplexContent -Encoding UTF8
 
-# Créer un fichier CSV invalide
+# CrÃ©er un fichier CSV invalide
 $invalidCsvContent = @"
 id,name,value
 1,Item 1,Value 1
@@ -126,7 +126,7 @@ id,name,value
 "@
 Set-Content -Path $invalidCsvPath -Value $invalidCsvContent -Encoding UTF8
 
-# Créer un fichier YAML invalide
+# CrÃ©er un fichier YAML invalide
 $invalidYamlContent = @"
 name: Invalid Object
 items:
@@ -140,24 +140,24 @@ items:
 "@
 Set-Content -Path $invalidYamlPath -Value $invalidYamlContent -Encoding UTF8
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests de traitement des formats CSV et YAML" {
     BeforeAll {
         # Importer le module
         . $unifiedSegmenterPath
         
-        # Initialiser le segmenteur unifié
+        # Initialiser le segmenteur unifiÃ©
         $initResult = Initialize-UnifiedSegmenter
         $initResult | Should -Be $true
     }
     
-    Context "Tests de détection de format" {
-        It "Détecte correctement le format CSV" {
+    Context "Tests de dÃ©tection de format" {
+        It "DÃ©tecte correctement le format CSV" {
             $format = Get-FileFormat -FilePath $csvSimplePath
             $format | Should -Be "CSV"
         }
         
-        It "Détecte correctement le format YAML" {
+        It "DÃ©tecte correctement le format YAML" {
             $format = Get-FileFormat -FilePath $yamlSimplePath
             $format | Should -Be "YAML"
         }
@@ -174,12 +174,12 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $isValid | Should -Be $true
         }
         
-        It "Détecte correctement un fichier CSV invalide" {
+        It "DÃ©tecte correctement un fichier CSV invalide" {
             $isValid = Test-FileValidity -FilePath $invalidCsvPath -Format "CSV"
             $isValid | Should -Be $false
         }
         
-        It "Détecte correctement un fichier YAML invalide" {
+        It "DÃ©tecte correctement un fichier YAML invalide" {
             $isValid = Test-FileValidity -FilePath $invalidYamlPath -Format "YAML"
             $isValid | Should -Be $false
         }
@@ -193,7 +193,7 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier JSON est valide
+            # VÃ©rifier que le fichier JSON est valide
             $jsonContent = Get-Content -Path $outputPath -Raw
             $jsonContent | Should -Not -BeNullOrEmpty
             { $jsonContent | ConvertFrom-Json } | Should -Not -Throw
@@ -206,12 +206,12 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier JSON est valide
+            # VÃ©rifier que le fichier JSON est valide
             $jsonContent = Get-Content -Path $outputPath -Raw
             $jsonContent | Should -Not -BeNullOrEmpty
             { $jsonContent | ConvertFrom-Json } | Should -Not -Throw
             
-            # Vérifier que les données sont correctes
+            # VÃ©rifier que les donnÃ©es sont correctes
             $jsonObject = $jsonContent | ConvertFrom-Json
             $jsonObject.Count | Should -Be 3
             $jsonObject[0].id | Should -Be "1"
@@ -226,7 +226,7 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier JSON est valide
+            # VÃ©rifier que le fichier JSON est valide
             $jsonContent = Get-Content -Path $outputPath -Raw
             $jsonContent | Should -Not -BeNullOrEmpty
             { $jsonContent | ConvertFrom-Json } | Should -Not -Throw
@@ -239,12 +239,12 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier JSON est valide
+            # VÃ©rifier que le fichier JSON est valide
             $jsonContent = Get-Content -Path $outputPath -Raw
             $jsonContent | Should -Not -BeNullOrEmpty
             { $jsonContent | ConvertFrom-Json } | Should -Not -Throw
             
-            # Vérifier que les données sont correctes
+            # VÃ©rifier que les donnÃ©es sont correctes
             $jsonObject = $jsonContent | ConvertFrom-Json
             $jsonObject.name | Should -Be "Complex Object"
             $jsonObject.items.Count | Should -Be 3
@@ -264,13 +264,13 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier CSV est valide
+            # VÃ©rifier que le fichier CSV est valide
             $csvContent = Get-Content -Path $outputPath -Raw
             $csvContent | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les données sont correctes
+            # VÃ©rifier que les donnÃ©es sont correctes
             $csvLines = $csvContent -split "`n"
-            $csvLines.Count | Should -BeGreaterThan 3  # En-tête + 3 lignes de données
+            $csvLines.Count | Should -BeGreaterThan 3  # En-tÃªte + 3 lignes de donnÃ©es
             $csvLines[0] | Should -Match "id,name,value"
         }
         
@@ -286,11 +286,11 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Be $true
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier YAML est valide
+            # VÃ©rifier que le fichier YAML est valide
             $yamlContent = Get-Content -Path $outputPath -Raw
             $yamlContent | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les données sont correctes
+            # VÃ©rifier que les donnÃ©es sont correctes
             $yamlContent | Should -Match "name: Simple Object"
             $yamlContent | Should -Match "items:"
         }
@@ -304,12 +304,12 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Not -BeNullOrEmpty
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier d'analyse est valide
+            # VÃ©rifier que le fichier d'analyse est valide
             $analysisContent = Get-Content -Path $outputPath -Raw
             $analysisContent | Should -Not -BeNullOrEmpty
             { $analysisContent | ConvertFrom-Json } | Should -Not -Throw
             
-            # Vérifier que l'analyse contient les informations attendues
+            # VÃ©rifier que l'analyse contient les informations attendues
             $analysis = $analysisContent | ConvertFrom-Json
             $analysis.file_info | Should -Not -BeNullOrEmpty
             $analysis.structure | Should -Not -BeNullOrEmpty
@@ -327,19 +327,19 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Not -BeNullOrEmpty
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier d'analyse est valide
+            # VÃ©rifier que le fichier d'analyse est valide
             $analysisContent = Get-Content -Path $outputPath -Raw
             $analysisContent | Should -Not -BeNullOrEmpty
             { $analysisContent | ConvertFrom-Json } | Should -Not -Throw
             
-            # Vérifier que l'analyse contient les informations attendues
+            # VÃ©rifier que l'analyse contient les informations attendues
             $analysis = $analysisContent | ConvertFrom-Json
             $analysis.structure.total_rows | Should -Be 3
             $analysis.structure.total_columns | Should -Be 7
             $analysis.structure.header | Should -Contain "numeric"
             $analysis.structure.header | Should -Contain "boolean"
             
-            # Vérifier les statistiques des colonnes
+            # VÃ©rifier les statistiques des colonnes
             $analysis.columns.numeric | Should -Not -BeNullOrEmpty
             $analysis.columns.numeric.detected_type | Should -Be "int"
             $analysis.columns.boolean | Should -Not -BeNullOrEmpty
@@ -353,12 +353,12 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Not -BeNullOrEmpty
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier d'analyse est valide
+            # VÃ©rifier que le fichier d'analyse est valide
             $analysisContent = Get-Content -Path $outputPath -Raw
             $analysisContent | Should -Not -BeNullOrEmpty
             { $analysisContent | ConvertFrom-Json } | Should -Not -Throw
             
-            # Vérifier que l'analyse contient les informations attendues
+            # VÃ©rifier que l'analyse contient les informations attendues
             $analysis = $analysisContent | ConvertFrom-Json
             $analysis.file_info | Should -Not -BeNullOrEmpty
             $analysis.structure | Should -Not -BeNullOrEmpty
@@ -374,12 +374,12 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $result | Should -Not -BeNullOrEmpty
             Test-Path -Path $outputPath | Should -Be $true
             
-            # Vérifier que le fichier d'analyse est valide
+            # VÃ©rifier que le fichier d'analyse est valide
             $analysisContent = Get-Content -Path $outputPath -Raw
             $analysisContent | Should -Not -BeNullOrEmpty
             { $analysisContent | ConvertFrom-Json } | Should -Not -Throw
             
-            # Vérifier que l'analyse contient les informations attendues
+            # VÃ©rifier que l'analyse contient les informations attendues
             $analysis = $analysisContent | ConvertFrom-Json
             $analysis.structure.type | Should -Be "dict"
             $analysis.structure.keys | Should -Contain "metadata"
@@ -390,7 +390,7 @@ Describe "Tests de traitement des formats CSV et YAML" {
     
     Context "Tests de segmentation de fichier" {
         BeforeEach {
-            # Créer un fichier CSV volumineux
+            # CrÃ©er un fichier CSV volumineux
             $largeCsvPath = Join-Path -Path $inputDir -ChildPath "large.csv"
             $largeCsvContent = "id,name,value`n"
             for ($i = 1; $i -le 1000; $i++) {
@@ -398,7 +398,7 @@ Describe "Tests de traitement des formats CSV et YAML" {
             }
             Set-Content -Path $largeCsvPath -Value $largeCsvContent -Encoding UTF8
             
-            # Créer un fichier YAML volumineux
+            # CrÃ©er un fichier YAML volumineux
             $largeYamlPath = Join-Path -Path $inputDir -ChildPath "large.yaml"
             $largeYamlContent = "items:`n"
             for ($i = 1; $i -le 1000; $i++) {
@@ -417,7 +417,7 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $segments | Should -Not -BeNullOrEmpty
             $segments.Count | Should -BeGreaterThan 1
             
-            # Vérifier que les segments sont valides
+            # VÃ©rifier que les segments sont valides
             foreach ($segment in $segments) {
                 Test-Path -Path $segment | Should -Be $true
                 $isValid = Test-FileValidity -FilePath $segment -Format "CSV"
@@ -435,7 +435,7 @@ Describe "Tests de traitement des formats CSV et YAML" {
             $segments | Should -Not -BeNullOrEmpty
             $segments.Count | Should -BeGreaterThan 1
             
-            # Vérifier que les segments sont valides
+            # VÃ©rifier que les segments sont valides
             foreach ($segment in $segments) {
                 Test-Path -Path $segment | Should -Be $true
                 $isValid = Test-FileValidity -FilePath $segment -Format "YAML"

@@ -1,5 +1,5 @@
-# Test d'intégration pour le système complet
-# Ce test vérifie que toutes les fonctionnalités du module fonctionnent correctement ensemble
+﻿# Test d'intÃ©gration pour le systÃ¨me complet
+# Ce test vÃ©rifie que toutes les fonctionnalitÃ©s du module fonctionnent correctement ensemble
 
 # Importer le module
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
@@ -8,20 +8,20 @@ $moduleFile = Join-Path -Path $modulePath -ChildPath "ModuleDependencyAnalyzer-F
 try {
     # Importer le module
     Import-Module -Name $moduleFile -Force -ErrorAction Stop
-    Write-Host "Module importé avec succès" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s" -ForegroundColor Green
 
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testDir = Join-Path -Path $env:TEMP -ChildPath "IntegrationTest"
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
     }
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-    # Créer une structure de module de test
+    # CrÃ©er une structure de module de test
     $moduleDir = Join-Path -Path $testDir -ChildPath "TestModule"
     New-Item -Path $moduleDir -ItemType Directory -Force | Out-Null
 
-    # Créer un fichier manifeste de test
+    # CrÃ©er un fichier manifeste de test
     $manifestContent = @"
 @{
     ModuleVersion = '1.0.0'
@@ -49,7 +49,7 @@ try {
     $manifestPath = Join-Path -Path $moduleDir -ChildPath "TestModule.psd1"
     Set-Content -Path $manifestPath -Value $manifestContent
 
-    # Créer un fichier de module principal
+    # CrÃ©er un fichier de module principal
     $moduleContent = @"
 # Module principal
 function Get-TestData {
@@ -89,9 +89,9 @@ Export-ModuleMember -Function Get-TestData
     $moduleFilePath = Join-Path -Path $moduleDir -ChildPath "TestModule.psm1"
     Set-Content -Path $moduleFilePath -Value $moduleContent
 
-    # Créer un module imbriqué
+    # CrÃ©er un module imbriquÃ©
     $nestedModuleContent = @"
-# Module imbriqué
+# Module imbriquÃ©
 function Get-NestedData {
     [CmdletBinding()]
     param (
@@ -112,7 +112,7 @@ Export-ModuleMember -Function Get-NestedData
     $nestedModulePath = Join-Path -Path $moduleDir -ChildPath "NestedModule1.psm1"
     Set-Content -Path $nestedModulePath -Value $nestedModuleContent
 
-    # Créer un script qui utilise le module
+    # CrÃ©er un script qui utilise le module
     $scriptContent = @"
 # Script qui utilise le module
 Import-Module .\TestModule.psd1
@@ -133,8 +133,8 @@ Get-ChildItem
     Write-Host "`nTest 1: Analyser le manifeste du module" -ForegroundColor Cyan
     $manifestDependencies = Get-ModuleDependenciesFromManifest -ManifestPath $manifestPath
     
-    Write-Host "Dépendances du manifeste:"
-    Write-Host "  Nombre de dépendances: $($manifestDependencies.Count)"
+    Write-Host "DÃ©pendances du manifeste:"
+    Write-Host "  Nombre de dÃ©pendances: $($manifestDependencies.Count)"
     $manifestDependencies | ForEach-Object {
         Write-Host "  - $($_.Name) (Type: $($_.Type))"
     }
@@ -143,8 +143,8 @@ Get-ChildItem
     Write-Host "`nTest 2: Analyser le code du module" -ForegroundColor Cyan
     $codeDependencies = Get-ModuleDependenciesFromCode -ModulePath $moduleFilePath
     
-    Write-Host "Dépendances du code:"
-    Write-Host "  Nombre de dépendances: $($codeDependencies.Count)"
+    Write-Host "DÃ©pendances du code:"
+    Write-Host "  Nombre de dÃ©pendances: $($codeDependencies.Count)"
     $codeDependencies | ForEach-Object {
         Write-Host "  - $($_.Name) (Type: $($_.Type))"
     }
@@ -153,14 +153,14 @@ Get-ChildItem
     Write-Host "`nTest 3: Analyser les fonctions externes" -ForegroundColor Cyan
     $externalFunctionDependencies = Get-ExternalFunctionDependencies -ModulePath $moduleFilePath
     
-    Write-Host "Dépendances des fonctions externes:"
-    Write-Host "  Nombre de dépendances: $($externalFunctionDependencies.Count)"
+    Write-Host "DÃ©pendances des fonctions externes:"
+    Write-Host "  Nombre de dÃ©pendances: $($externalFunctionDependencies.Count)"
     $externalFunctionDependencies | ForEach-Object {
         Write-Host "  - $($_.FunctionName) from $($_.Name) (Type: $($_.Type))"
     }
     
-    # Test 4: Résoudre le chemin d'une fonction
-    Write-Host "`nTest 4: Résoudre le chemin d'une fonction" -ForegroundColor Cyan
+    # Test 4: RÃ©soudre le chemin d'une fonction
+    Write-Host "`nTest 4: RÃ©soudre le chemin d'une fonction" -ForegroundColor Cyan
     $functionPath = Resolve-ExternalFunctionPath -FunctionName "Get-ChildItem"
     
     Write-Host "Chemin de la fonction Get-ChildItem:"
@@ -172,7 +172,7 @@ Get-ChildItem
     Write-Host "`nTest 5: Analyser le module complet" -ForegroundColor Cyan
     $completeAnalysis = Get-CompleteDependencyAnalysis -ModulePath $moduleDir -Recurse -IncludeDetails
     
-    Write-Host "Analyse complète du module:"
+    Write-Host "Analyse complÃ¨te du module:"
     Write-Host "  Module Path: $($completeAnalysis.ModulePath)"
     Write-Host "  Analysis Date: $($completeAnalysis.AnalysisDate)"
     Write-Host "  Total Dependencies: $($completeAnalysis.Summary.TotalDependencies)"
@@ -190,11 +190,11 @@ Get-ChildItem
     Write-Host "  Module Path: $($mddFormat.ModulePath)"
     Write-Host "  Dependencies Count: $($mddFormat.Dependencies.Count)"
     
-    # Test 7: Utiliser l'interface unifiée
-    Write-Host "`nTest 7: Utiliser l'interface unifiée" -ForegroundColor Cyan
+    # Test 7: Utiliser l'interface unifiÃ©e
+    Write-Host "`nTest 7: Utiliser l'interface unifiÃ©e" -ForegroundColor Cyan
     $unifiedResult = Get-ModuleDependencies -Path $moduleDir -Recurse -IncludeDetails
     
-    Write-Host "Résultat de l'interface unifiée:"
+    Write-Host "RÃ©sultat de l'interface unifiÃ©e:"
     Write-Host "  Module Path: $($unifiedResult.ModulePath)"
     Write-Host "  Module Name: $($unifiedResult.ModuleName)"
     Write-Host "  Total Dependencies: $($unifiedResult.Summary.TotalDependencies)"
@@ -209,18 +209,18 @@ Get-ChildItem
     $exportResult = Export-DependencyReport -ModulePath $moduleDir -OutputPath $reportPath -Format "HTML" -IncludeDetails -Recurse
     
     if ($exportResult -and (Test-Path -Path $reportPath)) {
-        Write-Host "Rapport exporté avec succès: $reportPath" -ForegroundColor Green
+        Write-Host "Rapport exportÃ© avec succÃ¨s: $reportPath" -ForegroundColor Green
     } else {
-        Write-Host "Erreur: Échec de l'exportation du rapport" -ForegroundColor Red
+        Write-Host "Erreur: Ã‰chec de l'exportation du rapport" -ForegroundColor Red
     }
     
-    # Test 9: Utiliser le système de cache
-    Write-Host "`nTest 9: Utiliser le système de cache" -ForegroundColor Cyan
+    # Test 9: Utiliser le systÃ¨me de cache
+    Write-Host "`nTest 9: Utiliser le systÃ¨me de cache" -ForegroundColor Cyan
     
     # Vider le cache
     Clear-DependencyCache
     
-    # Vérifier que le cache est vide
+    # VÃ©rifier que le cache est vide
     $initialCache = Get-DependencyCache
     if ($initialCache.Manifests.Count -eq 0 -and 
         $initialCache.Code.Count -eq 0 -and 
@@ -231,26 +231,26 @@ Get-ChildItem
         Write-Host "Erreur: Le cache n'est pas vide initialement" -ForegroundColor Red
     }
     
-    # Activer les messages de débogage
+    # Activer les messages de dÃ©bogage
     $VerbosePreference = "Continue"
     
-    # Analyser les dépendances
+    # Analyser les dÃ©pendances
     $result1 = Get-ModuleDependenciesFromCode -ModulePath $moduleFilePath
     $result2 = Get-ExternalFunctionDependencies -ModulePath $moduleFilePath
     $result3 = Resolve-ExternalFunctionPath -FunctionName "Get-Date"
     
-    # Désactiver les messages de débogage
+    # DÃ©sactiver les messages de dÃ©bogage
     $VerbosePreference = "SilentlyContinue"
     
-    # Vérifier que le cache est rempli
+    # VÃ©rifier que le cache est rempli
     $cacheAfterAnalysis = Get-DependencyCache
     
     if ($cacheAfterAnalysis.Code.Count -gt 0 -and 
         $cacheAfterAnalysis.ExternalFunctions.Count -gt 0 -and 
         $cacheAfterAnalysis.FunctionPaths.Count -gt 0) {
-        Write-Host "Cache rempli après analyse - OK" -ForegroundColor Green
+        Write-Host "Cache rempli aprÃ¨s analyse - OK" -ForegroundColor Green
     } else {
-        Write-Host "Erreur: Le cache n'est pas rempli après analyse" -ForegroundColor Red
+        Write-Host "Erreur: Le cache n'est pas rempli aprÃ¨s analyse" -ForegroundColor Red
     }
     
     # Test 10: Utiliser Invoke-ModuleDependencyDetector
@@ -258,15 +258,15 @@ Get-ChildItem
     $mddOutputPath = Join-Path -Path $testDir -ChildPath "MddReport.html"
     $mddResult = Invoke-ModuleDependencyDetector -ModulePath $moduleDir -Format "Detailed" -OutputPath $mddOutputPath -OutputFormat "HTML" -Recurse
     
-    Write-Host "Résultat de Invoke-ModuleDependencyDetector:"
+    Write-Host "RÃ©sultat de Invoke-ModuleDependencyDetector:"
     Write-Host "  Module Name: $($mddResult.ModuleName)"
     Write-Host "  Module Path: $($mddResult.ModulePath)"
     Write-Host "  Dependencies Count: $($mddResult.Dependencies.Count)"
     
     if (Test-Path -Path $mddOutputPath) {
-        Write-Host "Rapport MDD exporté avec succès: $mddOutputPath" -ForegroundColor Green
+        Write-Host "Rapport MDD exportÃ© avec succÃ¨s: $mddOutputPath" -ForegroundColor Green
     } else {
-        Write-Host "Erreur: Échec de l'exportation du rapport MDD" -ForegroundColor Red
+        Write-Host "Erreur: Ã‰chec de l'exportation du rapport MDD" -ForegroundColor Red
     }
 
     # Nettoyer
@@ -274,7 +274,7 @@ Get-ChildItem
     Remove-Module -Name "ModuleDependencyAnalyzer-Fixed" -Force -ErrorAction SilentlyContinue
 
     # Tout est OK
-    Write-Host "`nTest d'intégration terminé avec succès !" -ForegroundColor Green
+    Write-Host "`nTest d'intÃ©gration terminÃ© avec succÃ¨s !" -ForegroundColor Green
     exit 0
 } catch {
     # Une erreur s'est produite

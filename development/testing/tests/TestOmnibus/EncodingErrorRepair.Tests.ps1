@@ -1,34 +1,34 @@
-BeforeAll {
-    # Importer le script à tester
+﻿BeforeAll {
+    # Importer le script Ã  tester
     $global:scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\maintenance\encoding\Repair-EncodingIssues.ps1"
     
-    # Créer un dossier temporaire pour les tests
+    # CrÃ©er un dossier temporaire pour les tests
     $testFolder = Join-Path -Path $TestDrive -ChildPath "EncodingRepairTests"
     New-Item -Path $testFolder -ItemType Directory -Force | Out-Null
     
-    # Créer des fichiers de test avec différents encodages et problèmes
+    # CrÃ©er des fichiers de test avec diffÃ©rents encodages et problÃ¨mes
     
-    # 1. Fichier sans BOM avec variables dans des chaînes accentuées
+    # 1. Fichier sans BOM avec variables dans des chaÃ®nes accentuÃ©es
     $fileNoBomWithIssuesPath = Join-Path -Path $testFolder -ChildPath "NoBomWithIssues.ps1"
     $fileNoBomWithIssuesContent = @'
-# Fichier sans BOM avec variables dans des chaînes accentuées
-$message = "Bonjour $username, voici un texte accentué"
-Write-Host "Le résultat est: $result"
+# Fichier sans BOM avec variables dans des chaÃ®nes accentuÃ©es
+$message = "Bonjour $username, voici un texte accentuÃ©"
+Write-Host "Le rÃ©sultat est: $result"
 '@
     $utf8NoBom = New-Object System.Text.UTF8Encoding $false
     [System.IO.File]::WriteAllText($fileNoBomWithIssuesPath, $fileNoBomWithIssuesContent, $utf8NoBom)
     
-    # 2. Fichier avec BOM avec variables dans des chaînes accentuées
+    # 2. Fichier avec BOM avec variables dans des chaÃ®nes accentuÃ©es
     $fileBomWithIssuesPath = Join-Path -Path $testFolder -ChildPath "BomWithIssues.ps1"
     $fileBomWithIssuesContent = @'
-# Fichier avec BOM avec variables dans des chaînes accentuées
-$message = "Bonjour $username, voici un texte accentué"
-Write-Host "Le résultat est: $result"
+# Fichier avec BOM avec variables dans des chaÃ®nes accentuÃ©es
+$message = "Bonjour $username, voici un texte accentuÃ©"
+Write-Host "Le rÃ©sultat est: $result"
 '@
     $utf8WithBom = New-Object System.Text.UTF8Encoding $true
     [System.IO.File]::WriteAllText($fileBomWithIssuesPath, $fileBomWithIssuesContent, $utf8WithBom)
     
-    # 3. Fichier sans problèmes (pas de caractères accentués)
+    # 3. Fichier sans problÃ¨mes (pas de caractÃ¨res accentuÃ©s)
     $fileNoIssuesPath = Join-Path -Path $testFolder -ChildPath "NoIssues.ps1"
     $fileNoIssuesContent = @'
 # Fichier sans problemes
@@ -40,32 +40,32 @@ Write-Host "The result is: $result"
 
 Describe "Test-FileEncoding" {
     BeforeAll {
-        # Définir la fonction à tester
+        # DÃ©finir la fonction Ã  tester
         . $global:scriptPath
     }
     
-    It "Détecte correctement l'encodage UTF-8 avec BOM" {
+    It "DÃ©tecte correctement l'encodage UTF-8 avec BOM" {
         $filePath = Join-Path -Path $testFolder -ChildPath "BomWithIssues.ps1"
         $result = Test-FileEncoding -FilePath $filePath
         $result.Encoding | Should -Be "UTF-8 with BOM"
         $result.HasBOM | Should -Be $true
     }
     
-    It "Détecte correctement l'encodage sans BOM" {
+    It "DÃ©tecte correctement l'encodage sans BOM" {
         $filePath = Join-Path -Path $testFolder -ChildPath "NoBomWithIssues.ps1"
         $result = Test-FileEncoding -FilePath $filePath
         $result.Encoding | Should -Be "Unknown (possibly UTF-8 without BOM or ANSI)"
         $result.HasBOM | Should -Be $false
     }
     
-    It "Gère correctement les fichiers inexistants" {
+    It "GÃ¨re correctement les fichiers inexistants" {
         { Test-FileEncoding -FilePath "FichierInexistant.ps1" } | Should -Throw
     }
 }
 
 Describe "Repair-FileEncoding" {
     BeforeAll {
-        # Définir la fonction à tester
+        # DÃ©finir la fonction Ã  tester
         . $global:scriptPath
     }
     
@@ -75,7 +75,7 @@ Describe "Repair-FileEncoding" {
         $targetFile = Join-Path -Path $testFolder -ChildPath "NoBomWithIssues_ToFix.ps1"
         Copy-Item -Path $sourceFile -Destination $targetFile -Force
         
-        # Vérifier l'encodage initial
+        # VÃ©rifier l'encodage initial
         $initialEncoding = Test-FileEncoding -FilePath $targetFile
         $initialEncoding.HasBOM | Should -Be $false
         
@@ -83,66 +83,66 @@ Describe "Repair-FileEncoding" {
         $result = Repair-FileEncoding -FilePath $targetFile
         $result | Should -Be $true
         
-        # Vérifier l'encodage après correction
+        # VÃ©rifier l'encodage aprÃ¨s correction
         $fixedEncoding = Test-FileEncoding -FilePath $targetFile
         $fixedEncoding.HasBOM | Should -Be $true
         $fixedEncoding.Encoding | Should -Be "UTF-8 with BOM"
     }
     
-    It "Corrige les références de variables dans un fichier avec BOM" {
+    It "Corrige les rÃ©fÃ©rences de variables dans un fichier avec BOM" {
         # Copier le fichier de test pour ne pas modifier l'original
         $sourceFile = Join-Path -Path $testFolder -ChildPath "BomWithIssues.ps1"
         $targetFile = Join-Path -Path $testFolder -ChildPath "BomWithIssues_ToFix.ps1"
         Copy-Item -Path $sourceFile -Destination $targetFile -Force
         
-        # Vérifier l'encodage initial
+        # VÃ©rifier l'encodage initial
         $initialEncoding = Test-FileEncoding -FilePath $targetFile
         $initialEncoding.HasBOM | Should -Be $true
         
-        # Corriger les références de variables
+        # Corriger les rÃ©fÃ©rences de variables
         $result = Repair-FileEncoding -FilePath $targetFile
         $result | Should -Be $true
     }
     
-    It "Ne modifie pas un fichier sans problèmes" {
+    It "Ne modifie pas un fichier sans problÃ¨mes" {
         # Copier le fichier de test pour ne pas modifier l'original
         $sourceFile = Join-Path -Path $testFolder -ChildPath "NoIssues.ps1"
         $targetFile = Join-Path -Path $testFolder -ChildPath "NoIssues_ToCheck.ps1"
         Copy-Item -Path $sourceFile -Destination $targetFile -Force
         
-        # Vérifier l'encodage initial
+        # VÃ©rifier l'encodage initial
         $initialContent = Get-Content -Path $targetFile -Raw
         
         # Tenter de corriger le fichier
         $result = Repair-FileEncoding -FilePath $targetFile
         $result | Should -Be $false
         
-        # Vérifier que le contenu n'a pas changé
+        # VÃ©rifier que le contenu n'a pas changÃ©
         $finalContent = Get-Content -Path $targetFile -Raw
         $finalContent | Should -Be $initialContent
     }
     
-    It "Gère correctement les fichiers inexistants" {
+    It "GÃ¨re correctement les fichiers inexistants" {
         { Repair-FileEncoding -FilePath "FichierInexistant.ps1" } | Should -Throw
     }
 }
 
 Describe "Start-EncodingRepair" {
     BeforeAll {
-        # Définir la fonction à tester
+        # DÃ©finir la fonction Ã  tester
         . $global:scriptPath
     }
     
-    It "Corrige les problèmes dans un dossier" {
-        # Créer une copie du dossier de test
+    It "Corrige les problÃ¨mes dans un dossier" {
+        # CrÃ©er une copie du dossier de test
         $testFolderCopy = Join-Path -Path $TestDrive -ChildPath "EncodingRepairTestsCopy"
         New-Item -Path $testFolderCopy -ItemType Directory -Force | Out-Null
         Copy-Item -Path "$testFolder\*" -Destination $testFolderCopy -Force
         
-        # Exécuter la correction
+        # ExÃ©cuter la correction
         Start-EncodingRepair -Path $testFolderCopy
         
-        # Vérifier que tous les fichiers ont été corrigés
+        # VÃ©rifier que tous les fichiers ont Ã©tÃ© corrigÃ©s
         $files = Get-ChildItem -Path $testFolderCopy -Filter "*.ps1"
         foreach ($file in $files) {
             $encoding = Test-FileEncoding -FilePath $file.FullName
@@ -151,7 +151,7 @@ Describe "Start-EncodingRepair" {
         }
     }
     
-    It "Gère correctement les chemins inexistants" {
+    It "GÃ¨re correctement les chemins inexistants" {
         { Start-EncodingRepair -Path "DossierInexistant" } | Should -Throw
     }
 }

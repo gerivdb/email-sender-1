@@ -1,19 +1,19 @@
-BeforeAll {
-    # Importer le module à tester
+﻿BeforeAll {
+    # Importer le module Ã  tester
     $global:modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1"
 
-    # Charger le contenu du module directement plutôt que de l'importer
+    # Charger le contenu du module directement plutÃ´t que de l'importer
     . $global:modulePath
 
-    # Créer un dossier temporaire pour les tests
+    # CrÃ©er un dossier temporaire pour les tests
     $global:testFolder = Join-Path -Path $TestDrive -ChildPath "ErrorPatternAnalyzerTests"
     New-Item -Path $global:testFolder -ItemType Directory -Force | Out-Null
 
-    # Rediriger les chemins de base de données et de journal pour les tests
+    # Rediriger les chemins de base de donnÃ©es et de journal pour les tests
     $script:ErrorDatabasePath = Join-Path -Path $global:testFolder -ChildPath "test_error_database.json"
     $script:ErrorLogPath = Join-Path -Path $global:testFolder -ChildPath "test_error_log.md"
 
-    # Fonction pour créer une erreur de test
+    # Fonction pour crÃ©er une erreur de test
     function New-TestErrorRecord {
         param (
             [Parameter(Mandatory = $false)]
@@ -40,7 +40,7 @@ BeforeAll {
             $null
         )
 
-        # Ajouter des informations supplémentaires
+        # Ajouter des informations supplÃ©mentaires
         $errorRecord | Add-Member -NotePropertyName ScriptName -NotePropertyValue $ScriptName -Force
         $errorRecord | Add-Member -NotePropertyName ScriptLineNumber -NotePropertyValue $LineNumber -Force
         $errorRecord | Add-Member -NotePropertyName Line -NotePropertyValue $Line -Force
@@ -53,11 +53,11 @@ BeforeAll {
 
 Describe "ErrorPatternAnalyzer" {
     BeforeEach {
-        # Réinitialiser la base de données pour chaque test
+        # RÃ©initialiser la base de donnÃ©es pour chaque test
         Initialize-ErrorDatabase -DatabasePath $script:ErrorDatabasePath -Force
     }
 
-    It "Ajoute une erreur à la base de données" {
+    It "Ajoute une erreur Ã  la base de donnÃ©es" {
         $errorRecord = New-TestErrorRecord
         $patternId = Add-ErrorRecord -ErrorRecord $errorRecord -Source "Test"
 
@@ -69,7 +69,7 @@ Describe "ErrorPatternAnalyzer" {
     }
 
     It "Identifie des patterns similaires" {
-        # Ajouter une première erreur
+        # Ajouter une premiÃ¨re erreur
         $errorRecord1 = New-TestErrorRecord -Message "Cannot access property of null object"
         $patternId1 = Add-ErrorRecord -ErrorRecord $errorRecord1 -Source "Test"
 
@@ -77,7 +77,7 @@ Describe "ErrorPatternAnalyzer" {
         $errorRecord2 = New-TestErrorRecord -Message "Cannot access property of null object" -LineNumber 43
         $patternId2 = Add-ErrorRecord -ErrorRecord $errorRecord2 -Source "Test"
 
-        # Les deux erreurs devraient être associées au même pattern
+        # Les deux erreurs devraient Ãªtre associÃ©es au mÃªme pattern
         $patternId1 | Should -Be $patternId2
 
         $patterns = Get-ErrorPattern
@@ -85,16 +85,16 @@ Describe "ErrorPatternAnalyzer" {
         $patterns[0].Occurrences | Should -Be 2
     }
 
-    It "Crée des patterns distincts pour des erreurs différentes" {
-        # Ajouter une première erreur
+    It "CrÃ©e des patterns distincts pour des erreurs diffÃ©rentes" {
+        # Ajouter une premiÃ¨re erreur
         $errorRecord1 = New-TestErrorRecord -Message "Cannot access property of null object"
         $patternId1 = Add-ErrorRecord -ErrorRecord $errorRecord1 -Source "Test"
 
-        # Ajouter une erreur différente
+        # Ajouter une erreur diffÃ©rente
         $errorRecord2 = New-TestErrorRecord -Message "Index out of range" -ErrorId "IndexOutOfRange" -Line '$array[$index]'
         $patternId2 = Add-ErrorRecord -ErrorRecord $errorRecord2 -Source "Test"
 
-        # Les deux erreurs devraient avoir des patterns différents
+        # Les deux erreurs devraient avoir des patterns diffÃ©rents
         $patternId1 | Should -Not -Be $patternId2
 
         $patterns = Get-ErrorPattern
@@ -129,7 +129,7 @@ Describe "ErrorPatternAnalyzer" {
         $distance | Should -Be 3
     }
 
-    It "Mesure correctement la similarité entre patterns" {
+    It "Mesure correctement la similaritÃ© entre patterns" {
         $pattern1 = @{
             ExceptionType  = "System.NullReferenceException"
             ErrorId        = "NullReference"
@@ -150,7 +150,7 @@ Describe "ErrorPatternAnalyzer" {
 
         $similarity | Should -Be 1.0
 
-        # Pattern légèrement différent
+        # Pattern lÃ©gÃ¨rement diffÃ©rent
         $pattern3 = @{
             ExceptionType  = "System.NullReferenceException"
             ErrorId        = "NullReference"
@@ -176,13 +176,13 @@ Describe "ErrorPatternAnalyzer" {
         $pattern.Description | Should -Be "Test Description"
         $pattern.IsInedited | Should -Be $true
 
-        # Vérifier que le pattern a été mis à jour dans la base de données
+        # VÃ©rifier que le pattern a Ã©tÃ© mis Ã  jour dans la base de donnÃ©es
         $patterns = Get-ErrorPattern
         $patterns[0].ValidationStatus | Should -Be "Valid"
         $patterns[0].Name | Should -Be "Test Pattern"
     }
 
-    It "Génère un rapport d'analyse" {
+    It "GÃ©nÃ¨re un rapport d'analyse" {
         # Ajouter quelques erreurs
         $errorRecord1 = New-TestErrorRecord -Message "Cannot access property of null object"
         $patternId1 = Add-ErrorRecord -ErrorRecord $errorRecord1 -Source "Test"
@@ -194,7 +194,7 @@ Describe "ErrorPatternAnalyzer" {
         Confirm-ErrorPattern -PatternId $patternId1 -ValidationStatus "Valid" -IsInedited
         Confirm-ErrorPattern -PatternId $patternId2 -ValidationStatus "Invalid" -IsInedited $false
 
-        # Générer un rapport
+        # GÃ©nÃ©rer un rapport
         $reportPath = Join-Path -Path $global:testFolder -ChildPath "test_report.md"
         $result = New-ErrorPatternReport -OutputPath $reportPath
 
@@ -202,21 +202,21 @@ Describe "ErrorPatternAnalyzer" {
         Test-Path -Path $reportPath | Should -Be $true
 
         $reportContent = Get-Content -Path $reportPath -Raw
-        $reportContent | Should -Match "Patterns d'erreur inédits"
-        $reportContent | Should -Match "Corrélations entre patterns"
+        $reportContent | Should -Match "Patterns d'erreur inÃ©dits"
+        $reportContent | Should -Match "CorrÃ©lations entre patterns"
     }
 }
 
 Describe "ErrorPatternAnalyzer Integration" {
     BeforeAll {
-        # Réinitialiser la base de données pour les tests d'intégration
-        # Charger le contenu du module directement plutôt que de l'importer
+        # RÃ©initialiser la base de donnÃ©es pour les tests d'intÃ©gration
+        # Charger le contenu du module directement plutÃ´t que de l'importer
         . $global:modulePath
 
-        # Initialiser la base de données
+        # Initialiser la base de donnÃ©es
         Initialize-ErrorDatabase -DatabasePath $script:ErrorDatabasePath -Force
 
-        # Créer un fichier de log de test
+        # CrÃ©er un fichier de log de test
         $logPath = Join-Path -Path $global:testFolder -ChildPath "test_error.log"
 
         $logContent = @"
@@ -235,7 +235,7 @@ Exception : System.NullReferenceException: Object reference not set to an instan
 
         $logContent | Out-File -FilePath $logPath -Encoding utf8
 
-        # Créer le script d'analyse
+        # CrÃ©er le script d'analyse
         $scriptPath = Join-Path -Path $global:testFolder -ChildPath "Analyze-TestErrors.ps1"
 
         $scriptContent = @"
@@ -260,7 +260,7 @@ function Analyze-ErrorLog {
         `$exceptionMessage = `$match.Groups[1].Value.Trim()
         `$stackTrace = `$match.Groups[2].Value.Trim()
 
-        # Créer un objet ErrorRecord
+        # CrÃ©er un objet ErrorRecord
         `$exception = New-Object System.Exception `$exceptionMessage
         `$errorRecord = New-Object System.Management.Automation.ErrorRecord(
             `$exception,
@@ -269,12 +269,12 @@ function Analyze-ErrorLog {
             `$null
         )
 
-        # Ajouter des informations supplémentaires
+        # Ajouter des informations supplÃ©mentaires
         `$errorRecord.PSObject.Properties.Add(
             (New-Object System.Management.Automation.PSNoteProperty "ScriptStackTrace", `$stackTrace)
         )
 
-        # Ajouter l'erreur à la base de données
+        # Ajouter l'erreur Ã  la base de donnÃ©es
         Add-ErrorRecord -ErrorRecord `$errorRecord -Source `$LogPath
     }
 }
@@ -282,7 +282,7 @@ function Analyze-ErrorLog {
 # Analyser le fichier de log
 Analyze-ErrorLog -LogPath "$logPath"
 
-# Générer un rapport
+# GÃ©nÃ©rer un rapport
 New-ErrorPatternReport -OutputPath "$global:testFolder\integration_report.md"
 "@
 
@@ -290,15 +290,15 @@ New-ErrorPatternReport -OutputPath "$global:testFolder\integration_report.md"
     }
 
     It "Analyse correctement un fichier de log" {
-        # Exécuter le script d'analyse
+        # ExÃ©cuter le script d'analyse
         $scriptPath = Join-Path -Path $global:testFolder -ChildPath "Analyze-TestErrors.ps1"
         & $scriptPath
 
-        # Vérifier que les patterns ont été créés
+        # VÃ©rifier que les patterns ont Ã©tÃ© crÃ©Ã©s
         $patterns = Get-ErrorPattern
         $patterns.Count | Should -BeGreaterThan 0
 
-        # Vérifier que le rapport a été généré
+        # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
         $reportPath = Join-Path -Path $global:testFolder -ChildPath "integration_report.md"
         Test-Path -Path $reportPath | Should -Be $true
     }

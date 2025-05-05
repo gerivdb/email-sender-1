@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Compare les performances des outils d'extraction AST avec d'autres outils d'analyse de code PowerShell.
 .DESCRIPTION
     Ce script compare les performances des fonctions d'extraction AST du module AstNavigator
     avec d'autres outils d'analyse de code PowerShell comme PSScriptAnalyzer, PSParser et
-    des approches basées sur des expressions régulières.
+    des approches basÃ©es sur des expressions rÃ©guliÃ¨res.
 .PARAMETER TestScriptSizes
-    Tailles des scripts de test à générer (Small, Medium, Large).
+    Tailles des scripts de test Ã  gÃ©nÃ©rer (Small, Medium, Large).
 .PARAMETER Iterations
-    Nombre d'itérations pour chaque test.
+    Nombre d'itÃ©rations pour chaque test.
 .PARAMETER OutputPath
-    Chemin où enregistrer les résultats des comparaisons.
+    Chemin oÃ¹ enregistrer les rÃ©sultats des comparaisons.
 .PARAMETER GenerateReport
-    Indique si un rapport HTML doit être généré.
+    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
 .EXAMPLE
     .\Compare-AstExtractionTools.ps1 -TestScriptSizes @("Small", "Medium") -Iterations 5
 .NOTES
@@ -37,24 +37,24 @@ param(
     [switch]$GenerateReport
 )
 
-# Importer les modules nécessaires
+# Importer les modules nÃ©cessaires
 $modulePath = Split-Path -Parent $PSScriptRoot
 if (-not (Get-Module -Name "AstNavigator" -ErrorAction SilentlyContinue)) {
     Import-Module "$modulePath\AstNavigator.psd1" -Force -ErrorAction Stop
 }
 
-# Vérifier si PSScriptAnalyzer est installé
+# VÃ©rifier si PSScriptAnalyzer est installÃ©
 $psScriptAnalyzerInstalled = $null -ne (Get-Module -ListAvailable -Name "PSScriptAnalyzer" -ErrorAction SilentlyContinue)
 if (-not $psScriptAnalyzerInstalled) {
-    Write-Warning "Le module PSScriptAnalyzer n'est pas installé. Certains tests seront ignorés."
+    Write-Warning "Le module PSScriptAnalyzer n'est pas installÃ©. Certains tests seront ignorÃ©s."
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour générer un script de test de taille spécifique (réutilisée de Measure-AstExtractionPerformance.ps1)
+# Fonction pour gÃ©nÃ©rer un script de test de taille spÃ©cifique (rÃ©utilisÃ©e de Measure-AstExtractionPerformance.ps1)
 function New-TestScript {
     [CmdletBinding()]
     param(
@@ -66,7 +66,7 @@ function New-TestScript {
         [string]$OutputPath
     )
 
-    # Définir les paramètres en fonction de la taille
+    # DÃ©finir les paramÃ¨tres en fonction de la taille
     $scriptParams = @{
         Small      = @{
             FunctionCount         = 5
@@ -100,22 +100,22 @@ function New-TestScript {
 
     $params = $scriptParams[$Size]
 
-    # Générer le contenu du script
+    # GÃ©nÃ©rer le contenu du script
     $scriptContent = @"
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Script de test généré automatiquement ($Size).
+    Script de test gÃ©nÃ©rÃ© automatiquement ($Size).
 .DESCRIPTION
-    Ce script a été généré pour tester les performances des fonctions d'extraction AST.
+    Ce script a Ã©tÃ© gÃ©nÃ©rÃ© pour tester les performances des fonctions d'extraction AST.
     Taille: $Size
     Fonctions: $($params.FunctionCount)
-    Paramètres par fonction: $($params.ParametersPerFunction)
+    ParamÃ¨tres par fonction: $($params.ParametersPerFunction)
     Commandes par fonction: $($params.CommandsPerFunction)
     Variables par fonction: $($params.VariablesPerFunction)
     Profondeur d'imbrication: $($params.NestedDepth)
 .NOTES
-    Généré le: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+    GÃ©nÃ©rÃ© le: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 #>
 
 "@
@@ -126,11 +126,11 @@ function New-TestScript {
         $scriptContent += "`$global:Variable$i = '$i'`n"
     }
 
-    # Générer les fonctions
+    # GÃ©nÃ©rer les fonctions
     for ($funcIndex = 1; $funcIndex -le $params.FunctionCount; $funcIndex++) {
         $functionName = "Test-Function$funcIndex"
 
-        # Début de la fonction
+        # DÃ©but de la fonction
         $scriptContent += @"
 
 function $functionName {
@@ -138,7 +138,7 @@ function $functionName {
     param(
 "@
 
-        # Ajouter les paramètres
+        # Ajouter les paramÃ¨tres
         for ($paramIndex = 1; $paramIndex -le $params.ParametersPerFunction; $paramIndex++) {
             $paramName = "Parameter$paramIndex"
             $paramType = @("string", "int", "bool", "array", "hashtable", "object")[$paramIndex % 6]
@@ -155,7 +155,7 @@ function $functionName {
     )
 
     begin {
-        Write-Verbose "Début de la fonction $functionName"
+        Write-Verbose "DÃ©but de la fonction $functionName"
 "@
 
         # Ajouter des variables locales
@@ -177,7 +177,7 @@ function $functionName {
             switch ($cmdType) {
                 0 {
                     # Commande simple
-                    $scriptContent += "        Write-Verbose `"Exécution de la commande $cmdIndex`"`n"
+                    $scriptContent += "        Write-Verbose `"ExÃ©cution de la commande $cmdIndex`"`n"
                 }
                 1 {
                     # Condition if
@@ -193,7 +193,7 @@ function $functionName {
                     # Boucle foreach
                     $scriptContent += @"
         foreach (`$item in @(1, 2, 3)) {
-            Write-Verbose "Traitement de l'élément `$item dans la boucle $cmdIndex"
+            Write-Verbose "Traitement de l'Ã©lÃ©ment `$item dans la boucle $cmdIndex"
         }
 "@
                 }
@@ -201,14 +201,14 @@ function $functionName {
                     # Try/catch
                     $scriptContent += @"
         try {
-            Write-Verbose "Tentative d'opération $cmdIndex"
+            Write-Verbose "Tentative d'opÃ©ration $cmdIndex"
         } catch {
-            Write-Error "Erreur dans l'opération $cmdIndex : `$_"
+            Write-Error "Erreur dans l'opÃ©ration $cmdIndex : `$_"
         }
 "@
                 }
                 4 {
-                    # Structure imbriquée (selon la profondeur)
+                    # Structure imbriquÃ©e (selon la profondeur)
                     $nestedContent = "            Write-Verbose `"Niveau le plus profond atteint`"`n"
 
                     for ($depth = $params.NestedDepth; $depth -gt 0; $depth--) {
@@ -234,14 +234,14 @@ $nestedContent        }
 "@
     }
 
-    # Ajouter un appel à chaque fonction
+    # Ajouter un appel Ã  chaque fonction
     $scriptContent += "`n# Appels de fonctions`n"
     for ($funcIndex = 1; $funcIndex -le $params.FunctionCount; $funcIndex++) {
         $functionName = "Test-Function$funcIndex"
         $scriptContent += "$functionName -Parameter1 'TestValue$funcIndex' -Parameter2 $funcIndex`n"
     }
 
-    # Enregistrer le script si un chemin est spécifié
+    # Enregistrer le script si un chemin est spÃ©cifiÃ©
     if ($OutputPath) {
         $scriptPath = Join-Path -Path $OutputPath -ChildPath "TestScript_$Size.ps1"
         Set-Content -Path $scriptPath -Value $scriptContent -Encoding UTF8
@@ -271,7 +271,7 @@ function Measure-ToolPerformance {
         [int]$Iterations = 3
     )
 
-    # Préparer les résultats
+    # PrÃ©parer les rÃ©sultats
     $results = @{
         ToolName       = $ToolName
         ScriptPath     = $ScriptPath
@@ -285,17 +285,17 @@ function Measure-ToolPerformance {
         ErrorMessage   = $null
     }
 
-    # Exécuter les itérations
+    # ExÃ©cuter les itÃ©rations
     for ($i = 0; $i -lt $Iterations; $i++) {
         try {
-            # Mesurer l'utilisation de la mémoire et du CPU avant
+            # Mesurer l'utilisation de la mÃ©moire et du CPU avant
             $processBeforeMemory = (Get-Process -Id $PID).WorkingSet64
             $processBeforeCPU = (Get-Process -Id $PID).CPU
 
-            # Mesurer le temps d'exécution
+            # Mesurer le temps d'exÃ©cution
             $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-            # Exécuter le script block avec les paramètres
+            # ExÃ©cuter le script block avec les paramÃ¨tres
             $scriptParams = $Parameters.Clone()
             $scriptParams["ScriptPath"] = $ScriptPath
 
@@ -303,19 +303,19 @@ function Measure-ToolPerformance {
 
             $stopwatch.Stop()
 
-            # Mesurer l'utilisation de la mémoire et du CPU après
+            # Mesurer l'utilisation de la mÃ©moire et du CPU aprÃ¨s
             $processAfterMemory = (Get-Process -Id $PID).WorkingSet64
             $processAfterCPU = (Get-Process -Id $PID).CPU
 
             $memoryUsage = $processAfterMemory - $processBeforeMemory
             $cpuUsage = $processAfterCPU - $processBeforeCPU
 
-            # Enregistrer les résultats
+            # Enregistrer les rÃ©sultats
             $results.ExecutionTimes += $stopwatch.ElapsedMilliseconds
             $results.MemoryUsage += $memoryUsage
             $results.CPUUsage += $cpuUsage
 
-            # Collecter des informations sur le résultat
+            # Collecter des informations sur le rÃ©sultat
             if ($i -eq 0) {
                 if ($result -is [array]) {
                     $results["ResultCount"] = $result.Count
@@ -324,13 +324,13 @@ function Measure-ToolPerformance {
                 }
             }
 
-            # Forcer le garbage collection entre les itérations
+            # Forcer le garbage collection entre les itÃ©rations
             [System.GC]::Collect()
             Start-Sleep -Milliseconds 100
         } catch {
             $results.Success = $false
             $results.ErrorMessage = $_.Exception.Message
-            Write-Warning "Erreur lors de l'exécution de $ToolName : $_"
+            Write-Warning "Erreur lors de l'exÃ©cution de $ToolName : $_"
             break
         }
     }
@@ -347,7 +347,7 @@ function Measure-ToolPerformance {
     return [PSCustomObject]$results
 }
 
-# Fonction pour générer un rapport HTML de comparaison
+# Fonction pour gÃ©nÃ©rer un rapport HTML de comparaison
 function New-ComparisonReport {
     [CmdletBinding()]
     param(
@@ -360,7 +360,7 @@ function New-ComparisonReport {
 
     $reportPath = Join-Path -Path $OutputPath -ChildPath "AstExtractionToolsComparison_$(Get-Date -Format 'yyyyMMdd_HHmmss').html"
 
-    # Créer le contenu HTML
+    # CrÃ©er le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -387,16 +387,16 @@ function New-ComparisonReport {
     <h1>Comparaison des outils d'analyse de code PowerShell</h1>
     <div class="summary">
         <p><strong>Date du rapport:</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
-        <p><strong>Nombre d'outils comparés:</strong> $($Results | Select-Object -ExpandProperty ToolName -Unique | Measure-Object | Select-Object -ExpandProperty Count)</p>
-        <p><strong>Tailles de scripts testées:</strong> $($Results | ForEach-Object { (Split-Path -Leaf $_.ScriptPath) -replace 'TestScript_(.+)\.ps1', '$1' } | Select-Object -Unique | Join-String -Separator ', ')</p>
+        <p><strong>Nombre d'outils comparÃ©s:</strong> $($Results | Select-Object -ExpandProperty ToolName -Unique | Measure-Object | Select-Object -ExpandProperty Count)</p>
+        <p><strong>Tailles de scripts testÃ©es:</strong> $($Results | ForEach-Object { (Split-Path -Leaf $_.ScriptPath) -replace 'TestScript_(.+)\.ps1', '$1' } | Select-Object -Unique | Join-String -Separator ', ')</p>
         <p><strong>Version PowerShell:</strong> $($PSVersionTable.PSVersion)</p>
-        <p><strong>Système d'exploitation:</strong> $([System.Environment]::OSVersion.VersionString)</p>
+        <p><strong>SystÃ¨me d'exploitation:</strong> $([System.Environment]::OSVersion.VersionString)</p>
     </div>
 
     <h2>Graphiques de comparaison</h2>
 "@
 
-    # Créer un graphique pour chaque taille de script
+    # CrÃ©er un graphique pour chaque taille de script
     $scriptSizes = $Results | ForEach-Object { (Split-Path -Leaf $_.ScriptPath) -replace 'TestScript_(.+)\.ps1', '$1' } | Select-Object -Unique
 
     foreach ($size in $scriptSizes) {
@@ -413,9 +413,9 @@ function New-ComparisonReport {
 "@
     }
 
-    # Tableau récapitulatif
+    # Tableau rÃ©capitulatif
     $htmlContent += @"
-    <h2>Résultats détaillés</h2>
+    <h2>RÃ©sultats dÃ©taillÃ©s</h2>
     <table>
         <tr>
             <th>Outil</th>
@@ -423,14 +423,14 @@ function New-ComparisonReport {
             <th>Temps moyen (ms)</th>
             <th>Temps min (ms)</th>
             <th>Temps max (ms)</th>
-            <th>Mémoire moyenne (KB)</th>
+            <th>MÃ©moire moyenne (KB)</th>
             <th>CPU moyen</th>
-            <th>Résultats</th>
+            <th>RÃ©sultats</th>
             <th>Statut</th>
         </tr>
 "@
 
-    # Ajouter les résultats au tableau
+    # Ajouter les rÃ©sultats au tableau
     foreach ($size in $scriptSizes) {
         $sizeResults = $Results | Where-Object { (Split-Path -Leaf $_.ScriptPath) -like "TestScript_$size.ps1" }
 
@@ -442,7 +442,7 @@ function New-ComparisonReport {
 
         foreach ($result in $sizeResults) {
             $statusClass = if ($result.Success) { "success" } else { "error" }
-            $statusText = if ($result.Success) { "Succès" } else { "Échec: $($result.ErrorMessage)" }
+            $statusText = if ($result.Success) { "SuccÃ¨s" } else { "Ã‰chec: $($result.ErrorMessage)" }
             $winnerClass = if ($result.ToolName -eq $fastestTool) { "winner" } else { "" }
 
             $htmlContent += @"
@@ -461,7 +461,7 @@ function New-ComparisonReport {
         }
     }
 
-    # Fermer le tableau et préparer les données pour les graphiques
+    # Fermer le tableau et prÃ©parer les donnÃ©es pour les graphiques
     $htmlContent += @"
     </table>
 
@@ -473,19 +473,19 @@ function New-ComparisonReport {
         $sizeResults = $Results | Where-Object { (Split-Path -Leaf $_.ScriptPath) -like "TestScript_$size.ps1" }
 
         $htmlContent += @"
-        // Données pour les graphiques de taille $size
+        // DonnÃ©es pour les graphiques de taille $size
         const tools_$size = [$(($sizeResults | ForEach-Object { "'$($_.ToolName)'" }) -join ', ')];
         const executionTimes_$size = [$(($sizeResults | ForEach-Object { $_.AverageExecutionTime }) -join ', ')];
         const memoryUsages_$size = [$(($sizeResults | ForEach-Object { $_.AverageMemoryUsage / 1KB }) -join ', ')];
 
-        // Graphique des temps d'exécution pour $size
+        // Graphique des temps d'exÃ©cution pour $size
         const executionTimeCtx_$size = document.getElementById('executionTimeChart_$size').getContext('2d');
         new Chart(executionTimeCtx_$size, {
             type: 'bar',
             data: {
                 labels: tools_$size,
                 datasets: [{
-                    label: 'Temps d\'exécution moyen (ms)',
+                    label: 'Temps d\'exÃ©cution moyen (ms)',
                     data: executionTimes_$size,
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -506,14 +506,14 @@ function New-ComparisonReport {
             }
         });
 
-        // Graphique de l'utilisation de la mémoire pour $size
+        // Graphique de l'utilisation de la mÃ©moire pour $size
         const memoryUsageCtx_$size = document.getElementById('memoryUsageChart_$size').getContext('2d');
         new Chart(memoryUsageCtx_$size, {
             type: 'bar',
             data: {
                 labels: tools_$size,
                 datasets: [{
-                    label: 'Utilisation moyenne de la mémoire (KB)',
+                    label: 'Utilisation moyenne de la mÃ©moire (KB)',
                     data: memoryUsages_$size,
                     backgroundColor: 'rgba(75, 192, 192, 0.5)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -548,7 +548,7 @@ function New-ComparisonReport {
     return $reportPath
 }
 
-# Fonction principale pour exécuter les comparaisons
+# Fonction principale pour exÃ©cuter les comparaisons
 function Start-ToolsComparison {
     [CmdletBinding()]
     param(
@@ -565,16 +565,16 @@ function Start-ToolsComparison {
     $results = @()
     $testScripts = @{}
 
-    # Générer les scripts de test
-    Write-Host "Génération des scripts de test..." -ForegroundColor Cyan
+    # GÃ©nÃ©rer les scripts de test
+    Write-Host "GÃ©nÃ©ration des scripts de test..." -ForegroundColor Cyan
     foreach ($size in $TestScriptSizes) {
-        Write-Host "  Création du script de test de taille $size..." -ForegroundColor Yellow
+        Write-Host "  CrÃ©ation du script de test de taille $size..." -ForegroundColor Yellow
         $scriptPath = New-TestScript -Size $size -OutputPath $OutputPath
         $testScripts[$size] = $scriptPath
-        Write-Host "  Script créé: $scriptPath" -ForegroundColor Green
+        Write-Host "  Script crÃ©Ã©: $scriptPath" -ForegroundColor Green
     }
 
-    # Définir les outils à comparer
+    # DÃ©finir les outils Ã  comparer
     $toolsToCompare = @(
         @{
             Name        = "AstNavigator (Get-AstFunctions)"
@@ -613,7 +613,7 @@ function Start-ToolsComparison {
             }
         },
         @{
-            Name        = "Expressions régulières"
+            Name        = "Expressions rÃ©guliÃ¨res"
             ScriptBlock = {
                 param($ScriptPath)
 
@@ -645,8 +645,8 @@ function Start-ToolsComparison {
         }
     }
 
-    # Exécuter les comparaisons
-    Write-Host "`nExécution des comparaisons..." -ForegroundColor Cyan
+    # ExÃ©cuter les comparaisons
+    Write-Host "`nExÃ©cution des comparaisons..." -ForegroundColor Cyan
 
     foreach ($size in $TestScriptSizes) {
         $scriptPath = $testScripts[$size]
@@ -659,37 +659,37 @@ function Start-ToolsComparison {
             $results += $result
 
             if ($result.Success) {
-                Write-Host "      Temps moyen: $([math]::Round($result.AverageExecutionTime, 2)) ms, Mémoire: $([math]::Round($result.AverageMemoryUsage / 1KB, 2)) KB" -ForegroundColor Green
+                Write-Host "      Temps moyen: $([math]::Round($result.AverageExecutionTime, 2)) ms, MÃ©moire: $([math]::Round($result.AverageMemoryUsage / 1KB, 2)) KB" -ForegroundColor Green
             } else {
-                Write-Host "      Échec: $($result.ErrorMessage)" -ForegroundColor Red
+                Write-Host "      Ã‰chec: $($result.ErrorMessage)" -ForegroundColor Red
             }
         }
     }
 
-    # Enregistrer les résultats bruts
+    # Enregistrer les rÃ©sultats bruts
     $resultsPath = Join-Path -Path $OutputPath -ChildPath "AstExtractionToolsComparison_$(Get-Date -Format 'yyyyMMdd_HHmmss').json"
     $results | ConvertTo-Json -Depth 5 | Set-Content -Path $resultsPath -Encoding UTF8
 
-    Write-Host "`nRésultats enregistrés: $resultsPath" -ForegroundColor Green
+    Write-Host "`nRÃ©sultats enregistrÃ©s: $resultsPath" -ForegroundColor Green
 
     return $results
 }
 
-# Exécuter les comparaisons
+# ExÃ©cuter les comparaisons
 $comparisonResults = Start-ToolsComparison -TestScriptSizes $TestScriptSizes -Iterations $Iterations -OutputPath $OutputPath
 
-# Générer le rapport HTML si demandé
+# GÃ©nÃ©rer le rapport HTML si demandÃ©
 if ($GenerateReport) {
-    Write-Host "`nGénération du rapport HTML..." -ForegroundColor Cyan
+    Write-Host "`nGÃ©nÃ©ration du rapport HTML..." -ForegroundColor Cyan
     $reportPath = New-ComparisonReport -Results $comparisonResults -OutputPath $OutputPath
-    Write-Host "Rapport généré: $reportPath" -ForegroundColor Green
+    Write-Host "Rapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
 
-    # Ouvrir le rapport dans le navigateur par défaut
+    # Ouvrir le rapport dans le navigateur par dÃ©faut
     Start-Process $reportPath
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé des comparaisons:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des comparaisons:" -ForegroundColor Cyan
 foreach ($size in $TestScriptSizes) {
     $sizeResults = $comparisonResults | Where-Object { (Split-Path -Leaf $_.ScriptPath) -like "TestScript_$size.ps1" }
     Write-Host "  Script de taille $($size):" -ForegroundColor Yellow
@@ -708,7 +708,7 @@ foreach ($size in $TestScriptSizes) {
             $color = if ($isFastest) { "Green" } else { "White" }
             Write-Host "    $($result.ToolName): $([math]::Round($result.AverageExecutionTime, 2)) ms$fastestIndicator" -ForegroundColor $color
         } else {
-            Write-Host "    $($result.ToolName): Échec - $($result.ErrorMessage)" -ForegroundColor Red
+            Write-Host "    $($result.ToolName): Ã‰chec - $($result.ErrorMessage)" -ForegroundColor Red
         }
     }
 }

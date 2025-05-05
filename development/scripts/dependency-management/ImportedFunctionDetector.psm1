@@ -1,60 +1,60 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 <#
 .SYNOPSIS
-    Module pour la détection des fonctions importées dans les scripts PowerShell.
+    Module pour la dÃ©tection des fonctions importÃ©es dans les scripts PowerShell.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour détecter les modules importés et les fonctions
-    exportées par ces modules dans les scripts PowerShell.
+    Ce module fournit des fonctions pour dÃ©tecter les modules importÃ©s et les fonctions
+    exportÃ©es par ces modules dans les scripts PowerShell.
 
 .NOTES
     Auteur: Dependency Management Team
     Version: 1.0
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer le module FunctionCallParser s'il n'est pas déjà importé
+# Importer le module FunctionCallParser s'il n'est pas dÃ©jÃ  importÃ©
 $functionCallParserPath = Join-Path -Path $PSScriptRoot -ChildPath 'FunctionCallParser.psm1'
 if (-not (Get-Module -Name 'FunctionCallParser')) {
     if (Test-Path -Path $functionCallParserPath) {
         Import-Module -Name $functionCallParserPath -Force
     }
     else {
-        throw "Le module FunctionCallParser est requis mais n'a pas été trouvé à l'emplacement: $functionCallParserPath"
+        throw "Le module FunctionCallParser est requis mais n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $functionCallParserPath"
     }
 }
 
 <#
 .SYNOPSIS
-    Détecte les modules importés dans un script PowerShell.
+    DÃ©tecte les modules importÃ©s dans un script PowerShell.
 
 .DESCRIPTION
-    Cette fonction analyse un script PowerShell et détecte tous les modules importés
+    Cette fonction analyse un script PowerShell et dÃ©tecte tous les modules importÃ©s
     via Import-Module, using module, #Requires -Modules, etc.
 
 .PARAMETER ScriptPath
-    Chemin du script PowerShell à analyser.
+    Chemin du script PowerShell Ã  analyser.
 
 .PARAMETER ScriptContent
-    Contenu du script PowerShell à analyser. Si spécifié, ScriptPath est ignoré.
+    Contenu du script PowerShell Ã  analyser. Si spÃ©cifiÃ©, ScriptPath est ignorÃ©.
 
 .PARAMETER IncludeRequiresDirectives
-    Indique si les directives #Requires -Modules doivent être incluses dans les résultats.
+    Indique si les directives #Requires -Modules doivent Ãªtre incluses dans les rÃ©sultats.
 
 .PARAMETER IncludeUsingStatements
-    Indique si les instructions using module doivent être incluses dans les résultats.
+    Indique si les instructions using module doivent Ãªtre incluses dans les rÃ©sultats.
 
 .EXAMPLE
     $importedModules = Get-ImportedModules -ScriptPath 'C:\Scripts\MyScript.ps1'
-    Analyse le script MyScript.ps1 et retourne tous les modules importés.
+    Analyse le script MyScript.ps1 et retourne tous les modules importÃ©s.
 
 .EXAMPLE
     $importedModules = Get-ImportedModules -ScriptContent $scriptContent -IncludeRequiresDirectives
-    Analyse le contenu du script fourni et retourne tous les modules importés, y compris ceux spécifiés dans les directives #Requires.
+    Analyse le contenu du script fourni et retourne tous les modules importÃ©s, y compris ceux spÃ©cifiÃ©s dans les directives #Requires.
 
 .OUTPUTS
-    [PSCustomObject[]] Liste des modules importés.
+    [PSCustomObject[]] Liste des modules importÃ©s.
 #>
 function Get-ImportedModules {
     [CmdletBinding()]
@@ -73,9 +73,9 @@ function Get-ImportedModules {
     )
 
     begin {
-        # Vérifier si au moins un des paramètres ScriptPath ou ScriptContent est spécifié
+        # VÃ©rifier si au moins un des paramÃ¨tres ScriptPath ou ScriptContent est spÃ©cifiÃ©
         if (-not $ScriptPath -and -not $ScriptContent) {
-            throw 'Vous devez spécifier soit ScriptPath, soit ScriptContent.'
+            throw 'Vous devez spÃ©cifier soit ScriptPath, soit ScriptContent.'
         }
     }
 
@@ -92,10 +92,10 @@ function Get-ImportedModules {
                 $ast = [System.Management.Automation.Language.Parser]::ParseInput($ScriptContent, [ref]$null, [ref]$null)
             }
 
-            # Initialiser la liste des modules importés
+            # Initialiser la liste des modules importÃ©s
             $importedModules = [System.Collections.ArrayList]::new()
 
-            # Trouver tous les appels à Import-Module
+            # Trouver tous les appels Ã  Import-Module
             $importModuleCalls = $ast.FindAll({
                 param($node)
                 $node -is [System.Management.Automation.Language.CommandAst] -and
@@ -103,22 +103,22 @@ function Get-ImportedModules {
                 $node.CommandElements[0].Extent.Text -eq 'Import-Module'
             }, $true)
 
-            # Traiter les appels à Import-Module
+            # Traiter les appels Ã  Import-Module
             foreach ($call in $importModuleCalls) {
                 $moduleName = $null
                 $moduleVersion = $null
                 $prefix = $null
                 $alias = $null
 
-                # Parcourir les éléments de la commande
+                # Parcourir les Ã©lÃ©ments de la commande
                 for ($i = 1; $i -lt $call.CommandElements.Count; $i++) {
                     $element = $call.CommandElements[$i]
 
-                    # Vérifier si c'est un paramètre nommé
+                    # VÃ©rifier si c'est un paramÃ¨tre nommÃ©
                     if ($element -is [System.Management.Automation.Language.CommandParameterAst]) {
                         $paramName = $element.ParameterName.ToLower()
 
-                        # Vérifier s'il y a une valeur associée
+                        # VÃ©rifier s'il y a une valeur associÃ©e
                         if ($i + 1 -lt $call.CommandElements.Count -and 
                             -not ($call.CommandElements[$i + 1] -is [System.Management.Automation.Language.CommandParameterAst])) {
                             $paramValue = $call.CommandElements[$i + 1].Extent.Text.Trim("'`"")
@@ -131,16 +131,16 @@ function Get-ImportedModules {
                                 'alias' { $alias = $paramValue; break }
                             }
                             
-                            $i++ # Sauter la valeur du paramètre
+                            $i++ # Sauter la valeur du paramÃ¨tre
                         }
                     }
-                    # Sinon, c'est un paramètre positionnel (probablement le nom du module)
+                    # Sinon, c'est un paramÃ¨tre positionnel (probablement le nom du module)
                     elseif (-not $moduleName) {
                         $moduleName = $element.Extent.Text.Trim("'`"")
                     }
                 }
 
-                # Ajouter le module à la liste
+                # Ajouter le module Ã  la liste
                 if ($moduleName) {
                     [void]$importedModules.Add([PSCustomObject]@{
                         Name = $moduleName
@@ -155,7 +155,7 @@ function Get-ImportedModules {
                 }
             }
 
-            # Trouver toutes les instructions using module si demandé
+            # Trouver toutes les instructions using module si demandÃ©
             if ($IncludeUsingStatements) {
                 $usingStatements = $ast.FindAll({
                     param($node)
@@ -180,7 +180,7 @@ function Get-ImportedModules {
                 }
             }
 
-            # Trouver toutes les directives #Requires -Modules si demandé
+            # Trouver toutes les directives #Requires -Modules si demandÃ©
             if ($IncludeRequiresDirectives -and $ast.ScriptRequirements -and $ast.ScriptRequirements.RequiredModules) {
                 foreach ($requiredModule in $ast.ScriptRequirements.RequiredModules) {
                     $moduleName = $requiredModule.Name
@@ -202,7 +202,7 @@ function Get-ImportedModules {
             return $importedModules
         }
         catch {
-            Write-Error "Erreur lors de la détection des modules importés: $_"
+            Write-Error "Erreur lors de la dÃ©tection des modules importÃ©s: $_"
             return @()
         }
     }
@@ -210,37 +210,37 @@ function Get-ImportedModules {
 
 <#
 .SYNOPSIS
-    Obtient les fonctions exportées par un module PowerShell.
+    Obtient les fonctions exportÃ©es par un module PowerShell.
 
 .DESCRIPTION
-    Cette fonction obtient la liste des fonctions exportées par un module PowerShell
-    en important le module et en interrogeant ses fonctions exportées.
+    Cette fonction obtient la liste des fonctions exportÃ©es par un module PowerShell
+    en important le module et en interrogeant ses fonctions exportÃ©es.
 
 .PARAMETER ModuleName
     Nom du module PowerShell.
 
 .PARAMETER ModuleVersion
-    Version du module PowerShell. Si non spécifié, la dernière version disponible est utilisée.
+    Version du module PowerShell. Si non spÃ©cifiÃ©, la derniÃ¨re version disponible est utilisÃ©e.
 
 .PARAMETER ImportIfNotLoaded
-    Indique si le module doit être importé s'il n'est pas déjà chargé.
+    Indique si le module doit Ãªtre importÃ© s'il n'est pas dÃ©jÃ  chargÃ©.
 
 .PARAMETER IncludeCmdlets
-    Indique si les cmdlets doivent être inclus dans les résultats.
+    Indique si les cmdlets doivent Ãªtre inclus dans les rÃ©sultats.
 
 .PARAMETER IncludeAliases
-    Indique si les alias doivent être inclus dans les résultats.
+    Indique si les alias doivent Ãªtre inclus dans les rÃ©sultats.
 
 .EXAMPLE
     $exportedFunctions = Get-ModuleExportedFunctions -ModuleName 'Microsoft.PowerShell.Management'
-    Obtient les fonctions exportées par le module Microsoft.PowerShell.Management.
+    Obtient les fonctions exportÃ©es par le module Microsoft.PowerShell.Management.
 
 .EXAMPLE
     $exportedFunctions = Get-ModuleExportedFunctions -ModuleName 'Az.Storage' -ModuleVersion '2.0.0' -IncludeCmdlets -IncludeAliases
-    Obtient les fonctions, cmdlets et alias exportés par le module Az.Storage version 2.0.0.
+    Obtient les fonctions, cmdlets et alias exportÃ©s par le module Az.Storage version 2.0.0.
 
 .OUTPUTS
-    [PSCustomObject[]] Liste des fonctions exportées par le module.
+    [PSCustomObject[]] Liste des fonctions exportÃ©es par le module.
 #>
 function Get-ModuleExportedFunctions {
     [CmdletBinding()]
@@ -263,7 +263,7 @@ function Get-ModuleExportedFunctions {
 
     process {
         try {
-            # Vérifier si le module est déjà chargé
+            # VÃ©rifier si le module est dÃ©jÃ  chargÃ©
             $moduleInfo = $null
             if ($ModuleVersion) {
                 $moduleInfo = Get-Module -Name $ModuleName -RequiredVersion $ModuleVersion -ErrorAction SilentlyContinue
@@ -272,7 +272,7 @@ function Get-ModuleExportedFunctions {
                 $moduleInfo = Get-Module -Name $ModuleName -ErrorAction SilentlyContinue
             }
 
-            # Importer le module s'il n'est pas déjà chargé et si demandé
+            # Importer le module s'il n'est pas dÃ©jÃ  chargÃ© et si demandÃ©
             if (-not $moduleInfo -and $ImportIfNotLoaded) {
                 $importParams = @{
                     Name = $ModuleName
@@ -287,7 +287,7 @@ function Get-ModuleExportedFunctions {
                 $moduleInfo = Import-Module @importParams
             }
 
-            # Vérifier si le module est chargé
+            # VÃ©rifier si le module est chargÃ©
             if (-not $moduleInfo) {
                 # Essayer de trouver le module sans l'importer
                 $moduleParams = @{
@@ -303,15 +303,15 @@ function Get-ModuleExportedFunctions {
                 $moduleInfo = Get-Module @moduleParams | Select-Object -First 1
 
                 if (-not $moduleInfo) {
-                    Write-Warning "Le module '$ModuleName' n'est pas chargé et n'a pas été trouvé. Utilisez ImportIfNotLoaded pour l'importer automatiquement."
+                    Write-Warning "Le module '$ModuleName' n'est pas chargÃ© et n'a pas Ã©tÃ© trouvÃ©. Utilisez ImportIfNotLoaded pour l'importer automatiquement."
                     return @()
                 }
             }
 
-            # Initialiser la liste des fonctions exportées
+            # Initialiser la liste des fonctions exportÃ©es
             $exportedFunctions = [System.Collections.ArrayList]::new()
 
-            # Obtenir les fonctions exportées
+            # Obtenir les fonctions exportÃ©es
             $functions = $moduleInfo.ExportedFunctions.Values
             foreach ($function in $functions) {
                 [void]$exportedFunctions.Add([PSCustomObject]@{
@@ -322,7 +322,7 @@ function Get-ModuleExportedFunctions {
                 })
             }
 
-            # Obtenir les cmdlets exportés si demandé
+            # Obtenir les cmdlets exportÃ©s si demandÃ©
             if ($IncludeCmdlets) {
                 $cmdlets = $moduleInfo.ExportedCmdlets.Values
                 foreach ($cmdlet in $cmdlets) {
@@ -335,7 +335,7 @@ function Get-ModuleExportedFunctions {
                 }
             }
 
-            # Obtenir les alias exportés si demandé
+            # Obtenir les alias exportÃ©s si demandÃ©
             if ($IncludeAliases) {
                 $aliases = $moduleInfo.ExportedAliases.Values
                 foreach ($alias in $aliases) {
@@ -352,7 +352,7 @@ function Get-ModuleExportedFunctions {
             return $exportedFunctions
         }
         catch {
-            Write-Error "Erreur lors de l'obtention des fonctions exportées par le module '$ModuleName': $_"
+            Write-Error "Erreur lors de l'obtention des fonctions exportÃ©es par le module '$ModuleName': $_"
             return @()
         }
     }
@@ -360,37 +360,37 @@ function Get-ModuleExportedFunctions {
 
 <#
 .SYNOPSIS
-    Détecte les fonctions importées dans un script PowerShell.
+    DÃ©tecte les fonctions importÃ©es dans un script PowerShell.
 
 .DESCRIPTION
-    Cette fonction analyse un script PowerShell et détecte toutes les fonctions importées
-    via les modules importés dans le script.
+    Cette fonction analyse un script PowerShell et dÃ©tecte toutes les fonctions importÃ©es
+    via les modules importÃ©s dans le script.
 
 .PARAMETER ScriptPath
-    Chemin du script PowerShell à analyser.
+    Chemin du script PowerShell Ã  analyser.
 
 .PARAMETER ScriptContent
-    Contenu du script PowerShell à analyser. Si spécifié, ScriptPath est ignoré.
+    Contenu du script PowerShell Ã  analyser. Si spÃ©cifiÃ©, ScriptPath est ignorÃ©.
 
 .PARAMETER ImportModulesIfNotLoaded
-    Indique si les modules doivent être importés s'ils ne sont pas déjà chargés.
+    Indique si les modules doivent Ãªtre importÃ©s s'ils ne sont pas dÃ©jÃ  chargÃ©s.
 
 .PARAMETER IncludeCmdlets
-    Indique si les cmdlets doivent être inclus dans les résultats.
+    Indique si les cmdlets doivent Ãªtre inclus dans les rÃ©sultats.
 
 .PARAMETER IncludeAliases
-    Indique si les alias doivent être inclus dans les résultats.
+    Indique si les alias doivent Ãªtre inclus dans les rÃ©sultats.
 
 .EXAMPLE
     $importedFunctions = Get-ImportedFunctions -ScriptPath 'C:\Scripts\MyScript.ps1'
-    Analyse le script MyScript.ps1 et retourne toutes les fonctions importées.
+    Analyse le script MyScript.ps1 et retourne toutes les fonctions importÃ©es.
 
 .EXAMPLE
     $importedFunctions = Get-ImportedFunctions -ScriptContent $scriptContent -ImportModulesIfNotLoaded -IncludeCmdlets
-    Analyse le contenu du script fourni et retourne toutes les fonctions importées, y compris les cmdlets.
+    Analyse le contenu du script fourni et retourne toutes les fonctions importÃ©es, y compris les cmdlets.
 
 .OUTPUTS
-    [PSCustomObject[]] Liste des fonctions importées.
+    [PSCustomObject[]] Liste des fonctions importÃ©es.
 #>
 function Get-ImportedFunctions {
     [CmdletBinding()]
@@ -412,15 +412,15 @@ function Get-ImportedFunctions {
     )
 
     begin {
-        # Vérifier si au moins un des paramètres ScriptPath ou ScriptContent est spécifié
+        # VÃ©rifier si au moins un des paramÃ¨tres ScriptPath ou ScriptContent est spÃ©cifiÃ©
         if (-not $ScriptPath -and -not $ScriptContent) {
-            throw 'Vous devez spécifier soit ScriptPath, soit ScriptContent.'
+            throw 'Vous devez spÃ©cifier soit ScriptPath, soit ScriptContent.'
         }
     }
 
     process {
         try {
-            # Obtenir les modules importés
+            # Obtenir les modules importÃ©s
             $importedModulesParams = @{
                 IncludeRequiresDirectives = $true
                 IncludeUsingStatements = $true
@@ -435,10 +435,10 @@ function Get-ImportedFunctions {
 
             $importedModules = Get-ImportedModules @importedModulesParams
 
-            # Initialiser la liste des fonctions importées
+            # Initialiser la liste des fonctions importÃ©es
             $importedFunctions = [System.Collections.ArrayList]::new()
 
-            # Obtenir les fonctions exportées par chaque module
+            # Obtenir les fonctions exportÃ©es par chaque module
             foreach ($module in $importedModules) {
                 $moduleExportedFunctionsParams = @{
                     ModuleName = $module.Name
@@ -453,9 +453,9 @@ function Get-ImportedFunctions {
 
                 $exportedFunctions = Get-ModuleExportedFunctions @moduleExportedFunctionsParams
 
-                # Ajouter les fonctions exportées à la liste des fonctions importées
+                # Ajouter les fonctions exportÃ©es Ã  la liste des fonctions importÃ©es
                 foreach ($function in $exportedFunctions) {
-                    # Ajouter le préfixe si spécifié
+                    # Ajouter le prÃ©fixe si spÃ©cifiÃ©
                     $functionName = $function.Name
                     if ($module.Prefix) {
                         $functionName = $module.Prefix + '-' + $functionName
@@ -477,7 +477,7 @@ function Get-ImportedFunctions {
             return $importedFunctions
         }
         catch {
-            Write-Error "Erreur lors de la détection des fonctions importées: $_"
+            Write-Error "Erreur lors de la dÃ©tection des fonctions importÃ©es: $_"
             return @()
         }
     }

@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le script prioritize-improvements.ps1.
 
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
     du script prioritize-improvements.ps1.
 
 .PARAMETER ScriptPath
@@ -11,12 +11,12 @@
 
 .EXAMPLE
     .\Test-PrioritizeImprovements.ps1 -ScriptPath "..\prioritize-improvements.ps1"
-    Exécute les tests unitaires pour le script prioritize-improvements.ps1.
+    ExÃ©cute les tests unitaires pour le script prioritize-improvements.ps1.
 
 .NOTES
     Auteur: Analysis Team
     Version: 1.0
-    Date de création: 2025-05-06
+    Date de crÃ©ation: 2025-05-06
 #>
 [CmdletBinding()]
 param (
@@ -24,30 +24,30 @@ param (
     [string]$ScriptPath = "..\prioritize-improvements.ps1"
 )
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $ScriptPath)) {
     Write-Error "Le script est introuvable : $ScriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PrioritizeImprovementsTests"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier JSON de test
+# CrÃ©er un fichier JSON de test
 $testInputFile = Join-Path -Path $testDir -ChildPath "test-improvements.json"
 $testOutputFile = Join-Path -Path $testDir -ChildPath "test-improvement-priorities.md"
 
 $testData = @{
     Criteria = @{
         Impact = @{
-            Description = "Impact potentiel de l'amélioration sur la qualité du code et la productivité"
+            Description = "Impact potentiel de l'amÃ©lioration sur la qualitÃ© du code et la productivitÃ©"
             Weight = 0.5
         }
         Effort = @{
-            Description = "Effort requis pour implémenter l'amélioration (inversement proportionnel)"
+            Description = "Effort requis pour implÃ©menter l'amÃ©lioration (inversement proportionnel)"
             Weight = 0.5
         }
     }
@@ -63,9 +63,9 @@ $testData = @{
                 @{
                     Name = "Test Improvement 1"
                     Description = "Test improvement 1 description"
-                    Type = "Fonctionnalité"
+                    Type = "FonctionnalitÃ©"
                     Effort = "Faible"
-                    Impact = "Élevé"
+                    Impact = "Ã‰levÃ©"
                     Dependencies = @()
                     Scores = @{
                         Impact = 9
@@ -75,7 +75,7 @@ $testData = @{
                 @{
                     Name = "Test Improvement 2"
                     Description = "Test improvement 2 description"
-                    Type = "Amélioration"
+                    Type = "AmÃ©lioration"
                     Effort = "Moyen"
                     Impact = "Moyen"
                     Dependencies = @()
@@ -94,8 +94,8 @@ $testData = @{
                     Name = "Test Improvement 3"
                     Description = "Test improvement 3 description"
                     Type = "Optimisation"
-                    Effort = "Élevé"
-                    Impact = "Élevé"
+                    Effort = "Ã‰levÃ©"
+                    Impact = "Ã‰levÃ©"
                     Dependencies = @()
                     Scores = @{
                         Impact = 8
@@ -109,7 +109,7 @@ $testData = @{
 
 $testData | ConvertTo-Json -Depth 10 | Set-Content -Path $testInputFile -Encoding UTF8
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Test-Function {
     [CmdletBinding()]
     param (
@@ -126,10 +126,10 @@ function Test-Function {
         $result = & $Test
         
         if ($result -eq $true) {
-            Write-Host "  Résultat : Succès" -ForegroundColor Green
+            Write-Host "  RÃ©sultat : SuccÃ¨s" -ForegroundColor Green
             return $true
         } else {
-            Write-Host "  Résultat : Échec" -ForegroundColor Red
+            Write-Host "  RÃ©sultat : Ã‰chec" -ForegroundColor Red
             return $false
         }
     } catch {
@@ -159,25 +159,25 @@ $tests = @(
         }
     },
     @{
-        Name = "Test de l'exécution du script avec des données de test"
+        Name = "Test de l'exÃ©cution du script avec des donnÃ©es de test"
         Test = {
             try {
                 $result = & $ScriptPath -InputFile $testInputFile -OutputFile $testOutputFile -Format "Markdown"
                 return (Test-Path -Path $testOutputFile -PathType Leaf)
             } catch {
-                Write-Error "Erreur lors de l'exécution du script : $_"
+                Write-Error "Erreur lors de l'exÃ©cution du script : $_"
                 return $false
             }
         }
     },
     @{
-        Name = "Test du contenu du rapport généré"
+        Name = "Test du contenu du rapport gÃ©nÃ©rÃ©"
         Test = {
             try {
                 $content = Get-Content -Path $testOutputFile -Raw
                 return ($content -match "Test Improvement 1" -and $content -match "Test Improvement 2" -and $content -match "Test Improvement 3")
             } catch {
-                Write-Error "Erreur lors de la vérification du contenu du rapport : $_"
+                Write-Error "Erreur lors de la vÃ©rification du contenu du rapport : $_"
                 return $false
             }
         }
@@ -187,58 +187,58 @@ $tests = @(
         Test = {
             try {
                 $content = Get-Content -Path $testOutputFile -Raw
-                # Test Improvement 1 devrait avoir un score plus élevé que Test Improvement 2
+                # Test Improvement 1 devrait avoir un score plus Ã©levÃ© que Test Improvement 2
                 $improvement1Index = $content.IndexOf("Test Improvement 1")
                 $improvement2Index = $content.IndexOf("Test Improvement 2")
                 return ($improvement1Index -lt $improvement2Index)
             } catch {
-                Write-Error "Erreur lors de la vérification de la priorisation : $_"
+                Write-Error "Erreur lors de la vÃ©rification de la priorisation : $_"
                 return $false
             }
         }
     },
     @{
-        Name = "Test de l'exécution du script avec le format HTML"
+        Name = "Test de l'exÃ©cution du script avec le format HTML"
         Test = {
             try {
                 $testHtmlOutputFile = Join-Path -Path $testDir -ChildPath "test-improvement-priorities.html"
                 $result = & $ScriptPath -InputFile $testInputFile -OutputFile $testHtmlOutputFile -Format "HTML"
                 return (Test-Path -Path $testHtmlOutputFile -PathType Leaf)
             } catch {
-                Write-Error "Erreur lors de l'exécution du script avec le format HTML : $_"
+                Write-Error "Erreur lors de l'exÃ©cution du script avec le format HTML : $_"
                 return $false
             }
         }
     },
     @{
-        Name = "Test de l'exécution du script avec le format CSV"
+        Name = "Test de l'exÃ©cution du script avec le format CSV"
         Test = {
             try {
                 $testCsvOutputFile = Join-Path -Path $testDir -ChildPath "test-improvement-priorities.csv"
                 $result = & $ScriptPath -InputFile $testInputFile -OutputFile $testCsvOutputFile -Format "CSV"
                 return (Test-Path -Path $testCsvOutputFile -PathType Leaf)
             } catch {
-                Write-Error "Erreur lors de l'exécution du script avec le format CSV : $_"
+                Write-Error "Erreur lors de l'exÃ©cution du script avec le format CSV : $_"
                 return $false
             }
         }
     },
     @{
-        Name = "Test de l'exécution du script avec le format JSON"
+        Name = "Test de l'exÃ©cution du script avec le format JSON"
         Test = {
             try {
                 $testJsonOutputFile = Join-Path -Path $testDir -ChildPath "test-improvement-priorities.json"
                 $result = & $ScriptPath -InputFile $testInputFile -OutputFile $testJsonOutputFile -Format "JSON"
                 return (Test-Path -Path $testJsonOutputFile -PathType Leaf)
             } catch {
-                Write-Error "Erreur lors de l'exécution du script avec le format JSON : $_"
+                Write-Error "Erreur lors de l'exÃ©cution du script avec le format JSON : $_"
                 return $false
             }
         }
     }
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $totalTests = $tests.Count
 $passedTests = 0
 
@@ -250,20 +250,20 @@ foreach ($test in $tests) {
     }
 }
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor Cyan
-Write-Host "  Tests réussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
-Write-Host "  Tests échoués : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor Cyan
+Write-Host "  Tests rÃ©ussis : $passedTests" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Yellow" })
+Write-Host "  Tests Ã©chouÃ©s : $($totalTests - $passedTests)" -ForegroundColor $(if ($passedTests -eq $totalTests) { "Green" } else { "Red" })
 
 # Nettoyer les fichiers de test
 Remove-Item -Path $testDir -Recurse -Force
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 if ($passedTests -eq $totalTests) {
-    Write-Host "`nTous les tests ont réussi." -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi." -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

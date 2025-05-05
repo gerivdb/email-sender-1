@@ -1,37 +1,37 @@
-# Script d'analyse des workflows n8n
+﻿# Script d'analyse des workflows n8n
 # Ce script utilise le module WorkflowAnalyzer pour analyser les workflows n8n
 
 #Requires -Version 5.1
 
 <#
 .SYNOPSIS
-    Analyse les workflows n8n pour détecter les activités, extraire les transitions et analyser les conditions.
+    Analyse les workflows n8n pour dÃ©tecter les activitÃ©s, extraire les transitions et analyser les conditions.
 
 .DESCRIPTION
     Ce script utilise le module WorkflowAnalyzer pour analyser les workflows n8n.
-    Il permet de détecter les activités, extraire les transitions et analyser les conditions des workflows.
-    Les résultats peuvent être exportés dans différents formats (Markdown, JSON, HTML, Text).
+    Il permet de dÃ©tecter les activitÃ©s, extraire les transitions et analyser les conditions des workflows.
+    Les rÃ©sultats peuvent Ãªtre exportÃ©s dans diffÃ©rents formats (Markdown, JSON, HTML, Text).
 
 .PARAMETER WorkflowPath
-    Chemin du fichier de workflow n8n à analyser.
+    Chemin du fichier de workflow n8n Ã  analyser.
 
 .PARAMETER OutputFolder
-    Dossier où enregistrer les rapports d'analyse.
+    Dossier oÃ¹ enregistrer les rapports d'analyse.
 
 .PARAMETER Format
     Format des rapports d'analyse (Markdown, JSON, HTML, Text).
 
 .PARAMETER ActivitiesOnly
-    Indique si seules les activités doivent être analysées.
+    Indique si seules les activitÃ©s doivent Ãªtre analysÃ©es.
 
 .PARAMETER TransitionsOnly
-    Indique si seules les transitions doivent être analysées.
+    Indique si seules les transitions doivent Ãªtre analysÃ©es.
 
 .PARAMETER ConditionsOnly
-    Indique si seules les conditions doivent être analysées.
+    Indique si seules les conditions doivent Ãªtre analysÃ©es.
 
 .PARAMETER IncludeDetails
-    Indique si les détails des nœuds doivent être inclus dans les résultats.
+    Indique si les dÃ©tails des nÅ“uds doivent Ãªtre inclus dans les rÃ©sultats.
 
 .EXAMPLE
     .\Analyze-N8nWorkflow.ps1 -WorkflowPath "path\to\workflow.json" -OutputFolder "path\to\reports"
@@ -89,13 +89,13 @@ function Write-Message {
     Write-Host "[$Status] $Message" -ForegroundColor $color
 }
 
-# Vérifier si le fichier de workflow existe
+# VÃ©rifier si le fichier de workflow existe
 if (-not (Test-Path -Path $WorkflowPath)) {
     Write-Message "Le fichier de workflow n'existe pas: $WorkflowPath" -Status "ERROR"
     exit 1
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputFolder)) {
     New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
 }
@@ -105,28 +105,28 @@ Write-Message "Chargement du workflow: $WorkflowPath"
 $workflow = Get-N8nWorkflow -WorkflowPath $WorkflowPath
 
 if (-not $workflow) {
-    Write-Message "Échec du chargement du workflow" -Status "ERROR"
+    Write-Message "Ã‰chec du chargement du workflow" -Status "ERROR"
     exit 1
 }
 
-Write-Message "Workflow chargé avec succès: $($workflow.name)" -Status "SUCCESS"
+Write-Message "Workflow chargÃ© avec succÃ¨s: $($workflow.name)" -Status "SUCCESS"
 
-# Si aucune option spécifique n'est sélectionnée, analyser tout
+# Si aucune option spÃ©cifique n'est sÃ©lectionnÃ©e, analyser tout
 if (-not ($ActivitiesOnly -or $TransitionsOnly -or $ConditionsOnly)) {
     $ActivitiesOnly = $true
     $TransitionsOnly = $true
     $ConditionsOnly = $true
 }
 
-# Analyser les activités
+# Analyser les activitÃ©s
 if ($ActivitiesOnly) {
-    Write-Message "Détection des activités du workflow..."
+    Write-Message "DÃ©tection des activitÃ©s du workflow..."
     $activities = Get-N8nWorkflowActivities -Workflow $workflow -IncludeDetails:$IncludeDetails
     
     if ($activities) {
-        Write-Message "Activités détectées avec succès: $($activities.Count) activités trouvées" -Status "SUCCESS"
+        Write-Message "ActivitÃ©s dÃ©tectÃ©es avec succÃ¨s: $($activities.Count) activitÃ©s trouvÃ©es" -Status "SUCCESS"
         
-        # Enregistrer les activités
+        # Enregistrer les activitÃ©s
         $activitiesOutputPath = Join-Path -Path $OutputFolder -ChildPath "workflow_activities.$($Format.ToLower())"
         
         switch ($Format) {
@@ -134,8 +134,8 @@ if ($ActivitiesOnly) {
                 $activities | ConvertTo-Json -Depth 10 | Out-File -FilePath $activitiesOutputPath -Encoding UTF8
             }
             "Markdown" {
-                $markdown = "# Activités du workflow: $($workflow.name)`n`n"
-                $markdown += "| ID | Nom | Type | Catégorie |`n"
+                $markdown = "# ActivitÃ©s du workflow: $($workflow.name)`n`n"
+                $markdown += "| ID | Nom | Type | CatÃ©gorie |`n"
                 $markdown += "|----|-----|------|-----------|`n"
                 foreach ($activity in $activities) {
                     $markdown += "| $($activity.Id) | $($activity.Name) | $($activity.Type) | $($activity.Category) |`n"
@@ -143,9 +143,9 @@ if ($ActivitiesOnly) {
                 $markdown | Out-File -FilePath $activitiesOutputPath -Encoding UTF8
             }
             "HTML" {
-                $html = "<html><head><title>Activités du workflow: $($workflow.name)</title></head><body>"
-                $html += "<h1>Activités du workflow: $($workflow.name)</h1>"
-                $html += "<table border='1'><tr><th>ID</th><th>Nom</th><th>Type</th><th>Catégorie</th></tr>"
+                $html = "<html><head><title>ActivitÃ©s du workflow: $($workflow.name)</title></head><body>"
+                $html += "<h1>ActivitÃ©s du workflow: $($workflow.name)</h1>"
+                $html += "<table border='1'><tr><th>ID</th><th>Nom</th><th>Type</th><th>CatÃ©gorie</th></tr>"
                 foreach ($activity in $activities) {
                     $html += "<tr><td>$($activity.Id)</td><td>$($activity.Name)</td><td>$($activity.Type)</td><td>$($activity.Category)</td></tr>"
                 }
@@ -153,18 +153,18 @@ if ($ActivitiesOnly) {
                 $html | Out-File -FilePath $activitiesOutputPath -Encoding UTF8
             }
             "Text" {
-                $text = "Activités du workflow: $($workflow.name)`r`n`r`n"
+                $text = "ActivitÃ©s du workflow: $($workflow.name)`r`n`r`n"
                 foreach ($activity in $activities) {
-                    $text += "- $($activity.Name) (ID: $($activity.Id), Type: $($activity.Type), Catégorie: $($activity.Category))`r`n"
+                    $text += "- $($activity.Name) (ID: $($activity.Id), Type: $($activity.Type), CatÃ©gorie: $($activity.Category))`r`n"
                 }
                 $text | Out-File -FilePath $activitiesOutputPath -Encoding UTF8
             }
         }
         
-        Write-Message "Activités enregistrées dans: $activitiesOutputPath" -Status "SUCCESS"
+        Write-Message "ActivitÃ©s enregistrÃ©es dans: $activitiesOutputPath" -Status "SUCCESS"
     }
     else {
-        Write-Message "Échec de la détection des activités" -Status "ERROR"
+        Write-Message "Ã‰chec de la dÃ©tection des activitÃ©s" -Status "ERROR"
     }
 }
 
@@ -174,7 +174,7 @@ if ($TransitionsOnly) {
     $transitions = Get-N8nWorkflowTransitions -Workflow $workflow -IncludeNodeDetails:$IncludeDetails
     
     if ($transitions) {
-        Write-Message "Transitions extraites avec succès: $($transitions.Count) transitions trouvées" -Status "SUCCESS"
+        Write-Message "Transitions extraites avec succÃ¨s: $($transitions.Count) transitions trouvÃ©es" -Status "SUCCESS"
         
         # Enregistrer les transitions
         $transitionsOutputPath = Join-Path -Path $OutputFolder -ChildPath "workflow_transitions.$($Format.ToLower())"
@@ -211,10 +211,10 @@ if ($TransitionsOnly) {
             }
         }
         
-        Write-Message "Transitions enregistrées dans: $transitionsOutputPath" -Status "SUCCESS"
+        Write-Message "Transitions enregistrÃ©es dans: $transitionsOutputPath" -Status "SUCCESS"
     }
     else {
-        Write-Message "Échec de l'extraction des transitions" -Status "ERROR"
+        Write-Message "Ã‰chec de l'extraction des transitions" -Status "ERROR"
     }
 }
 
@@ -224,7 +224,7 @@ if ($ConditionsOnly) {
     $conditions = Get-N8nWorkflowConditions -Workflow $workflow -IncludeTransitions
     
     if ($conditions -ne $null) {
-        Write-Message "Conditions analysées avec succès: $($conditions.Count) nœuds conditionnels trouvés" -Status "SUCCESS"
+        Write-Message "Conditions analysÃ©es avec succÃ¨s: $($conditions.Count) nÅ“uds conditionnels trouvÃ©s" -Status "SUCCESS"
         
         # Enregistrer les conditions
         $conditionsOutputPath = Join-Path -Path $OutputFolder -ChildPath "workflow_conditions.$($Format.ToLower())"
@@ -237,7 +237,7 @@ if ($ConditionsOnly) {
                 $markdown = "# Conditions du workflow: $($workflow.name)`n`n"
                 
                 if ($conditions.Count -eq 0) {
-                    $markdown += "Aucun nœud conditionnel trouvé dans le workflow.`n"
+                    $markdown += "Aucun nÅ“ud conditionnel trouvÃ© dans le workflow.`n"
                 }
                 else {
                     foreach ($condition in $conditions) {
@@ -245,7 +245,7 @@ if ($ConditionsOnly) {
                         $markdown += "- **Type**: $($condition.Type)`n"
                         $markdown += "- **Conditions**:`n`n"
                         
-                        $markdown += "| Type | Valeur 1 | Opération | Valeur 2 |`n"
+                        $markdown += "| Type | Valeur 1 | OpÃ©ration | Valeur 2 |`n"
                         $markdown += "|------|----------|-----------|----------|`n"
                         foreach ($cond in $condition.Conditions) {
                             $markdown += "| $($cond.Type) | $($cond.Value1) | $($cond.Operation) | $($cond.Value2) |`n"
@@ -271,7 +271,7 @@ if ($ConditionsOnly) {
                 $html += "<h1>Conditions du workflow: $($workflow.name)</h1>"
                 
                 if ($conditions.Count -eq 0) {
-                    $html += "<p>Aucun nœud conditionnel trouvé dans le workflow.</p>"
+                    $html += "<p>Aucun nÅ“ud conditionnel trouvÃ© dans le workflow.</p>"
                 }
                 else {
                     foreach ($condition in $conditions) {
@@ -279,7 +279,7 @@ if ($ConditionsOnly) {
                         $html += "<p><strong>Type</strong>: $($condition.Type)</p>"
                         $html += "<p><strong>Conditions</strong>:</p>"
                         
-                        $html += "<table border='1'><tr><th>Type</th><th>Valeur 1</th><th>Opération</th><th>Valeur 2</th></tr>"
+                        $html += "<table border='1'><tr><th>Type</th><th>Valeur 1</th><th>OpÃ©ration</th><th>Valeur 2</th></tr>"
                         foreach ($cond in $condition.Conditions) {
                             $html += "<tr><td>$($cond.Type)</td><td>$($cond.Value1)</td><td>$($cond.Operation)</td><td>$($cond.Value2)</td></tr>"
                         }
@@ -303,7 +303,7 @@ if ($ConditionsOnly) {
                 $text = "Conditions du workflow: $($workflow.name)`r`n`r`n"
                 
                 if ($conditions.Count -eq 0) {
-                    $text += "Aucun nœud conditionnel trouvé dans le workflow.`r`n"
+                    $text += "Aucun nÅ“ud conditionnel trouvÃ© dans le workflow.`r`n"
                 }
                 else {
                     foreach ($condition in $conditions) {
@@ -329,22 +329,22 @@ if ($ConditionsOnly) {
             }
         }
         
-        Write-Message "Conditions enregistrées dans: $conditionsOutputPath" -Status "SUCCESS"
+        Write-Message "Conditions enregistrÃ©es dans: $conditionsOutputPath" -Status "SUCCESS"
     }
     else {
-        Write-Message "Échec de l'analyse des conditions" -Status "ERROR"
+        Write-Message "Ã‰chec de l'analyse des conditions" -Status "ERROR"
     }
 }
 
-# Générer un rapport complet
+# GÃ©nÃ©rer un rapport complet
 $reportOutputPath = Join-Path -Path $OutputFolder -ChildPath "workflow_analysis_report.$($Format.ToLower())"
 $report = Get-N8nWorkflowAnalysisReport -WorkflowPath $WorkflowPath -OutputPath $reportOutputPath -Format $Format
 
 if ($report) {
-    Write-Message "Rapport complet généré avec succès: $reportOutputPath" -Status "SUCCESS"
+    Write-Message "Rapport complet gÃ©nÃ©rÃ© avec succÃ¨s: $reportOutputPath" -Status "SUCCESS"
 }
 else {
-    Write-Message "Échec de la génération du rapport complet" -Status "ERROR"
+    Write-Message "Ã‰chec de la gÃ©nÃ©ration du rapport complet" -Status "ERROR"
 }
 
-Write-Message "Analyse terminée."
+Write-Message "Analyse terminÃ©e."

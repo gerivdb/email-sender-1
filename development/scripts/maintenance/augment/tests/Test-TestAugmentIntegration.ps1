@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour le script de test d'intégration avec Augment Code.
+    Tests unitaires pour le script de test d'intÃ©gration avec Augment Code.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour le script de test d'intégration avec Augment Code,
+    Ce script contient des tests unitaires pour le script de test d'intÃ©gration avec Augment Code,
     utilisant le framework Pester.
 
 .EXAMPLE
     Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-TestAugmentIntegration.ps1"
-    # Exécute les tests unitaires pour le script de test d'intégration avec Augment Code
+    # ExÃ©cute les tests unitaires pour le script de test d'intÃ©gration avec Augment Code
 
 .NOTES
     Version: 1.0
@@ -16,17 +16,17 @@
     Auteur: Augment Agent
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Déterminer le chemin du script à tester
+# DÃ©terminer le chemin du script Ã  tester
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $scriptPath = Join-Path -Path $scriptRoot -ChildPath "test-augment-integration.ps1"
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $scriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -62,25 +62,25 @@ Describe "Test Augment Integration Tests" {
     
     Context "Script Loading" {
         It "Should load the script without errors" {
-            # Vérifier que le script existe
+            # VÃ©rifier que le script existe
             Test-Path -Path $scriptPath | Should -Be $true
             
-            # Charger le script dans un bloc de script pour éviter d'exécuter le script complet
+            # Charger le script dans un bloc de script pour Ã©viter d'exÃ©cuter le script complet
             $scriptContent = Get-Content -Path $scriptPath -Raw
             
-            # Remplacer la partie qui exécute le script par un commentaire
-            $scriptContent = $scriptContent -replace "# Exécuter les tests.*?# Afficher un résumé", "# Script execution disabled for testing"
+            # Remplacer la partie qui exÃ©cute le script par un commentaire
+            $scriptContent = $scriptContent -replace "# ExÃ©cuter les tests.*?# Afficher un rÃ©sumÃ©", "# Script execution disabled for testing"
             
             $scriptBlock = [ScriptBlock]::Create($scriptContent)
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             { . $scriptBlock } | Should -Not -Throw
         }
     }
     
     Context "Test Functions" {
         It "Should test the AugmentIntegration module" {
-            # Définir la fonction Test-AugmentIntegrationModule pour le test
+            # DÃ©finir la fonction Test-AugmentIntegrationModule pour le test
             function Test-AugmentIntegrationModule {
                 $modulePath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\AugmentIntegration.psm1"
                 return Test-Path -Path $modulePath
@@ -92,7 +92,7 @@ Describe "Test Augment Integration Tests" {
         }
         
         It "Should test the Memories MCP server" {
-            # Définir la fonction Test-MemoriesMCPServer pour le test
+            # DÃ©finir la fonction Test-MemoriesMCPServer pour le test
             function Test-MemoriesMCPServer {
                 $serverPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\mcp-memories-server.ps1"
                 return Test-Path -Path $serverPath
@@ -104,7 +104,7 @@ Describe "Test Augment Integration Tests" {
         }
         
         It "Should test the Mode Manager MCP adapter" {
-            # Définir la fonction Test-ModeManagerMCPAdapter pour le test
+            # DÃ©finir la fonction Test-ModeManagerMCPAdapter pour le test
             function Test-ModeManagerMCPAdapter {
                 $adapterPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\mcp-mode-manager-adapter.ps1"
                 return Test-Path -Path $adapterPath
@@ -116,7 +116,7 @@ Describe "Test Augment Integration Tests" {
         }
         
         It "Should test the Mode Manager integration" {
-            # Définir la fonction Test-ModeManagerIntegration pour le test
+            # DÃ©finir la fonction Test-ModeManagerIntegration pour le test
             function Test-ModeManagerIntegration {
                 $integrationPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\mode-manager-augment-integration.ps1"
                 return Test-Path -Path $integrationPath
@@ -128,7 +128,7 @@ Describe "Test Augment Integration Tests" {
         }
         
         It "Should test the Memories optimization" {
-            # Définir la fonction Test-MemoriesOptimization pour le test
+            # DÃ©finir la fonction Test-MemoriesOptimization pour le test
             function Test-MemoriesOptimization {
                 $optimizationPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\optimize-augment-memories.ps1"
                 return Test-Path -Path $optimizationPath
@@ -140,7 +140,7 @@ Describe "Test Augment Integration Tests" {
         }
         
         It "Should test the MCP configuration" {
-            # Définir la fonction Test-MCPConfiguration pour le test
+            # DÃ©finir la fonction Test-MCPConfiguration pour le test
             function Test-MCPConfiguration {
                 $configurationPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\configure-augment-mcp.ps1"
                 return Test-Path -Path $configurationPath
@@ -152,7 +152,7 @@ Describe "Test Augment Integration Tests" {
         }
         
         It "Should test the MCP servers startup" {
-            # Définir la fonction Test-MCPServersStartup pour le test
+            # DÃ©finir la fonction Test-MCPServersStartup pour le test
             function Test-MCPServersStartup {
                 $startupPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\start-mcp-servers.ps1"
                 return Test-Path -Path $startupPath
@@ -164,7 +164,7 @@ Describe "Test Augment Integration Tests" {
         }
         
         It "Should test the performance analysis" {
-            # Définir la fonction Test-PerformanceAnalysis pour le test
+            # DÃ©finir la fonction Test-PerformanceAnalysis pour le test
             function Test-PerformanceAnalysis {
                 $analysisPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\analyze-augment-performance.ps1"
                 return Test-Path -Path $analysisPath
@@ -176,7 +176,7 @@ Describe "Test Augment Integration Tests" {
         }
         
         It "Should test the Memories synchronization" {
-            # Définir la fonction Test-MemoriesSync pour le test
+            # DÃ©finir la fonction Test-MemoriesSync pour le test
             function Test-MemoriesSync {
                 $syncPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\sync-memories-with-n8n.ps1"
                 return Test-Path -Path $syncPath
@@ -188,7 +188,7 @@ Describe "Test Augment Integration Tests" {
         }
         
         It "Should test the documentation" {
-            # Définir la fonction Test-Documentation pour le test
+            # DÃ©finir la fonction Test-Documentation pour le test
             function Test-Documentation {
                 $docPaths = @(
                     "docs\guides\augment\integration_guide.md",
@@ -215,10 +215,10 @@ Describe "Test Augment Integration Tests" {
     
     Context "Script Execution" {
         It "Should execute all tests" {
-            # Exécuter le script
+            # ExÃ©cuter le script
             & $scriptPath
             
-            # Vérifier que les fonctions ont été appelées
+            # VÃ©rifier que les fonctions ont Ã©tÃ© appelÃ©es
             Should -Invoke -CommandName Test-Component -Times 10
         }
     }

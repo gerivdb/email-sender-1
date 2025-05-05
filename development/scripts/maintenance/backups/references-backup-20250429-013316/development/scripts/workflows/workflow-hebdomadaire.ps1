@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'automatisation pour les tâches hebdomadaires de gestion de roadmap.
+    Script d'automatisation pour les tÃ¢ches hebdomadaires de gestion de roadmap.
 
 .DESCRIPTION
-    Ce script exécute les tâches hebdomadaires de gestion de roadmap :
+    Ce script exÃ©cute les tÃ¢ches hebdomadaires de gestion de roadmap :
     1. Synchronisation de toutes les roadmaps
-    2. Génération de rapports hebdomadaires
-    3. Planification des tâches pour la semaine à venir
-    4. Journalisation des résultats
+    2. GÃ©nÃ©ration de rapports hebdomadaires
+    3. Planification des tÃ¢ches pour la semaine Ã  venir
+    4. Journalisation des rÃ©sultats
 
 .PARAMETER RoadmapPaths
-    Tableau des chemins vers les fichiers de roadmap à traiter.
-    Par défaut : @("projet\roadmaps\Roadmap\roadmap_complete_converted.md")
+    Tableau des chemins vers les fichiers de roadmap Ã  traiter.
+    Par dÃ©faut : @("projet\roadmaps\Roadmap\roadmap_complete_converted.md")
 
 .PARAMETER OutputPath
-    Chemin vers le répertoire de sortie pour les rapports et les plans.
-    Par défaut : "projet\roadmaps"
+    Chemin vers le rÃ©pertoire de sortie pour les rapports et les plans.
+    Par dÃ©faut : "projet\roadmaps"
 
 .PARAMETER LogPath
-    Chemin vers le répertoire de journalisation.
-    Par défaut : "projet\roadmaps\Logs"
+    Chemin vers le rÃ©pertoire de journalisation.
+    Par dÃ©faut : "projet\roadmaps\Logs"
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration unifiée.
-    Par défaut : "development\config\unified-config.json"
+    Chemin vers le fichier de configuration unifiÃ©e.
+    Par dÃ©faut : "development\config\unified-config.json"
 
 .EXAMPLE
     .\workflow-hebdomadaire.ps1
@@ -34,7 +34,7 @@
 .NOTES
     Auteur: Integrated Manager Team
     Version: 1.0
-    Date de création: 2023-06-01
+    Date de crÃ©ation: 2023-06-01
 #>
 [CmdletBinding()]
 param (
@@ -51,7 +51,7 @@ param (
     [string]$ConfigPath = "development\config\unified-config.json"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and 
        -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -61,7 +61,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
@@ -89,15 +89,15 @@ if (-not [System.IO.Path]::IsPathRooted($ConfigPath)) {
     $ConfigPath = Join-Path -Path $projectRoot -ChildPath $ConfigPath
 }
 
-# Vérifier que les fichiers de roadmap existent
+# VÃ©rifier que les fichiers de roadmap existent
 foreach ($path in $RoadmapPaths) {
     if (-not (Test-Path -Path $path)) {
-        Write-Error "Le fichier de roadmap spécifié n'existe pas : $path"
+        Write-Error "Le fichier de roadmap spÃ©cifiÃ© n'existe pas : $path"
         exit 1
     }
 }
 
-# Créer les répertoires nécessaires s'ils n'existent pas
+# CrÃ©er les rÃ©pertoires nÃ©cessaires s'ils n'existent pas
 $reportsPath = Join-Path -Path $OutputPath -ChildPath "Reports"
 $plansPath = Join-Path -Path $OutputPath -ChildPath "Plans"
 
@@ -107,7 +107,7 @@ foreach ($path in @($LogPath, $reportsPath, $plansPath)) {
     }
 }
 
-# Définir le chemin du fichier de journal
+# DÃ©finir le chemin du fichier de journal
 $date = Get-Date -Format "yyyy-MM-dd"
 $logFile = Join-Path -Path $LogPath -ChildPath "workflow-hebdomadaire-$date.log"
 
@@ -137,25 +137,25 @@ function Write-Log {
     $logMessage | Out-File -FilePath $logFile -Append
 }
 
-# Définir le chemin du gestionnaire intégré
+# DÃ©finir le chemin du gestionnaire intÃ©grÃ©
 $integratedManagerPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\integrated-manager.ps1"
 
-# Vérifier que le gestionnaire intégré existe
+# VÃ©rifier que le gestionnaire intÃ©grÃ© existe
 if (-not (Test-Path -Path $integratedManagerPath)) {
-    Write-Log "Le gestionnaire intégré est introuvable : $integratedManagerPath" -Level "ERROR"
+    Write-Log "Le gestionnaire intÃ©grÃ© est introuvable : $integratedManagerPath" -Level "ERROR"
     exit 1
 }
 
-# Journaliser le début du workflow
-Write-Log "Début du workflow hebdomadaire" -Level "INFO"
+# Journaliser le dÃ©but du workflow
+Write-Log "DÃ©but du workflow hebdomadaire" -Level "INFO"
 Write-Log "Fichiers de roadmap : $($RoadmapPaths -join ', ')" -Level "INFO"
-Write-Log "Répertoire de sortie : $OutputPath" -Level "INFO"
+Write-Log "RÃ©pertoire de sortie : $OutputPath" -Level "INFO"
 Write-Log "Fichier de journal : $logFile" -Level "INFO"
 Write-Log "Fichier de configuration : $ConfigPath" -Level "INFO"
 
 try {
-    # Étape 1: Synchronisation de toutes les roadmaps
-    Write-Log "Étape 1: Synchronisation de toutes les roadmaps" -Level "INFO"
+    # Ã‰tape 1: Synchronisation de toutes les roadmaps
+    Write-Log "Ã‰tape 1: Synchronisation de toutes les roadmaps" -Level "INFO"
     
     # Synchroniser toutes les roadmaps vers JSON et HTML
     $syncResults = @()
@@ -168,9 +168,9 @@ try {
         $syncJsonResult = & $integratedManagerPath -Mode "ROADMAP-SYNC" -SourcePath $roadmapPath -TargetFormat "JSON" -ConfigPath $ConfigPath
         
         if ($syncJsonResult.Success) {
-            Write-Log "Synchronisation vers JSON réussie : $($syncJsonResult.TargetPath)" -Level "SUCCESS"
+            Write-Log "Synchronisation vers JSON rÃ©ussie : $($syncJsonResult.TargetPath)" -Level "SUCCESS"
         } else {
-            Write-Log "Échec de la synchronisation vers JSON : $($syncJsonResult.TargetPath)" -Level "ERROR"
+            Write-Log "Ã‰chec de la synchronisation vers JSON : $($syncJsonResult.TargetPath)" -Level "ERROR"
         }
         
         # Synchroniser vers HTML
@@ -178,9 +178,9 @@ try {
         $syncHtmlResult = & $integratedManagerPath -Mode "ROADMAP-SYNC" -SourcePath $roadmapPath -TargetFormat "HTML" -ConfigPath $ConfigPath
         
         if ($syncHtmlResult.Success) {
-            Write-Log "Synchronisation vers HTML réussie : $($syncHtmlResult.TargetPath)" -Level "SUCCESS"
+            Write-Log "Synchronisation vers HTML rÃ©ussie : $($syncHtmlResult.TargetPath)" -Level "SUCCESS"
         } else {
-            Write-Log "Échec de la synchronisation vers HTML : $($syncHtmlResult.TargetPath)" -Level "ERROR"
+            Write-Log "Ã‰chec de la synchronisation vers HTML : $($syncHtmlResult.TargetPath)" -Level "ERROR"
         }
         
         $syncResults += @{
@@ -190,8 +190,8 @@ try {
         }
     }
     
-    # Étape 2: Génération de rapports hebdomadaires
-    Write-Log "Étape 2: Génération de rapports hebdomadaires" -Level "INFO"
+    # Ã‰tape 2: GÃ©nÃ©ration de rapports hebdomadaires
+    Write-Log "Ã‰tape 2: GÃ©nÃ©ration de rapports hebdomadaires" -Level "INFO"
     
     $reportResults = @()
     
@@ -199,14 +199,14 @@ try {
         $roadmapName = [System.IO.Path]::GetFileNameWithoutExtension($roadmapPath)
         $reportPath = Join-Path -Path $reportsPath -ChildPath "hebdomadaire-$roadmapName-$date"
         
-        Write-Log "Génération du rapport hebdomadaire pour : $roadmapPath" -Level "INFO"
+        Write-Log "GÃ©nÃ©ration du rapport hebdomadaire pour : $roadmapPath" -Level "INFO"
         $reportResult = & $integratedManagerPath -Mode "ROADMAP-REPORT" -RoadmapPath $roadmapPath -OutputPath $reportPath -ReportFormat "All" -ConfigPath $ConfigPath
         
         if ($reportResult) {
-            Write-Log "Génération du rapport hebdomadaire réussie" -Level "SUCCESS"
-            Write-Log "Rapports générés : $($reportResult.GeneratedReports -join ', ')" -Level "INFO"
+            Write-Log "GÃ©nÃ©ration du rapport hebdomadaire rÃ©ussie" -Level "SUCCESS"
+            Write-Log "Rapports gÃ©nÃ©rÃ©s : $($reportResult.GeneratedReports -join ', ')" -Level "INFO"
         } else {
-            Write-Log "Échec de la génération du rapport hebdomadaire" -Level "ERROR"
+            Write-Log "Ã‰chec de la gÃ©nÃ©ration du rapport hebdomadaire" -Level "ERROR"
         }
         
         $reportResults += @{
@@ -216,8 +216,8 @@ try {
         }
     }
     
-    # Étape 3: Planification des tâches pour la semaine à venir
-    Write-Log "Étape 3: Planification des tâches pour la semaine à venir" -Level "INFO"
+    # Ã‰tape 3: Planification des tÃ¢ches pour la semaine Ã  venir
+    Write-Log "Ã‰tape 3: Planification des tÃ¢ches pour la semaine Ã  venir" -Level "INFO"
     
     $planResults = @()
     
@@ -225,14 +225,14 @@ try {
         $roadmapName = [System.IO.Path]::GetFileNameWithoutExtension($roadmapPath)
         $planPath = Join-Path -Path $plansPath -ChildPath "hebdomadaire-$roadmapName-$date.md"
         
-        Write-Log "Génération du plan hebdomadaire pour : $roadmapPath" -Level "INFO"
+        Write-Log "GÃ©nÃ©ration du plan hebdomadaire pour : $roadmapPath" -Level "INFO"
         $planResult = & $integratedManagerPath -Mode "ROADMAP-PLAN" -RoadmapPath $roadmapPath -OutputPath $planPath -DaysToForecast 7 -ConfigPath $ConfigPath
         
         if ($planResult) {
-            Write-Log "Génération du plan hebdomadaire réussie" -Level "SUCCESS"
-            Write-Log "Plan généré : $planPath" -Level "INFO"
+            Write-Log "GÃ©nÃ©ration du plan hebdomadaire rÃ©ussie" -Level "SUCCESS"
+            Write-Log "Plan gÃ©nÃ©rÃ© : $planPath" -Level "INFO"
         } else {
-            Write-Log "Échec de la génération du plan hebdomadaire" -Level "ERROR"
+            Write-Log "Ã‰chec de la gÃ©nÃ©ration du plan hebdomadaire" -Level "ERROR"
         }
         
         $planResults += @{
@@ -242,19 +242,19 @@ try {
         }
     }
     
-    # Étape 4: Exécution du workflow de gestion de roadmap
-    Write-Log "Étape 4: Exécution du workflow de gestion de roadmap" -Level "INFO"
+    # Ã‰tape 4: ExÃ©cution du workflow de gestion de roadmap
+    Write-Log "Ã‰tape 4: ExÃ©cution du workflow de gestion de roadmap" -Level "INFO"
     
     $workflowResults = @()
     
     foreach ($roadmapPath in $RoadmapPaths) {
-        Write-Log "Exécution du workflow de gestion de roadmap pour : $roadmapPath" -Level "INFO"
+        Write-Log "ExÃ©cution du workflow de gestion de roadmap pour : $roadmapPath" -Level "INFO"
         $workflowResult = & $integratedManagerPath -Workflow "RoadmapManagement" -RoadmapPath $roadmapPath -ConfigPath $ConfigPath
         
         if ($workflowResult) {
-            Write-Log "Exécution du workflow de gestion de roadmap réussie" -Level "SUCCESS"
+            Write-Log "ExÃ©cution du workflow de gestion de roadmap rÃ©ussie" -Level "SUCCESS"
         } else {
-            Write-Log "Échec de l'exécution du workflow de gestion de roadmap" -Level "ERROR"
+            Write-Log "Ã‰chec de l'exÃ©cution du workflow de gestion de roadmap" -Level "ERROR"
         }
         
         $workflowResults += @{
@@ -267,12 +267,12 @@ try {
     Write-Log "Fin du workflow hebdomadaire" -Level "SUCCESS"
 } catch {
     # Journaliser l'erreur
-    Write-Log "Erreur lors de l'exécution du workflow hebdomadaire : $_" -Level "ERROR"
+    Write-Log "Erreur lors de l'exÃ©cution du workflow hebdomadaire : $_" -Level "ERROR"
     Write-Log "Trace de la pile : $($_.ScriptStackTrace)" -Level "ERROR"
     exit 1
 }
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 return @{
     RoadmapPaths = $RoadmapPaths
     OutputPath = $OutputPath

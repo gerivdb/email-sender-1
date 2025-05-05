@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests de validation des canaux de sortie du système de feedback.
+    Tests de validation des canaux de sortie du systÃ¨me de feedback.
 
 .DESCRIPTION
-    Ce script contient les tests pour valider les différents canaux de sortie
-    du système de feedback, y compris la console, les fichiers de log,
-    les événements et les sorties personnalisées.
+    Ce script contient les tests pour valider les diffÃ©rents canaux de sortie
+    du systÃ¨me de feedback, y compris la console, les fichiers de log,
+    les Ã©vÃ©nements et les sorties personnalisÃ©es.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les chemins des modules à tester
+# DÃ©finir les chemins des modules Ã  tester
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $feedbackManagerPath = Join-Path -Path $modulesPath -ChildPath "FeedbackManager\FeedbackManager.psm1"
 $feedbackCollectorPath = Join-Path -Path $modulesPath -ChildPath "FeedbackCollector\FeedbackCollector.psm1"
 $feedbackExporterPath = Join-Path -Path $modulesPath -ChildPath "FeedbackExporter\FeedbackExporter.psm1"
 
-# Importer les modules à tester
+# Importer les modules Ã  tester
 if (Test-Path -Path $feedbackManagerPath) {
     Import-Module $feedbackManagerPath -Force
 }
@@ -46,18 +46,18 @@ else {
     throw "Module FeedbackExporter introuvable : $feedbackExporterPath"
 }
 
-# Définir les tests
-Describe "Système de feedback - Tests des canaux de sortie" {
+# DÃ©finir les tests
+Describe "SystÃ¨me de feedback - Tests des canaux de sortie" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "FeedbackOutputTests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
 
-        # Créer les sous-répertoires nécessaires
+        # CrÃ©er les sous-rÃ©pertoires nÃ©cessaires
         $script:LogDir = Join-Path -Path $script:TestDir -ChildPath "logs"
         New-Item -Path $script:LogDir -ItemType Directory -Force | Out-Null
 
-        # Fonction pour créer un canal de sortie vers un fichier de log
+        # Fonction pour crÃ©er un canal de sortie vers un fichier de log
         function New-FileLogChannel {
             param (
                 [Parameter(Mandatory = $true)]
@@ -75,7 +75,7 @@ Describe "Système de feedback - Tests des canaux de sortie" {
             }
         }
 
-        # Fonction pour créer un canal de sortie vers une variable
+        # Fonction pour crÃ©er un canal de sortie vers une variable
         function New-VariableChannel {
             param (
                 [Parameter(Mandatory = $true)]
@@ -92,7 +92,7 @@ Describe "Système de feedback - Tests des canaux de sortie" {
             }
         }
 
-        # Fonction pour créer un canal de sortie qui déclenche un événement
+        # Fonction pour crÃ©er un canal de sortie qui dÃ©clenche un Ã©vÃ©nement
         function New-EventChannel {
             param (
                 [Parameter(Mandatory = $true)]
@@ -105,12 +105,12 @@ Describe "Système de feedback - Tests des canaux de sortie" {
                     [FeedbackMessage]$Message
                 )
                 
-                # Créer un événement PowerShell
+                # CrÃ©er un Ã©vÃ©nement PowerShell
                 $event = New-Event -SourceIdentifier $EventName -MessageData $Message
             }
         }
 
-        # Fonction pour créer un canal de sortie formaté
+        # Fonction pour crÃ©er un canal de sortie formatÃ©
         function New-FormattedChannel {
             param (
                 [Parameter(Mandatory = $true)]
@@ -140,57 +140,57 @@ Describe "Système de feedback - Tests des canaux de sortie" {
             Mock Write-Host { $script:ConsoleOutput = $args[0] }
         }
 
-        It "Doit écrire les messages dans la console" {
+        It "Doit Ã©crire les messages dans la console" {
             $message = Send-ProcessManagerInformation -Message "Test console output" -PassThru
             
             $script:ConsoleOutput | Should -Not -BeNullOrEmpty
             $script:ConsoleOutput | Should -Match "Test console output"
         }
 
-        It "Doit formater les messages avec la couleur appropriée" {
+        It "Doit formater les messages avec la couleur appropriÃ©e" {
             $message = Send-ProcessManagerError -Message "Test error output" -PassThru
             
             $script:ConsoleOutput | Should -Not -BeNullOrEmpty
             $script:ConsoleOutput | Should -Match "Test error output"
             
-            # Vérifier que Write-Host a été appelé avec la couleur rouge
+            # VÃ©rifier que Write-Host a Ã©tÃ© appelÃ© avec la couleur rouge
             Should -Invoke Write-Host -ParameterFilter { $ForegroundColor -eq "Red" }
         }
     }
 
     Context "Canal de sortie fichier" {
-        It "Doit écrire les messages dans un fichier de log" {
-            # Créer un fichier de log pour le test
+        It "Doit Ã©crire les messages dans un fichier de log" {
+            # CrÃ©er un fichier de log pour le test
             $logPath = Join-Path -Path $script:LogDir -ChildPath "test_log.txt"
             
-            # Créer un canal de sortie vers le fichier de log
+            # CrÃ©er un canal de sortie vers le fichier de log
             $fileChannel = New-FileLogChannel -LogPath $logPath
             
-            # Ajouter le canal à la liste des canaux de sortie
+            # Ajouter le canal Ã  la liste des canaux de sortie
             $script:FeedbackChannels = @($fileChannel)
             
             # Envoyer un message
             $message = Send-ProcessManagerInformation -Message "Test file output" -PassThru
             
-            # Vérifier que le fichier de log existe et contient le message
+            # VÃ©rifier que le fichier de log existe et contient le message
             Test-Path -Path $logPath | Should -Be $true
             $logContent = Get-Content -Path $logPath -Raw
             $logContent | Should -Match "Test file output"
             
-            # Restaurer les canaux de sortie par défaut
+            # Restaurer les canaux de sortie par dÃ©faut
             $script:FeedbackChannels = @()
         }
     }
 
     Context "Canal de sortie variable" {
         It "Doit stocker les messages dans une variable" {
-            # Créer une variable pour stocker les messages
+            # CrÃ©er une variable pour stocker les messages
             $messages = @()
             
-            # Créer un canal de sortie vers la variable
+            # CrÃ©er un canal de sortie vers la variable
             $variableChannel = New-VariableChannel -VariableRef ([ref]$messages)
             
-            # Ajouter le canal à la liste des canaux de sortie
+            # Ajouter le canal Ã  la liste des canaux de sortie
             $script:FeedbackChannels = @($variableChannel)
             
             # Envoyer plusieurs messages
@@ -198,26 +198,26 @@ Describe "Système de feedback - Tests des canaux de sortie" {
             $message2 = Send-ProcessManagerWarning -Message "Test variable output 2" -PassThru
             $message3 = Send-ProcessManagerError -Message "Test variable output 3" -PassThru
             
-            # Vérifier que les messages ont été stockés dans la variable
+            # VÃ©rifier que les messages ont Ã©tÃ© stockÃ©s dans la variable
             $messages.Count | Should -Be 3
             $messages[0].Message | Should -Be "Test variable output 1"
             $messages[1].Message | Should -Be "Test variable output 2"
             $messages[2].Message | Should -Be "Test variable output 3"
             
-            # Restaurer les canaux de sortie par défaut
+            # Restaurer les canaux de sortie par dÃ©faut
             $script:FeedbackChannels = @()
         }
     }
 
-    Context "Canal de sortie événement" {
-        It "Doit déclencher des événements pour les messages" {
-            # Créer un canal de sortie qui déclenche des événements
+    Context "Canal de sortie Ã©vÃ©nement" {
+        It "Doit dÃ©clencher des Ã©vÃ©nements pour les messages" {
+            # CrÃ©er un canal de sortie qui dÃ©clenche des Ã©vÃ©nements
             $eventChannel = New-EventChannel -EventName "FeedbackTest"
             
-            # Ajouter le canal à la liste des canaux de sortie
+            # Ajouter le canal Ã  la liste des canaux de sortie
             $script:FeedbackChannels = @($eventChannel)
             
-            # S'abonner à l'événement
+            # S'abonner Ã  l'Ã©vÃ©nement
             $eventReceived = $false
             $eventMessage = $null
             
@@ -229,10 +229,10 @@ Describe "Système de feedback - Tests des canaux de sortie" {
             # Envoyer un message
             $message = Send-ProcessManagerInformation -Message "Test event output" -PassThru
             
-            # Attendre que l'événement soit traité
+            # Attendre que l'Ã©vÃ©nement soit traitÃ©
             Start-Sleep -Milliseconds 100
             
-            # Vérifier que l'événement a été déclenché
+            # VÃ©rifier que l'Ã©vÃ©nement a Ã©tÃ© dÃ©clenchÃ©
             $eventReceived | Should -Be $true
             $eventMessage | Should -Not -BeNullOrEmpty
             $eventMessage.Message | Should -Be "Test event output"
@@ -243,49 +243,49 @@ Describe "Système de feedback - Tests des canaux de sortie" {
         }
     }
 
-    Context "Canal de sortie formaté" {
-        It "Doit formater les messages selon un modèle personnalisé" {
-            # Créer une variable pour stocker les messages formatés
+    Context "Canal de sortie formatÃ©" {
+        It "Doit formater les messages selon un modÃ¨le personnalisÃ©" {
+            # CrÃ©er une variable pour stocker les messages formatÃ©s
             $formattedOutput = @()
             
-            # Créer un canal de sortie formaté
+            # CrÃ©er un canal de sortie formatÃ©
             $format = "[{Timestamp}] <{Type}> {Message} (Severity: {Severity})"
             $formattedChannel = New-FormattedChannel -Format $format -OutputRef ([ref]$formattedOutput)
             
-            # Ajouter le canal à la liste des canaux de sortie
+            # Ajouter le canal Ã  la liste des canaux de sortie
             $script:FeedbackChannels = @($formattedChannel)
             
             # Envoyer un message
             $message = Send-ProcessManagerWarning -Message "Test formatted output" -Severity 2 -PassThru
             
-            # Vérifier que le message a été formaté correctement
+            # VÃ©rifier que le message a Ã©tÃ© formatÃ© correctement
             $formattedOutput.Count | Should -Be 1
             $formattedOutput[0] | Should -Match "\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] <Warning> Test formatted output \(Severity: 2\)"
             
-            # Restaurer les canaux de sortie par défaut
+            # Restaurer les canaux de sortie par dÃ©faut
             $script:FeedbackChannels = @()
         }
     }
 
     Context "Canaux de sortie multiples" {
-        It "Doit envoyer les messages à plusieurs canaux simultanément" {
-            # Créer des variables pour stocker les sorties
+        It "Doit envoyer les messages Ã  plusieurs canaux simultanÃ©ment" {
+            # CrÃ©er des variables pour stocker les sorties
             $consoleOutput = $null
             $fileOutput = Join-Path -Path $script:LogDir -ChildPath "multi_channel_test.txt"
             $variableOutput = @()
             
-            # Créer les canaux de sortie
+            # CrÃ©er les canaux de sortie
             Mock Write-Host { $consoleOutput = $args[0] }
             $fileChannel = New-FileLogChannel -LogPath $fileOutput
             $variableChannel = New-VariableChannel -VariableRef ([ref]$variableOutput)
             
-            # Ajouter les canaux à la liste des canaux de sortie
+            # Ajouter les canaux Ã  la liste des canaux de sortie
             $script:FeedbackChannels = @($fileChannel, $variableChannel)
             
             # Envoyer un message
             $message = Send-ProcessManagerInformation -Message "Test multi-channel output" -PassThru
             
-            # Vérifier que le message a été envoyé à tous les canaux
+            # VÃ©rifier que le message a Ã©tÃ© envoyÃ© Ã  tous les canaux
             $consoleOutput | Should -Not -BeNullOrEmpty
             $consoleOutput | Should -Match "Test multi-channel output"
             
@@ -296,14 +296,14 @@ Describe "Système de feedback - Tests des canaux de sortie" {
             $variableOutput.Count | Should -Be 1
             $variableOutput[0].Message | Should -Be "Test multi-channel output"
             
-            # Restaurer les canaux de sortie par défaut
+            # Restaurer les canaux de sortie par dÃ©faut
             $script:FeedbackChannels = @()
         }
     }
 
-    Context "Exportation vers différents formats" {
+    Context "Exportation vers diffÃ©rents formats" {
         BeforeAll {
-            # Préparer une collection de messages pour les tests d'exportation
+            # PrÃ©parer une collection de messages pour les tests d'exportation
             $script:MessageCollection.Clear()
             
             for ($i = 0; $i -lt 10; $i++) {
@@ -329,7 +329,7 @@ Describe "Système de feedback - Tests des canaux de sortie" {
             $content = Get-Content -Path $exportPath -Raw
             $content | Should -Not -BeNullOrEmpty
             
-            # Vérifier que le contenu est un JSON valide
+            # VÃ©rifier que le contenu est un JSON valide
             { ConvertFrom-Json -InputObject $content } | Should -Not -Throw
             $json = ConvertFrom-Json -InputObject $content
             $json.Messages.Count | Should -Be 10
@@ -344,10 +344,10 @@ Describe "Système de feedback - Tests des canaux de sortie" {
             $content = Get-Content -Path $exportPath -Raw
             $content | Should -Not -BeNullOrEmpty
             
-            # Vérifier que le contenu est un CSV valide
+            # VÃ©rifier que le contenu est un CSV valide
             $content | Should -Match "Timestamp,Type,Source,Severity,Message"
             $lines = $content -split "`n"
-            $lines.Count | Should -BeGreaterThan 10  # En-tête + 10 messages
+            $lines.Count | Should -BeGreaterThan 10  # En-tÃªte + 10 messages
         }
     }
 
@@ -357,7 +357,7 @@ Describe "Système de feedback - Tests des canaux de sortie" {
             Remove-Item -Path $script:TestDir -Recurse -Force
         }
         
-        # Restaurer les canaux de sortie par défaut
+        # Restaurer les canaux de sortie par dÃ©faut
         $script:FeedbackChannels = @()
     }
 }

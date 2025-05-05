@@ -1,18 +1,18 @@
-# Tests unitaires pour le module PerformancePredictor
+﻿# Tests unitaires pour le module PerformancePredictor
 # Auteur: EMAIL_SENDER_1 Team
 # Version: 1.0.0
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\PerformancePredictor.psm1"
 if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
-    Write-Host "Module importé avec succès: $modulePath" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s: $modulePath" -ForegroundColor Green
 } else {
     Write-Error "Module not found: $modulePath"
     exit 1
 }
 
-# Vérifier que les fonctions du module sont disponibles
+# VÃ©rifier que les fonctions du module sont disponibles
 $requiredFunctions = @(
     'Initialize-PerformancePredictor',
     'Start-ModelTraining',
@@ -34,7 +34,7 @@ if ($missingFunctions.Count -gt 0) {
     exit 1
 }
 
-# Fonction pour générer des métriques de test
+# Fonction pour gÃ©nÃ©rer des mÃ©triques de test
 function New-TestMetrics {
     param (
         [int]$Count = 24,
@@ -56,7 +56,7 @@ function New-TestMetrics {
         $errorRate = 1 + 0.5 * [Math]::Sin($hour / 8 * [Math]::PI) + (Get-Random -Minimum -0.2 -Maximum 0.2)
         $throughputRate = 1000 + 500 * [Math]::Sin($hour / 6 * [Math]::PI) + (Get-Random -Minimum -100 -Maximum 100)
 
-        # Ajouter une anomalie à la 15ème heure
+        # Ajouter une anomalie Ã  la 15Ã¨me heure
         if ($i -eq 15) {
             $cpuUsage += 40
             $memoryUsage += 30
@@ -91,7 +91,7 @@ function New-TestMetrics {
     return $metrics
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PerformancePredictorTests"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
@@ -108,7 +108,7 @@ $testConfig = @{
     MetricsToPredictString = "CPU.Usage,Memory.Usage,Disk.Usage,Network.BandwidthUsage,ResponseTime,ErrorRate,ThroughputRate"
 }
 
-# Générer des métriques de test
+# GÃ©nÃ©rer des mÃ©triques de test
 $testMetrics = New-TestMetrics -Count 48
 
 Describe "PerformancePredictor Module Tests" {
@@ -223,8 +223,8 @@ Describe "PerformancePredictor Module Tests" {
 
             $reportContent = Get-Content -Path $reportPath -Raw
             $reportContent -match "<html>" | Should -Be $true
-            $reportContent -match "<title>Rapport de prédiction des performances</title>" | Should -Be $true
-            $reportContent -match "<h2>Métrique: CPU.Usage</h2>" | Should -Be $true
+            $reportContent -match "<title>Rapport de prÃ©diction des performances</title>" | Should -Be $true
+            $reportContent -match "<h2>MÃ©trique: CPU.Usage</h2>" | Should -Be $true
         }
 
         It "Should generate CSV reports successfully" {

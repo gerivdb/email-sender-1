@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le serveur MCP des Memories.
 
@@ -8,7 +8,7 @@
 
 .EXAMPLE
     Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-MCPMemoriesServer.ps1"
-    # Exécute les tests unitaires pour le serveur MCP des Memories
+    # ExÃ©cute les tests unitaires pour le serveur MCP des Memories
 
 .NOTES
     Version: 1.0
@@ -16,17 +16,17 @@
     Auteur: Augment Agent
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Déterminer le chemin du script à tester
+# DÃ©terminer le chemin du script Ã  tester
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $scriptPath = Join-Path -Path $scriptRoot -ChildPath "mcp-memories-server.ps1"
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $scriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -35,7 +35,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 
 Describe "MCP Memories Server Tests" {
     BeforeAll {
-        # Créer des mocks pour les dépendances
+        # CrÃ©er des mocks pour les dÃ©pendances
         Mock -CommandName New-Object -ParameterFilter { $TypeName -eq "System.Net.Sockets.TcpListener" } -MockWith {
             return [PSCustomObject]@{
                 Start = { }
@@ -68,7 +68,7 @@ Describe "MCP Memories Server Tests" {
             }
         }
         
-        # Créer un fichier de configuration temporaire pour les tests
+        # CrÃ©er un fichier de configuration temporaire pour les tests
         $testDir = Join-Path -Path $TestDrive -ChildPath "config"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         
@@ -86,10 +86,10 @@ Describe "MCP Memories Server Tests" {
         } | ConvertTo-Json -Depth 10
         $testConfigContent | Out-File -FilePath $testConfigPath -Encoding UTF8
         
-        # Définir des variables globales pour les tests
+        # DÃ©finir des variables globales pour les tests
         $Global:TestConfigPath = $testConfigPath
         
-        # Créer des fonctions de mock pour les fonctions du script
+        # CrÃ©er des fonctions de mock pour les fonctions du script
         function Process-MCPRequest {
             param (
                 [string]$RequestJson
@@ -103,7 +103,7 @@ Describe "MCP Memories Server Tests" {
                 [int]$Port
             )
             
-            # Ne rien faire, juste simuler le démarrage du serveur
+            # Ne rien faire, juste simuler le dÃ©marrage du serveur
         }
         
         function Get-AugmentMemories {
@@ -125,23 +125,23 @@ Describe "MCP Memories Server Tests" {
     
     Context "Script Loading" {
         It "Should load the script without errors" {
-            # Vérifier que le script existe
+            # VÃ©rifier que le script existe
             Test-Path -Path $scriptPath | Should -Be $true
             
-            # Charger le script dans un bloc de script pour éviter d'exécuter Start-MCPServer
+            # Charger le script dans un bloc de script pour Ã©viter d'exÃ©cuter Start-MCPServer
             $scriptBlock = [ScriptBlock]::Create((Get-Content -Path $scriptPath -Raw))
             
             # Remplacer Start-MCPServer par une fonction qui ne fait rien
             $scriptBlock = [ScriptBlock]::Create($scriptBlock.ToString() -replace "Start-MCPServer -Port \`$Port", "# Start-MCPServer -Port `$Port")
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             { . $scriptBlock } | Should -Not -Throw
         }
     }
     
     Context "Process-MCPRequest" {
         It "Should process getMemories request correctly" {
-            # Définir la fonction Process-MCPRequest pour le test
+            # DÃ©finir la fonction Process-MCPRequest pour le test
             function Process-MCPRequest {
                 param (
                     [string]$RequestJson
@@ -163,7 +163,7 @@ Describe "MCP Memories Server Tests" {
                         result = $null
                         error = @{
                             code = -32601
-                            message = "Méthode non reconnue : $($request.method)"
+                            message = "MÃ©thode non reconnue : $($request.method)"
                         }
                     } | ConvertTo-Json
                 }
@@ -179,7 +179,7 @@ Describe "MCP Memories Server Tests" {
         }
         
         It "Should process updateMemories request correctly" {
-            # Définir la fonction Process-MCPRequest pour le test
+            # DÃ©finir la fonction Process-MCPRequest pour le test
             function Process-MCPRequest {
                 param (
                     [string]$RequestJson
@@ -197,7 +197,7 @@ Describe "MCP Memories Server Tests" {
                         result = $null
                         error = @{
                             code = -32601
-                            message = "Méthode non reconnue : $($request.method)"
+                            message = "MÃ©thode non reconnue : $($request.method)"
                         }
                     } | ConvertTo-Json
                 }
@@ -212,7 +212,7 @@ Describe "MCP Memories Server Tests" {
         }
         
         It "Should process splitInput request correctly" {
-            # Définir la fonction Process-MCPRequest pour le test
+            # DÃ©finir la fonction Process-MCPRequest pour le test
             function Process-MCPRequest {
                 param (
                     [string]$RequestJson
@@ -233,7 +233,7 @@ Describe "MCP Memories Server Tests" {
                         result = $null
                         error = @{
                             code = -32601
-                            message = "Méthode non reconnue : $($request.method)"
+                            message = "MÃ©thode non reconnue : $($request.method)"
                         }
                     } | ConvertTo-Json
                 }
@@ -250,7 +250,7 @@ Describe "MCP Memories Server Tests" {
         }
         
         It "Should process exportToVSCode request correctly" {
-            # Définir la fonction Process-MCPRequest pour le test
+            # DÃ©finir la fonction Process-MCPRequest pour le test
             function Process-MCPRequest {
                 param (
                     [string]$RequestJson
@@ -268,7 +268,7 @@ Describe "MCP Memories Server Tests" {
                         result = $null
                         error = @{
                             code = -32601
-                            message = "Méthode non reconnue : $($request.method)"
+                            message = "MÃ©thode non reconnue : $($request.method)"
                         }
                     } | ConvertTo-Json
                 }
@@ -283,7 +283,7 @@ Describe "MCP Memories Server Tests" {
         }
         
         It "Should handle unknown methods correctly" {
-            # Définir la fonction Process-MCPRequest pour le test
+            # DÃ©finir la fonction Process-MCPRequest pour le test
             function Process-MCPRequest {
                 param (
                     [string]$RequestJson
@@ -295,7 +295,7 @@ Describe "MCP Memories Server Tests" {
                     result = $null
                     error = @{
                         code = -32601
-                        message = "Méthode non reconnue : $($request.method)"
+                        message = "MÃ©thode non reconnue : $($request.method)"
                     }
                 } | ConvertTo-Json
             }
@@ -312,7 +312,7 @@ Describe "MCP Memories Server Tests" {
     
     Context "Get-AugmentMemories" {
         It "Should return valid Memories" {
-            # Définir la fonction Get-AugmentMemories pour le test
+            # DÃ©finir la fonction Get-AugmentMemories pour le test
             function Get-AugmentMemories {
                 return @{
                     version = "2.0.0"

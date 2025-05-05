@@ -1,28 +1,28 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de test de l'intégration complète du Process Manager.
+    Script de test de l'intÃ©gration complÃ¨te du Process Manager.
 
 .DESCRIPTION
-    Ce script teste l'intégration complète du Process Manager avec les modules améliorés.
+    Ce script teste l'intÃ©gration complÃ¨te du Process Manager avec les modules amÃ©liorÃ©s.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire courant.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER Force
-    Force l'exécution des tests même si les modules ne sont pas installés.
+    Force l'exÃ©cution des tests mÃªme si les modules ne sont pas installÃ©s.
 
 .EXAMPLE
     .\Test-Integration.ps1
-    Teste l'intégration complète du Process Manager.
+    Teste l'intÃ©gration complÃ¨te du Process Manager.
 
 .EXAMPLE
     .\Test-Integration.ps1 -ProjectRoot "D:\Projets\MonProjet" -Force
-    Force l'exécution des tests dans le répertoire spécifié.
+    Force l'exÃ©cution des tests dans le rÃ©pertoire spÃ©cifiÃ©.
 
 .NOTES
     Auteur: EMAIL_SENDER_1
     Version: 1.0
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -33,7 +33,7 @@ param (
     [switch]$Force
 )
 
-# Définir les chemins
+# DÃ©finir les chemins
 $processManagerRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers\process-manager"
 $modulesRoot = Join-Path -Path $processManagerRoot -ChildPath "modules"
 $scriptsRoot = Join-Path -Path $processManagerRoot -ChildPath "scripts"
@@ -41,7 +41,7 @@ $testsRoot = Join-Path -Path $processManagerRoot -ChildPath "tests"
 $processManagerScript = Join-Path -Path $scriptsRoot -ChildPath "process-manager.ps1"
 $testDir = Join-Path -Path $testsRoot -ChildPath "temp"
 
-# Fonction pour écrire des messages de journal
+# Fonction pour Ã©crire des messages de journal
 function Write-TestLog {
     [CmdletBinding()]
     param (
@@ -56,7 +56,7 @@ function Write-TestLog {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "[$timestamp] [$Level] $Message"
     
-    # Définir la couleur en fonction du niveau
+    # DÃ©finir la couleur en fonction du niveau
     $color = switch ($Level) {
         "Info" { "White" }
         "Warning" { "Yellow" }
@@ -69,52 +69,52 @@ function Write-TestLog {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier que le répertoire du projet existe
+# VÃ©rifier que le rÃ©pertoire du projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du projet n'existe pas : $ProjectRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du projet n'existe pas : $ProjectRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le répertoire du Process Manager existe
+# VÃ©rifier que le rÃ©pertoire du Process Manager existe
 if (-not (Test-Path -Path $processManagerRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le script du Process Manager existe
+# VÃ©rifier que le script du Process Manager existe
 if (-not (Test-Path -Path $processManagerScript -PathType Leaf)) {
     Write-TestLog -Message "Le script du Process Manager n'existe pas : $processManagerScript" -Level Error
     exit 1
 }
 
-# Vérifier si les modules sont installés
+# VÃ©rifier si les modules sont installÃ©s
 $processManagerModule = Get-Module -Name "ProcessManager" -ListAvailable
 if (-not $processManagerModule -and -not $Force) {
-    Write-TestLog -Message "Le module ProcessManager n'est pas installé. Utilisez -Force pour forcer l'exécution des tests." -Level Warning
-    Write-TestLog -Message "Exécutez le script install-modules.ps1 pour installer le module." -Level Info
+    Write-TestLog -Message "Le module ProcessManager n'est pas installÃ©. Utilisez -Force pour forcer l'exÃ©cution des tests." -Level Warning
+    Write-TestLog -Message "ExÃ©cutez le script install-modules.ps1 pour installer le module." -Level Info
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un gestionnaire de test
+# CrÃ©er un gestionnaire de test
 $testManagerPath = Join-Path -Path $testDir -ChildPath "test-manager.ps1"
 Set-Content -Path $testManagerPath -Value @"
 <#
 .SYNOPSIS
-    Gestionnaire de test pour les tests d'intégration.
+    Gestionnaire de test pour les tests d'intÃ©gration.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests d'intégration
+    Ce script est un gestionnaire de test utilisÃ© pour les tests d'intÃ©gration
     du Process Manager.
 
 .MANIFEST
 {
     "Name": "TestManager",
-    "Description": "Gestionnaire de test pour les tests d'intégration",
+    "Description": "Gestionnaire de test pour les tests d'intÃ©gration",
     "Version": "1.0.0",
     "Author": "EMAIL_SENDER_1",
     "Dependencies": []
@@ -130,14 +130,14 @@ function Start-TestManager {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire de test..."
+    Write-Host "DÃ©marrage du gestionnaire de test..."
 }
 
 function Stop-TestManager {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire de test..."
+    Write-Host "ArrÃªt du gestionnaire de test..."
 }
 
 function Get-TestManagerStatus {
@@ -150,7 +150,7 @@ function Get-TestManagerStatus {
     }
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-TestManager
@@ -167,19 +167,19 @@ switch (`$Command) {
 }
 "@
 
-# Créer un fichier de manifeste pour le gestionnaire de test
+# CrÃ©er un fichier de manifeste pour le gestionnaire de test
 $testManifestPath = Join-Path -Path $testDir -ChildPath "test-manager.manifest.json"
 Set-Content -Path $testManifestPath -Value @"
 {
     "Name": "TestManager",
-    "Description": "Gestionnaire de test pour les tests d'intégration",
+    "Description": "Gestionnaire de test pour les tests d'intÃ©gration",
     "Version": "1.0.0",
     "Author": "EMAIL_SENDER_1",
     "Dependencies": []
 }
 "@
 
-# Définir les tests unitaires
+# DÃ©finir les tests unitaires
 $tests = @(
     @{
         Name = "Test d'importation du module ProcessManager"
@@ -203,7 +203,7 @@ $tests = @(
                 return $manifest -ne $null -and $manifest.Name -eq "TestManager" -and $manifest.Version -eq "1.0.0"
             }
             catch {
-                Write-TestLog -Message "Erreur lors de l'exécution de Get-ManagerManifest : $_" -Level Error
+                Write-TestLog -Message "Erreur lors de l'exÃ©cution de Get-ManagerManifest : $_" -Level Error
                 return $false
             }
         }
@@ -217,7 +217,7 @@ $tests = @(
                 return $result -eq $true
             }
             catch {
-                Write-TestLog -Message "Erreur lors de l'exécution de Test-ManifestValidity : $_" -Level Error
+                Write-TestLog -Message "Erreur lors de l'exÃ©cution de Test-ManifestValidity : $_" -Level Error
                 return $false
             }
         }
@@ -230,7 +230,7 @@ $tests = @(
                 return $result -eq $true
             }
             catch {
-                Write-TestLog -Message "Erreur lors de l'exécution de Test-ManagerValidity : $_" -Level Error
+                Write-TestLog -Message "Erreur lors de l'exÃ©cution de Test-ManagerValidity : $_" -Level Error
                 return $false
             }
         }
@@ -243,7 +243,7 @@ $tests = @(
                 return $dependencies -ne $null
             }
             catch {
-                Write-TestLog -Message "Erreur lors de l'exécution de Get-ManagerDependencies : $_" -Level Error
+                Write-TestLog -Message "Erreur lors de l'exÃ©cution de Get-ManagerDependencies : $_" -Level Error
                 return $false
             }
         }
@@ -262,39 +262,39 @@ $tests = @(
         }
     },
     @{
-        Name = "Test de découverte des gestionnaires avec le Process Manager"
+        Name = "Test de dÃ©couverte des gestionnaires avec le Process Manager"
         Test = {
             try {
                 $result = & $processManagerScript -Command Discover -Force
                 return $LASTEXITCODE -eq 0
             }
             catch {
-                Write-TestLog -Message "Erreur lors de la découverte des gestionnaires : $_" -Level Error
+                Write-TestLog -Message "Erreur lors de la dÃ©couverte des gestionnaires : $_" -Level Error
                 return $false
             }
         }
     },
     @{
-        Name = "Test d'exécution d'une commande sur le gestionnaire avec le Process Manager"
+        Name = "Test d'exÃ©cution d'une commande sur le gestionnaire avec le Process Manager"
         Test = {
             try {
                 $result = & $processManagerScript -Command Run -ManagerName "TestManager" -ManagerCommand "Status"
                 return $LASTEXITCODE -eq 0
             }
             catch {
-                Write-TestLog -Message "Erreur lors de l'exécution d'une commande sur le gestionnaire : $_" -Level Error
+                Write-TestLog -Message "Erreur lors de l'exÃ©cution d'une commande sur le gestionnaire : $_" -Level Error
                 return $false
             }
         }
     }
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $totalTests = $tests.Count
 $passedTests = 0
 $failedTests = 0
 
-Write-TestLog -Message "Exécution de $totalTests tests d'intégration pour le Process Manager..." -Level Info
+Write-TestLog -Message "ExÃ©cution de $totalTests tests d'intÃ©gration pour le Process Manager..." -Level Info
 
 foreach ($test in $tests) {
     Write-TestLog -Message "Test : $($test.Name)" -Level Info
@@ -303,34 +303,34 @@ foreach ($test in $tests) {
         $result = & $test.Test
         
         if ($result) {
-            Write-TestLog -Message "  Résultat : Réussi" -Level Success
+            Write-TestLog -Message "  RÃ©sultat : RÃ©ussi" -Level Success
             $passedTests++
         } else {
-            Write-TestLog -Message "  Résultat : Échec" -Level Error
+            Write-TestLog -Message "  RÃ©sultat : Ã‰chec" -Level Error
             $failedTests++
         }
     } catch {
-        Write-TestLog -Message "  Résultat : Erreur - $_" -Level Error
+        Write-TestLog -Message "  RÃ©sultat : Erreur - $_" -Level Error
         $failedTests++
     }
 }
 
-# Afficher le résumé
-Write-TestLog -Message "`nRésumé des tests :" -Level Info
-Write-TestLog -Message "  Tests exécutés : $totalTests" -Level Info
-Write-TestLog -Message "  Tests réussis  : $passedTests" -Level Success
-Write-TestLog -Message "  Tests échoués  : $failedTests" -Level Error
+# Afficher le rÃ©sumÃ©
+Write-TestLog -Message "`nRÃ©sumÃ© des tests :" -Level Info
+Write-TestLog -Message "  Tests exÃ©cutÃ©s : $totalTests" -Level Info
+Write-TestLog -Message "  Tests rÃ©ussis  : $passedTests" -Level Success
+Write-TestLog -Message "  Tests Ã©chouÃ©s  : $failedTests" -Level Error
 
 # Nettoyer les fichiers de test
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 if ($failedTests -eq 0) {
-    Write-TestLog -Message "`nTous les tests ont réussi !" -Level Success
+    Write-TestLog -Message "`nTous les tests ont rÃ©ussi !" -Level Success
     exit 0
 } else {
-    Write-TestLog -Message "`nCertains tests ont échoué." -Level Error
+    Write-TestLog -Message "`nCertains tests ont Ã©chouÃ©." -Level Error
     exit 1
 }

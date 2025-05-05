@@ -1,6 +1,6 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
-# Fonction simple pour détecter les cycles dans un graphe
+# Fonction simple pour dÃ©tecter les cycles dans un graphe
 function Find-SimpleCycle {
     param (
         [hashtable]$Graph
@@ -23,7 +23,7 @@ function Find-SimpleCycle {
                 DFS -Node $neighbor
             }
             elseif ($path.ContainsKey($neighbor)) {
-                $cycles += "Cycle trouvé: $Node -> $neighbor"
+                $cycles += "Cycle trouvÃ©: $Node -> $neighbor"
             }
         }
 
@@ -39,21 +39,21 @@ function Find-SimpleCycle {
     return $cycles
 }
 
-# Créer un graphe de dépendances simple avec un cycle
+# CrÃ©er un graphe de dÃ©pendances simple avec un cycle
 $graph = @{
     'A' = @('B')
     'B' = @('C')
     'C' = @('A')
 }
 
-Write-Host "Graphe de dépendances:"
+Write-Host "Graphe de dÃ©pendances:"
 $graph | ConvertTo-Json
 
-Write-Host "`nDétection des cycles:"
+Write-Host "`nDÃ©tection des cycles:"
 $cycles = Find-SimpleCycle -Graph $graph
 $cycles
 
-# Créer un graphe de dépendances plus complexe avec plusieurs cycles
+# CrÃ©er un graphe de dÃ©pendances plus complexe avec plusieurs cycles
 $complexGraph = @{
     'ModuleA' = @('ModuleB', 'ModuleC')
     'ModuleB' = @('ModuleD')
@@ -63,11 +63,11 @@ $complexGraph = @{
     'ModuleF' = @('ModuleB')  # Cycle: ModuleC -> ModuleE -> ModuleB -> ModuleC
 }
 
-Write-Host "`nGraphe de dépendances complexe:"
+Write-Host "`nGraphe de dÃ©pendances complexe:"
 $complexGraph | ConvertTo-Json
 
-Write-Host "`nDétection des cycles dans le graphe complexe:"
+Write-Host "`nDÃ©tection des cycles dans le graphe complexe:"
 $complexCycles = Find-SimpleCycle -Graph $complexGraph
 $complexCycles
 
-Write-Host "`nTest terminé!"
+Write-Host "`nTest terminÃ©!"

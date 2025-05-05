@@ -1,10 +1,10 @@
-# Script de test pour la fonction Get-AstNodeTypeCount
+﻿# Script de test pour la fonction Get-AstNodeTypeCount
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script PowerShell de test
+# CrÃ©er un script PowerShell de test
 $sampleCode = @'
 function Get-Example {
     param (

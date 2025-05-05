@@ -1,5 +1,5 @@
-function Get-LocalIP {
-    # Obtenir l'adresse IP locale (IPv4 uniquement, en excluant les adresses spéciales)
+﻿function Get-LocalIP {
+    # Obtenir l'adresse IP locale (IPv4 uniquement, en excluant les adresses spÃ©ciales)
     $localIP = (Get-NetIPAddress | Where-Object { 
         $_.AddressFamily -eq "IPv4" -and 
         $_.PrefixOrigin -ne "WellKnown" 
@@ -9,7 +9,7 @@ function Get-LocalIP {
         Write-Host "Adresse IP locale : $localIP"
         return $localIP
     } else {
-        Write-Error "Impossible de déterminer l'adresse IP locale"
+        Write-Error "Impossible de dÃ©terminer l'adresse IP locale"
         return $null
     }
 }

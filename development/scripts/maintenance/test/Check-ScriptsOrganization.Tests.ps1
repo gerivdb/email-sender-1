@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Check-ScriptsOrganization.ps1.
@@ -10,19 +10,19 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-10
+    Date de crÃ©ation: 2023-06-10
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\monitoring\Check-ScriptsOrganization.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if (-not (Test-Path -Path $scriptPath)) {
     throw "Le script Check-ScriptsOrganization.ps1 n'existe pas: $scriptPath"
 }
@@ -30,28 +30,28 @@ if (-not (Test-Path -Path $scriptPath)) {
 # Tests Pester
 Describe "Tests du script Check-ScriptsOrganization.ps1" {
     BeforeAll {
-        # Créer un dossier temporaire pour les tests
+        # CrÃ©er un dossier temporaire pour les tests
         $testDir = Join-Path -Path $env:TEMP -ChildPath "CheckScriptsOrganizationTests"
         if (Test-Path -Path $testDir) {
             Remove-Item -Path $testDir -Recurse -Force
         }
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-        # Créer une structure de dossiers pour les tests
+        # CrÃ©er une structure de dossiers pour les tests
         $maintenanceDir = Join-Path -Path $testDir -ChildPath "maintenance"
         New-Item -Path $maintenanceDir -ItemType Directory -Force | Out-Null
 
-        # Créer quelques sous-dossiers
+        # CrÃ©er quelques sous-dossiers
         $categories = @('api', 'cleanup', 'paths', 'test', 'utils', 'monitoring')
         foreach ($category in $categories) {
             New-Item -Path (Join-Path -Path $maintenanceDir -ChildPath $category) -ItemType Directory -Force | Out-Null
         }
 
-        # Créer un dossier pour les rapports
+        # CrÃ©er un dossier pour les rapports
         $reportsDir = Join-Path -Path $testDir -ChildPath "reports"
         New-Item -Path $reportsDir -ItemType Directory -Force | Out-Null
 
-        # Créer quelques fichiers de test dans les sous-dossiers
+        # CrÃ©er quelques fichiers de test dans les sous-dossiers
         $subDirFiles = @(
             @{Path = "api\Analyze-Data.ps1"; Content = "# Analyze data script" },
             @{Path = "cleanup\Fix-Issues.ps1"; Content = "# Fix issues script" },
@@ -74,18 +74,18 @@ Describe "Tests du script Check-ScriptsOrganization.ps1" {
     }
 
     AfterAll {
-        # Nettoyer après les tests
+        # Nettoyer aprÃ¨s les tests
         if (Test-Path -Path $script:testDir) {
             Remove-Item -Path $script:testDir -Recurse -Force
         }
     }
 
-    Context "Tests de fonctionnalité" {
+    Context "Tests de fonctionnalitÃ©" {
         It "Le script devrait exister" {
             Test-Path -Path $scriptPath | Should -Be $true
         }
 
-        It "Le script devrait être un fichier PowerShell valide" {
+        It "Le script devrait Ãªtre un fichier PowerShell valide" {
             { . $scriptPath } | Should -Not -Throw
         }
 
@@ -95,22 +95,22 @@ Describe "Tests du script Check-ScriptsOrganization.ps1" {
         }
     }
 
-    Context "Tests d'intégration - Organisation correcte" {
-        It "Devrait générer un rapport d'organisation" {
-            # Exécuter le script avec les paramètres de test
+    Context "Tests d'intÃ©gration - Organisation correcte" {
+        It "Devrait gÃ©nÃ©rer un rapport d'organisation" {
+            # ExÃ©cuter le script avec les paramÃ¨tres de test
             & $scriptPath -OutputPath $script:reportsDir
 
-            # Vérifier qu'un rapport a été généré
+            # VÃ©rifier qu'un rapport a Ã©tÃ© gÃ©nÃ©rÃ©
             $reportFiles = Get-ChildItem -Path $script:reportsDir -Filter "organization_report_*.json"
             $reportFiles.Count | Should -BeGreaterThan 0
         }
 
         It "Le rapport devrait indiquer que l'organisation est correcte" {
-            # Récupérer le dernier rapport généré
+            # RÃ©cupÃ©rer le dernier rapport gÃ©nÃ©rÃ©
             $reportFile = Get-ChildItem -Path $script:reportsDir -Filter "organization_report_*.json" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
             $report = Get-Content -Path $reportFile.FullName -Raw | ConvertFrom-Json
 
-            # Vérifier que le rapport indique que l'organisation est correcte
+            # VÃ©rifier que le rapport indique que l'organisation est correcte
             $report.OrganizationStatus | Should -Be "OK"
             $report.RootFilesCount | Should -Be 0
             $report.SubDirsCount | Should -BeGreaterThan 0
@@ -118,9 +118,9 @@ Describe "Tests du script Check-ScriptsOrganization.ps1" {
         }
     }
 
-    Context "Tests d'intégration - Organisation incorrecte" {
+    Context "Tests d'intÃ©gration - Organisation incorrecte" {
         BeforeEach {
-            # Créer quelques fichiers de test à la racine
+            # CrÃ©er quelques fichiers de test Ã  la racine
             $rootFiles = @(
                 @{Name = "test-script-at-root.ps1"; Content = "# Test script at root" },
                 @{Name = "update-paths-at-root.ps1"; Content = "# Update paths script at root" }
@@ -133,20 +133,20 @@ Describe "Tests du script Check-ScriptsOrganization.ps1" {
         }
 
         AfterEach {
-            # Supprimer les fichiers de test à la racine
+            # Supprimer les fichiers de test Ã  la racine
             Get-ChildItem -Path $script:maintenanceDir -File | Remove-Item -Force
         }
 
-        It "Devrait détecter les fichiers à la racine" {
-            # Exécuter le script avec les paramètres de test
+        It "Devrait dÃ©tecter les fichiers Ã  la racine" {
+            # ExÃ©cuter le script avec les paramÃ¨tres de test
             & $scriptPath -OutputPath $script:reportsDir
 
-            # Récupérer le dernier rapport généré
+            # RÃ©cupÃ©rer le dernier rapport gÃ©nÃ©rÃ©
             $reportFile = Get-ChildItem -Path $script:reportsDir -Filter "organization_report_*.json" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
             $report = Get-Content -Path $reportFile.FullName -Raw | ConvertFrom-Json
 
-            # Vérifier que le rapport indique que l'organisation est incorrecte
-            $report.OrganizationStatus | Should -Be "PROBLÈME"
+            # VÃ©rifier que le rapport indique que l'organisation est incorrecte
+            $report.OrganizationStatus | Should -Be "PROBLÃˆME"
             $report.RootFilesCount | Should -Be 2
             $report.RootFiles.Count | Should -Be 2
         }

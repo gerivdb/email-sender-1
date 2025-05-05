@@ -1,14 +1,14 @@
-# AstNavigator.psm1
+﻿# AstNavigator.psm1
 # Module pour la navigation et l'analyse des arbres syntaxiques PowerShell (AST)
 
-# Importer les fonctions privées
+# Importer les fonctions privÃ©es
 $PrivateFunctions = @(Get-ChildItem -Path "$PSScriptRoot\Private\*.ps1" -ErrorAction SilentlyContinue)
 foreach ($Function in $PrivateFunctions) {
     try {
         . $Function.FullName
-        Write-Verbose "Fonction privée chargée : $($Function.BaseName)"
+        Write-Verbose "Fonction privÃ©e chargÃ©e : $($Function.BaseName)"
     } catch {
-        Write-Error -Message "Échec du chargement de la fonction privée $($Function.FullName): $_"
+        Write-Error -Message "Ã‰chec du chargement de la fonction privÃ©e $($Function.FullName): $_"
     }
 }
 
@@ -17,9 +17,9 @@ $PublicFunctions = @(Get-ChildItem -Path "$PSScriptRoot\Public\*.ps1" -ErrorActi
 foreach ($Function in $PublicFunctions) {
     try {
         . $Function.FullName
-        Write-Verbose "Fonction publique chargée : $($Function.BaseName)"
+        Write-Verbose "Fonction publique chargÃ©e : $($Function.BaseName)"
     } catch {
-        Write-Error -Message "Échec du chargement de la fonction publique $($Function.FullName): $_"
+        Write-Error -Message "Ã‰chec du chargement de la fonction publique $($Function.FullName): $_"
     }
 }
 

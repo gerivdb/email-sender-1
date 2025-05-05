@@ -1,4 +1,4 @@
-# Tests unitaires pour le module PredictiveModel
+﻿# Tests unitaires pour le module PredictiveModel
 # Utilise pytest
 
 import os
@@ -10,20 +10,20 @@ import pandas as pd
 from datetime import datetime, timedelta
 from unittest.mock import patch, MagicMock
 
-# Ajouter le répertoire des modules au chemin de recherche
+# Ajouter le rÃ©pertoire des modules au chemin de recherche
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'modules')))
 
-# Importer le module à tester
+# Importer le module Ã  tester
 import PredictiveModel
 
-# Données de test
+# DonnÃ©es de test
 @pytest.fixture
 def test_metrics():
-    """Génère des données de test pour les métriques"""
+    """GÃ©nÃ¨re des donnÃ©es de test pour les mÃ©triques"""
     metrics = []
     base_date = datetime.now() - timedelta(days=7)
     
-    # Générer 168 points (1 semaine avec des points horaires)
+    # GÃ©nÃ©rer 168 points (1 semaine avec des points horaires)
     for i in range(168):
         timestamp = base_date + timedelta(hours=i)
         
@@ -31,16 +31,16 @@ def test_metrics():
         hour_of_day = timestamp.hour
         day_of_week = timestamp.weekday()
         
-        # Utilisation CPU plus élevée pendant les heures de travail (9h-17h) et en semaine
+        # Utilisation CPU plus Ã©levÃ©e pendant les heures de travail (9h-17h) et en semaine
         cpu_usage = 30 + 20 * np.sin(hour_of_day * np.pi / 12)
         if 9 <= hour_of_day <= 17 and day_of_week < 5:
             cpu_usage += 15
         
-        # Ajouter du bruit aléatoire
+        # Ajouter du bruit alÃ©atoire
         cpu_usage += np.random.normal(0, 5)
         cpu_usage = max(0, min(100, cpu_usage))
         
-        # Utilisation mémoire corrélée avec CPU mais plus stable
+        # Utilisation mÃ©moire corrÃ©lÃ©e avec CPU mais plus stable
         memory_usage = 50 + 0.3 * cpu_usage + np.random.normal(0, 3)
         memory_usage = max(0, min(100, memory_usage))
         
@@ -48,11 +48,11 @@ def test_metrics():
         disk_usage = 60 + i * 0.1 + np.random.normal(0, 2)
         disk_usage = max(0, min(100, disk_usage))
         
-        # Utilisation réseau corrélée avec CPU
+        # Utilisation rÃ©seau corrÃ©lÃ©e avec CPU
         network_usage = 20 + 0.4 * cpu_usage + np.random.normal(0, 10)
         network_usage = max(0, min(100, network_usage))
         
-        # Créer une anomalie à un moment spécifique
+        # CrÃ©er une anomalie Ã  un moment spÃ©cifique
         if i == 100:
             cpu_usage = 95
             memory_usage = 90
@@ -78,7 +78,7 @@ def test_metrics():
 
 @pytest.fixture
 def temp_json_file(test_metrics, tmp_path):
-    """Crée un fichier JSON temporaire avec les métriques de test"""
+    """CrÃ©e un fichier JSON temporaire avec les mÃ©triques de test"""
     file_path = tmp_path / "test_metrics.json"
     with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(test_metrics, f)
@@ -86,7 +86,7 @@ def temp_json_file(test_metrics, tmp_path):
 
 @pytest.fixture
 def predictor():
-    """Crée une instance de PerformancePredictor avec une configuration de test"""
+    """CrÃ©e une instance de PerformancePredictor avec une configuration de test"""
     config = {
         "model_dir": os.path.join(os.environ.get("TEMP", "/tmp"), "test_models"),
         "history_size": 12,
@@ -97,19 +97,19 @@ def predictor():
         "retraining_interval": 1
     }
     
-    # Créer le répertoire de modèles s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de modÃ¨les s'il n'existe pas
     os.makedirs(config["model_dir"], exist_ok=True)
     
     return PredictiveModel.PerformancePredictor(config)
 
 def test_load_metrics_from_json(temp_json_file, test_metrics):
-    """Teste le chargement des métriques à partir d'un fichier JSON"""
+    """Teste le chargement des mÃ©triques Ã  partir d'un fichier JSON"""
     metrics = PredictiveModel.load_metrics_from_json(temp_json_file)
     assert len(metrics) == len(test_metrics)
     assert metrics[0]["CPU"]["Usage"] == test_metrics[0]["CPU"]["Usage"]
 
 def test_predictor_initialization(predictor):
-    """Teste l'initialisation du prédicteur"""
+    """Teste l'initialisation du prÃ©dicteur"""
     assert predictor is not None
     assert predictor.config["history_size"] == 12
     assert predictor.config["forecast_horizon"] == 6
@@ -117,7 +117,7 @@ def test_predictor_initialization(predictor):
     assert len(predictor.config["metrics_to_predict"]) == 4
 
 def test_prepare_data(predictor, test_metrics):
-    """Teste la préparation des données pour l'entraînement"""
+    """Teste la prÃ©paration des donnÃ©es pour l'entraÃ®nement"""
     X, y = predictor._prepare_data(test_metrics, "CPU.Usage")
     assert X is not None
     assert y is not None
@@ -128,7 +128,7 @@ def test_prepare_data(predictor, test_metrics):
     assert "lag_1" in X.columns
 
 def test_train_model(predictor, test_metrics):
-    """Teste l'entraînement des modèles"""
+    """Teste l'entraÃ®nement des modÃ¨les"""
     results = predictor.train(test_metrics, force=True)
     assert results is not None
     assert "CPU.Usage" in results
@@ -138,11 +138,11 @@ def test_train_model(predictor, test_metrics):
     assert "importance" in results["CPU.Usage"]
 
 def test_predict(predictor, test_metrics):
-    """Teste la prédiction des valeurs futures"""
-    # D'abord entraîner le modèle
+    """Teste la prÃ©diction des valeurs futures"""
+    # D'abord entraÃ®ner le modÃ¨le
     predictor.train(test_metrics, force=True)
     
-    # Ensuite faire des prédictions
+    # Ensuite faire des prÃ©dictions
     results = predictor.predict(test_metrics, horizon=3)
     assert results is not None
     assert "CPU.Usage" in results
@@ -153,11 +153,11 @@ def test_predict(predictor, test_metrics):
     assert len(results["CPU.Usage"]["timestamps"]) == 3
 
 def test_detect_anomalies(predictor, test_metrics):
-    """Teste la détection d'anomalies"""
-    # D'abord entraîner le modèle
+    """Teste la dÃ©tection d'anomalies"""
+    # D'abord entraÃ®ner le modÃ¨le
     predictor.train(test_metrics, force=True)
     
-    # Ensuite détecter les anomalies
+    # Ensuite dÃ©tecter les anomalies
     results = predictor.detect_anomalies(test_metrics)
     assert results is not None
     assert "CPU.Usage" in results
@@ -179,18 +179,18 @@ def test_analyze_trends(predictor, test_metrics):
     assert "slope" in results["CPU.Usage"]["trend"]
 
 def test_save_predictions_to_json(predictor, test_metrics, tmp_path):
-    """Teste la sauvegarde des prédictions dans un fichier JSON"""
-    # D'abord entraîner le modèle
+    """Teste la sauvegarde des prÃ©dictions dans un fichier JSON"""
+    # D'abord entraÃ®ner le modÃ¨le
     predictor.train(test_metrics, force=True)
     
-    # Ensuite faire des prédictions
+    # Ensuite faire des prÃ©dictions
     results = predictor.predict(test_metrics, horizon=3)
     
-    # Sauvegarder les prédictions
+    # Sauvegarder les prÃ©dictions
     output_file = tmp_path / "predictions.json"
     PredictiveModel.save_predictions_to_json(results, str(output_file))
     
-    # Vérifier que le fichier existe et contient les données
+    # VÃ©rifier que le fichier existe et contient les donnÃ©es
     assert os.path.exists(output_file)
     with open(output_file, 'r', encoding='utf-8') as f:
         saved_results = json.load(f)
@@ -205,7 +205,7 @@ def test_command_line_interface(temp_json_file, tmp_path):
     
     # Simuler les arguments de ligne de commande
     with patch('sys.argv', ['PredictiveModel.py', '--input', temp_json_file, '--output', str(output_file), '--action', 'train', '--force']):
-        # Simuler l'exécution du module en tant que script
+        # Simuler l'exÃ©cution du module en tant que script
         with patch('PredictiveModel.argparse.ArgumentParser.parse_args') as mock_args:
             mock_args.return_value = MagicMock(
                 input=temp_json_file,
@@ -216,16 +216,16 @@ def test_command_line_interface(temp_json_file, tmp_path):
                 config=None
             )
             
-            # Simuler l'exécution de la fonction principale
+            # Simuler l'exÃ©cution de la fonction principale
             with patch('PredictiveModel.PerformancePredictor.train') as mock_train:
                 mock_train.return_value = {"CPU.Usage": {"status": "success"}}
                 
-                # Exécuter le code qui serait normalement exécuté par if __name__ == "__main__"
+                # ExÃ©cuter le code qui serait normalement exÃ©cutÃ© par if __name__ == "__main__"
                 metrics = PredictiveModel.load_metrics_from_json(temp_json_file)
                 predictor = PredictiveModel.PerformancePredictor()
                 results = predictor.train(metrics, force=True)
                 
-                # Vérifier que la fonction train a été appelée
+                # VÃ©rifier que la fonction train a Ã©tÃ© appelÃ©e
                 mock_train.assert_called_once()
 
 if __name__ == "__main__":

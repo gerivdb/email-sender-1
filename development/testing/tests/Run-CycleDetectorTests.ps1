@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests unitaires pour le module CycleDetector.
+    ExÃ©cute les tests unitaires pour le module CycleDetector.
 .DESCRIPTION
-    Ce script exécute les tests unitaires pour le module CycleDetector et génère un rapport d'exécution.
+    Ce script exÃ©cute les tests unitaires pour le module CycleDetector et gÃ©nÃ¨re un rapport d'exÃ©cution.
 .PARAMETER OutputPath
-    Chemin où le rapport de test sera généré. Par défaut, il est créé dans le dossier docs/test_reports.
+    Chemin oÃ¹ le rapport de test sera gÃ©nÃ©rÃ©. Par dÃ©faut, il est crÃ©Ã© dans le dossier docs/test_reports.
 .PARAMETER ShowDetailedResults
-    Affiche les résultats détaillés des tests dans la console.
+    Affiche les rÃ©sultats dÃ©taillÃ©s des tests dans la console.
 .EXAMPLE
     .\Run-CycleDetectorTests.ps1
-    Exécute les tests et génère un rapport dans le dossier par défaut.
+    ExÃ©cute les tests et gÃ©nÃ¨re un rapport dans le dossier par dÃ©faut.
 .EXAMPLE
     .\Run-CycleDetectorTests.ps1 -OutputPath "C:\Reports" -ShowDetailedResults
-    Exécute les tests, affiche les résultats détaillés et génère un rapport dans le dossier spécifié.
+    ExÃ©cute les tests, affiche les rÃ©sultats dÃ©taillÃ©s et gÃ©nÃ¨re un rapport dans le dossier spÃ©cifiÃ©.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-01
+    Date de crÃ©ation: 2025-06-01
 #>
 [CmdletBinding()]
 param (
@@ -25,16 +25,16 @@ param (
     [switch]$ShowDetailedResults
 )
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-Error "Le module Pester n'est pas installé. Veuillez l'installer avec la commande : Install-Module -Name Pester -Force"
+    Write-Error "Le module Pester n'est pas installÃ©. Veuillez l'installer avec la commande : Install-Module -Name Pester -Force"
     return
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Host "Dossier de sortie créé: $OutputPath" -ForegroundColor Green
+    Write-Host "Dossier de sortie crÃ©Ã©: $OutputPath" -ForegroundColor Green
 }
 
 # Chemin du fichier de rapport
@@ -53,52 +53,52 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = $xmlReportPath
 $pesterConfig.TestResult.OutputFormat = 'NUnitXml'
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires pour le module CycleDetector..." -ForegroundColor Cyan
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires pour le module CycleDetector..." -ForegroundColor Cyan
 $results = Invoke-Pester -Configuration $pesterConfig
 
-# Générer le rapport Markdown
+# GÃ©nÃ©rer le rapport Markdown
 $reportContent = @"
-# Rapport d'exécution des tests - Module CycleDetector
+# Rapport d'exÃ©cution des tests - Module CycleDetector
 
-## Résumé
+## RÃ©sumÃ©
 
-- **Date d'exécution**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+- **Date d'exÃ©cution**: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 - **Nombre total de tests**: $($results.TotalCount)
-- **Tests réussis**: $($results.PassedCount)
-- **Tests échoués**: $($results.FailedCount)
-- **Tests ignorés**: $($results.SkippedCount)
-- **Durée totale**: $([math]::Round($results.Duration.TotalSeconds, 2)) secondes
+- **Tests rÃ©ussis**: $($results.PassedCount)
+- **Tests Ã©chouÃ©s**: $($results.FailedCount)
+- **Tests ignorÃ©s**: $($results.SkippedCount)
+- **DurÃ©e totale**: $([math]::Round($results.Duration.TotalSeconds, 2)) secondes
 
-## Détails des tests
+## DÃ©tails des tests
 
 ### Tests fonctionnels
 
-Les tests fonctionnels vérifient que le module CycleDetector détecte correctement les cycles dans différents types de graphes :
+Les tests fonctionnels vÃ©rifient que le module CycleDetector dÃ©tecte correctement les cycles dans diffÃ©rents types de graphes :
 
-- Détection de cycles dans des graphes simples
-- Détection de cycles dans des graphes complexes
-- Gestion des cas limites (graphes vides, noeuds isolés, références nulles)
+- DÃ©tection de cycles dans des graphes simples
+- DÃ©tection de cycles dans des graphes complexes
+- Gestion des cas limites (graphes vides, noeuds isolÃ©s, rÃ©fÃ©rences nulles)
 - Suppression de cycles
-- Détection de cycles dans les dépendances de scripts
-- Détection de cycles dans les workflows n8n
+- DÃ©tection de cycles dans les dÃ©pendances de scripts
+- DÃ©tection de cycles dans les workflows n8n
 
-$(if ($results.FailedCount -eq 0) { "Tous les tests fonctionnels ont réussi, confirmant que le module fonctionne correctement." } else { "Certains tests fonctionnels ont échoué. Voir les détails ci-dessous." })
+$(if ($results.FailedCount -eq 0) { "Tous les tests fonctionnels ont rÃ©ussi, confirmant que le module fonctionne correctement." } else { "Certains tests fonctionnels ont Ã©chouÃ©. Voir les dÃ©tails ci-dessous." })
 
 ### Tests de performance
 
-Les tests de performance vérifient que le module CycleDetector est efficace même avec de grands graphes :
+Les tests de performance vÃ©rifient que le module CycleDetector est efficace mÃªme avec de grands graphes :
 
 - Traitement de petits graphes (10 noeuds) : < 1 seconde
 - Traitement de graphes moyens (50 noeuds) : < 2 secondes
 - Traitement de grands graphes (100 noeuds) : < 3 secondes
-- Traitement de très grands graphes (1000 noeuds) : < 5 secondes
+- Traitement de trÃ¨s grands graphes (1000 noeuds) : < 5 secondes
 
-$(if ($results.FailedCount -eq 0) { "Tous les tests de performance ont réussi, confirmant que le module est suffisamment performant pour les cas d'utilisation prévus." } else { "Certains tests de performance ont échoué. Voir les détails ci-dessous." })
+$(if ($results.FailedCount -eq 0) { "Tous les tests de performance ont rÃ©ussi, confirmant que le module est suffisamment performant pour les cas d'utilisation prÃ©vus." } else { "Certains tests de performance ont Ã©chouÃ©. Voir les dÃ©tails ci-dessous." })
 
 $(if ($results.FailedCount -gt 0) {
 @"
-## Tests échoués
+## Tests Ã©chouÃ©s
 
 $(foreach ($test in $results.Failed) {
 "### $($test.Name)`n`n- **Description**: $($test.ExpandedName)`n- **Message**: $($test.ErrorRecord.Exception.Message)`n- **Emplacement**: $($test.ErrorRecord.ScriptStackTrace)`n"
@@ -108,30 +108,30 @@ $(foreach ($test in $results.Failed) {
 
 ## Recommandations
 
-1. **Amélioration de la gestion des erreurs**: Bien que le module gère correctement les erreurs, il serait utile d'ajouter plus de messages d'erreur descriptifs pour aider les utilisateurs à comprendre les problèmes.
+1. **AmÃ©lioration de la gestion des erreurs**: Bien que le module gÃ¨re correctement les erreurs, il serait utile d'ajouter plus de messages d'erreur descriptifs pour aider les utilisateurs Ã  comprendre les problÃ¨mes.
 
-2. **Documentation des tests**: Ajouter des commentaires plus détaillés dans les tests pour expliquer le but de chaque test et les résultats attendus.
+2. **Documentation des tests**: Ajouter des commentaires plus dÃ©taillÃ©s dans les tests pour expliquer le but de chaque test et les rÃ©sultats attendus.
 
-3. **Tests d'intégration**: Développer des tests d'intégration pour vérifier que le module fonctionne correctement avec d'autres modules et dans des scénarios réels.
+3. **Tests d'intÃ©gration**: DÃ©velopper des tests d'intÃ©gration pour vÃ©rifier que le module fonctionne correctement avec d'autres modules et dans des scÃ©narios rÃ©els.
 
 ## Conclusion
 
-$(if ($results.FailedCount -eq 0) { "Le module CycleDetector a passé tous les tests avec succès, démontrant sa fiabilité et ses performances." } else { "Le module CycleDetector présente des problèmes qui doivent être corrigés avant de pouvoir être utilisé en production." })
+$(if ($results.FailedCount -eq 0) { "Le module CycleDetector a passÃ© tous les tests avec succÃ¨s, dÃ©montrant sa fiabilitÃ© et ses performances." } else { "Le module CycleDetector prÃ©sente des problÃ¨mes qui doivent Ãªtre corrigÃ©s avant de pouvoir Ãªtre utilisÃ© en production." })
 "@
 
 # Enregistrer le rapport
 $reportContent | Out-File -FilePath $reportPath -Encoding utf8
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests:" -ForegroundColor Cyan
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
 Write-Host "  Tests totaux: $($results.TotalCount)" -ForegroundColor White
-Write-Host "  Tests réussis: $($results.PassedCount)" -ForegroundColor Green
-Write-Host "  Tests échoués: $($results.FailedCount)" -ForegroundColor $(if ($results.FailedCount -gt 0) { "Red" } else { "Green" })
-Write-Host "  Tests ignorés: $($results.SkippedCount)" -ForegroundColor Yellow
-Write-Host "  Durée totale: $([math]::Round($results.Duration.TotalSeconds, 2)) secondes" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis: $($results.PassedCount)" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $($results.FailedCount)" -ForegroundColor $(if ($results.FailedCount -gt 0) { "Red" } else { "Green" })
+Write-Host "  Tests ignorÃ©s: $($results.SkippedCount)" -ForegroundColor Yellow
+Write-Host "  DurÃ©e totale: $([math]::Round($results.Duration.TotalSeconds, 2)) secondes" -ForegroundColor White
 
-Write-Host "`nRapport généré: $reportPath" -ForegroundColor Green
-Write-Host "Rapport XML généré: $xmlReportPath" -ForegroundColor Green
+Write-Host "`nRapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
+Write-Host "Rapport XML gÃ©nÃ©rÃ©: $xmlReportPath" -ForegroundColor Green
 
 # Retourner le code de sortie
 exit $results.FailedCount

@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Reorganize-Repository.ps1
 .DESCRIPTION
     Ce script contient des tests unitaires pour valider le bon fonctionnement
-    du script Reorganize-Repository.ps1 qui réorganise les fichiers du dépôt
-    selon la structure standardisée.
+    du script Reorganize-Repository.ps1 qui rÃ©organise les fichiers du dÃ©pÃ´t
+    selon la structure standardisÃ©e.
 .EXAMPLE
     Invoke-Pester -Path .\Test-RepositoryMigration.ps1
 .NOTES
@@ -14,26 +14,26 @@
     Date: 2025-04-26
 #>
 
-# Importer le module Pester s'il n'est pas déjà chargé
+# Importer le module Pester s'il n'est pas dÃ©jÃ  chargÃ©
 if (-not (Get-Module -Name Pester)) {
     Import-Module Pester -ErrorAction Stop
 }
 
-# Chemin du script à tester
+# Chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\maintenance\repo\Reorganize-Repository.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    throw "Le script Reorganize-Repository.ps1 n'existe pas à l'emplacement spécifié: $scriptPath"
+    throw "Le script Reorganize-Repository.ps1 n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $scriptPath"
 }
 
 Describe "Reorganize-Repository" {
     BeforeAll {
-        # Créer un dossier temporaire pour les tests
+        # CrÃ©er un dossier temporaire pour les tests
         $testRoot = Join-Path -Path $TestDrive -ChildPath "TestRepo"
         New-Item -Path $testRoot -ItemType Directory -Force | Out-Null
         
-        # Créer une structure de dossiers non standard
+        # CrÃ©er une structure de dossiers non standard
         $nonStandardFolders = @(
             "old-scripts",
             "python-scripts",
@@ -46,7 +46,7 @@ Describe "Reorganize-Repository" {
             New-Item -Path (Join-Path -Path $testRoot -ChildPath $folder) -ItemType Directory -Force | Out-Null
         }
         
-        # Créer des fichiers à réorganiser
+        # CrÃ©er des fichiers Ã  rÃ©organiser
         $filesToReorganize = @(
             # Scripts PowerShell
             @{
@@ -115,15 +115,15 @@ Describe "Reorganize-Repository" {
         }
     }
     
-    Context "Création de la structure de dossiers" {
-        It "Crée la structure de dossiers standard" {
-            # Exécuter le script en mode simulation
+    Context "CrÃ©ation de la structure de dossiers" {
+        It "CrÃ©e la structure de dossiers standard" {
+            # ExÃ©cuter le script en mode simulation
             & $scriptPath -Path $testRoot -DryRun
             
-            # Exécuter le script réellement
+            # ExÃ©cuter le script rÃ©ellement
             & $scriptPath -Path $testRoot
             
-            # Vérifier que les dossiers standard ont été créés
+            # VÃ©rifier que les dossiers standard ont Ã©tÃ© crÃ©Ã©s
             $standardFolders = @(
                 "scripts",
                 "scripts\analysis",
@@ -149,8 +149,8 @@ Describe "Reorganize-Repository" {
     }
     
     Context "Migration des fichiers" {
-        It "Migre les scripts PowerShell vers les dossiers appropriés" {
-            # Vérifier que les scripts PowerShell ont été migrés vers les bons dossiers
+        It "Migre les scripts PowerShell vers les dossiers appropriÃ©s" {
+            # VÃ©rifier que les scripts PowerShell ont Ã©tÃ© migrÃ©s vers les bons dossiers
             Test-Path -Path (Join-Path -Path $testRoot -ChildPath "scripts\analysis\Get-Data.ps1") -PathType Leaf | Should -Be $true
             Test-Path -Path (Join-Path -Path $testRoot -ChildPath "scripts\automation\Start-Service.ps1") -PathType Leaf | Should -Be $true
             Test-Path -Path (Join-Path -Path $testRoot -ChildPath "scripts\gui\Show-Form.ps1") -PathType Leaf | Should -Be $true
@@ -160,27 +160,27 @@ Describe "Reorganize-Repository" {
             Test-Path -Path (Join-Path -Path $testRoot -ChildPath "scripts\utils\ConvertTo-Json.ps1") -PathType Leaf | Should -Be $true
         }
         
-        It "Migre les scripts Python vers les dossiers appropriés" {
-            # Vérifier que les scripts Python ont été migrés vers les bons dossiers
+        It "Migre les scripts Python vers les dossiers appropriÃ©s" {
+            # VÃ©rifier que les scripts Python ont Ã©tÃ© migrÃ©s vers les bons dossiers
             Test-Path -Path (Join-Path -Path $testRoot -ChildPath "scripts\analysis\analyze_data.py") -PathType Leaf | Should -Be $true
             Test-Path -Path (Join-Path -Path $testRoot -ChildPath "scripts\automation\start_service.py") -PathType Leaf | Should -Be $true
         }
         
-        It "Migre les scripts Batch vers les dossiers appropriés" {
-            # Vérifier que les scripts Batch ont été migrés vers les bons dossiers
+        It "Migre les scripts Batch vers les dossiers appropriÃ©s" {
+            # VÃ©rifier que les scripts Batch ont Ã©tÃ© migrÃ©s vers les bons dossiers
             Test-Path -Path (Join-Path -Path $testRoot -ChildPath "scripts\setup\install-app.cmd") -PathType Leaf | Should -Be $true
         }
         
-        It "Migre la documentation vers les dossiers appropriés" {
-            # Vérifier que la documentation a été migrée vers les bons dossiers
+        It "Migre la documentation vers les dossiers appropriÃ©s" {
+            # VÃ©rifier que la documentation a Ã©tÃ© migrÃ©e vers les bons dossiers
             Test-Path -Path (Join-Path -Path $testRoot -ChildPath "docs\guides\Guide.md") -PathType Leaf | Should -Be $true
             Test-Path -Path (Join-Path -Path $testRoot -ChildPath "docs\api\API.md") -PathType Leaf | Should -Be $true
         }
     }
     
     Context "Nettoyage des dossiers vides" {
-        It "Supprime les dossiers vides après la migration" {
-            # Vérifier que les dossiers non standard sont vides ou ont été supprimés
+        It "Supprime les dossiers vides aprÃ¨s la migration" {
+            # VÃ©rifier que les dossiers non standard sont vides ou ont Ã©tÃ© supprimÃ©s
             foreach ($folder in @("old-scripts", "python-scripts", "powershell-scripts", "batch-files", "documentation")) {
                 $folderPath = Join-Path -Path $testRoot -ChildPath $folder
                 (Test-Path -Path $folderPath -PathType Container) -and ((Get-ChildItem -Path $folderPath).Count -gt 0) | Should -Be $false
@@ -189,16 +189,16 @@ Describe "Reorganize-Repository" {
     }
     
     Context "Journalisation" {
-        It "Génère un journal des opérations" {
-            # Vérifier que le journal a été créé
+        It "GÃ©nÃ¨re un journal des opÃ©rations" {
+            # VÃ©rifier que le journal a Ã©tÃ© crÃ©Ã©
             $logFiles = Get-ChildItem -Path (Join-Path -Path $testRoot -ChildPath "logs") -Filter "reorganization-*.log" -File
             $logFiles | Should -Not -BeNullOrEmpty
             
-            # Vérifier le contenu du journal
+            # VÃ©rifier le contenu du journal
             $logContent = Get-Content -Path $logFiles[0].FullName -Raw
-            $logContent | Should -Match "Création de la structure de dossiers"
+            $logContent | Should -Match "CrÃ©ation de la structure de dossiers"
             $logContent | Should -Match "Migration des fichiers"
-            $logContent | Should -Match "Réorganisation du dépôt terminée"
+            $logContent | Should -Match "RÃ©organisation du dÃ©pÃ´t terminÃ©e"
         }
     }
 }

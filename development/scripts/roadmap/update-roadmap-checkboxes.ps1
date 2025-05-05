@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Met à jour les cases à cocher dans le fichier roadmap.
+    Met Ã  jour les cases Ã  cocher dans le fichier roadmap.
 
 .DESCRIPTION
-    Ce script met à jour les cases à cocher dans le fichier roadmap pour marquer les tâches comme complétées.
+    Ce script met Ã  jour les cases Ã  cocher dans le fichier roadmap pour marquer les tÃ¢ches comme complÃ©tÃ©es.
 
 .PARAMETER RoadmapPath
     Chemin vers le fichier roadmap.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tâche à marquer comme complétée.
+    Identifiant de la tÃ¢che Ã  marquer comme complÃ©tÃ©e.
 
 .PARAMETER Completed
-    Indique si la tâche doit être marquée comme complétée (true) ou non complétée (false).
+    Indique si la tÃ¢che doit Ãªtre marquÃ©e comme complÃ©tÃ©e (true) ou non complÃ©tÃ©e (false).
 
 .EXAMPLE
     .\update-roadmap-checkboxes.ps1 -RoadmapPath "projet\roadmaps\roadmap_complete_converted.md" -TaskIdentifier "1.1.1" -Completed $true
-    Marque la tâche 1.1.1 et ses sous-tâches comme complétées dans le fichier roadmap.
+    Marque la tÃ¢che 1.1.1 et ses sous-tÃ¢ches comme complÃ©tÃ©es dans le fichier roadmap.
 #>
 
 [CmdletBinding()]
@@ -31,7 +31,7 @@ param (
     [switch]$Completed
 )
 
-# Vérifier que le fichier roadmap existe
+# VÃ©rifier que le fichier roadmap existe
 if (-not (Test-Path -Path $RoadmapPath)) {
     Write-Error "Le fichier roadmap est introuvable : $RoadmapPath"
     exit 1
@@ -40,38 +40,38 @@ if (-not (Test-Path -Path $RoadmapPath)) {
 # Lire le contenu du fichier roadmap
 $content = Get-Content -Path $RoadmapPath -Encoding UTF8
 
-# Créer un tableau pour stocker le contenu modifié
+# CrÃ©er un tableau pour stocker le contenu modifiÃ©
 $modifiedContent = @()
 
-# Définir les expressions régulières pour identifier les tâches
+# DÃ©finir les expressions rÃ©guliÃ¨res pour identifier les tÃ¢ches
 $taskRegex = "^(\s*)-\s+\[([ x])\]\s+\*\*($TaskIdentifier(?:\.\d+)?)\*\*\s+(.*)$"
 
 # Parcourir chaque ligne du fichier
 foreach ($line in $content) {
-    # Vérifier si la ligne correspond à une tâche
+    # VÃ©rifier si la ligne correspond Ã  une tÃ¢che
     if ($line -match $taskRegex) {
         $indent = $matches[1]
         $checkbox = $matches[2]
         $taskId = $matches[3]
         $taskText = $matches[4]
 
-        # Vérifier si la tâche correspond à l'identifiant spécifié ou à une sous-tâche
+        # VÃ©rifier si la tÃ¢che correspond Ã  l'identifiant spÃ©cifiÃ© ou Ã  une sous-tÃ¢che
         if ($taskId -eq $TaskIdentifier -or $taskId -match "^$TaskIdentifier\.\d+$") {
-            # Mettre à jour la case à cocher
+            # Mettre Ã  jour la case Ã  cocher
             $newCheckbox = if ($Completed) { "x" } else { " " }
             $modifiedLine = "$indent- [$newCheckbox] **$taskId** $taskText"
             $modifiedContent += $modifiedLine
         } else {
-            # Conserver la ligne inchangée
+            # Conserver la ligne inchangÃ©e
             $modifiedContent += $line
         }
     } else {
-        # Conserver la ligne inchangée
+        # Conserver la ligne inchangÃ©e
         $modifiedContent += $line
     }
 }
 
-# Écrire le contenu modifié dans le fichier
+# Ã‰crire le contenu modifiÃ© dans le fichier
 Set-Content -Path $RoadmapPath -Value $modifiedContent -Encoding UTF8
 
-Write-Host "Les cases à cocher pour la tâche $TaskIdentifier ont été mises à jour dans le fichier $RoadmapPath."
+Write-Host "Les cases Ã  cocher pour la tÃ¢che $TaskIdentifier ont Ã©tÃ© mises Ã  jour dans le fichier $RoadmapPath."

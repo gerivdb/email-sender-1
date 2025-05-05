@@ -1,28 +1,28 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Analyse de code avec mise en cache des rÃ©sultats.
+    Analyse de code avec mise en cache des rÃƒÂ©sultats.
 .DESCRIPTION
-    Ce script analyse le code source avec diffÃ©rents outils et met en cache les rÃ©sultats
-    pour amÃ©liorer les performances lors des analyses ultÃ©rieures.
+    Ce script analyse le code source avec diffÃƒÂ©rents outils et met en cache les rÃƒÂ©sultats
+    pour amÃƒÂ©liorer les performances lors des analyses ultÃƒÂ©rieures.
 .PARAMETER Path
-    Chemin du fichier ou du rÃ©pertoire Ã  analyser.
+    Chemin du fichier ou du rÃƒÂ©pertoire ÃƒÂ  analyser.
 .PARAMETER Tools
-    Liste des outils Ã  utiliser pour l'analyse. Valeurs possibles : PSScriptAnalyzer, ESLint, Pylint, TodoAnalyzer, All.
+    Liste des outils ÃƒÂ  utiliser pour l'analyse. Valeurs possibles : PSScriptAnalyzer, ESLint, Pylint, TodoAnalyzer, All.
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les rÃ©sultats de l'analyse.
+    Chemin du fichier de sortie pour les rÃƒÂ©sultats de l'analyse.
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
+    Indique si un rapport HTML doit ÃƒÂªtre gÃƒÂ©nÃƒÂ©rÃƒÂ©.
 .PARAMETER Recurse
-    Indique si les sous-rÃ©pertoires doivent Ãªtre analysÃ©s.
+    Indique si les sous-rÃƒÂ©pertoires doivent ÃƒÂªtre analysÃƒÂ©s.
 .PARAMETER UseCache
-    Indique si le cache doit Ãªtre utilisÃ© pour amÃ©liorer les performances.
+    Indique si le cache doit ÃƒÂªtre utilisÃƒÂ© pour amÃƒÂ©liorer les performances.
 .PARAMETER CacheTTLHours
-    DurÃ©e de vie des Ã©lÃ©ments du cache en heures. Par dÃ©faut : 24 heures.
+    DurÃƒÂ©e de vie des ÃƒÂ©lÃƒÂ©ments du cache en heures. Par dÃƒÂ©faut : 24 heures.
 .PARAMETER MaxMemoryItems
-    Nombre maximum d'Ã©lÃ©ments Ã  conserver en mÃ©moire. Par dÃ©faut : 1000.
+    Nombre maximum d'ÃƒÂ©lÃƒÂ©ments ÃƒÂ  conserver en mÃƒÂ©moire. Par dÃƒÂ©faut : 1000.
 .PARAMETER ForceRefresh
-    Force l'actualisation du cache mÃªme si les rÃ©sultats sont dÃ©jÃ  en cache.
+    Force l'actualisation du cache mÃƒÂªme si les rÃƒÂ©sultats sont dÃƒÂ©jÃƒÂ  en cache.
 .EXAMPLE
     .\Start-CachedCodeAnalysis.ps1 -Path ".\development\scripts" -Tools PSScriptAnalyzer, TodoAnalyzer -GenerateHtmlReport -Recurse -UseCache
 .NOTES
@@ -60,18 +60,18 @@ param(
     [switch]$ForceRefresh
 )
 
-# Importer les modules nÃ©cessaires
+# Importer les modules nÃƒÂ©cessaires
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\pr-testing\modules"
 $cacheModulePath = Join-Path -Path $modulesPath -ChildPath "PRAnalysisCache.psm1"
 
 if (-not (Test-Path -Path $cacheModulePath)) {
-    Write-Error "Module PRAnalysisCache.psm1 non trouvÃ© Ã  l'emplacement: $cacheModulePath"
+    Write-Error "Module PRAnalysisCache.psm1 non trouvÃƒÂ© ÃƒÂ  l'emplacement: $cacheModulePath"
     exit 1
 }
 
 Import-Module $cacheModulePath -Force
 
-# Initialiser le cache si demandÃ©
+# Initialiser le cache si demandÃƒÂ©
 $cache = $null
 if ($UseCache) {
     $cache = New-PRAnalysisCache -MaxMemoryItems $MaxMemoryItems
@@ -82,7 +82,7 @@ if ($UseCache) {
     }
     
     $cache.DiskCachePath = $cachePath
-    Write-Verbose "Cache initialisÃ© avec $MaxMemoryItems Ã©lÃ©ments maximum en mÃ©moire et stockage sur disque dans $cachePath"
+    Write-Verbose "Cache initialisÃƒÂ© avec $MaxMemoryItems ÃƒÂ©lÃƒÂ©ments maximum en mÃƒÂ©moire et stockage sur disque dans $cachePath"
 }
 
 # Fonction pour analyser un fichier avec PSScriptAnalyzer
@@ -94,7 +94,7 @@ function Invoke-PSScriptAnalyzerAnalysis {
     )
     
     if (-not (Get-Module -Name PSScriptAnalyzer -ListAvailable)) {
-        Write-Warning "PSScriptAnalyzer n'est pas installÃ©. Installation en cours..."
+        Write-Warning "PSScriptAnalyzer n'est pas installÃƒÂ©. Installation en cours..."
         Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
     }
     
@@ -123,18 +123,18 @@ function Invoke-ESLintAnalysis {
         [string]$FilePath
     )
     
-    # VÃ©rifier si ESLint est installÃ©
+    # VÃƒÂ©rifier si ESLint est installÃƒÂ©
     $eslintPath = Get-Command eslint -ErrorAction SilentlyContinue
     
     if (-not $eslintPath) {
-        Write-Warning "ESLint n'est pas installÃ© ou n'est pas dans le PATH."
+        Write-Warning "ESLint n'est pas installÃƒÂ© ou n'est pas dans le PATH."
         return @()
     }
     
     $tempFile = Join-Path -Path $env:TEMP -ChildPath "eslint_results_$(Get-Random).json"
     
     try {
-        # ExÃ©cuter ESLint avec sortie JSON
+        # ExÃƒÂ©cuter ESLint avec sortie JSON
         eslint $FilePath --format json --output-file $tempFile
         
         if (Test-Path -Path $tempFile) {
@@ -160,7 +160,7 @@ function Invoke-ESLintAnalysis {
         }
     }
     catch {
-        Write-Warning "Erreur lors de l'exÃ©cution d'ESLint: $_"
+        Write-Warning "Erreur lors de l'exÃƒÂ©cution d'ESLint: $_"
     }
     finally {
         if (Test-Path -Path $tempFile) {
@@ -179,18 +179,18 @@ function Invoke-PylintAnalysis {
         [string]$FilePath
     )
     
-    # VÃ©rifier si Pylint est installÃ©
+    # VÃƒÂ©rifier si Pylint est installÃƒÂ©
     $pylintPath = Get-Command pylint -ErrorAction SilentlyContinue
     
     if (-not $pylintPath) {
-        Write-Warning "Pylint n'est pas installÃ© ou n'est pas dans le PATH."
+        Write-Warning "Pylint n'est pas installÃƒÂ© ou n'est pas dans le PATH."
         return @()
     }
     
     $tempFile = Join-Path -Path $env:TEMP -ChildPath "pylint_results_$(Get-Random).json"
     
     try {
-        # ExÃ©cuter Pylint avec sortie JSON
+        # ExÃƒÂ©cuter Pylint avec sortie JSON
         pylint --output-format=json $FilePath > $tempFile
         
         if (Test-Path -Path $tempFile) {
@@ -216,7 +216,7 @@ function Invoke-PylintAnalysis {
         }
     }
     catch {
-        Write-Warning "Erreur lors de l'exÃ©cution de Pylint: $_"
+        Write-Warning "Erreur lors de l'exÃƒÂ©cution de Pylint: $_"
     }
     finally {
         if (Test-Path -Path $tempFile) {
@@ -245,7 +245,7 @@ function Invoke-TodoAnalyzerAnalysis {
         $todoType = $match.Groups[1].Value
         $todoMessage = $match.Groups[2].Value.Trim()
         
-        # DÃ©terminer la ligne du TODO
+        # DÃƒÂ©terminer la ligne du TODO
         $lineNumber = ($content.Substring(0, $match.Index).Split("`n")).Length
         
         $severity = switch ($todoType.ToUpper()) {
@@ -280,7 +280,7 @@ function Invoke-CachedFileAnalysis {
         [string[]]$Tools
     )
     
-    # VÃ©rifier si le fichier existe
+    # VÃƒÂ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         Write-Warning "Le fichier n'existe pas: $FilePath"
         return @()
@@ -289,14 +289,14 @@ function Invoke-CachedFileAnalysis {
     # Obtenir les informations sur le fichier
     $fileInfo = Get-Item -Path $FilePath
     
-    # GÃ©nÃ©rer une clÃ© de cache unique basÃ©e sur le chemin du fichier et sa date de modification
+    # GÃƒÂ©nÃƒÂ©rer une clÃƒÂ© de cache unique basÃƒÂ©e sur le chemin du fichier et sa date de modification
     $cacheKey = "CodeAnalysis:$($FilePath):$($fileInfo.LastWriteTimeUtc.Ticks):$($Tools -join ',')"
     
-    # VÃ©rifier le cache si activÃ©
+    # VÃƒÂ©rifier le cache si activÃƒÂ©
     if ($UseCache -and -not $ForceRefresh -and $null -ne $cache) {
         $cachedResult = $cache.GetItem($cacheKey)
         if ($null -ne $cachedResult) {
-            Write-Verbose "RÃ©sultats rÃ©cupÃ©rÃ©s du cache pour $FilePath"
+            Write-Verbose "RÃƒÂ©sultats rÃƒÂ©cupÃƒÂ©rÃƒÂ©s du cache pour $FilePath"
             return $cachedResult
         }
     }
@@ -304,10 +304,10 @@ function Invoke-CachedFileAnalysis {
     # Analyser le fichier
     $results = Invoke-FileAnalysis -FilePath $FilePath -Tools $Tools
     
-    # Stocker les rÃ©sultats dans le cache si activÃ©
+    # Stocker les rÃƒÂ©sultats dans le cache si activÃƒÂ©
     if ($UseCache -and $null -ne $cache) {
         $cache.SetItem($cacheKey, $results, (New-TimeSpan -Hours $CacheTTLHours))
-        Write-Verbose "RÃ©sultats stockÃ©s dans le cache pour $FilePath"
+        Write-Verbose "RÃƒÂ©sultats stockÃƒÂ©s dans le cache pour $FilePath"
     }
     
     return $results
@@ -326,14 +326,14 @@ function Invoke-FileAnalysis {
     
     $results = @()
     
-    # DÃ©terminer les outils Ã  utiliser
+    # DÃƒÂ©terminer les outils ÃƒÂ  utiliser
     $useAll = $Tools -contains "All"
     $usePSScriptAnalyzer = $useAll -or ($Tools -contains "PSScriptAnalyzer")
     $useESLint = $useAll -or ($Tools -contains "ESLint")
     $usePylint = $useAll -or ($Tools -contains "Pylint")
     $useTodoAnalyzer = $useAll -or ($Tools -contains "TodoAnalyzer")
     
-    # DÃ©terminer le type de fichier
+    # DÃƒÂ©terminer le type de fichier
     $extension = [System.IO.Path]::GetExtension($FilePath).ToLower()
     
     # Analyser avec PSScriptAnalyzer si applicable
@@ -354,7 +354,7 @@ function Invoke-FileAnalysis {
         $results += $pylintResults
     }
     
-    # Analyser avec TodoAnalyzer (applicable Ã  tous les types de fichiers)
+    # Analyser avec TodoAnalyzer (applicable ÃƒÂ  tous les types de fichiers)
     if ($useTodoAnalyzer) {
         $todoResults = Invoke-TodoAnalyzerAnalysis -FilePath $FilePath
         $results += $todoResults
@@ -363,7 +363,7 @@ function Invoke-FileAnalysis {
     return $results
 }
 
-# Fonction pour gÃ©nÃ©rer un rapport HTML
+# Fonction pour gÃƒÂ©nÃƒÂ©rer un rapport HTML
 function New-HtmlReport {
     [CmdletBinding()]
     param(
@@ -393,24 +393,24 @@ function New-HtmlReport {
 </head>
 <body>
     <h1>Rapport d'analyse de code</h1>
-    <p>GÃ©nÃ©rÃ© le $(Get-Date)</p>
+    <p>GÃƒÂ©nÃƒÂ©rÃƒÂ© le $(Get-Date)</p>
     
     <div class="summary">
-        <h2>RÃ©sumÃ©</h2>
-        <p>Nombre total de problÃ¨mes: $($Results.Count)</p>
+        <h2>RÃƒÂ©sumÃƒÂ©</h2>
+        <p>Nombre total de problÃƒÂ¨mes: $($Results.Count)</p>
         <p>Erreurs: $($Results | Where-Object { $_.Severity -eq "Error" } | Measure-Object | Select-Object -ExpandProperty Count)</p>
         <p>Avertissements: $($Results | Where-Object { $_.Severity -eq "Warning" } | Measure-Object | Select-Object -ExpandProperty Count)</p>
         <p>Informations: $($Results | Where-Object { $_.Severity -eq "Information" } | Measure-Object | Select-Object -ExpandProperty Count)</p>
     </div>
     
-    <h2>DÃ©tails</h2>
+    <h2>DÃƒÂ©tails</h2>
     <table>
         <tr>
             <th>Fichier</th>
             <th>Ligne</th>
             <th>Colonne</th>
-            <th>SÃ©vÃ©ritÃ©</th>
-            <th>RÃ¨gle</th>
+            <th>SÃƒÂ©vÃƒÂ©ritÃƒÂ©</th>
+            <th>RÃƒÂ¨gle</th>
             <th>Outil</th>
             <th>Message</th>
         </tr>
@@ -468,16 +468,16 @@ function Start-Analysis {
     
     $allResults = @()
     
-    # Mesurer le temps d'exÃ©cution
+    # Mesurer le temps d'exÃƒÂ©cution
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     
-    # DÃ©terminer si le chemin est un fichier ou un rÃ©pertoire
+    # DÃƒÂ©terminer si le chemin est un fichier ou un rÃƒÂ©pertoire
     if (Test-Path -Path $Path -PathType Leaf) {
         # Analyser un seul fichier
         $allResults += Invoke-CachedFileAnalysis -FilePath $Path -Tools $Tools
     }
     else {
-        # Analyser un rÃ©pertoire
+        # Analyser un rÃƒÂ©pertoire
         $files = Get-ChildItem -Path $Path -Recurse:$Recurse -File
         
         $totalFiles = $files.Count
@@ -490,7 +490,7 @@ function Start-Analysis {
             
             Write-Progress -Activity "Analyse de code" -Status "Traitement du fichier $processedFiles/$totalFiles ($percentComplete%)" -PercentComplete $percentComplete
             
-            # VÃ©rifier si le fichier est dans le cache
+            # VÃƒÂ©rifier si le fichier est dans le cache
             $fileInfo = $file
             $cacheKey = "CodeAnalysis:$($file.FullName):$($fileInfo.LastWriteTimeUtc.Ticks):$($Tools -join ',')"
             $fromCache = $false
@@ -506,15 +506,15 @@ function Start-Analysis {
             # Analyser le fichier
             $fileResults = Invoke-CachedFileAnalysis -FilePath $file.FullName -Tools $Tools
             
-            # Ajouter les rÃ©sultats
+            # Ajouter les rÃƒÂ©sultats
             $allResults += $fileResults
             
             # Afficher des informations sur le fichier
             if ($fromCache) {
-                Write-Verbose "Fichier $($file.Name) analysÃ© (depuis le cache): $($fileResults.Count) problÃ¨mes trouvÃ©s"
+                Write-Verbose "Fichier $($file.Name) analysÃƒÂ© (depuis le cache): $($fileResults.Count) problÃƒÂ¨mes trouvÃƒÂ©s"
             }
             else {
-                Write-Verbose "Fichier $($file.Name) analysÃ©: $($fileResults.Count) problÃ¨mes trouvÃ©s"
+                Write-Verbose "Fichier $($file.Name) analysÃƒÂ©: $($fileResults.Count) problÃƒÂ¨mes trouvÃƒÂ©s"
             }
         }
         
@@ -530,11 +530,11 @@ function Start-Analysis {
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed
     
-    # Afficher un rÃ©sumÃ©
-    Write-Host "Analyse terminÃ©e en $($elapsedTime.TotalSeconds) secondes." -ForegroundColor Green
-    Write-Host "Nombre total de problÃ¨mes trouvÃ©s: $($allResults.Count)" -ForegroundColor Yellow
+    # Afficher un rÃƒÂ©sumÃƒÂ©
+    Write-Host "Analyse terminÃƒÂ©e en $($elapsedTime.TotalSeconds) secondes." -ForegroundColor Green
+    Write-Host "Nombre total de problÃƒÂ¨mes trouvÃƒÂ©s: $($allResults.Count)" -ForegroundColor Yellow
     
-    # Grouper les rÃ©sultats par sÃ©vÃ©ritÃ©
+    # Grouper les rÃƒÂ©sultats par sÃƒÂ©vÃƒÂ©ritÃƒÂ©
     $resultsBySeverity = $allResults | Group-Object -Property Severity -NoElement
     foreach ($group in $resultsBySeverity) {
         $color = switch ($group.Name) {
@@ -547,24 +547,24 @@ function Start-Analysis {
         Write-Host "$($group.Name): $($group.Count)" -ForegroundColor $color
     }
     
-    # Enregistrer les rÃ©sultats si demandÃ©
+    # Enregistrer les rÃƒÂ©sultats si demandÃƒÂ©
     if ($OutputPath) {
         $allResults | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding UTF8
-        Write-Host "RÃ©sultats enregistrÃ©s dans $OutputPath" -ForegroundColor Green
+        Write-Host "RÃƒÂ©sultats enregistrÃƒÂ©s dans $OutputPath" -ForegroundColor Green
         
-        # GÃ©nÃ©rer un rapport HTML si demandÃ©
+        # GÃƒÂ©nÃƒÂ©rer un rapport HTML si demandÃƒÂ©
         if ($GenerateHtmlReport) {
             $htmlPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
             New-HtmlReport -Results $allResults -OutputPath $htmlPath
-            Write-Host "Rapport HTML gÃ©nÃ©rÃ© dans $htmlPath" -ForegroundColor Green
+            Write-Host "Rapport HTML gÃƒÂ©nÃƒÂ©rÃƒÂ© dans $htmlPath" -ForegroundColor Green
         }
     }
     
     return $allResults
 }
 
-# ExÃ©cuter l'analyse
+# ExÃƒÂ©cuter l'analyse
 $results = Start-Analysis -Path $Path -Tools $Tools -OutputPath $OutputPath -GenerateHtmlReport:$GenerateHtmlReport -Recurse:$Recurse
 
-# Afficher les rÃ©sultats
+# Afficher les rÃƒÂ©sultats
 return $results

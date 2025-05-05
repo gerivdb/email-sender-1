@@ -1,4 +1,4 @@
-# Script pour executer les tests avec des caracteres ASCII uniquement
+﻿# Script pour executer les tests avec des caracteres ASCII uniquement
 
 # Configurer l'encodage de la console
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8

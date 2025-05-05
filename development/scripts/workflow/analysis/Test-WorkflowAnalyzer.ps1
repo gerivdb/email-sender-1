@@ -1,5 +1,5 @@
-# Script de test pour le module WorkflowAnalyzer
-# Ce script teste les fonctionnalités du module WorkflowAnalyzer
+﻿# Script de test pour le module WorkflowAnalyzer
+# Ce script teste les fonctionnalitÃ©s du module WorkflowAnalyzer
 
 #Requires -Version 5.1
 
@@ -35,15 +35,15 @@ function Test-WorkflowAnalyzer {
         [string]$OutputFolder = $PSScriptRoot
     )
     
-    Write-TestMessage "Démarrage des tests du module WorkflowAnalyzer..."
+    Write-TestMessage "DÃ©marrage des tests du module WorkflowAnalyzer..."
     
-    # Vérifier si le fichier de workflow existe
+    # VÃ©rifier si le fichier de workflow existe
     if (-not (Test-Path -Path $WorkflowPath)) {
         Write-TestMessage "Le fichier de workflow n'existe pas: $WorkflowPath" -Status "ERROR"
         return
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputFolder)) {
         New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
     }
@@ -53,28 +53,28 @@ function Test-WorkflowAnalyzer {
     $workflow = Get-N8nWorkflow -WorkflowPath $WorkflowPath
     
     if ($workflow) {
-        Write-TestMessage "Workflow chargé avec succès: $($workflow.name)" -Status "SUCCESS"
+        Write-TestMessage "Workflow chargÃ© avec succÃ¨s: $($workflow.name)" -Status "SUCCESS"
     }
     else {
-        Write-TestMessage "Échec du chargement du workflow" -Status "ERROR"
+        Write-TestMessage "Ã‰chec du chargement du workflow" -Status "ERROR"
         return
     }
     
-    # Test 2: Détecter les activités
-    Write-TestMessage "Test 2: Détection des activités..."
+    # Test 2: DÃ©tecter les activitÃ©s
+    Write-TestMessage "Test 2: DÃ©tection des activitÃ©s..."
     $activities = Get-N8nWorkflowActivities -Workflow $workflow -IncludeDetails
     
     if ($activities) {
-        Write-TestMessage "Activités détectées avec succès: $($activities.Count) activités trouvées" -Status "SUCCESS"
+        Write-TestMessage "ActivitÃ©s dÃ©tectÃ©es avec succÃ¨s: $($activities.Count) activitÃ©s trouvÃ©es" -Status "SUCCESS"
         
-        # Afficher quelques activités
-        Write-TestMessage "Exemples d'activités:"
+        # Afficher quelques activitÃ©s
+        Write-TestMessage "Exemples d'activitÃ©s:"
         $activities | Select-Object -First 3 | ForEach-Object {
-            Write-Host "  - $($_.Name) (Type: $($_.Type), Catégorie: $($_.Category))"
+            Write-Host "  - $($_.Name) (Type: $($_.Type), CatÃ©gorie: $($_.Category))"
         }
     }
     else {
-        Write-TestMessage "Échec de la détection des activités" -Status "ERROR"
+        Write-TestMessage "Ã‰chec de la dÃ©tection des activitÃ©s" -Status "ERROR"
     }
     
     # Test 3: Extraire les transitions
@@ -82,7 +82,7 @@ function Test-WorkflowAnalyzer {
     $transitions = Get-N8nWorkflowTransitions -Workflow $workflow
     
     if ($transitions) {
-        Write-TestMessage "Transitions extraites avec succès: $($transitions.Count) transitions trouvées" -Status "SUCCESS"
+        Write-TestMessage "Transitions extraites avec succÃ¨s: $($transitions.Count) transitions trouvÃ©es" -Status "SUCCESS"
         
         # Afficher quelques transitions
         Write-TestMessage "Exemples de transitions:"
@@ -91,7 +91,7 @@ function Test-WorkflowAnalyzer {
         }
     }
     else {
-        Write-TestMessage "Échec de l'extraction des transitions" -Status "ERROR"
+        Write-TestMessage "Ã‰chec de l'extraction des transitions" -Status "ERROR"
     }
     
     # Test 4: Analyser les conditions
@@ -99,7 +99,7 @@ function Test-WorkflowAnalyzer {
     $conditions = Get-N8nWorkflowConditions -Workflow $workflow -IncludeTransitions
     
     if ($conditions -ne $null) {
-        Write-TestMessage "Conditions analysées avec succès: $($conditions.Count) nœuds conditionnels trouvés" -Status "SUCCESS"
+        Write-TestMessage "Conditions analysÃ©es avec succÃ¨s: $($conditions.Count) nÅ“uds conditionnels trouvÃ©s" -Status "SUCCESS"
         
         # Afficher quelques conditions
         if ($conditions.Count -gt 0) {
@@ -109,41 +109,41 @@ function Test-WorkflowAnalyzer {
             }
         }
         else {
-            Write-TestMessage "Aucun nœud conditionnel trouvé dans le workflow" -Status "WARNING"
+            Write-TestMessage "Aucun nÅ“ud conditionnel trouvÃ© dans le workflow" -Status "WARNING"
         }
     }
     else {
-        Write-TestMessage "Échec de l'analyse des conditions" -Status "ERROR"
+        Write-TestMessage "Ã‰chec de l'analyse des conditions" -Status "ERROR"
     }
     
-    # Test 5: Générer un rapport
-    Write-TestMessage "Test 5: Génération d'un rapport..."
+    # Test 5: GÃ©nÃ©rer un rapport
+    Write-TestMessage "Test 5: GÃ©nÃ©ration d'un rapport..."
     $outputPath = Join-Path -Path $OutputFolder -ChildPath "workflow_analysis_report.md"
     $report = Get-N8nWorkflowAnalysisReport -WorkflowPath $WorkflowPath -OutputPath $outputPath -Format "Markdown"
     
     if ($report) {
-        Write-TestMessage "Rapport généré avec succès: $outputPath" -Status "SUCCESS"
+        Write-TestMessage "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $outputPath" -Status "SUCCESS"
     }
     else {
-        Write-TestMessage "Échec de la génération du rapport" -Status "ERROR"
+        Write-TestMessage "Ã‰chec de la gÃ©nÃ©ration du rapport" -Status "ERROR"
     }
     
-    # Test 6: Générer un rapport JSON
-    Write-TestMessage "Test 6: Génération d'un rapport JSON..."
+    # Test 6: GÃ©nÃ©rer un rapport JSON
+    Write-TestMessage "Test 6: GÃ©nÃ©ration d'un rapport JSON..."
     $outputPathJson = Join-Path -Path $OutputFolder -ChildPath "workflow_analysis_report.json"
     $reportJson = Get-N8nWorkflowAnalysisReport -WorkflowPath $WorkflowPath -OutputPath $outputPathJson -Format "JSON"
     
     if ($reportJson) {
-        Write-TestMessage "Rapport JSON généré avec succès: $outputPathJson" -Status "SUCCESS"
+        Write-TestMessage "Rapport JSON gÃ©nÃ©rÃ© avec succÃ¨s: $outputPathJson" -Status "SUCCESS"
     }
     else {
-        Write-TestMessage "Échec de la génération du rapport JSON" -Status "ERROR"
+        Write-TestMessage "Ã‰chec de la gÃ©nÃ©ration du rapport JSON" -Status "ERROR"
     }
     
-    Write-TestMessage "Tests terminés."
+    Write-TestMessage "Tests terminÃ©s."
 }
 
-# Vérifier si le script est exécuté directement
+# VÃ©rifier si le script est exÃ©cutÃ© directement
 if ($MyInvocation.InvocationName -ne ".") {
     # Obtenir les arguments de la ligne de commande
     param (
@@ -154,12 +154,12 @@ if ($MyInvocation.InvocationName -ne ".") {
         [string]$OutputFolder = $PSScriptRoot
     )
     
-    # Si aucun chemin de workflow n'est spécifié, demander à l'utilisateur
+    # Si aucun chemin de workflow n'est spÃ©cifiÃ©, demander Ã  l'utilisateur
     if (-not $WorkflowPath) {
-        Write-Host "Veuillez spécifier le chemin d'un fichier de workflow n8n à analyser:" -ForegroundColor Cyan
+        Write-Host "Veuillez spÃ©cifier le chemin d'un fichier de workflow n8n Ã  analyser:" -ForegroundColor Cyan
         $WorkflowPath = Read-Host
     }
     
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     Test-WorkflowAnalyzer -WorkflowPath $WorkflowPath -OutputFolder $OutputFolder
 }

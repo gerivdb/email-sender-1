@@ -1,26 +1,26 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'intégration des gestionnaires existants avec le Process Manager.
+    Script d'intÃ©gration des gestionnaires existants avec le Process Manager.
 
 .DESCRIPTION
-    Ce script intègre les gestionnaires existants avec le Process Manager en les enregistrant
-    et en configurant les adaptateurs appropriés.
+    Ce script intÃ¨gre les gestionnaires existants avec le Process Manager en les enregistrant
+    et en configurant les adaptateurs appropriÃ©s.
 
 .PARAMETER Force
-    Force l'intégration même si les gestionnaires sont déjà intégrés.
+    Force l'intÃ©gration mÃªme si les gestionnaires sont dÃ©jÃ  intÃ©grÃ©s.
 
 .EXAMPLE
     .\integrate-managers.ps1
-    Intègre les gestionnaires existants avec le Process Manager.
+    IntÃ¨gre les gestionnaires existants avec le Process Manager.
 
 .EXAMPLE
     .\integrate-managers.ps1 -Force
-    Force l'intégration des gestionnaires existants avec le Process Manager.
+    Force l'intÃ©gration des gestionnaires existants avec le Process Manager.
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2025-05-03
+    Date de crÃ©ation: 2025-05-03
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -28,26 +28,26 @@ param (
     [switch]$Force
 )
 
-# Définir le chemin vers le Process Manager
+# DÃ©finir le chemin vers le Process Manager
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $processManagerPath = Join-Path -Path $scriptPath -ChildPath "process-manager.ps1"
 
-# Vérifier que le Process Manager existe
+# VÃ©rifier que le Process Manager existe
 if (-not (Test-Path -Path $processManagerPath)) {
-    Write-Error "Le Process Manager est introuvable à l'emplacement : $processManagerPath"
+    Write-Error "Le Process Manager est introuvable Ã  l'emplacement : $processManagerPath"
     exit 1
 }
 
-# Définir le chemin vers les adaptateurs
+# DÃ©finir le chemin vers les adaptateurs
 $adaptersPath = Join-Path -Path (Split-Path -Parent $scriptPath) -ChildPath "adapters"
 
-# Vérifier que le répertoire des adaptateurs existe
+# VÃ©rifier que le rÃ©pertoire des adaptateurs existe
 if (-not (Test-Path -Path $adaptersPath)) {
-    Write-Error "Le répertoire des adaptateurs est introuvable à l'emplacement : $adaptersPath"
+    Write-Error "Le rÃ©pertoire des adaptateurs est introuvable Ã  l'emplacement : $adaptersPath"
     exit 1
 }
 
-# Définir les gestionnaires à intégrer
+# DÃ©finir les gestionnaires Ã  intÃ©grer
 $managers = @(
     @{
         Name = "ModeManager"
@@ -90,9 +90,9 @@ function Register-Manager {
         [switch]$Force
     )
 
-    # Vérifier que le gestionnaire existe
+    # VÃ©rifier que le gestionnaire existe
     if (-not (Test-Path -Path $Path)) {
-        Write-Warning "Le gestionnaire '$Name' est introuvable à l'emplacement : $Path"
+        Write-Warning "Le gestionnaire '$Name' est introuvable Ã  l'emplacement : $Path"
         return $false
     }
 
@@ -102,7 +102,7 @@ function Register-Manager {
             $result = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $processManagerPath -Command Register -ManagerName $Name -ManagerPath $Path -Force:$Force" -Wait -PassThru -NoNewWindow
             
             if ($result.ExitCode -eq 0) {
-                Write-Host "Le gestionnaire '$Name' a été enregistré avec succès." -ForegroundColor Green
+                Write-Host "Le gestionnaire '$Name' a Ã©tÃ© enregistrÃ© avec succÃ¨s." -ForegroundColor Green
                 return $true
             } else {
                 Write-Error "Erreur lors de l'enregistrement du gestionnaire '$Name'. Code de sortie : $($result.ExitCode)"
@@ -117,15 +117,15 @@ function Register-Manager {
     return $false
 }
 
-# Intégrer les gestionnaires
+# IntÃ©grer les gestionnaires
 $integratedManagers = 0
 
 foreach ($manager in $managers) {
-    Write-Host "Intégration du gestionnaire '$($manager.Name)'..." -ForegroundColor Cyan
+    Write-Host "IntÃ©gration du gestionnaire '$($manager.Name)'..." -ForegroundColor Cyan
     
-    # Vérifier que l'adaptateur existe
+    # VÃ©rifier que l'adaptateur existe
     if (-not (Test-Path -Path $manager.AdapterPath)) {
-        Write-Warning "L'adaptateur pour le gestionnaire '$($manager.Name)' est introuvable à l'emplacement : $($manager.AdapterPath)"
+        Write-Warning "L'adaptateur pour le gestionnaire '$($manager.Name)' est introuvable Ã  l'emplacement : $($manager.AdapterPath)"
         continue
     }
     
@@ -135,25 +135,25 @@ foreach ($manager in $managers) {
     }
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'intégration :" -ForegroundColor Cyan
-Write-Host "  Gestionnaires intégrés : $integratedManagers / $($managers.Count)" -ForegroundColor $(if ($integratedManagers -eq $managers.Count) { "Green" } else { "Yellow" })
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'intÃ©gration :" -ForegroundColor Cyan
+Write-Host "  Gestionnaires intÃ©grÃ©s : $integratedManagers / $($managers.Count)" -ForegroundColor $(if ($integratedManagers -eq $managers.Count) { "Green" } else { "Yellow" })
 
-# Afficher les gestionnaires enregistrés
-Write-Host "`nListe des gestionnaires enregistrés :" -ForegroundColor Cyan
+# Afficher les gestionnaires enregistrÃ©s
+Write-Host "`nListe des gestionnaires enregistrÃ©s :" -ForegroundColor Cyan
 try {
     $result = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $processManagerPath -Command List" -Wait -PassThru -NoNewWindow
     
     if ($result.ExitCode -ne 0) {
-        Write-Warning "Erreur lors de l'affichage des gestionnaires enregistrés. Code de sortie : $($result.ExitCode)"
+        Write-Warning "Erreur lors de l'affichage des gestionnaires enregistrÃ©s. Code de sortie : $($result.ExitCode)"
     }
 } catch {
-    Write-Error "Erreur lors de l'affichage des gestionnaires enregistrés : $_"
+    Write-Error "Erreur lors de l'affichage des gestionnaires enregistrÃ©s : $_"
 }
 
 # Afficher un message de confirmation
 if ($integratedManagers -eq $managers.Count) {
-    Write-Host "`nTous les gestionnaires ont été intégrés avec succès." -ForegroundColor Green
+    Write-Host "`nTous les gestionnaires ont Ã©tÃ© intÃ©grÃ©s avec succÃ¨s." -ForegroundColor Green
 } else {
-    Write-Warning "`nCertains gestionnaires n'ont pas pu être intégrés. Vérifiez les erreurs ci-dessus."
+    Write-Warning "`nCertains gestionnaires n'ont pas pu Ãªtre intÃ©grÃ©s. VÃ©rifiez les erreurs ci-dessus."
 }

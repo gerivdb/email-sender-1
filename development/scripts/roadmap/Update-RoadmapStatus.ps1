@@ -1,6 +1,6 @@
-# Update-RoadmapStatus.ps1
-# Script pour mettre à jour les statuts des tâches dans la roadmap active
-# et archiver automatiquement les tâches terminées
+﻿# Update-RoadmapStatus.ps1
+# Script pour mettre Ã  jour les statuts des tÃ¢ches dans la roadmap active
+# et archiver automatiquement les tÃ¢ches terminÃ©es
 
 [CmdletBinding()]
 param (
@@ -97,14 +97,14 @@ function Update-TaskStatus {
 
         if ($updated) {
             Set-Content -Path $RoadmapPath -Value $content -Encoding UTF8
-            Write-Log "Statut de la tâche $TaskId mis à jour: $NewStatus" -Level Info
+            Write-Log "Statut de la tÃ¢che $TaskId mis Ã  jour: $NewStatus" -Level Info
             return $true
         } else {
-            Write-Log "Tâche $TaskId non trouvée dans $RoadmapPath" -Level Warning
+            Write-Log "TÃ¢che $TaskId non trouvÃ©e dans $RoadmapPath" -Level Warning
             return $false
         }
     } catch {
-        Write-Log "Erreur lors de la mise à jour du statut: $_" -Level Error
+        Write-Log "Erreur lors de la mise Ã  jour du statut: $_" -Level Error
         return $false
     }
 }
@@ -127,12 +127,12 @@ function Get-TasksStatus {
         $currentSection = ""
 
         foreach ($line in $content) {
-            # Détecter les en-têtes de section
+            # DÃ©tecter les en-tÃªtes de section
             if ($line -match "^#{1,6}\s+(.+)$") {
                 $currentSection = $Matches[1]
             }
 
-            # Détecter les tâches
+            # DÃ©tecter les tÃ¢ches
             if ($line -match $taskPattern) {
                 $status = if ($Matches[1] -eq "x") { "Complete" } else { "Incomplete" }
                 $taskId = $Matches[2]
@@ -149,7 +149,7 @@ function Get-TasksStatus {
 
         return $tasks
     } catch {
-        Write-Log "Erreur lors de la récupération des statuts: $_" -Level Error
+        Write-Log "Erreur lors de la rÃ©cupÃ©ration des statuts: $_" -Level Error
         return @()
     }
 }
@@ -173,7 +173,7 @@ function Move-CompletedTasks {
         $activeContent = Get-Content -Path $ActivePath -Encoding UTF8
         $completedContent = Get-Content -Path $CompletedPath -Encoding UTF8
 
-        # Identifier les sections et tâches complétées
+        # Identifier les sections et tÃ¢ches complÃ©tÃ©es
         $newActiveContent = @()
         $sectionsToMove = @()
         $inSection = $false
@@ -182,9 +182,9 @@ function Move-CompletedTasks {
         $sectionHasTasks = $false
 
         foreach ($line in $activeContent) {
-            # Détecter les en-têtes de section
+            # DÃ©tecter les en-tÃªtes de section
             if ($line -match "^#{1,6}\s+") {
-                # Finaliser la section précédente
+                # Finaliser la section prÃ©cÃ©dente
                 if ($inSection) {
                     if ($currentSectionCompleted -and $sectionHasTasks) {
                         $sectionsToMove += $currentSection
@@ -199,10 +199,10 @@ function Move-CompletedTasks {
                 $currentSectionCompleted = $true
                 $sectionHasTasks = $false
             } elseif ($inSection) {
-                # Ajouter la ligne à la section courante
+                # Ajouter la ligne Ã  la section courante
                 $currentSection += $line
 
-                # Vérifier si c'est une tâche
+                # VÃ©rifier si c'est une tÃ¢che
                 if ($line -match "- \[(x| )\]") {
                     $sectionHasTasks = $true
                     if ($line -match "- \[ \]") {
@@ -210,12 +210,12 @@ function Move-CompletedTasks {
                     }
                 }
             } else {
-                # Ligne hors section (en-tête du document)
+                # Ligne hors section (en-tÃªte du document)
                 $newActiveContent += $line
             }
         }
 
-        # Traiter la dernière section
+        # Traiter la derniÃ¨re section
         if ($inSection) {
             if ($currentSectionCompleted -and $sectionHasTasks) {
                 $sectionsToMove += $currentSection
@@ -224,7 +224,7 @@ function Move-CompletedTasks {
             }
         }
 
-        # Ajouter les sections complétées au fichier d'archive
+        # Ajouter les sections complÃ©tÃ©es au fichier d'archive
         $newCompletedContent = $completedContent
         foreach ($section in $sectionsToMove) {
             $newCompletedContent += ""
@@ -235,10 +235,10 @@ function Move-CompletedTasks {
         Set-Content -Path $ActivePath -Value $newActiveContent -Encoding UTF8
         Set-Content -Path $CompletedPath -Value $newCompletedContent -Encoding UTF8
 
-        Write-Log "Déplacement des tâches terminées: $(($sectionsToMove | Measure-Object).Count) sections déplacées" -Level Info
+        Write-Log "DÃ©placement des tÃ¢ches terminÃ©es: $(($sectionsToMove | Measure-Object).Count) sections dÃ©placÃ©es" -Level Info
         return $true
     } catch {
-        Write-Log "Erreur lors du déplacement des tâches terminées: $_" -Level Error
+        Write-Log "Erreur lors du dÃ©placement des tÃ¢ches terminÃ©es: $_" -Level Error
         return $false
     }
 }
@@ -270,16 +270,16 @@ function Generate-StatusReport {
         $report = @"
 # Rapport d'avancement de la Roadmap - EMAIL_SENDER_1
 
-Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 
-## Résumé
+## RÃ©sumÃ©
 
-- **Total des tâches**: $totalTasks
-- **Tâches terminées**: $completedCount
-- **Tâches en cours**: $incompleteCount
-- **Pourcentage d'achèvement**: $completionPercentage%
+- **Total des tÃ¢ches**: $totalTasks
+- **TÃ¢ches terminÃ©es**: $completedCount
+- **TÃ¢ches en cours**: $incompleteCount
+- **Pourcentage d'achÃ¨vement**: $completionPercentage%
 
-## Tâches actives par section
+## TÃ¢ches actives par section
 
 "@
 
@@ -303,7 +303,7 @@ Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 "@
 
             foreach ($task in $sectionTasks | Sort-Object -Property TaskId) {
-                $statusIcon = if ($task.Status -eq "Complete") { "✅" } else { "⏳" }
+                $statusIcon = if ($task.Status -eq "Complete") { "âœ…" } else { "â³" }
                 $report += "| $($task.TaskId) | $($task.Description) | $statusIcon |\n"
             }
         }
@@ -316,34 +316,34 @@ Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
         }
 
         Set-Content -Path $reportPath -Value $report -Encoding UTF8
-        Write-Log "Rapport d'avancement généré: $reportPath" -Level Info
+        Write-Log "Rapport d'avancement gÃ©nÃ©rÃ©: $reportPath" -Level Info
 
         return $reportPath
     } catch {
-        Write-Log "Erreur lors de la génération du rapport: $_" -Level Error
+        Write-Log "Erreur lors de la gÃ©nÃ©ration du rapport: $_" -Level Error
         return $false
     }
 }
 
-# Exécution principale
+# ExÃ©cution principale
 if (-not [string]::IsNullOrEmpty($TaskId) -and -not [string]::IsNullOrEmpty($Status)) {
-    Write-Log "Mise à jour du statut de la tâche ${TaskId}: ${Status}" -Level Info
+    Write-Log "Mise Ã  jour du statut de la tÃ¢che ${TaskId}: ${Status}" -Level Info
     $success = Update-TaskStatus -RoadmapPath $ActiveRoadmapPath -TaskId $TaskId -NewStatus $Status
 
     if ($success -and $AutoArchive -and $Status -eq "Complete") {
-        Write-Log "Archivage automatique des tâches terminées..." -Level Info
+        Write-Log "Archivage automatique des tÃ¢ches terminÃ©es..." -Level Info
         Move-CompletedTasks -ActivePath $ActiveRoadmapPath -CompletedPath $CompletedRoadmapPath
     }
 } elseif ($AutoArchive) {
-    Write-Log "Archivage des tâches terminées..." -Level Info
+    Write-Log "Archivage des tÃ¢ches terminÃ©es..." -Level Info
     Move-CompletedTasks -ActivePath $ActiveRoadmapPath -CompletedPath $CompletedRoadmapPath
 }
 
 if ($GenerateReport) {
-    Write-Log "Génération du rapport d'avancement..." -Level Info
+    Write-Log "GÃ©nÃ©ration du rapport d'avancement..." -Level Info
     $reportPath = Generate-StatusReport -ActivePath $ActiveRoadmapPath -CompletedPath $CompletedRoadmapPath
 
     if ($reportPath) {
-        Write-Log "Rapport généré avec succès: $reportPath" -Level Info
+        Write-Log "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $reportPath" -Level Info
     }
 }

@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le script d'optimisation des Memories.
 
@@ -8,7 +8,7 @@
 
 .EXAMPLE
     Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-OptimizeAugmentMemories.ps1"
-    # Exécute les tests unitaires pour le script d'optimisation des Memories
+    # ExÃ©cute les tests unitaires pour le script d'optimisation des Memories
 
 .NOTES
     Version: 1.0
@@ -16,17 +16,17 @@
     Auteur: Augment Agent
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Déterminer le chemin du script à tester
+# DÃ©terminer le chemin du script Ã  tester
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $scriptPath = Join-Path -Path $scriptRoot -ChildPath "optimize-augment-memories.ps1"
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $scriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -35,7 +35,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 
 Describe "Optimize Augment Memories Tests" {
     BeforeAll {
-        # Créer un fichier de configuration temporaire pour les tests
+        # CrÃ©er un fichier de configuration temporaire pour les tests
         $testDir = Join-Path -Path $TestDrive -ChildPath "config"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         
@@ -53,17 +53,17 @@ Describe "Optimize Augment Memories Tests" {
         } | ConvertTo-Json -Depth 10
         $testConfigContent | Out-File -FilePath $testConfigPath -Encoding UTF8
         
-        # Créer un répertoire de sortie temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire de sortie temporaire pour les tests
         $testOutputDir = Join-Path -Path $TestDrive -ChildPath "output"
         New-Item -Path $testOutputDir -ItemType Directory -Force | Out-Null
         
         $testOutputPath = Join-Path -Path $testOutputDir -ChildPath "memories.json"
         
-        # Définir des variables globales pour les tests
+        # DÃ©finir des variables globales pour les tests
         $Global:TestConfigPath = $testConfigPath
         $Global:TestOutputPath = $testOutputPath
         
-        # Créer des fonctions de mock pour les fonctions du script
+        # CrÃ©er des fonctions de mock pour les fonctions du script
         function Get-OptimizedMemories {
             param (
                 [string]$Mode = "ALL"
@@ -102,18 +102,18 @@ Describe "Optimize Augment Memories Tests" {
     
     Context "Script Loading" {
         It "Should load the script without errors" {
-            # Vérifier que le script existe
+            # VÃ©rifier que le script existe
             Test-Path -Path $scriptPath | Should -Be $true
             
-            # Charger le script dans un bloc de script pour éviter d'exécuter le script complet
+            # Charger le script dans un bloc de script pour Ã©viter d'exÃ©cuter le script complet
             $scriptContent = Get-Content -Path $scriptPath -Raw
             
-            # Remplacer la partie qui exécute le script par un commentaire
-            $scriptContent = $scriptContent -replace "# Générer les Memories optimisées.*?# Enregistrer les Memories optimisées", "# Script execution disabled for testing"
+            # Remplacer la partie qui exÃ©cute le script par un commentaire
+            $scriptContent = $scriptContent -replace "# GÃ©nÃ©rer les Memories optimisÃ©es.*?# Enregistrer les Memories optimisÃ©es", "# Script execution disabled for testing"
             
             $scriptBlock = [ScriptBlock]::Create($scriptContent)
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             { . $scriptBlock } | Should -Not -Throw
         }
     }
@@ -147,7 +147,7 @@ Describe "Optimize Augment Memories Tests" {
     
     Context "Script Execution" {
         It "Should generate and save optimized Memories" {
-            # Mock les fonctions nécessaires
+            # Mock les fonctions nÃ©cessaires
             Mock -CommandName Get-OptimizedMemories -MockWith {
                 param (
                     [string]$Mode = "ALL"
@@ -165,20 +165,20 @@ Describe "Optimize Augment Memories Tests" {
                 }
             }
             
-            # Exécuter le script avec des paramètres spécifiques
+            # ExÃ©cuter le script avec des paramÃ¨tres spÃ©cifiques
             $params = @{
                 OutputPath = $Global:TestOutputPath
                 Mode = "ALL"
                 ConfigPath = $Global:TestConfigPath
             }
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             & $scriptPath @params
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $Global:TestOutputPath | Should -Be $true
             
-            # Vérifier le contenu du fichier
+            # VÃ©rifier le contenu du fichier
             $content = Get-Content -Path $Global:TestOutputPath -Raw | ConvertFrom-Json
             $content | Should -Not -BeNullOrEmpty
             $content.version | Should -Be "2.0.0"

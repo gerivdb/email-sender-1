@@ -1,13 +1,13 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de vérification de l'implémentation du gestionnaire intégré.
+    Script de vÃ©rification de l'implÃ©mentation du gestionnaire intÃ©grÃ©.
 
 .DESCRIPTION
-    Ce script vérifie que tous les fichiers nécessaires au fonctionnement du gestionnaire intégré existent
-    et que les fonctionnalités de base sont disponibles.
+    Ce script vÃ©rifie que tous les fichiers nÃ©cessaires au fonctionnement du gestionnaire intÃ©grÃ© existent
+    et que les fonctionnalitÃ©s de base sont disponibles.
 
 .PARAMETER Verbose
-    Affiche des informations détaillées sur l'exécution.
+    Affiche des informations dÃ©taillÃ©es sur l'exÃ©cution.
 
 .EXAMPLE
     .\Verify-Implementation.ps1
@@ -15,16 +15,16 @@
 .NOTES
     Auteur: Integrated Manager Team
     Version: 1.0
-    Date de création: 2023-06-01
+    Date de crÃ©ation: 2023-06-01
 #>
 [CmdletBinding()]
 param ()
 
-# Définir les chemins
+# DÃ©finir les chemins
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 
-# Fonction pour afficher les résultats
+# Fonction pour afficher les rÃ©sultats
 function Write-Result {
     param (
         [Parameter(Mandatory = $true)]
@@ -37,7 +37,7 @@ function Write-Result {
         [string]$Details = ""
     )
 
-    $status = if ($Success) { "OK" } else { "ÉCHEC" }
+    $status = if ($Success) { "OK" } else { "Ã‰CHEC" }
     $color = if ($Success) { "Green" } else { "Red" }
 
     Write-Host "[$status] " -ForegroundColor $color -NoNewline
@@ -50,27 +50,27 @@ function Write-Result {
     }
 }
 
-# Afficher l'en-tête
-Write-Host "Vérification de l'implémentation du gestionnaire intégré" -ForegroundColor Cyan
+# Afficher l'en-tÃªte
+Write-Host "VÃ©rification de l'implÃ©mentation du gestionnaire intÃ©grÃ©" -ForegroundColor Cyan
 Write-Host "=======================================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Vérifier que les fichiers existent
+# VÃ©rifier que les fichiers existent
 $files = @(
-    @{ Name = "Gestionnaire intégré"; Path = "development\scripts\integrated-manager.ps1" },
+    @{ Name = "Gestionnaire intÃ©grÃ©"; Path = "development\scripts\integrated-manager.ps1" },
     @{ Name = "Mode ROADMAP-SYNC"; Path = "development\scripts\maintenance\modes\roadmap-sync-mode.ps1" },
     @{ Name = "Mode ROADMAP-REPORT"; Path = "development\scripts\maintenance\modes\roadmap-report-mode.ps1" },
     @{ Name = "Mode ROADMAP-PLAN"; Path = "development\scripts\maintenance\modes\roadmap-plan-mode.ps1" },
     @{ Name = "Workflow quotidien"; Path = "development\scripts\workflows\workflow-quotidien.ps1" },
     @{ Name = "Workflow hebdomadaire"; Path = "development\scripts\workflows\workflow-hebdomadaire.ps1" },
     @{ Name = "Workflow mensuel"; Path = "development\scripts\workflows\workflow-mensuel.ps1" },
-    @{ Name = "Installation des tâches planifiées"; Path = "development\scripts\workflows\install-scheduled-tasks.ps1" },
+    @{ Name = "Installation des tÃ¢ches planifiÃ©es"; Path = "development\scripts\workflows\install-scheduled-tasks.ps1" },
     @{ Name = "Guide d'utilisation"; Path = "development\docs\guides\user-guides\integrated-manager-guide.md" },
-    @{ Name = "Guide de démarrage rapide"; Path = "development\docs\guides\user-guides\integrated-manager-quickstart.md" },
-    @{ Name = "Référence des paramètres"; Path = "development\docs\guides\reference\integrated-manager-parameters.md" },
-    @{ Name = "Script de vérification de l'installation"; Path = "development\scripts\maintenance\verify-installation.ps1" },
+    @{ Name = "Guide de dÃ©marrage rapide"; Path = "development\docs\guides\user-guides\integrated-manager-quickstart.md" },
+    @{ Name = "RÃ©fÃ©rence des paramÃ¨tres"; Path = "development\docs\guides\reference\integrated-manager-parameters.md" },
+    @{ Name = "Script de vÃ©rification de l'installation"; Path = "development\scripts\maintenance\verify-installation.ps1" },
     @{ Name = "Script d'installation rapide"; Path = "development\scripts\maintenance\install-integrated-manager.ps1" },
-    @{ Name = "Script de désinstallation"; Path = "development\scripts\maintenance\uninstall-integrated-manager.ps1" }
+    @{ Name = "Script de dÃ©sinstallation"; Path = "development\scripts\maintenance\uninstall-integrated-manager.ps1" }
 )
 
 $filesSuccess = $true
@@ -81,7 +81,7 @@ foreach ($file in $files) {
     $fileSuccess = Test-Path -Path $filePath
     $filesSuccess = $filesSuccess -and $fileSuccess
 
-    $fileStatus = if ($fileSuccess) { "OK" } else { "ÉCHEC" }
+    $fileStatus = if ($fileSuccess) { "OK" } else { "Ã‰CHEC" }
     $fileColor = if ($fileSuccess) { "Green" } else { "Red" }
 
     Write-Host "  [$fileStatus] " -ForegroundColor $fileColor -NoNewline
@@ -94,14 +94,14 @@ foreach ($file in $files) {
     }
 }
 
-Write-Result -Component "Fichiers" -Success $filesSuccess -Details "$($files.Count) fichiers vérifiés"
+Write-Result -Component "Fichiers" -Success $filesSuccess -Details "$($files.Count) fichiers vÃ©rifiÃ©s"
 
-# Vérifier que les répertoires existent
+# VÃ©rifier que les rÃ©pertoires existent
 $directories = @(
-    @{ Name = "Répertoire des modes"; Path = "development\scripts\maintenance\modes" },
-    @{ Name = "Répertoire des workflows"; Path = "development\scripts\workflows" },
-    @{ Name = "Répertoire des guides"; Path = "development\docs\guides\user-guides" },
-    @{ Name = "Répertoire des références"; Path = "development\docs\guides\reference" }
+    @{ Name = "RÃ©pertoire des modes"; Path = "development\scripts\maintenance\modes" },
+    @{ Name = "RÃ©pertoire des workflows"; Path = "development\scripts\workflows" },
+    @{ Name = "RÃ©pertoire des guides"; Path = "development\docs\guides\user-guides" },
+    @{ Name = "RÃ©pertoire des rÃ©fÃ©rences"; Path = "development\docs\guides\reference" }
 )
 
 $directoriesSuccess = $true
@@ -112,164 +112,164 @@ foreach ($directory in $directories) {
     $directorySuccess = Test-Path -Path $directoryPath -PathType Container
     $directoriesSuccess = $directoriesSuccess -and $directorySuccess
 
-    $directoryStatus = if ($directorySuccess) { "OK" } else { "ÉCHEC" }
+    $directoryStatus = if ($directorySuccess) { "OK" } else { "Ã‰CHEC" }
     $directoryColor = if ($directorySuccess) { "Green" } else { "Red" }
 
     Write-Host "  [$directoryStatus] " -ForegroundColor $directoryColor -NoNewline
     Write-Host "$($directory.Name)" -NoNewline
 
     if (-not $directorySuccess) {
-        Write-Host " - Répertoire introuvable : $directoryPath"
+        Write-Host " - RÃ©pertoire introuvable : $directoryPath"
     } else {
         Write-Host ""
     }
 }
 
-Write-Result -Component "Répertoires" -Success $directoriesSuccess -Details "$($directories.Count) répertoires vérifiés"
+Write-Result -Component "RÃ©pertoires" -Success $directoriesSuccess -Details "$($directories.Count) rÃ©pertoires vÃ©rifiÃ©s"
 
-# Vérifier que le gestionnaire intégré peut être exécuté
+# VÃ©rifier que le gestionnaire intÃ©grÃ© peut Ãªtre exÃ©cutÃ©
 $integratedManagerPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\integrated-manager.ps1"
 $integratedManagerSuccess = $false
 $integratedManagerDetails = ""
 
 if (Test-Path -Path $integratedManagerPath) {
     try {
-        # Exécuter le gestionnaire intégré avec le paramètre -ListModes
+        # ExÃ©cuter le gestionnaire intÃ©grÃ© avec le paramÃ¨tre -ListModes
         $output = & $integratedManagerPath -ListModes -ErrorAction SilentlyContinue
-        $listModesSuccess = $true # Considérer que l'exécution est réussie même si la sortie est vide
+        $listModesSuccess = $true # ConsidÃ©rer que l'exÃ©cution est rÃ©ussie mÃªme si la sortie est vide
 
-        # Exécuter le gestionnaire intégré avec le paramètre -ListWorkflows
+        # ExÃ©cuter le gestionnaire intÃ©grÃ© avec le paramÃ¨tre -ListWorkflows
         $output = & $integratedManagerPath -ListWorkflows -ErrorAction SilentlyContinue
-        $listWorkflowsSuccess = $true # Considérer que l'exécution est réussie même si la sortie est vide
+        $listWorkflowsSuccess = $true # ConsidÃ©rer que l'exÃ©cution est rÃ©ussie mÃªme si la sortie est vide
 
         $integratedManagerSuccess = $listModesSuccess -and $listWorkflowsSuccess
         $integratedManagerDetails = if ($integratedManagerSuccess) {
-            "Le gestionnaire intégré peut être exécuté avec les paramètres -ListModes et -ListWorkflows"
+            "Le gestionnaire intÃ©grÃ© peut Ãªtre exÃ©cutÃ© avec les paramÃ¨tres -ListModes et -ListWorkflows"
         } elseif ($listModesSuccess) {
-            "Le gestionnaire intégré peut être exécuté avec le paramètre -ListModes mais pas avec -ListWorkflows"
+            "Le gestionnaire intÃ©grÃ© peut Ãªtre exÃ©cutÃ© avec le paramÃ¨tre -ListModes mais pas avec -ListWorkflows"
         } elseif ($listWorkflowsSuccess) {
-            "Le gestionnaire intégré peut être exécuté avec le paramètre -ListWorkflows mais pas avec -ListModes"
+            "Le gestionnaire intÃ©grÃ© peut Ãªtre exÃ©cutÃ© avec le paramÃ¨tre -ListWorkflows mais pas avec -ListModes"
         } else {
-            "Le gestionnaire intégré ne peut pas être exécuté"
+            "Le gestionnaire intÃ©grÃ© ne peut pas Ãªtre exÃ©cutÃ©"
         }
     } catch {
-        $integratedManagerDetails = "Erreur lors de l'exécution : $_"
+        $integratedManagerDetails = "Erreur lors de l'exÃ©cution : $_"
     }
 } else {
     $integratedManagerDetails = "Fichier introuvable : $integratedManagerPath"
 }
 
-Write-Result -Component "Exécution du gestionnaire intégré" -Success $integratedManagerSuccess -Details $integratedManagerDetails
+Write-Result -Component "ExÃ©cution du gestionnaire intÃ©grÃ©" -Success $integratedManagerSuccess -Details $integratedManagerDetails
 
-# Vérifier que le script de vérification de l'installation peut être exécuté
+# VÃ©rifier que le script de vÃ©rification de l'installation peut Ãªtre exÃ©cutÃ©
 $verifyInstallationPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\verify-installation.ps1"
 $verifyInstallationSuccess = $false
 $verifyInstallationDetails = ""
 
 if (Test-Path -Path $verifyInstallationPath) {
     try {
-        # Exécuter le script de vérification de l'installation avec le paramètre -WhatIf
+        # ExÃ©cuter le script de vÃ©rification de l'installation avec le paramÃ¨tre -WhatIf
         $output = & $verifyInstallationPath -ErrorAction SilentlyContinue
         $verifyInstallationSuccess = $true
-        $verifyInstallationDetails = "Le script de vérification de l'installation peut être exécuté"
+        $verifyInstallationDetails = "Le script de vÃ©rification de l'installation peut Ãªtre exÃ©cutÃ©"
     } catch {
-        $verifyInstallationDetails = "Erreur lors de l'exécution : $_"
+        $verifyInstallationDetails = "Erreur lors de l'exÃ©cution : $_"
     }
 } else {
     $verifyInstallationDetails = "Fichier introuvable : $verifyInstallationPath"
 }
 
-Write-Result -Component "Exécution du script de vérification de l'installation" -Success $verifyInstallationSuccess -Details $verifyInstallationDetails
+Write-Result -Component "ExÃ©cution du script de vÃ©rification de l'installation" -Success $verifyInstallationSuccess -Details $verifyInstallationDetails
 
-# Vérifier que le script d'installation rapide peut être exécuté
+# VÃ©rifier que le script d'installation rapide peut Ãªtre exÃ©cutÃ©
 $installIntegratedManagerPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\install-integrated-manager.ps1"
 $installIntegratedManagerSuccess = $false
 $installIntegratedManagerDetails = ""
 
 if (Test-Path -Path $installIntegratedManagerPath) {
     try {
-        # Exécuter le script d'installation rapide avec le paramètre -WhatIf
+        # ExÃ©cuter le script d'installation rapide avec le paramÃ¨tre -WhatIf
         $output = & $installIntegratedManagerPath -WhatIf -ErrorAction SilentlyContinue
         $installIntegratedManagerSuccess = $true
-        $installIntegratedManagerDetails = "Le script d'installation rapide peut être exécuté"
+        $installIntegratedManagerDetails = "Le script d'installation rapide peut Ãªtre exÃ©cutÃ©"
     } catch {
-        $installIntegratedManagerDetails = "Erreur lors de l'exécution : $_"
+        $installIntegratedManagerDetails = "Erreur lors de l'exÃ©cution : $_"
     }
 } else {
     $installIntegratedManagerDetails = "Fichier introuvable : $installIntegratedManagerPath"
 }
 
-Write-Result -Component "Exécution du script d'installation rapide" -Success $installIntegratedManagerSuccess -Details $installIntegratedManagerDetails
+Write-Result -Component "ExÃ©cution du script d'installation rapide" -Success $installIntegratedManagerSuccess -Details $installIntegratedManagerDetails
 
-# Vérifier que le script de désinstallation peut être exécuté
+# VÃ©rifier que le script de dÃ©sinstallation peut Ãªtre exÃ©cutÃ©
 $uninstallIntegratedManagerPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\uninstall-integrated-manager.ps1"
 $uninstallIntegratedManagerSuccess = $false
 $uninstallIntegratedManagerDetails = ""
 
 if (Test-Path -Path $uninstallIntegratedManagerPath) {
     try {
-        # Exécuter le script de désinstallation avec le paramètre -WhatIf
+        # ExÃ©cuter le script de dÃ©sinstallation avec le paramÃ¨tre -WhatIf
         $output = & $uninstallIntegratedManagerPath -WhatIf -ErrorAction SilentlyContinue
         $uninstallIntegratedManagerSuccess = $true
-        $uninstallIntegratedManagerDetails = "Le script de désinstallation peut être exécuté"
+        $uninstallIntegratedManagerDetails = "Le script de dÃ©sinstallation peut Ãªtre exÃ©cutÃ©"
     } catch {
-        $uninstallIntegratedManagerDetails = "Erreur lors de l'exécution : $_"
+        $uninstallIntegratedManagerDetails = "Erreur lors de l'exÃ©cution : $_"
     }
 } else {
     $uninstallIntegratedManagerDetails = "Fichier introuvable : $uninstallIntegratedManagerPath"
 }
 
-Write-Result -Component "Exécution du script de désinstallation" -Success $uninstallIntegratedManagerSuccess -Details $uninstallIntegratedManagerDetails
+Write-Result -Component "ExÃ©cution du script de dÃ©sinstallation" -Success $uninstallIntegratedManagerSuccess -Details $uninstallIntegratedManagerDetails
 
-# Afficher le résumé
+# Afficher le rÃ©sumÃ©
 Write-Host ""
-Write-Host "Résumé de la vérification" -ForegroundColor Cyan
+Write-Host "RÃ©sumÃ© de la vÃ©rification" -ForegroundColor Cyan
 Write-Host "======================" -ForegroundColor Cyan
 
 $totalSuccess = $filesSuccess -and $directoriesSuccess -and $integratedManagerSuccess -and $verifyInstallationSuccess -and $installIntegratedManagerSuccess -and $uninstallIntegratedManagerSuccess
-$totalStatus = if ($totalSuccess) { "SUCCÈS" } else { "ÉCHEC" }
+$totalStatus = if ($totalSuccess) { "SUCCÃˆS" } else { "Ã‰CHEC" }
 $totalColor = if ($totalSuccess) { "Green" } else { "Red" }
 
-Write-Host "Résultat global : " -NoNewline
+Write-Host "RÃ©sultat global : " -NoNewline
 Write-Host "[$totalStatus]" -ForegroundColor $totalColor
 
 if (-not $totalSuccess) {
     Write-Host ""
-    Write-Host "Actions recommandées :" -ForegroundColor Yellow
+    Write-Host "Actions recommandÃ©es :" -ForegroundColor Yellow
 
     if (-not $filesSuccess) {
-        Write-Host "- Créer les fichiers manquants"
+        Write-Host "- CrÃ©er les fichiers manquants"
     }
 
     if (-not $directoriesSuccess) {
-        Write-Host "- Créer les répertoires manquants"
+        Write-Host "- CrÃ©er les rÃ©pertoires manquants"
     }
 
     if (-not $integratedManagerSuccess) {
-        Write-Host "- Vérifier le gestionnaire intégré"
+        Write-Host "- VÃ©rifier le gestionnaire intÃ©grÃ©"
     }
 
     if (-not $verifyInstallationSuccess) {
-        Write-Host "- Vérifier le script de vérification de l'installation"
+        Write-Host "- VÃ©rifier le script de vÃ©rification de l'installation"
     }
 
     if (-not $installIntegratedManagerSuccess) {
-        Write-Host "- Vérifier le script d'installation rapide"
+        Write-Host "- VÃ©rifier le script d'installation rapide"
     }
 
     if (-not $uninstallIntegratedManagerSuccess) {
-        Write-Host "- Vérifier le script de désinstallation"
+        Write-Host "- VÃ©rifier le script de dÃ©sinstallation"
     }
 } else {
     Write-Host ""
-    Write-Host "Toutes les vérifications ont réussi. L'implémentation du gestionnaire intégré est correcte." -ForegroundColor Green
+    Write-Host "Toutes les vÃ©rifications ont rÃ©ussi. L'implÃ©mentation du gestionnaire intÃ©grÃ© est correcte." -ForegroundColor Green
 }
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 return @{
     Success                    = $totalSuccess
-    Files                      = @{ Success = $filesSuccess; Details = "$($files.Count) fichiers vérifiés" }
-    Directories                = @{ Success = $directoriesSuccess; Details = "$($directories.Count) répertoires vérifiés" }
+    Files                      = @{ Success = $filesSuccess; Details = "$($files.Count) fichiers vÃ©rifiÃ©s" }
+    Directories                = @{ Success = $directoriesSuccess; Details = "$($directories.Count) rÃ©pertoires vÃ©rifiÃ©s" }
     IntegratedManager          = @{ Success = $integratedManagerSuccess; Details = $integratedManagerDetails }
     VerifyInstallation         = @{ Success = $verifyInstallationSuccess; Details = $verifyInstallationDetails }
     InstallIntegratedManager   = @{ Success = $installIntegratedManagerSuccess; Details = $installIntegratedManagerDetails }

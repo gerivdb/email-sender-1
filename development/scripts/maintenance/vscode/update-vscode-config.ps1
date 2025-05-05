@@ -1,4 +1,4 @@
-# Script pour mettre à jour la configuration VS Code
+﻿# Script pour mettre Ã  jour la configuration VS Code
 $settingsContent = @'
 {
     "mcpServers": {
@@ -37,7 +37,7 @@ $settingsContent = @'
         "*supergateway*"
     ],
 
-    // Paramètres d'éditeur optimisés
+    // ParamÃ¨tres d'Ã©diteur optimisÃ©s
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.renderWhitespace": "boundary",
@@ -130,17 +130,17 @@ $keybindingsContent = @'
   {
     "key": "ctrl+alt+j d",
     "command": "workbench.action.tasks.runTask",
-    "args": "Journal: Entrée quotidienne"
+    "args": "Journal: EntrÃ©e quotidienne"
   },
   {
     "key": "ctrl+alt+j w",
     "command": "workbench.action.tasks.runTask",
-    "args": "Journal: Entrée hebdomadaire"
+    "args": "Journal: EntrÃ©e hebdomadaire"
   },
   {
     "key": "ctrl+alt+j n",
     "command": "workbench.action.tasks.runTask",
-    "args": "Journal: Nouvelle entrée"
+    "args": "Journal: Nouvelle entrÃ©e"
   },
   {
     "key": "ctrl+alt+j s",
@@ -160,26 +160,26 @@ $keybindingsContent = @'
   {
     "key": "ctrl+alt+j m",
     "command": "workbench.action.tasks.runTask",
-    "args": "Journal: Démarrer la surveillance"
+    "args": "Journal: DÃ©marrer la surveillance"
   }
 ]
 '@
 
-# Créer le dossier .vscode s'il n'existe pas
+# CrÃ©er le dossier .vscode s'il n'existe pas
 if (-not (Test-Path -Path ".vscode")) {
     New-Item -Path ".vscode" -ItemType Directory -Force | Out-Null
-    Write-Host "Dossier .vscode créé."
+    Write-Host "Dossier .vscode crÃ©Ã©."
 }
 
-# Écrire les fichiers de configuration
+# Ã‰crire les fichiers de configuration
 try {
     $settingsContent | Out-File -FilePath ".vscode/settings.json" -Encoding utf8 -Force
-    Write-Host "Fichier settings.json mis à jour avec succès."
+    Write-Host "Fichier settings.json mis Ã  jour avec succÃ¨s."
     
     $keybindingsContent | Out-File -FilePath ".vscode/keybindings.json" -Encoding utf8 -Force
-    Write-Host "Fichier keybindings.json mis à jour avec succès."
+    Write-Host "Fichier keybindings.json mis Ã  jour avec succÃ¨s."
     
-    Write-Host "Configuration VS Code optimisée avec succès !"
+    Write-Host "Configuration VS Code optimisÃ©e avec succÃ¨s !"
 } catch {
-    Write-Error "Erreur lors de la mise à jour des fichiers : $_"
+    Write-Error "Erreur lors de la mise Ã  jour des fichiers : $_"
 }

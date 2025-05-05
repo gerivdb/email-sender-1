@@ -1,40 +1,40 @@
-<#
+﻿<#
 .SYNOPSIS
-    VÃ©rifie si les tÃ¢ches sÃ©lectionnÃ©es ont Ã©tÃ© implÃ©mentÃ©es Ã  100% et testÃ©es avec succÃ¨s Ã  100%.
-    Version amÃ©liorÃ©e avec meilleure gestion des chemins.
+    VÃƒÂ©rifie si les tÃƒÂ¢ches sÃƒÂ©lectionnÃƒÂ©es ont ÃƒÂ©tÃƒÂ© implÃƒÂ©mentÃƒÂ©es ÃƒÂ  100% et testÃƒÂ©es avec succÃƒÂ¨s ÃƒÂ  100%.
+    Version amÃƒÂ©liorÃƒÂ©e avec meilleure gestion des chemins.
 
 .DESCRIPTION
-    Cette fonction vÃ©rifie si les tÃ¢ches sÃ©lectionnÃ©es ont Ã©tÃ© implÃ©mentÃ©es Ã  100% et testÃ©es
-    avec succÃ¨s Ã  100%. Si c'est le cas, elle peut mettre Ã  jour automatiquement le statut
-    des tÃ¢ches dans la roadmap en cochant les cases correspondantes.
-    Cette version amÃ©liorÃ©e gÃ¨re mieux les chemins et les erreurs.
+    Cette fonction vÃƒÂ©rifie si les tÃƒÂ¢ches sÃƒÂ©lectionnÃƒÂ©es ont ÃƒÂ©tÃƒÂ© implÃƒÂ©mentÃƒÂ©es ÃƒÂ  100% et testÃƒÂ©es
+    avec succÃƒÂ¨s ÃƒÂ  100%. Si c'est le cas, elle peut mettre ÃƒÂ  jour automatiquement le statut
+    des tÃƒÂ¢ches dans la roadmap en cochant les cases correspondantes.
+    Cette version amÃƒÂ©liorÃƒÂ©e gÃƒÂ¨re mieux les chemins et les erreurs.
 
 .PARAMETER FilePath
-    Chemin vers le fichier de roadmap Ã  vÃ©rifier et mettre Ã  jour.
+    Chemin vers le fichier de roadmap ÃƒÂ  vÃƒÂ©rifier et mettre ÃƒÂ  jour.
 
 .PARAMETER TaskIdentifier
-    Identifiant de la tÃ¢che Ã  vÃ©rifier (par exemple, "1.2.1.3.2.3").
-    Si non spÃ©cifiÃ©, l'utilisateur sera invitÃ© Ã  le saisir.
+    Identifiant de la tÃƒÂ¢che ÃƒÂ  vÃƒÂ©rifier (par exemple, "1.2.1.3.2.3").
+    Si non spÃƒÂ©cifiÃƒÂ©, l'utilisateur sera invitÃƒÂ© ÃƒÂ  le saisir.
 
 .PARAMETER ImplementationPath
-    Chemin vers le rÃ©pertoire contenant l'implÃ©mentation.
-    Si non spÃ©cifiÃ©, le script tentera de le dÃ©duire automatiquement.
+    Chemin vers le rÃƒÂ©pertoire contenant l'implÃƒÂ©mentation.
+    Si non spÃƒÂ©cifiÃƒÂ©, le script tentera de le dÃƒÂ©duire automatiquement.
 
 .PARAMETER TestsPath
-    Chemin vers le rÃ©pertoire contenant les tests.
-    Si non spÃ©cifiÃ©, le script tentera de le dÃ©duire automatiquement.
+    Chemin vers le rÃƒÂ©pertoire contenant les tests.
+    Si non spÃƒÂ©cifiÃƒÂ©, le script tentera de le dÃƒÂ©duire automatiquement.
 
 .PARAMETER UpdateRoadmap
-    Indique si la roadmap doit Ãªtre mise Ã  jour automatiquement.
-    Par dÃ©faut : $true.
+    Indique si la roadmap doit ÃƒÂªtre mise ÃƒÂ  jour automatiquement.
+    Par dÃƒÂ©faut : $true.
 
 .PARAMETER GenerateReport
-    Indique si un rapport doit Ãªtre gÃ©nÃ©rÃ©.
-    Par dÃ©faut : $true.
+    Indique si un rapport doit ÃƒÂªtre gÃƒÂ©nÃƒÂ©rÃƒÂ©.
+    Par dÃƒÂ©faut : $true.
 
 .PARAMETER ProjectRoot
     Chemin racine du projet.
-    Si non spÃ©cifiÃ©, le script tentera de le dÃ©duire automatiquement.
+    Si non spÃƒÂ©cifiÃƒÂ©, le script tentera de le dÃƒÂ©duire automatiquement.
 
 .EXAMPLE
     Invoke-RoadmapCheck -FilePath "Roadmap/roadmap.md" -TaskIdentifier "1.2.3"
@@ -45,8 +45,8 @@
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.1
-    Date de crÃ©ation: 2023-08-15
-    Date de mise Ã  jour: 2025-05-01 - AmÃ©lioration de la gestion des chemins
+    Date de crÃƒÂ©ation: 2023-08-15
+    Date de mise ÃƒÂ  jour: 2025-05-01 - AmÃƒÂ©lioration de la gestion des chemins
 #>
 function Invoke-RoadmapCheck {
     [CmdletBinding(SupportsShouldProcess = $true)]
@@ -73,9 +73,9 @@ function Invoke-RoadmapCheck {
         [string]$ProjectRoot
     )
 
-    # DÃ©terminer le chemin racine du projet
+    # DÃƒÂ©terminer le chemin racine du projet
     if (-not $ProjectRoot) {
-        # Essayer de dÃ©duire le chemin racine du projet
+        # Essayer de dÃƒÂ©duire le chemin racine du projet
         $currentPath = Get-Location
         $possibleRoots = @(
             "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1",
@@ -85,35 +85,35 @@ function Invoke-RoadmapCheck {
         foreach ($root in $possibleRoots) {
             if (Test-Path -Path $root) {
                 $ProjectRoot = $root
-                Write-Host "Chemin racine du projet dÃ©tectÃ© : $ProjectRoot" -ForegroundColor Green
+                Write-Host "Chemin racine du projet dÃƒÂ©tectÃƒÂ© : $ProjectRoot" -ForegroundColor Green
                 break
             }
         }
         
         if (-not $ProjectRoot) {
-            Write-Warning "Impossible de dÃ©duire le chemin racine du projet. Utilisation du chemin courant."
+            Write-Warning "Impossible de dÃƒÂ©duire le chemin racine du projet. Utilisation du chemin courant."
             $ProjectRoot = $currentPath
         }
     }
 
-    # VÃ©rifier que le fichier existe
+    # VÃƒÂ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath)) {
-        # Essayer de rÃ©soudre le chemin relatif
+        # Essayer de rÃƒÂ©soudre le chemin relatif
         $absolutePath = Join-Path -Path $ProjectRoot -ChildPath $FilePath
         if (Test-Path -Path $absolutePath) {
             $FilePath = $absolutePath
-            Write-Host "Chemin absolu du fichier rÃ©solu : $FilePath" -ForegroundColor Green
+            Write-Host "Chemin absolu du fichier rÃƒÂ©solu : $FilePath" -ForegroundColor Green
         } else {
-            throw "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
+            throw "Le fichier spÃƒÂ©cifiÃƒÂ© n'existe pas : $FilePath"
         }
     }
 
-    # Importer la fonction Update-RoadmapTaskStatus si elle n'est pas dÃ©jÃ  disponible
+    # Importer la fonction Update-RoadmapTaskStatus si elle n'est pas dÃƒÂ©jÃƒÂ  disponible
     if (-not (Get-Command -Name Update-RoadmapTaskStatus -ErrorAction SilentlyContinue)) {
         $updateTaskPath = Join-Path -Path (Split-Path -Parent $MyInvocation.PSCommandPath) -ChildPath "Update-RoadmapTaskStatus.ps1"
         if (Test-Path -Path $updateTaskPath) {
             . $updateTaskPath
-            Write-Host "Fonction Update-RoadmapTaskStatus importÃ©e depuis $updateTaskPath" -ForegroundColor Green
+            Write-Host "Fonction Update-RoadmapTaskStatus importÃƒÂ©e depuis $updateTaskPath" -ForegroundColor Green
         } else {
             # Essayer de trouver le fichier dans d'autres emplacements
             $possiblePaths = @(
@@ -125,41 +125,41 @@ function Invoke-RoadmapCheck {
             foreach ($path in $possiblePaths) {
                 if (Test-Path -Path $path) {
                     . $path
-                    Write-Host "Fonction Update-RoadmapTaskStatus importÃ©e depuis $path" -ForegroundColor Green
+                    Write-Host "Fonction Update-RoadmapTaskStatus importÃƒÂ©e depuis $path" -ForegroundColor Green
                     $found = $true
                     break
                 }
             }
             
             if (-not $found) {
-                throw "La fonction Update-RoadmapTaskStatus est introuvable. Assurez-vous que le fichier Update-RoadmapTaskStatus.ps1 est prÃ©sent dans le mÃªme rÃ©pertoire."
+                throw "La fonction Update-RoadmapTaskStatus est introuvable. Assurez-vous que le fichier Update-RoadmapTaskStatus.ps1 est prÃƒÂ©sent dans le mÃƒÂªme rÃƒÂ©pertoire."
             }
         }
     }
 
-    # Si l'identifiant de tÃ¢che n'est pas spÃ©cifiÃ©, afficher le contenu du fichier et demander Ã  l'utilisateur
+    # Si l'identifiant de tÃƒÂ¢che n'est pas spÃƒÂ©cifiÃƒÂ©, afficher le contenu du fichier et demander ÃƒÂ  l'utilisateur
     if (-not $TaskIdentifier) {
         # Lire le contenu du fichier
         $content = Get-Content -Path $FilePath -Encoding UTF8
 
-        # Afficher le contenu avec des numÃ©ros de ligne
+        # Afficher le contenu avec des numÃƒÂ©ros de ligne
         Write-Host "Contenu du fichier de roadmap :" -ForegroundColor Cyan
         for ($i = 0; $i -lt $content.Count; $i++) {
             Write-Host ("{0,5}: {1}" -f ($i + 1), $content[$i])
         }
 
-        # Demander Ã  l'utilisateur de saisir l'identifiant de la tÃ¢che
-        $TaskIdentifier = Read-Host -Prompt "Entrez l'identifiant de la tÃ¢che Ã  vÃ©rifier (par exemple, 1.2.1.3.2.3)"
+        # Demander ÃƒÂ  l'utilisateur de saisir l'identifiant de la tÃƒÂ¢che
+        $TaskIdentifier = Read-Host -Prompt "Entrez l'identifiant de la tÃƒÂ¢che ÃƒÂ  vÃƒÂ©rifier (par exemple, 1.2.1.3.2.3)"
 
         if (-not $TaskIdentifier) {
-            throw "Aucun identifiant de tÃ¢che spÃ©cifiÃ©. OpÃ©ration annulÃ©e."
+            throw "Aucun identifiant de tÃƒÂ¢che spÃƒÂ©cifiÃƒÂ©. OpÃƒÂ©ration annulÃƒÂ©e."
         }
     }
 
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Encoding UTF8
 
-    # Trouver la tÃ¢che principale et ses sous-tÃ¢ches
+    # Trouver la tÃƒÂ¢che principale et ses sous-tÃƒÂ¢ches
     $taskLinePattern = ".*\b$([regex]::Escape($TaskIdentifier))\b.*"
     $taskLines = @()
     $taskLineIndices = @()
@@ -169,13 +169,13 @@ function Invoke-RoadmapCheck {
     for ($i = 0; $i -lt $content.Count; $i++) {
         $line = $content[$i]
 
-        # VÃ©rifier si c'est la tÃ¢che principale
+        # VÃƒÂ©rifier si c'est la tÃƒÂ¢che principale
         if ($line -match $taskLinePattern) {
             $inTaskSection = $true
             $taskLines += $line
             $taskLineIndices += $i
 
-            # DÃ©terminer l'indentation de la tÃ¢che principale
+            # DÃƒÂ©terminer l'indentation de la tÃƒÂ¢che principale
             if ($line -match "^(\s+)") {
                 $taskIndentation = $matches[1]
             }
@@ -183,31 +183,31 @@ function Invoke-RoadmapCheck {
             continue
         }
 
-        # Si nous sommes dans la section de la tÃ¢che, vÃ©rifier les sous-tÃ¢ches
+        # Si nous sommes dans la section de la tÃƒÂ¢che, vÃƒÂ©rifier les sous-tÃƒÂ¢ches
         if ($inTaskSection) {
-            # VÃ©rifier si la ligne a une indentation plus grande que la tÃ¢che principale
+            # VÃƒÂ©rifier si la ligne a une indentation plus grande que la tÃƒÂ¢che principale
             if ($line -match "^$taskIndentation\s+") {
                 $taskLines += $line
                 $taskLineIndices += $i
             } else {
-                # Si l'indentation est Ã©gale ou infÃ©rieure, nous sommes sortis de la section
+                # Si l'indentation est ÃƒÂ©gale ou infÃƒÂ©rieure, nous sommes sortis de la section
                 $inTaskSection = $false
             }
         }
     }
 
     if ($taskLines.Count -eq 0) {
-        throw "TÃ¢che avec l'identifiant '$TaskIdentifier' non trouvÃ©e dans le fichier."
+        throw "TÃƒÂ¢che avec l'identifiant '$TaskIdentifier' non trouvÃƒÂ©e dans le fichier."
     }
 
-    # Analyser les tÃ¢ches pour dÃ©terminer leurs identifiants et titres
+    # Analyser les tÃƒÂ¢ches pour dÃƒÂ©terminer leurs identifiants et titres
     $tasks = @()
     foreach ($taskLine in $taskLines) {
         if ($taskLine -match ".*\*\*([0-9.]+)\*\*\s+(.+)") {
             $taskId = $matches[1]
             $taskTitle = $matches[2]
 
-            # DÃ©terminer si la tÃ¢che est cochÃ©e
+            # DÃƒÂ©terminer si la tÃƒÂ¢che est cochÃƒÂ©e
             $isChecked = $taskLine -match "\[x\]"
 
             $tasks += @{
@@ -219,21 +219,21 @@ function Invoke-RoadmapCheck {
         }
     }
 
-    # VÃ©rifier l'implÃ©mentation et les tests pour chaque tÃ¢che
+    # VÃƒÂ©rifier l'implÃƒÂ©mentation et les tests pour chaque tÃƒÂ¢che
     $implementationResults = @{}
     $testResults = @{}
     $tasksToUpdate = @()
 
     foreach ($task in $tasks) {
-        # VÃ©rifier l'implÃ©mentation
+        # VÃƒÂ©rifier l'implÃƒÂ©mentation
         $implementationResult = Test-TaskImplementation -TaskId $task.Id -TaskTitle $task.Title -ImplementationPath $ImplementationPath -ProjectRoot $ProjectRoot
         $implementationResults[$task.Id] = $implementationResult
 
-        # VÃ©rifier les tests
+        # VÃƒÂ©rifier les tests
         $testResult = Test-TaskTests -TaskId $task.Id -TaskTitle $task.Title -TestsPath $TestsPath -ProjectRoot $ProjectRoot
         $testResults[$task.Id] = $testResult
 
-        # Si l'implÃ©mentation et les tests sont Ã  100%, marquer la tÃ¢che pour mise Ã  jour
+        # Si l'implÃƒÂ©mentation et les tests sont ÃƒÂ  100%, marquer la tÃƒÂ¢che pour mise ÃƒÂ  jour
         if ($implementationResult.ImplementationComplete -and $testResult.TestsComplete -and $testResult.TestsSuccessful) {
             if (-not $task.IsChecked) {
                 $tasksToUpdate += $task.Id
@@ -241,21 +241,21 @@ function Invoke-RoadmapCheck {
         }
     }
 
-    # GÃ©nÃ©rer un rapport si demandÃ©
+    # GÃƒÂ©nÃƒÂ©rer un rapport si demandÃƒÂ©
     if ($GenerateReport) {
         $reportPath = Join-Path -Path (Split-Path -Parent $FilePath) -ChildPath "check_report_$TaskIdentifier.md"
         $report = @"
-# Rapport de vÃ©rification pour la tÃ¢che $TaskIdentifier
+# Rapport de vÃƒÂ©rification pour la tÃƒÂ¢che $TaskIdentifier
 
-## RÃ©sumÃ©
+## RÃƒÂ©sumÃƒÂ©
 
-- TÃ¢che principale : **$TaskIdentifier** - $($tasks[0].Title)
-- Nombre de sous-tÃ¢ches : $($tasks.Count - 1)
-- TÃ¢ches implÃ©mentÃ©es Ã  100% : $($implementationResults.Values | Where-Object { $_.ImplementationComplete } | Measure-Object).Count
-- TÃ¢ches testÃ©es Ã  100% : $($testResults.Values | Where-Object { $_.TestsComplete -and $_.TestsSuccessful } | Measure-Object).Count
-- TÃ¢ches Ã  mettre Ã  jour : $($tasksToUpdate.Count)
+- TÃƒÂ¢che principale : **$TaskIdentifier** - $($tasks[0].Title)
+- Nombre de sous-tÃƒÂ¢ches : $($tasks.Count - 1)
+- TÃƒÂ¢ches implÃƒÂ©mentÃƒÂ©es ÃƒÂ  100% : $($implementationResults.Values | Where-Object { $_.ImplementationComplete } | Measure-Object).Count
+- TÃƒÂ¢ches testÃƒÂ©es ÃƒÂ  100% : $($testResults.Values | Where-Object { $_.TestsComplete -and $_.TestsSuccessful } | Measure-Object).Count
+- TÃƒÂ¢ches ÃƒÂ  mettre ÃƒÂ  jour : $($tasksToUpdate.Count)
 
-## DÃ©tails des tÃ¢ches
+## DÃƒÂ©tails des tÃƒÂ¢ches
 
 "@
 
@@ -265,33 +265,33 @@ function Invoke-RoadmapCheck {
 
             $report += @"
 
-### TÃ¢che $($task.Id) - $($task.Title)
+### TÃƒÂ¢che $($task.Id) - $($task.Title)
 
-- **Ã‰tat actuel** : $(if ($task.IsChecked) { "TerminÃ©e" } else { "En cours" })
-- **ImplÃ©mentation** : $(if ($implResult.ImplementationComplete) { "ComplÃ¨te (100%)" } else { "IncomplÃ¨te ($($implResult.ImplementationPercentage)%)" })
+- **Ãƒâ€°tat actuel** : $(if ($task.IsChecked) { "TerminÃƒÂ©e" } else { "En cours" })
+- **ImplÃƒÂ©mentation** : $(if ($implResult.ImplementationComplete) { "ComplÃƒÂ¨te (100%)" } else { "IncomplÃƒÂ¨te ($($implResult.ImplementationPercentage)%)" })
 - **Tests** : $(if ($testResult.TestsComplete) { "Complets" } else { "Incomplets" })
-- **RÃ©sultats des tests** : $(if ($testResult.TestsSuccessful) { "Tous les tests passent" } else { "Certains tests Ã©chouent" })
-- **Action recommandÃ©e** : $(if ($implResult.ImplementationComplete -and $testResult.TestsComplete -and $testResult.TestsSuccessful -and -not $task.IsChecked) { "Marquer comme terminÃ©e" } elseif (-not $implResult.ImplementationComplete) { "ComplÃ©ter l'implÃ©mentation" } elseif (-not $testResult.TestsComplete) { "Ajouter des tests" } elseif (-not $testResult.TestsSuccessful) { "Corriger les tests qui Ã©chouent" } else { "Aucune action requise" })
+- **RÃƒÂ©sultats des tests** : $(if ($testResult.TestsSuccessful) { "Tous les tests passent" } else { "Certains tests ÃƒÂ©chouent" })
+- **Action recommandÃƒÂ©e** : $(if ($implResult.ImplementationComplete -and $testResult.TestsComplete -and $testResult.TestsSuccessful -and -not $task.IsChecked) { "Marquer comme terminÃƒÂ©e" } elseif (-not $implResult.ImplementationComplete) { "ComplÃƒÂ©ter l'implÃƒÂ©mentation" } elseif (-not $testResult.TestsComplete) { "Ajouter des tests" } elseif (-not $testResult.TestsSuccessful) { "Corriger les tests qui ÃƒÂ©chouent" } else { "Aucune action requise" })
 
 "@
         }
 
         $report | Set-Content -Path $reportPath -Encoding UTF8
-        Write-Host "Rapport gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Green
+        Write-Host "Rapport gÃƒÂ©nÃƒÂ©rÃƒÂ© : $reportPath" -ForegroundColor Green
     }
 
-    # Mettre Ã  jour la roadmap si demandÃ©
+    # Mettre ÃƒÂ  jour la roadmap si demandÃƒÂ©
     if ($UpdateRoadmap -and $tasksToUpdate.Count -gt 0) {
-        if ($PSCmdlet.ShouldProcess($FilePath, "Mettre Ã  jour le statut des tÃ¢ches")) {
+        if ($PSCmdlet.ShouldProcess($FilePath, "Mettre ÃƒÂ  jour le statut des tÃƒÂ¢ches")) {
             foreach ($taskId in $tasksToUpdate) {
                 Update-RoadmapTaskStatus -FilePath $FilePath -TaskIdentifier $taskId -Status "Completed"
             }
 
-            Write-Host "$($tasksToUpdate.Count) tÃ¢ches ont Ã©tÃ© marquÃ©es comme terminÃ©es dans la roadmap." -ForegroundColor Green
+            Write-Host "$($tasksToUpdate.Count) tÃƒÂ¢ches ont ÃƒÂ©tÃƒÂ© marquÃƒÂ©es comme terminÃƒÂ©es dans la roadmap." -ForegroundColor Green
         }
     }
 
-    # Retourner un rÃ©sumÃ©
+    # Retourner un rÃƒÂ©sumÃƒÂ©
     return @{
         MainTaskId    = $TaskIdentifier
         Tasks         = $tasks | ForEach-Object {
@@ -309,7 +309,7 @@ function Invoke-RoadmapCheck {
     }
 }
 
-# Fonction pour vÃ©rifier l'implÃ©mentation d'une tÃ¢che
+# Fonction pour vÃƒÂ©rifier l'implÃƒÂ©mentation d'une tÃƒÂ¢che
 function Test-TaskImplementation {
     param (
         [string]$TaskId,
@@ -318,10 +318,10 @@ function Test-TaskImplementation {
         [string]$ProjectRoot
     )
 
-    # Si le chemin d'implÃ©mentation n'est pas spÃ©cifiÃ©, essayer de le dÃ©duire
+    # Si le chemin d'implÃƒÂ©mentation n'est pas spÃƒÂ©cifiÃƒÂ©, essayer de le dÃƒÂ©duire
     if (-not $ImplementationPath) {
-        # Essayer de trouver le chemin d'implÃ©mentation en fonction du titre de la tÃ¢che
-        # Cette logique peut Ãªtre adaptÃ©e en fonction de la structure du projet
+        # Essayer de trouver le chemin d'implÃƒÂ©mentation en fonction du titre de la tÃƒÂ¢che
+        # Cette logique peut ÃƒÂªtre adaptÃƒÂ©e en fonction de la structure du projet
         $possiblePaths = @(
             (Join-Path -Path $ProjectRoot -ChildPath "tools\scripts\roadmap-parser\module\Functions\Public"),
             (Join-Path -Path $ProjectRoot -ChildPath "tools\scripts\roadmap-parser\module\Functions\Private"),
@@ -332,13 +332,13 @@ function Test-TaskImplementation {
         foreach ($path in $possiblePaths) {
             if (Test-Path -Path $path) {
                 $ImplementationPath = $path
-                Write-Host "Chemin d'implÃ©mentation dÃ©tectÃ© : $ImplementationPath" -ForegroundColor Green
+                Write-Host "Chemin d'implÃƒÂ©mentation dÃƒÂ©tectÃƒÂ© : $ImplementationPath" -ForegroundColor Green
                 break
             }
         }
 
         if (-not $ImplementationPath) {
-            Write-Warning "Impossible de dÃ©duire le chemin d'implÃ©mentation. Veuillez le spÃ©cifier manuellement."
+            Write-Warning "Impossible de dÃƒÂ©duire le chemin d'implÃƒÂ©mentation. Veuillez le spÃƒÂ©cifier manuellement."
             return @{
                 ImplementationComplete   = $false
                 ImplementationPercentage = 0
@@ -348,9 +348,9 @@ function Test-TaskImplementation {
         }
     }
 
-    # VÃ©rifier si le chemin existe
+    # VÃƒÂ©rifier si le chemin existe
     if (-not (Test-Path -Path $ImplementationPath)) {
-        Write-Warning "Le chemin d'implÃ©mentation spÃ©cifiÃ© n'existe pas : $ImplementationPath"
+        Write-Warning "Le chemin d'implÃƒÂ©mentation spÃƒÂ©cifiÃƒÂ© n'existe pas : $ImplementationPath"
         return @{
             ImplementationComplete   = $false
             ImplementationPercentage = 0
@@ -359,16 +359,16 @@ function Test-TaskImplementation {
         }
     }
 
-    # Rechercher les fichiers d'implÃ©mentation en fonction du titre de la tÃ¢che
+    # Rechercher les fichiers d'implÃƒÂ©mentation en fonction du titre de la tÃƒÂ¢che
     $keywords = $TaskTitle -split '\s+' | Where-Object { $_ -match '^[a-zA-Z0-9]+$' -and $_.Length -gt 3 }
     $implementationFiles = @()
 
-    # Pour les tests, si le chemin contient "TestImpl", considÃ©rer tous les fichiers comme pertinents
+    # Pour les tests, si le chemin contient "TestImpl", considÃƒÂ©rer tous les fichiers comme pertinents
     if ($ImplementationPath -match "TestImpl") {
         $allFiles = Get-ChildItem -Path $ImplementationPath -Recurse -File -Filter "*.ps1"
         $implementationFiles = $allFiles
     }
-    # Si nous avons des mots-clÃ©s, rechercher les fichiers correspondants
+    # Si nous avons des mots-clÃƒÂ©s, rechercher les fichiers correspondants
     elseif ($keywords.Count -gt 0) {
         $allFiles = Get-ChildItem -Path $ImplementationPath -Recurse -File -Filter "*.ps1"
 
@@ -382,20 +382,20 @@ function Test-TaskImplementation {
                 }
             }
 
-            # Si le fichier correspond Ã  au moins la moitiÃ© des mots-clÃ©s, le considÃ©rer comme pertinent
+            # Si le fichier correspond ÃƒÂ  au moins la moitiÃƒÂ© des mots-clÃƒÂ©s, le considÃƒÂ©rer comme pertinent
             if ($matchCount -ge [Math]::Ceiling($keywords.Count / 2)) {
                 $implementationFiles += $file
             }
         }
     }
 
-    # Analyser les fichiers d'implÃ©mentation pour dÃ©terminer le pourcentage d'implÃ©mentation
+    # Analyser les fichiers d'implÃƒÂ©mentation pour dÃƒÂ©terminer le pourcentage d'implÃƒÂ©mentation
     $implementationPercentage = 0
 
     if ($implementationFiles.Count -gt 0) {
-        # Logique simplifiÃ©e : si nous avons trouvÃ© des fichiers, considÃ©rer l'implÃ©mentation comme complÃ¨te
-        # Dans une version plus avancÃ©e, on pourrait analyser le contenu des fichiers pour dÃ©terminer
-        # plus prÃ©cisÃ©ment le pourcentage d'implÃ©mentation
+        # Logique simplifiÃƒÂ©e : si nous avons trouvÃƒÂ© des fichiers, considÃƒÂ©rer l'implÃƒÂ©mentation comme complÃƒÂ¨te
+        # Dans une version plus avancÃƒÂ©e, on pourrait analyser le contenu des fichiers pour dÃƒÂ©terminer
+        # plus prÃƒÂ©cisÃƒÂ©ment le pourcentage d'implÃƒÂ©mentation
         $implementationPercentage = 100
     }
 
@@ -407,7 +407,7 @@ function Test-TaskImplementation {
     }
 }
 
-# Fonction pour vÃ©rifier les tests d'une tÃ¢che
+# Fonction pour vÃƒÂ©rifier les tests d'une tÃƒÂ¢che
 function Test-TaskTests {
     param (
         [string]$TaskId,
@@ -416,10 +416,10 @@ function Test-TaskTests {
         [string]$ProjectRoot
     )
 
-    # Si le chemin des tests n'est pas spÃ©cifiÃ©, essayer de le dÃ©duire
+    # Si le chemin des tests n'est pas spÃƒÂ©cifiÃƒÂ©, essayer de le dÃƒÂ©duire
     if (-not $TestsPath) {
-        # Essayer de trouver le chemin des tests en fonction du titre de la tÃ¢che
-        # Cette logique peut Ãªtre adaptÃ©e en fonction de la structure du projet
+        # Essayer de trouver le chemin des tests en fonction du titre de la tÃƒÂ¢che
+        # Cette logique peut ÃƒÂªtre adaptÃƒÂ©e en fonction de la structure du projet
         $possiblePaths = @(
             (Join-Path -Path $ProjectRoot -ChildPath "tools\scripts\roadmap-parser\module\Tests"),
             (Join-Path -Path $ProjectRoot -ChildPath "tests\unit"),
@@ -429,13 +429,13 @@ function Test-TaskTests {
         foreach ($path in $possiblePaths) {
             if (Test-Path -Path $path) {
                 $TestsPath = $path
-                Write-Host "Chemin des tests dÃ©tectÃ© : $TestsPath" -ForegroundColor Green
+                Write-Host "Chemin des tests dÃƒÂ©tectÃƒÂ© : $TestsPath" -ForegroundColor Green
                 break
             }
         }
 
         if (-not $TestsPath) {
-            Write-Warning "Impossible de dÃ©duire le chemin des tests. Veuillez le spÃ©cifier manuellement."
+            Write-Warning "Impossible de dÃƒÂ©duire le chemin des tests. Veuillez le spÃƒÂ©cifier manuellement."
             return @{
                 TestsComplete   = $false
                 TestsSuccessful = $false
@@ -445,9 +445,9 @@ function Test-TaskTests {
         }
     }
 
-    # VÃ©rifier si le chemin existe
+    # VÃƒÂ©rifier si le chemin existe
     if (-not (Test-Path -Path $TestsPath)) {
-        Write-Warning "Le chemin des tests spÃ©cifiÃ© n'existe pas : $TestsPath"
+        Write-Warning "Le chemin des tests spÃƒÂ©cifiÃƒÂ© n'existe pas : $TestsPath"
         return @{
             TestsComplete   = $false
             TestsSuccessful = $false
@@ -456,16 +456,16 @@ function Test-TaskTests {
         }
     }
 
-    # Rechercher les fichiers de test en fonction du titre de la tÃ¢che
+    # Rechercher les fichiers de test en fonction du titre de la tÃƒÂ¢che
     $keywords = $TaskTitle -split '\s+' | Where-Object { $_ -match '^[a-zA-Z0-9]+$' -and $_.Length -gt 3 }
     $testFiles = @()
 
-    # Pour les tests, si le chemin contient "TestTests", considÃ©rer tous les fichiers comme pertinents
+    # Pour les tests, si le chemin contient "TestTests", considÃƒÂ©rer tous les fichiers comme pertinents
     if ($TestsPath -match "TestTests") {
         $allFiles = Get-ChildItem -Path $TestsPath -Recurse -File -Filter "Test-*.ps1"
         $testFiles = $allFiles
     }
-    # Si nous avons des mots-clÃ©s, rechercher les fichiers correspondants
+    # Si nous avons des mots-clÃƒÂ©s, rechercher les fichiers correspondants
     elseif ($keywords.Count -gt 0) {
         $allFiles = Get-ChildItem -Path $TestsPath -Recurse -File -Filter "Test-*.ps1"
 
@@ -479,27 +479,27 @@ function Test-TaskTests {
                 }
             }
 
-            # Si le fichier correspond Ã  au moins la moitiÃ© des mots-clÃ©s, le considÃ©rer comme pertinent
+            # Si le fichier correspond ÃƒÂ  au moins la moitiÃƒÂ© des mots-clÃƒÂ©s, le considÃƒÂ©rer comme pertinent
             if ($matchCount -ge [Math]::Ceiling($keywords.Count / 2)) {
                 $testFiles += $file
             }
         }
     }
 
-    # VÃ©rifier si les tests sont complets et rÃ©ussis
+    # VÃƒÂ©rifier si les tests sont complets et rÃƒÂ©ussis
     $testsComplete = $testFiles.Count -gt 0
     $testsSuccessful = $false
 
     if ($testsComplete) {
-        # ExÃ©cuter les tests pour vÃ©rifier s'ils rÃ©ussissent
+        # ExÃƒÂ©cuter les tests pour vÃƒÂ©rifier s'ils rÃƒÂ©ussissent
         $testResults = @()
 
         foreach ($testFile in $testFiles) {
             try {
-                # ExÃ©cuter le test et capturer la sortie
+                # ExÃƒÂ©cuter le test et capturer la sortie
                 $output = & $testFile.FullName 2>&1
 
-                # VÃ©rifier si le test a rÃ©ussi (pas d'erreurs)
+                # VÃƒÂ©rifier si le test a rÃƒÂ©ussi (pas d'erreurs)
                 $success = $LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq $null
 
                 $testResults += @{
@@ -516,7 +516,7 @@ function Test-TaskTests {
             }
         }
 
-        # ConsidÃ©rer les tests comme rÃ©ussis si tous les tests ont rÃ©ussi
+        # ConsidÃƒÂ©rer les tests comme rÃƒÂ©ussis si tous les tests ont rÃƒÂ©ussi
         $testsSuccessful = ($testResults | Where-Object { -not $_.Success } | Measure-Object).Count -eq 0
     }
 

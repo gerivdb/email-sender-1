@@ -1,17 +1,17 @@
-<#
+﻿<#
 .SYNOPSIS
-    Réorganise les dossiers development/tools et development/scripts/utils.
+    RÃ©organise les dossiers development/tools et development/scripts/utils.
 
 .DESCRIPTION
-    Ce script fusionne et réorganise les dossiers development/tools et development/scripts/utils
-    pour éliminer les redondances et améliorer la structure du projet.
+    Ce script fusionne et rÃ©organise les dossiers development/tools et development/scripts/utils
+    pour Ã©liminer les redondances et amÃ©liorer la structure du projet.
 
 .EXAMPLE
     .\reorganize-tools-utils.ps1
     
 .NOTES
     Auteur: Augment Agent
-    Date de création: 28/04/2025
+    Date de crÃ©ation: 28/04/2025
 #>
 
 # Fonction principale
@@ -20,13 +20,13 @@ function Reorganize-ToolsUtils {
     param()
     
     begin {
-        Write-Host "Réorganisation des dossiers development/tools et development/scripts/utils..." -ForegroundColor Cyan
+        Write-Host "RÃ©organisation des dossiers development/tools et development/scripts/utils..." -ForegroundColor Cyan
         $ErrorActionPreference = "Stop"
         
         $toolsRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\tools"
         $utilsRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\scripts\utils"
         
-        # Vérifier que les dossiers existent
+        # VÃ©rifier que les dossiers existent
         if (-not (Test-Path $toolsRoot)) {
             Write-Error "Le dossier development\tools n'existe pas : $toolsRoot"
             return $false
@@ -37,7 +37,7 @@ function Reorganize-ToolsUtils {
             return $false
         }
         
-        # Définir la nouvelle structure de dossiers dans tools
+        # DÃ©finir la nouvelle structure de dossiers dans tools
         $newFolders = @(
             "analysis",
             "augment",
@@ -58,9 +58,9 @@ function Reorganize-ToolsUtils {
             "utilities"
         )
         
-        # Définir les mappages de dossiers
+        # DÃ©finir les mappages de dossiers
         $folderMappings = @{
-            # Dossiers à déplacer de utils vers tools
+            # Dossiers Ã  dÃ©placer de utils vers tools
             "utils_to_tools" = @{
                 "analysis" = "analysis"
                 "cache" = "cache"
@@ -85,7 +85,7 @@ function Reorganize-ToolsUtils {
                 "utils" = "utilities"
             }
             
-            # Dossiers à fusionner dans tools
+            # Dossiers Ã  fusionner dans tools
             "tools_to_reorganize" = @{
                 "analysis" = "analysis"
                 "augment" = "augment"
@@ -102,7 +102,7 @@ function Reorganize-ToolsUtils {
             }
         }
         
-        # Définir les fichiers à déplacer de utils vers tools
+        # DÃ©finir les fichiers Ã  dÃ©placer de utils vers tools
         $filesToMove = @{
             "Compare-ImplementationPerformance.ps1" = "analysis"
             "copy-files.ps1" = "utilities"
@@ -122,19 +122,19 @@ function Reorganize-ToolsUtils {
     
     process {
         try {
-            # Créer les nouveaux dossiers dans tools
+            # CrÃ©er les nouveaux dossiers dans tools
             foreach ($folder in $newFolders) {
                 $folderPath = Join-Path -Path $toolsRoot -ChildPath $folder
                 
                 if (-not (Test-Path $folderPath)) {
-                    if ($PSCmdlet.ShouldProcess($folderPath, "Créer le dossier")) {
+                    if ($PSCmdlet.ShouldProcess($folderPath, "CrÃ©er le dossier")) {
                         New-Item -Path $folderPath -ItemType Directory -Force | Out-Null
-                        Write-Host "  Dossier créé : $folderPath" -ForegroundColor Yellow
+                        Write-Host "  Dossier crÃ©Ã© : $folderPath" -ForegroundColor Yellow
                     }
                 }
             }
             
-            # Déplacer les dossiers de utils vers tools
+            # DÃ©placer les dossiers de utils vers tools
             foreach ($sourceFolder in $folderMappings.utils_to_tools.Keys) {
                 $sourcePath = Join-Path -Path $utilsRoot -ChildPath $sourceFolder
                 $targetFolder = $folderMappings.utils_to_tools[$sourceFolder]
@@ -149,46 +149,46 @@ function Reorganize-ToolsUtils {
                         $newPath = Join-Path -Path $targetPath -ChildPath $relativePath
                         $newParent = Split-Path -Path $newPath -Parent
                         
-                        # Créer le dossier parent si nécessaire
+                        # CrÃ©er le dossier parent si nÃ©cessaire
                         if (-not (Test-Path $newParent) -and $item.PSIsContainer -eq $false) {
-                            if ($PSCmdlet.ShouldProcess($newParent, "Créer le dossier parent")) {
+                            if ($PSCmdlet.ShouldProcess($newParent, "CrÃ©er le dossier parent")) {
                                 New-Item -Path $newParent -ItemType Directory -Force | Out-Null
                             }
                         }
                         
-                        # Déplacer l'élément seulement s'il s'agit d'un fichier
+                        # DÃ©placer l'Ã©lÃ©ment seulement s'il s'agit d'un fichier
                         if ($item.PSIsContainer -eq $false) {
                             if (Test-Path $newPath) {
                                 # Comparer les dates de modification
                                 $existingItem = Get-Item -Path $newPath
                                 
                                 if ($item.LastWriteTime -gt $existingItem.LastWriteTime) {
-                                    if ($PSCmdlet.ShouldProcess("$($item.FullName) -> $newPath (plus récent)", "Remplacer le fichier")) {
+                                    if ($PSCmdlet.ShouldProcess("$($item.FullName) -> $newPath (plus rÃ©cent)", "Remplacer le fichier")) {
                                         Copy-Item -Path $item.FullName -Destination $newPath -Force
-                                        Write-Host "  Fichier remplacé (plus récent) : $($item.FullName) -> $newPath" -ForegroundColor Green
+                                        Write-Host "  Fichier remplacÃ© (plus rÃ©cent) : $($item.FullName) -> $newPath" -ForegroundColor Green
                                     }
                                 }
                                 else {
-                                    Write-Host "  Fichier ignoré (plus ancien ou identique) : $($item.FullName)" -ForegroundColor Gray
+                                    Write-Host "  Fichier ignorÃ© (plus ancien ou identique) : $($item.FullName)" -ForegroundColor Gray
                                 }
                             }
                             else {
                                 if ($PSCmdlet.ShouldProcess("$($item.FullName) -> $newPath", "Copier le fichier")) {
                                     Copy-Item -Path $item.FullName -Destination $newPath -Force
-                                    Write-Host "  Fichier copié : $($item.FullName) -> $newPath" -ForegroundColor Green
+                                    Write-Host "  Fichier copiÃ© : $($item.FullName) -> $newPath" -ForegroundColor Green
                                 }
                             }
                         }
                     }
                     
-                    Write-Host "  Contenu du dossier $sourcePath copié vers $targetPath" -ForegroundColor Green
+                    Write-Host "  Contenu du dossier $sourcePath copiÃ© vers $targetPath" -ForegroundColor Green
                 }
                 else {
-                    Write-Host "  Dossier source non trouvé : $sourcePath" -ForegroundColor Yellow
+                    Write-Host "  Dossier source non trouvÃ© : $sourcePath" -ForegroundColor Yellow
                 }
             }
             
-            # Déplacer les fichiers de utils vers tools
+            # DÃ©placer les fichiers de utils vers tools
             foreach ($file in $filesToMove.Keys) {
                 $sourcePath = Join-Path -Path $utilsRoot -ChildPath $file
                 $targetFolder = $filesToMove[$file]
@@ -201,33 +201,33 @@ function Reorganize-ToolsUtils {
                         $targetItem = Get-Item -Path $targetPath
                         
                         if ($sourceItem.LastWriteTime -gt $targetItem.LastWriteTime) {
-                            if ($PSCmdlet.ShouldProcess("$sourcePath -> $targetPath (plus récent)", "Remplacer le fichier")) {
+                            if ($PSCmdlet.ShouldProcess("$sourcePath -> $targetPath (plus rÃ©cent)", "Remplacer le fichier")) {
                                 Copy-Item -Path $sourcePath -Destination $targetPath -Force
-                                Write-Host "  Fichier remplacé (plus récent) : $sourcePath -> $targetPath" -ForegroundColor Green
+                                Write-Host "  Fichier remplacÃ© (plus rÃ©cent) : $sourcePath -> $targetPath" -ForegroundColor Green
                             }
                         }
                         else {
-                            Write-Host "  Fichier ignoré (plus ancien ou identique) : $sourcePath" -ForegroundColor Gray
+                            Write-Host "  Fichier ignorÃ© (plus ancien ou identique) : $sourcePath" -ForegroundColor Gray
                         }
                     }
                     else {
                         if ($PSCmdlet.ShouldProcess("$sourcePath -> $targetPath", "Copier le fichier")) {
                             Copy-Item -Path $sourcePath -Destination $targetPath -Force
-                            Write-Host "  Fichier copié : $sourcePath -> $targetPath" -ForegroundColor Green
+                            Write-Host "  Fichier copiÃ© : $sourcePath -> $targetPath" -ForegroundColor Green
                         }
                     }
                 }
                 else {
-                    Write-Host "  Fichier source non trouvé : $sourcePath" -ForegroundColor Yellow
+                    Write-Host "  Fichier source non trouvÃ© : $sourcePath" -ForegroundColor Yellow
                 }
             }
             
-            # Réorganiser les dossiers dans tools
+            # RÃ©organiser les dossiers dans tools
             foreach ($sourceFolder in $folderMappings.tools_to_reorganize.Keys) {
                 $sourcePath = Join-Path -Path $toolsRoot -ChildPath $sourceFolder
                 $targetFolder = $folderMappings.tools_to_reorganize[$sourceFolder]
                 
-                # Si le dossier source est le même que le dossier cible, ignorer
+                # Si le dossier source est le mÃªme que le dossier cible, ignorer
                 if ($sourceFolder -eq $targetFolder) {
                     continue
                 }
@@ -243,59 +243,59 @@ function Reorganize-ToolsUtils {
                         $newPath = Join-Path -Path $targetPath -ChildPath $relativePath
                         $newParent = Split-Path -Path $newPath -Parent
                         
-                        # Créer le dossier parent si nécessaire
+                        # CrÃ©er le dossier parent si nÃ©cessaire
                         if (-not (Test-Path $newParent) -and $item.PSIsContainer -eq $false) {
-                            if ($PSCmdlet.ShouldProcess($newParent, "Créer le dossier parent")) {
+                            if ($PSCmdlet.ShouldProcess($newParent, "CrÃ©er le dossier parent")) {
                                 New-Item -Path $newParent -ItemType Directory -Force | Out-Null
                             }
                         }
                         
-                        # Déplacer l'élément seulement s'il s'agit d'un fichier
+                        # DÃ©placer l'Ã©lÃ©ment seulement s'il s'agit d'un fichier
                         if ($item.PSIsContainer -eq $false) {
                             if (Test-Path $newPath) {
                                 # Comparer les dates de modification
                                 $existingItem = Get-Item -Path $newPath
                                 
                                 if ($item.LastWriteTime -gt $existingItem.LastWriteTime) {
-                                    if ($PSCmdlet.ShouldProcess("$($item.FullName) -> $newPath (plus récent)", "Remplacer le fichier")) {
+                                    if ($PSCmdlet.ShouldProcess("$($item.FullName) -> $newPath (plus rÃ©cent)", "Remplacer le fichier")) {
                                         Copy-Item -Path $item.FullName -Destination $newPath -Force
-                                        Write-Host "  Fichier remplacé (plus récent) : $($item.FullName) -> $newPath" -ForegroundColor Green
+                                        Write-Host "  Fichier remplacÃ© (plus rÃ©cent) : $($item.FullName) -> $newPath" -ForegroundColor Green
                                     }
                                 }
                                 else {
-                                    Write-Host "  Fichier ignoré (plus ancien ou identique) : $($item.FullName)" -ForegroundColor Gray
+                                    Write-Host "  Fichier ignorÃ© (plus ancien ou identique) : $($item.FullName)" -ForegroundColor Gray
                                 }
                             }
                             else {
                                 if ($PSCmdlet.ShouldProcess("$($item.FullName) -> $newPath", "Copier le fichier")) {
                                     Copy-Item -Path $item.FullName -Destination $newPath -Force
-                                    Write-Host "  Fichier copié : $($item.FullName) -> $newPath" -ForegroundColor Green
+                                    Write-Host "  Fichier copiÃ© : $($item.FullName) -> $newPath" -ForegroundColor Green
                                 }
                             }
                         }
                     }
                     
-                    Write-Host "  Contenu du dossier $sourcePath copié vers $targetPath" -ForegroundColor Green
+                    Write-Host "  Contenu du dossier $sourcePath copiÃ© vers $targetPath" -ForegroundColor Green
                     
                     # Supprimer le dossier source si ce n'est pas un dossier cible
                     if ($newFolders -notcontains $sourceFolder) {
                         if ($PSCmdlet.ShouldProcess($sourcePath, "Supprimer le dossier source")) {
                             Remove-Item -Path $sourcePath -Recurse -Force
-                            Write-Host "  Dossier source supprimé : $sourcePath" -ForegroundColor Yellow
+                            Write-Host "  Dossier source supprimÃ© : $sourcePath" -ForegroundColor Yellow
                         }
                     }
                 }
                 else {
-                    Write-Host "  Dossier source non trouvé : $sourcePath" -ForegroundColor Yellow
+                    Write-Host "  Dossier source non trouvÃ© : $sourcePath" -ForegroundColor Yellow
                 }
             }
             
-            # Mettre à jour le fichier README.md dans tools
+            # Mettre Ã  jour le fichier README.md dans tools
             $readmePath = Join-Path -Path $toolsRoot -ChildPath "README.md"
             $readmeContent = @"
-# Outils de développement
+# Outils de dÃ©veloppement
 
-Ce dossier contient tous les outils utilisés pour le développement du projet.
+Ce dossier contient tous les outils utilisÃ©s pour le dÃ©veloppement du projet.
 
 ## Structure
 
@@ -303,46 +303,46 @@ Ce dossier contient tous les outils utilisés pour le développement du projet.
 - **augment/** - Configuration et outils pour Augment
 - **cache/** - Gestionnaires de cache et outils de mise en cache
 - **converters/** - Convertisseurs de formats (CSV, YAML, JSON, etc.)
-- **detectors/** - Détecteurs de problèmes et d'anomalies
-- **documentation/** - Outils de génération de documentation
+- **detectors/** - DÃ©tecteurs de problÃ¨mes et d'anomalies
+- **documentation/** - Outils de gÃ©nÃ©ration de documentation
 - **error-handling/** - Outils de gestion des erreurs
 - **examples/** - Exemples d'utilisation des outils
 - **git/** - Outils pour Git
-- **integrations/** - Intégrations avec d'autres systèmes
+- **integrations/** - IntÃ©grations avec d'autres systÃ¨mes
 - **json/** - Outils de manipulation de JSON
 - **markdown/** - Outils de manipulation de Markdown
 - **optimization/** - Outils d'optimisation
-- **reports/** - Générateurs de rapports
+- **reports/** - GÃ©nÃ©rateurs de rapports
 - **roadmap/** - Outils pour la roadmap
 - **testing/** - Outils de test
 - **utilities/** - Utilitaires divers
 
 ## Utilisation
 
-Les outils de ce dossier sont utilisés par les scripts du projet. Ils peuvent également être utilisés directement par les développeurs.
+Les outils de ce dossier sont utilisÃ©s par les scripts du projet. Ils peuvent Ã©galement Ãªtre utilisÃ©s directement par les dÃ©veloppeurs.
 
-## Développement
+## DÃ©veloppement
 
-Pour ajouter un nouvel outil, créez un fichier dans le sous-dossier approprié et documentez son utilisation dans le README.md du sous-dossier.
+Pour ajouter un nouvel outil, crÃ©ez un fichier dans le sous-dossier appropriÃ© et documentez son utilisation dans le README.md du sous-dossier.
 "@
             
-            if ($PSCmdlet.ShouldProcess($readmePath, "Mettre à jour le fichier README.md")) {
+            if ($PSCmdlet.ShouldProcess($readmePath, "Mettre Ã  jour le fichier README.md")) {
                 Set-Content -Path $readmePath -Value $readmeContent -Force
-                Write-Host "  Fichier README.md mis à jour : $readmePath" -ForegroundColor Green
+                Write-Host "  Fichier README.md mis Ã  jour : $readmePath" -ForegroundColor Green
             }
             
-            # Créer un fichier README.md dans utils pour expliquer la migration
+            # CrÃ©er un fichier README.md dans utils pour expliquer la migration
             $utilsReadmePath = Join-Path -Path $utilsRoot -ChildPath "README.md"
             $utilsReadmeContent = @"
-# Utilitaires (Déprécié)
+# Utilitaires (DÃ©prÃ©ciÃ©)
 
-Ce dossier est déprécié. Tous les utilitaires ont été déplacés vers le dossier `development/tools`.
+Ce dossier est dÃ©prÃ©ciÃ©. Tous les utilitaires ont Ã©tÃ© dÃ©placÃ©s vers le dossier `development/tools`.
 
-Veuillez utiliser les outils dans le dossier `development/tools` à la place.
+Veuillez utiliser les outils dans le dossier `development/tools` Ã  la place.
 
 ## Migration
 
-Les fichiers de ce dossier ont été migrés vers les sous-dossiers suivants dans `development/tools` :
+Les fichiers de ce dossier ont Ã©tÃ© migrÃ©s vers les sous-dossiers suivants dans `development/tools` :
 
 - **analysis/** -> `development/tools/analysis-tools/`
 - **automation/** -> `development/tools/utilities-tools/`
@@ -368,19 +368,19 @@ Les fichiers de ce dossier ont été migrés vers les sous-dossiers suivants dan
 - **utils/** -> `development/tools/utilities-tools/`
 "@
             
-            if ($PSCmdlet.ShouldProcess($utilsReadmePath, "Créer le fichier README.md")) {
+            if ($PSCmdlet.ShouldProcess($utilsReadmePath, "CrÃ©er le fichier README.md")) {
                 Set-Content -Path $utilsReadmePath -Value $utilsReadmeContent -Force
-                Write-Host "  Fichier README.md créé : $utilsReadmePath" -ForegroundColor Green
+                Write-Host "  Fichier README.md crÃ©Ã© : $utilsReadmePath" -ForegroundColor Green
             }
         }
         catch {
-            Write-Error "Une erreur s'est produite lors de la réorganisation des dossiers : $_"
+            Write-Error "Une erreur s'est produite lors de la rÃ©organisation des dossiers : $_"
             return $false
         }
     }
     
     end {
-        Write-Host "`nRéorganisation des dossiers terminée !" -ForegroundColor Cyan
+        Write-Host "`nRÃ©organisation des dossiers terminÃ©e !" -ForegroundColor Cyan
         return $true
     }
 }

@@ -1,4 +1,4 @@
-# Définir la fonction Measure-LevenshteinDistance
+﻿# DÃ©finir la fonction Measure-LevenshteinDistance
 function Measure-LevenshteinDistance {
     [CmdletBinding()]
     param (
@@ -12,15 +12,15 @@ function Measure-LevenshteinDistance {
     $len1 = $String1.Length
     $len2 = $String2.Length
     
-    # Créer une matrice pour stocker les distances
+    # CrÃ©er une matrice pour stocker les distances
     $matrix = New-Object 'int[,]' ($len1 + 1), ($len2 + 1)
     
-    # Initialiser la première colonne
+    # Initialiser la premiÃ¨re colonne
     for ($i = 0; $i -le $len1; $i++) {
         $matrix[$i, 0] = $i
     }
     
-    # Initialiser la première ligne
+    # Initialiser la premiÃ¨re ligne
     for ($j = 0; $j -le $len2; $j++) {
         $matrix[0, $j] = $j
     }
@@ -44,7 +44,7 @@ function Measure-LevenshteinDistance {
     return $matrix[$len1, $len2]
 }
 
-# Définir la fonction Get-MessagePattern
+# DÃ©finir la fonction Get-MessagePattern
 function Get-MessagePattern {
     [CmdletBinding()]
     param (
@@ -52,7 +52,7 @@ function Get-MessagePattern {
         [string]$Message
     )
     
-    # Remplacer les valeurs spécifiques par des placeholders
+    # Remplacer les valeurs spÃ©cifiques par des placeholders
     $pattern = $Message
     
     # Remplacer les chemins de fichiers
@@ -70,7 +70,7 @@ function Get-MessagePattern {
     return $pattern
 }
 
-# Définir la fonction Get-LinePattern
+# DÃ©finir la fonction Get-LinePattern
 function Get-LinePattern {
     [CmdletBinding()]
     param (
@@ -82,10 +82,10 @@ function Get-LinePattern {
         return ""
     }
     
-    # Remplacer les valeurs spécifiques par des placeholders
+    # Remplacer les valeurs spÃ©cifiques par des placeholders
     $pattern = $Line
     
-    # Remplacer les chaînes de caractères
+    # Remplacer les chaÃ®nes de caractÃ¨res
     $pattern = $pattern -replace '"[^"]*"', '<STRING>'
     
     # Remplacer les nombres
@@ -97,7 +97,7 @@ function Get-LinePattern {
     return $pattern
 }
 
-# Définir la fonction Measure-PatternSimilarity
+# DÃ©finir la fonction Measure-PatternSimilarity
 function Measure-PatternSimilarity {
     [CmdletBinding()]
     param (
@@ -128,7 +128,7 @@ function Measure-PatternSimilarity {
         $similarityScore += 0.3
     }
     elseif ($Pattern1.MessagePattern -and $Pattern2.MessagePattern) {
-        # Calculer la similarité de Levenshtein
+        # Calculer la similaritÃ© de Levenshtein
         $levenshtein = Measure-LevenshteinDistance -String1 $Pattern1.MessagePattern -String2 $Pattern2.MessagePattern
         $maxLength = [Math]::Max($Pattern1.MessagePattern.Length, $Pattern2.MessagePattern.Length)
         
@@ -150,7 +150,7 @@ function Measure-PatternSimilarity {
         $similarityScore += 0.1
     }
     elseif ($Pattern1.LinePattern -and $Pattern2.LinePattern) {
-        # Calculer la similarité de Levenshtein
+        # Calculer la similaritÃ© de Levenshtein
         $levenshtein = Measure-LevenshteinDistance -String1 $Pattern1.LinePattern -String2 $Pattern2.LinePattern
         $maxLength = [Math]::Max($Pattern1.LinePattern.Length, $Pattern2.LinePattern.Length)
         

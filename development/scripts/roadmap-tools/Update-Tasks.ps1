@@ -1,4 +1,4 @@
-# Script pour mettre à jour les tâches dans un fichier de roadmap
+﻿# Script pour mettre Ã  jour les tÃ¢ches dans un fichier de roadmap
 
 $roadmapPath = "test_roadmap.md"
 $lineNumbers = @(20, 21, 26, 27)
@@ -6,19 +6,19 @@ $lineNumbers = @(20, 21, 26, 27)
 # Lire le contenu du fichier de roadmap
 $content = Get-Content -Path $roadmapPath -Encoding UTF8
 
-# Mettre à jour les tâches
+# Mettre Ã  jour les tÃ¢ches
 foreach ($lineNumber in $lineNumbers) {
     $line = $content[$lineNumber - 1]
     if ($line -match '^\s*-\s+\[ \]\s+(\d+(\.\d+)*)\s+(.+)$') {
         $content[$lineNumber - 1] = $line -replace '\[ \]', '[x]'
-        Write-Host "Tâche mise à jour à la ligne $lineNumber : $($content[$lineNumber - 1])" -ForegroundColor Green
+        Write-Host "TÃ¢che mise Ã  jour Ã  la ligne $lineNumber : $($content[$lineNumber - 1])" -ForegroundColor Green
     }
     else {
         Write-Host "Ligne $lineNumber : $line" -ForegroundColor Yellow
-        Write-Host "  La ligne ne correspond pas à une tâche non cochée." -ForegroundColor Red
+        Write-Host "  La ligne ne correspond pas Ã  une tÃ¢che non cochÃ©e." -ForegroundColor Red
     }
 }
 
-# Sauvegarder le contenu mis à jour
+# Sauvegarder le contenu mis Ã  jour
 $content | Set-Content -Path $roadmapPath -Encoding UTF8
-Write-Host "`nLe fichier de roadmap a été mis à jour." -ForegroundColor Green
+Write-Host "`nLe fichier de roadmap a Ã©tÃ© mis Ã  jour." -ForegroundColor Green

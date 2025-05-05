@@ -1,5 +1,5 @@
-# Start-AutoArchiveMonitor.ps1
-# Script pour surveiller et archiver automatiquement les tâches terminées de la roadmap
+﻿# Start-AutoArchiveMonitor.ps1
+# Script pour surveiller et archiver automatiquement les tÃ¢ches terminÃ©es de la roadmap
 # Version: 1.0
 # Date: 2025-05-03
 
@@ -33,13 +33,13 @@ if (Test-Path $modulePath) {
     exit 1
 }
 
-# Vérifier si le fichier de roadmap existe
+# VÃ©rifier si le fichier de roadmap existe
 if (-not (Test-Path -Path $RoadmapPath)) {
     Write-Error "Le fichier de roadmap n'existe pas: $RoadmapPath"
     exit 1
 }
 
-# Fonction pour vérifier si l'IDE est ouvert
+# Fonction pour vÃ©rifier si l'IDE est ouvert
 function Test-IDERunning {
     param (
         [string]$ProcessName
@@ -49,7 +49,7 @@ function Test-IDERunning {
     return $null -ne $process
 }
 
-# Fonction pour vérifier si le fichier a été modifié depuis la dernière vérification
+# Fonction pour vÃ©rifier si le fichier a Ã©tÃ© modifiÃ© depuis la derniÃ¨re vÃ©rification
 function Test-FileChanged {
     param (
         [string]$FilePath,
@@ -64,7 +64,7 @@ function Test-FileChanged {
     return $lastWriteTime -gt $LastCheckTime
 }
 
-# Fonction pour archiver les tâches terminées
+# Fonction pour archiver les tÃ¢ches terminÃ©es
 function Invoke-ArchiveCompletedTasks {
     param (
         [string]$RoadmapPath,
@@ -79,7 +79,7 @@ function Invoke-ArchiveCompletedTasks {
         return $false
     }
     
-    # Construire les paramètres pour le script d'archivage
+    # Construire les paramÃ¨tres pour le script d'archivage
     $params = @{
         RoadmapPath = $RoadmapPath
     }
@@ -92,7 +92,7 @@ function Invoke-ArchiveCompletedTasks {
         $params.Add("Force", $true)
     }
     
-    # Convertir les paramètres en chaîne de commande
+    # Convertir les paramÃ¨tres en chaÃ®ne de commande
     $paramString = ""
     foreach ($key in $params.Keys) {
         $value = $params[$key]
@@ -103,13 +103,13 @@ function Invoke-ArchiveCompletedTasks {
         }
     }
     
-    # Exécuter le script d'archivage
+    # ExÃ©cuter le script d'archivage
     $command = "& `"$archiveScriptPath`"$paramString"
-    Write-Log "Exécution de la commande: $command" -Level Info
+    Write-Log "ExÃ©cution de la commande: $command" -Level Info
     
     try {
         Invoke-Expression $command
-        Write-Log "Archivage automatique exécuté avec succès." -Level Success
+        Write-Log "Archivage automatique exÃ©cutÃ© avec succÃ¨s." -Level Success
         return $true
     } catch {
         Write-Log "Erreur lors de l'archivage automatique: $_" -Level Error
@@ -123,45 +123,45 @@ function Start-Monitor {
     $lastCheckTime = [datetime]::MinValue
     $lastArchiveTime = [datetime]::MinValue
     
-    Write-Host "Démarrage du moniteur d'archivage automatique..."
+    Write-Host "DÃ©marrage du moniteur d'archivage automatique..."
     Write-Host "Intervalle: $IntervalMinutes minutes"
     Write-Host "Fichier de roadmap: $RoadmapPath"
     Write-Host "Processus IDE: $IDEProcessName"
-    Write-Host "Mise à jour de la base vectorielle: $UpdateVectorDB"
-    Write-Host "Mode forcé: $Force"
-    Write-Host "Appuyez sur Ctrl+C pour arrêter le moniteur."
+    Write-Host "Mise Ã  jour de la base vectorielle: $UpdateVectorDB"
+    Write-Host "Mode forcÃ©: $Force"
+    Write-Host "Appuyez sur Ctrl+C pour arrÃªter le moniteur."
     
     try {
         while ($true) {
             $currentTime = Get-Date
             
-            # Vérifier si l'IDE est ouvert
+            # VÃ©rifier si l'IDE est ouvert
             $ideRunning = Test-IDERunning -ProcessName $IDEProcessName
             
             if ($ideRunning) {
-                # Vérifier si le fichier a été modifié
+                # VÃ©rifier si le fichier a Ã©tÃ© modifiÃ©
                 $fileChanged = Test-FileChanged -FilePath $RoadmapPath -LastCheckTime $lastCheckTime
                 
-                # Mettre à jour le temps de dernière vérification
+                # Mettre Ã  jour le temps de derniÃ¨re vÃ©rification
                 $lastCheckTime = $currentTime
                 
-                # Vérifier si l'intervalle d'archivage est écoulé
+                # VÃ©rifier si l'intervalle d'archivage est Ã©coulÃ©
                 $timeElapsed = $currentTime - $lastArchiveTime
                 $intervalElapsed = $timeElapsed.TotalSeconds -ge $intervalSeconds
                 
                 if ($fileChanged -and $intervalElapsed) {
-                    Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Fichier modifié et intervalle écoulé, exécution de l'archivage automatique..."
+                    Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Fichier modifiÃ© et intervalle Ã©coulÃ©, exÃ©cution de l'archivage automatique..."
                     
-                    # Archiver les tâches terminées
+                    # Archiver les tÃ¢ches terminÃ©es
                     $result = Invoke-ArchiveCompletedTasks -RoadmapPath $RoadmapPath -UpdateVectorDB $UpdateVectorDB -Force $Force
                     
                     if ($result) {
-                        # Mettre à jour le temps de dernier archivage
+                        # Mettre Ã  jour le temps de dernier archivage
                         $lastArchiveTime = $currentTime
                     }
                 } else {
                     if (-not $fileChanged) {
-                        Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Aucune modification détectée dans le fichier de roadmap."
+                        Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Aucune modification dÃ©tectÃ©e dans le fichier de roadmap."
                     }
                     
                     if (-not $intervalElapsed) {
@@ -170,18 +170,18 @@ function Start-Monitor {
                     }
                 }
             } else {
-                Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - IDE ($IDEProcessName) non détecté, surveillance en pause."
+                Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - IDE ($IDEProcessName) non dÃ©tectÃ©, surveillance en pause."
             }
             
-            # Attendre avant la prochaine vérification (30 secondes)
+            # Attendre avant la prochaine vÃ©rification (30 secondes)
             Start-Sleep -Seconds 30
         }
     } catch {
         Write-Host "Erreur dans la boucle de surveillance: $_" -ForegroundColor Red
     } finally {
-        Write-Host "Arrêt du moniteur d'archivage automatique."
+        Write-Host "ArrÃªt du moniteur d'archivage automatique."
     }
 }
 
-# Démarrer le moniteur
+# DÃ©marrer le moniteur
 Start-Monitor

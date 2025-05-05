@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour le mode GRAN.
+    ExÃ©cute tous les tests unitaires pour le mode GRAN.
 
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour le mode GRAN, y compris
-    les tests de détection de complexité et de domaine, de sélection de modèle
-    et de granularisation complète.
+    Ce script exÃ©cute tous les tests unitaires pour le mode GRAN, y compris
+    les tests de dÃ©tection de complexitÃ© et de domaine, de sÃ©lection de modÃ¨le
+    et de granularisation complÃ¨te.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-06-02
+    Date de crÃ©ation: 2025-06-02
 #>
 
-# Définir le chemin des tests
+# DÃ©finir le chemin des tests
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $testFiles = @(
     "Test-GranModeComplexitySimple.ps1",
@@ -21,7 +21,7 @@ $testFiles = @(
     "Test-GranModeGranularization.ps1"
 )
 
-# Fonction pour exécuter un test
+# Fonction pour exÃ©cuter un test
 function Invoke-Test {
     [CmdletBinding()]
     param (
@@ -33,14 +33,14 @@ function Invoke-Test {
 
     if (Test-Path -Path $testPath) {
         Write-Host "`n=========================================================" -ForegroundColor Cyan
-        Write-Host "Exécution du test : $TestFile" -ForegroundColor Cyan
+        Write-Host "ExÃ©cution du test : $TestFile" -ForegroundColor Cyan
         Write-Host "=========================================================" -ForegroundColor Cyan
 
         try {
             & $testPath
             return $true
         } catch {
-            Write-Host "Erreur lors de l'exécution du test : $_" -ForegroundColor Red
+            Write-Host "Erreur lors de l'exÃ©cution du test : $_" -ForegroundColor Red
             return $false
         }
     } else {
@@ -49,32 +49,32 @@ function Invoke-Test {
     }
 }
 
-# Exécuter tous les tests
+# ExÃ©cuter tous les tests
 $results = @{}
 
 foreach ($testFile in $testFiles) {
     $results[$testFile] = Invoke-Test -TestFile $testFile
 }
 
-# Afficher le résultat global
+# Afficher le rÃ©sultat global
 Write-Host "`n=========================================================" -ForegroundColor Cyan
-Write-Host "Résultat global des tests" -ForegroundColor Cyan
+Write-Host "RÃ©sultat global des tests" -ForegroundColor Cyan
 Write-Host "=========================================================" -ForegroundColor Cyan
 
 $totalTests = $testFiles.Count
 $passedTests = ($results.Values | Where-Object { $_ -eq $true }).Count
 
 foreach ($testFile in $testFiles) {
-    $status = if ($results[$testFile]) { "Réussi" } else { "Échoué" }
+    $status = if ($results[$testFile]) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
     $color = if ($results[$testFile]) { "Green" } else { "Red" }
     Write-Host "$testFile : $status" -ForegroundColor $color
 }
 
-Write-Host "`nRésultat global : $passedTests / $totalTests" -ForegroundColor Cyan
+Write-Host "`nRÃ©sultat global : $passedTests / $totalTests" -ForegroundColor Cyan
 if ($passedTests -eq $totalTests) {
-    Write-Host "Tous les tests ont réussi !" -ForegroundColor Green
+    Write-Host "Tous les tests ont rÃ©ussi !" -ForegroundColor Green
 } else {
-    Write-Host "Certains tests ont échoué." -ForegroundColor Red
+    Write-Host "Certains tests ont Ã©chouÃ©." -ForegroundColor Red
 }
 
 # Retourner le code de sortie

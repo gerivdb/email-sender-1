@@ -1,4 +1,4 @@
-# Script to update all references to the old docs/ path
+﻿# Script to update all references to the old docs/ path
 Write-Host "Updating all references to the old docs/ path..." -ForegroundColor Green
 
 # Define path mappings

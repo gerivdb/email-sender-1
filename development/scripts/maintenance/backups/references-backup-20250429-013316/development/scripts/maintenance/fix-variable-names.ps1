@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Corrige les noms de variables dans les fichiers.
 
@@ -6,7 +6,7 @@
     Ce script corrige les noms de variables dans les fichiers pour qu'ils soient conformes aux conventions de nommage.
 
 .PARAMETER FilePath
-    Chemin vers le fichier à corriger.
+    Chemin vers le fichier Ã  corriger.
 
 .EXAMPLE
     .\fix-variable-names.ps1 -FilePath "development\scripts\integrated-manager.ps1"
@@ -19,7 +19,7 @@ param (
     [string]$FilePath
 )
 
-# Vérifier que le fichier existe
+# VÃ©rifier que le fichier existe
 if (-not (Test-Path -Path $FilePath)) {
     Write-Error "Le fichier est introuvable : $FilePath"
     exit 1
@@ -32,7 +32,7 @@ $content = Get-Content -Path $FilePath -Raw
 $content = $content -replace '\$roadmap-managerPath', '$roadmapManagerPath'
 $content = $content -replace '\$config\.roadmap-manager', '$config.roadmapManager'
 
-# Écrire le contenu modifié dans le fichier
+# Ã‰crire le contenu modifiÃ© dans le fichier
 Set-Content -Path $FilePath -Value $content -Encoding UTF8
 
-Write-Host "Les noms de variables ont été corrigés dans le fichier $FilePath." -ForegroundColor Green
+Write-Host "Les noms de variables ont Ã©tÃ© corrigÃ©s dans le fichier $FilePath." -ForegroundColor Green

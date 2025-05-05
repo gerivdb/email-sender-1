@@ -1,9 +1,9 @@
-# Script pour tester la détection des gestionnaires d'erreurs personnalisés
-# Ce script teste spécifiquement la détection des gestionnaires d'erreurs personnalisés dans les workflows n8n
+﻿# Script pour tester la dÃ©tection des gestionnaires d'erreurs personnalisÃ©s
+# Ce script teste spÃ©cifiquement la dÃ©tection des gestionnaires d'erreurs personnalisÃ©s dans les workflows n8n
 
 #Requires -Version 5.1
 
-# Paramètres
+# ParamÃ¨tres
 param (
     [Parameter(Mandatory = $false)]
     [string]$TestDataPath = "TestData",
@@ -12,7 +12,7 @@ param (
     [string]$OutputFolder = "TestResults"
 )
 
-# Définir les chemins complets
+# DÃ©finir les chemins complets
 $TestDataPath = Join-Path -Path $PSScriptRoot -ChildPath $TestDataPath
 $OutputFolder = Join-Path -Path $PSScriptRoot -ChildPath $OutputFolder
 
@@ -38,7 +38,7 @@ function Write-TestMessage {
     Write-Host "[$Status] $Message" -ForegroundColor $color
 }
 
-# Créer les dossiers s'ils n'existent pas
+# CrÃ©er les dossiers s'ils n'existent pas
 if (-not (Test-Path -Path $TestDataPath)) {
     New-Item -Path $TestDataPath -ItemType Directory -Force | Out-Null
 }
@@ -47,10 +47,10 @@ if (-not (Test-Path -Path $OutputFolder)) {
     New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
 }
 
-# Créer un workflow de test avec des gestionnaires d'erreurs personnalisés
+# CrÃ©er un workflow de test avec des gestionnaires d'erreurs personnalisÃ©s
 $customErrorHandlersWorkflowPath = Join-Path -Path $TestDataPath -ChildPath "custom_error_handlers_workflow.json"
 if (-not (Test-Path -Path $customErrorHandlersWorkflowPath)) {
-    Write-TestMessage "Création d'un workflow de test avec des gestionnaires d'erreurs personnalisés..." -Status "INFO"
+    Write-TestMessage "CrÃ©ation d'un workflow de test avec des gestionnaires d'erreurs personnalisÃ©s..." -Status "INFO"
     
     $workflow = @{
         id          = "test-workflow-custom-error-handlers"
@@ -223,32 +223,32 @@ return processData();
     $workflowJson = $workflow | ConvertTo-Json -Depth 10
     Set-Content -Path $customErrorHandlersWorkflowPath -Value $workflowJson -Encoding UTF8
     
-    Write-TestMessage "Workflow de test créé: $customErrorHandlersWorkflowPath" -Status "SUCCESS"
+    Write-TestMessage "Workflow de test crÃ©Ã©: $customErrorHandlersWorkflowPath" -Status "SUCCESS"
 }
 else {
     Write-TestMessage "Utilisation du workflow de test existant: $customErrorHandlersWorkflowPath" -Status "INFO"
 }
 
-# Tester la détection des gestionnaires d'erreurs personnalisés
-Write-TestMessage "Test de la détection des gestionnaires d'erreurs personnalisés..." -Status "INFO"
+# Tester la dÃ©tection des gestionnaires d'erreurs personnalisÃ©s
+Write-TestMessage "Test de la dÃ©tection des gestionnaires d'erreurs personnalisÃ©s..." -Status "INFO"
 
 # Charger le workflow
 $workflow = Get-N8nWorkflow -WorkflowPath $customErrorHandlersWorkflowPath
 
 if (-not $workflow) {
-    Write-TestMessage "Échec du chargement du workflow" -Status "ERROR"
+    Write-TestMessage "Ã‰chec du chargement du workflow" -Status "ERROR"
     exit 1
 }
 
-Write-TestMessage "Workflow chargé avec succès: $($workflow.name)" -Status "SUCCESS"
+Write-TestMessage "Workflow chargÃ© avec succÃ¨s: $($workflow.name)" -Status "SUCCESS"
 
-# Détecter les gestionnaires d'erreurs personnalisés
+# DÃ©tecter les gestionnaires d'erreurs personnalisÃ©s
 $customErrorHandlers = Get-N8nWorkflowCustomErrorHandlers -Workflow $workflow
 
 if ($customErrorHandlers) {
-    Write-TestMessage "Gestionnaires d'erreurs personnalisés détectés avec succès: $($customErrorHandlers.Count) noeuds trouvés" -Status "SUCCESS"
+    Write-TestMessage "Gestionnaires d'erreurs personnalisÃ©s dÃ©tectÃ©s avec succÃ¨s: $($customErrorHandlers.Count) noeuds trouvÃ©s" -Status "SUCCESS"
     
-    # Afficher les résultats
+    # Afficher les rÃ©sultats
     foreach ($node in $customErrorHandlers) {
         Write-TestMessage "Noeud: $($node.Name) (ID: $($node.Id))" -Status "INFO"
         Write-Host "  Type: $($node.Type)"
@@ -276,10 +276,10 @@ if ($customErrorHandlers) {
         Write-Host ""
     }
     
-    # Enregistrer les résultats dans un fichier Markdown
+    # Enregistrer les rÃ©sultats dans un fichier Markdown
     $outputPath = Join-Path -Path $OutputFolder -ChildPath "custom_error_handlers.md"
     
-    $markdown = "# Gestionnaires d'erreurs personnalisés dans le workflow: $($workflow.name)`n`n"
+    $markdown = "# Gestionnaires d'erreurs personnalisÃ©s dans le workflow: $($workflow.name)`n`n"
     
     foreach ($node in $customErrorHandlers) {
         $markdown += "## Noeud: $($node.Name) (ID: $($node.Id))`n`n"
@@ -287,7 +287,7 @@ if ($customErrorHandlers) {
         $markdown += "- **Nombre de gestionnaires**: $($node.CustomErrorHandlersCount)`n`n"
         
         if ($node.Type -eq "n8n-nodes-base.stopAndError") {
-            $markdown += "### Détails du noeud Stop And Error`n`n"
+            $markdown += "### DÃ©tails du noeud Stop And Error`n`n"
             $markdown += "- **Type d'erreur**: $($node.ErrorType)`n"
             $markdown += "- **Message d'erreur**: $($node.ErrorMessage)`n`n"
         }
@@ -310,10 +310,10 @@ if ($customErrorHandlers) {
     }
     
     $markdown | Out-File -FilePath $outputPath -Encoding UTF8
-    Write-TestMessage "Résultats enregistrés dans: $outputPath" -Status "SUCCESS"
+    Write-TestMessage "RÃ©sultats enregistrÃ©s dans: $outputPath" -Status "SUCCESS"
 }
 else {
-    Write-TestMessage "Aucun gestionnaire d'erreur personnalisé détecté" -Status "WARNING"
+    Write-TestMessage "Aucun gestionnaire d'erreur personnalisÃ© dÃ©tectÃ©" -Status "WARNING"
 }
 
-Write-TestMessage "Test terminé." -Status "SUCCESS"
+Write-TestMessage "Test terminÃ©." -Status "SUCCESS"

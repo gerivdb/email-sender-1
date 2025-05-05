@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module AugmentIntegration.
 
@@ -8,7 +8,7 @@
 
 .EXAMPLE
     Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-AugmentIntegration.ps1"
-    # Exécute les tests unitaires pour le module AugmentIntegration
+    # ExÃ©cute les tests unitaires pour le module AugmentIntegration
 
 .NOTES
     Version: 1.0
@@ -16,17 +16,17 @@
     Auteur: Augment Agent
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $moduleRoot = Split-Path -Path $PSScriptRoot -Parent
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "AugmentIntegration.psm1"
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $moduleRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -38,11 +38,11 @@ Describe "AugmentIntegration Module Tests" {
         # Importer le module
         Import-Module $modulePath -Force
         
-        # Créer des mocks pour les dépendances
+        # CrÃ©er des mocks pour les dÃ©pendances
         Mock -CommandName Start-Process -MockWith { return [PSCustomObject]@{ Id = 12345 } }
         Mock -CommandName Invoke-RestMethod -MockWith { return [PSCustomObject]@{ status = "success" } }
         
-        # Créer des fichiers temporaires pour les tests
+        # CrÃ©er des fichiers temporaires pour les tests
         $testDir = Join-Path -Path $TestDrive -ChildPath "augment"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         
@@ -66,7 +66,7 @@ Describe "AugmentIntegration Module Tests" {
 "@
         $testLogContent | Out-File -FilePath $testLogPath -Encoding UTF8
         
-        # Définir des variables globales pour les tests
+        # DÃ©finir des variables globales pour les tests
         $Global:TestMemoriesPath = $testMemoriesPath
         $Global:TestLogPath = $testLogPath
     }
@@ -76,7 +76,7 @@ Describe "AugmentIntegration Module Tests" {
         Remove-Variable -Name TestMemoriesPath -Scope Global -ErrorAction SilentlyContinue
         Remove-Variable -Name TestLogPath -Scope Global -ErrorAction SilentlyContinue
         
-        # Décharger le module
+        # DÃ©charger le module
         Remove-Module -Name AugmentIntegration -ErrorAction SilentlyContinue
     }
     
@@ -194,7 +194,7 @@ Describe "AugmentMemoriesManager Tests" {
             $result = Update-AugmentMemories -OutputPath $Global:TestMemoriesPath
             $result | Should -Be $true
             
-            # Vérifier que le fichier a été créé
+            # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $Global:TestMemoriesPath | Should -Be $true
         }
     }
@@ -221,7 +221,7 @@ Describe "MCP Integration Tests" {
     
     Context "Start-AugmentMCPServers" {
         It "Should start the MCP servers without errors" {
-            # Mock le script de démarrage
+            # Mock le script de dÃ©marrage
             Mock -CommandName & -ParameterFilter { $args[0] -like "*start-mcp-servers.ps1*" } -MockWith { return $true }
             
             { Start-AugmentMCPServers } | Should -Not -Throw
@@ -230,7 +230,7 @@ Describe "MCP Integration Tests" {
     
     Context "Stop-AugmentMCPServers" {
         It "Should stop the MCP servers without errors" {
-            # Mock le script d'arrêt
+            # Mock le script d'arrÃªt
             Mock -CommandName & -ParameterFilter { $args[0] -like "*stop-mcp-servers.ps1*" } -MockWith { return $true }
             Mock -CommandName Test-Path -MockWith { return $true }
             

@@ -1,10 +1,10 @@
-# Script pour exécuter les tests unitaires du module WorkflowAnalyzer
-# Ce script exécute les tests unitaires et génère un rapport de couverture
+﻿# Script pour exÃ©cuter les tests unitaires du module WorkflowAnalyzer
+# Ce script exÃ©cute les tests unitaires et gÃ©nÃ¨re un rapport de couverture
 
 #Requires -Version 5.1
 #Requires -Modules Pester
 
-# Paramètres
+# ParamÃ¨tres
 param (
     [Parameter(Mandatory = $false)]
     [switch]$GenerateCoverageReport,
@@ -13,10 +13,10 @@ param (
     [string]$OutputFolder = "TestResults"
 )
 
-# Définir le chemin complet du dossier de sortie
+# DÃ©finir le chemin complet du dossier de sortie
 $OutputFolder = Join-Path -Path $PSScriptRoot -ChildPath $OutputFolder
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputFolder)) {
     New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
 }
@@ -39,9 +39,9 @@ function Write-TestMessage {
     Write-Host "[$Status] $Message" -ForegroundColor $color
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -ListAvailable -Name Pester)) {
-    Write-TestMessage "Le module Pester n'est pas installé. Installation en cours..." -Status "WARNING"
+    Write-TestMessage "Le module Pester n'est pas installÃ©. Installation en cours..." -Status "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
@@ -55,7 +55,7 @@ $pesterConfig.Output.Verbosity = "Detailed"
 $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputFolder -ChildPath "TestResults.xml"
 
-# Configurer la couverture de code si demandé
+# Configurer la couverture de code si demandÃ©
 if ($GenerateCoverageReport) {
     $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "WorkflowAnalyzer.psm1"
     $pesterConfig.CodeCoverage.Enabled = $true
@@ -63,28 +63,28 @@ if ($GenerateCoverageReport) {
     $pesterConfig.CodeCoverage.OutputPath = Join-Path -Path $OutputFolder -ChildPath "CodeCoverage.xml"
 }
 
-# Exécuter les tests
-Write-TestMessage "Exécution des tests unitaires..." -Status "INFO"
+# ExÃ©cuter les tests
+Write-TestMessage "ExÃ©cution des tests unitaires..." -Status "INFO"
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher les résultats
+# Afficher les rÃ©sultats
 if ($testResults.FailedCount -eq 0) {
-    Write-TestMessage "Tous les tests ont réussi! ($($testResults.PassedCount) tests réussis)" -Status "SUCCESS"
+    Write-TestMessage "Tous les tests ont rÃ©ussi! ($($testResults.PassedCount) tests rÃ©ussis)" -Status "SUCCESS"
 } else {
-    Write-TestMessage "$($testResults.FailedCount) tests ont échoué sur $($testResults.TotalCount) tests." -Status "ERROR"
+    Write-TestMessage "$($testResults.FailedCount) tests ont Ã©chouÃ© sur $($testResults.TotalCount) tests." -Status "ERROR"
 }
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateCoverageReport) {
-    Write-TestMessage "Génération du rapport de couverture..." -Status "INFO"
+    Write-TestMessage "GÃ©nÃ©ration du rapport de couverture..." -Status "INFO"
 
-    # Vérifier si ReportGenerator est installé
+    # VÃ©rifier si ReportGenerator est installÃ©
     if (-not (Get-Command -Name ReportGenerator -ErrorAction SilentlyContinue)) {
-        Write-TestMessage "ReportGenerator n'est pas installé. Installation en cours..." -Status "WARNING"
+        Write-TestMessage "ReportGenerator n'est pas installÃ©. Installation en cours..." -Status "WARNING"
         dotnet tool install -g dotnet-reportgenerator-globaltool
     }
 
-    # Générer le rapport HTML
+    # GÃ©nÃ©rer le rapport HTML
     $coverageXmlPath = Join-Path -Path $OutputFolder -ChildPath "CodeCoverage.xml"
     $coverageHtmlPath = Join-Path -Path $OutputFolder -ChildPath "CoverageReport"
 
@@ -92,17 +92,17 @@ if ($GenerateCoverageReport) {
         ReportGenerator "-reports:$coverageXmlPath" "-targetdir:$coverageHtmlPath" "-reporttypes:Html"
 
         if (Test-Path -Path $coverageHtmlPath) {
-            Write-TestMessage "Rapport de couverture généré dans: $coverageHtmlPath" -Status "SUCCESS"
+            Write-TestMessage "Rapport de couverture gÃ©nÃ©rÃ© dans: $coverageHtmlPath" -Status "SUCCESS"
 
-            # Ouvrir le rapport dans le navigateur par défaut
+            # Ouvrir le rapport dans le navigateur par dÃ©faut
             Start-Process (Join-Path -Path $coverageHtmlPath -ChildPath "index.htm")
         } else {
-            Write-TestMessage "Échec de la génération du rapport de couverture" -Status "ERROR"
+            Write-TestMessage "Ã‰chec de la gÃ©nÃ©ration du rapport de couverture" -Status "ERROR"
         }
     } else {
-        Write-TestMessage "Fichier de couverture XML non trouvé" -Status "ERROR"
+        Write-TestMessage "Fichier de couverture XML non trouvÃ©" -Status "ERROR"
     }
 }
 
 # Afficher le chemin du rapport de test
-Write-TestMessage "Rapport de test généré dans: $($pesterConfig.TestResult.OutputPath)" -Status "INFO"
+Write-TestMessage "Rapport de test gÃ©nÃ©rÃ© dans: $($pesterConfig.TestResult.OutputPath)" -Status "INFO"

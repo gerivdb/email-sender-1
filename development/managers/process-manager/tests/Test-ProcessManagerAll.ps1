@@ -1,38 +1,38 @@
-<#
+﻿<#
 .SYNOPSIS
     Script principal de test pour le Process Manager.
 
 .DESCRIPTION
-    Ce script exécute tous les tests pour le Process Manager et génère un rapport complet.
+    Ce script exÃ©cute tous les tests pour le Process Manager et gÃ©nÃ¨re un rapport complet.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire courant.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER TestType
-    Type de tests à exécuter. Les valeurs possibles sont : All, Unit, Integration, Functional, Performance, Load.
-    Par défaut, exécute tous les tests.
+    Type de tests Ã  exÃ©cuter. Les valeurs possibles sont : All, Unit, Integration, Functional, Performance, Load.
+    Par dÃ©faut, exÃ©cute tous les tests.
 
 .PARAMETER SkipCleanup
-    Ne supprime pas les fichiers de test après l'exécution.
+    Ne supprime pas les fichiers de test aprÃ¨s l'exÃ©cution.
 
 .PARAMETER GenerateReport
-    Génère un rapport HTML des résultats des tests.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests.
 
 .PARAMETER ReportPath
-    Chemin où enregistrer le rapport HTML. Par défaut, utilise le répertoire des tests.
+    Chemin oÃ¹ enregistrer le rapport HTML. Par dÃ©faut, utilise le rÃ©pertoire des tests.
 
 .EXAMPLE
     .\Test-ProcessManagerAll.ps1
-    Exécute tous les tests pour le Process Manager.
+    ExÃ©cute tous les tests pour le Process Manager.
 
 .EXAMPLE
     .\Test-ProcessManagerAll.ps1 -TestType Functional -GenerateReport
-    Exécute uniquement les tests fonctionnels et génère un rapport HTML.
+    ExÃ©cute uniquement les tests fonctionnels et gÃ©nÃ¨re un rapport HTML.
 
 .NOTES
     Auteur: EMAIL_SENDER_1
     Version: 1.0
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -53,14 +53,14 @@ param (
     [string]$ReportPath
 )
 
-# Définir les chemins
+# DÃ©finir les chemins
 $processManagerRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers\process-manager"
 $modulesRoot = Join-Path -Path $processManagerRoot -ChildPath "modules"
 $scriptsRoot = Join-Path -Path $processManagerRoot -ChildPath "scripts"
 $testsRoot = Join-Path -Path $processManagerRoot -ChildPath "tests"
 $reportsDir = if ($ReportPath) { $ReportPath } else { Join-Path -Path $testsRoot -ChildPath "reports" }
 
-# Définir les chemins des scripts de test
+# DÃ©finir les chemins des scripts de test
 $unitTestScripts = @(
     (Join-Path -Path $testsRoot -ChildPath "Test-ManifestParser.ps1"),
     (Join-Path -Path $testsRoot -ChildPath "Test-ValidationService.ps1"),
@@ -72,7 +72,7 @@ $functionalTestScript = Join-Path -Path $testsRoot -ChildPath "Test-ProcessManag
 $performanceTestScript = Join-Path -Path $testsRoot -ChildPath "Test-ProcessManagerPerformance.ps1"
 $loadTestScript = Join-Path -Path $testsRoot -ChildPath "Test-ProcessManagerLoad.ps1"
 
-# Fonction pour écrire des messages de journal
+# Fonction pour Ã©crire des messages de journal
 function Write-TestLog {
     [CmdletBinding()]
     param (
@@ -87,7 +87,7 @@ function Write-TestLog {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "[$timestamp] [$Level] $Message"
     
-    # Définir la couleur en fonction du niveau
+    # DÃ©finir la couleur en fonction du niveau
     $color = switch ($Level) {
         "Info" { "White" }
         "Warning" { "Yellow" }
@@ -101,7 +101,7 @@ function Write-TestLog {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Fonction pour exécuter un script de test
+# Fonction pour exÃ©cuter un script de test
 function Invoke-TestScript {
     [CmdletBinding()]
     param (
@@ -112,14 +112,14 @@ function Invoke-TestScript {
         [hashtable]$Parameters = @{}
     )
 
-    Write-TestLog -Message "Exécution du script de test : $ScriptPath" -Level Info
+    Write-TestLog -Message "ExÃ©cution du script de test : $ScriptPath" -Level Info
     
     try {
         $result = & $ScriptPath @Parameters
         $exitCode = $LASTEXITCODE
         
         if ($exitCode -eq 0) {
-            Write-TestLog -Message "Script de test exécuté avec succès." -Level Success
+            Write-TestLog -Message "Script de test exÃ©cutÃ© avec succÃ¨s." -Level Success
             return [PSCustomObject]@{
                 ScriptPath = $ScriptPath
                 Success = $true
@@ -127,7 +127,7 @@ function Invoke-TestScript {
                 Result = $result
             }
         } else {
-            Write-TestLog -Message "Script de test exécuté avec des erreurs. Code de sortie : $exitCode" -Level Error
+            Write-TestLog -Message "Script de test exÃ©cutÃ© avec des erreurs. Code de sortie : $exitCode" -Level Error
             return [PSCustomObject]@{
                 ScriptPath = $ScriptPath
                 Success = $false
@@ -136,7 +136,7 @@ function Invoke-TestScript {
             }
         }
     } catch {
-        Write-TestLog -Message "Erreur lors de l'exécution du script de test : $_" -Level Error
+        Write-TestLog -Message "Erreur lors de l'exÃ©cution du script de test : $_" -Level Error
         return [PSCustomObject]@{
             ScriptPath = $ScriptPath
             Success = $false
@@ -146,7 +146,7 @@ function Invoke-TestScript {
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function Generate-HtmlReport {
     [CmdletBinding()]
     param (
@@ -157,15 +157,15 @@ function Generate-HtmlReport {
         [string]$ReportPath
     )
 
-    Write-TestLog -Message "Génération du rapport HTML..." -Level Info
+    Write-TestLog -Message "GÃ©nÃ©ration du rapport HTML..." -Level Info
     
-    # Créer le répertoire du rapport s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire du rapport s'il n'existe pas
     $reportDir = Split-Path -Path $ReportPath -Parent
     if (-not (Test-Path -Path $reportDir -PathType Container)) {
         New-Item -Path $reportDir -ItemType Directory -Force | Out-Null
     }
     
-    # Générer le contenu HTML
+    # GÃ©nÃ©rer le contenu HTML
     $htmlContent = @"
 <!DOCTYPE html>
 <html lang="fr">
@@ -239,11 +239,11 @@ function Generate-HtmlReport {
         <p>Date du rapport : $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
         
         <div class="summary">
-            <h2>Résumé</h2>
-            <p>Tests exécutés : $($TestResults.TotalTests)</p>
-            <p>Tests réussis : <span class="success">$($TestResults.SuccessfulTests)</span></p>
-            <p>Tests échoués : <span class="error">$($TestResults.FailedTests)</span></p>
-            <p>Taux de réussite : <span class="$(if ($TestResults.SuccessRate -ge 90) { "success" } elseif ($TestResults.SuccessRate -ge 70) { "warning" } else { "error" })">$($TestResults.SuccessRate.ToString("F2"))%</span></p>
+            <h2>RÃ©sumÃ©</h2>
+            <p>Tests exÃ©cutÃ©s : $($TestResults.TotalTests)</p>
+            <p>Tests rÃ©ussis : <span class="success">$($TestResults.SuccessfulTests)</span></p>
+            <p>Tests Ã©chouÃ©s : <span class="error">$($TestResults.FailedTests)</span></p>
+            <p>Taux de rÃ©ussite : <span class="$(if ($TestResults.SuccessRate -ge 90) { "success" } elseif ($TestResults.SuccessRate -ge 70) { "warning" } else { "error" })">$($TestResults.SuccessRate.ToString("F2"))%</span></p>
         </div>
 "@
 
@@ -252,11 +252,11 @@ function Generate-HtmlReport {
         $htmlContent += @"
         <div class="test-section">
             <h2>Tests unitaires</h2>
-            <p>Tests exécutés : $($TestResults.UnitTests.Count)</p>
-            <p>Tests réussis : <span class="success">$($TestResults.UnitTests | Where-Object { $_.Success } | Measure-Object).Count</span></p>
-            <p>Tests échoués : <span class="error">$($TestResults.UnitTests | Where-Object { -not $_.Success } | Measure-Object).Count</span></p>
+            <p>Tests exÃ©cutÃ©s : $($TestResults.UnitTests.Count)</p>
+            <p>Tests rÃ©ussis : <span class="success">$($TestResults.UnitTests | Where-Object { $_.Success } | Measure-Object).Count</span></p>
+            <p>Tests Ã©chouÃ©s : <span class="error">$($TestResults.UnitTests | Where-Object { -not $_.Success } | Measure-Object).Count</span></p>
             
-            <h3>Détails</h3>
+            <h3>DÃ©tails</h3>
             <table>
                 <tr>
                     <th>Module</th>
@@ -270,7 +270,7 @@ function Generate-HtmlReport {
             $htmlContent += @"
                 <tr>
                     <td>$moduleName</td>
-                    <td class="$(if ($test.Success) { "success" } else { "error" })">$(if ($test.Success) { "Réussi" } else { "Échoué" })</td>
+                    <td class="$(if ($test.Success) { "success" } else { "error" })">$(if ($test.Success) { "RÃ©ussi" } else { "Ã‰chouÃ©" })</td>
                     <td>$($test.ExitCode)</td>
                 </tr>
 "@
@@ -285,8 +285,8 @@ function Generate-HtmlReport {
     if ($TestResults.IntegrationTest) {
         $htmlContent += @"
         <div class="test-section">
-            <h2>Test d'intégration</h2>
-            <p>Statut : <span class="$(if ($TestResults.IntegrationTest.Success) { "success" } else { "error" })">$(if ($TestResults.IntegrationTest.Success) { "Réussi" } else { "Échoué" })</span></p>
+            <h2>Test d'intÃ©gration</h2>
+            <p>Statut : <span class="$(if ($TestResults.IntegrationTest.Success) { "success" } else { "error" })">$(if ($TestResults.IntegrationTest.Success) { "RÃ©ussi" } else { "Ã‰chouÃ©" })</span></p>
             <p>Code de sortie : $($TestResults.IntegrationTest.ExitCode)</p>
         </div>
 "@
@@ -296,7 +296,7 @@ function Generate-HtmlReport {
         $htmlContent += @"
         <div class="test-section">
             <h2>Tests fonctionnels</h2>
-            <p>Statut : <span class="$(if ($TestResults.FunctionalTest.Success) { "success" } else { "error" })">$(if ($TestResults.FunctionalTest.Success) { "Réussi" } else { "Échoué" })</span></p>
+            <p>Statut : <span class="$(if ($TestResults.FunctionalTest.Success) { "success" } else { "error" })">$(if ($TestResults.FunctionalTest.Success) { "RÃ©ussi" } else { "Ã‰chouÃ©" })</span></p>
             <p>Code de sortie : $($TestResults.FunctionalTest.ExitCode)</p>
         </div>
 "@
@@ -306,20 +306,20 @@ function Generate-HtmlReport {
         $htmlContent += @"
         <div class="test-section">
             <h2>Tests de performance</h2>
-            <p>Statut : <span class="$(if ($TestResults.PerformanceTest.Success) { "success" } else { "error" })">$(if ($TestResults.PerformanceTest.Success) { "Réussi" } else { "Échoué" })</span></p>
+            <p>Statut : <span class="$(if ($TestResults.PerformanceTest.Success) { "success" } else { "error" })">$(if ($TestResults.PerformanceTest.Success) { "RÃ©ussi" } else { "Ã‰chouÃ©" })</span></p>
             
-            <h3>Résultats</h3>
+            <h3>RÃ©sultats</h3>
             <div class="chart-container">
                 <canvas id="performanceChart"></canvas>
             </div>
             
             <table>
                 <tr>
-                    <th>Opération</th>
+                    <th>OpÃ©ration</th>
                     <th>Temps moyen (ms)</th>
                     <th>Temps min (ms)</th>
                     <th>Temps max (ms)</th>
-                    <th>Écart-type (ms)</th>
+                    <th>Ã‰cart-type (ms)</th>
                 </tr>
 "@
 
@@ -346,7 +346,7 @@ function Generate-HtmlReport {
                         data: {
                             labels: [$(($TestResults.PerformanceTest.Result | ForEach-Object { "'$($_.Name)'" }) -join ', ')],
                             datasets: [{
-                                label: 'Temps d\'exécution moyen (ms)',
+                                label: 'Temps d\'exÃ©cution moyen (ms)',
                                 data: [$(($TestResults.PerformanceTest.Result | ForEach-Object { $_.AvgExecutionTime.ToString("F2") }) -join ', ')],
                                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
                                 borderColor: 'rgba(54, 162, 235, 1)',
@@ -375,19 +375,19 @@ function Generate-HtmlReport {
         $htmlContent += @"
         <div class="test-section">
             <h2>Tests de charge</h2>
-            <p>Statut : <span class="$(if ($TestResults.LoadTest.Success) { "success" } else { "error" })">$(if ($TestResults.LoadTest.Success) { "Réussi" } else { "Échoué" })</span></p>
+            <p>Statut : <span class="$(if ($TestResults.LoadTest.Success) { "success" } else { "error" })">$(if ($TestResults.LoadTest.Success) { "RÃ©ussi" } else { "Ã‰chouÃ©" })</span></p>
             
-            <h3>Résultats</h3>
+            <h3>RÃ©sultats</h3>
             <p>Nombre de gestionnaires : $($TestResults.LoadTest.Result.NumManagers)</p>
-            <p>Nombre d'opérations : $($TestResults.LoadTest.Result.NumOperations)</p>
-            <p>Opérations réussies : <span class="success">$($TestResults.LoadTest.Result.SuccessfulOperations)</span></p>
-            <p>Opérations échouées : <span class="error">$($TestResults.LoadTest.Result.FailedOperations)</span></p>
-            <p>Durée totale : $($TestResults.LoadTest.Result.TotalDuration.ToString("F2")) secondes</p>
-            <p>Opérations par seconde : $($TestResults.LoadTest.Result.OperationsPerSecond.ToString("F2"))</p>
-            <p>Temps d'exécution moyen : $($TestResults.LoadTest.Result.AvgExecutionTime.ToString("F2")) ms</p>
-            <p>Temps d'exécution min : $($TestResults.LoadTest.Result.MinExecutionTime.ToString("F2")) ms</p>
-            <p>Temps d'exécution max : $($TestResults.LoadTest.Result.MaxExecutionTime.ToString("F2")) ms</p>
-            <p>Écart-type : $($TestResults.LoadTest.Result.StdDevExecutionTime.ToString("F2")) ms</p>
+            <p>Nombre d'opÃ©rations : $($TestResults.LoadTest.Result.NumOperations)</p>
+            <p>OpÃ©rations rÃ©ussies : <span class="success">$($TestResults.LoadTest.Result.SuccessfulOperations)</span></p>
+            <p>OpÃ©rations Ã©chouÃ©es : <span class="error">$($TestResults.LoadTest.Result.FailedOperations)</span></p>
+            <p>DurÃ©e totale : $($TestResults.LoadTest.Result.TotalDuration.ToString("F2")) secondes</p>
+            <p>OpÃ©rations par seconde : $($TestResults.LoadTest.Result.OperationsPerSecond.ToString("F2"))</p>
+            <p>Temps d'exÃ©cution moyen : $($TestResults.LoadTest.Result.AvgExecutionTime.ToString("F2")) ms</p>
+            <p>Temps d'exÃ©cution min : $($TestResults.LoadTest.Result.MinExecutionTime.ToString("F2")) ms</p>
+            <p>Temps d'exÃ©cution max : $($TestResults.LoadTest.Result.MaxExecutionTime.ToString("F2")) ms</p>
+            <p>Ã‰cart-type : $($TestResults.LoadTest.Result.StdDevExecutionTime.ToString("F2")) ms</p>
         </div>
 "@
     }
@@ -400,27 +400,27 @@ function Generate-HtmlReport {
 
     # Enregistrer le rapport HTML
     $htmlContent | Set-Content -Path $ReportPath -Encoding UTF8
-    Write-TestLog -Message "Rapport HTML généré : $ReportPath" -Level Success
+    Write-TestLog -Message "Rapport HTML gÃ©nÃ©rÃ© : $ReportPath" -Level Success
 }
 
-# Vérifier que le répertoire du projet existe
+# VÃ©rifier que le rÃ©pertoire du projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du projet n'existe pas : $ProjectRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du projet n'existe pas : $ProjectRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le répertoire du Process Manager existe
+# VÃ©rifier que le rÃ©pertoire du Process Manager existe
 if (-not (Test-Path -Path $processManagerRoot -PathType Container)) {
-    Write-TestLog -Message "Le répertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
+    Write-TestLog -Message "Le rÃ©pertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
     exit 1
 }
 
-# Créer le répertoire des rapports si nécessaire
+# CrÃ©er le rÃ©pertoire des rapports si nÃ©cessaire
 if ($GenerateReport -and -not (Test-Path -Path $reportsDir -PathType Container)) {
     New-Item -Path $reportsDir -ItemType Directory -Force | Out-Null
 }
 
-# Initialiser les résultats des tests
+# Initialiser les rÃ©sultats des tests
 $testResults = [PSCustomObject]@{
     UnitTests = @()
     IntegrationTest = $null
@@ -433,9 +433,9 @@ $testResults = [PSCustomObject]@{
     SuccessRate = 0
 }
 
-# Exécuter les tests unitaires
+# ExÃ©cuter les tests unitaires
 if ($TestType -in @("All", "Unit")) {
-    Write-TestLog -Message "Exécution des tests unitaires..." -Level Info
+    Write-TestLog -Message "ExÃ©cution des tests unitaires..." -Level Info
     
     foreach ($unitTestScript in $unitTestScripts) {
         if (Test-Path -Path $unitTestScript -PathType Leaf) {
@@ -454,9 +454,9 @@ if ($TestType -in @("All", "Unit")) {
     }
 }
 
-# Exécuter le test d'intégration
+# ExÃ©cuter le test d'intÃ©gration
 if ($TestType -in @("All", "Integration")) {
-    Write-TestLog -Message "Exécution du test d'intégration..." -Level Info
+    Write-TestLog -Message "ExÃ©cution du test d'intÃ©gration..." -Level Info
     
     if (Test-Path -Path $integrationTestScript -PathType Leaf) {
         $parameters = @{
@@ -477,13 +477,13 @@ if ($TestType -in @("All", "Integration")) {
             $testResults.FailedTests++
         }
     } else {
-        Write-TestLog -Message "Script de test d'intégration introuvable : $integrationTestScript" -Level Warning
+        Write-TestLog -Message "Script de test d'intÃ©gration introuvable : $integrationTestScript" -Level Warning
     }
 }
 
-# Exécuter les tests fonctionnels
+# ExÃ©cuter les tests fonctionnels
 if ($TestType -in @("All", "Functional")) {
-    Write-TestLog -Message "Exécution des tests fonctionnels..." -Level Info
+    Write-TestLog -Message "ExÃ©cution des tests fonctionnels..." -Level Info
     
     if (Test-Path -Path $functionalTestScript -PathType Leaf) {
         $parameters = @{
@@ -508,14 +508,14 @@ if ($TestType -in @("All", "Functional")) {
     }
 }
 
-# Exécuter les tests de performance
+# ExÃ©cuter les tests de performance
 if ($TestType -in @("All", "Performance")) {
-    Write-TestLog -Message "Exécution des tests de performance..." -Level Info
+    Write-TestLog -Message "ExÃ©cution des tests de performance..." -Level Info
     
     if (Test-Path -Path $performanceTestScript -PathType Leaf) {
         $parameters = @{
             ProjectRoot = $ProjectRoot
-            Iterations = 5 # Réduire le nombre d'itérations pour les tests complets
+            Iterations = 5 # RÃ©duire le nombre d'itÃ©rations pour les tests complets
         }
         
         if ($SkipCleanup) {
@@ -536,15 +536,15 @@ if ($TestType -in @("All", "Performance")) {
     }
 }
 
-# Exécuter les tests de charge
+# ExÃ©cuter les tests de charge
 if ($TestType -in @("All", "Load")) {
-    Write-TestLog -Message "Exécution des tests de charge..." -Level Info
+    Write-TestLog -Message "ExÃ©cution des tests de charge..." -Level Info
     
     if (Test-Path -Path $loadTestScript -PathType Leaf) {
         $parameters = @{
             ProjectRoot = $ProjectRoot
-            NumManagers = 20 # Réduire le nombre de gestionnaires pour les tests complets
-            NumOperations = 50 # Réduire le nombre d'opérations pour les tests complets
+            NumManagers = 20 # RÃ©duire le nombre de gestionnaires pour les tests complets
+            NumOperations = 50 # RÃ©duire le nombre d'opÃ©rations pour les tests complets
         }
         
         if ($SkipCleanup) {
@@ -565,23 +565,23 @@ if ($TestType -in @("All", "Load")) {
     }
 }
 
-# Calculer le taux de réussite
+# Calculer le taux de rÃ©ussite
 if ($testResults.TotalTests -gt 0) {
     $testResults.SuccessRate = ($testResults.SuccessfulTests / $testResults.TotalTests) * 100
 }
 
-# Afficher le résumé
-Write-TestLog -Message "`nRésumé des tests :" -Level Info
-Write-TestLog -Message "  Tests exécutés : $($testResults.TotalTests)" -Level Info
-Write-TestLog -Message "  Tests réussis  : $($testResults.SuccessfulTests)" -Level Success
-Write-TestLog -Message "  Tests échoués  : $($testResults.FailedTests)" -Level Error
-Write-TestLog -Message "  Taux de réussite : $($testResults.SuccessRate.ToString("F2"))%" -Level Info
+# Afficher le rÃ©sumÃ©
+Write-TestLog -Message "`nRÃ©sumÃ© des tests :" -Level Info
+Write-TestLog -Message "  Tests exÃ©cutÃ©s : $($testResults.TotalTests)" -Level Info
+Write-TestLog -Message "  Tests rÃ©ussis  : $($testResults.SuccessfulTests)" -Level Success
+Write-TestLog -Message "  Tests Ã©chouÃ©s  : $($testResults.FailedTests)" -Level Error
+Write-TestLog -Message "  Taux de rÃ©ussite : $($testResults.SuccessRate.ToString("F2"))%" -Level Info
 
-# Générer le rapport HTML
+# GÃ©nÃ©rer le rapport HTML
 if ($GenerateReport) {
     $reportFilePath = Join-Path -Path $reportsDir -ChildPath "process-manager-test-report-$(Get-Date -Format 'yyyy-MM-dd-HHmmss').html"
     Generate-HtmlReport -TestResults $testResults -ReportPath $reportFilePath
 }
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return $testResults

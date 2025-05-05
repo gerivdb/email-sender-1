@@ -1,12 +1,12 @@
-<#
+﻿<#
 .SYNOPSIS
-Classifie automatiquement les scripts selon une taxonomie dÃ©finie
+Classifie automatiquement les scripts selon une taxonomie dÃƒÂ©finie
 
 .DESCRIPTION
 Ce script permet de :
-- Classifier les scripts par catÃ©gories et sous-catÃ©gories
-- Appliquer des tags basÃ©s sur le contenu
-- GÃ©nÃ©rer une structure de dossiers basÃ©e sur la classification
+- Classifier les scripts par catÃƒÂ©gories et sous-catÃƒÂ©gories
+- Appliquer des tags basÃƒÂ©s sur le contenu
+- GÃƒÂ©nÃƒÂ©rer une structure de dossiers basÃƒÂ©e sur la classification
 #>
 
 param(
@@ -24,7 +24,7 @@ $taxonomy = @{
     "Core"    = @{
         Description   = "Scripts fondamentaux du projet"
         SubCategories = @{
-            "Initialisation" = "Scripts de dÃ©marrage et configuration"
+            "Initialisation" = "Scripts de dÃƒÂ©marrage et configuration"
             "Utils"          = "Fonctions utilitaires de base"
             "Modules"        = "Modules principaux"
         }
@@ -33,29 +33,29 @@ $taxonomy = @{
         Description   = "Scripts de gestion et administration"
         SubCategories = @{
             "Projet" = "Gestion du projet"
-            "CI-CD"  = "IntÃ©gration et dÃ©ploiement continu"
+            "CI-CD"  = "IntÃƒÂ©gration et dÃƒÂ©ploiement continu"
             "Tests"  = "Gestion des tests"
         }
     }
-    "DonnÃ©es" = @{
-        Description   = "Scripts de gestion des donnÃ©es"
+    "DonnÃƒÂ©es" = @{
+        Description   = "Scripts de gestion des donnÃƒÂ©es"
         SubCategories = @{
-            "Import"         = "Import de donnÃ©es"
-            "Export"         = "Export de donnÃ©es"
-            "Transformation" = "Transformation de donnÃ©es"
+            "Import"         = "Import de donnÃƒÂ©es"
+            "Export"         = "Export de donnÃƒÂ©es"
+            "Transformation" = "Transformation de donnÃƒÂ©es"
         }
     }
     "MCP"     = @{
-        Description   = "Scripts liÃ©s aux MCP (Model Control Providers)"
+        Description   = "Scripts liÃƒÂ©s aux MCP (Model Control Providers)"
         SubCategories = @{
-            "IntÃ©gration" = "IntÃ©gration avec MCP"
+            "IntÃƒÂ©gration" = "IntÃƒÂ©gration avec MCP"
             "Outils"      = "Outils MCP"
             "Gestion"     = "Gestion des MCP"
         }
     }
 }
 
-# RÃ¨gles de classification basÃ©es sur le contenu
+# RÃƒÂ¨gles de classification basÃƒÂ©es sur le contenu
 $classificationRules = @{
     "Core"    = @{
         Patterns = @("Initialize-", "Setup-", "Config", "MainModule")
@@ -65,7 +65,7 @@ $classificationRules = @{
         Patterns = @("Manage-", "Admin-", "Test-", "Build-", "Deploy-")
         Keywords = @("gestion", "admin", "test", "build", "deploy")
     }
-    "DonnÃ©es" = @{
+    "DonnÃƒÂ©es" = @{
         Patterns = @("Import-", "Export-", "Convert-", "Transform-")
         Keywords = @("import", "export", "data", "csv", "json", "transform")
     }
@@ -84,16 +84,16 @@ function Get-ScriptClassification {
 
     $content = Get-Content $scriptPath -Raw
     $classification = @{
-        Category    = "Non classÃ©"
+        Category    = "Non classÃƒÂ©"
         SubCategory = "Autre"
         Tags        = @()
     }
 
-    # VÃ©rifier les rÃ¨gles de classification
+    # VÃƒÂ©rifier les rÃƒÂ¨gles de classification
     foreach ($category in $classificationRules.Keys) {
         $matchFound = $false
 
-        # VÃ©rifier les patterns dans le nom
+        # VÃƒÂ©rifier les patterns dans le nom
         foreach ($pattern in $classificationRules[$category].Patterns) {
             if ($scriptName -like "*$pattern*") {
                 $matchFound = $true
@@ -101,7 +101,7 @@ function Get-ScriptClassification {
             }
         }
 
-        # VÃ©rifier les keywords dans le contenu
+        # VÃƒÂ©rifier les keywords dans le contenu
         if (-not $matchFound) {
             foreach ($keyword in $classificationRules[$category].Keywords) {
                 if ($content -match $keyword) {
@@ -113,7 +113,7 @@ function Get-ScriptClassification {
 
         if ($matchFound) {
             $classification.Category = $category
-            # Trouver la sous-catÃ©gorie la plus probable
+            # Trouver la sous-catÃƒÂ©gorie la plus probable
             foreach ($subCat in $taxonomy[$category].SubCategories.Keys) {
                 if ($scriptName -like "*$subCat*" -or $content -match $subCat) {
                     $classification.SubCategory = $subCat
@@ -124,16 +124,16 @@ function Get-ScriptClassification {
         }
     }
 
-    # Ajouter des tags basÃ©s sur le contenu
+    # Ajouter des tags basÃƒÂ©s sur le contenu
     if ($content -match "function ") { $classification.Tags += "Fonctions" }
     if ($content -match "class ") { $classification.Tags += "Classes" }
     if ($content -match "workflow") { $classification.Tags += "Workflow" }
-    if ($content -match "param\(") { $classification.Tags += "ParamÃ¨tres" }
+    if ($content -match "param\(") { $classification.Tags += "ParamÃƒÂ¨tres" }
 
     return $classification
 }
 
-# RÃ©cupÃ©rer tous les scripts
+# RÃƒÂ©cupÃƒÂ©rer tous les scripts
 $allScripts = Get-ScriptInventory -ForceRescan
 $results = @()
 
@@ -155,7 +155,7 @@ foreach ($script in $allScripts) {
     $results += $result
 }
 
-# GÃ©nÃ©rer le rapport
+# GÃƒÂ©nÃƒÂ©rer le rapport
 if (-not (Test-Path $OutputPath)) {
     New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
 }
@@ -188,16 +188,16 @@ switch ($ReportFormat) {
 </head>
 <body>
     <h1>Classification des Scripts</h1>
-    <p>GÃ©nÃ©rÃ© le $(Get-Date)</p>
+    <p>GÃƒÂ©nÃƒÂ©rÃƒÂ© le $(Get-Date)</p>
     <table>
         <tr>
             <th>Script</th>
-            <th>CatÃ©gorie</th>
-            <th>Sous-catÃ©gorie</th>
+            <th>CatÃƒÂ©gorie</th>
+            <th>Sous-catÃƒÂ©gorie</th>
             <th>Tags</th>
             $(
                 if ($UpdateStructure) {
-                    "<th>Chemin suggÃ©rÃ©</th>"
+                    "<th>Chemin suggÃƒÂ©rÃƒÂ©</th>"
                 }
             )
         </tr>
@@ -229,9 +229,9 @@ switch ($ReportFormat) {
     }
 }
 
-# Mettre Ã  jour la structure si demandÃ©
+# Mettre ÃƒÂ  jour la structure si demandÃƒÂ©
 if ($UpdateStructure) {
-    Write-Host "Mise Ã  jour de la structure des dossiers..."
+    Write-Host "Mise ÃƒÂ  jour de la structure des dossiers..."
     foreach ($result in $results) {
         if ($result.SuggestedPath -and $result.CurrentPath -ne $result.SuggestedPath) {
             $targetDir = Split-Path $result.SuggestedPath -Parent
@@ -241,8 +241,8 @@ if ($UpdateStructure) {
             Move-Item $result.CurrentPath $result.SuggestedPath -Force
         }
     }
-    Write-Host "Structure mise Ã  jour avec succÃ¨s."
+    Write-Host "Structure mise ÃƒÂ  jour avec succÃƒÂ¨s."
 }
 
-Write-Host "Rapport gÃ©nÃ©rÃ©: $reportFile"
+Write-Host "Rapport gÃƒÂ©nÃƒÂ©rÃƒÂ©: $reportFile"
 $results | Format-Table -AutoSize

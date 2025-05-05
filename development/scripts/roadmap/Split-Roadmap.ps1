@@ -1,6 +1,6 @@
-# Split-Roadmap.ps1
-# Script pour séparer une roadmap volumineuse en fichiers distincts : actif et complété
-# Tout en préservant le fichier original
+﻿# Split-Roadmap.ps1
+# Script pour sÃ©parer une roadmap volumineuse en fichiers distincts : actif et complÃ©tÃ©
+# Tout en prÃ©servant le fichier original
 
 [CmdletBinding()]
 param (
@@ -63,14 +63,14 @@ function Test-FileExists {
                 $folder = Split-Path -Path $Path -Parent
                 if (-not (Test-Path -Path $folder)) {
                     New-Item -Path $folder -ItemType Directory -Force | Out-Null
-                    Write-Log "Dossier créé: $folder" -Level Info
+                    Write-Log "Dossier crÃ©Ã©: $folder" -Level Info
                 }
 
                 Set-Content -Path $Path -Value $InitialContent -Encoding UTF8
-                Write-Log "Fichier créé: $Path" -Level Info
+                Write-Log "Fichier crÃ©Ã©: $Path" -Level Info
                 return $true
             } catch {
-                Write-Log "Erreur lors de la création du fichier $Path : $_" -Level Error
+                Write-Log "Erreur lors de la crÃ©ation du fichier $Path : $_" -Level Error
                 return $false
             }
         } else {
@@ -176,30 +176,30 @@ function Split-RoadmapContent {
     $currentSectionLevel = 0
     $inSection = $false
 
-    # Ajouter l'en-tête au contenu actif
+    # Ajouter l'en-tÃªte au contenu actif
     $activeContent += "# Roadmap Active - EMAIL_SENDER_1"
     $activeContent += ""
-    $activeContent += "Ce fichier contient les tâches actives et à venir de la roadmap."
-    $activeContent += "Généré le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+    $activeContent += "Ce fichier contient les tÃ¢ches actives et Ã  venir de la roadmap."
+    $activeContent += "GÃ©nÃ©rÃ© le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
     $activeContent += ""
 
-    # Ajouter l'en-tête au contenu complété
-    $completedContent += "# Roadmap Complétée - EMAIL_SENDER_1"
+    # Ajouter l'en-tÃªte au contenu complÃ©tÃ©
+    $completedContent += "# Roadmap ComplÃ©tÃ©e - EMAIL_SENDER_1"
     $completedContent += ""
-    $completedContent += "Ce fichier contient les tâches complétées de la roadmap."
-    $completedContent += "Généré le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+    $completedContent += "Ce fichier contient les tÃ¢ches complÃ©tÃ©es de la roadmap."
+    $completedContent += "GÃ©nÃ©rÃ© le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
     $completedContent += ""
 
     foreach ($line in $Content) {
         $sectionLevel = Get-SectionLevel -Line $line
 
-        # Si c'est un en-tête de section
+        # Si c'est un en-tÃªte de section
         if ($sectionLevel -gt 0) {
-            # Si nous étions dans une section, finalisons-la
+            # Si nous Ã©tions dans une section, finalisons-la
             if ($inSection) {
                 $isCompleted = Test-SectionCompleted -SectionContent $currentSection
 
-                # Stocker la section complète
+                # Stocker la section complÃ¨te
                 $sections[$currentSectionId] = @{
                     Title       = $currentSectionTitle
                     Level       = $currentSectionLevel
@@ -207,7 +207,7 @@ function Split-RoadmapContent {
                     IsCompleted = $isCompleted
                 }
 
-                # Ajouter la section au contenu approprié
+                # Ajouter la section au contenu appropriÃ©
                 if ($isCompleted) {
                     $completedContent += $currentSection
                 } else {
@@ -222,10 +222,10 @@ function Split-RoadmapContent {
             $currentSection = @($line)
             $inSection = $true
         } elseif ($inSection) {
-            # Ajouter la ligne à la section courante
+            # Ajouter la ligne Ã  la section courante
             $currentSection += $line
         } else {
-            # Ligne hors section (en-tête du document)
+            # Ligne hors section (en-tÃªte du document)
             if (-not [string]::IsNullOrWhiteSpace($line)) {
                 $activeContent += $line
                 $completedContent += $line
@@ -233,11 +233,11 @@ function Split-RoadmapContent {
         }
     }
 
-    # Traiter la dernière section
+    # Traiter la derniÃ¨re section
     if ($inSection) {
         $isCompleted = Test-SectionCompleted -SectionContent $currentSection
 
-        # Stocker la section complète
+        # Stocker la section complÃ¨te
         $sections[$currentSectionId] = @{
             Title       = $currentSectionTitle
             Level       = $currentSectionLevel
@@ -245,7 +245,7 @@ function Split-RoadmapContent {
             IsCompleted = $isCompleted
         }
 
-        # Ajouter la section au contenu approprié
+        # Ajouter la section au contenu appropriÃ©
         if ($isCompleted) {
             $completedContent += $currentSection
         } else {
@@ -277,11 +277,11 @@ function Archive-CompletedSections {
             $sectionFileName = "section_${sectionId}_$(($section.Title -replace '[\\\/\:\*\?\"\<\>\|]', '_')).md"
             $sectionFilePath = Join-Path -Path $ArchivePath -ChildPath $sectionFileName
 
-            # Créer le contenu du fichier de section
+            # CrÃ©er le contenu du fichier de section
             $sectionContent = @(
                 "# Section $sectionId : $($section.Title)",
                 "",
-                "Section archivée le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')",
+                "Section archivÃ©e le $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')",
                 "",
                 "## Contenu",
                 ""
@@ -291,7 +291,7 @@ function Archive-CompletedSections {
 
             # Sauvegarder le fichier de section
             Set-Content -Path $sectionFilePath -Value $sectionContent -Encoding UTF8
-            Write-Log "Section archivée: $sectionId -> $sectionFilePath" -Level Info
+            Write-Log "Section archivÃ©e: $sectionId -> $sectionFilePath" -Level Info
         }
     }
 }
@@ -319,23 +319,23 @@ function Split-Roadmap {
         [switch]$Force
     )
 
-    # Vérifier que le fichier source existe
+    # VÃ©rifier que le fichier source existe
     if (-not (Test-Path -Path $SourcePath)) {
         Write-Log "Le fichier source $SourcePath n'existe pas." -Level Error
         return $false
     }
 
-    # Vérifier si les fichiers de destination existent déjà
+    # VÃ©rifier si les fichiers de destination existent dÃ©jÃ 
     if ((Test-Path -Path $ActivePath) -or (Test-Path -Path $CompletedPath)) {
         if (-not $Force) {
-            Write-Log "Les fichiers de destination existent déjà. Utilisez -Force pour les écraser." -Level Warning
+            Write-Log "Les fichiers de destination existent dÃ©jÃ . Utilisez -Force pour les Ã©craser." -Level Warning
             return $false
         }
     }
 
     # Lire le contenu du fichier source
     try {
-        # Essayer différents encodages
+        # Essayer diffÃ©rents encodages
         try {
             $content = Get-Content -Path $SourcePath -Encoding UTF8 -ErrorAction Stop
         } catch {
@@ -347,7 +347,7 @@ function Split-Roadmap {
         }
 
         if ($null -eq $content -or $content.Count -eq 0) {
-            Write-Log "Le fichier source est vide ou n'a pas pu être lu correctement." -Level Error
+            Write-Log "Le fichier source est vide ou n'a pas pu Ãªtre lu correctement." -Level Error
             return $false
         }
 
@@ -357,10 +357,10 @@ function Split-Roadmap {
         return $false
     }
 
-    # Séparer le contenu
+    # SÃ©parer le contenu
     $result = Split-RoadmapContent -Content $content
 
-    # Créer les dossiers de destination si nécessaires
+    # CrÃ©er les dossiers de destination si nÃ©cessaires
     $activeFolder = Split-Path -Path $ActivePath -Parent
     $completedFolder = Split-Path -Path $CompletedPath -Parent
 
@@ -375,12 +375,12 @@ function Split-Roadmap {
     # Sauvegarder les fichiers
     try {
         Set-Content -Path $ActivePath -Value $result.ActiveContent -Encoding UTF8
-        Write-Log "Fichier actif créé: $ActivePath ($(($result.ActiveContent | Measure-Object).Count) lignes)" -Level Info
+        Write-Log "Fichier actif crÃ©Ã©: $ActivePath ($(($result.ActiveContent | Measure-Object).Count) lignes)" -Level Info
 
         Set-Content -Path $CompletedPath -Value $result.CompletedContent -Encoding UTF8
-        Write-Log "Fichier complété créé: $CompletedPath ($(($result.CompletedContent | Measure-Object).Count) lignes)" -Level Info
+        Write-Log "Fichier complÃ©tÃ© crÃ©Ã©: $CompletedPath ($(($result.CompletedContent | Measure-Object).Count) lignes)" -Level Info
 
-        # Archiver les sections complétées si demandé
+        # Archiver les sections complÃ©tÃ©es si demandÃ©
         if ($ArchiveSections -and -not [string]::IsNullOrEmpty($SectionsPath)) {
             if (-not (Test-Path -Path $SectionsPath)) {
                 New-Item -Path $SectionsPath -ItemType Directory -Force | Out-Null
@@ -396,8 +396,8 @@ function Split-Roadmap {
     }
 }
 
-# Exécution principale
-Write-Log "Démarrage de la séparation de la roadmap..." -Level Info
+# ExÃ©cution principale
+Write-Log "DÃ©marrage de la sÃ©paration de la roadmap..." -Level Info
 
 $success = Split-Roadmap -SourcePath $SourceRoadmapPath `
     -ActivePath $ActiveRoadmapPath `
@@ -407,7 +407,7 @@ $success = Split-Roadmap -SourcePath $SourceRoadmapPath `
     -Force:$Force
 
 if ($success) {
-    Write-Log "Séparation de la roadmap terminée avec succès." -Level Info
+    Write-Log "SÃ©paration de la roadmap terminÃ©e avec succÃ¨s." -Level Info
 } else {
-    Write-Log "Échec de la séparation de la roadmap." -Level Error
+    Write-Log "Ã‰chec de la sÃ©paration de la roadmap." -Level Error
 }

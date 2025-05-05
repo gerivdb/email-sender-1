@@ -1,40 +1,40 @@
-<#
+﻿<#
 .SYNOPSIS
-    Recherche des nœuds spécifiques dans l'arbre syntaxique PowerShell.
+    Recherche des nÅ“uds spÃ©cifiques dans l'arbre syntaxique PowerShell.
 
 .DESCRIPTION
-    Cette fonction recherche des nœuds spécifiques dans un arbre syntaxique PowerShell (AST) en utilisant différents critères de recherche.
-    Elle permet de rechercher par type de nœud, par nom d'élément, par position ou par motif.
+    Cette fonction recherche des nÅ“uds spÃ©cifiques dans un arbre syntaxique PowerShell (AST) en utilisant diffÃ©rents critÃ¨res de recherche.
+    Elle permet de rechercher par type de nÅ“ud, par nom d'Ã©lÃ©ment, par position ou par motif.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à parcourir. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  parcourir. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER NodeType
-    Type de nœud AST à rechercher. Si spécifié, seuls les nœuds de ce type seront inclus dans les résultats.
+    Type de nÅ“ud AST Ã  rechercher. Si spÃ©cifiÃ©, seuls les nÅ“uds de ce type seront inclus dans les rÃ©sultats.
 
 .PARAMETER Name
-    Nom de l'élément à rechercher (fonction, variable, etc.). Peut contenir des caractères génériques.
+    Nom de l'Ã©lÃ©ment Ã  rechercher (fonction, variable, etc.). Peut contenir des caractÃ¨res gÃ©nÃ©riques.
 
 .PARAMETER Line
-    Numéro de ligne pour rechercher des nœuds à une position spécifique.
+    NumÃ©ro de ligne pour rechercher des nÅ“uds Ã  une position spÃ©cifique.
 
 .PARAMETER Column
-    Numéro de colonne pour rechercher des nœuds à une position spécifique.
+    NumÃ©ro de colonne pour rechercher des nÅ“uds Ã  une position spÃ©cifique.
 
 .PARAMETER Pattern
-    Motif de recherche pour le contenu du nœud. Peut contenir des caractères génériques.
+    Motif de recherche pour le contenu du nÅ“ud. Peut contenir des caractÃ¨res gÃ©nÃ©riques.
 
 .PARAMETER ParentType
-    Type de nœud parent pour une recherche contextuelle.
+    Type de nÅ“ud parent pour une recherche contextuelle.
 
 .PARAMETER MaxResults
-    Nombre maximum de résultats à retourner. Si 0 ou non spécifié, tous les résultats sont retournés.
+    Nombre maximum de rÃ©sultats Ã  retourner. Si 0 ou non spÃ©cifiÃ©, tous les rÃ©sultats sont retournÃ©s.
 
 .PARAMETER Predicate
-    Prédicat (ScriptBlock) personnalisé pour filtrer les nœuds. Si spécifié, seuls les nœuds pour lesquels le prédicat retourne $true seront inclus dans les résultats.
+    PrÃ©dicat (ScriptBlock) personnalisÃ© pour filtrer les nÅ“uds. Si spÃ©cifiÃ©, seuls les nÅ“uds pour lesquels le prÃ©dicat retourne $true seront inclus dans les rÃ©sultats.
 
 .PARAMETER First
-    Si spécifié, retourne uniquement le premier résultat trouvé.
+    Si spÃ©cifiÃ©, retourne uniquement le premier rÃ©sultat trouvÃ©.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -51,7 +51,7 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 function Find-AstNode {
     [CmdletBinding(DefaultParameterSetName = 'ByType')]
@@ -92,10 +92,10 @@ function Find-AstNode {
     )
 
     begin {
-        # Initialiser la liste des résultats
+        # Initialiser la liste des rÃ©sultats
         $results = New-Object System.Collections.ArrayList
 
-        # Fonction pour vérifier si un nœud correspond au type spécifié
+        # Fonction pour vÃ©rifier si un nÅ“ud correspond au type spÃ©cifiÃ©
         function Test-NodeType {
             param (
                 [Parameter(Mandatory = $true)]
@@ -109,7 +109,7 @@ function Find-AstNode {
             return $nodeTypeName -eq $Type -or $nodeTypeName -eq "${Type}Ast"
         }
 
-        # Fonction pour vérifier si un nœud correspond au nom spécifié
+        # Fonction pour vÃ©rifier si un nÅ“ud correspond au nom spÃ©cifiÃ©
         function Test-NodeName {
             param (
                 [Parameter(Mandatory = $true)]
@@ -119,15 +119,15 @@ function Find-AstNode {
                 [string]$NamePattern
             )
 
-            # Vérifier si le nœud a une propriété Name
+            # VÃ©rifier si le nÅ“ud a une propriÃ©tÃ© Name
             if ($Node.PSObject.Properties.Name -contains 'Name') {
                 return $Node.Name -like $NamePattern
             }
-            # Vérifier si c'est une variable
+            # VÃ©rifier si c'est une variable
             elseif ($Node -is [System.Management.Automation.Language.VariableExpressionAst]) {
                 return $Node.VariablePath.UserPath -like $NamePattern
             }
-            # Vérifier si c'est une commande
+            # VÃ©rifier si c'est une commande
             elseif ($Node -is [System.Management.Automation.Language.CommandAst]) {
                 $commandName = $Node.CommandElements[0].Value
                 return $commandName -like $NamePattern
@@ -136,7 +136,7 @@ function Find-AstNode {
             return $false
         }
 
-        # Fonction pour vérifier si un nœud est à la position spécifiée
+        # Fonction pour vÃ©rifier si un nÅ“ud est Ã  la position spÃ©cifiÃ©e
         function Test-NodePosition {
             param (
                 [Parameter(Mandatory = $true)]
@@ -149,9 +149,9 @@ function Find-AstNode {
                 [int]$ColumnNumber = 0
             )
 
-            # Vérifier si le nœud est à la ligne spécifiée
+            # VÃ©rifier si le nÅ“ud est Ã  la ligne spÃ©cifiÃ©e
             if ($Node.Extent.StartLineNumber -le $LineNumber -and $Node.Extent.EndLineNumber -ge $LineNumber) {
-                # Si la colonne est spécifiée, vérifier également la colonne
+                # Si la colonne est spÃ©cifiÃ©e, vÃ©rifier Ã©galement la colonne
                 if ($ColumnNumber -gt 0) {
                     return ($Node.Extent.StartLineNumber -lt $LineNumber -or $Node.Extent.StartColumnNumber -le $ColumnNumber) -and
                            ($Node.Extent.EndLineNumber -gt $LineNumber -or $Node.Extent.EndColumnNumber -ge $ColumnNumber)
@@ -161,7 +161,7 @@ function Find-AstNode {
             return $false
         }
 
-        # Fonction pour vérifier si un nœud correspond au motif spécifié
+        # Fonction pour vÃ©rifier si un nÅ“ud correspond au motif spÃ©cifiÃ©
         function Test-NodePattern {
             param (
                 [Parameter(Mandatory = $true)]
@@ -171,12 +171,12 @@ function Find-AstNode {
                 [string]$PatternToMatch
             )
 
-            # Obtenir le texte du nœud
+            # Obtenir le texte du nÅ“ud
             $nodeText = $Node.Extent.Text
             return $nodeText -like "*$PatternToMatch*"
         }
 
-        # Fonction pour vérifier si un nœud a un parent du type spécifié
+        # Fonction pour vÃ©rifier si un nÅ“ud a un parent du type spÃ©cifiÃ©
         function Test-NodeParentType {
             param (
                 [Parameter(Mandatory = $true)]
@@ -186,7 +186,7 @@ function Find-AstNode {
                 [string]$Type
             )
 
-            # Obtenir le parent du nœud
+            # Obtenir le parent du nÅ“ud
             $parent = $Node.Parent
             if ($null -eq $parent) {
                 return $false
@@ -198,36 +198,36 @@ function Find-AstNode {
 
     process {
         try {
-            # Créer le prédicat de recherche en fonction des paramètres
+            # CrÃ©er le prÃ©dicat de recherche en fonction des paramÃ¨tres
             $searchPredicate = {
                 param($node)
 
-                # Vérifier le type de nœud si spécifié
+                # VÃ©rifier le type de nÅ“ud si spÃ©cifiÃ©
                 if ($NodeType -and -not (Test-NodeType -Node $node -Type $NodeType)) {
                     return $false
                 }
 
-                # Vérifier le nom si spécifié
+                # VÃ©rifier le nom si spÃ©cifiÃ©
                 if ($PSCmdlet.ParameterSetName -eq 'ByName' -and -not (Test-NodeName -Node $node -NamePattern $Name)) {
                     return $false
                 }
 
-                # Vérifier la position si spécifiée
+                # VÃ©rifier la position si spÃ©cifiÃ©e
                 if ($PSCmdlet.ParameterSetName -eq 'ByPosition' -and -not (Test-NodePosition -Node $node -LineNumber $Line -ColumnNumber $Column)) {
                     return $false
                 }
 
-                # Vérifier le motif si spécifié
+                # VÃ©rifier le motif si spÃ©cifiÃ©
                 if ($PSCmdlet.ParameterSetName -eq 'ByPattern' -and -not (Test-NodePattern -Node $node -PatternToMatch $Pattern)) {
                     return $false
                 }
 
-                # Vérifier le type de parent si spécifié
+                # VÃ©rifier le type de parent si spÃ©cifiÃ©
                 if ($PSCmdlet.ParameterSetName -eq 'ByContext' -and -not (Test-NodeParentType -Node $node -Type $ParentType)) {
                     return $false
                 }
 
-                # Vérifier le prédicat personnalisé si spécifié
+                # VÃ©rifier le prÃ©dicat personnalisÃ© si spÃ©cifiÃ©
                 if ($Predicate -and -not (& $Predicate $node)) {
                     return $false
                 }
@@ -235,29 +235,29 @@ function Find-AstNode {
                 return $true
             }
 
-            # Rechercher les nœuds correspondants
+            # Rechercher les nÅ“uds correspondants
             if ($First) {
-                # Rechercher uniquement le premier nœud correspondant
+                # Rechercher uniquement le premier nÅ“ud correspondant
                 $result = $Ast.Find($searchPredicate, $true)
                 if ($null -ne $result) {
                     [void]$results.Add($result)
                 }
             } else {
-                # Rechercher tous les nœuds correspondants
+                # Rechercher tous les nÅ“uds correspondants
                 $foundNodes = $Ast.FindAll($searchPredicate, $true)
 
-                # Limiter le nombre de résultats si spécifié
+                # Limiter le nombre de rÃ©sultats si spÃ©cifiÃ©
                 if ($MaxResults -gt 0 -and $foundNodes.Count -gt $MaxResults) {
                     $foundNodes = $foundNodes | Select-Object -First $MaxResults
                 }
 
-                # Ajouter les nœuds trouvés aux résultats
+                # Ajouter les nÅ“uds trouvÃ©s aux rÃ©sultats
                 foreach ($node in $foundNodes) {
                     [void]$results.Add($node)
                 }
             }
 
-            # Retourner les résultats
+            # Retourner les rÃ©sultats
             return $results
         } catch {
             Write-Error -Message "Erreur lors de la recherche de noeuds dans l'AST : $_"

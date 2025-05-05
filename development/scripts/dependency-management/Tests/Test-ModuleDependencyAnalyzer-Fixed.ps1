@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module ModuleDependencyAnalyzer-Fixed.
@@ -12,24 +12,24 @@
     Version: 1.0
 #>
 
-# Importer le module Pester si nécessaire
+# Importer le module Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
 $moduleName = "ModuleDependencyAnalyzer-Fixed"
 $moduleFile = Join-Path -Path $modulePath -ChildPath "$moduleName.psm1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ModuleDependencyAnalyzerTests"
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $manifestContent = @"
 @{
     ModuleVersion = '1.0.0'
@@ -78,10 +78,10 @@ $scriptPath = Join-Path -Path $testDir -ChildPath "TestScript.ps1"
 Set-Content -Path $manifestPath -Value $manifestContent
 Set-Content -Path $scriptPath -Value $scriptContent
 
-# Définir les tests Pester
+# DÃ©finir les tests Pester
 Describe "ModuleDependencyAnalyzer-Fixed Tests" {
     BeforeAll {
-        # Importer le module à tester
+        # Importer le module Ã  tester
         Import-Module -Name $moduleFile -Force
     }
 
@@ -153,5 +153,5 @@ Describe "ModuleDependencyAnalyzer-Fixed Tests" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed

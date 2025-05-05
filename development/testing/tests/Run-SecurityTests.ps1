@@ -1,17 +1,17 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests de sécurité pour le projet.
+    ExÃ©cute les tests de sÃ©curitÃ© pour le projet.
 .DESCRIPTION
-    Ce script exécute les tests de sécurité pour le projet et génère un rapport de résultats.
+    Ce script exÃ©cute les tests de sÃ©curitÃ© pour le projet et gÃ©nÃ¨re un rapport de rÃ©sultats.
 .PARAMETER OutputPath
-    Chemin du répertoire de sortie pour les rapports. Par défaut: "./reports/security".
+    Chemin du rÃ©pertoire de sortie pour les rapports. Par dÃ©faut: "./reports/security".
 .EXAMPLE
     .\Run-SecurityTests.ps1 -OutputPath "./reports/security"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 [CmdletBinding()]
@@ -20,7 +20,7 @@ param (
     [string]$OutputPath = "./reports/security"
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -46,39 +46,39 @@ function Write-Log {
     Write-Host $Message
 }
 
-# Créer le répertoire de sortie
+# CrÃ©er le rÃ©pertoire de sortie
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Répertoire de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "RÃ©pertoire de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester -Force
 
-# Définir le chemin des tests de sécurité
+# DÃ©finir le chemin des tests de sÃ©curitÃ©
 $securityTestsPath = Join-Path -Path $PSScriptRoot -ChildPath "security"
 
-# Vérifier que le répertoire des tests de sécurité existe
+# VÃ©rifier que le rÃ©pertoire des tests de sÃ©curitÃ© existe
 if (-not (Test-Path -Path $securityTestsPath)) {
-    Write-Log "Le répertoire des tests de sécurité n'existe pas: $securityTestsPath" -Level "ERROR"
+    Write-Log "Le rÃ©pertoire des tests de sÃ©curitÃ© n'existe pas: $securityTestsPath" -Level "ERROR"
     exit 1
 }
 
-# Obtenir tous les fichiers de test de sécurité
+# Obtenir tous les fichiers de test de sÃ©curitÃ©
 $securityTestFiles = Get-ChildItem -Path $securityTestsPath -Filter "*.Tests.ps1" -Recurse
 
 if ($securityTestFiles.Count -eq 0) {
-    Write-Log "Aucun fichier de test de sécurité trouvé dans: $securityTestsPath" -Level "WARNING"
+    Write-Log "Aucun fichier de test de sÃ©curitÃ© trouvÃ© dans: $securityTestsPath" -Level "WARNING"
     exit 0
 }
 
-Write-Log "Nombre de fichiers de test de sécurité trouvés: $($securityTestFiles.Count)" -Level "INFO"
+Write-Log "Nombre de fichiers de test de sÃ©curitÃ© trouvÃ©s: $($securityTestFiles.Count)" -Level "INFO"
 
 # Configurer les options de Pester
 $pesterConfig = New-PesterConfiguration
@@ -89,20 +89,20 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputPath -ChildPath "security-test-results.xml"
 $pesterConfig.TestResult.OutputFormat = "NUnitXml"
 
-# Exécuter les tests de sécurité
-Write-Log "Exécution des tests de sécurité..." -Level "TITLE"
+# ExÃ©cuter les tests de sÃ©curitÃ©
+Write-Log "ExÃ©cution des tests de sÃ©curitÃ©..." -Level "TITLE"
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher les résultats
-Write-Log "Résultats des tests de sécurité:" -Level "TITLE"
-Write-Log "Tests exécutés: $($testResults.TotalCount)" -Level "INFO"
-Write-Log "Tests réussis: $($testResults.PassedCount)" -Level "SUCCESS"
-Write-Log "Tests échoués: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -gt 0) { "ERROR" } else { "INFO" })
-Write-Log "Tests ignorés: $($testResults.SkippedCount)" -Level "INFO"
-Write-Log "Tests non exécutés: $($testResults.NotRunCount)" -Level "INFO"
-Write-Log "Durée totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
+# Afficher les rÃ©sultats
+Write-Log "RÃ©sultats des tests de sÃ©curitÃ©:" -Level "TITLE"
+Write-Log "Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -Level "INFO"
+Write-Log "Tests rÃ©ussis: $($testResults.PassedCount)" -Level "SUCCESS"
+Write-Log "Tests Ã©chouÃ©s: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -gt 0) { "ERROR" } else { "INFO" })
+Write-Log "Tests ignorÃ©s: $($testResults.SkippedCount)" -Level "INFO"
+Write-Log "Tests non exÃ©cutÃ©s: $($testResults.NotRunCount)" -Level "INFO"
+Write-Log "DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
 
-# Générer un rapport HTML
+# GÃ©nÃ©rer un rapport HTML
 $htmlReportPath = Join-Path -Path $OutputPath -ChildPath "security-test-report.html"
 
 $htmlReport = @"
@@ -111,7 +111,7 @@ $htmlReport = @"
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de tests de sécurité</title>
+    <title>Rapport de tests de sÃ©curitÃ©</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -217,16 +217,16 @@ $htmlReport = @"
     </style>
 </head>
 <body>
-    <h1>Rapport de tests de sécurité</h1>
+    <h1>Rapport de tests de sÃ©curitÃ©</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Tests exécutés: <strong>$($testResults.TotalCount)</strong></p>
-        <p>Tests réussis: <strong>$($testResults.PassedCount)</strong></p>
-        <p>Tests échoués: <strong>$($testResults.FailedCount)</strong></p>
-        <p>Tests ignorés: <strong>$($testResults.SkippedCount)</strong></p>
-        <p>Tests non exécutés: <strong>$($testResults.NotRunCount)</strong></p>
-        <p>Durée totale: <strong>$($testResults.Duration.TotalSeconds) secondes</strong></p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests exÃ©cutÃ©s: <strong>$($testResults.TotalCount)</strong></p>
+        <p>Tests rÃ©ussis: <strong>$($testResults.PassedCount)</strong></p>
+        <p>Tests Ã©chouÃ©s: <strong>$($testResults.FailedCount)</strong></p>
+        <p>Tests ignorÃ©s: <strong>$($testResults.SkippedCount)</strong></p>
+        <p>Tests non exÃ©cutÃ©s: <strong>$($testResults.NotRunCount)</strong></p>
+        <p>DurÃ©e totale: <strong>$($testResults.Duration.TotalSeconds) secondes</strong></p>
         
         <div class="progress-bar">
             <div class="progress" style="width: $([Math]::Round(($testResults.PassedCount / [Math]::Max(1, $testResults.TotalCount)) * 100))%">
@@ -235,11 +235,11 @@ $htmlReport = @"
         </div>
     </div>
     
-    <h2>Détails des tests</h2>
+    <h2>DÃ©tails des tests</h2>
     <div class="test-container">
 "@
 
-# Ajouter les détails des tests
+# Ajouter les dÃ©tails des tests
 foreach ($container in $testResults.Containers) {
     $fileName = [System.IO.Path]::GetFileName($container.Item.FullName)
     $passedCount = ($container.Tests | Where-Object { $_.Result -eq "Passed" }).Count
@@ -255,8 +255,8 @@ foreach ($container in $testResults.Containers) {
     }
     
     $statusText = switch ($status) {
-        "passed" { "Réussi" }
-        "failed" { "Échoué" }
+        "passed" { "RÃ©ussi" }
+        "failed" { "Ã‰chouÃ©" }
         "mixed" { "Mixte" }
     }
     
@@ -267,7 +267,7 @@ foreach ($container in $testResults.Containers) {
                 <span class="test-file-status status-$status">$statusText</span>
             </div>
             <p>Chemin: $($container.Item.FullName)</p>
-            <p>Tests réussis: $passedCount / $($container.Tests.Count)</p>
+            <p>Tests rÃ©ussis: $passedCount / $($container.Tests.Count)</p>
 "@
     
     # Ajouter les blocs de test
@@ -327,14 +327,14 @@ foreach ($container in $testResults.Containers) {
 $htmlReport += @"
     </div>
     
-    <p class="timestamp">Rapport généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p class="timestamp">Rapport gÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
 </body>
 </html>
 "@
 
 $htmlReport | Out-File -FilePath $htmlReportPath -Encoding utf8
 
-Write-Log "Rapport HTML généré: $htmlReportPath" -Level "SUCCESS"
+Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlReportPath" -Level "SUCCESS"
 
 # Ouvrir le rapport HTML
 if (Test-Path -Path $htmlReportPath) {
@@ -344,9 +344,9 @@ if (Test-Path -Path $htmlReportPath) {
 
 # Retourner le code de sortie
 if ($testResults.FailedCount -gt 0) {
-    Write-Log "Des tests de sécurité ont échoué. Veuillez consulter le rapport pour plus de détails." -Level "ERROR"
+    Write-Log "Des tests de sÃ©curitÃ© ont Ã©chouÃ©. Veuillez consulter le rapport pour plus de dÃ©tails." -Level "ERROR"
     exit 1
 } else {
-    Write-Log "Tous les tests de sécurité ont réussi!" -Level "SUCCESS"
+    Write-Log "Tous les tests de sÃ©curitÃ© ont rÃ©ussi!" -Level "SUCCESS"
     exit 0
 }

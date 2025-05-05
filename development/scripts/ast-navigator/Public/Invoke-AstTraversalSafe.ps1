@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Effectue un parcours securise de l'arbre syntaxique PowerShell avec gestion des erreurs et des cas limites.
 

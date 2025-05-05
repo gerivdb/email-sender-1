@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour la fonction Get-AstCommands.
 
@@ -9,16 +9,16 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-12-15
+    Date de crÃ©ation: 2023-12-15
 #>
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
 Import-Module $modulePath -Force
 
 Describe "Get-AstCommands" {
     BeforeAll {
-        # Créer un script PowerShell de test avec différents types de commandes
+        # CrÃ©er un script PowerShell de test avec diffÃ©rents types de commandes
         $sampleCode = @'
 # Commandes simples
 Get-Process
@@ -28,7 +28,7 @@ Write-Output "Hello, World!"
 # Commandes avec pipeline
 Get-ChildItem -Path "C:\Temp" -Filter "*.txt" | Where-Object { $_.Length -gt 1KB } | Sort-Object Length -Descending
 
-# Commandes avec paramètres nommés et positionnels
+# Commandes avec paramÃ¨tres nommÃ©s et positionnels
 New-Item -Path "C:\Temp\test.txt" -ItemType File -Force
 Copy-Item "C:\Temp\source.txt" "C:\Temp\destination.txt" -Force
 
@@ -69,7 +69,7 @@ Restart-Service -Name $serviceName -Force
             $commands = Get-AstCommands -Ast $script:ast
             $commands.Count | Should -BeGreaterThan 10
 
-            # Vérifier que les commandes principales sont présentes
+            # VÃ©rifier que les commandes principales sont prÃ©sentes
             $commandNames = $commands | ForEach-Object { $_.Name }
             $commandNames | Should -Contain "Get-Process"
             $commandNames | Should -Contain "Get-Service"
@@ -93,7 +93,7 @@ Restart-Service -Name $serviceName -Force
             $commands = Get-AstCommands -Ast $script:ast -Name "Get-*"
             $commands.Count | Should -BeGreaterThan 2
 
-            # Vérifier que seules les commandes Get-* sont présentes
+            # VÃ©rifier que seules les commandes Get-* sont prÃ©sentes
             $commandNames = $commands | ForEach-Object { $_.Name }
             $commandNames | Should -Contain "Get-Process"
             $commandNames | Should -Contain "Get-Service"
@@ -103,12 +103,12 @@ Restart-Service -Name $serviceName -Force
         }
 
         It "Devrait filtrer les commandes par type" {
-            # Note: Cette fonctionnalité dépend de l'implémentation exacte de Get-AstCommands
-            # et de sa capacité à déterminer le type de commande
+            # Note: Cette fonctionnalitÃ© dÃ©pend de l'implÃ©mentation exacte de Get-AstCommands
+            # et de sa capacitÃ© Ã  dÃ©terminer le type de commande
             $commands = Get-AstCommands -Ast $script:ast -CommandType "Cmdlet"
             $commands.Count | Should -BeGreaterThan 5
 
-            # Les commandes externes ne devraient pas être incluses
+            # Les commandes externes ne devraient pas Ãªtre incluses
             $commandNames = $commands | ForEach-Object { $_.Name }
             $commandNames | Should -Not -Contain "ping"
             $commandNames | Should -Not -Contain "cmd"
@@ -119,7 +119,7 @@ Restart-Service -Name $serviceName -Force
         It "Devrait inclure les arguments des commandes" {
             $commands = Get-AstCommands -Ast $script:ast -IncludeArguments
 
-            # Vérifier les arguments de Get-Service
+            # VÃ©rifier les arguments de Get-Service
             $getService = $commands | Where-Object { $_.Name -eq "Get-Service" } | Select-Object -First 1
             $getService.Arguments | Should -Not -BeNullOrEmpty
             $getService.Arguments.Count | Should -Be 1
@@ -127,7 +127,7 @@ Restart-Service -Name $serviceName -Force
             $getService.Arguments[0].ParameterName | Should -Be "Name"
             $getService.Arguments[0].Value | Should -Be '"BITS"'
 
-            # Vérifier les arguments de New-Item
+            # VÃ©rifier les arguments de New-Item
             $newItem = $commands | Where-Object { $_.Name -eq "New-Item" } | Select-Object -First 1
             $newItem.Arguments | Should -Not -BeNullOrEmpty
             $newItem.Arguments.Count | Should -Be 3
@@ -149,7 +149,7 @@ Restart-Service -Name $serviceName -Force
         It "Devrait inclure les informations de pipeline" {
             $commands = Get-AstCommands -Ast $script:ast -IncludePipelines
 
-            # Vérifier le pipeline Get-ChildItem | Where-Object | Sort-Object
+            # VÃ©rifier le pipeline Get-ChildItem | Where-Object | Sort-Object
             $getChildItem = $commands | Where-Object { $_.Name -eq "Get-ChildItem" } | Select-Object -First 1
             $getChildItem.Pipeline | Should -Not -BeNullOrEmpty
             $getChildItem.Pipeline.IsFirst | Should -Be $true
@@ -174,8 +174,8 @@ Restart-Service -Name $serviceName -Force
     }
 
     Context "Gestion des erreurs" {
-        It "Devrait retourner un tableau vide si aucune commande n'est trouvée" {
-            # Créer un AST sans commande
+        It "Devrait retourner un tableau vide si aucune commande n'est trouvÃ©e" {
+            # CrÃ©er un AST sans commande
             $emptyCode = "# Ceci est un commentaire sans commande"
             $emptyTokens = $emptyErrors = $null
             $emptyAst = [System.Management.Automation.Language.Parser]::ParseInput($emptyCode, [ref]$emptyTokens, [ref]$emptyErrors)
@@ -185,7 +185,7 @@ Restart-Service -Name $serviceName -Force
             $commands.Count | Should -Be 0
         }
 
-        It "Devrait retourner un tableau vide si le filtre par nom ne correspond à aucune commande" {
+        It "Devrait retourner un tableau vide si le filtre par nom ne correspond Ã  aucune commande" {
             $commands = Get-AstCommands -Ast $script:ast -Name "NonExistentCommand"
             $commands | Should -BeOfType System.Array
             $commands.Count | Should -Be 0

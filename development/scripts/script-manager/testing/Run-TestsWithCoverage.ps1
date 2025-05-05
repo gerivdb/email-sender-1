@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests du script manager avec couverture de code.
+    ExÃ©cute les tests du script manager avec couverture de code.
 .DESCRIPTION
-    Ce script exécute les tests du script manager et génère un rapport de couverture de code,
+    Ce script exÃ©cute les tests du script manager et gÃ©nÃ¨re un rapport de couverture de code,
     en utilisant le framework Pester.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de tests.
 .PARAMETER TestType
-    Type de tests à exécuter : Original, Fixed, All (par défaut).
+    Type de tests Ã  exÃ©cuter : Original, Fixed, All (par dÃ©faut).
 .PARAMETER GenerateHTML
-    Génère un rapport HTML des résultats des tests.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests.
 .PARAMETER TestName
-    Nom du test à exécuter. Si non spécifié, tous les tests sont exécutés.
+    Nom du test Ã  exÃ©cuter. Si non spÃ©cifiÃ©, tous les tests sont exÃ©cutÃ©s.
 .EXAMPLE
     .\Run-TestsWithCoverage.ps1 -OutputPath ".\reports\tests" -GenerateHTML
 .EXAMPLE
@@ -20,7 +20,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -39,7 +39,7 @@ param (
     [string]$TestName
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -64,22 +64,22 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Récupérer les fichiers de test
+# RÃ©cupÃ©rer les fichiers de test
 $originalTestFiles = @()
 $fixedTestFiles = @()
 
@@ -100,36 +100,36 @@ if ($TestType -eq "Fixed" -or $TestType -eq "All") {
     }
 }
 
-# Vérifier si des fichiers de test ont été trouvés
+# VÃ©rifier si des fichiers de test ont Ã©tÃ© trouvÃ©s
 $totalTestFiles = $originalTestFiles.Count + $fixedTestFiles.Count
 if ($totalTestFiles -eq 0) {
-    Write-Log "Aucun fichier de test trouvé." -Level "ERROR"
+    Write-Log "Aucun fichier de test trouvÃ©." -Level "ERROR"
     exit 1
 }
 
-Write-Log "Exécution de $totalTestFiles fichier(s) de test avec couverture de code..." -Level "INFO"
+Write-Log "ExÃ©cution de $totalTestFiles fichier(s) de test avec couverture de code..." -Level "INFO"
 
-# Récupérer les fichiers à tester pour la couverture de code
+# RÃ©cupÃ©rer les fichiers Ã  tester pour la couverture de code
 $scriptsToTest = @(
     "$PSScriptRoot/../organization/Organize-ManagerScripts.ps1",
     "$PSScriptRoot/../analysis/Analyze-Scripts.ps1",
     "$PSScriptRoot/../inventory/Show-ScriptInventory.ps1"
 )
 
-# Vérifier si les fichiers à tester existent
+# VÃ©rifier si les fichiers Ã  tester existent
 $validScriptsToTest = @()
 foreach ($script in $scriptsToTest) {
     if (Test-Path -Path $script) {
         $validScriptsToTest += $script
-        Write-Log "Fichier à tester trouvé: $script" -Level "INFO"
+        Write-Log "Fichier Ã  tester trouvÃ©: $script" -Level "INFO"
     }
     else {
-        Write-Log "Fichier à tester non trouvé: $script" -Level "WARNING"
+        Write-Log "Fichier Ã  tester non trouvÃ©: $script" -Level "WARNING"
     }
 }
 
 if ($validScriptsToTest.Count -eq 0) {
-    Write-Log "Aucun fichier à tester trouvé pour la couverture de code." -Level "ERROR"
+    Write-Log "Aucun fichier Ã  tester trouvÃ© pour la couverture de code." -Level "ERROR"
     exit 1
 }
 
@@ -145,18 +145,18 @@ $pesterConfig.CodeCoverage.Path = $validScriptsToTest
 $pesterConfig.CodeCoverage.OutputPath = Join-Path -Path $OutputPath -ChildPath "CodeCoverage.xml"
 $pesterConfig.CodeCoverage.OutputFormat = "JaCoCo"
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Log "`nRésumé des tests:" -Level "INFO"
-Write-Log "  Tests exécutés: $($testResults.TotalCount)" -Level "INFO"
-Write-Log "  Tests réussis: $($testResults.PassedCount)" -Level "SUCCESS"
-Write-Log "  Tests échoués: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
-Write-Log "  Tests ignorés: $($testResults.SkippedCount)" -Level "WARNING"
-Write-Log "  Durée totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Log "`nRÃ©sumÃ© des tests:" -Level "INFO"
+Write-Log "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -Level "INFO"
+Write-Log "  Tests rÃ©ussis: $($testResults.PassedCount)" -Level "SUCCESS"
+Write-Log "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
+Write-Log "  Tests ignorÃ©s: $($testResults.SkippedCount)" -Level "WARNING"
+Write-Log "  DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
 
-# Afficher un résumé de la couverture de code
+# Afficher un rÃ©sumÃ© de la couverture de code
 $codeCoverage = $testResults.CodeCoverage
 if ($codeCoverage) {
     $totalCommands = $codeCoverage.NumberOfCommandsAnalyzed
@@ -164,18 +164,18 @@ if ($codeCoverage) {
     $missedCommands = $totalCommands - $coveredCommands
     $coveragePercent = if ($totalCommands -gt 0) { [math]::Round(($coveredCommands / $totalCommands) * 100, 2) } else { 0 }
     
-    Write-Log "`nRésumé de la couverture de code:" -Level "INFO"
-    Write-Log "  Commandes analysées: $totalCommands" -Level "INFO"
-    Write-Log "  Commandes exécutées: $coveredCommands" -Level "SUCCESS"
-    Write-Log "  Commandes non exécutées: $missedCommands" -Level "WARNING"
+    Write-Log "`nRÃ©sumÃ© de la couverture de code:" -Level "INFO"
+    Write-Log "  Commandes analysÃ©es: $totalCommands" -Level "INFO"
+    Write-Log "  Commandes exÃ©cutÃ©es: $coveredCommands" -Level "SUCCESS"
+    Write-Log "  Commandes non exÃ©cutÃ©es: $missedCommands" -Level "WARNING"
     Write-Log "  Pourcentage de couverture: $coveragePercent%" -Level $(if ($coveragePercent -ge 80) { "SUCCESS" } elseif ($coveragePercent -ge 60) { "WARNING" } else { "ERROR" })
 }
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "TestResultsWithCoverage.html"
     
-    # Créer un rapport HTML simple
+    # CrÃ©er un rapport HTML simple
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -209,33 +209,33 @@ if ($GenerateHTML) {
 </head>
 <body>
     <h1>Rapport de tests avec couverture de code</h1>
-    <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé des tests</h2>
+        <h2>RÃ©sumÃ© des tests</h2>
         <table>
             <tr>
-                <th>Métrique</th>
+                <th>MÃ©trique</th>
                 <th>Valeur</th>
             </tr>
             <tr>
-                <td>Tests exécutés</td>
+                <td>Tests exÃ©cutÃ©s</td>
                 <td>$($testResults.TotalCount)</td>
             </tr>
             <tr>
-                <td>Tests réussis</td>
+                <td>Tests rÃ©ussis</td>
                 <td class="success">$($testResults.PassedCount)</td>
             </tr>
             <tr>
-                <td>Tests échoués</td>
+                <td>Tests Ã©chouÃ©s</td>
                 <td class="error">$($testResults.FailedCount)</td>
             </tr>
             <tr>
-                <td>Tests ignorés</td>
+                <td>Tests ignorÃ©s</td>
                 <td class="warning">$($testResults.SkippedCount)</td>
             </tr>
             <tr>
-                <td>Durée totale</td>
+                <td>DurÃ©e totale</td>
                 <td>$($testResults.Duration.TotalSeconds) secondes</td>
             </tr>
         </table>
@@ -247,22 +247,22 @@ if ($GenerateHTML) {
         
         $htmlContent += @"
     <div class="summary">
-        <h2>Résumé de la couverture de code</h2>
+        <h2>RÃ©sumÃ© de la couverture de code</h2>
         <table>
             <tr>
-                <th>Métrique</th>
+                <th>MÃ©trique</th>
                 <th>Valeur</th>
             </tr>
             <tr>
-                <td>Commandes analysées</td>
+                <td>Commandes analysÃ©es</td>
                 <td>$totalCommands</td>
             </tr>
             <tr>
-                <td>Commandes exécutées</td>
+                <td>Commandes exÃ©cutÃ©es</td>
                 <td class="success">$coveredCommands</td>
             </tr>
             <tr>
-                <td>Commandes non exécutées</td>
+                <td>Commandes non exÃ©cutÃ©es</td>
                 <td class="warning">$missedCommands</td>
             </tr>
             <tr>
@@ -278,19 +278,19 @@ if ($GenerateHTML) {
         </table>
     </div>
     
-    <h2>Détails de la couverture de code</h2>
-    <p>Pour plus de détails, consultez le rapport XML de couverture de code.</p>
+    <h2>DÃ©tails de la couverture de code</h2>
+    <p>Pour plus de dÃ©tails, consultez le rapport XML de couverture de code.</p>
 "@
     }
 
     $htmlContent += @"
     <h2>Recommandations</h2>
-    <p>Pour améliorer la couverture de code, il est recommandé de :</p>
+    <p>Pour amÃ©liorer la couverture de code, il est recommandÃ© de :</p>
     <ul>
         <li>Ajouter des tests pour les parties du code qui ne sont pas couvertes</li>
         <li>Utiliser des mocks pour tester les fonctions qui interagissent avec des ressources externes</li>
         <li>Tester les cas d'erreur et les cas limites</li>
-        <li>Intégrer les tests de couverture de code dans le processus de CI/CD</li>
+        <li>IntÃ©grer les tests de couverture de code dans le processus de CI/CD</li>
     </ul>
 </body>
 </html>
@@ -298,19 +298,19 @@ if ($GenerateHTML) {
     
     $htmlContent | Out-File -FilePath $htmlPath -Encoding utf8
     
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
 # Afficher les chemins des rapports
-Write-Log "Rapport XML des tests généré: $($pesterConfig.TestResult.OutputPath)" -Level "SUCCESS"
-Write-Log "Rapport XML de couverture de code généré: $($pesterConfig.CodeCoverage.OutputPath)" -Level "SUCCESS"
+Write-Log "Rapport XML des tests gÃ©nÃ©rÃ©: $($pesterConfig.TestResult.OutputPath)" -Level "SUCCESS"
+Write-Log "Rapport XML de couverture de code gÃ©nÃ©rÃ©: $($pesterConfig.CodeCoverage.OutputPath)" -Level "SUCCESS"
 
-# Retourner le code de sortie en fonction des résultats
+# Retourner le code de sortie en fonction des rÃ©sultats
 if ($testResults.FailedCount -gt 0) {
-    Write-Log "Des tests ont échoué. Veuillez consulter les rapports pour plus de détails." -Level "ERROR"
+    Write-Log "Des tests ont Ã©chouÃ©. Veuillez consulter les rapports pour plus de dÃ©tails." -Level "ERROR"
     exit 1
 }
 else {
-    Write-Log "Tous les tests ont réussi!" -Level "SUCCESS"
+    Write-Log "Tous les tests ont rÃ©ussi!" -Level "SUCCESS"
     exit 0
 }

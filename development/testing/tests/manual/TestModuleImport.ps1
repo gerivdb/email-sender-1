@@ -1,4 +1,4 @@
-# Test d'importation des modules
+﻿# Test d'importation des modules
 Write-Host "Test d'importation des modules" -ForegroundColor Green
 
 # Importer les modules
@@ -20,12 +20,12 @@ function Test-ModuleImport {
     Write-Host "Test d'importation du module $ModuleName..." -ForegroundColor Yellow
     
     if (-not (Test-Path -Path $ModulePath)) {
-        Write-Host "Le module $ModuleName n'existe pas au chemin spécifié : $ModulePath" -ForegroundColor Red
+        Write-Host "Le module $ModuleName n'existe pas au chemin spÃ©cifiÃ© : $ModulePath" -ForegroundColor Red
         return $false
     }
     
     try {
-        # Créer un nouveau processus PowerShell pour isoler l'importation
+        # CrÃ©er un nouveau processus PowerShell pour isoler l'importation
         $result = powershell.exe -Command "
             `$ErrorActionPreference = 'Stop'
             try {
@@ -39,7 +39,7 @@ function Test-ModuleImport {
         "
         
         if ($result -eq "Success") {
-            Write-Host "Module $ModuleName importé avec succès." -ForegroundColor Green
+            Write-Host "Module $ModuleName importÃ© avec succÃ¨s." -ForegroundColor Green
             return $true
         } else {
             Write-Host "Erreur lors de l'importation du module $ModuleName : $result" -ForegroundColor Red
@@ -68,15 +68,15 @@ foreach ($moduleName in $modules.Keys) {
     $results[$moduleName] = Test-ModuleImport -ModuleName $moduleName -ModulePath $modulePath
 }
 
-# Afficher les résultats
-Write-Host "`nRésultats des tests d'importation :" -ForegroundColor Cyan
+# Afficher les rÃ©sultats
+Write-Host "`nRÃ©sultats des tests d'importation :" -ForegroundColor Cyan
 foreach ($moduleName in $results.Keys) {
-    $status = if ($results[$moduleName]) { "Succès" } else { "Échec" }
+    $status = if ($results[$moduleName]) { "SuccÃ¨s" } else { "Ã‰chec" }
     $color = if ($results[$moduleName]) { "Green" } else { "Red" }
     Write-Host "  $moduleName : $status" -ForegroundColor $color
 }
 
-# Vérifier si tous les modules ont été importés avec succès
+# VÃ©rifier si tous les modules ont Ã©tÃ© importÃ©s avec succÃ¨s
 $allSuccess = $true
 foreach ($success in $results.Values) {
     if (-not $success) {
@@ -86,9 +86,9 @@ foreach ($success in $results.Values) {
 }
 
 if ($allSuccess) {
-    Write-Host "`nTous les modules ont été importés avec succès." -ForegroundColor Green
+    Write-Host "`nTous les modules ont Ã©tÃ© importÃ©s avec succÃ¨s." -ForegroundColor Green
 } else {
-    Write-Host "`nCertains modules n'ont pas pu être importés. Veuillez corriger les erreurs." -ForegroundColor Red
+    Write-Host "`nCertains modules n'ont pas pu Ãªtre importÃ©s. Veuillez corriger les erreurs." -ForegroundColor Red
 }
 
-Write-Host "Tests terminés." -ForegroundColor Green
+Write-Host "Tests terminÃ©s." -ForegroundColor Green

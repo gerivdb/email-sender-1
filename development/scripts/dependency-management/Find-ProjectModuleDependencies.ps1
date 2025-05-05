@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Détecte les dépendances de modules PowerShell dans un projet.
+    DÃ©tecte les dÃ©pendances de modules PowerShell dans un projet.
 
 .DESCRIPTION
-    Ce script analyse tous les fichiers PowerShell d'un projet pour détecter
-    les instructions Import-Module et générer un rapport des dépendances.
+    Ce script analyse tous les fichiers PowerShell d'un projet pour dÃ©tecter
+    les instructions Import-Module et gÃ©nÃ©rer un rapport des dÃ©pendances.
 
 .PARAMETER ProjectPath
-    Chemin du répertoire du projet à analyser.
+    Chemin du rÃ©pertoire du projet Ã  analyser.
 
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour le rapport des dépendances.
-    Si non spécifié, le rapport est affiché dans la console.
+    Chemin du fichier de sortie pour le rapport des dÃ©pendances.
+    Si non spÃ©cifiÃ©, le rapport est affichÃ© dans la console.
 
 .PARAMETER IncludeSubdirectories
-    Indique si les sous-répertoires doivent être inclus dans l'analyse.
+    Indique si les sous-rÃ©pertoires doivent Ãªtre inclus dans l'analyse.
 
 .PARAMETER ResolveModulePaths
-    Indique si les chemins des modules doivent être résolus.
+    Indique si les chemins des modules doivent Ãªtre rÃ©solus.
 
 .EXAMPLE
     .\Find-ProjectModuleDependencies.ps1 -ProjectPath "C:\Projects\MyProject"
@@ -29,7 +29,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -51,16 +51,16 @@ param (
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "ModuleDependencyDetector.psm1"
 Import-Module $modulePath -Force
 
-# Vérifier que le répertoire du projet existe
+# VÃ©rifier que le rÃ©pertoire du projet existe
 if (-not (Test-Path -Path $ProjectPath -PathType Container)) {
-    Write-Error "Le répertoire du projet spécifié n'existe pas : $ProjectPath"
+    Write-Error "Le rÃ©pertoire du projet spÃ©cifiÃ© n'existe pas : $ProjectPath"
     exit 1
 }
 
 # Obtenir tous les fichiers PowerShell du projet
 $powerShellFiles = Get-ChildItem -Path $ProjectPath -Include "*.ps1", "*.psm1", "*.psd1" -File -Recurse:$IncludeSubdirectories
 
-# Initialiser le rapport des dépendances
+# Initialiser le rapport des dÃ©pendances
 $dependencies = [System.Collections.Generic.Dictionary[string, System.Collections.Generic.List[PSObject]]]::new()
 
 # Analyser chaque fichier PowerShell
@@ -70,10 +70,10 @@ $processedFiles = 0
 foreach ($file in $powerShellFiles) {
     $processedFiles++
     $percentComplete = [math]::Round(($processedFiles / $totalFiles) * 100)
-    Write-Progress -Activity "Analyse des dépendances de modules" -Status "Traitement de $file" -PercentComplete $percentComplete
+    Write-Progress -Activity "Analyse des dÃ©pendances de modules" -Status "Traitement de $file" -PercentComplete $percentComplete
 
     try {
-        # Analyser le fichier pour détecter les instructions Import-Module
+        # Analyser le fichier pour dÃ©tecter les instructions Import-Module
         $moduleImports = Find-ImportModuleInstruction -FilePath $file.FullName -ResolveModulePaths:$ResolveModulePaths -BaseDirectory $file.DirectoryName
 
         if ($moduleImports.Count -gt 0) {
@@ -84,9 +84,9 @@ foreach ($file in $powerShellFiles) {
     }
 }
 
-Write-Progress -Activity "Analyse des dépendances de modules" -Completed
+Write-Progress -Activity "Analyse des dÃ©pendances de modules" -Completed
 
-# Générer le rapport des dépendances
+# GÃ©nÃ©rer le rapport des dÃ©pendances
 $report = [PSCustomObject]@{
     ProjectPath           = $ProjectPath
     TotalFiles            = $totalFiles
@@ -99,15 +99,15 @@ $report = [PSCustomObject]@{
 # Afficher ou enregistrer le rapport
 if ($OutputPath) {
     $report | ConvertTo-Json -Depth 5 | Set-Content -Path $OutputPath
-    Write-Host "Rapport des dépendances enregistré dans $OutputPath" -ForegroundColor Green
+    Write-Host "Rapport des dÃ©pendances enregistrÃ© dans $OutputPath" -ForegroundColor Green
 } else {
-    # Afficher un résumé dans la console
-    Write-Host "Rapport des dépendances de modules pour $ProjectPath" -ForegroundColor Cyan
+    # Afficher un rÃ©sumÃ© dans la console
+    Write-Host "Rapport des dÃ©pendances de modules pour $ProjectPath" -ForegroundColor Cyan
     Write-Host "  Nombre total de fichiers PowerShell : $totalFiles" -ForegroundColor Yellow
-    Write-Host "  Nombre de fichiers avec dépendances : $($dependencies.Count)" -ForegroundColor Yellow
-    Write-Host "  Nombre total de dépendances : $($report.TotalDependencies)" -ForegroundColor Yellow
+    Write-Host "  Nombre de fichiers avec dÃ©pendances : $($dependencies.Count)" -ForegroundColor Yellow
+    Write-Host "  Nombre total de dÃ©pendances : $($report.TotalDependencies)" -ForegroundColor Yellow
 
-    # Afficher les dépendances par fichier
+    # Afficher les dÃ©pendances par fichier
     foreach ($file in $dependencies.Keys) {
         $relativePath = $file.Substring($ProjectPath.Length).TrimStart('\', '/')
         Write-Host "`n  Fichier : $relativePath" -ForegroundColor Green
@@ -132,7 +132,7 @@ if ($OutputPath) {
     }
 }
 
-# Afficher les statistiques des modules les plus utilisés
+# Afficher les statistiques des modules les plus utilisÃ©s
 $moduleStats = @{}
 foreach ($file in $dependencies.Keys) {
     foreach ($module in $dependencies[$file]) {
@@ -144,7 +144,7 @@ foreach ($file in $dependencies.Keys) {
     }
 }
 
-Write-Host "`nModules les plus utilisés :" -ForegroundColor Cyan
+Write-Host "`nModules les plus utilisÃ©s :" -ForegroundColor Cyan
 $moduleStats.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 10 | ForEach-Object {
     Write-Host "  $($_.Key) : $($_.Value) fichiers" -ForegroundColor Yellow
 }

@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module CycleDetector.
 .DESCRIPTION
     Ce script contient les tests unitaires pour le module CycleDetector,
-    vérifiant la détection de cycles dans différents types de graphes.
+    vÃ©rifiant la dÃ©tection de cycles dans diffÃ©rents types de graphes.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-01
+    Date de crÃ©ation: 2025-06-01
 #>
 
 BeforeAll {
-    # Chemin du module à tester
+    # Chemin du module Ã  tester
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\CycleDetector.psm1"
 
-    # Vérifier si le module existe
+    # VÃ©rifier si le module existe
     if (-not (Test-Path -Path $modulePath)) {
-        throw "Module CycleDetector introuvable à l'emplacement: $modulePath"
+        throw "Module CycleDetector introuvable Ã  l'emplacement: $modulePath"
     }
 
     # Importer le module
@@ -25,19 +25,19 @@ BeforeAll {
 }
 
 Describe "Initialize-CycleDetector" {
-    It "Devrait initialiser le détecteur de cycles avec les valeurs par défaut" {
+    It "Devrait initialiser le dÃ©tecteur de cycles avec les valeurs par dÃ©faut" {
         Initialize-CycleDetector
 
-        # Vérifier que les variables globales sont initialisées
+        # VÃ©rifier que les variables globales sont initialisÃ©es
         $Global:CycleDetectorEnabled | Should -Be $true
         $Global:CycleDetectorMaxDepth | Should -Be 1000
         $Global:CycleDetectorCacheEnabled | Should -Be $true
     }
 
-    It "Devrait initialiser le détecteur de cycles avec les valeurs spécifiées" {
+    It "Devrait initialiser le dÃ©tecteur de cycles avec les valeurs spÃ©cifiÃ©es" {
         Initialize-CycleDetector -Enabled $false -MaxDepth 500 -CacheEnabled $false
 
-        # Vérifier que les variables globales sont initialisées avec les valeurs spécifiées
+        # VÃ©rifier que les variables globales sont initialisÃ©es avec les valeurs spÃ©cifiÃ©es
         $Global:CycleDetectorEnabled | Should -Be $false
         $Global:CycleDetectorMaxDepth | Should -Be 500
         $Global:CycleDetectorCacheEnabled | Should -Be $false
@@ -45,8 +45,8 @@ Describe "Initialize-CycleDetector" {
 }
 
 Describe "Find-GraphCycle" {
-    Context "Lorsqu'on vérifie des cycles simples" {
-        It "Devrait détecter un cycle direct entre deux noeuds" {
+    Context "Lorsqu'on vÃ©rifie des cycles simples" {
+        It "Devrait dÃ©tecter un cycle direct entre deux noeuds" {
             $graph = @{
                 "A" = @("B")
                 "B" = @("A")
@@ -57,7 +57,7 @@ Describe "Find-GraphCycle" {
             $result.CyclePath | Should -Contain "B"
         }
 
-        It "Ne devrait pas détecter de cycles dans un graphe linéaire" {
+        It "Ne devrait pas dÃ©tecter de cycles dans un graphe linÃ©aire" {
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -67,7 +67,7 @@ Describe "Find-GraphCycle" {
             $result.HasCycle | Should -Be $false
         }
 
-        It "Devrait détecter un cycle dans un graphe complexe" {
+        It "Devrait dÃ©tecter un cycle dans un graphe complexe" {
             $graph = @{
                 "A" = @("B", "C")
                 "B" = @("D")
@@ -80,7 +80,7 @@ Describe "Find-GraphCycle" {
             $result.HasCycle | Should -Be $true
         }
 
-        It "Devrait détecter une boucle sur un seul noeud" {
+        It "Devrait dÃ©tecter une boucle sur un seul noeud" {
             $graph = @{
                 "A" = @("A")
                 "B" = @("C")
@@ -91,7 +91,7 @@ Describe "Find-GraphCycle" {
             $result.CyclePath | Should -Be @("A", "A")
         }
 
-        It "Devrait détecter un cycle triangulaire" {
+        It "Devrait dÃ©tecter un cycle triangulaire" {
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -105,7 +105,7 @@ Describe "Find-GraphCycle" {
             $result.CyclePath | Should -Contain "C"
         }
 
-        It "Devrait détecter un cycle dans un graphe avec plusieurs chemins" {
+        It "Devrait dÃ©tecter un cycle dans un graphe avec plusieurs chemins" {
             $graph = @{
                 "A" = @("B", "C")
                 "B" = @("D")
@@ -117,8 +117,8 @@ Describe "Find-GraphCycle" {
         }
     }
 
-    Context "Lorsqu'on utilise l'implémentation itérative" {
-        It "Devrait détecter un cycle avec l'implémentation itérative" {
+    Context "Lorsqu'on utilise l'implÃ©mentation itÃ©rative" {
+        It "Devrait dÃ©tecter un cycle avec l'implÃ©mentation itÃ©rative" {
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -129,7 +129,7 @@ Describe "Find-GraphCycle" {
             $result.CyclePath.Count | Should -BeGreaterThan 0
         }
 
-        It "Ne devrait pas détecter de cycles dans un graphe linéaire avec l'implémentation itérative" {
+        It "Ne devrait pas dÃ©tecter de cycles dans un graphe linÃ©aire avec l'implÃ©mentation itÃ©rative" {
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -140,8 +140,8 @@ Describe "Find-GraphCycle" {
         }
     }
 
-    Context "Lorsqu'on spécifie une profondeur maximale" {
-        It "Devrait respecter la profondeur maximale spécifiée" {
+    Context "Lorsqu'on spÃ©cifie une profondeur maximale" {
+        It "Devrait respecter la profondeur maximale spÃ©cifiÃ©e" {
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -150,19 +150,19 @@ Describe "Find-GraphCycle" {
                 "E" = @("A")
             }
             $result = Find-GraphCycle -Graph $graph -MaxDepth 2
-            # Le cycle ne sera pas détecté car il nécessite une profondeur > 2
+            # Le cycle ne sera pas dÃ©tectÃ© car il nÃ©cessite une profondeur > 2
             $result.HasCycle | Should -Be $false
         }
     }
 
     Context "Lorsqu'on traite des cas limites" {
-        It "Devrait gérer correctement un graphe vide" {
+        It "Devrait gÃ©rer correctement un graphe vide" {
             $graph = @{}
             $result = Find-GraphCycle -Graph $graph
             $result.HasCycle | Should -Be $false
         }
 
-        It "Devrait gérer correctement un graphe avec un seul noeud" {
+        It "Devrait gÃ©rer correctement un graphe avec un seul noeud" {
             $graph = @{
                 "A" = @()
             }
@@ -170,7 +170,7 @@ Describe "Find-GraphCycle" {
             $result.HasCycle | Should -Be $false
         }
 
-        It "Devrait gérer correctement un graphe déconnecté" {
+        It "Devrait gÃ©rer correctement un graphe dÃ©connectÃ©" {
             $graph = @{
                 "A" = @("B")
                 "B" = @()
@@ -185,12 +185,12 @@ Describe "Find-GraphCycle" {
 
 Describe "Find-Cycle" {
     BeforeEach {
-        # Réinitialiser les statistiques et le cache
+        # RÃ©initialiser les statistiques et le cache
         Initialize-CycleDetector
         Clear-CycleDetectionCache
     }
 
-    It "Devrait détecter un cycle dans un graphe" {
+    It "Devrait dÃ©tecter un cycle dans un graphe" {
         $graph = @{
             "A" = @("B")
             "B" = @("C")
@@ -201,7 +201,7 @@ Describe "Find-Cycle" {
         $result.CyclePath.Count | Should -BeGreaterThan 0
     }
 
-    It "Ne devrait pas détecter de cycle dans un graphe sans cycle" {
+    It "Ne devrait pas dÃ©tecter de cycle dans un graphe sans cycle" {
         $graph = @{
             "A" = @("B")
             "B" = @("C")
@@ -211,7 +211,7 @@ Describe "Find-Cycle" {
         $result.HasCycle | Should -Be $false
     }
 
-    It "Devrait utiliser la profondeur maximale spécifiée" {
+    It "Devrait utiliser la profondeur maximale spÃ©cifiÃ©e" {
         $graph = @{
             "A" = @("B")
             "B" = @("C")
@@ -220,11 +220,11 @@ Describe "Find-Cycle" {
             "E" = @("A")
         }
         $result = Find-Cycle -Graph $graph -MaxDepth 2
-        # Le cycle ne sera pas détecté car il nécessite une profondeur > 2
+        # Le cycle ne sera pas dÃ©tectÃ© car il nÃ©cessite une profondeur > 2
         $result.HasCycle | Should -Be $false
     }
 
-    It "Devrait détecter un cycle dans un graphe avec des noeuds isolés" {
+    It "Devrait dÃ©tecter un cycle dans un graphe avec des noeuds isolÃ©s" {
         $graph = @{
             "A" = @("B")
             "B" = @("C")
@@ -237,26 +237,26 @@ Describe "Find-Cycle" {
         $result.CyclePath.Count | Should -BeGreaterThan 0
     }
 
-    It "Devrait gérer correctement un graphe avec des références nulles" {
+    It "Devrait gÃ©rer correctement un graphe avec des rÃ©fÃ©rences nulles" {
         $graph = @{
             "A" = @("B")
             "B" = $null
             "C" = @("A")
         }
         $result = Find-Cycle -Graph $graph
-        # Le comportement attendu dépend de l'implémentation, mais la fonction ne devrait pas planter
+        # Le comportement attendu dÃ©pend de l'implÃ©mentation, mais la fonction ne devrait pas planter
         { $result } | Should -Not -Throw
     }
 
-    It "Devrait utiliser le cache si activé" {
-        # Ce test est désactivé car l'optimisation des performances rend difficile de tester le cache
-        # de manière fiable dans un environnement de test unitaire
+    It "Devrait utiliser le cache si activÃ©" {
+        # Ce test est dÃ©sactivÃ© car l'optimisation des performances rend difficile de tester le cache
+        # de maniÃ¨re fiable dans un environnement de test unitaire
         $true | Should -Be $true
     }
 }
 
 Describe "Remove-Cycle" {
-    It "Devrait supprimer un cycle simple en retirant une arête" {
+    It "Devrait supprimer un cycle simple en retirant une arÃªte" {
         $graph = @{
             "A" = @("B")
             "B" = @("C")
@@ -266,11 +266,11 @@ Describe "Remove-Cycle" {
         $cycle = @("A", "B", "C")
         $result = Remove-Cycle -Graph $graph -Cycle $cycle
 
-        # Vérifier que le cycle a été supprimé
+        # VÃ©rifier que le cycle a Ã©tÃ© supprimÃ©
         $newCycleCheck = Find-GraphCycle -Graph $result
         $newCycleCheck.HasCycle | Should -Be $false
 
-        # Vérifier qu'une seule arête a été supprimée
+        # VÃ©rifier qu'une seule arÃªte a Ã©tÃ© supprimÃ©e
         $edgeCount = 0
         foreach ($node in $result.Keys) {
             $edgeCount += $result[$node].Count
@@ -293,18 +293,18 @@ Describe "Remove-Cycle" {
         $cycle = @("A", "A")
         $result = Remove-Cycle -Graph $graph -Cycle $cycle
 
-        # Vérifier que le cycle a été supprimé
+        # VÃ©rifier que le cycle a Ã©tÃ© supprimÃ©
         $newCycleCheck = Find-GraphCycle -Graph $result
         $newCycleCheck.HasCycle | Should -Be $false
 
-        # Vérifier que le noeud A n'a plus de voisins
+        # VÃ©rifier que le noeud A n'a plus de voisins
         $result["A"].Count | Should -Be 0
     }
 }
 
 Describe "Find-DependencyCycles" {
     BeforeAll {
-        # Créer des fichiers de test temporaires
+        # CrÃ©er des fichiers de test temporaires
         $tempDir = Join-Path -Path $TestDrive -ChildPath "scripts"
         New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
 
@@ -338,34 +338,34 @@ function Test-E { Write-Host "E" }
 "@ | Out-File -FilePath "$tempDir\E.ps1" -Encoding utf8
     }
 
-    It "Devrait détecter un cycle dans les dépendances de scripts" {
+    It "Devrait dÃ©tecter un cycle dans les dÃ©pendances de scripts" {
         $result = Find-DependencyCycles -Path $tempDir
         $result.HasCycles | Should -Be $true
         $result.Cycles.Count | Should -BeGreaterThan 0
     }
 
-    It "Devrait identifier correctement les scripts impliqués dans le cycle" {
+    It "Devrait identifier correctement les scripts impliquÃ©s dans le cycle" {
         $result = Find-DependencyCycles -Path $tempDir
         $cycle = $result.Cycles
         $cycle | Should -Not -BeNullOrEmpty
-        # Vérifier que le cycle contient au moins un des scripts
+        # VÃ©rifier que le cycle contient au moins un des scripts
         ($cycle -contains "A.ps1" -or $cycle -contains "B.ps1" -or $cycle -contains "C.ps1") | Should -Be $true
     }
 
-    It "Ne devrait pas signaler de cycle pour les scripts sans dépendances cycliques" {
+    It "Ne devrait pas signaler de cycle pour les scripts sans dÃ©pendances cycliques" {
         $result = Find-DependencyCycles -Path $tempDir
         $result.NonCyclicScripts | Should -Contain "D.ps1"
         $result.NonCyclicScripts | Should -Contain "E.ps1"
     }
 
-    It "Devrait générer un rapport JSON si un chemin de sortie est spécifié" {
+    It "Devrait gÃ©nÃ©rer un rapport JSON si un chemin de sortie est spÃ©cifiÃ©" {
         $outputPath = Join-Path -Path $TestDrive -ChildPath "report.json"
         Find-DependencyCycles -Path $tempDir -OutputPath $outputPath
 
-        # Vérifier que le fichier a été créé
+        # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
         Test-Path -Path $outputPath | Should -Be $true
 
-        # Vérifier que le contenu est un JSON valide
+        # VÃ©rifier que le contenu est un JSON valide
         $json = Get-Content -Path $outputPath -Raw | ConvertFrom-Json
         $json.HasCycles | Should -Be $true
     }
@@ -373,7 +373,7 @@ function Test-E { Write-Host "E" }
 
 Describe "Test-WorkflowCycles" {
     BeforeAll {
-        # Créer un workflow n8n de test avec un cycle
+        # CrÃ©er un workflow n8n de test avec un cycle
         $tempDir = Join-Path -Path $TestDrive -ChildPath "workflows"
         New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
 
@@ -421,35 +421,35 @@ Describe "Test-WorkflowCycles" {
         $workflowWithoutCycle | ConvertTo-Json -Depth 10 | Out-File -FilePath "$tempDir\workflow_without_cycle.json" -Encoding utf8
     }
 
-    It "Devrait détecter un cycle dans un workflow n8n" {
+    It "Devrait dÃ©tecter un cycle dans un workflow n8n" {
         $result = Test-WorkflowCycles -WorkflowPath "$tempDir\workflow_with_cycle.json"
         $result.HasCycles | Should -Be $true
     }
 
-    It "Ne devrait pas détecter de cycle dans un workflow linéaire" {
+    It "Ne devrait pas dÃ©tecter de cycle dans un workflow linÃ©aire" {
         $result = Test-WorkflowCycles -WorkflowPath "$tempDir\workflow_without_cycle.json"
         $result.HasCycles | Should -Be $false
     }
 
-    It "Devrait identifier correctement les noeuds impliqués dans le cycle" {
+    It "Devrait identifier correctement les noeuds impliquÃ©s dans le cycle" {
         $result = Test-WorkflowCycles -WorkflowPath "$tempDir\workflow_with_cycle.json"
         $cycle = $result.Cycles
         $cycle | Should -Not -BeNullOrEmpty
-        # Vérifier que le cycle contient au moins un des noeuds
+        # VÃ©rifier que le cycle contient au moins un des noeuds
         ($cycle -contains "node2" -or $cycle -contains "node3") | Should -Be $true
     }
 
-    It "Devrait gérer correctement un fichier de workflow invalide" {
-        # Créer un fichier JSON invalide
+    It "Devrait gÃ©rer correctement un fichier de workflow invalide" {
+        # CrÃ©er un fichier JSON invalide
         $invalidJson = "{ This is not valid JSON }"
         $invalidPath = "$tempDir\invalid_workflow.json"
         $invalidJson | Out-File -FilePath $invalidPath -Encoding utf8
 
-        # La fonction ne devrait pas planter, même avec un JSON invalide
+        # La fonction ne devrait pas planter, mÃªme avec un JSON invalide
         # Utiliser ErrorAction SilentlyContinue pour supprimer les messages d'erreur
         { Test-WorkflowCycles -WorkflowPath $invalidPath -ErrorAction SilentlyContinue } | Should -Not -Throw
 
-        # Le résultat devrait indiquer qu'il n'y a pas de cycles
+        # Le rÃ©sultat devrait indiquer qu'il n'y a pas de cycles
         $result = Test-WorkflowCycles -WorkflowPath $invalidPath -ErrorAction SilentlyContinue
         $result.HasCycles | Should -Be $false
     }
@@ -457,7 +457,7 @@ Describe "Test-WorkflowCycles" {
 
 Describe "Get-CycleDetectionStatistics" {
     BeforeAll {
-        # Réinitialiser les statistiques
+        # RÃ©initialiser les statistiques
         Initialize-CycleDetector
         Clear-CycleDetectionCache
         $Global:CycleDetectorStats.TotalCalls = 0
@@ -466,20 +466,20 @@ Describe "Get-CycleDetectionStatistics" {
         $Global:CycleDetectorStats.CacheMisses = 0
     }
 
-    It "Devrait retourner les statistiques d'utilisation du détecteur de cycles" {
-        # Effectuer quelques appels au détecteur de cycles
+    It "Devrait retourner les statistiques d'utilisation du dÃ©tecteur de cycles" {
+        # Effectuer quelques appels au dÃ©tecteur de cycles
         $graph = @{
             "A" = @("B")
             "B" = @("C")
             "C" = @("A")
         }
 
-        # Ajouter plus de nœuds pour éviter l'optimisation des petits graphes
+        # Ajouter plus de nÅ“uds pour Ã©viter l'optimisation des petits graphes
         for ($i = 1; $i -le 10; $i++) {
             $graph.Add("Node$i", @("NodeX$i"))
         }
 
-        # Réinitialiser les statistiques
+        # RÃ©initialiser les statistiques
         $Global:CycleDetectorStats.TotalCalls = 0
         $Global:CycleDetectorStats.TotalCycles = 0
         $Global:CycleDetectorStats.CacheHits = 0
@@ -491,10 +491,10 @@ Describe "Get-CycleDetectionStatistics" {
         # Premier appel avec SkipCache pour forcer un cache miss
         Find-Cycle -Graph $graph -SkipCache
 
-        # Récupérer les statistiques
+        # RÃ©cupÃ©rer les statistiques
         $stats = Get-CycleDetectionStatistics
 
-        # Vérifier les statistiques
+        # VÃ©rifier les statistiques
         $stats.TotalCalls | Should -BeGreaterThan 0
         $stats.TotalCycles | Should -BeGreaterThan 0
         $stats.CacheMisses | Should -BeGreaterThan 0
@@ -503,7 +503,7 @@ Describe "Get-CycleDetectionStatistics" {
 
 Describe "Clear-CycleDetectionCache" {
     BeforeEach {
-        # Réinitialiser les statistiques et le cache
+        # RÃ©initialiser les statistiques et le cache
         Initialize-CycleDetector
         Clear-CycleDetectionCache
         $Global:CycleDetectorStats.TotalCalls = 0
@@ -512,7 +512,7 @@ Describe "Clear-CycleDetectionCache" {
         $Global:CycleDetectorStats.CacheMisses = 0
     }
 
-    It "Devrait effacer le cache du détecteur de cycles" {
+    It "Devrait effacer le cache du dÃ©tecteur de cycles" {
         # Remplir le cache
         $graph = @{
             "A" = @("B")
@@ -522,66 +522,66 @@ Describe "Clear-CycleDetectionCache" {
 
         Find-Cycle -Graph $graph
 
-        # Vérifier que le cache contient des données
+        # VÃ©rifier que le cache contient des donnÃ©es
         $statsBefore = Get-CycleDetectionStatistics
         $statsBefore.CacheHits | Should -Be 0
 
         # Effacer le cache
         Clear-CycleDetectionCache
 
-        # Vérifier que le cache est vide
+        # VÃ©rifier que le cache est vide
         $statsAfter = Get-CycleDetectionStatistics
         $statsAfter.CacheHits | Should -Be 0
 
-        # Appeler à nouveau le détecteur de cycles
+        # Appeler Ã  nouveau le dÃ©tecteur de cycles
         Find-Cycle -Graph $graph
 
-        # Vérifier que le cache a été utilisé
+        # VÃ©rifier que le cache a Ã©tÃ© utilisÃ©
         $statsFinal = Get-CycleDetectionStatistics
-        $statsFinal.CacheHits | Should -Be 0 # Pas de hit car le cache a été effacé
+        $statsFinal.CacheHits | Should -Be 0 # Pas de hit car le cache a Ã©tÃ© effacÃ©
     }
 }
 
 Describe "Tests de performance" {
     BeforeAll {
-        # Réinitialiser les statistiques et le cache
+        # RÃ©initialiser les statistiques et le cache
         Initialize-CycleDetector
         Clear-CycleDetectionCache
     }
 
-    Context "Performances sur des graphes de différentes tailles" {
+    Context "Performances sur des graphes de diffÃ©rentes tailles" {
         It "Devrait traiter efficacement un petit graphe (10 noeuds)" {
-            # Créer un graphe linéaire de 10 noeuds
+            # CrÃ©er un graphe linÃ©aire de 10 noeuds
             $graph = @{}
             for ($i = 1; $i -lt 10; $i++) {
                 $graph["Node$i"] = @("Node$($i+1)")
             }
             $graph["Node10"] = @()
 
-            # Mesurer le temps d'exécution
+            # Mesurer le temps d'exÃ©cution
             $time = Measure-Command { Find-Cycle -Graph $graph }
 
-            # Vérifier que le temps d'exécution est raisonnable (< 1 seconde)
+            # VÃ©rifier que le temps d'exÃ©cution est raisonnable (< 1 seconde)
             $time.TotalMilliseconds | Should -BeLessThan 1000
         }
 
         It "Devrait traiter efficacement un graphe moyen (50 noeuds)" {
-            # Créer un graphe linéaire de 50 noeuds
+            # CrÃ©er un graphe linÃ©aire de 50 noeuds
             $graph = @{}
             for ($i = 1; $i -lt 50; $i++) {
                 $graph["Node$i"] = @("Node$($i+1)")
             }
             $graph["Node50"] = @()
 
-            # Mesurer le temps d'exécution
+            # Mesurer le temps d'exÃ©cution
             $time = Measure-Command { Find-Cycle -Graph $graph }
 
-            # Vérifier que le temps d'exécution est raisonnable (< 2 secondes)
+            # VÃ©rifier que le temps d'exÃ©cution est raisonnable (< 2 secondes)
             $time.TotalMilliseconds | Should -BeLessThan 2000
         }
 
-        It "Devrait détecter efficacement un cycle dans un grand graphe" {
-            # Créer un graphe linéaire de 100 noeuds avec un cycle à la fin
+        It "Devrait dÃ©tecter efficacement un cycle dans un grand graphe" {
+            # CrÃ©er un graphe linÃ©aire de 100 noeuds avec un cycle Ã  la fin
             $graph = @{}
             for ($i = 1; $i -lt 100; $i++) {
                 $graph["Node$i"] = @("Node$($i+1)")
@@ -589,43 +589,43 @@ Describe "Tests de performance" {
             # Ajouter un cycle
             $graph["Node100"] = @("Node1")
 
-            # Mesurer le temps d'exécution
+            # Mesurer le temps d'exÃ©cution
             $time = Measure-Command { Find-Cycle -Graph $graph }
 
-            # Vérifier que le temps d'exécution est raisonnable (< 3 secondes)
+            # VÃ©rifier que le temps d'exÃ©cution est raisonnable (< 3 secondes)
             $time.TotalMilliseconds | Should -BeLessThan 3000
 
-            # Vérifier que le cycle est détecté (test séparé de la mesure de performance)
+            # VÃ©rifier que le cycle est dÃ©tectÃ© (test sÃ©parÃ© de la mesure de performance)
             $cycleResult = Find-Cycle -Graph $graph
             $cycleResult.HasCycle | Should -Be $true
         }
     }
 
-    Context "Performances avec différentes implémentations" {
-        It "Devrait utiliser automatiquement l'implémentation itérative pour les grands graphes" {
-            # Créer un grand graphe (plus de 1000 noeuds)
+    Context "Performances avec diffÃ©rentes implÃ©mentations" {
+        It "Devrait utiliser automatiquement l'implÃ©mentation itÃ©rative pour les grands graphes" {
+            # CrÃ©er un grand graphe (plus de 1000 noeuds)
             $graph = @{}
             for ($i = 1; $i -lt 1000; $i++) {
                 $graph["Node$i"] = @("Node$($i+1)")
             }
             $graph["Node1000"] = @()
 
-            # Mesurer le temps d'exécution
+            # Mesurer le temps d'exÃ©cution
             $time = Measure-Command { Find-Cycle -Graph $graph }
 
-            # Vérifier que le temps d'exécution est raisonnable (< 5 secondes)
-            # Ce test peut échouer sur des machines lentes, ajuster si nécessaire
+            # VÃ©rifier que le temps d'exÃ©cution est raisonnable (< 5 secondes)
+            # Ce test peut Ã©chouer sur des machines lentes, ajuster si nÃ©cessaire
             $time.TotalMilliseconds | Should -BeLessThan 5000
 
-            # Vérifier qu'aucun cycle n'est détecté (test séparé de la mesure de performance)
+            # VÃ©rifier qu'aucun cycle n'est dÃ©tectÃ© (test sÃ©parÃ© de la mesure de performance)
             $cycleResult = Find-Cycle -Graph $graph
             $cycleResult.HasCycle | Should -Be $false
         }
     }
 
     Context "Optimisations de cache" {
-        It "Devrait effectuer deux appels consécutifs sans erreur" {
-            # Créer un graphe moyen
+        It "Devrait effectuer deux appels consÃ©cutifs sans erreur" {
+            # CrÃ©er un graphe moyen
             $graph = @{}
             for ($i = 1; $i -lt 30; $i++) {
                 $graph["Node$i"] = @("Node$($i+1)")
@@ -638,21 +638,21 @@ Describe "Tests de performance" {
             # Premier appel
             $result1 = Find-Cycle -Graph $graph
 
-            # Deuxième appel (devrait utiliser le cache si activé)
+            # DeuxiÃ¨me appel (devrait utiliser le cache si activÃ©)
             $result2 = Find-Cycle -Graph $graph
 
-            # Les deux appels devraient donner le même résultat
+            # Les deux appels devraient donner le mÃªme rÃ©sultat
             $result1.HasCycle | Should -Be $result2.HasCycle
 
-            # Note: Nous ne testons pas la performance ici car elle peut être instable
-            # en raison des optimisations du module et des variations de performance du système
+            # Note: Nous ne testons pas la performance ici car elle peut Ãªtre instable
+            # en raison des optimisations du module et des variations de performance du systÃ¨me
         }
     }
 }
 
 Describe "Tests de cas complexes" {
     Context "Graphes avec structures complexes" {
-        It "Devrait détecter un cycle dans un graphe en forme de diamant" {
+        It "Devrait dÃ©tecter un cycle dans un graphe en forme de diamant" {
             $graph = @{
                 "A" = @("B", "C")
                 "B" = @("D")
@@ -664,7 +664,7 @@ Describe "Tests de cas complexes" {
             $result.HasCycle | Should -Be $true
         }
 
-        It "Devrait détecter plusieurs cycles dans un graphe complexe" {
+        It "Devrait dÃ©tecter plusieurs cycles dans un graphe complexe" {
             $graph = @{
                 "A" = @("B", "C")
                 "B" = @("D", "E")
@@ -680,19 +680,19 @@ Describe "Tests de cas complexes" {
             $result.HasCycle | Should -Be $true
         }
 
-        It "Devrait gérer correctement un graphe avec des cycles multiples indépendants" {
+        It "Devrait gÃ©rer correctement un graphe avec des cycles multiples indÃ©pendants" {
             $graph = @{
                 # Premier cycle
                 "A1" = @("B1")
                 "B1" = @("C1")
                 "C1" = @("A1")
 
-                # Deuxième cycle
+                # DeuxiÃ¨me cycle
                 "A2" = @("B2")
                 "B2" = @("C2")
                 "C2" = @("A2")
 
-                # Troisième cycle
+                # TroisiÃ¨me cycle
                 "A3" = @("B3")
                 "B3" = @("C3")
                 "C3" = @("A3")
@@ -703,7 +703,7 @@ Describe "Tests de cas complexes" {
     }
 
     Context "Cas limites et robustesse" {
-        It "Devrait gérer correctement un graphe avec des noeuds isolés" {
+        It "Devrait gÃ©rer correctement un graphe avec des noeuds isolÃ©s" {
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -720,7 +720,7 @@ Describe "Tests de cas complexes" {
             $result.HasCycle | Should -Be $true
         }
 
-        It "Devrait gérer correctement un graphe avec des références à des noeuds inexistants" {
+        It "Devrait gÃ©rer correctement un graphe avec des rÃ©fÃ©rences Ã  des noeuds inexistants" {
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")

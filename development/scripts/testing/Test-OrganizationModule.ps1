@@ -1,8 +1,8 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module d'organisation
 .DESCRIPTION
-    Ce script exÃ©cute des tests unitaires pour le module d'organisation du Script Manager
+    Ce script exÃƒÂ©cute des tests unitaires pour le module d'organisation du Script Manager
 
 
 
@@ -27,12 +27,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Ã‰crire dans le fichier journal
+    # Ãƒâ€°crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        # CrÃƒÂ©er le rÃƒÂ©pertoire de logs si nÃƒÂ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -41,7 +41,7 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'Ã©criture dans le journal
+        # Ignorer les erreurs d'ÃƒÂ©criture dans le journal
     }
 }
 try {
@@ -50,36 +50,36 @@ try {
 .SYNOPSIS
     Tests unitaires pour le module d'organisation
 .DESCRIPTION
-    Ce script exÃ©cute des tests unitaires pour le module d'organisation du Script Manager
+    Ce script exÃƒÂ©cute des tests unitaires pour le module d'organisation du Script Manager
 #>
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installÃ©. Installation..." -ForegroundColor Yellow
+    Write-Host "Le module Pester n'est pas installÃƒÂ©. Installation..." -ForegroundColor Yellow
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# DÃ©finir le chemin du module Ã  tester
+# DÃƒÂ©finir le chemin du module ÃƒÂ  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\D"
 
-# VÃ©rifier si le module existe
+# VÃƒÂ©rifier si le module existe
 if (-not (Test-Path -Path $ModulePath)) {
-    Write-Host "Module d'organisation non trouvÃ©: $ModulePath" -ForegroundColor Red
+    Write-Host "Module d'organisation non trouvÃƒÂ©: $ModulePath" -ForegroundColor Red
     exit 1
 }
 
 # Importer le module
 Import-Module $ModulePath -Force
 
-# CrÃ©er un dossier temporaire pour les tests
+# CrÃƒÂ©er un dossier temporaire pour les tests
 $TestDir = Join-Path -Path $env:TEMP -ChildPath "ScriptManagerTests"
 if (-not (Test-Path -Path $TestDir)) {
     New-Item -ItemType Directory -Path $TestDir -Force | Out-Null
 }
 
-# CrÃ©er des fichiers de test
+# CrÃƒÂ©er des fichiers de test
 $AnalysisPath = Join-Path -Path $TestDir -ChildPath "analysis.json"
 $RulesPath = Join-Path -Path $TestDir -ChildPath "rules.json"
 $OrganizationPath = Join-Path -Path $TestDir -ChildPath "organization.json"
@@ -263,12 +263,12 @@ $Analysis = @{
     )
 } | ConvertTo-Json -Depth 10
 
-# Contenu du fichier de rÃ¨gles
+# Contenu du fichier de rÃƒÂ¨gles
 $Rules = @{
     rules = @(
         @{
             name = "PowerShell Scripts Organization"
-            description = "RÃ¨gles pour organiser les scripts PowerShell"
+            description = "RÃƒÂ¨gles pour organiser les scripts PowerShell"
             patterns = @(
                 @{
                     pattern = ".*\.ps1$"
@@ -286,7 +286,7 @@ $Rules = @{
         },
         @{
             name = "Python Scripts Organization"
-            description = "RÃ¨gles pour organiser les scripts Python"
+            description = "RÃƒÂ¨gles pour organiser les scripts Python"
             patterns = @(
                 @{
                     pattern = ".*\.py$"
@@ -304,7 +304,7 @@ $Rules = @{
         },
         @{
             name = "Batch Scripts Organization"
-            description = "RÃ¨gles pour organiser les scripts batch"
+            description = "RÃƒÂ¨gles pour organiser les scripts batch"
             patterns = @(
                 @{
                     pattern = ".*\.(cmd|bat)$"
@@ -323,21 +323,21 @@ $Rules = @{
     )
 } | ConvertTo-Json -Depth 10
 
-# Ã‰crire les fichiers de test
+# Ãƒâ€°crire les fichiers de test
 Set-Content -Path $AnalysisPath -Value $Analysis
 Set-Content -Path $RulesPath -Value $Rules
 
-# ExÃ©cuter les tests
+# ExÃƒÂ©cuter les tests
 Describe "Module d'organisation" {
     Context "Invoke-ScriptOrganization" {
-        It "Devrait organiser les scripts avec succÃ¨s en mode simulation" {
+        It "Devrait organiser les scripts avec succÃƒÂ¨s en mode simulation" {
             $Organization = Invoke-ScriptOrganization -AnalysisPath $AnalysisPath -RulesPath $RulesPath -OutputPath $OrganizationPath
             $Organization | Should -Not -BeNullOrEmpty
             $Organization.TotalScripts | Should -Be 3
             $Organization.AutoApply | Should -Be $false
         }
         
-        It "Devrait crÃ©er un fichier d'organisation" {
+        It "Devrait crÃƒÂ©er un fichier d'organisation" {
             Test-Path -Path $OrganizationPath | Should -Be $true
         }
         
@@ -361,5 +361,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+    Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }

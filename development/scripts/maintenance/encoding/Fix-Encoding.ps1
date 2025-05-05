@@ -1,4 +1,4 @@
-# Fix-Encoding.ps1
+﻿# Fix-Encoding.ps1
 # Script pour corriger l'encodage des fichiers de test
 
 param (
@@ -23,37 +23,37 @@ function Repair-FileEncoding {
         # Lire le contenu du fichier avec l'encodage actuel
         $content = Get-Content -Path $FilePath -Raw
         
-        # Corriger les caractÃ¨res mal encodÃ©s
-        $correctedContent = $content -replace "ÃƒÂ©", "Ã©" `
-                                     -replace "ÃƒÂ¨", "Ã¨" `
-                                     -replace "Ãƒ ", "Ã " `
-                                     -replace "ÃƒÂ®", "Ã®" `
-                                     -replace "ÃƒÂ´", "Ã´" `
-                                     -replace "ÃƒÂ»", "Ã»" `
-                                     -replace "ÃƒÂ§", "Ã§" `
-                                     -replace "Ãƒâ€°", "Ã‰" `
-                                     -replace "ÃƒË†", "Ãˆ" `
-                                     -replace "Ãƒâ‚¬", "Ã€" `
-                                     -replace "ÃƒÅ½", "ÃŽ" `
-                                     -replace "Ãƒ"", "Ã”" `
-                                     -replace "Ãƒâ€º", "Ã›" `
-                                     -replace "Ãƒâ€¡", "Ã‡"
+        # Corriger les caractÃƒÂ¨res mal encodÃƒÂ©s
+        $correctedContent = $content -replace "ÃƒÆ’Ã‚Â©", "ÃƒÂ©" `
+                                     -replace "ÃƒÆ’Ã‚Â¨", "ÃƒÂ¨" `
+                                     -replace "ÃƒÆ’ ", "ÃƒÂ " `
+                                     -replace "ÃƒÆ’Ã‚Â®", "ÃƒÂ®" `
+                                     -replace "ÃƒÆ’Ã‚Â´", "ÃƒÂ´" `
+                                     -replace "ÃƒÆ’Ã‚Â»", "ÃƒÂ»" `
+                                     -replace "ÃƒÆ’Ã‚Â§", "ÃƒÂ§" `
+                                     -replace "ÃƒÆ’Ã¢â‚¬Â°", "Ãƒâ€°" `
+                                     -replace "ÃƒÆ’Ã‹â€ ", "ÃƒË†" `
+                                     -replace "ÃƒÆ’Ã¢â€šÂ¬", "Ãƒâ‚¬" `
+                                     -replace "ÃƒÆ’Ã…Â½", "ÃƒÅ½" `
+                                     -replace "ÃƒÆ’"", "Ãƒâ€" `
+                                     -replace "ÃƒÆ’Ã¢â‚¬Âº", "Ãƒâ€º" `
+                                     -replace "ÃƒÆ’Ã¢â‚¬Â¡", "Ãƒâ€¡"
         
-        # VÃ©rifier si des modifications ont Ã©tÃ© apportÃ©es
+        # VÃƒÂ©rifier si des modifications ont ÃƒÂ©tÃƒÂ© apportÃƒÂ©es
         if ($content -ne $correctedContent) {
             if ($WhatIf) {
-                Write-Output "Le fichier $FilePath serait corrigÃ©."
+                Write-Output "Le fichier $FilePath serait corrigÃƒÂ©."
             }
             else {
                 # Sauvegarder le fichier avec l'encodage UTF-8 avec BOM
                 $utf8WithBom = New-Object System.Text.UTF8Encoding $true
                 [System.IO.File]::WriteAllText($FilePath, $correctedContent, $utf8WithBom)
-                Write-Output "Le fichier $FilePath a Ã©tÃ© corrigÃ©."
+                Write-Output "Le fichier $FilePath a ÃƒÂ©tÃƒÂ© corrigÃƒÂ©."
             }
             return $true
         }
         else {
-            Write-Output "Le fichier $FilePath ne nÃ©cessite pas de correction."
+            Write-Output "Le fichier $FilePath ne nÃƒÂ©cessite pas de correction."
             return $false
         }
     }
@@ -71,7 +71,7 @@ function Process-Folder {
         [switch]$WhatIf
     )
     
-    # VÃ©rifier que le dossier existe
+    # VÃƒÂ©rifier que le dossier existe
     if (-not (Test-Path -Path $FolderPath -PathType Container)) {
         Write-Error "Le dossier $FolderPath n'existe pas."
         return
@@ -92,15 +92,15 @@ function Process-Folder {
         }
     }
     
-    # Afficher le rÃ©sumÃ©
+    # Afficher le rÃƒÂ©sumÃƒÂ©
     Write-Output ""
     if ($WhatIf) {
-        Write-Output "$correctedCount fichiers seraient corrigÃ©s."
+        Write-Output "$correctedCount fichiers seraient corrigÃƒÂ©s."
     }
     else {
-        Write-Output "$correctedCount fichiers ont Ã©tÃ© corrigÃ©s."
+        Write-Output "$correctedCount fichiers ont ÃƒÂ©tÃƒÂ© corrigÃƒÂ©s."
     }
 }
 
-# Traiter le dossier spÃ©cifiÃ©
+# Traiter le dossier spÃƒÂ©cifiÃƒÂ©
 Process-Folder -FolderPath $FolderPath -Recursive:$Recursive -WhatIf:$WhatIf

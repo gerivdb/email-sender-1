@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
-    Nettoie les fichiers originaux aprÃ¨s l'organisation du dÃ©pÃ´t.
+    Nettoie les fichiers originaux aprÃƒÂ¨s l'organisation du dÃƒÂ©pÃƒÂ´t.
 
 .DESCRIPTION
-    Ce script supprime les fichiers originaux qui ont Ã©tÃ© dÃ©placÃ©s lors de l'organisation du dÃ©pÃ´t.
-    Il ne supprime que les fichiers qui ont Ã©tÃ© correctement copiÃ©s vers leurs nouveaux emplacements.
+    Ce script supprime les fichiers originaux qui ont ÃƒÂ©tÃƒÂ© dÃƒÂ©placÃƒÂ©s lors de l'organisation du dÃƒÂ©pÃƒÂ´t.
+    Il ne supprime que les fichiers qui ont ÃƒÂ©tÃƒÂ© correctement copiÃƒÂ©s vers leurs nouveaux emplacements.
 
 .PARAMETER DryRun
-    Si spÃ©cifiÃ©, le script affiche les actions qui seraient effectuÃ©es sans les exÃ©cuter.
+    Si spÃƒÂ©cifiÃƒÂ©, le script affiche les actions qui seraient effectuÃƒÂ©es sans les exÃƒÂ©cuter.
 
 .PARAMETER Force
-    Si spÃ©cifiÃ©, le script supprime les fichiers sans demander de confirmation.
+    Si spÃƒÂ©cifiÃƒÂ©, le script supprime les fichiers sans demander de confirmation.
 
 .PARAMETER LogFile
-    Chemin vers un fichier de log pour enregistrer les actions effectuÃ©es.
+    Chemin vers un fichier de log pour enregistrer les actions effectuÃƒÂ©es.
 
 .EXAMPLE
     .\cleanup-repository.ps1 -DryRun
@@ -24,7 +24,7 @@
 .NOTES
     Auteur: Maintenance Team
     Version: 1.0
-    Date de crÃ©ation: 2023-08-15
+    Date de crÃƒÂ©ation: 2023-08-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -38,16 +38,16 @@ param (
     [string]$LogFile
 )
 
-# DÃ©finir le rÃ©pertoire racine du dÃ©pÃ´t
+# DÃƒÂ©finir le rÃƒÂ©pertoire racine du dÃƒÂ©pÃƒÂ´t
 $repoRoot = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\"
 $repoRoot = [System.IO.Path]::GetFullPath($repoRoot)
 
-# VÃ©rifier que le rÃ©pertoire racine existe
+# VÃƒÂ©rifier que le rÃƒÂ©pertoire racine existe
 if (-not (Test-Path -Path $repoRoot -PathType Container)) {
-    throw "Le rÃ©pertoire racine n'existe pas : $repoRoot"
+    throw "Le rÃƒÂ©pertoire racine n'existe pas : $repoRoot"
 }
 
-Write-Host "Nettoyage du dÃ©pÃ´t : $repoRoot" -ForegroundColor Cyan
+Write-Host "Nettoyage du dÃƒÂ©pÃƒÂ´t : $repoRoot" -ForegroundColor Cyan
 
 # Fonction pour journaliser les actions
 function Write-Log {
@@ -75,12 +75,12 @@ if ($LogFile) {
     }
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Nettoyage dÃ©marrÃ© le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
-    "RÃ©pertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Nettoyage dÃƒÂ©marrÃƒÂ© le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
+    "RÃƒÂ©pertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
 }
 
-# DÃ©finir les fichiers Ã  supprimer
+# DÃƒÂ©finir les fichiers ÃƒÂ  supprimer
 $filesToRemove = @(
     # Scripts de mode
     "development/scripts/archi-mode.ps1",
@@ -125,27 +125,27 @@ function Remove-FileIfExists {
             } else {
                 if ($PSCmdlet.ShouldProcess($FilePath, "Supprimer")) {
                     Remove-Item -Path $FilePath -Force
-                    Write-Log "Fichier supprimÃ© : $FilePath"
+                    Write-Log "Fichier supprimÃƒÂ© : $FilePath"
                 }
             }
         } else {
-            Write-Log "Suppression ignorÃ©e : $FilePath"
+            Write-Log "Suppression ignorÃƒÂ©e : $FilePath"
         }
     } else {
         Write-Log "Le fichier n'existe pas : $FilePath"
     }
 }
 
-# Parcourir les fichiers Ã  supprimer
+# Parcourir les fichiers ÃƒÂ  supprimer
 foreach ($pattern in $filesToRemove) {
     $files = Get-ChildItem -Path (Join-Path -Path $repoRoot -ChildPath $pattern) -File -ErrorAction SilentlyContinue
     
     foreach ($file in $files) {
-        # VÃ©rifier que le fichier a bien Ã©tÃ© copiÃ© vers son nouvel emplacement
+        # VÃƒÂ©rifier que le fichier a bien ÃƒÂ©tÃƒÂ© copiÃƒÂ© vers son nouvel emplacement
         $fileName = $file.Name
         $baseName = $file.BaseName
         
-        # Extraire le nom du mode Ã  partir du nom du fichier
+        # Extraire le nom du mode ÃƒÂ  partir du nom du fichier
         if ($fileName -match "^([a-zA-Z0-9-]+)-mode\.ps1$") {
             $modeName = $matches[1]
             $destinationPath = Join-Path -Path $repoRoot -ChildPath "development/roadmap/scripts-parser/modes/$modeName/$fileName"
@@ -162,29 +162,29 @@ foreach ($pattern in $filesToRemove) {
         } elseif ($fileName -match "^programmation_(.+)\.md$") {
             $destinationPath = Join-Path -Path $repoRoot -ChildPath "docs/guides/methodologies/$fileName"
         } else {
-            # Pour les autres fichiers, on ne vÃ©rifie pas
+            # Pour les autres fichiers, on ne vÃƒÂ©rifie pas
             $destinationPath = $null
         }
         
         if ($destinationPath -and (Test-Path -Path $destinationPath)) {
             Remove-FileIfExists -FilePath $file.FullName
         } elseif ($destinationPath) {
-            Write-Log "Le fichier n'a pas Ã©tÃ© copiÃ© vers son nouvel emplacement : $destinationPath"
-            Write-Log "Suppression ignorÃ©e : $($file.FullName)"
+            Write-Log "Le fichier n'a pas ÃƒÂ©tÃƒÂ© copiÃƒÂ© vers son nouvel emplacement : $destinationPath"
+            Write-Log "Suppression ignorÃƒÂ©e : $($file.FullName)"
         } else {
             Remove-FileIfExists -FilePath $file.FullName
         }
     }
 }
 
-# RÃ©sumÃ© du nettoyage
-Write-Host "Nettoyage terminÃ©." -ForegroundColor Cyan
+# RÃƒÂ©sumÃƒÂ© du nettoyage
+Write-Host "Nettoyage terminÃƒÂ©." -ForegroundColor Cyan
 
 if ($LogFile) {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Nettoyage terminÃ© le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Nettoyage terminÃƒÂ© le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     
-    Write-Host "Log de nettoyage enregistrÃ© dans : $LogFile" -ForegroundColor Cyan
+    Write-Host "Log de nettoyage enregistrÃƒÂ© dans : $LogFile" -ForegroundColor Cyan
 }
 

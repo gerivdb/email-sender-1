@@ -1,5 +1,5 @@
-# Stop-AutoArchiveMonitor.ps1
-# Script pour arrêter le moniteur d'archivage automatique
+﻿# Stop-AutoArchiveMonitor.ps1
+# Script pour arrÃªter le moniteur d'archivage automatique
 # Version: 1.0
 # Date: 2025-05-03
 
@@ -11,7 +11,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $pidFilePath = Join-Path -Path $scriptPath -ChildPath "auto_archive_monitor.pid"
 
 if (-not (Test-Path -Path $pidFilePath)) {
-    Write-Error "Fichier PID introuvable: $pidFilePath. Le moniteur n'est peut-être pas en cours d'exécution."
+    Write-Error "Fichier PID introuvable: $pidFilePath. Le moniteur n'est peut-Ãªtre pas en cours d'exÃ©cution."
     exit 1
 }
 
@@ -23,23 +23,23 @@ if (-not $processId) {
     exit 1
 }
 
-# Vérifier si le processus existe
+# VÃ©rifier si le processus existe
 $process = Get-Process -Id $processId -ErrorAction SilentlyContinue
 
 if (-not $process) {
-    Write-Warning "Le processus avec l'ID $processId n'existe pas ou a déjà été arrêté."
+    Write-Warning "Le processus avec l'ID $processId n'existe pas ou a dÃ©jÃ  Ã©tÃ© arrÃªtÃ©."
     Remove-Item -Path $pidFilePath -Force
     exit 0
 }
 
-# Arrêter le processus
+# ArrÃªter le processus
 try {
     Stop-Process -Id $processId -Force
-    Write-Host "Moniteur d'archivage automatique (PID: $processId) arrêté avec succès."
+    Write-Host "Moniteur d'archivage automatique (PID: $processId) arrÃªtÃ© avec succÃ¨s."
     
     # Supprimer le fichier PID
     Remove-Item -Path $pidFilePath -Force
 } catch {
-    Write-Error "Erreur lors de l'arrêt du processus: $_"
+    Write-Error "Erreur lors de l'arrÃªt du processus: $_"
     exit 1
 }

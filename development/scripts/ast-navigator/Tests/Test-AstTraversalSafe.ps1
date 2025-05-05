@@ -1,9 +1,9 @@
-# Script de test pour la fonction Invoke-AstTraversalSafe
+﻿# Script de test pour la fonction Invoke-AstTraversalSafe
 
 # Charger la fonction
 . "$PSScriptRoot\..\Public\Invoke-AstTraversalSafe.ps1"
 
-# Créer un exemple de code PowerShell complexe à analyser
+# CrÃ©er un exemple de code PowerShell complexe Ã  analyser
 $sampleCode = @'
 function Get-Example {
     [CmdletBinding()]
@@ -70,7 +70,7 @@ $result | ForEach-Object {
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [ref]$tokens, [ref]$errors)
 
-# Vérifier s'il y a des erreurs d'analyse
+# VÃ©rifier s'il y a des erreurs d'analyse
 if ($errors.Count -gt 0) {
     Write-Error "Erreurs d'analyse du code :"
     foreach ($error in $errors) {
@@ -108,14 +108,14 @@ foreach ($variable in $variables) {
     }
 }
 
-# Test 4: Parcours avec prédicat qui génère une erreur
+# Test 4: Parcours avec prÃ©dicat qui gÃ©nÃ¨re une erreur
 Write-Host "`n=== Test 4: Parcours avec predicat qui genere une erreur ===" -ForegroundColor Cyan
 $predicateWithError = {
     param($node)
-    # Générer une erreur intentionnellement
+    # GÃ©nÃ©rer une erreur intentionnellement
     if ($node -is [System.Management.Automation.Language.StringConstantExpressionAst]) {
         $value = $node.Value
-        # Accéder à une propriété qui n'existe pas
+        # AccÃ©der Ã  une propriÃ©tÃ© qui n'existe pas
         $nonExistentProperty = $node.NonExistentProperty
         return $value -like "*mode*"
     }
@@ -137,7 +137,7 @@ Write-Host "Temps ecoule: $($result.ElapsedTime) secondes" -ForegroundColor Yell
 Write-Host "Nombre de noeuds traites: $($result.NodeCount)" -ForegroundColor Yellow
 Write-Host "Nombre de noeuds visites: $($result.VisitedNodesCount)" -ForegroundColor Yellow
 
-# Test 6: Parcours avec limite de nœuds
+# Test 6: Parcours avec limite de nÅ“uds
 Write-Host "`n=== Test 6: Parcours avec limite de noeuds ===" -ForegroundColor Cyan
 $result = Invoke-AstTraversalSafe -Ast $ast -MaxNodes 10 -ErrorHandling "Log" -IncludeErrors
 Write-Host "Nombre de resultats: $($result.Results.Count)" -ForegroundColor Yellow
@@ -146,7 +146,7 @@ Write-Host "Temps ecoule: $($result.ElapsedTime) secondes" -ForegroundColor Yell
 Write-Host "Nombre de noeuds traites: $($result.NodeCount)" -ForegroundColor Yellow
 Write-Host "Nombre de noeuds visites: $($result.VisitedNodesCount)" -ForegroundColor Yellow
 
-# Test 7: Parcours avec limite de résultats
+# Test 7: Parcours avec limite de rÃ©sultats
 Write-Host "`n=== Test 7: Parcours avec limite de resultats ===" -ForegroundColor Cyan
 $result = Invoke-AstTraversalSafe -Ast $ast -MaxResults 5 -ErrorHandling "Log" -IncludeErrors
 Write-Host "Nombre de resultats: $($result.Results.Count)" -ForegroundColor Yellow

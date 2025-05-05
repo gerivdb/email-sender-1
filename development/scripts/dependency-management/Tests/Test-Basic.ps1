@@ -1,13 +1,13 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "ModuleDependencyTraversal.psm1"
 
 Write-Host "Module path: $modulePath"
 
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Le module ModuleDependencyTraversal.psm1 n'existe pas dans le chemin spécifié: $modulePath"
+    throw "Le module ModuleDependencyTraversal.psm1 n'existe pas dans le chemin spÃ©cifiÃ©: $modulePath"
 }
 
 Write-Host "Importing module..."
@@ -15,16 +15,16 @@ Import-Module -Name $modulePath -Force
 
 Write-Host "Testing module functions..."
 
-# Créer un graphe de dépendances simple
+# CrÃ©er un graphe de dÃ©pendances simple
 $graph = @{
     'ModuleA' = @('ModuleB', 'ModuleC')
     'ModuleB' = @('ModuleD')
     'ModuleC' = @('ModuleE')
     'ModuleD' = @()
-    'ModuleE' = @('ModuleB')  # Crée un cycle avec ModuleB
+    'ModuleE' = @('ModuleB')  # CrÃ©e un cycle avec ModuleB
 }
 
-# Définir les variables globales
+# DÃ©finir les variables globales
 $Global:MDT_DependencyGraph = $graph
 $Global:MDT_VisitedModules = @{}
 $Global:MDT_MaxRecursionDepth = 10

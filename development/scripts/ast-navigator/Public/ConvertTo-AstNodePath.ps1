@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Convertit un chemin de noeuds en représentation textuelle.
+    Convertit un chemin de noeuds en reprÃ©sentation textuelle.
 
 .DESCRIPTION
-    Cette fonction convertit un chemin de noeuds (obtenu via Get-AstNodePath) en représentation textuelle.
-    Elle permet de personnaliser le format de la représentation textuelle.
+    Cette fonction convertit un chemin de noeuds (obtenu via Get-AstNodePath) en reprÃ©sentation textuelle.
+    Elle permet de personnaliser le format de la reprÃ©sentation textuelle.
 
 .PARAMETER Path
-    Le chemin de noeuds à convertir. Peut être un tableau de noeuds AST ou un noeud AST unique.
+    Le chemin de noeuds Ã  convertir. Peut Ãªtre un tableau de noeuds AST ou un noeud AST unique.
 
 .PARAMETER IncludeTypes
-    Si spécifié, inclut les types de noeuds dans la représentation textuelle.
+    Si spÃ©cifiÃ©, inclut les types de noeuds dans la reprÃ©sentation textuelle.
 
 .PARAMETER IncludePositions
-    Si spécifié, inclut les positions (ligne, colonne) des noeuds dans la représentation textuelle.
+    Si spÃ©cifiÃ©, inclut les positions (ligne, colonne) des noeuds dans la reprÃ©sentation textuelle.
 
 .PARAMETER Separator
-    Séparateur à utiliser pour la représentation textuelle du chemin. Par défaut, c'est "/".
+    SÃ©parateur Ã  utiliser pour la reprÃ©sentation textuelle du chemin. Par dÃ©faut, c'est "/".
 
 .PARAMETER Format
-    Format à utiliser pour chaque noeud dans la représentation textuelle. Les placeholders suivants sont disponibles :
+    Format Ã  utiliser pour chaque noeud dans la reprÃ©sentation textuelle. Les placeholders suivants sont disponibles :
     - {name} : Nom du noeud
     - {type} : Type du noeud
     - {line} : Ligne du noeud
@@ -70,15 +70,15 @@ function ConvertTo-AstNodePath {
             if ($Path -is [System.Management.Automation.Language.Ast]) {
                 $nodes = Get-AstNodePath -Node $Path
             }
-            # Si le chemin est déjà une liste de noeuds, l'utiliser directement
+            # Si le chemin est dÃ©jÃ  une liste de noeuds, l'utiliser directement
             elseif ($Path -is [System.Collections.IEnumerable] -and $Path -isnot [string]) {
                 $nodes = $Path
             }
             else {
-                throw "Le paramètre Path doit être un noeud AST ou un tableau de noeuds AST."
+                throw "Le paramÃ¨tre Path doit Ãªtre un noeud AST ou un tableau de noeuds AST."
             }
 
-            # Initialiser la représentation textuelle du chemin
+            # Initialiser la reprÃ©sentation textuelle du chemin
             $pathString = ""
 
             # Parcourir les noeuds du chemin
@@ -107,7 +107,7 @@ function ConvertTo-AstNodePath {
                     }
                 }
 
-                # Créer la représentation du noeud en fonction du format spécifié
+                # CrÃ©er la reprÃ©sentation du noeud en fonction du format spÃ©cifiÃ©
                 $nodeString = $Format
 
                 # Remplacer les placeholders par les valeurs correspondantes
@@ -117,21 +117,21 @@ function ConvertTo-AstNodePath {
                 $nodeString = $nodeString.Replace("{column}", $nodeColumn)
                 $nodeString = $nodeString.Replace("{text}", $nodeText)
 
-                # Ajouter les types si demandé
+                # Ajouter les types si demandÃ©
                 if ($IncludeTypes -and -not $Format.Contains("{type}")) {
                     $nodeString = "$nodeType($nodeString)"
                 }
 
-                # Ajouter les positions si demandé
+                # Ajouter les positions si demandÃ©
                 if ($IncludePositions -and -not ($Format.Contains("{line}") -or $Format.Contains("{column}"))) {
                     $nodeString = "$nodeString ($nodeLine,$nodeColumn)"
                 }
 
-                # Ajouter le noeud à la représentation textuelle du chemin
+                # Ajouter le noeud Ã  la reprÃ©sentation textuelle du chemin
                 $pathString += "$nodeString$Separator"
             }
 
-            # Supprimer le dernier séparateur
+            # Supprimer le dernier sÃ©parateur
             if ($pathString.EndsWith($Separator)) {
                 $pathString = $pathString.Substring(0, $pathString.Length - $Separator.Length)
             }
@@ -139,7 +139,7 @@ function ConvertTo-AstNodePath {
             return $pathString
         }
         catch {
-            Write-Error -Message "Erreur lors de la conversion du chemin en représentation textuelle : $_"
+            Write-Error -Message "Erreur lors de la conversion du chemin en reprÃ©sentation textuelle : $_"
             throw
         }
     }

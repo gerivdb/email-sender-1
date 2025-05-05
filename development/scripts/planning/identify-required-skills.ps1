@@ -1,35 +1,35 @@
-<#
+﻿<#
 .SYNOPSIS
-    Identifie les compétences requises pour chaque amélioration.
+    Identifie les compÃ©tences requises pour chaque amÃ©lioration.
 
 .DESCRIPTION
-    Ce script identifie les compétences requises pour chaque amélioration en analysant
-    le type d'amélioration, les technologies impliquées, la complexité technique et les risques.
+    Ce script identifie les compÃ©tences requises pour chaque amÃ©lioration en analysant
+    le type d'amÃ©lioration, les technologies impliquÃ©es, la complexitÃ© technique et les risques.
 
 .PARAMETER InputFile
-    Chemin vers le fichier JSON contenant les améliorations à analyser.
+    Chemin vers le fichier JSON contenant les amÃ©liorations Ã  analyser.
 
 .PARAMETER TechnicalAnalysisFile
-    Chemin vers le fichier d'analyse technique généré précédemment.
+    Chemin vers le fichier d'analyse technique gÃ©nÃ©rÃ© prÃ©cÃ©demment.
 
 .PARAMETER ComplexityScoresFile
-    Chemin vers le fichier des scores de complexité technique généré précédemment.
+    Chemin vers le fichier des scores de complexitÃ© technique gÃ©nÃ©rÃ© prÃ©cÃ©demment.
 
 .PARAMETER OutputFile
-    Chemin vers le fichier de sortie pour le rapport des compétences requises.
+    Chemin vers le fichier de sortie pour le rapport des compÃ©tences requises.
 
 .PARAMETER Format
     Format du rapport de sortie. Les valeurs possibles sont : JSON, Markdown.
-    Par défaut : Markdown
+    Par dÃ©faut : Markdown
 
 .EXAMPLE
     .\identify-required-skills.ps1 -InputFile "data\improvements.json" -TechnicalAnalysisFile "data\planning\technical-analysis.md" -ComplexityScoresFile "data\planning\complexity-scores.md" -OutputFile "data\planning\required-skills.md"
-    Génère un rapport des compétences requises au format Markdown.
+    GÃ©nÃ¨re un rapport des compÃ©tences requises au format Markdown.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-09
+    Date de crÃ©ation: 2025-05-09
 #>
 [CmdletBinding()]
 param (
@@ -50,9 +50,9 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Vérifier que les fichiers d'entrée existent
+# VÃ©rifier que les fichiers d'entrÃ©e existent
 if (-not (Test-Path -Path $InputFile)) {
-    Write-Error "Le fichier d'entrée n'existe pas : $InputFile"
+    Write-Error "Le fichier d'entrÃ©e n'existe pas : $InputFile"
     exit 1
 }
 
@@ -62,25 +62,25 @@ if (-not (Test-Path -Path $TechnicalAnalysisFile)) {
 }
 
 if (-not (Test-Path -Path $ComplexityScoresFile)) {
-    Write-Error "Le fichier des scores de complexité technique n'existe pas : $ComplexityScoresFile"
+    Write-Error "Le fichier des scores de complexitÃ© technique n'existe pas : $ComplexityScoresFile"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputFile -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Charger les données des améliorations
+# Charger les donnÃ©es des amÃ©liorations
 try {
     $improvementsData = Get-Content -Path $InputFile -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "Erreur lors du chargement du fichier d'entrée : $_"
+    Write-Error "Erreur lors du chargement du fichier d'entrÃ©e : $_"
     exit 1
 }
 
-# Fonction pour identifier les compétences techniques requises
+# Fonction pour identifier les compÃ©tences techniques requises
 function Identify-TechnicalSkills {
     [CmdletBinding()]
     param (
@@ -96,286 +96,286 @@ function Identify-TechnicalSkills {
 
     $skills = @()
     
-    # Compétences de base requises pour tous les types d'amélioration
+    # CompÃ©tences de base requises pour tous les types d'amÃ©lioration
     $skills += [PSCustomObject]@{
-        Category = "Développement"
+        Category = "DÃ©veloppement"
         Skill = "PowerShell"
-        Level = "Intermédiaire"
-        Justification = "Langage principal utilisé dans le projet"
+        Level = "IntermÃ©diaire"
+        Justification = "Langage principal utilisÃ© dans le projet"
     }
     
-    # Compétences spécifiques au type d'amélioration
+    # CompÃ©tences spÃ©cifiques au type d'amÃ©lioration
     switch ($Improvement.Type) {
-        "Fonctionnalité" {
+        "FonctionnalitÃ©" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
-                Skill = "Conception de fonctionnalités"
-                Level = "Avancé"
-                Justification = "Nécessaire pour concevoir de nouvelles fonctionnalités"
+                Category = "DÃ©veloppement"
+                Skill = "Conception de fonctionnalitÃ©s"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour concevoir de nouvelles fonctionnalitÃ©s"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Tests unitaires"
-                Level = "Intermédiaire"
-                Justification = "Nécessaire pour tester les nouvelles fonctionnalités"
+                Level = "IntermÃ©diaire"
+                Justification = "NÃ©cessaire pour tester les nouvelles fonctionnalitÃ©s"
             }
         }
-        "Amélioration" {
+        "AmÃ©lioration" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Refactoring"
-                Level = "Intermédiaire"
-                Justification = "Nécessaire pour améliorer le code existant"
+                Level = "IntermÃ©diaire"
+                Justification = "NÃ©cessaire pour amÃ©liorer le code existant"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
-                Skill = "Tests de régression"
-                Level = "Intermédiaire"
-                Justification = "Nécessaire pour vérifier que les améliorations n'introduisent pas de régressions"
+                Category = "DÃ©veloppement"
+                Skill = "Tests de rÃ©gression"
+                Level = "IntermÃ©diaire"
+                Justification = "NÃ©cessaire pour vÃ©rifier que les amÃ©liorations n'introduisent pas de rÃ©gressions"
             }
         }
         "Optimisation" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Optimisation de performances"
-                Level = "Avancé"
-                Justification = "Nécessaire pour optimiser les performances"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour optimiser les performances"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Profilage"
-                Level = "Avancé"
-                Justification = "Nécessaire pour identifier les goulots d'étranglement"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour identifier les goulots d'Ã©tranglement"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Tests de performance"
-                Level = "Avancé"
-                Justification = "Nécessaire pour mesurer les améliorations de performance"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour mesurer les amÃ©liorations de performance"
             }
         }
-        "Intégration" {
+        "IntÃ©gration" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
-                Skill = "Intégration de systèmes"
-                Level = "Avancé"
-                Justification = "Nécessaire pour intégrer des systèmes externes"
+                Category = "DÃ©veloppement"
+                Skill = "IntÃ©gration de systÃ¨mes"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour intÃ©grer des systÃ¨mes externes"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "API"
-                Level = "Avancé"
-                Justification = "Nécessaire pour interagir avec des API externes"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour interagir avec des API externes"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
-                Skill = "Tests d'intégration"
-                Level = "Avancé"
-                Justification = "Nécessaire pour tester les intégrations"
+                Category = "DÃ©veloppement"
+                Skill = "Tests d'intÃ©gration"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour tester les intÃ©grations"
             }
         }
-        "Sécurité" {
+        "SÃ©curitÃ©" {
             $skills += [PSCustomObject]@{
-                Category = "Sécurité"
-                Skill = "Sécurité des applications"
+                Category = "SÃ©curitÃ©"
+                Skill = "SÃ©curitÃ© des applications"
                 Level = "Expert"
-                Justification = "Nécessaire pour implémenter des mécanismes de sécurité"
+                Justification = "NÃ©cessaire pour implÃ©menter des mÃ©canismes de sÃ©curitÃ©"
             }
             $skills += [PSCustomObject]@{
-                Category = "Sécurité"
+                Category = "SÃ©curitÃ©"
                 Skill = "Cryptographie"
-                Level = "Avancé"
-                Justification = "Nécessaire pour implémenter des mécanismes de chiffrement"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour implÃ©menter des mÃ©canismes de chiffrement"
             }
             $skills += [PSCustomObject]@{
-                Category = "Sécurité"
-                Skill = "Tests de sécurité"
-                Level = "Avancé"
-                Justification = "Nécessaire pour tester les mécanismes de sécurité"
+                Category = "SÃ©curitÃ©"
+                Skill = "Tests de sÃ©curitÃ©"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour tester les mÃ©canismes de sÃ©curitÃ©"
             }
         }
     }
     
-    # Compétences spécifiques au gestionnaire
+    # CompÃ©tences spÃ©cifiques au gestionnaire
     switch ($ManagerName) {
         "Process Manager" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Gestion de processus"
-                Level = "Avancé"
-                Justification = "Nécessaire pour travailler avec le gestionnaire de processus"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour travailler avec le gestionnaire de processus"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Programmation concurrente"
-                Level = "Avancé"
-                Justification = "Nécessaire pour gérer les processus concurrents"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour gÃ©rer les processus concurrents"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Runspace Pools"
-                Level = "Avancé"
-                Justification = "Nécessaire pour utiliser les Runspace Pools de PowerShell"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour utiliser les Runspace Pools de PowerShell"
             }
         }
         "Mode Manager" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
-                Skill = "Gestion d'états"
-                Level = "Avancé"
-                Justification = "Nécessaire pour gérer les états des modes"
+                Category = "DÃ©veloppement"
+                Skill = "Gestion d'Ã©tats"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour gÃ©rer les Ã©tats des modes"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
-                Skill = "Machines à états"
-                Level = "Intermédiaire"
-                Justification = "Nécessaire pour implémenter les transitions entre modes"
+                Category = "DÃ©veloppement"
+                Skill = "Machines Ã  Ã©tats"
+                Level = "IntermÃ©diaire"
+                Justification = "NÃ©cessaire pour implÃ©menter les transitions entre modes"
             }
         }
         "Roadmap Manager" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Parsing de Markdown"
-                Level = "Avancé"
-                Justification = "Nécessaire pour parser les fichiers Markdown de roadmap"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour parser les fichiers Markdown de roadmap"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Graphes"
-                Level = "Intermédiaire"
-                Justification = "Nécessaire pour gérer les dépendances entre tâches"
+                Level = "IntermÃ©diaire"
+                Justification = "NÃ©cessaire pour gÃ©rer les dÃ©pendances entre tÃ¢ches"
             }
         }
         "Integrated Manager" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
-                Skill = "Intégration de systèmes"
+                Category = "DÃ©veloppement"
+                Skill = "IntÃ©gration de systÃ¨mes"
                 Level = "Expert"
-                Justification = "Nécessaire pour intégrer différents systèmes"
+                Justification = "NÃ©cessaire pour intÃ©grer diffÃ©rents systÃ¨mes"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "API REST"
-                Level = "Avancé"
-                Justification = "Nécessaire pour interagir avec des API REST"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour interagir avec des API REST"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "JSON"
-                Level = "Avancé"
-                Justification = "Nécessaire pour manipuler des données JSON"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour manipuler des donnÃ©es JSON"
             }
         }
         "Script Manager" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "PowerShell"
                 Level = "Expert"
-                Justification = "Nécessaire pour gérer des scripts PowerShell"
+                Justification = "NÃ©cessaire pour gÃ©rer des scripts PowerShell"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Modules PowerShell"
-                Level = "Avancé"
-                Justification = "Nécessaire pour créer et gérer des modules PowerShell"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour crÃ©er et gÃ©rer des modules PowerShell"
             }
         }
         "Error Manager" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Gestion d'erreurs"
                 Level = "Expert"
-                Justification = "Nécessaire pour implémenter des mécanismes de gestion d'erreurs"
+                Justification = "NÃ©cessaire pour implÃ©menter des mÃ©canismes de gestion d'erreurs"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Journalisation"
-                Level = "Avancé"
-                Justification = "Nécessaire pour journaliser les erreurs"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour journaliser les erreurs"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Diagnostic"
-                Level = "Avancé"
-                Justification = "Nécessaire pour diagnostiquer les erreurs"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour diagnostiquer les erreurs"
             }
         }
         "Configuration Manager" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Gestion de configuration"
-                Level = "Avancé"
-                Justification = "Nécessaire pour gérer les configurations"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour gÃ©rer les configurations"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "YAML"
-                Level = "Intermédiaire"
-                Justification = "Nécessaire pour manipuler des fichiers YAML"
+                Level = "IntermÃ©diaire"
+                Justification = "NÃ©cessaire pour manipuler des fichiers YAML"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "JSON"
-                Level = "Avancé"
-                Justification = "Nécessaire pour manipuler des fichiers JSON"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour manipuler des fichiers JSON"
             }
         }
         "Logging Manager" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Journalisation"
                 Level = "Expert"
-                Justification = "Nécessaire pour implémenter des mécanismes de journalisation"
+                Justification = "NÃ©cessaire pour implÃ©menter des mÃ©canismes de journalisation"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Rotation de logs"
-                Level = "Intermédiaire"
-                Justification = "Nécessaire pour gérer la rotation des logs"
+                Level = "IntermÃ©diaire"
+                Justification = "NÃ©cessaire pour gÃ©rer la rotation des logs"
             }
         }
     }
     
-    # Compétences supplémentaires basées sur la complexité
+    # CompÃ©tences supplÃ©mentaires basÃ©es sur la complexitÃ©
     switch ($ComplexityLevel) {
-        "Très élevée" {
+        "TrÃ¨s Ã©levÃ©e" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Architecture logicielle"
                 Level = "Expert"
-                Justification = "Nécessaire pour concevoir des solutions complexes"
+                Justification = "NÃ©cessaire pour concevoir des solutions complexes"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
-                Skill = "Optimisation avancée"
+                Category = "DÃ©veloppement"
+                Skill = "Optimisation avancÃ©e"
                 Level = "Expert"
-                Justification = "Nécessaire pour optimiser des solutions complexes"
+                Justification = "NÃ©cessaire pour optimiser des solutions complexes"
             }
         }
-        "Élevée" {
+        "Ã‰levÃ©e" {
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Architecture logicielle"
-                Level = "Avancé"
-                Justification = "Nécessaire pour concevoir des solutions de complexité élevée"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour concevoir des solutions de complexitÃ© Ã©levÃ©e"
             }
             $skills += [PSCustomObject]@{
-                Category = "Développement"
+                Category = "DÃ©veloppement"
                 Skill = "Optimisation"
-                Level = "Avancé"
-                Justification = "Nécessaire pour optimiser des solutions de complexité élevée"
+                Level = "AvancÃ©"
+                Justification = "NÃ©cessaire pour optimiser des solutions de complexitÃ© Ã©levÃ©e"
             }
         }
     }
     
-    # Supprimer les doublons (en conservant le niveau le plus élevé)
+    # Supprimer les doublons (en conservant le niveau le plus Ã©levÃ©)
     $uniqueSkills = @{}
     foreach ($skill in $skills) {
         $key = "$($skill.Category):$($skill.Skill)"
         $levelValue = switch ($skill.Level) {
-            "Débutant" { 1 }
-            "Intermédiaire" { 2 }
-            "Avancé" { 3 }
+            "DÃ©butant" { 1 }
+            "IntermÃ©diaire" { 2 }
+            "AvancÃ©" { 3 }
             "Expert" { 4 }
             default { 0 }
         }
@@ -391,7 +391,7 @@ function Identify-TechnicalSkills {
     return $uniqueSkills.Values | ForEach-Object { $_.Skill } | Sort-Object -Property Category, Skill
 }
 
-# Fonction pour générer le rapport au format Markdown
+# Fonction pour gÃ©nÃ©rer le rapport au format Markdown
 function Generate-MarkdownReport {
     [CmdletBinding()]
     param (
@@ -399,29 +399,29 @@ function Generate-MarkdownReport {
         [PSCustomObject]$SkillsResults
     )
 
-    $markdown = "# Identification des Compétences Requises pour les Améliorations`n`n"
-    $markdown += "Ce document présente l'identification des compétences requises pour les améliorations identifiées pour les différents gestionnaires.`n`n"
+    $markdown = "# Identification des CompÃ©tences Requises pour les AmÃ©liorations`n`n"
+    $markdown += "Ce document prÃ©sente l'identification des compÃ©tences requises pour les amÃ©liorations identifiÃ©es pour les diffÃ©rents gestionnaires.`n`n"
     
-    $markdown += "## Table des Matières`n`n"
+    $markdown += "## Table des MatiÃ¨res`n`n"
     
     foreach ($manager in $SkillsResults.Managers) {
         $markdown += "- [$($manager.Name)](#$($manager.Name.ToLower().Replace(' ', '-')))`n"
     }
     
-    $markdown += "`n## Méthodologie`n`n"
-    $markdown += "L'identification des compétences requises a été réalisée en analysant :`n`n"
-    $markdown += "1. **Type d'amélioration** : Compétences spécifiques au type d'amélioration (Fonctionnalité, Amélioration, Optimisation, etc.)`n"
-    $markdown += "2. **Gestionnaire concerné** : Compétences spécifiques au gestionnaire (Process Manager, Mode Manager, etc.)`n"
-    $markdown += "3. **Complexité technique** : Compétences supplémentaires basées sur la complexité technique`n`n"
+    $markdown += "`n## MÃ©thodologie`n`n"
+    $markdown += "L'identification des compÃ©tences requises a Ã©tÃ© rÃ©alisÃ©e en analysant :`n`n"
+    $markdown += "1. **Type d'amÃ©lioration** : CompÃ©tences spÃ©cifiques au type d'amÃ©lioration (FonctionnalitÃ©, AmÃ©lioration, Optimisation, etc.)`n"
+    $markdown += "2. **Gestionnaire concernÃ©** : CompÃ©tences spÃ©cifiques au gestionnaire (Process Manager, Mode Manager, etc.)`n"
+    $markdown += "3. **ComplexitÃ© technique** : CompÃ©tences supplÃ©mentaires basÃ©es sur la complexitÃ© technique`n`n"
     
-    $markdown += "### Niveaux de Compétence`n`n"
-    $markdown += "Les compétences sont évaluées selon quatre niveaux :`n`n"
+    $markdown += "### Niveaux de CompÃ©tence`n`n"
+    $markdown += "Les compÃ©tences sont Ã©valuÃ©es selon quatre niveaux :`n`n"
     $markdown += "| Niveau | Description |`n"
     $markdown += "|--------|-------------|`n"
-    $markdown += "| Débutant | Connaissances de base, supervision nécessaire |`n"
-    $markdown += "| Intermédiaire | Bonnes connaissances, autonomie sur des tâches standard |`n"
-    $markdown += "| Avancé | Expertise solide, autonomie sur des tâches complexes |`n"
-    $markdown += "| Expert | Maîtrise approfondie, référent technique |`n`n"
+    $markdown += "| DÃ©butant | Connaissances de base, supervision nÃ©cessaire |`n"
+    $markdown += "| IntermÃ©diaire | Bonnes connaissances, autonomie sur des tÃ¢ches standard |`n"
+    $markdown += "| AvancÃ© | Expertise solide, autonomie sur des tÃ¢ches complexes |`n"
+    $markdown += "| Expert | MaÃ®trise approfondie, rÃ©fÃ©rent technique |`n`n"
     
     foreach ($manager in $SkillsResults.Managers) {
         $markdown += "## <a name='$($manager.Name.ToLower().Replace(' ', '-'))'></a>$($manager.Name)`n`n"
@@ -430,34 +430,34 @@ function Generate-MarkdownReport {
             $markdown += "### $($improvement.Name)`n`n"
             $markdown += "**Description :** $($improvement.Description)`n`n"
             $markdown += "**Type :** $($improvement.Type)`n`n"
-            $markdown += "**Complexité technique :** $($improvement.ComplexityLevel)`n`n"
+            $markdown += "**ComplexitÃ© technique :** $($improvement.ComplexityLevel)`n`n"
             
             if ($improvement.Skills.Count -gt 0) {
-                $markdown += "#### Compétences Requises`n`n"
-                $markdown += "| Catégorie | Compétence | Niveau | Justification |`n"
+                $markdown += "#### CompÃ©tences Requises`n`n"
+                $markdown += "| CatÃ©gorie | CompÃ©tence | Niveau | Justification |`n"
                 $markdown += "|-----------|------------|--------|---------------|`n"
                 
                 foreach ($skill in $improvement.Skills) {
                     $markdown += "| $($skill.Category) | $($skill.Skill) | $($skill.Level) | $($skill.Justification) |`n"
                 }
             } else {
-                $markdown += "#### Compétences Requises`n`n"
-                $markdown += "Aucune compétence spécifique identifiée pour cette amélioration.`n"
+                $markdown += "#### CompÃ©tences Requises`n`n"
+                $markdown += "Aucune compÃ©tence spÃ©cifique identifiÃ©e pour cette amÃ©lioration.`n"
             }
             
             $markdown += "`n"
         }
     }
     
-    $markdown += "## Résumé`n`n"
+    $markdown += "## RÃ©sumÃ©`n`n"
     
     $totalImprovements = 0
     $totalSkills = 0
     $skillsByCategory = @{}
     $skillsByLevel = @{
-        "Débutant" = 0
-        "Intermédiaire" = 0
-        "Avancé" = 0
+        "DÃ©butant" = 0
+        "IntermÃ©diaire" = 0
+        "AvancÃ©" = 0
         "Expert" = 0
     }
     
@@ -482,10 +482,10 @@ function Generate-MarkdownReport {
         }
     }
     
-    $markdown += "Cette analyse a identifié $totalSkills compétences requises pour $totalImprovements améliorations réparties sur $($SkillsResults.Managers.Count) gestionnaires.`n`n"
+    $markdown += "Cette analyse a identifiÃ© $totalSkills compÃ©tences requises pour $totalImprovements amÃ©liorations rÃ©parties sur $($SkillsResults.Managers.Count) gestionnaires.`n`n"
     
-    $markdown += "### Répartition par Catégorie`n`n"
-    $markdown += "| Catégorie | Nombre de Compétences |`n"
+    $markdown += "### RÃ©partition par CatÃ©gorie`n`n"
+    $markdown += "| CatÃ©gorie | Nombre de CompÃ©tences |`n"
     $markdown += "|-----------|------------------------|`n"
     
     foreach ($category in $skillsByCategory.Keys | Sort-Object) {
@@ -493,17 +493,17 @@ function Generate-MarkdownReport {
         $markdown += "| $category | $categorySkillsCount |`n"
     }
     
-    $markdown += "`n### Répartition par Niveau`n`n"
+    $markdown += "`n### RÃ©partition par Niveau`n`n"
     $markdown += "| Niveau | Nombre | Pourcentage |`n"
     $markdown += "|--------|--------|------------|`n"
     
-    foreach ($level in @("Débutant", "Intermédiaire", "Avancé", "Expert")) {
+    foreach ($level in @("DÃ©butant", "IntermÃ©diaire", "AvancÃ©", "Expert")) {
         $percentage = if ($totalSkills -gt 0) { [Math]::Round(($skillsByLevel[$level] / $totalSkills) * 100, 1) } else { 0 }
         $markdown += "| $level | $($skillsByLevel[$level]) | $percentage% |`n"
     }
     
-    $markdown += "`n### Compétences les Plus Demandées`n`n"
-    $markdown += "| Catégorie | Compétence | Nombre d'Améliorations |`n"
+    $markdown += "`n### CompÃ©tences les Plus DemandÃ©es`n`n"
+    $markdown += "| CatÃ©gorie | CompÃ©tence | Nombre d'AmÃ©liorations |`n"
     $markdown += "|-----------|------------|------------------------|`n"
     
     $topSkills = @()
@@ -524,16 +524,16 @@ function Generate-MarkdownReport {
     }
     
     $markdown += "`n### Recommandations`n`n"
-    $markdown += "1. **Formation** : Organiser des formations pour les compétences les plus demandées, en particulier celles de niveau Avancé et Expert.`n"
-    $markdown += "2. **Recrutement** : Recruter des profils possédant les compétences les plus demandées, en particulier celles de niveau Expert.`n"
-    $markdown += "3. **Partenariats** : Établir des partenariats avec des experts externes pour les compétences rares ou très spécialisées.`n"
-    $markdown += "4. **Documentation** : Améliorer la documentation pour faciliter la montée en compétence des équipes.`n"
-    $markdown += "5. **Mentorat** : Mettre en place un système de mentorat pour partager les connaissances au sein de l'équipe.`n"
+    $markdown += "1. **Formation** : Organiser des formations pour les compÃ©tences les plus demandÃ©es, en particulier celles de niveau AvancÃ© et Expert.`n"
+    $markdown += "2. **Recrutement** : Recruter des profils possÃ©dant les compÃ©tences les plus demandÃ©es, en particulier celles de niveau Expert.`n"
+    $markdown += "3. **Partenariats** : Ã‰tablir des partenariats avec des experts externes pour les compÃ©tences rares ou trÃ¨s spÃ©cialisÃ©es.`n"
+    $markdown += "4. **Documentation** : AmÃ©liorer la documentation pour faciliter la montÃ©e en compÃ©tence des Ã©quipes.`n"
+    $markdown += "5. **Mentorat** : Mettre en place un systÃ¨me de mentorat pour partager les connaissances au sein de l'Ã©quipe.`n"
     
     return $markdown
 }
 
-# Fonction pour générer le rapport au format JSON
+# Fonction pour gÃ©nÃ©rer le rapport au format JSON
 function Generate-JsonReport {
     [CmdletBinding()]
     param (
@@ -544,7 +544,7 @@ function Generate-JsonReport {
     return $SkillsResults | ConvertTo-Json -Depth 10
 }
 
-# Identifier les compétences requises pour chaque amélioration
+# Identifier les compÃ©tences requises pour chaque amÃ©lioration
 $skillsResults = [PSCustomObject]@{
     GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     Managers = @()
@@ -558,20 +558,20 @@ foreach ($manager in $improvementsData.Managers) {
     }
     
     foreach ($improvement in $manager.Improvements) {
-        # Déterminer le niveau de complexité (à partir de l'évaluation précédente)
-        $complexityLevel = "Moyenne" # Valeur par défaut
+        # DÃ©terminer le niveau de complexitÃ© (Ã  partir de l'Ã©valuation prÃ©cÃ©dente)
+        $complexityLevel = "Moyenne" # Valeur par dÃ©faut
         
-        # Dans un cas réel, on récupérerait cette information du fichier des scores de complexité
-        # Pour simplifier, on utilise une logique basée sur l'effort et le type
-        if ($improvement.Effort -eq "Élevé") {
-            if ($improvement.Type -eq "Optimisation" -or $improvement.Type -eq "Intégration" -or $improvement.Type -eq "Sécurité") {
-                $complexityLevel = "Élevée"
+        # Dans un cas rÃ©el, on rÃ©cupÃ©rerait cette information du fichier des scores de complexitÃ©
+        # Pour simplifier, on utilise une logique basÃ©e sur l'effort et le type
+        if ($improvement.Effort -eq "Ã‰levÃ©") {
+            if ($improvement.Type -eq "Optimisation" -or $improvement.Type -eq "IntÃ©gration" -or $improvement.Type -eq "SÃ©curitÃ©") {
+                $complexityLevel = "Ã‰levÃ©e"
             }
         } elseif ($improvement.Effort -eq "Faible") {
             $complexityLevel = "Faible"
         }
         
-        # Identifier les compétences requises
+        # Identifier les compÃ©tences requises
         $skills = Identify-TechnicalSkills -Improvement $improvement -ManagerName $manager.Name -ComplexityLevel $complexityLevel
         
         $improvementSkills = [PSCustomObject]@{
@@ -589,7 +589,7 @@ foreach ($manager in $improvementsData.Managers) {
     $skillsResults.Managers += $managerSkills
 }
 
-# Générer le rapport dans le format spécifié
+# GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $reportContent = Generate-MarkdownReport -SkillsResults $skillsResults
@@ -602,23 +602,23 @@ switch ($Format) {
 # Enregistrer le rapport
 try {
     $reportContent | Out-File -FilePath $OutputFile -Encoding UTF8
-    Write-Host "Rapport des compétences requises généré avec succès : $OutputFile"
+    Write-Host "Rapport des compÃ©tences requises gÃ©nÃ©rÃ© avec succÃ¨s : $OutputFile"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du rapport : $_"
     exit 1
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'identification des compétences requises :"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'identification des compÃ©tences requises :"
 Write-Host "---------------------------------------------------"
 
 $totalImprovements = 0
 $totalSkills = 0
 $skillsByCategory = @{}
 $skillsByLevel = @{
-    "Débutant" = 0
-    "Intermédiaire" = 0
-    "Avancé" = 0
+    "DÃ©butant" = 0
+    "IntermÃ©diaire" = 0
+    "AvancÃ©" = 0
     "Expert" = 0
 }
 
@@ -642,17 +642,17 @@ foreach ($manager in $skillsResults.Managers) {
     $totalImprovements += $managerImprovements
     $totalSkills += $managerSkills
     
-    Write-Host "  $($manager.Name) : $managerSkills compétences pour $managerImprovements améliorations"
+    Write-Host "  $($manager.Name) : $managerSkills compÃ©tences pour $managerImprovements amÃ©liorations"
 }
 
-Write-Host "  Total : $totalSkills compétences pour $totalImprovements améliorations"
-Write-Host "`nRépartition par catégorie :"
+Write-Host "  Total : $totalSkills compÃ©tences pour $totalImprovements amÃ©liorations"
+Write-Host "`nRÃ©partition par catÃ©gorie :"
 foreach ($category in $skillsByCategory.Keys | Sort-Object) {
     Write-Host "  $category : $($skillsByCategory[$category])"
 }
 
-Write-Host "`nRépartition par niveau :"
-foreach ($level in @("Débutant", "Intermédiaire", "Avancé", "Expert")) {
+Write-Host "`nRÃ©partition par niveau :"
+foreach ($level in @("DÃ©butant", "IntermÃ©diaire", "AvancÃ©", "Expert")) {
     $percentage = if ($totalSkills -gt 0) { [Math]::Round(($skillsByLevel[$level] / $totalSkills) * 100, 1) } else { 0 }
     Write-Host "  $level : $($skillsByLevel[$level]) ($percentage%)"
 }

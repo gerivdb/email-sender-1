@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Organise la structure du dÃ©pÃ´t selon une hiÃ©rarchie optimisÃ©e.
+    Organise la structure du dÃƒÂ©pÃƒÂ´t selon une hiÃƒÂ©rarchie optimisÃƒÂ©e.
 
 .DESCRIPTION
-    Ce script rÃ©organise le dÃ©pÃ´t en une structure hiÃ©rarchique optimisÃ©e
-    avec un nombre minimal de dossiers Ã  la racine. Il crÃ©e une structure
-    logique et dÃ©place les fichiers vers leurs emplacements appropriÃ©s.
+    Ce script rÃƒÂ©organise le dÃƒÂ©pÃƒÂ´t en une structure hiÃƒÂ©rarchique optimisÃƒÂ©e
+    avec un nombre minimal de dossiers ÃƒÂ  la racine. Il crÃƒÂ©e une structure
+    logique et dÃƒÂ©place les fichiers vers leurs emplacements appropriÃƒÂ©s.
 
 .PARAMETER DryRun
-    Si spÃ©cifiÃ©, le script affiche les actions qui seraient effectuÃ©es sans les exÃ©cuter.
+    Si spÃƒÂ©cifiÃƒÂ©, le script affiche les actions qui seraient effectuÃƒÂ©es sans les exÃƒÂ©cuter.
 
 .PARAMETER Force
-    Si spÃ©cifiÃ©, le script Ã©crase les fichiers existants sans demander de confirmation.
+    Si spÃƒÂ©cifiÃƒÂ©, le script ÃƒÂ©crase les fichiers existants sans demander de confirmation.
 
 .PARAMETER LogFile
-    Chemin vers un fichier de log pour enregistrer les actions effectuÃ©es.
+    Chemin vers un fichier de log pour enregistrer les actions effectuÃƒÂ©es.
 
 .EXAMPLE
     .\organize-repository-v2.ps1 -DryRun
@@ -25,7 +25,7 @@
 .NOTES
     Auteur: Maintenance Team
     Version: 2.0
-    Date de crÃ©ation: 2023-08-15
+    Date de crÃƒÂ©ation: 2023-08-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -39,16 +39,16 @@ param (
     [string]$LogFile
 )
 
-# DÃ©finir le rÃ©pertoire racine du dÃ©pÃ´t
+# DÃƒÂ©finir le rÃƒÂ©pertoire racine du dÃƒÂ©pÃƒÂ´t
 $repoRoot = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\"
 $repoRoot = [System.IO.Path]::GetFullPath($repoRoot)
 
-# VÃ©rifier que le rÃ©pertoire racine existe
+# VÃƒÂ©rifier que le rÃƒÂ©pertoire racine existe
 if (-not (Test-Path -Path $repoRoot -PathType Container)) {
-    throw "Le rÃ©pertoire racine n'existe pas : $repoRoot"
+    throw "Le rÃƒÂ©pertoire racine n'existe pas : $repoRoot"
 }
 
-Write-Host "Organisation du dÃ©pÃ´t : $repoRoot" -ForegroundColor Cyan
+Write-Host "Organisation du dÃƒÂ©pÃƒÂ´t : $repoRoot" -ForegroundColor Cyan
 
 # Fonction pour journaliser les actions
 function Write-Log {
@@ -77,12 +77,12 @@ if ($LogFile) {
     }
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Organisation dÃ©marrÃ©e le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
-    "RÃ©pertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Organisation dÃƒÂ©marrÃƒÂ©e le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
+    "RÃƒÂ©pertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
 }
 
-# DÃ©finir la nouvelle structure hiÃ©rarchique
+# DÃƒÂ©finir la nouvelle structure hiÃƒÂ©rarchique
 $rootFolders = @(
     "src",           # Code source principal
     "tools",         # Outils et scripts
@@ -93,36 +93,36 @@ $rootFolders = @(
     ".build"         # Fichiers de build et CI/CD
 )
 
-Write-Log "CrÃ©ation de la structure principale..." -Color Cyan
+Write-Log "CrÃƒÂ©ation de la structure principale..." -Color Cyan
 
-# CrÃ©er les dossiers racine
+# CrÃƒÂ©er les dossiers racine
 foreach ($folder in $rootFolders) {
     $folderPath = Join-Path -Path $repoRoot -ChildPath $folder
     
     if (-not (Test-Path -Path $folderPath)) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] CrÃ©ation du dossier racine : $folderPath" -Color Yellow
+            Write-Log "[DRYRUN] CrÃƒÂ©ation du dossier racine : $folderPath" -Color Yellow
         } else {
-            if ($PSCmdlet.ShouldProcess($folderPath, "CrÃ©er le dossier racine")) {
+            if ($PSCmdlet.ShouldProcess($folderPath, "CrÃƒÂ©er le dossier racine")) {
                 New-Item -Path $folderPath -ItemType Directory -Force | Out-Null
-                Write-Log "Dossier racine crÃ©Ã© : $folderPath" -Color Green
+                Write-Log "Dossier racine crÃƒÂ©ÃƒÂ© : $folderPath" -Color Green
             }
         }
     } else {
-        Write-Log "Le dossier racine existe dÃ©jÃ  : $folderPath" -Color Gray
+        Write-Log "Le dossier racine existe dÃƒÂ©jÃƒÂ  : $folderPath" -Color Gray
     }
 }
 
-# DÃ©finir la structure dÃ©taillÃ©e
+# DÃƒÂ©finir la structure dÃƒÂ©taillÃƒÂ©e
 $folderStructure = @{
     # Structure src (code source)
     "src" = @(
-        "core",                  # FonctionnalitÃ©s de base
+        "core",                  # FonctionnalitÃƒÂ©s de base
         "modules",               # Modules fonctionnels
         "api",                   # API et interfaces
         "services",              # Services
         "utils",                 # Utilitaires
-        "models",                # ModÃ¨les de donnÃ©es
+        "models",                # ModÃƒÂ¨les de donnÃƒÂ©es
         "n8n",                   # Workflows n8n
         "frontend"               # Interface utilisateur
     )
@@ -132,9 +132,9 @@ $folderStructure = @{
         "scripts",               # Scripts divers
         "development/roadmap/scripts",       # Scripts de roadmap
         "development/scripts/maintenance",   # Scripts de maintenance
-        "development/scripts/deployment",    # Scripts de dÃ©ploiement
+        "development/scripts/deployment",    # Scripts de dÃƒÂ©ploiement
         "development/scripts/automation",    # Scripts d'automatisation
-        "generators",            # GÃ©nÃ©rateurs de code
+        "generators",            # GÃƒÂ©nÃƒÂ©rateurs de code
         "analyzers",             # Outils d'analyse
         "converters",            # Outils de conversion
         "templates",             # Templates
@@ -149,32 +149,32 @@ $folderStructure = @{
     "docs" = @(
         "guides",                # Guides d'utilisation
         "guides/user",           # Guides utilisateur
-        "guides/developer",      # Guides dÃ©veloppeur
+        "guides/developer",      # Guides dÃƒÂ©veloppeur
         "guides/admin",          # Guides administrateur
-        "guides/methodologies",  # MÃ©thodologies
+        "guides/methodologies",  # MÃƒÂ©thodologies
         "api",                   # Documentation API
         "architecture",          # Documentation architecture
         "roadmap",               # Roadmap du projet
         "roadmap/plans",         # Plans de roadmap
         "examples",              # Exemples
-        "references"             # RÃ©fÃ©rences
+        "references"             # RÃƒÂ©fÃƒÂ©rences
     )
     
     # Structure tests (tests)
     "tests" = @(
         "unit",                  # Tests unitaires
-        "integration",           # Tests d'intÃ©gration
+        "integration",           # Tests d'intÃƒÂ©gration
         "performance",           # Tests de performance
         "e2e",                   # Tests end-to-end
-        "fixtures",              # DonnÃ©es de test
+        "fixtures",              # DonnÃƒÂ©es de test
         "mocks"                  # Mocks et stubs
     )
     
     # Structure config (configuration)
     "config" = @(
         "environments",          # Configurations d'environnement
-        "settings",              # ParamÃ¨tres gÃ©nÃ©raux
-        "schemas",               # SchÃ©mas de configuration
+        "settings",              # ParamÃƒÂ¨tres gÃƒÂ©nÃƒÂ©raux
+        "schemas",               # SchÃƒÂ©mas de configuration
         "templates"              # Templates de configuration
     )
     
@@ -183,8 +183,8 @@ $folderStructure = @{
         "images",                # Images
         "styles",                # Styles
         "fonts",                 # Polices
-        "data",                  # DonnÃ©es statiques
-        "media"                  # MÃ©dias
+        "data",                  # DonnÃƒÂ©es statiques
+        "media"                  # MÃƒÂ©dias
     )
     
     # Structure .build (build et CI/CD)
@@ -199,29 +199,29 @@ $folderStructure = @{
     )
 }
 
-# CrÃ©er la structure dÃ©taillÃ©e
+# CrÃƒÂ©er la structure dÃƒÂ©taillÃƒÂ©e
 foreach ($rootFolder in $folderStructure.Keys) {
     foreach ($subFolder in $folderStructure[$rootFolder]) {
         $folderPath = Join-Path -Path $repoRoot -ChildPath "$rootFolder/$subFolder"
         
         if (-not (Test-Path -Path $folderPath)) {
             if ($DryRun) {
-                Write-Log "[DRYRUN] CrÃ©ation du dossier : $folderPath" -Color Yellow
+                Write-Log "[DRYRUN] CrÃƒÂ©ation du dossier : $folderPath" -Color Yellow
             } else {
-                if ($PSCmdlet.ShouldProcess($folderPath, "CrÃ©er le dossier")) {
+                if ($PSCmdlet.ShouldProcess($folderPath, "CrÃƒÂ©er le dossier")) {
                     New-Item -Path $folderPath -ItemType Directory -Force | Out-Null
-                    Write-Log "Dossier crÃ©Ã© : $folderPath" -Color Green
+                    Write-Log "Dossier crÃƒÂ©ÃƒÂ© : $folderPath" -Color Green
                 }
             }
         } else {
-            Write-Log "Le dossier existe dÃ©jÃ  : $folderPath" -Color Gray
+            Write-Log "Le dossier existe dÃƒÂ©jÃƒÂ  : $folderPath" -Color Gray
         }
     }
 }
 
-# DÃ©finir les mappages de dossiers (dÃ©placer des dossiers entiers)
+# DÃƒÂ©finir les mappages de dossiers (dÃƒÂ©placer des dossiers entiers)
 $directoryMappings = @{
-    # DÃ©placer les dossiers existants vers la nouvelle structure
+    # DÃƒÂ©placer les dossiers existants vers la nouvelle structure
     "scripts"                    = "development/scripts"
     "development/roadmap/scripts"            = "development/tools/development/roadmap/scripts"
     "development/roadmap/scripts-parser"     = "development/tools/development/roadmap/scripts/parser"
@@ -259,9 +259,9 @@ $directoryMappings = @{
     "archive"                    = ".build/archive"
 }
 
-Write-Log "DÃ©placement des dossiers existants vers la nouvelle structure..." -Color Cyan
+Write-Log "DÃƒÂ©placement des dossiers existants vers la nouvelle structure..." -Color Cyan
 
-# Fonction pour dÃ©placer un dossier entier
+# Fonction pour dÃƒÂ©placer un dossier entier
 function Move-DirectoryToNewLocation {
     param (
         [string]$SourceDir,
@@ -279,17 +279,17 @@ function Move-DirectoryToNewLocation {
     $destinationParent = Split-Path -Path $destinationPath -Parent
     if (-not (Test-Path -Path $destinationParent)) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] CrÃ©ation du dossier parent : $destinationParent" -Color Yellow
+            Write-Log "[DRYRUN] CrÃƒÂ©ation du dossier parent : $destinationParent" -Color Yellow
         } else {
-            if ($PSCmdlet.ShouldProcess($destinationParent, "CrÃ©er le dossier parent")) {
+            if ($PSCmdlet.ShouldProcess($destinationParent, "CrÃƒÂ©er le dossier parent")) {
                 New-Item -Path $destinationParent -ItemType Directory -Force | Out-Null
-                Write-Log "Dossier parent crÃ©Ã© : $destinationParent" -Color Green
+                Write-Log "Dossier parent crÃƒÂ©ÃƒÂ© : $destinationParent" -Color Green
             }
         }
     }
     
     if (Test-Path -Path $destinationPath) {
-        # Le dossier de destination existe dÃ©jÃ , on doit fusionner le contenu
+        # Le dossier de destination existe dÃƒÂ©jÃƒÂ , on doit fusionner le contenu
         $sourceItems = Get-ChildItem -Path $sourcePath -Recurse
         
         foreach ($item in $sourceItems) {
@@ -300,11 +300,11 @@ function Move-DirectoryToNewLocation {
                 # C'est un dossier
                 if (-not (Test-Path -Path $targetPath)) {
                     if ($DryRun) {
-                        Write-Log "[DRYRUN] CrÃ©ation du dossier : $targetPath" -Color Yellow
+                        Write-Log "[DRYRUN] CrÃƒÂ©ation du dossier : $targetPath" -Color Yellow
                     } else {
-                        if ($PSCmdlet.ShouldProcess($targetPath, "CrÃ©er le dossier")) {
+                        if ($PSCmdlet.ShouldProcess($targetPath, "CrÃƒÂ©er le dossier")) {
                             New-Item -Path $targetPath -ItemType Directory -Force | Out-Null
-                            Write-Log "Dossier crÃ©Ã© : $targetPath" -Color Green
+                            Write-Log "Dossier crÃƒÂ©ÃƒÂ© : $targetPath" -Color Green
                         }
                     }
                 }
@@ -313,11 +313,11 @@ function Move-DirectoryToNewLocation {
                 $targetDir = Split-Path -Path $targetPath -Parent
                 if (-not (Test-Path -Path $targetDir)) {
                     if ($DryRun) {
-                        Write-Log "[DRYRUN] CrÃ©ation du dossier : $targetDir" -Color Yellow
+                        Write-Log "[DRYRUN] CrÃƒÂ©ation du dossier : $targetDir" -Color Yellow
                     } else {
-                        if ($PSCmdlet.ShouldProcess($targetDir, "CrÃ©er le dossier")) {
+                        if ($PSCmdlet.ShouldProcess($targetDir, "CrÃƒÂ©er le dossier")) {
                             New-Item -Path $targetDir -ItemType Directory -Force | Out-Null
-                            Write-Log "Dossier crÃ©Ã© : $targetDir" -Color Green
+                            Write-Log "Dossier crÃƒÂ©ÃƒÂ© : $targetDir" -Color Green
                         }
                     }
                 }
@@ -326,7 +326,7 @@ function Move-DirectoryToNewLocation {
                     if ($Force) {
                         $shouldContinue = $true
                     } else {
-                        $shouldContinue = $PSCmdlet.ShouldContinue("Le fichier existe dÃ©jÃ  : $targetPath. Voulez-vous le remplacer ?", "Confirmation")
+                        $shouldContinue = $PSCmdlet.ShouldContinue("Le fichier existe dÃƒÂ©jÃƒÂ  : $targetPath. Voulez-vous le remplacer ?", "Confirmation")
                     }
                 } else {
                     $shouldContinue = $true
@@ -338,42 +338,42 @@ function Move-DirectoryToNewLocation {
                     } else {
                         if ($PSCmdlet.ShouldProcess($item.FullName, "Copier vers $targetPath")) {
                             Copy-Item -Path $item.FullName -Destination $targetPath -Force
-                            Write-Log "Fichier copiÃ© : $($item.FullName) -> $targetPath" -Color Green
+                            Write-Log "Fichier copiÃƒÂ© : $($item.FullName) -> $targetPath" -Color Green
                         }
                     }
                 } else {
-                    Write-Log "Copie ignorÃ©e : $($item.FullName)" -Color Gray
+                    Write-Log "Copie ignorÃƒÂ©e : $($item.FullName)" -Color Gray
                 }
             }
         }
         
-        Write-Log "Contenu fusionnÃ© : $sourcePath -> $destinationPath" -Color Cyan
+        Write-Log "Contenu fusionnÃƒÂ© : $sourcePath -> $destinationPath" -Color Cyan
     } else {
-        # Le dossier de destination n'existe pas, on peut simplement dÃ©placer le dossier source
+        # Le dossier de destination n'existe pas, on peut simplement dÃƒÂ©placer le dossier source
         if ($DryRun) {
-            Write-Log "[DRYRUN] DÃ©placement du dossier : $sourcePath -> $destinationPath" -Color Yellow
+            Write-Log "[DRYRUN] DÃƒÂ©placement du dossier : $sourcePath -> $destinationPath" -Color Yellow
         } else {
-            if ($PSCmdlet.ShouldProcess($sourcePath, "DÃ©placer vers $destinationPath")) {
-                # Utiliser Copy-Item puis Remove-Item pour simuler un Move-Item avec crÃ©ation de dossiers parents
+            if ($PSCmdlet.ShouldProcess($sourcePath, "DÃƒÂ©placer vers $destinationPath")) {
+                # Utiliser Copy-Item puis Remove-Item pour simuler un Move-Item avec crÃƒÂ©ation de dossiers parents
                 Copy-Item -Path $sourcePath -Destination $destinationPath -Recurse -Force
-                Write-Log "Dossier copiÃ© : $sourcePath -> $destinationPath" -Color Green
+                Write-Log "Dossier copiÃƒÂ© : $sourcePath -> $destinationPath" -Color Green
                 
-                # Ne pas supprimer le dossier source pour l'instant, on le fera dans une phase de nettoyage ultÃ©rieure
-                # si le dÃ©placement est confirmÃ© comme rÃ©ussi
+                # Ne pas supprimer le dossier source pour l'instant, on le fera dans une phase de nettoyage ultÃƒÂ©rieure
+                # si le dÃƒÂ©placement est confirmÃƒÂ© comme rÃƒÂ©ussi
             }
         }
     }
 }
 
-# DÃ©placer les dossiers selon les mappages
+# DÃƒÂ©placer les dossiers selon les mappages
 foreach ($sourceDir in $directoryMappings.Keys) {
     $destinationDir = $directoryMappings[$sourceDir]
     Move-DirectoryToNewLocation -SourceDir $sourceDir -DestinationDir $destinationDir
 }
 
-# DÃ©finir les mappages de fichiers spÃ©cifiques
+# DÃƒÂ©finir les mappages de fichiers spÃƒÂ©cifiques
 $fileMappings = @{
-    # Fichiers Ã  la racine
+    # Fichiers ÃƒÂ  la racine
     "*.md"                      = "docs/readme/{0}"
     "*.txt"                     = "docs/readme/{0}"
     "*.json"                    = "projet/config/settings/{0}"
@@ -387,7 +387,7 @@ $fileMappings = @{
     "*.scss"                    = "projet/assets/styles/{0}"
     "*.html"                    = "src/frontend/{0}"
     
-    # Scripts spÃ©cifiques
+    # Scripts spÃƒÂ©cifiques
     "development/scripts/*-mode.ps1"        = "development/tools/development/roadmap/scripts/modes/{0}/{0}-mode.ps1"
     "development/scripts/Test-*.ps1"        = "development/tools/development/scripts/development/testing/tests/{0}"
     
@@ -401,9 +401,9 @@ $fileMappings = @{
     "templates/maintenance/*.ejs.t" = "development/tools/development/templates/maintenance/{0}"
 }
 
-Write-Log "DÃ©placement des fichiers spÃ©cifiques..." -Color Cyan
+Write-Log "DÃƒÂ©placement des fichiers spÃƒÂ©cifiques..." -Color Cyan
 
-# Fonction pour dÃ©placer un fichier
+# Fonction pour dÃƒÂ©placer un fichier
 function Move-FileToNewLocation {
     param (
         [string]$SourceFile,
@@ -418,11 +418,11 @@ function Move-FileToNewLocation {
     $destinationDir = Split-Path -Path $DestinationPath -Parent
     if (-not (Test-Path -Path $destinationDir)) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] CrÃ©ation du rÃ©pertoire : $destinationDir" -Color Yellow
+            Write-Log "[DRYRUN] CrÃƒÂ©ation du rÃƒÂ©pertoire : $destinationDir" -Color Yellow
         } else {
-            if ($PSCmdlet.ShouldProcess($destinationDir, "CrÃ©er le rÃ©pertoire")) {
+            if ($PSCmdlet.ShouldProcess($destinationDir, "CrÃƒÂ©er le rÃƒÂ©pertoire")) {
                 New-Item -Path $destinationDir -ItemType Directory -Force | Out-Null
-                Write-Log "RÃ©pertoire crÃ©Ã© : $destinationDir" -Color Green
+                Write-Log "RÃƒÂ©pertoire crÃƒÂ©ÃƒÂ© : $destinationDir" -Color Green
             }
         }
     }
@@ -431,7 +431,7 @@ function Move-FileToNewLocation {
         if ($Force) {
             $shouldContinue = $true
         } else {
-            $shouldContinue = $PSCmdlet.ShouldContinue("Le fichier existe dÃ©jÃ  : $DestinationPath. Voulez-vous le remplacer ?", "Confirmation")
+            $shouldContinue = $PSCmdlet.ShouldContinue("Le fichier existe dÃƒÂ©jÃƒÂ  : $DestinationPath. Voulez-vous le remplacer ?", "Confirmation")
         }
     } else {
         $shouldContinue = $true
@@ -439,17 +439,17 @@ function Move-FileToNewLocation {
     
     if ($shouldContinue) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] DÃ©placement du fichier : $SourceFile -> $DestinationPath" -Color Yellow
+            Write-Log "[DRYRUN] DÃƒÂ©placement du fichier : $SourceFile -> $DestinationPath" -Color Yellow
         } else {
-            if ($PSCmdlet.ShouldProcess($SourceFile, "DÃ©placer vers $DestinationPath")) {
+            if ($PSCmdlet.ShouldProcess($SourceFile, "DÃƒÂ©placer vers $DestinationPath")) {
                 Copy-Item -Path $SourceFile -Destination $DestinationPath -Force
-                Write-Log "Fichier dÃ©placÃ© : $SourceFile -> $DestinationPath" -Color Green
+                Write-Log "Fichier dÃƒÂ©placÃƒÂ© : $SourceFile -> $DestinationPath" -Color Green
                 
                 # Ne pas supprimer le fichier source pour l'instant
             }
         }
     } else {
-        Write-Log "DÃ©placement ignorÃ© : $SourceFile" -Color Gray
+        Write-Log "DÃƒÂ©placement ignorÃƒÂ© : $SourceFile" -Color Gray
     }
 }
 
@@ -461,7 +461,7 @@ foreach ($pattern in $fileMappings.Keys) {
         $fileName = $file.Name
         $baseName = $file.BaseName
         
-        # Extraire le nom du mode Ã  partir du nom du fichier
+        # Extraire le nom du mode ÃƒÂ  partir du nom du fichier
         if ($fileName -match "^([a-zA-Z0-9-]+)-mode\.ps1$") {
             $modeName = $matches[1]
             $destinationPath = Join-Path -Path $repoRoot -ChildPath ($fileMappings[$pattern] -f $modeName)
@@ -473,21 +473,21 @@ foreach ($pattern in $fileMappings.Keys) {
     }
 }
 
-# CrÃ©er des fichiers README.md pour chaque dossier racine
+# CrÃƒÂ©er des fichiers README.md pour chaque dossier racine
 $readmeTemplates = @{
     "src" = @"
 # Source Code
 
-Ce rÃ©pertoire contient le code source principal du projet.
+Ce rÃƒÂ©pertoire contient le code source principal du projet.
 
 ## Structure
 
-- **core/** - FonctionnalitÃ©s de base
+- **core/** - FonctionnalitÃƒÂ©s de base
 - **modules/** - Modules fonctionnels
 - **api/** - API et interfaces
 - **services/** - Services
 - **utils/** - Utilitaires
-- **models/** - ModÃ¨les de donnÃ©es
+- **models/** - ModÃƒÂ¨les de donnÃƒÂ©es
 - **n8n/** - Workflows n8n
 - **frontend/** - Interface utilisateur
 
@@ -495,22 +495,22 @@ Ce rÃ©pertoire contient le code source principal du projet.
 
 - Suivre les conventions de nommage du projet
 - Documenter les fonctions et classes
-- Ã‰crire des tests unitaires pour chaque fonctionnalitÃ©
+- Ãƒâ€°crire des tests unitaires pour chaque fonctionnalitÃƒÂ©
 "@
 
     "tools" = @"
 # Tools
 
-Ce rÃ©pertoire contient les outils et scripts du projet.
+Ce rÃƒÂ©pertoire contient les outils et scripts du projet.
 
 ## Structure
 
 - **development/scripts/** - Scripts divers
   - **roadmap/** - Scripts de roadmap
   - **maintenance/** - Scripts de maintenance
-  - **deployment/** - Scripts de dÃ©ploiement
+  - **deployment/** - Scripts de dÃƒÂ©ploiement
   - **automation/** - Scripts d'automatisation
-- **generators/** - GÃ©nÃ©rateurs de code
+- **generators/** - GÃƒÂ©nÃƒÂ©rateurs de code
 - **analyzers/** - Outils d'analyse
 - **converters/** - Outils de conversion
 - **templates/** - Templates
@@ -524,50 +524,50 @@ Consultez la documentation dans le dossier `docs/guides` pour plus d'information
     "docs" = @"
 # Documentation
 
-Ce rÃ©pertoire contient la documentation du projet.
+Ce rÃƒÂ©pertoire contient la documentation du projet.
 
 ## Structure
 
 - **guides/** - Guides d'utilisation
   - **user/** - Guides utilisateur
-  - **developer/** - Guides dÃ©veloppeur
+  - **developer/** - Guides dÃƒÂ©veloppeur
   - **admin/** - Guides administrateur
-  - **methodologies/** - MÃ©thodologies
+  - **methodologies/** - MÃƒÂ©thodologies
 - **api/** - Documentation API
 - **architecture/** - Documentation architecture
 - **roadmap/** - Roadmap du projet
 - **examples/** - Exemples
-- **references/** - RÃ©fÃ©rences
+- **references/** - RÃƒÂ©fÃƒÂ©rences
 
 ## Contribution
 
-Pour contribuer Ã  la documentation, suivez les conventions dÃ©crites dans le guide du dÃ©veloppeur.
+Pour contribuer ÃƒÂ  la documentation, suivez les conventions dÃƒÂ©crites dans le guide du dÃƒÂ©veloppeur.
 "@
 
     "tests" = @"
 # Tests
 
-Ce rÃ©pertoire contient les tests du projet.
+Ce rÃƒÂ©pertoire contient les tests du projet.
 
 ## Structure
 
 - **unit/** - Tests unitaires
-- **integration/** - Tests d'intÃ©gration
+- **integration/** - Tests d'intÃƒÂ©gration
 - **performance/** - Tests de performance
 - **e2e/** - Tests end-to-end
-- **fixtures/** - DonnÃ©es de test
+- **fixtures/** - DonnÃƒÂ©es de test
 - **mocks/** - Mocks et stubs
 
-## ExÃ©cution des tests
+## ExÃƒÂ©cution des tests
 
 ```powershell
-# ExÃ©cuter tous les tests
+# ExÃƒÂ©cuter tous les tests
 Invoke-Pester
 
-# ExÃ©cuter les tests unitaires
+# ExÃƒÂ©cuter les tests unitaires
 Invoke-Pester -Path ./unit
 
-# ExÃ©cuter les tests d'intÃ©gration
+# ExÃƒÂ©cuter les tests d'intÃƒÂ©gration
 Invoke-Pester -Path ./integration
 ```
 "@
@@ -575,42 +575,42 @@ Invoke-Pester -Path ./integration
     "config" = @"
 # Configuration
 
-Ce rÃ©pertoire contient les fichiers de configuration du projet.
+Ce rÃƒÂ©pertoire contient les fichiers de configuration du projet.
 
 ## Structure
 
 - **environments/** - Configurations d'environnement
-- **settings/** - ParamÃ¨tres gÃ©nÃ©raux
-- **schemas/** - SchÃ©mas de configuration
+- **settings/** - ParamÃƒÂ¨tres gÃƒÂ©nÃƒÂ©raux
+- **schemas/** - SchÃƒÂ©mas de configuration
 - **templates/** - Templates de configuration
 
 ## Utilisation
 
-Les fichiers de configuration sont chargÃ©s automatiquement par l'application en fonction de l'environnement.
+Les fichiers de configuration sont chargÃƒÂ©s automatiquement par l'application en fonction de l'environnement.
 "@
 
     "assets" = @"
 # Assets
 
-Ce rÃ©pertoire contient les ressources statiques du projet.
+Ce rÃƒÂ©pertoire contient les ressources statiques du projet.
 
 ## Structure
 
 - **images/** - Images
 - **styles/** - Styles
 - **fonts/** - Polices
-- **data/** - DonnÃ©es statiques
-- **media/** - MÃ©dias
+- **data/** - DonnÃƒÂ©es statiques
+- **media/** - MÃƒÂ©dias
 
 ## Utilisation
 
-Ces ressources sont utilisÃ©es par l'application et la documentation.
+Ces ressources sont utilisÃƒÂ©es par l'application et la documentation.
 "@
 
     ".build" = @"
 # Build
 
-Ce rÃ©pertoire contient les fichiers liÃ©s au build et au CI/CD.
+Ce rÃƒÂ©pertoire contient les fichiers liÃƒÂ©s au build et au CI/CD.
 
 ## Structure
 
@@ -624,31 +624,31 @@ Ce rÃ©pertoire contient les fichiers liÃ©s au build et au CI/CD.
 
 ## Utilisation
 
-Ces fichiers sont utilisÃ©s par les systÃ¨mes de build et de CI/CD.
+Ces fichiers sont utilisÃƒÂ©s par les systÃƒÂ¨mes de build et de CI/CD.
 "@
 }
 
-Write-Log "CrÃ©ation des fichiers README.md pour chaque dossier racine..." -Color Cyan
+Write-Log "CrÃƒÂ©ation des fichiers README.md pour chaque dossier racine..." -Color Cyan
 
-# CrÃ©er les fichiers README.md
+# CrÃƒÂ©er les fichiers README.md
 foreach ($rootFolder in $readmeTemplates.Keys) {
     $readmePath = Join-Path -Path $repoRoot -ChildPath "$rootFolder/README.md"
     
     if (-not (Test-Path -Path $readmePath) -or $Force) {
         if ($DryRun) {
-            Write-Log "[DRYRUN] CrÃ©ation du fichier README.md : $readmePath" -Color Yellow
+            Write-Log "[DRYRUN] CrÃƒÂ©ation du fichier README.md : $readmePath" -Color Yellow
         } else {
-            if ($PSCmdlet.ShouldProcess($readmePath, "CrÃ©er le fichier README.md")) {
+            if ($PSCmdlet.ShouldProcess($readmePath, "CrÃƒÂ©er le fichier README.md")) {
                 Set-Content -Path $readmePath -Value $readmeTemplates[$rootFolder] -Encoding UTF8
-                Write-Log "Fichier README.md crÃ©Ã© : $readmePath" -Color Green
+                Write-Log "Fichier README.md crÃƒÂ©ÃƒÂ© : $readmePath" -Color Green
             }
         }
     } else {
-        Write-Log "Le fichier README.md existe dÃ©jÃ  : $readmePath" -Color Gray
+        Write-Log "Le fichier README.md existe dÃƒÂ©jÃƒÂ  : $readmePath" -Color Gray
     }
 }
 
-# CrÃ©er un README.md Ã  la racine
+# CrÃƒÂ©er un README.md ÃƒÂ  la racine
 $rootReadmePath = Join-Path -Path $repoRoot -ChildPath "README.md"
 $rootReadmeContent = @"
 # EMAIL_SENDER_1
@@ -669,11 +669,11 @@ Consultez le guide d'installation dans `docs/guides/installation/`.
 
 ## Documentation
 
-La documentation complÃ¨te est disponible dans le dossier `docs/`.
+La documentation complÃƒÂ¨te est disponible dans le dossier `docs/`.
 
-## DÃ©veloppement
+## DÃƒÂ©veloppement
 
-Consultez le guide du dÃ©veloppeur dans `docs/guides/developer/`.
+Consultez le guide du dÃƒÂ©veloppeur dans `docs/guides/developer/`.
 
 ## Tests
 
@@ -686,34 +686,34 @@ Ce projet est sous licence MIT.
 
 if (-not (Test-Path -Path $rootReadmePath) -or $Force) {
     if ($DryRun) {
-        Write-Log "[DRYRUN] CrÃ©ation du fichier README.md Ã  la racine : $rootReadmePath" -Color Yellow
+        Write-Log "[DRYRUN] CrÃƒÂ©ation du fichier README.md ÃƒÂ  la racine : $rootReadmePath" -Color Yellow
     } else {
-        if ($PSCmdlet.ShouldProcess($rootReadmePath, "CrÃ©er le fichier README.md Ã  la racine")) {
+        if ($PSCmdlet.ShouldProcess($rootReadmePath, "CrÃƒÂ©er le fichier README.md ÃƒÂ  la racine")) {
             Set-Content -Path $rootReadmePath -Value $rootReadmeContent -Encoding UTF8
-            Write-Log "Fichier README.md crÃ©Ã© Ã  la racine : $rootReadmePath" -Color Green
+            Write-Log "Fichier README.md crÃƒÂ©ÃƒÂ© ÃƒÂ  la racine : $rootReadmePath" -Color Green
         }
     }
 } else {
-    Write-Log "Le fichier README.md existe dÃ©jÃ  Ã  la racine : $rootReadmePath" -Color Gray
+    Write-Log "Le fichier README.md existe dÃƒÂ©jÃƒÂ  ÃƒÂ  la racine : $rootReadmePath" -Color Gray
 }
 
-# RÃ©sumÃ© de l'organisation
-Write-Log "Organisation terminÃ©e." -Color Cyan
-Write-Log "La structure du dÃ©pÃ´t a Ã©tÃ© rÃ©organisÃ©e selon une hiÃ©rarchie optimisÃ©e." -Color Cyan
+# RÃƒÂ©sumÃƒÂ© de l'organisation
+Write-Log "Organisation terminÃƒÂ©e." -Color Cyan
+Write-Log "La structure du dÃƒÂ©pÃƒÂ´t a ÃƒÂ©tÃƒÂ© rÃƒÂ©organisÃƒÂ©e selon une hiÃƒÂ©rarchie optimisÃƒÂ©e." -Color Cyan
 Write-Log "Les dossiers racine sont maintenant : $($rootFolders -join ', ')" -Color Cyan
 
 if ($LogFile) {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Organisation terminÃ©e le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Organisation terminÃƒÂ©e le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "Dossiers racine : $($rootFolders -join ', ')" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     
-    Write-Host "Log d'organisation enregistrÃ© dans : $LogFile" -ForegroundColor Cyan
+    Write-Host "Log d'organisation enregistrÃƒÂ© dans : $LogFile" -ForegroundColor Cyan
 }
 
 # Avertissement final
-Write-Log "IMPORTANT : Ce script a copiÃ© les fichiers vers la nouvelle structure, mais n'a pas supprimÃ© les fichiers originaux." -Color Yellow
-Write-Log "Une fois que vous avez vÃ©rifiÃ© que tout fonctionne correctement, vous pouvez exÃ©cuter un script de nettoyage pour supprimer les fichiers originaux." -Color Yellow
+Write-Log "IMPORTANT : Ce script a copiÃƒÂ© les fichiers vers la nouvelle structure, mais n'a pas supprimÃƒÂ© les fichiers originaux." -Color Yellow
+Write-Log "Une fois que vous avez vÃƒÂ©rifiÃƒÂ© que tout fonctionne correctement, vous pouvez exÃƒÂ©cuter un script de nettoyage pour supprimer les fichiers originaux." -Color Yellow
 
 
 

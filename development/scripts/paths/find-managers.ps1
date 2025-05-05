@@ -1,10 +1,10 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param (
     [Parameter(Mandatory = $false)]
     [string]$ProjectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 )
 
-# Vérifier que le dossier de projet existe
+# VÃ©rifier que le dossier de projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
     Write-Error "Le dossier de projet est introuvable : $ProjectRoot"
     exit 1
@@ -13,7 +13,7 @@ if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
 # Rechercher tous les fichiers de gestionnaires
 Write-Host "Recherche des gestionnaires dans $ProjectRoot..." -ForegroundColor Cyan
 
-# Rechercher dans les dossiers spécifiques
+# Rechercher dans les dossiers spÃ©cifiques
 $searchPaths = @(
     "development\managers",
     "development\scripts",
@@ -43,8 +43,8 @@ foreach ($searchPath in $searchPaths) {
     }
 }
 
-# Afficher les résultats
-Write-Host "Gestionnaires trouvés : $($managers.Count)" -ForegroundColor Green
+# Afficher les rÃ©sultats
+Write-Host "Gestionnaires trouvÃ©s : $($managers.Count)" -ForegroundColor Green
 Write-Host ""
 
 $results = @()
@@ -63,18 +63,18 @@ foreach ($manager in $managers) {
     Write-Host "$managerName : $relativePath" -ForegroundColor Yellow
 }
 
-# Enregistrer les résultats dans un fichier
+# Enregistrer les rÃ©sultats dans un fichier
 $outputPath = Join-Path -Path $ProjectRoot -ChildPath "development\scripts\maintenance\managers.csv"
 $results | Export-Csv -Path $outputPath -NoTypeInformation -Encoding UTF8
 
 Write-Host ""
-Write-Host "Résultats enregistrés dans : $outputPath" -ForegroundColor Green
+Write-Host "RÃ©sultats enregistrÃ©s dans : $outputPath" -ForegroundColor Green
 
 # Rechercher les fichiers de configuration des gestionnaires
 Write-Host ""
 Write-Host "Recherche des fichiers de configuration des gestionnaires..." -ForegroundColor Cyan
 
-# Rechercher dans les dossiers spécifiques
+# Rechercher dans les dossiers spÃ©cifiques
 $configSearchPaths = @(
     "development\managers",
     "development\config",
@@ -104,8 +104,8 @@ foreach ($searchPath in $configSearchPaths) {
     }
 }
 
-# Afficher les résultats
-Write-Host "Fichiers de configuration trouvés : $($configFiles.Count)" -ForegroundColor Green
+# Afficher les rÃ©sultats
+Write-Host "Fichiers de configuration trouvÃ©s : $($configFiles.Count)" -ForegroundColor Green
 Write-Host ""
 
 $configResults = @()
@@ -123,14 +123,14 @@ foreach ($configFile in $configFiles) {
     Write-Host "$configName : $relativePath" -ForegroundColor Yellow
 }
 
-# Enregistrer les résultats dans un fichier
+# Enregistrer les rÃ©sultats dans un fichier
 $configOutputPath = Join-Path -Path $ProjectRoot -ChildPath "development\scripts\maintenance\manager-configs.csv"
 $configResults | Export-Csv -Path $configOutputPath -NoTypeInformation -Encoding UTF8
 
 Write-Host ""
-Write-Host "Résultats des configurations enregistrés dans : $configOutputPath" -ForegroundColor Green
+Write-Host "RÃ©sultats des configurations enregistrÃ©s dans : $configOutputPath" -ForegroundColor Green
 
-# Retourner les résultats
+# Retourner les rÃ©sultats
 return @{
     Managers    = $results
     ConfigFiles = $configResults

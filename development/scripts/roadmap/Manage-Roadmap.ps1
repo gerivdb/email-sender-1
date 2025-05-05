@@ -1,5 +1,5 @@
-# Manage-Roadmap.ps1
-# Script principal pour gérer la roadmap et ses fonctionnalités
+﻿# Manage-Roadmap.ps1
+# Script principal pour gÃ©rer la roadmap et ses fonctionnalitÃ©s
 
 [CmdletBinding()]
 param (
@@ -65,7 +65,7 @@ function Show-Help {
 GESTION DE LA ROADMAP - EMAIL_SENDER_1
 ======================================
 
-Ce script permet de gérer la roadmap du projet EMAIL_SENDER_1.
+Ce script permet de gÃ©rer la roadmap du projet EMAIL_SENDER_1.
 
 SYNTAXE
 -------
@@ -73,43 +73,43 @@ SYNTAXE
 
 ACTIONS
 -------
-    Split    : Sépare la roadmap en fichiers actif et complété
-    Update   : Met à jour le statut d'une tâche
+    Split    : SÃ©pare la roadmap en fichiers actif et complÃ©tÃ©
+    Update   : Met Ã  jour le statut d'une tÃ¢che
     Navigate : Navigue dans la roadmap
-    Report   : Génère un rapport d'avancement
+    Report   : GÃ©nÃ¨re un rapport d'avancement
     Help     : Affiche cette aide
 
 OPTIONS COMMUNES
 ---------------
-    -Force          : Force l'écrasement des fichiers existants
-    -OpenInEditor   : Ouvre le fichier dans l'éditeur après l'opération
+    -Force          : Force l'Ã©crasement des fichiers existants
+    -OpenInEditor   : Ouvre le fichier dans l'Ã©diteur aprÃ¨s l'opÃ©ration
 
 OPTIONS POUR SPLIT
 -----------------
-    -ArchiveSections : Archive également les sections complétées
+    -ArchiveSections : Archive Ã©galement les sections complÃ©tÃ©es
 
 OPTIONS POUR UPDATE
 -----------------
-    -TaskId <id>           : Identifiant de la tâche à mettre à jour
+    -TaskId <id>           : Identifiant de la tÃ¢che Ã  mettre Ã  jour
     -Status <statut>       : Nouveau statut (Complete ou Incomplete)
 
 OPTIONS POUR NAVIGATE
 -------------------
     -NavigateMode <mode>   : Mode de navigation (Active, Completed, All, Search)
-    -DetailLevel <niveau>  : Niveau de détail (1-6)
-    -SearchTerm <terme>    : Terme à rechercher (pour le mode Search)
-    -SectionId <id>        : Identifiant de la section à afficher
+    -DetailLevel <niveau>  : Niveau de dÃ©tail (1-6)
+    -SearchTerm <terme>    : Terme Ã  rechercher (pour le mode Search)
+    -SectionId <id>        : Identifiant de la section Ã  afficher
 
 OPTIONS POUR REPORT
 -----------------
-    Aucune option spécifique
+    Aucune option spÃ©cifique
 
 EXEMPLES
 --------
-    # Séparer la roadmap
+    # SÃ©parer la roadmap
     .\Manage-Roadmap.ps1 -Action Split -ArchiveSections -Force
 
-    # Mettre à jour une tâche
+    # Mettre Ã  jour une tÃ¢che
     .\Manage-Roadmap.ps1 -Action Update -TaskId "1.2.3" -Status Complete
 
     # Naviguer dans la roadmap active
@@ -118,10 +118,10 @@ EXEMPLES
     # Rechercher un terme
     .\Manage-Roadmap.ps1 -Action Navigate -NavigateMode Search -SearchTerm "gestionnaire"
 
-    # Afficher une section spécifique
+    # Afficher une section spÃ©cifique
     .\Manage-Roadmap.ps1 -Action Navigate -SectionId "1.2.3"
 
-    # Générer un rapport
+    # GÃ©nÃ©rer un rapport
     .\Manage-Roadmap.ps1 -Action Report
 
 "@
@@ -138,7 +138,7 @@ $splitRoadmapScript = Join-Path -Path $PSScriptRoot -ChildPath "Split-Roadmap.ps
 $updateRoadmapStatusScript = Join-Path -Path $PSScriptRoot -ChildPath "Update-RoadmapStatus.ps1"
 $navigateRoadmapScript = Join-Path -Path $PSScriptRoot -ChildPath "Navigate-Roadmap.ps1"
 
-# Vérifier que les scripts existent
+# VÃ©rifier que les scripts existent
 $missingScripts = @()
 
 if (-not (Test-Path -Path $splitRoadmapScript)) {
@@ -155,14 +155,14 @@ if (-not (Test-Path -Path $navigateRoadmapScript)) {
 
 if ($missingScripts.Count -gt 0) {
     Write-Log "Les scripts suivants sont manquants: $($missingScripts -join ', ')" -Level Error
-    Write-Log "Veuillez vous assurer que tous les scripts sont présents dans le même dossier que ce script." -Level Error
+    Write-Log "Veuillez vous assurer que tous les scripts sont prÃ©sents dans le mÃªme dossier que ce script." -Level Error
     return
 }
 
-# Exécution de l'action demandée
+# ExÃ©cution de l'action demandÃ©e
 switch ($Action) {
     "Split" {
-        Write-Log "Séparation de la roadmap..." -Level Info
+        Write-Log "SÃ©paration de la roadmap..." -Level Info
 
         $params = @{
             SourceRoadmapPath        = $sourceRoadmapPath
@@ -188,7 +188,7 @@ switch ($Action) {
     }
     "Update" {
         if ([string]::IsNullOrEmpty($TaskId)) {
-            Write-Log "L'identifiant de la tâche est requis pour l'action Update." -Level Error
+            Write-Log "L'identifiant de la tÃ¢che est requis pour l'action Update." -Level Error
             return
         }
 
@@ -197,7 +197,7 @@ switch ($Action) {
             return
         }
 
-        Write-Log "Mise à jour du statut de la tâche ${TaskId}: ${Status}" -Level Info
+        Write-Log "Mise Ã  jour du statut de la tÃ¢che ${TaskId}: ${Status}" -Level Info
 
         $params = @{
             ActiveRoadmapPath    = $activeRoadmapPath
@@ -241,7 +241,7 @@ switch ($Action) {
         & $navigateRoadmapScript @params
     }
     "Report" {
-        Write-Log "Génération du rapport d'avancement..." -Level Info
+        Write-Log "GÃ©nÃ©ration du rapport d'avancement..." -Level Info
 
         $params = @{
             ActiveRoadmapPath    = $activeRoadmapPath

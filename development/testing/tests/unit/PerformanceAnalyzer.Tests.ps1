@@ -1,12 +1,12 @@
-# Tests unitaires pour le module PerformanceAnalyzer
+﻿# Tests unitaires pour le module PerformanceAnalyzer
 # Utilise Pester 5.x
 
 BeforeAll {
-    # Chemin du module à tester
+    # Chemin du module Ã  tester
     $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\PerformanceAnalyzer.psm1"
     $MetricsCollectorPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\MetricsCollector.psm1"
 
-    # Vérifier si les modules existent
+    # VÃ©rifier si les modules existent
     $ModuleExists = Test-Path -Path $ModulePath
     $CollectorExists = Test-Path -Path $MetricsCollectorPath
 
@@ -23,7 +23,7 @@ BeforeAll {
         Import-Module -Name $MetricsCollectorPath -Force -Verbose
     }
 
-    # Créer des données de test
+    # CrÃ©er des donnÃ©es de test
     $TestMetrics = @{
         CPU         = @{
             Usage         = 45.5
@@ -190,7 +190,7 @@ BeforeAll {
         Timestamp   = Get-Date
     }
 
-    # Créer des mocks pour les fonctions externes
+    # CrÃ©er des mocks pour les fonctions externes
     function Get-CPUMetrics { return $TestMetrics.CPU }
     function Get-MemoryMetrics { return $TestMetrics.Memory }
     function Get-DiskMetrics { return $TestMetrics.Disk }
@@ -569,28 +569,28 @@ Context "Measure-CPUMetrics Tests" {
     }
 
     It "Should analyze CPU metrics correctly" {
-        # Créer un tableau de métriques CPU pour simuler plusieurs échantillons
+        # CrÃ©er un tableau de mÃ©triques CPU pour simuler plusieurs Ã©chantillons
         $cpuMetrics = @($TestMetrics.CPU, $TestMetrics.CPU, $TestMetrics.CPU)
 
         # Modifier quelques valeurs pour simuler des variations
-        $cpuMetrics[1].Usage = 82.5  # Dépasse le seuil
-        $cpuMetrics[1].QueueLength = 6  # Dépasse le seuil
-        $cpuMetrics[2].InterruptTime = 12.0  # Dépasse le seuil
+        $cpuMetrics[1].Usage = 82.5  # DÃ©passe le seuil
+        $cpuMetrics[1].QueueLength = 6  # DÃ©passe le seuil
+        $cpuMetrics[2].InterruptTime = 12.0  # DÃ©passe le seuil
 
         $result = Measure-CPUMetrics -CPUMetrics $cpuMetrics
 
-        # Vérifier la structure du résultat
+        # VÃ©rifier la structure du rÃ©sultat
         $result | Should -Not -BeNullOrEmpty
         $result.Usage | Should -Not -BeNullOrEmpty
         $result.Usage.Average | Should -BeOfType [double]
         $result.Usage.Maximum | Should -BeOfType [double]
-        $result.Usage.Trend | Should -BeIn @("Croissante", "Décroissante", "Stable")
+        $result.Usage.Trend | Should -BeIn @("Croissante", "DÃ©croissante", "Stable")
 
-        # Vérifier les anomalies
+        # VÃ©rifier les anomalies
         $result.Anomalies | Should -Not -BeNullOrEmpty
         $result.Anomalies.Count | Should -BeGreaterThan 0
 
-        # Vérifier les recommandations
+        # VÃ©rifier les recommandations
         $result.Recommendations | Should -Not -BeNullOrEmpty
         $result.Recommendations.Count | Should -BeGreaterThan 0
     }
@@ -602,27 +602,27 @@ Context "Measure-MemoryMetrics Tests" {
     }
 
     It "Should analyze memory metrics correctly" {
-        # Créer un tableau de métriques mémoire pour simuler plusieurs échantillons
+        # CrÃ©er un tableau de mÃ©triques mÃ©moire pour simuler plusieurs Ã©chantillons
         $memoryMetrics = @($TestMetrics.Memory, $TestMetrics.Memory, $TestMetrics.Memory)
 
         # Modifier quelques valeurs pour simuler des variations
-        $memoryMetrics[1].Usage = 87.5  # Dépasse le seuil
+        $memoryMetrics[1].Usage = 87.5  # DÃ©passe le seuil
         $memoryMetrics[1].Available.MB = 450  # Sous le seuil
-        $memoryMetrics[2].Performance.PageFaultsPersec = 1200  # Dépasse le seuil
+        $memoryMetrics[2].Performance.PageFaultsPersec = 1200  # DÃ©passe le seuil
 
         $result = Measure-MemoryMetrics -MemoryMetrics $memoryMetrics
 
-        # Vérifier la structure du résultat
+        # VÃ©rifier la structure du rÃ©sultat
         $result | Should -Not -BeNullOrEmpty
         $result.Usage | Should -Not -BeNullOrEmpty
         $result.Available | Should -Not -BeNullOrEmpty
         $result.PageFaults | Should -Not -BeNullOrEmpty
 
-        # Vérifier les anomalies
+        # VÃ©rifier les anomalies
         $result.Anomalies | Should -Not -BeNullOrEmpty
         $result.Anomalies.Count | Should -BeGreaterThan 0
 
-        # Vérifier les recommandations
+        # VÃ©rifier les recommandations
         $result.Recommendations | Should -Not -BeNullOrEmpty
         $result.Recommendations.Count | Should -BeGreaterThan 0
     }
@@ -634,28 +634,28 @@ Context "Measure-DiskMetrics Tests" {
     }
 
     It "Should analyze disk metrics correctly" {
-        # Créer un tableau de métriques disque pour simuler plusieurs échantillons
+        # CrÃ©er un tableau de mÃ©triques disque pour simuler plusieurs Ã©chantillons
         $diskMetrics = @($TestMetrics.Disk, $TestMetrics.Disk, $TestMetrics.Disk)
 
         # Modifier quelques valeurs pour simuler des variations
-        $diskMetrics[1].Usage.Average = 92.5  # Dépasse le seuil
-        $diskMetrics[1].Performance.Total.ResponseTimeMS = 25.0  # Dépasse le seuil
-        $diskMetrics[2].Performance.Total.QueueLength = 3  # Dépasse le seuil
+        $diskMetrics[1].Usage.Average = 92.5  # DÃ©passe le seuil
+        $diskMetrics[1].Performance.Total.ResponseTimeMS = 25.0  # DÃ©passe le seuil
+        $diskMetrics[2].Performance.Total.QueueLength = 3  # DÃ©passe le seuil
 
         $result = Measure-DiskMetrics -DiskMetrics $diskMetrics
 
-        # Vérifier la structure du résultat
+        # VÃ©rifier la structure du rÃ©sultat
         $result | Should -Not -BeNullOrEmpty
         $result.Usage | Should -Not -BeNullOrEmpty
         $result.IOPS | Should -Not -BeNullOrEmpty
         $result.ResponseTime | Should -Not -BeNullOrEmpty
         $result.QueueLength | Should -Not -BeNullOrEmpty
 
-        # Vérifier les anomalies
+        # VÃ©rifier les anomalies
         $result.Anomalies | Should -Not -BeNullOrEmpty
         $result.Anomalies.Count | Should -BeGreaterThan 0
 
-        # Vérifier les recommandations
+        # VÃ©rifier les recommandations
         $result.Recommendations | Should -Not -BeNullOrEmpty
         $result.Recommendations.Count | Should -BeGreaterThan 0
     }
@@ -667,28 +667,28 @@ Context "Measure-NetworkMetrics Tests" {
     }
 
     It "Should analyze network metrics correctly" {
-        # Créer un tableau de métriques réseau pour simuler plusieurs échantillons
+        # CrÃ©er un tableau de mÃ©triques rÃ©seau pour simuler plusieurs Ã©chantillons
         $networkMetrics = @($TestMetrics.Network, $TestMetrics.Network, $TestMetrics.Network)
 
         # Modifier quelques valeurs pour simuler des variations
-        $networkMetrics[1].BandwidthUsage = 85.5  # Dépasse le seuil
-        $networkMetrics[1].Latency = 120.0  # Dépasse le seuil
-        $networkMetrics[2].Performance.ErrorRate = 0.15  # Dépasse le seuil
+        $networkMetrics[1].BandwidthUsage = 85.5  # DÃ©passe le seuil
+        $networkMetrics[1].Latency = 120.0  # DÃ©passe le seuil
+        $networkMetrics[2].Performance.ErrorRate = 0.15  # DÃ©passe le seuil
 
         $result = Measure-NetworkMetrics -NetworkMetrics $networkMetrics
 
-        # Vérifier la structure du résultat
+        # VÃ©rifier la structure du rÃ©sultat
         $result | Should -Not -BeNullOrEmpty
         $result.BandwidthUsage | Should -Not -BeNullOrEmpty
         $result.Throughput | Should -Not -BeNullOrEmpty
         $result.Latency | Should -Not -BeNullOrEmpty
         $result.ErrorRate | Should -Not -BeNullOrEmpty
 
-        # Vérifier les anomalies
+        # VÃ©rifier les anomalies
         $result.Anomalies | Should -Not -BeNullOrEmpty
         $result.Anomalies.Count | Should -BeGreaterThan 0
 
-        # Vérifier les recommandations
+        # VÃ©rifier les recommandations
         $result.Recommendations | Should -Not -BeNullOrEmpty
         $result.Recommendations.Count | Should -BeGreaterThan 0
     }
@@ -700,7 +700,7 @@ Context "Measure-Metrics Tests" {
     }
 
     It "Should analyze all metrics correctly" {
-        # Créer un tableau de métriques pour simuler plusieurs échantillons
+        # CrÃ©er un tableau de mÃ©triques pour simuler plusieurs Ã©chantillons
         $metrics = @(
             @{
                 CPU       = $TestMetrics.CPU
@@ -726,25 +726,25 @@ Context "Measure-Metrics Tests" {
         )
 
         # Modifier quelques valeurs pour simuler des variations
-        $metrics[1].CPU.Usage = 85.0  # Dépasse le seuil
-        $metrics[1].Memory.Usage = 90.0  # Dépasse le seuil
-        $metrics[2].Disk.Usage.Average = 95.0  # Dépasse le seuil
-        $metrics[2].Network.BandwidthUsage = 85.0  # Dépasse le seuil
+        $metrics[1].CPU.Usage = 85.0  # DÃ©passe le seuil
+        $metrics[1].Memory.Usage = 90.0  # DÃ©passe le seuil
+        $metrics[2].Disk.Usage.Average = 95.0  # DÃ©passe le seuil
+        $metrics[2].Network.BandwidthUsage = 85.0  # DÃ©passe le seuil
 
         $result = Measure-Metrics -Metrics $metrics
 
-        # Vérifier la structure du résultat
+        # VÃ©rifier la structure du rÃ©sultat
         $result | Should -Not -BeNullOrEmpty
         $result.CPU | Should -Not -BeNullOrEmpty
         $result.Memory | Should -Not -BeNullOrEmpty
         $result.Disk | Should -Not -BeNullOrEmpty
         $result.Network | Should -Not -BeNullOrEmpty
 
-        # Vérifier les problèmes
+        # VÃ©rifier les problÃ¨mes
         $result.Issues | Should -Not -BeNullOrEmpty
         $result.Issues.Count | Should -BeGreaterThan 0
 
-        # Vérifier les recommandations
+        # VÃ©rifier les recommandations
         $result.Recommendations | Should -Not -BeNullOrEmpty
         $result.Recommendations.Count | Should -BeGreaterThan 0
     }
@@ -764,7 +764,7 @@ Context "Get-MetricTrend Tests" {
     It "Should calculate trend correctly for decreasing values" {
         $values = @(50, 40, 30, 20, 10)
         $result = Get-MetricTrend -Values $values
-        $result | Should -Be "Décroissante"
+        $result | Should -Be "DÃ©croissante"
     }
 
     It "Should calculate trend correctly for stable values" {
@@ -787,7 +787,7 @@ Context "Get-MetricTrend Tests" {
 }
 
 AfterAll {
-    # Nettoyer les modules importés
+    # Nettoyer les modules importÃ©s
     if ($ModuleExists) {
         Remove-Module -Name "PerformanceAnalyzer" -Force -ErrorAction SilentlyContinue
     }

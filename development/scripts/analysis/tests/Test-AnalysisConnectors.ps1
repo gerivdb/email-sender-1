@@ -1,12 +1,12 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Teste les connecteurs d'analyse pour vÃ©rifier leur bon fonctionnement.
+    Teste les connecteurs d'analyse pour vÃƒÂ©rifier leur bon fonctionnement.
 
 .DESCRIPTION
     Ce script teste les connecteurs d'analyse (PSScriptAnalyzer, ESLint, Pylint, SonarQube)
-    pour vÃ©rifier qu'ils fonctionnent correctement et qu'ils produisent des rÃ©sultats
-    au format unifiÃ©.
+    pour vÃƒÂ©rifier qu'ils fonctionnent correctement et qu'ils produisent des rÃƒÂ©sultats
+    au format unifiÃƒÂ©.
 
 .PARAMETER TestPSScriptAnalyzer
     Tester le connecteur PSScriptAnalyzer.
@@ -24,7 +24,7 @@
     Tester tous les connecteurs disponibles.
 
 .PARAMETER OutputDirectory
-    RÃ©pertoire de sortie pour les rÃ©sultats des tests.
+    RÃƒÂ©pertoire de sortie pour les rÃƒÂ©sultats des tests.
 
 .EXAMPLE
     .\Test-AnalysisConnectors.ps1 -TestPSScriptAnalyzer -OutputDirectory "C:\Tests"
@@ -70,14 +70,14 @@ else {
     throw "Module AnalysisTools.psm1 introuvable."
 }
 
-# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
+# CrÃƒÂ©er le rÃƒÂ©pertoire de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputDirectory -PathType Container)) {
     try {
         New-Item -Path $OutputDirectory -ItemType Directory -Force | Out-Null
-        Write-Verbose "RÃ©pertoire de sortie '$OutputDirectory' crÃ©Ã©."
+        Write-Verbose "RÃƒÂ©pertoire de sortie '$OutputDirectory' crÃƒÂ©ÃƒÂ©."
     }
     catch {
-        Write-Error "Impossible de crÃ©er le rÃ©pertoire de sortie '$OutputDirectory': $_"
+        Write-Error "Impossible de crÃƒÂ©er le rÃƒÂ©pertoire de sortie '$OutputDirectory': $_"
         return
     }
 }
@@ -92,13 +92,13 @@ function Test-PSScriptAnalyzerConnector {
     
     Write-Host "Test du connecteur PSScriptAnalyzer..." -ForegroundColor Cyan
     
-    # VÃ©rifier si PSScriptAnalyzer est disponible
+    # VÃƒÂ©rifier si PSScriptAnalyzer est disponible
     if (-not (Test-AnalysisTool -ToolName "PSScriptAnalyzer")) {
-        Write-Warning "PSScriptAnalyzer n'est pas disponible. Test ignorÃ©."
+        Write-Warning "PSScriptAnalyzer n'est pas disponible. Test ignorÃƒÂ©."
         return $false
     }
     
-    # Trouver un script PowerShell Ã  analyser
+    # Trouver un script PowerShell ÃƒÂ  analyser
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\tools\Connect-PSScriptAnalyzer.ps1"
     
     if (-not (Test-Path -Path $scriptPath -PathType Leaf)) {
@@ -106,18 +106,18 @@ function Test-PSScriptAnalyzerConnector {
         return $false
     }
     
-    # ExÃ©cuter l'analyse
+    # ExÃƒÂ©cuter l'analyse
     $outputPath = Join-Path -Path $OutputDirectory -ChildPath "pssa-results.json"
     
     try {
         & (Join-Path -Path $PSScriptRoot -ChildPath "..\development\tools\Connect-PSScriptAnalyzer.ps1") -FilePath $scriptPath -OutputPath $outputPath
         
         if (Test-Path -Path $outputPath -PathType Leaf) {
-            Write-Host "Test PSScriptAnalyzer rÃ©ussi. RÃ©sultats enregistrÃ©s dans: $outputPath" -ForegroundColor Green
+            Write-Host "Test PSScriptAnalyzer rÃƒÂ©ussi. RÃƒÂ©sultats enregistrÃƒÂ©s dans: $outputPath" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Error "Ã‰chec du test PSScriptAnalyzer. Fichier de rÃ©sultats non crÃ©Ã©."
+            Write-Error "Ãƒâ€°chec du test PSScriptAnalyzer. Fichier de rÃƒÂ©sultats non crÃƒÂ©ÃƒÂ©."
             return $false
         }
     }
@@ -137,34 +137,34 @@ function Test-ESLintConnector {
     
     Write-Host "Test du connecteur ESLint..." -ForegroundColor Cyan
     
-    # VÃ©rifier si ESLint est disponible
+    # VÃƒÂ©rifier si ESLint est disponible
     if (-not (Test-AnalysisTool -ToolName "ESLint")) {
-        Write-Warning "ESLint n'est pas disponible. Test ignorÃ©."
+        Write-Warning "ESLint n'est pas disponible. Test ignorÃƒÂ©."
         return $false
     }
     
-    # Trouver un fichier JavaScript Ã  analyser
+    # Trouver un fichier JavaScript ÃƒÂ  analyser
     $jsFiles = Get-ChildItem -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\..\..") -Include "*.js" -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 1
     
     if ($null -eq $jsFiles) {
-        Write-Warning "Aucun fichier JavaScript trouvÃ© pour le test."
+        Write-Warning "Aucun fichier JavaScript trouvÃƒÂ© pour le test."
         return $false
     }
     
     $jsPath = $jsFiles.FullName
     
-    # ExÃ©cuter l'analyse
+    # ExÃƒÂ©cuter l'analyse
     $outputPath = Join-Path -Path $OutputDirectory -ChildPath "eslint-results.json"
     
     try {
         & (Join-Path -Path $PSScriptRoot -ChildPath "..\development\tools\Connect-ESLint.ps1") -FilePath $jsPath -OutputPath $outputPath
         
         if (Test-Path -Path $outputPath -PathType Leaf) {
-            Write-Host "Test ESLint rÃ©ussi. RÃ©sultats enregistrÃ©s dans: $outputPath" -ForegroundColor Green
+            Write-Host "Test ESLint rÃƒÂ©ussi. RÃƒÂ©sultats enregistrÃƒÂ©s dans: $outputPath" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Error "Ã‰chec du test ESLint. Fichier de rÃ©sultats non crÃ©Ã©."
+            Write-Error "Ãƒâ€°chec du test ESLint. Fichier de rÃƒÂ©sultats non crÃƒÂ©ÃƒÂ©."
             return $false
         }
     }
@@ -184,34 +184,34 @@ function Test-PylintConnector {
     
     Write-Host "Test du connecteur Pylint..." -ForegroundColor Cyan
     
-    # VÃ©rifier si Pylint est disponible
+    # VÃƒÂ©rifier si Pylint est disponible
     if (-not (Test-AnalysisTool -ToolName "Pylint")) {
-        Write-Warning "Pylint n'est pas disponible. Test ignorÃ©."
+        Write-Warning "Pylint n'est pas disponible. Test ignorÃƒÂ©."
         return $false
     }
     
-    # Trouver un fichier Python Ã  analyser
+    # Trouver un fichier Python ÃƒÂ  analyser
     $pyFiles = Get-ChildItem -Path (Join-Path -Path $PSScriptRoot -ChildPath "..\..\..") -Include "*.py" -Recurse -File -ErrorAction SilentlyContinue | Select-Object -First 1
     
     if ($null -eq $pyFiles) {
-        Write-Warning "Aucun fichier Python trouvÃ© pour le test."
+        Write-Warning "Aucun fichier Python trouvÃƒÂ© pour le test."
         return $false
     }
     
     $pyPath = $pyFiles.FullName
     
-    # ExÃ©cuter l'analyse
+    # ExÃƒÂ©cuter l'analyse
     $outputPath = Join-Path -Path $OutputDirectory -ChildPath "pylint-results.json"
     
     try {
         & (Join-Path -Path $PSScriptRoot -ChildPath "..\development\tools\Connect-Pylint.ps1") -FilePath $pyPath -OutputPath $outputPath
         
         if (Test-Path -Path $outputPath -PathType Leaf) {
-            Write-Host "Test Pylint rÃ©ussi. RÃ©sultats enregistrÃ©s dans: $outputPath" -ForegroundColor Green
+            Write-Host "Test Pylint rÃƒÂ©ussi. RÃƒÂ©sultats enregistrÃƒÂ©s dans: $outputPath" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Error "Ã‰chec du test Pylint. Fichier de rÃ©sultats non crÃ©Ã©."
+            Write-Error "Ãƒâ€°chec du test Pylint. Fichier de rÃƒÂ©sultats non crÃƒÂ©ÃƒÂ©."
             return $false
         }
     }
@@ -221,7 +221,7 @@ function Test-PylintConnector {
     }
 }
 
-# Fonction pour tester la fusion des rÃ©sultats
+# Fonction pour tester la fusion des rÃƒÂ©sultats
 function Test-ResultsMerging {
     [CmdletBinding()]
     param (
@@ -229,17 +229,17 @@ function Test-ResultsMerging {
         [string]$OutputDirectory
     )
     
-    Write-Host "Test de la fusion des rÃ©sultats..." -ForegroundColor Cyan
+    Write-Host "Test de la fusion des rÃƒÂ©sultats..." -ForegroundColor Cyan
     
-    # VÃ©rifier s'il y a des fichiers de rÃ©sultats Ã  fusionner
+    # VÃƒÂ©rifier s'il y a des fichiers de rÃƒÂ©sultats ÃƒÂ  fusionner
     $resultFiles = Get-ChildItem -Path $OutputDirectory -Filter "*-results.json" -File
     
     if ($resultFiles.Count -lt 2) {
-        Write-Warning "Pas assez de fichiers de rÃ©sultats pour tester la fusion (minimum 2 requis)."
+        Write-Warning "Pas assez de fichiers de rÃƒÂ©sultats pour tester la fusion (minimum 2 requis)."
         return $false
     }
     
-    # ExÃ©cuter la fusion
+    # ExÃƒÂ©cuter la fusion
     $outputPath = Join-Path -Path $OutputDirectory -ChildPath "merged-results.json"
     $htmlPath = Join-Path -Path $OutputDirectory -ChildPath "merged-results.html"
     
@@ -251,11 +251,11 @@ function Test-ResultsMerging {
         $success = (Test-Path -Path $outputPath -PathType Leaf) -and (Test-Path -Path $htmlPath -PathType Leaf)
         
         if ($success) {
-            Write-Host "Test de fusion rÃ©ussi. RÃ©sultats enregistrÃ©s dans: $outputPath et $htmlPath" -ForegroundColor Green
+            Write-Host "Test de fusion rÃƒÂ©ussi. RÃƒÂ©sultats enregistrÃƒÂ©s dans: $outputPath et $htmlPath" -ForegroundColor Green
             return $true
         }
         else {
-            Write-Error "Ã‰chec du test de fusion. Fichiers de rÃ©sultats non crÃ©Ã©s."
+            Write-Error "Ãƒâ€°chec du test de fusion. Fichiers de rÃƒÂ©sultats non crÃƒÂ©ÃƒÂ©s."
             return $false
         }
     }
@@ -265,10 +265,10 @@ function Test-ResultsMerging {
     }
 }
 
-# ExÃ©cuter les tests
+# ExÃƒÂ©cuter les tests
 $testResults = @{}
 
-# DÃ©terminer quels tests exÃ©cuter
+# DÃƒÂ©terminer quels tests exÃƒÂ©cuter
 if ($TestAll) {
     $TestPSScriptAnalyzer = $true
     $TestESLint = $true
@@ -276,7 +276,7 @@ if ($TestAll) {
     $TestSonarQube = $true
 }
 
-# ExÃ©cuter les tests sÃ©lectionnÃ©s
+# ExÃƒÂ©cuter les tests sÃƒÂ©lectionnÃƒÂ©s
 if ($TestPSScriptAnalyzer) {
     $testResults["PSScriptAnalyzer"] = Test-PSScriptAnalyzerConnector -OutputDirectory $OutputDirectory
 }
@@ -289,22 +289,22 @@ if ($TestPylint) {
     $testResults["Pylint"] = Test-PylintConnector -OutputDirectory $OutputDirectory
 }
 
-# Tester la fusion des rÃ©sultats si au moins deux tests ont rÃ©ussi
+# Tester la fusion des rÃƒÂ©sultats si au moins deux tests ont rÃƒÂ©ussi
 $successfulTests = ($testResults.Values | Where-Object { $_ -eq $true }).Count
 if ($successfulTests -ge 2) {
     $testResults["Fusion"] = Test-ResultsMerging -OutputDirectory $OutputDirectory
 }
 
-# Afficher un rÃ©sumÃ© des tests
-Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Cyan
+# Afficher un rÃƒÂ©sumÃƒÂ© des tests
+Write-Host "`nRÃƒÂ©sumÃƒÂ© des tests:" -ForegroundColor Cyan
 
 foreach ($test in $testResults.Keys) {
     $result = $testResults[$test]
-    $resultText = if ($result) { "RÃ©ussi" } else { "Ã‰chouÃ©" }
+    $resultText = if ($result) { "RÃƒÂ©ussi" } else { "Ãƒâ€°chouÃƒÂ©" }
     $resultColor = if ($result) { "Green" } else { "Red" }
     
     Write-Host "  - $test : $resultText" -ForegroundColor $resultColor
 }
 
-# Afficher le chemin des rÃ©sultats
-Write-Host "`nLes rÃ©sultats des tests sont disponibles dans: $OutputDirectory" -ForegroundColor Cyan
+# Afficher le chemin des rÃƒÂ©sultats
+Write-Host "`nLes rÃƒÂ©sultats des tests sont disponibles dans: $OutputDirectory" -ForegroundColor Cyan

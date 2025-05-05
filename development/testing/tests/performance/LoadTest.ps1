@@ -1,21 +1,21 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Test de charge pour les modules du projet.
 .DESCRIPTION
-    Ce script exécute des tests de charge pour les différents modules du projet.
+    Ce script exÃ©cute des tests de charge pour les diffÃ©rents modules du projet.
 .PARAMETER ModulesToTest
-    Liste des modules à tester.
+    Liste des modules Ã  tester.
 .PARAMETER Duration
-    Durée du test de charge en secondes.
+    DurÃ©e du test de charge en secondes.
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les résultats.
+    Chemin du fichier de sortie pour les rÃ©sultats.
 .EXAMPLE
     .\LoadTest.ps1 -ModulesToTest @("CycleDetector", "InputSegmentation", "PredictiveCache", "ParallelProcessing") -Duration 60
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-19
+    Date de crÃ©ation: 2025-05-19
 #>
 
 [CmdletBinding()]
@@ -30,7 +30,7 @@ param (
     [string]$OutputPath = ".\reports\performance\load_test_results.json"
 )
 
-# Fonction pour exécuter un test de charge
+# Fonction pour exÃ©cuter un test de charge
 function Start-LoadTest {
     [CmdletBinding()]
     param (
@@ -51,7 +51,7 @@ function Start-LoadTest {
     $successCount = 0
     $failureCount = 0
     
-    # Créer un runspace pool
+    # CrÃ©er un runspace pool
     $sessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
     $runspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $sessionState, $Host)
     $runspacePool.Open()
@@ -62,11 +62,11 @@ function Start-LoadTest {
         while ((Get-Date) -lt $endTime) {
             $iteration++
             
-            # Créer un nouveau runspace
+            # CrÃ©er un nouveau runspace
             $powershell = [powershell]::Create().AddScript($ScriptBlock)
             $powershell.RunspacePool = $runspacePool
             
-            # Démarrer l'exécution de manière asynchrone
+            # DÃ©marrer l'exÃ©cution de maniÃ¨re asynchrone
             $handle = $powershell.BeginInvoke()
             
             $runspaces += [PSCustomObject]@{
@@ -75,7 +75,7 @@ function Start-LoadTest {
                 StartTime = Get-Date
             }
             
-            # Vérifier les runspaces terminés
+            # VÃ©rifier les runspaces terminÃ©s
             $completedRunspaces = @($runspaces | Where-Object { $_.Handle.IsCompleted })
             
             foreach ($runspace in $completedRunspaces) {
@@ -112,10 +112,10 @@ function Start-LoadTest {
                 }
             }
             
-            # Mettre à jour la liste des runspaces
+            # Mettre Ã  jour la liste des runspaces
             $runspaces = @($runspaces | Where-Object { -not $_.Handle.IsCompleted })
             
-            # Petite pause pour éviter de surcharger le CPU
+            # Petite pause pour Ã©viter de surcharger le CPU
             Start-Sleep -Milliseconds 100
         }
         
@@ -157,10 +157,10 @@ function Start-LoadTest {
                 }
             }
             
-            # Mettre à jour la liste des runspaces
+            # Mettre Ã  jour la liste des runspaces
             $runspaces = @($runspaces | Where-Object { -not $_.Handle.IsCompleted })
             
-            # Petite pause pour éviter de surcharger le CPU
+            # Petite pause pour Ã©viter de surcharger le CPU
             Start-Sleep -Milliseconds 100
         }
     }
@@ -196,26 +196,26 @@ function Start-LoadTest {
     }
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Résultats globaux
+# RÃ©sultats globaux
 $loadTestResults = @{}
 
 # Tests pour CycleDetector
 if ($ModulesToTest -contains "CycleDetector") {
-    Write-Host "Exécution du test de charge pour CycleDetector..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution du test de charge pour CycleDetector..." -ForegroundColor Cyan
     
     # Importer le module
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\CycleDetector.psm1"
     Import-Module $modulePath -Force
     
-    # Test de charge pour la détection de cycles
+    # Test de charge pour la dÃ©tection de cycles
     $cycleDetectorTest = Start-LoadTest -ScriptBlock {
-        # Créer un graphe aléatoire
+        # CrÃ©er un graphe alÃ©atoire
         $graphSize = Get-Random -Minimum 10 -Maximum 100
         $graph = @{}
         
@@ -230,7 +230,7 @@ if ($ModulesToTest -contains "CycleDetector") {
             $graph["Node$i"] = $connections
         }
         
-        # Détecter les cycles
+        # DÃ©tecter les cycles
         Detect-Cycle -Graph $graph
     } -Duration $Duration
     
@@ -239,7 +239,7 @@ if ($ModulesToTest -contains "CycleDetector") {
 
 # Tests pour InputSegmentation
 if ($ModulesToTest -contains "InputSegmentation") {
-    Write-Host "Exécution du test de charge pour InputSegmentation..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution du test de charge pour InputSegmentation..." -ForegroundColor Cyan
     
     # Importer le module
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\InputSegmentation.psm1"
@@ -250,7 +250,7 @@ if ($ModulesToTest -contains "InputSegmentation") {
     
     # Test de charge pour la segmentation de texte
     $inputSegmentationTest = Start-LoadTest -ScriptBlock {
-        # Créer un texte aléatoire
+        # CrÃ©er un texte alÃ©atoire
         $textSize = Get-Random -Minimum 5 -Maximum 50
         $text = "A" * ($textSize * 1KB)
         
@@ -263,13 +263,13 @@ if ($ModulesToTest -contains "InputSegmentation") {
 
 # Tests pour PredictiveCache
 if ($ModulesToTest -contains "PredictiveCache") {
-    Write-Host "Exécution du test de charge pour PredictiveCache..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution du test de charge pour PredictiveCache..." -ForegroundColor Cyan
     
     # Importer le module
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\PredictiveCache.psm1"
     Import-Module $modulePath -Force
     
-    # Créer des dossiers temporaires
+    # CrÃ©er des dossiers temporaires
     $tempCachePath = Join-Path -Path $env:TEMP -ChildPath "cache_load_test"
     $tempModelPath = Join-Path -Path $env:TEMP -ChildPath "model_load_test"
     
@@ -284,9 +284,9 @@ if ($ModulesToTest -contains "PredictiveCache") {
     # Initialiser le module
     Initialize-PredictiveCache -Enabled $true -CachePath $tempCachePath -ModelPath $tempModelPath -MaxCacheSize 10MB -DefaultTTL 3600
     
-    # Test de charge pour le cache prédictif
+    # Test de charge pour le cache prÃ©dictif
     $predictiveCacheTest = Start-LoadTest -ScriptBlock {
-        # Opération aléatoire
+        # OpÃ©ration alÃ©atoire
         $operation = Get-Random -InputObject @("Get", "Set", "Remove")
         $key = "key-$(Get-Random -Minimum 1 -Maximum 1000)"
         
@@ -309,15 +309,15 @@ if ($ModulesToTest -contains "PredictiveCache") {
 
 # Tests pour ParallelProcessing
 if ($ModulesToTest -contains "ParallelProcessing") {
-    Write-Host "Exécution du test de charge pour ParallelProcessing..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution du test de charge pour ParallelProcessing..." -ForegroundColor Cyan
     
     # Importer le script
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\performance\Optimize-ParallelExecution.ps1"
     . $scriptPath
     
-    # Test de charge pour le traitement parallèle
+    # Test de charge pour le traitement parallÃ¨le
     $parallelProcessingTest = Start-LoadTest -ScriptBlock {
-        # Créer des données aléatoires
+        # CrÃ©er des donnÃ©es alÃ©atoires
         $dataSize = Get-Random -Minimum 10 -Maximum 100
         $data = 1..$dataSize
         
@@ -328,29 +328,29 @@ if ($ModulesToTest -contains "ParallelProcessing") {
             return $item * 2
         }
         
-        # Exécuter le traitement parallèle
+        # ExÃ©cuter le traitement parallÃ¨le
         Invoke-RunspacePoolProcessing -Data $data -ScriptBlock ${function:Test-Function} -MaxThreads 4
     } -Duration $Duration
     
     $loadTestResults.ParallelProcessing = $parallelProcessingTest
 }
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 $loadTestResults | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
 
-Write-Host "Tests de charge terminés. Résultats enregistrés dans $OutputPath" -ForegroundColor Green
+Write-Host "Tests de charge terminÃ©s. RÃ©sultats enregistrÃ©s dans $OutputPath" -ForegroundColor Green
 
-# Afficher un résumé
-Write-Host "`nRésumé des tests de charge:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests de charge:" -ForegroundColor Cyan
 
 foreach ($module in $loadTestResults.Keys) {
     Write-Host "`n$module:" -ForegroundColor Yellow
     
     $testResult = $loadTestResults.$module
     
-    Write-Host "  Durée: $($testResult.Duration) secondes" -ForegroundColor White
-    Write-Host "  Exécutions totales: $($testResult.TotalExecutions)" -ForegroundColor White
-    Write-Host "  Taux de succès: $([Math]::Round($testResult.SuccessRate, 2))%" -ForegroundColor White
-    Write-Host "  Temps d'exécution moyen: $([Math]::Round($testResult.AvgExecutionTimeMs, 2)) ms" -ForegroundColor White
-    Write-Host "  Exécutions par seconde: $([Math]::Round($testResult.ExecutionsPerSecond, 2))" -ForegroundColor White
+    Write-Host "  DurÃ©e: $($testResult.Duration) secondes" -ForegroundColor White
+    Write-Host "  ExÃ©cutions totales: $($testResult.TotalExecutions)" -ForegroundColor White
+    Write-Host "  Taux de succÃ¨s: $([Math]::Round($testResult.SuccessRate, 2))%" -ForegroundColor White
+    Write-Host "  Temps d'exÃ©cution moyen: $([Math]::Round($testResult.AvgExecutionTimeMs, 2)) ms" -ForegroundColor White
+    Write-Host "  ExÃ©cutions par seconde: $([Math]::Round($testResult.ExecutionsPerSecond, 2))" -ForegroundColor White
 }

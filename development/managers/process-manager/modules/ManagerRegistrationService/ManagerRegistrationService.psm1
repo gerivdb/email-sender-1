@@ -1,10 +1,10 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de service d'enregistrement des gestionnaires pour le Process Manager.
 
 .DESCRIPTION
-    Ce module fournit des fonctionnalités avancées pour l'enregistrement, la validation,
-    la gestion des dépendances et la sécurité des gestionnaires dans le Process Manager.
+    Ce module fournit des fonctionnalitÃ©s avancÃ©es pour l'enregistrement, la validation,
+    la gestion des dÃ©pendances et la sÃ©curitÃ© des gestionnaires dans le Process Manager.
 
 .NOTES
     Version: 1.0.0
@@ -13,31 +13,31 @@
 
 #region Variables globales
 
-# Chemin du fichier de configuration par défaut
+# Chemin du fichier de configuration par dÃ©faut
 $script:DefaultConfigPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "config\process-manager.config.json"
 
-# Niveau de journalisation par défaut
+# Niveau de journalisation par dÃ©faut
 $script:DefaultLogLevel = "Info"
 
-# Chemin du journal par défaut
+# Chemin du journal par dÃ©faut
 $script:DefaultLogPath = "logs/process-manager/registration-service.log"
 
 #endregion
 
-#region Fonctions privées
+#region Fonctions privÃ©es
 
 <#
 .SYNOPSIS
-    Écrit un message dans le journal.
+    Ã‰crit un message dans le journal.
 
 .DESCRIPTION
-    Cette fonction écrit un message dans le journal avec un niveau de gravité spécifié.
+    Cette fonction Ã©crit un message dans le journal avec un niveau de gravitÃ© spÃ©cifiÃ©.
 
 .PARAMETER Message
-    Le message à écrire dans le journal.
+    Le message Ã  Ã©crire dans le journal.
 
 .PARAMETER Level
-    Le niveau de gravité du message (Debug, Info, Warning, Error).
+    Le niveau de gravitÃ© du message (Debug, Info, Warning, Error).
 
 .EXAMPLE
     Write-RegistrationLog -Message "Enregistrement du gestionnaire 'ModeManager'" -Level Info
@@ -53,7 +53,7 @@ function Write-RegistrationLog {
         [string]$Level = "Info"
     )
 
-    # Définir les niveaux de journalisation
+    # DÃ©finir les niveaux de journalisation
     $logLevels = @{
         Debug = 0
         Info = 1
@@ -64,12 +64,12 @@ function Write-RegistrationLog {
     # Obtenir la configuration
     $config = Get-RegistrationConfig
 
-    # Vérifier si le niveau de journalisation est suffisant
+    # VÃ©rifier si le niveau de journalisation est suffisant
     if ($logLevels[$Level] -ge $logLevels[$config.LogLevel]) {
         $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         $logMessage = "[$timestamp] [$Level] $Message"
         
-        # Définir la couleur en fonction du niveau
+        # DÃ©finir la couleur en fonction du niveau
         $color = switch ($Level) {
             "Debug" { "Gray" }
             "Info" { "White" }
@@ -81,13 +81,13 @@ function Write-RegistrationLog {
         # Afficher le message dans la console
         Write-Host $logMessage -ForegroundColor $color
         
-        # Créer le répertoire de journaux s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de journaux s'il n'existe pas
         $logDir = Split-Path -Path $config.LogPath -Parent
         if (-not (Test-Path -Path $logDir -PathType Container)) {
             New-Item -Path $logDir -ItemType Directory -Force | Out-Null
         }
         
-        # Écrire le message dans le fichier de journal
+        # Ã‰crire le message dans le fichier de journal
         $logFile = Join-Path -Path $logDir -ChildPath "registration-service_$(Get-Date -Format 'yyyy-MM-dd').log"
         Add-Content -Path $logFile -Value $logMessage -Encoding UTF8
     }
@@ -98,10 +98,10 @@ function Write-RegistrationLog {
     Obtient la configuration du service d'enregistrement.
 
 .DESCRIPTION
-    Cette fonction charge la configuration du service d'enregistrement à partir du fichier de configuration.
+    Cette fonction charge la configuration du service d'enregistrement Ã  partir du fichier de configuration.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     $config = Get-RegistrationConfig
@@ -113,15 +113,15 @@ function Get-RegistrationConfig {
         [string]$ConfigPath = $script:DefaultConfigPath
     )
 
-    # Vérifier si le fichier de configuration existe
+    # VÃ©rifier si le fichier de configuration existe
     if (-not (Test-Path -Path $ConfigPath -PathType Leaf)) {
-        # Créer le répertoire de configuration s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de configuration s'il n'existe pas
         $configDir = Split-Path -Path $ConfigPath -Parent
         if (-not (Test-Path -Path $configDir -PathType Container)) {
             New-Item -Path $configDir -ItemType Directory -Force | Out-Null
         }
         
-        # Créer un fichier de configuration par défaut
+        # CrÃ©er un fichier de configuration par dÃ©faut
         $defaultConfig = @{
             Enabled = $true
             LogLevel = $script:DefaultLogLevel
@@ -130,7 +130,7 @@ function Get-RegistrationConfig {
         }
         
         $defaultConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigPath -Encoding UTF8
-        Write-RegistrationLog -Message "Fichier de configuration créé : $ConfigPath" -Level Info
+        Write-RegistrationLog -Message "Fichier de configuration crÃ©Ã© : $ConfigPath" -Level Info
         
         return $defaultConfig
     }
@@ -143,7 +143,7 @@ function Get-RegistrationConfig {
     catch {
         Write-RegistrationLog -Message "Erreur lors du chargement de la configuration : $_" -Level Error
         
-        # Retourner une configuration par défaut en cas d'erreur
+        # Retourner une configuration par dÃ©faut en cas d'erreur
         return @{
             Enabled = $true
             LogLevel = $script:DefaultLogLevel
@@ -161,10 +161,10 @@ function Get-RegistrationConfig {
     Cette fonction enregistre la configuration du service d'enregistrement dans le fichier de configuration.
 
 .PARAMETER Config
-    La configuration à enregistrer.
+    La configuration Ã  enregistrer.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     Save-RegistrationConfig -Config $config
@@ -180,7 +180,7 @@ function Save-RegistrationConfig {
     )
     
     try {
-        # Créer le répertoire de configuration s'il n'existe pas
+        # CrÃ©er le rÃ©pertoire de configuration s'il n'existe pas
         $configDir = Split-Path -Path $ConfigPath -Parent
         if (-not (Test-Path -Path $configDir -PathType Container)) {
             New-Item -Path $configDir -ItemType Directory -Force | Out-Null
@@ -188,7 +188,7 @@ function Save-RegistrationConfig {
         
         # Enregistrer la configuration
         $Config | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigPath -Encoding UTF8
-        Write-RegistrationLog -Message "Configuration enregistrée : $ConfigPath" -Level Debug
+        Write-RegistrationLog -Message "Configuration enregistrÃ©e : $ConfigPath" -Level Debug
         
         return $true
     }
@@ -207,32 +207,32 @@ function Save-RegistrationConfig {
     Enregistre un gestionnaire dans le Process Manager.
 
 .DESCRIPTION
-    Cette fonction enregistre un gestionnaire dans le Process Manager avec des fonctionnalités avancées
-    de validation, de gestion des dépendances et de sécurité.
+    Cette fonction enregistre un gestionnaire dans le Process Manager avec des fonctionnalitÃ©s avancÃ©es
+    de validation, de gestion des dÃ©pendances et de sÃ©curitÃ©.
 
 .PARAMETER Name
-    Le nom du gestionnaire à enregistrer.
+    Le nom du gestionnaire Ã  enregistrer.
 
 .PARAMETER Path
     Le chemin vers le script du gestionnaire.
 
 .PARAMETER Version
-    La version du gestionnaire. Si non spécifiée, tente de l'extraire du manifeste.
+    La version du gestionnaire. Si non spÃ©cifiÃ©e, tente de l'extraire du manifeste.
 
 .PARAMETER Force
-    Force l'enregistrement même si le gestionnaire existe déjà.
+    Force l'enregistrement mÃªme si le gestionnaire existe dÃ©jÃ .
 
 .PARAMETER SkipDependencyCheck
-    Ignore la vérification des dépendances.
+    Ignore la vÃ©rification des dÃ©pendances.
 
 .PARAMETER SkipValidation
     Ignore la validation du gestionnaire.
 
 .PARAMETER SkipSecurityCheck
-    Ignore les vérifications de sécurité.
+    Ignore les vÃ©rifications de sÃ©curitÃ©.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     Register-Manager -Name "ModeManager" -Path "development\managers\mode-manager\scripts\mode-manager.ps1"
@@ -271,56 +271,56 @@ function Register-Manager {
     # Obtenir la configuration
     $config = Get-RegistrationConfig -ConfigPath $ConfigPath
 
-    # Vérifier que le fichier du gestionnaire existe
+    # VÃ©rifier que le fichier du gestionnaire existe
     if (-not (Test-Path -Path $Path -PathType Leaf)) {
         Write-RegistrationLog -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $false
     }
 
-    # Vérifier si le gestionnaire est déjà enregistré
+    # VÃ©rifier si le gestionnaire est dÃ©jÃ  enregistrÃ©
     if ($config.Managers.$Name -and -not $Force) {
-        Write-RegistrationLog -Message "Le gestionnaire '$Name' est déjà enregistré. Utilisez -Force pour le remplacer." -Level Warning
+        Write-RegistrationLog -Message "Le gestionnaire '$Name' est dÃ©jÃ  enregistrÃ©. Utilisez -Force pour le remplacer." -Level Warning
         return $false
     }
 
-    # Extraire le manifeste si disponible (sera implémenté dans le module ManifestParser)
+    # Extraire le manifeste si disponible (sera implÃ©mentÃ© dans le module ManifestParser)
     $manifest = $null
     if (-not $SkipValidation) {
-        # Cette partie sera implémentée dans le module ManifestParser
-        Write-RegistrationLog -Message "Extraction du manifeste non implémentée. Utilisation des valeurs par défaut." -Level Warning
+        # Cette partie sera implÃ©mentÃ©e dans le module ManifestParser
+        Write-RegistrationLog -Message "Extraction du manifeste non implÃ©mentÃ©e. Utilisation des valeurs par dÃ©faut." -Level Warning
     }
 
-    # Déterminer la version
+    # DÃ©terminer la version
     if (-not $Version) {
         if ($manifest -and $manifest.Version) {
             $Version = $manifest.Version
         } else {
             $Version = "1.0.0"
-            Write-RegistrationLog -Message "Version non spécifiée et non trouvée dans le manifeste. Utilisation de la version par défaut : $Version" -Level Warning
+            Write-RegistrationLog -Message "Version non spÃ©cifiÃ©e et non trouvÃ©e dans le manifeste. Utilisation de la version par dÃ©faut : $Version" -Level Warning
         }
     }
 
-    # Valider le gestionnaire (sera implémenté dans le module ValidationService)
+    # Valider le gestionnaire (sera implÃ©mentÃ© dans le module ValidationService)
     if (-not $SkipValidation) {
-        # Cette partie sera implémentée dans le module ValidationService
-        Write-RegistrationLog -Message "Validation du gestionnaire non implémentée. Poursuite de l'enregistrement." -Level Warning
+        # Cette partie sera implÃ©mentÃ©e dans le module ValidationService
+        Write-RegistrationLog -Message "Validation du gestionnaire non implÃ©mentÃ©e. Poursuite de l'enregistrement." -Level Warning
     }
 
-    # Vérifier les dépendances (sera implémenté dans le module DependencyResolver)
+    # VÃ©rifier les dÃ©pendances (sera implÃ©mentÃ© dans le module DependencyResolver)
     if (-not $SkipDependencyCheck) {
-        # Cette partie sera implémentée dans le module DependencyResolver
-        Write-RegistrationLog -Message "Vérification des dépendances non implémentée. Poursuite de l'enregistrement." -Level Warning
+        # Cette partie sera implÃ©mentÃ©e dans le module DependencyResolver
+        Write-RegistrationLog -Message "VÃ©rification des dÃ©pendances non implÃ©mentÃ©e. Poursuite de l'enregistrement." -Level Warning
     }
 
-    # Vérifier la sécurité (sera implémenté dans le module SecurityService)
+    # VÃ©rifier la sÃ©curitÃ© (sera implÃ©mentÃ© dans le module SecurityService)
     if (-not $SkipSecurityCheck) {
-        # Cette partie sera implémentée dans le module SecurityService
-        Write-RegistrationLog -Message "Vérification de sécurité non implémentée. Poursuite de l'enregistrement." -Level Warning
+        # Cette partie sera implÃ©mentÃ©e dans le module SecurityService
+        Write-RegistrationLog -Message "VÃ©rification de sÃ©curitÃ© non implÃ©mentÃ©e. Poursuite de l'enregistrement." -Level Warning
     }
 
     # Enregistrer le gestionnaire
     if ($PSCmdlet.ShouldProcess($Name, "Enregistrer le gestionnaire")) {
-        # Créer ou mettre à jour l'entrée du gestionnaire
+        # CrÃ©er ou mettre Ã  jour l'entrÃ©e du gestionnaire
         $managerEntry = @{
             Path = $Path
             Version = $Version
@@ -329,7 +329,7 @@ function Register-Manager {
             LastUpdatedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
         }
 
-        # Ajouter des métadonnées supplémentaires si disponibles
+        # Ajouter des mÃ©tadonnÃ©es supplÃ©mentaires si disponibles
         if ($manifest) {
             if ($manifest.Description) {
                 $managerEntry.Description = $manifest.Description
@@ -345,9 +345,9 @@ function Register-Manager {
             }
         }
 
-        # Mettre à jour la configuration
+        # Mettre Ã  jour la configuration
         if ($config.Managers.PSObject.Properties.Name -contains $Name) {
-            # Mettre à jour un gestionnaire existant
+            # Mettre Ã  jour un gestionnaire existant
             $config.Managers.$Name = $managerEntry
         } else {
             # Ajouter un nouveau gestionnaire
@@ -356,7 +356,7 @@ function Register-Manager {
 
         # Enregistrer la configuration
         if (Save-RegistrationConfig -Config $config -ConfigPath $ConfigPath) {
-            Write-RegistrationLog -Message "Gestionnaire '$Name' enregistré avec succès (version $Version)." -Level Info
+            Write-RegistrationLog -Message "Gestionnaire '$Name' enregistrÃ© avec succÃ¨s (version $Version)." -Level Info
             return $true
         } else {
             Write-RegistrationLog -Message "Erreur lors de l'enregistrement de la configuration pour le gestionnaire '$Name'." -Level Error
@@ -369,22 +369,22 @@ function Register-Manager {
 
 <#
 .SYNOPSIS
-    Désenregistre un gestionnaire du Process Manager.
+    DÃ©senregistre un gestionnaire du Process Manager.
 
 .DESCRIPTION
     Cette fonction supprime l'enregistrement d'un gestionnaire du Process Manager.
 
 .PARAMETER Name
-    Le nom du gestionnaire à désenregistrer.
+    Le nom du gestionnaire Ã  dÃ©senregistrer.
 
 .PARAMETER Version
-    La version spécifique du gestionnaire à désenregistrer. Si non spécifiée, désenregistre toutes les versions.
+    La version spÃ©cifique du gestionnaire Ã  dÃ©senregistrer. Si non spÃ©cifiÃ©e, dÃ©senregistre toutes les versions.
 
 .PARAMETER Force
-    Force le désenregistrement sans demander de confirmation.
+    Force le dÃ©senregistrement sans demander de confirmation.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     Unregister-Manager -Name "ModeManager"
@@ -411,29 +411,29 @@ function Unregister-Manager {
     # Obtenir la configuration
     $config = Get-RegistrationConfig -ConfigPath $ConfigPath
 
-    # Vérifier si le gestionnaire est enregistré
+    # VÃ©rifier si le gestionnaire est enregistrÃ©
     if (-not $config.Managers.PSObject.Properties.Name -contains $Name) {
-        Write-RegistrationLog -Message "Le gestionnaire '$Name' n'est pas enregistré." -Level Warning
+        Write-RegistrationLog -Message "Le gestionnaire '$Name' n'est pas enregistrÃ©." -Level Warning
         return $false
     }
 
-    # Vérifier la version si spécifiée
+    # VÃ©rifier la version si spÃ©cifiÃ©e
     if ($Version -and $config.Managers.$Name.Version -ne $Version) {
-        Write-RegistrationLog -Message "La version '$Version' du gestionnaire '$Name' n'est pas enregistrée." -Level Warning
+        Write-RegistrationLog -Message "La version '$Version' du gestionnaire '$Name' n'est pas enregistrÃ©e." -Level Warning
         return $false
     }
 
-    # Désenregistrer le gestionnaire
-    if ($PSCmdlet.ShouldProcess($Name, "Désenregistrer le gestionnaire")) {
+    # DÃ©senregistrer le gestionnaire
+    if ($PSCmdlet.ShouldProcess($Name, "DÃ©senregistrer le gestionnaire")) {
         # Supprimer le gestionnaire de la configuration
         $config.Managers.PSObject.Properties.Remove($Name)
 
         # Enregistrer la configuration
         if (Save-RegistrationConfig -Config $config -ConfigPath $ConfigPath) {
-            Write-RegistrationLog -Message "Gestionnaire '$Name' désenregistré avec succès." -Level Info
+            Write-RegistrationLog -Message "Gestionnaire '$Name' dÃ©senregistrÃ© avec succÃ¨s." -Level Info
             return $true
         } else {
-            Write-RegistrationLog -Message "Erreur lors de l'enregistrement de la configuration après désenregistrement du gestionnaire '$Name'." -Level Error
+            Write-RegistrationLog -Message "Erreur lors de l'enregistrement de la configuration aprÃ¨s dÃ©senregistrement du gestionnaire '$Name'." -Level Error
             return $false
         }
     }
@@ -443,13 +443,13 @@ function Unregister-Manager {
 
 <#
 .SYNOPSIS
-    Met à jour un gestionnaire dans le Process Manager.
+    Met Ã  jour un gestionnaire dans le Process Manager.
 
 .DESCRIPTION
-    Cette fonction met à jour l'enregistrement d'un gestionnaire dans le Process Manager.
+    Cette fonction met Ã  jour l'enregistrement d'un gestionnaire dans le Process Manager.
 
 .PARAMETER Name
-    Le nom du gestionnaire à mettre à jour.
+    Le nom du gestionnaire Ã  mettre Ã  jour.
 
 .PARAMETER Path
     Le nouveau chemin vers le script du gestionnaire.
@@ -458,19 +458,19 @@ function Unregister-Manager {
     La nouvelle version du gestionnaire.
 
 .PARAMETER Force
-    Force la mise à jour sans demander de confirmation.
+    Force la mise Ã  jour sans demander de confirmation.
 
 .PARAMETER SkipDependencyCheck
-    Ignore la vérification des dépendances.
+    Ignore la vÃ©rification des dÃ©pendances.
 
 .PARAMETER SkipValidation
     Ignore la validation du gestionnaire.
 
 .PARAMETER SkipSecurityCheck
-    Ignore les vérifications de sécurité.
+    Ignore les vÃ©rifications de sÃ©curitÃ©.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     Update-Manager -Name "ModeManager" -Path "development\managers\mode-manager\scripts\mode-manager.ps1" -Version "1.1.0"
@@ -509,31 +509,31 @@ function Update-Manager {
     # Obtenir la configuration
     $config = Get-RegistrationConfig -ConfigPath $ConfigPath
 
-    # Vérifier si le gestionnaire est enregistré
+    # VÃ©rifier si le gestionnaire est enregistrÃ©
     if (-not $config.Managers.PSObject.Properties.Name -contains $Name) {
-        Write-RegistrationLog -Message "Le gestionnaire '$Name' n'est pas enregistré." -Level Warning
+        Write-RegistrationLog -Message "Le gestionnaire '$Name' n'est pas enregistrÃ©." -Level Warning
         return $false
     }
 
-    # Utiliser le chemin existant si non spécifié
+    # Utiliser le chemin existant si non spÃ©cifiÃ©
     if (-not $Path) {
         $Path = $config.Managers.$Name.Path
     }
 
-    # Vérifier que le fichier du gestionnaire existe
+    # VÃ©rifier que le fichier du gestionnaire existe
     if (-not (Test-Path -Path $Path -PathType Leaf)) {
         Write-RegistrationLog -Message "Le fichier du gestionnaire n'existe pas : $Path" -Level Error
         return $false
     }
 
-    # Utiliser la version existante si non spécifiée
+    # Utiliser la version existante si non spÃ©cifiÃ©e
     if (-not $Version) {
         $Version = $config.Managers.$Name.Version
     }
 
-    # Mettre à jour le gestionnaire
-    if ($PSCmdlet.ShouldProcess($Name, "Mettre à jour le gestionnaire")) {
-        # Appeler Register-Manager avec les paramètres appropriés
+    # Mettre Ã  jour le gestionnaire
+    if ($PSCmdlet.ShouldProcess($Name, "Mettre Ã  jour le gestionnaire")) {
+        # Appeler Register-Manager avec les paramÃ¨tres appropriÃ©s
         $registerParams = @{
             Name = $Name
             Path = $Path
@@ -557,10 +557,10 @@ function Update-Manager {
         $result = Register-Manager @registerParams
 
         if ($result) {
-            Write-RegistrationLog -Message "Gestionnaire '$Name' mis à jour avec succès (version $Version)." -Level Info
+            Write-RegistrationLog -Message "Gestionnaire '$Name' mis Ã  jour avec succÃ¨s (version $Version)." -Level Info
             return $true
         } else {
-            Write-RegistrationLog -Message "Erreur lors de la mise à jour du gestionnaire '$Name'." -Level Error
+            Write-RegistrationLog -Message "Erreur lors de la mise Ã  jour du gestionnaire '$Name'." -Level Error
             return $false
         }
     }
@@ -570,19 +570,19 @@ function Update-Manager {
 
 <#
 .SYNOPSIS
-    Obtient les informations sur un ou plusieurs gestionnaires enregistrés.
+    Obtient les informations sur un ou plusieurs gestionnaires enregistrÃ©s.
 
 .DESCRIPTION
-    Cette fonction récupère les informations sur les gestionnaires enregistrés dans le Process Manager.
+    Cette fonction rÃ©cupÃ¨re les informations sur les gestionnaires enregistrÃ©s dans le Process Manager.
 
 .PARAMETER Name
-    Le nom du gestionnaire à récupérer. Si non spécifié, récupère tous les gestionnaires.
+    Le nom du gestionnaire Ã  rÃ©cupÃ©rer. Si non spÃ©cifiÃ©, rÃ©cupÃ¨re tous les gestionnaires.
 
 .PARAMETER Detailed
-    Affiche des informations détaillées sur les gestionnaires.
+    Affiche des informations dÃ©taillÃ©es sur les gestionnaires.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     Get-RegisteredManager
@@ -606,23 +606,23 @@ function Get-RegisteredManager {
     # Obtenir la configuration
     $config = Get-RegistrationConfig -ConfigPath $ConfigPath
 
-    # Vérifier si des gestionnaires sont enregistrés
+    # VÃ©rifier si des gestionnaires sont enregistrÃ©s
     if (-not $config.Managers -or $config.Managers.PSObject.Properties.Count -eq 0) {
-        Write-RegistrationLog -Message "Aucun gestionnaire n'est enregistré." -Level Info
+        Write-RegistrationLog -Message "Aucun gestionnaire n'est enregistrÃ©." -Level Info
         return @()
     }
 
-    # Filtrer par nom si spécifié
+    # Filtrer par nom si spÃ©cifiÃ©
     if ($Name) {
         if (-not $config.Managers.PSObject.Properties.Name -contains $Name) {
-            Write-RegistrationLog -Message "Le gestionnaire '$Name' n'est pas enregistré." -Level Warning
+            Write-RegistrationLog -Message "Le gestionnaire '$Name' n'est pas enregistrÃ©." -Level Warning
             return @()
         }
 
         $managers = @($config.Managers.$Name)
         $managers | Add-Member -NotePropertyName Name -NotePropertyValue $Name -Force
     } else {
-        # Récupérer tous les gestionnaires
+        # RÃ©cupÃ©rer tous les gestionnaires
         $managers = @()
         foreach ($managerName in $config.Managers.PSObject.Properties.Name) {
             $manager = $config.Managers.$managerName
@@ -637,16 +637,16 @@ function Get-RegisteredManager {
 
 <#
 .SYNOPSIS
-    Recherche des gestionnaires enregistrés selon des critères spécifiques.
+    Recherche des gestionnaires enregistrÃ©s selon des critÃ¨res spÃ©cifiques.
 
 .DESCRIPTION
-    Cette fonction recherche des gestionnaires enregistrés dans le Process Manager selon des critères spécifiques.
+    Cette fonction recherche des gestionnaires enregistrÃ©s dans le Process Manager selon des critÃ¨res spÃ©cifiques.
 
 .PARAMETER Criteria
-    Les critères de recherche sous forme de hashtable.
+    Les critÃ¨res de recherche sous forme de hashtable.
 
 .PARAMETER ConfigPath
-    Le chemin vers le fichier de configuration. Si non spécifié, utilise le chemin par défaut.
+    Le chemin vers le fichier de configuration. Si non spÃ©cifiÃ©, utilise le chemin par dÃ©faut.
 
 .EXAMPLE
     Find-Manager -Criteria @{ Version = "1.0.0" }
@@ -667,7 +667,7 @@ function Find-Manager {
     # Obtenir tous les gestionnaires
     $managers = Get-RegisteredManager -ConfigPath $ConfigPath
 
-    # Filtrer selon les critères
+    # Filtrer selon les critÃ¨res
     $filteredManagers = @()
     foreach ($manager in $managers) {
         $match = $true
@@ -688,7 +688,7 @@ function Find-Manager {
         }
     }
 
-    # Retourner les gestionnaires filtrés
+    # Retourner les gestionnaires filtrÃ©s
     return $filteredManagers
 }
 

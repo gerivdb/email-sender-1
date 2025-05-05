@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
     Adaptateur pour l'Integrated Manager.
 
 .DESCRIPTION
-    Cet adaptateur permet d'intégrer l'Integrated Manager avec le Process Manager.
-    Il fournit une interface standardisée pour interagir avec l'Integrated Manager.
+    Cet adaptateur permet d'intÃ©grer l'Integrated Manager avec le Process Manager.
+    Il fournit une interface standardisÃ©e pour interagir avec l'Integrated Manager.
 
 .PARAMETER Command
-    La commande à exécuter. Les commandes disponibles sont :
-    - ExecuteWorkflow : Exécute un workflow intégré
+    La commande Ã  exÃ©cuter. Les commandes disponibles sont :
+    - ExecuteWorkflow : ExÃ©cute un workflow intÃ©grÃ©
     - GetStatus : Obtient le statut d'un workflow
     - ListWorkflows : Liste tous les workflows disponibles
-    - GetWorkflowInfo : Obtient des informations sur un workflow spécifique
+    - GetWorkflowInfo : Obtient des informations sur un workflow spÃ©cifique
 
 .PARAMETER WorkflowName
-    Le nom du workflow à utiliser pour la commande.
+    Le nom du workflow Ã  utiliser pour la commande.
 
 .PARAMETER Parameters
-    Les paramètres supplémentaires à passer à la commande.
+    Les paramÃ¨tres supplÃ©mentaires Ã  passer Ã  la commande.
 
 .EXAMPLE
     .\integrated-manager-adapter.ps1 -Command ListWorkflows
@@ -25,12 +25,12 @@
 
 .EXAMPLE
     .\integrated-manager-adapter.ps1 -Command ExecuteWorkflow -WorkflowName "ProcessEmail"
-    Exécute le workflow "ProcessEmail".
+    ExÃ©cute le workflow "ProcessEmail".
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2025-05-03
+    Date de crÃ©ation: 2025-05-03
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -45,16 +45,16 @@ param (
     [hashtable]$Parameters = @{}
 )
 
-# Définir le chemin vers l'Integrated Manager
+# DÃ©finir le chemin vers l'Integrated Manager
 $integratedManagerPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path))) -ChildPath "integrated-manager\scripts\integrated-manager.ps1"
 
-# Vérifier que l'Integrated Manager existe
+# VÃ©rifier que l'Integrated Manager existe
 if (-not (Test-Path -Path $integratedManagerPath)) {
-    Write-Error "L'Integrated Manager est introuvable à l'emplacement : $integratedManagerPath"
+    Write-Error "L'Integrated Manager est introuvable Ã  l'emplacement : $integratedManagerPath"
     exit 1
 }
 
-# Fonction pour exécuter une commande sur l'Integrated Manager
+# Fonction pour exÃ©cuter une commande sur l'Integrated Manager
 function Invoke-IntegratedManagerCommand {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -71,11 +71,11 @@ function Invoke-IntegratedManagerCommand {
         ArgumentList = "-Command $Command"
     }
 
-    # Ajouter les paramètres
+    # Ajouter les paramÃ¨tres
     foreach ($param in $Parameters.Keys) {
         $value = $Parameters[$param]
         
-        # Gérer les types de paramètres
+        # GÃ©rer les types de paramÃ¨tres
         if ($value -is [switch]) {
             if ($value) {
                 $commandParams.ArgumentList += " -$param"
@@ -88,19 +88,19 @@ function Invoke-IntegratedManagerCommand {
         }
     }
 
-    # Exécuter la commande
-    if ($PSCmdlet.ShouldProcess("Integrated Manager", "Exécuter la commande $Command")) {
+    # ExÃ©cuter la commande
+    if ($PSCmdlet.ShouldProcess("Integrated Manager", "ExÃ©cuter la commande $Command")) {
         try {
             $result = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $($commandParams.FilePath) $($commandParams.ArgumentList)" -Wait -PassThru -NoNewWindow
             
             if ($result.ExitCode -eq 0) {
                 return $true
             } else {
-                Write-Error "Erreur lors de l'exécution de la commande. Code de sortie : $($result.ExitCode)"
+                Write-Error "Erreur lors de l'exÃ©cution de la commande. Code de sortie : $($result.ExitCode)"
                 return $false
             }
         } catch {
-            Write-Error "Erreur lors de l'exécution de la commande : $_"
+            Write-Error "Erreur lors de l'exÃ©cution de la commande : $_"
             return $false
         }
     }
@@ -108,21 +108,21 @@ function Invoke-IntegratedManagerCommand {
     return $false
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch ($Command) {
     "ExecuteWorkflow" {
-        # Vérifier que le nom du workflow est spécifié
+        # VÃ©rifier que le nom du workflow est spÃ©cifiÃ©
         if (-not $WorkflowName) {
-            Write-Error "Le paramètre WorkflowName est requis pour la commande ExecuteWorkflow."
+            Write-Error "Le paramÃ¨tre WorkflowName est requis pour la commande ExecuteWorkflow."
             exit 1
         }
         
-        # Exécuter le workflow
+        # ExÃ©cuter le workflow
         $params = @{
             WorkflowName = $WorkflowName
         }
         
-        # Ajouter les paramètres supplémentaires
+        # Ajouter les paramÃ¨tres supplÃ©mentaires
         foreach ($param in $Parameters.Keys) {
             $params[$param] = $Parameters[$param]
         }
@@ -132,9 +132,9 @@ switch ($Command) {
     }
     
     "GetStatus" {
-        # Vérifier que le nom du workflow est spécifié
+        # VÃ©rifier que le nom du workflow est spÃ©cifiÃ©
         if (-not $WorkflowName) {
-            Write-Error "Le paramètre WorkflowName est requis pour la commande GetStatus."
+            Write-Error "Le paramÃ¨tre WorkflowName est requis pour la commande GetStatus."
             exit 1
         }
         
@@ -154,9 +154,9 @@ switch ($Command) {
     }
     
     "GetWorkflowInfo" {
-        # Vérifier que le nom du workflow est spécifié
+        # VÃ©rifier que le nom du workflow est spÃ©cifiÃ©
         if (-not $WorkflowName) {
-            Write-Error "Le paramètre WorkflowName est requis pour la commande GetWorkflowInfo."
+            Write-Error "Le paramÃ¨tre WorkflowName est requis pour la commande GetWorkflowInfo."
             exit 1
         }
         

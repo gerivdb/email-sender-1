@@ -1,35 +1,35 @@
-<#
+﻿<#
 .SYNOPSIS
-    Met à jour les références aux gestionnaires dans les fichiers.
+    Met Ã  jour les rÃ©fÃ©rences aux gestionnaires dans les fichiers.
 
 .DESCRIPTION
-    Ce script met à jour les références aux gestionnaires dans les fichiers
+    Ce script met Ã  jour les rÃ©fÃ©rences aux gestionnaires dans les fichiers
     pour pointer vers les nouveaux emplacements.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire parent du répertoire du script.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire parent du rÃ©pertoire du script.
 
 .PARAMETER BackupFolder
-    Chemin vers le dossier de sauvegarde. Par défaut, utilise le dossier "backups" dans le répertoire du script.
+    Chemin vers le dossier de sauvegarde. Par dÃ©faut, utilise le dossier "backups" dans le rÃ©pertoire du script.
 
 .PARAMETER WhatIf
-    Indique ce qui se passerait si le script s'exécutait sans effectuer de modifications.
+    Indique ce qui se passerait si le script s'exÃ©cutait sans effectuer de modifications.
 
 .PARAMETER Force
-    Force l'exécution du script sans demander de confirmation.
+    Force l'exÃ©cution du script sans demander de confirmation.
 
 .EXAMPLE
     .\update-manager-references.ps1
-    Met à jour les références aux gestionnaires dans les fichiers.
+    Met Ã  jour les rÃ©fÃ©rences aux gestionnaires dans les fichiers.
 
 .EXAMPLE
     .\update-manager-references.ps1 -WhatIf
-    Affiche ce qui se passerait si le script s'exécutait sans effectuer de modifications.
+    Affiche ce qui se passerait si le script s'exÃ©cutait sans effectuer de modifications.
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2023-06-01
+    Date de crÃ©ation: 2023-06-01
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -44,35 +44,35 @@ param (
     [switch]$Force
 )
 
-# Vérifier que le dossier de projet existe
+# VÃ©rifier que le dossier de projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
     Write-Error "Le dossier de projet est introuvable : $ProjectRoot"
     exit 1
 }
 
-# Créer le dossier de sauvegarde s'il n'existe pas
+# CrÃ©er le dossier de sauvegarde s'il n'existe pas
 if (-not (Test-Path -Path $BackupFolder -PathType Container)) {
-    if ($PSCmdlet.ShouldProcess($BackupFolder, "Créer le dossier de sauvegarde")) {
+    if ($PSCmdlet.ShouldProcess($BackupFolder, "CrÃ©er le dossier de sauvegarde")) {
         New-Item -Path $BackupFolder -ItemType Directory -Force | Out-Null
     }
 }
 
-# Définir les chemins des répertoires
+# DÃ©finir les chemins des rÃ©pertoires
 $managersRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers"
 $configRoot = Join-Path -Path $ProjectRoot -ChildPath "projet\config\managers"
 
-# Vérifier que les répertoires existent
+# VÃ©rifier que les rÃ©pertoires existent
 if (-not (Test-Path -Path $managersRoot -PathType Container)) {
-    Write-Error "Le répertoire racine des gestionnaires est introuvable : $managersRoot"
+    Write-Error "Le rÃ©pertoire racine des gestionnaires est introuvable : $managersRoot"
     exit 1
 }
 
 if (-not (Test-Path -Path $configRoot -PathType Container)) {
-    Write-Error "Le répertoire de configuration des gestionnaires est introuvable : $configRoot"
+    Write-Error "Le rÃ©pertoire de configuration des gestionnaires est introuvable : $configRoot"
     exit 1
 }
 
-# Définir les chemins à mettre à jour
+# DÃ©finir les chemins Ã  mettre Ã  jour
 $pathMappings = @{
     # Integrated Manager
     "development\scripts\integrated-manager.ps1"                = "development\managers\integrated-manager\scripts\integrated-manager.ps1"
@@ -96,21 +96,21 @@ $pathMappings = @{
     "src\n8n\config\n8n-manager-config.json"                    = "projet\config\managers\n8n-manager\n8n-manager.config.json"
 }
 
-# Créer une sauvegarde des fichiers
+# CrÃ©er une sauvegarde des fichiers
 $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $backupPath = Join-Path -Path $BackupFolder -ChildPath "references-backup-$timestamp"
 
-if ($PSCmdlet.ShouldProcess("Références", "Créer une sauvegarde")) {
-    Write-Host "Création d'une sauvegarde des fichiers..." -ForegroundColor Yellow
+if ($PSCmdlet.ShouldProcess("RÃ©fÃ©rences", "CrÃ©er une sauvegarde")) {
+    Write-Host "CrÃ©ation d'une sauvegarde des fichiers..." -ForegroundColor Yellow
     New-Item -Path $backupPath -ItemType Directory -Force | Out-Null
 }
 
-# Rechercher les fichiers qui contiennent des références aux anciens chemins
-Write-Host "Recherche des fichiers contenant des références aux anciens chemins..." -ForegroundColor Yellow
+# Rechercher les fichiers qui contiennent des rÃ©fÃ©rences aux anciens chemins
+Write-Host "Recherche des fichiers contenant des rÃ©fÃ©rences aux anciens chemins..." -ForegroundColor Yellow
 
 $filesToUpdate = @()
 
-# Limiter la recherche aux répertoires les plus susceptibles de contenir des références
+# Limiter la recherche aux rÃ©pertoires les plus susceptibles de contenir des rÃ©fÃ©rences
 $searchPaths = @(
     Join-Path -Path $ProjectRoot -ChildPath "development\scripts"
     Join-Path -Path $ProjectRoot -ChildPath "development\managers"
@@ -127,7 +127,7 @@ foreach ($searchPath in $searchPaths) {
         foreach ($oldPath in $pathMappings.Keys) {
             $oldPathPattern = $oldPath.Replace("\", "\\").Replace(".", "\.")
 
-            # Rechercher les fichiers qui contiennent des références à l'ancien chemin
+            # Rechercher les fichiers qui contiennent des rÃ©fÃ©rences Ã  l'ancien chemin
             $files = Get-ChildItem -Path $searchPath -Recurse -File -Include *.ps1, *.psm1, *.psd1, *.json, *.md |
                 Where-Object { $_.FullName -notlike "*\node_modules\*" -and $_.FullName -notlike "*\backups\*" } |
                 Select-Object -ExpandProperty FullName |
@@ -152,7 +152,7 @@ foreach ($searchPath in $searchPaths) {
 # Supprimer les doublons
 $filesToUpdate = $filesToUpdate | Sort-Object -Property FilePath -Unique
 
-# Sauvegarder et mettre à jour les fichiers
+# Sauvegarder et mettre Ã  jour les fichiers
 foreach ($file in $filesToUpdate) {
     $filePath = $file.FilePath
     $fileName = Split-Path -Path $filePath -Leaf
@@ -170,8 +170,8 @@ foreach ($file in $filesToUpdate) {
         Copy-Item -Path $filePath -Destination $backupFilePath -Force
     }
 
-    # Mettre à jour les références dans le fichier
-    if ($PSCmdlet.ShouldProcess($filePath, "Mettre à jour les références")) {
+    # Mettre Ã  jour les rÃ©fÃ©rences dans le fichier
+    if ($PSCmdlet.ShouldProcess($filePath, "Mettre Ã  jour les rÃ©fÃ©rences")) {
         $fileContent = Get-Content -Path $filePath -Raw
         $originalContent = $fileContent
 
@@ -182,16 +182,16 @@ foreach ($file in $filesToUpdate) {
             $fileContent = $fileContent -replace $oldPath, $newPath
         }
 
-        # Écrire le contenu mis à jour dans le fichier
+        # Ã‰crire le contenu mis Ã  jour dans le fichier
         if ($fileContent -ne $originalContent) {
             Set-Content -Path $filePath -Value $fileContent -Encoding UTF8
-            Write-Host "  Fichier mis à jour : $relativePath" -ForegroundColor Gray
+            Write-Host "  Fichier mis Ã  jour : $relativePath" -ForegroundColor Gray
         }
     }
 }
 
-# Mettre à jour les références dans les fichiers des gestionnaires
-Write-Host "Mise à jour des références dans les fichiers des gestionnaires..." -ForegroundColor Yellow
+# Mettre Ã  jour les rÃ©fÃ©rences dans les fichiers des gestionnaires
+Write-Host "Mise Ã  jour des rÃ©fÃ©rences dans les fichiers des gestionnaires..." -ForegroundColor Yellow
 
 $managerFiles = Get-ChildItem -Path $managersRoot -Recurse -File -Include *.ps1, *.psm1, *.psd1, *.json |
     Select-Object -ExpandProperty FullName
@@ -212,8 +212,8 @@ foreach ($filePath in $managerFiles) {
         Copy-Item -Path $filePath -Destination $backupFilePath -Force
     }
 
-    # Mettre à jour les références dans le fichier
-    if ($PSCmdlet.ShouldProcess($filePath, "Mettre à jour les références")) {
+    # Mettre Ã  jour les rÃ©fÃ©rences dans le fichier
+    if ($PSCmdlet.ShouldProcess($filePath, "Mettre Ã  jour les rÃ©fÃ©rences")) {
         $fileContent = Get-Content -Path $filePath -Raw
         $originalContent = $fileContent
 
@@ -224,16 +224,16 @@ foreach ($filePath in $managerFiles) {
             $fileContent = $fileContent -replace $oldPath, $newPath
         }
 
-        # Écrire le contenu mis à jour dans le fichier
+        # Ã‰crire le contenu mis Ã  jour dans le fichier
         if ($fileContent -ne $originalContent) {
             Set-Content -Path $filePath -Value $fileContent -Encoding UTF8
-            Write-Host "  Fichier mis à jour : $relativePath" -ForegroundColor Gray
+            Write-Host "  Fichier mis Ã  jour : $relativePath" -ForegroundColor Gray
         }
     }
 }
 
-# Mettre à jour les références dans les fichiers de configuration
-Write-Host "Mise à jour des références dans les fichiers de configuration..." -ForegroundColor Yellow
+# Mettre Ã  jour les rÃ©fÃ©rences dans les fichiers de configuration
+Write-Host "Mise Ã  jour des rÃ©fÃ©rences dans les fichiers de configuration..." -ForegroundColor Yellow
 
 $configFiles = Get-ChildItem -Path $configRoot -Recurse -File -Include *.json |
     Select-Object -ExpandProperty FullName
@@ -254,8 +254,8 @@ foreach ($filePath in $configFiles) {
         Copy-Item -Path $filePath -Destination $backupFilePath -Force
     }
 
-    # Mettre à jour les références dans le fichier
-    if ($PSCmdlet.ShouldProcess($filePath, "Mettre à jour les références")) {
+    # Mettre Ã  jour les rÃ©fÃ©rences dans le fichier
+    if ($PSCmdlet.ShouldProcess($filePath, "Mettre Ã  jour les rÃ©fÃ©rences")) {
         $fileContent = Get-Content -Path $filePath -Raw
         $originalContent = $fileContent
 
@@ -266,24 +266,24 @@ foreach ($filePath in $configFiles) {
             $fileContent = $fileContent -replace $oldPath, $newPath
         }
 
-        # Écrire le contenu mis à jour dans le fichier
+        # Ã‰crire le contenu mis Ã  jour dans le fichier
         if ($fileContent -ne $originalContent) {
             Set-Content -Path $filePath -Value $fileContent -Encoding UTF8
-            Write-Host "  Fichier mis à jour : $relativePath" -ForegroundColor Gray
+            Write-Host "  Fichier mis Ã  jour : $relativePath" -ForegroundColor Gray
         }
     }
 }
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 Write-Host ""
-Write-Host "Résumé de la mise à jour des références" -ForegroundColor Cyan
+Write-Host "RÃ©sumÃ© de la mise Ã  jour des rÃ©fÃ©rences" -ForegroundColor Cyan
 Write-Host "====================================" -ForegroundColor Cyan
 Write-Host "Sauvegarde : $backupPath" -ForegroundColor Gray
-Write-Host "Nombre de fichiers mis à jour : $($filesToUpdate.Count)" -ForegroundColor Gray
+Write-Host "Nombre de fichiers mis Ã  jour : $($filesToUpdate.Count)" -ForegroundColor Gray
 Write-Host ""
-Write-Host "Mise à jour terminée avec succès." -ForegroundColor Green
+Write-Host "Mise Ã  jour terminÃ©e avec succÃ¨s." -ForegroundColor Green
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 return @{
     BackupPath   = $backupPath
     UpdatedFiles = $filesToUpdate.Count

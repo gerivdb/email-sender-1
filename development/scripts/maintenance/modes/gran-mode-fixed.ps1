@@ -1,5 +1,5 @@
-# Mode GRAN - Granularisation des tâches
-# Ce script permet de décomposer une tâche de roadmap en sous-tâches plus granulaires
+﻿# Mode GRAN - Granularisation des tÃ¢ches
+# Ce script permet de dÃ©composer une tÃ¢che de roadmap en sous-tÃ¢ches plus granulaires
 # directement dans le document.
 
 [CmdletBinding()]
@@ -44,7 +44,7 @@ param (
     [string]$OutputFile
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while ($projectRoot -and -not (Test-Path -Path "$projectRoot\projet" -PathType Container)) {
     $projectRoot = Split-Path -Parent $projectRoot
@@ -54,67 +54,67 @@ if (-not $projectRoot) {
     $projectRoot = Split-Path -Parent $PSScriptRoot
 }
 
-# Afficher les paramètres
-Write-Host "Mode GRAN - Décomposition de tâches en sous-tâches" -ForegroundColor Cyan
+# Afficher les paramÃ¨tres
+Write-Host "Mode GRAN - DÃ©composition de tÃ¢ches en sous-tÃ¢ches" -ForegroundColor Cyan
 Write-Host "Fichier de roadmap : $FilePath" -ForegroundColor Gray
 if ($TaskIdentifier) {
-    Write-Host "Identifiant de tâche : $TaskIdentifier" -ForegroundColor Gray
+    Write-Host "Identifiant de tÃ¢che : $TaskIdentifier" -ForegroundColor Gray
 }
 if ($SubTasksInput) {
-    Write-Host "Sous-tâches fournies via paramètre SubTasksInput" -ForegroundColor Gray
+    Write-Host "Sous-tÃ¢ches fournies via paramÃ¨tre SubTasksInput" -ForegroundColor Gray
 } elseif ($SubTasksFile) {
-    Write-Host "Fichier de sous-tâches : $SubTasksFile" -ForegroundColor Gray
+    Write-Host "Fichier de sous-tÃ¢ches : $SubTasksFile" -ForegroundColor Gray
 } else {
-    Write-Host "Niveau de complexité : $ComplexityLevel" -ForegroundColor Gray
+    Write-Host "Niveau de complexitÃ© : $ComplexityLevel" -ForegroundColor Gray
     if ($Domain -ne "None") {
         Write-Host "Domaine : $Domain" -ForegroundColor Gray
     } else {
-        Write-Host "Domaine : Auto-détection" -ForegroundColor Gray
+        Write-Host "Domaine : Auto-dÃ©tection" -ForegroundColor Gray
     }
 }
 
-# Vérifier que le fichier existe
+# VÃ©rifier que le fichier existe
 if (-not (Test-Path -Path $FilePath)) {
-    Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+    Write-Error "Le fichier spÃ©cifiÃ© n'existe pas : $FilePath"
     exit 1
 }
 
-# Charger la configuration des modèles de sous-tâches
+# Charger la configuration des modÃ¨les de sous-tÃ¢ches
 $templateConfig = $null
 $templateConfigPath = Join-Path -Path $projectRoot -ChildPath "development\roadmap\parser\config\subtasks-templates.json"
 if (Test-Path -Path $templateConfigPath) {
     try {
         $templateConfig = Get-Content -Path $templateConfigPath -Raw | ConvertFrom-Json
     } catch {
-        Write-Warning "Erreur lors du chargement de la configuration des modèles de sous-tâches : $_"
+        Write-Warning "Erreur lors du chargement de la configuration des modÃ¨les de sous-tÃ¢ches : $_"
     }
 }
 
-# Lire les sous-tâches à partir du fichier ou du paramètre SubTasksInput
+# Lire les sous-tÃ¢ches Ã  partir du fichier ou du paramÃ¨tre SubTasksInput
 $subTasksInput = ""
 if ($SubTasksInput) {
-    # Utiliser directement les sous-tâches fournies en paramètre
+    # Utiliser directement les sous-tÃ¢ches fournies en paramÃ¨tre
     $subTasksInput = $SubTasksInput
-    Write-Host "Sous-tâches fournies via le paramètre SubTasksInput" -ForegroundColor Green
+    Write-Host "Sous-tÃ¢ches fournies via le paramÃ¨tre SubTasksInput" -ForegroundColor Green
 } elseif ($SubTasksFile) {
     if (Test-Path -Path $SubTasksFile) {
         $subTasksInput = Get-Content -Path $SubTasksFile -Encoding UTF8 -Raw
-        Write-Host "Sous-tâches lues depuis le fichier : $SubTasksFile" -ForegroundColor Green
+        Write-Host "Sous-tÃ¢ches lues depuis le fichier : $SubTasksFile" -ForegroundColor Green
     } else {
-        Write-Error "Le fichier de sous-tâches spécifié n'existe pas : $SubTasksFile"
+        Write-Error "Le fichier de sous-tÃ¢ches spÃ©cifiÃ© n'existe pas : $SubTasksFile"
         exit 1
     }
 } elseif ($templateConfig) {
-    # Si aucun fichier de sous-tâches n'est spécifié, utiliser un modèle basé sur la complexité
-    # (Code existant pour la détection de complexité et domaine)
+    # Si aucun fichier de sous-tÃ¢ches n'est spÃ©cifiÃ©, utiliser un modÃ¨le basÃ© sur la complexitÃ©
+    # (Code existant pour la dÃ©tection de complexitÃ© et domaine)
 }
 
-# IMPORTANT: Ce script modifie DIRECTEMENT le document spécifié.
-# La granularisation est appliquée en écrasant (overwriting) le contenu existant.
-# Aucun résultat intermédiaire n'est affiché dans le terminal, seul le document est modifié.
-Write-Host "ATTENTION: Ce script va modifier directement le document spécifié." -ForegroundColor Yellow
-Write-Host "La granularisation sera appliquée en écrasant le contenu existant." -ForegroundColor Yellow
-Write-Host "Aucun résultat intermédiaire ne sera affiché dans le terminal, seul le document sera modifié." -ForegroundColor Yellow
+# IMPORTANT: Ce script modifie DIRECTEMENT le document spÃ©cifiÃ©.
+# La granularisation est appliquÃ©e en Ã©crasant (overwriting) le contenu existant.
+# Aucun rÃ©sultat intermÃ©diaire n'est affichÃ© dans le terminal, seul le document est modifiÃ©.
+Write-Host "ATTENTION: Ce script va modifier directement le document spÃ©cifiÃ©." -ForegroundColor Yellow
+Write-Host "La granularisation sera appliquÃ©e en Ã©crasant le contenu existant." -ForegroundColor Yellow
+Write-Host "Aucun rÃ©sultat intermÃ©diaire ne sera affichÃ© dans le terminal, seul le document sera modifiÃ©." -ForegroundColor Yellow
 Write-Host ""
 
 # Appeler la fonction Invoke-RoadmapGranularization
@@ -132,7 +132,7 @@ if ($subTasksInput) {
     $params.SubTasksInput = $subTasksInput
 }
 
-# Déterminer quelle fonction utiliser en fonction des paramètres
+# DÃ©terminer quelle fonction utiliser en fonction des paramÃ¨tres
 $useTimeEstimation = $AddTimeEstimation
 
 # Importer la fonction Split-RoadmapTask
@@ -147,7 +147,7 @@ if (Test-Path -Path $splitTaskPath) {
         . $splitTaskPath
         Write-Host "Chargement de la fonction Split-RoadmapTask depuis $splitTaskPath" -ForegroundColor Green
     } else {
-        Write-Error "La fonction Split-RoadmapTask est introuvable. Assurez-vous que le fichier Split-RoadmapTask.ps1 ou Split-RoadmapTask-Fixed.ps1 est présent dans le répertoire development\roadmap\parser\module\Functions\Public\"
+        Write-Error "La fonction Split-RoadmapTask est introuvable. Assurez-vous que le fichier Split-RoadmapTask.ps1 ou Split-RoadmapTask-Fixed.ps1 est prÃ©sent dans le rÃ©pertoire development\roadmap\parser\module\Functions\Public\"
         exit 1
     }
 }
@@ -163,7 +163,7 @@ if (Test-Path -Path $granularizationPath) {
         . $granularizationPath
         Write-Host "Chargement de la fonction Invoke-RoadmapGranularization depuis $granularizationPath" -ForegroundColor Green
     } else {
-        Write-Error "La fonction Invoke-RoadmapGranularization est introuvable. Assurez-vous que le fichier Invoke-RoadmapGranularization.ps1 ou Invoke-RoadmapGranularization-Fixed.ps1 est présent dans le répertoire development\roadmap\parser\module\Functions\Public\"
+        Write-Error "La fonction Invoke-RoadmapGranularization est introuvable. Assurez-vous que le fichier Invoke-RoadmapGranularization.ps1 ou Invoke-RoadmapGranularization-Fixed.ps1 est prÃ©sent dans le rÃ©pertoire development\roadmap\parser\module\Functions\Public\"
         exit 1
     }
 }
@@ -172,8 +172,8 @@ if (Test-Path -Path $granularizationPath) {
 $result = Invoke-RoadmapGranularization @params
 
 # Afficher un message de fin
-Write-Host "`nExécution du mode GRAN terminée." -ForegroundColor Cyan
-Write-Host "Le document a été modifié : $FilePath" -ForegroundColor Green
+Write-Host "`nExÃ©cution du mode GRAN terminÃ©e." -ForegroundColor Cyan
+Write-Host "Le document a Ã©tÃ© modifiÃ© : $FilePath" -ForegroundColor Green
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $result

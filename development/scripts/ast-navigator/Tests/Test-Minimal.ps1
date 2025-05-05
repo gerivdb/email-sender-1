@@ -1,6 +1,6 @@
-# Script de test minimal pour l'AST PowerShell
+﻿# Script de test minimal pour l'AST PowerShell
 
-# Créer un exemple de code PowerShell à analyser
+# CrÃ©er un exemple de code PowerShell Ã  analyser
 $sampleCode = @'
 function Get-Example {
     param (
@@ -21,10 +21,10 @@ Write-Host "Type de l'AST racine: $($ast.GetType().Name)" -ForegroundColor Yello
 
 # Rechercher manuellement les fonctions
 $functions = $ast.FindAll({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }, $true)
-Write-Host "Nombre de fonctions trouvées: $($functions.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de fonctions trouvÃ©es: $($functions.Count)" -ForegroundColor Yellow
 
 foreach ($function in $functions) {
     Write-Host "  Fonction: $($function.Name) (Ligne $($function.Extent.StartLineNumber))" -ForegroundColor Green
 }
 
-Write-Host "Test terminé avec succès!" -ForegroundColor Green
+Write-Host "Test terminÃ© avec succÃ¨s!" -ForegroundColor Green

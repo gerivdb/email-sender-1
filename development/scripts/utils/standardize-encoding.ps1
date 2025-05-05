@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
     Standardise l'encodage de tous les fichiers du projet.
 .DESCRIPTION
     Ce script standardise l'encodage de tous les fichiers du projet en les convertissant en UTF-8 avec BOM.
 .PARAMETER Path
-    Chemin vers le répertoire racine du projet.
+    Chemin vers le rÃ©pertoire racine du projet.
 .PARAMETER Filter
-    Filtre à appliquer aux fichiers (par défaut, "*.ps1,*.psm1,*.psd1,*.md,*.json,*.xml,*.yml,*.yaml").
+    Filtre Ã  appliquer aux fichiers (par dÃ©faut, "*.ps1,*.psm1,*.psd1,*.md,*.json,*.xml,*.yml,*.yaml").
 .PARAMETER WhatIf
-    Si spécifié, simule les actions sans les exécuter.
+    Si spÃ©cifiÃ©, simule les actions sans les exÃ©cuter.
 .EXAMPLE
     .\standardize-encoding.ps1 -Path "D:\Projets\MonProjet" -WhatIf
     Simule la standardisation de l'encodage de tous les fichiers du projet.
@@ -25,15 +25,15 @@ param (
 # Importer le module d'encodage
 $encodingModulePath = Join-Path -Path $PSScriptRoot -ChildPath "roadmap-parser\module\Functions\Private\Encoding\Standardize-Encoding.ps1"
 if (-not (Test-Path -Path $encodingModulePath)) {
-    Write-Error "Le module d'encodage est introuvable à l'emplacement : $encodingModulePath"
+    Write-Error "Le module d'encodage est introuvable Ã  l'emplacement : $encodingModulePath"
     exit 1
 }
 
 . $encodingModulePath
 
-# Afficher les informations de démarrage
+# Afficher les informations de dÃ©marrage
 Write-Host "Standardisation de l'encodage des fichiers du projet..." -ForegroundColor Cyan
-Write-Host "Répertoire racine : $Path" -ForegroundColor Cyan
+Write-Host "RÃ©pertoire racine : $Path" -ForegroundColor Cyan
 Write-Host "Filtre : $Filter" -ForegroundColor Cyan
 
 # Convertir le filtre en tableau
@@ -47,4 +47,4 @@ foreach ($filterItem in $filterArray) {
     Standardize-Encoding -Path $Path -Recurse -Filter $filterItem -Encoding "UTF8BOM" -Verbose:$VerbosePreference -WhatIf:$WhatIfPreference
 }
 
-Write-Host "Standardisation de l'encodage terminée." -ForegroundColor Green
+Write-Host "Standardisation de l'encodage terminÃ©e." -ForegroundColor Green

@@ -1,34 +1,34 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires corrigés pour les fonctions d'organisation des scripts du manager.
+    Tests unitaires corrigÃ©s pour les fonctions d'organisation des scripts du manager.
 .DESCRIPTION
-    Ce script contient des tests unitaires corrigés pour les fonctions d'organisation
+    Ce script contient des tests unitaires corrigÃ©s pour les fonctions d'organisation
     des scripts du manager, en utilisant le framework Pester avec des mocks.
 .EXAMPLE
     Invoke-Pester -Path ".\OrganizationFunctions.Fixed.Tests.ps1"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = "$PSScriptRoot/../organization/Organize-ManagerScripts.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Warning "Le script à tester n'existe pas: $scriptPath"
+    Write-Warning "Le script Ã  tester n'existe pas: $scriptPath"
     exit 1
 }
 
-# Charger les fonctions à tester en utilisant une portée isolée
+# Charger les fonctions Ã  tester en utilisant une portÃ©e isolÃ©e
 $scriptContent = Get-Content -Path $scriptPath -Raw
 $scriptBlock = [ScriptBlock]::Create($scriptContent)
 
@@ -40,7 +40,7 @@ foreach ($match in $matches) {
     $functions[$functionName] = $true
 }
 
-# Définir les fonctions pour les tests
+# DÃ©finir les fonctions pour les tests
 function Get-ScriptCategory {
     [CmdletBinding()]
     param (
@@ -51,7 +51,7 @@ function Get-ScriptCategory {
         [string]$Content = ""
     )
     
-    # Classification prédéfinie des scripts
+    # Classification prÃ©dÃ©finie des scripts
     $scriptClassification = @{
         "ScriptManager.ps1" = "core"
         "Reorganize-Scripts.ps1" = "organization"
@@ -59,14 +59,14 @@ function Get-ScriptCategory {
         "README.md" = "core"
     }
     
-    # Vérifier si le script a une classification prédéfinie
+    # VÃ©rifier si le script a une classification prÃ©dÃ©finie
     if ($scriptClassification.ContainsKey($FileName)) {
         return $scriptClassification[$FileName]
     }
     
     $lowerName = $FileName.ToLower()
     
-    # Catégorisation basée sur des mots-clés dans le nom du fichier
+    # CatÃ©gorisation basÃ©e sur des mots-clÃ©s dans le nom du fichier
     if ($lowerName -match 'analyze|analysis') { return 'analysis' }
     if ($lowerName -match 'organize|organization') { return 'organization' }
     if ($lowerName -match 'inventory|catalog') { return 'inventory' }
@@ -94,7 +94,7 @@ function Get-ScriptCategory {
         if ($Content -match 'ui|interface') { return 'ui' }
     }
     
-    # Par défaut, retourner 'core'
+    # Par dÃ©faut, retourner 'core'
     return 'core'
 }
 
@@ -133,25 +133,25 @@ function Move-ScriptToCategory {
         $targetDir = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $FilePath)) -ChildPath $Category
         $targetPath = Join-Path -Path $targetDir -ChildPath $fileName
         
-        # Vérifier si le dossier cible existe, sinon le créer
+        # VÃ©rifier si le dossier cible existe, sinon le crÃ©er
         if (-not (Test-Path -Path $targetDir)) {
-            if ($PSCmdlet.ShouldProcess($targetDir, "Créer le dossier")) {
+            if ($PSCmdlet.ShouldProcess($targetDir, "CrÃ©er le dossier")) {
                 New-Item -Path $targetDir -ItemType Directory -Force | Out-Null
             }
         }
         
-        # Vérifier si le fichier existe déjà dans le dossier cible
+        # VÃ©rifier si le fichier existe dÃ©jÃ  dans le dossier cible
         if (Test-Path -Path $targetPath) {
             return $false
         }
         
-        # Créer une sauvegarde si demandé
+        # CrÃ©er une sauvegarde si demandÃ©
         if ($CreateBackup) {
             Backup-File -FilePath $FilePath | Out-Null
         }
         
-        # Déplacer le fichier
-        if ($PSCmdlet.ShouldProcess($FilePath, "Déplacer vers $targetDir")) {
+        # DÃ©placer le fichier
+        if ($PSCmdlet.ShouldProcess($FilePath, "DÃ©placer vers $targetDir")) {
             Move-Item -Path $FilePath -Destination $targetPath -Force
             return $true
         }
@@ -164,7 +164,7 @@ function Move-ScriptToCategory {
 }
 
 # Tests Pester
-Describe "Tests des fonctions d'organisation des scripts du manager (version corrigée)" {
+Describe "Tests des fonctions d'organisation des scripts du manager (version corrigÃ©e)" {
     Context "Tests de la fonction Get-ScriptCategory" {
         It "Devrait retourner 'analysis' pour un fichier contenant 'analyze' dans son nom" {
             Get-ScriptCategory -FileName "Analyze-Scripts.ps1" | Should -Be "analysis"
@@ -210,28 +210,28 @@ Describe "Tests des fonctions d'organisation des scripts du manager (version cor
             Get-ScriptCategory -FileName "Update-UI.ps1" | Should -Be "ui"
         }
 
-        It "Devrait retourner 'core' pour un fichier sans mot-clé reconnu" {
+        It "Devrait retourner 'core' pour un fichier sans mot-clÃ© reconnu" {
             Get-ScriptCategory -FileName "ScriptManager.ps1" | Should -Be "core"
         }
 
-        It "Devrait analyser le contenu si le nom ne contient pas de mot-clé reconnu" {
+        It "Devrait analyser le contenu si le nom ne contient pas de mot-clÃ© reconnu" {
             $content = "# Script pour analyser les scripts"
             Get-ScriptCategory -FileName "random-script.ps1" -Content $content | Should -Be "analysis"
         }
 
-        It "Devrait retourner 'core' si ni le nom ni le contenu ne contiennent de mot-clé reconnu" {
-            $content = "# Script sans mot-clé reconnu"
+        It "Devrait retourner 'core' si ni le nom ni le contenu ne contiennent de mot-clÃ© reconnu" {
+            $content = "# Script sans mot-clÃ© reconnu"
             Get-ScriptCategory -FileName "random-script.ps1" -Content $content | Should -Be "core"
         }
     }
 
     Context "Tests de la fonction Backup-File avec mocks" {
         BeforeAll {
-            # Créer un mock pour Copy-Item
+            # CrÃ©er un mock pour Copy-Item
             Mock Copy-Item { return $true }
         }
 
-        It "Devrait créer une sauvegarde du fichier" {
+        It "Devrait crÃ©er une sauvegarde du fichier" {
             $result = Backup-File -FilePath "C:\test\file.ps1"
             $result | Should -Be $true
             Should -Invoke Copy-Item -Times 1 -Exactly
@@ -240,7 +240,7 @@ Describe "Tests des fonctions d'organisation des scripts du manager (version cor
 
     Context "Tests de la fonction Move-ScriptToCategory avec mocks" {
         BeforeAll {
-            # Créer des mocks pour les fonctions utilisées
+            # CrÃ©er des mocks pour les fonctions utilisÃ©es
             Mock Test-Path { return $false } -ParameterFilter { $Path -like "*\testing" }
             Mock Test-Path { return $true } -ParameterFilter { $Path -like "*\file.ps1" }
             Mock Test-Path { return $false } -ParameterFilter { $Path -like "*\testing\file.ps1" }
@@ -249,18 +249,18 @@ Describe "Tests des fonctions d'organisation des scripts du manager (version cor
             Mock Move-Item { return $true }
         }
 
-        It "Devrait déplacer le fichier dans le sous-dossier approprié" {
+        It "Devrait dÃ©placer le fichier dans le sous-dossier appropriÃ©" {
             $result = Move-ScriptToCategory -FilePath "C:\test\file.ps1" -Category "testing" -CreateBackup:$false -WhatIf:$false
             $result | Should -Be $true
             Should -Invoke Move-Item -Times 1 -Exactly
         }
 
-        It "Devrait créer le dossier cible s'il n'existe pas" {
+        It "Devrait crÃ©er le dossier cible s'il n'existe pas" {
             $result = Move-ScriptToCategory -FilePath "C:\test\file.ps1" -Category "testing" -CreateBackup:$false -WhatIf:$false
             Should -Invoke New-Item -Times 1 -Exactly
         }
 
-        It "Devrait créer une sauvegarde si demandé" {
+        It "Devrait crÃ©er une sauvegarde si demandÃ©" {
             $result = Move-ScriptToCategory -FilePath "C:\test\file.ps1" -Category "testing" -CreateBackup:$true -WhatIf:$false
             Should -Invoke Backup-File -Times 1 -Exactly
         }

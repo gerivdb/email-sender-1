@@ -1,10 +1,10 @@
-# Script de test simple pour la fonction Get-AstEventHandlers
+﻿# Script de test simple pour la fonction Get-AstEventHandlers
 
 # Importer le module AstNavigator
 $modulePath = Split-Path -Parent $PSScriptRoot
 Import-Module "$modulePath\AstNavigator.psd1" -Force
 
-# Créer un script de test simple
+# CrÃ©er un script de test simple
 $sampleCode = @'
 # Exemple de Register-Event
 $watcher = New-Object System.IO.FileSystemWatcher
@@ -12,8 +12,8 @@ $watcher.Path = "C:\Temp"
 $watcher.Filter = "*.txt"
 $watcher.EnableRaisingEvents = $true
 
-# Gestionnaire d'événements
-$action = { Write-Host "Fichier modifié: $($Event.SourceEventArgs.FullPath)" }
+# Gestionnaire d'Ã©vÃ©nements
+$action = { Write-Host "Fichier modifiÃ©: $($Event.SourceEventArgs.FullPath)" }
 
 # Enregistrer le gestionnaire
 Register-ObjectEvent -InputObject $watcher -EventName Changed -Action $action
@@ -26,7 +26,7 @@ $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [
 # Tester la fonction
 Write-Host "Test de Get-AstEventHandlers:" -ForegroundColor Cyan
 $handlers = Get-AstEventHandlers -Ast $ast
-Write-Host "Nombre de gestionnaires trouvés: $($handlers.Count)" -ForegroundColor Yellow
+Write-Host "Nombre de gestionnaires trouvÃ©s: $($handlers.Count)" -ForegroundColor Yellow
 
 foreach ($handler in $handlers) {
     Write-Host "Type: $($handler.Type), Commande: $($handler.Command) (Lignes $($handler.StartLine)-$($handler.EndLine))" -ForegroundColor Green

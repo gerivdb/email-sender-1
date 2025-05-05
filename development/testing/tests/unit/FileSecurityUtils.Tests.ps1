@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module FileSecurityUtils.ps1.
@@ -7,31 +7,31 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $securityUtilsPath = Join-Path -Path $modulesPath -ChildPath "FileSecurityUtils.ps1"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "FileSecurityUtilsTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $validJsonPath = Join-Path -Path $testTempDir -ChildPath "valid.json"
 $validCsvPath = Join-Path -Path $testTempDir -ChildPath "valid.csv"
 $invalidJsonPath = Join-Path -Path $testTempDir -ChildPath "invalid.json"
@@ -39,7 +39,7 @@ $suspiciousFilePath = Join-Path -Path $testTempDir -ChildPath "suspicious.json"
 $executableFilePath = Join-Path -Path $testTempDir -ChildPath "executable.txt"
 $largeFilePath = Join-Path -Path $testTempDir -ChildPath "large.json"
 
-# Créer un fichier JSON valide
+# CrÃ©er un fichier JSON valide
 $validJsonContent = @{
     "name" = "Example Object"
     "items" = @(
@@ -50,7 +50,7 @@ $validJsonContent = @{
 } | ConvertTo-Json -Depth 10
 Set-Content -Path $validJsonPath -Value $validJsonContent -Encoding UTF8
 
-# Créer un fichier CSV valide
+# CrÃ©er un fichier CSV valide
 $validCsvContent = @"
 id,name,value,description
 1,Item 1,Value 1,"Description 1"
@@ -59,7 +59,7 @@ id,name,value,description
 "@
 Set-Content -Path $validCsvPath -Value $validCsvContent -Encoding UTF8
 
-# Créer un fichier JSON invalide
+# CrÃ©er un fichier JSON invalide
 $invalidJsonContent = @"
 {
     "name": "Invalid JSON",
@@ -72,7 +72,7 @@ $invalidJsonContent = @"
 "@
 Set-Content -Path $invalidJsonPath -Value $invalidJsonContent -Encoding UTF8
 
-# Créer un fichier avec du contenu suspect
+# CrÃ©er un fichier avec du contenu suspect
 $suspiciousContent = @"
 {
     "name": "Suspicious Content",
@@ -86,7 +86,7 @@ $suspiciousContent = @"
 "@
 Set-Content -Path $suspiciousFilePath -Value $suspiciousContent -Encoding UTF8
 
-# Créer un fichier avec du contenu exécutable
+# CrÃ©er un fichier avec du contenu exÃ©cutable
 $executableContent = @"
 <script>
     alert('Hello, World!');
@@ -101,20 +101,20 @@ function runCommand() {
 "@
 Set-Content -Path $executableFilePath -Value $executableContent -Encoding UTF8
 
-# Créer un fichier volumineux
+# CrÃ©er un fichier volumineux
 $largeJsonContent = @{
     "array" = (1..10000 | ForEach-Object { @{ "id" = $_; "value" = "Value $_" } })
 } | ConvertTo-Json -Depth 10
 Set-Content -Path $largeFilePath -Value $largeJsonContent -Encoding UTF8
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests du module FileSecurityUtils" {
     BeforeAll {
         # Importer les modules
         . $securityUtilsPath
         . $unifiedSegmenterPath
         
-        # Initialiser le segmenteur unifié
+        # Initialiser le segmenteur unifiÃ©
         $initResult = Initialize-UnifiedSegmenter
         $initResult | Should -Be $true
     }
@@ -125,17 +125,17 @@ Describe "Tests du module FileSecurityUtils" {
             $result | Should -Be $true
         }
         
-        It "Rejette un chemin avec une extension bloquée" {
+        It "Rejette un chemin avec une extension bloquÃ©e" {
             $result = Test-SecurePath -Path "C:\temp\script.ps1" -AllowRelativePaths
             $result | Should -Be $false
         }
         
-        It "Valide correctement un chemin avec une extension autorisée" {
+        It "Valide correctement un chemin avec une extension autorisÃ©e" {
             $result = Test-SecurePath -Path $validJsonPath -AllowedExtensions @(".json", ".csv", ".yaml")
             $result | Should -Be $true
         }
         
-        It "Rejette un chemin avec une extension non autorisée" {
+        It "Rejette un chemin avec une extension non autorisÃ©e" {
             $result = Test-SecurePath -Path $validCsvPath -AllowedExtensions @(".json", ".yaml")
             $result | Should -Be $false
         }
@@ -144,18 +144,18 @@ Describe "Tests du module FileSecurityUtils" {
             { Test-SecurePath -Path "" } | Should -Throw
         }
         
-        It "Rejette un chemin avec des caractères invalides" {
+        It "Rejette un chemin avec des caractÃ¨res invalides" {
             { Test-SecurePath -Path "C:\temp\invalid<>|.txt" } | Should -Throw
         }
         
-        It "Rejette un chemin relatif si AllowRelativePaths n'est pas spécifié" {
+        It "Rejette un chemin relatif si AllowRelativePaths n'est pas spÃ©cifiÃ©" {
             $result = Test-SecurePath -Path "temp\file.txt"
             $result | Should -Be $false
         }
     }
     
     Context "Tests de la fonction Test-SecureContent" {
-        It "Valide correctement un contenu sûr" {
+        It "Valide correctement un contenu sÃ»r" {
             $result = Test-SecureContent -FilePath $validJsonPath
             $result | Should -Be $true
         }
@@ -165,7 +165,7 @@ Describe "Tests du module FileSecurityUtils" {
             $result | Should -Be $false
         }
         
-        It "Rejette un contenu exécutable" {
+        It "Rejette un contenu exÃ©cutable" {
             $result = Test-SecureContent -FilePath $executableFilePath -CheckForExecutableContent
             $result | Should -Be $false
         }
@@ -212,7 +212,7 @@ Describe "Tests du module FileSecurityUtils" {
             $result | Should -Be $false
         }
         
-        It "Détecte automatiquement le format du fichier" {
+        It "DÃ©tecte automatiquement le format du fichier" {
             $result = Test-FileSecurely -FilePath $validJsonPath -Format "AUTO"
             $result | Should -Be $true
         }
@@ -222,9 +222,9 @@ Describe "Tests du module FileSecurityUtils" {
         }
     }
     
-    Context "Tests d'intégration" {
-        It "Intègre correctement avec le module UnifiedSegmenter" {
-            # Créer une fonction de test
+    Context "Tests d'intÃ©gration" {
+        It "IntÃ¨gre correctement avec le module UnifiedSegmenter" {
+            # CrÃ©er une fonction de test
             function Test-Integration {
                 param (
                     [Parameter(Mandatory = $true)]
@@ -234,7 +234,7 @@ Describe "Tests du module FileSecurityUtils" {
                     [string]$Format = "AUTO"
                 )
                 
-                # Valider le fichier de manière sécurisée
+                # Valider le fichier de maniÃ¨re sÃ©curisÃ©e
                 $isSecureFile = Test-FileSecurely -FilePath $FilePath -Format $Format
                 
                 if (-not $isSecureFile) {
@@ -252,7 +252,7 @@ Describe "Tests du module FileSecurityUtils" {
                 return $isValid
             }
             
-            # Tester l'intégration
+            # Tester l'intÃ©gration
             $result = Test-Integration -FilePath $validJsonPath
             $result | Should -Be $true
             

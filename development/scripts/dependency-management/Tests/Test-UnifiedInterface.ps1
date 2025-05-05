@@ -1,5 +1,5 @@
-# Test pour l'interface unifiée Get-ModuleDependencies
-# Ce test vérifie que la fonction Get-ModuleDependencies fonctionne correctement
+﻿# Test pour l'interface unifiÃ©e Get-ModuleDependencies
+# Ce test vÃ©rifie que la fonction Get-ModuleDependencies fonctionne correctement
 
 # Importer le module
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
@@ -8,16 +8,16 @@ $moduleFile = Join-Path -Path $modulePath -ChildPath "ModuleDependencyAnalyzer-F
 try {
     # Importer le module
     Import-Module -Name $moduleFile -Force -ErrorAction Stop
-    Write-Host "Module importé avec succès" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s" -ForegroundColor Green
 
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testDir = Join-Path -Path $env:TEMP -ChildPath "UnifiedInterfaceTest"
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
     }
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-    # Créer un fichier manifeste de test
+    # CrÃ©er un fichier manifeste de test
     $manifestContent = @"
 @{
     ModuleVersion = '1.0.0'
@@ -38,9 +38,9 @@ try {
     $manifestPath = Join-Path -Path $testDir -ChildPath "TestModule.psd1"
     Set-Content -Path $manifestPath -Value $manifestContent
 
-    # Créer un fichier de script de test
+    # CrÃ©er un fichier de script de test
     $scriptContent = @"
-# Définition d'une fonction interne
+# DÃ©finition d'une fonction interne
 function Test-InternalFunction {
     param (
         [string]`$Path
@@ -50,7 +50,7 @@ function Test-InternalFunction {
     Write-Output "Testing internal function"
 }
 
-# Appel à des fonctions externes
+# Appel Ã  des fonctions externes
 Get-Date
 Get-ChildItem
 Import-Module Module3
@@ -59,11 +59,11 @@ Import-Module Module3
     $scriptPath = Join-Path -Path $testDir -ChildPath "TestScript.ps1"
     Set-Content -Path $scriptPath -Value $scriptContent
 
-    # Test 1: Analyser un fichier manifeste avec l'interface unifiée
-    Write-Host "`nTest 1: Analyser un fichier manifeste avec l'interface unifiée" -ForegroundColor Cyan
+    # Test 1: Analyser un fichier manifeste avec l'interface unifiÃ©e
+    Write-Host "`nTest 1: Analyser un fichier manifeste avec l'interface unifiÃ©e" -ForegroundColor Cyan
     $result1 = Get-ModuleDependencies -Path $manifestPath
     
-    Write-Host "Résultat de l'analyse du manifeste:"
+    Write-Host "RÃ©sultat de l'analyse du manifeste:"
     Write-Host "  Module Path: $($result1.ModulePath)"
     Write-Host "  Module Name: $($result1.ModuleName)"
     Write-Host "  Analysis Date: $($result1.AnalysisDate)"
@@ -73,11 +73,11 @@ Import-Module Module3
     Write-Host "  External Function Dependencies: $($result1.Summary.ExternalFunctionDependenciesCount)"
     Write-Host "  Unique Modules: $($result1.Summary.UniqueModules)"
     
-    # Test 2: Analyser un fichier script avec l'interface unifiée
-    Write-Host "`nTest 2: Analyser un fichier script avec l'interface unifiée" -ForegroundColor Cyan
+    # Test 2: Analyser un fichier script avec l'interface unifiÃ©e
+    Write-Host "`nTest 2: Analyser un fichier script avec l'interface unifiÃ©e" -ForegroundColor Cyan
     $result2 = Get-ModuleDependencies -Path $scriptPath
     
-    Write-Host "Résultat de l'analyse du script:"
+    Write-Host "RÃ©sultat de l'analyse du script:"
     Write-Host "  Module Path: $($result2.ModulePath)"
     Write-Host "  Module Name: $($result2.ModuleName)"
     Write-Host "  Analysis Date: $($result2.AnalysisDate)"
@@ -87,11 +87,11 @@ Import-Module Module3
     Write-Host "  External Function Dependencies: $($result2.Summary.ExternalFunctionDependenciesCount)"
     Write-Host "  Unique Modules: $($result2.Summary.UniqueModules)"
     
-    # Test 3: Analyser un répertoire avec l'interface unifiée
-    Write-Host "`nTest 3: Analyser un répertoire avec l'interface unifiée" -ForegroundColor Cyan
+    # Test 3: Analyser un rÃ©pertoire avec l'interface unifiÃ©e
+    Write-Host "`nTest 3: Analyser un rÃ©pertoire avec l'interface unifiÃ©e" -ForegroundColor Cyan
     $result3 = Get-ModuleDependencies -Path $testDir -Recurse
     
-    Write-Host "Résultat de l'analyse du répertoire:"
+    Write-Host "RÃ©sultat de l'analyse du rÃ©pertoire:"
     Write-Host "  Module Path: $($result3.ModulePath)"
     Write-Host "  Module Name: $($result3.ModuleName)"
     Write-Host "  Analysis Date: $($result3.AnalysisDate)"
@@ -101,10 +101,10 @@ Import-Module Module3
     Write-Host "  External Function Dependencies: $($result3.Summary.ExternalFunctionDependenciesCount)"
     Write-Host "  Unique Modules: $($result3.Summary.UniqueModules)"
     
-    # Test 4: Analyser un module par nom (simulé)
-    Write-Host "`nTest 4: Analyser un module par nom (simulé)" -ForegroundColor Cyan
+    # Test 4: Analyser un module par nom (simulÃ©)
+    Write-Host "`nTest 4: Analyser un module par nom (simulÃ©)" -ForegroundColor Cyan
     
-    # Créer une fonction mock pour Find-ModulePath
+    # CrÃ©er une fonction mock pour Find-ModulePath
     function Find-ModulePath {
         param (
             [string]$ModuleName,
@@ -122,7 +122,7 @@ Import-Module Module3
     # Analyser un module par nom
     $result4 = Get-ModuleDependencies -ModuleName "TestModule"
     
-    Write-Host "Résultat de l'analyse du module par nom:"
+    Write-Host "RÃ©sultat de l'analyse du module par nom:"
     Write-Host "  Module Path: $($result4.ModulePath)"
     Write-Host "  Module Name: $($result4.ModuleName)"
     Write-Host "  Analysis Date: $($result4.AnalysisDate)"
@@ -132,8 +132,8 @@ Import-Module Module3
     Write-Host "  External Function Dependencies: $($result4.Summary.ExternalFunctionDependenciesCount)"
     Write-Host "  Unique Modules: $($result4.Summary.UniqueModules)"
     
-    # Test 5: Exporter les résultats dans différents formats
-    Write-Host "`nTest 5: Exporter les résultats dans différents formats" -ForegroundColor Cyan
+    # Test 5: Exporter les rÃ©sultats dans diffÃ©rents formats
+    Write-Host "`nTest 5: Exporter les rÃ©sultats dans diffÃ©rents formats" -ForegroundColor Cyan
     
     # Exporter au format texte
     $textOutputPath = Join-Path -Path $testDir -ChildPath "DependencyReport.txt"
@@ -151,27 +151,27 @@ Import-Module Module3
     $jsonOutputPath = Join-Path -Path $testDir -ChildPath "DependencyReport.json"
     Get-ModuleDependencies -Path $manifestPath -OutputPath $jsonOutputPath -OutputFormat "JSON"
     
-    # Vérifier que les fichiers ont été créés
+    # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
     $exportSuccess = $true
     if (-not (Test-Path -Path $textOutputPath)) {
-        Write-Host "Erreur: Le fichier texte n'a pas été créé" -ForegroundColor Red
+        Write-Host "Erreur: Le fichier texte n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
         $exportSuccess = $false
     }
     if (-not (Test-Path -Path $csvOutputPath)) {
-        Write-Host "Erreur: Le fichier CSV n'a pas été créé" -ForegroundColor Red
+        Write-Host "Erreur: Le fichier CSV n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
         $exportSuccess = $false
     }
     if (-not (Test-Path -Path $htmlOutputPath)) {
-        Write-Host "Erreur: Le fichier HTML n'a pas été créé" -ForegroundColor Red
+        Write-Host "Erreur: Le fichier HTML n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
         $exportSuccess = $false
     }
     if (-not (Test-Path -Path $jsonOutputPath)) {
-        Write-Host "Erreur: Le fichier JSON n'a pas été créé" -ForegroundColor Red
+        Write-Host "Erreur: Le fichier JSON n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
         $exportSuccess = $false
     }
     
     if ($exportSuccess) {
-        Write-Host "Tous les fichiers d'export ont été créés avec succès" -ForegroundColor Green
+        Write-Host "Tous les fichiers d'export ont Ã©tÃ© crÃ©Ã©s avec succÃ¨s" -ForegroundColor Green
     }
 
     # Nettoyer
@@ -179,7 +179,7 @@ Import-Module Module3
     Remove-Module -Name "ModuleDependencyAnalyzer-Fixed" -Force -ErrorAction SilentlyContinue
 
     # Tout est OK
-    Write-Host "`nTest terminé avec succès !" -ForegroundColor Green
+    Write-Host "`nTest terminÃ© avec succÃ¨s !" -ForegroundColor Green
     exit 0
 } catch {
     # Une erreur s'est produite

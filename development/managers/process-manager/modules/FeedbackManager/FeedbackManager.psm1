@@ -1,38 +1,38 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de gestion des retours d'information pour le Process Manager.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour gérer les retours d'information
-    dans le Process Manager, y compris les erreurs, avertissements, informations et succès.
+    Ce module fournit des fonctions pour gÃ©rer les retours d'information
+    dans le Process Manager, y compris les erreurs, avertissements, informations et succÃ¨s.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
-# Définition des types de retours d'information
+# DÃ©finition des types de retours d'information
 enum FeedbackType {
-    Error       # Erreurs critiques qui empêchent l'exécution normale
-    Warning     # Avertissements qui n'empêchent pas l'exécution mais nécessitent attention
-    Information # Informations générales sur le déroulement des opérations
-    Success     # Notifications de succès d'une opération
-    Debug       # Informations détaillées pour le débogage
-    Verbose     # Informations très détaillées pour le diagnostic
+    Error       # Erreurs critiques qui empÃªchent l'exÃ©cution normale
+    Warning     # Avertissements qui n'empÃªchent pas l'exÃ©cution mais nÃ©cessitent attention
+    Information # Informations gÃ©nÃ©rales sur le dÃ©roulement des opÃ©rations
+    Success     # Notifications de succÃ¨s d'une opÃ©ration
+    Debug       # Informations dÃ©taillÃ©es pour le dÃ©bogage
+    Verbose     # Informations trÃ¨s dÃ©taillÃ©es pour le diagnostic
 }
 
-# Définition des niveaux de verbosité
+# DÃ©finition des niveaux de verbositÃ©
 enum VerbosityLevel {
     None = 0  # Aucun message (silencieux)
     Minimal = 1  # Uniquement les erreurs critiques
     Normal = 2  # Erreurs et avertissements
     Detailed = 3  # Erreurs, avertissements et informations importantes
-    Full = 4  # Tous les messages, y compris les succès
-    Debug = 5  # Tous les messages, y compris les messages de débogage
+    Full = 4  # Tous les messages, y compris les succÃ¨s
+    Debug = 5  # Tous les messages, y compris les messages de dÃ©bogage
 }
 
-# Structure de données pour les messages de feedback
+# Structure de donnÃ©es pour les messages de feedback
 class FeedbackMessage {
     [FeedbackType]$Type
     [string]$Message
@@ -67,7 +67,7 @@ class FeedbackMessage {
         $this.MinimumVerbosity = $MinimumVerbosity
     }
 
-    # Méthode pour obtenir la sévérité par défaut en fonction du type
+    # MÃ©thode pour obtenir la sÃ©vÃ©ritÃ© par dÃ©faut en fonction du type
     hidden [int] GetDefaultSeverity([FeedbackType]$Type) {
         switch ($Type) {
             ([FeedbackType]::Error) { return 1 }
@@ -80,7 +80,7 @@ class FeedbackMessage {
         }
     }
 
-    # Méthode pour obtenir le niveau de verbosité par défaut en fonction du type
+    # MÃ©thode pour obtenir le niveau de verbositÃ© par dÃ©faut en fonction du type
     hidden [VerbosityLevel] GetDefaultVerbosity([FeedbackType]$Type) {
         switch ($Type) {
             ([FeedbackType]::Error) { return [VerbosityLevel]::Minimal }
@@ -93,23 +93,23 @@ class FeedbackMessage {
         }
     }
 
-    # Méthode pour convertir le message en chaîne formatée
+    # MÃ©thode pour convertir le message en chaÃ®ne formatÃ©e
     [string] ToString() {
         return "[$($this.Timestamp.ToString('yyyy-MM-dd HH:mm:ss'))] [$($this.Source)] [$($this.Type)] $($this.Message)"
     }
 
-    # Méthode pour convertir le message en objet JSON
+    # MÃ©thode pour convertir le message en objet JSON
     [string] ToJson() {
         return ConvertTo-Json -InputObject $this -Depth 3
     }
 
-    # Méthode pour vérifier si le message doit être affiché selon le niveau de verbosité
+    # MÃ©thode pour vÃ©rifier si le message doit Ãªtre affichÃ© selon le niveau de verbositÃ©
     [bool] ShouldDisplay([VerbosityLevel]$CurrentVerbosity) {
         return [int]$CurrentVerbosity -ge [int]$this.MinimumVerbosity
     }
 }
 
-# Mécanismes de filtrage des messages
+# MÃ©canismes de filtrage des messages
 class FeedbackFilter {
     [FeedbackType[]]$IncludedTypes
     [FeedbackType[]]$ExcludedTypes
@@ -121,7 +121,7 @@ class FeedbackFilter {
     [datetime]$EndTime
     [scriptblock]$CustomFilter
 
-    # Constructeur par défaut
+    # Constructeur par dÃ©faut
     FeedbackFilter() {
         $this.IncludedTypes = @([FeedbackType]::Error, [FeedbackType]::Warning, [FeedbackType]::Information, [FeedbackType]::Success)
         $this.ExcludedTypes = @()
@@ -134,9 +134,9 @@ class FeedbackFilter {
         $this.CustomFilter = { param($message) return $true }
     }
 
-    # Méthode pour vérifier si un message passe le filtre
+    # MÃ©thode pour vÃ©rifier si un message passe le filtre
     [bool] PassesFilter([FeedbackMessage]$Message) {
-        # Vérifier le type
+        # VÃ©rifier le type
         if ($this.IncludedTypes.Count -gt 0 -and $this.IncludedTypes -notcontains $Message.Type) {
             return $false
         }
@@ -145,7 +145,7 @@ class FeedbackFilter {
             return $false
         }
 
-        # Vérifier la source
+        # VÃ©rifier la source
         if ($this.IncludedSources.Count -gt 0 -and $this.IncludedSources -notcontains $Message.Source) {
             return $false
         }
@@ -154,35 +154,35 @@ class FeedbackFilter {
             return $false
         }
 
-        # Vérifier la sévérité
+        # VÃ©rifier la sÃ©vÃ©ritÃ©
         if ($Message.Severity -lt $this.MinimumSeverity -or $Message.Severity -gt $this.MaximumSeverity) {
             return $false
         }
 
-        # Vérifier l'horodatage
+        # VÃ©rifier l'horodatage
         if ($Message.Timestamp -lt $this.StartTime -or $Message.Timestamp -gt $this.EndTime) {
             return $false
         }
 
-        # Appliquer le filtre personnalisé
+        # Appliquer le filtre personnalisÃ©
         return & $this.CustomFilter $Message
     }
 
-    # Méthode pour créer un filtre qui n'inclut que certains types
+    # MÃ©thode pour crÃ©er un filtre qui n'inclut que certains types
     static [FeedbackFilter] ForTypes([FeedbackType[]]$Types) {
         $filter = [FeedbackFilter]::new()
         $filter.IncludedTypes = $Types
         return $filter
     }
 
-    # Méthode pour créer un filtre qui n'inclut que certaines sources
+    # MÃ©thode pour crÃ©er un filtre qui n'inclut que certaines sources
     static [FeedbackFilter] ForSources([string[]]$Sources) {
         $filter = [FeedbackFilter]::new()
         $filter.IncludedSources = $Sources
         return $filter
     }
 
-    # Méthode pour créer un filtre basé sur la sévérité
+    # MÃ©thode pour crÃ©er un filtre basÃ© sur la sÃ©vÃ©ritÃ©
     static [FeedbackFilter] ForSeverity([int]$MinimumSeverity, [int]$MaximumSeverity) {
         $filter = [FeedbackFilter]::new()
         $filter.MinimumSeverity = $MinimumSeverity
@@ -190,7 +190,7 @@ class FeedbackFilter {
         return $filter
     }
 
-    # Méthode pour créer un filtre basé sur une période de temps
+    # MÃ©thode pour crÃ©er un filtre basÃ© sur une pÃ©riode de temps
     static [FeedbackFilter] ForTimeRange([datetime]$StartTime, [datetime]$EndTime) {
         $filter = [FeedbackFilter]::new()
         $filter.StartTime = $StartTime
@@ -198,7 +198,7 @@ class FeedbackFilter {
         return $filter
     }
 
-    # Méthode pour créer un filtre personnalisé
+    # MÃ©thode pour crÃ©er un filtre personnalisÃ©
     static [FeedbackFilter] Custom([scriptblock]$CustomFilter) {
         $filter = [FeedbackFilter]::new()
         $filter.CustomFilter = $CustomFilter
@@ -246,7 +246,7 @@ function Send-ProcessManagerFeedback {
     )
 
     try {
-        # Créer le message de feedback
+        # CrÃ©er le message de feedback
         $feedbackMessage = $null
 
         if ($Severity -lt 0) {
@@ -255,27 +255,27 @@ function Send-ProcessManagerFeedback {
             $feedbackMessage = [FeedbackMessage]::new($Type, $Message, $Source, $Severity, $Data, $MinimumVerbosity)
         }
 
-        # Ajouter à l'historique si demandé
+        # Ajouter Ã  l'historique si demandÃ©
         if (-not $NoHistory) {
             Add-FeedbackToHistory -Message $feedbackMessage
         }
 
-        # Envoyer aux canaux de sortie si demandé
+        # Envoyer aux canaux de sortie si demandÃ©
         if (-not $NoOutput) {
             Send-FeedbackToChannels -Message $feedbackMessage
         }
 
-        # Retourner le message si demandé
+        # Retourner le message si demandÃ©
         if ($PassThru) {
             return $feedbackMessage
         }
     } catch {
-        # En cas d'erreur, utiliser Write-Error pour ne pas créer de boucle infinie
+        # En cas d'erreur, utiliser Write-Error pour ne pas crÃ©er de boucle infinie
         Write-Error "Erreur lors de l'envoi du feedback : $_"
     }
 }
 
-# Fonctions spécifiques par type de feedback
+# Fonctions spÃ©cifiques par type de feedback
 function Send-ProcessManagerError {
     [CmdletBinding()]
     param (
@@ -534,7 +534,7 @@ function Send-ProcessManagerVerbose {
     return Send-ProcessManagerFeedback @params
 }
 
-# Fonctions de gestion de la verbosité
+# Fonctions de gestion de la verbositÃ©
 function Set-ProcessManagerVerbosity {
     [CmdletBinding()]
     param (
@@ -543,7 +543,7 @@ function Set-ProcessManagerVerbosity {
     )
 
     $script:DefaultVerbosityLevel = $Level
-    Send-ProcessManagerInformation -Message "Niveau de verbosité défini à $Level" -MinimumVerbosity $Level
+    Send-ProcessManagerInformation -Message "Niveau de verbositÃ© dÃ©fini Ã  $Level" -MinimumVerbosity $Level
 }
 
 function Get-ProcessManagerVerbosity {
@@ -561,7 +561,7 @@ function Add-FeedbackToHistory {
         [FeedbackMessage]$Message
     )
 
-    # Ajouter le message à l'historique
+    # Ajouter le message Ã  l'historique
     $script:FeedbackHistory += $Message
 
     # Limiter la taille de l'historique
@@ -577,21 +577,21 @@ function Send-FeedbackToChannels {
         [FeedbackMessage]$Message
     )
 
-    # Vérifier si le message doit être affiché selon le niveau de verbosité
+    # VÃ©rifier si le message doit Ãªtre affichÃ© selon le niveau de verbositÃ©
     if (-not $Message.ShouldDisplay($script:DefaultVerbosityLevel)) {
         return
     }
 
-    # Si aucun canal n'est défini, utiliser la sortie console par défaut
+    # Si aucun canal n'est dÃ©fini, utiliser la sortie console par dÃ©faut
     if ($script:FeedbackChannels.Count -eq 0) {
         Write-FeedbackToConsole -Message $Message
     } else {
-        # Envoyer le message à tous les canaux enregistrés
+        # Envoyer le message Ã  tous les canaux enregistrÃ©s
         foreach ($channel in $script:FeedbackChannels) {
             try {
                 & $channel $Message
             } catch {
-                # Utiliser Write-Error pour éviter une boucle infinie
+                # Utiliser Write-Error pour Ã©viter une boucle infinie
                 Write-Error "Erreur lors de l'envoi du feedback au canal : $_"
             }
         }
@@ -605,7 +605,7 @@ function Write-FeedbackToConsole {
         [FeedbackMessage]$Message
     )
 
-    # Déterminer la couleur en fonction du type
+    # DÃ©terminer la couleur en fonction du type
     $color = switch ($Message.Type) {
         "Error" { "Red" }
         "Warning" { "Yellow" }
@@ -616,7 +616,7 @@ function Write-FeedbackToConsole {
         default { "White" }
     }
 
-    # Écrire le message dans la console
+    # Ã‰crire le message dans la console
     Write-Host $Message.ToString() -ForegroundColor $color
 }
 

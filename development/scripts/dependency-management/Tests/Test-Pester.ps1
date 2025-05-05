@@ -1,29 +1,29 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 # Importer le module Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "ModuleDependencyTraversal.psm1"
 
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Le module ModuleDependencyTraversal.psm1 n'existe pas dans le chemin spécifié: $modulePath"
+    throw "Le module ModuleDependencyTraversal.psm1 n'existe pas dans le chemin spÃ©cifiÃ©: $modulePath"
 }
 
 Import-Module -Name $modulePath -Force
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ModuleDependencyTraversalTests"
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Créer des modules de test
+# CrÃ©er des modules de test
 $moduleA = @{
     Name = "ModuleA"
     Version = "1.0.0"
@@ -56,19 +56,19 @@ $moduleE = @{
     Name = "ModuleE"
     Version = "1.0.0"
     Path = Join-Path -Path $testDir -ChildPath "ModuleE"
-    Dependencies = @("ModuleB")  # Crée un cycle avec ModuleB
+    Dependencies = @("ModuleB")  # CrÃ©e un cycle avec ModuleB
 }
 
 $modules = @($moduleA, $moduleB, $moduleC, $moduleD, $moduleE)
 
-# Créer les répertoires des modules
+# CrÃ©er les rÃ©pertoires des modules
 foreach ($module in $modules) {
     New-Item -Path $module.Path -ItemType Directory -Force | Out-Null
 }
 
-# Créer les fichiers des modules
+# CrÃ©er les fichiers des modules
 foreach ($module in $modules) {
-    # Créer le manifeste du module
+    # CrÃ©er le manifeste du module
     $manifestContent = @"
 @{
     RootModule = '$($module.Name).psm1'
@@ -92,7 +92,7 @@ $(
     $manifestPath = Join-Path -Path $module.Path -ChildPath "$($module.Name).psd1"
     $manifestContent | Out-File -FilePath $manifestPath -Encoding UTF8
 
-    # Créer le fichier du module
+    # CrÃ©er le fichier du module
     $moduleContent = @"
 <#
 .SYNOPSIS
@@ -119,15 +119,15 @@ Export-ModuleMember -Function Get-$($module.Name)Data
     $moduleContent | Out-File -FilePath $modulePath -Encoding UTF8
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Describe "ModuleDependencyTraversal" {
     BeforeAll {
-        # Réinitialiser le graphe de dépendances avant chaque test
+        # RÃ©initialiser le graphe de dÃ©pendances avant chaque test
         Reset-ModuleDependencyGraph
     }
 
     Context "Get-ModuleDirectDependencies" {
-        It "Détecte les dépendances directes d'un module" {
+        It "DÃ©tecte les dÃ©pendances directes d'un module" {
             $dependencies = Get-ModuleDirectDependencies -ModulePath (Join-Path -Path $moduleA.Path -ChildPath "$($moduleA.Name).psd1")
             $dependencies | Should -Not -BeNullOrEmpty
             $dependencies.Count | Should -Be 2
@@ -135,7 +135,7 @@ Describe "ModuleDependencyTraversal" {
             $dependencies.Name | Should -Contain "ModuleC"
         }
 
-        It "Détecte les dépendances directes d'un module sans dépendances" {
+        It "DÃ©tecte les dÃ©pendances directes d'un module sans dÃ©pendances" {
             $dependencies = Get-ModuleDirectDependencies -ModulePath (Join-Path -Path $moduleD.Path -ChildPath "$($moduleD.Name).psd1")
             $dependencies | Should -BeNullOrEmpty
         }

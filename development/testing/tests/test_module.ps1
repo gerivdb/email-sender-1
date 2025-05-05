@@ -1,7 +1,7 @@
-# Importer le module
+﻿# Importer le module
 Import-Module -Name (Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1") -Force
 
-# Vérifier que les fonctions sont disponibles
+# VÃ©rifier que les fonctions sont disponibles
 $functions = Get-Command -Module ErrorPatternAnalyzer
 Write-Host "Fonctions disponibles dans le module ErrorPatternAnalyzer:"
 $functions | ForEach-Object { Write-Host "- $($_.Name)" }

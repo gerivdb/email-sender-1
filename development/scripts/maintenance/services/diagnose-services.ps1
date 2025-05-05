@@ -1,4 +1,4 @@
-function Test-ProcessRunning {
+﻿function Test-ProcessRunning {
     param (
         [string]$processName
     )
@@ -33,16 +33,16 @@ function Write-ServiceStatus {
     
     Write-Host "`nDiagnostic pour $serviceName :" -ForegroundColor Cyan
     
-    # Vérifier le processus
+    # VÃ©rifier le processus
     $processRunning = Test-ProcessRunning -processName $processName
     Write-Host "- Processus ($processName): " -NoNewline
     if ($processRunning) {
         Write-Host "EN COURS" -ForegroundColor Green
     } else {
-        Write-Host "ARRÊTÉ" -ForegroundColor Red
+        Write-Host "ARRÃŠTÃ‰" -ForegroundColor Red
     }
     
-    # Vérifier le port
+    # VÃ©rifier le port
     Write-Host "- Port ($port): " -NoNewline
     if (Test-Port -serviceName $serviceName -port $port) {
         Write-Host "ACCESSIBLE" -ForegroundColor Green
@@ -50,10 +50,10 @@ function Write-ServiceStatus {
         Write-Host "INACCESSIBLE" -ForegroundColor Red
     }
     
-    # Vérifier la configuration
+    # VÃ©rifier la configuration
     Write-Host "- Fichier de configuration: " -NoNewline
     if (Test-Path $configPath) {
-        Write-Host "PRÉSENT" -ForegroundColor Green
+        Write-Host "PRÃ‰SENT" -ForegroundColor Green
     } else {
         Write-Host "MANQUANT" -ForegroundColor Red
     }
@@ -65,5 +65,5 @@ Write-ServiceStatus -serviceName "MCP Proxy" -processName "mcp" -port 4000 -conf
 Write-ServiceStatus -serviceName "Augment Service" -processName "augment" -port 3000 -configPath "src\augment\config\local.json"
 
 # Afficher les processus en cours sur les ports
-Write-Host "`nProcessus écoutant sur les ports :" -ForegroundColor Cyan
+Write-Host "`nProcessus Ã©coutant sur les ports :" -ForegroundColor Cyan
 netstat -ano | findstr "LISTENING" | findstr ":5678 :4000 :3000"

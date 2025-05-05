@@ -1,18 +1,18 @@
-# Tests unitaires simplifiés pour le module PerformancePredictor
+﻿# Tests unitaires simplifiÃ©s pour le module PerformancePredictor
 # Auteur: EMAIL_SENDER_1 Team
 # Version: 1.0.0
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\PerformancePredictor.psm1"
 if (Test-Path -Path $modulePath) {
     Import-Module $modulePath -Force
-    Write-Host "Module importé avec succès: $modulePath" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s: $modulePath" -ForegroundColor Green
 } else {
     Write-Error "Module not found: $modulePath"
     exit 1
 }
 
-# Vérifier que les fonctions du module sont disponibles
+# VÃ©rifier que les fonctions du module sont disponibles
 $requiredFunctions = @(
     'Initialize-PerformancePredictor',
     'Start-ModelTraining',
@@ -34,12 +34,12 @@ if ($missingFunctions.Count -gt 0) {
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PerformancePredictorTests_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
-Write-Host "Répertoire de test créé: $testDir" -ForegroundColor Green
+Write-Host "RÃ©pertoire de test crÃ©Ã©: $testDir" -ForegroundColor Green
 
-# Fonction pour générer des métriques de test
+# Fonction pour gÃ©nÃ©rer des mÃ©triques de test
 function New-TestMetrics {
     param (
         [int]$Count = 24,
@@ -58,7 +58,7 @@ function New-TestMetrics {
         $diskUsage = 50 + 0.5 * $i + (Get-Random -Minimum -1 -Maximum 1)
         $networkUsage = 20 + 15 * [Math]::Sin($hour / 6 * [Math]::PI) + (Get-Random -Minimum -4 -Maximum 4)
         
-        # Ajouter une anomalie à la 15ème heure
+        # Ajouter une anomalie Ã  la 15Ã¨me heure
         if ($i -eq 15) {
             $cpuUsage += 40
             $memoryUsage += 30
@@ -89,7 +89,7 @@ function New-TestMetrics {
 }
 
 # Tests simples
-Write-Host "Exécution des tests simples..." -ForegroundColor Cyan
+Write-Host "ExÃ©cution des tests simples..." -ForegroundColor Cyan
 
 # Test 1: Initialisation du module
 Write-Host "Test 1: Initialisation du module" -ForegroundColor Yellow
@@ -97,9 +97,9 @@ try {
     $config = Initialize-PerformancePredictor -ConfigPath "$testDir\config.json" -LogPath "$testDir\logs.log" -ModelStoragePath "$testDir\models" -PredictionHorizon 6 -AnomalySensitivity "Medium" -RetrainingInterval 1
     
     if ($config -and $config.ConfigPath -eq "$testDir\config.json") {
-        Write-Host "  SUCCÈS: Module initialisé avec succès" -ForegroundColor Green
+        Write-Host "  SUCCÃˆS: Module initialisÃ© avec succÃ¨s" -ForegroundColor Green
     } else {
-        Write-Host "  ÉCHEC: Échec de l'initialisation du module" -ForegroundColor Red
+        Write-Host "  Ã‰CHEC: Ã‰chec de l'initialisation du module" -ForegroundColor Red
         exit 1
     }
 } catch {
@@ -107,15 +107,15 @@ try {
     exit 1
 }
 
-# Test 2: Génération des métriques de test
-Write-Host "Test 2: Génération des métriques de test" -ForegroundColor Yellow
+# Test 2: GÃ©nÃ©ration des mÃ©triques de test
+Write-Host "Test 2: GÃ©nÃ©ration des mÃ©triques de test" -ForegroundColor Yellow
 try {
     $metrics = New-TestMetrics -Count 48
     
     if ($metrics -and $metrics.Count -eq 48) {
-        Write-Host "  SUCCÈS: Métriques générées avec succès" -ForegroundColor Green
+        Write-Host "  SUCCÃˆS: MÃ©triques gÃ©nÃ©rÃ©es avec succÃ¨s" -ForegroundColor Green
     } else {
-        Write-Host "  ÉCHEC: Échec de la génération des métriques" -ForegroundColor Red
+        Write-Host "  Ã‰CHEC: Ã‰chec de la gÃ©nÃ©ration des mÃ©triques" -ForegroundColor Red
         exit 1
     }
 } catch {
@@ -123,12 +123,12 @@ try {
     exit 1
 }
 
-# Test 3: Exportation des métriques au format JSON
-Write-Host "Test 3: Exportation des métriques au format JSON" -ForegroundColor Yellow
+# Test 3: Exportation des mÃ©triques au format JSON
+Write-Host "Test 3: Exportation des mÃ©triques au format JSON" -ForegroundColor Yellow
 try {
     $jsonPath = Join-Path -Path $testDir -ChildPath "metrics.json"
     
-    # Convertir les métriques au format JSON
+    # Convertir les mÃ©triques au format JSON
     $formattedMetrics = $metrics | ForEach-Object {
         @{
             Timestamp = if ($_.Timestamp -is [DateTime]) { $_.Timestamp.ToString('o') } else { $_.Timestamp }
@@ -139,13 +139,13 @@ try {
         }
     }
     
-    # Exporter les métriques au format JSON
+    # Exporter les mÃ©triques au format JSON
     $formattedMetrics | ConvertTo-Json -Depth 10 | Out-File -FilePath $jsonPath -Encoding utf8
     
     if (Test-Path -Path $jsonPath) {
-        Write-Host "  SUCCÈS: Métriques exportées avec succès" -ForegroundColor Green
+        Write-Host "  SUCCÃˆS: MÃ©triques exportÃ©es avec succÃ¨s" -ForegroundColor Green
     } else {
-        Write-Host "  ÉCHEC: Échec de l'exportation des métriques" -ForegroundColor Red
+        Write-Host "  Ã‰CHEC: Ã‰chec de l'exportation des mÃ©triques" -ForegroundColor Red
         exit 1
     }
 } catch {
@@ -157,7 +157,7 @@ try {
 Write-Host "Nettoyage des fichiers de test..." -ForegroundColor Cyan
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
-    Write-Host "Répertoire de test supprimé: $testDir" -ForegroundColor Green
+    Write-Host "RÃ©pertoire de test supprimÃ©: $testDir" -ForegroundColor Green
 }
 
-Write-Host "Tous les tests ont réussi!" -ForegroundColor Green
+Write-Host "Tous les tests ont rÃ©ussi!" -ForegroundColor Green

@@ -1,26 +1,26 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    DÃ©tecte les dÃ©pendances cycliques dans les scripts et workflows.
+    DÃƒÂ©tecte les dÃƒÂ©pendances cycliques dans les scripts et workflows.
 .DESCRIPTION
-    Ce script analyse les scripts et workflows pour dÃ©tecter les dÃ©pendances cycliques
-    qui pourraient causer des boucles infinies ou des erreurs rÃ©cursives.
+    Ce script analyse les scripts et workflows pour dÃƒÂ©tecter les dÃƒÂ©pendances cycliques
+    qui pourraient causer des boucles infinies ou des erreurs rÃƒÂ©cursives.
 .PARAMETER Path
-    Chemin du dossier ou fichier Ã  analyser.
+    Chemin du dossier ou fichier ÃƒÂ  analyser.
 .PARAMETER Recursive
-    Analyse rÃ©cursivement les sous-dossiers.
+    Analyse rÃƒÂ©cursivement les sous-dossiers.
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour le rapport.
 .PARAMETER IncludeWorkflows
     Inclut l'analyse des workflows n8n.
 .PARAMETER MaxDepth
-    Profondeur maximale pour l'analyse rÃ©cursive des dÃ©pendances.
+    Profondeur maximale pour l'analyse rÃƒÂ©cursive des dÃƒÂ©pendances.
 .EXAMPLE
     .\Detect-CyclicDependencies.ps1 -Path ".\development\scripts" -Recursive -OutputPath ".\reports\dependencies.json"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de crÃ©ation: 2025-04-17
+    Date de crÃƒÂ©ation: 2025-04-17
 #>
 
 [CmdletBinding()]
@@ -41,18 +41,18 @@ param (
     [int]$MaxDepth = 5
 )
 
-# Importer le module de dÃ©tection de cycles
+# Importer le module de dÃƒÂ©tection de cycles
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\" -Resolve
 $modulePath = Join-Path -Path $modulePath -ChildPath "modules\CycleDetector.psm1"
 
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Module de dÃ©tection de cycles introuvable: $modulePath"
+    Write-Error "Module de dÃƒÂ©tection de cycles introuvable: $modulePath"
     exit 1
 }
 
 Import-Module $modulePath -Force
 
-# Fonction pour Ã©crire dans le journal
+# Fonction pour ÃƒÂ©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -98,22 +98,22 @@ function Start-CyclicDependencyDetection {
         [int]$MaxDepth
     )
     
-    Write-Log "DÃ©marrage de la dÃ©tection des dÃ©pendances cycliques..." -Level "TITLE"
+    Write-Log "DÃƒÂ©marrage de la dÃƒÂ©tection des dÃƒÂ©pendances cycliques..." -Level "TITLE"
     Write-Log "Chemin: $Path"
-    Write-Log "RÃ©cursif: $Recursive"
+    Write-Log "RÃƒÂ©cursif: $Recursive"
     Write-Log "Profondeur maximale: $MaxDepth"
     Write-Log "Inclure les workflows: $IncludeWorkflows"
     
-    # VÃ©rifier si le chemin existe
+    # VÃƒÂ©rifier si le chemin existe
     if (-not (Test-Path -Path $Path)) {
         Write-Log "Le chemin n'existe pas: $Path" -Level "ERROR"
         return
     }
     
-    # Initialiser le dÃ©tecteur de cycles
+    # Initialiser le dÃƒÂ©tecteur de cycles
     Initialize-CycleDetector -Enabled $true -MaxDepth $MaxDepth
     
-    # Obtenir les fichiers Ã  analyser
+    # Obtenir les fichiers ÃƒÂ  analyser
     $scriptExtensions = @(".ps1", ".py", ".bat", ".cmd", ".sh")
     $workflowExtensions = @(".json")
     
@@ -133,7 +133,7 @@ function Start-CyclicDependencyDetection {
         
         $files += Get-ChildItem @searchOptions
         
-        # Ajouter les workflows si demandÃ©
+        # Ajouter les workflows si demandÃƒÂ©
         if ($IncludeWorkflows) {
             $workflowOptions = @{
                 Path = $Path
@@ -155,7 +155,7 @@ function Start-CyclicDependencyDetection {
                     $content = Get-Content -Path $file.FullName -Raw
                     $json = ConvertFrom-Json -InputObject $content -ErrorAction Stop
                     
-                    # VÃ©rifier si c'est un workflow n8n
+                    # VÃƒÂ©rifier si c'est un workflow n8n
                     if ($json.nodes -and $json.connections) {
                         $n8nWorkflows += $file
                     }
@@ -173,7 +173,7 @@ function Start-CyclicDependencyDetection {
         $files += Get-Item -Path $Path
     }
     
-    Write-Log "Nombre de fichiers Ã  analyser: $($files.Count)"
+    Write-Log "Nombre de fichiers ÃƒÂ  analyser: $($files.Count)"
     
     # Analyser les fichiers
     $dependencies = @{}
@@ -189,7 +189,7 @@ function Start-CyclicDependencyDetection {
             $result = Test-N8nWorkflowCycles -WorkflowPath $file.FullName
             
             if (-not $result) {
-                Write-Log "Cycles dÃ©tectÃ©s dans le workflow: $($file.FullName)" -Level "WARNING"
+                Write-Log "Cycles dÃƒÂ©tectÃƒÂ©s dans le workflow: $($file.FullName)" -Level "WARNING"
             }
         }
         elseif ($scriptExtensions -contains $extension) {
@@ -214,16 +214,16 @@ function Start-CyclicDependencyDetection {
         }
     }
     
-    # Obtenir les statistiques de dÃ©tection de cycles
+    # Obtenir les statistiques de dÃƒÂ©tection de cycles
     $stats = Get-CycleDetectionStatistics
     
-    Write-Log "Nombre total de cycles dÃ©tectÃ©s: $($stats.TotalCycles)" -Level $(if ($stats.TotalCycles -gt 0) { "WARNING" } else { "SUCCESS" })
+    Write-Log "Nombre total de cycles dÃƒÂ©tectÃƒÂ©s: $($stats.TotalCycles)" -Level $(if ($stats.TotalCycles -gt 0) { "WARNING" } else { "SUCCESS" })
     
     foreach ($type in $stats.CyclesByType.Keys) {
         Write-Log "Cycles de type '$type': $($stats.CyclesByType[$type])"
     }
     
-    # GÃ©nÃ©rer le rapport
+    # GÃƒÂ©nÃƒÂ©rer le rapport
     if ($OutputPath) {
         $report = @{
             GeneratedAt = (Get-Date).ToString("o")
@@ -236,7 +236,7 @@ function Start-CyclicDependencyDetection {
             CycleStatistics = $stats
         }
         
-        # CrÃ©er le dossier de sortie s'il n'existe pas
+        # CrÃƒÂ©er le dossier de sortie s'il n'existe pas
         $outputDir = [System.IO.Path]::GetDirectoryName($OutputPath)
         
         if (-not (Test-Path -Path $outputDir)) {
@@ -246,11 +246,11 @@ function Start-CyclicDependencyDetection {
         # Enregistrer le rapport
         $report | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
         
-        Write-Log "Rapport gÃ©nÃ©rÃ©: $OutputPath" -Level "SUCCESS"
+        Write-Log "Rapport gÃƒÂ©nÃƒÂ©rÃƒÂ©: $OutputPath" -Level "SUCCESS"
     }
     
     return $stats
 }
 
-# ExÃ©cuter la fonction principale
+# ExÃƒÂ©cuter la fonction principale
 Start-CyclicDependencyDetection -Path $Path -Recursive:$Recursive -OutputPath $OutputPath -IncludeWorkflows:$IncludeWorkflows -MaxDepth $MaxDepth

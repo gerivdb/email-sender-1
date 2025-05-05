@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module DependencyResolver.
 
 .DESCRIPTION
-    Ce script exécute des tests unitaires pour vérifier le bon fonctionnement
+    Ce script exÃ©cute des tests unitaires pour vÃ©rifier le bon fonctionnement
     du module DependencyResolver.
 
 .NOTES
@@ -11,22 +11,22 @@
     Auteur: EMAIL_SENDER_1
 #>
 
-# Définir le chemin du module à tester
+# DÃ©finir le chemin du module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\DependencyResolver\DependencyResolver.psm1"
 
-# Vérifier que le module existe
+# VÃ©rifier que le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    Write-Error "Le module DependencyResolver est introuvable à l'emplacement : $modulePath"
+    Write-Error "Le module DependencyResolver est introuvable Ã  l'emplacement : $modulePath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de configuration de test
+# CrÃ©er un fichier de configuration de test
 $testConfigPath = Join-Path -Path $testDir -ChildPath "test-dependency.config.json"
 $testConfig = @{
     Managers = @{
@@ -49,7 +49,7 @@ $testConfig = @{
 }
 $testConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $testConfigPath -Encoding UTF8
 
-# Créer des gestionnaires de test avec des dépendances
+# CrÃ©er des gestionnaires de test avec des dÃ©pendances
 $managerAPath = Join-Path -Path $testDir -ChildPath "manager-a.ps1"
 Set-Content -Path $managerAPath -Value @"
 <#
@@ -57,7 +57,7 @@ Set-Content -Path $managerAPath -Value @"
     Gestionnaire A pour les tests unitaires.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests unitaires
+    Ce script est un gestionnaire de test utilisÃ© pour les tests unitaires
     du module DependencyResolver.
 
 .MANIFEST
@@ -81,14 +81,14 @@ param (
     [string]`$Command = "Status"
 )
 
-# Importer les dépendances
+# Importer les dÃ©pendances
 Import-Module "ManagerB"
 
 function Start-ManagerA {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire A..."
+    Write-Host "DÃ©marrage du gestionnaire A..."
     Start-ManagerB
 }
 
@@ -96,7 +96,7 @@ function Stop-ManagerA {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire A..."
+    Write-Host "ArrÃªt du gestionnaire A..."
     Stop-ManagerB
 }
 
@@ -110,7 +110,7 @@ function Get-ManagerAStatus {
     }
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-ManagerA
@@ -134,7 +134,7 @@ Set-Content -Path $managerBPath -Value @"
     Gestionnaire B pour les tests unitaires.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests unitaires
+    Ce script est un gestionnaire de test utilisÃ© pour les tests unitaires
     du module DependencyResolver.
 
 .MANIFEST
@@ -159,14 +159,14 @@ param (
     [string]`$Command = "Status"
 )
 
-# Importer les dépendances
+# Importer les dÃ©pendances
 Import-Module "ManagerC"
 
 function Start-ManagerB {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire B..."
+    Write-Host "DÃ©marrage du gestionnaire B..."
     Start-ManagerC
 }
 
@@ -174,7 +174,7 @@ function Stop-ManagerB {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire B..."
+    Write-Host "ArrÃªt du gestionnaire B..."
     Stop-ManagerC
 }
 
@@ -188,7 +188,7 @@ function Get-ManagerBStatus {
     }
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-ManagerB
@@ -212,7 +212,7 @@ Set-Content -Path $managerCPath -Value @"
     Gestionnaire C pour les tests unitaires.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests unitaires
+    Ce script est un gestionnaire de test utilisÃ© pour les tests unitaires
     du module DependencyResolver.
 
 .MANIFEST
@@ -234,14 +234,14 @@ function Start-ManagerC {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire C..."
+    Write-Host "DÃ©marrage du gestionnaire C..."
 }
 
 function Stop-ManagerC {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire C..."
+    Write-Host "ArrÃªt du gestionnaire C..."
 }
 
 function Get-ManagerCStatus {
@@ -254,7 +254,7 @@ function Get-ManagerCStatus {
     }
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-ManagerC
@@ -271,7 +271,7 @@ switch (`$Command) {
 }
 "@
 
-# Créer un gestionnaire avec des dépendances cycliques
+# CrÃ©er un gestionnaire avec des dÃ©pendances cycliques
 $managerDPath = Join-Path -Path $testDir -ChildPath "manager-d.ps1"
 Set-Content -Path $managerDPath -Value @"
 <#
@@ -279,7 +279,7 @@ Set-Content -Path $managerDPath -Value @"
     Gestionnaire D pour les tests unitaires.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests unitaires
+    Ce script est un gestionnaire de test utilisÃ© pour les tests unitaires
     du module DependencyResolver.
 
 .MANIFEST
@@ -302,14 +302,14 @@ param (
     [string]`$Command = "Status"
 )
 
-# Importer les dépendances
+# Importer les dÃ©pendances
 Import-Module "ManagerE"
 
 function Start-ManagerD {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire D..."
+    Write-Host "DÃ©marrage du gestionnaire D..."
     Start-ManagerE
 }
 
@@ -317,7 +317,7 @@ function Stop-ManagerD {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire D..."
+    Write-Host "ArrÃªt du gestionnaire D..."
     Stop-ManagerE
 }
 
@@ -331,7 +331,7 @@ function Get-ManagerDStatus {
     }
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-ManagerD
@@ -355,7 +355,7 @@ Set-Content -Path $managerEPath -Value @"
     Gestionnaire E pour les tests unitaires.
 
 .DESCRIPTION
-    Ce script est un gestionnaire de test utilisé pour les tests unitaires
+    Ce script est un gestionnaire de test utilisÃ© pour les tests unitaires
     du module DependencyResolver.
 
 .MANIFEST
@@ -378,14 +378,14 @@ param (
     [string]`$Command = "Status"
 )
 
-# Importer les dépendances
+# Importer les dÃ©pendances
 Import-Module "ManagerD"
 
 function Start-ManagerE {
     [CmdletBinding()]
     param()
     
-    Write-Host "Démarrage du gestionnaire E..."
+    Write-Host "DÃ©marrage du gestionnaire E..."
     Start-ManagerD
 }
 
@@ -393,7 +393,7 @@ function Stop-ManagerE {
     [CmdletBinding()]
     param()
     
-    Write-Host "Arrêt du gestionnaire E..."
+    Write-Host "ArrÃªt du gestionnaire E..."
     Stop-ManagerD
 }
 
@@ -407,7 +407,7 @@ function Get-ManagerEStatus {
     }
 }
 
-# Exécuter la commande spécifiée
+# ExÃ©cuter la commande spÃ©cifiÃ©e
 switch (`$Command) {
     "Start" {
         Start-ManagerE
@@ -424,7 +424,7 @@ switch (`$Command) {
 }
 "@
 
-# Mettre à jour la configuration pour inclure les gestionnaires D et E
+# Mettre Ã  jour la configuration pour inclure les gestionnaires D et E
 $testConfig.Managers.ManagerD = @{
     Path = $managerDPath
     Version = "1.0.0"
@@ -440,42 +440,42 @@ $testConfig | ConvertTo-Json -Depth 10 | Set-Content -Path $testConfigPath -Enco
 # Importer le module
 Import-Module -Name $modulePath -Force
 
-# Définir les tests unitaires
+# DÃ©finir les tests unitaires
 $tests = @(
     @{
         Name = "Test de Get-ManagerDependencies avec manifeste"
         Test = {
-            # Extraire les dépendances du gestionnaire A
+            # Extraire les dÃ©pendances du gestionnaire A
             $dependencies = Get-ManagerDependencies -Path $managerAPath
             
-            # Vérifier que les dépendances sont extraites correctement
+            # VÃ©rifier que les dÃ©pendances sont extraites correctement
             if (-not $dependencies -or $dependencies.Count -eq 0) {
                 return $false
             }
             
-            # Vérifier les propriétés des dépendances
+            # VÃ©rifier les propriÃ©tÃ©s des dÃ©pendances
             return $dependencies[0].Name -eq "ManagerB" -and $dependencies[0].MinimumVersion -eq "1.0.0" -and $dependencies[0].Required -eq $true
         }
     },
     @{
         Name = "Test de Get-ManagerDependencies avec analyse manuelle"
         Test = {
-            # Extraire les dépendances du gestionnaire A sans utiliser le manifeste
+            # Extraire les dÃ©pendances du gestionnaire A sans utiliser le manifeste
             $dependencies = Get-ManagerDependencies -Path $managerAPath
             
-            # Vérifier que les dépendances sont extraites correctement
+            # VÃ©rifier que les dÃ©pendances sont extraites correctement
             if (-not $dependencies -or $dependencies.Count -eq 0) {
                 return $false
             }
             
-            # Vérifier que la dépendance à ManagerB est détectée
+            # VÃ©rifier que la dÃ©pendance Ã  ManagerB est dÃ©tectÃ©e
             return $dependencies | Where-Object { $_.Name -eq "ManagerB" } | Select-Object -First 1
         }
     },
     @{
-        Name = "Test de Test-DependenciesAvailability avec dépendances disponibles"
+        Name = "Test de Test-DependenciesAvailability avec dÃ©pendances disponibles"
         Test = {
-            # Définir les dépendances à vérifier
+            # DÃ©finir les dÃ©pendances Ã  vÃ©rifier
             $dependencies = @(
                 @{
                     Name = "ManagerB"
@@ -484,17 +484,17 @@ $tests = @(
                 }
             )
             
-            # Vérifier la disponibilité des dépendances
+            # VÃ©rifier la disponibilitÃ© des dÃ©pendances
             $result = Test-DependenciesAvailability -Dependencies $dependencies -ConfigPath $testConfigPath
             
-            # Vérifier que la vérification a réussi
+            # VÃ©rifier que la vÃ©rification a rÃ©ussi
             return $result -eq $true
         }
     },
     @{
-        Name = "Test de Test-DependenciesAvailability avec dépendances incompatibles"
+        Name = "Test de Test-DependenciesAvailability avec dÃ©pendances incompatibles"
         Test = {
-            # Définir les dépendances à vérifier
+            # DÃ©finir les dÃ©pendances Ã  vÃ©rifier
             $dependencies = @(
                 @{
                     Name = "ManagerB"
@@ -503,17 +503,17 @@ $tests = @(
                 }
             )
             
-            # Vérifier la disponibilité des dépendances
+            # VÃ©rifier la disponibilitÃ© des dÃ©pendances
             $result = Test-DependenciesAvailability -Dependencies $dependencies -ConfigPath $testConfigPath
             
-            # Vérifier que la vérification a échoué
+            # VÃ©rifier que la vÃ©rification a Ã©chouÃ©
             return $result -eq $false
         }
     },
     @{
-        Name = "Test de Resolve-DependencyConflicts avec dépendances compatibles"
+        Name = "Test de Resolve-DependencyConflicts avec dÃ©pendances compatibles"
         Test = {
-            # Définir les dépendances à résoudre
+            # DÃ©finir les dÃ©pendances Ã  rÃ©soudre
             $dependencies = @(
                 @{
                     Name = "ManagerC"
@@ -527,22 +527,22 @@ $tests = @(
                 }
             )
             
-            # Résoudre les conflits de dépendances
+            # RÃ©soudre les conflits de dÃ©pendances
             $resolvedDependencies = Resolve-DependencyConflicts -Dependencies $dependencies -ConfigPath $testConfigPath
             
-            # Vérifier que la résolution a réussi
+            # VÃ©rifier que la rÃ©solution a rÃ©ussi
             if (-not $resolvedDependencies -or $resolvedDependencies.Count -eq 0) {
                 return $false
             }
             
-            # Vérifier les propriétés de la dépendance résolue
+            # VÃ©rifier les propriÃ©tÃ©s de la dÃ©pendance rÃ©solue
             return $resolvedDependencies[0].Name -eq "ManagerC" -and $resolvedDependencies[0].MinimumVersion -eq "1.5.0" -and $resolvedDependencies[0].MaximumVersion -eq "2.5.0" -and $resolvedDependencies[0].Required -eq $true
         }
     },
     @{
-        Name = "Test de Resolve-DependencyConflicts avec dépendances incompatibles"
+        Name = "Test de Resolve-DependencyConflicts avec dÃ©pendances incompatibles"
         Test = {
-            # Définir les dépendances à résoudre
+            # DÃ©finir les dÃ©pendances Ã  rÃ©soudre
             $dependencies = @(
                 @{
                     Name = "ManagerC"
@@ -556,46 +556,46 @@ $tests = @(
                 }
             )
             
-            # Résoudre les conflits de dépendances
+            # RÃ©soudre les conflits de dÃ©pendances
             $resolvedDependencies = Resolve-DependencyConflicts -Dependencies $dependencies -ConfigPath $testConfigPath
             
-            # Vérifier que la résolution a échoué
+            # VÃ©rifier que la rÃ©solution a Ã©chouÃ©
             return $resolvedDependencies -eq $null
         }
     },
     @{
-        Name = "Test de Get-ManagerLoadOrder avec dépendances linéaires"
+        Name = "Test de Get-ManagerLoadOrder avec dÃ©pendances linÃ©aires"
         Test = {
-            # Déterminer l'ordre de chargement des gestionnaires
+            # DÃ©terminer l'ordre de chargement des gestionnaires
             $loadOrder = Get-ManagerLoadOrder -ManagerNames @("ManagerA", "ManagerB", "ManagerC") -ConfigPath $testConfigPath
             
-            # Vérifier que l'ordre de chargement est correct
+            # VÃ©rifier que l'ordre de chargement est correct
             if (-not $loadOrder -or $loadOrder.Count -ne 3) {
                 return $false
             }
             
-            # Vérifier que l'ordre est correct (C -> B -> A)
+            # VÃ©rifier que l'ordre est correct (C -> B -> A)
             return $loadOrder[0] -eq "ManagerC" -and $loadOrder[1] -eq "ManagerB" -and $loadOrder[2] -eq "ManagerA"
         }
     },
     @{
-        Name = "Test de Get-ManagerLoadOrder avec dépendances cycliques"
+        Name = "Test de Get-ManagerLoadOrder avec dÃ©pendances cycliques"
         Test = {
-            # Déterminer l'ordre de chargement des gestionnaires avec dépendances cycliques
+            # DÃ©terminer l'ordre de chargement des gestionnaires avec dÃ©pendances cycliques
             $loadOrder = Get-ManagerLoadOrder -ManagerNames @("ManagerD", "ManagerE") -ConfigPath $testConfigPath
             
-            # Vérifier que la détection de cycle a échoué
+            # VÃ©rifier que la dÃ©tection de cycle a Ã©chouÃ©
             return $loadOrder -eq $null
         }
     }
 )
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $totalTests = $tests.Count
 $passedTests = 0
 $failedTests = 0
 
-Write-Host "Exécution de $totalTests tests unitaires pour le module DependencyResolver..." -ForegroundColor Cyan
+Write-Host "ExÃ©cution de $totalTests tests unitaires pour le module DependencyResolver..." -ForegroundColor Cyan
 
 foreach ($test in $tests) {
     Write-Host "Test : $($test.Name)" -ForegroundColor Yellow
@@ -604,34 +604,34 @@ foreach ($test in $tests) {
         $result = & $test.Test
         
         if ($result) {
-            Write-Host "  Résultat : Réussi" -ForegroundColor Green
+            Write-Host "  RÃ©sultat : RÃ©ussi" -ForegroundColor Green
             $passedTests++
         } else {
-            Write-Host "  Résultat : Échec" -ForegroundColor Red
+            Write-Host "  RÃ©sultat : Ã‰chec" -ForegroundColor Red
             $failedTests++
         }
     } catch {
-        Write-Host "  Résultat : Erreur - $_" -ForegroundColor Red
+        Write-Host "  RÃ©sultat : Erreur - $_" -ForegroundColor Red
         $failedTests++
     }
 }
 
-# Afficher le résumé
-Write-Host "`nRésumé des tests :" -ForegroundColor Cyan
-Write-Host "  Tests exécutés : $totalTests" -ForegroundColor White
-Write-Host "  Tests réussis  : $passedTests" -ForegroundColor Green
-Write-Host "  Tests échoués  : $failedTests" -ForegroundColor Red
+# Afficher le rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des tests :" -ForegroundColor Cyan
+Write-Host "  Tests exÃ©cutÃ©s : $totalTests" -ForegroundColor White
+Write-Host "  Tests rÃ©ussis  : $passedTests" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s  : $failedTests" -ForegroundColor Red
 
 # Nettoyer les fichiers de test
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 
-# Retourner le résultat global
+# Retourner le rÃ©sultat global
 if ($failedTests -eq 0) {
-    Write-Host "`nTous les tests ont réussi !" -ForegroundColor Green
+    Write-Host "`nTous les tests ont rÃ©ussi !" -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

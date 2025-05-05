@@ -1,4 +1,4 @@
-# Module manifest for module 'AstNavigator'
+﻿# Module manifest for module 'AstNavigator'
 @{
     # Script module or binary module file associated with this manifest.
     RootModule        = 'AstNavigator.psm1'

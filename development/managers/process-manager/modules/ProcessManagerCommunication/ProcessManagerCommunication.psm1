@@ -1,15 +1,15 @@
-<#
+﻿<#
 .SYNOPSIS
     Module de communication avec le Process Manager.
 
 .DESCRIPTION
     Ce module fournit des fonctions pour communiquer avec le Process Manager
-    et ses gestionnaires enregistrés.
+    et ses gestionnaires enregistrÃ©s.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
 # Variables globales du module
@@ -29,7 +29,7 @@ function Write-CommunicationLog {
         [string]$Level = "Info"
     )
     
-    # Déterminer la couleur en fonction du niveau
+    # DÃ©terminer la couleur en fonction du niveau
     $color = switch ($Level) {
         "Debug" { "Gray" }
         "Info" { "White" }
@@ -39,7 +39,7 @@ function Write-CommunicationLog {
         default { "White" }
     }
     
-    # Écrire le message dans la console
+    # Ã‰crire le message dans la console
     Write-Host "[$((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))] [ProcessManagerCommunication] [$Level] $Message" -ForegroundColor $color
 }
 
@@ -49,10 +49,10 @@ function Write-CommunicationLog {
 
 .DESCRIPTION
     Cette fonction initialise la communication avec le Process Manager
-    en créant les canaux de communication nécessaires.
+    en crÃ©ant les canaux de communication nÃ©cessaires.
 
 .PARAMETER Protocol
-    Le protocole de communication à utiliser (NamedPipe, FileSystem, Socket).
+    Le protocole de communication Ã  utiliser (NamedPipe, FileSystem, Socket).
 
 .PARAMETER Name
     Le nom du canal de communication.
@@ -62,7 +62,7 @@ function Write-CommunicationLog {
 
 .EXAMPLE
     Initialize-ProcessManagerCommunication -Protocol "NamedPipe"
-    Initialise la communication avec le Process Manager via un pipe nommé.
+    Initialise la communication avec le Process Manager via un pipe nommÃ©.
 #>
 function Initialize-ProcessManagerCommunication {
     [CmdletBinding()]
@@ -79,14 +79,14 @@ function Initialize-ProcessManagerCommunication {
     )
     
     try {
-        # Vérifier si le module InterProcessCommunication est disponible
+        # VÃ©rifier si le module InterProcessCommunication est disponible
         if (-not (Get-Module -ListAvailable -Name "InterProcessCommunication")) {
             # Essayer de charger le script directement
             $ipcScriptPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent -Parent -Parent -Parent) -ChildPath "development\scripts\email\InterProcessCommunication.ps1"
             
             if (Test-Path -Path $ipcScriptPath -PathType Leaf) {
                 . $ipcScriptPath
-                Write-CommunicationLog -Message "Script InterProcessCommunication chargé depuis $ipcScriptPath" -Level Info
+                Write-CommunicationLog -Message "Script InterProcessCommunication chargÃ© depuis $ipcScriptPath" -Level Info
             }
             else {
                 Write-CommunicationLog -Message "Le module InterProcessCommunication n'est pas disponible." -Level Error
@@ -95,7 +95,7 @@ function Initialize-ProcessManagerCommunication {
         }
         else {
             Import-Module -Name "InterProcessCommunication" -ErrorAction Stop
-            Write-CommunicationLog -Message "Module InterProcessCommunication importé" -Level Info
+            Write-CommunicationLog -Message "Module InterProcessCommunication importÃ©" -Level Info
         }
         
         # Initialiser la communication selon le protocole
@@ -104,26 +104,26 @@ function Initialize-ProcessManagerCommunication {
                 $connection = Connect-IPCClient -Protocol "NamedPipe" -Name $Name
                 
                 if (-not $connection) {
-                    # Le serveur n'est pas en cours d'exécution, essayer de le démarrer
+                    # Le serveur n'est pas en cours d'exÃ©cution, essayer de le dÃ©marrer
                     $processManagerPath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent -Parent) -ChildPath "scripts\process-manager.ps1"
                     
                     if (Test-Path -Path $processManagerPath -PathType Leaf) {
                         Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$processManagerPath`" -StartServer -Protocol NamedPipe -Name $Name" -WindowStyle Hidden
                         
-                        # Attendre que le serveur démarre
+                        # Attendre que le serveur dÃ©marre
                         Start-Sleep -Seconds 2
                         
-                        # Essayer de se connecter à nouveau
+                        # Essayer de se connecter Ã  nouveau
                         $connection = Connect-IPCClient -Protocol "NamedPipe" -Name $Name
                     }
                 }
                 
                 if ($connection) {
-                    Write-CommunicationLog -Message "Communication initialisée via pipe nommé : $Name" -Level Success
+                    Write-CommunicationLog -Message "Communication initialisÃ©e via pipe nommÃ© : $Name" -Level Success
                     return $connection
                 }
                 else {
-                    Write-CommunicationLog -Message "Impossible d'initialiser la communication via pipe nommé : $Name" -Level Error
+                    Write-CommunicationLog -Message "Impossible d'initialiser la communication via pipe nommÃ© : $Name" -Level Error
                     return $false
                 }
             }
@@ -142,14 +142,14 @@ function Initialize-ProcessManagerCommunication {
                     LockFile = Join-Path -Path $communicationDir -ChildPath "lock.txt"
                 }
                 
-                Write-CommunicationLog -Message "Communication initialisée via système de fichiers : $communicationDir" -Level Success
+                Write-CommunicationLog -Message "Communication initialisÃ©e via systÃ¨me de fichiers : $communicationDir" -Level Success
                 return $connection
             }
             "Socket" {
                 $connection = Connect-IPCClient -Protocol "Socket" -Host "localhost" -Port 8765
                 
                 if ($connection) {
-                    Write-CommunicationLog -Message "Communication initialisée via socket : localhost:8765" -Level Success
+                    Write-CommunicationLog -Message "Communication initialisÃ©e via socket : localhost:8765" -Level Success
                     return $connection
                 }
                 else {
@@ -170,19 +170,19 @@ function Initialize-ProcessManagerCommunication {
     Envoie une commande au Process Manager.
 
 .DESCRIPTION
-    Cette fonction envoie une commande au Process Manager via le canal de communication spécifié.
+    Cette fonction envoie une commande au Process Manager via le canal de communication spÃ©cifiÃ©.
 
 .PARAMETER Connection
     La connexion au Process Manager.
 
 .PARAMETER Command
-    La commande à envoyer.
+    La commande Ã  envoyer.
 
 .PARAMETER Parameters
-    Les paramètres de la commande.
+    Les paramÃ¨tres de la commande.
 
 .PARAMETER Timeout
-    Le délai d'attente en secondes pour la réponse.
+    Le dÃ©lai d'attente en secondes pour la rÃ©ponse.
 
 .EXAMPLE
     $connection = Initialize-ProcessManagerCommunication
@@ -206,7 +206,7 @@ function Send-ProcessManagerCommand {
     )
     
     try {
-        # Créer l'objet de commande
+        # CrÃ©er l'objet de commande
         $commandObject = @{
             Command = $Command
             Parameters = $Parameters
@@ -219,57 +219,57 @@ function Send-ProcessManagerCommand {
         
         # Envoyer la commande selon le protocole
         if ($Connection.Protocol -eq "FileSystem") {
-            # Acquérir le verrou
+            # AcquÃ©rir le verrou
             $lockAcquired = $false
             $startTime = Get-Date
             
             while (-not $lockAcquired -and ((Get-Date) - $startTime).TotalSeconds -lt $Timeout) {
                 if (-not (Test-Path -Path $Connection.LockFile -PathType Leaf)) {
-                    # Créer le fichier de verrou
+                    # CrÃ©er le fichier de verrou
                     "LOCKED" | Out-File -FilePath $Connection.LockFile -Encoding utf8
                     $lockAcquired = $true
                 }
                 else {
-                    # Attendre et réessayer
+                    # Attendre et rÃ©essayer
                     Start-Sleep -Milliseconds 100
                 }
             }
             
             if (-not $lockAcquired) {
-                Write-CommunicationLog -Message "Impossible d'acquérir le verrou pour envoyer la commande." -Level Error
+                Write-CommunicationLog -Message "Impossible d'acquÃ©rir le verrou pour envoyer la commande." -Level Error
                 return $null
             }
             
-            # Écrire la commande dans le fichier de requête
+            # Ã‰crire la commande dans le fichier de requÃªte
             $commandJson | Out-File -FilePath $Connection.RequestFile -Encoding utf8
             
-            # Créer un événement pour signaler la requête
+            # CrÃ©er un Ã©vÃ©nement pour signaler la requÃªte
             $event = New-IPCEvent -Name "ProcessManagerRequest" -Global
             Set-IPCEvent -Event $event.EventHandle
             
-            # Attendre la réponse
+            # Attendre la rÃ©ponse
             $responseReceived = $false
             $startTime = Get-Date
             
             while (-not $responseReceived -and ((Get-Date) - $startTime).TotalSeconds -lt $Timeout) {
                 if (Test-Path -Path $Connection.ResponseFile -PathType Leaf) {
-                    # Lire la réponse
+                    # Lire la rÃ©ponse
                     $responseJson = Get-Content -Path $Connection.ResponseFile -Raw
                     
                     if ($responseJson) {
                         try {
                             $response = $responseJson | ConvertFrom-Json
                             
-                            # Vérifier que la réponse correspond à la requête
+                            # VÃ©rifier que la rÃ©ponse correspond Ã  la requÃªte
                             if ($response.Id -eq $commandObject.Id) {
                                 $responseReceived = $true
                                 
-                                # Supprimer le fichier de réponse
+                                # Supprimer le fichier de rÃ©ponse
                                 Remove-Item -Path $Connection.ResponseFile -Force
                             }
                         }
                         catch {
-                            Write-CommunicationLog -Message "Erreur lors de la lecture de la réponse : $_" -Level Warning
+                            Write-CommunicationLog -Message "Erreur lors de la lecture de la rÃ©ponse : $_" -Level Warning
                         }
                     }
                 }
@@ -279,17 +279,17 @@ function Send-ProcessManagerCommand {
                 }
             }
             
-            # Libérer le verrou
+            # LibÃ©rer le verrou
             if (Test-Path -Path $Connection.LockFile -PathType Leaf) {
                 Remove-Item -Path $Connection.LockFile -Force
             }
             
             if ($responseReceived) {
-                Write-CommunicationLog -Message "Réponse reçue pour la commande '$Command'." -Level Success
+                Write-CommunicationLog -Message "RÃ©ponse reÃ§ue pour la commande '$Command'." -Level Success
                 return $response
             }
             else {
-                Write-CommunicationLog -Message "Délai d'attente dépassé pour la commande '$Command'." -Level Warning
+                Write-CommunicationLog -Message "DÃ©lai d'attente dÃ©passÃ© pour la commande '$Command'." -Level Warning
                 return $null
             }
         }
@@ -297,7 +297,7 @@ function Send-ProcessManagerCommand {
             # Envoyer la commande via IPC
             Send-IPCMessage -Connection $Connection -Message $commandJson
             
-            # Attendre la réponse
+            # Attendre la rÃ©ponse
             $responseReceived = $false
             $startTime = Get-Date
             
@@ -308,23 +308,23 @@ function Send-ProcessManagerCommand {
                     try {
                         $response = $responseJson | ConvertFrom-Json
                         
-                        # Vérifier que la réponse correspond à la requête
+                        # VÃ©rifier que la rÃ©ponse correspond Ã  la requÃªte
                         if ($response.Id -eq $commandObject.Id) {
                             $responseReceived = $true
                         }
                     }
                     catch {
-                        Write-CommunicationLog -Message "Erreur lors de la lecture de la réponse : $_" -Level Warning
+                        Write-CommunicationLog -Message "Erreur lors de la lecture de la rÃ©ponse : $_" -Level Warning
                     }
                 }
             }
             
             if ($responseReceived) {
-                Write-CommunicationLog -Message "Réponse reçue pour la commande '$Command'." -Level Success
+                Write-CommunicationLog -Message "RÃ©ponse reÃ§ue pour la commande '$Command'." -Level Success
                 return $response
             }
             else {
-                Write-CommunicationLog -Message "Délai d'attente dépassé pour la commande '$Command'." -Level Warning
+                Write-CommunicationLog -Message "DÃ©lai d'attente dÃ©passÃ© pour la commande '$Command'." -Level Warning
                 return $null
             }
         }
@@ -341,7 +341,7 @@ function Send-ProcessManagerCommand {
 
 .DESCRIPTION
     Cette fonction ferme la communication avec le Process Manager
-    en libérant les ressources utilisées.
+    en libÃ©rant les ressources utilisÃ©es.
 
 .PARAMETER Connection
     La connexion au Process Manager.
@@ -361,14 +361,14 @@ function Close-ProcessManagerCommunication {
     try {
         # Fermer la connexion selon le protocole
         if ($Connection.Protocol -eq "FileSystem") {
-            # Rien à faire pour le protocole FileSystem
-            Write-CommunicationLog -Message "Communication fermée (FileSystem)." -Level Info
+            # Rien Ã  faire pour le protocole FileSystem
+            Write-CommunicationLog -Message "Communication fermÃ©e (FileSystem)." -Level Info
             return $true
         }
         else {
             # Fermer la connexion IPC
             Close-IPCConnection -Connection $Connection
-            Write-CommunicationLog -Message "Communication fermée." -Level Info
+            Write-CommunicationLog -Message "Communication fermÃ©e." -Level Info
             return $true
         }
     }
@@ -384,20 +384,20 @@ function Close-ProcessManagerCommunication {
 
 .DESCRIPTION
     Cette fonction envoie une notification au Process Manager
-    pour l'informer d'un événement.
+    pour l'informer d'un Ã©vÃ©nement.
 
 .PARAMETER EventType
-    Le type d'événement.
+    Le type d'Ã©vÃ©nement.
 
 .PARAMETER EventData
-    Les données de l'événement.
+    Les donnÃ©es de l'Ã©vÃ©nement.
 
 .PARAMETER Async
-    Indique si la notification doit être envoyée de manière asynchrone.
+    Indique si la notification doit Ãªtre envoyÃ©e de maniÃ¨re asynchrone.
 
 .EXAMPLE
     Send-ProcessManagerNotification -EventType "ManagerStarted" -EventData @{ Name = "ModeManager" }
-    Envoie une notification au Process Manager pour l'informer du démarrage du gestionnaire de modes.
+    Envoie une notification au Process Manager pour l'informer du dÃ©marrage du gestionnaire de modes.
 #>
 function Send-ProcessManagerNotification {
     [CmdletBinding()]
@@ -413,7 +413,7 @@ function Send-ProcessManagerNotification {
     )
     
     try {
-        # Créer l'objet de notification
+        # CrÃ©er l'objet de notification
         $notification = @{
             EventType = $EventType
             EventData = $EventData
@@ -424,7 +424,7 @@ function Send-ProcessManagerNotification {
         # Convertir l'objet en JSON
         $notificationJson = $notification | ConvertTo-Json -Depth 10
         
-        # Déterminer le chemin du fichier de notification
+        # DÃ©terminer le chemin du fichier de notification
         $configPath = $script:DefaultConfigPath
         $notificationDir = Join-Path -Path (Split-Path -Path $configPath -Parent) -ChildPath "notifications"
         
@@ -434,19 +434,19 @@ function Send-ProcessManagerNotification {
         
         $notificationFile = Join-Path -Path $notificationDir -ChildPath "notification_$($notification.Id).json"
         
-        # Écrire la notification dans le fichier
+        # Ã‰crire la notification dans le fichier
         $notificationJson | Out-File -FilePath $notificationFile -Encoding utf8
         
-        # Créer un événement pour signaler la notification
+        # CrÃ©er un Ã©vÃ©nement pour signaler la notification
         $event = New-IPCEvent -Name $script:DefaultEventName -Global
         
         if ($event) {
             Set-IPCEvent -Event $event.EventHandle
-            Write-CommunicationLog -Message "Notification envoyée : $EventType" -Level Success
+            Write-CommunicationLog -Message "Notification envoyÃ©e : $EventType" -Level Success
             return $true
         }
         else {
-            Write-CommunicationLog -Message "Impossible de créer l'événement pour la notification." -Level Warning
+            Write-CommunicationLog -Message "Impossible de crÃ©er l'Ã©vÃ©nement pour la notification." -Level Warning
             return $false
         }
     }
@@ -462,17 +462,17 @@ function Send-ProcessManagerNotification {
 
 .DESCRIPTION
     Cette fonction s'abonne aux notifications du Process Manager
-    pour recevoir des événements.
+    pour recevoir des Ã©vÃ©nements.
 
 .PARAMETER EventTypes
-    Les types d'événements auxquels s'abonner.
+    Les types d'Ã©vÃ©nements auxquels s'abonner.
 
 .PARAMETER Callback
-    La fonction de rappel à appeler lors de la réception d'une notification.
+    La fonction de rappel Ã  appeler lors de la rÃ©ception d'une notification.
 
 .EXAMPLE
     Subscribe-ProcessManagerNotifications -EventTypes @("ManagerStarted", "ManagerStopped") -Callback { param($notification) Write-Host $notification.EventType }
-    S'abonne aux notifications de démarrage et d'arrêt des gestionnaires.
+    S'abonne aux notifications de dÃ©marrage et d'arrÃªt des gestionnaires.
 #>
 function Subscribe-ProcessManagerNotifications {
     [CmdletBinding()]
@@ -485,7 +485,7 @@ function Subscribe-ProcessManagerNotifications {
     )
     
     try {
-        # Créer un objet d'abonnement
+        # CrÃ©er un objet d'abonnement
         $subscription = @{
             Id = [guid]::NewGuid().ToString()
             EventTypes = $EventTypes
@@ -493,7 +493,7 @@ function Subscribe-ProcessManagerNotifications {
             Active = $true
         }
         
-        # Démarrer un job pour surveiller les notifications
+        # DÃ©marrer un job pour surveiller les notifications
         $job = Start-Job -ScriptBlock {
             param (
                 [string]$SubscriptionId,
@@ -502,7 +502,7 @@ function Subscribe-ProcessManagerNotifications {
                 [string]$EventName
             )
             
-            # Créer un événement pour attendre les notifications
+            # CrÃ©er un Ã©vÃ©nement pour attendre les notifications
             $event = New-Object System.Threading.EventWaitHandle($false, [System.Threading.EventResetMode]::AutoReset, $EventName)
             
             while ($true) {
@@ -517,9 +517,9 @@ function Subscribe-ProcessManagerNotifications {
                         # Lire la notification
                         $notification = Get-Content -Path $file.FullName -Raw | ConvertFrom-Json
                         
-                        # Vérifier si le type d'événement correspond
+                        # VÃ©rifier si le type d'Ã©vÃ©nement correspond
                         if ($EventTypes.Count -eq 0 -or $EventTypes -contains $notification.EventType) {
-                            # Écrire la notification dans le pipeline de sortie
+                            # Ã‰crire la notification dans le pipeline de sortie
                             $notification
                         }
                         
@@ -536,7 +536,7 @@ function Subscribe-ProcessManagerNotifications {
         # Enregistrer le job et l'abonnement
         $subscription.Job = $job
         
-        # Démarrer un job pour traiter les notifications
+        # DÃ©marrer un job pour traiter les notifications
         $processingJob = Start-Job -ScriptBlock {
             param (
                 [int]$JobId,
@@ -559,7 +559,7 @@ function Subscribe-ProcessManagerNotifications {
         
         $subscription.ProcessingJob = $processingJob
         
-        Write-CommunicationLog -Message "Abonnement aux notifications créé : $($subscription.Id)" -Level Success
+        Write-CommunicationLog -Message "Abonnement aux notifications crÃ©Ã© : $($subscription.Id)" -Level Success
         return $subscription
     }
     catch {
@@ -570,18 +570,18 @@ function Subscribe-ProcessManagerNotifications {
 
 <#
 .SYNOPSIS
-    Se désabonne des notifications du Process Manager.
+    Se dÃ©sabonne des notifications du Process Manager.
 
 .DESCRIPTION
-    Cette fonction se désabonne des notifications du Process Manager.
+    Cette fonction se dÃ©sabonne des notifications du Process Manager.
 
 .PARAMETER Subscription
-    L'abonnement à annuler.
+    L'abonnement Ã  annuler.
 
 .EXAMPLE
     $subscription = Subscribe-ProcessManagerNotifications -EventTypes @("ManagerStarted") -Callback { ... }
     Unsubscribe-ProcessManagerNotifications -Subscription $subscription
-    Se désabonne des notifications du Process Manager.
+    Se dÃ©sabonne des notifications du Process Manager.
 #>
 function Unsubscribe-ProcessManagerNotifications {
     [CmdletBinding()]
@@ -591,7 +591,7 @@ function Unsubscribe-ProcessManagerNotifications {
     )
     
     try {
-        # Arrêter les jobs
+        # ArrÃªter les jobs
         if ($Subscription.Job) {
             Stop-Job -Id $Subscription.Job.Id -ErrorAction SilentlyContinue
             Remove-Job -Id $Subscription.Job.Id -Force -ErrorAction SilentlyContinue
@@ -605,11 +605,11 @@ function Unsubscribe-ProcessManagerNotifications {
         # Marquer l'abonnement comme inactif
         $Subscription.Active = $false
         
-        Write-CommunicationLog -Message "Désabonnement des notifications : $($Subscription.Id)" -Level Success
+        Write-CommunicationLog -Message "DÃ©sabonnement des notifications : $($Subscription.Id)" -Level Success
         return $true
     }
     catch {
-        Write-CommunicationLog -Message "Erreur lors du désabonnement des notifications : $_" -Level Error
+        Write-CommunicationLog -Message "Erreur lors du dÃ©sabonnement des notifications : $_" -Level Error
         return $false
     }
 }

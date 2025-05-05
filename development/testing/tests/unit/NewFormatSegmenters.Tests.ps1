@@ -1,44 +1,44 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les segmenteurs de formats CSV et YAML.
 .DESCRIPTION
     Ce script contient des tests unitaires pour les modules CsvSegmenter.py,
-    YamlSegmenter.py et leur intégration avec UnifiedSegmenter.ps1.
+    YamlSegmenter.py et leur intÃ©gration avec UnifiedSegmenter.ps1.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
 $csvSegmenterPath = Join-Path -Path $modulesPath -ChildPath "CsvSegmenter.py"
 $yamlSegmenterPath = Join-Path -Path $modulesPath -ChildPath "YamlSegmenter.py"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "NewFormatSegmentersTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $csvFilePath = Join-Path -Path $testTempDir -ChildPath "test.csv"
 $yamlFilePath = Join-Path -Path $testTempDir -ChildPath "test.yaml"
 $outputDir = Join-Path -Path $testTempDir -ChildPath "output"
 
-# Créer un fichier CSV de test
+# CrÃ©er un fichier CSV de test
 $csvContent = @"
 id,name,value,description
 1,Item 1,Value 1,"This is a description for item 1"
@@ -54,7 +54,7 @@ id,name,value,description
 "@
 Set-Content -Path $csvFilePath -Value $csvContent -Encoding UTF8
 
-# Créer un fichier YAML de test
+# CrÃ©er un fichier YAML de test
 $yamlContent = @"
 name: Test Object
 items:
@@ -83,27 +83,27 @@ metadata:
 "@
 Set-Content -Path $yamlFilePath -Value $yamlContent -Encoding UTF8
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests des segmenteurs de formats CSV et YAML" {
     BeforeAll {
         # Importer le module UnifiedSegmenter
         . $unifiedSegmenterPath
         
-        # Initialiser le segmenteur unifié
+        # Initialiser le segmenteur unifiÃ©
         $initResult = Initialize-UnifiedSegmenter -MaxInputSizeKB 10 -DefaultChunkSizeKB 5
     }
     
     Context "Tests du module UnifiedSegmenter avec CSV et YAML" {
-        It "Initialise correctement le segmenteur unifié" {
+        It "Initialise correctement le segmenteur unifiÃ©" {
             $initResult | Should -Be $true
         }
         
-        It "Détecte correctement le format CSV" {
+        It "DÃ©tecte correctement le format CSV" {
             $format = Get-FileFormat -FilePath $csvFilePath
             $format | Should -Be "CSV"
         }
         
-        It "Détecte correctement le format YAML" {
+        It "DÃ©tecte correctement le format YAML" {
             $format = Get-FileFormat -FilePath $yamlFilePath
             $format | Should -Be "YAML"
         }
@@ -129,7 +129,7 @@ Describe "Tests des segmenteurs de formats CSV et YAML" {
             $result = Get-FileAnalysis -FilePath $csvFilePath -Format "CSV" -OutputFile $outputFile
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que l'analyse contient des informations pertinentes
+            # VÃ©rifier que l'analyse contient des informations pertinentes
             $analysis = Get-Content -Path $outputFile -Raw | ConvertFrom-Json
             $analysis.total_rows | Should -BeGreaterThan 0
             $analysis.columns | Should -Not -BeNullOrEmpty
@@ -140,23 +140,23 @@ Describe "Tests des segmenteurs de formats CSV et YAML" {
             $result = Split-File -FilePath $csvFilePath -Format "CSV" -OutputDir $csvOutputDir -ChunkSizeKB 1
             $result | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $csvOutputDir -Filter "*.csv"
             $segmentFiles.Count | Should -BeGreaterThan 0
             
-            # Vérifier que chaque segment est un CSV valide
+            # VÃ©rifier que chaque segment est un CSV valide
             foreach ($file in $segmentFiles) {
                 $isValid = Test-FileValidity -FilePath $file.FullName -Format "CSV"
                 $isValid | Should -Be $true
             }
         }
         
-        It "Peut segmenter un fichier CSV sans préserver l'en-tête" {
+        It "Peut segmenter un fichier CSV sans prÃ©server l'en-tÃªte" {
             $csvOutputDir = Join-Path -Path $outputDir -ChildPath "csv_no_header"
             $result = Split-File -FilePath $csvFilePath -Format "CSV" -OutputDir $csvOutputDir -ChunkSizeKB 1 -PreserveStructure:$false
             $result | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $csvOutputDir -Filter "*.csv"
             $segmentFiles.Count | Should -BeGreaterThan 0
         }
@@ -172,7 +172,7 @@ Describe "Tests des segmenteurs de formats CSV et YAML" {
             $result = Get-FileAnalysis -FilePath $yamlFilePath -Format "YAML" -OutputFile $outputFile
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que l'analyse contient des informations pertinentes
+            # VÃ©rifier que l'analyse contient des informations pertinentes
             $analysis = Get-Content -Path $outputFile -Raw | ConvertFrom-Json
             $analysis.structure | Should -Not -BeNullOrEmpty
         }
@@ -182,11 +182,11 @@ Describe "Tests des segmenteurs de formats CSV et YAML" {
             $result = Split-File -FilePath $yamlFilePath -Format "YAML" -OutputDir $yamlOutputDir -ChunkSizeKB 1
             $result | Should -Not -BeNullOrEmpty
             
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $yamlOutputDir -Filter "*.yaml"
             $segmentFiles.Count | Should -BeGreaterThan 0
             
-            # Vérifier que chaque segment est un YAML valide
+            # VÃ©rifier que chaque segment est un YAML valide
             foreach ($file in $segmentFiles) {
                 $isValid = Test-FileValidity -FilePath $file.FullName -Format "YAML"
                 $isValid | Should -Be $true
@@ -195,73 +195,73 @@ Describe "Tests des segmenteurs de formats CSV et YAML" {
     }
     
     Context "Tests de conversion entre formats avec CSV et YAML" {
-        It "Peut convertir de CSV à JSON" {
+        It "Peut convertir de CSV Ã  JSON" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "csv_to_json.json"
             $result = Convert-FileFormat -InputFile $csvFilePath -OutputFile $outputFile -InputFormat "CSV" -OutputFormat "JSON"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que le fichier est un JSON valide
+            # VÃ©rifier que le fichier est un JSON valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "JSON"
             $isValid | Should -Be $true
         }
         
-        It "Peut convertir de CSV à XML" {
+        It "Peut convertir de CSV Ã  XML" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "csv_to_xml.xml"
             $result = Convert-FileFormat -InputFile $csvFilePath -OutputFile $outputFile -InputFormat "CSV" -OutputFormat "XML"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que le fichier est un XML valide
+            # VÃ©rifier que le fichier est un XML valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "XML"
             $isValid | Should -Be $true
         }
         
-        It "Peut convertir de CSV à YAML" {
+        It "Peut convertir de CSV Ã  YAML" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "csv_to_yaml.yaml"
             $result = Convert-FileFormat -InputFile $csvFilePath -OutputFile $outputFile -InputFormat "CSV" -OutputFormat "YAML"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que le fichier est un YAML valide
+            # VÃ©rifier que le fichier est un YAML valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "YAML"
             $isValid | Should -Be $true
         }
         
-        It "Peut convertir de YAML à JSON" {
+        It "Peut convertir de YAML Ã  JSON" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "yaml_to_json.json"
             $result = Convert-FileFormat -InputFile $yamlFilePath -OutputFile $outputFile -InputFormat "YAML" -OutputFormat "JSON"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que le fichier est un JSON valide
+            # VÃ©rifier que le fichier est un JSON valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "JSON"
             $isValid | Should -Be $true
         }
         
-        It "Peut convertir de YAML à XML" {
+        It "Peut convertir de YAML Ã  XML" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "yaml_to_xml.xml"
             $result = Convert-FileFormat -InputFile $yamlFilePath -OutputFile $outputFile -InputFormat "YAML" -OutputFormat "XML"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que le fichier est un XML valide
+            # VÃ©rifier que le fichier est un XML valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "XML"
             $isValid | Should -Be $true
         }
         
-        It "Peut convertir de YAML à CSV" {
+        It "Peut convertir de YAML Ã  CSV" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "yaml_to_csv.csv"
             $result = Convert-FileFormat -InputFile $yamlFilePath -OutputFile $outputFile -InputFormat "YAML" -OutputFormat "CSV"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que le fichier est un CSV valide
+            # VÃ©rifier que le fichier est un CSV valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "CSV"
             $isValid | Should -Be $true
         }
         
-        It "Peut convertir de JSON à CSV" {
+        It "Peut convertir de JSON Ã  CSV" {
             # D'abord, convertir YAML en JSON
             $jsonFilePath = Join-Path -Path $testTempDir -ChildPath "temp.json"
             $result1 = Convert-FileFormat -InputFile $yamlFilePath -OutputFile $jsonFilePath -InputFormat "YAML" -OutputFormat "JSON"
@@ -273,12 +273,12 @@ Describe "Tests des segmenteurs de formats CSV et YAML" {
             $result2 | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que le fichier est un CSV valide
+            # VÃ©rifier que le fichier est un CSV valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "CSV"
             $isValid | Should -Be $true
         }
         
-        It "Peut convertir de JSON à YAML" {
+        It "Peut convertir de JSON Ã  YAML" {
             # D'abord, convertir CSV en JSON
             $jsonFilePath = Join-Path -Path $testTempDir -ChildPath "temp2.json"
             $result1 = Convert-FileFormat -InputFile $csvFilePath -OutputFile $jsonFilePath -InputFormat "CSV" -OutputFormat "JSON"
@@ -290,7 +290,7 @@ Describe "Tests des segmenteurs de formats CSV et YAML" {
             $result2 | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
             
-            # Vérifier que le fichier est un YAML valide
+            # VÃ©rifier que le fichier est un YAML valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "YAML"
             $isValid | Should -Be $true
         }

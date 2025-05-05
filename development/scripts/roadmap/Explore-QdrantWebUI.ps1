@@ -1,4 +1,4 @@
-# Explore-QdrantWebUI.ps1
+﻿# Explore-QdrantWebUI.ps1
 # Script pour explorer l'interface web de Qdrant
 # Version: 1.0
 # Date: 2025-05-02
@@ -31,11 +31,11 @@ function Test-QdrantConnection {
 
     try {
         $response = Invoke-RestMethod -Uri $Url -Method Get -ErrorAction Stop
-        Write-Log "Qdrant est accessible à l'URL: $Url" -Level Success
+        Write-Log "Qdrant est accessible Ã  l'URL: $Url" -Level Success
         Write-Log "Version de Qdrant: $($response.version)" -Level Info
         return $true
     } catch {
-        Write-Log "Impossible de se connecter à Qdrant à l'URL: $Url" -Level Error
+        Write-Log "Impossible de se connecter Ã  Qdrant Ã  l'URL: $Url" -Level Error
         Write-Log "Erreur: $_" -Level Error
         return $false
     }
@@ -51,7 +51,7 @@ function Get-QdrantCollections {
         Write-Log "Collections disponibles dans Qdrant:" -Level Info
         
         if ($response.result.collections.Count -eq 0) {
-            Write-Log "Aucune collection trouvée." -Level Warning
+            Write-Log "Aucune collection trouvÃ©e." -Level Warning
         } else {
             foreach ($collection in $response.result.collections) {
                 Write-Log "- $($collection.name)" -Level Info
@@ -60,7 +60,7 @@ function Get-QdrantCollections {
         
         return $response.result.collections
     } catch {
-        Write-Log "Erreur lors de la récupération des collections: $_" -Level Error
+        Write-Log "Erreur lors de la rÃ©cupÃ©ration des collections: $_" -Level Error
         return $null
     }
 }
@@ -80,7 +80,7 @@ function Get-QdrantCollectionInfo {
         
         return $response.result
     } catch {
-        Write-Log "Erreur lors de la récupération des informations sur la collection '$CollectionName': $_" -Level Error
+        Write-Log "Erreur lors de la rÃ©cupÃ©ration des informations sur la collection '$CollectionName': $_" -Level Error
         return $null
     }
 }
@@ -104,7 +104,7 @@ function Get-QdrantCollectionPoints {
         Write-Log "Points dans la collection '$CollectionName':" -Level Info
         
         if ($response.result.points.Count -eq 0) {
-            Write-Log "Aucun point trouvé." -Level Warning
+            Write-Log "Aucun point trouvÃ©." -Level Warning
         } else {
             foreach ($point in $response.result.points) {
                 Write-Log "- ID: $($point.id)" -Level Info
@@ -119,7 +119,7 @@ function Get-QdrantCollectionPoints {
         
         return $response.result.points
     } catch {
-        Write-Log "Erreur lors de la récupération des points de la collection '$CollectionName': $_" -Level Error
+        Write-Log "Erreur lors de la rÃ©cupÃ©ration des points de la collection '$CollectionName': $_" -Level Error
         return $null
     }
 }
@@ -131,7 +131,7 @@ function Open-QdrantWebUI {
     
     try {
         $webUIUrl = $Url.TrimEnd('/') + "/dashboard"
-        Write-Log "Ouverture de l'interface web de Qdrant à l'URL: $webUIUrl" -Level Info
+        Write-Log "Ouverture de l'interface web de Qdrant Ã  l'URL: $webUIUrl" -Level Info
         Start-Process $webUIUrl
     } catch {
         Write-Log "Erreur lors de l'ouverture de l'interface web de Qdrant: $_" -Level Error
@@ -143,31 +143,31 @@ function Get-QdrantInfo {
         [string]$Url
     )
     
-    # Vérifier la connexion à Qdrant
+    # VÃ©rifier la connexion Ã  Qdrant
     if (-not (Test-QdrantConnection -Url $Url)) {
         return
     }
     
-    # Récupérer les collections
+    # RÃ©cupÃ©rer les collections
     $collections = Get-QdrantCollections -Url $Url
     
-    # Si des collections sont trouvées, récupérer les informations sur chaque collection
+    # Si des collections sont trouvÃ©es, rÃ©cupÃ©rer les informations sur chaque collection
     if ($collections) {
         foreach ($collection in $collections) {
             Get-QdrantCollectionInfo -Url $Url -CollectionName $collection.name
             
-            # Récupérer quelques points de la collection
+            # RÃ©cupÃ©rer quelques points de la collection
             Get-QdrantCollectionPoints -Url $Url -CollectionName $collection.name -Limit 5
         }
     }
     
-    # Ouvrir l'interface web de Qdrant si demandé
+    # Ouvrir l'interface web de Qdrant si demandÃ©
     if ($OpenBrowser) {
         Open-QdrantWebUI -Url $Url
     }
     
-    Write-Log "Exploration de Qdrant terminée." -Level Success
+    Write-Log "Exploration de Qdrant terminÃ©e." -Level Success
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Get-QdrantInfo -Url $QdrantUrl

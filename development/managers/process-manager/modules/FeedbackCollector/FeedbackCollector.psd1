@@ -1,4 +1,4 @@
-@{
+﻿@{
     # Version du module
     ModuleVersion = '1.0.0'
     
@@ -6,31 +6,31 @@
     Author = 'Process Manager Team'
     
     # Description du module
-    Description = 'Module de collecte et d''agrégation des messages de feedback pour le Process Manager'
+    Description = 'Module de collecte et d''agrÃ©gation des messages de feedback pour le Process Manager'
     
     # Module PowerShell requis
     PowerShellVersion = '5.1'
     
-    # Modules à importer en tant que modules imbriqués
+    # Modules Ã  importer en tant que modules imbriquÃ©s
     NestedModules = @('FeedbackCollector.psm1')
     
-    # Fonctions à exporter
+    # Fonctions Ã  exporter
     FunctionsToExport = @(
         'Initialize-FeedbackCollector',
         'Add-MessageToCollection',
         'Invoke-CollectionRotation'
     )
     
-    # Variables à exporter
+    # Variables Ã  exporter
     VariablesToExport = @()
     
-    # Alias à exporter
+    # Alias Ã  exporter
     AliasesToExport = @()
     
-    # Informations privées
+    # Informations privÃ©es
     PrivateData = @{
         PSData = @{
-            # Tags appliqués à ce module
+            # Tags appliquÃ©s Ã  ce module
             Tags = @('ProcessManager', 'Feedback', 'Collection', 'Aggregation')
             
             # URL du projet
@@ -40,7 +40,7 @@
             LicenseUri = ''
             
             # Notes de publication
-            ReleaseNotes = 'Version initiale du module de collecte et d''agrégation des messages de feedback pour le Process Manager'
+            ReleaseNotes = 'Version initiale du module de collecte et d''agrÃ©gation des messages de feedback pour le Process Manager'
         }
     }
 }

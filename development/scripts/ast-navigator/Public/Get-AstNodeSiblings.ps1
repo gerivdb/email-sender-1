@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Obtient les nœuds frères (siblings) d'un nœud donné dans l'arbre syntaxique PowerShell.
+    Obtient les nÅ“uds frÃ¨res (siblings) d'un nÅ“ud donnÃ© dans l'arbre syntaxique PowerShell.
 
 .DESCRIPTION
-    Cette fonction retourne les nœuds frères (siblings) d'un nœud donné dans l'arbre syntaxique PowerShell (AST).
-    Les nœuds frères sont les nœuds qui partagent le même parent que le nœud donné.
+    Cette fonction retourne les nÅ“uds frÃ¨res (siblings) d'un nÅ“ud donnÃ© dans l'arbre syntaxique PowerShell (AST).
+    Les nÅ“uds frÃ¨res sont les nÅ“uds qui partagent le mÃªme parent que le nÅ“ud donnÃ©.
 
 .PARAMETER Node
-    Le nœud AST pour lequel on souhaite obtenir les frères.
+    Le nÅ“ud AST pour lequel on souhaite obtenir les frÃ¨res.
 
 .PARAMETER IncludeSelf
-    Si spécifié, inclut le nœud lui-même dans les résultats.
+    Si spÃ©cifiÃ©, inclut le nÅ“ud lui-mÃªme dans les rÃ©sultats.
 
 .PARAMETER SiblingType
-    Type de nœud frère à filtrer. Si spécifié, seuls les frères de ce type seront inclus dans les résultats.
+    Type de nÅ“ud frÃ¨re Ã  filtrer. Si spÃ©cifiÃ©, seuls les frÃ¨res de ce type seront inclus dans les rÃ©sultats.
 
 .PARAMETER Predicate
-    Prédicat (ScriptBlock) pour filtrer les nœuds frères. Si spécifié, seuls les frères pour lesquels le prédicat retourne $true seront inclus dans les résultats.
+    PrÃ©dicat (ScriptBlock) pour filtrer les nÅ“uds frÃ¨res. Si spÃ©cifiÃ©, seuls les frÃ¨res pour lesquels le prÃ©dicat retourne $true seront inclus dans les rÃ©sultats.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -31,7 +31,7 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 function Get-AstNodeSiblings {
     [CmdletBinding()]
@@ -50,10 +50,10 @@ function Get-AstNodeSiblings {
     )
 
     begin {
-        # Initialiser la liste des résultats
+        # Initialiser la liste des rÃ©sultats
         $results = New-Object System.Collections.ArrayList
 
-        # Fonction pour vérifier si un nœud correspond au type spécifié
+        # Fonction pour vÃ©rifier si un nÅ“ud correspond au type spÃ©cifiÃ©
         function Test-NodeType {
             param (
                 [Parameter(Mandatory = $true)]
@@ -70,40 +70,40 @@ function Get-AstNodeSiblings {
 
     process {
         try {
-            # Vérifier si le nœud a un parent
+            # VÃ©rifier si le nÅ“ud a un parent
             if ($null -eq $Node.Parent) {
                 Write-Verbose "Le noeud n'a pas de parent, donc pas de freres."
                 return $results
             }
 
-            # Obtenir le parent du nœud
+            # Obtenir le parent du nÅ“ud
             $parent = $Node.Parent
 
-            # Obtenir tous les nœuds enfants du parent
+            # Obtenir tous les nÅ“uds enfants du parent
             $siblings = $parent.FindAll({ $true }, $false)
 
-            # Parcourir les frères
+            # Parcourir les frÃ¨res
             foreach ($sibling in $siblings) {
-                # Vérifier si le frère est le nœud lui-même
+                # VÃ©rifier si le frÃ¨re est le nÅ“ud lui-mÃªme
                 if (-not $IncludeSelf -and $sibling -eq $Node) {
                     continue
                 }
 
-                # Vérifier si le frère correspond au type spécifié
+                # VÃ©rifier si le frÃ¨re correspond au type spÃ©cifiÃ©
                 if ($SiblingType -and -not (Test-NodeType -Node $sibling -Type $SiblingType)) {
                     continue
                 }
 
-                # Vérifier si le frère correspond au prédicat spécifié
+                # VÃ©rifier si le frÃ¨re correspond au prÃ©dicat spÃ©cifiÃ©
                 if ($Predicate -and -not (& $Predicate $sibling)) {
                     continue
                 }
 
-                # Ajouter le frère aux résultats
+                # Ajouter le frÃ¨re aux rÃ©sultats
                 [void]$results.Add($sibling)
             }
 
-            # Retourner les résultats
+            # Retourner les rÃ©sultats
             return $results
         } catch {
             Write-Error -Message "Erreur lors de la recherche des freres du noeud : $_"

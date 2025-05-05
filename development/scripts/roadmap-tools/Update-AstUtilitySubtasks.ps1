@@ -1,8 +1,8 @@
-# Script pour mettre à jour les sous-tâches des fonctions utilitaires dans la roadmap
+﻿# Script pour mettre Ã  jour les sous-tÃ¢ches des fonctions utilitaires dans la roadmap
 
 $roadmapPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\roadmap_complete_converted.md"
 
-# Vérifier si le fichier de roadmap existe
+# VÃ©rifier si le fichier de roadmap existe
 if (-not (Test-Path -Path $roadmapPath)) {
     Write-Error "Le fichier de roadmap '$roadmapPath' n'existe pas."
     exit 1
@@ -18,54 +18,54 @@ if ($null -eq $content -or $content.Count -eq 0) {
 Write-Host "Fichier de roadmap : $roadmapPath" -ForegroundColor Cyan
 Write-Host "Nombre de lignes : $($content.Count)" -ForegroundColor Cyan
 
-# Liste des tâches à mettre à jour
+# Liste des tÃ¢ches Ã  mettre Ã  jour
 $taskIds = @(
-    "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.1",      # Implémenter une fonction pour obtenir la profondeur d'un nœud dans l'arbre
-    "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.3",      # Créer une fonction pour vérifier si un nœud est descendant d'un autre
-    "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.4",      # Implémenter une fonction pour obtenir le niveau de complexité d'un nœud
-    "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.5"       # Développer une fonction pour convertir un chemin de nœuds en représentation textuelle
+    "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.1",      # ImplÃ©menter une fonction pour obtenir la profondeur d'un nÅ“ud dans l'arbre
+    "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.3",      # CrÃ©er une fonction pour vÃ©rifier si un nÅ“ud est descendant d'un autre
+    "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.4",      # ImplÃ©menter une fonction pour obtenir le niveau de complexitÃ© d'un nÅ“ud
+    "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.5.5"       # DÃ©velopper une fonction pour convertir un chemin de nÅ“uds en reprÃ©sentation textuelle
 )
 
-# Parcourir le contenu et mettre à jour les tâches
+# Parcourir le contenu et mettre Ã  jour les tÃ¢ches
 $updatedContent = $content.Clone()
 $tasksUpdated = 0
 
 for ($i = 0; $i -lt $content.Count; $i++) {
     $line = $content[$i]
     
-    # Vérifier si la ligne correspond à une tâche
+    # VÃ©rifier si la ligne correspond Ã  une tÃ¢che
     if ($line -match '^\s*-\s+\[([ xX])\]\s+(\*\*)?(\d+(\.\d+)*)\s*(\*\*)?\s+(.+)$') {
         $status = $matches[1]
         $currentTaskId = $matches[3]
         $taskName = $matches[6]
         
-        # Vérifier si c'est une tâche que nous cherchons
+        # VÃ©rifier si c'est une tÃ¢che que nous cherchons
         if ($taskIds -contains $currentTaskId) {
-            Write-Host "Tâche trouvée à la ligne $($i+1) : [$status] $currentTaskId $taskName" -ForegroundColor Yellow
+            Write-Host "TÃ¢che trouvÃ©e Ã  la ligne $($i+1) : [$status] $currentTaskId $taskName" -ForegroundColor Yellow
             
-            # Vérifier si la tâche est déjà cochée
+            # VÃ©rifier si la tÃ¢che est dÃ©jÃ  cochÃ©e
             if ($status -eq 'x' -or $status -eq 'X') {
-                Write-Host "  Tâche déjà cochée." -ForegroundColor Green
+                Write-Host "  TÃ¢che dÃ©jÃ  cochÃ©e." -ForegroundColor Green
                 continue
             }
             
-            # Mettre à jour la tâche
+            # Mettre Ã  jour la tÃ¢che
             $updatedLine = $line -replace '\[ \]', '[x]'
             $updatedContent[$i] = $updatedLine
             $tasksUpdated++
             
-            Write-Host "  Tâche mise à jour : $updatedLine" -ForegroundColor Green
+            Write-Host "  TÃ¢che mise Ã  jour : $updatedLine" -ForegroundColor Green
         }
     }
 }
 
-# Vérifier si des tâches ont été mises à jour
+# VÃ©rifier si des tÃ¢ches ont Ã©tÃ© mises Ã  jour
 if ($tasksUpdated -eq 0) {
-    Write-Host "Aucune tâche n'a été mise à jour." -ForegroundColor Yellow
+    Write-Host "Aucune tÃ¢che n'a Ã©tÃ© mise Ã  jour." -ForegroundColor Yellow
     exit 0
 }
 
-# Sauvegarder le contenu mis à jour
+# Sauvegarder le contenu mis Ã  jour
 $updatedContent | Set-Content -Path $roadmapPath -Encoding UTF8
-Write-Host "`nLe fichier de roadmap a été mis à jour avec succès." -ForegroundColor Green
-Write-Host "$tasksUpdated tâches ont été mises à jour." -ForegroundColor Green
+Write-Host "`nLe fichier de roadmap a Ã©tÃ© mis Ã  jour avec succÃ¨s." -ForegroundColor Green
+Write-Host "$tasksUpdated tÃ¢ches ont Ã©tÃ© mises Ã  jour." -ForegroundColor Green

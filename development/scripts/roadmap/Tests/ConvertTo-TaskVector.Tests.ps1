@@ -1,4 +1,4 @@
-BeforeAll {
+﻿BeforeAll {
     # Importer le module commun
     $scriptPath = Split-Path -Parent $PSScriptRoot
     $projectRoot = Split-Path -Parent $scriptPath
@@ -11,7 +11,7 @@ BeforeAll {
         throw "Module commun introuvable: $modulePath"
     }
 
-    # Définir la fonction ConvertTo-TaskVector pour les tests
+    # DÃ©finir la fonction ConvertTo-TaskVector pour les tests
     function script:ConvertTo-TaskVector {
         param (
             [Parameter(Mandatory = $true)]
@@ -19,9 +19,9 @@ BeforeAll {
         )
 
         # Cette fonction est un mock pour les tests
-        # Elle retourne un vecteur simulé
-        # Pour le test "Génère des vecteurs différents pour des tâches différentes",
-        # nous retournons des vecteurs différents selon l'ID de la tâche
+        # Elle retourne un vecteur simulÃ©
+        # Pour le test "GÃ©nÃ¨re des vecteurs diffÃ©rents pour des tÃ¢ches diffÃ©rentes",
+        # nous retournons des vecteurs diffÃ©rents selon l'ID de la tÃ¢che
         if ($Task.Id -eq "1.2") {
             return [PSCustomObject]@{
                 Id          = $Task.Id
@@ -43,17 +43,17 @@ BeforeAll {
         }
     }
 
-    # Créer un fichier de roadmap temporaire pour les tests
+    # CrÃ©er un fichier de roadmap temporaire pour les tests
     $testRoadmapContent = @"
 # Roadmap de test
 
-## Tâches actives
+## TÃ¢ches actives
 
-- [ ] **1.1** Tâche de test 1
-  - [ ] **1.1.1** Sous-tâche 1.1
-  - [ ] **1.1.2** Sous-tâche 1.2
-- [ ] **1.2** Tâche de test 2
-  - [x] **1.2.1** Sous-tâche terminée
+- [ ] **1.1** TÃ¢che de test 1
+  - [ ] **1.1.1** Sous-tÃ¢che 1.1
+  - [ ] **1.1.2** Sous-tÃ¢che 1.2
+- [ ] **1.2** TÃ¢che de test 2
+  - [x] **1.2.1** Sous-tÃ¢che terminÃ©e
 "@
 
     $script:testRoadmapPath = Join-Path -Path $TestDrive -ChildPath "test_roadmap.md"
@@ -61,20 +61,20 @@ BeforeAll {
 }
 
 Describe "ConvertTo-TaskVector" {
-    It "Convertit correctement une tâche en vecteur" {
-        # Créer une tâche de test
+    It "Convertit correctement une tÃ¢che en vecteur" {
+        # CrÃ©er une tÃ¢che de test
         $task = [PSCustomObject]@{
             Id          = "1.1"
-            Description = "Tâche de test 1"
+            Description = "TÃ¢che de test 1"
             Status      = "Incomplete"
             Level       = 1
-            Section     = "Tâches actives"
+            Section     = "TÃ¢ches actives"
         }
 
-        # Convertir la tâche en vecteur
+        # Convertir la tÃ¢che en vecteur
         $vector = ConvertTo-TaskVector -Task $task
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $vector | Should -Not -BeNullOrEmpty
         $vector.Id | Should -Be $task.Id
         $vector.Description | Should -Be $task.Description
@@ -85,113 +85,113 @@ Describe "ConvertTo-TaskVector" {
         $vector.Vector.Count | Should -BeGreaterThan 0
     }
 
-    It "Génère des vecteurs différents pour des tâches différentes" {
-        # Créer deux tâches de test
+    It "GÃ©nÃ¨re des vecteurs diffÃ©rents pour des tÃ¢ches diffÃ©rentes" {
+        # CrÃ©er deux tÃ¢ches de test
         $task1 = [PSCustomObject]@{
             Id          = "1.1"
-            Description = "Tâche de test 1"
+            Description = "TÃ¢che de test 1"
             Status      = "Incomplete"
             Level       = 1
-            Section     = "Tâches actives"
+            Section     = "TÃ¢ches actives"
         }
 
         $task2 = [PSCustomObject]@{
             Id          = "1.2"
-            Description = "Tâche de test 2"
+            Description = "TÃ¢che de test 2"
             Status      = "Incomplete"
             Level       = 1
-            Section     = "Tâches actives"
+            Section     = "TÃ¢ches actives"
         }
 
-        # Convertir les tâches en vecteurs
+        # Convertir les tÃ¢ches en vecteurs
         $vector1 = ConvertTo-TaskVector -Task $task1
         $vector2 = ConvertTo-TaskVector -Task $task2
 
-        # Vérifier que les vecteurs sont différents
+        # VÃ©rifier que les vecteurs sont diffÃ©rents
         $vector1.Vector | Should -Not -Be $vector2.Vector
     }
 
-    It "Génère des vecteurs similaires pour des tâches similaires" {
-        # Cette fonction n'est pas implémentée dans le module, mais nous pouvons tester le concept
-        # Créer deux tâches similaires
+    It "GÃ©nÃ¨re des vecteurs similaires pour des tÃ¢ches similaires" {
+        # Cette fonction n'est pas implÃ©mentÃ©e dans le module, mais nous pouvons tester le concept
+        # CrÃ©er deux tÃ¢ches similaires
         $task1 = [PSCustomObject]@{
             Id          = "1.1"
-            Description = "Implémenter la fonction de recherche"
+            Description = "ImplÃ©menter la fonction de recherche"
             Status      = "Incomplete"
             Level       = 1
-            Section     = "Tâches actives"
+            Section     = "TÃ¢ches actives"
         }
 
         $task2 = [PSCustomObject]@{
             Id          = "1.2"
-            Description = "Implémenter la fonction de recherche avancée"
+            Description = "ImplÃ©menter la fonction de recherche avancÃ©e"
             Status      = "Incomplete"
             Level       = 1
-            Section     = "Tâches actives"
+            Section     = "TÃ¢ches actives"
         }
 
-        # Convertir les tâches en vecteurs
+        # Convertir les tÃ¢ches en vecteurs
         $vector1 = ConvertTo-TaskVector -Task $task1
         $vector2 = ConvertTo-TaskVector -Task $task2
 
-        # Nous ne pouvons pas comparer directement les vecteurs, mais nous pouvons vérifier qu'ils existent
+        # Nous ne pouvons pas comparer directement les vecteurs, mais nous pouvons vÃ©rifier qu'ils existent
         $vector1.Vector | Should -Not -BeNullOrEmpty
         $vector2.Vector | Should -Not -BeNullOrEmpty
     }
 }
 
 BeforeAll {
-    # Définir la fonction Get-RoadmapTasks pour les tests
+    # DÃ©finir la fonction Get-RoadmapTasks pour les tests
     function script:Get-RoadmapTasks {
         # Cette fonction est un mock pour les tests
-        # Elle retourne des tâches simulées
+        # Elle retourne des tÃ¢ches simulÃ©es
         return @(
             [PSCustomObject]@{
                 Id          = "1.1"
-                Description = "Tâche de test 1"
+                Description = "TÃ¢che de test 1"
                 Status      = "Incomplete"
                 Level       = 1
-                Section     = "Tâches actives"
+                Section     = "TÃ¢ches actives"
             },
             [PSCustomObject]@{
                 Id          = "1.1.1"
-                Description = "Sous-tâche 1.1"
+                Description = "Sous-tÃ¢che 1.1"
                 Status      = "Incomplete"
                 Level       = 2
-                Section     = "Tâches actives"
+                Section     = "TÃ¢ches actives"
             },
             [PSCustomObject]@{
                 Id          = "1.1.2"
-                Description = "Sous-tâche 1.2"
+                Description = "Sous-tÃ¢che 1.2"
                 Status      = "Incomplete"
                 Level       = 2
-                Section     = "Tâches actives"
+                Section     = "TÃ¢ches actives"
             },
             [PSCustomObject]@{
                 Id          = "1.2"
-                Description = "Tâche de test 2"
+                Description = "TÃ¢che de test 2"
                 Status      = "Incomplete"
                 Level       = 1
-                Section     = "Tâches actives"
+                Section     = "TÃ¢ches actives"
             },
             [PSCustomObject]@{
                 Id          = "1.2.1"
-                Description = "Sous-tâche terminée"
+                Description = "Sous-tÃ¢che terminÃ©e"
                 Status      = "Completed"
                 Level       = 2
-                Section     = "Tâches actives"
+                Section     = "TÃ¢ches actives"
             }
         )
     }
 }
 
 Describe "Get-RoadmapTasks" {
-    It "Extrait correctement les tâches d'un fichier Markdown" {
-        # Appeler directement la fonction Get-RoadmapTasks sans paramètre
-        # car notre mock ne prend pas en compte le paramètre FilePath
+    It "Extrait correctement les tÃ¢ches d'un fichier Markdown" {
+        # Appeler directement la fonction Get-RoadmapTasks sans paramÃ¨tre
+        # car notre mock ne prend pas en compte le paramÃ¨tre FilePath
         $tasks = Get-RoadmapTasks
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $tasks | Should -Not -BeNullOrEmpty
         $tasks.Count | Should -BeGreaterThan 0
         $tasks | Where-Object { $_.Id -eq "1.1" } | Should -Not -BeNullOrEmpty
@@ -200,7 +200,7 @@ Describe "Get-RoadmapTasks" {
         $tasks | Where-Object { $_.Id -eq "1.2" } | Should -Not -BeNullOrEmpty
         $tasks | Where-Object { $_.Id -eq "1.2.1" } | Should -Not -BeNullOrEmpty
 
-        # Vérifier les statuts
+        # VÃ©rifier les statuts
         $tasks | Where-Object { $_.Id -eq "1.2.1" } | Select-Object -ExpandProperty Status | Should -Be "Completed"
         $tasks | Where-Object { $_.Id -eq "1.1" } | Select-Object -ExpandProperty Status | Should -Be "Incomplete"
     }

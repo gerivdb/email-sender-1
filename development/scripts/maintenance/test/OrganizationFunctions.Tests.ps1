@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les fonctions d'organisation des scripts.
@@ -10,16 +10,16 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-10
+    Date de crÃ©ation: 2023-06-10
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Fonctions à tester
+# Fonctions Ã  tester
 function Get-ScriptCategory {
     [CmdletBinding()]
     param (
@@ -32,7 +32,7 @@ function Get-ScriptCategory {
     
     $lowerName = $FileName.ToLower()
     
-    # Catégorisation basée sur des mots-clés dans le nom du fichier
+    # CatÃ©gorisation basÃ©e sur des mots-clÃ©s dans le nom du fichier
     if ($lowerName -match 'roadmap') { return 'roadmap' }
     if ($lowerName -match 'path') { return 'paths' }
     if ($lowerName -match 'checkbox') { return 'modes' }
@@ -59,20 +59,20 @@ function Get-ScriptCategory {
     if ($Content) {
         if ($Content -match 'roadmap|plan') { return 'roadmap' }
         if ($Content -match 'path|chemin') { return 'paths' }
-        if ($Content -match 'checkbox|case à cocher') { return 'modes' }
+        if ($Content -match 'checkbox|case Ã  cocher') { return 'modes' }
         if ($Content -match 'analyze|analyse|feedback') { return 'api' }
         if ($Content -match 'test|pester') { return 'test' }
         if ($Content -match 'vscode|vs code') { return 'vscode' }
         if ($Content -match 'git|commit|push') { return 'git' }
-        if ($Content -match 'clean|fix|repair|nettoyer|réparer') { return 'cleanup' }
-        if ($Content -match 'mode|check|vérifier') { return 'modes' }
+        if ($Content -match 'clean|fix|repair|nettoyer|rÃ©parer') { return 'cleanup' }
+        if ($Content -match 'mode|check|vÃ©rifier') { return 'modes' }
         if ($Content -match 'encoding|encodage|utf') { return 'encoding' }
         if ($Content -match 'log|journal') { return 'logs' }
         if ($Content -match 'performance|perf|mesure') { return 'performance' }
         if ($Content -match 'backup|sauvegarde') { return 'backups' }
     }
     
-    # Par défaut, retourner 'utils'
+    # Par dÃ©faut, retourner 'utils'
     return 'utils'
 }
 
@@ -135,17 +135,17 @@ Describe "Tests des fonctions d'organisation des scripts" {
             Get-ScriptCategory -FileName "init-maintenance.ps1" | Should -Be "environment-compatibility"
         }
 
-        It "Devrait retourner 'utils' pour un fichier sans mot-clé reconnu" {
+        It "Devrait retourner 'utils' pour un fichier sans mot-clÃ© reconnu" {
             Get-ScriptCategory -FileName "random-script.ps1" | Should -Be "utils"
         }
 
-        It "Devrait analyser le contenu si le nom ne contient pas de mot-clé reconnu" {
-            $content = "# Script pour tester les performances du système"
+        It "Devrait analyser le contenu si le nom ne contient pas de mot-clÃ© reconnu" {
+            $content = "# Script pour tester les performances du systÃ¨me"
             Get-ScriptCategory -FileName "random-script.ps1" -Content $content | Should -Be "performance"
         }
 
-        It "Devrait retourner 'utils' si ni le nom ni le contenu ne contiennent de mot-clé reconnu" {
-            $content = "# Script sans mot-clé reconnu"
+        It "Devrait retourner 'utils' si ni le nom ni le contenu ne contiennent de mot-clÃ© reconnu" {
+            $content = "# Script sans mot-clÃ© reconnu"
             Get-ScriptCategory -FileName "random-script.ps1" -Content $content | Should -Be "utils"
         }
     }

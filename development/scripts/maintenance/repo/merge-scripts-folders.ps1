@@ -1,9 +1,9 @@
-<#
+﻿<#
 .SYNOPSIS
     Fusionne les dossiers de scripts.
 
 .DESCRIPTION
-    Ce script déplace les scripts de development/scripts vers les sous-dossiers appropriés
+    Ce script dÃ©place les scripts de development/scripts vers les sous-dossiers appropriÃ©s
     dans development/scripts.
 
 .EXAMPLE
@@ -11,7 +11,7 @@
     
 .NOTES
     Auteur: Augment Agent
-    Date de création: 28/04/2025
+    Date de crÃ©ation: 28/04/2025
 #>
 
 # Fonction principale
@@ -26,7 +26,7 @@ function Merge-ScriptsFolders {
         $sourceRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\tools\scripts"
         $destRoot = Join-Path -Path (Get-Location).Path -ChildPath "development\scripts"
         
-        # Vérifier que les dossiers existent
+        # VÃ©rifier que les dossiers existent
         if (-not (Test-Path $sourceRoot)) {
             Write-Error "Le dossier source n'existe pas : $sourceRoot"
             return $false
@@ -37,7 +37,7 @@ function Merge-ScriptsFolders {
             return $false
         }
         
-        # Définir les mappages de dossiers
+        # DÃ©finir les mappages de dossiers
         $folderMappings = @{
             "agent-auto" = "automation"
             "analysis" = "analysis"
@@ -84,7 +84,7 @@ function Merge-ScriptsFolders {
             "workflow" = "workflow"
         }
         
-        # Définir les mappages de fichiers
+        # DÃ©finir les mappages de fichiers
         $fileMappings = @{
             "archi-mode.ps1" = "maintenance\modes"
             "c-break-mode.ps1" = "maintenance\modes"
@@ -118,89 +118,89 @@ function Merge-ScriptsFolders {
     
     process {
         try {
-            # Créer les dossiers de destination s'ils n'existent pas
+            # CrÃ©er les dossiers de destination s'ils n'existent pas
             foreach ($mapping in $folderMappings.GetEnumerator()) {
                 $destFolder = Join-Path -Path $destRoot -ChildPath $mapping.Value
                 if (-not (Test-Path $destFolder)) {
-                    if ($PSCmdlet.ShouldProcess($destFolder, "Créer le dossier")) {
+                    if ($PSCmdlet.ShouldProcess($destFolder, "CrÃ©er le dossier")) {
                         New-Item -Path $destFolder -ItemType Directory -Force | Out-Null
-                        Write-Host "  Dossier créé : $destFolder" -ForegroundColor Yellow
+                        Write-Host "  Dossier crÃ©Ã© : $destFolder" -ForegroundColor Yellow
                     }
                 }
             }
             
-            # Créer le dossier network s'il n'existe pas
+            # CrÃ©er le dossier network s'il n'existe pas
             $networkFolder = Join-Path -Path $destRoot -ChildPath "network"
             if (-not (Test-Path $networkFolder)) {
-                if ($PSCmdlet.ShouldProcess($networkFolder, "Créer le dossier")) {
+                if ($PSCmdlet.ShouldProcess($networkFolder, "CrÃ©er le dossier")) {
                     New-Item -Path $networkFolder -ItemType Directory -Force | Out-Null
-                    Write-Host "  Dossier créé : $networkFolder" -ForegroundColor Yellow
+                    Write-Host "  Dossier crÃ©Ã© : $networkFolder" -ForegroundColor Yellow
                 }
             }
             
-            # Créer le dossier modes s'il n'existe pas
+            # CrÃ©er le dossier modes s'il n'existe pas
             $modesFolder = Join-Path -Path $destRoot -ChildPath "maintenance\modes"
             if (-not (Test-Path $modesFolder)) {
-                if ($PSCmdlet.ShouldProcess($modesFolder, "Créer le dossier")) {
+                if ($PSCmdlet.ShouldProcess($modesFolder, "CrÃ©er le dossier")) {
                     New-Item -Path $modesFolder -ItemType Directory -Force | Out-Null
-                    Write-Host "  Dossier créé : $modesFolder" -ForegroundColor Yellow
+                    Write-Host "  Dossier crÃ©Ã© : $modesFolder" -ForegroundColor Yellow
                 }
             }
             
-            # Créer le dossier services s'il n'existe pas
+            # CrÃ©er le dossier services s'il n'existe pas
             $servicesFolder = Join-Path -Path $destRoot -ChildPath "maintenance\services"
             if (-not (Test-Path $servicesFolder)) {
-                if ($PSCmdlet.ShouldProcess($servicesFolder, "Créer le dossier")) {
+                if ($PSCmdlet.ShouldProcess($servicesFolder, "CrÃ©er le dossier")) {
                     New-Item -Path $servicesFolder -ItemType Directory -Force | Out-Null
-                    Write-Host "  Dossier créé : $servicesFolder" -ForegroundColor Yellow
+                    Write-Host "  Dossier crÃ©Ã© : $servicesFolder" -ForegroundColor Yellow
                 }
             }
             
-            # Déplacer les dossiers
+            # DÃ©placer les dossiers
             foreach ($mapping in $folderMappings.GetEnumerator()) {
                 $sourceFolder = Join-Path -Path $sourceRoot -ChildPath $mapping.Key
                 $destFolder = Join-Path -Path $destRoot -ChildPath $mapping.Value
                 
                 if (Test-Path $sourceFolder) {
-                    if ($PSCmdlet.ShouldProcess("$sourceFolder -> $destFolder", "Déplacer le dossier")) {
+                    if ($PSCmdlet.ShouldProcess("$sourceFolder -> $destFolder", "DÃ©placer le dossier")) {
                         # Copier le contenu du dossier
                         Copy-Item -Path "$sourceFolder\*" -Destination $destFolder -Recurse -Force
-                        Write-Host "  Dossier déplacé : $sourceFolder -> $destFolder" -ForegroundColor Green
+                        Write-Host "  Dossier dÃ©placÃ© : $sourceFolder -> $destFolder" -ForegroundColor Green
                     }
                 }
             }
             
-            # Déplacer les fichiers
+            # DÃ©placer les fichiers
             foreach ($mapping in $fileMappings.GetEnumerator()) {
                 $sourceFile = Join-Path -Path $sourceRoot -ChildPath $mapping.Key
                 $destFolder = Join-Path -Path $destRoot -ChildPath $mapping.Value
                 $destFile = Join-Path -Path $destFolder -ChildPath $mapping.Key
                 
                 if (Test-Path $sourceFile) {
-                    if ($PSCmdlet.ShouldProcess("$sourceFile -> $destFile", "Déplacer le fichier")) {
+                    if ($PSCmdlet.ShouldProcess("$sourceFile -> $destFile", "DÃ©placer le fichier")) {
                         # Copier le fichier
                         Copy-Item -Path $sourceFile -Destination $destFile -Force
-                        Write-Host "  Fichier déplacé : $sourceFile -> $destFile" -ForegroundColor Green
+                        Write-Host "  Fichier dÃ©placÃ© : $sourceFile -> $destFile" -ForegroundColor Green
                     }
                 }
             }
             
-            # Déplacer les templates Hygen
+            # DÃ©placer les templates Hygen
             $sourceTemplates = Join-Path -Path $sourceRoot -ChildPath "_templates"
             $destTemplates = Join-Path -Path (Get-Location).Path -ChildPath "development\templates\hygen"
             
             if (Test-Path $sourceTemplates) {
-                if ($PSCmdlet.ShouldProcess("$sourceTemplates -> $destTemplates", "Déplacer les templates")) {
+                if ($PSCmdlet.ShouldProcess("$sourceTemplates -> $destTemplates", "DÃ©placer les templates")) {
                     # Copier le contenu du dossier
                     Copy-Item -Path "$sourceTemplates\*" -Destination $destTemplates -Recurse -Force
-                    Write-Host "  Templates déplacés : $sourceTemplates -> $destTemplates" -ForegroundColor Green
+                    Write-Host "  Templates dÃ©placÃ©s : $sourceTemplates -> $destTemplates" -ForegroundColor Green
                 }
             }
             
             # Supprimer le dossier source
             if ($PSCmdlet.ShouldProcess($sourceRoot, "Supprimer le dossier")) {
                 Remove-Item -Path $sourceRoot -Recurse -Force
-                Write-Host "  Dossier source supprimé : $sourceRoot" -ForegroundColor Yellow
+                Write-Host "  Dossier source supprimÃ© : $sourceRoot" -ForegroundColor Yellow
             }
         }
         catch {
@@ -210,7 +210,7 @@ function Merge-ScriptsFolders {
     }
     
     end {
-        Write-Host "`nFusion des dossiers de scripts terminée !" -ForegroundColor Cyan
+        Write-Host "`nFusion des dossiers de scripts terminÃ©e !" -ForegroundColor Cyan
         return $true
     }
 }

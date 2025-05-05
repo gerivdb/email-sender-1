@@ -1,4 +1,4 @@
-# Script d'installation des hooks Git
+﻿# Script d'installation des hooks Git
 # Ce script configure les hooks Git pour le projet n8n
 
 param (
@@ -22,7 +22,7 @@ param (
 $projectRoot = (Get-Item $PSScriptRoot).Parent.Parent.FullName
 Set-Location $projectRoot
 
-# Fonction pour afficher un message colorÃ©
+# Fonction pour afficher un message colorÃƒÂ©
 function Write-ColorMessage {
     param (
         [string]$Message,
@@ -32,15 +32,15 @@ function Write-ColorMessage {
     Write-Host $Message -ForegroundColor $ForegroundColor
 }
 
-# VÃ©rifier si nous sommes dans un dÃ©pÃ´t Git
+# VÃƒÂ©rifier si nous sommes dans un dÃƒÂ©pÃƒÂ´t Git
 if (-not (Test-Path "$projectRoot\.git")) {
-    Write-ColorMessage "Ce dossier n'est pas un dÃ©pÃ´t Git" -ForegroundColor "Red"
+    Write-ColorMessage "Ce dossier n'est pas un dÃƒÂ©pÃƒÂ´t Git" -ForegroundColor "Red"
     exit 1
 }
 
 Write-ColorMessage "Configuration des hooks Git pour le projet n8n..." -ForegroundColor "Cyan"
 
-# Fonction pour vÃ©rifier si un fichier est verrouillÃ©
+# Fonction pour vÃƒÂ©rifier si un fichier est verrouillÃƒÂ©
 function Test-FileLock {
     param (
         [parameter(Mandatory = $true)]
@@ -64,15 +64,15 @@ function Test-FileLock {
     return $locked
 }
 
-# CrÃ©er le dossier des hooks Git s'il n'existe pas
+# CrÃƒÂ©er le dossier des hooks Git s'il n'existe pas
 $gitHooksDir = "$projectRoot\.git\hooks"
 if (-not (Test-Path $gitHooksDir)) {
     try {
         New-Item -ItemType Directory -Path $gitHooksDir -Force | Out-Null
-        Write-ColorMessage "Dossier de hooks Git crÃ©Ã©" -ForegroundColor "Green"
+        Write-ColorMessage "Dossier de hooks Git crÃƒÂ©ÃƒÂ©" -ForegroundColor "Green"
     }
     catch {
-        Write-ColorMessage "Erreur lors de la crÃ©ation du dossier de hooks Git : $_" -ForegroundColor "Red"
+        Write-ColorMessage "Erreur lors de la crÃƒÂ©ation du dossier de hooks Git : $_" -ForegroundColor "Red"
         if (-not $Force) {
             exit 1
         }
@@ -85,21 +85,21 @@ if (-not $SkipPreCommit) {
 
     $preCommitHookPath = "$gitHooksDir\pre-commit"
 
-    # VÃ©rifier si le fichier pre-commit est verrouillÃ©
+    # VÃƒÂ©rifier si le fichier pre-commit est verrouillÃƒÂ©
     $isLocked = Test-FileLock -Path $preCommitHookPath
 
     if ($isLocked) {
-        Write-ColorMessage "Le fichier pre-commit hook est actuellement verrouillÃ© ou utilisÃ© par un autre processus" -ForegroundColor "Yellow"
+        Write-ColorMessage "Le fichier pre-commit hook est actuellement verrouillÃƒÂ© ou utilisÃƒÂ© par un autre processus" -ForegroundColor "Yellow"
         if (-not $Force) {
-            Write-ColorMessage "Utilisez -Force pour continuer malgrÃ© le verrouillage" -ForegroundColor "Yellow"
+            Write-ColorMessage "Utilisez -Force pour continuer malgrÃƒÂ© le verrouillage" -ForegroundColor "Yellow"
             exit 1
         }
         else {
-            Write-ColorMessage "Continuation forcÃ©e malgrÃ© le verrouillage" -ForegroundColor "Yellow"
+            Write-ColorMessage "Continuation forcÃƒÂ©e malgrÃƒÂ© le verrouillage" -ForegroundColor "Yellow"
         }
     }
 
-    # DÃ©terminer le script Ã  utiliser
+    # DÃƒÂ©terminer le script ÃƒÂ  utiliser
     $organizationScript = if ([string]::IsNullOrEmpty($CustomPreCommitScript)) {
         "development/scripts/maintenance/auto-organize-silent-improved.ps1"
     } else {
@@ -110,31 +110,31 @@ if (-not $SkipPreCommit) {
     $preCommitWrapperPath = Join-Path $projectRoot "..\..\D"
 
     if (-not (Test-Path $preCommitWrapperPath)) {
-        Write-ColorMessage "Wrapper pre-commit non trouvÃ© : $preCommitWrapperPath" -ForegroundColor "Red"
+        Write-ColorMessage "Wrapper pre-commit non trouvÃƒÂ© : $preCommitWrapperPath" -ForegroundColor "Red"
         if (-not $Force) {
             exit 1
         }
     }
 
-    # CrÃ©er un fichier temporaire pour le hook
+    # CrÃƒÂ©er un fichier temporaire pour le hook
     $tempHookPath = "$gitHooksDir\pre-commit.tmp"
 
     # Copier le contenu du wrapper
     $preCommitHookContent = Get-Content $preCommitWrapperPath -Raw
 
     try {
-        # Ã‰crire d'abord dans un fichier temporaire
+        # Ãƒâ€°crire d'abord dans un fichier temporaire
         Set-Content -Path $tempHookPath -Value $preCommitHookContent -NoNewline
 
-        # Puis renommer le fichier temporaire (opÃ©ration atomique)
+        # Puis renommer le fichier temporaire (opÃƒÂ©ration atomique)
         if (Test-Path $preCommitHookPath) {
             Remove-Item -Path $preCommitHookPath -Force
         }
         Rename-Item -Path $tempHookPath -NewName (Split-Path $preCommitHookPath -Leaf)
 
-        Write-ColorMessage "Hook pre-commit configurÃ© avec succÃ¨s" -ForegroundColor "Green"
+        Write-ColorMessage "Hook pre-commit configurÃƒÂ© avec succÃƒÂ¨s" -ForegroundColor "Green"
 
-        # Rendre le hook exÃ©cutable sous Unix
+        # Rendre le hook exÃƒÂ©cutable sous Unix
         if ($IsLinux -or $IsMacOS) {
             & chmod +x $preCommitHookPath
         }
@@ -147,7 +147,7 @@ if (-not $SkipPreCommit) {
     }
 }
 else {
-    Write-ColorMessage "`nConfiguration du hook pre-commit ignorÃ©e (option -SkipPreCommit)" -ForegroundColor "Yellow"
+    Write-ColorMessage "`nConfiguration du hook pre-commit ignorÃƒÂ©e (option -SkipPreCommit)" -ForegroundColor "Yellow"
 }
 
 # Configurer le hook pre-push
@@ -156,21 +156,21 @@ if (-not $SkipPrePush) {
 
     $prePushHookPath = "$gitHooksDir\pre-push"
 
-    # VÃ©rifier si le fichier pre-push est verrouillÃ©
+    # VÃƒÂ©rifier si le fichier pre-push est verrouillÃƒÂ©
     $isLocked = Test-FileLock -Path $prePushHookPath
 
     if ($isLocked) {
-        Write-ColorMessage "Le fichier pre-push hook est actuellement verrouillÃ© ou utilisÃ© par un autre processus" -ForegroundColor "Yellow"
+        Write-ColorMessage "Le fichier pre-push hook est actuellement verrouillÃƒÂ© ou utilisÃƒÂ© par un autre processus" -ForegroundColor "Yellow"
         if (-not $Force) {
-            Write-ColorMessage "Utilisez -Force pour continuer malgrÃ© le verrouillage" -ForegroundColor "Yellow"
+            Write-ColorMessage "Utilisez -Force pour continuer malgrÃƒÂ© le verrouillage" -ForegroundColor "Yellow"
             exit 1
         }
         else {
-            Write-ColorMessage "Continuation forcÃ©e malgrÃ© le verrouillage" -ForegroundColor "Yellow"
+            Write-ColorMessage "Continuation forcÃƒÂ©e malgrÃƒÂ© le verrouillage" -ForegroundColor "Yellow"
         }
     }
 
-    # DÃ©terminer le script Ã  utiliser
+    # DÃƒÂ©terminer le script ÃƒÂ  utiliser
     $verificationScript = if ([string]::IsNullOrEmpty($CustomPrePushScript)) {
         "development/scripts/utils/git/git-pre-push-check.ps1"
     } else {
@@ -181,31 +181,31 @@ if (-not $SkipPrePush) {
     $prePushWrapperPath = Join-Path $projectRoot "..\..\D"
 
     if (-not (Test-Path $prePushWrapperPath)) {
-        Write-ColorMessage "Wrapper pre-push non trouvÃ© : $prePushWrapperPath" -ForegroundColor "Red"
+        Write-ColorMessage "Wrapper pre-push non trouvÃƒÂ© : $prePushWrapperPath" -ForegroundColor "Red"
         if (-not $Force) {
             exit 1
         }
     }
 
-    # CrÃ©er un fichier temporaire pour le hook
+    # CrÃƒÂ©er un fichier temporaire pour le hook
     $tempHookPath = "$gitHooksDir\pre-push.tmp"
 
     # Copier le contenu du wrapper
     $prePushHookContent = Get-Content $prePushWrapperPath -Raw
 
     try {
-        # Ã‰crire d'abord dans un fichier temporaire
+        # Ãƒâ€°crire d'abord dans un fichier temporaire
         Set-Content -Path $tempHookPath -Value $prePushHookContent -NoNewline
 
-        # Puis renommer le fichier temporaire (opÃ©ration atomique)
+        # Puis renommer le fichier temporaire (opÃƒÂ©ration atomique)
         if (Test-Path $prePushHookPath) {
             Remove-Item -Path $prePushHookPath -Force
         }
         Rename-Item -Path $tempHookPath -NewName (Split-Path $prePushHookPath -Leaf)
 
-        Write-ColorMessage "Hook pre-push configurÃ© avec succÃ¨s" -ForegroundColor "Green"
+        Write-ColorMessage "Hook pre-push configurÃƒÂ© avec succÃƒÂ¨s" -ForegroundColor "Green"
 
-        # Rendre le hook exÃ©cutable sous Unix
+        # Rendre le hook exÃƒÂ©cutable sous Unix
         if ($IsLinux -or $IsMacOS) {
             & chmod +x $prePushHookPath
         }
@@ -218,37 +218,37 @@ if (-not $SkipPrePush) {
     }
 }
 else {
-    Write-ColorMessage "`nConfiguration du hook pre-push ignorÃ©e (option -SkipPrePush)" -ForegroundColor "Yellow"
+    Write-ColorMessage "`nConfiguration du hook pre-push ignorÃƒÂ©e (option -SkipPrePush)" -ForegroundColor "Yellow"
 }
 
-# Afficher un rÃ©sumÃ©
-Write-ColorMessage "`nRÃ©sumÃ© de la configuration des hooks Git:" -ForegroundColor "Cyan"
-Write-ColorMessage "- Hook pre-commit: $(if (-not $SkipPreCommit) { 'ConfigurÃ©' } else { 'IgnorÃ©' })" -ForegroundColor $(if (-not $SkipPreCommit) { "Green" } else { "Yellow" })
+# Afficher un rÃƒÂ©sumÃƒÂ©
+Write-ColorMessage "`nRÃƒÂ©sumÃƒÂ© de la configuration des hooks Git:" -ForegroundColor "Cyan"
+Write-ColorMessage "- Hook pre-commit: $(if (-not $SkipPreCommit) { 'ConfigurÃƒÂ©' } else { 'IgnorÃƒÂ©' })" -ForegroundColor $(if (-not $SkipPreCommit) { "Green" } else { "Yellow" })
 if (-not $SkipPreCommit) {
-    Write-ColorMessage "  Script utilisÃ©: $organizationScript" -ForegroundColor "White"
+    Write-ColorMessage "  Script utilisÃƒÂ©: $organizationScript" -ForegroundColor "White"
 }
-Write-ColorMessage "- Hook pre-push: $(if (-not $SkipPrePush) { 'ConfigurÃ©' } else { 'IgnorÃ©' })" -ForegroundColor $(if (-not $SkipPrePush) { "Green" } else { "Yellow" })
+Write-ColorMessage "- Hook pre-push: $(if (-not $SkipPrePush) { 'ConfigurÃƒÂ©' } else { 'IgnorÃƒÂ©' })" -ForegroundColor $(if (-not $SkipPrePush) { "Green" } else { "Yellow" })
 if (-not $SkipPrePush) {
-    Write-ColorMessage "  Script utilisÃ©: $verificationScript" -ForegroundColor "White"
+    Write-ColorMessage "  Script utilisÃƒÂ©: $verificationScript" -ForegroundColor "White"
 }
 
 # Afficher des instructions d'utilisation
 Write-ColorMessage "`nInstructions d'utilisation:" -ForegroundColor "Cyan"
-Write-ColorMessage "1. Les hooks Git sont maintenant configurÃ©s et s'exÃ©cuteront automatiquement lors des opÃ©rations Git." -ForegroundColor "White"
-Write-ColorMessage "2. Pour dÃ©sactiver temporairement un hook, utilisez l'option --no-verify:" -ForegroundColor "White"
-Write-ColorMessage "   git commit --no-verify -m \"Commit sans vÃ©rification\"" -ForegroundColor "White"
+Write-ColorMessage "1. Les hooks Git sont maintenant configurÃƒÂ©s et s'exÃƒÂ©cuteront automatiquement lors des opÃƒÂ©rations Git." -ForegroundColor "White"
+Write-ColorMessage "2. Pour dÃƒÂ©sactiver temporairement un hook, utilisez l'option --no-verify:" -ForegroundColor "White"
+Write-ColorMessage "   git commit --no-verify -m \"Commit sans vÃƒÂ©rification\"" -ForegroundColor "White"
 Write-ColorMessage "   git push --no-verify" -ForegroundColor "White"
 Write-ColorMessage "3. Pour plus d'informations, consultez le guide: docs/guides/GUIDE_HOOKS_GIT.md" -ForegroundColor "White"
 
-# Afficher l'aide si demandÃ©
+# Afficher l'aide si demandÃƒÂ©
 if ($args -contains "-help" -or $args -contains "--help" -or $args -contains "/?") {
     Write-ColorMessage "`nUtilisation: .\setup-git-hooks.ps1 [options]" -ForegroundColor "Cyan"
     Write-ColorMessage "`nOptions:" -ForegroundColor "Cyan"
     Write-ColorMessage "  -Force                  Ignorer les erreurs et continuer" -ForegroundColor "Cyan"
     Write-ColorMessage "  -SkipPreCommit          Ne pas configurer le hook pre-commit" -ForegroundColor "Cyan"
     Write-ColorMessage "  -SkipPrePush            Ne pas configurer le hook pre-push" -ForegroundColor "Cyan"
-    Write-ColorMessage "  -CustomPreCommitScript  Chemin personnalisÃ© pour le script pre-commit" -ForegroundColor "Cyan"
-    Write-ColorMessage "  -CustomPrePushScript    Chemin personnalisÃ© pour le script pre-push" -ForegroundColor "Cyan"
+    Write-ColorMessage "  -CustomPreCommitScript  Chemin personnalisÃƒÂ© pour le script pre-commit" -ForegroundColor "Cyan"
+    Write-ColorMessage "  -CustomPrePushScript    Chemin personnalisÃƒÂ© pour le script pre-push" -ForegroundColor "Cyan"
     Write-ColorMessage "`nExemples:" -ForegroundColor "Cyan"
     Write-ColorMessage "  .\setup-git-hooks.ps1" -ForegroundColor "Cyan"
     Write-ColorMessage "  .\setup-git-hooks.ps1 -SkipPrePush" -ForegroundColor "Cyan"

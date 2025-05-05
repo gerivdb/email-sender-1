@@ -1,16 +1,16 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de gÃ©nÃ©ration de scripts Ã  l'aide de Hygen.
+    Script de gÃƒÂ©nÃƒÂ©ration de scripts ÃƒÂ  l'aide de Hygen.
 
 .DESCRIPTION
-    Ce script utilise Hygen pour gÃ©nÃ©rer diffÃ©rents types de scripts
-    (scripts d'automatisation, d'analyse, de test, d'intÃ©gration).
+    Ce script utilise Hygen pour gÃƒÂ©nÃƒÂ©rer diffÃƒÂ©rents types de scripts
+    (scripts d'automatisation, d'analyse, de test, d'intÃƒÂ©gration).
 
 .PARAMETER Type
-    Type de script Ã  gÃ©nÃ©rer (automation, analysis, test, integration).
+    Type de script ÃƒÂ  gÃƒÂ©nÃƒÂ©rer (automation, analysis, test, integration).
 
 .PARAMETER Name
-    Nom du script Ã  gÃ©nÃ©rer.
+    Nom du script ÃƒÂ  gÃƒÂ©nÃƒÂ©rer.
 
 .PARAMETER Description
     Description du script.
@@ -22,10 +22,10 @@
     Sous-dossier pour le script (pour les scripts d'analyse).
 
 .PARAMETER ScriptToTest
-    Chemin relatif du script Ã  tester (pour les scripts de test).
+    Chemin relatif du script ÃƒÂ  tester (pour les scripts de test).
 
 .PARAMETER FunctionName
-    Nom de la fonction principale Ã  tester (pour les scripts de test).
+    Nom de la fonction principale ÃƒÂ  tester (pour les scripts de test).
 
 .PARAMETER Author
     Auteur du script.
@@ -34,29 +34,29 @@
     Tags du script.
 
 .PARAMETER OutputFolder
-    Dossier de sortie pour le script gÃ©nÃ©rÃ©. Si non spÃ©cifiÃ©, le script sera gÃ©nÃ©rÃ©
-    dans le dossier par dÃ©faut selon son type.
+    Dossier de sortie pour le script gÃƒÂ©nÃƒÂ©rÃƒÂ©. Si non spÃƒÂ©cifiÃƒÂ©, le script sera gÃƒÂ©nÃƒÂ©rÃƒÂ©
+    dans le dossier par dÃƒÂ©faut selon son type.
 
 .EXAMPLE
     .\Generate-Script.ps1 -Type automation -Name "Auto-ProcessFiles" -Description "Script d'automatisation pour traiter des fichiers" -Author "John Doe"
-    GÃ©nÃ¨re un script d'automatisation nommÃ© "Auto-ProcessFiles".
+    GÃƒÂ©nÃƒÂ¨re un script d'automatisation nommÃƒÂ© "Auto-ProcessFiles".
 
 .EXAMPLE
-    .\Generate-Script.ps1 -Type analysis -Name "Analyze-CodeQuality" -Description "Script d'analyse de la qualitÃ© du code" -SubFolder "plugins" -Author "Jane Smith"
-    GÃ©nÃ¨re un script d'analyse nommÃ© "Analyze-CodeQuality" dans le sous-dossier "plugins".
+    .\Generate-Script.ps1 -Type analysis -Name "Analyze-CodeQuality" -Description "Script d'analyse de la qualitÃƒÂ© du code" -SubFolder "plugins" -Author "Jane Smith"
+    GÃƒÂ©nÃƒÂ¨re un script d'analyse nommÃƒÂ© "Analyze-CodeQuality" dans le sous-dossier "plugins".
 
 .EXAMPLE
     .\Generate-Script.ps1 -Type test -Name "Example-Script" -Description "Tests pour Example-Script" -ScriptToTest "automation/Example-Script.ps1" -FunctionName "ExampleScript" -Author "Dev Team"
-    GÃ©nÃ¨re un script de test nommÃ© "Example-Script.Tests.ps1".
+    GÃƒÂ©nÃƒÂ¨re un script de test nommÃƒÂ© "Example-Script.Tests.ps1".
 
 .EXAMPLE
-    .\Generate-Script.ps1 -Type integration -Name "Sync-GitHubIssues" -Description "Script d'intÃ©gration avec GitHub Issues" -Author "Integration Team"
-    GÃ©nÃ¨re un script d'intÃ©gration nommÃ© "Sync-GitHubIssues".
+    .\Generate-Script.ps1 -Type integration -Name "Sync-GitHubIssues" -Description "Script d'intÃƒÂ©gration avec GitHub Issues" -Author "Integration Team"
+    GÃƒÂ©nÃƒÂ¨re un script d'intÃƒÂ©gration nommÃƒÂ© "Sync-GitHubIssues".
 
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1
-    Date de crÃ©ation: 2023-05-15
+    Date de crÃƒÂ©ation: 2023-05-15
 #>
 
 [CmdletBinding(SupportsShouldProcess=$true)]
@@ -93,20 +93,20 @@ param (
     [string]$OutputFolder = ""
 )
 
-# DÃ©finir les couleurs pour les messages
+# DÃƒÂ©finir les couleurs pour les messages
 $successColor = "Green"
 $errorColor = "Red"
 $infoColor = "Cyan"
 $warningColor = "Yellow"
 
-# Fonction pour afficher un message de succÃ¨s
+# Fonction pour afficher un message de succÃƒÂ¨s
 function Write-Success {
     param (
         [Parameter(Mandatory=$true)]
         [string]$Message
     )
     
-    Write-Host "âœ“ $Message" -ForegroundColor $successColor
+    Write-Host "Ã¢Å“â€œ $Message" -ForegroundColor $successColor
 }
 
 # Fonction pour afficher un message d'erreur
@@ -116,7 +116,7 @@ function Write-Error {
         [string]$Message
     )
     
-    Write-Host "âœ— $Message" -ForegroundColor $errorColor
+    Write-Host "Ã¢Å“â€” $Message" -ForegroundColor $errorColor
 }
 
 # Fonction pour afficher un message d'information
@@ -126,7 +126,7 @@ function Write-Info {
         [string]$Message
     )
     
-    Write-Host "â„¹ $Message" -ForegroundColor $infoColor
+    Write-Host "Ã¢â€žÂ¹ $Message" -ForegroundColor $infoColor
 }
 
 # Fonction pour afficher un message d'avertissement
@@ -136,7 +136,7 @@ function Write-Warning {
         [string]$Message
     )
     
-    Write-Host "âš  $Message" -ForegroundColor $warningColor
+    Write-Host "Ã¢Å¡Â  $Message" -ForegroundColor $warningColor
 }
 
 # Fonction pour obtenir le chemin du projet
@@ -146,7 +146,7 @@ function Get-ProjectPath {
     return $projectRoot
 }
 
-# Fonction pour gÃ©nÃ©rer un script
+# Fonction pour gÃƒÂ©nÃƒÂ©rer un script
 function Generate-ScriptFile {
     param (
         [Parameter(Mandatory=$true)]
@@ -155,35 +155,35 @@ function Generate-ScriptFile {
     
     $projectRoot = Get-ProjectPath
     
-    # VÃ©rifier si Hygen est installÃ©
+    # VÃƒÂ©rifier si Hygen est installÃƒÂ©
     try {
         $hygenVersion = npx hygen --version 2>&1
         if ($LASTEXITCODE -ne 0) {
-            Write-Error "Hygen n'est pas installÃ©. Veuillez l'installer avec 'npm install -g hygen' ou 'npm install --save-dev hygen'."
+            Write-Error "Hygen n'est pas installÃƒÂ©. Veuillez l'installer avec 'npm install -g hygen' ou 'npm install --save-dev hygen'."
             return $false
         }
     }
     catch {
-        Write-Error "Erreur lors de la vÃ©rification de Hygen : $_"
+        Write-Error "Erreur lors de la vÃƒÂ©rification de Hygen : $_"
         return $false
     }
     
-    # DÃ©terminer le gÃ©nÃ©rateur Ã  utiliser
+    # DÃƒÂ©terminer le gÃƒÂ©nÃƒÂ©rateur ÃƒÂ  utiliser
     switch ($Type) {
         "automation" {
-            Write-Info "GÃ©nÃ©ration d'un script d'automatisation..." -ForegroundColor Cyan
+            Write-Info "GÃƒÂ©nÃƒÂ©ration d'un script d'automatisation..." -ForegroundColor Cyan
             $generator = "script-automation"
         }
         "analysis" {
-            Write-Info "GÃ©nÃ©ration d'un script d'analyse..." -ForegroundColor Cyan
+            Write-Info "GÃƒÂ©nÃƒÂ©ration d'un script d'analyse..." -ForegroundColor Cyan
             $generator = "script-analysis"
         }
         "test" {
-            Write-Info "GÃ©nÃ©ration d'un script de test..." -ForegroundColor Cyan
+            Write-Info "GÃƒÂ©nÃƒÂ©ration d'un script de test..." -ForegroundColor Cyan
             $generator = "script-test"
         }
         "integration" {
-            Write-Info "GÃ©nÃ©ration d'un script d'intÃ©gration..." -ForegroundColor Cyan
+            Write-Info "GÃƒÂ©nÃƒÂ©ration d'un script d'intÃƒÂ©gration..." -ForegroundColor Cyan
             $generator = "script-integration"
         }
         default {
@@ -195,7 +195,7 @@ function Generate-ScriptFile {
     # Construire la commande Hygen
     $hygenCommand = "npx hygen $generator new"
     
-    # Ajouter les paramÃ¨tres
+    # Ajouter les paramÃƒÂ¨tres
     $hygenParams = @()
     $hygenParams += "--name `"$Name`""
     
@@ -231,40 +231,40 @@ function Generate-ScriptFile {
         $hygenParams += "--out-dir `"$OutputFolder`""
     }
     
-    # ExÃ©cuter la commande Hygen
+    # ExÃƒÂ©cuter la commande Hygen
     $fullCommand = "$hygenCommand $($hygenParams -join ' ')"
     
     if ($PSCmdlet.ShouldProcess("Hygen", $fullCommand)) {
         try {
-            Write-Info "ExÃ©cution de la commande: $fullCommand"
+            Write-Info "ExÃƒÂ©cution de la commande: $fullCommand"
             
-            # Changer le rÃ©pertoire de travail pour le rÃ©pertoire du projet
+            # Changer le rÃƒÂ©pertoire de travail pour le rÃƒÂ©pertoire du projet
             $currentLocation = Get-Location
             Set-Location -Path $projectRoot
             
-            # ExÃ©cuter la commande Hygen
+            # ExÃƒÂ©cuter la commande Hygen
             $output = Invoke-Expression $fullCommand
             
-            # Restaurer le rÃ©pertoire de travail
+            # Restaurer le rÃƒÂ©pertoire de travail
             Set-Location -Path $currentLocation
             
-            # VÃ©rifier si la commande a rÃ©ussi
+            # VÃƒÂ©rifier si la commande a rÃƒÂ©ussi
             if ($LASTEXITCODE -eq 0) {
-                Write-Success "Script gÃ©nÃ©rÃ© avec succÃ¨s"
+                Write-Success "Script gÃƒÂ©nÃƒÂ©rÃƒÂ© avec succÃƒÂ¨s"
                 return $true
             }
             else {
-                Write-Error "Erreur lors de la gÃ©nÃ©ration du script"
+                Write-Error "Erreur lors de la gÃƒÂ©nÃƒÂ©ration du script"
                 Write-Error $output
                 return $false
             }
         }
         catch {
-            Write-Error "Erreur lors de l'exÃ©cution de la commande Hygen : $_"
+            Write-Error "Erreur lors de l'exÃƒÂ©cution de la commande Hygen : $_"
             return $false
         }
         finally {
-            # S'assurer que le rÃ©pertoire de travail est restaurÃ©
+            # S'assurer que le rÃƒÂ©pertoire de travail est restaurÃƒÂ©
             if ((Get-Location).Path -ne $currentLocation.Path) {
                 Set-Location -Path $currentLocation
             }
@@ -277,42 +277,42 @@ function Generate-ScriptFile {
 
 # Fonction principale
 function Start-ScriptGeneration {
-    Write-Info "GÃ©nÃ©ration d'un script de type '$Type'..."
+    Write-Info "GÃƒÂ©nÃƒÂ©ration d'un script de type '$Type'..."
     
-    # GÃ©nÃ©rer le script
+    # GÃƒÂ©nÃƒÂ©rer le script
     $result = Generate-ScriptFile -Type $Type
     
-    # Afficher le rÃ©sultat
+    # Afficher le rÃƒÂ©sultat
     if ($result) {
-        Write-Success "Script de type '$Type' gÃ©nÃ©rÃ© avec succÃ¨s"
+        Write-Success "Script de type '$Type' gÃƒÂ©nÃƒÂ©rÃƒÂ© avec succÃƒÂ¨s"
         
-        # Afficher le chemin du script gÃ©nÃ©rÃ©
+        # Afficher le chemin du script gÃƒÂ©nÃƒÂ©rÃƒÂ©
         switch ($Type) {
             "automation" {
-                Write-Info "Le script a Ã©tÃ© gÃ©nÃ©rÃ© dans: development/scripts/automation/$Name.ps1"
+                Write-Info "Le script a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ© dans: development/scripts/automation/$Name.ps1"
             }
             "analysis" {
                 if ([string]::IsNullOrEmpty($SubFolder)) {
-                    Write-Info "Le script a Ã©tÃ© gÃ©nÃ©rÃ© dans: development/scripts/analysis/$Name.ps1"
+                    Write-Info "Le script a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ© dans: development/scripts/analysis/$Name.ps1"
                 }
                 else {
-                    Write-Info "Le script a Ã©tÃ© gÃ©nÃ©rÃ© dans: development/scripts/analysis/$SubFolder/$Name.ps1"
+                    Write-Info "Le script a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ© dans: development/scripts/analysis/$SubFolder/$Name.ps1"
                 }
             }
             "test" {
-                Write-Info "Le script a Ã©tÃ© gÃ©nÃ©rÃ© dans: development/scripts/development/testing/tests/$Name.Tests.ps1"
+                Write-Info "Le script a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ© dans: development/scripts/development/testing/tests/$Name.Tests.ps1"
             }
             "integration" {
-                Write-Info "Le script a Ã©tÃ© gÃ©nÃ©rÃ© dans: development/scripts/integration/$Name.ps1"
+                Write-Info "Le script a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ© dans: development/scripts/integration/$Name.ps1"
             }
         }
     }
     else {
-        Write-Error "Ã‰chec de la gÃ©nÃ©ration du script de type '$Type'"
+        Write-Error "Ãƒâ€°chec de la gÃƒÂ©nÃƒÂ©ration du script de type '$Type'"
     }
     
     return $result
 }
 
-# ExÃ©cuter la gÃ©nÃ©ration du script
+# ExÃƒÂ©cuter la gÃƒÂ©nÃƒÂ©ration du script
 Start-ScriptGeneration

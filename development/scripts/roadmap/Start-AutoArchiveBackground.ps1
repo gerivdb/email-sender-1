@@ -1,5 +1,5 @@
-# Start-AutoArchiveBackground.ps1
-# Script pour démarrer le moniteur d'archivage automatique en arrière-plan
+﻿# Start-AutoArchiveBackground.ps1
+# Script pour dÃ©marrer le moniteur d'archivage automatique en arriÃ¨re-plan
 # Version: 1.0
 # Date: 2025-05-03
 
@@ -30,7 +30,7 @@ if (-not (Test-Path -Path $monitorScriptPath)) {
     exit 1
 }
 
-# Construire les paramètres pour le script de surveillance
+# Construire les paramÃ¨tres pour le script de surveillance
 $params = @{
     RoadmapPath = $RoadmapPath
     IntervalMinutes = $IntervalMinutes
@@ -45,7 +45,7 @@ if ($Force) {
     $params.Add("Force", $true)
 }
 
-# Convertir les paramètres en chaîne de commande
+# Convertir les paramÃ¨tres en chaÃ®ne de commande
 $paramString = ""
 foreach ($key in $params.Keys) {
     $value = $params[$key]
@@ -56,27 +56,27 @@ foreach ($key in $params.Keys) {
     }
 }
 
-# Créer le script PowerShell à exécuter en arrière-plan
+# CrÃ©er le script PowerShell Ã  exÃ©cuter en arriÃ¨re-plan
 $command = "& `"$monitorScriptPath`"$paramString"
 
-# Démarrer le script en arrière-plan
+# DÃ©marrer le script en arriÃ¨re-plan
 $encodedCommand = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($command))
 $process = Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-EncodedCommand", $encodedCommand -WindowStyle Minimized -PassThru
 
-# Afficher les informations sur le processus démarré
-Write-Host "Moniteur d'archivage automatique démarré en arrière-plan."
+# Afficher les informations sur le processus dÃ©marrÃ©
+Write-Host "Moniteur d'archivage automatique dÃ©marrÃ© en arriÃ¨re-plan."
 Write-Host "ID du processus: $($process.Id)"
 Write-Host "Intervalle d'archivage: $IntervalMinutes minutes"
 Write-Host "Fichier de roadmap: $RoadmapPath"
 Write-Host "Processus IDE: $IDEProcessName"
-Write-Host "Mise à jour de la base vectorielle: $UpdateVectorDB"
-Write-Host "Mode forcé: $Force"
+Write-Host "Mise Ã  jour de la base vectorielle: $UpdateVectorDB"
+Write-Host "Mode forcÃ©: $Force"
 Write-Host ""
-Write-Host "Pour arrêter le moniteur, exécutez la commande suivante:"
+Write-Host "Pour arrÃªter le moniteur, exÃ©cutez la commande suivante:"
 Write-Host "Stop-Process -Id $($process.Id) -Force"
 
-# Enregistrer l'ID du processus dans un fichier pour pouvoir l'arrêter facilement plus tard
+# Enregistrer l'ID du processus dans un fichier pour pouvoir l'arrÃªter facilement plus tard
 $pidFilePath = Join-Path -Path $scriptPath -ChildPath "auto_archive_monitor.pid"
 $process.Id | Out-File -FilePath $pidFilePath -Force
 
-Write-Host "ID du processus enregistré dans: $pidFilePath"
+Write-Host "ID du processus enregistrÃ© dans: $pidFilePath"

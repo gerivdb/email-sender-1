@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
-    Définit une structure de répertoires standard pour les gestionnaires.
+    DÃ©finit une structure de rÃ©pertoires standard pour les gestionnaires.
 
 .DESCRIPTION
-    Ce script définit une structure de répertoires standard pour les gestionnaires
-    et crée les répertoires nécessaires.
+    Ce script dÃ©finit une structure de rÃ©pertoires standard pour les gestionnaires
+    et crÃ©e les rÃ©pertoires nÃ©cessaires.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire parent du répertoire du script.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire parent du rÃ©pertoire du script.
 
 .PARAMETER WhatIf
-    Indique ce qui se passerait si le script s'exécutait sans effectuer de modifications.
+    Indique ce qui se passerait si le script s'exÃ©cutait sans effectuer de modifications.
 
 .PARAMETER Force
-    Force l'exécution du script sans demander de confirmation.
+    Force l'exÃ©cution du script sans demander de confirmation.
 
 .EXAMPLE
     .\define-manager-structure.ps1
-    Définit une structure de répertoires standard pour les gestionnaires.
+    DÃ©finit une structure de rÃ©pertoires standard pour les gestionnaires.
 
 .EXAMPLE
     .\define-manager-structure.ps1 -WhatIf
-    Affiche ce qui se passerait si le script s'exécutait sans effectuer de modifications.
+    Affiche ce qui se passerait si le script s'exÃ©cutait sans effectuer de modifications.
 
 .NOTES
     Auteur: Process Manager Team
     Version: 1.0
-    Date de création: 2023-06-01
+    Date de crÃ©ation: 2023-06-01
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -38,17 +38,17 @@ param (
     [switch]$Force
 )
 
-# Vérifier que le dossier de projet existe
+# VÃ©rifier que le dossier de projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
     Write-Error "Le dossier de projet est introuvable : $ProjectRoot"
     exit 1
 }
 
-# Définir les chemins des répertoires
+# DÃ©finir les chemins des rÃ©pertoires
 $managersRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers"
 $configRoot = Join-Path -Path $ProjectRoot -ChildPath "projet\config\managers"
 
-# Définir la structure des gestionnaires
+# DÃ©finir la structure des gestionnaires
 $managerStructure = @{
     "integrated-manager" = @{
         "Path" = Join-Path -Path $managersRoot -ChildPath "integrated-manager"
@@ -115,80 +115,80 @@ $managerStructure = @{
     }
 }
 
-# Créer le répertoire racine des gestionnaires
+# CrÃ©er le rÃ©pertoire racine des gestionnaires
 if (-not (Test-Path -Path $managersRoot -PathType Container)) {
-    if ($PSCmdlet.ShouldProcess($managersRoot, "Créer le répertoire racine des gestionnaires")) {
+    if ($PSCmdlet.ShouldProcess($managersRoot, "CrÃ©er le rÃ©pertoire racine des gestionnaires")) {
         New-Item -Path $managersRoot -ItemType Directory -Force | Out-Null
-        Write-Host "Répertoire créé : $managersRoot" -ForegroundColor Green
+        Write-Host "RÃ©pertoire crÃ©Ã© : $managersRoot" -ForegroundColor Green
     }
 }
 
-# Créer le répertoire de configuration des gestionnaires
+# CrÃ©er le rÃ©pertoire de configuration des gestionnaires
 if (-not (Test-Path -Path $configRoot -PathType Container)) {
-    if ($PSCmdlet.ShouldProcess($configRoot, "Créer le répertoire de configuration des gestionnaires")) {
+    if ($PSCmdlet.ShouldProcess($configRoot, "CrÃ©er le rÃ©pertoire de configuration des gestionnaires")) {
         New-Item -Path $configRoot -ItemType Directory -Force | Out-Null
-        Write-Host "Répertoire créé : $configRoot" -ForegroundColor Green
+        Write-Host "RÃ©pertoire crÃ©Ã© : $configRoot" -ForegroundColor Green
     }
 }
 
-# Créer les répertoires pour chaque gestionnaire
+# CrÃ©er les rÃ©pertoires pour chaque gestionnaire
 foreach ($manager in $managerStructure.Keys) {
     $managerPath = $managerStructure[$manager].Path
     
-    # Créer le répertoire du gestionnaire
+    # CrÃ©er le rÃ©pertoire du gestionnaire
     if (-not (Test-Path -Path $managerPath -PathType Container)) {
-        if ($PSCmdlet.ShouldProcess($managerPath, "Créer le répertoire du gestionnaire $manager")) {
+        if ($PSCmdlet.ShouldProcess($managerPath, "CrÃ©er le rÃ©pertoire du gestionnaire $manager")) {
             New-Item -Path $managerPath -ItemType Directory -Force | Out-Null
-            Write-Host "Répertoire créé : $managerPath" -ForegroundColor Green
+            Write-Host "RÃ©pertoire crÃ©Ã© : $managerPath" -ForegroundColor Green
         }
     }
     
-    # Créer les sous-répertoires du gestionnaire
+    # CrÃ©er les sous-rÃ©pertoires du gestionnaire
     foreach ($subdir in $managerStructure[$manager].Subdirectories) {
         $subdirPath = Join-Path -Path $managerPath -ChildPath $subdir
         
         if (-not (Test-Path -Path $subdirPath -PathType Container)) {
-            if ($PSCmdlet.ShouldProcess($subdirPath, "Créer le sous-répertoire $subdir pour le gestionnaire $manager")) {
+            if ($PSCmdlet.ShouldProcess($subdirPath, "CrÃ©er le sous-rÃ©pertoire $subdir pour le gestionnaire $manager")) {
                 New-Item -Path $subdirPath -ItemType Directory -Force | Out-Null
-                Write-Host "Répertoire créé : $subdirPath" -ForegroundColor Green
+                Write-Host "RÃ©pertoire crÃ©Ã© : $subdirPath" -ForegroundColor Green
             }
         }
     }
     
-    # Créer le répertoire de configuration du gestionnaire
+    # CrÃ©er le rÃ©pertoire de configuration du gestionnaire
     $managerConfigPath = Join-Path -Path $configRoot -ChildPath $manager
     
     if (-not (Test-Path -Path $managerConfigPath -PathType Container)) {
-        if ($PSCmdlet.ShouldProcess($managerConfigPath, "Créer le répertoire de configuration du gestionnaire $manager")) {
+        if ($PSCmdlet.ShouldProcess($managerConfigPath, "CrÃ©er le rÃ©pertoire de configuration du gestionnaire $manager")) {
             New-Item -Path $managerConfigPath -ItemType Directory -Force | Out-Null
-            Write-Host "Répertoire créé : $managerConfigPath" -ForegroundColor Green
+            Write-Host "RÃ©pertoire crÃ©Ã© : $managerConfigPath" -ForegroundColor Green
         }
     }
 }
 
-# Créer un fichier README.md dans le répertoire racine des gestionnaires
+# CrÃ©er un fichier README.md dans le rÃ©pertoire racine des gestionnaires
 $readmePath = Join-Path -Path $managersRoot -ChildPath "README.md"
 
 if (-not (Test-Path -Path $readmePath -PathType Leaf)) {
-    if ($PSCmdlet.ShouldProcess($readmePath, "Créer le fichier README.md")) {
+    if ($PSCmdlet.ShouldProcess($readmePath, "CrÃ©er le fichier README.md")) {
         $readmeContent = @"
 # Gestionnaires
 
-Ce répertoire contient tous les gestionnaires du projet.
+Ce rÃ©pertoire contient tous les gestionnaires du projet.
 
 ## Structure
 
-Chaque gestionnaire est organisé selon la structure suivante :
+Chaque gestionnaire est organisÃ© selon la structure suivante :
 
-- `<gestionnaire>/config` : Fichiers de configuration spécifiques au gestionnaire
+- `<gestionnaire>/config` : Fichiers de configuration spÃ©cifiques au gestionnaire
 - `<gestionnaire>/scripts` : Scripts PowerShell du gestionnaire
 - `<gestionnaire>/modules` : Modules PowerShell du gestionnaire
-- `<gestionnaire>/tests` : Tests unitaires et d'intégration du gestionnaire
+- `<gestionnaire>/tests` : Tests unitaires et d'intÃ©gration du gestionnaire
 
 ## Gestionnaires disponibles
 
-- `integrated-manager` : Gestionnaire intégré qui coordonne tous les autres gestionnaires
-- `mode-manager` : Gestionnaire des modes opérationnels
+- `integrated-manager` : Gestionnaire intÃ©grÃ© qui coordonne tous les autres gestionnaires
+- `mode-manager` : Gestionnaire des modes opÃ©rationnels
 - `roadmap-manager` : Gestionnaire de la roadmap
 - `mcp-manager` : Gestionnaire MCP
 - `script-manager` : Gestionnaire de scripts
@@ -197,30 +197,30 @@ Chaque gestionnaire est organisé selon la structure suivante :
 
 ## Configuration
 
-Les fichiers de configuration des gestionnaires sont centralisés dans le répertoire `projet/config/managers`.
+Les fichiers de configuration des gestionnaires sont centralisÃ©s dans le rÃ©pertoire `projet/config/managers`.
 "@
         
         Set-Content -Path $readmePath -Value $readmeContent -Encoding UTF8
-        Write-Host "Fichier créé : $readmePath" -ForegroundColor Green
+        Write-Host "Fichier crÃ©Ã© : $readmePath" -ForegroundColor Green
     }
 }
 
-# Créer un fichier README.md dans le répertoire de configuration des gestionnaires
+# CrÃ©er un fichier README.md dans le rÃ©pertoire de configuration des gestionnaires
 $configReadmePath = Join-Path -Path $configRoot -ChildPath "README.md"
 
 if (-not (Test-Path -Path $configReadmePath -PathType Leaf)) {
-    if ($PSCmdlet.ShouldProcess($configReadmePath, "Créer le fichier README.md")) {
+    if ($PSCmdlet.ShouldProcess($configReadmePath, "CrÃ©er le fichier README.md")) {
         $configReadmeContent = @"
 # Configuration des gestionnaires
 
-Ce répertoire contient les fichiers de configuration de tous les gestionnaires du projet.
+Ce rÃ©pertoire contient les fichiers de configuration de tous les gestionnaires du projet.
 
 ## Structure
 
-Chaque gestionnaire a son propre répertoire de configuration :
+Chaque gestionnaire a son propre rÃ©pertoire de configuration :
 
-- `integrated-manager` : Configuration du gestionnaire intégré
-- `mode-manager` : Configuration du gestionnaire des modes opérationnels
+- `integrated-manager` : Configuration du gestionnaire intÃ©grÃ©
+- `mode-manager` : Configuration du gestionnaire des modes opÃ©rationnels
 - `roadmap-manager` : Configuration du gestionnaire de la roadmap
 - `mcp-manager` : Configuration du gestionnaire MCP
 - `script-manager` : Configuration du gestionnaire de scripts
@@ -233,25 +233,25 @@ Les fichiers de configuration sont au format JSON et suivent la convention de no
 "@
         
         Set-Content -Path $configReadmePath -Value $configReadmeContent -Encoding UTF8
-        Write-Host "Fichier créé : $configReadmePath" -ForegroundColor Green
+        Write-Host "Fichier crÃ©Ã© : $configReadmePath" -ForegroundColor Green
     }
 }
 
-# Afficher un résumé
+# Afficher un rÃ©sumÃ©
 Write-Host ""
-Write-Host "Résumé de la structure des gestionnaires" -ForegroundColor Cyan
+Write-Host "RÃ©sumÃ© de la structure des gestionnaires" -ForegroundColor Cyan
 Write-Host "=======================================" -ForegroundColor Cyan
-Write-Host "Répertoire racine des gestionnaires : $managersRoot" -ForegroundColor Gray
-Write-Host "Répertoire de configuration des gestionnaires : $configRoot" -ForegroundColor Gray
+Write-Host "RÃ©pertoire racine des gestionnaires : $managersRoot" -ForegroundColor Gray
+Write-Host "RÃ©pertoire de configuration des gestionnaires : $configRoot" -ForegroundColor Gray
 Write-Host ""
-Write-Host "Gestionnaires définis :" -ForegroundColor Gray
+Write-Host "Gestionnaires dÃ©finis :" -ForegroundColor Gray
 foreach ($manager in $managerStructure.Keys) {
     Write-Host "  - $manager" -ForegroundColor Gray
 }
 Write-Host ""
-Write-Host "Structure définie avec succès." -ForegroundColor Green
+Write-Host "Structure dÃ©finie avec succÃ¨s." -ForegroundColor Green
 
-# Retourner un résultat
+# Retourner un rÃ©sultat
 return @{
     ManagersRoot = $managersRoot
     ConfigRoot = $configRoot

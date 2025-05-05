@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests de performance et de charge pour le système de feedback.
+    Tests de performance et de charge pour le systÃ¨me de feedback.
 
 .DESCRIPTION
-    Ce script contient les tests de performance et de charge pour évaluer
-    les performances du système de feedback sous différentes conditions de charge.
+    Ce script contient les tests de performance et de charge pour Ã©valuer
+    les performances du systÃ¨me de feedback sous diffÃ©rentes conditions de charge.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les chemins des modules à tester
+# DÃ©finir les chemins des modules Ã  tester
 $modulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
 $feedbackManagerPath = Join-Path -Path $modulesPath -ChildPath "FeedbackManager\FeedbackManager.psm1"
 $feedbackCollectorPath = Join-Path -Path $modulesPath -ChildPath "FeedbackCollector\FeedbackCollector.psm1"
 $feedbackExporterPath = Join-Path -Path $modulesPath -ChildPath "FeedbackExporter\FeedbackExporter.psm1"
 
-# Importer les modules à tester
+# Importer les modules Ã  tester
 if (Test-Path -Path $feedbackManagerPath) {
     Import-Module $feedbackManagerPath -Force
 }
@@ -45,14 +45,14 @@ else {
     throw "Module FeedbackExporter introuvable : $feedbackExporterPath"
 }
 
-# Définir les tests
-Describe "Système de feedback - Tests de performance et de charge" {
+# DÃ©finir les tests
+Describe "SystÃ¨me de feedback - Tests de performance et de charge" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "FeedbackPerformanceTests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
 
-        # Créer les sous-répertoires nécessaires
+        # CrÃ©er les sous-rÃ©pertoires nÃ©cessaires
         $script:ConfigDir = Join-Path -Path $script:TestDir -ChildPath "config"
         $script:DataDir = Join-Path -Path $script:TestDir -ChildPath "data"
         $script:ExportDir = Join-Path -Path $script:TestDir -ChildPath "exports"
@@ -65,7 +65,7 @@ Describe "Système de feedback - Tests de performance et de charge" {
         Initialize-FeedbackCollector -StoragePath $script:DataDir -MaxCollectionSize 100000
         Initialize-FeedbackExporter -ExportPath $script:ExportDir
 
-        # Fonction pour générer des messages de test
+        # Fonction pour gÃ©nÃ©rer des messages de test
         function New-TestMessage {
             param (
                 [Parameter(Mandatory = $false)]
@@ -78,13 +78,13 @@ Describe "Système de feedback - Tests de performance et de charge" {
                 [FeedbackType]$Type = [FeedbackType]::Information
             )
             
-            # Générer un message de la taille spécifiée
+            # GÃ©nÃ©rer un message de la taille spÃ©cifiÃ©e
             $message = "Test message $Index: " + "X" * ($Size - 15 - $Index.ToString().Length)
             
             return [FeedbackMessage]::new($Type, $message)
         }
 
-        # Fonction pour mesurer le temps d'exécution
+        # Fonction pour mesurer le temps d'exÃ©cution
         function Measure-ExecutionTime {
             param (
                 [Parameter(Mandatory = $true)]
@@ -101,7 +101,7 @@ Describe "Système de feedback - Tests de performance et de charge" {
 
     Context "Performance de l'envoi de messages" {
         It "Doit pouvoir envoyer 1000 messages en moins de 5 secondes" {
-            # Désactiver la sortie console pour le test
+            # DÃ©sactiver la sortie console pour le test
             Mock Write-Host { }
             
             $time = Measure-ExecutionTime {
@@ -130,7 +130,7 @@ Describe "Système de feedback - Tests de performance et de charge" {
 
     Context "Performance de l'exportation de messages" {
         BeforeAll {
-            # Préparer une collection de messages pour les tests d'exportation
+            # PrÃ©parer une collection de messages pour les tests d'exportation
             $script:MessageCollection.Clear()
             
             for ($i = 0; $i -lt 1000; $i++) {
@@ -170,8 +170,8 @@ Describe "Système de feedback - Tests de performance et de charge" {
         }
     }
 
-    Context "Tests de charge avec différentes tailles de messages" {
-        It "Doit gérer efficacement des messages de grande taille" {
+    Context "Tests de charge avec diffÃ©rentes tailles de messages" {
+        It "Doit gÃ©rer efficacement des messages de grande taille" {
             $script:MessageCollection.Clear()
             
             $sizes = @(100, 500, 1000, 5000, 10000)
@@ -188,7 +188,7 @@ Describe "Système de feedback - Tests de performance et de charge" {
                     }
                 }
                 
-                # Vérifier que le temps d'exécution est proportionnel à la taille des messages
+                # VÃ©rifier que le temps d'exÃ©cution est proportionnel Ã  la taille des messages
                 $timePerMessage = $time / $count
                 $timePerMessage | Should -BeLessThan ($size / 10)
             }
@@ -197,7 +197,7 @@ Describe "Système de feedback - Tests de performance et de charge" {
 
     Context "Tests de charge avec filtrage" {
         BeforeAll {
-            # Préparer une collection de messages variés pour les tests de filtrage
+            # PrÃ©parer une collection de messages variÃ©s pour les tests de filtrage
             $script:MessageCollection.Clear()
             
             $types = @([FeedbackType]::Error, [FeedbackType]::Warning, [FeedbackType]::Information, [FeedbackType]::Success, [FeedbackType]::Debug)
@@ -238,7 +238,7 @@ Describe "Système de feedback - Tests de performance et de charge" {
             $filteredMessages.Count | Should -Be 200  # 1000 / 5 = 200 messages de Source1
         }
 
-        It "Doit filtrer efficacement par sévérité" {
+        It "Doit filtrer efficacement par sÃ©vÃ©ritÃ©" {
             $filter = [FeedbackFilter]::ForSeverity(1, 2)
             
             $time = Measure-ExecutionTime {
@@ -246,7 +246,7 @@ Describe "Système de feedback - Tests de performance et de charge" {
             }
             
             $time | Should -BeLessThan 1000
-            $filteredMessages.Count | Should -Be 400  # 1000 / 5 * 2 = 400 messages de sévérité 1 ou 2
+            $filteredMessages.Count | Should -Be 400  # 1000 / 5 * 2 = 400 messages de sÃ©vÃ©ritÃ© 1 ou 2
         }
     }
 

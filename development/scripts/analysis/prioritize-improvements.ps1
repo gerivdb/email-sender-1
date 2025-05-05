@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Identifie et priorise les améliorations nécessaires pour les gestionnaires.
+    Identifie et priorise les amÃ©liorations nÃ©cessaires pour les gestionnaires.
 
 .DESCRIPTION
-    Ce script identifie et priorise les améliorations nécessaires pour les gestionnaires
-    en fonction de critères définis. Il évalue chaque amélioration selon ces critères,
-    calcule les scores de priorité et classe les améliorations par ordre de priorité.
+    Ce script identifie et priorise les amÃ©liorations nÃ©cessaires pour les gestionnaires
+    en fonction de critÃ¨res dÃ©finis. Il Ã©value chaque amÃ©lioration selon ces critÃ¨res,
+    calcule les scores de prioritÃ© et classe les amÃ©liorations par ordre de prioritÃ©.
 
 .PARAMETER InputFile
-    Chemin vers le fichier JSON contenant les améliorations à prioriser.
+    Chemin vers le fichier JSON contenant les amÃ©liorations Ã  prioriser.
 
 .PARAMETER OutputFile
     Chemin vers le fichier de sortie pour le rapport de priorisation.
 
 .PARAMETER Format
     Format du rapport de sortie. Les valeurs possibles sont : JSON, CSV, HTML, Markdown.
-    Par défaut : Markdown
+    Par dÃ©faut : Markdown
 
 .EXAMPLE
     .\prioritize-improvements.ps1 -InputFile "data\improvements.json" -OutputFile "reports\improvement-priorities.md"
-    Génère un rapport de priorisation au format Markdown.
+    GÃ©nÃ¨re un rapport de priorisation au format Markdown.
 
 .NOTES
     Auteur: Analysis Team
     Version: 1.0
-    Date de création: 2025-05-06
+    Date de crÃ©ation: 2025-05-06
 #>
 [CmdletBinding()]
 param (
@@ -39,27 +39,27 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $InputFile)) {
-    Write-Error "Le fichier d'entrée n'existe pas : $InputFile"
+    Write-Error "Le fichier d'entrÃ©e n'existe pas : $InputFile"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputFile -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Charger les données des améliorations
+# Charger les donnÃ©es des amÃ©liorations
 try {
     $improvementsData = Get-Content -Path $InputFile -Raw | ConvertFrom-Json
 } catch {
-    Write-Error "Erreur lors du chargement du fichier d'entrée : $_"
+    Write-Error "Erreur lors du chargement du fichier d'entrÃ©e : $_"
     exit 1
 }
 
-# Fonction pour définir les critères de priorisation
+# Fonction pour dÃ©finir les critÃ¨res de priorisation
 function Define-PrioritizationCriteria {
     [CmdletBinding()]
     param (
@@ -67,17 +67,17 @@ function Define-PrioritizationCriteria {
         [PSCustomObject]$ImprovementsData
     )
 
-    # Utiliser les critères définis dans le fichier d'entrée
+    # Utiliser les critÃ¨res dÃ©finis dans le fichier d'entrÃ©e
     $criteria = $ImprovementsData.Criteria
 
-    # Vérifier que les poids des critères totalisent 1.0
+    # VÃ©rifier que les poids des critÃ¨res totalisent 1.0
     $totalWeight = 0
     foreach ($criterion in $criteria.PSObject.Properties) {
         $totalWeight += $criterion.Value.Weight
     }
 
     if ([math]::Abs($totalWeight - 1.0) -gt 0.001) {
-        Write-Warning "La somme des poids des critères n'est pas égale à 1.0 (Total: $totalWeight). Les poids seront normalisés."
+        Write-Warning "La somme des poids des critÃ¨res n'est pas Ã©gale Ã  1.0 (Total: $totalWeight). Les poids seront normalisÃ©s."
         
         # Normaliser les poids
         foreach ($criterion in $criteria.PSObject.Properties) {
@@ -88,7 +88,7 @@ function Define-PrioritizationCriteria {
     return $criteria
 }
 
-# Fonction pour évaluer chaque amélioration selon les critères
+# Fonction pour Ã©valuer chaque amÃ©lioration selon les critÃ¨res
 function Evaluate-Improvements {
     [CmdletBinding()]
     param (
@@ -103,15 +103,15 @@ function Evaluate-Improvements {
 
     foreach ($manager in $ImprovementsData.Managers) {
         foreach ($improvement in $manager.Improvements) {
-            # Vérifier que tous les critères sont présents
+            # VÃ©rifier que tous les critÃ¨res sont prÃ©sents
             foreach ($criterion in $Criteria.PSObject.Properties.Name) {
                 if (-not $improvement.Scores.PSObject.Properties.Name.Contains($criterion)) {
-                    Write-Warning "Le critère '$criterion' est manquant pour l'amélioration '$($improvement.Name)' du gestionnaire '$($manager.Name)'. Une valeur par défaut de 5 sera utilisée."
+                    Write-Warning "Le critÃ¨re '$criterion' est manquant pour l'amÃ©lioration '$($improvement.Name)' du gestionnaire '$($manager.Name)'. Une valeur par dÃ©faut de 5 sera utilisÃ©e."
                     Add-Member -InputObject $improvement.Scores -MemberType NoteProperty -Name $criterion -Value 5
                 }
             }
 
-            # Créer un objet avec l'amélioration évaluée
+            # CrÃ©er un objet avec l'amÃ©lioration Ã©valuÃ©e
             $evaluatedImprovement = [PSCustomObject]@{
                 ManagerName = $manager.Name
                 ManagerCategory = $manager.Category
@@ -122,7 +122,7 @@ function Evaluate-Improvements {
                 Impact = $improvement.Impact
                 Dependencies = $improvement.Dependencies
                 Scores = $improvement.Scores
-                PriorityScore = 0 # Sera calculé ultérieurement
+                PriorityScore = 0 # Sera calculÃ© ultÃ©rieurement
             }
 
             $evaluatedImprovements += $evaluatedImprovement
@@ -132,7 +132,7 @@ function Evaluate-Improvements {
     return $evaluatedImprovements
 }
 
-# Fonction pour calculer les scores de priorité
+# Fonction pour calculer les scores de prioritÃ©
 function Calculate-PriorityScores {
     [CmdletBinding()]
     param (
@@ -146,7 +146,7 @@ function Calculate-PriorityScores {
     foreach ($improvement in $EvaluatedImprovements) {
         $priorityScore = 0
 
-        # Calculer le score pondéré pour chaque critère
+        # Calculer le score pondÃ©rÃ© pour chaque critÃ¨re
         foreach ($criterion in $Criteria.PSObject.Properties) {
             $criterionName = $criterion.Name
             $criterionWeight = $criterion.Value.Weight
@@ -155,14 +155,14 @@ function Calculate-PriorityScores {
             $priorityScore += $criterionScore * $criterionWeight
         }
 
-        # Arrondir le score à deux décimales
+        # Arrondir le score Ã  deux dÃ©cimales
         $improvement.PriorityScore = [math]::Round($priorityScore, 2)
     }
 
     return $EvaluatedImprovements
 }
 
-# Fonction pour classer les améliorations par ordre de priorité
+# Fonction pour classer les amÃ©liorations par ordre de prioritÃ©
 function Rank-Improvements {
     [CmdletBinding()]
     param (
@@ -170,10 +170,10 @@ function Rank-Improvements {
         [array]$ScoredImprovements
     )
 
-    # Trier les améliorations par score de priorité (décroissant)
+    # Trier les amÃ©liorations par score de prioritÃ© (dÃ©croissant)
     $rankedImprovements = $ScoredImprovements | Sort-Object -Property PriorityScore -Descending
 
-    # Ajouter le rang à chaque amélioration
+    # Ajouter le rang Ã  chaque amÃ©lioration
     for ($i = 0; $i -lt $rankedImprovements.Count; $i++) {
         Add-Member -InputObject $rankedImprovements[$i] -MemberType NoteProperty -Name Rank -Value ($i + 1)
     }
@@ -181,7 +181,7 @@ function Rank-Improvements {
     return $rankedImprovements
 }
 
-# Fonction pour générer le rapport au format Markdown
+# Fonction pour gÃ©nÃ©rer le rapport au format Markdown
 function Generate-MarkdownReport {
     [CmdletBinding()]
     param (
@@ -189,29 +189,29 @@ function Generate-MarkdownReport {
         [PSCustomObject]$Report
     )
 
-    $markdown = "# Rapport de Priorisation des Améliorations`n`n"
-    $markdown += "Date de génération : $($Report.GeneratedAt)`n`n"
+    $markdown = "# Rapport de Priorisation des AmÃ©liorations`n`n"
+    $markdown += "Date de gÃ©nÃ©ration : $($Report.GeneratedAt)`n`n"
     
-    # Ajouter les critères de priorisation
-    $markdown += "## Critères de Priorisation`n`n"
-    $markdown += "| Critère | Poids | Description |`n"
+    # Ajouter les critÃ¨res de priorisation
+    $markdown += "## CritÃ¨res de Priorisation`n`n"
+    $markdown += "| CritÃ¨re | Poids | Description |`n"
     $markdown += "|---------|-------|-------------|`n"
     
     foreach ($criterion in $Report.Criteria.PSObject.Properties) {
         $markdown += "| $($criterion.Name) | $($criterion.Value.Weight) | $($criterion.Value.Description) |`n"
     }
     
-    # Ajouter les améliorations priorisées
-    $markdown += "`n## Améliorations Priorisées`n`n"
-    $markdown += "| Rang | Amélioration | Gestionnaire | Score | Type | Effort | Impact |`n"
+    # Ajouter les amÃ©liorations priorisÃ©es
+    $markdown += "`n## AmÃ©liorations PriorisÃ©es`n`n"
+    $markdown += "| Rang | AmÃ©lioration | Gestionnaire | Score | Type | Effort | Impact |`n"
     $markdown += "|------|--------------|--------------|-------|------|--------|--------|`n"
     
     foreach ($improvement in $Report.RankedImprovements) {
         $markdown += "| $($improvement.Rank) | $($improvement.Name) | $($improvement.ManagerName) | $($improvement.PriorityScore) | $($improvement.Type) | $($improvement.Effort) | $($improvement.Impact) |`n"
     }
     
-    # Ajouter les détails des améliorations
-    $markdown += "`n## Détails des Améliorations`n`n"
+    # Ajouter les dÃ©tails des amÃ©liorations
+    $markdown += "`n## DÃ©tails des AmÃ©liorations`n`n"
     
     foreach ($improvement in $Report.RankedImprovements) {
         $markdown += "### $($improvement.Rank). $($improvement.Name) (Score: $($improvement.PriorityScore))`n`n"
@@ -222,15 +222,15 @@ function Generate-MarkdownReport {
         $markdown += "**Impact :** $($improvement.Impact)`n`n"
         
         if ($improvement.Dependencies -and $improvement.Dependencies.Count -gt 0) {
-            $markdown += "**Dépendances :**`n`n"
+            $markdown += "**DÃ©pendances :**`n`n"
             foreach ($dependency in $improvement.Dependencies) {
                 $markdown += "- $dependency`n"
             }
             $markdown += "`n"
         }
         
-        $markdown += "**Scores par critère :**`n`n"
-        $markdown += "| Critère | Score |`n"
+        $markdown += "**Scores par critÃ¨re :**`n`n"
+        $markdown += "| CritÃ¨re | Score |`n"
         $markdown += "|---------|-------|`n"
         
         foreach ($criterion in $improvement.Scores.PSObject.Properties) {
@@ -243,40 +243,40 @@ function Generate-MarkdownReport {
     # Ajouter des recommandations
     $markdown += "## Recommandations`n`n"
     
-    $markdown += "### Améliorations à court terme (priorité élevée)`n`n"
+    $markdown += "### AmÃ©liorations Ã  court terme (prioritÃ© Ã©levÃ©e)`n`n"
     $highPriorityImprovements = $Report.RankedImprovements | Where-Object { $_.PriorityScore -ge $Report.Thresholds.HighPriorityThreshold }
     if ($highPriorityImprovements.Count -gt 0) {
         foreach ($improvement in $highPriorityImprovements) {
             $markdown += "- **$($improvement.Name)** ($($improvement.ManagerName)) - Score: $($improvement.PriorityScore)`n"
         }
     } else {
-        $markdown += "Aucune amélioration à priorité élevée identifiée.`n"
+        $markdown += "Aucune amÃ©lioration Ã  prioritÃ© Ã©levÃ©e identifiÃ©e.`n"
     }
     
-    $markdown += "`n### Améliorations à moyen terme (priorité moyenne)`n`n"
+    $markdown += "`n### AmÃ©liorations Ã  moyen terme (prioritÃ© moyenne)`n`n"
     $mediumPriorityImprovements = $Report.RankedImprovements | Where-Object { $_.PriorityScore -ge $Report.Thresholds.MediumPriorityThreshold -and $_.PriorityScore -lt $Report.Thresholds.HighPriorityThreshold }
     if ($mediumPriorityImprovements.Count -gt 0) {
         foreach ($improvement in $mediumPriorityImprovements) {
             $markdown += "- **$($improvement.Name)** ($($improvement.ManagerName)) - Score: $($improvement.PriorityScore)`n"
         }
     } else {
-        $markdown += "Aucune amélioration à priorité moyenne identifiée.`n"
+        $markdown += "Aucune amÃ©lioration Ã  prioritÃ© moyenne identifiÃ©e.`n"
     }
     
-    $markdown += "`n### Améliorations à long terme (priorité basse)`n`n"
+    $markdown += "`n### AmÃ©liorations Ã  long terme (prioritÃ© basse)`n`n"
     $lowPriorityImprovements = $Report.RankedImprovements | Where-Object { $_.PriorityScore -lt $Report.Thresholds.MediumPriorityThreshold }
     if ($lowPriorityImprovements.Count -gt 0) {
         foreach ($improvement in $lowPriorityImprovements) {
             $markdown += "- **$($improvement.Name)** ($($improvement.ManagerName)) - Score: $($improvement.PriorityScore)`n"
         }
     } else {
-        $markdown += "Aucune amélioration à priorité basse identifiée.`n"
+        $markdown += "Aucune amÃ©lioration Ã  prioritÃ© basse identifiÃ©e.`n"
     }
     
     return $markdown
 }
 
-# Fonction pour générer le rapport au format HTML
+# Fonction pour gÃ©nÃ©rer le rapport au format HTML
 function Generate-HtmlReport {
     [CmdletBinding()]
     param (
@@ -290,7 +290,7 @@ function Generate-HtmlReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de Priorisation des Améliorations</title>
+    <title>Rapport de Priorisation des AmÃ©liorations</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1, h2, h3, h4 { color: #333; }
@@ -309,13 +309,13 @@ function Generate-HtmlReport {
     </style>
 </head>
 <body>
-    <h1>Rapport de Priorisation des Améliorations</h1>
-    <p>Date de génération : $($Report.GeneratedAt)</p>
+    <h1>Rapport de Priorisation des AmÃ©liorations</h1>
+    <p>Date de gÃ©nÃ©ration : $($Report.GeneratedAt)</p>
     
-    <h2>Critères de Priorisation</h2>
+    <h2>CritÃ¨res de Priorisation</h2>
     <table>
         <tr>
-            <th>Critère</th>
+            <th>CritÃ¨re</th>
             <th>Poids</th>
             <th>Description</th>
         </tr>
@@ -334,11 +334,11 @@ function Generate-HtmlReport {
     $html += @"
     </table>
     
-    <h2>Améliorations Priorisées</h2>
+    <h2>AmÃ©liorations PriorisÃ©es</h2>
     <table>
         <tr>
             <th>Rang</th>
-            <th>Amélioration</th>
+            <th>AmÃ©lioration</th>
             <th>Gestionnaire</th>
             <th>Score</th>
             <th>Type</th>
@@ -371,7 +371,7 @@ function Generate-HtmlReport {
     $html += @"
     </table>
     
-    <h2>Détails des Améliorations</h2>
+    <h2>DÃ©tails des AmÃ©liorations</h2>
 "@
 
     foreach ($improvement in $Report.RankedImprovements) {
@@ -394,7 +394,7 @@ function Generate-HtmlReport {
 
         if ($improvement.Dependencies -and $improvement.Dependencies.Count -gt 0) {
             $html += @"
-        <p><strong>Dépendances :</strong></p>
+        <p><strong>DÃ©pendances :</strong></p>
         <ul>
 "@
             foreach ($dependency in $improvement.Dependencies) {
@@ -408,10 +408,10 @@ function Generate-HtmlReport {
         }
 
         $html += @"
-        <p><strong>Scores par critère :</strong></p>
+        <p><strong>Scores par critÃ¨re :</strong></p>
         <table>
             <tr>
-                <th>Critère</th>
+                <th>CritÃ¨re</th>
                 <th>Score</th>
             </tr>
 "@
@@ -435,7 +435,7 @@ function Generate-HtmlReport {
     <div class="recommendations">
         <h2>Recommandations</h2>
         
-        <h3>Améliorations à court terme (priorité élevée)</h3>
+        <h3>AmÃ©liorations Ã  court terme (prioritÃ© Ã©levÃ©e)</h3>
 "@
 
     $highPriorityImprovements = $Report.RankedImprovements | Where-Object { $_.PriorityScore -ge $Report.Thresholds.HighPriorityThreshold }
@@ -453,12 +453,12 @@ function Generate-HtmlReport {
 "@
     } else {
         $html += @"
-        <p>Aucune amélioration à priorité élevée identifiée.</p>
+        <p>Aucune amÃ©lioration Ã  prioritÃ© Ã©levÃ©e identifiÃ©e.</p>
 "@
     }
 
     $html += @"
-        <h3>Améliorations à moyen terme (priorité moyenne)</h3>
+        <h3>AmÃ©liorations Ã  moyen terme (prioritÃ© moyenne)</h3>
 "@
 
     $mediumPriorityImprovements = $Report.RankedImprovements | Where-Object { $_.PriorityScore -ge $Report.Thresholds.MediumPriorityThreshold -and $_.PriorityScore -lt $Report.Thresholds.HighPriorityThreshold }
@@ -476,12 +476,12 @@ function Generate-HtmlReport {
 "@
     } else {
         $html += @"
-        <p>Aucune amélioration à priorité moyenne identifiée.</p>
+        <p>Aucune amÃ©lioration Ã  prioritÃ© moyenne identifiÃ©e.</p>
 "@
     }
 
     $html += @"
-        <h3>Améliorations à long terme (priorité basse)</h3>
+        <h3>AmÃ©liorations Ã  long terme (prioritÃ© basse)</h3>
 "@
 
     $lowPriorityImprovements = $Report.RankedImprovements | Where-Object { $_.PriorityScore -lt $Report.Thresholds.MediumPriorityThreshold }
@@ -499,7 +499,7 @@ function Generate-HtmlReport {
 "@
     } else {
         $html += @"
-        <p>Aucune amélioration à priorité basse identifiée.</p>
+        <p>Aucune amÃ©lioration Ã  prioritÃ© basse identifiÃ©e.</p>
 "@
     }
 
@@ -512,7 +512,7 @@ function Generate-HtmlReport {
     return $html
 }
 
-# Fonction pour générer le rapport au format CSV
+# Fonction pour gÃ©nÃ©rer le rapport au format CSV
 function Generate-CsvReport {
     [CmdletBinding()]
     param (
@@ -520,7 +520,7 @@ function Generate-CsvReport {
         [PSCustomObject]$Report
     )
 
-    $csv = "Rang,Amélioration,Gestionnaire,Score,Type,Effort,Impact`n"
+    $csv = "Rang,AmÃ©lioration,Gestionnaire,Score,Type,Effort,Impact`n"
     
     foreach ($improvement in $Report.RankedImprovements) {
         $csv += "$($improvement.Rank),$($improvement.Name),$($improvement.ManagerName),$($improvement.PriorityScore),$($improvement.Type),$($improvement.Effort),$($improvement.Impact)`n"
@@ -529,13 +529,13 @@ function Generate-CsvReport {
     return $csv
 }
 
-# Exécuter le processus de priorisation
+# ExÃ©cuter le processus de priorisation
 $criteria = Define-PrioritizationCriteria -ImprovementsData $improvementsData
 $evaluatedImprovements = Evaluate-Improvements -ImprovementsData $improvementsData -Criteria $criteria
 $scoredImprovements = Calculate-PriorityScores -EvaluatedImprovements $evaluatedImprovements -Criteria $criteria
 $rankedImprovements = Rank-Improvements -ScoredImprovements $scoredImprovements
 
-# Créer le rapport de priorisation
+# CrÃ©er le rapport de priorisation
 $prioritizationReport = [PSCustomObject]@{
     GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     Criteria = $criteria
@@ -543,7 +543,7 @@ $prioritizationReport = [PSCustomObject]@{
     Thresholds = $improvementsData.Thresholds
 }
 
-# Générer le rapport dans le format spécifié
+# GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $reportContent = Generate-MarkdownReport -Report $prioritizationReport
@@ -562,21 +562,21 @@ switch ($Format) {
 # Enregistrer le rapport
 try {
     $reportContent | Out-File -FilePath $OutputFile -Encoding UTF8
-    Write-Host "Rapport de priorisation généré avec succès : $OutputFile"
+    Write-Host "Rapport de priorisation gÃ©nÃ©rÃ© avec succÃ¨s : $OutputFile"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du rapport : $_"
     exit 1
 }
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé de la priorisation :"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© de la priorisation :"
 Write-Host "--------------------------------"
-Write-Host "  Améliorations évaluées : $($rankedImprovements.Count)"
+Write-Host "  AmÃ©liorations Ã©valuÃ©es : $($rankedImprovements.Count)"
 
 $highPriorityCount = ($rankedImprovements | Where-Object { $_.PriorityScore -ge $improvementsData.Thresholds.HighPriorityThreshold }).Count
 $mediumPriorityCount = ($rankedImprovements | Where-Object { $_.PriorityScore -ge $improvementsData.Thresholds.MediumPriorityThreshold -and $_.PriorityScore -lt $improvementsData.Thresholds.HighPriorityThreshold }).Count
 $lowPriorityCount = ($rankedImprovements | Where-Object { $_.PriorityScore -lt $improvementsData.Thresholds.MediumPriorityThreshold }).Count
 
-Write-Host "  Améliorations à priorité élevée : $highPriorityCount"
-Write-Host "  Améliorations à priorité moyenne : $mediumPriorityCount"
-Write-Host "  Améliorations à priorité basse : $lowPriorityCount"
+Write-Host "  AmÃ©liorations Ã  prioritÃ© Ã©levÃ©e : $highPriorityCount"
+Write-Host "  AmÃ©liorations Ã  prioritÃ© moyenne : $mediumPriorityCount"
+Write-Host "  AmÃ©liorations Ã  prioritÃ© basse : $lowPriorityCount"

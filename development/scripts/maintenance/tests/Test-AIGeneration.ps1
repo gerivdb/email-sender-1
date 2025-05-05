@@ -1,4 +1,4 @@
-# Fonction pour générer des sous-tâches avec l'IA
+﻿# Fonction pour gÃ©nÃ©rer des sous-tÃ¢ches avec l'IA
 function Get-AIGeneratedSubTasks {
     [CmdletBinding()]
     param (
@@ -33,35 +33,35 @@ function Get-AIGeneratedSubTasks {
         return $null
     }
     
-    # Vérifier si l'IA est activée
+    # VÃ©rifier si l'IA est activÃ©e
     if (-not $aiConfig.enabled) {
-        Write-Warning "La génération de sous-tâches par IA est désactivée dans la configuration."
+        Write-Warning "La gÃ©nÃ©ration de sous-tÃ¢ches par IA est dÃ©sactivÃ©e dans la configuration."
         return $null
     }
     
-    # Vérifier si la clé API est définie
+    # VÃ©rifier si la clÃ© API est dÃ©finie
     $apiKeyVarName = $aiConfig.api_key_env_var
     $apiKey = [Environment]::GetEnvironmentVariable($apiKeyVarName)
     if (-not $apiKey) {
-        Write-Warning "Clé API non définie dans la variable d'environnement $apiKeyVarName"
+        Write-Warning "ClÃ© API non dÃ©finie dans la variable d'environnement $apiKeyVarName"
         return $null
     }
     
-    # Extraire le titre de la tâche (tout ce qui suit l'identifiant entre ** **)
+    # Extraire le titre de la tÃ¢che (tout ce qui suit l'identifiant entre ** **)
     $titleMatch = [regex]::Match($TaskContent, '\*\*[^\*]+\*\*\s+(.+)')
     $taskTitle = if ($titleMatch.Success) { $titleMatch.Groups[1].Value } else { $TaskContent }
     
-    # Préparer les domaines pour le prompt
+    # PrÃ©parer les domaines pour le prompt
     $domainsText = if ($Domains -and $Domains.Count -gt 0) {
         $Domains -join ", "
     } else {
-        "Non spécifié"
+        "Non spÃ©cifiÃ©"
     }
     
-    # Préparer le prompt
+    # PrÃ©parer le prompt
     $prompt = $aiConfig.prompt_template -replace "{task}", $taskTitle -replace "{complexity}", $ComplexityLevel -replace "{domains}", $domainsText -replace "{max_subtasks}", $MaxSubTasks
     
-    # Préparer la requête API
+    # PrÃ©parer la requÃªte API
     $headers = @{
         "Content-Type" = "application/json"
         "Authorization" = "Bearer $apiKey"
@@ -72,7 +72,7 @@ function Get-AIGeneratedSubTasks {
         messages = @(
             @{
                 role = "system"
-                content = "Tu es un expert en gestion de projet et en décomposition de tâches. Tu vas générer une liste de sous-tâches pour une tâche donnée."
+                content = "Tu es un expert en gestion de projet et en dÃ©composition de tÃ¢ches. Tu vas gÃ©nÃ©rer une liste de sous-tÃ¢ches pour une tÃ¢che donnÃ©e."
             },
             @{
                 role = "user"
@@ -85,53 +85,53 @@ function Get-AIGeneratedSubTasks {
     
     # Appeler l'API
     try {
-        Write-Host "Génération de sous-tâches avec l'IA..." -ForegroundColor Yellow
+        Write-Host "GÃ©nÃ©ration de sous-tÃ¢ches avec l'IA..." -ForegroundColor Yellow
         
         $response = Invoke-RestMethod -Uri "https://api.openai.com/v1/chat/completions" -Method Post -Headers $headers -Body $body
         
-        # Traiter la réponse
+        # Traiter la rÃ©ponse
         $generatedContent = $response.choices[0].message.content
         
-        # Nettoyer le contenu généré (supprimer les numéros, les tirets, etc.)
+        # Nettoyer le contenu gÃ©nÃ©rÃ© (supprimer les numÃ©ros, les tirets, etc.)
         $lines = $generatedContent -split "`n" | ForEach-Object { 
             $line = $_.Trim()
-            # Supprimer les numéros et les tirets au début de la ligne
+            # Supprimer les numÃ©ros et les tirets au dÃ©but de la ligne
             $line = $line -replace "^(\d+[\.\)]\s*|\-\s*)", ""
             # Ignorer les lignes vides
             if ($line) { $line }
         }
         
-        # Limiter le nombre de sous-tâches
+        # Limiter le nombre de sous-tÃ¢ches
         if ($lines.Count -gt $MaxSubTasks) {
             $lines = $lines[0..($MaxSubTasks-1)]
         }
         
-        Write-Host "Sous-tâches générées avec succès par l'IA." -ForegroundColor Green
+        Write-Host "Sous-tÃ¢ches gÃ©nÃ©rÃ©es avec succÃ¨s par l'IA." -ForegroundColor Green
         
-        # Retourner les sous-tâches générées
+        # Retourner les sous-tÃ¢ches gÃ©nÃ©rÃ©es
         return @{
             Content = $lines -join "`r`n"
             Level = "ai"
             Domain = if ($Domains -and $Domains.Count -gt 0) { $Domains[0] } else { $null }
             Domains = $Domains
-            Description = "Sous-tâches générées par IA pour $ComplexityLevel" + $(if ($Domains) { " ($($Domains -join ", "))" })
+            Description = "Sous-tÃ¢ches gÃ©nÃ©rÃ©es par IA pour $ComplexityLevel" + $(if ($Domains) { " ($($Domains -join ", "))" })
             MaxSubTasks = $MaxSubTasks
             Combined = $false
             AI = $true
         }
     } catch {
-        Write-Warning "Erreur lors de l'appel à l'API IA : $_"
+        Write-Warning "Erreur lors de l'appel Ã  l'API IA : $_"
         return $null
     }
 }
 
 # Tester la fonction
 $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
-$result = Get-AIGeneratedSubTasks -TaskContent "Implémenter un système d'authentification" -ComplexityLevel "Medium" -Domains @("Backend", "Security") -MaxSubTasks 5 -ProjectRoot $projectRoot
+$result = Get-AIGeneratedSubTasks -TaskContent "ImplÃ©menter un systÃ¨me d'authentification" -ComplexityLevel "Medium" -Domains @("Backend", "Security") -MaxSubTasks 5 -ProjectRoot $projectRoot
 
-# Afficher le résultat
+# Afficher le rÃ©sultat
 if ($result) {
-    Write-Host "Sous-tâches générées :"
+    Write-Host "Sous-tÃ¢ches gÃ©nÃ©rÃ©es :"
     Write-Host "--------------------"
     Write-Host $result.Content
     Write-Host "--------------------"
@@ -139,5 +139,5 @@ if ($result) {
     Write-Host "Domaines : $($result.Domains -join ", ")"
     Write-Host "Description : $($result.Description)"
 } else {
-    Write-Host "Impossible de générer des sous-tâches avec l'IA."
+    Write-Host "Impossible de gÃ©nÃ©rer des sous-tÃ¢ches avec l'IA."
 }

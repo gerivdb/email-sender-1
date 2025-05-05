@@ -1,25 +1,25 @@
-BeforeAll {
-  # Importer le module à tester
+﻿BeforeAll {
+  # Importer le module Ã  tester
   $global:scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\Integrate-WithTestOmnibus.ps1"
   $global:modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1"
 
-  # Créer un dossier temporaire pour les tests
+  # CrÃ©er un dossier temporaire pour les tests
   $global:testFolder = Join-Path -Path $TestDrive -ChildPath "TestOmnibusIntegrationTests"
   New-Item -Path $global:testFolder -ItemType Directory -Force | Out-Null
 
-  # Créer une base de données de test
+  # CrÃ©er une base de donnÃ©es de test
   $global:databasePath = Join-Path -Path $global:testFolder -ChildPath "test_error_database.json"
   $global:reportPath = Join-Path -Path $global:testFolder -ChildPath "test_integration_report.md"
 
-  # Créer un dossier TestOmnibus de test
+  # CrÃ©er un dossier TestOmnibus de test
   $global:testOmnibusPath = Join-Path -Path $global:testFolder -ChildPath "TestOmnibus"
   New-Item -Path $global:testOmnibusPath -ItemType Directory -Force | Out-Null
 
-  # Créer des dossiers pour les logs de test
+  # CrÃ©er des dossiers pour les logs de test
   $global:logsPath = Join-Path -Path $global:testOmnibusPath -ChildPath "logs"
   New-Item -Path $global:logsPath -ItemType Directory -Force | Out-Null
 
-  # Créer des fichiers de log de test
+  # CrÃ©er des fichiers de log de test
   $logFile1 = Join-Path -Path $global:logsPath -ChildPath "test_log_1.log"
   $logContent1 = @"
 Exception : System.NullReferenceException: Object reference not set to an instance of an object.
@@ -72,7 +72,7 @@ Describe "Integrate-WithTestOmnibus" {
     # Charger le module ErrorPatternAnalyzer
     . $global:modulePath
 
-    # Initialiser la base de données
+    # Initialiser la base de donnÃ©es
     $script:ErrorDatabasePath = $global:databasePath
     Initialize-ErrorDatabase -DatabasePath $global:databasePath -Force
   }
@@ -87,68 +87,68 @@ Describe "Integrate-WithTestOmnibus" {
     $errors | Should -Not -BeNullOrEmpty
     $errors.Count | Should -BeGreaterThan 0
 
-    # Vérifier que les erreurs ont été extraites correctement
+    # VÃ©rifier que les erreurs ont Ã©tÃ© extraites correctement
     $errors | Where-Object { $_.Source -like "*test_log_1.log" } | Should -Not -BeNullOrEmpty
     $errors | Where-Object { $_.Source -like "*test_results_1.xml" } | Should -Not -BeNullOrEmpty
     $errors | Where-Object { $_.Source -like "*error_1.json" } | Should -Not -BeNullOrEmpty
   }
 
-  It "Ajoute correctement les erreurs à la base de données" {
+  It "Ajoute correctement les erreurs Ã  la base de donnÃ©es" {
     # Charger le script
     . $global:scriptPath -TestOmnibusPath $global:testOmnibusPath -ErrorDatabasePath $global:databasePath -ReportPath $global:reportPath
 
     # Extraire les erreurs
     $errors = Get-TestOmnibusErrors -TestOmnibusPath $global:testOmnibusPath
 
-    # Ajouter les erreurs à la base de données
+    # Ajouter les erreurs Ã  la base de donnÃ©es
     $patternIds = Add-TestOmnibusErrors -Errors $errors
 
     $patternIds | Should -Not -BeNullOrEmpty
     $patternIds.Count | Should -Be $errors.Count
 
-    # Vérifier que les patterns ont été créés
+    # VÃ©rifier que les patterns ont Ã©tÃ© crÃ©Ã©s
     $patterns = Get-ErrorPattern
     $patterns.Count | Should -BeGreaterThan 0
   }
 
-  It "Crée correctement un hook d'intégration" {
+  It "CrÃ©e correctement un hook d'intÃ©gration" {
     # Charger le script
     . $global:scriptPath -TestOmnibusPath $global:testOmnibusPath -ErrorDatabasePath $global:databasePath -ReportPath $global:reportPath
 
-    # Créer un hook d'intégration
+    # CrÃ©er un hook d'intÃ©gration
     $hookPath = New-TestOmnibusHook -TestOmnibusPath $global:testOmnibusPath
 
     $hookPath | Should -Not -BeNullOrEmpty
     Test-Path -Path $hookPath | Should -Be $true
 
-    # Vérifier que le hook contient les fonctions nécessaires
+    # VÃ©rifier que le hook contient les fonctions nÃ©cessaires
     $hookContent = Get-Content -Path $hookPath -Raw
     $hookContent | Should -Match "Process-TestErrors"
     $hookContent | Should -Match "ErrorPatternAnalyzer"
   }
 
-  It "Crée correctement un rapport d'intégration" {
+  It "CrÃ©e correctement un rapport d'intÃ©gration" {
     # Charger le script
     . $global:scriptPath -TestOmnibusPath $global:testOmnibusPath -ErrorDatabasePath $global:databasePath -ReportPath $global:reportPath
 
     # Extraire les erreurs
     $errors = Get-TestOmnibusErrors -TestOmnibusPath $global:testOmnibusPath
 
-    # Ajouter les erreurs à la base de données
+    # Ajouter les erreurs Ã  la base de donnÃ©es
     $patternIds = Add-TestOmnibusErrors -Errors $errors
 
-    # Créer un rapport d'intégration
+    # CrÃ©er un rapport d'intÃ©gration
     $reportPath = New-IntegrationReport -PatternIds $patternIds -ReportPath $global:reportPath
 
     $reportPath | Should -Be $global:reportPath
     Test-Path -Path $reportPath | Should -Be $true
 
-    # Vérifier que le rapport contient les sections nécessaires
+    # VÃ©rifier que le rapport contient les sections nÃ©cessaires
     $reportContent = Get-Content -Path $reportPath -Raw
-    $reportContent | Should -Match "Rapport d'intégration avec TestOmnibus"
-    $reportContent | Should -Match "Résumé"
-    $reportContent | Should -Match "Patterns d'erreur détectés"
-    $reportContent | Should -Match "Intégration avec TestOmnibus"
+    $reportContent | Should -Match "Rapport d'intÃ©gration avec TestOmnibus"
+    $reportContent | Should -Match "RÃ©sumÃ©"
+    $reportContent | Should -Match "Patterns d'erreur dÃ©tectÃ©s"
+    $reportContent | Should -Match "IntÃ©gration avec TestOmnibus"
   }
 }
 
@@ -157,23 +157,23 @@ Describe "Integrate-WithTestOmnibus Integration" {
     # Charger le module ErrorPatternAnalyzer
     . $global:modulePath
 
-    # Initialiser la base de données
+    # Initialiser la base de donnÃ©es
     $script:ErrorDatabasePath = $global:databasePath
     Initialize-ErrorDatabase -DatabasePath $global:databasePath -Force
   }
 
-  It "Exécute correctement le script complet" {
-    # Exécuter le script
+  It "ExÃ©cute correctement le script complet" {
+    # ExÃ©cuter le script
     & $global:scriptPath -TestOmnibusPath $global:testOmnibusPath -ErrorDatabasePath $global:databasePath -ReportPath $global:reportPath
 
-    # Vérifier que le rapport a été généré
+    # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
     Test-Path -Path $global:reportPath | Should -Be $true
 
-    # Vérifier que le hook a été créé
+    # VÃ©rifier que le hook a Ã©tÃ© crÃ©Ã©
     $hookPath = Join-Path -Path $global:testOmnibusPath -ChildPath "hooks\ErrorPatternAnalyzer.ps1"
     Test-Path -Path $hookPath | Should -Be $true
 
-    # Vérifier que la base de données contient des patterns
+    # VÃ©rifier que la base de donnÃ©es contient des patterns
     $database = Get-Content -Path $global:databasePath -Raw | ConvertFrom-Json
     $database.Patterns.Count | Should -BeGreaterThan 0
   }

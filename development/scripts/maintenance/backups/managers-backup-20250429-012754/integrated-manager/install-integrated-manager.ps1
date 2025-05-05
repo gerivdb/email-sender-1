@@ -1,23 +1,23 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'installation du gestionnaire intégré.
+    Script d'installation du gestionnaire intÃ©grÃ©.
 
 .DESCRIPTION
-    Ce script installe le gestionnaire intégré en créant les fichiers nécessaires et en configurant l'environnement.
+    Ce script installe le gestionnaire intÃ©grÃ© en crÃ©ant les fichiers nÃ©cessaires et en configurant l'environnement.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire courant.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER Force
-    Indique si les fichiers existants doivent être écrasés.
+    Indique si les fichiers existants doivent Ãªtre Ã©crasÃ©s.
 
 .EXAMPLE
     .\install-integrated-manager.ps1
-    Installe le gestionnaire intégré dans le répertoire courant.
+    Installe le gestionnaire intÃ©grÃ© dans le rÃ©pertoire courant.
 
 .EXAMPLE
     .\install-integrated-manager.ps1 -ProjectRoot "D:\MonProjet" -Force
-    Installe le gestionnaire intégré dans le répertoire D:\MonProjet et écrase les fichiers existants.
+    Installe le gestionnaire intÃ©grÃ© dans le rÃ©pertoire D:\MonProjet et Ã©crase les fichiers existants.
 #>
 
 [CmdletBinding()]
@@ -29,11 +29,11 @@ param (
     [switch]$Force
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 if ($ProjectRoot -eq ".") {
     $ProjectRoot = $PWD.Path
     
-    # Remonter jusqu'à trouver le répertoire .git
+    # Remonter jusqu'Ã  trouver le rÃ©pertoire .git
     while (-not (Test-Path -Path (Join-Path -Path $ProjectRoot -ChildPath ".git") -PathType Container) -and 
            -not [string]::IsNullOrEmpty($ProjectRoot)) {
         $ProjectRoot = Split-Path -Path $ProjectRoot -Parent
@@ -44,9 +44,9 @@ if ($ProjectRoot -eq ".") {
     }
 }
 
-# Vérifier que le répertoire du projet existe
+# VÃ©rifier que le rÃ©pertoire du projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
-    Write-Error "Le répertoire du projet n'existe pas : $ProjectRoot"
+    Write-Error "Le rÃ©pertoire du projet n'existe pas : $ProjectRoot"
     exit 1
 }
 
@@ -56,18 +56,18 @@ $integratedManagerScript = Join-Path -Path $scriptPath -ChildPath "integrated-ma
 $integratedManagerDoc = Join-Path -Path $ProjectRoot -ChildPath "development\docs\guides\methodologies\integrated_manager.md"
 $unifiedConfigJson = Join-Path -Path $ProjectRoot -ChildPath "development\config\unified-config.json"
 
-# Vérifier que les fichiers source existent
+# VÃ©rifier que les fichiers source existent
 if (-not (Test-Path -Path $integratedManagerScript)) {
-    Write-Error "Le script du gestionnaire intégré est introuvable : $integratedManagerScript"
+    Write-Error "Le script du gestionnaire intÃ©grÃ© est introuvable : $integratedManagerScript"
     exit 1
 }
 
 if (-not (Test-Path -Path $integratedManagerDoc)) {
-    Write-Warning "La documentation du gestionnaire intégré est introuvable : $integratedManagerDoc"
+    Write-Warning "La documentation du gestionnaire intÃ©grÃ© est introuvable : $integratedManagerDoc"
 }
 
 if (-not (Test-Path -Path $unifiedConfigJson)) {
-    Write-Warning "Le fichier de configuration unifié est introuvable : $unifiedConfigJson"
+    Write-Warning "Le fichier de configuration unifiÃ© est introuvable : $unifiedConfigJson"
 }
 
 # Chemins des liens symboliques
@@ -76,7 +76,7 @@ $linkPaths = @{
     "scripts\integrated-manager.ps1" = $integratedManagerScript
 }
 
-# Créer les répertoires nécessaires
+# CrÃ©er les rÃ©pertoires nÃ©cessaires
 $directories = @(
     "development\config",
     "development\docs\guides\methodologies",
@@ -87,7 +87,7 @@ $directories = @(
 foreach ($directory in $directories) {
     $dirPath = Join-Path -Path $ProjectRoot -ChildPath $directory
     if (-not (Test-Path -Path $dirPath -PathType Container)) {
-        Write-Host "Création du répertoire : $dirPath" -ForegroundColor Green
+        Write-Host "CrÃ©ation du rÃ©pertoire : $dirPath" -ForegroundColor Green
         New-Item -Path $dirPath -ItemType Directory -Force | Out-Null
     }
 }
@@ -104,7 +104,7 @@ foreach ($source in $filesToCopy.Keys) {
     
     if (Test-Path -Path $source) {
         if ((Test-Path -Path $destination) -and -not $Force) {
-            Write-Warning "Le fichier existe déjà et ne sera pas écrasé : $destination"
+            Write-Warning "Le fichier existe dÃ©jÃ  et ne sera pas Ã©crasÃ© : $destination"
         } else {
             Write-Host "Copie du fichier : $source -> $destination" -ForegroundColor Green
             Copy-Item -Path $source -Destination $destination -Force
@@ -114,67 +114,67 @@ foreach ($source in $filesToCopy.Keys) {
     }
 }
 
-# Créer les liens symboliques
+# CrÃ©er les liens symboliques
 foreach ($link in $linkPaths.Keys) {
     $linkPath = Join-Path -Path $ProjectRoot -ChildPath $link
     $targetPath = $linkPaths[$link]
     
     if ((Test-Path -Path $linkPath) -and -not $Force) {
-        Write-Warning "Le lien existe déjà et ne sera pas écrasé : $linkPath"
+        Write-Warning "Le lien existe dÃ©jÃ  et ne sera pas Ã©crasÃ© : $linkPath"
     } else {
         if (Test-Path -Path $linkPath) {
             Remove-Item -Path $linkPath -Force
         }
         
         try {
-            # Créer un lien symbolique si possible
+            # CrÃ©er un lien symbolique si possible
             if ($PSVersionTable.PSVersion.Major -ge 5) {
-                Write-Host "Création du lien symbolique : $linkPath -> $targetPath" -ForegroundColor Green
+                Write-Host "CrÃ©ation du lien symbolique : $linkPath -> $targetPath" -ForegroundColor Green
                 New-Item -Path $linkPath -ItemType SymbolicLink -Target $targetPath -Force | Out-Null
             } else {
-                # Sinon, créer un fichier de redirection
-                Write-Host "Création du fichier de redirection : $linkPath -> $targetPath" -ForegroundColor Green
+                # Sinon, crÃ©er un fichier de redirection
+                Write-Host "CrÃ©ation du fichier de redirection : $linkPath -> $targetPath" -ForegroundColor Green
                 @"
-# Ce fichier est une redirection vers le script du gestionnaire intégré
-# Le script réel se trouve à l'emplacement : $targetPath
+# Ce fichier est une redirection vers le script du gestionnaire intÃ©grÃ©
+# Le script rÃ©el se trouve Ã  l'emplacement : $targetPath
 
-# Rediriger vers le script réel
+# Rediriger vers le script rÃ©el
 & "$targetPath" @args
 "@ | Set-Content -Path $linkPath -Encoding UTF8
             }
         } catch {
-            Write-Warning "Impossible de créer le lien symbolique : $linkPath -> $targetPath"
+            Write-Warning "Impossible de crÃ©er le lien symbolique : $linkPath -> $targetPath"
             Write-Warning "Erreur : $_"
             
-            # Créer un fichier de redirection en cas d'échec
-            Write-Host "Création du fichier de redirection : $linkPath -> $targetPath" -ForegroundColor Green
+            # CrÃ©er un fichier de redirection en cas d'Ã©chec
+            Write-Host "CrÃ©ation du fichier de redirection : $linkPath -> $targetPath" -ForegroundColor Green
             @"
-# Ce fichier est une redirection vers le script du gestionnaire intégré
-# Le script réel se trouve à l'emplacement : $targetPath
+# Ce fichier est une redirection vers le script du gestionnaire intÃ©grÃ©
+# Le script rÃ©el se trouve Ã  l'emplacement : $targetPath
 
-# Rediriger vers le script réel
+# Rediriger vers le script rÃ©el
 & "$targetPath" @args
 "@ | Set-Content -Path $linkPath -Encoding UTF8
         }
     }
 }
 
-# Créer un raccourci dans le dossier principal
+# CrÃ©er un raccourci dans le dossier principal
 $shortcutPath = Join-Path -Path $ProjectRoot -ChildPath "integrated-manager.ps1"
 if ((Test-Path -Path $shortcutPath) -and -not $Force) {
-    Write-Warning "Le raccourci existe déjà et ne sera pas écrasé : $shortcutPath"
+    Write-Warning "Le raccourci existe dÃ©jÃ  et ne sera pas Ã©crasÃ© : $shortcutPath"
 } else {
-    Write-Host "Création du raccourci : $shortcutPath" -ForegroundColor Green
+    Write-Host "CrÃ©ation du raccourci : $shortcutPath" -ForegroundColor Green
     @"
-# Ce fichier est un raccourci vers le script du gestionnaire intégré
-# Le script réel se trouve à l'emplacement : development\scripts\integrated-manager.ps1
+# Ce fichier est un raccourci vers le script du gestionnaire intÃ©grÃ©
+# Le script rÃ©el se trouve Ã  l'emplacement : development\scripts\integrated-manager.ps1
 
-# Rediriger vers le script réel
+# Rediriger vers le script rÃ©el
 & "development\scripts\integrated-manager.ps1" @args
 "@ | Set-Content -Path $shortcutPath -Encoding UTF8
 }
 
-# Vérifier que les fichiers ont été correctement installés
+# VÃ©rifier que les fichiers ont Ã©tÃ© correctement installÃ©s
 $filesToCheck = @(
     "development\scripts\integrated-manager.ps1",
     "development\docs\guides\methodologies\integrated_manager.md",
@@ -188,17 +188,17 @@ $allFilesExist = $true
 foreach ($file in $filesToCheck) {
     $filePath = Join-Path -Path $ProjectRoot -ChildPath $file
     if (-not (Test-Path -Path $filePath)) {
-        Write-Warning "Le fichier n'a pas été correctement installé : $filePath"
+        Write-Warning "Le fichier n'a pas Ã©tÃ© correctement installÃ© : $filePath"
         $allFilesExist = $false
     }
 }
 
 if ($allFilesExist) {
-    Write-Host "Le gestionnaire intégré a été installé avec succès !" -ForegroundColor Green
-    Write-Host "Pour l'utiliser, exécutez :" -ForegroundColor Cyan
+    Write-Host "Le gestionnaire intÃ©grÃ© a Ã©tÃ© installÃ© avec succÃ¨s !" -ForegroundColor Green
+    Write-Host "Pour l'utiliser, exÃ©cutez :" -ForegroundColor Cyan
     Write-Host "  - Depuis le dossier principal : .\integrated-manager.ps1" -ForegroundColor Cyan
     Write-Host "  - Depuis n'importe quel dossier : .\scripts\integrated-manager.ps1" -ForegroundColor Cyan
     Write-Host "  - Depuis n'importe quel dossier : .\tools\scripts\integrated-manager.ps1" -ForegroundColor Cyan
 } else {
-    Write-Warning "Le gestionnaire intégré n'a pas été correctement installé."
+    Write-Warning "Le gestionnaire intÃ©grÃ© n'a pas Ã©tÃ© correctement installÃ©."
 }

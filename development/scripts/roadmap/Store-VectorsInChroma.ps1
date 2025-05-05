@@ -1,5 +1,5 @@
-# Store-VectorsInChroma.ps1
-# Script pour stocker les vecteurs de tâches dans une base vectorielle Chroma
+﻿# Store-VectorsInChroma.ps1
+# Script pour stocker les vecteurs de tÃ¢ches dans une base vectorielle Chroma
 
 [CmdletBinding()]
 param (
@@ -16,7 +16,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -39,26 +39,26 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         }
         else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     }
     catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("chromadb", "numpy", "pandas")
     $missingPackages = @()
@@ -79,24 +79,24 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         }
         else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
     
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour stocker les vecteurs dans Chroma
+# Fonction pour crÃ©er un script Python temporaire pour stocker les vecteurs dans Chroma
 function New-ChromaStorageScript {
     [CmdletBinding()]
     param (
@@ -139,14 +139,14 @@ def main():
         print(f"Erreur lors du chargement du fichier JSON: {e}")
         sys.exit(1)
     
-    # Créer le dossier de la base Chroma s'il n'existe pas
+    # CrÃ©er le dossier de la base Chroma s'il n'existe pas
     os.makedirs(chroma_db_path, exist_ok=True)
     
     # Initialiser le client Chroma
     print(f"Initialisation de la base Chroma dans {chroma_db_path}...")
     client = chromadb.PersistentClient(path=chroma_db_path)
     
-    # Vérifier si la collection existe déjà
+    # VÃ©rifier si la collection existe dÃ©jÃ 
     try:
         existing_collections = client.list_collections()
         collection_exists = any(c.name == collection_name for c in existing_collections)
@@ -157,16 +157,16 @@ def main():
             collection_exists = False
         
         if collection_exists and not force:
-            print(f"La collection {collection_name} existe déjà. Utilisez -Force pour la remplacer.")
+            print(f"La collection {collection_name} existe dÃ©jÃ . Utilisez -Force pour la remplacer.")
             sys.exit(0)
         
-        # Créer la collection
+        # CrÃ©er la collection
         collection = client.create_collection(
             name=collection_name,
             metadata={"description": "Roadmap tasks vectors", "created": datetime.now().isoformat()}
         )
         
-        # Préparer les données pour l'insertion
+        # PrÃ©parer les donnÃ©es pour l'insertion
         ids = []
         embeddings = []
         metadatas = []
@@ -176,7 +176,7 @@ def main():
             ids.append(task['TaskId'])
             embeddings.append(task['Vector'])
             
-            # Préparer les métadonnées
+            # PrÃ©parer les mÃ©tadonnÃ©es
             metadata = {
                 "description": task['Description'],
                 "status": task['Status'],
@@ -187,17 +187,17 @@ def main():
             }
             metadatas.append(metadata)
             
-            # Préparer le document (texte)
+            # PrÃ©parer le document (texte)
             document = f"ID: {task['TaskId']} | Description: {task['Description']} | Section: {task['Section']} | Status: {task['Status']}"
             documents.append(document)
         
-        # Insérer les données par lots
+        # InsÃ©rer les donnÃ©es par lots
         batch_size = 100
         total_tasks = len(ids)
         
         for i in range(0, total_tasks, batch_size):
             end_idx = min(i + batch_size, total_tasks)
-            print(f"Insertion des tâches {i+1} à {end_idx} sur {total_tasks}...")
+            print(f"Insertion des tÃ¢ches {i+1} Ã  {end_idx} sur {total_tasks}...")
             
             collection.add(
                 ids=ids[i:end_idx],
@@ -206,16 +206,16 @@ def main():
                 documents=documents[i:end_idx]
             )
         
-        print(f"Stockage terminé. {total_tasks} tâches ont été stockées dans la collection {collection_name}.")
+        print(f"Stockage terminÃ©. {total_tasks} tÃ¢ches ont Ã©tÃ© stockÃ©es dans la collection {collection_name}.")
         
-        # Vérifier que les données ont été correctement stockées
+        # VÃ©rifier que les donnÃ©es ont Ã©tÃ© correctement stockÃ©es
         count = collection.count()
-        print(f"Nombre d'éléments dans la collection: {count}")
+        print(f"Nombre d'Ã©lÃ©ments dans la collection: {count}")
         
         if count == total_tasks:
-            print("Toutes les tâches ont été correctement stockées.")
+            print("Toutes les tÃ¢ches ont Ã©tÃ© correctement stockÃ©es.")
         else:
-            print(f"Attention: {total_tasks - count} tâches n'ont pas été stockées.")
+            print(f"Attention: {total_tasks - count} tÃ¢ches n'ont pas Ã©tÃ© stockÃ©es.")
         
     except Exception as e:
         print(f"Erreur lors du stockage des vecteurs dans Chroma: {e}")
@@ -231,37 +231,37 @@ if __name__ == "__main__":
 
 # Fonction principale
 function Main {
-    # Vérifier si le fichier de vecteurs existe
+    # VÃ©rifier si le fichier de vecteurs existe
     if (-not (Test-Path -Path $VectorsPath)) {
         Write-Log "Le fichier de vecteurs $VectorsPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
     
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
     
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour le stockage dans Chroma..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour le stockage dans Chroma..." -Level Info
     $pythonScript = New-ChromaStorageScript -VectorsPath $VectorsPath -ChromaDbPath $ChromaDbPath -CollectionName $CollectionName -Force:$Force
     
-    # Exécuter le script Python
-    Write-Log "Exécution du script Python pour le stockage dans Chroma..." -Level Info
+    # ExÃ©cuter le script Python
+    Write-Log "ExÃ©cution du script Python pour le stockage dans Chroma..." -Level Info
     python $pythonScript
     
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
     
-    Write-Log "Opération terminée." -Level Success
+    Write-Log "OpÃ©ration terminÃ©e." -Level Success
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

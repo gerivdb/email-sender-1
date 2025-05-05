@@ -1,29 +1,29 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module ModuleDependencyDetector.
 
 .DESCRIPTION
     Ce script contient les tests unitaires pour le module ModuleDependencyDetector,
-    vérifiant la détection des instructions Import-Module et using module dans les scripts PowerShell.
+    vÃ©rifiant la dÃ©tection des instructions Import-Module et using module dans les scripts PowerShell.
 
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-16
+    Date de crÃ©ation: 2023-06-16
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\ModuleDependencyDetector.psm1"
 Import-Module $modulePath -Force
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "ModuleDependencyDetectorTests"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
@@ -31,7 +31,7 @@ if (-not (Test-Path -Path $testDir)) {
 
 Describe "ModuleDependencyDetector" {
     BeforeEach {
-        # Créer des fichiers de test
+        # CrÃ©er des fichiers de test
         $testScriptPath1 = Join-Path -Path $testDir -ChildPath "TestImportModule.ps1"
         $testScriptContent1 = @'
 # Test d'importation de modules avec Import-Module
@@ -60,7 +60,7 @@ using module PSScriptAnalyzer
 using module ..\Modules\MyModule.psm1
 using module C:\Modules\AnotherModule.psm1
 
-# Mélange avec Import-Module
+# MÃ©lange avec Import-Module
 Import-Module Pester
 '@
         Set-Content -Path $testScriptPath2 -Value $testScriptContent2
@@ -77,7 +77,7 @@ Import-Module ..\Modules\AnotherModule.psm1
 '@
         Set-Content -Path $testScriptPath3 -Value $testScriptContent3
 
-        # Créer un module de test
+        # CrÃ©er un module de test
         $testModulePath = Join-Path -Path $testDir -ChildPath "Modules"
         if (-not (Test-Path -Path $testModulePath)) {
             New-Item -Path $testModulePath -ItemType Directory -Force | Out-Null
@@ -104,14 +104,14 @@ Export-ModuleMember -Function Test-Function
     }
 
     Context "Find-ImportModuleInstruction" {
-        It "Détecte les instructions Import-Module dans un fichier" {
+        It "DÃ©tecte les instructions Import-Module dans un fichier" {
             $result = Find-ImportModuleInstruction -FilePath $testScriptPath1
             $result | Should -Not -BeNullOrEmpty
             $result.Count | Should -BeGreaterThan 0
             $result[0].Name | Should -Be "PSScriptAnalyzer"
         }
 
-        It "Détecte les instructions using module dans un fichier" {
+        It "DÃ©tecte les instructions using module dans un fichier" {
             $result = Find-ImportModuleInstruction -FilePath $testScriptPath2
             $result | Should -Not -BeNullOrEmpty
             $usingModules = @($result | Where-Object { $_.ImportType -eq "using module" })
@@ -119,7 +119,7 @@ Export-ModuleMember -Function Test-Function
             $usingModules[0].Name | Should -Be "PSScriptAnalyzer"
         }
 
-        It "Détecte les instructions Import-Module et using module dans un fichier" {
+        It "DÃ©tecte les instructions Import-Module et using module dans un fichier" {
             $result = Find-ImportModuleInstruction -FilePath $testScriptPath3
             $result | Should -Not -BeNullOrEmpty
             $importModules = @($result | Where-Object { $_.ImportType -eq "Import-Module" })
@@ -128,35 +128,35 @@ Export-ModuleMember -Function Test-Function
             $usingModules | Should -Not -BeNullOrEmpty
         }
 
-        It "Détecte les instructions Import-Module avec paramètres nommés" {
+        It "DÃ©tecte les instructions Import-Module avec paramÃ¨tres nommÃ©s" {
             $result = Find-ImportModuleInstruction -FilePath $testScriptPath1
             $namedModule = $result | Where-Object { $_.ArgumentType -eq "Named" }
             $namedModule | Should -Not -BeNullOrEmpty
             $namedModule[0].Name | Should -Be "Pester"
         }
 
-        It "Détecte les instructions Import-Module avec chemins relatifs" {
+        It "DÃ©tecte les instructions Import-Module avec chemins relatifs" {
             $result = Find-ImportModuleInstruction -FilePath $testScriptPath1
             $pathModule = $result | Where-Object { $_.Path -like "*MyModule.psm1" }
             $pathModule | Should -Not -BeNullOrEmpty
             $pathModule[0].Name | Should -Be "MyModule"
         }
 
-        It "Détecte les instructions Import-Module avec versions" {
+        It "DÃ©tecte les instructions Import-Module avec versions" {
             $result = Find-ImportModuleInstruction -FilePath $testScriptPath1
             $versionModule = $result | Where-Object { $_.Version -ne $null }
             $versionModule | Should -Not -BeNullOrEmpty
             $versionModule[0].Name | Should -Be "PSScriptAnalyzer"
         }
 
-        It "Détecte les instructions Import-Module avec paramètres supplémentaires" {
+        It "DÃ©tecte les instructions Import-Module avec paramÃ¨tres supplÃ©mentaires" {
             $result = Find-ImportModuleInstruction -FilePath $testScriptPath1
             $globalModule = $result | Where-Object { $_.Global -eq $true -and $_.ImportType -eq "Import-Module" }
             $globalModule | Should -Not -BeNullOrEmpty
             $globalModule[0].Name | Should -Be "PSScriptAnalyzer"
         }
 
-        It "Gère correctement un contenu de script" {
+        It "GÃ¨re correctement un contenu de script" {
             $scriptContent = @'
 # Test d'importation de modules
 Import-Module PSScriptAnalyzer
@@ -174,8 +174,8 @@ using module Pester
     }
 
     Context "Resolve-ModulePath" {
-        It "Résout le chemin d'un module par nom" {
-            # Créer un module de test
+        It "RÃ©sout le chemin d'un module par nom" {
+            # CrÃ©er un module de test
             $testModulePath = Join-Path -Path $testDir -ChildPath "TestResolveModule.psm1"
             $testModuleContent = @'
 function Test-Function {
@@ -189,13 +189,13 @@ Export-ModuleMember -Function Test-Function
 '@
             Set-Content -Path $testModulePath -Value $testModuleContent
 
-            # Tester la résolution
+            # Tester la rÃ©solution
             $result = Resolve-ModulePath -Name "TestResolveModule" -BaseDirectory $testDir
             $result | Should -Not -BeNullOrEmpty
         }
 
-        It "Résout le chemin d'un module par chemin relatif" {
-            # Créer un module de test dans un sous-répertoire
+        It "RÃ©sout le chemin d'un module par chemin relatif" {
+            # CrÃ©er un module de test dans un sous-rÃ©pertoire
             $testSubDir = Join-Path -Path $testDir -ChildPath "SubDir"
             if (-not (Test-Path -Path $testSubDir)) {
                 New-Item -Path $testSubDir -ItemType Directory -Force | Out-Null
@@ -213,14 +213,14 @@ Export-ModuleMember -Function Test-Function
 '@
             Set-Content -Path $testModulePath -Value $testModuleContent
 
-            # Tester la résolution
+            # Tester la rÃ©solution
             $relativePath = "SubDir\TestRelativeModule.psm1"
             $result = Resolve-ModulePath -Path $relativePath -BaseDirectory $testDir
             $result | Should -Not -BeNullOrEmpty
         }
 
-        It "Résout le chemin d'un module par chemin absolu" {
-            # Créer un module de test
+        It "RÃ©sout le chemin d'un module par chemin absolu" {
+            # CrÃ©er un module de test
             $testModulePath = Join-Path -Path $testDir -ChildPath "TestAbsoluteModule.psm1"
             $testModuleContent = @'
 function Test-Function {
@@ -234,7 +234,7 @@ Export-ModuleMember -Function Test-Function
 '@
             Set-Content -Path $testModulePath -Value $testModuleContent
 
-            # Tester la résolution
+            # Tester la rÃ©solution
             $result = Resolve-ModulePath -Path $testModulePath -BaseDirectory $testDir
             $result | Should -Not -BeNullOrEmpty
         }

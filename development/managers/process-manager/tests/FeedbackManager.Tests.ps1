@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module FeedbackManager.
 
@@ -8,51 +8,51 @@
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules\FeedbackManager\FeedbackManager.psm1"
 if (Test-Path -Path $modulePath) {
-    # Importer directement le contenu du module pour éviter les problèmes de chargement
+    # Importer directement le contenu du module pour Ã©viter les problÃ¨mes de chargement
     . $modulePath
 } else {
     throw "Module FeedbackManager introuvable : $modulePath"
 }
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "FeedbackManager - Tests unitaires" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "FeedbackManagerTests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
     }
 
-    Context "Types et énumérations" {
-        It "L'énumération FeedbackType doit être définie" {
+    Context "Types et Ã©numÃ©rations" {
+        It "L'Ã©numÃ©ration FeedbackType doit Ãªtre dÃ©finie" {
             [FeedbackType] | Should -Not -BeNullOrEmpty
         }
 
-        It "L'énumération VerbosityLevel doit être définie" {
+        It "L'Ã©numÃ©ration VerbosityLevel doit Ãªtre dÃ©finie" {
             [VerbosityLevel] | Should -Not -BeNullOrEmpty
         }
 
-        It "La classe FeedbackMessage doit être définie" {
+        It "La classe FeedbackMessage doit Ãªtre dÃ©finie" {
             [FeedbackMessage] | Should -Not -BeNullOrEmpty
         }
 
-        It "La classe FeedbackFilter doit être définie" {
+        It "La classe FeedbackFilter doit Ãªtre dÃ©finie" {
             [FeedbackFilter] | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context "Création de messages de feedback" {
-        It "Doit créer un message de feedback avec le constructeur simple" {
+    Context "CrÃ©ation de messages de feedback" {
+        It "Doit crÃ©er un message de feedback avec le constructeur simple" {
             $message = [FeedbackMessage]::new([FeedbackType]::Information, "Test message")
             $message | Should -Not -BeNullOrEmpty
             $message.Type | Should -Be ([FeedbackType]::Information)
@@ -62,7 +62,7 @@ Describe "FeedbackManager - Tests unitaires" {
             $message.CorrelationId | Should -Not -BeNullOrEmpty
         }
 
-        It "Doit créer un message de feedback avec le constructeur complet" {
+        It "Doit crÃ©er un message de feedback avec le constructeur complet" {
             $data = @{ Key = "Value" }
             $message = [FeedbackMessage]::new(
                 [FeedbackType]::Warning,
@@ -82,18 +82,18 @@ Describe "FeedbackManager - Tests unitaires" {
         }
     }
 
-    Context "Méthodes de la classe FeedbackMessage" {
+    Context "MÃ©thodes de la classe FeedbackMessage" {
         BeforeAll {
             $script:TestMessage = [FeedbackMessage]::new([FeedbackType]::Error, "Test error message")
         }
 
-        It "La méthode ToString doit retourner une chaîne formatée" {
+        It "La mÃ©thode ToString doit retourner une chaÃ®ne formatÃ©e" {
             $result = $script:TestMessage.ToString()
             $result | Should -BeOfType [string]
             $result | Should -Match "\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \[ProcessManager\] \[Error\] Test error message"
         }
 
-        It "La méthode ToJson doit retourner une chaîne JSON valide" {
+        It "La mÃ©thode ToJson doit retourner une chaÃ®ne JSON valide" {
             $result = $script:TestMessage.ToJson()
             $result | Should -BeOfType [string]
             { ConvertFrom-Json -InputObject $result } | Should -Not -Throw
@@ -102,13 +102,13 @@ Describe "FeedbackManager - Tests unitaires" {
             $json.Message | Should -Be "Test error message"
         }
 
-        It "La méthode ShouldDisplay doit retourner true pour un niveau de verbosité suffisant" {
+        It "La mÃ©thode ShouldDisplay doit retourner true pour un niveau de verbositÃ© suffisant" {
             $script:TestMessage.ShouldDisplay([VerbosityLevel]::Minimal) | Should -Be $true
             $script:TestMessage.ShouldDisplay([VerbosityLevel]::Normal) | Should -Be $true
             $script:TestMessage.ShouldDisplay([VerbosityLevel]::Detailed) | Should -Be $true
         }
 
-        It "La méthode ShouldDisplay doit retourner false pour un niveau de verbosité insuffisant" {
+        It "La mÃ©thode ShouldDisplay doit retourner false pour un niveau de verbositÃ© insuffisant" {
             $script:TestMessage.ShouldDisplay([VerbosityLevel]::None) | Should -Be $false
         }
     }
@@ -123,7 +123,7 @@ Describe "FeedbackManager - Tests unitaires" {
             $script:VerboseMessage = [FeedbackMessage]::new([FeedbackType]::Verbose, "Verbose message")
         }
 
-        It "Le filtre par défaut doit accepter les messages d'erreur, d'avertissement, d'information et de succès" {
+        It "Le filtre par dÃ©faut doit accepter les messages d'erreur, d'avertissement, d'information et de succÃ¨s" {
             $filter = [FeedbackFilter]::new()
             $filter.PassesFilter($script:ErrorMessage) | Should -Be $true
             $filter.PassesFilter($script:WarningMessage) | Should -Be $true
@@ -131,7 +131,7 @@ Describe "FeedbackManager - Tests unitaires" {
             $filter.PassesFilter($script:SuccessMessage) | Should -Be $true
         }
 
-        It "Le filtre par type doit accepter uniquement les types spécifiés" {
+        It "Le filtre par type doit accepter uniquement les types spÃ©cifiÃ©s" {
             $filter = [FeedbackFilter]::ForTypes(@([FeedbackType]::Error, [FeedbackType]::Warning))
             $filter.PassesFilter($script:ErrorMessage) | Should -Be $true
             $filter.PassesFilter($script:WarningMessage) | Should -Be $true
@@ -139,7 +139,7 @@ Describe "FeedbackManager - Tests unitaires" {
             $filter.PassesFilter($script:SuccessMessage) | Should -Be $false
         }
 
-        It "Le filtre par source doit accepter uniquement les sources spécifiées" {
+        It "Le filtre par source doit accepter uniquement les sources spÃ©cifiÃ©es" {
             $customMessage = [FeedbackMessage]::new([FeedbackType]::Information, "Custom message")
             $customMessage.Source = "CustomSource"
 
@@ -148,7 +148,7 @@ Describe "FeedbackManager - Tests unitaires" {
             $filter.PassesFilter($script:InfoMessage) | Should -Be $false
         }
 
-        It "Le filtre par sévérité doit accepter uniquement les sévérités dans la plage spécifiée" {
+        It "Le filtre par sÃ©vÃ©ritÃ© doit accepter uniquement les sÃ©vÃ©ritÃ©s dans la plage spÃ©cifiÃ©e" {
             $filter = [FeedbackFilter]::ForSeverity(1, 2)
             $filter.PassesFilter($script:ErrorMessage) | Should -Be $true
             $filter.PassesFilter($script:WarningMessage) | Should -Be $true
@@ -156,7 +156,7 @@ Describe "FeedbackManager - Tests unitaires" {
             $filter.PassesFilter($script:SuccessMessage) | Should -Be $false
         }
 
-        It "Le filtre personnalisé doit appliquer la logique spécifiée" {
+        It "Le filtre personnalisÃ© doit appliquer la logique spÃ©cifiÃ©e" {
             $filter = [FeedbackFilter]::Custom({ param($message) $message.Message -like "*message*" })
             $filter.PassesFilter($script:ErrorMessage) | Should -Be $true
 
@@ -172,7 +172,7 @@ Describe "FeedbackManager - Tests unitaires" {
             Mock Write-Host { $script:Output = $args[0] }
         }
 
-        It "Send-ProcessManagerFeedback doit créer et envoyer un message" {
+        It "Send-ProcessManagerFeedback doit crÃ©er et envoyer un message" {
             $result = Send-ProcessManagerFeedback -Type ([FeedbackType]::Information) -Message "Test message" -PassThru
             $result | Should -Not -BeNullOrEmpty
             $result.Type | Should -Be ([FeedbackType]::Information)
@@ -204,7 +204,7 @@ Describe "FeedbackManager - Tests unitaires" {
             $script:Output | Should -Match "Test info"
         }
 
-        It "Send-ProcessManagerSuccess doit envoyer un message de succès" {
+        It "Send-ProcessManagerSuccess doit envoyer un message de succÃ¨s" {
             $result = Send-ProcessManagerSuccess -Message "Test success" -PassThru
             $result | Should -Not -BeNullOrEmpty
             $result.Type | Should -Be ([FeedbackType]::Success)
@@ -212,7 +212,7 @@ Describe "FeedbackManager - Tests unitaires" {
             $script:Output | Should -Match "Test success"
         }
 
-        It "Send-ProcessManagerDebug doit envoyer un message de débogage" {
+        It "Send-ProcessManagerDebug doit envoyer un message de dÃ©bogage" {
             $result = Send-ProcessManagerDebug -Message "Test debug" -PassThru
             $result | Should -Not -BeNullOrEmpty
             $result.Type | Should -Be ([FeedbackType]::Debug)
@@ -229,13 +229,13 @@ Describe "FeedbackManager - Tests unitaires" {
         }
     }
 
-    Context "Gestion de la verbosité" {
-        It "Get-ProcessManagerVerbosity doit retourner le niveau de verbosité actuel" {
+    Context "Gestion de la verbositÃ©" {
+        It "Get-ProcessManagerVerbosity doit retourner le niveau de verbositÃ© actuel" {
             $verbosity = Get-ProcessManagerVerbosity
             $verbosity | Should -BeOfType [VerbosityLevel]
         }
 
-        It "Set-ProcessManagerVerbosity doit modifier le niveau de verbosité" {
+        It "Set-ProcessManagerVerbosity doit modifier le niveau de verbositÃ©" {
             Set-ProcessManagerVerbosity -Level ([VerbosityLevel]::Minimal)
             $verbosity = Get-ProcessManagerVerbosity
             $verbosity | Should -Be ([VerbosityLevel]::Minimal)

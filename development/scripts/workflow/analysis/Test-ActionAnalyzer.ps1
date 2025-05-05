@@ -1,4 +1,4 @@
-# Script de test pour les fonctions d'analyse des actions de workflow n8n
+﻿# Script de test pour les fonctions d'analyse des actions de workflow n8n
 # Ce script teste les fonctions Get-N8nWorkflowActions, Get-N8nWorkflowActionParameters et Get-N8nWorkflowActionResults
 
 #Requires -Version 5.1
@@ -39,23 +39,23 @@ function Write-TestMessage {
     }
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputFolder -PathType Container)) {
     New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
-    Write-TestMessage "Dossier de sortie créé: $OutputFolder" -Status "INFO"
+    Write-TestMessage "Dossier de sortie crÃ©Ã©: $OutputFolder" -Status "INFO"
 }
 
 # Importer le module WorkflowAnalyzer
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "WorkflowAnalyzer.psm1"
 if (Test-Path -Path $modulePath -PathType Leaf) {
     Import-Module $modulePath -Force
-    Write-TestMessage "Module WorkflowAnalyzer importé avec succès" -Status "SUCCESS"
+    Write-TestMessage "Module WorkflowAnalyzer importÃ© avec succÃ¨s" -Status "SUCCESS"
 } else {
     Write-TestMessage "Module WorkflowAnalyzer introuvable: $modulePath" -Status "ERROR"
     exit 1
 }
 
-# Vérifier si le fichier de workflow existe
+# VÃ©rifier si le fichier de workflow existe
 if (-not (Test-Path -Path $WorkflowPath -PathType Leaf)) {
     Write-TestMessage "Fichier de workflow introuvable: $WorkflowPath" -Status "ERROR"
     exit 1
@@ -66,20 +66,20 @@ Write-TestMessage "Chargement du workflow: $WorkflowPath" -Status "INFO"
 $workflow = Get-N8nWorkflow -WorkflowPath $WorkflowPath
 
 if (-not $workflow) {
-    Write-TestMessage "Échec du chargement du workflow" -Status "ERROR"
+    Write-TestMessage "Ã‰chec du chargement du workflow" -Status "ERROR"
     exit 1
 }
 
-Write-TestMessage "Workflow chargé avec succès: $($workflow.name)" -Status "SUCCESS"
-Write-TestMessage "Nombre de nœuds: $($workflow.nodes.Count)" -Status "INFO"
+Write-TestMessage "Workflow chargÃ© avec succÃ¨s: $($workflow.name)" -Status "SUCCESS"
+Write-TestMessage "Nombre de nÅ“uds: $($workflow.nodes.Count)" -Status "INFO"
 Write-TestMessage "Workflow actif: $($workflow.active)" -Status "INFO"
 
-# Test 1: Extraire les actions exécutées
-Write-TestMessage "Test 1: Extraction des actions exécutées..." -Status "INFO"
+# Test 1: Extraire les actions exÃ©cutÃ©es
+Write-TestMessage "Test 1: Extraction des actions exÃ©cutÃ©es..." -Status "INFO"
 $actions = Get-N8nWorkflowActions -Workflow $workflow -IncludeDetails -IncludeRelationships
 
 if ($actions -ne $null) {
-    Write-TestMessage "Actions extraites avec succès: $($actions.Count) actions trouvées" -Status "SUCCESS"
+    Write-TestMessage "Actions extraites avec succÃ¨s: $($actions.Count) actions trouvÃ©es" -Status "SUCCESS"
     
     # Afficher quelques actions
     if ($actions.Count -gt 0) {
@@ -87,82 +87,82 @@ if ($actions -ne $null) {
         $actions | Select-Object -First 3 | ForEach-Object {
             Write-Host "  - $($_.Name) (Type: $($_.ActionType))"
             if ($_.Parameters.Count -gt 0) {
-                Write-Host "    Paramètres:"
+                Write-Host "    ParamÃ¨tres:"
                 $_.Parameters | Select-Object -First 3 | ForEach-Object {
                     Write-Host "      * $($_.Name): $($_.Value) (Type: $($_.Type))"
                 }
             }
             if ($_.InputNodes.Count -gt 0) {
-                Write-Host "    Nœuds d'entrée:"
+                Write-Host "    NÅ“uds d'entrÃ©e:"
                 $_.InputNodes | Select-Object -First 3 | ForEach-Object {
                     Write-Host "      * $($_.NodeName) (Type: $($_.NodeType))"
                 }
             }
             if ($_.OutputNodes.Count -gt 0) {
-                Write-Host "    Nœuds de sortie:"
+                Write-Host "    NÅ“uds de sortie:"
                 $_.OutputNodes | Select-Object -First 3 | ForEach-Object {
                     Write-Host "      * $($_.NodeName) (Type: $($_.NodeType))"
                 }
             }
         }
     } else {
-        Write-TestMessage "Aucune action trouvée dans le workflow" -Status "WARNING"
+        Write-TestMessage "Aucune action trouvÃ©e dans le workflow" -Status "WARNING"
     }
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $actionsOutputPath = Join-Path -Path $OutputFolder -ChildPath "actions.json"
     $actions | ConvertTo-Json -Depth 10 | Out-File -FilePath $actionsOutputPath -Encoding UTF8
-    Write-TestMessage "Résultats enregistrés dans: $actionsOutputPath" -Status "INFO"
+    Write-TestMessage "RÃ©sultats enregistrÃ©s dans: $actionsOutputPath" -Status "INFO"
 } else {
-    Write-TestMessage "Échec de l'extraction des actions" -Status "ERROR"
+    Write-TestMessage "Ã‰chec de l'extraction des actions" -Status "ERROR"
 }
 
-# Test 2: Détecter les paramètres d'action
-Write-TestMessage "Test 2: Détection des paramètres d'action..." -Status "INFO"
+# Test 2: DÃ©tecter les paramÃ¨tres d'action
+Write-TestMessage "Test 2: DÃ©tection des paramÃ¨tres d'action..." -Status "INFO"
 $actionParameters = Get-N8nWorkflowActionParameters -Workflow $workflow -IncludeDetails
 
 if ($actionParameters -ne $null) {
-    Write-TestMessage "Paramètres d'action détectés avec succès: $($actionParameters.Count) actions analysées" -Status "SUCCESS"
+    Write-TestMessage "ParamÃ¨tres d'action dÃ©tectÃ©s avec succÃ¨s: $($actionParameters.Count) actions analysÃ©es" -Status "SUCCESS"
     
-    # Afficher quelques paramètres d'action
+    # Afficher quelques paramÃ¨tres d'action
     if ($actionParameters.Count -gt 0) {
-        Write-TestMessage "Exemples de paramètres d'action:" -Status "INFO"
+        Write-TestMessage "Exemples de paramÃ¨tres d'action:" -Status "INFO"
         $actionParameters | Select-Object -First 3 | ForEach-Object {
             Write-Host "  - $($_.Name) (Type: $($_.ActionType))"
             Write-Host "    Impact:"
             Write-Host "      * Performance: $($_.Impact.Performance)"
-            Write-Host "      * Taille des données: $($_.Impact.DataSize)"
-            Write-Host "      * Fiabilité: $($_.Impact.Reliability)"
-            Write-Host "      * Sécurité: $($_.Impact.Security)"
+            Write-Host "      * Taille des donnÃ©es: $($_.Impact.DataSize)"
+            Write-Host "      * FiabilitÃ©: $($_.Impact.Reliability)"
+            Write-Host "      * SÃ©curitÃ©: $($_.Impact.Security)"
             if ($_.Parameters.Count -gt 0) {
-                Write-Host "    Paramètres:"
+                Write-Host "    ParamÃ¨tres:"
                 $_.Parameters | Select-Object -First 3 | ForEach-Object {
                     Write-Host "      * $($_.Name): $($_.Value) (Type: $($_.Type))"
                 }
             }
         }
     } else {
-        Write-TestMessage "Aucun paramètre d'action trouvé dans le workflow" -Status "WARNING"
+        Write-TestMessage "Aucun paramÃ¨tre d'action trouvÃ© dans le workflow" -Status "WARNING"
     }
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $actionParametersOutputPath = Join-Path -Path $OutputFolder -ChildPath "action_parameters.json"
     $actionParameters | ConvertTo-Json -Depth 10 | Out-File -FilePath $actionParametersOutputPath -Encoding UTF8
-    Write-TestMessage "Résultats enregistrés dans: $actionParametersOutputPath" -Status "INFO"
+    Write-TestMessage "RÃ©sultats enregistrÃ©s dans: $actionParametersOutputPath" -Status "INFO"
 } else {
-    Write-TestMessage "Échec de la détection des paramètres d'action" -Status "ERROR"
+    Write-TestMessage "Ã‰chec de la dÃ©tection des paramÃ¨tres d'action" -Status "ERROR"
 }
 
-# Test 3: Analyser les résultats d'action
-Write-TestMessage "Test 3: Analyse des résultats d'action..." -Status "INFO"
+# Test 3: Analyser les rÃ©sultats d'action
+Write-TestMessage "Test 3: Analyse des rÃ©sultats d'action..." -Status "INFO"
 $actionResults = Get-N8nWorkflowActionResults -Workflow $workflow -IncludeDetails
 
 if ($actionResults -ne $null) {
-    Write-TestMessage "Résultats d'action analysés avec succès: $($actionResults.Count) actions analysées" -Status "SUCCESS"
+    Write-TestMessage "RÃ©sultats d'action analysÃ©s avec succÃ¨s: $($actionResults.Count) actions analysÃ©es" -Status "SUCCESS"
     
-    # Afficher quelques résultats d'action
+    # Afficher quelques rÃ©sultats d'action
     if ($actionResults.Count -gt 0) {
-        Write-TestMessage "Exemples de résultats d'action:" -Status "INFO"
+        Write-TestMessage "Exemples de rÃ©sultats d'action:" -Status "INFO"
         $actionResults | Select-Object -First 3 | ForEach-Object {
             Write-Host "  - $($_.Name) (Type: $($_.ActionType))"
             Write-Host "    Type de sortie: $($_.OutputType)"
@@ -173,36 +173,36 @@ if ($actionResults -ne $null) {
                 }
             }
             if ($_.DataFlow.Count -gt 0) {
-                Write-Host "    Flux de données:"
+                Write-Host "    Flux de donnÃ©es:"
                 $_.DataFlow | Select-Object -First 3 | ForEach-Object {
-                    Write-Host "      * De $($_.SourceNode) à $($_.TargetNode) (Transformé: $($_.DataTransformed))"
+                    Write-Host "      * De $($_.SourceNode) Ã  $($_.TargetNode) (TransformÃ©: $($_.DataTransformed))"
                 }
             }
         }
     } else {
-        Write-TestMessage "Aucun résultat d'action trouvé dans le workflow" -Status "WARNING"
+        Write-TestMessage "Aucun rÃ©sultat d'action trouvÃ© dans le workflow" -Status "WARNING"
     }
     
-    # Enregistrer les résultats
+    # Enregistrer les rÃ©sultats
     $actionResultsOutputPath = Join-Path -Path $OutputFolder -ChildPath "action_results.json"
     $actionResults | ConvertTo-Json -Depth 10 | Out-File -FilePath $actionResultsOutputPath -Encoding UTF8
-    Write-TestMessage "Résultats enregistrés dans: $actionResultsOutputPath" -Status "INFO"
+    Write-TestMessage "RÃ©sultats enregistrÃ©s dans: $actionResultsOutputPath" -Status "INFO"
 } else {
-    Write-TestMessage "Échec de l'analyse des résultats d'action" -Status "ERROR"
+    Write-TestMessage "Ã‰chec de l'analyse des rÃ©sultats d'action" -Status "ERROR"
 }
 
-# Générer un rapport de test
+# GÃ©nÃ©rer un rapport de test
 $reportPath = Join-Path -Path $OutputFolder -ChildPath "action_analysis_report.md"
 $report = @"
 # Rapport d'analyse des actions de workflow
 
-## Informations générales
+## Informations gÃ©nÃ©rales
 - **Workflow**: $($workflow.name)
 - **ID**: $($workflow.id)
 - **Actif**: $($workflow.active)
-- **Nombre de nœuds**: $($workflow.nodes.Count)
+- **Nombre de nÅ“uds**: $($workflow.nodes.Count)
 
-## Actions exécutées
+## Actions exÃ©cutÃ©es
 - **Nombre d'actions**: $($actions.Count)
 
 $(if ($actions.Count -gt 0) {
@@ -210,75 +210,75 @@ $(if ($actions.Count -gt 0) {
         "### $($_.Name) (Type: $($_.ActionType))
 - **ID**: $($_.Id)
 - **Type**: $($_.Type)
-- **Catégorie**: $($_.Category)
-- **Paramètres**:
+- **CatÃ©gorie**: $($_.Category)
+- **ParamÃ¨tres**:
 $(if ($_.Parameters.Count -gt 0) {
     $_.Parameters | ForEach-Object {
         "  - **$($_.Name)**: $($_.Value) (Type: $($_.Type))"
     } | Out-String
 } else {
-    "  - Aucun paramètre spécifique"
+    "  - Aucun paramÃ¨tre spÃ©cifique"
 })
-- **Nœuds d'entrée**:
+- **NÅ“uds d'entrÃ©e**:
 $(if ($_.InputNodes.Count -gt 0) {
     $_.InputNodes | ForEach-Object {
         "  - **$($_.NodeName)** (Type: $($_.NodeType))"
     } | Out-String
 } else {
-    "  - Aucun nœud d'entrée"
+    "  - Aucun nÅ“ud d'entrÃ©e"
 })
-- **Nœuds de sortie**:
+- **NÅ“uds de sortie**:
 $(if ($_.OutputNodes.Count -gt 0) {
     $_.OutputNodes | ForEach-Object {
         "  - **$($_.NodeName)** (Type: $($_.NodeType))"
     } | Out-String
 } else {
-    "  - Aucun nœud de sortie"
+    "  - Aucun nÅ“ud de sortie"
 })
 "
     } | Out-String
 } else {
-    "Aucune action trouvée dans le workflow."
+    "Aucune action trouvÃ©e dans le workflow."
 })
 
-## Paramètres d'action
-- **Nombre d'actions analysées**: $($actionParameters.Count)
+## ParamÃ¨tres d'action
+- **Nombre d'actions analysÃ©es**: $($actionParameters.Count)
 
 $(if ($actionParameters.Count -gt 0) {
     $actionParameters | ForEach-Object {
         "### $($_.Name) (Type: $($_.ActionType))
 - **ID**: $($_.Id)
 - **Type**: $($_.Type)
-- **Catégorie**: $($_.Category)
+- **CatÃ©gorie**: $($_.Category)
 - **Impact**:
   - **Performance**: $($_.Impact.Performance)
-  - **Taille des données**: $($_.Impact.DataSize)
-  - **Fiabilité**: $($_.Impact.Reliability)
-  - **Sécurité**: $($_.Impact.Security)
-  - **Dépendances**: $($_.Impact.Dependencies -join ', ')
-- **Paramètres**:
+  - **Taille des donnÃ©es**: $($_.Impact.DataSize)
+  - **FiabilitÃ©**: $($_.Impact.Reliability)
+  - **SÃ©curitÃ©**: $($_.Impact.Security)
+  - **DÃ©pendances**: $($_.Impact.Dependencies -join ', ')
+- **ParamÃ¨tres**:
 $(if ($_.Parameters.Count -gt 0) {
     $_.Parameters | ForEach-Object {
         "  - **$($_.Name)**: $($_.Value) (Type: $($_.Type))"
     } | Out-String
 } else {
-    "  - Aucun paramètre spécifique"
+    "  - Aucun paramÃ¨tre spÃ©cifique"
 })
 "
     } | Out-String
 } else {
-    "Aucun paramètre d'action trouvé dans le workflow."
+    "Aucun paramÃ¨tre d'action trouvÃ© dans le workflow."
 })
 
-## Résultats d'action
-- **Nombre d'actions analysées**: $($actionResults.Count)
+## RÃ©sultats d'action
+- **Nombre d'actions analysÃ©es**: $($actionResults.Count)
 
 $(if ($actionResults.Count -gt 0) {
     $actionResults | ForEach-Object {
         "### $($_.Name) (Type: $($_.ActionType))
 - **ID**: $($_.Id)
 - **Type**: $($_.Type)
-- **Catégorie**: $($_.Category)
+- **CatÃ©gorie**: $($_.Category)
 - **Type de sortie**: $($_.OutputType)
 - **Consommateurs**:
 $(if ($_.Consumers.Count -gt 0) {
@@ -288,22 +288,22 @@ $(if ($_.Consumers.Count -gt 0) {
 } else {
     "  - Aucun consommateur"
 })
-- **Flux de données**:
+- **Flux de donnÃ©es**:
 $(if ($_.DataFlow.Count -gt 0) {
     $_.DataFlow | ForEach-Object {
-        "  - De **$($_.SourceNode)** à **$($_.TargetNode)** (Transformé: $($_.DataTransformed))"
+        "  - De **$($_.SourceNode)** Ã  **$($_.TargetNode)** (TransformÃ©: $($_.DataTransformed))"
     } | Out-String
 } else {
-    "  - Aucun flux de données"
+    "  - Aucun flux de donnÃ©es"
 })
 "
     } | Out-String
 } else {
-    "Aucun résultat d'action trouvé dans le workflow."
+    "Aucun rÃ©sultat d'action trouvÃ© dans le workflow."
 })
 "@
 
 $report | Out-File -FilePath $reportPath -Encoding UTF8
-Write-TestMessage "Rapport de test généré: $reportPath" -Status "SUCCESS"
+Write-TestMessage "Rapport de test gÃ©nÃ©rÃ©: $reportPath" -Status "SUCCESS"
 
-Write-TestMessage "Tests terminés avec succès!" -Status "SUCCESS"
+Write-TestMessage "Tests terminÃ©s avec succÃ¨s!" -Status "SUCCESS"

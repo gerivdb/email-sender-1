@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Module pour l'analyse des manifestes de modules PowerShell (.psd1).
 
 .DESCRIPTION
     Ce module fournit des fonctions pour analyser les manifestes de modules PowerShell,
-    extraire les dépendances RequiredModules, NestedModules, etc.
+    extraire les dÃ©pendances RequiredModules, NestedModules, etc.
 
 .NOTES
     Auteur: Dependency Management Team
@@ -19,14 +19,14 @@ function Get-PowerShellManifestStructure {
         [string]$ManifestPath
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ManifestPath -PathType Leaf)) {
         $errorMsg = "File not found: $ManifestPath"
         Write-Error $errorMsg
         return $null
     }
 
-    # Vérifier l'extension du fichier
+    # VÃ©rifier l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($ManifestPath)
     if ($extension -ne ".psd1") {
         $errorMsg = "File is not a PowerShell manifest (.psd1): $ManifestPath"
@@ -38,7 +38,7 @@ function Get-PowerShellManifestStructure {
         # Importer le manifeste
         $manifest = Import-PowerShellDataFile -Path $ManifestPath -ErrorAction Stop
 
-        # Créer l'objet résultat
+        # CrÃ©er l'objet rÃ©sultat
         $result = [PSCustomObject]@{
             ModuleName      = [System.IO.Path]::GetFileNameWithoutExtension($ManifestPath)
             ModuleVersion   = $manifest.ModuleVersion
@@ -50,7 +50,7 @@ function Get-PowerShellManifestStructure {
             NestedModules   = @()
         }
 
-        # Analyser les dépendances RequiredModules
+        # Analyser les dÃ©pendances RequiredModules
         if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
             $requiredModules = @()
             foreach ($module in $manifest.RequiredModules) {
@@ -71,7 +71,7 @@ function Get-PowerShellManifestStructure {
             $result.RequiredModules = $requiredModules
         }
 
-        # Analyser les dépendances NestedModules
+        # Analyser les dÃ©pendances NestedModules
         if ($manifest.ContainsKey('NestedModules') -and $manifest.NestedModules) {
             $nestedModules = @()
             foreach ($module in $manifest.NestedModules) {
@@ -114,16 +114,16 @@ function Get-ModuleDependenciesFromManifest {
         [switch]$ResolveModulePaths
     )
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $ManifestPath -PathType Leaf)) {
         Write-Warning "Manifest file does not exist: $ManifestPath"
         return $dependencies
     }
 
-    # Vérifier l'extension du fichier
+    # VÃ©rifier l'extension du fichier
     $extension = [System.IO.Path]::GetExtension($ManifestPath)
     if ($extension -ne ".psd1") {
         Write-Warning "File is not a PowerShell manifest (.psd1): $ManifestPath"
@@ -134,14 +134,14 @@ function Get-ModuleDependenciesFromManifest {
         # Importer le manifeste
         $manifest = Import-PowerShellDataFile -Path $ManifestPath -ErrorAction Stop
 
-        # Extraire les dépendances RequiredModules
+        # Extraire les dÃ©pendances RequiredModules
         if ($manifest.ContainsKey('RequiredModules') -and $manifest.RequiredModules) {
             Write-Verbose "Analyzing RequiredModules in manifest: $ManifestPath"
 
-            # RequiredModules peut être une chaîne, un tableau de chaînes, ou un tableau d'objets
+            # RequiredModules peut Ãªtre une chaÃ®ne, un tableau de chaÃ®nes, ou un tableau d'objets
             $requiredModules = $manifest.RequiredModules
 
-            # Si RequiredModules est une chaîne unique, la convertir en tableau
+            # Si RequiredModules est une chaÃ®ne unique, la convertir en tableau
             if ($requiredModules -is [string]) {
                 $requiredModules = @($requiredModules)
             }
@@ -154,7 +154,7 @@ function Get-ModuleDependenciesFromManifest {
                 $moduleMaxVersion = $null
                 $moduleMinVersion = $null
 
-                # Déterminer le format du module requis
+                # DÃ©terminer le format du module requis
                 if ($requiredModule -is [string]) {
                     # Format simple: 'ModuleName'
                     $moduleName = $requiredModule
@@ -164,7 +164,7 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleName = $requiredModule.ModuleName
                     }
 
-                    # Gérer les différentes façons de spécifier la version
+                    # GÃ©rer les diffÃ©rentes faÃ§ons de spÃ©cifier la version
                     if ($requiredModule.ContainsKey('ModuleVersion')) {
                         $moduleVersion = $requiredModule.ModuleVersion
                     }
@@ -178,7 +178,7 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleMinVersion = $requiredModule.MinimumVersion
                     }
 
-                    # Gérer le GUID du module
+                    # GÃ©rer le GUID du module
                     if ($requiredModule.ContainsKey('GUID')) {
                         $moduleGuid = $requiredModule.GUID
                     }
@@ -198,18 +198,18 @@ function Get-ModuleDependenciesFromManifest {
                     }
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
                     Write-Verbose "System module ignored: $moduleName"
                     continue
                 }
 
-                # Résoudre le chemin du module si demandé
+                # RÃ©soudre le chemin du module si demandÃ©
                 if ($ResolveModulePaths -and -not $modulePath) {
                     $modulePath = Find-ModulePath -ModuleName $moduleName -ModuleVersion $moduleVersion
                 }
 
-                # Ajouter la dépendance à la liste
+                # Ajouter la dÃ©pendance Ã  la liste
                 [void]$dependencies.Add([PSCustomObject]@{
                         Name       = $moduleName
                         Version    = $moduleVersion
@@ -223,14 +223,14 @@ function Get-ModuleDependenciesFromManifest {
             }
         }
 
-        # Extraire les dépendances NestedModules
+        # Extraire les dÃ©pendances NestedModules
         if ($manifest.ContainsKey('NestedModules') -and $manifest.NestedModules) {
             Write-Verbose "Analyzing NestedModules in manifest: $ManifestPath"
 
-            # NestedModules peut être une chaîne, un tableau de chaînes, ou un tableau d'objets
+            # NestedModules peut Ãªtre une chaÃ®ne, un tableau de chaÃ®nes, ou un tableau d'objets
             $nestedModules = $manifest.NestedModules
 
-            # Si NestedModules est une chaîne unique, la convertir en tableau
+            # Si NestedModules est une chaÃ®ne unique, la convertir en tableau
             if ($nestedModules -is [string]) {
                 $nestedModules = @($nestedModules)
             }
@@ -243,7 +243,7 @@ function Get-ModuleDependenciesFromManifest {
                 $moduleMaxVersion = $null
                 $moduleMinVersion = $null
 
-                # Déterminer le format du module imbriqué
+                # DÃ©terminer le format du module imbriquÃ©
                 if ($nestedModule -is [string]) {
                     # Format simple: 'ModuleName' ou 'Path\To\Module.psm1'
                     if ($nestedModule -match '\.ps[md]1$') {
@@ -251,7 +251,7 @@ function Get-ModuleDependenciesFromManifest {
                         $modulePath = $nestedModule
                         $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($nestedModule)
 
-                        # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                        # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du manifeste
                         if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                             $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
                             $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
@@ -266,7 +266,7 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleName = $nestedModule.ModuleName
                     }
 
-                    # Gérer les différentes façons de spécifier la version
+                    # GÃ©rer les diffÃ©rentes faÃ§ons de spÃ©cifier la version
                     if ($nestedModule.ContainsKey('ModuleVersion')) {
                         $moduleVersion = $nestedModule.ModuleVersion
                     }
@@ -280,16 +280,16 @@ function Get-ModuleDependenciesFromManifest {
                         $moduleMinVersion = $nestedModule.MinimumVersion
                     }
 
-                    # Gérer le GUID du module
+                    # GÃ©rer le GUID du module
                     if ($nestedModule.ContainsKey('GUID')) {
                         $moduleGuid = $nestedModule.GUID
                     }
 
-                    # Gérer le chemin du module
+                    # GÃ©rer le chemin du module
                     if ($nestedModule.ContainsKey('Path')) {
                         $modulePath = $nestedModule.Path
 
-                        # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                        # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du manifeste
                         if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                             $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
                             $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
@@ -311,18 +311,18 @@ function Get-ModuleDependenciesFromManifest {
                     }
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
                     Write-Verbose "System module ignored: $moduleName"
                     continue
                 }
 
-                # Résoudre le chemin du module si demandé
+                # RÃ©soudre le chemin du module si demandÃ©
                 if ($ResolveModulePaths -and -not $modulePath) {
                     $modulePath = Find-ModulePath -ModuleName $moduleName -ModuleVersion $moduleVersion
                 }
 
-                # Ajouter la dépendance à la liste
+                # Ajouter la dÃ©pendance Ã  la liste
                 [void]$dependencies.Add([PSCustomObject]@{
                         Name       = $moduleName
                         Version    = $moduleVersion
@@ -336,7 +336,7 @@ function Get-ModuleDependenciesFromManifest {
             }
         }
 
-        # Extraire les dépendances ModuleToProcess (alias RootModule)
+        # Extraire les dÃ©pendances ModuleToProcess (alias RootModule)
         if (($manifest.ContainsKey('ModuleToProcess') -and $manifest.ModuleToProcess) -or
             ($manifest.ContainsKey('RootModule') -and $manifest.RootModule)) {
 
@@ -347,7 +347,7 @@ function Get-ModuleDependenciesFromManifest {
             }
             Write-Verbose "Analyzing RootModule in manifest: $ManifestPath"
 
-            # Déterminer le type de RootModule
+            # DÃ©terminer le type de RootModule
             if ($rootModule -is [string]) {
                 # Format simple: 'ModuleName' ou 'Path\To\Module.psm1'
                 $moduleName = $null
@@ -358,7 +358,7 @@ function Get-ModuleDependenciesFromManifest {
                     $modulePath = $rootModule
                     $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($rootModule)
 
-                    # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                    # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du manifeste
                     if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                         $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
                         $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
@@ -368,16 +368,16 @@ function Get-ModuleDependenciesFromManifest {
                     $moduleName = $rootModule
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
                     Write-Verbose "System module ignored: $moduleName"
                 } else {
-                    # Résoudre le chemin du module si demandé
+                    # RÃ©soudre le chemin du module si demandÃ©
                     if ($ResolveModulePaths -and -not $modulePath) {
                         $modulePath = Find-ModulePath -ModuleName $moduleName
                     }
 
-                    # Ajouter la dépendance à la liste
+                    # Ajouter la dÃ©pendance Ã  la liste
                     [void]$dependencies.Add([PSCustomObject]@{
                             Name    = $moduleName
                             Version = $null
@@ -398,7 +398,7 @@ function Get-ModuleDependenciesFromManifest {
                     $moduleName = $rootModule.ModuleName
                 }
 
-                # Gérer les différentes façons de spécifier la version
+                # GÃ©rer les diffÃ©rentes faÃ§ons de spÃ©cifier la version
                 if ($rootModule.ContainsKey('ModuleVersion')) {
                     $moduleVersion = $rootModule.ModuleVersion
                 }
@@ -406,16 +406,16 @@ function Get-ModuleDependenciesFromManifest {
                     $moduleVersion = $rootModule.RequiredVersion
                 }
 
-                # Gérer le GUID du module
+                # GÃ©rer le GUID du module
                 if ($rootModule.ContainsKey('GUID')) {
                     $moduleGuid = $rootModule.GUID
                 }
 
-                # Gérer le chemin du module
+                # GÃ©rer le chemin du module
                 if ($rootModule.ContainsKey('Path')) {
                     $modulePath = $rootModule.Path
 
-                    # Si le chemin est relatif, le résoudre par rapport au répertoire du manifeste
+                    # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du manifeste
                     if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                         $manifestDir = [System.IO.Path]::GetDirectoryName($ManifestPath)
                         $modulePath = Join-Path -Path $manifestDir -ChildPath $modulePath
@@ -424,11 +424,11 @@ function Get-ModuleDependenciesFromManifest {
                     $modulePath = Find-ModulePath -ModuleName $moduleName -ModuleVersion $moduleVersion
                 }
 
-                # Ignorer les modules système si demandé
+                # Ignorer les modules systÃ¨me si demandÃ©
                 if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
                     Write-Verbose "System module ignored: $moduleName"
                 } else {
-                    # Ajouter la dépendance à la liste
+                    # Ajouter la dÃ©pendance Ã  la liste
                     [void]$dependencies.Add([PSCustomObject]@{
                             Name    = $moduleName
                             Version = $moduleVersion

@@ -1,4 +1,4 @@
-# Script de test pour la détection des instructions using module
+﻿# Script de test pour la dÃ©tection des instructions using module
 param (
     [Parameter(Mandatory = $false)]
     [string]$FilePath = (Join-Path -Path $PSScriptRoot -ChildPath "TestImport.ps1")
@@ -9,21 +9,21 @@ Write-Host "Contenu du fichier $FilePath :"
 $content = Get-Content -Path $FilePath -Raw
 Write-Host $content
 
-# Utiliser une expression régulière simple pour détecter les instructions using module
+# Utiliser une expression rÃ©guliÃ¨re simple pour dÃ©tecter les instructions using module
 $regex = [regex]'using\s+module\s+(\S+)'
 $matches = $regex.Matches($content)
 
-Write-Host "`nNombre d'instructions using module trouvées : $($matches.Count)"
+Write-Host "`nNombre d'instructions using module trouvÃ©es : $($matches.Count)"
 foreach ($match in $matches) {
     $moduleName = $match.Groups[1].Value
     Write-Host "  Module : $moduleName"
 }
 
-# Utiliser une expression régulière pour détecter les instructions Import-Module
+# Utiliser une expression rÃ©guliÃ¨re pour dÃ©tecter les instructions Import-Module
 $regex = [regex]'Import-Module\s+(\S+)'
 $matches = $regex.Matches($content)
 
-Write-Host "`nNombre d'instructions Import-Module trouvées : $($matches.Count)"
+Write-Host "`nNombre d'instructions Import-Module trouvÃ©es : $($matches.Count)"
 foreach ($match in $matches) {
     $moduleName = $match.Groups[1].Value
     Write-Host "  Module : $moduleName"

@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Initialise l'environnement du script manager.
@@ -12,7 +12,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding(SupportsShouldProcess = $true)]
@@ -21,7 +21,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -46,7 +46,7 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Fonction pour vérifier si une commande existe
+# Fonction pour vÃ©rifier si une commande existe
 function Test-Command {
     [CmdletBinding()]
     param (
@@ -63,24 +63,24 @@ function Test-Command {
     }
 }
 
-# Vérifier si Node.js est installé
+# VÃ©rifier si Node.js est installÃ©
 if (-not (Test-Command -Command "node")) {
-    Write-Log "Node.js n'est pas installé. Veuillez l'installer avant de continuer." -Level "ERROR"
-    Write-Log "Téléchargez-le depuis https://nodejs.org/" -Level "INFO"
+    Write-Log "Node.js n'est pas installÃ©. Veuillez l'installer avant de continuer." -Level "ERROR"
+    Write-Log "TÃ©lÃ©chargez-le depuis https://nodejs.org/" -Level "INFO"
     exit 1
 }
 
-# Vérifier si Git est installé
+# VÃ©rifier si Git est installÃ©
 if (-not (Test-Command -Command "git")) {
-    Write-Log "Git n'est pas installé. Veuillez l'installer avant de continuer." -Level "ERROR"
-    Write-Log "Téléchargez-le depuis https://git-scm.com/" -Level "INFO"
+    Write-Log "Git n'est pas installÃ©. Veuillez l'installer avant de continuer." -Level "ERROR"
+    Write-Log "TÃ©lÃ©chargez-le depuis https://git-scm.com/" -Level "INFO"
     exit 1
 }
 
-# Vérifier si nous sommes dans un dépôt Git
+# VÃ©rifier si nous sommes dans un dÃ©pÃ´t Git
 $repoRoot = git rev-parse --show-toplevel 2>$null
 if (-not $repoRoot) {
-    Write-Log "Ce script doit être exécuté dans un dépôt Git." -Level "ERROR"
+    Write-Log "Ce script doit Ãªtre exÃ©cutÃ© dans un dÃ©pÃ´t Git." -Level "ERROR"
     exit 1
 }
 
@@ -88,7 +88,7 @@ if (-not $repoRoot) {
 $managerDir = $PSScriptRoot
 Write-Log "Dossier manager: $managerDir" -Level "INFO"
 
-# Installer Hygen globalement si nécessaire
+# Installer Hygen globalement si nÃ©cessaire
 if (-not (Test-Command -Command "npx hygen")) {
     if ($PSCmdlet.ShouldProcess("Hygen", "Installer globalement")) {
         Write-Log "Installation de Hygen..." -Level "INFO"
@@ -99,11 +99,11 @@ if (-not (Test-Command -Command "npx hygen")) {
             exit 1
         }
         
-        Write-Log "Hygen installé avec succès." -Level "SUCCESS"
+        Write-Log "Hygen installÃ© avec succÃ¨s." -Level "SUCCESS"
     }
 }
 else {
-    Write-Log "Hygen est déjà installé." -Level "INFO"
+    Write-Log "Hygen est dÃ©jÃ  installÃ©." -Level "INFO"
 }
 
 # Installer le hook pre-commit
@@ -117,12 +117,12 @@ if (Test-Path -Path $installHookScript) {
             Write-Log "Erreur lors de l'installation du hook pre-commit." -Level "ERROR"
         }
         else {
-            Write-Log "Hook pre-commit installé avec succès." -Level "SUCCESS"
+            Write-Log "Hook pre-commit installÃ© avec succÃ¨s." -Level "SUCCESS"
         }
     }
 }
 else {
-    Write-Log "Script d'installation du hook pre-commit non trouvé: $installHookScript" -Level "WARNING"
+    Write-Log "Script d'installation du hook pre-commit non trouvÃ©: $installHookScript" -Level "WARNING"
 }
 
 # Organiser les scripts existants
@@ -136,12 +136,12 @@ if (Test-Path -Path $organizeScript) {
             Write-Log "Erreur lors de l'organisation des scripts." -Level "ERROR"
         }
         else {
-            Write-Log "Scripts organisés avec succès." -Level "SUCCESS"
+            Write-Log "Scripts organisÃ©s avec succÃ¨s." -Level "SUCCESS"
         }
     }
 }
 else {
-    Write-Log "Script d'organisation non trouvé: $organizeScript" -Level "WARNING"
+    Write-Log "Script d'organisation non trouvÃ©: $organizeScript" -Level "WARNING"
 }
 
 # Configurer MCP Desktop Commander
@@ -152,7 +152,7 @@ if (Test-Path -Path $mcpConfigPath) {
     if ($PSCmdlet.ShouldProcess("MCP Desktop Commander", "Configurer")) {
         Write-Log "Configuration de MCP Desktop Commander..." -Level "INFO"
         
-        # Vérifier si le fichier de destination existe déjà
+        # VÃ©rifier si le fichier de destination existe dÃ©jÃ 
         if (Test-Path -Path $mcpConfigDestPath) {
             # Lire les fichiers JSON
             $existingConfig = Get-Content -Path $mcpConfigDestPath -Raw | ConvertFrom-Json
@@ -167,7 +167,7 @@ if (Test-Path -Path $mcpConfigPath) {
                 $existingConfig.commands | Add-Member -MemberType NoteProperty -Name $command.Name -Value $command.Value -Force
             }
             
-            # Enregistrer la configuration fusionnée
+            # Enregistrer la configuration fusionnÃ©e
             $existingConfig | ConvertTo-Json -Depth 10 | Out-File -FilePath $mcpConfigDestPath -Encoding utf8
         }
         else {
@@ -175,37 +175,37 @@ if (Test-Path -Path $mcpConfigPath) {
             Copy-Item -Path $mcpConfigPath -Destination $mcpConfigDestPath -Force
         }
         
-        Write-Log "MCP Desktop Commander configuré avec succès." -Level "SUCCESS"
-        Write-Log "Pour utiliser MCP Desktop Commander, exécutez: npx -y @wonderwhy-er/desktop-commander" -Level "INFO"
+        Write-Log "MCP Desktop Commander configurÃ© avec succÃ¨s." -Level "SUCCESS"
+        Write-Log "Pour utiliser MCP Desktop Commander, exÃ©cutez: npx -y @wonderwhy-er/desktop-commander" -Level "INFO"
     }
 }
 else {
-    Write-Log "Fichier de configuration MCP non trouvé: $mcpConfigPath" -Level "WARNING"
+    Write-Log "Fichier de configuration MCP non trouvÃ©: $mcpConfigPath" -Level "WARNING"
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testScript = Join-Path -Path $managerDir -ChildPath "testing\Test-ManagerScripts.ps1"
 if (Test-Path -Path $testScript) {
     if ($PSCmdlet.ShouldProcess("Scripts du manager", "Tester")) {
-        Write-Log "Exécution des tests..." -Level "INFO"
+        Write-Log "ExÃ©cution des tests..." -Level "INFO"
         & $testScript
         
         if ($LASTEXITCODE -ne 0) {
-            Write-Log "Des tests ont échoué. Veuillez consulter les rapports pour plus de détails." -Level "ERROR"
+            Write-Log "Des tests ont Ã©chouÃ©. Veuillez consulter les rapports pour plus de dÃ©tails." -Level "ERROR"
         }
         else {
-            Write-Log "Tous les tests ont réussi!" -Level "SUCCESS"
+            Write-Log "Tous les tests ont rÃ©ussi!" -Level "SUCCESS"
         }
     }
 }
 else {
-    Write-Log "Script de test non trouvé: $testScript" -Level "WARNING"
+    Write-Log "Script de test non trouvÃ©: $testScript" -Level "WARNING"
 }
 
-Write-Log "`nInitialisation de l'environnement du script manager terminée." -Level "SUCCESS"
+Write-Log "`nInitialisation de l'environnement du script manager terminÃ©e." -Level "SUCCESS"
 Write-Log "Vous pouvez maintenant:" -Level "INFO"
-Write-Log "  1. Créer de nouveaux scripts avec: npx hygen script new" -Level "INFO"
-Write-Log "  2. Créer de nouveaux modules avec: npx hygen module new" -Level "INFO"
+Write-Log "  1. CrÃ©er de nouveaux scripts avec: npx hygen script new" -Level "INFO"
+Write-Log "  2. CrÃ©er de nouveaux modules avec: npx hygen module new" -Level "INFO"
 Write-Log "  3. Organiser les scripts existants avec: .\organization\Organize-ManagerScripts.ps1" -Level "INFO"
 Write-Log "  4. Surveiller les scripts avec: .\monitoring\Monitor-ManagerScripts.ps1" -Level "INFO"
 Write-Log "  5. Utiliser MCP Desktop Commander avec: npx -y @wonderwhy-er/desktop-commander" -Level "INFO"

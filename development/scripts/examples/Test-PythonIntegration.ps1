@@ -1,18 +1,18 @@
-# Script de test pour l'intÃ©gration avec Python
+﻿# Script de test pour l'intÃƒÂ©gration avec Python
 # Auteur: EMAIL_SENDER_1 Team
 # Version: 1.0.0
 
-# VÃ©rifier que Python est installÃ©
+# VÃƒÂ©rifier que Python est installÃƒÂ©
 try {
     $pythonVersion = python --version
-    Write-Host "Python dÃ©tectÃ©: $pythonVersion" -ForegroundColor Green
+    Write-Host "Python dÃƒÂ©tectÃƒÂ©: $pythonVersion" -ForegroundColor Green
 } catch {
-    Write-Error "Python n'est pas installÃ© ou n'est pas dans le PATH. Veuillez installer Python 3.8+ et rÃ©essayer."
+    Write-Error "Python n'est pas installÃƒÂ© ou n'est pas dans le PATH. Veuillez installer Python 3.8+ et rÃƒÂ©essayer."
     exit 1
 }
 
-# VÃ©rifier que les bibliothÃ¨ques nÃ©cessaires sont installÃ©es
-Write-Host "VÃ©rification des bibliothÃ¨ques Python..." -ForegroundColor Cyan
+# VÃƒÂ©rifier que les bibliothÃƒÂ¨ques nÃƒÂ©cessaires sont installÃƒÂ©es
+Write-Host "VÃƒÂ©rification des bibliothÃƒÂ¨ques Python..." -ForegroundColor Cyan
 $requiredLibraries = @("numpy", "pandas", "sklearn", "joblib")
 $missingLibraries = @()
 
@@ -28,18 +28,18 @@ except ImportError:
 }
 
 if ($missingLibraries.Count -gt 0) {
-    Write-Host "BibliothÃ¨ques manquantes: $($missingLibraries -join ', ')" -ForegroundColor Yellow
-    Write-Host "ExÃ©cutez le script d'installation des dÃ©pendances: .\development\scripts\setup\Install-PredictiveModelDependencies.ps1" -ForegroundColor Yellow
+    Write-Host "BibliothÃƒÂ¨ques manquantes: $($missingLibraries -join ', ')" -ForegroundColor Yellow
+    Write-Host "ExÃƒÂ©cutez le script d'installation des dÃƒÂ©pendances: .\development\scripts\setup\Install-PredictiveModelDependencies.ps1" -ForegroundColor Yellow
 } else {
-    Write-Host "Toutes les bibliothÃ¨ques nÃ©cessaires sont installÃ©es." -ForegroundColor Green
+    Write-Host "Toutes les bibliothÃƒÂ¨ques nÃƒÂ©cessaires sont installÃƒÂ©es." -ForegroundColor Green
 }
 
-# CrÃ©er un rÃ©pertoire temporaire pour les tests
+# CrÃƒÂ©er un rÃƒÂ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "PythonIntegrationTest_$(Get-Random)"
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
-Write-Host "RÃ©pertoire de test crÃ©Ã©: $testDir" -ForegroundColor Green
+Write-Host "RÃƒÂ©pertoire de test crÃƒÂ©ÃƒÂ©: $testDir" -ForegroundColor Green
 
-# CrÃ©er un fichier de mÃ©triques de test
+# CrÃƒÂ©er un fichier de mÃƒÂ©triques de test
 $metricsFile = Join-Path -Path $testDir -ChildPath "test_metrics.json"
 $metrics = @()
 
@@ -54,9 +54,9 @@ for ($i = 0; $i -lt 24; $i++) {
 }
 
 $metrics | ConvertTo-Json -Depth 10 | Set-Content -Path $metricsFile -Encoding UTF8
-Write-Host "Fichier de mÃ©triques crÃ©Ã©: $metricsFile" -ForegroundColor Green
+Write-Host "Fichier de mÃƒÂ©triques crÃƒÂ©ÃƒÂ©: $metricsFile" -ForegroundColor Green
 
-# CrÃ©er un fichier de configuration
+# CrÃƒÂ©er un fichier de configuration
 $configFile = Join-Path -Path $testDir -ChildPath "config.json"
 $config = @{
     model_dir           = Join-Path -Path $testDir -ChildPath "models"
@@ -70,23 +70,23 @@ $config = @{
 
 New-Item -Path $config.model_dir -ItemType Directory -Force | Out-Null
 $config | ConvertTo-Json -Depth 10 | Set-Content -Path $configFile -Encoding UTF8
-Write-Host "Fichier de configuration crÃ©Ã©: $configFile" -ForegroundColor Green
+Write-Host "Fichier de configuration crÃƒÂ©ÃƒÂ©: $configFile" -ForegroundColor Green
 
-# Tester l'appel direct Ã  Python
+# Tester l'appel direct ÃƒÂ  Python
 $pythonScript = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\PredictiveModel.py"
 if (Test-Path -Path $pythonScript) {
-    Write-Host "Test d'appel direct Ã  Python..." -ForegroundColor Cyan
+    Write-Host "Test d'appel direct ÃƒÂ  Python..." -ForegroundColor Cyan
 
-    # EntraÃ®ner le modÃ¨le
-    Write-Host "EntraÃ®nement du modÃ¨le..." -ForegroundColor Yellow
+    # EntraÃƒÂ®ner le modÃƒÂ¨le
+    Write-Host "EntraÃƒÂ®nement du modÃƒÂ¨le..." -ForegroundColor Yellow
     $trainOutput = python $pythonScript --action train --input $metricsFile --config $configFile --force
 
     try {
         $trainResult = $trainOutput | ConvertFrom-Json
         if ($trainResult.'CPU.Usage'.status -eq "success") {
-            Write-Host "  SUCCÃˆS: ModÃ¨le entraÃ®nÃ© avec succÃ¨s" -ForegroundColor Green
+            Write-Host "  SUCCÃƒË†S: ModÃƒÂ¨le entraÃƒÂ®nÃƒÂ© avec succÃƒÂ¨s" -ForegroundColor Green
         } else {
-            Write-Host "  Ã‰CHEC: Ã‰chec de l'entraÃ®nement du modÃ¨le" -ForegroundColor Red
+            Write-Host "  Ãƒâ€°CHEC: Ãƒâ€°chec de l'entraÃƒÂ®nement du modÃƒÂ¨le" -ForegroundColor Red
             Write-Host "  Message: $($trainResult.'CPU.Usage'.message)" -ForegroundColor Red
         }
     } catch {
@@ -94,17 +94,17 @@ if (Test-Path -Path $pythonScript) {
         Write-Host "  Sortie brute: $trainOutput" -ForegroundColor Yellow
     }
 
-    # Faire des prÃ©dictions
-    Write-Host "PrÃ©diction des valeurs futures..." -ForegroundColor Yellow
+    # Faire des prÃƒÂ©dictions
+    Write-Host "PrÃƒÂ©diction des valeurs futures..." -ForegroundColor Yellow
     $predictOutput = python $pythonScript --action predict --input $metricsFile --config $configFile --horizon 3
 
     try {
         $predictResult = $predictOutput | ConvertFrom-Json
         if ($predictResult.'CPU.Usage'.status -eq "success") {
-            Write-Host "  SUCCÃˆS: PrÃ©dictions gÃ©nÃ©rÃ©es avec succÃ¨s" -ForegroundColor Green
-            Write-Host "  PrÃ©dictions: $($predictResult.'CPU.Usage'.predictions -join ', ')" -ForegroundColor Green
+            Write-Host "  SUCCÃƒË†S: PrÃƒÂ©dictions gÃƒÂ©nÃƒÂ©rÃƒÂ©es avec succÃƒÂ¨s" -ForegroundColor Green
+            Write-Host "  PrÃƒÂ©dictions: $($predictResult.'CPU.Usage'.predictions -join ', ')" -ForegroundColor Green
         } else {
-            Write-Host "  Ã‰CHEC: Ã‰chec de la gÃ©nÃ©ration des prÃ©dictions" -ForegroundColor Red
+            Write-Host "  Ãƒâ€°CHEC: Ãƒâ€°chec de la gÃƒÂ©nÃƒÂ©ration des prÃƒÂ©dictions" -ForegroundColor Red
             Write-Host "  Message: $($predictResult.'CPU.Usage'.message)" -ForegroundColor Red
         }
     } catch {
@@ -112,12 +112,12 @@ if (Test-Path -Path $pythonScript) {
         Write-Host "  Sortie brute: $predictOutput" -ForegroundColor Yellow
     }
 } else {
-    Write-Host "Script Python non trouvÃ©: $pythonScript" -ForegroundColor Red
+    Write-Host "Script Python non trouvÃƒÂ©: $pythonScript" -ForegroundColor Red
 }
 
 # Nettoyer les fichiers de test
 Write-Host "Nettoyage des fichiers de test..." -ForegroundColor Cyan
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
-    Write-Host "RÃ©pertoire de test supprimÃ©: $testDir" -ForegroundColor Green
+    Write-Host "RÃƒÂ©pertoire de test supprimÃƒÂ©: $testDir" -ForegroundColor Green
 }

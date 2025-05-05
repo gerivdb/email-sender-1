@@ -1,13 +1,13 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de test pour vérifier le fonctionnement du mode CHECK pour les roadmaps.
+    Script de test pour vÃ©rifier le fonctionnement du mode CHECK pour les roadmaps.
 
 .DESCRIPTION
-    Ce script crée un fichier de roadmap de test, exécute le script de mise à jour de la roadmap,
-    et vérifie que les tâches sont correctement mises à jour.
+    Ce script crÃ©e un fichier de roadmap de test, exÃ©cute le script de mise Ã  jour de la roadmap,
+    et vÃ©rifie que les tÃ¢ches sont correctement mises Ã  jour.
 
 .PARAMETER TestDirectory
-    Répertoire où créer les fichiers de test. Par défaut, utilise un sous-répertoire "Tests" dans le répertoire courant.
+    RÃ©pertoire oÃ¹ crÃ©er les fichiers de test. Par dÃ©faut, utilise un sous-rÃ©pertoire "Tests" dans le rÃ©pertoire courant.
 
 .EXAMPLE
     .\Test-RoadmapCheck.ps1
@@ -15,7 +15,7 @@
 .NOTES
     Auteur: Roadmap Tools Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 [CmdletBinding()]
 param (
@@ -23,12 +23,12 @@ param (
     [string]$TestDirectory = ".\Tests"
 )
 
-# Créer le répertoire de test s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de test s'il n'existe pas
 if (-not (Test-Path -Path $TestDirectory)) {
     New-Item -Path $TestDirectory -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 function New-TestRoadmap {
     param (
         [Parameter(Mandatory = $true)]
@@ -69,7 +69,7 @@ function New-TestRoadmap {
     return $Path
 }
 
-# Exécuter le script de mise à jour de la roadmap
+# ExÃ©cuter le script de mise Ã  jour de la roadmap
 function Invoke-UpdateRoadmapTest {
     param (
         [Parameter(Mandatory = $true)]
@@ -82,19 +82,19 @@ function Invoke-UpdateRoadmapTest {
     $updateScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Update-RoadmapStatus.ps1"
 
     if (-not (Test-Path -Path $updateScriptPath)) {
-        Write-Error "Le script de mise à jour de la roadmap n'a pas été trouvé : $updateScriptPath"
+        Write-Error "Le script de mise Ã  jour de la roadmap n'a pas Ã©tÃ© trouvÃ© : $updateScriptPath"
         return $false
     }
 
-    Write-Host "Chemin du script de mise à jour : $updateScriptPath" -ForegroundColor Cyan
+    Write-Host "Chemin du script de mise Ã  jour : $updateScriptPath" -ForegroundColor Cyan
     Write-Host "Chemin du fichier de roadmap : $RoadmapPath" -ForegroundColor Cyan
-    Write-Host "Numéros de lignes : $($LineNumbers -join ', ')" -ForegroundColor Cyan
+    Write-Host "NumÃ©ros de lignes : $($LineNumbers -join ', ')" -ForegroundColor Cyan
 
     & $updateScriptPath -RoadmapPath $RoadmapPath -LineNumbers $LineNumbers -Verbose
     return $true
 }
 
-# Vérifier que les tâches ont été mises à jour correctement
+# VÃ©rifier que les tÃ¢ches ont Ã©tÃ© mises Ã  jour correctement
 function Test-RoadmapUpdated {
     param (
         [Parameter(Mandatory = $true)]
@@ -122,7 +122,7 @@ function Test-RoadmapUpdated {
     $allExpectedImplemented = $true
     foreach ($expectedTaskId in $ExpectedImplementedTaskIds) {
         if (-not ($implementedTasks -contains $expectedTaskId)) {
-            Write-Warning "La tâche $expectedTaskId n'a pas été marquée comme implémentée."
+            Write-Warning "La tÃ¢che $expectedTaskId n'a pas Ã©tÃ© marquÃ©e comme implÃ©mentÃ©e."
             $allExpectedImplemented = $false
         }
     }
@@ -132,25 +132,25 @@ function Test-RoadmapUpdated {
 
 # Script principal
 function Invoke-RoadmapCheckTest {
-    # Créer un fichier de roadmap de test
+    # CrÃ©er un fichier de roadmap de test
     $testRoadmapPath = Join-Path -Path $TestDirectory -ChildPath "test_roadmap.md"
     New-TestRoadmap -Path $testRoadmapPath
-    Write-Host "Fichier de roadmap de test créé : $testRoadmapPath" -ForegroundColor Cyan
+    Write-Host "Fichier de roadmap de test crÃ©Ã© : $testRoadmapPath" -ForegroundColor Cyan
 
-    # Définir les lignes à vérifier (correspondant aux tâches implémentées)
-    $lineNumbers = @(9, 10, 11, 12)  # Lignes des tâches 2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.1 à 2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.4
+    # DÃ©finir les lignes Ã  vÃ©rifier (correspondant aux tÃ¢ches implÃ©mentÃ©es)
+    $lineNumbers = @(9, 10, 11, 12)  # Lignes des tÃ¢ches 2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.1 Ã  2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.4
 
-    # Exécuter le script de mise à jour de la roadmap
-    Write-Host "Exécution du script de mise à jour de la roadmap..." -ForegroundColor Cyan
+    # ExÃ©cuter le script de mise Ã  jour de la roadmap
+    Write-Host "ExÃ©cution du script de mise Ã  jour de la roadmap..." -ForegroundColor Cyan
     $updateSuccess = Invoke-UpdateRoadmapTest -RoadmapPath $testRoadmapPath -LineNumbers $lineNumbers
 
     if (-not $updateSuccess) {
-        Write-Error "Échec de l'exécution du script de mise à jour de la roadmap."
+        Write-Error "Ã‰chec de l'exÃ©cution du script de mise Ã  jour de la roadmap."
         return
     }
 
-    # Vérifier que les tâches ont été mises à jour correctement
-    Write-Host "Vérification des mises à jour..." -ForegroundColor Cyan
+    # VÃ©rifier que les tÃ¢ches ont Ã©tÃ© mises Ã  jour correctement
+    Write-Host "VÃ©rification des mises Ã  jour..." -ForegroundColor Cyan
     $expectedImplementedTaskIds = @(
         '2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.1',
         '2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.2',
@@ -161,13 +161,13 @@ function Invoke-RoadmapCheckTest {
     $testSuccess = Test-RoadmapUpdated -RoadmapPath $testRoadmapPath -ExpectedImplementedTaskIds $expectedImplementedTaskIds
 
     if ($testSuccess) {
-        Write-Host "Test réussi ! Toutes les tâches ont été correctement mises à jour." -ForegroundColor Green
+        Write-Host "Test rÃ©ussi ! Toutes les tÃ¢ches ont Ã©tÃ© correctement mises Ã  jour." -ForegroundColor Green
     } else {
-        Write-Error "Test échoué. Certaines tâches n'ont pas été correctement mises à jour."
+        Write-Error "Test Ã©chouÃ©. Certaines tÃ¢ches n'ont pas Ã©tÃ© correctement mises Ã  jour."
     }
 
-    # Afficher le contenu du fichier de roadmap mis à jour
-    Write-Host "`nContenu du fichier de roadmap mis à jour :" -ForegroundColor Cyan
+    # Afficher le contenu du fichier de roadmap mis Ã  jour
+    Write-Host "`nContenu du fichier de roadmap mis Ã  jour :" -ForegroundColor Cyan
     Get-Content -Path $testRoadmapPath | ForEach-Object {
         if ($_ -match '^\s*-\s+\[(x|X)\]') {
             Write-Host $_ -ForegroundColor Green
@@ -179,5 +179,5 @@ function Invoke-RoadmapCheckTest {
     }
 }
 
-# Exécuter le script principal
+# ExÃ©cuter le script principal
 Invoke-RoadmapCheckTest

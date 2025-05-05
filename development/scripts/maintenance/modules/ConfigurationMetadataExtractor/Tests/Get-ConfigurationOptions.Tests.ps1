@@ -1,13 +1,13 @@
-BeforeAll {
+﻿BeforeAll {
     # Importer le module
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath '..\ConfigurationMetadataExtractor.psm1'
     Import-Module $modulePath -Force
 }
 
 Describe 'Get-ConfigurationOptions' {
-    Context 'Extraction des options à partir du contenu JSON' {
-        It 'Extrait correctement les options en mode hiérarchique' {
-            # Définir le contenu JSON directement dans le test
+    Context 'Extraction des options Ã  partir du contenu JSON' {
+        It 'Extrait correctement les options en mode hiÃ©rarchique' {
+            # DÃ©finir le contenu JSON directement dans le test
             $jsonContent = @'
 {
     "server": {
@@ -51,7 +51,7 @@ Describe 'Get-ConfigurationOptions' {
         }
 
         It 'Extrait correctement les options en mode plat' {
-            # Définir le contenu JSON directement dans le test
+            # DÃ©finir le contenu JSON directement dans le test
             $jsonContent = @'
 {
     "server": {
@@ -88,8 +88,8 @@ Describe 'Get-ConfigurationOptions' {
             $result.'features'.ElementType | Should -Be "String"
         }
 
-        It 'Inclut correctement les valeurs lorsque demandé' {
-            # Définir le contenu JSON directement dans le test
+        It 'Inclut correctement les valeurs lorsque demandÃ©' {
+            # DÃ©finir le contenu JSON directement dans le test
             $jsonContent = @'
 {
     "server": {
@@ -126,9 +126,9 @@ Describe 'Get-ConfigurationOptions' {
         }
     }
 
-    Context 'Extraction des options à partir du contenu YAML' {
-        It 'Extrait correctement les options en mode hiérarchique' {
-            # Définir le contenu YAML directement dans le test
+    Context 'Extraction des options Ã  partir du contenu YAML' {
+        It 'Extrait correctement les options en mode hiÃ©rarchique' {
+            # DÃ©finir le contenu YAML directement dans le test
             $yamlContent = @'
 server:
   host: localhost
@@ -169,7 +169,7 @@ features:
     }
 
     Context 'Gestion des erreurs' {
-        It 'Génère une erreur pour un contenu JSON invalide' {
+        It 'GÃ©nÃ¨re une erreur pour un contenu JSON invalide' {
             $invalidJson = '{invalid json}'
             $tempJsonPath = [System.IO.Path]::GetTempFileName() + ".json"
             Set-Content -Path $tempJsonPath -Value $invalidJson
@@ -181,7 +181,7 @@ features:
             }
         }
 
-        It 'Génère une erreur pour un format non pris en charge' {
+        It 'GÃ©nÃ¨re une erreur pour un format non pris en charge' {
             $content = 'key = value'
             $tempPath = [System.IO.Path]::GetTempFileName() + ".txt"
             Set-Content -Path $tempPath -Value $content

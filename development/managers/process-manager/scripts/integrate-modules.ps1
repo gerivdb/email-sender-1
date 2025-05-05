@@ -1,32 +1,32 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script d'intégration des modules améliorés pour le Process Manager.
+    Script d'intÃ©gration des modules amÃ©liorÃ©s pour le Process Manager.
 
 .DESCRIPTION
-    Ce script intègre les modules améliorés (ManagerRegistrationService, ManifestParser,
+    Ce script intÃ¨gre les modules amÃ©liorÃ©s (ManagerRegistrationService, ManifestParser,
     ValidationService, DependencyResolver) au Process Manager existant.
 
 .PARAMETER ProjectRoot
-    Chemin vers la racine du projet. Par défaut, utilise le répertoire courant.
+    Chemin vers la racine du projet. Par dÃ©faut, utilise le rÃ©pertoire courant.
 
 .PARAMETER ModulesPath
-    Chemin vers le répertoire des modules. Par défaut, utilise le répertoire 'modules' dans le répertoire du Process Manager.
+    Chemin vers le rÃ©pertoire des modules. Par dÃ©faut, utilise le rÃ©pertoire 'modules' dans le rÃ©pertoire du Process Manager.
 
 .PARAMETER Force
-    Force l'intégration même si les modules sont déjà intégrés.
+    Force l'intÃ©gration mÃªme si les modules sont dÃ©jÃ  intÃ©grÃ©s.
 
 .EXAMPLE
     .\integrate-modules.ps1
-    Intègre les modules améliorés au Process Manager.
+    IntÃ¨gre les modules amÃ©liorÃ©s au Process Manager.
 
 .EXAMPLE
     .\integrate-modules.ps1 -ProjectRoot "D:\Projets\MonProjet" -Force
-    Force l'intégration des modules améliorés dans le répertoire spécifié.
+    Force l'intÃ©gration des modules amÃ©liorÃ©s dans le rÃ©pertoire spÃ©cifiÃ©.
 
 .NOTES
     Auteur: EMAIL_SENDER_1
     Version: 1.0
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -40,13 +40,13 @@ param (
     [switch]$Force
 )
 
-# Définir les chemins
+# DÃ©finir les chemins
 $processManagerRoot = Join-Path -Path $ProjectRoot -ChildPath "development\managers\process-manager"
 $defaultModulesPath = Join-Path -Path $processManagerRoot -ChildPath "modules"
 $modulesPath = if ($ModulesPath) { $ModulesPath } else { $defaultModulesPath }
 $psModulesPath = Join-Path -Path $env:PSModulePath.Split(';')[0] -ChildPath "ProcessManager"
 
-# Définir les noms des modules
+# DÃ©finir les noms des modules
 $moduleNames = @(
     "ManagerRegistrationService",
     "ManifestParser",
@@ -54,7 +54,7 @@ $moduleNames = @(
     "DependencyResolver"
 )
 
-# Fonction pour écrire des messages de journal
+# Fonction pour Ã©crire des messages de journal
 function Write-IntegrationLog {
     [CmdletBinding()]
     param (
@@ -69,7 +69,7 @@ function Write-IntegrationLog {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "[$timestamp] [$Level] $Message"
     
-    # Définir la couleur en fonction du niveau
+    # DÃ©finir la couleur en fonction du niveau
     $color = switch ($Level) {
         "Info" { "White" }
         "Warning" { "Yellow" }
@@ -82,25 +82,25 @@ function Write-IntegrationLog {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier que le répertoire du projet existe
+# VÃ©rifier que le rÃ©pertoire du projet existe
 if (-not (Test-Path -Path $ProjectRoot -PathType Container)) {
-    Write-IntegrationLog -Message "Le répertoire du projet n'existe pas : $ProjectRoot" -Level Error
+    Write-IntegrationLog -Message "Le rÃ©pertoire du projet n'existe pas : $ProjectRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le répertoire du Process Manager existe
+# VÃ©rifier que le rÃ©pertoire du Process Manager existe
 if (-not (Test-Path -Path $processManagerRoot -PathType Container)) {
-    Write-IntegrationLog -Message "Le répertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
+    Write-IntegrationLog -Message "Le rÃ©pertoire du Process Manager n'existe pas : $processManagerRoot" -Level Error
     exit 1
 }
 
-# Vérifier que le répertoire des modules existe
+# VÃ©rifier que le rÃ©pertoire des modules existe
 if (-not (Test-Path -Path $modulesPath -PathType Container)) {
-    Write-IntegrationLog -Message "Le répertoire des modules n'existe pas : $modulesPath" -Level Error
+    Write-IntegrationLog -Message "Le rÃ©pertoire des modules n'existe pas : $modulesPath" -Level Error
     exit 1
 }
 
-# Vérifier si les modules sont déjà intégrés
+# VÃ©rifier si les modules sont dÃ©jÃ  intÃ©grÃ©s
 $modulesIntegrated = $true
 foreach ($moduleName in $moduleNames) {
     $modulePath = Join-Path -Path $modulesPath -ChildPath $moduleName
@@ -111,52 +111,52 @@ foreach ($moduleName in $moduleNames) {
 }
 
 if ($modulesIntegrated -and -not $Force) {
-    Write-IntegrationLog -Message "Les modules sont déjà intégrés. Utilisez -Force pour forcer l'intégration." -Level Warning
+    Write-IntegrationLog -Message "Les modules sont dÃ©jÃ  intÃ©grÃ©s. Utilisez -Force pour forcer l'intÃ©gration." -Level Warning
     exit 0
 }
 
-# Créer le répertoire des modules PowerShell si nécessaire
+# CrÃ©er le rÃ©pertoire des modules PowerShell si nÃ©cessaire
 if (-not (Test-Path -Path $psModulesPath -PathType Container)) {
-    if ($PSCmdlet.ShouldProcess($psModulesPath, "Créer le répertoire des modules PowerShell")) {
+    if ($PSCmdlet.ShouldProcess($psModulesPath, "CrÃ©er le rÃ©pertoire des modules PowerShell")) {
         New-Item -Path $psModulesPath -ItemType Directory -Force | Out-Null
-        Write-IntegrationLog -Message "Répertoire des modules PowerShell créé : $psModulesPath" -Level Success
+        Write-IntegrationLog -Message "RÃ©pertoire des modules PowerShell crÃ©Ã© : $psModulesPath" -Level Success
     }
 }
 
-# Intégrer chaque module
+# IntÃ©grer chaque module
 foreach ($moduleName in $moduleNames) {
     $moduleSourcePath = Join-Path -Path $modulesPath -ChildPath $moduleName
     $moduleDestPath = Join-Path -Path $psModulesPath -ChildPath $moduleName
     
-    # Vérifier que le module source existe
+    # VÃ©rifier que le module source existe
     if (-not (Test-Path -Path $moduleSourcePath -PathType Container)) {
         Write-IntegrationLog -Message "Le module source n'existe pas : $moduleSourcePath" -Level Error
         continue
     }
     
-    # Copier le module vers le répertoire des modules PowerShell
+    # Copier le module vers le rÃ©pertoire des modules PowerShell
     if ($PSCmdlet.ShouldProcess($moduleDestPath, "Copier le module")) {
-        # Supprimer le module existant si nécessaire
+        # Supprimer le module existant si nÃ©cessaire
         if (Test-Path -Path $moduleDestPath -PathType Container) {
             Remove-Item -Path $moduleDestPath -Recurse -Force
-            Write-IntegrationLog -Message "Module existant supprimé : $moduleDestPath" -Level Info
+            Write-IntegrationLog -Message "Module existant supprimÃ© : $moduleDestPath" -Level Info
         }
         
-        # Créer le répertoire de destination
+        # CrÃ©er le rÃ©pertoire de destination
         New-Item -Path $moduleDestPath -ItemType Directory -Force | Out-Null
         
         # Copier les fichiers du module
         Copy-Item -Path "$moduleSourcePath\*" -Destination $moduleDestPath -Recurse -Force
-        Write-IntegrationLog -Message "Module copié : $moduleName" -Level Success
+        Write-IntegrationLog -Message "Module copiÃ© : $moduleName" -Level Success
     }
 }
 
-# Créer un module principal ProcessManager qui importe tous les modules
+# CrÃ©er un module principal ProcessManager qui importe tous les modules
 $processManagerModulePath = Join-Path -Path $psModulesPath -ChildPath "ProcessManager.psm1"
 $processManagerManifestPath = Join-Path -Path $psModulesPath -ChildPath "ProcessManager.psd1"
 
-if ($PSCmdlet.ShouldProcess($processManagerModulePath, "Créer le module principal")) {
-    # Créer le module principal
+if ($PSCmdlet.ShouldProcess($processManagerModulePath, "CrÃ©er le module principal")) {
+    # CrÃ©er le module principal
     $moduleContent = @"
 <#
 .SYNOPSIS
@@ -168,7 +168,7 @@ if ($PSCmdlet.ShouldProcess($processManagerModulePath, "Créer le module princip
 .NOTES
     Auteur: EMAIL_SENDER_1
     Version: 1.0
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
 # Importer les modules
@@ -177,38 +177,38 @@ Import-Module -Name "ManifestParser" -Force
 Import-Module -Name "ValidationService" -Force
 Import-Module -Name "DependencyResolver" -Force
 
-# Exporter les fonctions des modules importés
+# Exporter les fonctions des modules importÃ©s
 Export-ModuleMember -Function *
 "@
     
     Set-Content -Path $processManagerModulePath -Value $moduleContent -Encoding UTF8
-    Write-IntegrationLog -Message "Module principal créé : $processManagerModulePath" -Level Success
+    Write-IntegrationLog -Message "Module principal crÃ©Ã© : $processManagerModulePath" -Level Success
     
-    # Créer le manifeste du module principal
+    # CrÃ©er le manifeste du module principal
     $manifestContent = @"
 @{
     # Version du module
     ModuleVersion = '1.0.0'
 
-    # ID utilisé pour identifier de manière unique ce module
+    # ID utilisÃ© pour identifier de maniÃ¨re unique ce module
     GUID = '56789012-5678-5678-5678-567890123456'
 
     # Auteur de ce module
     Author = 'EMAIL_SENDER_1'
 
-    # Société ou fournisseur de ce module
+    # SociÃ©tÃ© ou fournisseur de ce module
     CompanyName = 'EMAIL_SENDER_1'
 
-    # Déclaration de copyright pour ce module
-    Copyright = '(c) 2025 EMAIL_SENDER_1. Tous droits réservés.'
+    # DÃ©claration de copyright pour ce module
+    Copyright = '(c) 2025 EMAIL_SENDER_1. Tous droits rÃ©servÃ©s.'
 
-    # Description de la fonctionnalité fournie par ce module
-    Description = 'Module principal du Process Manager qui intègre tous les modules améliorés.'
+    # Description de la fonctionnalitÃ© fournie par ce module
+    Description = 'Module principal du Process Manager qui intÃ¨gre tous les modules amÃ©liorÃ©s.'
 
     # Version minimale du moteur PowerShell requise par ce module
     PowerShellVersion = '5.1'
 
-    # Modules à importer comme modules imbriqués du module spécifié dans RootModule/ModuleToProcess
+    # Modules Ã  importer comme modules imbriquÃ©s du module spÃ©cifiÃ© dans RootModule/ModuleToProcess
     NestedModules = @(
         'ManagerRegistrationService',
         'ManifestParser',
@@ -216,7 +216,7 @@ Export-ModuleMember -Function *
         'DependencyResolver'
     )
 
-    # Fonctions à exporter à partir de ce module, pour de meilleures performances, n'utilisez pas de caractères génériques et ne supprimez pas l'entrée, utilisez une table vide si vous n'avez pas de fonctions à exposer
+    # Fonctions Ã  exporter Ã  partir de ce module, pour de meilleures performances, n'utilisez pas de caractÃ¨res gÃ©nÃ©riques et ne supprimez pas l'entrÃ©e, utilisez une table vide si vous n'avez pas de fonctions Ã  exposer
     FunctionsToExport = @(
         'Register-Manager',
         'Unregister-Manager',
@@ -235,19 +235,19 @@ Export-ModuleMember -Function *
         'Get-ManagerLoadOrder'
     )
 
-    # Cmdlets à exporter à partir de ce module, pour de meilleures performances, n'utilisez pas de caractères génériques et ne supprimez pas l'entrée, utilisez une table vide si vous n'avez pas de cmdlets à exposer
+    # Cmdlets Ã  exporter Ã  partir de ce module, pour de meilleures performances, n'utilisez pas de caractÃ¨res gÃ©nÃ©riques et ne supprimez pas l'entrÃ©e, utilisez une table vide si vous n'avez pas de cmdlets Ã  exposer
     CmdletsToExport = @()
 
-    # Variables à exporter à partir de ce module
+    # Variables Ã  exporter Ã  partir de ce module
     VariablesToExport = @()
 
-    # Alias à exporter à partir de ce module, pour de meilleures performances, n'utilisez pas de caractères génériques et ne supprimez pas l'entrée, utilisez une table vide si vous n'avez pas d'alias à exposer
+    # Alias Ã  exporter Ã  partir de ce module, pour de meilleures performances, n'utilisez pas de caractÃ¨res gÃ©nÃ©riques et ne supprimez pas l'entrÃ©e, utilisez une table vide si vous n'avez pas d'alias Ã  exposer
     AliasesToExport = @()
 
-    # Ressources DSC à exporter de ce module
+    # Ressources DSC Ã  exporter de ce module
     DscResourcesToExport = @()
 
-    # Liste de tous les modules empaquetés avec ce module
+    # Liste de tous les modules empaquetÃ©s avec ce module
     ModuleList = @(
         'ManagerRegistrationService',
         'ManifestParser',
@@ -255,16 +255,16 @@ Export-ModuleMember -Function *
         'DependencyResolver'
     )
 
-    # Liste de tous les fichiers empaquetés avec ce module
+    # Liste de tous les fichiers empaquetÃ©s avec ce module
     FileList = @(
         'ProcessManager.psm1',
         'ProcessManager.psd1'
     )
 
-    # Données privées à transmettre au module spécifié dans RootModule/ModuleToProcess. Cela peut également inclure une table de hachage PSData avec des métadonnées de module supplémentaires utilisées par PowerShell.
+    # DonnÃ©es privÃ©es Ã  transmettre au module spÃ©cifiÃ© dans RootModule/ModuleToProcess. Cela peut Ã©galement inclure une table de hachage PSData avec des mÃ©tadonnÃ©es de module supplÃ©mentaires utilisÃ©es par PowerShell.
     PrivateData = @{
         PSData = @{
-            # Tags appliqués à ce module. Ils aident à la découverte des modules dans les galeries en ligne.
+            # Tags appliquÃ©s Ã  ce module. Ils aident Ã  la dÃ©couverte des modules dans les galeries en ligne.
             Tags = @('ProcessManager', 'Manager', 'Registration', 'Validation', 'Dependency')
 
             # URL vers la licence de ce module.
@@ -273,7 +273,7 @@ Export-ModuleMember -Function *
             # URL vers le site web principal de ce projet.
             ProjectUri = ''
 
-            # URL vers une icône représentant ce module.
+            # URL vers une icÃ´ne reprÃ©sentant ce module.
             IconUri = ''
 
             # Notes de publication de ce module
@@ -284,36 +284,36 @@ Export-ModuleMember -Function *
 "@
     
     Set-Content -Path $processManagerManifestPath -Value $manifestContent -Encoding UTF8
-    Write-IntegrationLog -Message "Manifeste du module principal créé : $processManagerManifestPath" -Level Success
+    Write-IntegrationLog -Message "Manifeste du module principal crÃ©Ã© : $processManagerManifestPath" -Level Success
 }
 
-# Vérifier l'intégration
+# VÃ©rifier l'intÃ©gration
 $modulesVerified = $true
 foreach ($moduleName in $moduleNames) {
     $moduleDestPath = Join-Path -Path $psModulesPath -ChildPath $moduleName
     if (-not (Test-Path -Path $moduleDestPath -PathType Container)) {
-        Write-IntegrationLog -Message "Le module n'a pas été intégré correctement : $moduleName" -Level Error
+        Write-IntegrationLog -Message "Le module n'a pas Ã©tÃ© intÃ©grÃ© correctement : $moduleName" -Level Error
         $modulesVerified = $false
     }
 }
 
 if (-not (Test-Path -Path $processManagerModulePath -PathType Leaf)) {
-    Write-IntegrationLog -Message "Le module principal n'a pas été créé correctement : $processManagerModulePath" -Level Error
+    Write-IntegrationLog -Message "Le module principal n'a pas Ã©tÃ© crÃ©Ã© correctement : $processManagerModulePath" -Level Error
     $modulesVerified = $false
 }
 
 if (-not (Test-Path -Path $processManagerManifestPath -PathType Leaf)) {
-    Write-IntegrationLog -Message "Le manifeste du module principal n'a pas été créé correctement : $processManagerManifestPath" -Level Error
+    Write-IntegrationLog -Message "Le manifeste du module principal n'a pas Ã©tÃ© crÃ©Ã© correctement : $processManagerManifestPath" -Level Error
     $modulesVerified = $false
 }
 
-# Afficher le résultat de l'intégration
+# Afficher le rÃ©sultat de l'intÃ©gration
 if ($modulesVerified) {
-    Write-IntegrationLog -Message "Tous les modules ont été intégrés avec succès." -Level Success
+    Write-IntegrationLog -Message "Tous les modules ont Ã©tÃ© intÃ©grÃ©s avec succÃ¨s." -Level Success
     Write-IntegrationLog -Message "Pour utiliser les modules, importez le module principal : Import-Module ProcessManager" -Level Info
 } else {
-    Write-IntegrationLog -Message "Certains modules n'ont pas été intégrés correctement. Vérifiez les erreurs ci-dessus." -Level Error
+    Write-IntegrationLog -Message "Certains modules n'ont pas Ã©tÃ© intÃ©grÃ©s correctement. VÃ©rifiez les erreurs ci-dessus." -Level Error
 }
 
-# Retourner le résultat
+# Retourner le rÃ©sultat
 return $modulesVerified

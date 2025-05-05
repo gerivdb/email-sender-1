@@ -1,15 +1,15 @@
-# Exemple d'utilisation du module ModuleDependencyAnalyzer
+﻿# Exemple d'utilisation du module ModuleDependencyAnalyzer
 
 # Importer le module
 $moduleRoot = Split-Path -Parent $PSScriptRoot
 $modulePath = Join-Path -Path $moduleRoot -ChildPath "ModuleDependencyAnalyzer.psm1"
 Import-Module -Name $modulePath -Force
 
-# Définir le chemin du script à analyser
-# Remplacer par le chemin d'un script réel
+# DÃ©finir le chemin du script Ã  analyser
+# Remplacer par le chemin d'un script rÃ©el
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "SampleModuleScript.ps1"
 
-# Créer un script d'exemple si le fichier n'existe pas
+# CrÃ©er un script d'exemple si le fichier n'existe pas
 if (-not (Test-Path -Path $scriptPath)) {
     $sampleScript = @'
 #Requires -Version 5.1
@@ -57,13 +57,13 @@ function Invoke-CodeAnalysis {
     
     $results = Invoke-ScriptAnalyzer @analyzerParams
     
-    # Corriger les problèmes si demandé
+    # Corriger les problÃ¨mes si demandÃ©
     if ($Fix) {
-        Write-Verbose "Correction des problèmes détectés"
+        Write-Verbose "Correction des problÃ¨mes dÃ©tectÃ©s"
         Invoke-ScriptAnalyzer -Path $Path -Fix
     }
     
-    # Générer un rapport
+    # GÃ©nÃ©rer un rapport
     $report = [PSCustomObject]@{
         Path = $Path
         TotalIssues = $results.Count
@@ -84,17 +84,17 @@ function Invoke-CodeAnalysis {
     # Convertir le rapport en JSON
     $jsonReport = ConvertTo-Json -InputObject $report -Depth 5
     
-    # Exécuter des tests si le fichier de tests existe
+    # ExÃ©cuter des tests si le fichier de tests existe
     $testPath = [System.IO.Path]::ChangeExtension($Path, "Tests.ps1")
     if (Test-Path -Path $testPath) {
-        Write-Verbose "Exécution des tests: $testPath"
+        Write-Verbose "ExÃ©cution des tests: $testPath"
         Invoke-Pester -Path $testPath -PassThru
     }
     
     return $report
 }
 
-# Fonction de génération de rapport HTML
+# Fonction de gÃ©nÃ©ration de rapport HTML
 function New-AnalysisReport {
     [CmdletBinding()]
     param (
@@ -105,7 +105,7 @@ function New-AnalysisReport {
         [string]$OutputPath
     )
     
-    Write-Verbose "Génération du rapport HTML: $OutputPath"
+    Write-Verbose "GÃ©nÃ©ration du rapport HTML: $OutputPath"
     
     $html = @"
 <!DOCTYPE html>
@@ -126,13 +126,13 @@ function New-AnalysisReport {
 </head>
 <body>
     <h1>Rapport d'analyse de code</h1>
-    <p><strong>Fichier analysé:</strong> $($AnalysisResult.Path)</p>
-    <p><strong>Total des problèmes:</strong> $($AnalysisResult.TotalIssues)</p>
+    <p><strong>Fichier analysÃ©:</strong> $($AnalysisResult.Path)</p>
+    <p><strong>Total des problÃ¨mes:</strong> $($AnalysisResult.TotalIssues)</p>
     
-    <h2>Résumé par sévérité</h2>
+    <h2>RÃ©sumÃ© par sÃ©vÃ©ritÃ©</h2>
     <table>
         <tr>
-            <th>Sévérité</th>
+            <th>SÃ©vÃ©ritÃ©</th>
             <th>Nombre</th>
         </tr>
         <tr>
@@ -149,10 +149,10 @@ function New-AnalysisReport {
         </tr>
     </table>
     
-    <h2>Résumé par règle</h2>
+    <h2>RÃ©sumÃ© par rÃ¨gle</h2>
     <table>
         <tr>
-            <th>Règle</th>
+            <th>RÃ¨gle</th>
             <th>Nombre</th>
         </tr>
 "@
@@ -169,12 +169,12 @@ function New-AnalysisReport {
     $html += @"
     </table>
     
-    <h2>Détails des problèmes</h2>
+    <h2>DÃ©tails des problÃ¨mes</h2>
     <table>
         <tr>
             <th>Ligne</th>
-            <th>Sévérité</th>
-            <th>Règle</th>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>RÃ¨gle</th>
             <th>Message</th>
         </tr>
 "@
@@ -204,57 +204,57 @@ function New-AnalysisReport {
 "@
     
     $html | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Verbose "Rapport HTML généré: $OutputPath"
+    Write-Verbose "Rapport HTML gÃ©nÃ©rÃ©: $OutputPath"
 }
 
-# Exécuter l'analyse sur un script
+# ExÃ©cuter l'analyse sur un script
 $scriptToAnalyze = ".\script.ps1"
 if (Test-Path -Path $scriptToAnalyze) {
     $analysisResult = Invoke-CodeAnalysis -Path $scriptToAnalyze -Verbose
     $reportPath = ".\report.html"
     New-AnalysisReport -AnalysisResult $analysisResult -OutputPath $reportPath
-    Write-Host "Rapport généré: $reportPath"
+    Write-Host "Rapport gÃ©nÃ©rÃ©: $reportPath"
 } else {
-    Write-Warning "Le script à analyser n'existe pas: $scriptToAnalyze"
+    Write-Warning "Le script Ã  analyser n'existe pas: $scriptToAnalyze"
 }
 '@
     
     Set-Content -Path $scriptPath -Value $sampleScript
-    Write-Host "Script d'exemple créé: $scriptPath"
+    Write-Host "Script d'exemple crÃ©Ã©: $scriptPath"
 }
 
 # 1. Analyser les imports de modules
 Write-Host "`n=== Analyse des imports de modules ===" -ForegroundColor Cyan
 $moduleImports = Get-ModuleImportAnalysis -ScriptPath $scriptPath -IncludeRequires -IncludeUsingModule
-Write-Host "Modules importés: $($moduleImports.Count)"
+Write-Host "Modules importÃ©s: $($moduleImports.Count)"
 $moduleImports | Format-Table -Property Type, ModuleName, ModuleVersion, Line
 
 # 2. Analyser les utilisations de commandes de modules
 Write-Host "`n=== Analyse des utilisations de commandes de modules ===" -ForegroundColor Cyan
 $commandUsages = Get-ModuleCommandUsage -ScriptPath $scriptPath -IncludeAllCommands
-Write-Host "Commandes utilisées: $($commandUsages.Count)"
+Write-Host "Commandes utilisÃ©es: $($commandUsages.Count)"
 $commandUsages | Format-Table -Property CommandName, ModuleName, Line
 
 # 3. Comparer les imports et les utilisations
 Write-Host "`n=== Comparaison des imports et des utilisations ===" -ForegroundColor Cyan
 $comparison = Compare-ModuleImportsAndUsage -ScriptPath $scriptPath -IncludeRequires -IncludeUsingModule
 
-# Afficher les modules importés mais non utilisés
-Write-Host "`nModules importés mais non utilisés: $($comparison.ImportedButNotUsed.Count)" -ForegroundColor Yellow
+# Afficher les modules importÃ©s mais non utilisÃ©s
+Write-Host "`nModules importÃ©s mais non utilisÃ©s: $($comparison.ImportedButNotUsed.Count)" -ForegroundColor Yellow
 $comparison.ImportedButNotUsed | Format-Table -Property ModuleName, Type, Line
 
 # Afficher les commandes potentiellement manquantes
 Write-Host "`nCommandes potentiellement manquantes: $($comparison.PotentiallyMissingImports.Count)" -ForegroundColor Yellow
 $comparison.PotentiallyMissingImports | Format-Table -Property CommandName, Line
 
-# 4. Créer un graphe de dépendances
-Write-Host "`n=== Graphe de dépendances de modules ===" -ForegroundColor Cyan
+# 4. CrÃ©er un graphe de dÃ©pendances
+Write-Host "`n=== Graphe de dÃ©pendances de modules ===" -ForegroundColor Cyan
 $outputDir = Join-Path -Path $PSScriptRoot -ChildPath "Output"
 if (-not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory | Out-Null
 }
 
-# Exporter le graphe dans différents formats
+# Exporter le graphe dans diffÃ©rents formats
 $textOutputPath = Join-Path -Path $outputDir -ChildPath "ModuleDependencies.txt"
 $jsonOutputPath = Join-Path -Path $outputDir -ChildPath "ModuleDependencies.json"
 $dotOutputPath = Join-Path -Path $outputDir -ChildPath "ModuleDependencies.dot"
@@ -265,14 +265,14 @@ New-ModuleDependencyGraph -ScriptPath $scriptPath -OutputPath $jsonOutputPath -O
 New-ModuleDependencyGraph -ScriptPath $scriptPath -OutputPath $dotOutputPath -OutputFormat "DOT" -IncludeRequires -IncludeUsingModule
 New-ModuleDependencyGraph -ScriptPath $scriptPath -OutputPath $htmlOutputPath -OutputFormat "HTML" -IncludeRequires -IncludeUsingModule
 
-Write-Host "Graphe de dépendances exporté dans les formats suivants:"
+Write-Host "Graphe de dÃ©pendances exportÃ© dans les formats suivants:"
 Write-Host "- Texte: $textOutputPath"
 Write-Host "- JSON: $jsonOutputPath"
 Write-Host "- DOT: $dotOutputPath"
 Write-Host "- HTML: $htmlOutputPath"
 
-# Afficher le graphe de dépendances
-Write-Host "`nGraphe de dépendances:" -ForegroundColor Yellow
+# Afficher le graphe de dÃ©pendances
+Write-Host "`nGraphe de dÃ©pendances:" -ForegroundColor Yellow
 foreach ($node in $graph.Graph.Keys | Sort-Object) {
-    Write-Host "$node dépend de: $($graph.Graph[$node] -join ', ')"
+    Write-Host "$node dÃ©pend de: $($graph.Graph[$node] -join ', ')"
 }

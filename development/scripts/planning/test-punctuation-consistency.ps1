@@ -1,4 +1,4 @@
-# Créer un fichier markdown temporaire pour les tests
+﻿# CrÃ©er un fichier markdown temporaire pour les tests
 $testContent = @"
 # Titre Principal: Introduction
 
@@ -8,7 +8,7 @@ Contenu du titre principal.
 
 Contenu du sous-titre 1.1.
 
-### Sous-sous-titre 1.1.1: Détails
+### Sous-sous-titre 1.1.1: DÃ©tails
 
 Contenu du sous-sous-titre 1.1.1.
 
@@ -28,7 +28,7 @@ Contenu du sous-titre 2.1.
 
 Contenu du sous-sous-titre 2.1.1.
 
-### Sous-sous-titre 2.1.2: Résultats
+### Sous-sous-titre 2.1.2: RÃ©sultats
 
 Contenu du sous-sous-titre 2.1.2.
 
@@ -71,7 +71,7 @@ function Get-MarkdownTitles {
         }
     }
 
-    # Trier les titres par numéro de ligne
+    # Trier les titres par numÃ©ro de ligne
     return $titles | Sort-Object -Property LineNumber
 }
 
@@ -90,13 +90,13 @@ function Get-PunctuationAnalysis {
         SpecialCharacters         = @{}
     }
 
-    # Définir les marques de ponctuation à rechercher
-    $punctuationMarks = @('.', ',', ';', ':', '!', '?', '-', '_', '(', ')', '[', ']', '{', '}', '"', "'", '«', '»', '...', '–', '—')
+    # DÃ©finir les marques de ponctuation Ã  rechercher
+    $punctuationMarks = @('.', ',', ';', ':', '!', '?', '-', '_', '(', ')', '[', ']', '{', '}', '"', "'", 'Â«', 'Â»', '...', 'â€“', 'â€”')
 
-    # Définir les caractères spéciaux à rechercher
+    # DÃ©finir les caractÃ¨res spÃ©ciaux Ã  rechercher
     $specialCharacters = @('#', '@', '$', '%', '&', '*', '+', '=', '<', '>', '/', '\', '|', '~', '^')
 
-    # Vérifier chaque marque de ponctuation
+    # VÃ©rifier chaque marque de ponctuation
     foreach ($mark in $punctuationMarks) {
         if ($Text.Contains($mark)) {
             $analysis.HasPunctuation = $true
@@ -105,7 +105,7 @@ function Get-PunctuationAnalysis {
         }
     }
 
-    # Vérifier les caractères spéciaux
+    # VÃ©rifier les caractÃ¨res spÃ©ciaux
     foreach ($char in $specialCharacters) {
         if ($Text.Contains($char)) {
             $analysis.ContainsSpecialCharacters = $true
@@ -114,7 +114,7 @@ function Get-PunctuationAnalysis {
         }
     }
 
-    # Vérifier si le titre commence par une ponctuation
+    # VÃ©rifier si le titre commence par une ponctuation
     foreach ($mark in $punctuationMarks) {
         if ($Text.StartsWith($mark)) {
             $analysis.StartsWith = $mark
@@ -122,7 +122,7 @@ function Get-PunctuationAnalysis {
         }
     }
 
-    # Vérifier si le titre se termine par une ponctuation
+    # VÃ©rifier si le titre se termine par une ponctuation
     foreach ($mark in $punctuationMarks) {
         if ($Text.EndsWith($mark)) {
             $analysis.EndsWith = $mark
@@ -170,7 +170,7 @@ function Get-TitlePunctuationByLevel {
             if ($titleAnalysis.HasPunctuation) {
                 $titlesWithPunctuation++
 
-                # Ajouter un exemple si nécessaire
+                # Ajouter un exemple si nÃ©cessaire
                 if ($examples.WithPunctuation.Count -lt 3) {
                     $examples.WithPunctuation += $title.Title
                 }
@@ -184,7 +184,7 @@ function Get-TitlePunctuationByLevel {
                     $punctuationByMark[$mark] += $count
                 }
 
-                # Compter les titres commençant par une ponctuation
+                # Compter les titres commenÃ§ant par une ponctuation
                 if ($titleAnalysis.StartsWith) {
                     $startsWithPunctuation++
                     if (-not $startMarks.ContainsKey($titleAnalysis.StartsWith)) {
@@ -202,7 +202,7 @@ function Get-TitlePunctuationByLevel {
                     $endMarks[$titleAnalysis.EndsWith]++
                 }
             } else {
-                # Ajouter un exemple si nécessaire
+                # Ajouter un exemple si nÃ©cessaire
                 if ($examples.WithoutPunctuation.Count -lt 3) {
                     $examples.WithoutPunctuation += $title.Title
                 }
@@ -249,14 +249,14 @@ function Get-TitlePunctuationByLevel {
     return $analysis
 }
 
-# Fonction pour analyser la cohérence de la ponctuation entre les niveaux
+# Fonction pour analyser la cohÃ©rence de la ponctuation entre les niveaux
 function Get-PunctuationConsistencyAnalysis {
     param(
         [hashtable]$LevelAnalysis
     )
 
-    Write-Host "Début de l'analyse de cohérence..."
-    Write-Host "Niveaux reçus: $($LevelAnalysis.Keys -join ', ')"
+    Write-Host "DÃ©but de l'analyse de cohÃ©rence..."
+    Write-Host "Niveaux reÃ§us: $($LevelAnalysis.Keys -join ', ')"
 
     $consistency = @{
         Levels              = $LevelAnalysis.Keys | Sort-Object
@@ -268,9 +268,9 @@ function Get-PunctuationConsistencyAnalysis {
     }
 
     $levels = $consistency.Levels
-    Write-Host "Niveaux triés: $($levels -join ', ')"
+    Write-Host "Niveaux triÃ©s: $($levels -join ', ')"
 
-    # Analyser la cohérence entre chaque paire de niveaux
+    # Analyser la cohÃ©rence entre chaque paire de niveaux
     Write-Host "Analyse des paires de niveaux..."
     Write-Host "Nombre de niveaux: $($levels.Count)"
 
@@ -282,13 +282,13 @@ function Get-PunctuationConsistencyAnalysis {
 
             Write-Host "Analyse de la paire $pair..."
 
-            Write-Host "Vérification de l'existence du niveau $level1 dans LevelAnalysis..."
+            Write-Host "VÃ©rification de l'existence du niveau $level1 dans LevelAnalysis..."
             if (-not $LevelAnalysis.ContainsKey($level1)) {
                 Write-Host "ERREUR: Le niveau $level1 n'existe pas dans LevelAnalysis!"
                 continue
             }
 
-            Write-Host "Vérification de l'existence du niveau $level2 dans LevelAnalysis..."
+            Write-Host "VÃ©rification de l'existence du niveau $level2 dans LevelAnalysis..."
             if (-not $LevelAnalysis.ContainsKey($level2)) {
                 Write-Host "ERREUR: Le niveau $level2 n'existe pas dans LevelAnalysis!"
                 continue
@@ -310,7 +310,7 @@ function Get-PunctuationConsistencyAnalysis {
                 MarkConsistency = 0
             }
 
-            # Comparer les marques de ponctuation utilisées
+            # Comparer les marques de ponctuation utilisÃ©es
             $allMarks = @($analysis1.PunctuationByMark.Keys) + @($analysis2.PunctuationByMark.Keys) | Select-Object -Unique
             $commonMarks = 0
 
@@ -329,10 +329,10 @@ function Get-PunctuationConsistencyAnalysis {
             $punctuationConsistency.MarkConsistency = if ($punctuationConsistency.TotalMarks -gt 0) {
                 [math]::Round(($commonMarks / $punctuationConsistency.TotalMarks) * 100, 2)
             } else {
-                100 # Si aucune marque de ponctuation, considérer comme cohérent
+                100 # Si aucune marque de ponctuation, considÃ©rer comme cohÃ©rent
             }
 
-            # Calculer la cohérence globale pour cette paire
+            # Calculer la cohÃ©rence globale pour cette paire
             $consistencyScore = 0
             $consistencyScore += if ($punctuationConsistency.OverallUsage) { 1 } else { 0 }
             $consistencyScore += if ($punctuationConsistency.StartsWith) { 1 } else { 0 }
@@ -341,7 +341,7 @@ function Get-PunctuationConsistencyAnalysis {
 
             $pairConsistency = [math]::Round(($consistencyScore / 4) * 100, 2)
 
-            # Stocker l'analyse de cohérence pour cette paire
+            # Stocker l'analyse de cohÃ©rence pour cette paire
             $consistency.PairwiseConsistency[$pair] = @{
                 Level1                 = $level1
                 Level2                 = $level2
@@ -355,7 +355,7 @@ function Get-PunctuationConsistencyAnalysis {
                 IsConsistent           = ($pairConsistency -ge 75)
             }
 
-            # Mettre à jour les compteurs globaux
+            # Mettre Ã  jour les compteurs globaux
             if ($consistency.PairwiseConsistency[$pair].IsConsistent) {
                 $consistency.ConsistentPairs++
             }
@@ -363,22 +363,22 @@ function Get-PunctuationConsistencyAnalysis {
         }
     }
 
-    # Calculer la cohérence globale
+    # Calculer la cohÃ©rence globale
     $consistency.OverallConsistency = if ($consistency.TotalPairs -gt 0) {
         [math]::Round(($consistency.ConsistentPairs / $consistency.TotalPairs) * 100, 2)
     } else {
-        100 # Si un seul niveau, considérer comme cohérent
+        100 # Si un seul niveau, considÃ©rer comme cohÃ©rent
     }
 
-    # Générer des recommandations
-    Write-Host "Génération des recommandations..."
-    Write-Host "Score de cohérence globale: $($consistency.OverallConsistency)%"
+    # GÃ©nÃ©rer des recommandations
+    Write-Host "GÃ©nÃ©ration des recommandations..."
+    Write-Host "Score de cohÃ©rence globale: $($consistency.OverallConsistency)%"
 
     if ($consistency.OverallConsistency -lt 75) {
-        Write-Host "Score de cohérence < 75%, génération de recommandations détaillées..."
+        Write-Host "Score de cohÃ©rence < 75%, gÃ©nÃ©ration de recommandations dÃ©taillÃ©es..."
 
-        # Identifier les paires incohérentes
-        Write-Host "Identification des paires incohérentes..."
+        # Identifier les paires incohÃ©rentes
+        Write-Host "Identification des paires incohÃ©rentes..."
         Write-Host "Paires disponibles: $($consistency.PairwiseConsistency.Keys -join ', ')"
 
         $inconsistentPairs = @()
@@ -390,75 +390,75 @@ function Get-PunctuationConsistencyAnalysis {
             }
         }
 
-        Write-Host "Paires incohérentes identifiées: $($inconsistentPairs -join ', ')"
+        Write-Host "Paires incohÃ©rentes identifiÃ©es: $($inconsistentPairs -join ', ')"
         $consistency.Recommendations["InconsistentPairs"] = $inconsistentPairs
 
-        # Recommandations spécifiques pour chaque niveau
-        Write-Host "Génération de recommandations spécifiques pour chaque niveau..."
+        # Recommandations spÃ©cifiques pour chaque niveau
+        Write-Host "GÃ©nÃ©ration de recommandations spÃ©cifiques pour chaque niveau..."
 
         foreach ($level in $levels) {
             Write-Host "Analyse du niveau $level..."
 
-            Write-Host "Vérification de l'existence du niveau $level dans LevelAnalysis..."
+            Write-Host "VÃ©rification de l'existence du niveau $level dans LevelAnalysis..."
             if (-not $LevelAnalysis.ContainsKey($level)) {
                 Write-Host "ERREUR: Le niveau $level n'existe pas dans LevelAnalysis!"
                 continue
             }
 
             $levelAnalysis = $LevelAnalysis[$level]
-            Write-Host "Analyse du niveau $level récupérée avec succès."
+            Write-Host "Analyse du niveau $level rÃ©cupÃ©rÃ©e avec succÃ¨s."
 
-            # Vérifier si ce niveau est impliqué dans des paires incohérentes
-            Write-Host "Vérification de l'implication du niveau $level dans des paires incohérentes..."
+            # VÃ©rifier si ce niveau est impliquÃ© dans des paires incohÃ©rentes
+            Write-Host "VÃ©rification de l'implication du niveau $level dans des paires incohÃ©rentes..."
             $involvedInInconsistency = @()
 
             if ($inconsistentPairs -and $inconsistentPairs.Count -gt 0) {
                 $involvedInInconsistency = $inconsistentPairs | Where-Object { $_ -match "^$level-" -or $_ -match "-$level$" }
-                Write-Host "Paires incohérentes impliquant le niveau $level : $($involvedInInconsistency -join ', ')"
+                Write-Host "Paires incohÃ©rentes impliquant le niveau $level : $($involvedInInconsistency -join ', ')"
             } else {
-                Write-Host "Aucune paire incohérente trouvée."
+                Write-Host "Aucune paire incohÃ©rente trouvÃ©e."
             }
 
             if ($involvedInInconsistency -and $involvedInInconsistency.Count -gt 0) {
-                # Recommandations basées sur l'utilisation de la ponctuation
-                Write-Host "Génération de recommandations pour le niveau $level..."
+                # Recommandations basÃ©es sur l'utilisation de la ponctuation
+                Write-Host "GÃ©nÃ©ration de recommandations pour le niveau $level..."
 
                 if ($levelAnalysis.PercentageWithPunctuation -gt 50) {
-                    Write-Host "Niveau $level - Utilisation fréquente de la ponctuation ($($levelAnalysis.PercentageWithPunctuation)%)"
+                    Write-Host "Niveau $level - Utilisation frÃ©quente de la ponctuation ($($levelAnalysis.PercentageWithPunctuation)%)"
 
-                    Write-Host "Vérification des marques de ponctuation pour le niveau $level..."
+                    Write-Host "VÃ©rification des marques de ponctuation pour le niveau $level..."
                     $specificMarks = @()
                     if ($levelAnalysis.PunctuationByMark -and $levelAnalysis.PunctuationByMark.Keys) {
                         $specificMarks = $levelAnalysis.PunctuationByMark.Keys | Where-Object {
                             $levelAnalysis.PunctuationByMark[$_] -gt 0
                         }
-                        Write-Host "Marques de ponctuation trouvées: $($specificMarks -join ', ')"
+                        Write-Host "Marques de ponctuation trouvÃ©es: $($specificMarks -join ', ')"
                     } else {
-                        Write-Host "Aucune marque de ponctuation trouvée."
+                        Write-Host "Aucune marque de ponctuation trouvÃ©e."
                     }
 
                     $consistency.Recommendations["Level$level"] = @{
-                        CurrentUsage   = "Utilisation fréquente de la ponctuation ($($levelAnalysis.PercentageWithPunctuation)%)"
-                        Recommendation = "Maintenir une utilisation cohérente de la ponctuation avec les autres niveaux"
+                        CurrentUsage   = "Utilisation frÃ©quente de la ponctuation ($($levelAnalysis.PercentageWithPunctuation)%)"
+                        Recommendation = "Maintenir une utilisation cohÃ©rente de la ponctuation avec les autres niveaux"
                         SpecificMarks  = $specificMarks
                     }
                 } else {
-                    Write-Host "Niveau $level - Utilisation limitée de la ponctuation ($($levelAnalysis.PercentageWithPunctuation)%)"
+                    Write-Host "Niveau $level - Utilisation limitÃ©e de la ponctuation ($($levelAnalysis.PercentageWithPunctuation)%)"
 
-                    Write-Host "Vérification des marques de ponctuation pour le niveau $level..."
+                    Write-Host "VÃ©rification des marques de ponctuation pour le niveau $level..."
                     $specificMarks = @()
                     if ($levelAnalysis.PunctuationByMark -and $levelAnalysis.PunctuationByMark.Keys) {
                         $specificMarks = $levelAnalysis.PunctuationByMark.Keys | Where-Object {
                             $levelAnalysis.PunctuationByMark[$_] -gt 0
                         }
-                        Write-Host "Marques de ponctuation trouvées: $($specificMarks -join ', ')"
+                        Write-Host "Marques de ponctuation trouvÃ©es: $($specificMarks -join ', ')"
                     } else {
-                        Write-Host "Aucune marque de ponctuation trouvée."
+                        Write-Host "Aucune marque de ponctuation trouvÃ©e."
                     }
 
                     $consistency.Recommendations["Level$level"] = @{
-                        CurrentUsage   = "Utilisation limitée de la ponctuation ($($levelAnalysis.PercentageWithPunctuation)%)"
-                        Recommendation = "Éviter d'introduire de nouvelles marques de ponctuation pour maintenir la cohérence"
+                        CurrentUsage   = "Utilisation limitÃ©e de la ponctuation ($($levelAnalysis.PercentageWithPunctuation)%)"
+                        Recommendation = "Ã‰viter d'introduire de nouvelles marques de ponctuation pour maintenir la cohÃ©rence"
                         SpecificMarks  = $specificMarks
                     }
                 }
@@ -469,7 +469,7 @@ function Get-PunctuationConsistencyAnalysis {
     return $consistency
 }
 
-# Fonction pour générer un rapport d'analyse de la cohérence de la ponctuation
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse de la cohÃ©rence de la ponctuation
 function New-PunctuationConsistencyReport {
     param(
         [hashtable]$LevelAnalysis,
@@ -477,20 +477,20 @@ function New-PunctuationConsistencyReport {
         [bool]$IncludeExamples = $true
     )
 
-    Write-Host "Début de la génération du rapport..."
-    Write-Host "Niveaux d'analyse reçus: $($LevelAnalysis.LevelAnalysis.Keys -join ', ')"
-    Write-Host "Niveaux de cohérence reçus: $($ConsistencyAnalysis.Levels -join ', ')"
+    Write-Host "DÃ©but de la gÃ©nÃ©ration du rapport..."
+    Write-Host "Niveaux d'analyse reÃ§us: $($LevelAnalysis.LevelAnalysis.Keys -join ', ')"
+    Write-Host "Niveaux de cohÃ©rence reÃ§us: $($ConsistencyAnalysis.Levels -join ', ')"
 
     $levels = $ConsistencyAnalysis.Levels
 
     $report = @"
-# Analyse de la Cohérence de la Ponctuation entre Niveaux de Titres
+# Analyse de la CohÃ©rence de la Ponctuation entre Niveaux de Titres
 
-## Résumé
+## RÃ©sumÃ©
 
 - **Nombre total de niveaux de titres**: $($levels.Count)
-- **Score de cohérence globale**: $($ConsistencyAnalysis.OverallConsistency)%
-- **Paires de niveaux cohérentes**: $($ConsistencyAnalysis.ConsistentPairs)/$($ConsistencyAnalysis.TotalPairs)
+- **Score de cohÃ©rence globale**: $($ConsistencyAnalysis.OverallConsistency)%
+- **Paires de niveaux cohÃ©rentes**: $($ConsistencyAnalysis.ConsistentPairs)/$($ConsistencyAnalysis.TotalPairs)
 
 ## Analyse par Niveau de Titre
 
@@ -522,7 +522,7 @@ function New-PunctuationConsistencyReport {
 
         if ($levelData.PunctuationByMark.Count -gt 0) {
             $report += @"
-**Marques de ponctuation utilisées:**
+**Marques de ponctuation utilisÃ©es:**
 
 "@
             foreach ($mark in $levelData.PunctuationByMark.Keys | Sort-Object) {
@@ -532,7 +532,7 @@ function New-PunctuationConsistencyReport {
             }
         } else {
             $report += @"
-**Aucune marque de ponctuation utilisée à ce niveau.**
+**Aucune marque de ponctuation utilisÃ©e Ã  ce niveau.**
 
 "@
         }
@@ -542,10 +542,10 @@ function New-PunctuationConsistencyReport {
 
             if ($LevelAnalysis.Examples -and $LevelAnalysis.Examples.ContainsKey($level)) {
                 $examples = $LevelAnalysis.Examples[$level]
-                Write-Host "Exemples trouvés pour le niveau $level."
+                Write-Host "Exemples trouvÃ©s pour le niveau $level."
             } else {
-                Write-Host "Aucun exemple trouvé pour le niveau $level."
-                # Créer des exemples vides
+                Write-Host "Aucun exemple trouvÃ© pour le niveau $level."
+                # CrÃ©er des exemples vides
                 $examples = @{
                     WithPunctuation    = @()
                     WithoutPunctuation = @()
@@ -584,7 +584,7 @@ function New-PunctuationConsistencyReport {
 
     $report += @"
 
-## Analyse de Cohérence entre Niveaux
+## Analyse de CohÃ©rence entre Niveaux
 
 "@
 
@@ -597,12 +597,12 @@ function New-PunctuationConsistencyReport {
 
 ### Niveaux $level1 et $level2
 
-- **Score de cohérence**: $($pairData.ConsistencyScore)%
-- **Cohérence d'utilisation globale**: $(if ($pairData.OverallUsageConsistent) { "Oui" } else { "Non" })
-- **Cohérence des marques de ponctuation**: $($pairData.MarkConsistency)% ($($pairData.CommonMarks)/$($pairData.TotalMarks) marques communes)
-- **Cohérence de ponctuation en début de titre**: $(if ($pairData.StartsWithConsistent) { "Oui" } else { "Non" })
-- **Cohérence de ponctuation en fin de titre**: $(if ($pairData.EndsWithConsistent) { "Oui" } else { "Non" })
-- **Verdict**: $(if ($pairData.IsConsistent) { "Cohérent" } else { "Incohérent" })
+- **Score de cohÃ©rence**: $($pairData.ConsistencyScore)%
+- **CohÃ©rence d'utilisation globale**: $(if ($pairData.OverallUsageConsistent) { "Oui" } else { "Non" })
+- **CohÃ©rence des marques de ponctuation**: $($pairData.MarkConsistency)% ($($pairData.CommonMarks)/$($pairData.TotalMarks) marques communes)
+- **CohÃ©rence de ponctuation en dÃ©but de titre**: $(if ($pairData.StartsWithConsistent) { "Oui" } else { "Non" })
+- **CohÃ©rence de ponctuation en fin de titre**: $(if ($pairData.EndsWithConsistent) { "Oui" } else { "Non" })
+- **Verdict**: $(if ($pairData.IsConsistent) { "CohÃ©rent" } else { "IncohÃ©rent" })
 
 "@
     }
@@ -615,13 +615,13 @@ function New-PunctuationConsistencyReport {
 
     if ($ConsistencyAnalysis.OverallConsistency -ge 75) {
         $report += @"
-La cohérence de la ponctuation entre les niveaux de titres est bonne (>= 75%). Continuer à maintenir cette cohérence dans les futurs ajouts au document.
+La cohÃ©rence de la ponctuation entre les niveaux de titres est bonne (>= 75%). Continuer Ã  maintenir cette cohÃ©rence dans les futurs ajouts au document.
 "@
     } else {
         $report += @"
-La cohérence de la ponctuation entre les niveaux de titres pourrait être améliorée (< 75%). Voici quelques recommandations:
+La cohÃ©rence de la ponctuation entre les niveaux de titres pourrait Ãªtre amÃ©liorÃ©e (< 75%). Voici quelques recommandations:
 
-1. **Paires de niveaux incohérentes**: $(
+1. **Paires de niveaux incohÃ©rentes**: $(
     if ($ConsistencyAnalysis.Recommendations.ContainsKey("InconsistentPairs")) {
         $ConsistencyAnalysis.Recommendations["InconsistentPairs"] -join ", "
     } else {
@@ -645,23 +645,23 @@ La cohérence de la ponctuation entre les niveaux de titres pourrait être amél
         }
 
         $report += @"
-3. **Recommandations générales**:
-   - Standardiser l'utilisation de la ponctuation à travers tous les niveaux de titres
-   - Éviter de mélanger différents styles de ponctuation entre les niveaux
-   - Maintenir une cohérence dans l'utilisation des marques de ponctuation spécifiques
-   - Considérer l'adoption d'un guide de style pour la ponctuation des titres
+3. **Recommandations gÃ©nÃ©rales**:
+   - Standardiser l'utilisation de la ponctuation Ã  travers tous les niveaux de titres
+   - Ã‰viter de mÃ©langer diffÃ©rents styles de ponctuation entre les niveaux
+   - Maintenir une cohÃ©rence dans l'utilisation des marques de ponctuation spÃ©cifiques
+   - ConsidÃ©rer l'adoption d'un guide de style pour la ponctuation des titres
 "@
     }
 
     return $report
 }
 
-# Exécuter l'analyse
+# ExÃ©cuter l'analyse
 try {
     # Lire le contenu du fichier
     Write-Host "Lecture du fichier..."
     $content = Get-Content -Path $testFilePath -Raw -Encoding UTF8
-    Write-Host "Contenu du fichier lu avec succès."
+    Write-Host "Contenu du fichier lu avec succÃ¨s."
 
     # Extraire les titres
     Write-Host "Extraction des titres..."
@@ -676,31 +676,31 @@ try {
     # Analyser la ponctuation par niveau
     Write-Host "Analyse de la ponctuation par niveau..."
     $levelAnalysis = Get-TitlePunctuationByLevel -Titles $titles
-    Write-Host "Analyse par niveau terminée."
+    Write-Host "Analyse par niveau terminÃ©e."
 
-    # Afficher les niveaux analysés
-    Write-Host "Niveaux analysés: $($levelAnalysis.LevelAnalysis.Keys -join ', ')"
+    # Afficher les niveaux analysÃ©s
+    Write-Host "Niveaux analysÃ©s: $($levelAnalysis.LevelAnalysis.Keys -join ', ')"
 
-    # Analyser la cohérence entre les niveaux
-    Write-Host "Analyse de la cohérence entre niveaux..."
+    # Analyser la cohÃ©rence entre les niveaux
+    Write-Host "Analyse de la cohÃ©rence entre niveaux..."
     $consistencyAnalysis = Get-PunctuationConsistencyAnalysis -LevelAnalysis $levelAnalysis.LevelAnalysis
-    Write-Host "Analyse de cohérence terminée."
+    Write-Host "Analyse de cohÃ©rence terminÃ©e."
 
-    # Afficher les paires analysées
-    Write-Host "Paires analysées: $($consistencyAnalysis.PairwiseConsistency.Keys -join ', ')"
+    # Afficher les paires analysÃ©es
+    Write-Host "Paires analysÃ©es: $($consistencyAnalysis.PairwiseConsistency.Keys -join ', ')"
 
-    # Générer le rapport d'analyse
-    Write-Host "Génération du rapport..."
+    # GÃ©nÃ©rer le rapport d'analyse
+    Write-Host "GÃ©nÃ©ration du rapport..."
     $report = New-PunctuationConsistencyReport -LevelAnalysis $levelAnalysis -ConsistencyAnalysis $consistencyAnalysis -IncludeExamples $true
-    Write-Host "Rapport généré avec succès."
+    Write-Host "Rapport gÃ©nÃ©rÃ© avec succÃ¨s."
 
     # Enregistrer le rapport
     Set-Content -Path $testOutputPath -Value $report -Encoding UTF8
 
-    Write-Host "Analyse terminée. Rapport enregistré dans '$testOutputPath'."
+    Write-Host "Analyse terminÃ©e. Rapport enregistrÃ© dans '$testOutputPath'."
 
     # Afficher le rapport
-    Write-Host "`n--- Début du rapport ---`n"
+    Write-Host "`n--- DÃ©but du rapport ---`n"
     Write-Host $report
     Write-Host "`n--- Fin du rapport ---`n"
 } catch {

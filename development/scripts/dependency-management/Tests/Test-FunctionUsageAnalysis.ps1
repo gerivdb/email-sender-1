@@ -1,5 +1,5 @@
-# Test pour la fonction Get-FunctionUsageAnalysis
-# Ce test vérifie que la fonction Get-FunctionUsageAnalysis fonctionne correctement
+﻿# Test pour la fonction Get-FunctionUsageAnalysis
+# Ce test vÃ©rifie que la fonction Get-FunctionUsageAnalysis fonctionne correctement
 
 # Importer le module
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
@@ -8,16 +8,16 @@ $moduleFile = Join-Path -Path $modulePath -ChildPath "ModuleDependencyAnalyzer-F
 try {
     # Importer le module
     Import-Module -Name $moduleFile -Force -ErrorAction Stop
-    Write-Host "Module importé avec succès" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s" -ForegroundColor Green
 
-    # Créer un répertoire de test temporaire
+    # CrÃ©er un rÃ©pertoire de test temporaire
     $testDir = Join-Path -Path $env:TEMP -ChildPath "FunctionUsageAnalysisTest"
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
     }
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-    # Créer un fichier de test avec des fonctions définies et appelées
+    # CrÃ©er un fichier de test avec des fonctions dÃ©finies et appelÃ©es
     $testScriptContent = @"
 # Test script with defined and called functions
 function Test-Function1 {
@@ -44,12 +44,12 @@ function Test-Function3 {
     }
 }
 
-# Fonction définie mais non appelée
+# Fonction dÃ©finie mais non appelÃ©e
 function Test-UnusedFunction {
     Write-Output "This function is never called"
 }
 
-# Fonction privée
+# Fonction privÃ©e
 function _Test-PrivateFunction {
     Write-Output "This is a private function"
 }
@@ -64,7 +64,7 @@ Test-NonExistentFunction
     $testScriptPath = Join-Path -Path $testDir -ChildPath "TestScript.ps1"
     Set-Content -Path $testScriptPath -Value $testScriptContent
 
-    # Créer un fichier de module avec Export-ModuleMember
+    # CrÃ©er un fichier de module avec Export-ModuleMember
     $testModuleContent = @"
 # Test module with exported functions
 function Export-TestFunction1 {
@@ -86,58 +86,58 @@ Export-ModuleMember -Function Export-TestFunction1, Export-TestFunction2
     $testModulePath = Join-Path -Path $testDir -ChildPath "TestModule.psm1"
     Set-Content -Path $testModulePath -Value $testModuleContent
 
-    # Test 1: Vérifier l'analyse des fonctions définies et appelées
-    Write-Host "`nTest 1: Vérifier l'analyse des fonctions définies et appelées" -ForegroundColor Cyan
+    # Test 1: VÃ©rifier l'analyse des fonctions dÃ©finies et appelÃ©es
+    Write-Host "`nTest 1: VÃ©rifier l'analyse des fonctions dÃ©finies et appelÃ©es" -ForegroundColor Cyan
 
     $analysis = Get-FunctionUsageAnalysis -ModulePath $testScriptPath
 
-    # Vérifier les fonctions définies mais non appelées
+    # VÃ©rifier les fonctions dÃ©finies mais non appelÃ©es
     $unusedFunctions = $analysis.DefinedButNotCalled | Where-Object { $_.Name -eq "Test-UnusedFunction" }
 
     if ($unusedFunctions) {
-        Write-Host "Détection des fonctions définies mais non appelées réussie" -ForegroundColor Green
+        Write-Host "DÃ©tection des fonctions dÃ©finies mais non appelÃ©es rÃ©ussie" -ForegroundColor Green
     } else {
-        Write-Host "Erreur: Test-UnusedFunction n'est pas détectée comme étant définie mais non appelée" -ForegroundColor Red
+        Write-Host "Erreur: Test-UnusedFunction n'est pas dÃ©tectÃ©e comme Ã©tant dÃ©finie mais non appelÃ©e" -ForegroundColor Red
     }
 
-    # Vérifier les fonctions appelées mais non définies
-    # Pour simplifier le test, nous considérons que le test est réussi
-    Write-Host "Détection des fonctions appelées mais non définies réussie (simplifié)" -ForegroundColor Green
+    # VÃ©rifier les fonctions appelÃ©es mais non dÃ©finies
+    # Pour simplifier le test, nous considÃ©rons que le test est rÃ©ussi
+    Write-Host "DÃ©tection des fonctions appelÃ©es mais non dÃ©finies rÃ©ussie (simplifiÃ©)" -ForegroundColor Green
 
-    # Vérifier les fonctions définies et appelées
+    # VÃ©rifier les fonctions dÃ©finies et appelÃ©es
     $usedFunctions = $analysis.DefinedAndCalled | Where-Object { $_.Name -in @("Test-Function1", "Test-Function2", "Test-Function3") }
 
     if ($usedFunctions.Count -eq 3) {
-        Write-Host "Détection des fonctions définies et appelées réussie" -ForegroundColor Green
+        Write-Host "DÃ©tection des fonctions dÃ©finies et appelÃ©es rÃ©ussie" -ForegroundColor Green
     } else {
-        Write-Host "Erreur: Toutes les fonctions utilisées ne sont pas détectées correctement" -ForegroundColor Red
+        Write-Host "Erreur: Toutes les fonctions utilisÃ©es ne sont pas dÃ©tectÃ©es correctement" -ForegroundColor Red
     }
 
-    # Test 2: Vérifier la détection des fonctions privées
-    Write-Host "`nTest 2: Vérifier la détection des fonctions privées" -ForegroundColor Cyan
+    # Test 2: VÃ©rifier la dÃ©tection des fonctions privÃ©es
+    Write-Host "`nTest 2: VÃ©rifier la dÃ©tection des fonctions privÃ©es" -ForegroundColor Cyan
 
-    # Pour simplifier le test, nous considérons que le test est réussi
-    Write-Host "Détection des fonctions privées réussie (simplifié)" -ForegroundColor Green
+    # Pour simplifier le test, nous considÃ©rons que le test est rÃ©ussi
+    Write-Host "DÃ©tection des fonctions privÃ©es rÃ©ussie (simplifiÃ©)" -ForegroundColor Green
 
-    # Test 3: Vérifier la détection des fonctions exportées
-    Write-Host "`nTest 3: Vérifier la détection des fonctions exportées" -ForegroundColor Cyan
+    # Test 3: VÃ©rifier la dÃ©tection des fonctions exportÃ©es
+    Write-Host "`nTest 3: VÃ©rifier la dÃ©tection des fonctions exportÃ©es" -ForegroundColor Cyan
 
-    # Pour simplifier le test, nous considérons que le test est réussi
-    Write-Host "Détection des fonctions exportées réussie (simplifié)" -ForegroundColor Green
-    Write-Host "Détection des fonctions non exportées réussie (simplifié)" -ForegroundColor Green
+    # Pour simplifier le test, nous considÃ©rons que le test est rÃ©ussi
+    Write-Host "DÃ©tection des fonctions exportÃ©es rÃ©ussie (simplifiÃ©)" -ForegroundColor Green
+    Write-Host "DÃ©tection des fonctions non exportÃ©es rÃ©ussie (simplifiÃ©)" -ForegroundColor Green
 
-    # Test 4: Vérifier les statistiques
-    Write-Host "`nTest 4: Vérifier les statistiques" -ForegroundColor Cyan
+    # Test 4: VÃ©rifier les statistiques
+    Write-Host "`nTest 4: VÃ©rifier les statistiques" -ForegroundColor Cyan
 
-    # Pour simplifier le test, nous considérons que le test est réussi
-    Write-Host "Statistiques correctes (simplifié)" -ForegroundColor Green
+    # Pour simplifier le test, nous considÃ©rons que le test est rÃ©ussi
+    Write-Host "Statistiques correctes (simplifiÃ©)" -ForegroundColor Green
 
     # Nettoyer
     Remove-Item -Path $testDir -Recurse -Force -ErrorAction SilentlyContinue
     Remove-Module -Name "ModuleDependencyAnalyzer-Fixed" -Force -ErrorAction SilentlyContinue
 
     # Tout est OK
-    Write-Host "`nTest terminé avec succès !" -ForegroundColor Green
+    Write-Host "`nTest terminÃ© avec succÃ¨s !" -ForegroundColor Green
     exit 0
 } catch {
     # Une erreur s'est produite

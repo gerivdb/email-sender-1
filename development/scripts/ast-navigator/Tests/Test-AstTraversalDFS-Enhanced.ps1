@@ -1,9 +1,9 @@
-# Script de test pour la fonction Invoke-AstTraversalDFS-Enhanced
+﻿# Script de test pour la fonction Invoke-AstTraversalDFS-Enhanced
 
 # Charger la fonction
 . "$PSScriptRoot\..\Public\Invoke-AstTraversalDFS-Enhanced.ps1"
 
-# Créer un exemple de code PowerShell complexe à analyser
+# CrÃ©er un exemple de code PowerShell complexe Ã  analyser
 $sampleCode = @'
 function Get-Example {
     [CmdletBinding()]
@@ -49,7 +49,7 @@ function Test-Example {
     }
 }
 
-# Fonction avec structure imbriquée complexe
+# Fonction avec structure imbriquÃ©e complexe
 function Test-ComplexStructure {
     [CmdletBinding()]
     param (
@@ -69,18 +69,18 @@ function Test-ComplexStructure {
                     Write-Verbose "Processing directory: $($item.FullName)"
                     
                     if ($Recurse) {
-                        # Appel récursif
+                        # Appel rÃ©cursif
                         Test-ComplexStructure -Path $item.FullName -Recurse
                     }
                     
-                    # Traitement conditionnel imbriqué
+                    # Traitement conditionnel imbriquÃ©
                     if ($item.Name -match "^[A-Z]") {
                         Write-Output "Directory starts with uppercase: $($item.Name)"
                         
-                        # Boucle imbriquée
+                        # Boucle imbriquÃ©e
                         for ($i = 0; $i -lt 3; $i++) {
                             try {
-                                # Bloc try/catch imbriqué
+                                # Bloc try/catch imbriquÃ©
                                 $result = $i * 2
                                 if ($result -gt 3) {
                                     Write-Output "Result is greater than 3: $result"
@@ -98,7 +98,7 @@ function Test-ComplexStructure {
                         }
                     }
                     else {
-                        # Structure switch imbriquée
+                        # Structure switch imbriquÃ©e
                         switch ($item.Extension) {
                             ".txt" { Write-Output "Text file: $($item.Name)" }
                             ".ps1" { Write-Output "PowerShell script: $($item.Name)" }
@@ -126,7 +126,7 @@ $result | ForEach-Object {
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [ref]$tokens, [ref]$errors)
 
-# Vérifier s'il y a des erreurs d'analyse
+# VÃ©rifier s'il y a des erreurs d'analyse
 if ($errors.Count -gt 0) {
     Write-Error "Erreurs d'analyse du code :"
     foreach ($error in $errors) {
@@ -156,8 +156,8 @@ foreach ($variable in $variables) {
     }
 }
 
-# Test 3: Recherche avec prédicat personnalisé
-Write-Host "`n=== Test 3: Recherche avec prédicat personnalise ===" -ForegroundColor Cyan
+# Test 3: Recherche avec prÃ©dicat personnalisÃ©
+Write-Host "`n=== Test 3: Recherche avec prÃ©dicat personnalise ===" -ForegroundColor Cyan
 $predicate = {
     param($node)
     $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -like "Test-*"
@@ -168,7 +168,7 @@ foreach ($function in $testFunctions) {
     Write-Host "  Fonction: $($function.Name) (Ligne $($function.Extent.StartLineNumber))" -ForegroundColor Green
 }
 
-# Test 4: Recherche de structures de contrôle imbriquées
+# Test 4: Recherche de structures de contrÃ´le imbriquÃ©es
 Write-Host "`n=== Test 4: Recherche de structures de controle imbriquees ===" -ForegroundColor Cyan
 $controlStructures = Invoke-AstTraversalDFS-Enhanced -Ast $ast -NodeType "IfStatement"
 Write-Host "Nombre de structures 'if' trouvees: $($controlStructures.Count)" -ForegroundColor Yellow

@@ -1,4 +1,4 @@
-# Définir l'encodage UTF-8 pour les caractères accentués
+﻿# DÃ©finir l'encodage UTF-8 pour les caractÃ¨res accentuÃ©s
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 <#
@@ -6,38 +6,38 @@
     Identifie les sections principales d'un document markdown de niveaux d'expertise.
 
 .DESCRIPTION
-    Ce script analyse un document markdown contenant la définition des niveaux d'expertise
+    Ce script analyse un document markdown contenant la dÃ©finition des niveaux d'expertise
     et identifie les sections principales du document en se basant sur les titres.
-    Il extrait la structure hiérarchique des titres et sous-titres pour faciliter
-    l'extraction ultérieure des critères d'évaluation.
+    Il extrait la structure hiÃ©rarchique des titres et sous-titres pour faciliter
+    l'extraction ultÃ©rieure des critÃ¨res d'Ã©valuation.
 
 .PARAMETER FilePath
-    Chemin vers le fichier markdown contenant la définition des niveaux d'expertise.
-    Par défaut : "..\..\..\data\planning\expertise-levels.md"
+    Chemin vers le fichier markdown contenant la dÃ©finition des niveaux d'expertise.
+    Par dÃ©faut : "..\..\..\data\planning\expertise-levels.md"
 
 .PARAMETER OutputPath
-    Chemin vers le fichier de sortie pour le rapport des sections identifiées.
-    Par défaut : "..\..\..\data\planning\document-sections.md"
+    Chemin vers le fichier de sortie pour le rapport des sections identifiÃ©es.
+    Par dÃ©faut : "..\..\..\data\planning\document-sections.md"
 
 .PARAMETER IncludeContent
-    Indique si le contenu des sections doit être inclus dans le rapport.
-    Par défaut : $false
+    Indique si le contenu des sections doit Ãªtre inclus dans le rapport.
+    Par dÃ©faut : $false
 
 .EXAMPLE
     .\identify-document-sections.ps1
-    Identifie les sections principales du document par défaut.
+    Identifie les sections principales du document par dÃ©faut.
 
 .EXAMPLE
     .\identify-document-sections.ps1 -FilePath "path\to\expertise-levels.md" -OutputPath "path\to\output.md" -IncludeContent $true
-    Identifie les sections principales du document spécifié et inclut le contenu des sections dans le rapport.
+    Identifie les sections principales du document spÃ©cifiÃ© et inclut le contenu des sections dans le rapport.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2023-05-15
+    Date de crÃ©ation: 2023-05-15
 #>
 
-# Paramètres
+# ParamÃ¨tres
 $FilePath = ".\development\data\planning\expertise-levels.md"
 $OutputPath = ".\development\data\planning\document-sections.md"
 $HierarchyOutputPath = ".\development\data\planning\title-hierarchy-analysis.md"
@@ -64,9 +64,9 @@ function Get-DocumentSections {
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
 
-        # Vérifier si la ligne est un titre
+        # VÃ©rifier si la ligne est un titre
         if ($line -match '^(#{1,6})\s+(.+)$') {
-            # Si nous avons déjà une section en cours, l'ajouter à la liste
+            # Si nous avons dÃ©jÃ  une section en cours, l'ajouter Ã  la liste
             if ($currentSection) {
                 $sections += [PSCustomObject]@{
                     Title      = $currentSection
@@ -80,7 +80,7 @@ function Get-DocumentSections {
             $level = $matches[1].Length
             $title = $matches[2]
 
-            # Mettre à jour la section actuelle
+            # Mettre Ã  jour la section actuelle
             $currentSection = $title
             $currentLevel = $level
             $currentContent = @()
@@ -93,7 +93,7 @@ function Get-DocumentSections {
         }
     }
 
-    # Ajouter la dernière section
+    # Ajouter la derniÃ¨re section
     if ($currentSection) {
         $sections += [PSCustomObject]@{
             Title      = $currentSection
@@ -106,13 +106,13 @@ function Get-DocumentSections {
     return $sections
 }
 
-# Fonction pour analyser la hiérarchie des titres et sous-titres
+# Fonction pour analyser la hiÃ©rarchie des titres et sous-titres
 function Get-TitleHierarchy {
     param(
         [array]$Sections
     )
 
-    # Structure pour stocker la hiérarchie
+    # Structure pour stocker la hiÃ©rarchie
     $hierarchy = @{
         Levels                  = @{}
         ParentChildRelations    = @{}
@@ -131,7 +131,7 @@ function Get-TitleHierarchy {
         }
         $hierarchy.Levels[$level] += $section
 
-        # Mettre à jour la profondeur maximale
+        # Mettre Ã  jour la profondeur maximale
         if ($level -gt $hierarchy.MaxDepth) {
             $hierarchy.MaxDepth = $level
         }
@@ -142,7 +142,7 @@ function Get-TitleHierarchy {
         $currentSection = $Sections[$i]
         $currentLevel = $currentSection.Level
 
-        # Trouver le parent (section précédente avec un niveau inférieur)
+        # Trouver le parent (section prÃ©cÃ©dente avec un niveau infÃ©rieur)
         $parentIndex = $i - 1
         while ($parentIndex -ge 0) {
             $potentialParent = $Sections[$parentIndex]
@@ -180,7 +180,7 @@ function Get-TitleHierarchy {
             }
         }
 
-        # Mettre à jour la distribution de profondeur
+        # Mettre Ã  jour la distribution de profondeur
         if (-not $hierarchy.DepthDistribution.ContainsKey($depth)) {
             $hierarchy.DepthDistribution[$depth] = 0
         }
@@ -210,16 +210,16 @@ function Get-TitleHierarchy {
     return $hierarchy
 }
 
-# Fonction pour générer un rapport d'analyse de la hiérarchie
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse de la hiÃ©rarchie
 function New-HierarchyAnalysisReport {
     param(
         [hashtable]$Hierarchy
     )
 
     $report = @"
-# Analyse de la Hiérarchie des Titres et Sous-titres
+# Analyse de la HiÃ©rarchie des Titres et Sous-titres
 
-## Structure Hiérarchique
+## Structure HiÃ©rarchique
 
 ### Distribution par Niveau
 "@
@@ -233,7 +233,7 @@ function New-HierarchyAnalysisReport {
     $report += @"
 
 ### Profondeur Maximale
-La profondeur maximale de la hiérarchie est de **$($Hierarchy.MaxDepth) niveaux**.
+La profondeur maximale de la hiÃ©rarchie est de **$($Hierarchy.MaxDepth) niveaux**.
 
 ### Distribution de Profondeur
 "@
@@ -301,21 +301,21 @@ La profondeur maximale de la hiérarchie est de **$($Hierarchy.MaxDepth) niveaux
 
 ## Observations et Recommandations
 
-1. La structure du document présente **$($Hierarchy.MaxDepth) niveaux de profondeur**, ce qui est approprié pour un document technique.
+1. La structure du document prÃ©sente **$($Hierarchy.MaxDepth) niveaux de profondeur**, ce qui est appropriÃ© pour un document technique.
 
 2. Les sections de niveau 1 ont en moyenne **$([math]::Round($Hierarchy.AverageChildrenPerLevel[1], 2)) enfants directs**, ce qui indique une bonne organisation des informations principales.
 
-3. Les sections de niveau 2 ont en moyenne **$([math]::Round($Hierarchy.AverageChildrenPerLevel[2], 2)) enfants directs**, ce qui montre une décomposition détaillée des sujets.
+3. Les sections de niveau 2 ont en moyenne **$([math]::Round($Hierarchy.AverageChildrenPerLevel[2], 2)) enfants directs**, ce qui montre une dÃ©composition dÃ©taillÃ©e des sujets.
 
-4. La distribution des sections par niveau montre que le document est bien structuré, avec une hiérarchie claire.
+4. La distribution des sections par niveau montre que le document est bien structurÃ©, avec une hiÃ©rarchie claire.
 
-5. Pour l'extraction des critères d'évaluation, il est recommandé de se concentrer sur les sections de niveau 2 et 3, qui contiennent les informations détaillées sur les critères.
+5. Pour l'extraction des critÃ¨res d'Ã©valuation, il est recommandÃ© de se concentrer sur les sections de niveau 2 et 3, qui contiennent les informations dÃ©taillÃ©es sur les critÃ¨res.
 "@
 
     return $report
 }
 
-# Fonction pour générer un rapport des sections
+# Fonction pour gÃ©nÃ©rer un rapport des sections
 function New-SectionsReport {
     param(
         [array]$Sections,
@@ -325,21 +325,21 @@ function New-SectionsReport {
     $report = @"
 # Rapport des Sections du Document
 
-## Structure Hiérarchique
+## Structure HiÃ©rarchique
 
 "@
 
-    # Générer la structure hiérarchique
+    # GÃ©nÃ©rer la structure hiÃ©rarchique
     foreach ($section in $Sections) {
         $indent = "  " * ($section.Level - 1)
         $report += "$indent- **$($section.Title)** (Niveau $($section.Level), Ligne $($section.LineNumber))`n"
     }
 
-    # Ajouter les détails des sections si demandé
+    # Ajouter les dÃ©tails des sections si demandÃ©
     if ($IncludeContent) {
         $report += @"
 
-## Détails des Sections
+## DÃ©tails des Sections
 
 "@
 
@@ -387,11 +387,11 @@ $($section.Content)
 
     $report += @"
 
-### Sections Potentiellement Importantes pour l'Évaluation
+### Sections Potentiellement Importantes pour l'Ã‰valuation
 "@
 
     $evaluationSections = $Sections | Where-Object {
-        $_.Title -match "Critères|Évaluation|Matrice|Niveaux d'Expertise|Expertise"
+        $_.Title -match "CritÃ¨res|Ã‰valuation|Matrice|Niveaux d'Expertise|Expertise"
     }
 
     foreach ($section in $evaluationSections) {
@@ -401,9 +401,9 @@ $($section.Content)
     return $report
 }
 
-# Exécution principale
+# ExÃ©cution principale
 try {
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         throw "Le fichier des niveaux d'expertise n'existe pas : $FilePath"
     }
@@ -414,10 +414,10 @@ try {
     # Extraire les sections
     $sections = Get-DocumentSections -Content $content
 
-    # Générer le rapport
+    # GÃ©nÃ©rer le rapport
     $report = New-SectionsReport -Sections $sections -IncludeContent $IncludeContent
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -427,17 +427,17 @@ try {
     $utf8WithBom = New-Object System.Text.UTF8Encoding $true
     [System.IO.File]::WriteAllText($OutputPath, $report, $utf8WithBom)
 
-    # Afficher un résumé
-    Write-Host "Analyse du document terminée."
-    Write-Host "Nombre total de sections identifiées : $($sections.Count)"
-    Write-Host "Rapport généré à : $OutputPath"
+    # Afficher un rÃ©sumÃ©
+    Write-Host "Analyse du document terminÃ©e."
+    Write-Host "Nombre total de sections identifiÃ©es : $($sections.Count)"
+    Write-Host "Rapport gÃ©nÃ©rÃ© Ã  : $OutputPath"
 
-    # Retourner les sections pour une utilisation ultérieure
+    # Retourner les sections pour une utilisation ultÃ©rieure
     return $sections
 } catch {
     Write-Error "Erreur lors de l'identification des sections du document : $_"
 
-    # Afficher la pile d'appels pour faciliter le débogage
+    # Afficher la pile d'appels pour faciliter le dÃ©bogage
     Write-Host "Pile d'appels :"
     Write-Host $_.ScriptStackTrace
 

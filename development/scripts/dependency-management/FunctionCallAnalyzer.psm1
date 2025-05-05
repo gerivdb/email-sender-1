@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 <#
 .SYNOPSIS
@@ -6,12 +6,12 @@
 
 .DESCRIPTION
     Ce module fournit des fonctions pour analyser les appels de fonction dans les scripts PowerShell,
-    détecter les fonctions définies vs. appelées, et générer un graphe de dépendances de fonctions.
+    dÃ©tecter les fonctions dÃ©finies vs. appelÃ©es, et gÃ©nÃ©rer un graphe de dÃ©pendances de fonctions.
 
 .NOTES
     Auteur: Dependency Management Team
     Version: 1.0
-    Date de création: 2023-07-20
+    Date de crÃ©ation: 2023-07-20
 #>
 
 # Aucun module externe requis pour ce module
@@ -32,7 +32,7 @@ function Get-FunctionCallAnalysis {
         [switch]$ExcludeCommonCmdlets
     )
 
-    # Définir les cmdlets communs à exclure si demandé
+    # DÃ©finir les cmdlets communs Ã  exclure si demandÃ©
     $commonCmdlets = @(
         'Write-Host', 'Write-Output', 'Write-Verbose', 'Write-Debug', 'Write-Error', 'Write-Warning',
         'Get-Item', 'Set-Item', 'Remove-Item', 'Test-Path', 'Get-ChildItem', 'Set-Location',
@@ -44,7 +44,7 @@ function Get-FunctionCallAnalysis {
     $tokens = $errors = $null
     if ($PSCmdlet.ParameterSetName -eq 'Path') {
         if (-not (Test-Path -Path $ScriptPath -PathType Leaf)) {
-            throw "Le fichier spécifié n'existe pas: $ScriptPath"
+            throw "Le fichier spÃ©cifiÃ© n'existe pas: $ScriptPath"
         }
         $ast = [System.Management.Automation.Language.Parser]::ParseFile($ScriptPath, [ref]$tokens, [ref]$errors)
         $scriptName = Split-Path -Path $ScriptPath -Leaf
@@ -53,9 +53,9 @@ function Get-FunctionCallAnalysis {
         $scriptName = "ScriptContent"
     }
 
-    # Vérifier les erreurs de parsing
+    # VÃ©rifier les erreurs de parsing
     if ($errors -and $errors.Count -gt 0) {
-        Write-Warning "Des erreurs de parsing ont été détectées dans le script:"
+        Write-Warning "Des erreurs de parsing ont Ã©tÃ© dÃ©tectÃ©es dans le script:"
         foreach ($error in $errors) {
             Write-Warning "Ligne $($error.Extent.StartLineNumber), Colonne $($error.Extent.StartColumnNumber): $($error.Message)"
         }
@@ -67,7 +67,7 @@ function Get-FunctionCallAnalysis {
             $node.GetType().Name -eq 'CommandAst'
         }, $true)
 
-    # Trouver tous les appels de méthodes si demandé
+    # Trouver tous les appels de mÃ©thodes si demandÃ©
     $methodCalls = @()
     if ($IncludeMethodCalls) {
         $methodCalls = $ast.FindAll({
@@ -77,14 +77,14 @@ function Get-FunctionCallAnalysis {
             }, $true)
     }
 
-    # Collecter les résultats
+    # Collecter les rÃ©sultats
     $results = @()
 
     # Traiter les appels de commandes
     foreach ($call in $commandCalls) {
         $commandName = $call.CommandElements[0].Value
 
-        # Exclure les cmdlets communs si demandé
+        # Exclure les cmdlets communs si demandÃ©
         if ($ExcludeCommonCmdlets -and $commonCmdlets -contains $commandName) {
             continue
         }
@@ -99,7 +99,7 @@ function Get-FunctionCallAnalysis {
         }
     }
 
-    # Traiter les appels de méthodes
+    # Traiter les appels de mÃ©thodes
     foreach ($call in $methodCalls) {
         $memberExpr = $call.Expression
         $methodName = $memberExpr.Member.Value
@@ -135,7 +135,7 @@ function Get-FunctionDefinitionAnalysis {
     $tokens = $errors = $null
     if ($PSCmdlet.ParameterSetName -eq 'Path') {
         if (-not (Test-Path -Path $ScriptPath -PathType Leaf)) {
-            throw "Le fichier spécifié n'existe pas: $ScriptPath"
+            throw "Le fichier spÃ©cifiÃ© n'existe pas: $ScriptPath"
         }
         $ast = [System.Management.Automation.Language.Parser]::ParseFile($ScriptPath, [ref]$tokens, [ref]$errors)
         $scriptName = Split-Path -Path $ScriptPath -Leaf
@@ -144,21 +144,21 @@ function Get-FunctionDefinitionAnalysis {
         $scriptName = "ScriptContent"
     }
 
-    # Vérifier les erreurs de parsing
+    # VÃ©rifier les erreurs de parsing
     if ($errors -and $errors.Count -gt 0) {
-        Write-Warning "Des erreurs de parsing ont été détectées dans le script:"
+        Write-Warning "Des erreurs de parsing ont Ã©tÃ© dÃ©tectÃ©es dans le script:"
         foreach ($error in $errors) {
             Write-Warning "Ligne $($error.Extent.StartLineNumber), Colonne $($error.Extent.StartColumnNumber): $($error.Message)"
         }
     }
 
-    # Trouver toutes les définitions de fonctions
+    # Trouver toutes les dÃ©finitions de fonctions
     $functionDefinitions = $ast.FindAll({
             param($node)
             $node.GetType().Name -eq 'FunctionDefinitionAst'
         }, $true)
 
-    # Collecter les résultats
+    # Collecter les rÃ©sultats
     $results = @()
 
     foreach ($function in $functionDefinitions) {
@@ -168,11 +168,11 @@ function Get-FunctionDefinitionAnalysis {
             Line       = $function.Extent.StartLineNumber
             Column     = $function.Extent.StartColumnNumber
             EndLine    = $function.Extent.EndLineNumber
-            IsExported = $false # Par défaut, on considère que la fonction n'est pas exportée
-            Visibility = "Unknown" # Par défaut, visibilité inconnue
+            IsExported = $false # Par dÃ©faut, on considÃ¨re que la fonction n'est pas exportÃ©e
+            Visibility = "Unknown" # Par dÃ©faut, visibilitÃ© inconnue
         }
 
-        # Déterminer la visibilité de la fonction (Public/Private) en fonction du chemin
+        # DÃ©terminer la visibilitÃ© de la fonction (Public/Private) en fonction du chemin
         if ($PSCmdlet.ParameterSetName -eq 'Path') {
             $directory = Split-Path -Path $ScriptPath -Parent
             $directoryName = Split-Path -Path $directory -Leaf
@@ -184,7 +184,7 @@ function Get-FunctionDefinitionAnalysis {
             }
         }
 
-        # Ajouter les paramètres si demandé
+        # Ajouter les paramÃ¨tres si demandÃ©
         if ($IncludeParameters) {
             $parameters = @()
             if ($function.Parameters) {
@@ -193,7 +193,7 @@ function Get-FunctionDefinitionAnalysis {
                     $paramType = if ($param.StaticType) { $param.StaticType.ToString() } else { "Object" }
                     $isMandatory = $false
 
-                    # Rechercher l'attribut Parameter et la propriété Mandatory
+                    # Rechercher l'attribut Parameter et la propriÃ©tÃ© Mandatory
                     foreach ($attr in $param.Attributes) {
                         if ($attr.TypeName.ToString() -eq "Parameter") {
                             foreach ($namedArg in $attr.NamedArguments) {
@@ -237,19 +237,19 @@ function Compare-FunctionDefinitionsAndCalls {
         [switch]$IncludeParameters
     )
 
-    # Obtenir les définitions de fonctions
+    # Obtenir les dÃ©finitions de fonctions
     $definitions = Get-FunctionDefinitionAnalysis -ScriptPath $ScriptPath -IncludeParameters:$IncludeParameters
 
     # Obtenir les appels de fonctions
     $calls = Get-FunctionCallAnalysis -ScriptPath $ScriptPath -IncludeMethodCalls:$IncludeMethodCalls -ExcludeCommonCmdlets:$ExcludeCommonCmdlets
 
-    # Créer un dictionnaire des fonctions définies
+    # CrÃ©er un dictionnaire des fonctions dÃ©finies
     $definedFunctions = @{}
     foreach ($def in $definitions) {
         $definedFunctions[$def.Name] = $def
     }
 
-    # Créer un dictionnaire des fonctions appelées
+    # CrÃ©er un dictionnaire des fonctions appelÃ©es
     $calledFunctions = @{}
     foreach ($call in $calls) {
         if ($call.Type -eq "Command") {
@@ -260,7 +260,7 @@ function Compare-FunctionDefinitionsAndCalls {
         }
     }
 
-    # Analyser les résultats
+    # Analyser les rÃ©sultats
     $results = [PSCustomObject]@{
         ScriptPath          = $ScriptPath
         DefinedFunctions    = $definitions
@@ -270,14 +270,14 @@ function Compare-FunctionDefinitionsAndCalls {
         CalledButNotDefined = @()
     }
 
-    # Trouver les fonctions définies mais non appelées
+    # Trouver les fonctions dÃ©finies mais non appelÃ©es
     foreach ($defName in $definedFunctions.Keys) {
         if (-not $calledFunctions.ContainsKey($defName)) {
             $results.DefinedButNotCalled += $definedFunctions[$defName]
         }
     }
 
-    # Trouver les fonctions appelées mais non définies
+    # Trouver les fonctions appelÃ©es mais non dÃ©finies
     foreach ($callName in $calledFunctions.Keys) {
         if (-not $definedFunctions.ContainsKey($callName)) {
             $results.CalledButNotDefined += $calledFunctions[$callName]
@@ -307,18 +307,18 @@ function New-FunctionDependencyGraph {
         [switch]$ExcludeCommonCmdlets
     )
 
-    # Obtenir les définitions et appels de fonctions
+    # Obtenir les dÃ©finitions et appels de fonctions
     $analysis = Compare-FunctionDefinitionsAndCalls -ScriptPath $ScriptPath -IncludeMethodCalls:$IncludeMethodCalls -ExcludeCommonCmdlets:$ExcludeCommonCmdlets -IncludeParameters
 
-    # Créer le graphe de dépendances
+    # CrÃ©er le graphe de dÃ©pendances
     $graph = @{}
 
-    # Initialiser le graphe avec toutes les fonctions définies
+    # Initialiser le graphe avec toutes les fonctions dÃ©finies
     foreach ($function in $analysis.DefinedFunctions) {
         $graph[$function.Name] = @()
     }
 
-    # Ajouter les dépendances
+    # Ajouter les dÃ©pendances
     foreach ($call in $analysis.CalledFunctions) {
         $callerFunction = $null
 
@@ -330,22 +330,22 @@ function New-FunctionDependencyGraph {
             }
         }
 
-        # Si l'appel est dans une fonction définie et la fonction appelée est également définie
+        # Si l'appel est dans une fonction dÃ©finie et la fonction appelÃ©e est Ã©galement dÃ©finie
         if ($callerFunction -and $graph.ContainsKey($callerFunction) -and $graph.ContainsKey($call.Name)) {
-            # Éviter les auto-références
+            # Ã‰viter les auto-rÃ©fÃ©rences
             if ($callerFunction -ne $call.Name) {
                 $graph[$callerFunction] += $call.Name
             }
         }
     }
 
-    # Éliminer les doublons dans les dépendances
+    # Ã‰liminer les doublons dans les dÃ©pendances
     $graphKeys = $graph.Keys.Clone()
     foreach ($key in $graphKeys) {
         $graph[$key] = $graph[$key] | Select-Object -Unique
     }
 
-    # Préparer le résultat
+    # PrÃ©parer le rÃ©sultat
     $result = [PSCustomObject]@{
         ScriptPath = $ScriptPath
         Graph      = $graph
@@ -353,13 +353,13 @@ function New-FunctionDependencyGraph {
         Calls      = $analysis.CalledFunctions
     }
 
-    # Exporter le résultat si demandé
+    # Exporter le rÃ©sultat si demandÃ©
     if ($OutputPath) {
         switch ($OutputFormat) {
             "Text" {
-                $output = "Graphe de dépendances de fonctions pour $ScriptPath`n`n"
+                $output = "Graphe de dÃ©pendances de fonctions pour $ScriptPath`n`n"
                 foreach ($function in $graph.Keys | Sort-Object) {
-                    $output += "$function dépend de: $($graph[$function] -join ', ')`n"
+                    $output += "$function dÃ©pend de: $($graph[$function] -join ', ')`n"
                 }
                 $output | Out-File -FilePath $OutputPath -Encoding UTF8
             }
@@ -388,7 +388,7 @@ function New-FunctionDependencyGraph {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Graphe de dépendances de fonctions</title>
+    <title>Graphe de dÃ©pendances de fonctions</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
         h1 { color: #333; }
@@ -398,14 +398,14 @@ function New-FunctionDependencyGraph {
     </style>
 </head>
 <body>
-    <h1>Graphe de dépendances de fonctions pour $ScriptPath</h1>
+    <h1>Graphe de dÃ©pendances de fonctions pour $ScriptPath</h1>
     <div class="graph">
 "@
 
                 foreach ($function in $graph.Keys | Sort-Object) {
                     $html += @"
         <div class="function">
-            <span class="function-name">$function</span> dépend de:
+            <span class="function-name">$function</span> dÃ©pend de:
             <div class="dependencies">
 "@
                     if ($graph[$function].Count -gt 0) {
@@ -413,7 +413,7 @@ function New-FunctionDependencyGraph {
                             $html += "                <div>$dependency</div>`n"
                         }
                     } else {
-                        $html += "                <div>(aucune dépendance)</div>`n"
+                        $html += "                <div>(aucune dÃ©pendance)</div>`n"
                     }
 
                     $html += @"
@@ -431,7 +431,7 @@ function New-FunctionDependencyGraph {
             }
         }
 
-        Write-Verbose "Graphe de dépendances exporté vers: $OutputPath"
+        Write-Verbose "Graphe de dÃ©pendances exportÃ© vers: $OutputPath"
     }
 
     return $result

@@ -1,11 +1,11 @@
-function Get-PublicIP {
+﻿function Get-PublicIP {
     [CmdletBinding()]
     param(
         [switch]$IncludeVPNCheck,
         [switch]$ShowDetails
     )
 
-    # Liste des services avec priorité sur ceux supportant IPv6
+    # Liste des services avec prioritÃ© sur ceux supportant IPv6
     $ipServices = @(
         @{
             Uri = "https://api64.ipify.org?format=json"
@@ -47,18 +47,18 @@ function Get-PublicIP {
         }
         catch {
             if ($ShowDetails) {
-                Write-Warning "Échec du service $($service.Uri) : $_"
+                Write-Warning "Ã‰chec du service $($service.Uri) : $_"
             }
             continue
         }
     }
 
-    # Vérifier si une IP apparaît le plus souvent (consensus)
+    # VÃ©rifier si une IP apparaÃ®t le plus souvent (consensus)
     if ($results.Count -gt 0) {
         $consensusIP = $results | Group-Object | Sort-Object Count -Descending | Select-Object -First 1 | Select-Object -ExpandProperty Name
     }
     else {
-        Write-Warning "Aucune IP n'a pu être récupérée"
+        Write-Warning "Aucune IP n'a pu Ãªtre rÃ©cupÃ©rÃ©e"
         return
     }
 
@@ -88,7 +88,7 @@ function Get-PublicIP {
         }
         catch {
             if ($ShowDetails) {
-                Write-Warning "Erreur lors de la vérification VPN avec ip-api.com : $_"
+                Write-Warning "Erreur lors de la vÃ©rification VPN avec ip-api.com : $_"
             }
         }
 
@@ -110,7 +110,7 @@ function Get-PublicIP {
         }
     }
 
-    # Retourner les résultats
+    # Retourner les rÃ©sultats
     return [PSCustomObject]@{
         IP = $consensusIP
         VPNDetected = $vpnDetected
@@ -130,14 +130,14 @@ function Get-PublicIP {
 
 # Exemple d'utilisation
 $ipInfo = Get-PublicIP -IncludeVPNCheck -ShowDetails
-Write-Host "`nRésultats:" -ForegroundColor Cyan
+Write-Host "`nRÃ©sultats:" -ForegroundColor Cyan
 Write-Host "IP Publique     : $($ipInfo.IP)"
-Write-Host "VPN Détecté     : $($ipInfo.VPNDetected) (Score: $($ipInfo.VPNScore)%)"
+Write-Host "VPN DÃ©tectÃ©     : $($ipInfo.VPNDetected) (Score: $($ipInfo.VPNScore)%)"
 Write-Host "Localisation    : $($ipInfo.Location)"
 Write-Host "Fournisseur     : $($ipInfo.ISP)"
 
 if ($ipInfo.Details) {
-    Write-Host "`nDétails des vérifications:" -ForegroundColor Yellow
+    Write-Host "`nDÃ©tails des vÃ©rifications:" -ForegroundColor Yellow
     foreach ($detail in $ipInfo.Details) {
         Write-Host "$($detail.Source):"
         foreach ($check in $detail.Checks) {

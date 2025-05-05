@@ -1,4 +1,4 @@
-BeforeAll {
+﻿BeforeAll {
     # Importer le module commun
     $scriptPath = Split-Path -Parent $PSScriptRoot
     $projectRoot = Split-Path -Parent $scriptPath
@@ -13,17 +13,17 @@ BeforeAll {
 }
 
 Describe "TaskVector" {
-    It "Convertit correctement une tâche en vecteur" {
-        # Créer une tâche de test
+    It "Convertit correctement une tÃ¢che en vecteur" {
+        # CrÃ©er une tÃ¢che de test
         $task = [PSCustomObject]@{
             Id = "1.1"
-            Description = "Tâche de test 1"
+            Description = "TÃ¢che de test 1"
             Status = "Incomplete"
             Level = 1
-            Section = "Tâches actives"
+            Section = "TÃ¢ches actives"
         }
         
-        # Définir une fonction de mock pour la conversion
+        # DÃ©finir une fonction de mock pour la conversion
         function ConvertToVector {
             param (
                 [PSCustomObject]$Task
@@ -39,10 +39,10 @@ Describe "TaskVector" {
             }
         }
         
-        # Convertir la tâche en vecteur
+        # Convertir la tÃ¢che en vecteur
         $vector = ConvertToVector -Task $task
         
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $vector | Should -Not -BeNullOrEmpty
         $vector.Id | Should -Be $task.Id
         $vector.Description | Should -Be $task.Description
@@ -53,25 +53,25 @@ Describe "TaskVector" {
         $vector.Vector.Count | Should -BeGreaterThan 0
     }
     
-    It "Génère des vecteurs différents pour des tâches différentes" {
-        # Créer deux tâches de test
+    It "GÃ©nÃ¨re des vecteurs diffÃ©rents pour des tÃ¢ches diffÃ©rentes" {
+        # CrÃ©er deux tÃ¢ches de test
         $task1 = [PSCustomObject]@{
             Id = "1.1"
-            Description = "Tâche de test 1"
+            Description = "TÃ¢che de test 1"
             Status = "Incomplete"
             Level = 1
-            Section = "Tâches actives"
+            Section = "TÃ¢ches actives"
         }
         
         $task2 = [PSCustomObject]@{
             Id = "1.2"
-            Description = "Tâche de test 2"
+            Description = "TÃ¢che de test 2"
             Status = "Incomplete"
             Level = 1
-            Section = "Tâches actives"
+            Section = "TÃ¢ches actives"
         }
         
-        # Définir une fonction de mock pour la conversion
+        # DÃ©finir une fonction de mock pour la conversion
         function ConvertToVector {
             param (
                 [PSCustomObject]$Task
@@ -98,33 +98,33 @@ Describe "TaskVector" {
             }
         }
         
-        # Convertir les tâches en vecteurs
+        # Convertir les tÃ¢ches en vecteurs
         $vector1 = ConvertToVector -Task $task1
         $vector2 = ConvertToVector -Task $task2
         
-        # Vérifier que les vecteurs sont différents
+        # VÃ©rifier que les vecteurs sont diffÃ©rents
         $vector1.Vector | Should -Not -Be $vector2.Vector
     }
     
-    It "Génère des vecteurs similaires pour des tâches similaires" {
-        # Créer deux tâches similaires
+    It "GÃ©nÃ¨re des vecteurs similaires pour des tÃ¢ches similaires" {
+        # CrÃ©er deux tÃ¢ches similaires
         $task1 = [PSCustomObject]@{
             Id = "1.1"
-            Description = "Implémenter la fonction de recherche"
+            Description = "ImplÃ©menter la fonction de recherche"
             Status = "Incomplete"
             Level = 1
-            Section = "Tâches actives"
+            Section = "TÃ¢ches actives"
         }
         
         $task2 = [PSCustomObject]@{
             Id = "1.2"
-            Description = "Implémenter la fonction de recherche avancée"
+            Description = "ImplÃ©menter la fonction de recherche avancÃ©e"
             Status = "Incomplete"
             Level = 1
-            Section = "Tâches actives"
+            Section = "TÃ¢ches actives"
         }
         
-        # Définir une fonction de mock pour la conversion
+        # DÃ©finir une fonction de mock pour la conversion
         function ConvertToVector {
             param (
                 [PSCustomObject]$Task
@@ -140,11 +140,11 @@ Describe "TaskVector" {
             }
         }
         
-        # Convertir les tâches en vecteurs
+        # Convertir les tÃ¢ches en vecteurs
         $vector1 = ConvertToVector -Task $task1
         $vector2 = ConvertToVector -Task $task2
         
-        # Nous ne pouvons pas comparer directement les vecteurs, mais nous pouvons vérifier qu'ils existent
+        # Nous ne pouvons pas comparer directement les vecteurs, mais nous pouvons vÃ©rifier qu'ils existent
         $vector1.Vector | Should -Not -BeNullOrEmpty
         $vector2.Vector | Should -Not -BeNullOrEmpty
     }

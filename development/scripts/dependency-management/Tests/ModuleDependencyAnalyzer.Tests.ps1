@@ -1,10 +1,10 @@
-BeforeAll {
-    # Importer le module à tester
+﻿BeforeAll {
+    # Importer le module Ã  tester
     $moduleRoot = Split-Path -Parent $PSScriptRoot
     $modulePath = Join-Path -Path $moduleRoot -ChildPath "ModuleDependencyAnalyzer.psm1"
     Import-Module -Name $modulePath -Force
 
-    # Créer un script temporaire pour les tests
+    # CrÃ©er un script temporaire pour les tests
     $testScriptContent = @'
 #Requires -Version 5.1
 #Requires -Modules @{ModuleName="PSReadLine"; ModuleVersion="2.0.0"}
@@ -56,13 +56,13 @@ Describe "Get-ModuleImportAnalysis" {
         $result | Where-Object { $_.ModuleName -eq "Pester" } | Should -Not -BeNullOrEmpty
     }
 
-    It "Devrait inclure les directives #Requires si demandé" {
+    It "Devrait inclure les directives #Requires si demandÃ©" {
         $result = Get-ModuleImportAnalysis -ScriptPath $testScriptPath -IncludeRequires
         $result | Should -Not -BeNullOrEmpty
         $result | Where-Object { $_.Type -eq "#Requires -Modules" -and $_.ModuleName -eq "PSReadLine" } | Should -Not -BeNullOrEmpty
     }
 
-    It "Devrait inclure les directives using module si demandé" {
+    It "Devrait inclure les directives using module si demandÃ©" {
         $result = Get-ModuleImportAnalysis -ScriptPath $testScriptPath -IncludeUsingModule
         $result | Should -Not -BeNullOrEmpty
         $result | Where-Object { $_.Type -eq "using module" -and $_.ModuleName -eq "PSScriptAnalyzer" } | Should -Not -BeNullOrEmpty
@@ -85,7 +85,7 @@ Describe "Get-ModuleCommandUsage" {
         $result | Where-Object { $_.CommandName -eq "ConvertTo-Json" } | Should -Not -BeNullOrEmpty
     }
 
-    It "Devrait filtrer les commandes par module si spécifié" {
+    It "Devrait filtrer les commandes par module si spÃ©cifiÃ©" {
         $result = Get-ModuleCommandUsage -ScriptPath $testScriptPath -ModuleNames @("PSScriptAnalyzer")
         $result | Should -Not -BeNullOrEmpty
         $result | Where-Object { $_.CommandName -eq "Invoke-ScriptAnalyzer" } | Should -Not -BeNullOrEmpty
@@ -107,11 +107,11 @@ Describe "Compare-ModuleImportsAndUsage" {
         $result.UsedCommands | Should -Not -BeNullOrEmpty
     }
 
-    It "Devrait identifier les modules importés mais non utilisés" {
-        # Créer un script avec un module importé mais non utilisé
+    It "Devrait identifier les modules importÃ©s mais non utilisÃ©s" {
+        # CrÃ©er un script avec un module importÃ© mais non utilisÃ©
         $unusedModuleScript = @'
 Import-Module -Name PSScriptAnalyzer
-# Aucune commande de PSScriptAnalyzer n'est utilisée
+# Aucune commande de PSScriptAnalyzer n'est utilisÃ©e
 '@
         $unusedModuleScriptPath = Join-Path -Path $TestDrive -ChildPath "UnusedModule.ps1"
         Set-Content -Path $unusedModuleScriptPath -Value $unusedModuleScript
@@ -122,7 +122,7 @@ Import-Module -Name PSScriptAnalyzer
     }
 
     It "Devrait identifier les commandes potentiellement manquantes" {
-        # Créer un script avec une commande utilisée mais dont le module n'est pas importé
+        # CrÃ©er un script avec une commande utilisÃ©e mais dont le module n'est pas importÃ©
         $missingImportScript = @'
 # Utilisation d'une commande sans importer le module
 Invoke-ScriptAnalyzer -Path ".\script.ps1"
@@ -137,7 +137,7 @@ Invoke-ScriptAnalyzer -Path ".\script.ps1"
 }
 
 Describe "New-ModuleDependencyGraph" {
-    It "Devrait créer un graphe de dépendances de modules" {
+    It "Devrait crÃ©er un graphe de dÃ©pendances de modules" {
         $result = New-ModuleDependencyGraph -ScriptPath $testScriptPath
         $result | Should -Not -BeNullOrEmpty
         $result.Graph | Should -Not -BeNullOrEmpty
@@ -151,7 +151,7 @@ Describe "New-ModuleDependencyGraph" {
         New-ModuleDependencyGraph -ScriptPath $testScriptPath -OutputPath $outputPath -OutputFormat "Text"
         Test-Path -Path $outputPath | Should -Be $true
         $content = Get-Content -Path $outputPath -Raw
-        $content | Should -Match "TestModules.ps1 dépend de: PSScriptAnalyzer, Pester, Microsoft.PowerShell.Utility"
+        $content | Should -Match "TestModules.ps1 dÃ©pend de: PSScriptAnalyzer, Pester, Microsoft.PowerShell.Utility"
     }
 
     It "Devrait exporter le graphe au format JSON" {

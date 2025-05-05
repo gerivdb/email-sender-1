@@ -1,4 +1,4 @@
-# Navigate-Roadmap.ps1
+﻿# Navigate-Roadmap.ps1
 # Script pour naviguer facilement dans la roadmap et ses archives
 
 [CmdletBinding()]
@@ -134,7 +134,7 @@ function Show-RoadmapSummary {
         return $summary
     }
     catch {
-        Write-Log "Erreur lors de la génération du résumé: $_" -Level Error
+        Write-Log "Erreur lors de la gÃ©nÃ©ration du rÃ©sumÃ©: $_" -Level Error
         return @()
     }
 }
@@ -171,7 +171,7 @@ function Show-RoadmapSection {
             }
             elseif ($inSection) {
                 if ($level -gt 0 -and $level -le $sectionLevel) {
-                    # Nouvelle section de même niveau ou supérieur, on sort de la section
+                    # Nouvelle section de mÃªme niveau ou supÃ©rieur, on sort de la section
                     break
                 }
                 
@@ -182,7 +182,7 @@ function Show-RoadmapSection {
         return $sectionContent
     }
     catch {
-        Write-Log "Erreur lors de la récupération de la section: $_" -Level Error
+        Write-Log "Erreur lors de la rÃ©cupÃ©ration de la section: $_" -Level Error
         return @()
     }
 }
@@ -316,12 +316,12 @@ function Open-InEditor {
         return $true
     }
     catch {
-        Write-Log "Erreur lors de l'ouverture de l'éditeur: $_" -Level Error
+        Write-Log "Erreur lors de l'ouverture de l'Ã©diteur: $_" -Level Error
         return $false
     }
 }
 
-# Exécution principale
+# ExÃ©cution principale
 switch ($Mode) {
     "Active" {
         if (-not [string]::IsNullOrEmpty($SectionId)) {
@@ -336,15 +336,15 @@ switch ($Mode) {
                 }
             }
             else {
-                Write-Log "Section $SectionId non trouvée dans la roadmap active." -Level Warning
+                Write-Log "Section $SectionId non trouvÃ©e dans la roadmap active." -Level Warning
             }
         }
         else {
-            Write-Log "Affichage du résumé de la roadmap active..." -Level Info
+            Write-Log "Affichage du rÃ©sumÃ© de la roadmap active..." -Level Info
             $summary = Show-RoadmapSummary -RoadmapPath $ActiveRoadmapPath -MaxLevel $DetailLevel
             
             if ($summary.Count -gt 0) {
-                Write-Host "`n# Résumé de la Roadmap Active`n"
+                Write-Host "`n# RÃ©sumÃ© de la Roadmap Active`n"
                 $summary | ForEach-Object { Write-Host $_ }
                 
                 if ($OpenInEditor) {
@@ -355,7 +355,7 @@ switch ($Mode) {
     }
     "Completed" {
         if (-not [string]::IsNullOrEmpty($SectionId)) {
-            Write-Log "Affichage de la section $SectionId de la roadmap complétée..." -Level Info
+            Write-Log "Affichage de la section $SectionId de la roadmap complÃ©tÃ©e..." -Level Info
             $sectionContent = Show-RoadmapSection -RoadmapPath $CompletedRoadmapPath -SectionId $SectionId
             
             if ($sectionContent.Count -gt 0) {
@@ -366,12 +366,12 @@ switch ($Mode) {
                 }
             }
             else {
-                # Chercher dans les sections archivées
+                # Chercher dans les sections archivÃ©es
                 $archiveFiles = Get-ChildItem -Path $SectionsArchivePath -Filter "section_${SectionId}_*.md" -ErrorAction SilentlyContinue
                 
                 if ($archiveFiles.Count -gt 0) {
                     $archiveFile = $archiveFiles[0].FullName
-                    Write-Log "Section trouvée dans les archives: $archiveFile" -Level Info
+                    Write-Log "Section trouvÃ©e dans les archives: $archiveFile" -Level Info
                     
                     $archiveContent = Get-Content -Path $archiveFile -Encoding UTF8
                     $archiveContent | ForEach-Object { Write-Host $_ }
@@ -381,16 +381,16 @@ switch ($Mode) {
                     }
                 }
                 else {
-                    Write-Log "Section $SectionId non trouvée dans la roadmap complétée ni dans les archives." -Level Warning
+                    Write-Log "Section $SectionId non trouvÃ©e dans la roadmap complÃ©tÃ©e ni dans les archives." -Level Warning
                 }
             }
         }
         else {
-            Write-Log "Affichage du résumé de la roadmap complétée..." -Level Info
+            Write-Log "Affichage du rÃ©sumÃ© de la roadmap complÃ©tÃ©e..." -Level Info
             $summary = Show-RoadmapSummary -RoadmapPath $CompletedRoadmapPath -MaxLevel $DetailLevel
             
             if ($summary.Count -gt 0) {
-                Write-Host "`n# Résumé de la Roadmap Complétée`n"
+                Write-Host "`n# RÃ©sumÃ© de la Roadmap ComplÃ©tÃ©e`n"
                 $summary | ForEach-Object { Write-Host $_ }
                 
                 if ($OpenInEditor) {
@@ -400,30 +400,30 @@ switch ($Mode) {
         }
     }
     "All" {
-        Write-Log "Affichage du résumé complet de la roadmap..." -Level Info
+        Write-Log "Affichage du rÃ©sumÃ© complet de la roadmap..." -Level Info
         
         $activeSummary = Show-RoadmapSummary -RoadmapPath $ActiveRoadmapPath -MaxLevel $DetailLevel
         $completedSummary = Show-RoadmapSummary -RoadmapPath $CompletedRoadmapPath -MaxLevel $DetailLevel
         
-        Write-Host "`n# Résumé de la Roadmap Active`n"
+        Write-Host "`n# RÃ©sumÃ© de la Roadmap Active`n"
         if ($activeSummary.Count -gt 0) {
             $activeSummary | ForEach-Object { Write-Host $_ }
         }
         else {
-            Write-Host "  Aucune tâche active."
+            Write-Host "  Aucune tÃ¢che active."
         }
         
-        Write-Host "`n# Résumé de la Roadmap Complétée`n"
+        Write-Host "`n# RÃ©sumÃ© de la Roadmap ComplÃ©tÃ©e`n"
         if ($completedSummary.Count -gt 0) {
             $completedSummary | ForEach-Object { Write-Host $_ }
         }
         else {
-            Write-Host "  Aucune tâche complétée."
+            Write-Host "  Aucune tÃ¢che complÃ©tÃ©e."
         }
     }
     "Search" {
         if ([string]::IsNullOrEmpty($SearchTerm)) {
-            Write-Log "Terme de recherche non spécifié." -Level Error
+            Write-Log "Terme de recherche non spÃ©cifiÃ©." -Level Error
             return
         }
         
@@ -436,7 +436,7 @@ switch ($Mode) {
         $allResults = $activeResults + $completedResults + $archiveResults
         
         if ($allResults.Count -gt 0) {
-            Write-Host "`n# Résultats de recherche pour '$SearchTerm'`n"
+            Write-Host "`n# RÃ©sultats de recherche pour '$SearchTerm'`n"
             
             $allResults | ForEach-Object {
                 $filePath = $_.FilePath
@@ -453,7 +453,7 @@ switch ($Mode) {
             }
         }
         else {
-            Write-Log "Aucun résultat trouvé pour '$SearchTerm'." -Level Warning
+            Write-Log "Aucun rÃ©sultat trouvÃ© pour '$SearchTerm'." -Level Warning
         }
     }
 }

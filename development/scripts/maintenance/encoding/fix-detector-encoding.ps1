@@ -1,4 +1,4 @@
-# Script pour corriger l'encodage du fichier de dÃ©tection
+﻿# Script pour corriger l'encodage du fichier de dÃƒÂ©tection
 $filePath = ".\development\scripts\maintenance\encoding\Detect-VariableReferencesInAccentedStrings.ps1"
 $content = Get-Content -Path $filePath -Raw
 $utf8WithBom = New-Object System.Text.UTF8Encoding $true

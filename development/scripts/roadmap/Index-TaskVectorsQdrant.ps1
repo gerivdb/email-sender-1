@@ -1,5 +1,5 @@
-# Index-TaskVectorsQdrant.ps1
-# Script pour indexer les vecteurs de tâches par identifiant, statut, date, etc. dans Qdrant
+﻿# Index-TaskVectorsQdrant.ps1
+# Script pour indexer les vecteurs de tÃ¢ches par identifiant, statut, date, etc. dans Qdrant
 
 [CmdletBinding()]
 param (
@@ -16,7 +16,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -39,24 +39,24 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         } else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     } catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("qdrant_client", "json", "datetime")
     $missingPackages = @()
@@ -77,23 +77,23 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         } else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
 
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour indexer les vecteurs
+# Fonction pour crÃ©er un script Python temporaire pour indexer les vecteurs
 function New-TaskIndexScript {
     [CmdletBinding()]
     param (
@@ -122,33 +122,33 @@ from qdrant_client import QdrantClient
 from qdrant_client.http.exceptions import UnexpectedResponse
 
 def main():
-    # Paramètres
+    # ParamÃ¨tres
     qdrant_url = r'$QdrantUrl'
     collection_name = '$CollectionName'
     index_output_path = r'$IndexOutputPath'
     force = $($Force.ToString().ToLower() -replace "true", "True" -replace "false", "False")
 
-    # Vérifier si le fichier d'index existe déjà
+    # VÃ©rifier si le fichier d'index existe dÃ©jÃ 
     if os.path.exists(index_output_path) and not force:
-        print(f"Le fichier d'index {index_output_path} existe déjà. Utilisez -Force pour l'écraser.")
+        print(f"Le fichier d'index {index_output_path} existe dÃ©jÃ . Utilisez -Force pour l'Ã©craser.")
         sys.exit(0)
 
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     os.makedirs(os.path.dirname(index_output_path), exist_ok=True)
 
     # Initialiser le client Qdrant
-    print(f"Connexion à Qdrant sur {qdrant_url}...")
+    print(f"Connexion Ã  Qdrant sur {qdrant_url}...")
     try:
         client = QdrantClient(url=qdrant_url)
 
-        # Vérifier si Qdrant est accessible
+        # VÃ©rifier si Qdrant est accessible
         client.get_collections()
     except Exception as e:
-        print(f"Erreur lors de la connexion à Qdrant: {e}")
-        print("Assurez-vous que Qdrant est en cours d'exécution et accessible à l'URL spécifiée.")
+        print(f"Erreur lors de la connexion Ã  Qdrant: {e}")
+        print("Assurez-vous que Qdrant est en cours d'exÃ©cution et accessible Ã  l'URL spÃ©cifiÃ©e.")
         sys.exit(1)
 
-    # Vérifier si la collection existe
+    # VÃ©rifier si la collection existe
     try:
         collections = client.get_collections().collections
         collection_exists = any(c.name == collection_name for c in collections)
@@ -157,10 +157,10 @@ def main():
             print(f"La collection {collection_name} n'existe pas dans Qdrant.")
             sys.exit(1)
 
-        # Récupérer toutes les tâches
-        print("Récupération des données de la collection...")
+        # RÃ©cupÃ©rer toutes les tÃ¢ches
+        print("RÃ©cupÃ©ration des donnÃ©es de la collection...")
 
-        # Récupérer les informations sur la collection
+        # RÃ©cupÃ©rer les informations sur la collection
         collection_info = client.get_collection(collection_name=collection_name)
         total_points = collection_info.vectors_count
 
@@ -168,7 +168,7 @@ def main():
             print("La collection est vide.")
             sys.exit(0)
 
-        # Récupérer tous les points (tâches)
+        # RÃ©cupÃ©rer tous les points (tÃ¢ches)
         scroll_result = client.scroll(
             collection_name=collection_name,
             limit=total_points,
@@ -179,11 +179,11 @@ def main():
         points = scroll_result[0]
 
         if not points:
-            print("Aucune tâche trouvée dans la collection.")
+            print("Aucune tÃ¢che trouvÃ©e dans la collection.")
             sys.exit(0)
 
-        # Créer les index
-        print("Création des index...")
+        # CrÃ©er les index
+        print("CrÃ©ation des index...")
 
         # Index par ID
         id_index = {point.id: i for i, point in enumerate(points)}
@@ -206,7 +206,7 @@ def main():
             indent = point.payload.get('indentLevel', 0)
             indent_index[str(indent)].append(point.id)
 
-        # Index par date de mise à jour
+        # Index par date de mise Ã  jour
         date_index = defaultdict(list)
         for point in points:
             date = point.payload.get('lastUpdated', 'Unknown')
@@ -216,10 +216,10 @@ def main():
         parent_index = defaultdict(list)
         for point in points:
             parent = point.payload.get('parentId', '')
-            if parent:  # Ne pas indexer les tâches sans parent
+            if parent:  # Ne pas indexer les tÃ¢ches sans parent
                 parent_index[parent].append(point.id)
 
-        # Créer l'objet d'index complet
+        # CrÃ©er l'objet d'index complet
         indexes = {
             'metadata': {
                 'created': datetime.now().isoformat(),
@@ -241,17 +241,17 @@ def main():
         with open(index_output_path, 'w', encoding='utf-8') as f:
             json.dump(indexes, f, indent=2, ensure_ascii=False)
 
-        print(f"Indexation terminée. Les index ont été sauvegardés dans {index_output_path}.")
+        print(f"Indexation terminÃ©e. Les index ont Ã©tÃ© sauvegardÃ©s dans {index_output_path}.")
         print(f"Statistiques des index:")
-        print(f"  - Nombre total de tâches: {len(points)}")
-        print(f"  - Nombre de statuts différents: {len(status_index)}")
-        print(f"  - Nombre de sections différentes: {len(section_index)}")
+        print(f"  - Nombre total de tÃ¢ches: {len(points)}")
+        print(f"  - Nombre de statuts diffÃ©rents: {len(status_index)}")
+        print(f"  - Nombre de sections diffÃ©rentes: {len(section_index)}")
         print(f"  - Nombre de niveaux d'indentation: {len(indent_index)}")
-        print(f"  - Nombre de dates de mise à jour: {len(date_index)}")
-        print(f"  - Nombre de tâches avec parent: {sum(len(tasks) for tasks in parent_index.values())}")
+        print(f"  - Nombre de dates de mise Ã  jour: {len(date_index)}")
+        print(f"  - Nombre de tÃ¢ches avec parent: {sum(len(tasks) for tasks in parent_index.values())}")
 
     except Exception as e:
-        print(f"Erreur lors de l'indexation des tâches: {e}")
+        print(f"Erreur lors de l'indexation des tÃ¢ches: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
@@ -262,7 +262,7 @@ if __name__ == "__main__":
     return $scriptPath
 }
 
-# Fonction pour vérifier et démarrer le conteneur Docker de Qdrant
+# Fonction pour vÃ©rifier et dÃ©marrer le conteneur Docker de Qdrant
 function Start-QdrantContainerIfNeeded {
     [CmdletBinding()]
     param (
@@ -276,31 +276,31 @@ function Start-QdrantContainerIfNeeded {
         [switch]$Force
     )
 
-    # Vérifier si le conteneur est accessible
+    # VÃ©rifier si le conteneur est accessible
     try {
         $testUrl = "$QdrantUrl/dashboard"
         $response = Invoke-WebRequest -Uri $testUrl -Method Head -TimeoutSec 2 -ErrorAction SilentlyContinue
 
         if ($response.StatusCode -eq 200) {
-            Write-Log "Qdrant est accessible à l'URL: $QdrantUrl" -Level Success
+            Write-Log "Qdrant est accessible Ã  l'URL: $QdrantUrl" -Level Success
             return $true
         }
     } catch {
-        Write-Log "Qdrant n'est pas accessible à l'URL: $QdrantUrl" -Level Warning
+        Write-Log "Qdrant n'est pas accessible Ã  l'URL: $QdrantUrl" -Level Warning
     }
 
-    # Tenter de démarrer le conteneur Docker
-    Write-Log "Tentative de démarrage du conteneur Docker pour Qdrant..." -Level Info
+    # Tenter de dÃ©marrer le conteneur Docker
+    Write-Log "Tentative de dÃ©marrage du conteneur Docker pour Qdrant..." -Level Info
 
     $qdrantContainerScript = Join-Path -Path $PSScriptRoot -ChildPath "Start-QdrantContainer.ps1"
     if (Test-Path -Path $qdrantContainerScript) {
         & $qdrantContainerScript -Action Start -DataPath $DataPath -Force:$Force
 
         if ($LASTEXITCODE -eq 0) {
-            Write-Log "Conteneur Docker pour Qdrant démarré avec succès." -Level Success
+            Write-Log "Conteneur Docker pour Qdrant dÃ©marrÃ© avec succÃ¨s." -Level Success
 
-            # Attendre que le service soit prêt
-            Write-Log "Attente du démarrage du service Qdrant..." -Level Info
+            # Attendre que le service soit prÃªt
+            Write-Log "Attente du dÃ©marrage du service Qdrant..." -Level Info
             $maxRetries = 10
             $retryCount = 0
             $serviceReady = $false
@@ -315,27 +315,27 @@ function Start-QdrantContainerIfNeeded {
 
                     if ($response.StatusCode -eq 200) {
                         $serviceReady = $true
-                        Write-Log "Service Qdrant prêt après $retryCount tentatives." -Level Success
+                        Write-Log "Service Qdrant prÃªt aprÃ¨s $retryCount tentatives." -Level Success
                     }
                 } catch {
-                    Write-Log "Tentative $retryCount sur $maxRetries - Service Qdrant pas encore prêt..." -Level Info
+                    Write-Log "Tentative $retryCount sur $maxRetries - Service Qdrant pas encore prÃªt..." -Level Info
                 }
             }
 
             if ($serviceReady) {
                 return $true
             } else {
-                Write-Log "Le service Qdrant n'est pas devenu accessible après $maxRetries tentatives." -Level Warning
+                Write-Log "Le service Qdrant n'est pas devenu accessible aprÃ¨s $maxRetries tentatives." -Level Warning
                 return $false
             }
         } else {
-            Write-Log "Erreur lors du démarrage du conteneur Docker pour Qdrant." -Level Error
-            Write-Log "Assurez-vous que Docker est installé et en cours d'exécution." -Level Error
+            Write-Log "Erreur lors du dÃ©marrage du conteneur Docker pour Qdrant." -Level Error
+            Write-Log "Assurez-vous que Docker est installÃ© et en cours d'exÃ©cution." -Level Error
             return $false
         }
     } else {
-        Write-Log "Script de gestion du conteneur Docker pour Qdrant non trouvé: $qdrantContainerScript" -Level Error
-        Write-Log "Veuillez démarrer le conteneur manuellement avec Docker:" -Level Error
+        Write-Log "Script de gestion du conteneur Docker pour Qdrant non trouvÃ©: $qdrantContainerScript" -Level Error
+        Write-Log "Veuillez dÃ©marrer le conteneur manuellement avec Docker:" -Level Error
         Write-Log "docker run -d -p 6333:6333 -p 6334:6334 -v `"$(Resolve-Path $DataPath):/qdrant/storage`" qdrant/qdrant" -Level Error
         return $false
     }
@@ -343,44 +343,44 @@ function Start-QdrantContainerIfNeeded {
 
 # Fonction principale
 function Main {
-    # Vérifier si le fichier d'index existe déjà
+    # VÃ©rifier si le fichier d'index existe dÃ©jÃ 
     if ((Test-Path -Path $IndexOutputPath) -and -not $Force) {
-        Write-Log "Le fichier d'index $IndexOutputPath existe déjà. Utilisez -Force pour l'écraser." -Level Warning
+        Write-Log "Le fichier d'index $IndexOutputPath existe dÃ©jÃ . Utilisez -Force pour l'Ã©craser." -Level Warning
         return
     }
 
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
 
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
 
-    # Vérifier et démarrer le conteneur Docker de Qdrant si nécessaire
+    # VÃ©rifier et dÃ©marrer le conteneur Docker de Qdrant si nÃ©cessaire
     $qdrantDataPath = Join-Path -Path (Split-Path -Parent $IndexOutputPath) -ChildPath "qdrant_data"
     if (-not (Start-QdrantContainerIfNeeded -QdrantUrl $QdrantUrl -DataPath $qdrantDataPath -Force:$Force)) {
-        Write-Log "Impossible d'assurer que le conteneur Docker de Qdrant est en cours d'exécution. Le script ne peut pas continuer." -Level Error
+        Write-Log "Impossible d'assurer que le conteneur Docker de Qdrant est en cours d'exÃ©cution. Le script ne peut pas continuer." -Level Error
         return
     }
 
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour l'indexation des tâches..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour l'indexation des tÃ¢ches..." -Level Info
     $pythonScript = New-TaskIndexScript -QdrantUrl $QdrantUrl -CollectionName $CollectionName -IndexOutputPath $IndexOutputPath -Force:$Force
 
-    # Exécuter le script Python
-    Write-Log "Exécution du script Python pour l'indexation des tâches..." -Level Info
+    # ExÃ©cuter le script Python
+    Write-Log "ExÃ©cution du script Python pour l'indexation des tÃ¢ches..." -Level Info
     python $pythonScript
 
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
 
-    Write-Log "Opération terminée." -Level Success
+    Write-Log "OpÃ©ration terminÃ©e." -Level Success
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

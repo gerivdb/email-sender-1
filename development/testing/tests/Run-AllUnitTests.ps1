@@ -1,23 +1,23 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests unitaires pour le projet.
+    ExÃ©cute tous les tests unitaires pour le projet.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires pour le projet et génère un rapport de couverture de code.
+    Ce script exÃ©cute tous les tests unitaires pour le projet et gÃ©nÃ¨re un rapport de couverture de code.
 .PARAMETER Tags
-    Liste des tags de tests à exécuter. Si non spécifié, tous les tests sont exécutés.
+    Liste des tags de tests Ã  exÃ©cuter. Si non spÃ©cifiÃ©, tous les tests sont exÃ©cutÃ©s.
 .PARAMETER OutputPath
-    Chemin du répertoire de sortie pour les rapports. Par défaut: "./reports/tests".
+    Chemin du rÃ©pertoire de sortie pour les rapports. Par dÃ©faut: "./reports/tests".
 .PARAMETER CoveragePath
-    Chemin du répertoire de sortie pour les rapports de couverture. Par défaut: "./reports/coverage".
+    Chemin du rÃ©pertoire de sortie pour les rapports de couverture. Par dÃ©faut: "./reports/coverage".
 .PARAMETER Parallel
-    Exécute les tests en parallèle.
+    ExÃ©cute les tests en parallÃ¨le.
 .EXAMPLE
     .\Run-AllUnitTests.ps1 -Tags @("CacheManager", "EncryptionUtils") -Parallel
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 [CmdletBinding()]
@@ -35,7 +35,7 @@ param (
     [switch]$Parallel
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -59,33 +59,33 @@ function Write-Log {
     Write-Host "[$timestamp] [$Level] $Message" -ForegroundColor $color
 }
 
-# Vérifier que Pester est installé
+# VÃ©rifier que Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester -Force
 
-# Créer les répertoires de sortie
+# CrÃ©er les rÃ©pertoires de sortie
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Répertoire de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "RÃ©pertoire de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
 if (-not (Test-Path -Path $CoveragePath)) {
     New-Item -Path $CoveragePath -ItemType Directory -Force | Out-Null
-    Write-Log "Répertoire de couverture créé: $CoveragePath" -Level "INFO"
+    Write-Log "RÃ©pertoire de couverture crÃ©Ã©: $CoveragePath" -Level "INFO"
 }
 
-# Définir le chemin des tests
+# DÃ©finir le chemin des tests
 $TestsPath = Join-Path -Path $PSScriptRoot -ChildPath "unit"
 
 # Obtenir tous les fichiers de test
 $testFiles = Get-ChildItem -Path $TestsPath -Filter "*.Tests.ps1" -Recurse
 
-Write-Log "Nombre de fichiers de test trouvés: $($testFiles.Count)" -Level "INFO"
+Write-Log "Nombre de fichiers de test trouvÃ©s: $($testFiles.Count)" -Level "INFO"
 
 # Configurer les options de Pester
 $pesterConfig = New-PesterConfiguration
@@ -99,7 +99,7 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputPath -ChildPath "test-results.xml"
 $pesterConfig.TestResult.OutputFormat = "NUnitXml"
 
-# Configurer les modules à couvrir
+# Configurer les modules Ã  couvrir
 $modulesToCover = @(
     ".\modules\CacheManager.ps1"
     ".\modules\EncryptionUtils.ps1"
@@ -109,40 +109,40 @@ $modulesToCover = @(
 
 $pesterConfig.CodeCoverage.Path = $modulesToCover
 
-# Configurer les tags si spécifiés
+# Configurer les tags si spÃ©cifiÃ©s
 if ($Tags.Count -gt 0) {
     $pesterConfig.Filter.Tag = $Tags
 }
 
-# Configurer l'exécution parallèle si demandée
+# Configurer l'exÃ©cution parallÃ¨le si demandÃ©e
 if ($Parallel) {
     $pesterConfig.Run.EnableExit = $false
     $pesterConfig.Run.Exit = $false
     $pesterConfig.Run.Throw = $false
     
-    # Déterminer le nombre de threads à utiliser
+    # DÃ©terminer le nombre de threads Ã  utiliser
     $maxThreads = [Environment]::ProcessorCount
     $pesterConfig.Run.Container.MaxConcurrency = $maxThreads
     
-    Write-Log "Exécution des tests en parallèle avec $maxThreads threads..." -Level "INFO"
+    Write-Log "ExÃ©cution des tests en parallÃ¨le avec $maxThreads threads..." -Level "INFO"
 }
 
-# Exécuter les tests
-Write-Log "Exécution des tests unitaires..." -Level "INFO"
+# ExÃ©cuter les tests
+Write-Log "ExÃ©cution des tests unitaires..." -Level "INFO"
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Analyser les résultats
-Write-Log "Analyse des résultats..." -Level "INFO"
+# Analyser les rÃ©sultats
+Write-Log "Analyse des rÃ©sultats..." -Level "INFO"
 
-# Afficher un résumé des résultats
-Write-Log "Résumé des tests unitaires:" -Level "INFO"
-Write-Log "Tests exécutés: $($testResults.TotalCount)" -Level "INFO"
-Write-Log "Tests réussis: $($testResults.PassedCount)" -Level "SUCCESS"
-Write-Log "Tests échoués: $($testResults.FailedCount)" -Level ($testResults.FailedCount -gt 0 ? "ERROR" : "INFO")
-Write-Log "Tests ignorés: $($testResults.SkippedCount)" -Level "INFO"
-Write-Log "Durée totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Log "RÃ©sumÃ© des tests unitaires:" -Level "INFO"
+Write-Log "Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -Level "INFO"
+Write-Log "Tests rÃ©ussis: $($testResults.PassedCount)" -Level "SUCCESS"
+Write-Log "Tests Ã©chouÃ©s: $($testResults.FailedCount)" -Level ($testResults.FailedCount -gt 0 ? "ERROR" : "INFO")
+Write-Log "Tests ignorÃ©s: $($testResults.SkippedCount)" -Level "INFO"
+Write-Log "DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
 
-# Analyser les résultats de couverture
+# Analyser les rÃ©sultats de couverture
 $coverageReport = [xml](Get-Content -Path $pesterConfig.CodeCoverage.OutputPath -ErrorAction SilentlyContinue)
 
 if ($null -ne $coverageReport) {
@@ -199,11 +199,11 @@ if ($null -ne $coverageReport) {
     Write-Log "Lignes couvertes: $coveredLines" -Level "INFO"
     
     if ($uncoveredFunctions.Count -gt 0) {
-        Write-Log "Fonctions non couvertes à 100%:" -Level "WARNING"
+        Write-Log "Fonctions non couvertes Ã  100%:" -Level "WARNING"
         $uncoveredFunctions | Format-Table -AutoSize
     }
     
-    # Générer un rapport HTML
+    # GÃ©nÃ©rer un rapport HTML
     $htmlReportPath = Join-Path -Path $CoveragePath -ChildPath "coverage-report.html"
     
     $htmlReport = @"
@@ -228,18 +228,18 @@ if ($null -ne $coverageReport) {
     <h1>Rapport de couverture de code</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
         <p>Couverture totale: <span class="$($totalCoverage -ge 80 ? 'good' : ($totalCoverage -ge 60 ? 'warning' : 'bad'))">$([Math]::Round($totalCoverage, 2))%</span></p>
         <p>Lignes totales: $totalLines</p>
         <p>Lignes couvertes: $coveredLines</p>
     </div>
     
-    <h2>Fonctions non couvertes à 100%</h2>
+    <h2>Fonctions non couvertes Ã  100%</h2>
     <table>
         <tr>
             <th>Package</th>
             <th>Classe</th>
-            <th>Méthode</th>
+            <th>MÃ©thode</th>
             <th>Couverture</th>
         </tr>
 "@
@@ -263,14 +263,14 @@ if ($null -ne $coverageReport) {
     
     $htmlReport | Set-Content -Path $htmlReportPath -Encoding UTF8
     
-    Write-Log "Rapport HTML généré: $htmlReportPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlReportPath" -Level "SUCCESS"
 }
 
-# Retourner un code de sortie en fonction des résultats
+# Retourner un code de sortie en fonction des rÃ©sultats
 if ($testResults.FailedCount -gt 0) {
-    Write-Log "Des tests ont échoué!" -Level "ERROR"
+    Write-Log "Des tests ont Ã©chouÃ©!" -Level "ERROR"
     exit 1
 } else {
-    Write-Log "Tous les tests ont réussi!" -Level "SUCCESS"
+    Write-Log "Tous les tests ont rÃ©ussi!" -Level "SUCCESS"
     exit 0
 }

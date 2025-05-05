@@ -1,5 +1,5 @@
-# Test pour la fonction Get-CompleteDependencyAnalysis
-# Ce test vérifie que la fonction combine correctement toutes les méthodes de détection
+﻿# Test pour la fonction Get-CompleteDependencyAnalysis
+# Ce test vÃ©rifie que la fonction combine correctement toutes les mÃ©thodes de dÃ©tection
 
 # Importer le module
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
@@ -8,16 +8,16 @@ $moduleFile = Join-Path -Path $modulePath -ChildPath "ModuleDependencyAnalyzer-F
 try {
     # Importer le module
     Import-Module -Name $moduleFile -Force -ErrorAction Stop
-    Write-Host "Module importé avec succès" -ForegroundColor Green
+    Write-Host "Module importÃ© avec succÃ¨s" -ForegroundColor Green
 
-    # Créer un répertoire temporaire pour les tests
+    # CrÃ©er un rÃ©pertoire temporaire pour les tests
     $testDir = Join-Path -Path $env:TEMP -ChildPath "CompleteDependencyAnalysisTest"
     if (Test-Path -Path $testDir) {
         Remove-Item -Path $testDir -Recurse -Force
     }
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-    # Créer un fichier manifeste de test
+    # CrÃ©er un fichier manifeste de test
     $manifestContent = @"
 @{
     ModuleVersion = '1.0.0'
@@ -38,9 +38,9 @@ try {
     $manifestPath = Join-Path -Path $testDir -ChildPath "TestModule.psd1"
     Set-Content -Path $manifestPath -Value $manifestContent
 
-    # Créer un fichier de script de test
+    # CrÃ©er un fichier de script de test
     $scriptContent = @"
-# Définition d'une fonction interne
+# DÃ©finition d'une fonction interne
 function Test-InternalFunction {
     param (
         [string]`$Path
@@ -50,7 +50,7 @@ function Test-InternalFunction {
     Write-Output "Testing internal function"
 }
 
-# Appel à des fonctions externes
+# Appel Ã  des fonctions externes
 Get-Date
 Get-ChildItem
 Import-Module Module3
@@ -59,14 +59,14 @@ Import-Module Module3
     $scriptPath = Join-Path -Path $testDir -ChildPath "TestScript.ps1"
     Set-Content -Path $scriptPath -Value $scriptContent
 
-    # Créer un module de test
+    # CrÃ©er un module de test
     $moduleContent = @"
 # Module de test
 function Get-TestData {
     return "Test data"
 }
 
-# Appel à des fonctions externes
+# Appel Ã  des fonctions externes
 Get-Process
 "@
 
@@ -79,7 +79,7 @@ Get-Process
     Write-Host "`nTest 1: Analyser un fichier manifeste" -ForegroundColor Cyan
     $result1 = Get-CompleteDependencyAnalysis -ModulePath $manifestPath
     
-    Write-Host "Résultat de l'analyse du manifeste:"
+    Write-Host "RÃ©sultat de l'analyse du manifeste:"
     Write-Host "  Module Path: $($result1.ModulePath)"
     Write-Host "  Analysis Date: $($result1.AnalysisDate)"
     Write-Host "  Total Dependencies: $($result1.Summary.TotalDependencies)"
@@ -92,7 +92,7 @@ Get-Process
     Write-Host "`nTest 2: Analyser un fichier script" -ForegroundColor Cyan
     $result2 = Get-CompleteDependencyAnalysis -ModulePath $scriptPath
     
-    Write-Host "Résultat de l'analyse du script:"
+    Write-Host "RÃ©sultat de l'analyse du script:"
     Write-Host "  Module Path: $($result2.ModulePath)"
     Write-Host "  Analysis Date: $($result2.AnalysisDate)"
     Write-Host "  Total Dependencies: $($result2.Summary.TotalDependencies)"
@@ -101,11 +101,11 @@ Get-Process
     Write-Host "  External Function Dependencies: $($result2.Summary.ExternalFunctionDependenciesCount)"
     Write-Host "  Unique Modules: $($result2.Summary.UniqueModules)"
     
-    # Test 3: Analyser un répertoire de module
-    Write-Host "`nTest 3: Analyser un répertoire de module" -ForegroundColor Cyan
+    # Test 3: Analyser un rÃ©pertoire de module
+    Write-Host "`nTest 3: Analyser un rÃ©pertoire de module" -ForegroundColor Cyan
     $result3 = Get-CompleteDependencyAnalysis -ModulePath $moduleDirPath -Recurse
     
-    Write-Host "Résultat de l'analyse du répertoire de module:"
+    Write-Host "RÃ©sultat de l'analyse du rÃ©pertoire de module:"
     Write-Host "  Module Path: $($result3.ModulePath)"
     Write-Host "  Analysis Date: $($result3.AnalysisDate)"
     Write-Host "  Total Dependencies: $($result3.Summary.TotalDependencies)"
@@ -118,7 +118,7 @@ Get-Process
     Write-Host "`nTest 4: Analyser avec IncludeDetails" -ForegroundColor Cyan
     $result4 = Get-CompleteDependencyAnalysis -ModulePath $testDir -Recurse -IncludeDetails
     
-    Write-Host "Résultat de l'analyse avec IncludeDetails:"
+    Write-Host "RÃ©sultat de l'analyse avec IncludeDetails:"
     Write-Host "  Module Path: $($result4.ModulePath)"
     Write-Host "  Analysis Date: $($result4.AnalysisDate)"
     Write-Host "  Total Dependencies: $($result4.Summary.TotalDependencies)"
@@ -139,7 +139,7 @@ Get-Process
     Remove-Module -Name "ModuleDependencyAnalyzer-Fixed" -Force -ErrorAction SilentlyContinue
 
     # Tout est OK
-    Write-Host "`nTest terminé avec succès !" -ForegroundColor Green
+    Write-Host "`nTest terminÃ© avec succÃ¨s !" -ForegroundColor Green
     exit 0
 } catch {
     # Une erreur s'est produite

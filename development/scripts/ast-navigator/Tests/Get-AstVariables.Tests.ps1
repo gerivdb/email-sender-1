@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour la fonction Get-AstVariables.
 
@@ -9,16 +9,16 @@
 .NOTES
     Auteur: AST Navigator Team
     Version: 1.0
-    Date de création: 2023-12-15
+    Date de crÃ©ation: 2023-12-15
 #>
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".." -Resolve
 Import-Module $modulePath -Force
 
 Describe "Get-AstVariables" {
     BeforeAll {
-        # Créer un script PowerShell de test avec différents types de variables
+        # CrÃ©er un script PowerShell de test avec diffÃ©rents types de variables
         $sampleCode = @'
 # Variables globales et de script
 $Global:GlobalVar = "Valeur globale"
@@ -35,15 +35,15 @@ $localVar3 = @{
 function Test-Variables {
     # Variables de fonction
     $functionVar1 = "Variable dans une fonction"
-    $private:privateVar = "Variable privée"
+    $private:privateVar = "Variable privÃ©e"
 
     # Utilisation de variables
-    $result = $localVar1 + " modifiée"
+    $result = $localVar1 + " modifiÃ©e"
     $Global:GlobalVar = "Nouvelle valeur globale"
 
     # Boucle avec variable
     for ($i = 0; $i -lt 5; $i++) {
-        $loopVar = "Itération $i"
+        $loopVar = "ItÃ©ration $i"
         Write-Output $loopVar
     }
 
@@ -66,7 +66,7 @@ $Host.Name
             $variables = Get-AstVariables -Ast $script:ast
             $variables.Count | Should -BeGreaterThan 10
 
-            # Vérifier que les variables principales sont présentes
+            # VÃ©rifier que les variables principales sont prÃ©sentes
             $variableNames = $variables | ForEach-Object { $_.Name }
             $variableNames | Should -Contain "GlobalVar"
             $variableNames | Should -Contain "ScriptVar"
@@ -80,10 +80,10 @@ $Host.Name
             $variableNames | Should -Contain "loopVar"
         }
 
-        It "Devrait extraire les variables avec leur portée correcte" {
+        It "Devrait extraire les variables avec leur portÃ©e correcte" {
             $variables = Get-AstVariables -Ast $script:ast
 
-            # Vérifier les portées des variables
+            # VÃ©rifier les portÃ©es des variables
             $globalVar = $variables | Where-Object { $_.Name -eq "GlobalVar" } | Select-Object -First 1
             $globalVar.Scope | Should -Be "Global"
 
@@ -93,7 +93,7 @@ $Host.Name
             $privateVar = $variables | Where-Object { $_.Name -eq "privateVar" } | Select-Object -First 1
             $privateVar.Scope | Should -Be "Private"
 
-            # Les variables locales n'ont pas de portée explicite
+            # Les variables locales n'ont pas de portÃ©e explicite
             $localVar = $variables | Where-Object { $_.Name -eq "localVar1" } | Select-Object -First 1
             $localVar.Scope | Should -BeNullOrEmpty
         }
@@ -109,7 +109,7 @@ $Host.Name
             $variableNames | Should -Contain "localVar3"
         }
 
-        It "Devrait filtrer les variables par portée" {
+        It "Devrait filtrer les variables par portÃ©e" {
             $variables = Get-AstVariables -Ast $script:ast -Scope "Global"
             $variables.Count | Should -Be 1
             $variables[0].Name | Should -Be "GlobalVar"
@@ -120,10 +120,10 @@ $Host.Name
             $allVariables = Get-AstVariables -Ast $script:ast
             $filteredVariables = Get-AstVariables -Ast $script:ast -ExcludeAutomaticVariables
 
-            # Vérifier que le nombre de variables est réduit
+            # VÃ©rifier que le nombre de variables est rÃ©duit
             $allVariables.Count | Should -BeGreaterThan $filteredVariables.Count
 
-            # Vérifier que les variables automatiques sont exclues
+            # VÃ©rifier que les variables automatiques sont exclues
             $filteredNames = $filteredVariables | ForEach-Object { $_.Name }
             $filteredNames | Should -Not -Contain "PSVersionTable"
             $filteredNames | Should -Not -Contain "PWD"
@@ -135,7 +135,7 @@ $Host.Name
         It "Devrait inclure les assignations de variables" {
             $variables = Get-AstVariables -Ast $script:ast -IncludeAssignments
 
-            # Vérifier que les assignations sont incluses
+            # VÃ©rifier que les assignations sont incluses
             $globalVar = $variables | Where-Object { $_.Name -eq "GlobalVar" } | Select-Object -First 1
             $globalVar.Assignments | Should -Not -BeNullOrEmpty
             $globalVar.Assignments.Count | Should -Be 2  # Assignation initiale et dans la fonction
@@ -149,8 +149,8 @@ $Host.Name
     }
 
     Context "Gestion des erreurs" {
-        It "Devrait retourner un tableau vide si aucune variable n'est trouvée" {
-            # Créer un AST sans variable
+        It "Devrait retourner un tableau vide si aucune variable n'est trouvÃ©e" {
+            # CrÃ©er un AST sans variable
             $emptyCode = "# Ceci est un commentaire sans variable"
             $emptyTokens = $emptyErrors = $null
             $emptyAst = [System.Management.Automation.Language.Parser]::ParseInput($emptyCode, [ref]$emptyTokens, [ref]$emptyErrors)
@@ -160,14 +160,14 @@ $Host.Name
             $variables.Count | Should -Be 0
         }
 
-        It "Devrait retourner un tableau vide si le filtre par nom ne correspond à aucune variable" {
+        It "Devrait retourner un tableau vide si le filtre par nom ne correspond Ã  aucune variable" {
             $variables = Get-AstVariables -Ast $script:ast -Name "NonExistentVariable"
             $variables | Should -BeOfType System.Array
             $variables.Count | Should -Be 0
         }
 
-        It "Devrait retourner un tableau vide si le filtre par portée ne correspond à aucune variable" {
-            $variables = Get-AstVariables -Ast $script:ast -Scope "Workflow"  # Portée non utilisée dans l'exemple
+        It "Devrait retourner un tableau vide si le filtre par portÃ©e ne correspond Ã  aucune variable" {
+            $variables = Get-AstVariables -Ast $script:ast -Scope "Workflow"  # PortÃ©e non utilisÃ©e dans l'exemple
             $variables | Should -BeOfType System.Array
             $variables.Count | Should -Be 0
         }

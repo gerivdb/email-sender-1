@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Détecte les options de configuration dans un fichier de configuration.
+    DÃ©tecte les options de configuration dans un fichier de configuration.
 .DESCRIPTION
     Cette fonction analyse un fichier de configuration et extrait toutes les options
-    disponibles, avec leurs types, valeurs par défaut et autres métadonnées.
+    disponibles, avec leurs types, valeurs par dÃ©faut et autres mÃ©tadonnÃ©es.
 .PARAMETER Path
-    Chemin vers le fichier de configuration à analyser.
+    Chemin vers le fichier de configuration Ã  analyser.
 .PARAMETER Content
-    Contenu du fichier de configuration à analyser. Si spécifié, Path est ignoré.
+    Contenu du fichier de configuration Ã  analyser. Si spÃ©cifiÃ©, Path est ignorÃ©.
 .PARAMETER Format
-    Format du fichier de configuration. Si non spécifié, il sera détecté automatiquement.
+    Format du fichier de configuration. Si non spÃ©cifiÃ©, il sera dÃ©tectÃ© automatiquement.
 .PARAMETER IncludeValues
-    Indique si les valeurs actuelles des options doivent être incluses dans les résultats.
+    Indique si les valeurs actuelles des options doivent Ãªtre incluses dans les rÃ©sultats.
 .PARAMETER Flatten
-    Indique si les options doivent être retournées sous forme de liste plate plutôt que hiérarchique.
+    Indique si les options doivent Ãªtre retournÃ©es sous forme de liste plate plutÃ´t que hiÃ©rarchique.
 .EXAMPLE
     Get-ConfigurationOptions -Path "config.json"
-    Détecte les options de configuration dans le fichier config.json.
+    DÃ©tecte les options de configuration dans le fichier config.json.
 .EXAMPLE
     Get-ConfigurationOptions -Content '{"key": "value"}' -Format "JSON" -IncludeValues
-    Détecte les options de configuration dans le contenu JSON fourni et inclut leurs valeurs.
+    DÃ©tecte les options de configuration dans le contenu JSON fourni et inclut leurs valeurs.
 .OUTPUTS
     System.Collections.Hashtable
 #>
@@ -44,21 +44,21 @@ function Get-ConfigurationOptions {
     )
 
     try {
-        # Si le chemin est spécifié, lire le contenu du fichier
+        # Si le chemin est spÃ©cifiÃ©, lire le contenu du fichier
         if ($PSCmdlet.ParameterSetName -eq "Path") {
             if (-not (Test-Path -Path $Path -PathType Leaf)) {
-                throw "Le fichier spécifié n'existe pas: $Path"
+                throw "Le fichier spÃ©cifiÃ© n'existe pas: $Path"
             }
 
             $Content = Get-Content -Path $Path -Raw -ErrorAction Stop
         }
 
-        # Vérifier que le contenu n'est pas vide
+        # VÃ©rifier que le contenu n'est pas vide
         if ([string]::IsNullOrWhiteSpace($Content)) {
             throw "Le contenu est vide ou ne contient que des espaces blancs."
         }
 
-        # Déterminer le format si nécessaire
+        # DÃ©terminer le format si nÃ©cessaire
         if ($Format -eq "AUTO") {
             if ($PSCmdlet.ParameterSetName -eq "Path") {
                 $Format = Get-ConfigurationFormat -Path $Path
@@ -67,7 +67,7 @@ function Get-ConfigurationOptions {
             }
 
             if ($Format -eq "UNKNOWN") {
-                throw "Impossible de déterminer le format de configuration."
+                throw "Impossible de dÃ©terminer le format de configuration."
             }
         }
 
@@ -89,7 +89,7 @@ function Get-ConfigurationOptions {
 
         return $options
     } catch {
-        Write-Error "Erreur lors de la détection des options de configuration: $_"
+        Write-Error "Erreur lors de la dÃ©tection des options de configuration: $_"
         return $null
     }
 }
@@ -109,7 +109,7 @@ function Extract-FlatOptions {
 
     $options = @{}
 
-    # Si l'objet est un hashtable ou un PSCustomObject, extraire ses propriétés
+    # Si l'objet est un hashtable ou un PSCustomObject, extraire ses propriÃ©tÃ©s
     if ($Config -is [hashtable] -or $Config -is [PSCustomObject]) {
         $properties = @()
 
@@ -123,14 +123,14 @@ function Extract-FlatOptions {
             $value = if ($Config -is [hashtable]) { $Config[$key] } else { $Config.$key }
             $fullKey = if ($Prefix -eq "") { $key } else { "$Prefix.$key" }
 
-            # Si la valeur est un hashtable ou un PSCustomObject, extraire récursivement
+            # Si la valeur est un hashtable ou un PSCustomObject, extraire rÃ©cursivement
             if ($value -is [hashtable] -or $value -is [PSCustomObject]) {
                 $nestedOptions = Extract-FlatOptions -Config $value -IncludeValues:$IncludeValues -Prefix $fullKey
                 foreach ($nestedKey in $nestedOptions.Keys) {
                     $options[$nestedKey] = $nestedOptions[$nestedKey]
                 }
             }
-            # Si la valeur est un tableau, extraire chaque élément si nécessaire
+            # Si la valeur est un tableau, extraire chaque Ã©lÃ©ment si nÃ©cessaire
             elseif ($value -is [array]) {
                 $option = @{
                     Type        = "Array"
@@ -142,7 +142,7 @@ function Extract-FlatOptions {
                     $option.IsComplex = $true
                     $option.ElementType = "Object"
 
-                    # Extraire les options pour le premier élément du tableau comme exemple
+                    # Extraire les options pour le premier Ã©lÃ©ment du tableau comme exemple
                     $elementOptions = Extract-FlatOptions -Config $value[0] -IncludeValues:$IncludeValues -Prefix "$fullKey[0]"
                     foreach ($elementKey in $elementOptions.Keys) {
                         $options[$elementKey] = $elementOptions[$elementKey]
@@ -169,7 +169,7 @@ function Extract-FlatOptions {
             }
         }
     }
-    # Si l'objet est un tableau, extraire chaque élément
+    # Si l'objet est un tableau, extraire chaque Ã©lÃ©ment
     elseif ($Config -is [array]) {
         $option = @{
             Type        = "Array"
@@ -181,7 +181,7 @@ function Extract-FlatOptions {
             $option.IsComplex = $true
             $option.ElementType = "Object"
 
-            # Extraire les options pour le premier élément du tableau comme exemple
+            # Extraire les options pour le premier Ã©lÃ©ment du tableau comme exemple
             $elementOptions = Extract-FlatOptions -Config $Config[0] -IncludeValues:$IncludeValues -Prefix "$Prefix[0]"
             foreach ($elementKey in $elementOptions.Keys) {
                 $options[$elementKey] = $elementOptions[$elementKey]
@@ -220,7 +220,7 @@ function Extract-HierarchicalOptions {
         [switch]$IncludeValues
     )
 
-    # Si l'objet est un hashtable ou un PSCustomObject, extraire ses propriétés
+    # Si l'objet est un hashtable ou un PSCustomObject, extraire ses propriÃ©tÃ©s
     if ($Config -is [hashtable] -or $Config -is [PSCustomObject]) {
         $options = @{}
         $properties = @()
@@ -234,7 +234,7 @@ function Extract-HierarchicalOptions {
         foreach ($key in $properties) {
             $value = if ($Config -is [hashtable]) { $Config[$key] } else { $Config.$key }
 
-            # Si la valeur est un hashtable ou un PSCustomObject, extraire récursivement
+            # Si la valeur est un hashtable ou un PSCustomObject, extraire rÃ©cursivement
             if ($value -is [hashtable] -or $value -is [PSCustomObject]) {
                 $options[$key] = @{
                     Type       = "Object"
@@ -245,7 +245,7 @@ function Extract-HierarchicalOptions {
                     $options[$key].Value = $value
                 }
             }
-            # Si la valeur est un tableau, extraire chaque élément si nécessaire
+            # Si la valeur est un tableau, extraire chaque Ã©lÃ©ment si nÃ©cessaire
             elseif ($value -is [array]) {
                 $options[$key] = @{
                     Type        = "Array"
@@ -277,7 +277,7 @@ function Extract-HierarchicalOptions {
 
         return $options
     }
-    # Si l'objet est un tableau, extraire chaque élément
+    # Si l'objet est un tableau, extraire chaque Ã©lÃ©ment
     elseif ($Config -is [array]) {
         $options = @{
             Type        = "Array"

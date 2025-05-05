@@ -1,26 +1,26 @@
-<#
+﻿<#
 .SYNOPSIS
-    Met à jour le statut des tâches dans un fichier de roadmap en cochant les cases des tâches implémentées.
+    Met Ã  jour le statut des tÃ¢ches dans un fichier de roadmap en cochant les cases des tÃ¢ches implÃ©mentÃ©es.
 
 .DESCRIPTION
-    Ce script analyse un fichier de roadmap Markdown, vérifie si les tâches sélectionnées sont implémentées,
-    et met à jour le fichier en cochant les cases correspondantes. Il peut cibler des lignes spécifiques
+    Ce script analyse un fichier de roadmap Markdown, vÃ©rifie si les tÃ¢ches sÃ©lectionnÃ©es sont implÃ©mentÃ©es,
+    et met Ã  jour le fichier en cochant les cases correspondantes. Il peut cibler des lignes spÃ©cifiques
     dans le fichier de roadmap.
 
 .PARAMETER RoadmapPath
-    Chemin vers le fichier de roadmap à mettre à jour.
+    Chemin vers le fichier de roadmap Ã  mettre Ã  jour.
 
 .PARAMETER LineNumbers
-    Numéros de lignes à vérifier et mettre à jour dans le fichier de roadmap.
+    NumÃ©ros de lignes Ã  vÃ©rifier et mettre Ã  jour dans le fichier de roadmap.
 
 .PARAMETER TaskIds
-    Identifiants des tâches à vérifier et mettre à jour dans le fichier de roadmap.
+    Identifiants des tÃ¢ches Ã  vÃ©rifier et mettre Ã  jour dans le fichier de roadmap.
 
 .PARAMETER VerifyOnly
-    Si spécifié, le script vérifie seulement les tâches sans modifier le fichier de roadmap.
+    Si spÃ©cifiÃ©, le script vÃ©rifie seulement les tÃ¢ches sans modifier le fichier de roadmap.
 
 .PARAMETER GenerateReport
-    Si spécifié, génère un rapport détaillé des tâches vérifiées.
+    Si spÃ©cifiÃ©, gÃ©nÃ¨re un rapport dÃ©taillÃ© des tÃ¢ches vÃ©rifiÃ©es.
 
 .EXAMPLE
     .\Update-RoadmapStatus.ps1 -RoadmapPath ".\Roadmap\roadmap_complete_converted.md" -LineNumbers 42,43,44
@@ -31,7 +31,7 @@
 .NOTES
     Auteur: Roadmap Tools Team
     Version: 1.0
-    Date de création: 2023-11-15
+    Date de crÃ©ation: 2023-11-15
 #>
 [CmdletBinding(DefaultParameterSetName = 'ByLineNumbers')]
 param (
@@ -51,7 +51,7 @@ param (
     [switch]$GenerateReport
 )
 
-# Fonction pour vérifier si le fichier de roadmap existe
+# Fonction pour vÃ©rifier si le fichier de roadmap existe
 function Test-RoadmapFile {
     param (
         [Parameter(Mandatory = $true)]
@@ -64,7 +64,7 @@ function Test-RoadmapFile {
     }
 
     if (-not $Path.EndsWith('.md')) {
-        Write-Warning "Le fichier spécifié n'est pas un fichier Markdown (.md). Certaines fonctionnalités pourraient ne pas fonctionner correctement."
+        Write-Warning "Le fichier spÃ©cifiÃ© n'est pas un fichier Markdown (.md). Certaines fonctionnalitÃ©s pourraient ne pas fonctionner correctement."
     }
 
     return $true
@@ -97,7 +97,7 @@ function Get-RoadmapContent {
     }
 }
 
-# Fonction pour extraire les tâches de la roadmap
+# Fonction pour extraire les tÃ¢ches de la roadmap
 function Get-RoadmapTasks {
     param (
         [Parameter(Mandatory = $false)]
@@ -117,7 +117,7 @@ function Get-RoadmapTasks {
 
     $tasks = @()
 
-    # Regex pour extraire l'ID de la tâche et son statut
+    # Regex pour extraire l'ID de la tÃ¢che et son statut
     $taskRegex = '^\s*-\s+\[([ xX])\]\s+(\d+(\.\d+)*)\s+(.+)$'
     
     Write-Host "Analyse du fichier de roadmap ($($Content.Count) lignes)..." -ForegroundColor Cyan
@@ -126,16 +126,16 @@ function Get-RoadmapTasks {
     for ($i = 0; $i -lt $Content.Count; $i++) {
         $line = $Content[$i]
         
-        # Vérifier si la ligne correspond à une tâche
+        # VÃ©rifier si la ligne correspond Ã  une tÃ¢che
         if ($line -match $taskRegex) {
             $status = $matches[1]
             $taskId = $matches[2]
             $taskName = $matches[4]
-            $lineNumber = $i + 1  # Les numéros de ligne commencent à 1
+            $lineNumber = $i + 1  # Les numÃ©ros de ligne commencent Ã  1
 
-            Write-Host "Tâche trouvée à la ligne $lineNumber : [$status] $taskId $taskName" -ForegroundColor Yellow
+            Write-Host "TÃ¢che trouvÃ©e Ã  la ligne $lineNumber : [$status] $taskId $taskName" -ForegroundColor Yellow
 
-            # Vérifier si la tâche doit être incluse
+            # VÃ©rifier si la tÃ¢che doit Ãªtre incluse
             $includeTask = $false
             
             if ($Lines.Count -gt 0) {
@@ -181,18 +181,18 @@ function Get-RoadmapTasks {
     return $tasks
 }
 
-# Fonction pour vérifier si une tâche est implémentée
+# Fonction pour vÃ©rifier si une tÃ¢che est implÃ©mentÃ©e
 function Test-TaskImplementation {
     param (
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Task
     )
 
-    # Ici, vous pouvez implémenter votre propre logique pour vérifier si une tâche est implémentée
-    # Par exemple, vérifier si le code correspondant existe, si les tests passent, etc.
+    # Ici, vous pouvez implÃ©menter votre propre logique pour vÃ©rifier si une tÃ¢che est implÃ©mentÃ©e
+    # Par exemple, vÃ©rifier si le code correspondant existe, si les tests passent, etc.
     
-    # Pour cet exemple, nous allons simplement vérifier si la tâche contient certains mots-clés
-    # qui indiqueraient qu'elle est implémentée
+    # Pour cet exemple, nous allons simplement vÃ©rifier si la tÃ¢che contient certains mots-clÃ©s
+    # qui indiqueraient qu'elle est implÃ©mentÃ©e
     $implementationKeywords = @(
         'Invoke-AstTraversalDFS-Enhanced',
         'Find-AstNodeByType',
@@ -210,12 +210,12 @@ function Test-TaskImplementation {
 
     foreach ($keyword in $implementationKeywords) {
         if ($Task.TaskName -like "*$keyword*") {
-            Write-Host "Tâche $($Task.TaskId) implémentée (mot-clé: $keyword)" -ForegroundColor Green
+            Write-Host "TÃ¢che $($Task.TaskId) implÃ©mentÃ©e (mot-clÃ©: $keyword)" -ForegroundColor Green
             return $true
         }
     }
 
-    # Vérifier les IDs spécifiques des tâches que nous savons être implémentées
+    # VÃ©rifier les IDs spÃ©cifiques des tÃ¢ches que nous savons Ãªtre implÃ©mentÃ©es
     $implementedTaskIds = @(
         '2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.1',
         '2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.2',
@@ -224,20 +224,20 @@ function Test-TaskImplementation {
     )
 
     if ($implementedTaskIds -contains $Task.TaskId) {
-        Write-Host "Tâche $($Task.TaskId) implémentée (ID dans la liste)" -ForegroundColor Green
+        Write-Host "TÃ¢che $($Task.TaskId) implÃ©mentÃ©e (ID dans la liste)" -ForegroundColor Green
         return $true
     }
 
-    # Pour le test, considérer toutes les tâches comme implémentées si elles sont dans les lignes 9-12
+    # Pour le test, considÃ©rer toutes les tÃ¢ches comme implÃ©mentÃ©es si elles sont dans les lignes 9-12
     if ($Task.LineNumber -ge 9 -and $Task.LineNumber -le 12) {
-        Write-Host "Tâche $($Task.TaskId) implémentée (ligne $($Task.LineNumber))" -ForegroundColor Green
+        Write-Host "TÃ¢che $($Task.TaskId) implÃ©mentÃ©e (ligne $($Task.LineNumber))" -ForegroundColor Green
         return $true
     }
 
     return $false
 }
 
-# Fonction pour mettre à jour le statut d'une tâche dans la roadmap
+# Fonction pour mettre Ã  jour le statut d'une tÃ¢che dans la roadmap
 function Update-TaskStatus {
     param (
         [Parameter(Mandatory = $false)]
@@ -259,7 +259,7 @@ function Update-TaskStatus {
     }
     
     if ($null -eq $Tasks -or $Tasks.Count -eq 0) {
-        Write-Warning "Aucune tâche à mettre à jour."
+        Write-Warning "Aucune tÃ¢che Ã  mettre Ã  jour."
         return @{
             Content = $Content
             Tasks = @()
@@ -273,7 +273,7 @@ function Update-TaskStatus {
         $isImplemented = Test-TaskImplementation -Task $task
         
         if ($isImplemented -and -not $task.IsCompleted) {
-            # La tâche est implémentée mais pas encore cochée
+            # La tÃ¢che est implÃ©mentÃ©e mais pas encore cochÃ©e
             $lineIndex = $task.LineNumber - 1
             $updatedLine = $updatedContent[$lineIndex] -replace '\[ \]', '[x]'
             
@@ -300,7 +300,7 @@ function Update-TaskStatus {
     }
 }
 
-# Fonction pour sauvegarder le contenu mis à jour de la roadmap
+# Fonction pour sauvegarder le contenu mis Ã  jour de la roadmap
 function Save-RoadmapContent {
     param (
         [Parameter(Mandatory = $true)]
@@ -312,7 +312,7 @@ function Save-RoadmapContent {
 
     try {
         if ($null -eq $Content -or $Content.Count -eq 0) {
-            Write-Warning "Le contenu à sauvegarder est vide."
+            Write-Warning "Le contenu Ã  sauvegarder est vide."
             return $false
         }
         
@@ -320,12 +320,12 @@ function Save-RoadmapContent {
         return $true
     }
     catch {
-        Write-Error "Erreur lors de l'écriture du fichier de roadmap : $_"
+        Write-Error "Erreur lors de l'Ã©criture du fichier de roadmap : $_"
         return $false
     }
 }
 
-# Fonction pour générer un rapport des tâches vérifiées
+# Fonction pour gÃ©nÃ©rer un rapport des tÃ¢ches vÃ©rifiÃ©es
 function New-TaskReport {
     param (
         [Parameter(Mandatory = $true)]
@@ -337,21 +337,21 @@ function New-TaskReport {
     $updatedTasks = $Tasks | Where-Object { $_.Updated }
 
     $report = @"
-# Rapport de vérification des tâches
+# Rapport de vÃ©rification des tÃ¢ches
 
-## Résumé
-- Nombre total de tâches vérifiées : $($Tasks.Count)
-- Tâches implémentées : $($implementedTasks.Count)
-- Tâches non implémentées : $($notImplementedTasks.Count)
-- Tâches mises à jour : $($updatedTasks.Count)
+## RÃ©sumÃ©
+- Nombre total de tÃ¢ches vÃ©rifiÃ©es : $($Tasks.Count)
+- TÃ¢ches implÃ©mentÃ©es : $($implementedTasks.Count)
+- TÃ¢ches non implÃ©mentÃ©es : $($notImplementedTasks.Count)
+- TÃ¢ches mises Ã  jour : $($updatedTasks.Count)
 
-## Tâches implémentées
+## TÃ¢ches implÃ©mentÃ©es
 $($implementedTasks | ForEach-Object { "- [x] $($_.TaskId) $($_.TaskName)" } | Out-String)
 
-## Tâches non implémentées
+## TÃ¢ches non implÃ©mentÃ©es
 $($notImplementedTasks | ForEach-Object { "- [ ] $($_.TaskId) $($_.TaskName)" } | Out-String)
 
-## Tâches mises à jour
+## TÃ¢ches mises Ã  jour
 $($updatedTasks | ForEach-Object { "- [x] $($_.TaskId) $($_.TaskName)" } | Out-String)
 "@
 
@@ -360,7 +360,7 @@ $($updatedTasks | ForEach-Object { "- [x] $($_.TaskId) $($_.TaskName)" } | Out-S
 
 # Script principal
 function Invoke-RoadmapStatusUpdate {
-    # Vérifier si le fichier de roadmap existe
+    # VÃ©rifier si le fichier de roadmap existe
     if (-not (Test-RoadmapFile -Path $RoadmapPath)) {
         return
     }
@@ -371,55 +371,55 @@ function Invoke-RoadmapStatusUpdate {
         return
     }
 
-    # Extraire les tâches de la roadmap
+    # Extraire les tÃ¢ches de la roadmap
     $tasks = Get-RoadmapTasks -Content $content -Lines $LineNumbers -Ids $TaskIds
     if ($tasks.Count -eq 0) {
-        Write-Warning "Aucune tâche trouvée dans le fichier de roadmap."
+        Write-Warning "Aucune tÃ¢che trouvÃ©e dans le fichier de roadmap."
         return
     }
 
-    Write-Host "Tâches trouvées : $($tasks.Count)" -ForegroundColor Cyan
+    Write-Host "TÃ¢ches trouvÃ©es : $($tasks.Count)" -ForegroundColor Cyan
     foreach ($task in $tasks) {
         $statusSymbol = if ($task.IsCompleted) { "[x]" } else { "[ ]" }
         Write-Host "$statusSymbol $($task.TaskId) $($task.TaskName)" -ForegroundColor Yellow
     }
 
-    # Mettre à jour le statut des tâches
+    # Mettre Ã  jour le statut des tÃ¢ches
     $updateResult = Update-TaskStatus -Content $content -Tasks $tasks -DryRun:$VerifyOnly
     $updatedContent = $updateResult.Content
     $updatedTasks = $updateResult.Tasks
 
-    # Afficher les tâches mises à jour
+    # Afficher les tÃ¢ches mises Ã  jour
     $tasksUpdated = $updatedTasks | Where-Object { $_.Updated }
     if ($tasksUpdated.Count -gt 0) {
-        Write-Host "`nTâches mises à jour : $($tasksUpdated.Count)" -ForegroundColor Green
+        Write-Host "`nTÃ¢ches mises Ã  jour : $($tasksUpdated.Count)" -ForegroundColor Green
         foreach ($task in $tasksUpdated) {
             Write-Host "[x] $($task.TaskId) $($task.TaskName)" -ForegroundColor Green
         }
     }
     else {
-        Write-Host "`nAucune tâche n'a été mise à jour." -ForegroundColor Yellow
+        Write-Host "`nAucune tÃ¢che n'a Ã©tÃ© mise Ã  jour." -ForegroundColor Yellow
     }
 
-    # Sauvegarder le contenu mis à jour si ce n'est pas un dry run
+    # Sauvegarder le contenu mis Ã  jour si ce n'est pas un dry run
     if (-not $VerifyOnly -and $tasksUpdated.Count -gt 0) {
         $saved = Save-RoadmapContent -Path $RoadmapPath -Content $updatedContent
         if ($saved) {
-            Write-Host "`nLe fichier de roadmap a été mis à jour avec succès." -ForegroundColor Green
+            Write-Host "`nLe fichier de roadmap a Ã©tÃ© mis Ã  jour avec succÃ¨s." -ForegroundColor Green
         }
     }
     elseif ($VerifyOnly) {
-        Write-Host "`nMode vérification uniquement. Le fichier de roadmap n'a pas été modifié." -ForegroundColor Yellow
+        Write-Host "`nMode vÃ©rification uniquement. Le fichier de roadmap n'a pas Ã©tÃ© modifiÃ©." -ForegroundColor Yellow
     }
 
-    # Générer un rapport si demandé
+    # GÃ©nÃ©rer un rapport si demandÃ©
     if ($GenerateReport) {
         $reportPath = [System.IO.Path]::ChangeExtension($RoadmapPath, "report.md")
         $report = New-TaskReport -Tasks $updatedTasks
         $report | Out-File -FilePath $reportPath -Encoding UTF8
-        Write-Host "`nRapport généré : $reportPath" -ForegroundColor Cyan
+        Write-Host "`nRapport gÃ©nÃ©rÃ© : $reportPath" -ForegroundColor Cyan
     }
 }
 
-# Exécuter le script principal
+# ExÃ©cuter le script principal
 Invoke-RoadmapStatusUpdate

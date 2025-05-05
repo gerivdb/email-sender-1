@@ -1,4 +1,4 @@
-@{
+﻿@{
     # Version du module
     ModuleVersion = '1.0.0'
     
@@ -11,10 +11,10 @@
     # Module PowerShell requis
     PowerShellVersion = '5.1'
     
-    # Modules à importer en tant que modules imbriqués
+    # Modules Ã  importer en tant que modules imbriquÃ©s
     NestedModules = @('InformationExtractor.psm1')
     
-    # Fonctions à exporter
+    # Fonctions Ã  exporter
     FunctionsToExport = @(
         'Get-ManagerInformation',
         'Get-AllManagersInformation',
@@ -22,16 +22,16 @@
         'Get-ManagerDependencyGraph'
     )
     
-    # Variables à exporter
+    # Variables Ã  exporter
     VariablesToExport = @()
     
-    # Alias à exporter
+    # Alias Ã  exporter
     AliasesToExport = @()
     
-    # Informations privées
+    # Informations privÃ©es
     PrivateData = @{
         PSData = @{
-            # Tags appliqués à ce module
+            # Tags appliquÃ©s Ã  ce module
             Tags = @('ProcessManager', 'Information', 'Extraction')
             
             # URL du projet

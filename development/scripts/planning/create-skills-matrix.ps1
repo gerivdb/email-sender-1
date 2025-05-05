@@ -1,30 +1,30 @@
-<#
+﻿<#
 .SYNOPSIS
-    Crée une matrice de compétences par gestionnaire.
+    CrÃ©e une matrice de compÃ©tences par gestionnaire.
 
 .DESCRIPTION
-    Ce script analyse la liste des compétences extraites et crée une matrice
-    de compétences par gestionnaire, ce qui permet de visualiser les compétences
+    Ce script analyse la liste des compÃ©tences extraites et crÃ©e une matrice
+    de compÃ©tences par gestionnaire, ce qui permet de visualiser les compÃ©tences
     requises pour chaque gestionnaire et d'identifier les synergies potentielles.
 
 .PARAMETER SkillsListPath
-    Chemin vers le fichier de la liste des compétences extraites.
+    Chemin vers le fichier de la liste des compÃ©tences extraites.
 
 .PARAMETER OutputPath
-    Chemin vers le fichier de sortie pour la matrice de compétences.
+    Chemin vers le fichier de sortie pour la matrice de compÃ©tences.
 
 .PARAMETER Format
     Format du fichier de sortie. Les valeurs possibles sont : JSON, CSV, Markdown.
-    Par défaut : Markdown
+    Par dÃ©faut : Markdown
 
 .EXAMPLE
     .\create-skills-matrix.ps1 -SkillsListPath "data\planning\skills-list.md" -OutputPath "data\planning\skills-matrix.md"
-    Crée une matrice de compétences par gestionnaire et génère un fichier Markdown.
+    CrÃ©e une matrice de compÃ©tences par gestionnaire et gÃ©nÃ¨re un fichier Markdown.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-10
+    Date de crÃ©ation: 2025-05-10
 #>
 [CmdletBinding()]
 param (
@@ -39,19 +39,19 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $SkillsListPath)) {
-    Write-Error "Le fichier de la liste des compétences n'existe pas : $SkillsListPath"
+    Write-Error "Le fichier de la liste des compÃ©tences n'existe pas : $SkillsListPath"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour extraire les compétences de la liste Markdown
+# Fonction pour extraire les compÃ©tences de la liste Markdown
 function Extract-SkillsFromList {
     [CmdletBinding()]
     param (
@@ -64,10 +64,10 @@ function Extract-SkillsFromList {
     $currentManager = $null
     $currentImprovement = $null
 
-    # Utiliser une expression régulière pour extraire les sections des gestionnaires
+    # Utiliser une expression rÃ©guliÃ¨re pour extraire les sections des gestionnaires
     $managerPattern = '## <a name=''([^'']+)''></a>([^\n]+)'
     $improvementPattern = '### ([^\n]+)'
-    $skillsTablePattern = '\| Catégorie \| Compétence \| Niveau \| Justification \|[\r\n]+\|[^\n]+\|[\r\n]+((?:\|[^\n]+\|[\r\n]+)+)'
+    $skillsTablePattern = '\| CatÃ©gorie \| CompÃ©tence \| Niveau \| Justification \|[\r\n]+\|[^\n]+\|[\r\n]+((?:\|[^\n]+\|[\r\n]+)+)'
     $skillRowPattern = '\| ([^|]+) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|'
 
     # Extraire les gestionnaires
@@ -83,24 +83,24 @@ function Extract-SkillsFromList {
             $managerContent = $managerContent.Substring(0, $managerMatch.Length + $nextManagerMatch.Index)
         }
         
-        # Extraire les améliorations
+        # Extraire les amÃ©liorations
         $improvementMatches = [regex]::Matches($managerContent, $improvementPattern)
         foreach ($improvementMatch in $improvementMatches) {
             $improvementName = $improvementMatch.Groups[1].Value.Trim()
             
-            # Extraire le contenu de la section de l'amélioration
+            # Extraire le contenu de la section de l'amÃ©lioration
             $improvementContent = $managerContent.Substring($improvementMatch.Index)
             $nextImprovementMatch = [regex]::Match($improvementContent.Substring($improvementMatch.Length), $improvementPattern)
             if ($nextImprovementMatch.Success) {
                 $improvementContent = $improvementContent.Substring(0, $improvementMatch.Length + $nextImprovementMatch.Index)
             }
             
-            # Extraire la table des compétences
+            # Extraire la table des compÃ©tences
             $skillsTableMatch = [regex]::Match($improvementContent, $skillsTablePattern)
             if ($skillsTableMatch.Success) {
                 $skillsTable = $skillsTableMatch.Groups[1].Value
                 
-                # Extraire les lignes de compétences
+                # Extraire les lignes de compÃ©tences
                 $skillRowMatches = [regex]::Matches($skillsTable, $skillRowPattern)
                 foreach ($skillRowMatch in $skillRowMatches) {
                     $category = $skillRowMatch.Groups[1].Value.Trim()
@@ -127,7 +127,7 @@ function Extract-SkillsFromList {
     }
 }
 
-# Fonction pour créer une matrice de compétences par gestionnaire
+# Fonction pour crÃ©er une matrice de compÃ©tences par gestionnaire
 function Create-SkillsMatrix {
     [CmdletBinding()]
     param (
@@ -138,10 +138,10 @@ function Create-SkillsMatrix {
         [string[]]$Managers
     )
 
-    # Créer une liste de toutes les compétences uniques
+    # CrÃ©er une liste de toutes les compÃ©tences uniques
     $uniqueSkills = $Skills | Select-Object -Property Skill, Category -Unique | Sort-Object -Property Category, Skill
     
-    # Créer une matrice de compétences par gestionnaire
+    # CrÃ©er une matrice de compÃ©tences par gestionnaire
     $skillsMatrix = @()
     
     foreach ($skill in $uniqueSkills) {
@@ -171,7 +171,7 @@ function Create-SkillsMatrix {
         }
     }
     
-    # Créer une matrice d'améliorations par gestionnaire
+    # CrÃ©er une matrice d'amÃ©liorations par gestionnaire
     $improvementsMatrix = @()
     
     foreach ($manager in $Managers) {
@@ -183,7 +183,7 @@ function Create-SkillsMatrix {
         }
     }
     
-    # Créer une matrice de compétences par catégorie
+    # CrÃ©er une matrice de compÃ©tences par catÃ©gorie
     $categoryMatrix = @()
     
     $categories = $uniqueSkills | Select-Object -Property Category -Unique | ForEach-Object { $_.Category }
@@ -205,7 +205,7 @@ function Create-SkillsMatrix {
         }
     }
     
-    # Créer une matrice de niveaux d'expertise par gestionnaire
+    # CrÃ©er une matrice de niveaux d'expertise par gestionnaire
     $levelMatrix = @()
     
     $levels = $Skills | Select-Object -Property Level -Unique | ForEach-Object { $_.Level }
@@ -224,7 +224,7 @@ function Create-SkillsMatrix {
         }
     }
     
-    # Créer une matrice de synergies entre gestionnaires
+    # CrÃ©er une matrice de synergies entre gestionnaires
     $synergyMatrix = @()
     
     foreach ($manager1 in $Managers) {
@@ -260,7 +260,7 @@ function Create-SkillsMatrix {
     }
 }
 
-# Fonction pour générer le rapport au format Markdown
+# Fonction pour gÃ©nÃ©rer le rapport au format Markdown
 function Generate-MarkdownReport {
     [CmdletBinding()]
     param (
@@ -271,31 +271,31 @@ function Generate-MarkdownReport {
         [string[]]$Managers
     )
 
-    $markdown = "# Matrice de Compétences par Gestionnaire`n`n"
-    $markdown += "Ce document présente une matrice de compétences par gestionnaire, ce qui permet de visualiser les compétences requises pour chaque gestionnaire et d'identifier les synergies potentielles.`n`n"
+    $markdown = "# Matrice de CompÃ©tences par Gestionnaire`n`n"
+    $markdown += "Ce document prÃ©sente une matrice de compÃ©tences par gestionnaire, ce qui permet de visualiser les compÃ©tences requises pour chaque gestionnaire et d'identifier les synergies potentielles.`n`n"
     
-    $markdown += "## Table des Matières`n`n"
-    $markdown += "- [Résumé](#résumé)`n"
-    $markdown += "- [Matrice de Compétences](#matrice-de-compétences)`n"
-    $markdown += "- [Matrice par Catégorie](#matrice-par-catégorie)`n"
+    $markdown += "## Table des MatiÃ¨res`n`n"
+    $markdown += "- [RÃ©sumÃ©](#rÃ©sumÃ©)`n"
+    $markdown += "- [Matrice de CompÃ©tences](#matrice-de-compÃ©tences)`n"
+    $markdown += "- [Matrice par CatÃ©gorie](#matrice-par-catÃ©gorie)`n"
     $markdown += "- [Matrice par Niveau d'Expertise](#matrice-par-niveau-dexpertise)`n"
     $markdown += "- [Synergies entre Gestionnaires](#synergies-entre-gestionnaires)`n"
-    $markdown += "- [Améliorations par Gestionnaire](#améliorations-par-gestionnaire)`n"
+    $markdown += "- [AmÃ©liorations par Gestionnaire](#amÃ©liorations-par-gestionnaire)`n"
     $markdown += "- [Implications pour la Planification](#implications-pour-la-planification)`n"
     
-    # Résumé
-    $markdown += "`n## <a name='résumé'></a>Résumé`n`n"
+    # RÃ©sumÃ©
+    $markdown += "`n## <a name='rÃ©sumÃ©'></a>RÃ©sumÃ©`n`n"
     
     $totalSkills = $Matrix.SkillsMatrix.Count
     $totalCategories = $Matrix.CategoryMatrix.Count
     $totalLevels = $Matrix.LevelMatrix.Count
     
-    $markdown += "**Nombre total de compétences uniques :** $totalSkills`n`n"
-    $markdown += "**Nombre de catégories :** $totalCategories`n`n"
+    $markdown += "**Nombre total de compÃ©tences uniques :** $totalSkills`n`n"
+    $markdown += "**Nombre de catÃ©gories :** $totalCategories`n`n"
     $markdown += "**Nombre de niveaux d'expertise :** $totalLevels`n`n"
     
-    $markdown += "### Répartition des Compétences par Gestionnaire`n`n"
-    $markdown += "| Gestionnaire | Nombre de Compétences | % du Total |`n"
+    $markdown += "### RÃ©partition des CompÃ©tences par Gestionnaire`n`n"
+    $markdown += "| Gestionnaire | Nombre de CompÃ©tences | % du Total |`n"
     $markdown += "|--------------|----------------------|-----------|`n"
     
     foreach ($manager in $Managers) {
@@ -305,11 +305,11 @@ function Generate-MarkdownReport {
         $markdown += "| $manager | $managerSkillCount | $percentage% |`n"
     }
     
-    # Matrice de compétences
-    $markdown += "`n## <a name='matrice-de-compétences'></a>Matrice de Compétences`n`n"
-    $markdown += "Cette section présente une matrice de toutes les compétences requises pour chaque gestionnaire.`n`n"
+    # Matrice de compÃ©tences
+    $markdown += "`n## <a name='matrice-de-compÃ©tences'></a>Matrice de CompÃ©tences`n`n"
+    $markdown += "Cette section prÃ©sente une matrice de toutes les compÃ©tences requises pour chaque gestionnaire.`n`n"
     
-    $markdown += "| Catégorie | Compétence |"
+    $markdown += "| CatÃ©gorie | CompÃ©tence |"
     foreach ($manager in $Managers) {
         $markdown += " $manager |"
     }
@@ -344,11 +344,11 @@ function Generate-MarkdownReport {
         $markdown += "`n"
     }
     
-    # Matrice par catégorie
-    $markdown += "`n## <a name='matrice-par-catégorie'></a>Matrice par Catégorie`n`n"
-    $markdown += "Cette section présente une matrice du nombre de compétences par catégorie pour chaque gestionnaire.`n`n"
+    # Matrice par catÃ©gorie
+    $markdown += "`n## <a name='matrice-par-catÃ©gorie'></a>Matrice par CatÃ©gorie`n`n"
+    $markdown += "Cette section prÃ©sente une matrice du nombre de compÃ©tences par catÃ©gorie pour chaque gestionnaire.`n`n"
     
-    $markdown += "| Catégorie | Nombre de Compétences |"
+    $markdown += "| CatÃ©gorie | Nombre de CompÃ©tences |"
     foreach ($manager in $Managers) {
         $markdown += " $manager |"
     }
@@ -370,7 +370,7 @@ function Generate-MarkdownReport {
     
     # Matrice par niveau d'expertise
     $markdown += "`n## <a name='matrice-par-niveau-dexpertise'></a>Matrice par Niveau d'Expertise`n`n"
-    $markdown += "Cette section présente une matrice du nombre de compétences par niveau d'expertise pour chaque gestionnaire.`n`n"
+    $markdown += "Cette section prÃ©sente une matrice du nombre de compÃ©tences par niveau d'expertise pour chaque gestionnaire.`n`n"
     
     $markdown += "| Niveau d'Expertise |"
     foreach ($manager in $Managers) {
@@ -394,9 +394,9 @@ function Generate-MarkdownReport {
     
     # Synergies entre gestionnaires
     $markdown += "`n## <a name='synergies-entre-gestionnaires'></a>Synergies entre Gestionnaires`n`n"
-    $markdown += "Cette section présente les synergies potentielles entre gestionnaires en termes de compétences communes.`n`n"
+    $markdown += "Cette section prÃ©sente les synergies potentielles entre gestionnaires en termes de compÃ©tences communes.`n`n"
     
-    $markdown += "| Gestionnaire 1 | Gestionnaire 2 | Compétences Communes | % des Compétences de G1 | % des Compétences de G2 |`n"
+    $markdown += "| Gestionnaire 1 | Gestionnaire 2 | CompÃ©tences Communes | % des CompÃ©tences de G1 | % des CompÃ©tences de G2 |`n"
     $markdown += "|---------------|---------------|---------------------|------------------------|------------------------|`n"
     
     foreach ($manager1 in $Managers) {
@@ -417,8 +417,8 @@ function Generate-MarkdownReport {
         }
     }
     
-    # Détails des synergies
-    $markdown += "`n### Détails des Synergies`n`n"
+    # DÃ©tails des synergies
+    $markdown += "`n### DÃ©tails des Synergies`n`n"
     
     foreach ($manager1 in $Managers) {
         foreach ($manager2 in $Managers) {
@@ -427,8 +427,8 @@ function Generate-MarkdownReport {
                 
                 if ($synergy.CommonSkillCount -gt 0) {
                     $markdown += "#### $manager1 - $manager2`n`n"
-                    $markdown += "Compétences communes : $($synergy.CommonSkillCount)`n`n"
-                    $markdown += "| Compétence | Catégorie | Niveau ($manager1) | Niveau ($manager2) |`n"
+                    $markdown += "CompÃ©tences communes : $($synergy.CommonSkillCount)`n`n"
+                    $markdown += "| CompÃ©tence | CatÃ©gorie | Niveau ($manager1) | Niveau ($manager2) |`n"
                     $markdown += "|------------|-----------|-----------------|-----------------|`n"
                     
                     foreach ($skillName in $synergy.CommonSkills) {
@@ -446,9 +446,9 @@ function Generate-MarkdownReport {
         }
     }
     
-    # Améliorations par gestionnaire
-    $markdown += "`n## <a name='améliorations-par-gestionnaire'></a>Améliorations par Gestionnaire`n`n"
-    $markdown += "Cette section présente les améliorations identifiées pour chaque gestionnaire.`n`n"
+    # AmÃ©liorations par gestionnaire
+    $markdown += "`n## <a name='amÃ©liorations-par-gestionnaire'></a>AmÃ©liorations par Gestionnaire`n`n"
+    $markdown += "Cette section prÃ©sente les amÃ©liorations identifiÃ©es pour chaque gestionnaire.`n`n"
     
     foreach ($manager in $Managers) {
         $markdown += "### $manager`n`n"
@@ -456,7 +456,7 @@ function Generate-MarkdownReport {
         $improvements = ($Matrix.ImprovementsMatrix | Where-Object { $_.Manager -eq $manager }).Improvements
         
         if ($improvements.Count -gt 0) {
-            $markdown += "| Amélioration | Compétences Requises |`n"
+            $markdown += "| AmÃ©lioration | CompÃ©tences Requises |`n"
             $markdown += "|--------------|---------------------|`n"
             
             foreach ($improvement in $improvements) {
@@ -465,7 +465,7 @@ function Generate-MarkdownReport {
                 $markdown += "| $improvement | $($improvementSkills.Count) |`n"
             }
         } else {
-            $markdown += "Aucune amélioration identifiée pour ce gestionnaire.`n"
+            $markdown += "Aucune amÃ©lioration identifiÃ©e pour ce gestionnaire.`n"
         }
         
         $markdown += "`n"
@@ -473,27 +473,27 @@ function Generate-MarkdownReport {
     
     # Implications pour la planification
     $markdown += "`n## <a name='implications-pour-la-planification'></a>Implications pour la Planification`n`n"
-    $markdown += "Cette matrice de compétences par gestionnaire a plusieurs implications importantes pour la planification des ressources humaines :`n`n"
+    $markdown += "Cette matrice de compÃ©tences par gestionnaire a plusieurs implications importantes pour la planification des ressources humaines :`n`n"
     
     $markdown += "### Allocation des Ressources`n`n"
-    $markdown += "1. **Équipes transversales** : Former des équipes transversales pour les gestionnaires ayant des compétences communes.`n"
-    $markdown += "2. **Partage des ressources** : Partager les ressources humaines entre gestionnaires pour les compétences communes.`n"
-    $markdown += "3. **Spécialisation** : Identifier les besoins en spécialistes pour les compétences uniques à certains gestionnaires.`n"
+    $markdown += "1. **Ã‰quipes transversales** : Former des Ã©quipes transversales pour les gestionnaires ayant des compÃ©tences communes.`n"
+    $markdown += "2. **Partage des ressources** : Partager les ressources humaines entre gestionnaires pour les compÃ©tences communes.`n"
+    $markdown += "3. **SpÃ©cialisation** : Identifier les besoins en spÃ©cialistes pour les compÃ©tences uniques Ã  certains gestionnaires.`n"
     
-    $markdown += "`n### Formation et Développement`n`n"
-    $markdown += "1. **Programmes de formation** : Développer des programmes de formation ciblés pour les compétences les plus demandées.`n"
-    $markdown += "2. **Développement des compétences** : Encourager le développement des compétences communes pour faciliter la mobilité entre gestionnaires.`n"
-    $markdown += "3. **Mentorat** : Mettre en place des programmes de mentorat pour les compétences rares ou spécialisées.`n"
+    $markdown += "`n### Formation et DÃ©veloppement`n`n"
+    $markdown += "1. **Programmes de formation** : DÃ©velopper des programmes de formation ciblÃ©s pour les compÃ©tences les plus demandÃ©es.`n"
+    $markdown += "2. **DÃ©veloppement des compÃ©tences** : Encourager le dÃ©veloppement des compÃ©tences communes pour faciliter la mobilitÃ© entre gestionnaires.`n"
+    $markdown += "3. **Mentorat** : Mettre en place des programmes de mentorat pour les compÃ©tences rares ou spÃ©cialisÃ©es.`n"
     
     $markdown += "`n### Recrutement`n`n"
-    $markdown += "1. **Profils polyvalents** : Recruter des profils polyvalents possédant des compétences communes à plusieurs gestionnaires.`n"
-    $markdown += "2. **Spécialistes** : Recruter des spécialistes pour les compétences uniques à certains gestionnaires.`n"
-    $markdown += "3. **Équilibre des compétences** : Veiller à maintenir un équilibre des compétences au sein de l'équipe.`n"
+    $markdown += "1. **Profils polyvalents** : Recruter des profils polyvalents possÃ©dant des compÃ©tences communes Ã  plusieurs gestionnaires.`n"
+    $markdown += "2. **SpÃ©cialistes** : Recruter des spÃ©cialistes pour les compÃ©tences uniques Ã  certains gestionnaires.`n"
+    $markdown += "3. **Ã‰quilibre des compÃ©tences** : Veiller Ã  maintenir un Ã©quilibre des compÃ©tences au sein de l'Ã©quipe.`n"
     
     return $markdown
 }
 
-# Fonction pour générer le rapport au format CSV
+# Fonction pour gÃ©nÃ©rer le rapport au format CSV
 function Generate-CsvReport {
     [CmdletBinding()]
     param (
@@ -579,7 +579,7 @@ function Generate-CsvReport {
     return $csv
 }
 
-# Fonction pour générer le rapport au format JSON
+# Fonction pour gÃ©nÃ©rer le rapport au format JSON
 function Generate-JsonReport {
     [CmdletBinding()]
     param (
@@ -590,18 +590,18 @@ function Generate-JsonReport {
     return $Matrix | ConvertTo-Json -Depth 10
 }
 
-# Lire le contenu de la liste des compétences
+# Lire le contenu de la liste des compÃ©tences
 $listContent = Get-Content -Path $SkillsListPath -Raw
 
-# Extraire les compétences de la liste
+# Extraire les compÃ©tences de la liste
 $extractionResult = Extract-SkillsFromList -MarkdownContent $listContent
 $skills = $extractionResult.Skills
 $managers = $extractionResult.Managers
 
-# Créer une matrice de compétences par gestionnaire
+# CrÃ©er une matrice de compÃ©tences par gestionnaire
 $matrix = Create-SkillsMatrix -Skills $skills -Managers $managers
 
-# Générer le rapport dans le format spécifié
+# GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $reportContent = Generate-MarkdownReport -Matrix $matrix -Managers $managers
@@ -617,30 +617,30 @@ switch ($Format) {
 # Enregistrer le rapport
 try {
     $reportContent | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Matrice de compétences par gestionnaire générée avec succès : $OutputPath"
+    Write-Host "Matrice de compÃ©tences par gestionnaire gÃ©nÃ©rÃ©e avec succÃ¨s : $OutputPath"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du rapport : $_"
     exit 1
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de la matrice de compétences par gestionnaire :"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de la matrice de compÃ©tences par gestionnaire :"
 Write-Host "---------------------------------------------------"
 
 $totalSkills = $matrix.SkillsMatrix.Count
 $totalCategories = $matrix.CategoryMatrix.Count
 $totalLevels = $matrix.LevelMatrix.Count
 
-Write-Host "  Nombre total de compétences uniques : $totalSkills"
-Write-Host "  Nombre de catégories : $totalCategories"
+Write-Host "  Nombre total de compÃ©tences uniques : $totalSkills"
+Write-Host "  Nombre de catÃ©gories : $totalCategories"
 Write-Host "  Nombre de niveaux d'expertise : $totalLevels"
 
-Write-Host "`nRépartition des compétences par gestionnaire :"
+Write-Host "`nRÃ©partition des compÃ©tences par gestionnaire :"
 foreach ($manager in $managers) {
     $managerSkillCount = ($matrix.SkillsMatrix | Where-Object { $_.ManagerSkills[$manager] -ne $null }).Count
     $percentage = [Math]::Round(($managerSkillCount / $totalSkills) * 100, 1)
     
-    Write-Host "  $manager : $managerSkillCount compétences ($percentage%)"
+    Write-Host "  $manager : $managerSkillCount compÃ©tences ($percentage%)"
 }
 
 Write-Host "`nSynergies entre gestionnaires :"
@@ -650,7 +650,7 @@ foreach ($manager1 in $managers) {
             $synergy = ($matrix.SynergyMatrix | Where-Object { $_.Manager -eq $manager1 }).Synergies[$manager2]
             
             if ($synergy.CommonSkillCount -gt 0) {
-                Write-Host "  $manager1 - $manager2 : $($synergy.CommonSkillCount) compétences communes"
+                Write-Host "  $manager1 - $manager2 : $($synergy.CommonSkillCount) compÃ©tences communes"
             }
         }
     }

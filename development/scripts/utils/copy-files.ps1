@@ -1,15 +1,15 @@
-# Script pour copier les fichiers crÃ©Ã©s dans un nouveau dossier
+﻿# Script pour copier les fichiers crÃƒÂ©ÃƒÂ©s dans un nouveau dossier
 
-# CrÃ©er un dossier temporaire
+# CrÃƒÂ©er un dossier temporaire
 $tempFolder = "temp-files"
 New-Item -Path $tempFolder -ItemType Directory -Force | Out-Null
 
-# Copier les fichiers de commande Ã  la racine
+# Copier les fichiers de commande ÃƒÂ  la racine
 Copy-Item -Path "n8n-dashboard.cmd" -Destination "$tempFolder/" -Force
 Copy-Item -Path "n8n-maintenance.cmd" -Destination "$tempFolder/" -Force
 Copy-Item -Path "n8n-test.cmd" -Destination "$tempFolder/" -Force
 
-# CrÃ©er les dossiers nÃ©cessaires
+# CrÃƒÂ©er les dossiers nÃƒÂ©cessaires
 New-Item -Path "$tempFolder/dashboard" -ItemType Directory -Force | Out-Null
 New-Item -Path "$tempFolder/maintenance" -ItemType Directory -Force | Out-Null
 New-Item -Path "$tempFolder/tests" -ItemType Directory -Force | Out-Null
@@ -33,4 +33,4 @@ Copy-Item -Path "n8n/docs/examples/common-scenarios.md" -Destination "$tempFolde
 Copy-Item -Path "n8n/docs/user-guide.md" -Destination "$tempFolder/docs/user-guide.md" -Force
 Copy-Item -Path "n8n/docs/index.md" -Destination "$tempFolder/docs/index.md" -Force
 
-Write-Host "Fichiers copiÃ©s dans le dossier $tempFolder"
+Write-Host "Fichiers copiÃƒÂ©s dans le dossier $tempFolder"

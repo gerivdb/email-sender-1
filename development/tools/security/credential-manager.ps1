@@ -1,19 +1,19 @@
-<#
+﻿<#
 .SYNOPSIS
     Gestionnaire de credentials pour les API keys et autres informations sensibles.
 
 .DESCRIPTION
-    Ce script fournit des fonctions pour gérer les credentials de manière sécurisée.
+    Ce script fournit des fonctions pour gÃ©rer les credentials de maniÃ¨re sÃ©curisÃ©e.
     Il utilise le SecretManagement de PowerShell lorsque disponible, sinon il utilise
-    des variables d'environnement ou un fichier chiffré.
+    des variables d'environnement ou un fichier chiffrÃ©.
 
 .NOTES
     Auteur: Security Team
     Version: 1.0
-    Date de création: 2025-06-02
+    Date de crÃ©ation: 2025-06-02
 #>
 
-# Fonction pour récupérer un credential
+# Fonction pour rÃ©cupÃ©rer un credential
 function Get-SecureCredential {
     [CmdletBinding()]
     param (
@@ -27,13 +27,13 @@ function Get-SecureCredential {
         [switch]$Required
     )
     
-    # Vérifier si le module SecretManagement est disponible
+    # VÃ©rifier si le module SecretManagement est disponible
     $useSecretManagement = $false
     if (Get-Module -ListAvailable -Name Microsoft.PowerShell.SecretManagement) {
         $useSecretManagement = $true
     }
     
-    # Essayer de récupérer le credential depuis SecretManagement
+    # Essayer de rÃ©cupÃ©rer le credential depuis SecretManagement
     if ($useSecretManagement) {
         try {
             $secret = Get-Secret -Name $Name -ErrorAction SilentlyContinue
@@ -41,17 +41,17 @@ function Get-SecureCredential {
                 return $secret
             }
         } catch {
-            Write-Verbose "Impossible de récupérer le credential depuis SecretManagement : $_"
+            Write-Verbose "Impossible de rÃ©cupÃ©rer le credential depuis SecretManagement : $_"
         }
     }
     
-    # Essayer de récupérer le credential depuis les variables d'environnement
+    # Essayer de rÃ©cupÃ©rer le credential depuis les variables d'environnement
     $envValue = [Environment]::GetEnvironmentVariable($Name)
     if ($envValue) {
         return $envValue
     }
     
-    # Essayer de récupérer le credential depuis le fichier de credentials
+    # Essayer de rÃ©cupÃ©rer le credential depuis le fichier de credentials
     $credentialsFile = Join-Path -Path $PSScriptRoot -ChildPath "credentials.json"
     if (Test-Path -Path $credentialsFile) {
         try {
@@ -60,18 +60,18 @@ function Get-SecureCredential {
                 return $credentials.$Name
             }
         } catch {
-            Write-Verbose "Impossible de récupérer le credential depuis le fichier de credentials : $_"
+            Write-Verbose "Impossible de rÃ©cupÃ©rer le credential depuis le fichier de credentials : $_"
         }
     }
     
-    # Si un credential par défaut est fourni, l'utiliser
+    # Si un credential par dÃ©faut est fourni, l'utiliser
     if ($DefaultValue) {
         return $DefaultValue
     }
     
-    # Si le credential est requis et qu'il n'a pas été trouvé, lever une exception
+    # Si le credential est requis et qu'il n'a pas Ã©tÃ© trouvÃ©, lever une exception
     if ($Required) {
-        throw "Le credential '$Name' est requis mais n'a pas été trouvé."
+        throw "Le credential '$Name' est requis mais n'a pas Ã©tÃ© trouvÃ©."
     }
     
     # Sinon, retourner null
@@ -98,7 +98,7 @@ function Set-SecureCredential {
         if (Get-Module -ListAvailable -Name Microsoft.PowerShell.SecretManagement) {
             try {
                 Set-Secret -Name $Name -Secret $Value
-                Write-Host "Credential '$Name' enregistré dans SecretManagement." -ForegroundColor Green
+                Write-Host "Credential '$Name' enregistrÃ© dans SecretManagement." -ForegroundColor Green
                 return $true
             } catch {
                 Write-Warning "Impossible d'enregistrer le credential dans SecretManagement : $_"
@@ -112,7 +112,7 @@ function Set-SecureCredential {
     if ($StorageType -eq "Environment") {
         try {
             [Environment]::SetEnvironmentVariable($Name, $Value, "Process")
-            Write-Host "Credential '$Name' enregistré dans les variables d'environnement (Process)." -ForegroundColor Green
+            Write-Host "Credential '$Name' enregistrÃ© dans les variables d'environnement (Process)." -ForegroundColor Green
             return $true
         } catch {
             Write-Warning "Impossible d'enregistrer le credential dans les variables d'environnement : $_"
@@ -123,7 +123,7 @@ function Set-SecureCredential {
     if ($StorageType -eq "File") {
         $credentialsFile = Join-Path -Path $PSScriptRoot -ChildPath "credentials.json"
         
-        # Créer ou charger le fichier de credentials
+        # CrÃ©er ou charger le fichier de credentials
         if (Test-Path -Path $credentialsFile) {
             try {
                 $credentials = Get-Content -Path $credentialsFile -Raw | ConvertFrom-Json
@@ -134,20 +134,20 @@ function Set-SecureCredential {
             $credentials = [PSCustomObject]@{}
         }
         
-        # Ajouter ou mettre à jour le credential
+        # Ajouter ou mettre Ã  jour le credential
         $credentials | Add-Member -MemberType NoteProperty -Name $Name -Value $Value -Force
         
         # Enregistrer le fichier de credentials
         try {
             $credentials | ConvertTo-Json | Set-Content -Path $credentialsFile -Encoding UTF8
-            Write-Host "Credential '$Name' enregistré dans le fichier de credentials." -ForegroundColor Green
+            Write-Host "Credential '$Name' enregistrÃ© dans le fichier de credentials." -ForegroundColor Green
             return $true
         } catch {
             Write-Warning "Impossible d'enregistrer le credential dans le fichier de credentials : $_"
         }
     }
     
-    # Si aucun stockage n'a fonctionné, retourner false
+    # Si aucun stockage n'a fonctionnÃ©, retourner false
     return $false
 }
 
@@ -171,7 +171,7 @@ function Remove-SecureCredential {
             try {
                 if (Get-Secret -Name $Name -ErrorAction SilentlyContinue) {
                     Remove-Secret -Name $Name
-                    Write-Host "Credential '$Name' supprimé de SecretManagement." -ForegroundColor Green
+                    Write-Host "Credential '$Name' supprimÃ© de SecretManagement." -ForegroundColor Green
                     $removed = $true
                 }
             } catch {
@@ -185,7 +185,7 @@ function Remove-SecureCredential {
         try {
             if ([Environment]::GetEnvironmentVariable($Name)) {
                 [Environment]::SetEnvironmentVariable($Name, $null, "Process")
-                Write-Host "Credential '$Name' supprimé des variables d'environnement (Process)." -ForegroundColor Green
+                Write-Host "Credential '$Name' supprimÃ© des variables d'environnement (Process)." -ForegroundColor Green
                 $removed = $true
             }
         } catch {
@@ -204,7 +204,7 @@ function Remove-SecureCredential {
                 if ($credentials.PSObject.Properties.Name -contains $Name) {
                     $credentials.PSObject.Properties.Remove($Name)
                     $credentials | ConvertTo-Json | Set-Content -Path $credentialsFile -Encoding UTF8
-                    Write-Host "Credential '$Name' supprimé du fichier de credentials." -ForegroundColor Green
+                    Write-Host "Credential '$Name' supprimÃ© du fichier de credentials." -ForegroundColor Green
                     $removed = $true
                 }
             } catch {
@@ -223,7 +223,7 @@ function Get-SecureCredentialList {
     
     $credentialList = @()
     
-    # Récupérer les credentials depuis SecretManagement
+    # RÃ©cupÃ©rer les credentials depuis SecretManagement
     if (Get-Module -ListAvailable -Name Microsoft.PowerShell.SecretManagement) {
         try {
             $secretManagementCredentials = Get-SecretInfo | Select-Object -ExpandProperty Name
@@ -234,11 +234,11 @@ function Get-SecureCredentialList {
                 }
             }
         } catch {
-            Write-Warning "Impossible de récupérer les credentials depuis SecretManagement : $_"
+            Write-Warning "Impossible de rÃ©cupÃ©rer les credentials depuis SecretManagement : $_"
         }
     }
     
-    # Récupérer les credentials depuis le fichier de credentials
+    # RÃ©cupÃ©rer les credentials depuis le fichier de credentials
     $credentialsFile = Join-Path -Path $PSScriptRoot -ChildPath "credentials.json"
     if (Test-Path -Path $credentialsFile) {
         try {
@@ -250,7 +250,7 @@ function Get-SecureCredentialList {
                 }
             }
         } catch {
-            Write-Warning "Impossible de récupérer les credentials depuis le fichier de credentials : $_"
+            Write-Warning "Impossible de rÃ©cupÃ©rer les credentials depuis le fichier de credentials : $_"
         }
     }
     

@@ -1,34 +1,34 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests unitaires corrigés pour les fonctions d'inventaire des scripts du manager.
+    Tests unitaires corrigÃ©s pour les fonctions d'inventaire des scripts du manager.
 .DESCRIPTION
-    Ce script contient des tests unitaires corrigés pour les fonctions d'inventaire
+    Ce script contient des tests unitaires corrigÃ©s pour les fonctions d'inventaire
     des scripts du manager, en utilisant le framework Pester avec des mocks.
 .EXAMPLE
     Invoke-Pester -Path ".\InventoryFunctions.Fixed.Tests.ps1"
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = "$PSScriptRoot/../inventory/Show-ScriptInventory.ps1"
 
-# Vérifier si le script existe
+# VÃ©rifier si le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Warning "Le script à tester n'existe pas: $scriptPath"
+    Write-Warning "Le script Ã  tester n'existe pas: $scriptPath"
     exit 1
 }
 
-# Définir les fonctions pour les tests
+# DÃ©finir les fonctions pour les tests
 function Get-ScriptInventory {
     [CmdletBinding()]
     param (
@@ -40,10 +40,10 @@ function Get-ScriptInventory {
     )
     
     try {
-        # Récupérer tous les scripts
+        # RÃ©cupÃ©rer tous les scripts
         $scripts = Get-ChildItem -Path $RootPath -Recurse -File | Where-Object { $Extensions -contains $_.Extension }
         
-        # Créer l'inventaire
+        # CrÃ©er l'inventaire
         $inventory = @{
             GeneratedAt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
             RootPath = $RootPath
@@ -59,7 +59,7 @@ function Get-ScriptInventory {
             $inventory.ScriptsByExtension[$extension] = $count
         }
         
-        # Compter les scripts par répertoire
+        # Compter les scripts par rÃ©pertoire
         $directories = $scripts | Group-Object -Property { Split-Path -Parent $_.FullName } | Select-Object Name, Count
         foreach ($directory in $directories) {
             $inventory.ScriptsByDirectory[$directory.Name] = $directory.Count
@@ -83,7 +83,7 @@ function Get-ScriptInventory {
         return $inventory
     }
     catch {
-        Write-Error "Erreur lors de la création de l'inventaire des scripts : $_"
+        Write-Error "Erreur lors de la crÃ©ation de l'inventaire des scripts : $_"
         return $null
     }
 }
@@ -117,7 +117,7 @@ function Find-Script {
             $results = $results | Where-Object { $_.Extension -eq $Extension }
         }
         
-        # Filtrer par répertoire
+        # Filtrer par rÃ©pertoire
         if ($Directory) {
             $results = $results | Where-Object { $_.Directory -like "*$Directory*" }
         }
@@ -131,10 +131,10 @@ function Find-Script {
 }
 
 # Tests Pester
-Describe "Tests des fonctions d'inventaire des scripts du manager (version corrigée)" {
+Describe "Tests des fonctions d'inventaire des scripts du manager (version corrigÃ©e)" {
     Context "Tests de la fonction Get-ScriptInventory avec mocks" {
         BeforeAll {
-            # Créer des mocks pour les fonctions utilisées
+            # CrÃ©er des mocks pour les fonctions utilisÃ©es
             $mockScripts = @(
                 [PSCustomObject]@{
                     Name = "script1.ps1"
@@ -173,7 +173,7 @@ Describe "Tests des fonctions d'inventaire des scripts du manager (version corri
             Mock Split-Path { return "C:\test\subdir2" } -ParameterFilter { $Path -eq "C:\test\subdir2\manifest1.psd1" -and $Parent }
         }
 
-        It "Devrait créer un inventaire des scripts" {
+        It "Devrait crÃ©er un inventaire des scripts" {
             $inventory = Get-ScriptInventory -RootPath "C:\test"
             $inventory | Should -Not -BeNullOrEmpty
             $inventory.TotalScripts | Should -Be 4
@@ -189,13 +189,13 @@ Describe "Tests des fonctions d'inventaire des scripts du manager (version corri
 
         It "Devrait filtrer les scripts par extension" {
             $inventory = Get-ScriptInventory -RootPath "C:\test" -Extensions @(".ps1")
-            $inventory.TotalScripts | Should -Be 4  # Le mock retourne toujours les mêmes scripts
+            $inventory.TotalScripts | Should -Be 4  # Le mock retourne toujours les mÃªmes scripts
         }
     }
 
     Context "Tests de la fonction Find-Script" {
         BeforeAll {
-            # Créer un inventaire de test
+            # CrÃ©er un inventaire de test
             $script:testInventory = @{
                 Scripts = @(
                     @{
@@ -251,7 +251,7 @@ Describe "Tests des fonctions d'inventaire des scripts du manager (version corri
             $results[0].Name | Should -Be "module1.psm1"
         }
 
-        It "Devrait trouver des scripts par répertoire" {
+        It "Devrait trouver des scripts par rÃ©pertoire" {
             $results = Find-Script -Inventory $script:testInventory -Directory "subdir1"
             $results.Count | Should -Be 2
             $results[0].Name | Should -Be "script2.ps1"

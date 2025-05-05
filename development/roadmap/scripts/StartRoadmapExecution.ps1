@@ -1,5 +1,5 @@
-# Script d'exécution de la roadmap
-# Ce script exécute les tâches de la roadmap
+﻿# Script d'exÃ©cution de la roadmap
+# Ce script exÃ©cute les tÃ¢ches de la roadmap
 
 param (
     [string]$RoadmapPath = "Roadmap\roadmap_perso.md",
@@ -37,7 +37,7 @@ function Get-RoadmapContent {
         [string]$Path
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $Path)) {
         Write-Log -Message "Le fichier roadmap n'existe pas: $Path" -Level "ERROR"
         return $null
@@ -46,7 +46,7 @@ function Get-RoadmapContent {
     # Lire le contenu du fichier
     $content = Get-Content -Path $Path -Raw
     
-    # Structure pour stocker les données de la roadmap
+    # Structure pour stocker les donnÃ©es de la roadmap
     $roadmap = @{
         Title    = ""
         Content  = $content
@@ -59,7 +59,7 @@ function Get-RoadmapContent {
         $roadmap.Title = $Matches[1]
     }
     
-    # Analyser les sections, phases et tâches
+    # Analyser les sections, phases et tÃ¢ches
     $lines = $content -split "`n"
     $roadmap.Lines = $lines
     
@@ -69,7 +69,7 @@ function Get-RoadmapContent {
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
         
-        # Détecter une section
+        # DÃ©tecter une section
         if ($line -match "^## (\d+)\. (.+)$") {
             $sectionId = $Matches[1]
             $sectionTitle = $Matches[2]
@@ -88,7 +88,7 @@ function Get-RoadmapContent {
             $currentPhase = $null
         }
         
-        # Détecter une phase
+        # DÃ©tecter une phase
         elseif ($line -match "^  - \[([ x])\] \*\*Phase (\d+): (.+)\*\*$" -and $null -ne $currentSection) {
             $isCompleted = $Matches[1] -eq "x"
             $phaseId = $Matches[2]
@@ -108,7 +108,7 @@ function Get-RoadmapContent {
             $currentSection.Phases += $currentPhase
         }
         
-        # Détecter une tâche
+        # DÃ©tecter une tÃ¢che
         elseif ($line -match "^    - \[([ x])\] (.+)$" -and $null -ne $currentPhase) {
             $isCompleted = $Matches[1] -eq "x"
             $taskTitle = $Matches[2]
@@ -146,7 +146,7 @@ function Get-RoadmapContent {
     return $roadmap
 }
 
-# Fonction pour exécuter une tâche
+# Fonction pour exÃ©cuter une tÃ¢che
 function Invoke-RoadmapTask {
     param (
         [hashtable]$Task,
@@ -154,21 +154,21 @@ function Invoke-RoadmapTask {
         [hashtable]$Section
     )
     
-    Write-Log -Message "Exécution de la tâche: $($Task.Title)" -Level "INFO"
+    Write-Log -Message "ExÃ©cution de la tÃ¢che: $($Task.Title)" -Level "INFO"
     Write-Log -Message "  Section: $($Section.Id). $($Section.Title)" -Level "INFO"
     Write-Log -Message "  Phase: Phase $($Phase.Id): $($Phase.Title)" -Level "INFO"
     
-    # Simuler l'exécution de la tâche
+    # Simuler l'exÃ©cution de la tÃ¢che
     Start-Sleep -Seconds 1
     
-    Write-Log -Message "Tâche exécutée avec succès." -Level "SUCCESS"
+    Write-Log -Message "TÃ¢che exÃ©cutÃ©e avec succÃ¨s." -Level "SUCCESS"
     
     return $true
 }
 
 # Fonction principale
 function Main {
-    Write-Log -Message "Démarrage de l'exécution de la roadmap: $RoadmapPath" -Level "INFO"
+    Write-Log -Message "DÃ©marrage de l'exÃ©cution de la roadmap: $RoadmapPath" -Level "INFO"
     
     # Lire et analyser la roadmap
     $roadmap = Get-RoadmapContent -Path $RoadmapPath
@@ -178,7 +178,7 @@ function Main {
         exit 1
     }
     
-    Write-Log -Message "Roadmap analysée: $($roadmap.Title)" -Level "SUCCESS"
+    Write-Log -Message "Roadmap analysÃ©e: $($roadmap.Title)" -Level "SUCCESS"
     
     # Afficher les statistiques
     Write-Log -Message "Statistiques de la roadmap:" -Level "INFO"
@@ -200,11 +200,11 @@ function Main {
     }
     
     Write-Log -Message "  Phases: $completedPhases / $totalPhases ($([math]::Round(($completedPhases / $totalPhases) * 100))%)" -Level "INFO"
-    Write-Log -Message "  Tâches: $completedTasks / $totalTasks ($([math]::Round(($completedTasks / $totalTasks) * 100))%)" -Level "INFO"
+    Write-Log -Message "  TÃ¢ches: $completedTasks / $totalTasks ($([math]::Round(($completedTasks / $totalTasks) * 100))%)" -Level "INFO"
     
-    # Exécuter les tâches non complétées
+    # ExÃ©cuter les tÃ¢ches non complÃ©tÃ©es
     if ($AutoExecute) {
-        Write-Log -Message "Exécution automatique des tâches non complétées..." -Level "INFO"
+        Write-Log -Message "ExÃ©cution automatique des tÃ¢ches non complÃ©tÃ©es..." -Level "INFO"
         
         $tasksExecuted = 0
         
@@ -222,24 +222,24 @@ function Main {
             }
         }
         
-        Write-Log -Message "Exécution terminée. Tâches exécutées: $tasksExecuted" -Level "SUCCESS"
+        Write-Log -Message "ExÃ©cution terminÃ©e. TÃ¢ches exÃ©cutÃ©es: $tasksExecuted" -Level "SUCCESS"
         
-        # Mettre à jour la roadmap si demandé
+        # Mettre Ã  jour la roadmap si demandÃ©
         if ($AutoUpdate) {
-            Write-Log -Message "Mise à jour de la roadmap..." -Level "INFO"
+            Write-Log -Message "Mise Ã  jour de la roadmap..." -Level "INFO"
             
-            # Appeler RoadmapGitUpdater.ps1 pour mettre à jour la roadmap
+            # Appeler RoadmapGitUpdater.ps1 pour mettre Ã  jour la roadmap
             & "$PSScriptRoot\RoadmapGitUpdater.ps1" -RoadmapPath $RoadmapPath -AutoUpdate -GenerateReport
             
-            Write-Log -Message "Mise à jour terminée." -Level "SUCCESS"
+            Write-Log -Message "Mise Ã  jour terminÃ©e." -Level "SUCCESS"
         }
     }
     else {
-        Write-Log -Message "Mode d'exécution manuelle. Utilisez -AutoExecute pour exécuter automatiquement les tâches." -Level "INFO"
+        Write-Log -Message "Mode d'exÃ©cution manuelle. Utilisez -AutoExecute pour exÃ©cuter automatiquement les tÃ¢ches." -Level "INFO"
     }
     
-    Write-Log -Message "Exécution de la roadmap terminée." -Level "SUCCESS"
+    Write-Log -Message "ExÃ©cution de la roadmap terminÃ©e." -Level "SUCCESS"
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

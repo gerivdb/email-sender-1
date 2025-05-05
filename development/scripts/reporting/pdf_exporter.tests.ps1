@@ -1,33 +1,33 @@
-<#
+﻿<#
 .SYNOPSIS
     Tests unitaires pour le module d'export PDF.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃƒÂ©rifier le bon fonctionnement
     du module pdf_exporter.ps1.
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Host "Le module Pester n'est pas installÃ©. Installation en cours..."
+    Write-Host "Le module Pester n'est pas installÃƒÂ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemin vers le module Ã  tester
+# Chemin vers le module ÃƒÂ  tester
 $ModulePath = Join-Path -Path $PSScriptRoot -ChildPath "pdf_exporter.ps1"
 
-# CrÃ©er des donnÃ©es de test
+# CrÃƒÂ©er des donnÃƒÂ©es de test
 function New-TestPdfOptions {
     param (
         [string]$OutputPath
     )
     
-    # CrÃ©er le rÃ©pertoire de configuration de test
+    # CrÃƒÂ©er le rÃƒÂ©pertoire de configuration de test
     $ConfigDir = Join-Path -Path $OutputPath -ChildPath "projet/config/reporting"
     New-Item -Path $ConfigDir -ItemType Directory -Force | Out-Null
     
-    # CrÃ©er un fichier d'options PDF de test
+    # CrÃƒÂ©er un fichier d'options PDF de test
     $OptionsPath = Join-Path -Path $ConfigDir -ChildPath "test_pdf_options.json"
     
     $Options = @{
@@ -45,7 +45,7 @@ function New-TestPdfOptions {
         }
         toc = @{
             enable = $true
-            header_text = "Table des matiÃ¨res"
+            header_text = "Table des matiÃƒÂ¨res"
             level_indentation = 10
             disable_dotted_lines = $false
             disable_links = $false
@@ -61,7 +61,7 @@ function New-TestPdfOptions {
         }
         footer = @{
             enable = $true
-            html = "<div style='text-align: center; font-size: 10px; color: #777;'>Rapport gÃ©nÃ©rÃ© le [date] Ã  [time]</div>"
+            html = "<div style='text-align: center; font-size: 10px; color: #777;'>Rapport gÃƒÂ©nÃƒÂ©rÃƒÂ© le [date] ÃƒÂ  [time]</div>"
             spacing = "5mm"
         }
     }
@@ -71,7 +71,7 @@ function New-TestPdfOptions {
     return $OptionsPath
 }
 
-# CrÃ©er des donnÃ©es de rapport de test
+# CrÃƒÂ©er des donnÃƒÂ©es de rapport de test
 function New-TestReportData {
     return @{
         id = "test_report"
@@ -86,13 +86,13 @@ function New-TestReportData {
         sections = @(
             @{
                 id = "summary"
-                title = "RÃ©sumÃ©"
+                title = "RÃƒÂ©sumÃƒÂ©"
                 type = "texte"
-                content = "Ceci est un rÃ©sumÃ© du rapport de test."
+                content = "Ceci est un rÃƒÂ©sumÃƒÂ© du rapport de test."
             },
             @{
                 id = "metrics"
-                title = "MÃ©triques clÃ©s"
+                title = "MÃƒÂ©triques clÃƒÂ©s"
                 type = "metrics_summary"
                 metrics = @(
                     @{
@@ -104,7 +104,7 @@ function New-TestReportData {
                     },
                     @{
                         id = "memory_max"
-                        name = "MÃ©moire maximale"
+                        name = "MÃƒÂ©moire maximale"
                         value = 78.6
                         formatted_value = "78.6%"
                         trend = -1.3
@@ -115,20 +115,20 @@ function New-TestReportData {
     }
 }
 
-# ExÃ©cuter les tests
+# ExÃƒÂ©cuter les tests
 Describe "PDF Exporter Module Tests" {
     BeforeAll {
-        # CrÃ©er un rÃ©pertoire temporaire pour les tests
+        # CrÃƒÂ©er un rÃƒÂ©pertoire temporaire pour les tests
         $script:TestDir = Join-Path -Path $TestDrive -ChildPath "pdf_exporter_tests"
         New-Item -Path $script:TestDir -ItemType Directory -Force | Out-Null
         
-        # CrÃ©er des options PDF de test
+        # CrÃƒÂ©er des options PDF de test
         $script:TestOptionsPath = New-TestPdfOptions -OutputPath $script:TestDir
         
-        # Importer le module Ã  tester
+        # Importer le module ÃƒÂ  tester
         . $ModulePath
         
-        # RedÃ©finir les chemins par dÃ©faut pour les tests
+        # RedÃƒÂ©finir les chemins par dÃƒÂ©faut pour les tests
         $script:DefaultPdfOptionsPath = $script:TestOptionsPath
     }
     
@@ -270,6 +270,6 @@ Describe "PDF Exporter Module Tests" {
     }
 }
 
-# Ne pas exÃ©cuter les tests automatiquement Ã  la fin du script
-# Pour exÃ©cuter les tests, utilisez la commande suivante :
+# Ne pas exÃƒÂ©cuter les tests automatiquement ÃƒÂ  la fin du script
+# Pour exÃƒÂ©cuter les tests, utilisez la commande suivante :
 # Invoke-Pester -Path .\pdf_exporter.tests.ps1 -Output Detailed

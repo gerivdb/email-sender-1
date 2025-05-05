@@ -1,4 +1,4 @@
-BeforeAll {
+﻿BeforeAll {
   # Importer le module commun
   $scriptPath = Split-Path -Parent $PSScriptRoot
   $projectRoot = Split-Path -Parent $scriptPath
@@ -11,7 +11,7 @@ BeforeAll {
     throw "Module commun introuvable: $modulePath"
   }
 
-  # Définir la fonction Search-TasksQdrant pour les tests
+  # DÃ©finir la fonction Search-TasksQdrant pour les tests
   function Search-TasksQdrant {
     param (
       [string]$Query,
@@ -27,55 +27,55 @@ BeforeAll {
     )
 
     # Cette fonction est un mock pour les tests
-    # Pour le test "Recherche des tâches avec une requête"
+    # Pour le test "Recherche des tÃ¢ches avec une requÃªte"
     if ($Query -eq "recherche") {
       return @(
         [PSCustomObject]@{
           id          = "1.1"
-          description = "Implémentation de la recherche"
+          description = "ImplÃ©mentation de la recherche"
           status      = "Incomplete"
-          section     = "Tâches actives"
+          section     = "TÃ¢ches actives"
           score       = 0.85
         },
         [PSCustomObject]@{
           id          = "1.1.1"
           description = "Recherche simple"
           status      = "Incomplete"
-          section     = "Tâches actives"
+          section     = "TÃ¢ches actives"
           score       = 0.75
         }
       )
     }
-    # Pour le test "Filtre les tâches par statut"
+    # Pour le test "Filtre les tÃ¢ches par statut"
     elseif ($Query -eq "filtrage" -and $Status -eq "Completed") {
       return @(
         [PSCustomObject]@{
           id          = "1.2.1"
           description = "Filtrage par statut"
           status      = "Completed"
-          section     = "Tâches actives"
+          section     = "TÃ¢ches actives"
           score       = 0.9
         }
       )
     }
-    # Pour le test "Gère correctement les erreurs"
+    # Pour le test "GÃ¨re correctement les erreurs"
     elseif ($Query -eq "erreur") {
-      throw "Erreur simulée"
+      throw "Erreur simulÃ©e"
     } else {
       return $null
     }
   }
 
-  # Créer un fichier de roadmap temporaire pour les tests
+  # CrÃ©er un fichier de roadmap temporaire pour les tests
   $testRoadmapContent = @"
 # Roadmap de test
 
-## Tâches actives
+## TÃ¢ches actives
 
-- [ ] **1.1** Implémentation de la recherche
+- [ ] **1.1** ImplÃ©mentation de la recherche
   - [ ] **1.1.1** Recherche simple
-  - [ ] **1.1.2** Recherche avancée
-- [ ] **1.2** Implémentation du filtrage
+  - [ ] **1.1.2** Recherche avancÃ©e
+- [ ] **1.2** ImplÃ©mentation du filtrage
   - [x] **1.2.1** Filtrage par statut
 "@
 
@@ -100,12 +100,12 @@ BeforeAll {
       [bool]$Force
     )
 
-    return "# Script Python simulé pour les tests"
+    return "# Script Python simulÃ© pour les tests"
   }
 }
 
 Describe "Search-TasksQdrant" {
-  It "Recherche des tâches avec une requête" {
+  It "Recherche des tÃ¢ches avec une requÃªte" {
     # Mock pour la fonction python
     Mock python {
       @"
@@ -113,16 +113,16 @@ Describe "Search-TasksQdrant" {
   "results": [
     {
       "id": "1.1",
-      "description": "Implémentation de la recherche",
+      "description": "ImplÃ©mentation de la recherche",
       "status": "Incomplete",
-      "section": "Tâches actives",
+      "section": "TÃ¢ches actives",
       "score": 0.85
     },
     {
       "id": "1.1.1",
       "description": "Recherche simple",
       "status": "Incomplete",
-      "section": "Tâches actives",
+      "section": "TÃ¢ches actives",
       "score": 0.75
     }
   ]
@@ -130,19 +130,19 @@ Describe "Search-TasksQdrant" {
 "@
     }
 
-    # Exécuter la recherche
+    # ExÃ©cuter la recherche
     $result = Search-TasksQdrant -Query "recherche" -QdrantUrl "http://localhost:6333" -CollectionName "roadmap_tasks" -Limit 5
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $result | Should -Not -BeNullOrEmpty
     $result.Count | Should -Be 2
     $result[0].id | Should -Be "1.1"
-    $result[0].description | Should -Be "Implémentation de la recherche"
+    $result[0].description | Should -Be "ImplÃ©mentation de la recherche"
     $result[0].status | Should -Be "Incomplete"
     $result[0].score | Should -Be 0.85
   }
 
-  It "Filtre les tâches par statut" {
+  It "Filtre les tÃ¢ches par statut" {
     # Mock pour la fonction python
     Mock python {
       @"
@@ -152,7 +152,7 @@ Describe "Search-TasksQdrant" {
       "id": "1.2.1",
       "description": "Filtrage par statut",
       "status": "Completed",
-      "section": "Tâches actives",
+      "section": "TÃ¢ches actives",
       "score": 0.9
     }
   ]
@@ -160,10 +160,10 @@ Describe "Search-TasksQdrant" {
 "@
     }
 
-    # Exécuter la recherche avec filtre
+    # ExÃ©cuter la recherche avec filtre
     $result = Search-TasksQdrant -Query "filtrage" -Status "Completed" -QdrantUrl "http://localhost:6333" -CollectionName "roadmap_tasks" -Limit 5
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     $result | Should -Not -BeNullOrEmpty
     $result.Count | Should -Be 1
     $result[0].id | Should -Be "1.2.1"
@@ -172,8 +172,8 @@ Describe "Search-TasksQdrant" {
     $result[0].score | Should -Be 0.9
   }
 
-  It "Gère correctement les erreurs" {
-    # Exécuter la recherche avec une requête qui génère une erreur
+  It "GÃ¨re correctement les erreurs" {
+    # ExÃ©cuter la recherche avec une requÃªte qui gÃ©nÃ¨re une erreur
     { Search-TasksQdrant -Query "erreur" -QdrantUrl "http://localhost:6333" -CollectionName "roadmap_tasks" -Limit 5 } | Should -Throw
   }
 }

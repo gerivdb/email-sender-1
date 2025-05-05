@@ -1,4 +1,4 @@
-# Script de test tres simple
+﻿# Script de test tres simple
 
 # Creer un script PowerShell de test tres simple
 $sampleCode = @'

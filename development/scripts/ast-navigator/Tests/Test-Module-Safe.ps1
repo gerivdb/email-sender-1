@@ -1,4 +1,4 @@
-# Script de test pour le module AstNavigator avec la fonction Invoke-AstTraversalSafe
+﻿# Script de test pour le module AstNavigator avec la fonction Invoke-AstTraversalSafe
 
 # Charger directement les fonctions
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath ".."
@@ -13,7 +13,7 @@ foreach ($function in $publicFunctions) {
     . $function.FullName
 }
 
-# Créer un exemple de code PowerShell à analyser
+# CrÃ©er un exemple de code PowerShell Ã  analyser
 $sampleCode = @'
 function Get-Example {
     [CmdletBinding()]

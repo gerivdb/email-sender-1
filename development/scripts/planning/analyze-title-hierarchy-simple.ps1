@@ -1,7 +1,7 @@
-# Définir l'encodage UTF-8 pour les caractères accentués
+﻿# DÃ©finir l'encodage UTF-8 pour les caractÃ¨res accentuÃ©s
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Paramètres
+# ParamÃ¨tres
 $FilePath = "..\..\data\planning\expertise-levels.md"
 $OutputPath = "..\..\data\planning\title-hierarchy-analysis.md"
 $IncludeFormatAnalysis = $true
@@ -37,9 +37,9 @@ function Get-DocumentSections {
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
 
-        # Vérifier si la ligne est un titre avec la syntaxe #
+        # VÃ©rifier si la ligne est un titre avec la syntaxe #
         if ($line -match '^(#{1,6})\s+(.+)$') {
-            # Si nous avons déjà une section en cours, l'ajouter à la liste
+            # Si nous avons dÃ©jÃ  une section en cours, l'ajouter Ã  la liste
             if ($currentSection) {
                 $sections += [PSCustomObject]@{
                     Title      = $currentSection
@@ -54,15 +54,15 @@ function Get-DocumentSections {
             $level = $matches[1].Length
             $title = $matches[2]
 
-            # Mettre à jour la section actuelle
+            # Mettre Ã  jour la section actuelle
             $currentSection = $title
             $currentLevel = $level
             $currentContent = @()
             $currentLineNumber = $i + 1
         }
-        # Vérifier si la ligne est un titre avec la syntaxe de soulignement (= ou -)
+        # VÃ©rifier si la ligne est un titre avec la syntaxe de soulignement (= ou -)
         elseif (($i -lt ($lines.Count - 1)) -and ($line -match '^.+$') -and ($lines[$i + 1] -match '^(=+|-+)$')) {
-            # Si nous avons déjà une section en cours, l'ajouter à la liste
+            # Si nous avons dÃ©jÃ  une section en cours, l'ajouter Ã  la liste
             if ($currentSection) {
                 $sections += [PSCustomObject]@{
                     Title      = $currentSection
@@ -73,11 +73,11 @@ function Get-DocumentSections {
                 }
             }
 
-            # Déterminer le niveau en fonction du caractère de soulignement
+            # DÃ©terminer le niveau en fonction du caractÃ¨re de soulignement
             $level = if ($lines[$i + 1] -match '^=+$') { 1 } else { 2 }
             $title = $line
 
-            # Mettre à jour la section actuelle
+            # Mettre Ã  jour la section actuelle
             $currentSection = $title
             $currentLevel = $level
             $currentContent = @()
@@ -94,7 +94,7 @@ function Get-DocumentSections {
         }
     }
 
-    # Ajouter la dernière section
+    # Ajouter la derniÃ¨re section
     if ($currentSection) {
         $sections += [PSCustomObject]@{
             Title      = $currentSection
@@ -108,13 +108,13 @@ function Get-DocumentSections {
     return $sections
 }
 
-# Fonction pour analyser la hiérarchie des titres et sous-titres
+# Fonction pour analyser la hiÃ©rarchie des titres et sous-titres
 function Get-TitleHierarchy {
     param(
         [array]$Sections
     )
 
-    # Structure pour stocker la hiérarchie
+    # Structure pour stocker la hiÃ©rarchie
     $hierarchy = @{
         Levels                  = @{}
         ParentChildRelations    = @{}
@@ -137,7 +137,7 @@ function Get-TitleHierarchy {
         }
         $hierarchy.Levels[$level] += $section
 
-        # Mettre à jour la profondeur maximale
+        # Mettre Ã  jour la profondeur maximale
         if ($level -gt $hierarchy.MaxDepth) {
             $hierarchy.MaxDepth = $level
         }
@@ -148,7 +148,7 @@ function Get-TitleHierarchy {
         $currentSection = $Sections[$i]
         $currentLevel = $currentSection.Level
 
-        # Trouver le parent (section précédente avec un niveau inférieur)
+        # Trouver le parent (section prÃ©cÃ©dente avec un niveau infÃ©rieur)
         $parentIndex = $i - 1
         while ($parentIndex -ge 0) {
             $potentialParent = $Sections[$parentIndex]
@@ -186,7 +186,7 @@ function Get-TitleHierarchy {
             }
         }
 
-        # Mettre à jour la distribution de profondeur
+        # Mettre Ã  jour la distribution de profondeur
         if (-not $hierarchy.DepthDistribution.ContainsKey($depth)) {
             $hierarchy.DepthDistribution[$depth] = 0
         }
@@ -216,7 +216,7 @@ function Get-TitleHierarchy {
     return $hierarchy
 }
 
-# Fonction pour analyser les formats de titres utilisés dans le document
+# Fonction pour analyser les formats de titres utilisÃ©s dans le document
 function Get-TitleFormats {
     param(
         [string]$Content
@@ -272,7 +272,7 @@ function Get-TitleFormats {
     return $formats
 }
 
-# Fonction pour générer un rapport d'analyse de la hiérarchie
+# Fonction pour gÃ©nÃ©rer un rapport d'analyse de la hiÃ©rarchie
 function New-HierarchyAnalysisReport {
     param(
         [hashtable]$Hierarchy,
@@ -281,9 +281,9 @@ function New-HierarchyAnalysisReport {
     )
 
     $report = @"
-# Analyse de la Hiérarchie des Titres et Sous-titres
+# Analyse de la HiÃ©rarchie des Titres et Sous-titres
 
-## Structure Hiérarchique
+## Structure HiÃ©rarchique
 
 ### Distribution par Niveau
 "@
@@ -297,7 +297,7 @@ function New-HierarchyAnalysisReport {
     $report += @"
 
 ### Profondeur Maximale
-La profondeur maximale de la hiérarchie est de **$($Hierarchy.MaxDepth) niveaux**.
+La profondeur maximale de la hiÃ©rarchie est de **$($Hierarchy.MaxDepth) niveaux**.
 
 ### Distribution de Profondeur
 "@
@@ -330,7 +330,7 @@ La profondeur maximale de la hiérarchie est de **$($Hierarchy.MaxDepth) niveaux
         # Ajouter les informations sur les titres avec #
         $report += "`n#### Titres avec Syntaxe #"
         if ($TitleFormats.HashHeaders.Count -eq 0) {
-            $report += "`n- Aucun titre avec syntaxe # détecté"
+            $report += "`n- Aucun titre avec syntaxe # dÃ©tectÃ©"
         } else {
             foreach ($level in $TitleFormats.HashHeaders.Keys | Sort-Object) {
                 $count = $TitleFormats.HashHeaders[$level]
@@ -341,19 +341,19 @@ La profondeur maximale de la hiérarchie est de **$($Hierarchy.MaxDepth) niveaux
         # Ajouter les informations sur les titres avec soulignement
         $report += "`n`n#### Titres avec Syntaxe de Soulignement"
         if ($TitleFormats.UnderlineHeaders.Count -eq 0) {
-            $report += "`n- Aucun titre avec syntaxe de soulignement détecté"
+            $report += "`n- Aucun titre avec syntaxe de soulignement dÃ©tectÃ©"
         } else {
             foreach ($level in $TitleFormats.UnderlineHeaders.Keys | Sort-Object) {
                 $count = $TitleFormats.UnderlineHeaders[$level]
                 $symbol = if ($level -eq 1) { "=" } else { "-" }
-                $report += "`n- **Niveau $level** (souligné avec $symbol): $count titres"
+                $report += "`n- **Niveau $level** (soulignÃ© avec $symbol): $count titres"
             }
         }
 
         # Ajouter les informations sur les conventions de nommage
         $report += "`n`n### Conventions de Nommage des Titres"
         if ($TitleFormats.Conventions.Count -eq 0) {
-            $report += "`n- Aucune convention de nommage spécifique détectée"
+            $report += "`n- Aucune convention de nommage spÃ©cifique dÃ©tectÃ©e"
         } else {
             foreach ($convention in $TitleFormats.Conventions.Keys | Sort-Object) {
                 $count = $TitleFormats.Conventions[$convention]
@@ -412,29 +412,29 @@ La profondeur maximale de la hiérarchie est de **$($Hierarchy.MaxDepth) niveaux
 
 ## Observations et Recommandations
 
-1. La structure du document présente **$($Hierarchy.MaxDepth) niveaux de profondeur**, ce qui est $(if ($Hierarchy.MaxDepth -le 4) { "approprié" } else { "potentiellement trop profond" }) pour un document technique.
+1. La structure du document prÃ©sente **$($Hierarchy.MaxDepth) niveaux de profondeur**, ce qui est $(if ($Hierarchy.MaxDepth -le 4) { "appropriÃ©" } else { "potentiellement trop profond" }) pour un document technique.
 
 2. Les sections de niveau 1 ont en moyenne **$([math]::Round($Hierarchy.AverageChildrenPerLevel[1], 2)) enfants directs**, ce qui indique une $(if ($Hierarchy.AverageChildrenPerLevel[1] -le 7) { "bonne" } else { "potentiellement excessive" }) organisation des informations principales.
 
-3. Les sections de niveau 2 ont en moyenne **$([math]::Round($Hierarchy.AverageChildrenPerLevel[2], 2)) enfants directs**, ce qui montre une décomposition $(if ($Hierarchy.AverageChildrenPerLevel[2] -le 5) { "détaillée" } else { "potentiellement trop détaillée" }) des sujets.
+3. Les sections de niveau 2 ont en moyenne **$([math]::Round($Hierarchy.AverageChildrenPerLevel[2], 2)) enfants directs**, ce qui montre une dÃ©composition $(if ($Hierarchy.AverageChildrenPerLevel[2] -le 5) { "dÃ©taillÃ©e" } else { "potentiellement trop dÃ©taillÃ©e" }) des sujets.
 
-4. La distribution des sections par niveau montre que le document est $(if ($Hierarchy.Levels.Count -le 4) { "bien structuré" } else { "potentiellement trop complexe" }), avec une hiérarchie $(if ($Hierarchy.Levels.Count -le 4) { "claire" } else { "qui pourrait être simplifiée" }).
+4. La distribution des sections par niveau montre que le document est $(if ($Hierarchy.Levels.Count -le 4) { "bien structurÃ©" } else { "potentiellement trop complexe" }), avec une hiÃ©rarchie $(if ($Hierarchy.Levels.Count -le 4) { "claire" } else { "qui pourrait Ãªtre simplifiÃ©e" }).
 
-5. Pour l'extraction des critères d'évaluation, il est recommandé de se concentrer sur les sections de niveau 2 et 3, qui contiennent généralement les informations détaillées sur les critères.
+5. Pour l'extraction des critÃ¨res d'Ã©valuation, il est recommandÃ© de se concentrer sur les sections de niveau 2 et 3, qui contiennent gÃ©nÃ©ralement les informations dÃ©taillÃ©es sur les critÃ¨res.
 
-6. $(if ($TitleFormats.HashHeaders.Count -gt 0 -and $TitleFormats.UnderlineHeaders.Count -gt 0) { "Le document utilise un mélange de syntaxes de titres (# et soulignement), ce qui pourrait être standardisé pour plus de cohérence." } else { "Le document utilise une syntaxe de titres cohérente, ce qui facilite l'analyse automatique." })
+6. $(if ($TitleFormats.HashHeaders.Count -gt 0 -and $TitleFormats.UnderlineHeaders.Count -gt 0) { "Le document utilise un mÃ©lange de syntaxes de titres (# et soulignement), ce qui pourrait Ãªtre standardisÃ© pour plus de cohÃ©rence." } else { "Le document utilise une syntaxe de titres cohÃ©rente, ce qui facilite l'analyse automatique." })
 
-7. $(if ($TitleFormats.Conventions.Count -gt 2) { "Plusieurs conventions de nommage différentes sont utilisées pour les titres, ce qui pourrait être standardisé." } else { "Les conventions de nommage des titres sont relativement cohérentes." })
+7. $(if ($TitleFormats.Conventions.Count -gt 2) { "Plusieurs conventions de nommage diffÃ©rentes sont utilisÃ©es pour les titres, ce qui pourrait Ãªtre standardisÃ©." } else { "Les conventions de nommage des titres sont relativement cohÃ©rentes." })
 "@
 
     return $report
 }
 
-# Exécution principale
+# ExÃ©cution principale
 try {
-    # Vérifier que le fichier existe
+    # VÃ©rifier que le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
-        throw "Le fichier à analyser n'existe pas : $FilePath"
+        throw "Le fichier Ã  analyser n'existe pas : $FilePath"
     }
 
     # Lire le contenu du fichier
@@ -443,19 +443,19 @@ try {
     # Extraire les sections
     $sections = Get-DocumentSections -Content $content
 
-    # Analyser la hiérarchie des titres
+    # Analyser la hiÃ©rarchie des titres
     $hierarchy = Get-TitleHierarchy -Sections $sections
 
-    # Analyser les formats de titres si demandé
+    # Analyser les formats de titres si demandÃ©
     $titleFormats = $null
     if ($IncludeFormatAnalysis) {
         $titleFormats = Get-TitleFormats -Content $content
     }
 
-    # Générer le rapport d'analyse
+    # GÃ©nÃ©rer le rapport d'analyse
     $report = New-HierarchyAnalysisReport -Hierarchy $hierarchy -TitleFormats $titleFormats -IncludeFormatAnalysis $IncludeFormatAnalysis
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Path $OutputPath -Parent
     if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
@@ -465,22 +465,22 @@ try {
     $utf8WithBom = New-Object System.Text.UTF8Encoding $true
     [System.IO.File]::WriteAllText($OutputPath, $report, $utf8WithBom)
 
-    # Afficher un résumé
-    Write-Host "Analyse de la hiérarchie des titres terminée."
-    Write-Host "Nombre total de sections identifiées : $($sections.Count)"
-    Write-Host "Profondeur maximale de la hiérarchie : $($hierarchy.MaxDepth) niveaux"
-    Write-Host "Rapport généré à : $OutputPath"
+    # Afficher un rÃ©sumÃ©
+    Write-Host "Analyse de la hiÃ©rarchie des titres terminÃ©e."
+    Write-Host "Nombre total de sections identifiÃ©es : $($sections.Count)"
+    Write-Host "Profondeur maximale de la hiÃ©rarchie : $($hierarchy.MaxDepth) niveaux"
+    Write-Host "Rapport gÃ©nÃ©rÃ© Ã  : $OutputPath"
 
-    # Retourner la hiérarchie pour une utilisation ultérieure
+    # Retourner la hiÃ©rarchie pour une utilisation ultÃ©rieure
     return @{
         Sections = $sections
         Hierarchy = $hierarchy
         TitleFormats = $titleFormats
     }
 } catch {
-    Write-Error "Erreur lors de l'analyse de la hiérarchie des titres : $_"
+    Write-Error "Erreur lors de l'analyse de la hiÃ©rarchie des titres : $_"
 
-    # Afficher la pile d'appels pour faciliter le débogage
+    # Afficher la pile d'appels pour faciliter le dÃ©bogage
     Write-Host "Pile d'appels :"
     Write-Host $_.ScriptStackTrace
 

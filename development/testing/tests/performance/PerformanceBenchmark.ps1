@@ -1,21 +1,21 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Benchmark de performance pour les modules du projet.
 .DESCRIPTION
-    Ce script exécute des benchmarks de performance pour les différents modules du projet.
+    Ce script exÃ©cute des benchmarks de performance pour les diffÃ©rents modules du projet.
 .PARAMETER ModulesToTest
-    Liste des modules à tester.
+    Liste des modules Ã  tester.
 .PARAMETER Iterations
-    Nombre d'itérations pour chaque test.
+    Nombre d'itÃ©rations pour chaque test.
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les résultats.
+    Chemin du fichier de sortie pour les rÃ©sultats.
 .EXAMPLE
     .\PerformanceBenchmark.ps1 -ModulesToTest @("CycleDetector", "InputSegmentation", "PredictiveCache", "ParallelProcessing") -Iterations 5
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-17
+    Date de crÃ©ation: 2025-05-17
 #>
 
 [CmdletBinding()]
@@ -80,24 +80,24 @@ function Measure-Performance {
     }
 }
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Résultats globaux
+# RÃ©sultats globaux
 $benchmarkResults = @{}
 
 # Tests pour CycleDetector
 if ($ModulesToTest -contains "CycleDetector") {
-    Write-Host "Exécution des benchmarks pour CycleDetector..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des benchmarks pour CycleDetector..." -ForegroundColor Cyan
     
     # Importer le module
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\CycleDetector.psm1"
     Import-Module $modulePath -Force
     
-    # Test 1: Détection de cycles dans un petit graphe
+    # Test 1: DÃ©tection de cycles dans un petit graphe
     $smallGraph = @{
         "A" = @("B", "C")
         "B" = @("D")
@@ -111,7 +111,7 @@ if ($ModulesToTest -contains "CycleDetector") {
         Detect-Cycle -Graph $smallGraph
     } -Iterations $Iterations
     
-    # Test 2: Détection de cycles dans un graphe moyen
+    # Test 2: DÃ©tection de cycles dans un graphe moyen
     $mediumGraph = @{}
     for ($i = 0; $i -lt 100; $i++) {
         $connections = @()
@@ -125,7 +125,7 @@ if ($ModulesToTest -contains "CycleDetector") {
         Detect-Cycle -Graph $mediumGraph
     } -Iterations $Iterations
     
-    # Test 3: Détection de cycles dans un grand graphe
+    # Test 3: DÃ©tection de cycles dans un grand graphe
     $largeGraph = @{}
     for ($i = 0; $i -lt 1000; $i++) {
         $connections = @()
@@ -148,7 +148,7 @@ if ($ModulesToTest -contains "CycleDetector") {
 
 # Tests pour InputSegmentation
 if ($ModulesToTest -contains "InputSegmentation") {
-    Write-Host "Exécution des benchmarks pour InputSegmentation..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des benchmarks pour InputSegmentation..." -ForegroundColor Cyan
     
     # Importer le module
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\InputSegmentation.psm1"
@@ -187,13 +187,13 @@ if ($ModulesToTest -contains "InputSegmentation") {
 
 # Tests pour PredictiveCache
 if ($ModulesToTest -contains "PredictiveCache") {
-    Write-Host "Exécution des benchmarks pour PredictiveCache..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des benchmarks pour PredictiveCache..." -ForegroundColor Cyan
     
     # Importer le module
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\PredictiveCache.psm1"
     Import-Module $modulePath -Force
     
-    # Créer des dossiers temporaires
+    # CrÃ©er des dossiers temporaires
     $tempCachePath = Join-Path -Path $env:TEMP -ChildPath "cache_benchmark"
     $tempModelPath = Join-Path -Path $env:TEMP -ChildPath "model_benchmark"
     
@@ -230,14 +230,14 @@ if ($ModulesToTest -contains "PredictiveCache") {
         }
     } -Iterations $Iterations
     
-    # Test 3: Récupération de valeurs
+    # Test 3: RÃ©cupÃ©ration de valeurs
     $getCacheTest = Measure-Performance -ScriptBlock {
         for ($i = 0; $i -lt 100; $i++) {
             $value = Get-PredictiveCache -Key "medium-key-$i"
         }
     } -Iterations $Iterations
     
-    # Test 4: Prédiction de clés
+    # Test 4: PrÃ©diction de clÃ©s
     $predictCacheTest = Measure-Performance -ScriptBlock {
         for ($i = 0; $i -lt 10; $i++) {
             Register-CacheAccess -Key "seq-key-1" -WorkflowId "test-workflow" -NodeId "test-node"
@@ -258,7 +258,7 @@ if ($ModulesToTest -contains "PredictiveCache") {
 
 # Tests pour ParallelProcessing
 if ($ModulesToTest -contains "ParallelProcessing") {
-    Write-Host "Exécution des benchmarks pour ParallelProcessing..." -ForegroundColor Cyan
+    Write-Host "ExÃ©cution des benchmarks pour ParallelProcessing..." -ForegroundColor Cyan
     
     # Importer le script
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\performance\Optimize-ParallelExecution.ps1"
@@ -271,19 +271,19 @@ if ($ModulesToTest -contains "ParallelProcessing") {
         return $item * 2
     }
     
-    # Test 1: Traitement séquentiel
+    # Test 1: Traitement sÃ©quentiel
     $sequentialTest = Measure-Performance -ScriptBlock {
         $data = 1..20
         Invoke-SequentialProcessing -Data $data -ScriptBlock ${function:Test-Function}
     } -Iterations $Iterations
     
-    # Test 2: Traitement parallèle avec Runspace Pools
+    # Test 2: Traitement parallÃ¨le avec Runspace Pools
     $runspaceTest = Measure-Performance -ScriptBlock {
         $data = 1..20
         Invoke-RunspacePoolProcessing -Data $data -ScriptBlock ${function:Test-Function} -MaxThreads 4
     } -Iterations $Iterations
     
-    # Test 3: Traitement parallèle par lots
+    # Test 3: Traitement parallÃ¨le par lots
     $batchTest = Measure-Performance -ScriptBlock {
         $data = 1..20
         Invoke-BatchParallelProcessing -Data $data -ScriptBlock ${function:Test-Function} -MaxThreads 4 -ChunkSize 5
@@ -303,13 +303,13 @@ if ($ModulesToTest -contains "ParallelProcessing") {
     }
 }
 
-# Enregistrer les résultats
+# Enregistrer les rÃ©sultats
 $benchmarkResults | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
 
-Write-Host "Benchmarks terminés. Résultats enregistrés dans $OutputPath" -ForegroundColor Green
+Write-Host "Benchmarks terminÃ©s. RÃ©sultats enregistrÃ©s dans $OutputPath" -ForegroundColor Green
 
-# Afficher un résumé
-Write-Host "`nRésumé des performances:" -ForegroundColor Cyan
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des performances:" -ForegroundColor Cyan
 
 foreach ($module in $benchmarkResults.Keys) {
     Write-Host "`n$module:" -ForegroundColor Yellow

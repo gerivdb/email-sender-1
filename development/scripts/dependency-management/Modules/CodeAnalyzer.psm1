@@ -1,11 +1,11 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Module pour l'analyse des dépendances dans le code source PowerShell.
+    Module pour l'analyse des dÃ©pendances dans le code source PowerShell.
 
 .DESCRIPTION
     Ce module fournit des fonctions pour analyser le code source PowerShell
-    et détecter les dépendances via les appels Import-Module, etc.
+    et dÃ©tecter les dÃ©pendances via les appels Import-Module, etc.
 
 .NOTES
     Auteur: Dependency Management Team
@@ -28,22 +28,22 @@ function Get-ModuleDependenciesFromCode {
         [switch]$Recurse
     )
 
-    # Initialiser la liste des dépendances
+    # Initialiser la liste des dÃ©pendances
     $dependencies = [System.Collections.ArrayList]::new()
 
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path $ModulePath)) {
         Write-Warning "Path does not exist: $ModulePath"
         return $dependencies
     }
 
-    # Déterminer les fichiers à analyser
+    # DÃ©terminer les fichiers Ã  analyser
     $filesToAnalyze = @()
     if (Test-Path -Path $ModulePath -PathType Leaf) {
         # C'est un fichier unique
         $filesToAnalyze += $ModulePath
     } else {
-        # C'est un répertoire
+        # C'est un rÃ©pertoire
         $filter = "*.ps1", "*.psm1", "*.psd1"
         $filesToAnalyze += Get-ChildItem -Path $ModulePath -Include $filter -File -Recurse:$Recurse
     }
@@ -60,7 +60,7 @@ function Get-ModuleDependenciesFromCode {
             continue
         }
 
-        # Détecter les Import-Module avec différents formats
+        # DÃ©tecter les Import-Module avec diffÃ©rents formats
         # Format 1: Import-Module ModuleName
         # Format 2: Import-Module -Name ModuleName
         # Format 3: Import-Module -Name "ModuleName"
@@ -69,7 +69,7 @@ function Get-ModuleDependenciesFromCode {
         $importMatches = [regex]::Matches($content, '(?m)^\s*Import-Module\s+(?:-Name\s+)?([''"]?)([^''"\s,;]+)\1|^\s*Import-Module\s+-Name\s+([''"]?)([^''"\s,;]+)\3|^\s*Import-Module\s+-Path\s+([''"]?)([^''"\s,;]+)\5')
 
         foreach ($match in $importMatches) {
-            # Extraire le nom du module en fonction du format détecté
+            # Extraire le nom du module en fonction du format dÃ©tectÃ©
             $moduleName = $null
             $isPath = $false
             
@@ -84,7 +84,7 @@ function Get-ModuleDependenciesFromCode {
                 $modulePath = $match.Groups[6].Value
                 $isPath = $true
                 
-                # Extraire le nom du module à partir du chemin
+                # Extraire le nom du module Ã  partir du chemin
                 if ($modulePath -match '\.ps[md]1$') {
                     $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($modulePath)
                 } else {
@@ -92,32 +92,32 @@ function Get-ModuleDependenciesFromCode {
                 }
             }
             
-            # Vérifier si un nom de module a été trouvé
+            # VÃ©rifier si un nom de module a Ã©tÃ© trouvÃ©
             if (-not $moduleName) {
                 continue
             }
 
-            # Ignorer les modules système si demandé
+            # Ignorer les modules systÃ¨me si demandÃ©
             if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
                 Write-Verbose "System module ignored: $moduleName"
                 continue
             }
 
-            # Résoudre le chemin du module si demandé
+            # RÃ©soudre le chemin du module si demandÃ©
             if (-not $isPath) {
                 $modulePath = $null
                 if ($ResolveModulePaths) {
                     $modulePath = Find-ModulePath -ModuleName $moduleName
                 }
             } else {
-                # Si le chemin est relatif, le résoudre par rapport au répertoire du module
+                # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du module
                 if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                     $moduleDir = [System.IO.Path]::GetDirectoryName($file.FullName)
                     $modulePath = Join-Path -Path $moduleDir -ChildPath $modulePath
                 }
             }
 
-            # Ajouter la dépendance à la liste
+            # Ajouter la dÃ©pendance Ã  la liste
             [void]$dependencies.Add([PSCustomObject]@{
                     Name    = $moduleName
                     Version = $null
@@ -128,26 +128,26 @@ function Get-ModuleDependenciesFromCode {
                 })
         }
 
-        # Détecter les Using module
+        # DÃ©tecter les Using module
         $usingMatches = [regex]::Matches($content, '(?m)^\s*using\s+module\s+([''"]?)([^''"\s,;]+)\1')
 
         foreach ($match in $usingMatches) {
             $moduleName = $match.Groups[2].Value
             $isPath = $false
 
-            # Vérifier si c'est un chemin ou un nom de module
+            # VÃ©rifier si c'est un chemin ou un nom de module
             if ($moduleName -match '\.ps[md]1$' -or $moduleName -match '[\\/]') {
                 $isPath = $true
                 $modulePath = $moduleName
 
-                # Extraire le nom du module à partir du chemin
+                # Extraire le nom du module Ã  partir du chemin
                 if ($modulePath -match '\.ps[md]1$') {
                     $moduleName = [System.IO.Path]::GetFileNameWithoutExtension($modulePath)
                 } else {
                     $moduleName = [System.IO.Path]::GetFileName($modulePath)
                 }
 
-                # Si le chemin est relatif, le résoudre par rapport au répertoire du module
+                # Si le chemin est relatif, le rÃ©soudre par rapport au rÃ©pertoire du module
                 if (-not [System.IO.Path]::IsPathRooted($modulePath)) {
                     $moduleDir = [System.IO.Path]::GetDirectoryName($file.FullName)
                     $modulePath = Join-Path -Path $moduleDir -ChildPath $modulePath
@@ -160,13 +160,13 @@ function Get-ModuleDependenciesFromCode {
                 }
             }
 
-            # Ignorer les modules système si demandé
+            # Ignorer les modules systÃ¨me si demandÃ©
             if ($SkipSystemModules -and (Test-SystemModule -ModuleName $moduleName)) {
                 Write-Verbose "System module ignored: $moduleName"
                 continue
             }
 
-            # Ajouter la dépendance à la liste
+            # Ajouter la dÃ©pendance Ã  la liste
             [void]$dependencies.Add([PSCustomObject]@{
                     Name    = $moduleName
                     Version = $null

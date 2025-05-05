@@ -1,24 +1,24 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Wrapper pour l'analyse de code avec mise en cache des rÃ©sultats.
+    Wrapper pour l'analyse de code avec mise en cache des rÃƒÂ©sultats.
 .DESCRIPTION
-    Ce script est un wrapper pour l'analyse de code qui utilise la mise en cache des rÃ©sultats
-    pour amÃ©liorer les performances lors des analyses ultÃ©rieures.
+    Ce script est un wrapper pour l'analyse de code qui utilise la mise en cache des rÃƒÂ©sultats
+    pour amÃƒÂ©liorer les performances lors des analyses ultÃƒÂ©rieures.
 .PARAMETER Path
-    Chemin du fichier ou du rÃ©pertoire Ã  analyser.
+    Chemin du fichier ou du rÃƒÂ©pertoire ÃƒÂ  analyser.
 .PARAMETER Tool
-    Outil d'analyse Ã  utiliser. Valeurs possibles : PSScriptAnalyzer, All.
+    Outil d'analyse ÃƒÂ  utiliser. Valeurs possibles : PSScriptAnalyzer, All.
 .PARAMETER OutputPath
-    Chemin du fichier de sortie pour les rÃ©sultats de l'analyse.
+    Chemin du fichier de sortie pour les rÃƒÂ©sultats de l'analyse.
 .PARAMETER GenerateHtmlReport
-    Indique si un rapport HTML doit Ãªtre gÃ©nÃ©rÃ©.
+    Indique si un rapport HTML doit ÃƒÂªtre gÃƒÂ©nÃƒÂ©rÃƒÂ©.
 .PARAMETER Recurse
-    Indique si les sous-rÃ©pertoires doivent Ãªtre analysÃ©s.
+    Indique si les sous-rÃƒÂ©pertoires doivent ÃƒÂªtre analysÃƒÂ©s.
 .PARAMETER UseCache
-    Indique si le cache doit Ãªtre utilisÃ© pour amÃ©liorer les performances. Par dÃ©faut, le cache n'est pas utilisÃ©.
+    Indique si le cache doit ÃƒÂªtre utilisÃƒÂ© pour amÃƒÂ©liorer les performances. Par dÃƒÂ©faut, le cache n'est pas utilisÃƒÂ©.
 .PARAMETER ForceRefresh
-    Force l'actualisation du cache mÃªme si les rÃ©sultats sont dÃ©jÃ  en cache.
+    Force l'actualisation du cache mÃƒÂªme si les rÃƒÂ©sultats sont dÃƒÂ©jÃƒÂ  en cache.
 .EXAMPLE
     .\Start-CachedAnalysis.ps1 -Path ".\development\scripts" -Tool PSScriptAnalyzer -OutputPath "results.json" -GenerateHtmlReport -Recurse -UseCache
 .NOTES
@@ -55,11 +55,11 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $cachedPSScriptAnalyzerPath = Join-Path -Path $scriptPath -ChildPath "Invoke-CachedPSScriptAnalyzer.ps1"
 
 if (-not (Test-Path -Path $cachedPSScriptAnalyzerPath)) {
-    Write-Error "Script Invoke-CachedPSScriptAnalyzer.ps1 non trouvÃ© Ã  l'emplacement: $cachedPSScriptAnalyzerPath"
+    Write-Error "Script Invoke-CachedPSScriptAnalyzer.ps1 non trouvÃƒÂ© ÃƒÂ  l'emplacement: $cachedPSScriptAnalyzerPath"
     exit 1
 }
 
-# Fonction pour gÃ©nÃ©rer un rapport HTML
+# Fonction pour gÃƒÂ©nÃƒÂ©rer un rapport HTML
 function New-HtmlReport {
     [CmdletBinding()]
     param(
@@ -89,24 +89,24 @@ function New-HtmlReport {
 </head>
 <body>
     <h1>Rapport d'analyse de code</h1>
-    <p>GÃ©nÃ©rÃ© le $(Get-Date)</p>
+    <p>GÃƒÂ©nÃƒÂ©rÃƒÂ© le $(Get-Date)</p>
 
     <div class="summary">
-        <h2>RÃ©sumÃ©</h2>
-        <p>Nombre total de problÃ¨mes: $($Results.Count)</p>
+        <h2>RÃƒÂ©sumÃƒÂ©</h2>
+        <p>Nombre total de problÃƒÂ¨mes: $($Results.Count)</p>
         <p>Erreurs: $($Results | Where-Object { $_.Severity -eq "Error" } | Measure-Object | Select-Object -ExpandProperty Count)</p>
         <p>Avertissements: $($Results | Where-Object { $_.Severity -eq "Warning" } | Measure-Object | Select-Object -ExpandProperty Count)</p>
         <p>Informations: $($Results | Where-Object { $_.Severity -eq "Information" } | Measure-Object | Select-Object -ExpandProperty Count)</p>
     </div>
 
-    <h2>DÃ©tails</h2>
+    <h2>DÃƒÂ©tails</h2>
     <table>
         <tr>
             <th>Fichier</th>
             <th>Ligne</th>
             <th>Colonne</th>
-            <th>SÃ©vÃ©ritÃ©</th>
-            <th>RÃ¨gle</th>
+            <th>SÃƒÂ©vÃƒÂ©ritÃƒÂ©</th>
+            <th>RÃƒÂ¨gle</th>
             <th>Message</th>
         </tr>
 "@
@@ -140,10 +140,10 @@ function New-HtmlReport {
     $html | Out-File -FilePath $OutputPath -Encoding UTF8
 }
 
-# Mesurer le temps d'exÃ©cution
+# Mesurer le temps d'exÃƒÂ©cution
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-# ExÃ©cuter l'analyse en fonction de l'outil sÃ©lectionnÃ©
+# ExÃƒÂ©cuter l'analyse en fonction de l'outil sÃƒÂ©lectionnÃƒÂ©
 $results = @()
 
 if ($Tool -eq "PSScriptAnalyzer" -or $Tool -eq "All") {
@@ -163,11 +163,11 @@ if ($Tool -eq "PSScriptAnalyzer" -or $Tool -eq "All") {
 $stopwatch.Stop()
 $elapsedTime = $stopwatch.Elapsed
 
-# Afficher un rÃ©sumÃ©
-Write-Host "Analyse terminÃ©e en $($elapsedTime.TotalSeconds) secondes." -ForegroundColor Green
-Write-Host "Nombre total de problÃ¨mes trouvÃ©s: $($results.Count)" -ForegroundColor Yellow
+# Afficher un rÃƒÂ©sumÃƒÂ©
+Write-Host "Analyse terminÃƒÂ©e en $($elapsedTime.TotalSeconds) secondes." -ForegroundColor Green
+Write-Host "Nombre total de problÃƒÂ¨mes trouvÃƒÂ©s: $($results.Count)" -ForegroundColor Yellow
 
-# Grouper les rÃ©sultats par sÃ©vÃ©ritÃ©
+# Grouper les rÃƒÂ©sultats par sÃƒÂ©vÃƒÂ©ritÃƒÂ©
 $resultsBySeverity = $results | Group-Object -Property Severity -NoElement
 foreach ($group in $resultsBySeverity) {
     $color = switch ($group.Name) {
@@ -180,18 +180,18 @@ foreach ($group in $resultsBySeverity) {
     Write-Host "$($group.Name): $($group.Count)" -ForegroundColor $color
 }
 
-# Enregistrer les rÃ©sultats si demandÃ©
+# Enregistrer les rÃƒÂ©sultats si demandÃƒÂ©
 if ($OutputPath) {
     $results | ConvertTo-Json -Depth 5 | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "RÃ©sultats enregistrÃ©s dans $OutputPath" -ForegroundColor Green
+    Write-Host "RÃƒÂ©sultats enregistrÃƒÂ©s dans $OutputPath" -ForegroundColor Green
 
-    # GÃ©nÃ©rer un rapport HTML si demandÃ©
+    # GÃƒÂ©nÃƒÂ©rer un rapport HTML si demandÃƒÂ©
     if ($GenerateHtmlReport) {
         $htmlPath = [System.IO.Path]::ChangeExtension($OutputPath, "html")
         New-HtmlReport -Results $results -OutputPath $htmlPath
-        Write-Host "Rapport HTML gÃ©nÃ©rÃ© dans $htmlPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃƒÂ©nÃƒÂ©rÃƒÂ© dans $htmlPath" -ForegroundColor Green
     }
 }
 
-# Afficher les rÃ©sultats
+# Afficher les rÃƒÂ©sultats
 return $results

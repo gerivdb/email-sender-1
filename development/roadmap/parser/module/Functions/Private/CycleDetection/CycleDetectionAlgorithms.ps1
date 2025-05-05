@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Algorithmes de détection de cycles de dépendances.
+    Algorithmes de dÃ©tection de cycles de dÃ©pendances.
 
 .DESCRIPTION
-    Ce script contient des algorithmes pour détecter les cycles de dépendances
-    dans un graphe de dépendances.
+    Ce script contient des algorithmes pour dÃ©tecter les cycles de dÃ©pendances
+    dans un graphe de dÃ©pendances.
 
 .NOTES
     Auteur: RoadmapParser Team
     Version: 1.0
-    Date de création: 2025-04-25
+    Date de crÃ©ation: 2025-04-25
 #>
 
-# Fonction pour détecter les cycles avec l'algorithme DFS (Depth-First Search)
+# Fonction pour dÃ©tecter les cycles avec l'algorithme DFS (Depth-First Search)
 function Find-CyclesDFS {
     [CmdletBinding()]
     param(
@@ -21,12 +21,12 @@ function Find-CyclesDFS {
     )
     
     try {
-        # Initialiser les structures de données
+        # Initialiser les structures de donnÃ©es
         $visited = @{}
         $recursionStack = @{}
         $cycles = @()
         
-        # Fonction récursive pour la recherche en profondeur
+        # Fonction rÃ©cursive pour la recherche en profondeur
         function DFS-Visit {
             param(
                 [Parameter(Mandatory = $true)]
@@ -36,21 +36,21 @@ function Find-CyclesDFS {
                 [System.Collections.ArrayList]$Path
             )
             
-            # Marquer le nœud comme visité et l'ajouter à la pile de récursion
+            # Marquer le nÅ“ud comme visitÃ© et l'ajouter Ã  la pile de rÃ©cursion
             $visited[$Node] = $true
             $recursionStack[$Node] = $true
             
-            # Ajouter le nœud au chemin actuel
+            # Ajouter le nÅ“ud au chemin actuel
             [void]$Path.Add($Node)
             
             # Parcourir les voisins
             if ($Graph.ContainsKey($Node)) {
                 foreach ($neighbor in $Graph[$Node]) {
-                    # Si le voisin n'a pas été visité, le visiter
+                    # Si le voisin n'a pas Ã©tÃ© visitÃ©, le visiter
                     if (-not $visited.ContainsKey($neighbor) -or -not $visited[$neighbor]) {
                         DFS-Visit -Node $neighbor -Path $Path
                     }
-                    # Si le voisin est dans la pile de récursion, un cycle a été trouvé
+                    # Si le voisin est dans la pile de rÃ©cursion, un cycle a Ã©tÃ© trouvÃ©
                     elseif ($recursionStack.ContainsKey($neighbor) -and $recursionStack[$neighbor]) {
                         # Trouver l'index du voisin dans le chemin
                         $cycleStartIndex = $Path.IndexOf($neighbor)
@@ -59,24 +59,24 @@ function Find-CyclesDFS {
                             # Extraire le cycle
                             $cycleFiles = $Path.GetRange($cycleStartIndex, $Path.Count - $cycleStartIndex)
                             
-                            # Ajouter le cycle à la liste des cycles
+                            # Ajouter le cycle Ã  la liste des cycles
                             $cycles += [PSCustomObject]@{
                                 Files = $cycleFiles
                                 Length = $cycleFiles.Count
                                 Severity = [Math]::Min(10, $cycleFiles.Count * 2)
-                                Description = "Cycle détecté par l'algorithme DFS"
+                                Description = "Cycle dÃ©tectÃ© par l'algorithme DFS"
                             }
                         }
                     }
                 }
             }
             
-            # Retirer le nœud de la pile de récursion et du chemin
+            # Retirer le nÅ“ud de la pile de rÃ©cursion et du chemin
             $recursionStack[$Node] = $false
             [void]$Path.RemoveAt($Path.Count - 1)
         }
         
-        # Parcourir tous les nœuds du graphe
+        # Parcourir tous les nÅ“uds du graphe
         foreach ($node in $Graph.Keys) {
             if (-not $visited.ContainsKey($node) -or -not $visited[$node]) {
                 DFS-Visit -Node $node -Path (New-Object System.Collections.ArrayList)
@@ -86,12 +86,12 @@ function Find-CyclesDFS {
         return $cycles
     }
     catch {
-        Write-Error "Erreur lors de la détection des cycles avec l'algorithme DFS : $_"
+        Write-Error "Erreur lors de la dÃ©tection des cycles avec l'algorithme DFS : $_"
         return @()
     }
 }
 
-# Fonction pour détecter les cycles avec l'algorithme de Tarjan
+# Fonction pour dÃ©tecter les cycles avec l'algorithme de Tarjan
 function Find-CyclesTarjan {
     [CmdletBinding()]
     param(
@@ -100,7 +100,7 @@ function Find-CyclesTarjan {
     )
     
     try {
-        # Initialiser les structures de données
+        # Initialiser les structures de donnÃ©es
         $index = 0
         $indices = @{}
         $lowLinks = @{}
@@ -108,14 +108,14 @@ function Find-CyclesTarjan {
         $stack = New-Object System.Collections.ArrayList
         $cycles = @()
         
-        # Fonction récursive pour l'algorithme de Tarjan
+        # Fonction rÃ©cursive pour l'algorithme de Tarjan
         function Tarjan-Visit {
             param(
                 [Parameter(Mandatory = $true)]
                 [string]$Node
             )
             
-            # Initialiser le nœud
+            # Initialiser le nÅ“ud
             $indices[$Node] = $index
             $lowLinks[$Node] = $index
             $index++
@@ -125,19 +125,19 @@ function Find-CyclesTarjan {
             # Parcourir les voisins
             if ($Graph.ContainsKey($Node)) {
                 foreach ($neighbor in $Graph[$Node]) {
-                    # Si le voisin n'a pas été visité, le visiter
+                    # Si le voisin n'a pas Ã©tÃ© visitÃ©, le visiter
                     if (-not $indices.ContainsKey($neighbor)) {
                         Tarjan-Visit -Node $neighbor
                         $lowLinks[$Node] = [Math]::Min($lowLinks[$Node], $lowLinks[$neighbor])
                     }
-                    # Si le voisin est sur la pile, mettre à jour le lowLink
+                    # Si le voisin est sur la pile, mettre Ã  jour le lowLink
                     elseif ($onStack.ContainsKey($neighbor) -and $onStack[$neighbor]) {
                         $lowLinks[$Node] = [Math]::Min($lowLinks[$Node], $indices[$neighbor])
                     }
                 }
             }
             
-            # Si le nœud est la racine d'une composante fortement connexe
+            # Si le nÅ“ud est la racine d'une composante fortement connexe
             if ($lowLinks[$Node] -eq $indices[$Node]) {
                 $scc = New-Object System.Collections.ArrayList
                 $w = ""
@@ -149,19 +149,19 @@ function Find-CyclesTarjan {
                     [void]$scc.Add($w)
                 } while ($w -ne $Node)
                 
-                # Si la composante fortement connexe contient plus d'un nœud, c'est un cycle
+                # Si la composante fortement connexe contient plus d'un nÅ“ud, c'est un cycle
                 if ($scc.Count -gt 1) {
                     $cycles += [PSCustomObject]@{
                         Files = $scc
                         Length = $scc.Count
                         Severity = [Math]::Min(10, $scc.Count * 2)
-                        Description = "Cycle détecté par l'algorithme de Tarjan"
+                        Description = "Cycle dÃ©tectÃ© par l'algorithme de Tarjan"
                     }
                 }
             }
         }
         
-        # Parcourir tous les nœuds du graphe
+        # Parcourir tous les nÅ“uds du graphe
         foreach ($node in $Graph.Keys) {
             if (-not $indices.ContainsKey($node)) {
                 Tarjan-Visit -Node $node
@@ -171,12 +171,12 @@ function Find-CyclesTarjan {
         return $cycles
     }
     catch {
-        Write-Error "Erreur lors de la détection des cycles avec l'algorithme de Tarjan : $_"
+        Write-Error "Erreur lors de la dÃ©tection des cycles avec l'algorithme de Tarjan : $_"
         return @()
     }
 }
 
-# Fonction pour détecter les cycles avec l'algorithme de Johnson
+# Fonction pour dÃ©tecter les cycles avec l'algorithme de Johnson
 function Find-CyclesJohnson {
     [CmdletBinding()]
     param(
@@ -185,13 +185,13 @@ function Find-CyclesJohnson {
     )
     
     try {
-        # Initialiser les structures de données
+        # Initialiser les structures de donnÃ©es
         $cycles = @()
         $blocked = @{}
         $blockedMap = @{}
         $stack = New-Object System.Collections.ArrayList
         
-        # Fonction pour trouver les cycles à partir d'un nœud
+        # Fonction pour trouver les cycles Ã  partir d'un nÅ“ud
         function Find-CyclesFromNode {
             param(
                 [Parameter(Mandatory = $true)]
@@ -201,11 +201,11 @@ function Find-CyclesJohnson {
                 [hashtable]$SubGraph
             )
             
-            # Réinitialiser les structures de données
+            # RÃ©initialiser les structures de donnÃ©es
             $blocked = @{}
             $blockedMap = @{}
             
-            # Fonction récursive pour la recherche de circuits
+            # Fonction rÃ©cursive pour la recherche de circuits
             function Circuit {
                 param(
                     [Parameter(Mandatory = $true)]
@@ -217,16 +217,16 @@ function Find-CyclesJohnson {
                 
                 $foundCircuit = $false
                 
-                # Ajouter le nœud à la pile
+                # Ajouter le nÅ“ud Ã  la pile
                 [void]$stack.Add($Node)
                 $blocked[$Node] = $true
                 
                 # Parcourir les voisins
                 if ($SubGraph.ContainsKey($Node)) {
                     foreach ($neighbor in $SubGraph[$Node]) {
-                        # Si le voisin est le nœud de départ, un cycle a été trouvé
+                        # Si le voisin est le nÅ“ud de dÃ©part, un cycle a Ã©tÃ© trouvÃ©
                         if ($neighbor -eq $StartNode) {
-                            # Ajouter le cycle à la liste des cycles
+                            # Ajouter le cycle Ã  la liste des cycles
                             $cycleFiles = $stack.ToArray()
                             $cycleFiles += $StartNode
                             
@@ -234,12 +234,12 @@ function Find-CyclesJohnson {
                                 Files = $cycleFiles
                                 Length = $cycleFiles.Count
                                 Severity = [Math]::Min(10, $cycleFiles.Count * 2)
-                                Description = "Cycle détecté par l'algorithme de Johnson"
+                                Description = "Cycle dÃ©tectÃ© par l'algorithme de Johnson"
                             }
                             
                             $foundCircuit = $true
                         }
-                        # Sinon, si le voisin n'est pas bloqué, continuer la recherche
+                        # Sinon, si le voisin n'est pas bloquÃ©, continuer la recherche
                         elseif (-not $blocked.ContainsKey($neighbor) -or -not $blocked[$neighbor]) {
                             if (Circuit -Node $neighbor -StartNode $StartNode) {
                                 $foundCircuit = $true
@@ -248,11 +248,11 @@ function Find-CyclesJohnson {
                     }
                 }
                 
-                # Si un circuit a été trouvé, débloquer le nœud
+                # Si un circuit a Ã©tÃ© trouvÃ©, dÃ©bloquer le nÅ“ud
                 if ($foundCircuit) {
                     Unblock -Node $Node
                 }
-                # Sinon, mettre à jour la carte de blocage
+                # Sinon, mettre Ã  jour la carte de blocage
                 else {
                     if ($SubGraph.ContainsKey($Node)) {
                         foreach ($neighbor in $SubGraph[$Node]) {
@@ -267,13 +267,13 @@ function Find-CyclesJohnson {
                     }
                 }
                 
-                # Retirer le nœud de la pile
+                # Retirer le nÅ“ud de la pile
                 [void]$stack.RemoveAt($stack.Count - 1)
                 
                 return $foundCircuit
             }
             
-            # Fonction pour débloquer un nœud
+            # Fonction pour dÃ©bloquer un nÅ“ud
             function Unblock {
                 param(
                     [Parameter(Mandatory = $true)]
@@ -297,7 +297,7 @@ function Find-CyclesJohnson {
             Circuit -Node $StartNode -StartNode $StartNode
         }
         
-        # Parcourir tous les nœuds du graphe
+        # Parcourir tous les nÅ“uds du graphe
         foreach ($node in $Graph.Keys) {
             Find-CyclesFromNode -StartNode $node -SubGraph $Graph
         }
@@ -305,12 +305,12 @@ function Find-CyclesJohnson {
         return $cycles
     }
     catch {
-        Write-Error "Erreur lors de la détection des cycles avec l'algorithme de Johnson : $_"
+        Write-Error "Erreur lors de la dÃ©tection des cycles avec l'algorithme de Johnson : $_"
         return @()
     }
 }
 
-# Fonction principale pour détecter les cycles de dépendances
+# Fonction principale pour dÃ©tecter les cycles de dÃ©pendances
 function Find-DependencyCycles {
     [CmdletBinding()]
     param(
@@ -327,7 +327,7 @@ function Find-DependencyCycles {
     )
     
     try {
-        # Détecter les cycles avec l'algorithme spécifié
+        # DÃ©tecter les cycles avec l'algorithme spÃ©cifiÃ©
         $allCycles = switch ($Algorithm) {
             "DFS" {
                 Find-CyclesDFS -Graph $Graph
@@ -343,7 +343,7 @@ function Find-DependencyCycles {
             }
         }
 
-        # Filtrer les cycles selon la sévérité minimale
+        # Filtrer les cycles selon la sÃ©vÃ©ritÃ© minimale
         $filteredCycles = $allCycles | Where-Object { $_.Severity -ge $MinimumCycleSeverity }
 
         return @{
@@ -352,7 +352,7 @@ function Find-DependencyCycles {
         }
     }
     catch {
-        Write-Error "Erreur lors de la détection des cycles de dépendances : $_"
+        Write-Error "Erreur lors de la dÃ©tection des cycles de dÃ©pendances : $_"
         return @{
             AllCycles = @()
             FilteredCycles = @()

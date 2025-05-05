@@ -1,4 +1,4 @@
-# Script pour organiser le repo selon les bonnes pratiques
+﻿# Script pour organiser le repo selon les bonnes pratiques
 # Cree une structure de dossiers logique et deplace les fichiers dans les bons repertoires
 
 Write-Host "=== Reorganisation du repo selon les bonnes pratiques ===" -ForegroundColor Cyan
@@ -152,12 +152,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Ã‰crire dans le fichier journal
+    # Ãƒâ€°crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        # CrÃƒÂ©er le rÃƒÂ©pertoire de logs si nÃƒÂ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -166,7 +166,7 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'Ã©criture dans le journal
+        # Ignorer les erreurs d'ÃƒÂ©criture dans le journal
     }
 }
 try {
@@ -287,22 +287,22 @@ Ce projet contient des workflows n8n et des outils pour automatiser l'envoi d'em
 ## Structure du projet
 
 ```
-â”œâ”€â”€ src/                  # Code source principal
-â”‚   â”œâ”€â”€ workflows/        # Workflows n8n
-â”‚   â””â”€â”€ mcp/              # Fichiers MCP (Model Context Protocol)
-â”‚       â”œâ”€â”€ batch/        # Fichiers batch pour MCP
-â”‚       â””â”€â”€ projet/config/       # Configurations MCP
-â”œâ”€â”€ development/scripts/              # Scripts utilitaires
-â”‚   â”œâ”€â”€ setup/            # Scripts d'installation
-â”‚   â””â”€â”€ maintenance/      # Scripts de maintenance
-â”œâ”€â”€ projet/config/               # Fichiers de configuration
-â”œâ”€â”€ logs/                 # Fichiers de logs
-â”œâ”€â”€ docs/                 # Documentation
-â”‚   â”œâ”€â”€ guides/           # Guides d'utilisation
-â”‚   â””â”€â”€ api/              # Documentation API
-â”œâ”€â”€ development/testing/tests/                # Tests
-â”œâ”€â”€ development/tools/                # Outils divers
-â””â”€â”€ projet/assets/               # Ressources statiques
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ src/                  # Code source principal
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ workflows/        # Workflows n8n
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ mcp/              # Fichiers MCP (Model Context Protocol)
+Ã¢â€â€š       Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ batch/        # Fichiers batch pour MCP
+Ã¢â€â€š       Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ projet/config/       # Configurations MCP
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ development/scripts/              # Scripts utilitaires
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ setup/            # Scripts d'installation
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ maintenance/      # Scripts de maintenance
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ projet/config/               # Fichiers de configuration
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ logs/                 # Fichiers de logs
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ docs/                 # Documentation
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ guides/           # Guides d'utilisation
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ api/              # Documentation API
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ development/testing/tests/                # Tests
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ development/tools/                # Outils divers
+Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ projet/assets/               # Ressources statiques
 ```
 
 ## Installation
@@ -527,5 +527,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+    Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }

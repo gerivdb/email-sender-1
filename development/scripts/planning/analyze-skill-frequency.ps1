@@ -1,29 +1,29 @@
-<#
+﻿<#
 .SYNOPSIS
-    Analyse la fréquence d'utilisation de chaque compétence.
+    Analyse la frÃ©quence d'utilisation de chaque compÃ©tence.
 
 .DESCRIPTION
-    Ce script analyse la fréquence d'utilisation de chaque compétence dans les améliorations
-    et génère un rapport détaillé pour aider à la planification des ressources humaines.
+    Ce script analyse la frÃ©quence d'utilisation de chaque compÃ©tence dans les amÃ©liorations
+    et gÃ©nÃ¨re un rapport dÃ©taillÃ© pour aider Ã  la planification des ressources humaines.
 
 .PARAMETER SkillsListPath
-    Chemin vers le fichier de la liste des compétences extraites.
+    Chemin vers le fichier de la liste des compÃ©tences extraites.
 
 .PARAMETER OutputPath
-    Chemin vers le fichier de sortie pour le rapport de fréquence d'utilisation.
+    Chemin vers le fichier de sortie pour le rapport de frÃ©quence d'utilisation.
 
 .PARAMETER Format
     Format du fichier de sortie. Les valeurs possibles sont : JSON, CSV, Markdown.
-    Par défaut : Markdown
+    Par dÃ©faut : Markdown
 
 .EXAMPLE
     .\analyze-skill-frequency.ps1 -SkillsListPath "data\planning\skills-list.md" -OutputPath "data\planning\skill-frequency.md"
-    Analyse la fréquence d'utilisation de chaque compétence et génère un fichier Markdown.
+    Analyse la frÃ©quence d'utilisation de chaque compÃ©tence et gÃ©nÃ¨re un fichier Markdown.
 
 .NOTES
     Auteur: Planning Team
     Version: 1.0
-    Date de création: 2025-05-10
+    Date de crÃ©ation: 2025-05-10
 #>
 [CmdletBinding()]
 param (
@@ -38,19 +38,19 @@ param (
     [string]$Format = "Markdown"
 )
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $SkillsListPath)) {
-    Write-Error "Le fichier de la liste des compétences n'existe pas : $SkillsListPath"
+    Write-Error "Le fichier de la liste des compÃ©tences n'existe pas : $SkillsListPath"
     exit 1
 }
 
-# Créer le répertoire de sortie s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
 $outputDir = Split-Path -Path $OutputPath -Parent
 if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputDir)) {
     New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour extraire les compétences de la liste Markdown
+# Fonction pour extraire les compÃ©tences de la liste Markdown
 function Extract-SkillsFromList {
     [CmdletBinding()]
     param (
@@ -63,10 +63,10 @@ function Extract-SkillsFromList {
     $currentManager = $null
     $currentImprovement = $null
 
-    # Utiliser une expression régulière pour extraire les sections des gestionnaires
+    # Utiliser une expression rÃ©guliÃ¨re pour extraire les sections des gestionnaires
     $managerPattern = '## <a name=''([^'']+)''></a>([^\n]+)'
     $improvementPattern = '### ([^\n]+)'
-    $skillsTablePattern = '\| Catégorie \| Compétence \| Niveau \| Justification \|[\r\n]+\|[^\n]+\|[\r\n]+((?:\|[^\n]+\|[\r\n]+)+)'
+    $skillsTablePattern = '\| CatÃ©gorie \| CompÃ©tence \| Niveau \| Justification \|[\r\n]+\|[^\n]+\|[\r\n]+((?:\|[^\n]+\|[\r\n]+)+)'
     $skillRowPattern = '\| ([^|]+) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|'
 
     # Extraire les gestionnaires
@@ -82,24 +82,24 @@ function Extract-SkillsFromList {
             $managerContent = $managerContent.Substring(0, $managerMatch.Length + $nextManagerMatch.Index)
         }
         
-        # Extraire les améliorations
+        # Extraire les amÃ©liorations
         $improvementMatches = [regex]::Matches($managerContent, $improvementPattern)
         foreach ($improvementMatch in $improvementMatches) {
             $improvementName = $improvementMatch.Groups[1].Value.Trim()
             
-            # Extraire le contenu de la section de l'amélioration
+            # Extraire le contenu de la section de l'amÃ©lioration
             $improvementContent = $managerContent.Substring($improvementMatch.Index)
             $nextImprovementMatch = [regex]::Match($improvementContent.Substring($improvementMatch.Length), $improvementPattern)
             if ($nextImprovementMatch.Success) {
                 $improvementContent = $improvementContent.Substring(0, $improvementMatch.Length + $nextImprovementMatch.Index)
             }
             
-            # Extraire la table des compétences
+            # Extraire la table des compÃ©tences
             $skillsTableMatch = [regex]::Match($improvementContent, $skillsTablePattern)
             if ($skillsTableMatch.Success) {
                 $skillsTable = $skillsTableMatch.Groups[1].Value
                 
-                # Extraire les lignes de compétences
+                # Extraire les lignes de compÃ©tences
                 $skillRowMatches = [regex]::Matches($skillsTable, $skillRowPattern)
                 foreach ($skillRowMatch in $skillRowMatches) {
                     $category = $skillRowMatch.Groups[1].Value.Trim()
@@ -126,7 +126,7 @@ function Extract-SkillsFromList {
     }
 }
 
-# Fonction pour analyser la fréquence d'utilisation des compétences
+# Fonction pour analyser la frÃ©quence d'utilisation des compÃ©tences
 function Analyze-SkillFrequency {
     [CmdletBinding()]
     param (
@@ -134,24 +134,24 @@ function Analyze-SkillFrequency {
         [PSCustomObject[]]$Skills
     )
 
-    # Calculer le nombre total d'améliorations
+    # Calculer le nombre total d'amÃ©liorations
     $improvements = $Skills | Select-Object -Property Manager, Improvement -Unique
     $totalImprovements = $improvements.Count
     
-    # Calculer le nombre total de compétences
+    # Calculer le nombre total de compÃ©tences
     $totalSkills = $Skills.Count
     
-    # Calculer le nombre de compétences uniques
+    # Calculer le nombre de compÃ©tences uniques
     $uniqueSkills = $Skills | Select-Object -Property Skill -Unique
     $totalUniqueSkills = $uniqueSkills.Count
     
-    # Calculer la fréquence d'utilisation de chaque compétence
+    # Calculer la frÃ©quence d'utilisation de chaque compÃ©tence
     $skillFrequency = $Skills | Group-Object -Property Skill | ForEach-Object {
         $skillName = $_.Name
         $occurrences = $_.Count
         $percentage = [Math]::Round(($occurrences / $totalSkills) * 100, 1)
         
-        # Calculer le nombre d'améliorations qui utilisent cette compétence
+        # Calculer le nombre d'amÃ©liorations qui utilisent cette compÃ©tence
         $improvementsUsingSkill = $Skills | Where-Object { $_.Skill -eq $skillName } | Select-Object -Property Manager, Improvement -Unique
         $improvementCount = $improvementsUsingSkill.Count
         $improvementPercentage = [Math]::Round(($improvementCount / $totalImprovements) * 100, 1)
@@ -165,7 +165,7 @@ function Analyze-SkillFrequency {
             }
         }
         
-        # Calculer la distribution par catégorie
+        # Calculer la distribution par catÃ©gorie
         $categoryDistribution = $Skills | Where-Object { $_.Skill -eq $skillName } | Group-Object -Property Category | ForEach-Object {
             [PSCustomObject]@{
                 Category = $_.Name
@@ -195,13 +195,13 @@ function Analyze-SkillFrequency {
         }
     } | Sort-Object -Property Occurrences -Descending
     
-    # Calculer la fréquence d'utilisation par catégorie
+    # Calculer la frÃ©quence d'utilisation par catÃ©gorie
     $categoryFrequency = $Skills | Group-Object -Property Category | ForEach-Object {
         $categoryName = $_.Name
         $occurrences = $_.Count
         $percentage = [Math]::Round(($occurrences / $totalSkills) * 100, 1)
         
-        # Calculer le nombre de compétences uniques dans cette catégorie
+        # Calculer le nombre de compÃ©tences uniques dans cette catÃ©gorie
         $uniqueCategorySkills = $Skills | Where-Object { $_.Category -eq $categoryName } | Select-Object -Property Skill -Unique
         $uniqueCategorySkillCount = $uniqueCategorySkills.Count
         
@@ -213,7 +213,7 @@ function Analyze-SkillFrequency {
         }
     } | Sort-Object -Property Occurrences -Descending
     
-    # Calculer la fréquence d'utilisation par niveau d'expertise
+    # Calculer la frÃ©quence d'utilisation par niveau d'expertise
     $levelFrequency = $Skills | Group-Object -Property Level | ForEach-Object {
         $levelName = $_.Name
         $occurrences = $_.Count
@@ -226,17 +226,17 @@ function Analyze-SkillFrequency {
         }
     } | Sort-Object -Property Occurrences -Descending
     
-    # Calculer la fréquence d'utilisation par gestionnaire
+    # Calculer la frÃ©quence d'utilisation par gestionnaire
     $managerFrequency = $Skills | Group-Object -Property Manager | ForEach-Object {
         $managerName = $_.Name
         $occurrences = $_.Count
         $percentage = [Math]::Round(($occurrences / $totalSkills) * 100, 1)
         
-        # Calculer le nombre de compétences uniques pour ce gestionnaire
+        # Calculer le nombre de compÃ©tences uniques pour ce gestionnaire
         $uniqueManagerSkills = $Skills | Where-Object { $_.Manager -eq $managerName } | Select-Object -Property Skill -Unique
         $uniqueManagerSkillCount = $uniqueManagerSkills.Count
         
-        # Calculer le nombre d'améliorations pour ce gestionnaire
+        # Calculer le nombre d'amÃ©liorations pour ce gestionnaire
         $managerImprovements = $Skills | Where-Object { $_.Manager -eq $managerName } | Select-Object -Property Improvement -Unique
         $managerImprovementCount = $managerImprovements.Count
         
@@ -260,7 +260,7 @@ function Analyze-SkillFrequency {
     }
 }
 
-# Fonction pour générer le rapport au format Markdown
+# Fonction pour gÃ©nÃ©rer le rapport au format Markdown
 function Generate-MarkdownReport {
     [CmdletBinding()]
     param (
@@ -268,37 +268,37 @@ function Generate-MarkdownReport {
         [PSCustomObject]$FrequencyAnalysis
     )
 
-    $markdown = "# Analyse de la Fréquence d'Utilisation des Compétences`n`n"
-    $markdown += "Ce document présente une analyse détaillée de la fréquence d'utilisation des compétences dans les améliorations identifiées.`n`n"
+    $markdown = "# Analyse de la FrÃ©quence d'Utilisation des CompÃ©tences`n`n"
+    $markdown += "Ce document prÃ©sente une analyse dÃ©taillÃ©e de la frÃ©quence d'utilisation des compÃ©tences dans les amÃ©liorations identifiÃ©es.`n`n"
     
-    $markdown += "## Table des Matières`n`n"
-    $markdown += "- [Résumé](#résumé)`n"
-    $markdown += "- [Fréquence par Compétence](#fréquence-par-compétence)`n"
-    $markdown += "- [Fréquence par Catégorie](#fréquence-par-catégorie)`n"
-    $markdown += "- [Fréquence par Niveau d'Expertise](#fréquence-par-niveau-dexpertise)`n"
-    $markdown += "- [Fréquence par Gestionnaire](#fréquence-par-gestionnaire)`n"
-    $markdown += "- [Compétences les Plus Utilisées](#compétences-les-plus-utilisées)`n"
+    $markdown += "## Table des MatiÃ¨res`n`n"
+    $markdown += "- [RÃ©sumÃ©](#rÃ©sumÃ©)`n"
+    $markdown += "- [FrÃ©quence par CompÃ©tence](#frÃ©quence-par-compÃ©tence)`n"
+    $markdown += "- [FrÃ©quence par CatÃ©gorie](#frÃ©quence-par-catÃ©gorie)`n"
+    $markdown += "- [FrÃ©quence par Niveau d'Expertise](#frÃ©quence-par-niveau-dexpertise)`n"
+    $markdown += "- [FrÃ©quence par Gestionnaire](#frÃ©quence-par-gestionnaire)`n"
+    $markdown += "- [CompÃ©tences les Plus UtilisÃ©es](#compÃ©tences-les-plus-utilisÃ©es)`n"
     $markdown += "- [Implications pour la Planification](#implications-pour-la-planification)`n"
     
-    # Résumé
-    $markdown += "`n## <a name='résumé'></a>Résumé`n`n"
+    # RÃ©sumÃ©
+    $markdown += "`n## <a name='rÃ©sumÃ©'></a>RÃ©sumÃ©`n`n"
     
-    $markdown += "**Nombre total de compétences :** $($FrequencyAnalysis.TotalSkills)`n`n"
-    $markdown += "**Nombre de compétences uniques :** $($FrequencyAnalysis.TotalUniqueSkills)`n`n"
-    $markdown += "**Nombre total d'améliorations :** $($FrequencyAnalysis.TotalImprovements)`n`n"
+    $markdown += "**Nombre total de compÃ©tences :** $($FrequencyAnalysis.TotalSkills)`n`n"
+    $markdown += "**Nombre de compÃ©tences uniques :** $($FrequencyAnalysis.TotalUniqueSkills)`n`n"
+    $markdown += "**Nombre total d'amÃ©liorations :** $($FrequencyAnalysis.TotalImprovements)`n`n"
     
-    $markdown += "### Répartition Globale`n`n"
-    $markdown += "| Métrique | Valeur |`n"
+    $markdown += "### RÃ©partition Globale`n`n"
+    $markdown += "| MÃ©trique | Valeur |`n"
     $markdown += "|---------|--------|`n"
-    $markdown += "| Nombre moyen de compétences par amélioration | $([Math]::Round($FrequencyAnalysis.TotalSkills / $FrequencyAnalysis.TotalImprovements, 1)) |`n"
-    $markdown += "| Nombre moyen d'améliorations par compétence | $([Math]::Round($FrequencyAnalysis.TotalImprovements / $FrequencyAnalysis.TotalUniqueSkills, 1)) |`n"
-    $markdown += "| Ratio compétences uniques / total | $([Math]::Round($FrequencyAnalysis.TotalUniqueSkills / $FrequencyAnalysis.TotalSkills, 2)) |`n"
+    $markdown += "| Nombre moyen de compÃ©tences par amÃ©lioration | $([Math]::Round($FrequencyAnalysis.TotalSkills / $FrequencyAnalysis.TotalImprovements, 1)) |`n"
+    $markdown += "| Nombre moyen d'amÃ©liorations par compÃ©tence | $([Math]::Round($FrequencyAnalysis.TotalImprovements / $FrequencyAnalysis.TotalUniqueSkills, 1)) |`n"
+    $markdown += "| Ratio compÃ©tences uniques / total | $([Math]::Round($FrequencyAnalysis.TotalUniqueSkills / $FrequencyAnalysis.TotalSkills, 2)) |`n"
     
-    # Fréquence par compétence
-    $markdown += "`n## <a name='fréquence-par-compétence'></a>Fréquence par Compétence`n`n"
-    $markdown += "Cette section présente la fréquence d'utilisation de chaque compétence dans les améliorations.`n`n"
+    # FrÃ©quence par compÃ©tence
+    $markdown += "`n## <a name='frÃ©quence-par-compÃ©tence'></a>FrÃ©quence par CompÃ©tence`n`n"
+    $markdown += "Cette section prÃ©sente la frÃ©quence d'utilisation de chaque compÃ©tence dans les amÃ©liorations.`n`n"
     
-    $markdown += "| Compétence | Occurrences | % du Total | Améliorations | % des Améliorations |`n"
+    $markdown += "| CompÃ©tence | Occurrences | % du Total | AmÃ©liorations | % des AmÃ©liorations |`n"
     $markdown += "|------------|-------------|-----------|---------------|---------------------|`n"
     
     foreach ($skill in $FrequencyAnalysis.SkillFrequency | Select-Object -First 20) {
@@ -309,20 +309,20 @@ function Generate-MarkdownReport {
         $markdown += "| ... | ... | ... | ... | ... |`n"
     }
     
-    # Fréquence par catégorie
-    $markdown += "`n## <a name='fréquence-par-catégorie'></a>Fréquence par Catégorie`n`n"
-    $markdown += "Cette section présente la fréquence d'utilisation des compétences par catégorie.`n`n"
+    # FrÃ©quence par catÃ©gorie
+    $markdown += "`n## <a name='frÃ©quence-par-catÃ©gorie'></a>FrÃ©quence par CatÃ©gorie`n`n"
+    $markdown += "Cette section prÃ©sente la frÃ©quence d'utilisation des compÃ©tences par catÃ©gorie.`n`n"
     
-    $markdown += "| Catégorie | Occurrences | % du Total | Compétences Uniques |`n"
+    $markdown += "| CatÃ©gorie | Occurrences | % du Total | CompÃ©tences Uniques |`n"
     $markdown += "|-----------|-------------|-----------|---------------------|`n"
     
     foreach ($category in $FrequencyAnalysis.CategoryFrequency) {
         $markdown += "| $($category.Category) | $($category.Occurrences) | $($category.Percentage)% | $($category.UniqueSkillCount) |`n"
     }
     
-    # Fréquence par niveau d'expertise
-    $markdown += "`n## <a name='fréquence-par-niveau-dexpertise'></a>Fréquence par Niveau d'Expertise`n`n"
-    $markdown += "Cette section présente la fréquence d'utilisation des compétences par niveau d'expertise.`n`n"
+    # FrÃ©quence par niveau d'expertise
+    $markdown += "`n## <a name='frÃ©quence-par-niveau-dexpertise'></a>FrÃ©quence par Niveau d'Expertise`n`n"
+    $markdown += "Cette section prÃ©sente la frÃ©quence d'utilisation des compÃ©tences par niveau d'expertise.`n`n"
     
     $markdown += "| Niveau | Occurrences | % du Total |`n"
     $markdown += "|--------|-------------|-----------|`n"
@@ -331,27 +331,27 @@ function Generate-MarkdownReport {
         $markdown += "| $($level.Level) | $($level.Occurrences) | $($level.Percentage)% |`n"
     }
     
-    # Fréquence par gestionnaire
-    $markdown += "`n## <a name='fréquence-par-gestionnaire'></a>Fréquence par Gestionnaire`n`n"
-    $markdown += "Cette section présente la fréquence d'utilisation des compétences par gestionnaire.`n`n"
+    # FrÃ©quence par gestionnaire
+    $markdown += "`n## <a name='frÃ©quence-par-gestionnaire'></a>FrÃ©quence par Gestionnaire`n`n"
+    $markdown += "Cette section prÃ©sente la frÃ©quence d'utilisation des compÃ©tences par gestionnaire.`n`n"
     
-    $markdown += "| Gestionnaire | Occurrences | % du Total | Compétences Uniques | Améliorations |`n"
+    $markdown += "| Gestionnaire | Occurrences | % du Total | CompÃ©tences Uniques | AmÃ©liorations |`n"
     $markdown += "|--------------|-------------|-----------|---------------------|---------------|`n"
     
     foreach ($manager in $FrequencyAnalysis.ManagerFrequency) {
         $markdown += "| $($manager.Manager) | $($manager.Occurrences) | $($manager.Percentage)% | $($manager.UniqueSkillCount) | $($manager.ImprovementCount) |`n"
     }
     
-    # Compétences les plus utilisées
-    $markdown += "`n## <a name='compétences-les-plus-utilisées'></a>Compétences les Plus Utilisées`n`n"
-    $markdown += "Cette section présente une analyse détaillée des 5 compétences les plus utilisées.`n`n"
+    # CompÃ©tences les plus utilisÃ©es
+    $markdown += "`n## <a name='compÃ©tences-les-plus-utilisÃ©es'></a>CompÃ©tences les Plus UtilisÃ©es`n`n"
+    $markdown += "Cette section prÃ©sente une analyse dÃ©taillÃ©e des 5 compÃ©tences les plus utilisÃ©es.`n`n"
     
     $topSkills = $FrequencyAnalysis.SkillFrequency | Select-Object -First 5
     
     foreach ($skill in $topSkills) {
         $markdown += "### $($skill.Skill)`n`n"
         $markdown += "**Occurrences :** $($skill.Occurrences) ($($skill.Percentage)% du total)`n`n"
-        $markdown += "**Améliorations :** $($skill.ImprovementCount) ($($skill.ImprovementPercentage)% des améliorations)`n`n"
+        $markdown += "**AmÃ©liorations :** $($skill.ImprovementCount) ($($skill.ImprovementPercentage)% des amÃ©liorations)`n`n"
         
         $markdown += "#### Distribution par Niveau d'Expertise`n`n"
         $markdown += "| Niveau | Occurrences | % |`n"
@@ -361,8 +361,8 @@ function Generate-MarkdownReport {
             $markdown += "| $($level.Level) | $($level.Count) | $($level.Percentage)% |`n"
         }
         
-        $markdown += "`n#### Distribution par Catégorie`n`n"
-        $markdown += "| Catégorie | Occurrences | % |`n"
+        $markdown += "`n#### Distribution par CatÃ©gorie`n`n"
+        $markdown += "| CatÃ©gorie | Occurrences | % |`n"
         $markdown += "|-----------|-------------|---|`n"
         
         foreach ($category in $skill.CategoryDistribution | Sort-Object -Property Count -Descending) {
@@ -382,30 +382,30 @@ function Generate-MarkdownReport {
     
     # Implications pour la planification
     $markdown += "`n## <a name='implications-pour-la-planification'></a>Implications pour la Planification`n`n"
-    $markdown += "Cette analyse de la fréquence d'utilisation des compétences a plusieurs implications importantes pour la planification des ressources humaines :`n`n"
+    $markdown += "Cette analyse de la frÃ©quence d'utilisation des compÃ©tences a plusieurs implications importantes pour la planification des ressources humaines :`n`n"
     
-    $markdown += "### Priorités de Formation`n`n"
-    $markdown += "1. **Compétences à haute fréquence** : Les compétences les plus fréquemment utilisées devraient être prioritaires dans les programmes de formation.`n"
+    $markdown += "### PrioritÃ©s de Formation`n`n"
+    $markdown += "1. **CompÃ©tences Ã  haute frÃ©quence** : Les compÃ©tences les plus frÃ©quemment utilisÃ©es devraient Ãªtre prioritaires dans les programmes de formation.`n"
     $markdown += "   - " + ($topSkills | Select-Object -First 3 | ForEach-Object { $_.Skill }) -join "`n   - " + "`n"
-    $markdown += "2. **Niveaux d'expertise les plus demandés** : Les niveaux d'expertise les plus fréquemment requis devraient être ciblés dans les programmes de formation.`n"
+    $markdown += "2. **Niveaux d'expertise les plus demandÃ©s** : Les niveaux d'expertise les plus frÃ©quemment requis devraient Ãªtre ciblÃ©s dans les programmes de formation.`n"
     $markdown += "   - " + ($FrequencyAnalysis.LevelFrequency | Select-Object -First 2 | ForEach-Object { $_.Level }) -join "`n   - " + "`n"
     
     $markdown += "`n### Recrutement`n`n"
-    $markdown += "1. **Profils recherchés** : Les profils de recrutement devraient mettre l'accent sur les compétences les plus fréquemment utilisées.`n"
-    $markdown += "2. **Niveaux d'expertise** : Les niveaux d'expertise les plus demandés devraient être ciblés lors du recrutement.`n"
+    $markdown += "1. **Profils recherchÃ©s** : Les profils de recrutement devraient mettre l'accent sur les compÃ©tences les plus frÃ©quemment utilisÃ©es.`n"
+    $markdown += "2. **Niveaux d'expertise** : Les niveaux d'expertise les plus demandÃ©s devraient Ãªtre ciblÃ©s lors du recrutement.`n"
     
     $markdown += "`n### Allocation des Ressources`n`n"
-    $markdown += "1. **Équipes polyvalentes** : Former des équipes polyvalentes possédant les compétences les plus fréquemment utilisées.`n"
-    $markdown += "2. **Spécialistes** : Identifier les besoins en spécialistes pour les compétences moins fréquentes mais critiques.`n"
+    $markdown += "1. **Ã‰quipes polyvalentes** : Former des Ã©quipes polyvalentes possÃ©dant les compÃ©tences les plus frÃ©quemment utilisÃ©es.`n"
+    $markdown += "2. **SpÃ©cialistes** : Identifier les besoins en spÃ©cialistes pour les compÃ©tences moins frÃ©quentes mais critiques.`n"
     
     $markdown += "`n### Gestion des Connaissances`n`n"
-    $markdown += "1. **Documentation** : Prioriser la documentation des compétences les plus fréquemment utilisées.`n"
-    $markdown += "2. **Partage des connaissances** : Mettre en place des mécanismes de partage des connaissances pour les compétences les plus fréquemment utilisées.`n"
+    $markdown += "1. **Documentation** : Prioriser la documentation des compÃ©tences les plus frÃ©quemment utilisÃ©es.`n"
+    $markdown += "2. **Partage des connaissances** : Mettre en place des mÃ©canismes de partage des connaissances pour les compÃ©tences les plus frÃ©quemment utilisÃ©es.`n"
     
     return $markdown
 }
 
-# Fonction pour générer le rapport au format CSV
+# Fonction pour gÃ©nÃ©rer le rapport au format CSV
 function Generate-CsvReport {
     [CmdletBinding()]
     param (
@@ -434,7 +434,7 @@ function Generate-CsvReport {
     return $csv
 }
 
-# Fonction pour générer le rapport au format JSON
+# Fonction pour gÃ©nÃ©rer le rapport au format JSON
 function Generate-JsonReport {
     [CmdletBinding()]
     param (
@@ -460,17 +460,17 @@ function Generate-JsonReport {
     return $jsonData | ConvertTo-Json -Depth 10
 }
 
-# Lire le contenu de la liste des compétences
+# Lire le contenu de la liste des compÃ©tences
 $listContent = Get-Content -Path $SkillsListPath -Raw
 
-# Extraire les compétences de la liste
+# Extraire les compÃ©tences de la liste
 $extractionResult = Extract-SkillsFromList -MarkdownContent $listContent
 $skills = $extractionResult.Skills
 
-# Analyser la fréquence d'utilisation des compétences
+# Analyser la frÃ©quence d'utilisation des compÃ©tences
 $frequencyAnalysis = Analyze-SkillFrequency -Skills $skills
 
-# Générer le rapport dans le format spécifié
+# GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
         $reportContent = Generate-MarkdownReport -FrequencyAnalysis $frequencyAnalysis
@@ -486,26 +486,26 @@ switch ($Format) {
 # Enregistrer le rapport
 try {
     $reportContent | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Analyse de la fréquence d'utilisation des compétences générée avec succès : $OutputPath"
+    Write-Host "Analyse de la frÃ©quence d'utilisation des compÃ©tences gÃ©nÃ©rÃ©e avec succÃ¨s : $OutputPath"
 } catch {
     Write-Error "Erreur lors de l'enregistrement du rapport : $_"
     exit 1
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé de l'analyse de la fréquence d'utilisation des compétences :"
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© de l'analyse de la frÃ©quence d'utilisation des compÃ©tences :"
 Write-Host "------------------------------------------------------------"
 
-Write-Host "  Nombre total de compétences : $($frequencyAnalysis.TotalSkills)"
-Write-Host "  Nombre de compétences uniques : $($frequencyAnalysis.TotalUniqueSkills)"
-Write-Host "  Nombre total d'améliorations : $($frequencyAnalysis.TotalImprovements)"
+Write-Host "  Nombre total de compÃ©tences : $($frequencyAnalysis.TotalSkills)"
+Write-Host "  Nombre de compÃ©tences uniques : $($frequencyAnalysis.TotalUniqueSkills)"
+Write-Host "  Nombre total d'amÃ©liorations : $($frequencyAnalysis.TotalImprovements)"
 
-Write-Host "`nTop 5 des compétences les plus utilisées :"
+Write-Host "`nTop 5 des compÃ©tences les plus utilisÃ©es :"
 foreach ($skill in $frequencyAnalysis.SkillFrequency | Select-Object -First 5) {
-    Write-Host "  $($skill.Skill) : $($skill.Occurrences) occurrences ($($skill.Percentage)%), utilisée dans $($skill.ImprovementCount) améliorations ($($skill.ImprovementPercentage)%)"
+    Write-Host "  $($skill.Skill) : $($skill.Occurrences) occurrences ($($skill.Percentage)%), utilisÃ©e dans $($skill.ImprovementCount) amÃ©liorations ($($skill.ImprovementPercentage)%)"
 }
 
-Write-Host "`nRépartition par niveau d'expertise :"
+Write-Host "`nRÃ©partition par niveau d'expertise :"
 foreach ($level in $frequencyAnalysis.LevelFrequency) {
     Write-Host "  $($level.Level) : $($level.Occurrences) occurrences ($($level.Percentage)%)"
 }

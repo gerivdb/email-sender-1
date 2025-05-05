@@ -1,9 +1,9 @@
-# Script pour mettre à jour la tâche d'optimisation des performances pour les grands arbres syntaxiques
+﻿# Script pour mettre Ã  jour la tÃ¢che d'optimisation des performances pour les grands arbres syntaxiques
 
 $roadmapPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\projet\roadmaps\roadmap_complete_converted.md"
 $taskId = "2.1.2.4.1.2.3.2.2.5.3.2.2.1.3.1.5"
 
-# Vérifier si le fichier de roadmap existe
+# VÃ©rifier si le fichier de roadmap existe
 if (-not (Test-Path -Path $roadmapPath)) {
     Write-Error "Le fichier de roadmap '$roadmapPath' n'existe pas."
     exit 1
@@ -18,9 +18,9 @@ if ($null -eq $content -or $content.Count -eq 0) {
 
 Write-Host "Fichier de roadmap : $roadmapPath" -ForegroundColor Cyan
 Write-Host "Nombre de lignes : $($content.Count)" -ForegroundColor Cyan
-Write-Host "Tâche à mettre à jour : $taskId" -ForegroundColor Cyan
+Write-Host "TÃ¢che Ã  mettre Ã  jour : $taskId" -ForegroundColor Cyan
 
-# Parcourir le contenu et mettre à jour la tâche
+# Parcourir le contenu et mettre Ã  jour la tÃ¢che
 $updatedContent = $content.Clone()
 $taskFound = $false
 $taskLine = 0
@@ -28,41 +28,41 @@ $taskLine = 0
 for ($i = 0; $i -lt $content.Count; $i++) {
     $line = $content[$i]
     
-    # Vérifier si la ligne correspond à la tâche
+    # VÃ©rifier si la ligne correspond Ã  la tÃ¢che
     if ($line -match '^\s*-\s+\[([ xX])\]\s+(\*\*)?(\d+(\.\d+)*)\s*(\*\*)?\s+(.+)$') {
         $status = $matches[1]
         $currentTaskId = $matches[3]
         $taskName = $matches[6]
         
-        # Vérifier si c'est la tâche que nous cherchons
+        # VÃ©rifier si c'est la tÃ¢che que nous cherchons
         if ($currentTaskId -eq $taskId) {
-            Write-Host "Tâche trouvée à la ligne $($i+1) : [$status] $currentTaskId $taskName" -ForegroundColor Yellow
+            Write-Host "TÃ¢che trouvÃ©e Ã  la ligne $($i+1) : [$status] $currentTaskId $taskName" -ForegroundColor Yellow
             $taskFound = $true
             $taskLine = $i
             
-            # Vérifier si la tâche est déjà cochée
+            # VÃ©rifier si la tÃ¢che est dÃ©jÃ  cochÃ©e
             if ($status -eq 'x' -or $status -eq 'X') {
-                Write-Host "  Tâche déjà cochée." -ForegroundColor Green
+                Write-Host "  TÃ¢che dÃ©jÃ  cochÃ©e." -ForegroundColor Green
                 exit 0
             }
             
-            # Mettre à jour la tâche
+            # Mettre Ã  jour la tÃ¢che
             $updatedLine = $line -replace '\[ \]', '[x]'
             $updatedContent[$i] = $updatedLine
             
-            Write-Host "  Tâche mise à jour : $updatedLine" -ForegroundColor Green
+            Write-Host "  TÃ¢che mise Ã  jour : $updatedLine" -ForegroundColor Green
             break
         }
     }
 }
 
-# Vérifier si la tâche a été trouvée
+# VÃ©rifier si la tÃ¢che a Ã©tÃ© trouvÃ©e
 if (-not $taskFound) {
-    Write-Error "La tâche avec l'ID '$taskId' n'a pas été trouvée dans le fichier de roadmap."
+    Write-Error "La tÃ¢che avec l'ID '$taskId' n'a pas Ã©tÃ© trouvÃ©e dans le fichier de roadmap."
     exit 1
 }
 
-# Sauvegarder le contenu mis à jour
+# Sauvegarder le contenu mis Ã  jour
 $updatedContent | Set-Content -Path $roadmapPath -Encoding UTF8
-Write-Host "`nLe fichier de roadmap a été mis à jour avec succès." -ForegroundColor Green
-Write-Host "Tâche mise à jour à la ligne $($taskLine+1)." -ForegroundColor Green
+Write-Host "`nLe fichier de roadmap a Ã©tÃ© mis Ã  jour avec succÃ¨s." -ForegroundColor Green
+Write-Host "TÃ¢che mise Ã  jour Ã  la ligne $($taskLine+1)." -ForegroundColor Green

@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les fonctions d'organisation des scripts du manager.
@@ -10,16 +10,16 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Charger les fonctions à tester
+# Charger les fonctions Ã  tester
 . "$PSScriptRoot/../organization/Organize-ManagerScripts.ps1"
 
 # Tests Pester
@@ -69,31 +69,31 @@ Describe "Tests des fonctions d'organisation des scripts du manager" {
             Get-ScriptCategory -FileName "Update-UI.ps1" | Should -Be "ui"
         }
 
-        It "Devrait retourner 'core' pour un fichier sans mot-clé reconnu" {
+        It "Devrait retourner 'core' pour un fichier sans mot-clÃ© reconnu" {
             Get-ScriptCategory -FileName "ScriptManager.ps1" | Should -Be "core"
         }
 
-        It "Devrait analyser le contenu si le nom ne contient pas de mot-clé reconnu" {
+        It "Devrait analyser le contenu si le nom ne contient pas de mot-clÃ© reconnu" {
             $content = "# Script pour analyser les scripts"
             Get-ScriptCategory -FileName "random-script.ps1" -Content $content | Should -Be "analysis"
         }
 
-        It "Devrait retourner 'core' si ni le nom ni le contenu ne contiennent de mot-clé reconnu" {
-            $content = "# Script sans mot-clé reconnu"
+        It "Devrait retourner 'core' si ni le nom ni le contenu ne contiennent de mot-clÃ© reconnu" {
+            $content = "# Script sans mot-clÃ© reconnu"
             Get-ScriptCategory -FileName "random-script.ps1" -Content $content | Should -Be "core"
         }
     }
 
     Context "Tests de la fonction Backup-File" {
         BeforeAll {
-            # Créer un dossier temporaire pour les tests
+            # CrÃ©er un dossier temporaire pour les tests
             $testDir = Join-Path -Path $env:TEMP -ChildPath "BackupFileTests"
             if (Test-Path -Path $testDir) {
                 Remove-Item -Path $testDir -Recurse -Force
             }
             New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-            # Créer un fichier de test
+            # CrÃ©er un fichier de test
             $testFilePath = Join-Path -Path $testDir -ChildPath "test-file.ps1"
             Set-Content -Path $testFilePath -Value "# Test file" -Encoding UTF8
 
@@ -103,19 +103,19 @@ Describe "Tests des fonctions d'organisation des scripts du manager" {
         }
 
         AfterAll {
-            # Nettoyer après les tests
+            # Nettoyer aprÃ¨s les tests
             if (Test-Path -Path $script:testDir) {
                 Remove-Item -Path $script:testDir -Recurse -Force
             }
         }
 
-        It "Devrait créer une sauvegarde du fichier" {
+        It "Devrait crÃ©er une sauvegarde du fichier" {
             $result = Backup-File -FilePath $script:testFilePath
             $result | Should -Be $true
             Test-Path -Path "$script:testFilePath.bak" | Should -Be $true
         }
 
-        It "Le contenu de la sauvegarde devrait être identique à l'original" {
+        It "Le contenu de la sauvegarde devrait Ãªtre identique Ã  l'original" {
             $originalContent = Get-Content -Path $script:testFilePath -Raw
             $backupContent = Get-Content -Path "$script:testFilePath.bak" -Raw
             $backupContent | Should -Be $originalContent
@@ -124,18 +124,18 @@ Describe "Tests des fonctions d'organisation des scripts du manager" {
 
     Context "Tests de la fonction Move-ScriptToCategory" {
         BeforeAll {
-            # Créer un dossier temporaire pour les tests
+            # CrÃ©er un dossier temporaire pour les tests
             $testDir = Join-Path -Path $env:TEMP -ChildPath "MoveScriptToCategoryTests"
             if (Test-Path -Path $testDir) {
                 Remove-Item -Path $testDir -Recurse -Force
             }
             New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-            # Créer un dossier manager
+            # CrÃ©er un dossier manager
             $managerDir = Join-Path -Path $testDir -ChildPath "manager"
             New-Item -Path $managerDir -ItemType Directory -Force | Out-Null
 
-            # Créer un fichier de test
+            # CrÃ©er un fichier de test
             $testFilePath = Join-Path -Path $managerDir -ChildPath "test-file.ps1"
             Set-Content -Path $testFilePath -Value "# Test file" -Encoding UTF8
 
@@ -146,19 +146,19 @@ Describe "Tests des fonctions d'organisation des scripts du manager" {
         }
 
         AfterAll {
-            # Nettoyer après les tests
+            # Nettoyer aprÃ¨s les tests
             if (Test-Path -Path $script:testDir) {
                 Remove-Item -Path $script:testDir -Recurse -Force
             }
         }
 
-        It "Devrait déplacer le fichier dans le sous-dossier approprié" {
+        It "Devrait dÃ©placer le fichier dans le sous-dossier appropriÃ©" {
             $result = Move-ScriptToCategory -FilePath $script:testFilePath -Category "testing" -CreateBackup:$false
             $result | Should -Be $true
             Test-Path -Path "$script:managerDir/testing/test-file.ps1" | Should -Be $true
         }
 
-        It "Le dossier cible devrait être créé s'il n'existe pas" {
+        It "Le dossier cible devrait Ãªtre crÃ©Ã© s'il n'existe pas" {
             Test-Path -Path "$script:managerDir/testing" | Should -Be $true
         }
 

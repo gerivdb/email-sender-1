@@ -1,21 +1,21 @@
-# Test de la gestion des erreurs pour le mode manager
+﻿# Test de la gestion des erreurs pour le mode manager
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de configuration temporaire pour les tests d'erreur
+# CrÃ©er un fichier de configuration temporaire pour les tests d'erreur
 $tempConfigPath = Join-Path -Path $testDir -ChildPath "errors-config.json"
 @{
     General = @{
@@ -43,11 +43,11 @@ $tempConfigPath = Join-Path -Path $testDir -ChildPath "errors-config.json"
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $tempConfigPath -Encoding UTF8
 
-# Créer un fichier de configuration invalide
+# CrÃ©er un fichier de configuration invalide
 $invalidConfigPath = Join-Path -Path $testDir -ChildPath "invalid-config.json"
 "This is not a valid JSON file" | Set-Content -Path $invalidConfigPath -Encoding UTF8
 
-# Créer des scripts de mode simulés
+# CrÃ©er des scripts de mode simulÃ©s
 $mockCheckModePath = Join-Path -Path $PSScriptRoot -ChildPath "mock-check-mode.ps1"
 $mockCheckContent = @'
 param (
@@ -70,7 +70,7 @@ param (
     [string]$ConfigPath
 )
 
-Write-Host "Mode CHECK exécuté avec les paramètres suivants :"
+Write-Host "Mode CHECK exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -78,7 +78,7 @@ Write-Host "ActiveDocumentPath : $ActiveDocumentPath"
 Write-Host "CheckActiveDocument : $CheckActiveDocument"
 Write-Host "ConfigPath : $ConfigPath"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "check-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -109,13 +109,13 @@ param (
     [string]$ConfigPath
 )
 
-Write-Host "Mode ERROR exécuté avec les paramètres suivants :"
+Write-Host "Mode ERROR exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
 Write-Host "ConfigPath : $ConfigPath"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "error-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -125,7 +125,7 @@ ConfigPath : $ConfigPath
 "@ | Set-Content -Path $outputPath -Encoding UTF8
 
 # Simuler une erreur
-Write-Error "Erreur simulée dans le mode ERROR"
+Write-Error "Erreur simulÃ©e dans le mode ERROR"
 exit 1
 '@
 Set-Content -Path $mockErrorModePath -Value $mockErrorContent -Encoding UTF8
@@ -159,7 +159,7 @@ $variable = "Valeur
 '@
 Set-Content -Path $mockInvalidModePath -Value $mockInvalidContent -Encoding UTF8
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 "# Test Roadmap" | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
@@ -167,12 +167,12 @@ $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 Write-Host "Test 1: Mode inexistant" -ForegroundColor Cyan
 try {
     & $scriptPath -Mode "NONEXISTENT" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath
-    Write-Host "Test 1 échoué: Le script n'a pas généré d'erreur pour un mode inexistant" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Le script n'a pas gÃ©nÃ©rÃ© d'erreur pour un mode inexistant" -ForegroundColor Red
 } catch {
     if ($_.Exception.Message -match "n'appartient pas au jeu" -or $_.Exception.Message -match "ValidateSet") {
-        Write-Host "Test 1 réussi: Le script a généré une erreur pour un mode inexistant" -ForegroundColor Green
+        Write-Host "Test 1 rÃ©ussi: Le script a gÃ©nÃ©rÃ© une erreur pour un mode inexistant" -ForegroundColor Green
     } else {
-        Write-Host "Test 1 échoué: Le script a généré une erreur inattendue pour un mode inexistant" -ForegroundColor Red
+        Write-Host "Test 1 Ã©chouÃ©: Le script a gÃ©nÃ©rÃ© une erreur inattendue pour un mode inexistant" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
@@ -199,25 +199,25 @@ try {
     $config | ConvertTo-Json -Depth 5 | Set-Content -Path $tempConfigPath2 -Encoding UTF8
 
     & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath2
-    Write-Host "Test 2 échoué: Le script n'a pas généré d'erreur pour un script introuvable" -ForegroundColor Red
+    Write-Host "Test 2 Ã©chouÃ©: Le script n'a pas gÃ©nÃ©rÃ© d'erreur pour un script introuvable" -ForegroundColor Red
 } catch {
     if ($_.Exception.Message -match "Script .* introuvable" -or $_.Exception.Message -match "Le script .* est introuvable" -or $_.Exception.Message -match "Impossible de trouver le chemin") {
-        Write-Host "Test 2 réussi: Le script a généré une erreur pour un script introuvable" -ForegroundColor Green
+        Write-Host "Test 2 rÃ©ussi: Le script a gÃ©nÃ©rÃ© une erreur pour un script introuvable" -ForegroundColor Green
     } else {
-        Write-Host "Test 2 échoué: Le script a généré une erreur inattendue pour un script introuvable" -ForegroundColor Red
+        Write-Host "Test 2 Ã©chouÃ©: Le script a gÃ©nÃ©rÃ© une erreur inattendue pour un script introuvable" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
 
-# Test 3: Erreur d'exécution
-Write-Host "Test 3: Erreur d'exécution" -ForegroundColor Cyan
+# Test 3: Erreur d'exÃ©cution
+Write-Host "Test 3: Erreur d'exÃ©cution" -ForegroundColor Cyan
 try {
-    # Nous utilisons le mode CHECK avec un script qui génère une erreur
-    # Modifions temporairement la configuration pour que le script CHECK génère une erreur
+    # Nous utilisons le mode CHECK avec un script qui gÃ©nÃ¨re une erreur
+    # Modifions temporairement la configuration pour que le script CHECK gÃ©nÃ¨re une erreur
     $tempConfigPath3 = Join-Path -Path $testDir -ChildPath "error-script-config.json"
     $errorScriptPath = Join-Path -Path $testDir -ChildPath "error-script.ps1"
 
-    # Créer un script qui génère une erreur
+    # CrÃ©er un script qui gÃ©nÃ¨re une erreur
     @'
 param (
     [Parameter(Mandatory = $false)]
@@ -233,7 +233,7 @@ param (
     [string]$ConfigPath
 )
 
-Write-Error "Erreur simulée dans le script"
+Write-Error "Erreur simulÃ©e dans le script"
 exit 1
 '@ | Set-Content -Path $errorScriptPath -Encoding UTF8
 
@@ -253,12 +253,12 @@ exit 1
     $config | ConvertTo-Json -Depth 5 | Set-Content -Path $tempConfigPath3 -Encoding UTF8
 
     & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath3
-    Write-Host "Test 3 échoué: Le script n'a pas généré d'erreur pour une erreur d'exécution" -ForegroundColor Red
+    Write-Host "Test 3 Ã©chouÃ©: Le script n'a pas gÃ©nÃ©rÃ© d'erreur pour une erreur d'exÃ©cution" -ForegroundColor Red
 } catch {
-    if ($_.Exception.Message -match "Erreur lors de l'exécution du mode" -or $_.Exception.Message -match "Code de sortie : 1" -or $_.Exception.Message -match "Erreur simulée") {
-        Write-Host "Test 3 réussi: Le script a généré une erreur pour une erreur d'exécution" -ForegroundColor Green
+    if ($_.Exception.Message -match "Erreur lors de l'exÃ©cution du mode" -or $_.Exception.Message -match "Code de sortie : 1" -or $_.Exception.Message -match "Erreur simulÃ©e") {
+        Write-Host "Test 3 rÃ©ussi: Le script a gÃ©nÃ©rÃ© une erreur pour une erreur d'exÃ©cution" -ForegroundColor Green
     } else {
-        Write-Host "Test 3 échoué: Le script a généré une erreur inattendue pour une erreur d'exécution" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Le script a gÃ©nÃ©rÃ© une erreur inattendue pour une erreur d'exÃ©cution" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
@@ -271,7 +271,7 @@ try {
     $tempConfigPath4 = Join-Path -Path $testDir -ChildPath "invalid-script-config.json"
     $invalidScriptPath = Join-Path -Path $testDir -ChildPath "invalid-script.ps1"
 
-    # Créer un script avec une erreur de syntaxe
+    # CrÃ©er un script avec une erreur de syntaxe
     @'
 param (
     [Parameter(Mandatory = $false)]
@@ -307,12 +307,12 @@ $variable = "Valeur
     $config | ConvertTo-Json -Depth 5 | Set-Content -Path $tempConfigPath4 -Encoding UTF8
 
     & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath4
-    Write-Host "Test 4 échoué: Le script n'a pas généré d'erreur pour un script invalide" -ForegroundColor Red
+    Write-Host "Test 4 Ã©chouÃ©: Le script n'a pas gÃ©nÃ©rÃ© d'erreur pour un script invalide" -ForegroundColor Red
 } catch {
-    if ($_.Exception.Message -match "Erreur lors de l'exécution du mode" -or $_.Exception.Message -match "erreur de syntaxe" -or $_.Exception.Message -match "Impossible d'analyser") {
-        Write-Host "Test 4 réussi: Le script a généré une erreur pour un script invalide" -ForegroundColor Green
+    if ($_.Exception.Message -match "Erreur lors de l'exÃ©cution du mode" -or $_.Exception.Message -match "erreur de syntaxe" -or $_.Exception.Message -match "Impossible d'analyser") {
+        Write-Host "Test 4 rÃ©ussi: Le script a gÃ©nÃ©rÃ© une erreur pour un script invalide" -ForegroundColor Green
     } else {
-        Write-Host "Test 4 échoué: Le script a généré une erreur inattendue pour un script invalide" -ForegroundColor Red
+        Write-Host "Test 4 Ã©chouÃ©: Le script a gÃ©nÃ©rÃ© une erreur inattendue pour un script invalide" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
@@ -323,15 +323,15 @@ $result = $null
 try {
     $result = & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $invalidConfigPath
     if ($result -eq $false) {
-        Write-Host "Test 5 réussi: Le script a généré une erreur pour une configuration invalide" -ForegroundColor Green
+        Write-Host "Test 5 rÃ©ussi: Le script a gÃ©nÃ©rÃ© une erreur pour une configuration invalide" -ForegroundColor Green
     } else {
-        Write-Host "Test 5 échoué: Le script n'a pas généré d'erreur pour une configuration invalide" -ForegroundColor Red
+        Write-Host "Test 5 Ã©chouÃ©: Le script n'a pas gÃ©nÃ©rÃ© d'erreur pour une configuration invalide" -ForegroundColor Red
     }
 } catch {
     if ($_.Exception.Message -match "Erreur lors du chargement de la configuration" -or $_.Exception.Message -match "JSON invalide") {
-        Write-Host "Test 5 réussi: Le script a généré une erreur pour une configuration invalide" -ForegroundColor Green
+        Write-Host "Test 5 rÃ©ussi: Le script a gÃ©nÃ©rÃ© une erreur pour une configuration invalide" -ForegroundColor Green
     } else {
-        Write-Host "Test 5 échoué: Le script a généré une erreur inattendue pour une configuration invalide" -ForegroundColor Red
+        Write-Host "Test 5 Ã©chouÃ©: Le script a gÃ©nÃ©rÃ© une erreur inattendue pour une configuration invalide" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
@@ -343,30 +343,30 @@ try {
     $nonExistentConfigPath = Join-Path -Path $testDir -ChildPath "non-existent-config.json"
     $result = & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $nonExistentConfigPath
 
-    # Le script devrait utiliser une configuration par défaut et continuer l'exécution
+    # Le script devrait utiliser une configuration par dÃ©faut et continuer l'exÃ©cution
     if ($result -eq $true) {
-        Write-Host "Test 6 réussi: Le script a utilisé une configuration par défaut pour une configuration manquante" -ForegroundColor Green
+        Write-Host "Test 6 rÃ©ussi: Le script a utilisÃ© une configuration par dÃ©faut pour une configuration manquante" -ForegroundColor Green
     } else {
-        Write-Host "Test 6 échoué: Le script n'a pas utilisé une configuration par défaut pour une configuration manquante" -ForegroundColor Red
+        Write-Host "Test 6 Ã©chouÃ©: Le script n'a pas utilisÃ© une configuration par dÃ©faut pour une configuration manquante" -ForegroundColor Red
     }
 } catch {
-    # Si le script génère une erreur, c'est aussi acceptable car il peut être configuré pour échouer
+    # Si le script gÃ©nÃ¨re une erreur, c'est aussi acceptable car il peut Ãªtre configurÃ© pour Ã©chouer
     # si la configuration est manquante
     if ($_.Exception.Message -match "Fichier de configuration introuvable" -or $_.Exception.Message -match "configuration manquante") {
-        Write-Host "Test 6 réussi: Le script a généré une erreur appropriée pour une configuration manquante" -ForegroundColor Green
+        Write-Host "Test 6 rÃ©ussi: Le script a gÃ©nÃ©rÃ© une erreur appropriÃ©e pour une configuration manquante" -ForegroundColor Green
     } else {
-        Write-Host "Test 6 échoué: Le script a généré une erreur inattendue pour une configuration manquante" -ForegroundColor Red
+        Write-Host "Test 6 Ã©chouÃ©: Le script a gÃ©nÃ©rÃ© une erreur inattendue pour une configuration manquante" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
 
-# Test 7: Paramètres manquants
-Write-Host "Test 7: Paramètres manquants" -ForegroundColor Cyan
+# Test 7: ParamÃ¨tres manquants
+Write-Host "Test 7: ParamÃ¨tres manquants" -ForegroundColor Cyan
 try {
     & $scriptPath
-    Write-Host "Test 7 réussi: Le script a été exécuté sans paramètres" -ForegroundColor Green
+    Write-Host "Test 7 rÃ©ussi: Le script a Ã©tÃ© exÃ©cutÃ© sans paramÃ¨tres" -ForegroundColor Green
 } catch {
-    Write-Host "Test 7 échoué: Le script a généré une erreur pour des paramètres manquants" -ForegroundColor Red
+    Write-Host "Test 7 Ã©chouÃ©: Le script a gÃ©nÃ©rÃ© une erreur pour des paramÃ¨tres manquants" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
@@ -389,4 +389,4 @@ foreach ($file in $mockFiles) {
     }
 }
 
-Write-Host "Tests terminés." -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s." -ForegroundColor Cyan

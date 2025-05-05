@@ -1,5 +1,5 @@
-# Script de mise à jour de la roadmap en fonction des commits Git
-# Ce script analyse les commits Git et met à jour la roadmap en conséquence
+﻿# Script de mise Ã  jour de la roadmap en fonction des commits Git
+# Ce script analyse les commits Git et met Ã  jour la roadmap en consÃ©quence
 
 param (
     [string]$RoadmapPath = "Roadmap\roadmap_perso.md",
@@ -15,7 +15,7 @@ $reportPath = "Roadmap\Reports\git_update_report.html"
 $keywordsCompleted = @("fix", "fixes", "fixed", "close", "closes", "closed", "resolve", "resolves", "resolved", "implement", "implements", "implemented", "complete", "completes", "completed")
 $keywordsStarted = @("start", "starts", "started", "begin", "begins", "began", "work on", "working on", "progress", "in progress")
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     param (
         [string]$Message,
@@ -25,7 +25,7 @@ function Write-Log {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logEntry = "[$timestamp] [$Level] $Message"
 
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     Add-Content -Path $logFile -Value $logEntry
 
     # Afficher dans la console avec couleur
@@ -44,7 +44,7 @@ function Get-RoadmapContent {
         [string]$Path
     )
 
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $Path)) {
         Write-Log "Le fichier roadmap n'existe pas: $Path" "ERROR"
         return $null
@@ -53,7 +53,7 @@ function Get-RoadmapContent {
     # Lire le contenu du fichier
     $content = Get-Content -Path $Path -Raw
 
-    # Structure pour stocker les données de la roadmap
+    # Structure pour stocker les donnÃ©es de la roadmap
     $roadmap = @{
         Title    = ""
         Content  = $content
@@ -66,7 +66,7 @@ function Get-RoadmapContent {
         $roadmap.Title = $Matches[1]
     }
 
-    # Analyser les sections, phases et tâches
+    # Analyser les sections, phases et tÃ¢ches
     $lines = $content -split "`n"
     $roadmap.Lines = $lines
     $currentSection = $null
@@ -75,7 +75,7 @@ function Get-RoadmapContent {
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $line = $lines[$i]
 
-        # Détecter une section
+        # DÃ©tecter une section
         if ($line -match "^## (\d+)\. (.+)$") {
             $sectionId = $Matches[1]
             $sectionTitle = $Matches[2]
@@ -91,7 +91,7 @@ function Get-RoadmapContent {
             $currentPhase = $null
         }
 
-        # Détecter une phase
+        # DÃ©tecter une phase
         elseif ($line -match "^  - \[([ x])\] \*\*Phase (\d+): (.+)\*\*$" -and $null -ne $currentSection) {
             $isCompleted = $Matches[1] -eq "x"
             $phaseId = $Matches[2]
@@ -108,7 +108,7 @@ function Get-RoadmapContent {
             $currentSection.Phases += $currentPhase
         }
 
-        # Détecter une tâche
+        # DÃ©tecter une tÃ¢che
         elseif ($line -match "^    - \[([ x])\] (.+)$" -and $null -ne $currentPhase) {
             $isCompleted = $Matches[1] -eq "x"
             $taskTitle = $Matches[2]
@@ -123,7 +123,7 @@ function Get-RoadmapContent {
             $currentPhase.Tasks += $task
         }
 
-        # Détecter une sous-tâche
+        # DÃ©tecter une sous-tÃ¢che
         elseif ($line -match "^      - \[([ x])\] (.+)$" -and $null -ne $currentPhase -and $currentPhase.Tasks.Count -gt 0) {
             $isCompleted = $Matches[1] -eq "x"
             $subtaskTitle = $Matches[2]
@@ -141,31 +141,31 @@ function Get-RoadmapContent {
     return $roadmap
 }
 
-# Fonction pour obtenir les commits récents
+# Fonction pour obtenir les commits rÃ©cents
 function Get-RecentCommits {
     param (
         [string]$RepoPath,
         [int]$Days
     )
 
-    # Vérifier si le dossier est un dépôt Git
+    # VÃ©rifier si le dossier est un dÃ©pÃ´t Git
     if (-not (Test-Path -Path "$RepoPath\.git")) {
-        Write-Log "Le dossier n'est pas un dépôt Git: $RepoPath" "ERROR"
+        Write-Log "Le dossier n'est pas un dÃ©pÃ´t Git: $RepoPath" "ERROR"
         return $null
     }
 
     # Calculer la date limite
     $since = (Get-Date).AddDays(-$Days).ToString("yyyy-MM-dd")
 
-    # Obtenir les commits récents
+    # Obtenir les commits rÃ©cents
     $commits = @()
 
     try {
-        # Changer de répertoire
+        # Changer de rÃ©pertoire
         $currentDir = Get-Location
         Set-Location -Path $RepoPath
 
-        # Exécuter la commande Git
+        # ExÃ©cuter la commande Git
         $gitOutput = git log --since="$since" --pretty=format:"%h|%an|%ad|%s" --date=short
 
         # Analyser la sortie
@@ -186,12 +186,12 @@ function Get-RecentCommits {
             }
         }
 
-        # Revenir au répertoire d'origine
+        # Revenir au rÃ©pertoire d'origine
         Set-Location -Path $currentDir
     } catch {
         Write-Log "Erreur lors de l'obtention des commits: $_" "ERROR"
 
-        # Revenir au répertoire d'origine en cas d'erreur
+        # Revenir au rÃ©pertoire d'origine en cas d'erreur
         Set-Location -Path $currentDir
         return $null
     }
@@ -199,7 +199,7 @@ function Get-RecentCommits {
     return $commits
 }
 
-# Fonction pour trouver les tâches correspondant aux commits
+# Fonction pour trouver les tÃ¢ches correspondant aux commits
 function Find-MatchingTasks {
     param (
         [hashtable]$Roadmap,
@@ -212,7 +212,7 @@ function Find-MatchingTasks {
         $message = $commit.Message.ToLower()
         $status = "unknown"
 
-        # Déterminer le statut en fonction des mots-clés
+        # DÃ©terminer le statut en fonction des mots-clÃ©s
         foreach ($keyword in $keywordsCompleted) {
             if ($message -match "\b$keyword\b") {
                 $status = "completed"
@@ -229,13 +229,13 @@ function Find-MatchingTasks {
             }
         }
 
-        # Chercher des correspondances dans les tâches
+        # Chercher des correspondances dans les tÃ¢ches
         foreach ($section in $Roadmap.Sections) {
             foreach ($phase in $section.Phases) {
                 foreach ($task in $phase.Tasks) {
                     $taskTitle = $task.Title.ToLower()
 
-                    # Vérifier si le message du commit correspond à la tâche
+                    # VÃ©rifier si le message du commit correspond Ã  la tÃ¢che
                     if ($message -match [regex]::Escape($taskTitle) -or $taskTitle -match [regex]::Escape($message)) {
                         $matchingTasks += @{
                             Commit  = $commit
@@ -246,7 +246,7 @@ function Find-MatchingTasks {
                         }
                     }
 
-                    # Vérifier les sous-tâches
+                    # VÃ©rifier les sous-tÃ¢ches
                     foreach ($subtask in $task.Subtasks) {
                         $subtaskTitle = $subtask.Title.ToLower()
 
@@ -269,7 +269,7 @@ function Find-MatchingTasks {
     return $matchingTasks
 }
 
-# Fonction pour mettre à jour la roadmap
+# Fonction pour mettre Ã  jour la roadmap
 function Update-RoadmapFromMatches {
     param (
         [hashtable]$Roadmap,
@@ -283,7 +283,7 @@ function Update-RoadmapFromMatches {
     foreach ($match in $MatchingTasks) {
         if ($match.Status -eq "completed") {
             if ($match.ContainsKey("Subtask")) {
-                # Mettre à jour une sous-tâche
+                # Mettre Ã  jour une sous-tÃ¢che
                 $lineNumber = $match.Subtask.LineNumber
                 $line = $lines[$lineNumber]
 
@@ -292,10 +292,10 @@ function Update-RoadmapFromMatches {
                     $lines[$lineNumber] = $newLine
                     $updated = $true
 
-                    Write-Log "Sous-tâche marquée comme terminée: $($match.Subtask.Title)" "SUCCESS"
+                    Write-Log "Sous-tÃ¢che marquÃ©e comme terminÃ©e: $($match.Subtask.Title)" "SUCCESS"
                 }
             } else {
-                # Mettre à jour une tâche
+                # Mettre Ã  jour une tÃ¢che
                 $lineNumber = $match.Task.LineNumber
                 $line = $lines[$lineNumber]
 
@@ -304,13 +304,13 @@ function Update-RoadmapFromMatches {
                     $lines[$lineNumber] = $newLine
                     $updated = $true
 
-                    Write-Log "Tâche marquée comme terminée: $($match.Task.Title)" "SUCCESS"
+                    Write-Log "TÃ¢che marquÃ©e comme terminÃ©e: $($match.Task.Title)" "SUCCESS"
                 }
             }
         }
     }
 
-    # Vérifier si toutes les tâches d'une phase sont terminées
+    # VÃ©rifier si toutes les tÃ¢ches d'une phase sont terminÃ©es
     foreach ($section in $Roadmap.Sections) {
         foreach ($phase in $section.Phases) {
             if (-not $phase.IsCompleted) {
@@ -318,7 +318,7 @@ function Update-RoadmapFromMatches {
 
                 foreach ($task in $phase.Tasks) {
                     if (-not $task.IsCompleted) {
-                        # Vérifier si la tâche a été mise à jour
+                        # VÃ©rifier si la tÃ¢che a Ã©tÃ© mise Ã  jour
                         $lineNumber = $task.LineNumber
                         $line = $lines[$lineNumber]
 
@@ -330,14 +330,14 @@ function Update-RoadmapFromMatches {
                 }
 
                 if ($allTasksCompleted) {
-                    # Mettre à jour la phase
+                    # Mettre Ã  jour la phase
                     $lineNumber = $phase.LineNumber
                     $line = $lines[$lineNumber]
                     $newLine = $line -replace "\[ \]", "[x]"
                     $lines[$lineNumber] = $newLine
                     $updated = $true
 
-                    Write-Log "Phase marquée comme terminée: $($phase.Title)" "SUCCESS"
+                    Write-Log "Phase marquÃ©e comme terminÃ©e: $($phase.Title)" "SUCCESS"
                 }
             }
         }
@@ -349,12 +349,12 @@ function Update-RoadmapFromMatches {
 
         if ($AutoUpdate) {
             Set-Content -Path $RoadmapPath -Value $content -Encoding UTF8
-            Write-Log "Roadmap mise à jour avec succès" "SUCCESS"
+            Write-Log "Roadmap mise Ã  jour avec succÃ¨s" "SUCCESS"
         } else {
-            Write-Log "Modifications prêtes à être appliquées (utilisez -AutoUpdate pour appliquer)" "WARNING"
+            Write-Log "Modifications prÃªtes Ã  Ãªtre appliquÃ©es (utilisez -AutoUpdate pour appliquer)" "WARNING"
         }
     } else {
-        Write-Log "Aucune modification à appliquer" "INFO"
+        Write-Log "Aucune modification Ã  appliquer" "INFO"
     }
 
     return @{
@@ -363,7 +363,7 @@ function Update-RoadmapFromMatches {
     }
 }
 
-# Fonction pour générer un rapport HTML
+# Fonction pour gÃ©nÃ©rer un rapport HTML
 function New-GitUpdateReport {
     param (
         [hashtable]$Roadmap,
@@ -378,7 +378,7 @@ function New-GitUpdateReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapport de mise à jour Git - $($Roadmap.Title)</title>
+    <title>Rapport de mise Ã  jour Git - $($Roadmap.Title)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -456,19 +456,19 @@ function New-GitUpdateReport {
     </style>
 </head>
 <body>
-    <h1>Rapport de mise à jour Git - $($Roadmap.Title)</h1>
-    <p class="timestamp">Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss")</p>
+    <h1>Rapport de mise Ã  jour Git - $($Roadmap.Title)</h1>
+    <p class="timestamp">GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss")</p>
 
     <div class="section">
-        <h2>Résumé</h2>
-        <p>Période analysée: $DaysToAnalyze jours</p>
-        <p>Commits analysés: $($Commits.Count)</p>
-        <p>Correspondances trouvées: $($MatchingTasks.Count)</p>
-        <p>Roadmap mise à jour: $($UpdateResult.Updated)</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>PÃ©riode analysÃ©e: $DaysToAnalyze jours</p>
+        <p>Commits analysÃ©s: $($Commits.Count)</p>
+        <p>Correspondances trouvÃ©es: $($MatchingTasks.Count)</p>
+        <p>Roadmap mise Ã  jour: $($UpdateResult.Updated)</p>
     </div>
 
     <div class="section">
-        <h2>Commits récents</h2>
+        <h2>Commits rÃ©cents</h2>
 "@
 
     foreach ($commit in $Commits) {
@@ -485,12 +485,12 @@ function New-GitUpdateReport {
     </div>
 
     <div class="section">
-        <h2>Correspondances trouvées</h2>
+        <h2>Correspondances trouvÃ©es</h2>
 "@
 
     if ($MatchingTasks.Count -eq 0) {
         $html += @"
-        <p>Aucune correspondance trouvée.</p>
+        <p>Aucune correspondance trouvÃ©e.</p>
 "@
     } else {
         foreach ($match in $MatchingTasks) {
@@ -505,13 +505,13 @@ function New-GitUpdateReport {
 
             if ($match.ContainsKey("Subtask")) {
                 $html += @"
-            <p><strong>Tâche:</strong> $($match.Task.Title)</p>
-            <p><strong>Sous-tâche:</strong> $($match.Subtask.Title)</p>
+            <p><strong>TÃ¢che:</strong> $($match.Task.Title)</p>
+            <p><strong>Sous-tÃ¢che:</strong> $($match.Subtask.Title)</p>
             <p><strong>Statut:</strong> <span class="$statusClass">$($match.Status)</span></p>
 "@
             } else {
                 $html += @"
-            <p><strong>Tâche:</strong> $($match.Task.Title)</p>
+            <p><strong>TÃ¢che:</strong> $($match.Task.Title)</p>
             <p><strong>Statut:</strong> <span class="$statusClass">$($match.Status)</span></p>
 "@
             }
@@ -529,7 +529,7 @@ function New-GitUpdateReport {
     if ($UpdateResult.Updated) {
         $html += @"
     <div class="section">
-        <h2>Modifications apportées</h2>
+        <h2>Modifications apportÃ©es</h2>
         <div class="diff">
 "@
 
@@ -569,32 +569,32 @@ if ($null -eq $roadmap) {
     exit 1
 }
 
-# Obtenir les commits récents
+# Obtenir les commits rÃ©cents
 Write-Log "Obtention des commits des $DaysToAnalyze derniers jours..." "INFO"
 $commits = Get-RecentCommits -RepoPath $GitRepo -Days $DaysToAnalyze
 
 if ($null -eq $commits -or $commits.Count -eq 0) {
-    Write-Log "Aucun commit trouvé" "WARNING"
+    Write-Log "Aucun commit trouvÃ©" "WARNING"
     exit 0
 }
 
-Write-Log "Commits trouvés: $($commits.Count)" "INFO"
+Write-Log "Commits trouvÃ©s: $($commits.Count)" "INFO"
 
-# Trouver les tâches correspondant aux commits
+# Trouver les tÃ¢ches correspondant aux commits
 Write-Log "Recherche des correspondances..." "INFO"
 $matchingTasks = Find-MatchingTasks -Roadmap $roadmap -Commits $commits
 
-Write-Log "Correspondances trouvées: $($matchingTasks.Count)" "INFO"
+Write-Log "Correspondances trouvÃ©es: $($matchingTasks.Count)" "INFO"
 
-# Mettre à jour la roadmap
-Write-Log "Mise à jour de la roadmap..." "INFO"
+# Mettre Ã  jour la roadmap
+Write-Log "Mise Ã  jour de la roadmap..." "INFO"
 $updateResult = Update-RoadmapFromMatches -Roadmap $roadmap -MatchingTasks $matchingTasks
 
-# Générer un rapport
+# GÃ©nÃ©rer un rapport
 if ($GenerateReport) {
-    Write-Log "Génération du rapport..." "INFO"
+    Write-Log "GÃ©nÃ©ration du rapport..." "INFO"
 
-    # Créer le dossier de rapport s'il n'existe pas
+    # CrÃ©er le dossier de rapport s'il n'existe pas
     $reportFolder = Split-Path -Path $reportPath -Parent
     if (-not (Test-Path -Path $reportFolder)) {
         New-Item -Path $reportFolder -ItemType Directory -Force | Out-Null
@@ -603,10 +603,10 @@ if ($GenerateReport) {
     $report = New-GitUpdateReport -Roadmap $roadmap -Commits $commits -MatchingTasks $matchingTasks -UpdateResult $updateResult
     Set-Content -Path $reportPath -Value $report -Encoding UTF8
 
-    Write-Log "Rapport généré: $reportPath" "SUCCESS"
+    Write-Log "Rapport gÃ©nÃ©rÃ©: $reportPath" "SUCCESS"
 
     # Ouvrir le rapport
     Start-Process $reportPath
 }
 
-Write-Log "Terminé" "SUCCESS"
+Write-Log "TerminÃ©" "SUCCESS"

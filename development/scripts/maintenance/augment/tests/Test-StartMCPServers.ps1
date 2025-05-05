@@ -1,14 +1,14 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests unitaires pour le script de démarrage des serveurs MCP.
+    Tests unitaires pour le script de dÃ©marrage des serveurs MCP.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour le script de démarrage des serveurs MCP,
+    Ce script contient des tests unitaires pour le script de dÃ©marrage des serveurs MCP,
     utilisant le framework Pester.
 
 .EXAMPLE
     Invoke-Pester -Path "development\scripts\maintenance\augment\tests\Test-StartMCPServers.ps1"
-    # Exécute les tests unitaires pour le script de démarrage des serveurs MCP
+    # ExÃ©cute les tests unitaires pour le script de dÃ©marrage des serveurs MCP
 
 .NOTES
     Version: 1.0
@@ -16,17 +16,17 @@
     Auteur: Augment Agent
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Déterminer le chemin du script à tester
+# DÃ©terminer le chemin du script Ã  tester
 $scriptRoot = Split-Path -Path $PSScriptRoot -Parent
 $scriptPath = Join-Path -Path $scriptRoot -ChildPath "start-mcp-servers.ps1"
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $scriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -35,11 +35,11 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 
 Describe "Start MCP Servers Tests" {
     BeforeAll {
-        # Créer un répertoire temporaire pour les tests
+        # CrÃ©er un rÃ©pertoire temporaire pour les tests
         $testDir = Join-Path -Path $TestDrive -ChildPath "augment"
         New-Item -Path $testDir -ItemType Directory -Force | Out-Null
         
-        # Créer un fichier de configuration temporaire
+        # CrÃ©er un fichier de configuration temporaire
         $testConfigPath = Join-Path -Path $testDir -ChildPath "unified-config.json"
         $testConfigContent = @{
             Augment = @{
@@ -62,15 +62,15 @@ Describe "Start MCP Servers Tests" {
         } | ConvertTo-Json -Depth 10
         $testConfigContent | Out-File -FilePath $testConfigPath -Encoding UTF8
         
-        # Créer un répertoire de logs temporaire
+        # CrÃ©er un rÃ©pertoire de logs temporaire
         $testLogsDir = Join-Path -Path $testDir -ChildPath "logs\mcp"
         New-Item -Path $testLogsDir -ItemType Directory -Force | Out-Null
         
-        # Définir des variables globales pour les tests
+        # DÃ©finir des variables globales pour les tests
         $Global:TestConfigPath = $testConfigPath
         $Global:TestLogsDir = $testLogsDir
         
-        # Mock pour les fonctions système
+        # Mock pour les fonctions systÃ¨me
         Mock -CommandName New-Object -ParameterFilter { $TypeName -eq "System.Diagnostics.ProcessStartInfo" } -MockWith {
             return [PSCustomObject]@{
                 FileName = "powershell"
@@ -137,25 +137,25 @@ Describe "Start MCP Servers Tests" {
     
     Context "Script Loading" {
         It "Should load the script without errors" {
-            # Vérifier que le script existe
+            # VÃ©rifier que le script existe
             Test-Path -Path $scriptPath | Should -Be $true
             
-            # Charger le script dans un bloc de script pour éviter d'exécuter le script complet
+            # Charger le script dans un bloc de script pour Ã©viter d'exÃ©cuter le script complet
             $scriptContent = Get-Content -Path $scriptPath -Raw
             
-            # Remplacer la partie qui exécute le script par un commentaire
-            $scriptContent = $scriptContent -replace "# Créer le répertoire des logs s'il n'existe pas.*?# Créer un script d'arrêt", "# Script execution disabled for testing"
+            # Remplacer la partie qui exÃ©cute le script par un commentaire
+            $scriptContent = $scriptContent -replace "# CrÃ©er le rÃ©pertoire des logs s'il n'existe pas.*?# CrÃ©er un script d'arrÃªt", "# Script execution disabled for testing"
             
             $scriptBlock = [ScriptBlock]::Create($scriptContent)
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             { . $scriptBlock } | Should -Not -Throw
         }
     }
     
     Context "Start-MCPServer Function" {
         It "Should start a MCP server" {
-            # Définir la fonction Start-MCPServer pour le test
+            # DÃ©finir la fonction Start-MCPServer pour le test
             function Start-MCPServer {
                 param (
                     [string]$Name,
@@ -164,12 +164,12 @@ Describe "Start MCP Servers Tests" {
                     [string]$LogPath
                 )
                 
-                # Vérifier si le script existe
+                # VÃ©rifier si le script existe
                 if (-not (Test-Path -Path $ScriptPath)) {
                     return $false
                 }
                 
-                # Vérifier si le port est disponible
+                # VÃ©rifier si le port est disponible
                 try {
                     $tcpClient = New-Object System.Net.Sockets.TcpClient
                     $tcpClient.Connect("127.0.0.1", $Port)
@@ -179,7 +179,7 @@ Describe "Start MCP Servers Tests" {
                     # Le port est disponible
                 }
                 
-                # Démarrer le serveur MCP
+                # DÃ©marrer le serveur MCP
                 try {
                     $startInfo = New-Object System.Diagnostics.ProcessStartInfo
                     $startInfo.FileName = "powershell"
@@ -194,10 +194,10 @@ Describe "Start MCP Servers Tests" {
                     $process.StartInfo = $startInfo
                     $process.Start() | Out-Null
                     
-                    # Attendre que le processus démarre
+                    # Attendre que le processus dÃ©marre
                     Start-Sleep -Seconds 2
                     
-                    # Vérifier si le processus est toujours en cours d'exécution
+                    # VÃ©rifier si le processus est toujours en cours d'exÃ©cution
                     if ($process.HasExited) {
                         return $false
                     }
@@ -221,19 +221,19 @@ Describe "Start MCP Servers Tests" {
     
     Context "Script Execution" {
         It "Should start all MCP servers" {
-            # Mock supplémentaires pour l'exécution du script
+            # Mock supplÃ©mentaires pour l'exÃ©cution du script
             Mock -CommandName Start-MCPServer -MockWith { return $true }
             
-            # Exécuter le script avec des paramètres spécifiques
+            # ExÃ©cuter le script avec des paramÃ¨tres spÃ©cifiques
             $params = @{
                 ConfigPath = $Global:TestConfigPath
                 LogPath = $Global:TestLogsDir
             }
             
-            # Exécuter le script
+            # ExÃ©cuter le script
             & $scriptPath @params
             
-            # Vérifier que les fonctions ont été appelées
+            # VÃ©rifier que les fonctions ont Ã©tÃ© appelÃ©es
             Should -Invoke -CommandName Start-MCPServer -Times 2
             Should -Invoke -CommandName Out-File -Times 1 -ParameterFilter { $FilePath -like "*stop-mcp-servers.ps1" }
         }

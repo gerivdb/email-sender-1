@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
-    Tests d'existence des fichiers pour le système de feedback.
+    Tests d'existence des fichiers pour le systÃ¨me de feedback.
 
 .DESCRIPTION
-    Ce script vérifie simplement que les fichiers du système de feedback existent.
+    Ce script vÃ©rifie simplement que les fichiers du systÃ¨me de feedback existent.
 
 .NOTES
     Version: 1.0.0
     Auteur: Process Manager Team
-    Date de création: 2025-05-15
+    Date de crÃ©ation: 2025-05-15
 #>
 
-# Importer Pester si nécessaire
+# Importer Pester si nÃ©cessaire
 if (-not (Get-Module -Name Pester -ListAvailable)) {
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
-# Définir les tests
-Describe "Système de feedback - Tests d'existence des fichiers" {
+# DÃ©finir les tests
+Describe "SystÃ¨me de feedback - Tests d'existence des fichiers" {
     BeforeAll {
-        # Définir les chemins des modules
+        # DÃ©finir les chemins des modules
         $script:ModulesPath = Join-Path -Path $PSScriptRoot -ChildPath "..\modules"
         $script:FeedbackManagerPath = Join-Path -Path $script:ModulesPath -ChildPath "FeedbackManager"
         $script:FeedbackCollectorPath = Join-Path -Path $script:ModulesPath -ChildPath "FeedbackCollector"

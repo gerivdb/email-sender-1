@@ -1,26 +1,26 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Tests d'intégration pour la détection de cycles dans les workflows n8n.
+    Tests d'intÃ©gration pour la dÃ©tection de cycles dans les workflows n8n.
 .DESCRIPTION
-    Ce script contient les tests d'intégration pour la détection de cycles
-    dans les workflows n8n, vérifiant l'intégration avec n8n.
+    Ce script contient les tests d'intÃ©gration pour la dÃ©tection de cycles
+    dans les workflows n8n, vÃ©rifiant l'intÃ©gration avec n8n.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-14
+    Date de crÃ©ation: 2025-05-14
 #>
 
 BeforeAll {
-    # Importer le module à tester
+    # Importer le module Ã  tester
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\CycleDetector.psm1"
     Import-Module $modulePath -Force
     
-    # Créer un dossier temporaire pour les workflows de test
+    # CrÃ©er un dossier temporaire pour les workflows de test
     $tempDir = Join-Path -Path $TestDrive -ChildPath "workflows"
     New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
     
-    # Créer un workflow n8n de test avec un cycle
+    # CrÃ©er un workflow n8n de test avec un cycle
     $workflowWithCycle = @{
         name = "Workflow with cycle"
         nodes = @(
@@ -96,7 +96,7 @@ BeforeAll {
     $workflowWithCyclePath = Join-Path -Path $tempDir -ChildPath "workflow_with_cycle.json"
     $workflowWithCycle | ConvertTo-Json -Depth 10 | Out-File -FilePath $workflowWithCyclePath -Encoding utf8
     
-    # Créer un workflow n8n de test sans cycle
+    # CrÃ©er un workflow n8n de test sans cycle
     $workflowWithoutCycle = @{
         name = "Workflow without cycle"
         nodes = @(
@@ -148,7 +148,7 @@ BeforeAll {
     $workflowWithoutCyclePath = Join-Path -Path $tempDir -ChildPath "workflow_without_cycle.json"
     $workflowWithoutCycle | ConvertTo-Json -Depth 10 | Out-File -FilePath $workflowWithoutCyclePath -Encoding utf8
     
-    # Créer un workflow n8n de test avec plusieurs cycles
+    # CrÃ©er un workflow n8n de test avec plusieurs cycles
     $workflowWithMultipleCycles = @{
         name = "Workflow with multiple cycles"
         nodes = @(
@@ -269,10 +269,10 @@ BeforeAll {
 Describe "Validate-WorkflowCycles Integration" {
     Context "Lorsqu'on valide des workflows n8n" {
         BeforeAll {
-            # Chemin du script à tester
+            # Chemin du script Ã  tester
             $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\n8n\workflow-validation\Validate-WorkflowCycles.ps1"
             
-            # Vérifier si le script existe, sinon le créer pour les tests
+            # VÃ©rifier si le script existe, sinon le crÃ©er pour les tests
             if (-not (Test-Path -Path $scriptPath)) {
                 $scriptDir = Split-Path -Path $scriptPath -Parent
                 if (-not (Test-Path -Path $scriptDir)) {
@@ -291,7 +291,7 @@ Describe "Validate-WorkflowCycles Integration" {
 .PARAMETER OutputPath
     Chemin du fichier de sortie pour le rapport.
 .PARAMETER FixCycles
-    Tente de corriger automatiquement les cycles détectés.
+    Tente de corriger automatiquement les cycles dÃ©tectÃ©s.
 .EXAMPLE
     .\Validate-WorkflowCycles.ps1 -WorkflowsPath ".\workflows" -OutputPath ".\reports\workflow_cycles.json"
 #>
@@ -308,7 +308,7 @@ param (
     [switch]`$FixCycles
 )
 
-# Importer le module de détection de cycles
+# Importer le module de dÃ©tection de cycles
 `$modulePath = Join-Path -Path `$PSScriptRoot -ChildPath "..\..\..\..\modules\CycleDetector.psm1"
 Import-Module `$modulePath -Force
 
@@ -326,7 +326,7 @@ function Start-WorkflowCycleValidation {
         [switch]`$FixCycles
     )
     
-    # Vérifier si le chemin existe
+    # VÃ©rifier si le chemin existe
     if (-not (Test-Path -Path `$WorkflowsPath)) {
         Write-Error "Le chemin n'existe pas: `$WorkflowsPath"
         return `$null
@@ -355,10 +355,10 @@ function Start-WorkflowCycleValidation {
             `$fixedWorkflow = Fix-WorkflowCycles -WorkflowPath `$file.FullName -Cycles `$result.Cycles
             
             if (`$fixedWorkflow) {
-                # Sauvegarder le workflow corrigé
+                # Sauvegarder le workflow corrigÃ©
                 `$fixedWorkflow | ConvertTo-Json -Depth 10 | Out-File -FilePath `$file.FullName -Encoding utf8
                 
-                # Vérifier à nouveau
+                # VÃ©rifier Ã  nouveau
                 `$result = Test-WorkflowCycles -WorkflowPath `$file.FullName
                 `$result | Add-Member -MemberType NoteProperty -Name "Fixed" -Value `$true
             }
@@ -371,7 +371,7 @@ function Start-WorkflowCycleValidation {
         `$results += `$result
     }
     
-    # Créer le rapport
+    # CrÃ©er le rapport
     `$report = [PSCustomObject]@{
         GeneratedAt = (Get-Date).ToString("o")
         WorkflowsPath = `$WorkflowsPath
@@ -381,7 +381,7 @@ function Start-WorkflowCycleValidation {
         Results = `$results
     }
     
-    # Enregistrer le rapport si demandé
+    # Enregistrer le rapport si demandÃ©
     if (`$OutputPath) {
         `$report | ConvertTo-Json -Depth 10 | Out-File -FilePath `$OutputPath -Encoding utf8
     }
@@ -404,12 +404,12 @@ function Fix-WorkflowCycles {
         # Charger le workflow
         `$workflow = Get-Content -Path `$WorkflowPath -Raw | ConvertFrom-Json
         
-        # Pour chaque cycle, supprimer la dernière connexion
+        # Pour chaque cycle, supprimer la derniÃ¨re connexion
         foreach (`$cycle in `$Cycles) {
             `$lastNode = `$cycle[-1]
             `$firstNode = `$cycle[0]
             
-            # Trouver la connexion à supprimer
+            # Trouver la connexion Ã  supprimer
             if (`$workflow.connections.PSObject.Properties.Name -contains `$lastNode) {
                 `$connections = `$workflow.connections.(`$lastNode).main
                 
@@ -418,7 +418,7 @@ function Fix-WorkflowCycles {
                         `$targets = `$connections[`$i]
                         
                         if (`$targets) {
-                            # Filtrer les connexions qui pointent vers le premier nœud du cycle
+                            # Filtrer les connexions qui pointent vers le premier nÅ“ud du cycle
                             `$newTargets = `$targets | Where-Object { `$_.node -ne `$firstNode }
                             `$workflow.connections.(`$lastNode).main[`$i] = `$newTargets
                         }
@@ -435,37 +435,37 @@ function Fix-WorkflowCycles {
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-WorkflowCycleValidation -WorkflowsPath `$WorkflowsPath -OutputPath `$OutputPath -FixCycles:`$FixCycles
 "@ | Out-File -FilePath $scriptPath -Encoding utf8
             }
         }
         
-        It "Devrait détecter des cycles dans un workflow avec cycles" {
+        It "Devrait dÃ©tecter des cycles dans un workflow avec cycles" {
             $result = & $scriptPath -WorkflowsPath $workflowWithCyclePath
             $result.WorkflowsWithCycles | Should -Be 1
             $result.Results[0].HasCycles | Should -Be $true
         }
         
-        It "Ne devrait pas détecter de cycles dans un workflow sans cycles" {
+        It "Ne devrait pas dÃ©tecter de cycles dans un workflow sans cycles" {
             $result = & $scriptPath -WorkflowsPath $workflowWithoutCyclePath
             $result.WorkflowsWithCycles | Should -Be 0
             $result.Results[0].HasCycles | Should -Be $false
         }
         
-        It "Devrait corriger automatiquement les cycles lorsque demandé" {
+        It "Devrait corriger automatiquement les cycles lorsque demandÃ©" {
             $result = & $scriptPath -WorkflowsPath $workflowWithCyclePath -FixCycles
             $result.FixedWorkflows | Should -Be 1
             $result.Results[0].HasCycles | Should -Be $false
         }
         
-        It "Devrait détecter et corriger plusieurs cycles dans un workflow complexe" {
+        It "Devrait dÃ©tecter et corriger plusieurs cycles dans un workflow complexe" {
             $result = & $scriptPath -WorkflowsPath $workflowWithMultipleCyclesPath -FixCycles
             $result.FixedWorkflows | Should -Be 1
             $result.Results[0].HasCycles | Should -Be $false
         }
         
-        It "Devrait générer un rapport lorsqu'un chemin de sortie est spécifié" {
+        It "Devrait gÃ©nÃ©rer un rapport lorsqu'un chemin de sortie est spÃ©cifiÃ©" {
             $outputPath = Join-Path -Path $TestDrive -ChildPath "workflow_cycles_report.json"
             $result = & $scriptPath -WorkflowsPath $tempDir -OutputPath $outputPath
             
@@ -479,10 +479,10 @@ Start-WorkflowCycleValidation -WorkflowsPath `$WorkflowsPath -OutputPath `$Outpu
 Describe "Validate-AllWorkflows Integration" {
     Context "Lorsqu'on valide tous les workflows n8n" {
         BeforeAll {
-            # Chemin du script à tester
+            # Chemin du script Ã  tester
             $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\development\scripts\n8n\workflow-validation\Validate-AllWorkflows.ps1"
             
-            # Vérifier si le script existe, sinon le créer pour les tests
+            # VÃ©rifier si le script existe, sinon le crÃ©er pour les tests
             if (-not (Test-Path -Path $scriptPath)) {
                 $scriptDir = Split-Path -Path $scriptPath -Parent
                 if (-not (Test-Path -Path $scriptDir)) {
@@ -495,16 +495,16 @@ Describe "Validate-AllWorkflows Integration" {
 .SYNOPSIS
     Valide tous les workflows n8n du projet.
 .DESCRIPTION
-    Ce script valide tous les workflows n8n du projet pour détecter les cycles,
-    les nœuds manquants, et autres problèmes potentiels.
+    Ce script valide tous les workflows n8n du projet pour dÃ©tecter les cycles,
+    les nÅ“uds manquants, et autres problÃ¨mes potentiels.
 .PARAMETER WorkflowsPath
     Chemin du dossier contenant les workflows n8n.
 .PARAMETER ReportsPath
     Chemin du dossier pour les rapports de validation.
 .PARAMETER FixIssues
-    Tente de corriger automatiquement les problèmes détectés.
+    Tente de corriger automatiquement les problÃ¨mes dÃ©tectÃ©s.
 .PARAMETER GenerateReport
-    Génère un rapport HTML détaillé.
+    GÃ©nÃ¨re un rapport HTML dÃ©taillÃ©.
 .EXAMPLE
     .\Validate-AllWorkflows.ps1 -WorkflowsPath ".\workflows" -ReportsPath ".\reports\workflows" -GenerateReport
 #>
@@ -524,17 +524,17 @@ param (
     [switch]`$GenerateReport
 )
 
-# Importer le module de détection de cycles
+# Importer le module de dÃ©tection de cycles
 `$modulePath = Join-Path -Path `$PSScriptRoot -ChildPath "..\..\..\modules\CycleDetector.psm1"
 
 if (-not (Test-Path -Path `$modulePath)) {
-    Write-Error "Module de détection de cycles introuvable: `$modulePath"
+    Write-Error "Module de dÃ©tection de cycles introuvable: `$modulePath"
     exit 1
 }
 
 Import-Module `$modulePath -Force
 
-# Fonction principale simplifiée pour les tests
+# Fonction principale simplifiÃ©e pour les tests
 function Start-WorkflowValidation {
     [CmdletBinding()]
     param (
@@ -551,13 +551,13 @@ function Start-WorkflowValidation {
         [switch]`$GenerateReport
     )
     
-    # Vérifier si le dossier des workflows existe
+    # VÃ©rifier si le dossier des workflows existe
     if (-not (Test-Path -Path `$WorkflowsPath)) {
         Write-Error "Le dossier des workflows n'existe pas: `$WorkflowsPath"
         return `$null
     }
     
-    # Créer le dossier des rapports s'il n'existe pas
+    # CrÃ©er le dossier des rapports s'il n'existe pas
     if (-not (Test-Path -Path `$ReportsPath)) {
         New-Item -Path `$ReportsPath -ItemType Directory -Force | Out-Null
     }
@@ -573,7 +573,7 @@ function Start-WorkflowValidation {
             `$content = Get-Content -Path `$file.FullName -Raw
             `$json = ConvertFrom-Json -InputObject `$content -ErrorAction Stop
             
-            # Vérifier si c'est un workflow n8n
+            # VÃ©rifier si c'est un workflow n8n
             if (`$json.nodes -and `$json.connections) {
                 `$n8nWorkflows += `$file
             }
@@ -587,7 +587,7 @@ function Start-WorkflowValidation {
     `$results = @()
     
     foreach (`$workflow in `$n8nWorkflows) {
-        # Vérifier les cycles
+        # VÃ©rifier les cycles
         `$cycleResult = Test-WorkflowCycles -WorkflowPath `$workflow.FullName
         
         `$issues = @()
@@ -596,7 +596,7 @@ function Start-WorkflowValidation {
             foreach (`$cycle in `$cycleResult.Cycles) {
                 `$issues += [PSCustomObject]@{
                     Type = "CycleDetected"
-                    Description = "Cycle détecté: `$(`$cycle -join ' -> ')"
+                    Description = "Cycle dÃ©tectÃ©: `$(`$cycle -join ' -> ')"
                     Severity = "High"
                     CanFix = `$true
                 }
@@ -611,7 +611,7 @@ function Start-WorkflowValidation {
                 `$fixedWorkflow = Fix-WorkflowCycles -WorkflowPath `$workflow.FullName -Cycles `$cycleResult.Cycles
                 
                 if (`$fixedWorkflow) {
-                    # Sauvegarder le workflow corrigé
+                    # Sauvegarder le workflow corrigÃ©
                     `$fixedWorkflow | ConvertTo-Json -Depth 10 | Out-File -FilePath `$workflow.FullName -Encoding utf8
                     `$fixed = `$true
                 }
@@ -626,7 +626,7 @@ function Start-WorkflowValidation {
         }
     }
     
-    # Générer le rapport JSON
+    # GÃ©nÃ©rer le rapport JSON
     `$reportJson = [PSCustomObject]@{
         GeneratedAt = (Get-Date).ToString("o")
         WorkflowsPath = `$WorkflowsPath
@@ -639,11 +639,11 @@ function Start-WorkflowValidation {
     `$jsonReportPath = Join-Path -Path `$ReportsPath -ChildPath "workflow_validation_`$(Get-Date -Format 'yyyyMMdd_HHmmss').json"
     `$reportJson | ConvertTo-Json -Depth 10 | Out-File -FilePath `$jsonReportPath -Encoding utf8
     
-    # Générer le rapport HTML si demandé
+    # GÃ©nÃ©rer le rapport HTML si demandÃ©
     if (`$GenerateReport) {
         `$htmlReportPath = Join-Path -Path `$ReportsPath -ChildPath "workflow_validation_`$(Get-Date -Format 'yyyyMMdd_HHmmss').html"
         
-        # Contenu HTML simplifié pour les tests
+        # Contenu HTML simplifiÃ© pour les tests
         `$htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -652,9 +652,9 @@ function Start-WorkflowValidation {
 </head>
 <body>
     <h1>Rapport de validation des workflows n8n</h1>
-    <p>Workflows analysés: `$(`$n8nWorkflows.Count)</p>
-    <p>Workflows avec problèmes: `$((`$results | Where-Object { `$_.Issues.Count -gt 0 }).Count)</p>
-    <p>Workflows corrigés: `$((`$results | Where-Object { `$_.Fixed }).Count)</p>
+    <p>Workflows analysÃ©s: `$(`$n8nWorkflows.Count)</p>
+    <p>Workflows avec problÃ¨mes: `$((`$results | Where-Object { `$_.Issues.Count -gt 0 }).Count)</p>
+    <p>Workflows corrigÃ©s: `$((`$results | Where-Object { `$_.Fixed }).Count)</p>
 </body>
 </html>
 "@
@@ -680,12 +680,12 @@ function Fix-WorkflowCycles {
         # Charger le workflow
         `$workflow = Get-Content -Path `$WorkflowPath -Raw | ConvertFrom-Json
         
-        # Pour chaque cycle, supprimer la dernière connexion
+        # Pour chaque cycle, supprimer la derniÃ¨re connexion
         foreach (`$cycle in `$Cycles) {
             `$lastNode = `$cycle[-1]
             `$firstNode = `$cycle[0]
             
-            # Trouver la connexion à supprimer
+            # Trouver la connexion Ã  supprimer
             if (`$workflow.connections.PSObject.Properties.Name -contains `$lastNode) {
                 `$connections = `$workflow.connections.(`$lastNode).main
                 
@@ -694,7 +694,7 @@ function Fix-WorkflowCycles {
                         `$targets = `$connections[`$i]
                         
                         if (`$targets) {
-                            # Filtrer les connexions qui pointent vers le premier nœud du cycle
+                            # Filtrer les connexions qui pointent vers le premier nÅ“ud du cycle
                             `$newTargets = `$targets | Where-Object { `$_.node -ne `$firstNode }
                             `$workflow.connections.(`$lastNode).main[`$i] = `$newTargets
                         }
@@ -711,12 +711,12 @@ function Fix-WorkflowCycles {
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Start-WorkflowValidation -WorkflowsPath `$WorkflowsPath -ReportsPath `$ReportsPath -FixIssues:`$FixIssues -GenerateReport:`$GenerateReport
 "@ | Out-File -FilePath $scriptPath -Encoding utf8
             }
             
-            # Créer un dossier de rapports temporaire
+            # CrÃ©er un dossier de rapports temporaire
             $tempReportsDir = Join-Path -Path $TestDrive -ChildPath "reports"
             New-Item -Path $tempReportsDir -ItemType Directory -Force | Out-Null
         }
@@ -727,18 +727,18 @@ Start-WorkflowValidation -WorkflowsPath `$WorkflowsPath -ReportsPath `$ReportsPa
             $result.WorkflowsWithIssues | Should -Be 2  # Les deux workflows avec cycles
         }
         
-        It "Devrait corriger les problèmes lorsque demandé" {
+        It "Devrait corriger les problÃ¨mes lorsque demandÃ©" {
             $result = & $scriptPath -WorkflowsPath $tempDir -ReportsPath $tempReportsDir -FixIssues
             $result.FixedWorkflows | Should -BeGreaterThan 0
         }
         
-        It "Devrait générer un rapport HTML lorsque demandé" {
+        It "Devrait gÃ©nÃ©rer un rapport HTML lorsque demandÃ©" {
             & $scriptPath -WorkflowsPath $tempDir -ReportsPath $tempReportsDir -GenerateReport
             $htmlReports = Get-ChildItem -Path $tempReportsDir -Filter "*.html"
             $htmlReports.Count | Should -BeGreaterThan 0
         }
         
-        It "Devrait générer un rapport JSON" {
+        It "Devrait gÃ©nÃ©rer un rapport JSON" {
             & $scriptPath -WorkflowsPath $tempDir -ReportsPath $tempReportsDir
             $jsonReports = Get-ChildItem -Path $tempReportsDir -Filter "*.json"
             $jsonReports.Count | Should -BeGreaterThan 0

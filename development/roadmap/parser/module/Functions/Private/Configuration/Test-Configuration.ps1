@@ -1,18 +1,18 @@
-<#
+﻿<#
 .SYNOPSIS
-    Teste la validité d'une configuration.
+    Teste la validitÃ© d'une configuration.
 .DESCRIPTION
-    Cette fonction vérifie si une configuration contient toutes les sections et propriétés requises.
+    Cette fonction vÃ©rifie si une configuration contient toutes les sections et propriÃ©tÃ©s requises.
 .PARAMETER Config
-    L'objet de configuration à tester.
+    L'objet de configuration Ã  tester.
 .PARAMETER Detailed
-    Si spécifié, renvoie un objet détaillé contenant les résultats de validation.
+    Si spÃ©cifiÃ©, renvoie un objet dÃ©taillÃ© contenant les rÃ©sultats de validation.
 .EXAMPLE
     $isValid = Test-Configuration -Config $config
-    Teste si la configuration est valide et renvoie un booléen.
+    Teste si la configuration est valide et renvoie un boolÃ©en.
 .EXAMPLE
     $validationResult = Test-Configuration -Config $config -Detailed
-    Teste si la configuration est valide et renvoie un objet détaillé contenant les résultats de validation.
+    Teste si la configuration est valide et renvoie un objet dÃ©taillÃ© contenant les rÃ©sultats de validation.
 #>
 function Test-Configuration {
     [CmdletBinding()]
@@ -36,35 +36,35 @@ function Test-Configuration {
         }
     }
     
-    # Propriétés requises dans General
+    # PropriÃ©tÃ©s requises dans General
     if ($Config.PSObject.Properties.Name.Contains('General')) {
         $requiredGeneralProps = @('RoadmapPath', 'Encoding', 'DefaultMode')
         foreach ($prop in $requiredGeneralProps) {
             if (-not $Config.General.PSObject.Properties.Name.Contains($prop)) {
                 $isValid = $false
-                $validationResults += "Propriété requise manquante dans la section General: $prop"
+                $validationResults += "PropriÃ©tÃ© requise manquante dans la section General: $prop"
             }
         }
     }
     
-    # Propriétés requises dans Paths
+    # PropriÃ©tÃ©s requises dans Paths
     if ($Config.PSObject.Properties.Name.Contains('Paths')) {
         $requiredPathsProps = @('OutputDirectory', 'TestsDirectory', 'ScriptsDirectory')
         foreach ($prop in $requiredPathsProps) {
             if (-not $Config.Paths.PSObject.Properties.Name.Contains($prop)) {
                 $isValid = $false
-                $validationResults += "Propriété requise manquante dans la section Paths: $prop"
+                $validationResults += "PropriÃ©tÃ© requise manquante dans la section Paths: $prop"
             }
         }
     }
     
-    # Propriétés requises dans Check
+    # PropriÃ©tÃ©s requises dans Check
     if ($Config.PSObject.Properties.Name.Contains('Check')) {
         $requiredCheckProps = @('AutoUpdateCheckboxes', 'RequireFullTestCoverage', 'SimulationModeDefault')
         foreach ($prop in $requiredCheckProps) {
             if (-not $Config.Check.PSObject.Properties.Name.Contains($prop)) {
                 $isValid = $false
-                $validationResults += "Propriété requise manquante dans la section Check: $prop"
+                $validationResults += "PropriÃ©tÃ© requise manquante dans la section Check: $prop"
             }
         }
     }
@@ -80,7 +80,7 @@ function Test-Configuration {
             elseif (-not $Config.Modes.$mode.PSObject.Properties.Name.Contains('Enabled') -or 
                    -not $Config.Modes.$mode.PSObject.Properties.Name.Contains('ScriptPath')) {
                 $isValid = $false
-                $validationResults += "Le mode $mode manque de propriétés requises (Enabled ou ScriptPath)"
+                $validationResults += "Le mode $mode manque de propriÃ©tÃ©s requises (Enabled ou ScriptPath)"
             }
         }
     }

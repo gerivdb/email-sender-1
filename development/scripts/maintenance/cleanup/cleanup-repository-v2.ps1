@@ -1,20 +1,20 @@
-<#
+﻿<#
 .SYNOPSIS
-    Nettoie les fichiers originaux aprÃ¨s la rÃ©organisation du dÃ©pÃ´t.
+    Nettoie les fichiers originaux aprÃƒÂ¨s la rÃƒÂ©organisation du dÃƒÂ©pÃƒÂ´t.
 
 .DESCRIPTION
-    Ce script supprime les fichiers et dossiers originaux qui ont Ã©tÃ© dÃ©placÃ©s
-    lors de la rÃ©organisation du dÃ©pÃ´t avec organize-repository-v2.ps1.
-    ATTENTION : Ce script est destructif et doit Ãªtre utilisÃ© avec prÃ©caution.
+    Ce script supprime les fichiers et dossiers originaux qui ont ÃƒÂ©tÃƒÂ© dÃƒÂ©placÃƒÂ©s
+    lors de la rÃƒÂ©organisation du dÃƒÂ©pÃƒÂ´t avec organize-repository-v2.ps1.
+    ATTENTION : Ce script est destructif et doit ÃƒÂªtre utilisÃƒÂ© avec prÃƒÂ©caution.
 
 .PARAMETER DryRun
-    Si spÃ©cifiÃ©, le script affiche les actions qui seraient effectuÃ©es sans les exÃ©cuter.
+    Si spÃƒÂ©cifiÃƒÂ©, le script affiche les actions qui seraient effectuÃƒÂ©es sans les exÃƒÂ©cuter.
 
 .PARAMETER Force
-    Si spÃ©cifiÃ©, le script supprime les fichiers sans demander de confirmation.
+    Si spÃƒÂ©cifiÃƒÂ©, le script supprime les fichiers sans demander de confirmation.
 
 .PARAMETER LogFile
-    Chemin vers un fichier de log pour enregistrer les actions effectuÃ©es.
+    Chemin vers un fichier de log pour enregistrer les actions effectuÃƒÂ©es.
 
 .EXAMPLE
     .\cleanup-repository-v2.ps1 -DryRun
@@ -25,7 +25,7 @@
 .NOTES
     Auteur: Maintenance Team
     Version: 2.0
-    Date de crÃ©ation: 2023-08-15
+    Date de crÃƒÂ©ation: 2023-08-15
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param (
@@ -39,16 +39,16 @@ param (
     [string]$LogFile
 )
 
-# DÃ©finir le rÃ©pertoire racine du dÃ©pÃ´t
+# DÃƒÂ©finir le rÃƒÂ©pertoire racine du dÃƒÂ©pÃƒÂ´t
 $repoRoot = Join-Path -Path $PSScriptRoot -ChildPath "..\..\..\"
 $repoRoot = [System.IO.Path]::GetFullPath($repoRoot)
 
-# VÃ©rifier que le rÃ©pertoire racine existe
+# VÃƒÂ©rifier que le rÃƒÂ©pertoire racine existe
 if (-not (Test-Path -Path $repoRoot -PathType Container)) {
-    throw "Le rÃ©pertoire racine n'existe pas : $repoRoot"
+    throw "Le rÃƒÂ©pertoire racine n'existe pas : $repoRoot"
 }
 
-Write-Host "Nettoyage du dÃ©pÃ´t : $repoRoot" -ForegroundColor Cyan
+Write-Host "Nettoyage du dÃƒÂ©pÃƒÂ´t : $repoRoot" -ForegroundColor Cyan
 
 # Fonction pour journaliser les actions
 function Write-Log {
@@ -77,12 +77,12 @@ if ($LogFile) {
     }
     
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Nettoyage dÃ©marrÃ© le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
-    "RÃ©pertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Nettoyage dÃƒÂ©marrÃƒÂ© le $timestamp ===" | Out-File -FilePath $LogFile -Encoding UTF8
+    "RÃƒÂ©pertoire racine: $repoRoot" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
 }
 
-# DÃ©finir les dossiers Ã  conserver Ã  la racine
+# DÃƒÂ©finir les dossiers ÃƒÂ  conserver ÃƒÂ  la racine
 $keepRootFolders = @(
     "src",
     "tools",
@@ -91,7 +91,7 @@ $keepRootFolders = @(
     "config",
     "assets",
     ".build",
-    # Dossiers systÃ¨me et spÃ©ciaux Ã  conserver
+    # Dossiers systÃƒÂ¨me et spÃƒÂ©ciaux ÃƒÂ  conserver
     ".git",
     ".github",
     ".vscode",
@@ -102,7 +102,7 @@ $keepRootFolders = @(
     ".augment"
 )
 
-# Fonction pour vÃ©rifier si un dossier doit Ãªtre conservÃ©
+# Fonction pour vÃƒÂ©rifier si un dossier doit ÃƒÂªtre conservÃƒÂ©
 function Should-KeepFolder {
     param (
         [string]$FolderName
@@ -126,9 +126,9 @@ function Remove-FolderIfExists {
     if (Test-Path -Path $FolderPath -PathType Container) {
         $folderName = Split-Path -Path $FolderPath -Leaf
         
-        # VÃ©rifier si le dossier doit Ãªtre conservÃ©
+        # VÃƒÂ©rifier si le dossier doit ÃƒÂªtre conservÃƒÂ©
         if (Should-KeepFolder -FolderName $folderName) {
-            Write-Log "Dossier Ã  conserver : $FolderPath" -Color Gray
+            Write-Log "Dossier ÃƒÂ  conserver : $FolderPath" -Color Gray
             return
         }
         
@@ -145,14 +145,14 @@ function Remove-FolderIfExists {
                 if ($PSCmdlet.ShouldProcess($FolderPath, "Supprimer")) {
                     try {
                         Remove-Item -Path $FolderPath -Recurse -Force
-                        Write-Log "Dossier supprimÃ© : $FolderPath" -Color Green
+                        Write-Log "Dossier supprimÃƒÂ© : $FolderPath" -Color Green
                     } catch {
                         Write-Log "Erreur lors de la suppression du dossier $FolderPath : $_" -Color Red
                     }
                 }
             }
         } else {
-            Write-Log "Suppression ignorÃ©e : $FolderPath" -Color Gray
+            Write-Log "Suppression ignorÃƒÂ©e : $FolderPath" -Color Gray
         }
     } else {
         Write-Log "Le dossier n'existe pas : $FolderPath" -Color Gray
@@ -179,21 +179,21 @@ function Remove-FileIfExists {
                 if ($PSCmdlet.ShouldProcess($FilePath, "Supprimer")) {
                     try {
                         Remove-Item -Path $FilePath -Force
-                        Write-Log "Fichier supprimÃ© : $FilePath" -Color Green
+                        Write-Log "Fichier supprimÃƒÂ© : $FilePath" -Color Green
                     } catch {
                         Write-Log "Erreur lors de la suppression du fichier $FilePath : $_" -Color Red
                     }
                 }
             }
         } else {
-            Write-Log "Suppression ignorÃ©e : $FilePath" -Color Gray
+            Write-Log "Suppression ignorÃƒÂ©e : $FilePath" -Color Gray
         }
     } else {
         Write-Log "Le fichier n'existe pas : $FilePath" -Color Gray
     }
 }
 
-# VÃ©rifier que les dossiers de la nouvelle structure existent
+# VÃƒÂ©rifier que les dossiers de la nouvelle structure existent
 $newStructureExists = $true
 $requiredFolders = @(
     "src",
@@ -214,11 +214,11 @@ foreach ($folder in $requiredFolders) {
 }
 
 if (-not $newStructureExists) {
-    Write-Log "La nouvelle structure n'existe pas complÃ¨tement. ExÃ©cutez d'abord organize-repository-v2.ps1." -Color Red
+    Write-Log "La nouvelle structure n'existe pas complÃƒÂ¨tement. ExÃƒÂ©cutez d'abord organize-repository-v2.ps1." -Color Red
     return
 }
 
-# DÃ©finir les mappages de dossiers (pour vÃ©rifier que les fichiers ont bien Ã©tÃ© copiÃ©s)
+# DÃƒÂ©finir les mappages de dossiers (pour vÃƒÂ©rifier que les fichiers ont bien ÃƒÂ©tÃƒÂ© copiÃƒÂ©s)
 $directoryMappings = @{
     "scripts"                    = "development/scripts"
     "development/roadmap/scripts"            = "development/tools/development/roadmap/scripts"
@@ -257,9 +257,9 @@ $directoryMappings = @{
     "archive"                    = ".build/archive"
 }
 
-Write-Log "VÃ©rification des dossiers Ã  nettoyer..." -Color Cyan
+Write-Log "VÃƒÂ©rification des dossiers ÃƒÂ  nettoyer..." -Color Cyan
 
-# VÃ©rifier que les dossiers ont bien Ã©tÃ© copiÃ©s avant de les supprimer
+# VÃƒÂ©rifier que les dossiers ont bien ÃƒÂ©tÃƒÂ© copiÃƒÂ©s avant de les supprimer
 $foldersToRemove = @()
 
 foreach ($sourceDir in $directoryMappings.Keys) {
@@ -268,13 +268,13 @@ foreach ($sourceDir in $directoryMappings.Keys) {
     
     if (Test-Path -Path $sourcePath -PathType Container) {
         if (Test-Path -Path $destinationPath -PathType Container) {
-            # VÃ©rifier que le contenu a bien Ã©tÃ© copiÃ©
+            # VÃƒÂ©rifier que le contenu a bien ÃƒÂ©tÃƒÂ© copiÃƒÂ©
             $sourceFiles = Get-ChildItem -Path $sourcePath -Recurse -File | Measure-Object | Select-Object -ExpandProperty Count
             $destFiles = Get-ChildItem -Path $destinationPath -Recurse -File | Measure-Object | Select-Object -ExpandProperty Count
             
             if ($destFiles -ge $sourceFiles) {
                 $foldersToRemove += $sourcePath
-                Write-Log "Dossier Ã  supprimer : $sourcePath (contenu copiÃ© vers $destinationPath)" -Color Cyan
+                Write-Log "Dossier ÃƒÂ  supprimer : $sourcePath (contenu copiÃƒÂ© vers $destinationPath)" -Color Cyan
             } else {
                 Write-Log "Attention : Le dossier $destinationPath ne contient pas tous les fichiers de $sourcePath ($destFiles/$sourceFiles)" -Color Yellow
             }
@@ -291,7 +291,7 @@ foreach ($folderPath in $foldersToRemove) {
     Remove-FolderIfExists -FolderPath $folderPath
 }
 
-# Supprimer les dossiers racine qui ne sont pas dans la liste Ã  conserver
+# Supprimer les dossiers racine qui ne sont pas dans la liste ÃƒÂ  conserver
 Write-Log "Nettoyage des dossiers racine..." -Color Cyan
 
 $rootFolders = Get-ChildItem -Path $repoRoot -Directory
@@ -302,7 +302,7 @@ foreach ($folder in $rootFolders) {
     }
 }
 
-# DÃ©finir les fichiers Ã  dÃ©placer Ã  la racine
+# DÃƒÂ©finir les fichiers ÃƒÂ  dÃƒÂ©placer ÃƒÂ  la racine
 $rootFileMappings = @{
     "*.md"                      = "docs/readme/{0}"
     "*.txt"                     = "docs/readme/{0}"
@@ -318,7 +318,7 @@ $rootFileMappings = @{
     "*.html"                    = "src/frontend/{0}"
 }
 
-# Fichiers Ã  conserver Ã  la racine
+# Fichiers ÃƒÂ  conserver ÃƒÂ  la racine
 $keepRootFiles = @(
     "README.md",
     ".gitignore",
@@ -331,8 +331,8 @@ $keepRootFiles = @(
     "pyproject.toml"
 )
 
-# VÃ©rifier que les fichiers ont bien Ã©tÃ© copiÃ©s avant de les supprimer
-Write-Log "VÃ©rification des fichiers Ã  nettoyer..." -Color Cyan
+# VÃƒÂ©rifier que les fichiers ont bien ÃƒÂ©tÃƒÂ© copiÃƒÂ©s avant de les supprimer
+Write-Log "VÃƒÂ©rification des fichiers ÃƒÂ  nettoyer..." -Color Cyan
 
 $filesToRemove = @()
 
@@ -342,7 +342,7 @@ foreach ($pattern in $rootFileMappings.Keys) {
     foreach ($file in $files) {
         $fileName = $file.Name
         
-        # VÃ©rifier si le fichier doit Ãªtre conservÃ© Ã  la racine
+        # VÃƒÂ©rifier si le fichier doit ÃƒÂªtre conservÃƒÂ© ÃƒÂ  la racine
         $keepFile = $false
         foreach ($keepFileName in $keepRootFiles) {
             if ($fileName -eq $keepFileName) {
@@ -352,7 +352,7 @@ foreach ($pattern in $rootFileMappings.Keys) {
         }
         
         if ($keepFile) {
-            Write-Log "Fichier Ã  conserver Ã  la racine : $($file.FullName)" -Color Gray
+            Write-Log "Fichier ÃƒÂ  conserver ÃƒÂ  la racine : $($file.FullName)" -Color Gray
             continue
         }
         
@@ -360,7 +360,7 @@ foreach ($pattern in $rootFileMappings.Keys) {
         
         if (Test-Path -Path $destinationPath) {
             $filesToRemove += $file.FullName
-            Write-Log "Fichier Ã  supprimer : $($file.FullName) (copiÃ© vers $destinationPath)" -Color Cyan
+            Write-Log "Fichier ÃƒÂ  supprimer : $($file.FullName) (copiÃƒÂ© vers $destinationPath)" -Color Cyan
         } else {
             Write-Log "Attention : Le fichier de destination $destinationPath n'existe pas" -Color Yellow
         }
@@ -374,16 +374,16 @@ foreach ($filePath in $filesToRemove) {
     Remove-FileIfExists -FilePath $filePath
 }
 
-# RÃ©sumÃ© du nettoyage
-Write-Log "Nettoyage terminÃ©." -Color Cyan
-Write-Log "La structure du dÃ©pÃ´t a Ã©tÃ© nettoyÃ©e." -Color Cyan
+# RÃƒÂ©sumÃƒÂ© du nettoyage
+Write-Log "Nettoyage terminÃƒÂ©." -Color Cyan
+Write-Log "La structure du dÃƒÂ©pÃƒÂ´t a ÃƒÂ©tÃƒÂ© nettoyÃƒÂ©e." -Color Cyan
 
 if ($LogFile) {
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    "=== Nettoyage terminÃ© le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    "=== Nettoyage terminÃƒÂ© le $timestamp ===" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     "===================================" | Out-File -FilePath $LogFile -Append -Encoding UTF8
     
-    Write-Host "Log de nettoyage enregistrÃ© dans : $LogFile" -ForegroundColor Cyan
+    Write-Host "Log de nettoyage enregistrÃƒÂ© dans : $LogFile" -ForegroundColor Cyan
 }
 
 

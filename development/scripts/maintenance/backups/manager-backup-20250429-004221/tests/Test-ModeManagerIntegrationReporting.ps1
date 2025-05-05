@@ -1,50 +1,50 @@
-# Tests d'intégration entre le mode manager et le générateur de rapports
+﻿# Tests d'intÃ©gration entre le mode manager et le gÃ©nÃ©rateur de rapports
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un répertoire pour les rapports
+# CrÃ©er un rÃ©pertoire pour les rapports
 $reportsDir = Join-Path -Path $testDir -ChildPath "reports"
 if (-not (Test-Path -Path $reportsDir)) {
     New-Item -Path $reportsDir -ItemType Directory -Force | Out-Null
 }
 
-# Définir le chemin du générateur de rapports
+# DÃ©finir le chemin du gÃ©nÃ©rateur de rapports
 $reportGeneratorPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\reporting\generate_reports.ps1"
 if (-not (Test-Path -Path $reportGeneratorPath)) {
-    Write-Warning "Le générateur de rapports est introuvable à l'emplacement : $reportGeneratorPath"
-    Write-Warning "Création d'un générateur de rapports simulé pour les tests"
+    Write-Warning "Le gÃ©nÃ©rateur de rapports est introuvable Ã  l'emplacement : $reportGeneratorPath"
+    Write-Warning "CrÃ©ation d'un gÃ©nÃ©rateur de rapports simulÃ© pour les tests"
     
-    # Créer un générateur de rapports simulé
+    # CrÃ©er un gÃ©nÃ©rateur de rapports simulÃ©
     $reportGeneratorPath = Join-Path -Path $testDir -ChildPath "generate_reports.ps1"
     $reportGeneratorContent = @'
 <#
 .SYNOPSIS
-    Générateur de rapports simulé pour les tests d'intégration.
+    GÃ©nÃ©rateur de rapports simulÃ© pour les tests d'intÃ©gration.
 
 .DESCRIPTION
-    Ce script simule le générateur de rapports pour les tests d'intégration.
+    Ce script simule le gÃ©nÃ©rateur de rapports pour les tests d'intÃ©gration.
 
 .PARAMETER InputPath
-    Chemin du fichier d'entrée pour le rapport.
+    Chemin du fichier d'entrÃ©e pour le rapport.
 
 .PARAMETER OutputPath
-    Chemin du répertoire de sortie pour le rapport.
+    Chemin du rÃ©pertoire de sortie pour le rapport.
 
 .PARAMETER ReportType
-    Type de rapport à générer.
+    Type de rapport Ã  gÃ©nÃ©rer.
 
 .PARAMETER ConfigPath
     Chemin du fichier de configuration.
@@ -53,7 +53,7 @@ if (-not (Test-Path -Path $reportGeneratorPath)) {
     .\generate_reports.ps1 -InputPath "input.json" -OutputPath "reports" -ReportType "HTML" -ConfigPath "config.json"
 
 .NOTES
-    Ce script est utilisé pour les tests d'intégration du mode manager.
+    Ce script est utilisÃ© pour les tests d'intÃ©gration du mode manager.
 #>
 param (
     [Parameter(Mandatory = $true)]
@@ -69,18 +69,18 @@ param (
     [string]$ConfigPath
 )
 
-# Vérifier que le fichier d'entrée existe
+# VÃ©rifier que le fichier d'entrÃ©e existe
 if (-not (Test-Path -Path $InputPath)) {
-    Write-Error "Le fichier d'entrée est introuvable à l'emplacement : $InputPath"
+    Write-Error "Le fichier d'entrÃ©e est introuvable Ã  l'emplacement : $InputPath"
     exit 1
 }
 
-# Vérifier que le répertoire de sortie existe
+# VÃ©rifier que le rÃ©pertoire de sortie existe
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
 }
 
-# Simuler la génération d'un rapport
+# Simuler la gÃ©nÃ©ration d'un rapport
 $reportContent = @"
 <!DOCTYPE html>
 <html>
@@ -102,49 +102,49 @@ $reportContent = @"
 <body>
     <h1>Rapport de test</h1>
     <div class="summary">
-        <p>Fichier d'entrée : $InputPath</p>
+        <p>Fichier d'entrÃ©e : $InputPath</p>
         <p>Type de rapport : $ReportType</p>
         <p>Configuration : $ConfigPath</p>
     </div>
-    <h2>Détails</h2>
+    <h2>DÃ©tails</h2>
     <table>
         <tr>
-            <th>Élément</th>
+            <th>Ã‰lÃ©ment</th>
             <th>Statut</th>
         </tr>
         <tr>
-            <td>Élément 1</td>
-            <td class="passed">Réussi</td>
+            <td>Ã‰lÃ©ment 1</td>
+            <td class="passed">RÃ©ussi</td>
         </tr>
         <tr>
-            <td>Élément 2</td>
-            <td class="passed">Réussi</td>
+            <td>Ã‰lÃ©ment 2</td>
+            <td class="passed">RÃ©ussi</td>
         </tr>
         <tr>
-            <td>Élément 3</td>
-            <td class="passed">Réussi</td>
+            <td>Ã‰lÃ©ment 3</td>
+            <td class="passed">RÃ©ussi</td>
         </tr>
     </table>
 </body>
 </html>
 "@
 
-# Générer le rapport
+# GÃ©nÃ©rer le rapport
 $reportPath = Join-Path -Path $OutputPath -ChildPath "report.$($ReportType.ToLower())"
 $reportContent | Set-Content -Path $reportPath -Encoding UTF8
 
-# Créer un fichier de log
+# CrÃ©er un fichier de log
 $logPath = Join-Path -Path $OutputPath -ChildPath "report.log"
 @"
-[$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: Génération du rapport démarrée
-[$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: Fichier d'entrée : $InputPath
+[$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: GÃ©nÃ©ration du rapport dÃ©marrÃ©e
+[$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: Fichier d'entrÃ©e : $InputPath
 [$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: Type de rapport : $ReportType
 [$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: Configuration : $ConfigPath
-[$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: Rapport généré : $reportPath
-[$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: Génération du rapport terminée
+[$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: Rapport gÃ©nÃ©rÃ© : $reportPath
+[$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")] INFO: GÃ©nÃ©ration du rapport terminÃ©e
 "@ | Set-Content -Path $logPath -Encoding UTF8
 
-Write-Host "Rapport généré : $reportPath"
+Write-Host "Rapport gÃ©nÃ©rÃ© : $reportPath"
 Write-Host "Log : $logPath"
 
 exit 0
@@ -152,7 +152,7 @@ exit 0
     Set-Content -Path $reportGeneratorPath -Value $reportGeneratorContent -Encoding UTF8
 }
 
-# Créer un fichier de configuration pour les tests
+# CrÃ©er un fichier de configuration pour les tests
 $tempConfigPath = Join-Path -Path $testDir -ChildPath "reporting-config.json"
 @{
     General = @{
@@ -184,7 +184,7 @@ $tempConfigPath = Join-Path -Path $testDir -ChildPath "reporting-config.json"
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $tempConfigPath -Encoding UTF8
 
-# Créer des scripts de mode simulés
+# CrÃ©er des scripts de mode simulÃ©s
 $mockCheckModePath = Join-Path -Path $PSScriptRoot -ChildPath "mock-check-mode.ps1"
 $mockCheckContent = @'
 param (
@@ -210,7 +210,7 @@ param (
     [string]$ReportPath
 )
 
-Write-Host "Mode CHECK exécuté avec les paramètres suivants :"
+Write-Host "Mode CHECK exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -219,7 +219,7 @@ Write-Host "CheckActiveDocument : $CheckActiveDocument"
 Write-Host "ConfigPath : $ConfigPath"
 Write-Host "ReportPath : $ReportPath"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "check-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -231,7 +231,7 @@ ConfigPath : $ConfigPath
 ReportPath : $ReportPath
 "@ | Set-Content -Path $outputPath -Encoding UTF8
 
-# Créer un fichier de résultats pour le rapport
+# CrÃ©er un fichier de rÃ©sultats pour le rapport
 $resultsPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "check-mode-results.json"
 @"
 {
@@ -242,17 +242,17 @@ $resultsPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "check-mode-resul
         {
             "task": "1.2.3",
             "status": "completed",
-            "details": "Tâche complétée avec succès"
+            "details": "TÃ¢che complÃ©tÃ©e avec succÃ¨s"
         },
         {
             "task": "1.2.4",
             "status": "pending",
-            "details": "Tâche en attente"
+            "details": "TÃ¢che en attente"
         },
         {
             "task": "1.2.5",
             "status": "in_progress",
-            "details": "Tâche en cours"
+            "details": "TÃ¢che en cours"
         }
     ]
 }
@@ -281,14 +281,14 @@ param (
     [string]$ReportPath
 )
 
-Write-Host "Mode GRAN exécuté avec les paramètres suivants :"
+Write-Host "Mode GRAN exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
 Write-Host "ConfigPath : $ConfigPath"
 Write-Host "ReportPath : $ReportPath"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "gran-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -298,7 +298,7 @@ ConfigPath : $ConfigPath
 ReportPath : $ReportPath
 "@ | Set-Content -Path $outputPath -Encoding UTF8
 
-# Créer un fichier de résultats pour le rapport
+# CrÃ©er un fichier de rÃ©sultats pour le rapport
 $resultsPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "gran-mode-results.json"
 @"
 {
@@ -309,19 +309,19 @@ $resultsPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "gran-mode-result
         {
             "task": "1.2.3",
             "status": "granularized",
-            "details": "Tâche granularisée avec succès",
+            "details": "TÃ¢che granularisÃ©e avec succÃ¨s",
             "subtasks": [
                 {
                     "task": "1.2.3.1",
-                    "description": "Sous-tâche 1"
+                    "description": "Sous-tÃ¢che 1"
                 },
                 {
                     "task": "1.2.3.2",
-                    "description": "Sous-tâche 2"
+                    "description": "Sous-tÃ¢che 2"
                 },
                 {
                     "task": "1.2.3.3",
-                    "description": "Sous-tâche 3"
+                    "description": "Sous-tÃ¢che 3"
                 }
             ]
         }
@@ -333,29 +333,29 @@ exit 0
 '@
 Set-Content -Path $mockGranModePath -Value $mockGranContent -Encoding UTF8
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 @"
 # Test Roadmap
 
-## Tâche 1.2.3
+## TÃ¢che 1.2.3
 
 ### Description
-Cette tâche est utilisée pour les tests d'intégration avec le générateur de rapports.
+Cette tÃ¢che est utilisÃ©e pour les tests d'intÃ©gration avec le gÃ©nÃ©rateur de rapports.
 
-### Sous-tâches
-- [ ] Sous-tâche 1
-- [ ] Sous-tâche 2
-- [ ] Sous-tâche 3
+### Sous-tÃ¢ches
+- [ ] Sous-tÃ¢che 1
+- [ ] Sous-tÃ¢che 2
+- [ ] Sous-tÃ¢che 3
 "@ | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
-# Créer un répertoire pour les modèles de rapport
+# CrÃ©er un rÃ©pertoire pour les modÃ¨les de rapport
 $templatesDir = Join-Path -Path $testDir -ChildPath "templates"
 if (-not (Test-Path -Path $templatesDir)) {
     New-Item -Path $templatesDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un modèle de rapport HTML
+# CrÃ©er un modÃ¨le de rapport HTML
 $htmlTemplatePath = Join-Path -Path $templatesDir -ChildPath "report.html"
 @"
 <!DOCTYPE html>
@@ -380,14 +380,14 @@ $htmlTemplatePath = Join-Path -Path $templatesDir -ChildPath "report.html"
     <div class="summary">
         <p>Mode : {{mode}}</p>
         <p>Fichier : {{filePath}}</p>
-        <p>Tâche : {{taskIdentifier}}</p>
+        <p>TÃ¢che : {{taskIdentifier}}</p>
     </div>
-    <h2>Résultats</h2>
+    <h2>RÃ©sultats</h2>
     <table>
         <tr>
-            <th>Tâche</th>
+            <th>TÃ¢che</th>
             <th>Statut</th>
-            <th>Détails</th>
+            <th>DÃ©tails</th>
         </tr>
         {{#results}}
         <tr>
@@ -401,96 +401,96 @@ $htmlTemplatePath = Join-Path -Path $templatesDir -ChildPath "report.html"
 </html>
 "@ | Set-Content -Path $htmlTemplatePath -Encoding UTF8
 
-# Test 1: Intégration avec le générateur de rapports - Mode CHECK
-Write-Host "Test 1: Intégration avec le générateur de rapports - Mode CHECK" -ForegroundColor Cyan
+# Test 1: IntÃ©gration avec le gÃ©nÃ©rateur de rapports - Mode CHECK
+Write-Host "Test 1: IntÃ©gration avec le gÃ©nÃ©rateur de rapports - Mode CHECK" -ForegroundColor Cyan
 try {
-    # Exécuter le script avec le mode CHECK
+    # ExÃ©cuter le script avec le mode CHECK
     $output = & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement intégré le générateur de rapports
+    # VÃ©rifier que le script a correctement intÃ©grÃ© le gÃ©nÃ©rateur de rapports
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         $checkOutput = Get-Content -Path $checkOutputPath -Raw
         if ($checkOutput -match "ReportPath : $([regex]::Escape($reportsDir))") {
-            Write-Host "Test 1 réussi: Le script a correctement intégré le générateur de rapports avec le mode CHECK" -ForegroundColor Green
+            Write-Host "Test 1 rÃ©ussi: Le script a correctement intÃ©grÃ© le gÃ©nÃ©rateur de rapports avec le mode CHECK" -ForegroundColor Green
         } else {
-            Write-Host "Test 1 échoué: Le script n'a pas correctement intégré le générateur de rapports avec le mode CHECK" -ForegroundColor Red
+            Write-Host "Test 1 Ã©chouÃ©: Le script n'a pas correctement intÃ©grÃ© le gÃ©nÃ©rateur de rapports avec le mode CHECK" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 1 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 1 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
     
-    # Vérifier que le rapport a été généré
+    # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
     $reportPath = Join-Path -Path $reportsDir -ChildPath "report.html"
     if (Test-Path -Path $reportPath) {
-        Write-Host "Test 1 réussi: Le rapport a été généré" -ForegroundColor Green
+        Write-Host "Test 1 rÃ©ussi: Le rapport a Ã©tÃ© gÃ©nÃ©rÃ©" -ForegroundColor Green
     } else {
-        Write-Host "Test 1 échoué: Le rapport n'a pas été généré" -ForegroundColor Red
+        Write-Host "Test 1 Ã©chouÃ©: Le rapport n'a pas Ã©tÃ© gÃ©nÃ©rÃ©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 1 échoué: Une erreur s'est produite lors de l'exécution du script avec le mode CHECK" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec le mode CHECK" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 2: Intégration avec le générateur de rapports - Mode GRAN
-Write-Host "Test 2: Intégration avec le générateur de rapports - Mode GRAN" -ForegroundColor Cyan
+# Test 2: IntÃ©gration avec le gÃ©nÃ©rateur de rapports - Mode GRAN
+Write-Host "Test 2: IntÃ©gration avec le gÃ©nÃ©rateur de rapports - Mode GRAN" -ForegroundColor Cyan
 try {
-    # Exécuter le script avec le mode GRAN
+    # ExÃ©cuter le script avec le mode GRAN
     $output = & $scriptPath -Mode "GRAN" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement intégré le générateur de rapports
+    # VÃ©rifier que le script a correctement intÃ©grÃ© le gÃ©nÃ©rateur de rapports
     $granOutputPath = Join-Path -Path $testDir -ChildPath "gran-mode-output.txt"
     if (Test-Path -Path $granOutputPath) {
         $granOutput = Get-Content -Path $granOutputPath -Raw
         if ($granOutput -match "ReportPath : $([regex]::Escape($reportsDir))") {
-            Write-Host "Test 2 réussi: Le script a correctement intégré le générateur de rapports avec le mode GRAN" -ForegroundColor Green
+            Write-Host "Test 2 rÃ©ussi: Le script a correctement intÃ©grÃ© le gÃ©nÃ©rateur de rapports avec le mode GRAN" -ForegroundColor Green
         } else {
-            Write-Host "Test 2 échoué: Le script n'a pas correctement intégré le générateur de rapports avec le mode GRAN" -ForegroundColor Red
+            Write-Host "Test 2 Ã©chouÃ©: Le script n'a pas correctement intÃ©grÃ© le gÃ©nÃ©rateur de rapports avec le mode GRAN" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 2 échoué: Le fichier de sortie du mode GRAN n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 2 Ã©chouÃ©: Le fichier de sortie du mode GRAN n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
     
-    # Vérifier que le rapport a été généré
+    # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
     $reportPath = Join-Path -Path $reportsDir -ChildPath "report.html"
     if (Test-Path -Path $reportPath) {
-        Write-Host "Test 2 réussi: Le rapport a été généré" -ForegroundColor Green
+        Write-Host "Test 2 rÃ©ussi: Le rapport a Ã©tÃ© gÃ©nÃ©rÃ©" -ForegroundColor Green
     } else {
-        Write-Host "Test 2 échoué: Le rapport n'a pas été généré" -ForegroundColor Red
+        Write-Host "Test 2 Ã©chouÃ©: Le rapport n'a pas Ã©tÃ© gÃ©nÃ©rÃ©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 2 échoué: Une erreur s'est produite lors de l'exécution du script avec le mode GRAN" -ForegroundColor Red
+    Write-Host "Test 2 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec le mode GRAN" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 3: Intégration avec le générateur de rapports - Format de rapport personnalisé
-Write-Host "Test 3: Intégration avec le générateur de rapports - Format de rapport personnalisé" -ForegroundColor Cyan
+# Test 3: IntÃ©gration avec le gÃ©nÃ©rateur de rapports - Format de rapport personnalisÃ©
+Write-Host "Test 3: IntÃ©gration avec le gÃ©nÃ©rateur de rapports - Format de rapport personnalisÃ©" -ForegroundColor Cyan
 try {
-    # Modifier la configuration pour utiliser un format de rapport personnalisé
+    # Modifier la configuration pour utiliser un format de rapport personnalisÃ©
     $customConfigPath = Join-Path -Path $testDir -ChildPath "custom-reporting-config.json"
     $config = Get-Content -Path $tempConfigPath -Raw | ConvertFrom-Json
     $config.Reporting.DefaultFormat = "JSON"
     $config | ConvertTo-Json -Depth 5 | Set-Content -Path $customConfigPath -Encoding UTF8
     
-    # Exécuter le script avec le mode CHECK et le format de rapport personnalisé
+    # ExÃ©cuter le script avec le mode CHECK et le format de rapport personnalisÃ©
     $output = & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $customConfigPath 2>&1
     
-    # Vérifier que le rapport a été généré avec le format personnalisé
+    # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ© avec le format personnalisÃ©
     $reportPath = Join-Path -Path $reportsDir -ChildPath "report.json"
     if (Test-Path -Path $reportPath) {
-        Write-Host "Test 3 réussi: Le rapport a été généré avec le format personnalisé" -ForegroundColor Green
+        Write-Host "Test 3 rÃ©ussi: Le rapport a Ã©tÃ© gÃ©nÃ©rÃ© avec le format personnalisÃ©" -ForegroundColor Green
     } else {
-        Write-Host "Test 3 échoué: Le rapport n'a pas été généré avec le format personnalisé" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Le rapport n'a pas Ã©tÃ© gÃ©nÃ©rÃ© avec le format personnalisÃ©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 3 échoué: Une erreur s'est produite lors de l'exécution du script avec le format de rapport personnalisé" -ForegroundColor Red
+    Write-Host "Test 3 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec le format de rapport personnalisÃ©" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 4: Intégration avec le générateur de rapports - Rapport désactivé
-Write-Host "Test 4: Intégration avec le générateur de rapports - Rapport désactivé" -ForegroundColor Cyan
+# Test 4: IntÃ©gration avec le gÃ©nÃ©rateur de rapports - Rapport dÃ©sactivÃ©
+Write-Host "Test 4: IntÃ©gration avec le gÃ©nÃ©rateur de rapports - Rapport dÃ©sactivÃ©" -ForegroundColor Cyan
 try {
-    # Modifier la configuration pour désactiver les rapports
+    # Modifier la configuration pour dÃ©sactiver les rapports
     $disabledConfigPath = Join-Path -Path $testDir -ChildPath "disabled-reporting-config.json"
     $config = Get-Content -Path $tempConfigPath -Raw | ConvertFrom-Json
     $config.Reporting.Enabled = $false
@@ -502,18 +502,18 @@ try {
         New-Item -Path $reportsDir -ItemType Directory -Force | Out-Null
     }
     
-    # Exécuter le script avec le mode CHECK et les rapports désactivés
+    # ExÃ©cuter le script avec le mode CHECK et les rapports dÃ©sactivÃ©s
     $output = & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $disabledConfigPath 2>&1
     
-    # Vérifier qu'aucun rapport n'a été généré
+    # VÃ©rifier qu'aucun rapport n'a Ã©tÃ© gÃ©nÃ©rÃ©
     $reportPath = Join-Path -Path $reportsDir -ChildPath "report.html"
     if (-not (Test-Path -Path $reportPath)) {
-        Write-Host "Test 4 réussi: Aucun rapport n'a été généré lorsque les rapports sont désactivés" -ForegroundColor Green
+        Write-Host "Test 4 rÃ©ussi: Aucun rapport n'a Ã©tÃ© gÃ©nÃ©rÃ© lorsque les rapports sont dÃ©sactivÃ©s" -ForegroundColor Green
     } else {
-        Write-Host "Test 4 échoué: Un rapport a été généré alors que les rapports sont désactivés" -ForegroundColor Red
+        Write-Host "Test 4 Ã©chouÃ©: Un rapport a Ã©tÃ© gÃ©nÃ©rÃ© alors que les rapports sont dÃ©sactivÃ©s" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 4 échoué: Une erreur s'est produite lors de l'exécution du script avec les rapports désactivés" -ForegroundColor Red
+    Write-Host "Test 4 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec les rapports dÃ©sactivÃ©s" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
@@ -535,4 +535,4 @@ foreach ($file in $mockFiles) {
     }
 }
 
-Write-Host "Tests terminés." -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s." -ForegroundColor Cyan

@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour les segmenteurs de formats JSON, XML et texte.
@@ -8,18 +8,18 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
@@ -30,14 +30,14 @@ $csvSegmenterPath = Join-Path -Path $modulesPath -ChildPath "CsvSegmenter.py"
 $yamlSegmenterPath = Join-Path -Path $modulesPath -ChildPath "YamlSegmenter.py"
 $encodingDetectorPath = Join-Path -Path $modulesPath -ChildPath "EncodingDetector.py"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testTempDir = Join-Path -Path $env:TEMP -ChildPath "FormatSegmentersTests"
 if (Test-Path -Path $testTempDir) {
     Remove-Item -Path $testTempDir -Recurse -Force
 }
 New-Item -Path $testTempDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $jsonFilePath = Join-Path -Path $testTempDir -ChildPath "test.json"
 $xmlFilePath = Join-Path -Path $testTempDir -ChildPath "test.xml"
 $textFilePath = Join-Path -Path $testTempDir -ChildPath "test.txt"
@@ -45,7 +45,7 @@ $csvFilePath = Join-Path -Path $testTempDir -ChildPath "test.csv"
 $yamlFilePath = Join-Path -Path $testTempDir -ChildPath "test.yaml"
 $outputDir = Join-Path -Path $testTempDir -ChildPath "output"
 
-# Créer un fichier JSON de test
+# CrÃ©er un fichier JSON de test
 $jsonContent = @{
     "name"     = "Test Object"
     "items"    = @(
@@ -60,7 +60,7 @@ $jsonContent = @{
 } | ConvertTo-Json -Depth 10
 Set-Content -Path $jsonFilePath -Value $jsonContent -Encoding UTF8
 
-# Créer un fichier XML de test
+# CrÃ©er un fichier XML de test
 $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -84,7 +84,7 @@ $xmlContent = @"
 "@
 Set-Content -Path $xmlFilePath -Value $xmlContent -Encoding UTF8
 
-# Créer un fichier texte de test
+# CrÃ©er un fichier texte de test
 $textContent = @"
 # Test Document
 
@@ -100,7 +100,7 @@ Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
 "@
 Set-Content -Path $textFilePath -Value $textContent -Encoding UTF8
 
-# Créer un fichier CSV de test
+# CrÃ©er un fichier CSV de test
 $csvContent = @"
 id,name,value
 1,Item 1,Value 1
@@ -109,7 +109,7 @@ id,name,value
 "@
 Set-Content -Path $csvFilePath -Value $csvContent -Encoding UTF8
 
-# Créer un fichier YAML de test
+# CrÃ©er un fichier YAML de test
 $yamlContent = @"
 name: Test Object
 items:
@@ -125,47 +125,47 @@ metadata:
 "@
 Set-Content -Path $yamlFilePath -Value $yamlContent -Encoding UTF8
 
-# Définir les tests
+# DÃ©finir les tests
 Describe "Tests des segmenteurs de formats" {
     BeforeAll {
         # Importer le module UnifiedSegmenter
         . $unifiedSegmenterPath
 
-        # Initialiser le segmenteur unifié
+        # Initialiser le segmenteur unifiÃ©
         $initResult = Initialize-UnifiedSegmenter -MaxInputSizeKB 10 -DefaultChunkSizeKB 5
     }
 
     Context "Tests du module UnifiedSegmenter" {
-        It "Initialise correctement le segmenteur unifié" {
+        It "Initialise correctement le segmenteur unifiÃ©" {
             $initResult | Should -Be $true
         }
 
-        It "Détecte correctement le format JSON" {
+        It "DÃ©tecte correctement le format JSON" {
             $format = Get-FileFormat -FilePath $jsonFilePath
             $format | Should -Be "JSON"
         }
 
-        It "Détecte correctement le format XML" {
+        It "DÃ©tecte correctement le format XML" {
             $format = Get-FileFormat -FilePath $xmlFilePath
             $format | Should -Be "XML"
         }
 
-        It "Détecte correctement le format texte" {
+        It "DÃ©tecte correctement le format texte" {
             $format = Get-FileFormat -FilePath $textFilePath
             $format | Should -Be "TEXT"
         }
 
-        It "Détecte correctement le format CSV" {
+        It "DÃ©tecte correctement le format CSV" {
             $format = Get-FileFormat -FilePath $csvFilePath
             $format | Should -Be "CSV"
         }
 
-        It "Détecte correctement le format YAML" {
+        It "DÃ©tecte correctement le format YAML" {
             $format = Get-FileFormat -FilePath $yamlFilePath
             $format | Should -Be "YAML"
         }
 
-        It "Détecte correctement l'encodage d'un fichier" {
+        It "DÃ©tecte correctement l'encodage d'un fichier" {
             $encodingInfo = Get-FileEncoding -FilePath $jsonFilePath
             $encodingInfo | Should -Not -BeNullOrEmpty
             $encodingInfo.encoding | Should -Not -BeNullOrEmpty
@@ -208,7 +208,7 @@ Describe "Tests des segmenteurs de formats" {
             $result = Split-File -FilePath $jsonFilePath -Format "JSON" -OutputDir $jsonOutputDir -ChunkSizeKB 1
             $result | Should -Not -BeNullOrEmpty
 
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $jsonOutputDir -Filter "*.json"
             $segmentFiles.Count | Should -BeGreaterThan 0
         }
@@ -230,15 +230,15 @@ Describe "Tests des segmenteurs de formats" {
             $result = Split-File -FilePath $xmlFilePath -Format "XML" -OutputDir $xmlOutputDir -ChunkSizeKB 1
             $result | Should -Not -BeNullOrEmpty
 
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $xmlOutputDir -Filter "*.xml"
             $segmentFiles.Count | Should -BeGreaterThan 0
         }
 
-        It "Peut exécuter une requête XPath" {
+        It "Peut exÃ©cuter une requÃªte XPath" {
             $result = Invoke-XPathQuery -FilePath $xmlFilePath -XPathExpression "//item[@id='2']/value"
             $result | Should -Not -BeNullOrEmpty
-            $result | Should -Contain "--- Élément 1 ---"
+            $result | Should -Contain "--- Ã‰lÃ©ment 1 ---"
         }
     }
 
@@ -258,7 +258,7 @@ Describe "Tests des segmenteurs de formats" {
             $result = Split-File -FilePath $textFilePath -Format "TEXT" -OutputDir $textOutputDir -ChunkSizeKB 1
             $result | Should -Not -BeNullOrEmpty
 
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $textOutputDir -Filter "*.txt"
             $segmentFiles.Count | Should -BeGreaterThan 0
         }
@@ -268,7 +268,7 @@ Describe "Tests des segmenteurs de formats" {
             $result = Split-File -FilePath $textFilePath -Format "TEXT" -OutputDir $textOutputDir -TextMethod "paragraph"
             $result | Should -Not -BeNullOrEmpty
 
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $textOutputDir -Filter "*.txt"
             $segmentFiles.Count | Should -BeGreaterThan 0
         }
@@ -290,7 +290,7 @@ Describe "Tests des segmenteurs de formats" {
             $result = Split-File -FilePath $csvFilePath -Format "CSV" -OutputDir $csvOutputDir -ChunkSizeKB 1
             $result | Should -Not -BeNullOrEmpty
 
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $csvOutputDir -Filter "*.csv"
             $segmentFiles.Count | Should -BeGreaterThan 0
         }
@@ -312,81 +312,81 @@ Describe "Tests des segmenteurs de formats" {
             $result = Split-File -FilePath $yamlFilePath -Format "YAML" -OutputDir $yamlOutputDir -ChunkSizeKB 1
             $result | Should -Not -BeNullOrEmpty
 
-            # Vérifier que les fichiers ont été créés
+            # VÃ©rifier que les fichiers ont Ã©tÃ© crÃ©Ã©s
             $segmentFiles = Get-ChildItem -Path $yamlOutputDir -Filter "*.yaml"
             $segmentFiles.Count | Should -BeGreaterThan 0
         }
     }
 
     Context "Tests de conversion entre formats" {
-        It "Peut convertir de JSON à XML" {
+        It "Peut convertir de JSON Ã  XML" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "json_to_xml.xml"
             $result = Convert-FileFormat -InputFile $jsonFilePath -OutputFile $outputFile -InputFormat "JSON" -OutputFormat "XML"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
 
-            # Vérifier que le fichier est un XML valide
+            # VÃ©rifier que le fichier est un XML valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "XML"
             $isValid | Should -Be $true
         }
 
-        It "Peut convertir de XML à JSON" {
+        It "Peut convertir de XML Ã  JSON" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "xml_to_json.json"
             $result = Convert-FileFormat -InputFile $xmlFilePath -OutputFile $outputFile -InputFormat "XML" -OutputFormat "JSON"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
 
-            # Vérifier que le fichier est un JSON valide
+            # VÃ©rifier que le fichier est un JSON valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "JSON"
             $isValid | Should -Be $true
         }
 
-        It "Peut convertir de JSON à texte" {
+        It "Peut convertir de JSON Ã  texte" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "json_to_text.txt"
             $result = Convert-FileFormat -InputFile $jsonFilePath -OutputFile $outputFile -InputFormat "JSON" -OutputFormat "TEXT"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
         }
 
-        It "Peut convertir de XML à texte" {
+        It "Peut convertir de XML Ã  texte" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "xml_to_text.txt"
             $result = Convert-FileFormat -InputFile $xmlFilePath -OutputFile $outputFile -InputFormat "XML" -OutputFormat "TEXT"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
         }
 
-        It "Peut convertir de JSON à CSV" {
+        It "Peut convertir de JSON Ã  CSV" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "json_to_csv.csv"
             $result = Convert-FileFormat -InputFile $jsonFilePath -OutputFile $outputFile -InputFormat "JSON" -OutputFormat "CSV"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
         }
 
-        It "Peut convertir de JSON à YAML" {
+        It "Peut convertir de JSON Ã  YAML" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "json_to_yaml.yaml"
             $result = Convert-FileFormat -InputFile $jsonFilePath -OutputFile $outputFile -InputFormat "JSON" -OutputFormat "YAML"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
         }
 
-        It "Peut convertir de CSV à JSON" {
+        It "Peut convertir de CSV Ã  JSON" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "csv_to_json.json"
             $result = Convert-FileFormat -InputFile $csvFilePath -OutputFile $outputFile -InputFormat "CSV" -OutputFormat "JSON"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
 
-            # Vérifier que le fichier est un JSON valide
+            # VÃ©rifier que le fichier est un JSON valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "JSON"
             $isValid | Should -Be $true
         }
 
-        It "Peut convertir de YAML à JSON" {
+        It "Peut convertir de YAML Ã  JSON" {
             $outputFile = Join-Path -Path $testTempDir -ChildPath "yaml_to_json.json"
             $result = Convert-FileFormat -InputFile $yamlFilePath -OutputFile $outputFile -InputFormat "YAML" -OutputFormat "JSON"
             $result | Should -Be $true
             Test-Path -Path $outputFile | Should -Be $true
 
-            # Vérifier que le fichier est un JSON valide
+            # VÃ©rifier que le fichier est un JSON valide
             $isValid = Test-FileValidity -FilePath $outputFile -Format "JSON"
             $isValid | Should -Be $true
         }

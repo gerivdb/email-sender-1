@@ -1,4 +1,4 @@
-BeforeAll {
+﻿BeforeAll {
     # Importer le module commun
     $scriptPath = Split-Path -Parent $PSScriptRoot
     $projectRoot = Split-Path -Parent $scriptPath
@@ -11,7 +11,7 @@ BeforeAll {
         throw "Module commun introuvable: $modulePath"
     }
 
-    # Définir les fonctions pour les tests
+    # DÃ©finir les fonctions pour les tests
     function Update-TaskStatusInQdrant {
         param (
             [string]$TaskId,
@@ -23,7 +23,7 @@ BeforeAll {
         )
 
         # Cette fonction est un mock pour les tests
-        # Pour le test "Gère correctement les erreurs lors de la mise à jour dans Qdrant"
+        # Pour le test "GÃ¨re correctement les erreurs lors de la mise Ã  jour dans Qdrant"
         if ($TaskId -eq "error") {
             return $false
         } else {
@@ -55,23 +55,23 @@ BeforeAll {
         return $true
     }
 
-    # Créer un fichier de roadmap temporaire pour les tests
+    # CrÃ©er un fichier de roadmap temporaire pour les tests
     $testRoadmapContent = @"
 # Roadmap de test
 
-## Tâches actives
+## TÃ¢ches actives
 
-- [ ] **1.1** Implémentation de la recherche
+- [ ] **1.1** ImplÃ©mentation de la recherche
   - [ ] **1.1.1** Recherche simple
-  - [ ] **1.1.2** Recherche avancée
-- [ ] **1.2** Implémentation du filtrage
+  - [ ] **1.1.2** Recherche avancÃ©e
+- [ ] **1.2** ImplÃ©mentation du filtrage
   - [ ] **1.2.1** Filtrage par statut
 "@
 
     $script:testRoadmapPath = Join-Path -Path $TestDrive -ChildPath "test_roadmap.md"
     Set-Content -Path $script:testRoadmapPath -Value $testRoadmapContent -Encoding UTF8
 
-    # Créer un dossier d'historique temporaire pour les tests
+    # CrÃ©er un dossier d'historique temporaire pour les tests
     $script:testHistoryDir = Join-Path -Path $TestDrive -ChildPath "history"
     New-Item -Path $script:testHistoryDir -ItemType Directory -Force | Out-Null
 
@@ -89,12 +89,12 @@ BeforeAll {
             [bool]$Force
         )
 
-        return "# Script Python simulé pour les tests"
+        return "# Script Python simulÃ© pour les tests"
     }
 }
 
 Describe "Update-TaskStatusQdrant" {
-    It "Met à jour le statut d'une tâche dans Qdrant" {
+    It "Met Ã  jour le statut d'une tÃ¢che dans Qdrant" {
         # Mock pour la fonction python
         Mock python {
             @"
@@ -109,46 +109,46 @@ Describe "Update-TaskStatusQdrant" {
 "@
         }
 
-        # Exécuter la mise à jour
-        $result = Update-TaskStatusInQdrant -TaskId "1.1.1" -Status "Completed" -QdrantUrl "http://localhost:6333" -CollectionName "roadmap_tasks" -Comment "Test terminé" -Force $false
+        # ExÃ©cuter la mise Ã  jour
+        $result = Update-TaskStatusInQdrant -TaskId "1.1.1" -Status "Completed" -QdrantUrl "http://localhost:6333" -CollectionName "roadmap_tasks" -Comment "Test terminÃ©" -Force $false
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $result | Should -Be $true
     }
 
-    It "Met à jour le statut d'une tâche dans le fichier Markdown" {
-        # Modifier le contenu du fichier pour simuler la mise à jour
+    It "Met Ã  jour le statut d'une tÃ¢che dans le fichier Markdown" {
+        # Modifier le contenu du fichier pour simuler la mise Ã  jour
         $content = Get-Content -Path $script:testRoadmapPath -Raw
         $updatedContent = $content -replace "\- \[ \] \*\*1\.1\.1\*\* Recherche simple", "- [x] **1.1.1** Recherche simple"
         Set-Content -Path $script:testRoadmapPath -Value $updatedContent -Encoding UTF8
 
-        # Exécuter la mise à jour
+        # ExÃ©cuter la mise Ã  jour
         $result = Update-TaskStatusInMarkdown -TaskId "1.1.1" -Status "Completed" -RoadmapPath $script:testRoadmapPath -Force $false
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $result | Should -Be $true
 
-        # Vérifier que le fichier a été mis à jour
+        # VÃ©rifier que le fichier a Ã©tÃ© mis Ã  jour
         $content = Get-Content -Path $script:testRoadmapPath -Raw
         $content | Should -Match "\- \[x\] \*\*1\.1\.1\*\* Recherche simple"
     }
 
     It "Enregistre l'historique des modifications" {
-        # Exécuter l'enregistrement de l'historique
-        $result = Save-TaskStatusHistory -TaskId "1.1.1" -OldStatus "Incomplete" -NewStatus "Completed" -Comment "Test terminé"
+        # ExÃ©cuter l'enregistrement de l'historique
+        $result = Save-TaskStatusHistory -TaskId "1.1.1" -OldStatus "Incomplete" -NewStatus "Completed" -Comment "Test terminÃ©"
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $result | Should -Be $true
 
-        # Nous ne pouvons pas vérifier directement le fichier d'historique car il est créé dans un chemin absolu
-        # mais nous pouvons vérifier que la fonction a été appelée avec succès
+        # Nous ne pouvons pas vÃ©rifier directement le fichier d'historique car il est crÃ©Ã© dans un chemin absolu
+        # mais nous pouvons vÃ©rifier que la fonction a Ã©tÃ© appelÃ©e avec succÃ¨s
     }
 
-    It "Gère correctement les erreurs lors de la mise à jour dans Qdrant" {
-        # Exécuter la mise à jour avec un ID qui génère une erreur
-        $result = Update-TaskStatusInQdrant -TaskId "error" -Status "Completed" -QdrantUrl "http://localhost:6333" -CollectionName "roadmap_tasks" -Comment "Test terminé" -Force $false
+    It "GÃ¨re correctement les erreurs lors de la mise Ã  jour dans Qdrant" {
+        # ExÃ©cuter la mise Ã  jour avec un ID qui gÃ©nÃ¨re une erreur
+        $result = Update-TaskStatusInQdrant -TaskId "error" -Status "Completed" -QdrantUrl "http://localhost:6333" -CollectionName "roadmap_tasks" -Comment "Test terminÃ©" -Force $false
 
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         $result | Should -Be $false
     }
 }

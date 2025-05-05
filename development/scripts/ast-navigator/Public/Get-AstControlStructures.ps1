@@ -1,22 +1,22 @@
-<#
+﻿<#
 .SYNOPSIS
-    Extrait les structures de contrôle d'un script PowerShell.
+    Extrait les structures de contrÃ´le d'un script PowerShell.
 
 .DESCRIPTION
-    Cette fonction extrait les structures de contrôle (if, switch, foreach, while, do, try/catch) d'un script PowerShell
-    en utilisant l'arbre syntaxique (AST). Elle permet d'obtenir des informations détaillées sur chaque structure.
+    Cette fonction extrait les structures de contrÃ´le (if, switch, foreach, while, do, try/catch) d'un script PowerShell
+    en utilisant l'arbre syntaxique (AST). Elle permet d'obtenir des informations dÃ©taillÃ©es sur chaque structure.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à analyser. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  analyser. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER Type
-    Type de structure de contrôle à rechercher (If, Switch, Foreach, While, Do, Try, All).
+    Type de structure de contrÃ´le Ã  rechercher (If, Switch, Foreach, While, Do, Try, All).
 
 .PARAMETER IncludeContent
-    Si spécifié, inclut le contenu complet de chaque structure de contrôle.
+    Si spÃ©cifiÃ©, inclut le contenu complet de chaque structure de contrÃ´le.
 
 .PARAMETER AnalyzeComplexity
-    Si spécifié, analyse la complexité de chaque structure de contrôle.
+    Si spÃ©cifiÃ©, analyse la complexitÃ© de chaque structure de contrÃ´le.
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -50,41 +50,41 @@ function Get-AstControlStructures {
 
     process {
         try {
-            # Initialiser les résultats
+            # Initialiser les rÃ©sultats
             $results = @()
 
-            # Fonction pour calculer la complexité d'une structure
+            # Fonction pour calculer la complexitÃ© d'une structure
             function Get-StructureComplexity {
                 param (
                     [Parameter(Mandatory = $true)]
                     [System.Management.Automation.Language.Ast]$Structure
                 )
 
-                $complexity = 1  # Complexité de base
+                $complexity = 1  # ComplexitÃ© de base
 
-                # Ajouter de la complexité pour les conditions imbriquées
+                # Ajouter de la complexitÃ© pour les conditions imbriquÃ©es
                 $nestedConditions = $Structure.FindAll({
                     $args[0] -is [System.Management.Automation.Language.IfStatementAst] -or
                     $args[0] -is [System.Management.Automation.Language.SwitchStatementAst]
                 }, $true)
                 $complexity += $nestedConditions.Count
 
-                # Ajouter de la complexité pour les boucles imbriquées
+                # Ajouter de la complexitÃ© pour les boucles imbriquÃ©es
                 $nestedLoops = $Structure.FindAll({
                     $args[0] -is [System.Management.Automation.Language.ForEachStatementAst] -or
                     $args[0] -is [System.Management.Automation.Language.WhileStatementAst] -or
                     $args[0] -is [System.Management.Automation.Language.DoWhileStatementAst] -or
                     $args[0] -is [System.Management.Automation.Language.ForStatementAst]
                 }, $true)
-                $complexity += $nestedLoops.Count * 2  # Les boucles ajoutent plus de complexité
+                $complexity += $nestedLoops.Count * 2  # Les boucles ajoutent plus de complexitÃ©
 
-                # Ajouter de la complexité pour les blocs try/catch imbriqués
+                # Ajouter de la complexitÃ© pour les blocs try/catch imbriquÃ©s
                 $nestedTryCatch = $Structure.FindAll({
                     $args[0] -is [System.Management.Automation.Language.TryStatementAst]
                 }, $true)
                 $complexity += $nestedTryCatch.Count
 
-                # Ajouter de la complexité pour les opérateurs logiques dans les conditions
+                # Ajouter de la complexitÃ© pour les opÃ©rateurs logiques dans les conditions
                 $logicalOperators = $Structure.FindAll({
                     $args[0] -is [System.Management.Automation.Language.BinaryExpressionAst] -and
                     ($args[0].Operator -eq 'And' -or $args[0].Operator -eq 'Or')
@@ -226,7 +226,7 @@ function Get-AstControlStructures {
             return $results
         }
         catch {
-            Write-Error -Message "Erreur lors de l'extraction des structures de contrôle : $_"
+            Write-Error -Message "Erreur lors de l'extraction des structures de contrÃ´le : $_"
             throw
         }
     }

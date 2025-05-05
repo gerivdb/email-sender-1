@@ -1,19 +1,19 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests de performance pour le projet.
+    ExÃ©cute tous les tests de performance pour le projet.
 .DESCRIPTION
-    Ce script exécute tous les tests de performance pour le projet et génère des rapports de performance.
+    Ce script exÃ©cute tous les tests de performance pour le projet et gÃ©nÃ¨re des rapports de performance.
 .PARAMETER OutputPath
-    Chemin du répertoire de sortie pour les rapports. Par défaut: "./reports/performance".
+    Chemin du rÃ©pertoire de sortie pour les rapports. Par dÃ©faut: "./reports/performance".
 .PARAMETER GenerateCharts
-    Génère des graphiques pour les rapports de performance.
+    GÃ©nÃ¨re des graphiques pour les rapports de performance.
 .EXAMPLE
     .\Run-AllPerformanceTests.ps1 -GenerateCharts
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 [CmdletBinding()]
@@ -25,7 +25,7 @@ param (
     [switch]$GenerateCharts
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -49,53 +49,53 @@ function Write-Log {
     Write-Host "[$timestamp] [$Level] $Message" -ForegroundColor $color
 }
 
-# Créer le répertoire de sortie
+# CrÃ©er le rÃ©pertoire de sortie
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Répertoire de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "RÃ©pertoire de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Définir le chemin des tests de performance
+# DÃ©finir le chemin des tests de performance
 $PerformanceTestsPath = Join-Path -Path $PSScriptRoot -ChildPath "performance"
 
 # Obtenir tous les fichiers de test de performance
 $performanceTestFiles = Get-ChildItem -Path $PerformanceTestsPath -Filter "*.ps1" -Recurse
 
-Write-Log "Nombre de fichiers de test de performance trouvés: $($performanceTestFiles.Count)" -Level "INFO"
+Write-Log "Nombre de fichiers de test de performance trouvÃ©s: $($performanceTestFiles.Count)" -Level "INFO"
 
-# Exécuter les tests de performance
+# ExÃ©cuter les tests de performance
 $results = @()
 
 foreach ($testFile in $performanceTestFiles) {
-    Write-Log "Exécution du test de performance: $($testFile.Name)" -Level "INFO"
+    Write-Log "ExÃ©cution du test de performance: $($testFile.Name)" -Level "INFO"
     
     try {
-        # Exécuter le test de performance
+        # ExÃ©cuter le test de performance
         & $testFile.FullName
         
-        # Vérifier si le test a généré un fichier CSV
+        # VÃ©rifier si le test a gÃ©nÃ©rÃ© un fichier CSV
         $csvFileName = $testFile.BaseName + ".csv"
         $csvFilePath = Join-Path -Path $OutputPath -ChildPath $csvFileName
         
         if (Test-Path -Path $csvFilePath) {
-            Write-Log "Fichier CSV généré: $csvFilePath" -Level "SUCCESS"
+            Write-Log "Fichier CSV gÃ©nÃ©rÃ©: $csvFilePath" -Level "SUCCESS"
             
-            # Lire les résultats du fichier CSV
+            # Lire les rÃ©sultats du fichier CSV
             $testResults = Import-Csv -Path $csvFilePath
             $results += $testResults
         } else {
-            Write-Log "Aucun fichier CSV généré pour le test: $($testFile.Name)" -Level "WARNING"
+            Write-Log "Aucun fichier CSV gÃ©nÃ©rÃ© pour le test: $($testFile.Name)" -Level "WARNING"
         }
     } catch {
-        Write-Log "Erreur lors de l'exécution du test de performance: $($testFile.Name)" -Level "ERROR"
+        Write-Log "Erreur lors de l'exÃ©cution du test de performance: $($testFile.Name)" -Level "ERROR"
         Write-Log "Message d'erreur: $_" -Level "ERROR"
     }
 }
 
-# Générer un rapport de performance global
+# GÃ©nÃ©rer un rapport de performance global
 $reportPath = Join-Path -Path $OutputPath -ChildPath "performance-report.html"
 
-# Créer le rapport HTML
+# CrÃ©er le rapport HTML
 $htmlReport = @"
 <!DOCTYPE html>
 <html>
@@ -125,20 +125,20 @@ $htmlReport += @"
     <h1>Rapport de performance</h1>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Nombre de tests exécutés: $($results.Count)</p>
-        <p>Date d'exécution: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre de tests exÃ©cutÃ©s: $($results.Count)</p>
+        <p>Date d'exÃ©cution: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     </div>
     
-    <h2>Résultats des tests</h2>
+    <h2>RÃ©sultats des tests</h2>
     <table>
         <tr>
             <th>Test</th>
-            <th>Durée moyenne (ms)</th>
-            <th>Durée minimale (ms)</th>
-            <th>Durée maximale (ms)</th>
-            <th>Écart type</th>
-            <th>Itérations</th>
+            <th>DurÃ©e moyenne (ms)</th>
+            <th>DurÃ©e minimale (ms)</th>
+            <th>DurÃ©e maximale (ms)</th>
+            <th>Ã‰cart type</th>
+            <th>ItÃ©rations</th>
         </tr>
 "@
 
@@ -164,23 +164,23 @@ if ($GenerateCharts) {
     <h2>Graphiques</h2>
     
     <div class="chart">
-        <h3>Durée moyenne par test</h3>
+        <h3>DurÃ©e moyenne par test</h3>
         <canvas id="averageDurationChart"></canvas>
     </div>
     
     <script>
-        // Données pour le graphique de durée moyenne
+        // DonnÃ©es pour le graphique de durÃ©e moyenne
         const testNames = [$(($results | ForEach-Object { "'$($_.TestName)'" }) -join ", ")];
         const averageDurations = [$(($results | ForEach-Object { $_.AverageDuration }) -join ", ")];
         
-        // Créer le graphique de durée moyenne
+        // CrÃ©er le graphique de durÃ©e moyenne
         const averageDurationCtx = document.getElementById('averageDurationChart').getContext('2d');
         const averageDurationChart = new Chart(averageDurationCtx, {
             type: 'bar',
             data: {
                 labels: testNames,
                 datasets: [{
-                    label: 'Durée moyenne (ms)',
+                    label: 'DurÃ©e moyenne (ms)',
                     data: averageDurations,
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgba(54, 162, 235, 1)',
@@ -206,7 +206,7 @@ $htmlReport += @"
 
 $htmlReport | Set-Content -Path $reportPath -Encoding UTF8
 
-Write-Log "Rapport HTML généré: $reportPath" -Level "SUCCESS"
+Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $reportPath" -Level "SUCCESS"
 
 # Ouvrir le rapport HTML
 if (Test-Path -Path $reportPath) {
@@ -214,4 +214,4 @@ if (Test-Path -Path $reportPath) {
     Start-Process $reportPath
 }
 
-Write-Log "Tous les tests de performance ont été exécutés avec succès!" -Level "SUCCESS"
+Write-Log "Tous les tests de performance ont Ã©tÃ© exÃ©cutÃ©s avec succÃ¨s!" -Level "SUCCESS"

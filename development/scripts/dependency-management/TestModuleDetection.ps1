@@ -1,8 +1,8 @@
-# Script pour tester la détection des modules
+﻿# Script pour tester la dÃ©tection des modules
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "ModuleDependencyDetector.psm1"
 Import-Module $modulePath -Force
 
-# Créer un fichier temporaire avec des instructions using module et Import-Module
+# CrÃ©er un fichier temporaire avec des instructions using module et Import-Module
 $tempFilePath = Join-Path -Path $env:TEMP -ChildPath "TestModuleDetection.ps1"
 $content = @'
 # Test d'importation de modules
@@ -19,12 +19,12 @@ Set-Content -Path $tempFilePath -Value $content
 # Analyser le fichier temporaire
 $moduleImports = Find-ImportModuleInstruction -FilePath $tempFilePath
 
-# Afficher les résultats
-Write-Host "Nombre total d'instructions trouvées : $($moduleImports.Count)"
+# Afficher les rÃ©sultats
+Write-Host "Nombre total d'instructions trouvÃ©es : $($moduleImports.Count)"
 Write-Host "Instructions using module : $(($moduleImports | Where-Object { $_.ImportType -eq 'using module' }).Count)"
 Write-Host "Instructions Import-Module : $(($moduleImports | Where-Object { $_.ImportType -eq 'Import-Module' }).Count)"
 
-# Afficher les détails
+# Afficher les dÃ©tails
 foreach ($module in $moduleImports) {
     Write-Host "`nModule : $($module.Name)"
     Write-Host "  Type : $($module.ImportType)"

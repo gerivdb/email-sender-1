@@ -1,6 +1,6 @@
-# Script de test manuel pour la conversion JSON vers CSV
+﻿# Script de test manuel pour la conversion JSON vers CSV
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
@@ -8,26 +8,26 @@ $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmente
 # Importer le module
 . $unifiedSegmenterPath
 
-# Initialiser le segmenteur unifié
-Write-Host "Initialisation du segmenteur unifié..."
+# Initialiser le segmenteur unifiÃ©
+Write-Host "Initialisation du segmenteur unifiÃ©..."
 $initResult = Initialize-UnifiedSegmenter
-Write-Host "Initialisation réussie: $initResult"
+Write-Host "Initialisation rÃ©ussie: $initResult"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "JsonToCsvTest"
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $jsonObjectPath = Join-Path -Path $testDir -ChildPath "object.json"
 $jsonArrayPath = Join-Path -Path $testDir -ChildPath "array.json"
 $jsonNestedPath = Join-Path -Path $testDir -ChildPath "nested.json"
 $outputDir = Join-Path -Path $testDir -ChildPath "output"
 New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 
-# Créer un fichier JSON objet
+# CrÃ©er un fichier JSON objet
 $jsonObjectContent = @{
     "name" = "Test Object"
     "id" = 1
@@ -36,7 +36,7 @@ $jsonObjectContent = @{
 } | ConvertTo-Json -Depth 10
 Set-Content -Path $jsonObjectPath -Value $jsonObjectContent -Encoding UTF8
 
-# Créer un fichier JSON tableau
+# CrÃ©er un fichier JSON tableau
 $jsonArrayContent = @(
     @{ "id" = 1; "name" = "Item 1"; "value" = "Value 1"; "active" = $true },
     @{ "id" = 2; "name" = "Item 2"; "value" = "Value 2"; "active" = $false },
@@ -44,7 +44,7 @@ $jsonArrayContent = @(
 ) | ConvertTo-Json -Depth 10
 Set-Content -Path $jsonArrayPath -Value $jsonArrayContent -Encoding UTF8
 
-# Créer un fichier JSON avec structure imbriquée
+# CrÃ©er un fichier JSON avec structure imbriquÃ©e
 $jsonNestedContent = @{
     "name" = "Test Object"
     "items" = @(
@@ -63,7 +63,7 @@ Set-Content -Path $jsonNestedPath -Value $jsonNestedContent -Encoding UTF8
 Write-Host "`n=== Test 1: Conversion JSON objet vers CSV ==="
 $objectToCsvPath = Join-Path -Path $outputDir -ChildPath "object_to_csv.csv"
 $objectToCsvResult = Convert-FileFormat -InputFile $jsonObjectPath -OutputFile $objectToCsvPath -InputFormat "JSON" -OutputFormat "CSV"
-Write-Host "Résultat: $objectToCsvResult"
+Write-Host "RÃ©sultat: $objectToCsvResult"
 if ($objectToCsvResult -and (Test-Path -Path $objectToCsvPath)) {
     Write-Host "Contenu CSV:"
     Get-Content -Path $objectToCsvPath | ForEach-Object { Write-Host "  $_" }
@@ -73,24 +73,24 @@ if ($objectToCsvResult -and (Test-Path -Path $objectToCsvPath)) {
 Write-Host "`n=== Test 2: Conversion JSON tableau vers CSV ==="
 $arrayToCsvPath = Join-Path -Path $outputDir -ChildPath "array_to_csv.csv"
 $arrayToCsvResult = Convert-FileFormat -InputFile $jsonArrayPath -OutputFile $arrayToCsvPath -InputFormat "JSON" -OutputFormat "CSV"
-Write-Host "Résultat: $arrayToCsvResult"
+Write-Host "RÃ©sultat: $arrayToCsvResult"
 if ($arrayToCsvResult -and (Test-Path -Path $arrayToCsvPath)) {
     Write-Host "Contenu CSV:"
     Get-Content -Path $arrayToCsvPath | ForEach-Object { Write-Host "  $_" }
 }
 
-# Test 3: Conversion JSON imbriqué vers CSV
-Write-Host "`n=== Test 3: Conversion JSON imbriqué vers CSV ==="
+# Test 3: Conversion JSON imbriquÃ© vers CSV
+Write-Host "`n=== Test 3: Conversion JSON imbriquÃ© vers CSV ==="
 $nestedToCsvPath = Join-Path -Path $outputDir -ChildPath "nested_to_csv.csv"
 $nestedToCsvResult = Convert-FileFormat -InputFile $jsonNestedPath -OutputFile $nestedToCsvPath -InputFormat "JSON" -OutputFormat "CSV"
-Write-Host "Résultat: $nestedToCsvResult"
+Write-Host "RÃ©sultat: $nestedToCsvResult"
 if ($nestedToCsvResult -and (Test-Path -Path $nestedToCsvPath)) {
     Write-Host "Contenu CSV:"
     Get-Content -Path $nestedToCsvPath | ForEach-Object { Write-Host "  $_" }
 }
 
-# Test 4: Validation des fichiers CSV générés
-Write-Host "`n=== Test 4: Validation des fichiers CSV générés ==="
+# Test 4: Validation des fichiers CSV gÃ©nÃ©rÃ©s
+Write-Host "`n=== Test 4: Validation des fichiers CSV gÃ©nÃ©rÃ©s ==="
 if (Test-Path -Path $objectToCsvPath) {
     $isValid = Test-FileValidity -FilePath $objectToCsvPath -Format "CSV"
     Write-Host "CSV objet valide: $isValid"
@@ -103,11 +103,11 @@ if (Test-Path -Path $arrayToCsvPath) {
 
 if (Test-Path -Path $nestedToCsvPath) {
     $isValid = Test-FileValidity -FilePath $nestedToCsvPath -Format "CSV"
-    Write-Host "CSV imbriqué valide: $isValid"
+    Write-Host "CSV imbriquÃ© valide: $isValid"
 }
 
 # Nettoyer
 Write-Host "`nNettoyage des fichiers de test..."
 Remove-Item -Path $testDir -Recurse -Force
 
-Write-Host "`nTests terminés."
+Write-Host "`nTests terminÃ©s."

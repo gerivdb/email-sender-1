@@ -1,29 +1,29 @@
-@{
+﻿@{
     # Version du module
     ModuleVersion = '1.0.0'
 
-    # ID utilisé pour identifier de manière unique ce module
+    # ID utilisÃ© pour identifier de maniÃ¨re unique ce module
     GUID = '12345678-1234-1234-1234-123456789012'
 
     # Auteur de ce module
     Author = 'EMAIL_SENDER_1'
 
-    # Société ou fournisseur de ce module
+    # SociÃ©tÃ© ou fournisseur de ce module
     CompanyName = 'EMAIL_SENDER_1'
 
-    # Déclaration de copyright pour ce module
-    Copyright = '(c) 2025 EMAIL_SENDER_1. Tous droits réservés.'
+    # DÃ©claration de copyright pour ce module
+    Copyright = '(c) 2025 EMAIL_SENDER_1. Tous droits rÃ©servÃ©s.'
 
-    # Description de la fonctionnalité fournie par ce module
+    # Description de la fonctionnalitÃ© fournie par ce module
     Description = 'Module de service d''enregistrement des gestionnaires pour le Process Manager.'
 
     # Version minimale du moteur PowerShell requise par ce module
     PowerShellVersion = '5.1'
 
-    # Modules à importer comme modules imbriqués du module spécifié dans RootModule/ModuleToProcess
+    # Modules Ã  importer comme modules imbriquÃ©s du module spÃ©cifiÃ© dans RootModule/ModuleToProcess
     NestedModules = @()
 
-    # Fonctions à exporter à partir de ce module, pour de meilleures performances, n'utilisez pas de caractères génériques et ne supprimez pas l'entrée, utilisez une table vide si vous n'avez pas de fonctions à exposer
+    # Fonctions Ã  exporter Ã  partir de ce module, pour de meilleures performances, n'utilisez pas de caractÃ¨res gÃ©nÃ©riques et ne supprimez pas l'entrÃ©e, utilisez une table vide si vous n'avez pas de fonctions Ã  exposer
     FunctionsToExport = @(
         'Register-Manager',
         'Unregister-Manager',
@@ -32,31 +32,31 @@
         'Find-Manager'
     )
 
-    # Cmdlets à exporter à partir de ce module, pour de meilleures performances, n'utilisez pas de caractères génériques et ne supprimez pas l'entrée, utilisez une table vide si vous n'avez pas de cmdlets à exposer
+    # Cmdlets Ã  exporter Ã  partir de ce module, pour de meilleures performances, n'utilisez pas de caractÃ¨res gÃ©nÃ©riques et ne supprimez pas l'entrÃ©e, utilisez une table vide si vous n'avez pas de cmdlets Ã  exposer
     CmdletsToExport = @()
 
-    # Variables à exporter à partir de ce module
+    # Variables Ã  exporter Ã  partir de ce module
     VariablesToExport = @()
 
-    # Alias à exporter à partir de ce module, pour de meilleures performances, n'utilisez pas de caractères génériques et ne supprimez pas l'entrée, utilisez une table vide si vous n'avez pas d'alias à exposer
+    # Alias Ã  exporter Ã  partir de ce module, pour de meilleures performances, n'utilisez pas de caractÃ¨res gÃ©nÃ©riques et ne supprimez pas l'entrÃ©e, utilisez une table vide si vous n'avez pas d'alias Ã  exposer
     AliasesToExport = @()
 
-    # Ressources DSC à exporter de ce module
+    # Ressources DSC Ã  exporter de ce module
     DscResourcesToExport = @()
 
-    # Liste de tous les modules empaquetés avec ce module
+    # Liste de tous les modules empaquetÃ©s avec ce module
     ModuleList = @()
 
-    # Liste de tous les fichiers empaquetés avec ce module
+    # Liste de tous les fichiers empaquetÃ©s avec ce module
     FileList = @(
         'ManagerRegistrationService.psm1',
         'ManagerRegistrationService.psd1'
     )
 
-    # Données privées à transmettre au module spécifié dans RootModule/ModuleToProcess. Cela peut également inclure une table de hachage PSData avec des métadonnées de module supplémentaires utilisées par PowerShell.
+    # DonnÃ©es privÃ©es Ã  transmettre au module spÃ©cifiÃ© dans RootModule/ModuleToProcess. Cela peut Ã©galement inclure une table de hachage PSData avec des mÃ©tadonnÃ©es de module supplÃ©mentaires utilisÃ©es par PowerShell.
     PrivateData = @{
         PSData = @{
-            # Tags appliqués à ce module. Ils aident à la découverte des modules dans les galeries en ligne.
+            # Tags appliquÃ©s Ã  ce module. Ils aident Ã  la dÃ©couverte des modules dans les galeries en ligne.
             Tags = @('ProcessManager', 'Registration', 'Manager')
 
             # URL vers la licence de ce module.
@@ -65,7 +65,7 @@
             # URL vers le site web principal de ce projet.
             ProjectUri = ''
 
-            # URL vers une icône représentant ce module.
+            # URL vers une icÃ´ne reprÃ©sentant ce module.
             IconUri = ''
 
             # Notes de publication de ce module

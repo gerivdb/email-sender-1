@@ -1,10 +1,10 @@
-# Script de test très basique pour la fonction Invoke-AstTraversalDFS-Optimized
+﻿# Script de test trÃ¨s basique pour la fonction Invoke-AstTraversalDFS-Optimized
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script PowerShell de test minimal
+# CrÃ©er un script PowerShell de test minimal
 $sampleCode = @'
 function Test-Function {
     "Hello, World!"

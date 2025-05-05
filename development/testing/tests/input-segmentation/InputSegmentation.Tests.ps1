@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module InputSegmentation.
 .DESCRIPTION
     Ce script contient les tests unitaires pour le module InputSegmentation,
-    vérifiant la segmentation de différents types d'entrées.
+    vÃ©rifiant la segmentation de diffÃ©rents types d'entrÃ©es.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-05-10
+    Date de crÃ©ation: 2025-05-10
 #>
 
 BeforeAll {
-    # Importer le module à tester
+    # Importer le module Ã  tester
     $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\InputSegmentation.psm1"
     Import-Module $modulePath -Force
     
@@ -21,8 +21,8 @@ BeforeAll {
 }
 
 Describe "Measure-InputSize" {
-    Context "Lorsqu'on mesure la taille de différentes entrées" {
-        It "Devrait mesurer correctement la taille d'une chaîne de texte" {
+    Context "Lorsqu'on mesure la taille de diffÃ©rentes entrÃ©es" {
+        It "Devrait mesurer correctement la taille d'une chaÃ®ne de texte" {
             $text = "A" * 5KB
             $size = Measure-InputSize -Input $text
             $size | Should -BeGreaterOrEqual 4.8  # Tenir compte de l'encodage
@@ -47,7 +47,7 @@ Describe "Measure-InputSize" {
         }
         
         It "Devrait mesurer correctement la taille d'un fichier" {
-            # Créer un fichier temporaire
+            # CrÃ©er un fichier temporaire
             $tempFile = Join-Path -Path $TestDrive -ChildPath "test.txt"
             "A" * 5KB | Out-File -FilePath $tempFile -Encoding utf8
             
@@ -68,11 +68,11 @@ Describe "Split-TextInput" {
             $segments[0].Length | Should -BeLessThan 6KB
         }
         
-        It "Devrait préserver les sauts de ligne lorsque demandé" {
+        It "Devrait prÃ©server les sauts de ligne lorsque demandÃ©" {
             $text = "Ligne 1`nLigne 2`nLigne 3" * 1KB
             $segments = Split-TextInput -Text $text -ChunkSizeKB 5 -PreserveLines
             
-            # Vérifier que les segments se terminent par des sauts de ligne complets
+            # VÃ©rifier que les segments se terminent par des sauts de ligne complets
             $segments | ForEach-Object {
                 if ($_ -ne $segments[-1]) {  # Ignorer le dernier segment
                     $_.EndsWith("`n") | Should -Be $true
@@ -115,7 +115,7 @@ Describe "Split-JsonInput" {
             $segments[0].items.Count | Should -BeLessThan $json.items.Count
         }
         
-        It "Devrait préserver la structure de l'objet JSON dans chaque segment" {
+        It "Devrait prÃ©server la structure de l'objet JSON dans chaque segment" {
             $json = @{
                 metadata = @{
                     title = "Test"
@@ -133,7 +133,7 @@ Describe "Split-JsonInput" {
             
             $segments = Split-JsonInput -JsonObject $json -ChunkSizeKB 5
             
-            # Vérifier que chaque segment contient les métadonnées
+            # VÃ©rifier que chaque segment contient les mÃ©tadonnÃ©es
             $segments | ForEach-Object {
                 $_.metadata.title | Should -Be "Test"
                 $_.metadata.description | Should -Be "Description de test"
@@ -163,11 +163,11 @@ Describe "Split-JsonInput" {
 Describe "Split-FileInput" {
     Context "Lorsqu'on segmente un fichier" {
         BeforeAll {
-            # Créer un fichier texte volumineux
+            # CrÃ©er un fichier texte volumineux
             $tempTextFile = Join-Path -Path $TestDrive -ChildPath "large_text.txt"
             "A" * 12KB | Out-File -FilePath $tempTextFile -Encoding utf8
             
-            # Créer un fichier JSON volumineux
+            # CrÃ©er un fichier JSON volumineux
             $tempJsonFile = Join-Path -Path $TestDrive -ChildPath "large_json.json"
             $json = @{
                 items = @()
@@ -198,14 +198,14 @@ Describe "Split-FileInput" {
             $segments.Count | Should -BeGreaterThan 1
         }
         
-        It "Devrait préserver les sauts de ligne lorsque demandé" {
-            # Créer un fichier avec des sauts de ligne
+        It "Devrait prÃ©server les sauts de ligne lorsque demandÃ©" {
+            # CrÃ©er un fichier avec des sauts de ligne
             $tempLineFile = Join-Path -Path $TestDrive -ChildPath "lines.txt"
             "Ligne 1`nLigne 2`nLigne 3" * 1KB | Out-File -FilePath $tempLineFile -Encoding utf8
             
             $segments = Split-FileInput -FilePath $tempLineFile -ChunkSizeKB 5 -PreserveLines
             
-            # Vérifier que les segments se terminent par des sauts de ligne complets
+            # VÃ©rifier que les segments se terminent par des sauts de ligne complets
             $segments | ForEach-Object {
                 if ($_ -ne $segments[-1]) {  # Ignorer le dernier segment
                     $_.EndsWith("`n") | Should -Be $true
@@ -216,8 +216,8 @@ Describe "Split-FileInput" {
 }
 
 Describe "Split-Input" {
-    Context "Lorsqu'on utilise la fonction générique de segmentation" {
-        It "Devrait segmenter correctement une chaîne de texte" {
+    Context "Lorsqu'on utilise la fonction gÃ©nÃ©rique de segmentation" {
+        It "Devrait segmenter correctement une chaÃ®ne de texte" {
             $text = "A" * 12KB
             $segments = Split-Input -Input $text -ChunkSizeKB 5
             
@@ -242,7 +242,7 @@ Describe "Split-Input" {
         }
         
         It "Devrait segmenter correctement un chemin de fichier" {
-            # Créer un fichier temporaire
+            # CrÃ©er un fichier temporaire
             $tempFile = Join-Path -Path $TestDrive -ChildPath "test.txt"
             "A" * 12KB | Out-File -FilePath $tempFile -Encoding utf8
             
@@ -254,8 +254,8 @@ Describe "Split-Input" {
 }
 
 Describe "Save-SegmentationState and Get-SegmentationState" {
-    Context "Lorsqu'on sauvegarde et récupère l'état de segmentation" {
-        It "Devrait sauvegarder et récupérer correctement l'état" {
+    Context "Lorsqu'on sauvegarde et rÃ©cupÃ¨re l'Ã©tat de segmentation" {
+        It "Devrait sauvegarder et rÃ©cupÃ©rer correctement l'Ã©tat" {
             $id = "test-id"
             $segments = @("Segment 1", "Segment 2", "Segment 3")
             $currentIndex = 1
@@ -277,8 +277,8 @@ Describe "Save-SegmentationState and Get-SegmentationState" {
 }
 
 Describe "Invoke-WithSegmentation" {
-    Context "Lorsqu'on exécute un script avec segmentation" {
-        It "Devrait exécuter le script pour chaque segment" {
+    Context "Lorsqu'on exÃ©cute un script avec segmentation" {
+        It "Devrait exÃ©cuter le script pour chaque segment" {
             $input = "A" * 12KB
             $scriptBlock = {
                 param($segment)

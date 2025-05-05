@@ -1,26 +1,26 @@
-# Tests unitaires pour le module WorkflowAnalyzer
-# Ce script contient des tests unitaires pour vérifier le bon fonctionnement du module WorkflowAnalyzer
+﻿# Tests unitaires pour le module WorkflowAnalyzer
+# Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement du module WorkflowAnalyzer
 
 #Requires -Version 5.1
 #Requires -Modules Pester
 
-# Importer le module à tester
+# Importer le module Ã  tester
 $modulePath = Join-Path -Path (Split-Path -Parent $PSScriptRoot) -ChildPath "WorkflowAnalyzer.psm1"
 Import-Module $modulePath -Force
 
-# Créer un dossier temporaire pour les fichiers de test
+# CrÃ©er un dossier temporaire pour les fichiers de test
 $testDataPath = Join-Path -Path $PSScriptRoot -ChildPath "TestData"
 if (-not (Test-Path -Path $testDataPath)) {
   New-Item -Path $testDataPath -ItemType Directory -Force | Out-Null
 }
 
-# Créer un dossier pour les résultats des tests
+# CrÃ©er un dossier pour les rÃ©sultats des tests
 $testResultsPath = Join-Path -Path $PSScriptRoot -ChildPath "TestResults"
 if (-not (Test-Path -Path $testResultsPath)) {
   New-Item -Path $testResultsPath -ItemType Directory -Force | Out-Null
 }
 
-# Créer un workflow n8n de test simple
+# CrÃ©er un workflow n8n de test simple
 $simpleWorkflowPath = Join-Path -Path $testDataPath -ChildPath "simple_workflow.json"
 $simpleWorkflowJson = @"
 {
@@ -93,7 +93,7 @@ $simpleWorkflowJson = @"
 "@
 Set-Content -Path $simpleWorkflowPath -Value $simpleWorkflowJson -Encoding UTF8
 
-# Créer un workflow n8n de test avec des conditions
+# CrÃ©er un workflow n8n de test avec des conditions
 $conditionalWorkflowPath = Join-Path -Path $testDataPath -ChildPath "conditional_workflow.json"
 $conditionalWorkflowJson = @"
 {
@@ -301,7 +301,7 @@ $conditionalWorkflowJson = @"
 "@
 Set-Content -Path $conditionalWorkflowPath -Value $conditionalWorkflowJson -Encoding UTF8
 
-# Créer un workflow n8n de test complexe avec différents types de nœuds
+# CrÃ©er un workflow n8n de test complexe avec diffÃ©rents types de nÅ“uds
 $complexWorkflowPath = Join-Path -Path $testDataPath -ChildPath "complex_workflow.json"
 $complexWorkflowJson = @"
 {
@@ -491,7 +491,7 @@ $complexWorkflowJson = @"
 "@
 Set-Content -Path $complexWorkflowPath -Value $complexWorkflowJson -Encoding UTF8
 
-# Définir les tests Pester
+# DÃ©finir les tests Pester
 Describe "WorkflowAnalyzer Module Tests" {
   Context "Get-N8nWorkflow Function" {
     It "Should load a simple workflow correctly" {
@@ -595,13 +595,13 @@ Describe "WorkflowAnalyzer Module Tests" {
       $transitions | Should -Not -BeNullOrEmpty
       $transitions.Count | Should -Be 8
 
-      # Vérifier les transitions de l'IF
+      # VÃ©rifier les transitions de l'IF
       $ifTransitions = $transitions | Where-Object { $_.SourceNodeId -eq "node3" }
       $ifTransitions.Count | Should -Be 2
       $ifTransitions[0].TargetNodeId | Should -Be "node4" # True path
       $ifTransitions[1].TargetNodeId | Should -Be "node5" # False path
 
-      # Vérifier les transitions du Switch
+      # VÃ©rifier les transitions du Switch
       $switchTransitions = $transitions | Where-Object { $_.SourceNodeId -eq "node6" }
       $switchTransitions.Count | Should -Be 2
       $switchTransitions[0].TargetNodeId | Should -Be "node7" # Output 0
@@ -623,7 +623,7 @@ Describe "WorkflowAnalyzer Module Tests" {
       $conditions | Should -Not -BeNullOrEmpty
       $conditions.Count | Should -Be 2
 
-      # Vérifier le nœud IF
+      # VÃ©rifier le nÅ“ud IF
       $ifCondition = $conditions | Where-Object { $_.Type -eq "n8n-nodes-base.if" }
       $ifCondition | Should -Not -BeNullOrEmpty
       $ifCondition.Conditions.Count | Should -Be 1
@@ -631,7 +631,7 @@ Describe "WorkflowAnalyzer Module Tests" {
       $ifCondition.Conditions[0].Operation | Should -Be "equal"
       $ifCondition.Conditions[0].Value2 | Should -Be "test"
 
-      # Vérifier le nœud Switch
+      # VÃ©rifier le nÅ“ud Switch
       $switchCondition = $conditions | Where-Object { $_.Type -eq "n8n-nodes-base.switch" }
       $switchCondition | Should -Not -BeNullOrEmpty
       $switchCondition.Conditions.Count | Should -Be 2
@@ -649,7 +649,7 @@ Describe "WorkflowAnalyzer Module Tests" {
       $conditions | Should -Not -BeNullOrEmpty
       $conditions.Count | Should -Be 2
 
-      # Vérifier les transitions du nœud IF
+      # VÃ©rifier les transitions du nÅ“ud IF
       $ifCondition = $conditions | Where-Object { $_.Type -eq "n8n-nodes-base.if" }
       $ifCondition.Transitions | Should -Not -BeNullOrEmpty
       $ifCondition.Transitions.Count | Should -Be 2
@@ -658,7 +658,7 @@ Describe "WorkflowAnalyzer Module Tests" {
       $ifCondition.Transitions[1].OutputLabel | Should -Be "false"
       $ifCondition.Transitions[1].TargetNodeName | Should -Be "False Path"
 
-      # Vérifier les transitions du nœud Switch
+      # VÃ©rifier les transitions du nÅ“ud Switch
       $switchCondition = $conditions | Where-Object { $_.Type -eq "n8n-nodes-base.switch" }
       $switchCondition.Transitions | Should -Not -BeNullOrEmpty
       $switchCondition.Transitions.Count | Should -Be 2
@@ -677,7 +677,7 @@ Describe "WorkflowAnalyzer Module Tests" {
       Test-Path -Path $outputPath | Should -Be $true
       $reportContent = Get-Content -Path $outputPath -Raw
       $reportContent | Should -Match "Test Workflow Simple"
-      $reportContent | Should -Match "Activités"
+      $reportContent | Should -Match "ActivitÃ©s"
       $reportContent | Should -Match "Transitions"
     }
 
@@ -711,13 +711,13 @@ Describe "WorkflowAnalyzer Module Tests" {
       Test-Path -Path $outputPath | Should -Be $true
       $reportContent = Get-Content -Path $outputPath -Raw
       $reportContent | Should -Match "Test Workflow Simple"
-      $reportContent | Should -Match "Activités:"
+      $reportContent | Should -Match "ActivitÃ©s:"
       $reportContent | Should -Match "Transitions:"
     }
   }
 }
 
-# Nettoyer les fichiers de test après l'exécution des tests
+# Nettoyer les fichiers de test aprÃ¨s l'exÃ©cution des tests
 AfterAll {
   # Supprimer les fichiers de test
   if (Test-Path -Path $testDataPath) {

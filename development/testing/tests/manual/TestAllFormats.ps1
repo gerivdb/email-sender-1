@@ -1,6 +1,6 @@
-# Script de test manuel pour tous les formats et la détection d'encodage
+﻿# Script de test manuel pour tous les formats et la dÃ©tection d'encodage
 
-# Chemins des modules à tester
+# Chemins des modules Ã  tester
 $projectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmenter.ps1"
@@ -8,19 +8,19 @@ $unifiedSegmenterPath = Join-Path -Path $modulesPath -ChildPath "UnifiedSegmente
 # Importer le module
 . $unifiedSegmenterPath
 
-# Initialiser le segmenteur unifié
-Write-Host "Initialisation du segmenteur unifié..."
+# Initialiser le segmenteur unifiÃ©
+Write-Host "Initialisation du segmenteur unifiÃ©..."
 $initResult = Initialize-UnifiedSegmenter
-Write-Host "Initialisation réussie: $initResult"
+Write-Host "Initialisation rÃ©ussie: $initResult"
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $env:TEMP -ChildPath "AllFormatsTest"
 if (Test-Path -Path $testDir) {
     Remove-Item -Path $testDir -Recurse -Force
 }
 New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 
-# Créer des fichiers de test
+# CrÃ©er des fichiers de test
 $jsonFilePath = Join-Path -Path $testDir -ChildPath "test.json"
 $xmlFilePath = Join-Path -Path $testDir -ChildPath "test.xml"
 $csvFilePath = Join-Path -Path $testDir -ChildPath "test.csv"
@@ -30,7 +30,7 @@ $jsonArrayPath = Join-Path -Path $testDir -ChildPath "array.json"
 $outputDir = Join-Path -Path $testDir -ChildPath "output"
 New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
 
-# Créer un fichier JSON de test (objet)
+# CrÃ©er un fichier JSON de test (objet)
 $jsonContent = @{
     "name" = "Test Object"
     "items" = @(
@@ -41,7 +41,7 @@ $jsonContent = @{
 } | ConvertTo-Json -Depth 10
 Set-Content -Path $jsonFilePath -Value $jsonContent -Encoding UTF8
 
-# Créer un fichier JSON de test (tableau)
+# CrÃ©er un fichier JSON de test (tableau)
 $jsonArrayContent = @(
     @{ "id" = 1; "name" = "Item 1"; "value" = "Value 1" },
     @{ "id" = 2; "name" = "Item 2"; "value" = "Value 2" },
@@ -49,7 +49,7 @@ $jsonArrayContent = @(
 ) | ConvertTo-Json -Depth 10
 Set-Content -Path $jsonArrayPath -Value $jsonArrayContent -Encoding UTF8
 
-# Créer un fichier XML de test
+# CrÃ©er un fichier XML de test
 $xmlContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -69,7 +69,7 @@ $xmlContent = @"
 "@
 Set-Content -Path $xmlFilePath -Value $xmlContent -Encoding UTF8
 
-# Créer un fichier CSV de test
+# CrÃ©er un fichier CSV de test
 $csvContent = @"
 id,name,value
 1,Item 1,Value 1
@@ -78,7 +78,7 @@ id,name,value
 "@
 Set-Content -Path $csvFilePath -Value $csvContent -Encoding UTF8
 
-# Créer un fichier YAML de test
+# CrÃ©er un fichier YAML de test
 $yamlContent = @"
 name: Test Object
 items:
@@ -94,7 +94,7 @@ metadata:
 "@
 Set-Content -Path $yamlFilePath -Value $yamlContent -Encoding UTF8
 
-# Créer un fichier texte de test
+# CrÃ©er un fichier texte de test
 $textContent = @"
 Ceci est un fichier texte de test.
 Il contient plusieurs lignes.
@@ -104,8 +104,8 @@ Ligne 3
 "@
 Set-Content -Path $textFilePath -Value $textContent -Encoding UTF8
 
-# Test 1: Détection de format
-Write-Host "`n=== Test 1: Détection de format ==="
+# Test 1: DÃ©tection de format
+Write-Host "`n=== Test 1: DÃ©tection de format ==="
 Write-Host "JSON: $(Get-FileFormat -FilePath $jsonFilePath)"
 Write-Host "XML: $(Get-FileFormat -FilePath $xmlFilePath)"
 Write-Host "CSV: $(Get-FileFormat -FilePath $csvFilePath)"
@@ -113,8 +113,8 @@ Write-Host "YAML: $(Get-FileFormat -FilePath $yamlFilePath)"
 Write-Host "TEXT: $(Get-FileFormat -FilePath $textFilePath)"
 Write-Host "JSON Array: $(Get-FileFormat -FilePath $jsonArrayPath)"
 
-# Test 2: Détection d'encodage
-Write-Host "`n=== Test 2: Détection d'encodage ==="
+# Test 2: DÃ©tection d'encodage
+Write-Host "`n=== Test 2: DÃ©tection d'encodage ==="
 $jsonEncoding = Get-FileEncoding -FilePath $jsonFilePath
 Write-Host "JSON Encoding: $($jsonEncoding.encoding), Type: $($jsonEncoding.file_type)"
 
@@ -203,7 +203,7 @@ if ($csvAnalysisResult -and (Test-Path -Path $csvAnalysisPath)) {
     $csvAnalysis = Get-Content -Path $csvAnalysisPath -Raw | ConvertFrom-Json
     Write-Host "  Total des lignes: $($csvAnalysis.total_rows)"
     Write-Host "  Colonnes: $($csvAnalysis.columns)"
-    Write-Host "  En-tête: $($csvAnalysis.header -join ', ')"
+    Write-Host "  En-tÃªte: $($csvAnalysis.header -join ', ')"
 }
 
 # Analyse YAML
@@ -215,7 +215,7 @@ if ($yamlAnalysisResult -and (Test-Path -Path $yamlAnalysisPath)) {
     $yamlAnalysis = Get-Content -Path $yamlAnalysisPath -Raw | ConvertFrom-Json
     Write-Host "  Structure: $($yamlAnalysis.structure.type)"
     if ($yamlAnalysis.structure.keys) {
-        Write-Host "  Clés: $($yamlAnalysis.structure.keys.PSObject.Properties.Name -join ', ')"
+        Write-Host "  ClÃ©s: $($yamlAnalysis.structure.keys.PSObject.Properties.Name -join ', ')"
     }
 }
 
@@ -226,7 +226,7 @@ Write-Host "`n=== Test 6: Segmentation de fichier ==="
 $csvSegmentDir = Join-Path -Path $outputDir -ChildPath "csv_segments"
 New-Item -Path $csvSegmentDir -ItemType Directory -Force | Out-Null
 $csvSegmentResult = Split-File -FilePath $csvFilePath -Format "CSV" -OutputDir $csvSegmentDir -ChunkSizeKB 1
-Write-Host "Segmentation CSV: $($csvSegmentResult.Count) segments créés"
+Write-Host "Segmentation CSV: $($csvSegmentResult.Count) segments crÃ©Ã©s"
 if ($csvSegmentResult.Count -gt 0) {
     Write-Host "Segments CSV:"
     foreach ($segment in $csvSegmentResult) {
@@ -238,7 +238,7 @@ if ($csvSegmentResult.Count -gt 0) {
 $yamlSegmentDir = Join-Path -Path $outputDir -ChildPath "yaml_segments"
 New-Item -Path $yamlSegmentDir -ItemType Directory -Force | Out-Null
 $yamlSegmentResult = Split-File -FilePath $yamlFilePath -Format "YAML" -OutputDir $yamlSegmentDir -ChunkSizeKB 1
-Write-Host "`nSegmentation YAML: $($yamlSegmentResult.Count) segments créés"
+Write-Host "`nSegmentation YAML: $($yamlSegmentResult.Count) segments crÃ©Ã©s"
 if ($yamlSegmentResult.Count -gt 0) {
     Write-Host "Segments YAML:"
     foreach ($segment in $yamlSegmentResult) {
@@ -250,4 +250,4 @@ if ($yamlSegmentResult.Count -gt 0) {
 Write-Host "`nNettoyage des fichiers de test..."
 Remove-Item -Path $testDir -Recurse -Force
 
-Write-Host "`nTests terminés."
+Write-Host "`nTests terminÃ©s."

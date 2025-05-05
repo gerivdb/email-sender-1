@@ -1,5 +1,5 @@
-# Convert-TaskToVector.ps1
-# Script pour convertir les tâches de la roadmap en vecteurs avec leurs métadonnées
+﻿# Convert-TaskToVector.ps1
+# Script pour convertir les tÃ¢ches de la roadmap en vecteurs avec leurs mÃ©tadonnÃ©es
 
 [CmdletBinding()]
 param (
@@ -25,7 +25,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -48,7 +48,7 @@ function Write-Log {
     }
 }
 
-# Fonction pour extraire les tâches de la roadmap
+# Fonction pour extraire les tÃ¢ches de la roadmap
 function Get-RoadmapTasks {
     [CmdletBinding()]
     param (
@@ -69,13 +69,13 @@ function Get-RoadmapTasks {
         $currentDate = Get-Date -Format "yyyy-MM-dd"
         
         foreach ($line in $lines) {
-            # Détecter les sections (titres)
+            # DÃ©tecter les sections (titres)
             if ($line -match "^#{1,6}\s+(.+)$") {
                 $currentSection = $Matches[1]
                 continue
             }
             
-            # Détecter les tâches
+            # DÃ©tecter les tÃ¢ches
             if ($line -match "^\s*-\s+\[([ xX])\]\s+\*\*([0-9.]+)\*\*\s+(.+)$") {
                 $status = if ($Matches[1] -match "[xX]") { "Complete" } else { "Incomplete" }
                 $taskId = $Matches[2]
@@ -100,12 +100,12 @@ function Get-RoadmapTasks {
         return $tasks
     }
     catch {
-        Write-Log "Erreur lors de l'extraction des tâches: $_" -Level Error
+        Write-Log "Erreur lors de l'extraction des tÃ¢ches: $_" -Level Error
         return $null
     }
 }
 
-# Fonction pour générer un vecteur aléatoire (pour les tests sans API)
+# Fonction pour gÃ©nÃ©rer un vecteur alÃ©atoire (pour les tests sans API)
 function Get-RandomVector {
     [CmdletBinding()]
     param (
@@ -138,9 +138,9 @@ function Get-Embedding {
         [string]$Model
     )
     
-    # Si l'API key n'est pas fournie, générer un vecteur aléatoire
+    # Si l'API key n'est pas fournie, gÃ©nÃ©rer un vecteur alÃ©atoire
     if ([string]::IsNullOrEmpty($ApiKey)) {
-        Write-Log "Clé API non fournie. Génération d'un vecteur aléatoire." -Level Warning
+        Write-Log "ClÃ© API non fournie. GÃ©nÃ©ration d'un vecteur alÃ©atoire." -Level Warning
         return Get-RandomVector
     }
     
@@ -161,17 +161,17 @@ function Get-Embedding {
             return $response.data.embedding
         }
         else {
-            Write-Log "Réponse API invalide. Génération d'un vecteur aléatoire." -Level Warning
+            Write-Log "RÃ©ponse API invalide. GÃ©nÃ©ration d'un vecteur alÃ©atoire." -Level Warning
             return Get-RandomVector
         }
     }
     catch {
-        Write-Log "Erreur lors de l'appel à l'API d'embedding: $_" -Level Error
+        Write-Log "Erreur lors de l'appel Ã  l'API d'embedding: $_" -Level Error
         return Get-RandomVector
     }
 }
 
-# Fonction pour convertir les tâches en vecteurs
+# Fonction pour convertir les tÃ¢ches en vecteurs
 function Convert-TasksToVectors {
     [CmdletBinding()]
     param (
@@ -197,15 +197,15 @@ function Convert-TasksToVectors {
     
     foreach ($task in $Tasks) {
         $currentTask++
-        Write-Progress -Activity "Conversion des tâches en vecteurs" -Status "Traitement de la tâche $($task.TaskId)" -PercentComplete (($currentTask / $totalTasks) * 100)
+        Write-Progress -Activity "Conversion des tÃ¢ches en vecteurs" -Status "Traitement de la tÃ¢che $($task.TaskId)" -PercentComplete (($currentTask / $totalTasks) * 100)
         
-        # Créer un texte enrichi pour l'embedding
+        # CrÃ©er un texte enrichi pour l'embedding
         $enrichedText = "ID: $($task.TaskId) | Description: $($task.Description) | Section: $($task.Section) | Status: $($task.Status)"
         
         # Obtenir le vecteur d'embedding
         $vector = Get-Embedding -Text $enrichedText -ApiKey $ApiKey -Endpoint $Endpoint -Model $Model
         
-        # Créer l'objet tâche vectorisée
+        # CrÃ©er l'objet tÃ¢che vectorisÃ©e
         $taskVector = [PSCustomObject]@{
             TaskId = $task.TaskId
             Description = $task.Description
@@ -225,38 +225,38 @@ function Convert-TasksToVectors {
         $taskVectors += $taskVector
     }
     
-    Write-Progress -Activity "Conversion des tâches en vecteurs" -Completed
+    Write-Progress -Activity "Conversion des tÃ¢ches en vecteurs" -Completed
     return $taskVectors
 }
 
 # Fonction principale
 function Main {
-    # Vérifier si le fichier de sortie existe déjà
+    # VÃ©rifier si le fichier de sortie existe dÃ©jÃ 
     if ((Test-Path -Path $OutputPath) -and -not $Force) {
-        Write-Log "Le fichier de sortie $OutputPath existe déjà. Utilisez -Force pour l'écraser." -Level Warning
+        Write-Log "Le fichier de sortie $OutputPath existe dÃ©jÃ . Utilisez -Force pour l'Ã©craser." -Level Warning
         return
     }
     
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     $outputFolder = Split-Path -Path $OutputPath -Parent
     if (-not (Test-Path -Path $outputFolder)) {
         New-Item -Path $outputFolder -ItemType Directory -Force | Out-Null
-        Write-Log "Dossier créé: $outputFolder" -Level Info
+        Write-Log "Dossier crÃ©Ã©: $outputFolder" -Level Info
     }
     
-    # Extraire les tâches de la roadmap
-    Write-Log "Extraction des tâches depuis $RoadmapPath..." -Level Info
+    # Extraire les tÃ¢ches de la roadmap
+    Write-Log "Extraction des tÃ¢ches depuis $RoadmapPath..." -Level Info
     $tasks = Get-RoadmapTasks -RoadmapPath $RoadmapPath
     
     if ($null -eq $tasks -or $tasks.Count -eq 0) {
-        Write-Log "Aucune tâche trouvée dans la roadmap." -Level Warning
+        Write-Log "Aucune tÃ¢che trouvÃ©e dans la roadmap." -Level Warning
         return
     }
     
-    Write-Log "$($tasks.Count) tâches extraites." -Level Success
+    Write-Log "$($tasks.Count) tÃ¢ches extraites." -Level Success
     
-    # Convertir les tâches en vecteurs
-    Write-Log "Conversion des tâches en vecteurs..." -Level Info
+    # Convertir les tÃ¢ches en vecteurs
+    Write-Log "Conversion des tÃ¢ches en vecteurs..." -Level Info
     $taskVectors = Convert-TasksToVectors -Tasks $tasks -ApiKey $ApiKey -Endpoint $ModelEndpoint -Model $ModelName -VectorDimension $VectorDimension
     
     # Sauvegarder les vecteurs dans un fichier JSON
@@ -273,12 +273,12 @@ function Main {
         }
         
         $output | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-        Write-Log "Vecteurs de tâches sauvegardés dans $OutputPath" -Level Success
+        Write-Log "Vecteurs de tÃ¢ches sauvegardÃ©s dans $OutputPath" -Level Success
     }
     catch {
         Write-Log "Erreur lors de la sauvegarde des vecteurs: $_" -Level Error
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

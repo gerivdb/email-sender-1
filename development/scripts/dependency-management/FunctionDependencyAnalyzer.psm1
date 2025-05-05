@@ -1,33 +1,33 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 
 <#
 .SYNOPSIS
-    Module pour l'analyse des dépendances de fonctions dans les scripts PowerShell.
+    Module pour l'analyse des dÃ©pendances de fonctions dans les scripts PowerShell.
 
 .DESCRIPTION
-    Ce module fournit des fonctions pour analyser les dépendances de fonctions dans les scripts PowerShell,
-    notamment la détection des appels de fonctions non importées.
+    Ce module fournit des fonctions pour analyser les dÃ©pendances de fonctions dans les scripts PowerShell,
+    notamment la dÃ©tection des appels de fonctions non importÃ©es.
 
 .NOTES
     Auteur: Dependency Management Team
     Version: 1.0
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
-# Importer les modules requis s'ils ne sont pas déjà importés
+# Importer les modules requis s'ils ne sont pas dÃ©jÃ  importÃ©s
 $moduleRoot = $PSScriptRoot
 $functionCallParserPath = Join-Path -Path $moduleRoot -ChildPath 'FunctionCallParser.psm1'
 $importedFunctionDetectorPath = Join-Path -Path $moduleRoot -ChildPath 'ImportedFunctionDetector.psm1'
 
-# Liste des fonctions internes de PowerShell qui ne nécessitent pas d'importation
+# Liste des fonctions internes de PowerShell qui ne nÃ©cessitent pas d'importation
 $script:InternalFunctions = @(
-    # Fonctions de flux de contrôle
+    # Fonctions de flux de contrÃ´le
     'ForEach-Object', 'Where-Object', 'If', 'Else', 'ElseIf', 'Switch', 'For', 'While', 'Do', 'Until', 'Break', 'Continue', 'Return', 'Exit',
     # Fonctions de pipeline
     'Sort-Object', 'Group-Object', 'Select-Object', 'Measure-Object',
     # Fonctions de conversion
     'ConvertTo-Json', 'ConvertFrom-Json', 'ConvertTo-Csv', 'ConvertFrom-Csv', 'ConvertTo-Xml', 'ConvertFrom-Xml',
-    # Fonctions de manipulation de chaînes
+    # Fonctions de manipulation de chaÃ®nes
     'Split-Path', 'Join-Path', 'Resolve-Path', 'Test-Path',
     # Fonctions de manipulation d'objets
     'New-Object', 'Add-Member', 'Get-Member',
@@ -39,13 +39,13 @@ $script:InternalFunctions = @(
     'Get-Command', 'Get-Help', 'Get-Module', 'Import-Module', 'Remove-Module',
     # Fonctions de manipulation de fichiers
     'Get-Content', 'Set-Content', 'Add-Content', 'Clear-Content', 'Get-Item', 'Set-Item', 'Remove-Item', 'New-Item',
-    # Fonctions de manipulation de répertoires
+    # Fonctions de manipulation de rÃ©pertoires
     'Get-ChildItem', 'Set-Location', 'Push-Location', 'Pop-Location',
     # Fonctions de manipulation de processus
     'Start-Process', 'Stop-Process', 'Wait-Process',
     # Fonctions de manipulation de services
     'Get-Service', 'Start-Service', 'Stop-Service', 'Restart-Service',
-    # Fonctions de manipulation d'événements
+    # Fonctions de manipulation d'Ã©vÃ©nements
     'Register-ObjectEvent', 'Unregister-Event', 'Wait-Event', 'Get-Event', 'Remove-Event',
     # Fonctions de manipulation de jobs
     'Start-Job', 'Stop-Job', 'Wait-Job', 'Receive-Job', 'Remove-Job',
@@ -61,13 +61,13 @@ $script:InternalFunctions = @(
     'Invoke-DscResource', 'Get-DscResource', 'New-DscChecksum',
     # Fonctions de manipulation de certificats
     'Get-PfxCertificate', 'New-SelfSignedCertificate',
-    # Fonctions de manipulation de sécurité
+    # Fonctions de manipulation de sÃ©curitÃ©
     'ConvertTo-SecureString', 'ConvertFrom-SecureString', 'Get-Credential',
     # Fonctions de manipulation de dates
     'Get-Date', 'Set-Date',
     # Fonctions de manipulation de temps
     'Start-Sleep', 'Measure-Command',
-    # Fonctions de manipulation de hôtes
+    # Fonctions de manipulation de hÃ´tes
     'Write-Host', 'Write-Output', 'Write-Error', 'Write-Warning', 'Write-Verbose', 'Write-Debug', 'Write-Progress',
     # Fonctions de manipulation de culture
     'Get-Culture', 'Set-Culture',
@@ -103,7 +103,7 @@ if (-not (Get-Module -Name 'FunctionCallParser')) {
     if (Test-Path -Path $functionCallParserPath) {
         Import-Module -Name $functionCallParserPath -Force
     } else {
-        throw "Le module FunctionCallParser est requis mais n'a pas été trouvé à l'emplacement: $functionCallParserPath"
+        throw "Le module FunctionCallParser est requis mais n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $functionCallParserPath"
     }
 }
 
@@ -111,46 +111,46 @@ if (-not (Get-Module -Name 'ImportedFunctionDetector')) {
     if (Test-Path -Path $importedFunctionDetectorPath) {
         Import-Module -Name $importedFunctionDetectorPath -Force
     } else {
-        throw "Le module ImportedFunctionDetector est requis mais n'a pas été trouvé à l'emplacement: $importedFunctionDetectorPath"
+        throw "Le module ImportedFunctionDetector est requis mais n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement: $importedFunctionDetectorPath"
     }
 }
 
 <#
 .SYNOPSIS
-    Détecte les appels de fonctions non importées dans un script PowerShell.
+    DÃ©tecte les appels de fonctions non importÃ©es dans un script PowerShell.
 
 .DESCRIPTION
-    Cette fonction analyse un script PowerShell et détecte tous les appels de fonctions
-    qui ne sont pas importées via Import-Module, using module, #Requires -Modules, etc.
+    Cette fonction analyse un script PowerShell et dÃ©tecte tous les appels de fonctions
+    qui ne sont pas importÃ©es via Import-Module, using module, #Requires -Modules, etc.
 
 .PARAMETER ScriptPath
-    Chemin du script PowerShell à analyser.
+    Chemin du script PowerShell Ã  analyser.
 
 .PARAMETER ScriptContent
-    Contenu du script PowerShell à analyser. Si spécifié, ScriptPath est ignoré.
+    Contenu du script PowerShell Ã  analyser. Si spÃ©cifiÃ©, ScriptPath est ignorÃ©.
 
 .PARAMETER ImportModulesIfNotLoaded
-    Indique si les modules doivent être importés s'ils ne sont pas déjà chargés.
+    Indique si les modules doivent Ãªtre importÃ©s s'ils ne sont pas dÃ©jÃ  chargÃ©s.
 
 .PARAMETER IncludeMethodCalls
-    Indique si les appels de méthodes doivent être inclus dans l'analyse.
+    Indique si les appels de mÃ©thodes doivent Ãªtre inclus dans l'analyse.
 
 .PARAMETER IncludeStaticMethodCalls
-    Indique si les appels de méthodes statiques doivent être inclus dans l'analyse.
+    Indique si les appels de mÃ©thodes statiques doivent Ãªtre inclus dans l'analyse.
 
 .PARAMETER ExcludeCommonCmdlets
-    Indique si les cmdlets communs (comme Get-Item, Set-Location, etc.) doivent être exclus de l'analyse.
+    Indique si les cmdlets communs (comme Get-Item, Set-Location, etc.) doivent Ãªtre exclus de l'analyse.
 
 .EXAMPLE
     $nonImportedFunctions = Get-NonImportedFunctionCalls -ScriptPath 'C:\Scripts\MyScript.ps1'
-    Analyse le script MyScript.ps1 et retourne tous les appels de fonctions non importées.
+    Analyse le script MyScript.ps1 et retourne tous les appels de fonctions non importÃ©es.
 
 .EXAMPLE
     $nonImportedFunctions = Get-NonImportedFunctionCalls -ScriptContent $scriptContent -ImportModulesIfNotLoaded -IncludeMethodCalls
-    Analyse le contenu du script fourni et retourne tous les appels de fonctions non importées, y compris les appels de méthodes.
+    Analyse le contenu du script fourni et retourne tous les appels de fonctions non importÃ©es, y compris les appels de mÃ©thodes.
 
 .OUTPUTS
-    [PSCustomObject[]] Liste des appels de fonctions non importées.
+    [PSCustomObject[]] Liste des appels de fonctions non importÃ©es.
 #>
 function Get-NonImportedFunctionCalls {
     [CmdletBinding()]
@@ -175,15 +175,15 @@ function Get-NonImportedFunctionCalls {
     )
 
     begin {
-        # Vérifier si au moins un des paramètres ScriptPath ou ScriptContent est spécifié
+        # VÃ©rifier si au moins un des paramÃ¨tres ScriptPath ou ScriptContent est spÃ©cifiÃ©
         if (-not $ScriptPath -and -not $ScriptContent) {
-            throw 'Vous devez spécifier soit ScriptPath, soit ScriptContent.'
+            throw 'Vous devez spÃ©cifier soit ScriptPath, soit ScriptContent.'
         }
     }
 
     process {
         try {
-            # Préparer les paramètres pour Get-FunctionCalls
+            # PrÃ©parer les paramÃ¨tres pour Get-FunctionCalls
             $functionCallsParams = @{
                 IncludeMethodCalls       = $IncludeMethodCalls
                 IncludeStaticMethodCalls = $IncludeStaticMethodCalls
@@ -199,7 +199,7 @@ function Get-NonImportedFunctionCalls {
             # Obtenir tous les appels de fonctions
             $functionCalls = Get-FunctionCalls @functionCallsParams
 
-            # Obtenir les fonctions définies localement
+            # Obtenir les fonctions dÃ©finies localement
             $localFunctionsParams = @{}
             if ($PSCmdlet.ParameterSetName -eq 'Path') {
                 $localFunctionsParams['ScriptPath'] = $ScriptPath
@@ -209,7 +209,7 @@ function Get-NonImportedFunctionCalls {
 
             $localFunctions = Get-LocalFunctions @localFunctionsParams
 
-            # Obtenir les fonctions importées
+            # Obtenir les fonctions importÃ©es
             $importedFunctionsParams = @{
                 ImportModulesIfNotLoaded = $ImportModulesIfNotLoaded
                 IncludeCmdlets           = $true
@@ -224,41 +224,41 @@ function Get-NonImportedFunctionCalls {
 
             $importedFunctions = Get-ImportedFunctions @importedFunctionsParams
 
-            # Filtrer les appels de fonctions pour ne garder que ceux qui ne sont pas importés
+            # Filtrer les appels de fonctions pour ne garder que ceux qui ne sont pas importÃ©s
             $nonImportedFunctionCalls = [System.Collections.ArrayList]::new()
 
             foreach ($call in $functionCalls) {
-                # Ignorer les appels de méthodes et de méthodes statiques
+                # Ignorer les appels de mÃ©thodes et de mÃ©thodes statiques
                 if ($call.Type -eq 'Method' -or $call.Type -eq 'StaticMethod') {
                     continue
                 }
 
                 $functionName = $call.Name
 
-                # Vérifier si la fonction est définie localement
+                # VÃ©rifier si la fonction est dÃ©finie localement
                 $isLocalFunction = $localFunctions | Where-Object { $_.Name -eq $functionName }
                 if ($isLocalFunction) {
                     continue
                 }
 
-                # Vérifier si la fonction est importée
+                # VÃ©rifier si la fonction est importÃ©e
                 $isImportedFunction = $importedFunctions | Where-Object { $_.Name -eq $functionName }
                 if ($isImportedFunction) {
                     continue
                 }
 
-                # Vérifier si la fonction est une fonction interne de PowerShell
+                # VÃ©rifier si la fonction est une fonction interne de PowerShell
                 if ($script:InternalFunctions -contains $functionName) {
                     continue
                 }
 
-                # Vérifier si la fonction est un alias d'une fonction interne
+                # VÃ©rifier si la fonction est un alias d'une fonction interne
                 $alias = Get-Alias -Name $functionName -ErrorAction SilentlyContinue
                 if ($alias -and ($script:InternalFunctions -contains $alias.ResolvedCommand.Name)) {
                     continue
                 }
 
-                # Ajouter l'appel de fonction à la liste des appels non importés
+                # Ajouter l'appel de fonction Ã  la liste des appels non importÃ©s
                 [void]$nonImportedFunctionCalls.Add([PSCustomObject]@{
                         Name       = $functionName
                         Type       = $call.Type
@@ -271,7 +271,7 @@ function Get-NonImportedFunctionCalls {
 
             return $nonImportedFunctionCalls
         } catch {
-            Write-Error "Erreur lors de la détection des appels de fonctions non importées: $_"
+            Write-Error "Erreur lors de la dÃ©tection des appels de fonctions non importÃ©es: $_"
             return @()
         }
     }
@@ -279,34 +279,34 @@ function Get-NonImportedFunctionCalls {
 
 <#
 .SYNOPSIS
-    Résout les modules pour les fonctions non importées.
+    RÃ©sout les modules pour les fonctions non importÃ©es.
 
 .DESCRIPTION
-    Cette fonction résout les modules pour les fonctions non importées en recherchant
+    Cette fonction rÃ©sout les modules pour les fonctions non importÃ©es en recherchant
     les modules qui exportent ces fonctions.
 
 .PARAMETER FunctionNames
-    Liste des noms de fonctions à résoudre.
+    Liste des noms de fonctions Ã  rÃ©soudre.
 
 .PARAMETER SearchInInstalledModules
-    Indique si la recherche doit être effectuée dans les modules installés.
+    Indique si la recherche doit Ãªtre effectuÃ©e dans les modules installÃ©s.
 
 .PARAMETER SearchInLoadedModules
-    Indique si la recherche doit être effectuée dans les modules chargés.
+    Indique si la recherche doit Ãªtre effectuÃ©e dans les modules chargÃ©s.
 
 .PARAMETER ExcludeSystemModules
-    Indique si les modules système doivent être exclus des résultats.
+    Indique si les modules systÃ¨me doivent Ãªtre exclus des rÃ©sultats.
 
 .EXAMPLE
     $resolvedModules = Resolve-ModulesForFunctions -FunctionNames @('Get-Process', 'Get-Service')
-    Résout les modules pour les fonctions Get-Process et Get-Service.
+    RÃ©sout les modules pour les fonctions Get-Process et Get-Service.
 
 .EXAMPLE
     $resolvedModules = Resolve-ModulesForFunctions -FunctionNames $nonImportedFunctions.Name -SearchInInstalledModules -ExcludeSystemModules
-    Résout les modules pour les fonctions non importées en recherchant dans les modules installés, en excluant les modules système.
+    RÃ©sout les modules pour les fonctions non importÃ©es en recherchant dans les modules installÃ©s, en excluant les modules systÃ¨me.
 
 .OUTPUTS
-    [PSCustomObject[]] Liste des modules résolus pour les fonctions.
+    [PSCustomObject[]] Liste des modules rÃ©solus pour les fonctions.
 #>
 function Resolve-ModulesForFunctions {
     [CmdletBinding()]
@@ -326,15 +326,15 @@ function Resolve-ModulesForFunctions {
 
     process {
         try {
-            # Initialiser la liste des modules résolus
+            # Initialiser la liste des modules rÃ©solus
             $resolvedModules = [System.Collections.ArrayList]::new()
 
-            # Définir la valeur par défaut de SearchInLoadedModules
+            # DÃ©finir la valeur par dÃ©faut de SearchInLoadedModules
             if (-not $PSBoundParameters.ContainsKey('SearchInLoadedModules') -and -not $PSBoundParameters.ContainsKey('SearchInInstalledModules')) {
                 $SearchInLoadedModules = $true
             }
 
-            # Obtenir les modules à rechercher
+            # Obtenir les modules Ã  rechercher
             $modulesToSearch = @()
 
             if ($SearchInLoadedModules) {
@@ -345,7 +345,7 @@ function Resolve-ModulesForFunctions {
                 $modulesToSearch += Get-Module -ListAvailable
             }
 
-            # Filtrer les modules système si demandé
+            # Filtrer les modules systÃ¨me si demandÃ©
             if ($ExcludeSystemModules) {
                 $systemModules = @(
                     'Microsoft.PowerShell.Archive',
@@ -372,16 +372,16 @@ function Resolve-ModulesForFunctions {
             foreach ($functionName in $FunctionNames) {
                 $foundModules = @()
 
-                # Rechercher dans les fonctions exportées
+                # Rechercher dans les fonctions exportÃ©es
                 $foundModules += $modulesToSearch | Where-Object { $_.ExportedFunctions.Keys -contains $functionName }
 
-                # Rechercher dans les cmdlets exportés
+                # Rechercher dans les cmdlets exportÃ©s
                 $foundModules += $modulesToSearch | Where-Object { $_.ExportedCmdlets.Keys -contains $functionName }
 
-                # Rechercher dans les alias exportés
+                # Rechercher dans les alias exportÃ©s
                 $foundModules += $modulesToSearch | Where-Object { $_.ExportedAliases.Keys -contains $functionName }
 
-                # Ajouter les modules trouvés à la liste des modules résolus
+                # Ajouter les modules trouvÃ©s Ã  la liste des modules rÃ©solus
                 foreach ($module in $foundModules) {
                     [void]$resolvedModules.Add([PSCustomObject]@{
                             FunctionName  = $functionName
@@ -394,7 +394,7 @@ function Resolve-ModulesForFunctions {
 
             return $resolvedModules
         } catch {
-            Write-Error "Erreur lors de la résolution des modules pour les fonctions: $_"
+            Write-Error "Erreur lors de la rÃ©solution des modules pour les fonctions: $_"
             return @()
         }
     }
@@ -402,49 +402,49 @@ function Resolve-ModulesForFunctions {
 
 <#
 .SYNOPSIS
-    Analyse les dépendances de fonctions dans un script PowerShell.
+    Analyse les dÃ©pendances de fonctions dans un script PowerShell.
 
 .DESCRIPTION
-    Cette fonction analyse un script PowerShell et détecte les dépendances de fonctions,
-    notamment les appels de fonctions non importées et les modules requis.
+    Cette fonction analyse un script PowerShell et dÃ©tecte les dÃ©pendances de fonctions,
+    notamment les appels de fonctions non importÃ©es et les modules requis.
 
 .PARAMETER ScriptPath
-    Chemin du script PowerShell à analyser.
+    Chemin du script PowerShell Ã  analyser.
 
 .PARAMETER ScriptContent
-    Contenu du script PowerShell à analyser. Si spécifié, ScriptPath est ignoré.
+    Contenu du script PowerShell Ã  analyser. Si spÃ©cifiÃ©, ScriptPath est ignorÃ©.
 
 .PARAMETER ImportModulesIfNotLoaded
-    Indique si les modules doivent être importés s'ils ne sont pas déjà chargés.
+    Indique si les modules doivent Ãªtre importÃ©s s'ils ne sont pas dÃ©jÃ  chargÃ©s.
 
 .PARAMETER IncludeMethodCalls
-    Indique si les appels de méthodes doivent être inclus dans l'analyse.
+    Indique si les appels de mÃ©thodes doivent Ãªtre inclus dans l'analyse.
 
 .PARAMETER IncludeStaticMethodCalls
-    Indique si les appels de méthodes statiques doivent être inclus dans l'analyse.
+    Indique si les appels de mÃ©thodes statiques doivent Ãªtre inclus dans l'analyse.
 
 .PARAMETER ExcludeCommonCmdlets
-    Indique si les cmdlets communs (comme Get-Item, Set-Location, etc.) doivent être exclus de l'analyse.
+    Indique si les cmdlets communs (comme Get-Item, Set-Location, etc.) doivent Ãªtre exclus de l'analyse.
 
 .PARAMETER ResolveModules
-    Indique si les modules pour les fonctions non importées doivent être résolus.
+    Indique si les modules pour les fonctions non importÃ©es doivent Ãªtre rÃ©solus.
 
 .PARAMETER SearchInInstalledModules
-    Indique si la recherche des modules doit être effectuée dans les modules installés.
+    Indique si la recherche des modules doit Ãªtre effectuÃ©e dans les modules installÃ©s.
 
 .PARAMETER ExcludeSystemModules
-    Indique si les modules système doivent être exclus des résultats.
+    Indique si les modules systÃ¨me doivent Ãªtre exclus des rÃ©sultats.
 
 .EXAMPLE
     $dependencies = Get-FunctionDependencies -ScriptPath 'C:\Scripts\MyScript.ps1' -ResolveModules
-    Analyse le script MyScript.ps1 et retourne les dépendances de fonctions, en résolvant les modules pour les fonctions non importées.
+    Analyse le script MyScript.ps1 et retourne les dÃ©pendances de fonctions, en rÃ©solvant les modules pour les fonctions non importÃ©es.
 
 .EXAMPLE
     $dependencies = Get-FunctionDependencies -ScriptContent $scriptContent -ImportModulesIfNotLoaded -IncludeMethodCalls -ResolveModules -SearchInInstalledModules
-    Analyse le contenu du script fourni et retourne les dépendances de fonctions, en résolvant les modules pour les fonctions non importées.
+    Analyse le contenu du script fourni et retourne les dÃ©pendances de fonctions, en rÃ©solvant les modules pour les fonctions non importÃ©es.
 
 .OUTPUTS
-    [PSCustomObject] Résultat de l'analyse des dépendances de fonctions.
+    [PSCustomObject] RÃ©sultat de l'analyse des dÃ©pendances de fonctions.
 #>
 function Get-FunctionDependencies {
     [CmdletBinding()]
@@ -478,15 +478,15 @@ function Get-FunctionDependencies {
     )
 
     begin {
-        # Vérifier si au moins un des paramètres ScriptPath ou ScriptContent est spécifié
+        # VÃ©rifier si au moins un des paramÃ¨tres ScriptPath ou ScriptContent est spÃ©cifiÃ©
         if (-not $ScriptPath -and -not $ScriptContent) {
-            throw 'Vous devez spécifier soit ScriptPath, soit ScriptContent.'
+            throw 'Vous devez spÃ©cifier soit ScriptPath, soit ScriptContent.'
         }
     }
 
     process {
         try {
-            # Préparer les paramètres pour Get-NonImportedFunctionCalls
+            # PrÃ©parer les paramÃ¨tres pour Get-NonImportedFunctionCalls
             $nonImportedFunctionCallsParams = @{
                 ImportModulesIfNotLoaded = $ImportModulesIfNotLoaded
                 IncludeMethodCalls       = $IncludeMethodCalls
@@ -500,10 +500,10 @@ function Get-FunctionDependencies {
                 $nonImportedFunctionCallsParams['ScriptContent'] = $ScriptContent
             }
 
-            # Obtenir les appels de fonctions non importées
+            # Obtenir les appels de fonctions non importÃ©es
             $nonImportedFunctionCalls = Get-NonImportedFunctionCalls @nonImportedFunctionCallsParams
 
-            # Résoudre les modules pour les fonctions non importées si demandé
+            # RÃ©soudre les modules pour les fonctions non importÃ©es si demandÃ©
             $resolvedModules = @()
             if ($ResolveModules -and $nonImportedFunctionCalls.Count -gt 0) {
                 $resolveModulesParams = @{
@@ -516,7 +516,7 @@ function Get-FunctionDependencies {
                 $resolvedModules = Resolve-ModulesForFunctions @resolveModulesParams
             }
 
-            # Obtenir les modules importés
+            # Obtenir les modules importÃ©s
             $importedModulesParams = @{
                 IncludeRequiresDirectives = $true
                 IncludeUsingStatements    = $true
@@ -530,7 +530,7 @@ function Get-FunctionDependencies {
 
             $importedModules = Get-ImportedModules @importedModulesParams
 
-            # Créer le résultat de l'analyse
+            # CrÃ©er le rÃ©sultat de l'analyse
             $result = [PSCustomObject]@{
                 ImportedModules          = $importedModules
                 NonImportedFunctionCalls = $nonImportedFunctionCalls
@@ -547,7 +547,7 @@ function Get-FunctionDependencies {
                     $resolvedModulesForFunction = $resolvedModules | Where-Object { $_.FunctionName -eq $functionName }
 
                     if ($resolvedModulesForFunction.Count -eq 0) {
-                        # Aucun module trouvé pour cette fonction
+                        # Aucun module trouvÃ© pour cette fonction
                         [void]$missingModules.Add([PSCustomObject]@{
                                 FunctionName    = $functionName
                                 Line            = $functionCall.Line
@@ -556,7 +556,7 @@ function Get-FunctionDependencies {
                                 ResolvedModules = @()
                             })
                     } else {
-                        # Vérifier si les modules résolus sont déjà importés
+                        # VÃ©rifier si les modules rÃ©solus sont dÃ©jÃ  importÃ©s
                         $modulesNotImported = $resolvedModulesForFunction | Where-Object {
                             $moduleName = $_.ModuleName
                             -not ($importedModules | Where-Object { $_.Name -eq $moduleName })
@@ -579,7 +579,7 @@ function Get-FunctionDependencies {
 
             return $result
         } catch {
-            Write-Error "Erreur lors de l'analyse des dépendances de fonctions: $_"
+            Write-Error "Erreur lors de l'analyse des dÃ©pendances de fonctions: $_"
             return $null
         }
     }

@@ -1,6 +1,6 @@
-# Script de test simple pour la fonction Invoke-AstTraversalBFSAdvanced
+﻿# Script de test simple pour la fonction Invoke-AstTraversalBFSAdvanced
 
-# Créer un script PowerShell de test très simple
+# CrÃ©er un script PowerShell de test trÃ¨s simple
 $sampleCode = @'
 function Test-Function {
     "Hello, World!"
@@ -11,7 +11,7 @@ function Test-Function {
 $tokens = $errors = $null
 $ast = [System.Management.Automation.Language.Parser]::ParseInput($sampleCode, [ref]$tokens, [ref]$errors)
 
-# Définir la fonction de parcours en largeur (BFS) avancée
+# DÃ©finir la fonction de parcours en largeur (BFS) avancÃ©e
 function Invoke-AstTraversalBFSAdvanced {
     param (
         [Parameter(Mandatory = $true)]
@@ -24,14 +24,14 @@ function Invoke-AstTraversalBFSAdvanced {
     $results = New-Object System.Collections.ArrayList
     $queue = New-Object System.Collections.Queue
     
-    # Ajouter le nœud racine à la file d'attente
+    # Ajouter le nÅ“ud racine Ã  la file d'attente
     $queue.Enqueue($Ast)
     
     # Parcourir la file d'attente
     while ($queue.Count -gt 0) {
         $currentNode = $queue.Dequeue()
         
-        # Vérifier si le nœud correspond au type spécifié
+        # VÃ©rifier si le nÅ“ud correspond au type spÃ©cifiÃ©
         if ($NodeType) {
             $nodeTypeName = $currentNode.GetType().Name
             $typeToCheck = $NodeType
@@ -46,7 +46,7 @@ function Invoke-AstTraversalBFSAdvanced {
             [void]$results.Add($currentNode)
         }
         
-        # Ajouter les nœuds enfants à la file d'attente
+        # Ajouter les nÅ“uds enfants Ã  la file d'attente
         $children = $currentNode.FindAll({ $true }, $false)
         foreach ($child in $children) {
             $queue.Enqueue($child)

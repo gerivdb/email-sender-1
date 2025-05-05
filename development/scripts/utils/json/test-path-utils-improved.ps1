@@ -1,4 +1,4 @@
-# test-path-utils-improved.ps1
+﻿# test-path-utils-improved.ps1
 # Script de test ameliore pour les utilitaires de gestion des chemins
 
 # Importer le module Path-Manager
@@ -132,7 +132,7 @@ function Start-PathTests {
 
     # Test 6: Remove-PathAccents
     Test-PathFunction -Name "Remove-PathAccents" -Test {
-        $path = "development/scripts/utilitÃ©s/path-utils.ps1"
+        $path = "development/scripts/utilitÃƒÂ©s/path-utils.ps1"
         $pathWithoutAccents = Remove-PathAccents -Path $path
         return $pathWithoutAccents
     } -Expected "development/scripts/utilites/path-utils.ps1"
@@ -146,14 +146,14 @@ function Start-PathTests {
 
     # Test 8: ConvertTo-NormalizedPath
     Test-PathFunction -Name "ConvertTo-NormalizedPath" -Test {
-        $path = "development/scripts/utilitÃ©s test/path-utils.ps1"
+        $path = "development/scripts/utilitÃƒÂ©s test/path-utils.ps1"
         $normalizedPath = ConvertTo-NormalizedPath -Path $path
         return $normalizedPath
     } -Expected "..\..\D"
 
     # Test 9: Test-PathAccents
     Test-PathFunction -Name "Test-PathAccents avec accents" -Test {
-        $pathWithAccents = "development/scripts/utilitÃ©s/path-utils.ps1"
+        $pathWithAccents = "development/scripts/utilitÃƒÂ©s/path-utils.ps1"
         $hasAccents = Test-PathAccents -Path $pathWithAccents
         return $hasAccents
     } -Expected "True"

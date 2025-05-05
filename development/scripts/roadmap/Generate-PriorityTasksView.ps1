@@ -1,5 +1,5 @@
-# Generate-PriorityTasksView.ps1
-# Script pour générer une vue des prochaines étapes prioritaires
+﻿# Generate-PriorityTasksView.ps1
+# Script pour gÃ©nÃ©rer une vue des prochaines Ã©tapes prioritaires
 
 [CmdletBinding()]
 param (
@@ -36,7 +36,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -59,26 +59,26 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         }
         else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     }
     catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("chromadb", "json", "datetime")
     $missingPackages = @()
@@ -99,24 +99,24 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         }
         else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
     
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour générer la vue des prochaines étapes prioritaires
+# Fonction pour crÃ©er un script Python temporaire pour gÃ©nÃ©rer la vue des prochaines Ã©tapes prioritaires
 function New-PriorityTasksViewScript {
     [CmdletBinding()]
     param (
@@ -153,123 +153,123 @@ from datetime import datetime
 from collections import defaultdict
 
 def get_task_level(task_id):
-    """Déterminer le niveau hiérarchique d'une tâche à partir de son ID"""
+    """DÃ©terminer le niveau hiÃ©rarchique d'une tÃ¢che Ã  partir de son ID"""
     return len(task_id.split('.'))
 
 def get_parent_id(task_id):
-    """Obtenir l'ID parent d'une tâche"""
+    """Obtenir l'ID parent d'une tÃ¢che"""
     parts = task_id.split('.')
     if len(parts) <= 1:
         return ""
     return '.'.join(parts[:-1])
 
 def calculate_priority_auto(tasks):
-    """Calculer la priorité automatiquement en fonction de plusieurs facteurs"""
-    # Créer un dictionnaire des tâches pour un accès facile
+    """Calculer la prioritÃ© automatiquement en fonction de plusieurs facteurs"""
+    # CrÃ©er un dictionnaire des tÃ¢ches pour un accÃ¨s facile
     task_dict = {task["id"]: task for task in tasks}
     
-    # Calculer les scores de priorité
+    # Calculer les scores de prioritÃ©
     for task in tasks:
         # Initialiser le score
         score = 0
         
-        # Facteur 1: Niveau hiérarchique (les tâches de plus haut niveau sont plus prioritaires)
+        # Facteur 1: Niveau hiÃ©rarchique (les tÃ¢ches de plus haut niveau sont plus prioritaires)
         level = get_task_level(task["id"])
         score += (5 - min(level, 5)) * 10  # Max 40 points
         
-        # Facteur 2: Dépendances (les tâches sans dépendances sont plus prioritaires)
+        # Facteur 2: DÃ©pendances (les tÃ¢ches sans dÃ©pendances sont plus prioritaires)
         parent_id = get_parent_id(task["id"])
         if parent_id and parent_id in task_dict:
             parent_status = task_dict[parent_id].get("status", "")
             if parent_status == "Complete":
-                score += 30  # Parent terminé = bonne priorité
+                score += 30  # Parent terminÃ© = bonne prioritÃ©
             elif parent_status == "InProgress":
-                score += 20  # Parent en cours = priorité moyenne
+                score += 20  # Parent en cours = prioritÃ© moyenne
             else:
-                score += 0   # Parent non commencé = faible priorité
+                score += 0   # Parent non commencÃ© = faible prioritÃ©
         else:
-            score += 30  # Pas de parent = bonne priorité
+            score += 30  # Pas de parent = bonne prioritÃ©
         
-        # Facteur 3: Statut (les tâches en cours sont plus prioritaires)
+        # Facteur 3: Statut (les tÃ¢ches en cours sont plus prioritaires)
         if task.get("status") == "InProgress":
             score += 20
         
-        # Facteur 4: Assignation (les tâches assignées sont plus prioritaires)
+        # Facteur 4: Assignation (les tÃ¢ches assignÃ©es sont plus prioritaires)
         if task.get("assignee"):
             score += 10
         
         # Stocker le score
         task["priority_score"] = score
     
-    # Trier par score de priorité (décroissant)
+    # Trier par score de prioritÃ© (dÃ©croissant)
     return sorted(tasks, key=lambda x: x.get("priority_score", 0), reverse=True)
 
 def calculate_priority_dependencies(tasks):
-    """Calculer la priorité en fonction des dépendances"""
-    # Créer un dictionnaire des tâches pour un accès facile
+    """Calculer la prioritÃ© en fonction des dÃ©pendances"""
+    # CrÃ©er un dictionnaire des tÃ¢ches pour un accÃ¨s facile
     task_dict = {task["id"]: task for task in tasks}
     
-    # Calculer les scores de priorité
+    # Calculer les scores de prioritÃ©
     for task in tasks:
         # Initialiser le score
         score = 0
         
-        # Facteur principal: Dépendances
+        # Facteur principal: DÃ©pendances
         parent_id = get_parent_id(task["id"])
         if parent_id and parent_id in task_dict:
             parent_status = task_dict[parent_id].get("status", "")
             if parent_status == "Complete":
-                score += 100  # Parent terminé = haute priorité
+                score += 100  # Parent terminÃ© = haute prioritÃ©
             elif parent_status == "InProgress":
-                score += 50   # Parent en cours = priorité moyenne
+                score += 50   # Parent en cours = prioritÃ© moyenne
             else:
-                score += 0    # Parent non commencé = faible priorité
+                score += 0    # Parent non commencÃ© = faible prioritÃ©
         else:
-            score += 80  # Pas de parent = bonne priorité
+            score += 80  # Pas de parent = bonne prioritÃ©
         
-        # Facteur secondaire: Niveau hiérarchique
+        # Facteur secondaire: Niveau hiÃ©rarchique
         level = get_task_level(task["id"])
         score += (5 - min(level, 5)) * 5  # Max 20 points
         
         # Stocker le score
         task["priority_score"] = score
     
-    # Trier par score de priorité (décroissant)
+    # Trier par score de prioritÃ© (dÃ©croissant)
     return sorted(tasks, key=lambda x: x.get("priority_score", 0), reverse=True)
 
 def calculate_priority_chronological(tasks):
-    """Calculer la priorité en fonction de l'ordre chronologique des IDs"""
-    # Trier par ID (ordre numérique)
+    """Calculer la prioritÃ© en fonction de l'ordre chronologique des IDs"""
+    # Trier par ID (ordre numÃ©rique)
     return sorted(tasks, key=lambda x: [int(p) if p.isdigit() else p for p in x["id"].split('.')])
 
 def calculate_priority_manual(tasks, config_path):
-    """Calculer la priorité en fonction de la configuration manuelle"""
-    # Charger la configuration de priorité
+    """Calculer la prioritÃ© en fonction de la configuration manuelle"""
+    # Charger la configuration de prioritÃ©
     priority_config = {}
     if os.path.exists(config_path):
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
                 priority_config = json.load(f)
         except Exception as e:
-            print(f"Erreur lors du chargement de la configuration de priorité: {e}")
+            print(f"Erreur lors du chargement de la configuration de prioritÃ©: {e}")
     
-    # Obtenir les priorités manuelles
+    # Obtenir les prioritÃ©s manuelles
     manual_priorities = priority_config.get("taskPriorities", {})
     
-    # Assigner les scores de priorité
+    # Assigner les scores de prioritÃ©
     for task in tasks:
         task_id = task["id"]
         if task_id in manual_priorities:
             task["priority_score"] = manual_priorities[task_id]
         else:
-            # Priorité par défaut pour les tâches non configurées
+            # PrioritÃ© par dÃ©faut pour les tÃ¢ches non configurÃ©es
             task["priority_score"] = 0
     
-    # Trier par score de priorité (décroissant)
+    # Trier par score de prioritÃ© (dÃ©croissant)
     return sorted(tasks, key=lambda x: x.get("priority_score", 0), reverse=True)
 
 def main():
-    # Paramètres
+    # ParamÃ¨tres
     chroma_db_path = r'$ChromaDbPath'
     collection_name = '$CollectionName'
     max_tasks = $MaxTasks
@@ -282,10 +282,10 @@ def main():
     try:
         client = chromadb.PersistentClient(path=chroma_db_path)
     except Exception as e:
-        print(f"Erreur lors de la connexion à la base Chroma: {e}")
+        print(f"Erreur lors de la connexion Ã  la base Chroma: {e}")
         sys.exit(1)
     
-    # Vérifier si la collection existe
+    # VÃ©rifier si la collection existe
     try:
         existing_collections = client.list_collections()
         collection_exists = any(c.name == collection_name for c in existing_collections)
@@ -294,19 +294,19 @@ def main():
             print(f"La collection {collection_name} n'existe pas dans la base Chroma.")
             sys.exit(1)
         
-        # Récupérer la collection
+        # RÃ©cupÃ©rer la collection
         collection = client.get_collection(name=collection_name)
         
-        # Récupérer les tâches incomplètes
+        # RÃ©cupÃ©rer les tÃ¢ches incomplÃ¨tes
         result = collection.get(
             where={"status": {"$ne": "Complete"}}
         )
         
         if not result['ids']:
-            print("Aucune tâche incomplète trouvée.")
+            print("Aucune tÃ¢che incomplÃ¨te trouvÃ©e.")
             sys.exit(0)
         
-        # Filtrer par section si nécessaire
+        # Filtrer par section si nÃ©cessaire
         filtered_indices = []
         if section_filter:
             for i, metadata in enumerate(result['metadatas']):
@@ -316,7 +316,7 @@ def main():
         else:
             filtered_indices = list(range(len(result['ids'])))
         
-        # Créer une liste de tâches
+        # CrÃ©er une liste de tÃ¢ches
         tasks = []
         for i in filtered_indices:
             task_id = result['ids'][i]
@@ -333,11 +333,11 @@ def main():
                 "level": get_task_level(task_id)
             }
             
-            # Ajouter l'assigné s'il existe
+            # Ajouter l'assignÃ© s'il existe
             if "assignee" in metadata:
                 task["assignee"] = metadata["assignee"]
             
-            # Ajouter d'autres métadonnées si demandé
+            # Ajouter d'autres mÃ©tadonnÃ©es si demandÃ©
             if include_metadata:
                 for key, value in metadata.items():
                     if key not in task:
@@ -345,7 +345,7 @@ def main():
             
             tasks.append(task)
         
-        # Calculer les priorités selon la méthode choisie
+        # Calculer les prioritÃ©s selon la mÃ©thode choisie
         if priority_method == "Manual":
             prioritized_tasks = calculate_priority_manual(tasks, priority_config_path)
         elif priority_method == "Dependencies":
@@ -355,29 +355,29 @@ def main():
         else:  # Auto ou autre
             prioritized_tasks = calculate_priority_auto(tasks)
         
-        # Limiter le nombre de tâches
+        # Limiter le nombre de tÃ¢ches
         prioritized_tasks = prioritized_tasks[:max_tasks]
         
-        # Générer la vue Markdown
+        # GÃ©nÃ©rer la vue Markdown
         markdown_lines = []
-        markdown_lines.append("# Prochaines Étapes Prioritaires")
+        markdown_lines.append("# Prochaines Ã‰tapes Prioritaires")
         markdown_lines.append("")
-        markdown_lines.append(f"Générée le {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        markdown_lines.append(f"Méthode de priorité: {priority_method}")
+        markdown_lines.append(f"GÃ©nÃ©rÃ©e le {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        markdown_lines.append(f"MÃ©thode de prioritÃ©: {priority_method}")
         markdown_lines.append("")
         
         if section_filter:
-            markdown_lines.append(f"Filtré par section: {section_filter}")
+            markdown_lines.append(f"FiltrÃ© par section: {section_filter}")
             markdown_lines.append("")
         
         if not prioritized_tasks:
-            markdown_lines.append("Aucune tâche prioritaire trouvée.")
+            markdown_lines.append("Aucune tÃ¢che prioritaire trouvÃ©e.")
         else:
-            markdown_lines.append(f"## Top {len(prioritized_tasks)} tâches prioritaires")
+            markdown_lines.append(f"## Top {len(prioritized_tasks)} tÃ¢ches prioritaires")
             markdown_lines.append("")
             
             for i, task in enumerate(prioritized_tasks):
-                # Déterminer le symbole de statut
+                # DÃ©terminer le symbole de statut
                 status_symbol = " "
                 if task["status"] == "InProgress":
                     status_symbol = "o"
@@ -386,27 +386,27 @@ def main():
                 elif task["status"] == "Deferred":
                     status_symbol = ">"
                 
-                # Ajouter la tâche
+                # Ajouter la tÃ¢che
                 markdown_lines.append(f"{i+1}. [{status_symbol}] **{task['id']}** {task['description']}")
                 
-                # Ajouter les métadonnées
+                # Ajouter les mÃ©tadonnÃ©es
                 metadata_parts = []
                 if task["section"]:
                     metadata_parts.append(f"Section: {task['section']}")
                 
                 if task.get("assignee"):
-                    metadata_parts.append(f"Assignée à: {task['assignee']}")
+                    metadata_parts.append(f"AssignÃ©e Ã : {task['assignee']}")
                 
                 if task.get("lastUpdated"):
-                    metadata_parts.append(f"Mise à jour: {task['lastUpdated']}")
+                    metadata_parts.append(f"Mise Ã  jour: {task['lastUpdated']}")
                 
                 if "priority_score" in task:
-                    metadata_parts.append(f"Score de priorité: {task['priority_score']}")
+                    metadata_parts.append(f"Score de prioritÃ©: {task['priority_score']}")
                 
                 if metadata_parts:
                     markdown_lines.append(f"   _{', '.join(metadata_parts)}_")
                 
-                # Ajouter d'autres métadonnées si demandé
+                # Ajouter d'autres mÃ©tadonnÃ©es si demandÃ©
                 if include_metadata:
                     other_metadata = [f"{key}: {value}" for key, value in task.items() 
                                     if key not in ["id", "description", "section", "status", 
@@ -420,7 +420,7 @@ def main():
         # Joindre les lignes
         markdown_content = "\n".join(markdown_lines)
         
-        # Créer un objet résultat
+        # CrÃ©er un objet rÃ©sultat
         result = {
             "markdown": markdown_content,
             "tasks": prioritized_tasks,
@@ -433,11 +433,11 @@ def main():
             }
         }
         
-        # Afficher le résultat au format JSON
+        # Afficher le rÃ©sultat au format JSON
         print(json.dumps(result, indent=2, ensure_ascii=False))
         
     except Exception as e:
-        print(f"Erreur lors de la génération de la vue des prochaines étapes prioritaires: {e}")
+        print(f"Erreur lors de la gÃ©nÃ©ration de la vue des prochaines Ã©tapes prioritaires: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
@@ -517,16 +517,16 @@ code {
     $html = $html -replace '^### (.*?)$', '<h3>$1</h3>'
     $html = $html -replace '^#### (.*?)$', '<h4>$1</h4>'
     
-    # Convertir les listes numérotées et les tâches
+    # Convertir les listes numÃ©rotÃ©es et les tÃ¢ches
     $html = $html -replace '^(\d+)\. \[ \] \*\*(.*?)\*\* (.*?)$', '<li class="task-incomplete"><span class="number">$1.</span> <input type="checkbox" disabled> <strong>$2</strong> $3</li>'
     $html = $html -replace '^(\d+)\. \[o\] \*\*(.*?)\*\* (.*?)$', '<li class="task-inprogress"><span class="number">$1.</span> <input type="checkbox" disabled> <strong>$2</strong> $3 (En cours)</li>'
-    $html = $html -replace '^(\d+)\. \[!\] \*\*(.*?)\*\* (.*?)$', '<li class="task-blocked"><span class="number">$1.</span> <input type="checkbox" disabled> <strong>$2</strong> $3 (Bloqué)</li>'
-    $html = $html -replace '^(\d+)\. \[>\] \*\*(.*?)\*\* (.*?)$', '<li class="task-deferred"><span class="number">$1.</span> <input type="checkbox" disabled> <strong>$2</strong> $3 (Reporté)</li>'
+    $html = $html -replace '^(\d+)\. \[!\] \*\*(.*?)\*\* (.*?)$', '<li class="task-blocked"><span class="number">$1.</span> <input type="checkbox" disabled> <strong>$2</strong> $3 (BloquÃ©)</li>'
+    $html = $html -replace '^(\d+)\. \[>\] \*\*(.*?)\*\* (.*?)$', '<li class="task-deferred"><span class="number">$1.</span> <input type="checkbox" disabled> <strong>$2</strong> $3 (ReportÃ©)</li>'
     
-    # Convertir les métadonnées en italique
+    # Convertir les mÃ©tadonnÃ©es en italique
     $html = $html -replace '^\s*_(.*?)_$', '<div class="metadata">$1</div>'
     
-    # Envelopper les listes numérotées
+    # Envelopper les listes numÃ©rotÃ©es
     $html = $html -replace '(<li class="task-.*?">.*?</li>)', '<ol>$1</ol>'
     $html = $html -replace '<ol>(.*?)</ol>', {
         param($match)
@@ -547,7 +547,7 @@ code {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prochaines Étapes Prioritaires</title>
+    <title>Prochaines Ã‰tapes Prioritaires</title>
     $css
 </head>
 <body>
@@ -561,42 +561,42 @@ code {
 
 # Fonction principale
 function Main {
-    # Vérifier si la base Chroma existe
+    # VÃ©rifier si la base Chroma existe
     if (-not (Test-Path -Path $ChromaDbPath)) {
         Write-Log "La base Chroma $ChromaDbPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
     
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
     
-    # Vérifier si le fichier de sortie existe déjà
+    # VÃ©rifier si le fichier de sortie existe dÃ©jÃ 
     if ($OutputPath -and (Test-Path -Path $OutputPath) -and -not $Force) {
-        Write-Log "Le fichier de sortie $OutputPath existe déjà. Utilisez -Force pour l'écraser." -Level Warning
+        Write-Log "Le fichier de sortie $OutputPath existe dÃ©jÃ . Utilisez -Force pour l'Ã©craser." -Level Warning
         return
     }
     
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour générer la vue des prochaines étapes prioritaires..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour gÃ©nÃ©rer la vue des prochaines Ã©tapes prioritaires..." -Level Info
     $pythonScript = New-PriorityTasksViewScript -ChromaDbPath $ChromaDbPath -CollectionName $CollectionName -MaxTasks $MaxTasks -SectionFilter $SectionFilter -PriorityMethod $PriorityMethod -PriorityConfigPath $PriorityConfigPath -IncludeMetadata $IncludeMetadata
     
-    # Exécuter le script Python et capturer la sortie JSON
-    Write-Log "Génération de la vue des prochaines étapes prioritaires..." -Level Info
+    # ExÃ©cuter le script Python et capturer la sortie JSON
+    Write-Log "GÃ©nÃ©ration de la vue des prochaines Ã©tapes prioritaires..." -Level Info
     $output = python $pythonScript 2>&1
     
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
     
-    # Extraire les résultats JSON de la sortie
+    # Extraire les rÃ©sultats JSON de la sortie
     $jsonStartIndex = $output.IndexOf("{")
     $jsonEndIndex = $output.LastIndexOf("}")
     
@@ -604,14 +604,14 @@ function Main {
         $jsonString = $output.Substring($jsonStartIndex, $jsonEndIndex - $jsonStartIndex + 1)
         $result = $jsonString | ConvertFrom-Json
         
-        # Traiter les résultats selon le format demandé
+        # Traiter les rÃ©sultats selon le format demandÃ©
         switch ($OutputFormat) {
             "markdown" {
                 $content = $result.markdown
                 
                 if ($OutputPath) {
                     $content | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Vue des prochaines étapes prioritaires sauvegardée au format Markdown dans $OutputPath" -Level Success
+                    Write-Log "Vue des prochaines Ã©tapes prioritaires sauvegardÃ©e au format Markdown dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $content
@@ -622,7 +622,7 @@ function Main {
                 
                 if ($OutputPath) {
                     $html | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Vue des prochaines étapes prioritaires sauvegardée au format HTML dans $OutputPath" -Level Success
+                    Write-Log "Vue des prochaines Ã©tapes prioritaires sauvegardÃ©e au format HTML dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $html
@@ -631,7 +631,7 @@ function Main {
             "json" {
                 if ($OutputPath) {
                     $result | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Vue des prochaines étapes prioritaires sauvegardée au format JSON dans $OutputPath" -Level Success
+                    Write-Log "Vue des prochaines Ã©tapes prioritaires sauvegardÃ©e au format JSON dans $OutputPath" -Level Success
                 }
                 else {
                     $result | ConvertTo-Json -Depth 10
@@ -639,12 +639,12 @@ function Main {
             }
         }
         
-        Write-Log "Génération de la vue terminée. $($result.metadata.taskCount) tâches incluses." -Level Success
+        Write-Log "GÃ©nÃ©ration de la vue terminÃ©e. $($result.metadata.taskCount) tÃ¢ches incluses." -Level Success
     }
     else {
-        Write-Log "Erreur lors de la génération de la vue des prochaines étapes prioritaires." -Level Error
+        Write-Log "Erreur lors de la gÃ©nÃ©ration de la vue des prochaines Ã©tapes prioritaires." -Level Error
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main

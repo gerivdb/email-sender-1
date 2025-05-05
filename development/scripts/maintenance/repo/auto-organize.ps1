@@ -1,8 +1,8 @@
-# Script pour surveiller et organiser automatiquement les nouveaux fichiers
+﻿# Script pour surveiller et organiser automatiquement les nouveaux fichiers
 try {
     Write-Host "=== Organisation automatique des fichiers ===" -ForegroundColor Cyan
 
-    # Règles d'organisation automatique
+    # RÃ¨gles d'organisation automatique
     $autoOrganizeRules = @(
         # Format: [pattern, destination, description]
         @("*.json", "all-workflows/original", "Workflows n8n"),
@@ -14,25 +14,25 @@ try {
         @("*.ps1", "scripts", "Scripts PowerShell"),
         @("configure-*.ps1", "development/scripts/setup", "Scripts de configuration"),
         @("setup-*.ps1", "development/scripts/setup", "Scripts d'installation"),
-        @("update-*.ps1", "development/scripts/maintenance", "Scripts de mise à jour"),
+        @("update-*.ps1", "development/scripts/maintenance", "Scripts de mise Ã  jour"),
         @("cleanup-*.ps1", "development/scripts/maintenance", "Scripts de nettoyage"),
-        @("check-*.ps1", "development/scripts/maintenance", "Scripts de vérification"),
+        @("check-*.ps1", "development/scripts/maintenance", "Scripts de vÃ©rification"),
         @("organize-*.ps1", "development/scripts/maintenance", "Scripts d'organisation")
     )
 
-    # Traitement des règles
+    # Traitement des rÃ¨gles
     foreach ($rule in $autoOrganizeRules) {
         try {
             Process-OrganizationRule -Rule $rule
         }
         catch {
-            Write-Error "Erreur lors du traitement de la règle : $_"
+            Write-Error "Erreur lors du traitement de la rÃ¨gle : $_"
         }
     }
 
-    Write-Host "`n=== Organisation automatique terminée ===" -ForegroundColor Cyan
+    Write-Host "`n=== Organisation automatique terminÃ©e ===" -ForegroundColor Cyan
 
-    # Créer un hook Git pour organiser automatiquement les fichiers lors des commits
+    # CrÃ©er un hook Git pour organiser automatiquement les fichiers lors des commits
     $gitHooksDir = "$projectRoot\.git\hooks"
     if (Test-Path "$projectRoot\.git") {
         if (-not (Test-Path $gitHooksDir)) {
@@ -65,7 +65,7 @@ try {
     }
 }
 catch {
-    Write-Error "Erreur lors de la création des dossiers : $_"
+    Write-Error "Erreur lors de la crÃ©ation des dossiers : $_"
     exit 1
 }
 
@@ -98,12 +98,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
 
-    # Ã‰crire dans le fichier journal
+    # Ãƒâ€°crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
 
-        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        # CrÃƒÂ©er le rÃƒÂ©pertoire de logs si nÃƒÂ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -112,7 +112,7 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'Ã©criture dans le journal
+        # Ignorer les erreurs d'ÃƒÂ©criture dans le journal
     }
 }
 try {
@@ -222,7 +222,7 @@ git add .
 "@
         Set-Content -Path $preCommitHookPath -Value $preCommitHookContent -Encoding UTF8
 
-        # Rendre le hook exécutable sous Unix/Linux
+        # Rendre le hook exÃ©cutable sous Unix/Linux
         if ($IsLinux -or $IsMacOS) {
             chmod +x $preCommitHookPath
         }
@@ -245,7 +245,7 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+    Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }
 
 

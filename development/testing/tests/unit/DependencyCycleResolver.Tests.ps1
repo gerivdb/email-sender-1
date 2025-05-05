@@ -1,14 +1,14 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le module DependencyCycleResolver.
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vérifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
     du module DependencyCycleResolver.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-20
+    Date de crÃ©ation: 2025-04-20
 #>
 
 # Importer Pester
@@ -17,15 +17,15 @@ if (-not (Get-Module -Name Pester -ListAvailable)) {
 }
 Import-Module Pester -Force
 
-# Chemin du module à tester
+# Chemin du module Ã  tester
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\modules\DependencyCycleResolver.psm1"
 
-# Vérifier si le module existe
+# VÃ©rifier si le module existe
 if (-not (Test-Path -Path $modulePath)) {
-    throw "Le module DependencyCycleResolver.psm1 n'existe pas à l'emplacement spécifié: $modulePath"
+    throw "Le module DependencyCycleResolver.psm1 n'existe pas Ã  l'emplacement spÃ©cifiÃ©: $modulePath"
 }
 
-# Importer le module à tester
+# Importer le module Ã  tester
 Import-Module $modulePath -Force
 
 Describe "DependencyCycleResolver - Tests unitaires" {
@@ -35,98 +35,98 @@ Describe "DependencyCycleResolver - Tests unitaires" {
     }
 
     Context "Initialize-DependencyCycleResolver" {
-        It "Devrait initialiser le résolveur avec les paramètres par défaut" {
+        It "Devrait initialiser le rÃ©solveur avec les paramÃ¨tres par dÃ©faut" {
             $result = Initialize-DependencyCycleResolver
             $result | Should -Be $true
         }
 
-        It "Devrait initialiser le résolveur avec des paramètres personnalisés" {
+        It "Devrait initialiser le rÃ©solveur avec des paramÃ¨tres personnalisÃ©s" {
             $result = Initialize-DependencyCycleResolver -Enabled $false -MaxIterations 5 -Strategy "Random"
             $result | Should -Be $true
         }
     }
 
     Context "Resolve-DependencyCycle" {
-        It "Devrait résoudre un cycle simple" {
-            # Créer un graphe avec un cycle
+        It "Devrait rÃ©soudre un cycle simple" {
+            # CrÃ©er un graphe avec un cycle
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
                 "C" = @("A")
             }
 
-            # Créer un objet CycleResult
+            # CrÃ©er un objet CycleResult
             $cycleResult = [PSCustomObject]@{
                 HasCycle = $true
                 CyclePath = @("A", "B", "C", "A")
                 Graph = $graph
             }
 
-            # Résoudre le cycle
+            # RÃ©soudre le cycle
             $resolveResult = Resolve-DependencyCycle -CycleResult $cycleResult
 
-            # Vérifier que le cycle est résolu
+            # VÃ©rifier que le cycle est rÃ©solu
             $resolveResult.Success | Should -Be $true
             $resolveResult.RemovedEdges.Count | Should -Be 1
         }
 
-        It "Devrait retourner false si aucun cycle n'est détecté" {
-            # Créer un graphe sans cycle
+        It "Devrait retourner false si aucun cycle n'est dÃ©tectÃ©" {
+            # CrÃ©er un graphe sans cycle
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
                 "C" = @()
             }
 
-            # Créer un objet CycleResult
+            # CrÃ©er un objet CycleResult
             $cycleResult = [PSCustomObject]@{
                 HasCycle = $false
                 CyclePath = @()
                 Graph = $graph
             }
 
-            # Résoudre le cycle
+            # RÃ©soudre le cycle
             $resolveResult = Resolve-DependencyCycle -CycleResult $cycleResult
 
-            # Vérifier que la fonction retourne false
+            # VÃ©rifier que la fonction retourne false
             $resolveResult | Should -Be $false
         }
 
-        It "Devrait retourner false si le résolveur est désactivé" {
-            # Désactiver le résolveur
+        It "Devrait retourner false si le rÃ©solveur est dÃ©sactivÃ©" {
+            # DÃ©sactiver le rÃ©solveur
             Initialize-DependencyCycleResolver -Enabled $false
 
-            # Créer un graphe avec un cycle
+            # CrÃ©er un graphe avec un cycle
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
                 "C" = @("A")
             }
 
-            # Créer un objet CycleResult
+            # CrÃ©er un objet CycleResult
             $cycleResult = [PSCustomObject]@{
                 HasCycle = $true
                 CyclePath = @("A", "B", "C", "A")
                 Graph = $graph
             }
 
-            # Résoudre le cycle
+            # RÃ©soudre le cycle
             $resolveResult = Resolve-DependencyCycle -CycleResult $cycleResult
 
-            # Vérifier que la fonction retourne false
+            # VÃ©rifier que la fonction retourne false
             $resolveResult | Should -Be $false
 
-            # Réactiver le résolveur
+            # RÃ©activer le rÃ©solveur
             Initialize-DependencyCycleResolver -Enabled $true
         }
     }
 
     Context "Get-CycleResolverStatistics" {
-        It "Devrait retourner les statistiques du résolveur" {
+        It "Devrait retourner les statistiques du rÃ©solveur" {
             # Obtenir les statistiques
             $stats = Get-CycleResolverStatistics
 
-            # Vérifier que les statistiques sont disponibles
+            # VÃ©rifier que les statistiques sont disponibles
             $stats | Should -Not -BeNullOrEmpty
             $stats.Enabled | Should -BeOfType [bool]
             $stats.MaxIterations | Should -BeOfType [int]
@@ -139,8 +139,8 @@ Describe "DependencyCycleResolver - Tests unitaires" {
     }
 
     Context "Select-EdgeToRemove (fonction interne)" {
-        It "Devrait sélectionner une arête à supprimer selon la stratégie MinimumImpact" {
-            # Créer un graphe avec un cycle
+        It "Devrait sÃ©lectionner une arÃªte Ã  supprimer selon la stratÃ©gie MinimumImpact" {
+            # CrÃ©er un graphe avec un cycle
             $graph = @{
                 "A" = @("B")
                 "B" = @("C")
@@ -156,22 +156,22 @@ Describe "DependencyCycleResolver - Tests unitaires" {
                 # Charger le module
                 Import-Module "$using:modulePath" -Force
                 
-                # Accéder à la fonction interne
+                # AccÃ©der Ã  la fonction interne
                 $functionInfo = Get-Command -Module DependencyCycleResolver -Name "Select-EdgeToRemove" -ErrorAction SilentlyContinue
                 
                 if ($functionInfo) {
-                    # La fonction est exportée, l'appeler directement
+                    # La fonction est exportÃ©e, l'appeler directement
                     Select-EdgeToRemove -Graph $Graph -Cycle $Cycle -Strategy $Strategy
                 } else {
-                    # La fonction n'est pas exportée, utiliser une autre approche
+                    # La fonction n'est pas exportÃ©e, utiliser une autre approche
                     $moduleScript = Get-Content -Path "$using:modulePath" -Raw
                     $moduleScriptBlock = [ScriptBlock]::Create($moduleScript)
                     
-                    # Créer un nouveau contexte avec la fonction
+                    # CrÃ©er un nouveau contexte avec la fonction
                     $newScriptBlock = {
                         param($Graph, $Cycle, $Strategy)
                         
-                        # Définir la fonction Select-EdgeToRemove
+                        # DÃ©finir la fonction Select-EdgeToRemove
                         function Select-EdgeToRemove {
                             [CmdletBinding()]
                             param (
@@ -186,34 +186,34 @@ Describe "DependencyCycleResolver - Tests unitaires" {
                                 [string]$Strategy = "MinimumImpact"
                             )
                             
-                            # Créer la liste des arêtes du cycle
+                            # CrÃ©er la liste des arÃªtes du cycle
                             $edges = @()
                             for ($i = 0; $i -lt $Cycle.Count - 1; $i++) {
                                 $source = $Cycle[$i]
                                 $target = $Cycle[$i + 1]
                                 
-                                # Vérifier que l'arête existe
+                                # VÃ©rifier que l'arÃªte existe
                                 if ($Graph.ContainsKey($source) -and $Graph[$source] -contains $target) {
                                     $edges += [PSCustomObject]@{
                                         Source = $source
                                         Target = $target
-                                        Weight = 1 # Poids par défaut
+                                        Weight = 1 # Poids par dÃ©faut
                                     }
                                 }
                             }
                             
-                            # Sélectionner l'arête selon la stratégie
+                            # SÃ©lectionner l'arÃªte selon la stratÃ©gie
                             switch ($Strategy) {
                                 "MinimumImpact" {
-                                    # Sélectionner l'arête avec le moins d'impact (par exemple, la moins utilisée)
+                                    # SÃ©lectionner l'arÃªte avec le moins d'impact (par exemple, la moins utilisÃ©e)
                                     return $edges | Select-Object -First 1
                                 }
                                 "WeightBased" {
-                                    # Sélectionner l'arête avec le poids le plus faible
+                                    # SÃ©lectionner l'arÃªte avec le poids le plus faible
                                     return $edges | Sort-Object -Property Weight | Select-Object -First 1
                                 }
                                 "Random" {
-                                    # Sélectionner une arête aléatoire
+                                    # SÃ©lectionner une arÃªte alÃ©atoire
                                     return $edges | Get-Random
                                 }
                             }
@@ -223,14 +223,14 @@ Describe "DependencyCycleResolver - Tests unitaires" {
                         Select-EdgeToRemove -Graph $Graph -Cycle $Cycle -Strategy $Strategy
                     }
                     
-                    # Exécuter le script block
+                    # ExÃ©cuter le script block
                     & $newScriptBlock $Graph $Cycle $Strategy
                 }
             }
             
             $edge = Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $graph, $cycle, "MinimumImpact"
             
-            # Vérifier que l'arête est sélectionnée
+            # VÃ©rifier que l'arÃªte est sÃ©lectionnÃ©e
             $edge | Should -Not -BeNullOrEmpty
             $edge.Source | Should -BeIn @("A", "B", "C")
             $edge.Target | Should -BeIn @("A", "B", "C")
@@ -238,5 +238,5 @@ Describe "DependencyCycleResolver - Tests unitaires" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 Invoke-Pester -Path $PSScriptRoot -Output Detailed

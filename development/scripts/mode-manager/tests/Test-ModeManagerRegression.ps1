@@ -1,21 +1,21 @@
-# Tests de régression pour le mode manager
+﻿# Tests de rÃ©gression pour le mode manager
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de configuration pour les tests
+# CrÃ©er un fichier de configuration pour les tests
 $tempConfigPath = Join-Path -Path $testDir -ChildPath "regression-config.json"
 @{
     General = @{
@@ -35,7 +35,7 @@ $tempConfigPath = Join-Path -Path $testDir -ChildPath "regression-config.json"
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $tempConfigPath -Encoding UTF8
 
-# Créer des scripts de mode simulés
+# CrÃ©er des scripts de mode simulÃ©s
 $mockCheckModePath = Join-Path -Path $PSScriptRoot -ChildPath "mock-check-mode.ps1"
 $mockCheckContent = @'
 param (
@@ -58,7 +58,7 @@ param (
     [string]$ConfigPath
 )
 
-Write-Host "Mode CHECK exécuté avec les paramètres suivants :"
+Write-Host "Mode CHECK exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -66,7 +66,7 @@ Write-Host "ActiveDocumentPath : $ActiveDocumentPath"
 Write-Host "CheckActiveDocument : $CheckActiveDocument"
 Write-Host "ConfigPath : $ConfigPath"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "check-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -97,13 +97,13 @@ param (
     [string]$ConfigPath
 )
 
-Write-Host "Mode GRAN exécuté avec les paramètres suivants :"
+Write-Host "Mode GRAN exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
 Write-Host "ConfigPath : $ConfigPath"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "gran-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -116,205 +116,205 @@ exit 0
 '@
 Set-Content -Path $mockGranModePath -Value $mockGranContent -Encoding UTF8
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 "# Test Roadmap" | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
-# Test 1: Régression - Espaces dans les chemins de fichier
-Write-Host "Test 1: Régression - Espaces dans les chemins de fichier" -ForegroundColor Cyan
+# Test 1: RÃ©gression - Espaces dans les chemins de fichier
+Write-Host "Test 1: RÃ©gression - Espaces dans les chemins de fichier" -ForegroundColor Cyan
 try {
-    # Créer un fichier de roadmap avec des espaces dans le chemin
+    # CrÃ©er un fichier de roadmap avec des espaces dans le chemin
     $roadmapWithSpacesPath = Join-Path -Path $testDir -ChildPath "test roadmap with spaces.md"
     "# Test Roadmap with Spaces" | Set-Content -Path $roadmapWithSpacesPath -Encoding UTF8
     
-    # Exécuter le script avec un chemin contenant des espaces
+    # ExÃ©cuter le script avec un chemin contenant des espaces
     $output = & $scriptPath -Mode "CHECK" -FilePath $roadmapWithSpacesPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement géré le chemin avec des espaces
+    # VÃ©rifier que le script a correctement gÃ©rÃ© le chemin avec des espaces
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         $checkOutput = Get-Content -Path $checkOutputPath -Raw
         if ($checkOutput -match "FilePath : $([regex]::Escape($roadmapWithSpacesPath))") {
-            Write-Host "Test 1 réussi: Le script a correctement géré un chemin de fichier avec des espaces" -ForegroundColor Green
+            Write-Host "Test 1 rÃ©ussi: Le script a correctement gÃ©rÃ© un chemin de fichier avec des espaces" -ForegroundColor Green
         } else {
-            Write-Host "Test 1 échoué: Le script n'a pas correctement géré un chemin de fichier avec des espaces" -ForegroundColor Red
+            Write-Host "Test 1 Ã©chouÃ©: Le script n'a pas correctement gÃ©rÃ© un chemin de fichier avec des espaces" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 1 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 1 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 1 échoué: Une erreur s'est produite lors de l'exécution du script avec un chemin contenant des espaces" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec un chemin contenant des espaces" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 2: Régression - Caractères spéciaux dans les identifiants de tâche
-Write-Host "Test 2: Régression - Caractères spéciaux dans les identifiants de tâche" -ForegroundColor Cyan
+# Test 2: RÃ©gression - CaractÃ¨res spÃ©ciaux dans les identifiants de tÃ¢che
+Write-Host "Test 2: RÃ©gression - CaractÃ¨res spÃ©ciaux dans les identifiants de tÃ¢che" -ForegroundColor Cyan
 try {
-    # Exécuter le script avec un identifiant de tâche contenant des caractères spéciaux
+    # ExÃ©cuter le script avec un identifiant de tÃ¢che contenant des caractÃ¨res spÃ©ciaux
     $specialTaskId = "1.2.3-alpha.beta_gamma"
     $output = & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier $specialTaskId -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement géré l'identifiant de tâche avec des caractères spéciaux
+    # VÃ©rifier que le script a correctement gÃ©rÃ© l'identifiant de tÃ¢che avec des caractÃ¨res spÃ©ciaux
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         $checkOutput = Get-Content -Path $checkOutputPath -Raw
         if ($checkOutput -match "TaskIdentifier : $([regex]::Escape($specialTaskId))") {
-            Write-Host "Test 2 réussi: Le script a correctement géré un identifiant de tâche avec des caractères spéciaux" -ForegroundColor Green
+            Write-Host "Test 2 rÃ©ussi: Le script a correctement gÃ©rÃ© un identifiant de tÃ¢che avec des caractÃ¨res spÃ©ciaux" -ForegroundColor Green
         } else {
-            Write-Host "Test 2 échoué: Le script n'a pas correctement géré un identifiant de tâche avec des caractères spéciaux" -ForegroundColor Red
+            Write-Host "Test 2 Ã©chouÃ©: Le script n'a pas correctement gÃ©rÃ© un identifiant de tÃ¢che avec des caractÃ¨res spÃ©ciaux" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 2 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 2 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 2 échoué: Une erreur s'est produite lors de l'exécution du script avec un identifiant de tâche contenant des caractères spéciaux" -ForegroundColor Red
+    Write-Host "Test 2 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec un identifiant de tÃ¢che contenant des caractÃ¨res spÃ©ciaux" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 3: Régression - Chemins relatifs et absolus
-Write-Host "Test 3: Régression - Chemins relatifs et absolus" -ForegroundColor Cyan
+# Test 3: RÃ©gression - Chemins relatifs et absolus
+Write-Host "Test 3: RÃ©gression - Chemins relatifs et absolus" -ForegroundColor Cyan
 try {
-    # Exécuter le script avec un chemin relatif
+    # ExÃ©cuter le script avec un chemin relatif
     $relativeRoadmapPath = "temp\test-roadmap.md"
     $output = & $scriptPath -Mode "CHECK" -FilePath $relativeRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement géré le chemin relatif
+    # VÃ©rifier que le script a correctement gÃ©rÃ© le chemin relatif
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         $checkOutput = Get-Content -Path $checkOutputPath -Raw
         $absolutePath = Join-Path -Path (Get-Location) -ChildPath $relativeRoadmapPath
         if ($checkOutput -match "FilePath : $([regex]::Escape($absolutePath))") {
-            Write-Host "Test 3 réussi: Le script a correctement géré un chemin relatif" -ForegroundColor Green
+            Write-Host "Test 3 rÃ©ussi: Le script a correctement gÃ©rÃ© un chemin relatif" -ForegroundColor Green
         } else {
-            Write-Host "Test 3 échoué: Le script n'a pas correctement géré un chemin relatif" -ForegroundColor Red
+            Write-Host "Test 3 Ã©chouÃ©: Le script n'a pas correctement gÃ©rÃ© un chemin relatif" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 3 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 3 échoué: Une erreur s'est produite lors de l'exécution du script avec un chemin relatif" -ForegroundColor Red
+    Write-Host "Test 3 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec un chemin relatif" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 4: Régression - Fichiers inexistants
-Write-Host "Test 4: Régression - Fichiers inexistants" -ForegroundColor Cyan
+# Test 4: RÃ©gression - Fichiers inexistants
+Write-Host "Test 4: RÃ©gression - Fichiers inexistants" -ForegroundColor Cyan
 try {
-    # Exécuter le script avec un fichier inexistant
+    # ExÃ©cuter le script avec un fichier inexistant
     $nonExistentFilePath = Join-Path -Path $testDir -ChildPath "non-existent-file.md"
     $output = & $scriptPath -Mode "CHECK" -FilePath $nonExistentFilePath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement géré le fichier inexistant
+    # VÃ©rifier que le script a correctement gÃ©rÃ© le fichier inexistant
     if ($output -match "introuvable" -or $output -match "not found" -or $output -match "n'existe pas") {
-        Write-Host "Test 4 réussi: Le script a correctement géré un fichier inexistant" -ForegroundColor Green
+        Write-Host "Test 4 rÃ©ussi: Le script a correctement gÃ©rÃ© un fichier inexistant" -ForegroundColor Green
     } else {
-        Write-Host "Test 4 échoué: Le script n'a pas correctement géré un fichier inexistant" -ForegroundColor Red
+        Write-Host "Test 4 Ã©chouÃ©: Le script n'a pas correctement gÃ©rÃ© un fichier inexistant" -ForegroundColor Red
     }
 } catch {
-    # Si une erreur est générée, c'est aussi acceptable
+    # Si une erreur est gÃ©nÃ©rÃ©e, c'est aussi acceptable
     if ($_.Exception.Message -match "introuvable" -or $_.Exception.Message -match "not found" -or $_.Exception.Message -match "n'existe pas") {
-        Write-Host "Test 4 réussi: Le script a correctement géré un fichier inexistant" -ForegroundColor Green
+        Write-Host "Test 4 rÃ©ussi: Le script a correctement gÃ©rÃ© un fichier inexistant" -ForegroundColor Green
     } else {
-        Write-Host "Test 4 échoué: Le script n'a pas correctement géré un fichier inexistant" -ForegroundColor Red
+        Write-Host "Test 4 Ã©chouÃ©: Le script n'a pas correctement gÃ©rÃ© un fichier inexistant" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
 
-# Test 5: Régression - Paramètres manquants
-Write-Host "Test 5: Régression - Paramètres manquants" -ForegroundColor Cyan
+# Test 5: RÃ©gression - ParamÃ¨tres manquants
+Write-Host "Test 5: RÃ©gression - ParamÃ¨tres manquants" -ForegroundColor Cyan
 try {
-    # Exécuter le script sans le paramètre FilePath
+    # ExÃ©cuter le script sans le paramÃ¨tre FilePath
     $output = & $scriptPath -Mode "CHECK" -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement géré le paramètre manquant
+    # VÃ©rifier que le script a correctement gÃ©rÃ© le paramÃ¨tre manquant
     if ($output -match "manquant" -or $output -match "missing" -or $output -match "obligatoire") {
-        Write-Host "Test 5 réussi: Le script a correctement géré un paramètre manquant" -ForegroundColor Green
+        Write-Host "Test 5 rÃ©ussi: Le script a correctement gÃ©rÃ© un paramÃ¨tre manquant" -ForegroundColor Green
     } else {
-        Write-Host "Test 5 échoué: Le script n'a pas correctement géré un paramètre manquant" -ForegroundColor Red
+        Write-Host "Test 5 Ã©chouÃ©: Le script n'a pas correctement gÃ©rÃ© un paramÃ¨tre manquant" -ForegroundColor Red
     }
 } catch {
-    # Si une erreur est générée, c'est aussi acceptable
+    # Si une erreur est gÃ©nÃ©rÃ©e, c'est aussi acceptable
     if ($_.Exception.Message -match "manquant" -or $_.Exception.Message -match "missing" -or $_.Exception.Message -match "obligatoire") {
-        Write-Host "Test 5 réussi: Le script a correctement géré un paramètre manquant" -ForegroundColor Green
+        Write-Host "Test 5 rÃ©ussi: Le script a correctement gÃ©rÃ© un paramÃ¨tre manquant" -ForegroundColor Green
     } else {
-        Write-Host "Test 5 échoué: Le script n'a pas correctement géré un paramètre manquant" -ForegroundColor Red
+        Write-Host "Test 5 Ã©chouÃ©: Le script n'a pas correctement gÃ©rÃ© un paramÃ¨tre manquant" -ForegroundColor Red
         Write-Host "Erreur: $_" -ForegroundColor Red
     }
 }
 
-# Test 6: Régression - Encodage UTF-8 avec BOM
-Write-Host "Test 6: Régression - Encodage UTF-8 avec BOM" -ForegroundColor Cyan
+# Test 6: RÃ©gression - Encodage UTF-8 avec BOM
+Write-Host "Test 6: RÃ©gression - Encodage UTF-8 avec BOM" -ForegroundColor Cyan
 try {
-    # Créer un fichier de roadmap avec encodage UTF-8 avec BOM
+    # CrÃ©er un fichier de roadmap avec encodage UTF-8 avec BOM
     $utf8BomRoadmapPath = Join-Path -Path $testDir -ChildPath "utf8-bom-roadmap.md"
     "# Test Roadmap with UTF-8 BOM" | Set-Content -Path $utf8BomRoadmapPath -Encoding UTF8
     
-    # Exécuter le script avec le fichier UTF-8 avec BOM
+    # ExÃ©cuter le script avec le fichier UTF-8 avec BOM
     $output = & $scriptPath -Mode "CHECK" -FilePath $utf8BomRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement géré le fichier UTF-8 avec BOM
+    # VÃ©rifier que le script a correctement gÃ©rÃ© le fichier UTF-8 avec BOM
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         $checkOutput = Get-Content -Path $checkOutputPath -Raw
         if ($checkOutput -match "FilePath : $([regex]::Escape($utf8BomRoadmapPath))") {
-            Write-Host "Test 6 réussi: Le script a correctement géré un fichier UTF-8 avec BOM" -ForegroundColor Green
+            Write-Host "Test 6 rÃ©ussi: Le script a correctement gÃ©rÃ© un fichier UTF-8 avec BOM" -ForegroundColor Green
         } else {
-            Write-Host "Test 6 échoué: Le script n'a pas correctement géré un fichier UTF-8 avec BOM" -ForegroundColor Red
+            Write-Host "Test 6 Ã©chouÃ©: Le script n'a pas correctement gÃ©rÃ© un fichier UTF-8 avec BOM" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 6 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 6 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 6 échoué: Une erreur s'est produite lors de l'exécution du script avec un fichier UTF-8 avec BOM" -ForegroundColor Red
+    Write-Host "Test 6 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec un fichier UTF-8 avec BOM" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 7: Régression - Caractères accentués
-Write-Host "Test 7: Régression - Caractères accentués" -ForegroundColor Cyan
+# Test 7: RÃ©gression - CaractÃ¨res accentuÃ©s
+Write-Host "Test 7: RÃ©gression - CaractÃ¨res accentuÃ©s" -ForegroundColor Cyan
 try {
-    # Créer un fichier de roadmap avec des caractères accentués
+    # CrÃ©er un fichier de roadmap avec des caractÃ¨res accentuÃ©s
     $accentedRoadmapPath = Join-Path -Path $testDir -ChildPath "accented-roadmap.md"
-    "# Test Roadmap avec des caractères accentués : é à è ù ç" | Set-Content -Path $accentedRoadmapPath -Encoding UTF8
+    "# Test Roadmap avec des caractÃ¨res accentuÃ©s : Ã© Ã  Ã¨ Ã¹ Ã§" | Set-Content -Path $accentedRoadmapPath -Encoding UTF8
     
-    # Exécuter le script avec le fichier contenant des caractères accentués
+    # ExÃ©cuter le script avec le fichier contenant des caractÃ¨res accentuÃ©s
     $output = & $scriptPath -Mode "CHECK" -FilePath $accentedRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement géré le fichier avec des caractères accentués
+    # VÃ©rifier que le script a correctement gÃ©rÃ© le fichier avec des caractÃ¨res accentuÃ©s
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         $checkOutput = Get-Content -Path $checkOutputPath -Raw
         if ($checkOutput -match "FilePath : $([regex]::Escape($accentedRoadmapPath))") {
-            Write-Host "Test 7 réussi: Le script a correctement géré un fichier avec des caractères accentués" -ForegroundColor Green
+            Write-Host "Test 7 rÃ©ussi: Le script a correctement gÃ©rÃ© un fichier avec des caractÃ¨res accentuÃ©s" -ForegroundColor Green
         } else {
-            Write-Host "Test 7 échoué: Le script n'a pas correctement géré un fichier avec des caractères accentués" -ForegroundColor Red
+            Write-Host "Test 7 Ã©chouÃ©: Le script n'a pas correctement gÃ©rÃ© un fichier avec des caractÃ¨res accentuÃ©s" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 7 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 7 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 7 échoué: Une erreur s'est produite lors de l'exécution du script avec un fichier contenant des caractères accentués" -ForegroundColor Red
+    Write-Host "Test 7 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec un fichier contenant des caractÃ¨res accentuÃ©s" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 8: Régression - Paramètres avec des valeurs par défaut
-Write-Host "Test 8: Régression - Paramètres avec des valeurs par défaut" -ForegroundColor Cyan
+# Test 8: RÃ©gression - ParamÃ¨tres avec des valeurs par dÃ©faut
+Write-Host "Test 8: RÃ©gression - ParamÃ¨tres avec des valeurs par dÃ©faut" -ForegroundColor Cyan
 try {
-    # Exécuter le script sans le paramètre TaskIdentifier
+    # ExÃ©cuter le script sans le paramÃ¨tre TaskIdentifier
     $output = & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -ConfigPath $tempConfigPath 2>&1
     
-    # Vérifier que le script a correctement utilisé la valeur par défaut pour TaskIdentifier
+    # VÃ©rifier que le script a correctement utilisÃ© la valeur par dÃ©faut pour TaskIdentifier
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         $checkOutput = Get-Content -Path $checkOutputPath -Raw
         if ($checkOutput -match "TaskIdentifier : ") {
-            Write-Host "Test 8 réussi: Le script a correctement utilisé la valeur par défaut pour TaskIdentifier" -ForegroundColor Green
+            Write-Host "Test 8 rÃ©ussi: Le script a correctement utilisÃ© la valeur par dÃ©faut pour TaskIdentifier" -ForegroundColor Green
         } else {
-            Write-Host "Test 8 échoué: Le script n'a pas correctement utilisé la valeur par défaut pour TaskIdentifier" -ForegroundColor Red
+            Write-Host "Test 8 Ã©chouÃ©: Le script n'a pas correctement utilisÃ© la valeur par dÃ©faut pour TaskIdentifier" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 8 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 8 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 8 échoué: Une erreur s'est produite lors de l'exécution du script sans le paramètre TaskIdentifier" -ForegroundColor Red
+    Write-Host "Test 8 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script sans le paramÃ¨tre TaskIdentifier" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
@@ -336,4 +336,4 @@ foreach ($file in $mockFiles) {
     }
 }
 
-Write-Host "Tests terminés." -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s." -ForegroundColor Cyan

@@ -1,5 +1,5 @@
-# Update-TaskStatusQdrant.ps1
-# Script pour mettre à jour le statut des tâches dans Qdrant et dans le fichier Markdown
+﻿# Update-TaskStatusQdrant.ps1
+# Script pour mettre Ã  jour le statut des tÃ¢ches dans Qdrant et dans le fichier Markdown
 # Version: 1.0
 # Date: 2025-05-02
 
@@ -47,10 +47,10 @@ function Test-QdrantConnection {
 
     try {
         $response = Invoke-RestMethod -Uri $Url -Method Get -ErrorAction Stop
-        Write-Log "Qdrant est accessible à l'URL: $Url" -Level Success
+        Write-Log "Qdrant est accessible Ã  l'URL: $Url" -Level Success
         return $true
     } catch {
-        Write-Log "Impossible de se connecter à Qdrant à l'URL: $Url" -Level Error
+        Write-Log "Impossible de se connecter Ã  Qdrant Ã  l'URL: $Url" -Level Error
         Write-Log "Erreur: $_" -Level Error
         return $false
     }
@@ -81,26 +81,26 @@ status = r'$Status'
 comment = r'$Comment'
 force = $($Force.ToString().ToLower() -replace "true", "True" -replace "false", "False")
 
-# Fonction pour mettre à jour le statut d'une tâche dans Qdrant
+# Fonction pour mettre Ã  jour le statut d'une tÃ¢che dans Qdrant
 def update_task_status():
     try:
-        # Vérifier si Qdrant est accessible
+        # VÃ©rifier si Qdrant est accessible
         try:
             response = requests.get(f"{qdrant_url}/collections")
             if response.status_code != 200:
-                print(f"Erreur lors de la connexion à Qdrant: {response.status_code}")
+                print(f"Erreur lors de la connexion Ã  Qdrant: {response.status_code}")
                 return False
         except Exception as e:
-            print(f"Erreur lors de la connexion à Qdrant: {str(e)}")
+            print(f"Erreur lors de la connexion Ã  Qdrant: {str(e)}")
             return False
             
-        # Vérifier si la collection existe
+        # VÃ©rifier si la collection existe
         response = requests.get(f"{qdrant_url}/collections/{collection_name}")
         if response.status_code != 200:
             print(f"La collection {collection_name} n'existe pas dans Qdrant.")
             return False
             
-        # Rechercher la tâche par son ID
+        # Rechercher la tÃ¢che par son ID
         search_request = {
             "filter": {
                 "must": [
@@ -121,27 +121,27 @@ def update_task_status():
         )
         
         if response.status_code != 200:
-            print(f"Erreur lors de la recherche de la tâche: {response.status_code}")
+            print(f"Erreur lors de la recherche de la tÃ¢che: {response.status_code}")
             print(response.text)
             return False
             
-        # Vérifier si la tâche a été trouvée
+        # VÃ©rifier si la tÃ¢che a Ã©tÃ© trouvÃ©e
         result = response.json()
         if not result['result']['points']:
-            print(f"Tâche avec ID '{task_id}' non trouvée dans Qdrant.")
+            print(f"TÃ¢che avec ID '{task_id}' non trouvÃ©e dans Qdrant.")
             return False
             
-        # Récupérer le point
+        # RÃ©cupÃ©rer le point
         point = result['result']['points'][0]
         point_id = point['id']
         payload = point['payload']
         
-        # Vérifier si le statut est déjà celui demandé
+        # VÃ©rifier si le statut est dÃ©jÃ  celui demandÃ©
         if payload.get('status') == status and not force:
-            print(f"La tâche '{task_id}' a déjà le statut '{status}'.")
+            print(f"La tÃ¢che '{task_id}' a dÃ©jÃ  le statut '{status}'.")
             return True
             
-        # Mettre à jour le statut
+        # Mettre Ã  jour le statut
         old_status = payload.get('status', 'Unknown')
         payload['status'] = status
         
@@ -149,7 +149,7 @@ def update_task_status():
         if 'history' not in payload:
             payload['history'] = []
             
-        # Ajouter l'entrée d'historique
+        # Ajouter l'entrÃ©e d'historique
         history_entry = {
             'timestamp': datetime.now().isoformat(),
             'old_status': old_status,
@@ -160,13 +160,13 @@ def update_task_status():
         
         payload['history'].append(history_entry)
         
-        # Mettre à jour la date de dernière modification
+        # Mettre Ã  jour la date de derniÃ¨re modification
         payload['lastUpdated'] = datetime.now().strftime('%Y-%m-%d')
         
-        # Mettre à jour le texte
+        # Mettre Ã  jour le texte
         payload['text'] = f"ID: {task_id} | Description: {payload.get('description', 'N/A')} | Section: {payload.get('section', 'N/A')} | Status: {status}"
         
-        # Mettre à jour le point dans Qdrant
+        # Mettre Ã  jour le point dans Qdrant
         update_request = {
             "points": [
                 {
@@ -182,11 +182,11 @@ def update_task_status():
         )
         
         if response.status_code != 200:
-            print(f"Erreur lors de la mise à jour du statut: {response.status_code}")
+            print(f"Erreur lors de la mise Ã  jour du statut: {response.status_code}")
             print(response.text)
             return False
             
-        # Préparer le résultat
+        # PrÃ©parer le rÃ©sultat
         result = {
             "taskId": task_id,
             "description": payload.get("description", ""),
@@ -196,26 +196,26 @@ def update_task_status():
             "historyEntryAdded": True
         }
         
-        # Afficher le résultat au format JSON
+        # Afficher le rÃ©sultat au format JSON
         print(json.dumps(result, indent=2, ensure_ascii=False))
         return True
         
     except Exception as e:
-        print(f"Erreur lors de la mise à jour du statut: {str(e)}")
+        print(f"Erreur lors de la mise Ã  jour du statut: {str(e)}")
         return False
 
 if __name__ == "__main__":
     if not task_id:
-        print("Veuillez spécifier un ID de tâche avec le paramètre -TaskId.")
+        print("Veuillez spÃ©cifier un ID de tÃ¢che avec le paramÃ¨tre -TaskId.")
         sys.exit(1)
         
-    print(f"Mise à jour du statut de la tâche '{task_id}' à '{status}'...")
+    print(f"Mise Ã  jour du statut de la tÃ¢che '{task_id}' Ã  '{status}'...")
     
     if update_task_status():
-        print("Mise à jour réussie dans Qdrant.")
+        print("Mise Ã  jour rÃ©ussie dans Qdrant.")
         sys.exit(0)
     else:
-        print("Échec de la mise à jour dans Qdrant.")
+        print("Ã‰chec de la mise Ã  jour dans Qdrant.")
         sys.exit(1)
 "@
 
@@ -232,25 +232,25 @@ function Update-TaskStatusInQdrant {
         [bool]$Force
     )
     
-    # Créer le script Python pour la mise à jour
-    Write-Log "Création du script Python pour la mise à jour du statut..." -Level Info
+    # CrÃ©er le script Python pour la mise Ã  jour
+    Write-Log "CrÃ©ation du script Python pour la mise Ã  jour du statut..." -Level Info
     $pythonScript = Get-PythonUpdateScript -TaskId $TaskId -Status $Status -QdrantUrl $QdrantUrl -CollectionName $CollectionName -Comment $Comment -Force $Force
     
-    # Créer un fichier temporaire pour le script Python
+    # CrÃ©er un fichier temporaire pour le script Python
     $tempFile = [System.IO.Path]::GetTempFileName() -replace "\.tmp$", ".py"
     Set-Content -Path $tempFile -Value $pythonScript -Encoding UTF8
     
-    # Exécuter le script Python
-    Write-Log "Exécution du script Python pour la mise à jour du statut..." -Level Info
+    # ExÃ©cuter le script Python
+    Write-Log "ExÃ©cution du script Python pour la mise Ã  jour du statut..." -Level Info
     $output = python $tempFile 2>&1
     $exitCode = $LASTEXITCODE
     
     # Supprimer le fichier temporaire
     Remove-Item -Path $tempFile -Force
     
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     if ($exitCode -eq 0) {
-        # Extraire les résultats JSON de la sortie
+        # Extraire les rÃ©sultats JSON de la sortie
         $jsonStartIndex = $output.IndexOf("{")
         $jsonEndIndex = $output.LastIndexOf("}")
         
@@ -258,23 +258,23 @@ function Update-TaskStatusInQdrant {
             $jsonString = $output.Substring($jsonStartIndex, $jsonEndIndex - $jsonStartIndex + 1)
             $result = $jsonString | ConvertFrom-Json
             
-            # Afficher le résultat
-            Write-Host "`nMise à jour du statut effectuée avec succès:" -ForegroundColor Green
-            Write-Host "ID de la tâche: $($result.taskId)" -ForegroundColor Cyan
+            # Afficher le rÃ©sultat
+            Write-Host "`nMise Ã  jour du statut effectuÃ©e avec succÃ¨s:" -ForegroundColor Green
+            Write-Host "ID de la tÃ¢che: $($result.taskId)" -ForegroundColor Cyan
             Write-Host "Description: $($result.description)" -ForegroundColor Cyan
             Write-Host "Ancien statut: $($result.oldStatus)" -ForegroundColor Yellow
             Write-Host "Nouveau statut: $($result.newStatus)" -ForegroundColor Green
-            Write-Host "Dernière mise à jour: $($result.lastUpdated)" -ForegroundColor Cyan
+            Write-Host "DerniÃ¨re mise Ã  jour: $($result.lastUpdated)" -ForegroundColor Cyan
             
-            Write-Log "Mise à jour du statut réussie dans Qdrant." -Level Success
+            Write-Log "Mise Ã  jour du statut rÃ©ussie dans Qdrant." -Level Success
             return $true
         } else {
-            Write-Log "Impossible d'extraire les résultats JSON de la sortie." -Level Warning
+            Write-Log "Impossible d'extraire les rÃ©sultats JSON de la sortie." -Level Warning
             Write-Log "Sortie: $output" -Level Info
             return $true
         }
     } else {
-        Write-Log "Échec de la mise à jour du statut dans Qdrant." -Level Error
+        Write-Log "Ã‰chec de la mise Ã  jour du statut dans Qdrant." -Level Error
         Write-Log "Sortie: $output" -Level Error
         return $false
     }
@@ -288,12 +288,12 @@ function Update-TaskStatusInMarkdown {
         [bool]$Force
     )
     
-    # Vérifier si le fichier existe
+    # VÃ©rifier si le fichier existe
     if (-not (Test-FileExists -FilePath $RoadmapPath)) {
         return $false
     }
     
-    # Mettre à jour le statut dans le fichier Markdown
+    # Mettre Ã  jour le statut dans le fichier Markdown
     $checkbox = if ($Status -eq 'Completed') { 'x' } else { ' ' }
     $content = Get-Content -Path $RoadmapPath -Raw
     
@@ -304,10 +304,10 @@ function Update-TaskStatusInMarkdown {
     
     if ($content -ne $newContent) {
         Set-Content -Path $RoadmapPath -Value $newContent -Encoding UTF8
-        Write-Log "Statut de la tâche $TaskId mis à jour à $Status dans le fichier Markdown." -Level Success
+        Write-Log "Statut de la tÃ¢che $TaskId mis Ã  jour Ã  $Status dans le fichier Markdown." -Level Success
         return $true
     } else {
-        Write-Log "Tâche $TaskId non trouvée ou déjà dans l'état $Status dans le fichier Markdown." -Level Warning
+        Write-Log "TÃ¢che $TaskId non trouvÃ©e ou dÃ©jÃ  dans l'Ã©tat $Status dans le fichier Markdown." -Level Warning
         return $false
     }
 }
@@ -320,16 +320,16 @@ function Save-TaskStatusHistory {
         [string]$Comment
     )
     
-    # Créer le répertoire d'historique s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire d'historique s'il n'existe pas
     $historyDir = Join-Path -Path $PSScriptRoot -ChildPath "..\..\projet\logs\task_history"
     if (-not (Test-Path -Path $historyDir)) {
         New-Item -Path $historyDir -ItemType Directory -Force | Out-Null
     }
     
-    # Créer le fichier d'historique pour la tâche
+    # CrÃ©er le fichier d'historique pour la tÃ¢che
     $historyFile = Join-Path -Path $historyDir -ChildPath "$TaskId.json"
     
-    # Créer l'entrée d'historique
+    # CrÃ©er l'entrÃ©e d'historique
     $historyEntry = @{
         timestamp = (Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
         old_status = $OldStatus
@@ -338,47 +338,47 @@ function Save-TaskStatusHistory {
         user = $env:USERNAME
     }
     
-    # Charger l'historique existant ou créer un nouveau
+    # Charger l'historique existant ou crÃ©er un nouveau
     if (Test-Path -Path $historyFile) {
         $history = Get-Content -Path $historyFile -Raw | ConvertFrom-Json
     } else {
         $history = @()
     }
     
-    # Ajouter la nouvelle entrée
+    # Ajouter la nouvelle entrÃ©e
     $history += $historyEntry
     
     # Enregistrer l'historique
     $history | ConvertTo-Json -Depth 10 | Set-Content -Path $historyFile -Encoding UTF8
     
-    Write-Log "Historique de la tâche $TaskId mis à jour." -Level Success
+    Write-Log "Historique de la tÃ¢che $TaskId mis Ã  jour." -Level Success
     return $true
 }
 
 # Fonction principale
 function Invoke-TaskStatusUpdate {
-    # Vérifier la connexion à Qdrant
+    # VÃ©rifier la connexion Ã  Qdrant
     if (-not (Test-QdrantConnection -Url $QdrantUrl)) {
         return
     }
     
-    # Mettre à jour le statut dans Qdrant
+    # Mettre Ã  jour le statut dans Qdrant
     $qdrantResult = Update-TaskStatusInQdrant -TaskId $TaskId -Status $Status -QdrantUrl $QdrantUrl -CollectionName $CollectionName -Comment $Comment -Force $Force
     
-    # Mettre à jour le statut dans le fichier Markdown
+    # Mettre Ã  jour le statut dans le fichier Markdown
     $markdownResult = Update-TaskStatusInMarkdown -TaskId $TaskId -Status $Status -RoadmapPath $RoadmapPath -Force $Force
     
     # Enregistrer l'historique des modifications
     $oldStatus = if ($Status -eq "Completed") { "Incomplete" } else { "Completed" }
     $historyResult = Save-TaskStatusHistory -TaskId $TaskId -OldStatus $oldStatus -NewStatus $Status -Comment $Comment
     
-    # Afficher le résultat
+    # Afficher le rÃ©sultat
     if ($qdrantResult -and $markdownResult -and $historyResult) {
-        Write-Log "Mise à jour du statut de la tâche $TaskId réussie." -Level Success
+        Write-Log "Mise Ã  jour du statut de la tÃ¢che $TaskId rÃ©ussie." -Level Success
     } else {
-        Write-Log "Mise à jour du statut de la tâche $TaskId partiellement réussie." -Level Warning
+        Write-Log "Mise Ã  jour du statut de la tÃ¢che $TaskId partiellement rÃ©ussie." -Level Warning
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Invoke-TaskStatusUpdate

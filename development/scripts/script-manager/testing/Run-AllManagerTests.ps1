@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute tous les tests du script manager.
+    ExÃ©cute tous les tests du script manager.
 .DESCRIPTION
-    Ce script exécute tous les tests du script manager, y compris les tests
-    originaux et les tests corrigés, et génère des rapports détaillés.
+    Ce script exÃ©cute tous les tests du script manager, y compris les tests
+    originaux et les tests corrigÃ©s, et gÃ©nÃ¨re des rapports dÃ©taillÃ©s.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de tests.
 .PARAMETER TestType
-    Type de tests à exécuter : Original, Fixed, All (par défaut).
+    Type de tests Ã  exÃ©cuter : Original, Fixed, All (par dÃ©faut).
 .PARAMETER GenerateHTML
-    Génère un rapport HTML des résultats des tests.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests.
 .PARAMETER TestName
-    Nom du test à exécuter. Si non spécifié, tous les tests sont exécutés.
+    Nom du test Ã  exÃ©cuter. Si non spÃ©cifiÃ©, tous les tests sont exÃ©cutÃ©s.
 .PARAMETER SkipDownload
-    Ignore le téléchargement de ReportUnit.
+    Ignore le tÃ©lÃ©chargement de ReportUnit.
 .EXAMPLE
     .\Run-AllManagerTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
 .EXAMPLE
@@ -22,7 +22,7 @@
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -44,7 +44,7 @@ param (
     [switch]$SkipDownload
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -69,22 +69,22 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
-# Fonction pour exécuter les tests
+# Fonction pour exÃ©cuter les tests
 function Invoke-TestSuite {
     [CmdletBinding()]
     param (
@@ -98,7 +98,7 @@ function Invoke-TestSuite {
         [string]$OutputFile
     )
     
-    Write-Log "Exécution de la suite de tests '$TestSuiteName'..." -Level "INFO"
+    Write-Log "ExÃ©cution de la suite de tests '$TestSuiteName'..." -Level "INFO"
     Write-Log "Fichiers de test: $($TestFiles.Count)" -Level "INFO"
     foreach ($file in $TestFiles) {
         Write-Log "  $file" -Level "INFO"
@@ -112,21 +112,21 @@ function Invoke-TestSuite {
     $pesterConfig.TestResult.OutputPath = $OutputFile
     $pesterConfig.TestResult.OutputFormat = "NUnitXml"
     
-    # Exécuter les tests
+    # ExÃ©cuter les tests
     $testResults = Invoke-Pester -Configuration $pesterConfig
     
-    # Afficher un résumé des résultats
-    Write-Log "`nRésumé des tests '$TestSuiteName':" -Level "INFO"
-    Write-Log "  Tests exécutés: $($testResults.TotalCount)" -Level "INFO"
-    Write-Log "  Tests réussis: $($testResults.PassedCount)" -Level "SUCCESS"
-    Write-Log "  Tests échoués: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
-    Write-Log "  Tests ignorés: $($testResults.SkippedCount)" -Level "WARNING"
-    Write-Log "  Durée totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
+    # Afficher un rÃ©sumÃ© des rÃ©sultats
+    Write-Log "`nRÃ©sumÃ© des tests '$TestSuiteName':" -Level "INFO"
+    Write-Log "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -Level "INFO"
+    Write-Log "  Tests rÃ©ussis: $($testResults.PassedCount)" -Level "SUCCESS"
+    Write-Log "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
+    Write-Log "  Tests ignorÃ©s: $($testResults.SkippedCount)" -Level "WARNING"
+    Write-Log "  DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
     
     return $testResults
 }
 
-# Récupérer les fichiers de test
+# RÃ©cupÃ©rer les fichiers de test
 $originalTestFiles = @()
 $fixedTestFiles = @()
 
@@ -147,34 +147,34 @@ if ($TestType -eq "Fixed" -or $TestType -eq "All") {
     }
 }
 
-# Vérifier si des fichiers de test ont été trouvés
+# VÃ©rifier si des fichiers de test ont Ã©tÃ© trouvÃ©s
 $totalTestFiles = $originalTestFiles.Count + $fixedTestFiles.Count
 if ($totalTestFiles -eq 0) {
-    Write-Log "Aucun fichier de test trouvé." -Level "ERROR"
+    Write-Log "Aucun fichier de test trouvÃ©." -Level "ERROR"
     exit 1
 }
 
-Write-Log "Exécution de $totalTestFiles fichier(s) de test..." -Level "INFO"
+Write-Log "ExÃ©cution de $totalTestFiles fichier(s) de test..." -Level "INFO"
 
-# Exécuter les tests originaux
+# ExÃ©cuter les tests originaux
 $originalResults = $null
 $originalOutputFile = Join-Path -Path $OutputPath -ChildPath "OriginalTestResults.xml"
 if ($originalTestFiles.Count -gt 0) {
     $originalResults = Invoke-TestSuite -TestSuiteName "Tests originaux" -TestFiles $originalTestFiles.FullName -OutputFile $originalOutputFile
 }
 
-# Exécuter les tests corrigés
+# ExÃ©cuter les tests corrigÃ©s
 $fixedResults = $null
 $fixedOutputFile = Join-Path -Path $OutputPath -ChildPath "FixedTestResults.xml"
 if ($fixedTestFiles.Count -gt 0) {
-    $fixedResults = Invoke-TestSuite -TestSuiteName "Tests corrigés" -TestFiles $fixedTestFiles.FullName -OutputFile $fixedOutputFile
+    $fixedResults = Invoke-TestSuite -TestSuiteName "Tests corrigÃ©s" -TestFiles $fixedTestFiles.FullName -OutputFile $fixedOutputFile
 }
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "AllTestResults.html"
     
-    # Créer un rapport HTML simple
+    # CrÃ©er un rapport HTML simple
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -195,18 +195,18 @@ if ($GenerateHTML) {
 </head>
 <body>
     <h1>Rapport de tests du script manager</h1>
-    <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé global</h2>
+        <h2>RÃ©sumÃ© global</h2>
         <table>
             <tr>
                 <th>Suite de tests</th>
-                <th>Tests exécutés</th>
-                <th>Tests réussis</th>
-                <th>Tests échoués</th>
-                <th>Tests ignorés</th>
-                <th>Durée (s)</th>
+                <th>Tests exÃ©cutÃ©s</th>
+                <th>Tests rÃ©ussis</th>
+                <th>Tests Ã©chouÃ©s</th>
+                <th>Tests ignorÃ©s</th>
+                <th>DurÃ©e (s)</th>
             </tr>
 "@
 
@@ -226,7 +226,7 @@ if ($GenerateHTML) {
     if ($fixedResults) {
         $htmlContent += @"
             <tr>
-                <td>Tests corrigés</td>
+                <td>Tests corrigÃ©s</td>
                 <td>$($fixedResults.TotalCount)</td>
                 <td class="success">$($fixedResults.PassedCount)</td>
                 <td class="error">$($fixedResults.FailedCount)</td>
@@ -270,20 +270,20 @@ if ($GenerateHTML) {
         </table>
     </div>
     
-    <h2>Détails des tests</h2>
-    <p>Pour plus de détails, consultez les rapports XML :</p>
+    <h2>DÃ©tails des tests</h2>
+    <p>Pour plus de dÃ©tails, consultez les rapports XML :</p>
     <ul>
 "@
 
     if ($originalResults) {
         $htmlContent += @"
-        <li><a href="OriginalTestResults.xml">Résultats des tests originaux</a></li>
+        <li><a href="OriginalTestResults.xml">RÃ©sultats des tests originaux</a></li>
 "@
     }
 
     if ($fixedResults) {
         $htmlContent += @"
-        <li><a href="FixedTestResults.xml">Résultats des tests corrigés</a></li>
+        <li><a href="FixedTestResults.xml">RÃ©sultats des tests corrigÃ©s</a></li>
 "@
     }
 
@@ -291,12 +291,12 @@ if ($GenerateHTML) {
     </ul>
     
     <h2>Recommandations</h2>
-    <p>Pour améliorer les tests unitaires, il est recommandé de :</p>
+    <p>Pour amÃ©liorer les tests unitaires, il est recommandÃ© de :</p>
     <ul>
-        <li>Utiliser des mocks pour éviter que les tests ne modifient réellement les fichiers</li>
-        <li>Isoler les tests pour qu'ils soient indépendants les uns des autres</li>
-        <li>Ajouter des tests pour les nouvelles fonctionnalités du script manager</li>
-        <li>Intégrer les tests dans le processus de développement continu</li>
+        <li>Utiliser des mocks pour Ã©viter que les tests ne modifient rÃ©ellement les fichiers</li>
+        <li>Isoler les tests pour qu'ils soient indÃ©pendants les uns des autres</li>
+        <li>Ajouter des tests pour les nouvelles fonctionnalitÃ©s du script manager</li>
+        <li>IntÃ©grer les tests dans le processus de dÃ©veloppement continu</li>
     </ul>
 </body>
 </html>
@@ -304,48 +304,48 @@ if ($GenerateHTML) {
     
     $htmlContent | Out-File -FilePath $htmlPath -Encoding utf8
     
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
-# Télécharger et utiliser ReportUnit pour générer un rapport HTML plus détaillé
+# TÃ©lÃ©charger et utiliser ReportUnit pour gÃ©nÃ©rer un rapport HTML plus dÃ©taillÃ©
 if ($GenerateHTML -and -not $SkipDownload) {
     try {
         $reportUnitPath = Join-Path -Path $OutputPath -ChildPath "ReportUnit.exe"
         
-        # Télécharger ReportUnit s'il n'existe pas
+        # TÃ©lÃ©charger ReportUnit s'il n'existe pas
         if (-not (Test-Path -Path $reportUnitPath)) {
-            Write-Log "Téléchargement de ReportUnit..." -Level "INFO"
+            Write-Log "TÃ©lÃ©chargement de ReportUnit..." -Level "INFO"
             $reportUnitUrl = "https://github.com/reportunit/reportunit/releases/download/1.2.1/ReportUnit.exe"
             
             try {
                 Invoke-WebRequest -Uri $reportUnitUrl -OutFile $reportUnitPath
-                Write-Log "ReportUnit téléchargé avec succès." -Level "SUCCESS"
+                Write-Log "ReportUnit tÃ©lÃ©chargÃ© avec succÃ¨s." -Level "SUCCESS"
             }
             catch {
-                Write-Log "Erreur lors du téléchargement de ReportUnit: $_" -Level "ERROR"
-                Write-Log "Le rapport HTML détaillé ne sera pas généré." -Level "WARNING"
+                Write-Log "Erreur lors du tÃ©lÃ©chargement de ReportUnit: $_" -Level "ERROR"
+                Write-Log "Le rapport HTML dÃ©taillÃ© ne sera pas gÃ©nÃ©rÃ©." -Level "WARNING"
             }
         }
         
-        # Générer le rapport HTML détaillé avec ReportUnit
+        # GÃ©nÃ©rer le rapport HTML dÃ©taillÃ© avec ReportUnit
         if (Test-Path -Path $reportUnitPath) {
-            Write-Log "Génération du rapport HTML détaillé avec ReportUnit..." -Level "INFO"
+            Write-Log "GÃ©nÃ©ration du rapport HTML dÃ©taillÃ© avec ReportUnit..." -Level "INFO"
             
-            # Exécuter ReportUnit
+            # ExÃ©cuter ReportUnit
             $reportUnitArgs = @($OutputPath, $OutputPath)
             Start-Process -FilePath $reportUnitPath -ArgumentList $reportUnitArgs -NoNewWindow -Wait
             
-            Write-Log "Rapport HTML détaillé généré avec ReportUnit." -Level "SUCCESS"
+            Write-Log "Rapport HTML dÃ©taillÃ© gÃ©nÃ©rÃ© avec ReportUnit." -Level "SUCCESS"
         }
     }
     catch {
-        Write-Log "Erreur lors de la génération du rapport HTML détaillé: $_" -Level "ERROR"
+        Write-Log "Erreur lors de la gÃ©nÃ©ration du rapport HTML dÃ©taillÃ©: $_" -Level "ERROR"
     }
 }
 
-# Afficher un résumé global
-Write-Log "`nRésumé global des tests:" -Level "INFO"
-Write-Log "  Fichiers de test exécutés: $totalTestFiles" -Level "INFO"
+# Afficher un rÃ©sumÃ© global
+Write-Log "`nRÃ©sumÃ© global des tests:" -Level "INFO"
+Write-Log "  Fichiers de test exÃ©cutÃ©s: $totalTestFiles" -Level "INFO"
 
 $totalTests = 0
 $totalPassed = 0
@@ -366,17 +366,17 @@ if ($fixedResults) {
     $totalSkipped += $fixedResults.SkippedCount
 }
 
-Write-Log "  Tests exécutés: $totalTests" -Level "INFO"
-Write-Log "  Tests réussis: $totalPassed" -Level "SUCCESS"
-Write-Log "  Tests échoués: $totalFailed" -Level $(if ($totalFailed -eq 0) { "SUCCESS" } else { "ERROR" })
-Write-Log "  Tests ignorés: $totalSkipped" -Level "WARNING"
+Write-Log "  Tests exÃ©cutÃ©s: $totalTests" -Level "INFO"
+Write-Log "  Tests rÃ©ussis: $totalPassed" -Level "SUCCESS"
+Write-Log "  Tests Ã©chouÃ©s: $totalFailed" -Level $(if ($totalFailed -eq 0) { "SUCCESS" } else { "ERROR" })
+Write-Log "  Tests ignorÃ©s: $totalSkipped" -Level "WARNING"
 
-# Retourner le code de sortie en fonction des résultats
+# Retourner le code de sortie en fonction des rÃ©sultats
 if ($totalFailed -gt 0) {
-    Write-Log "Des tests ont échoué. Veuillez consulter les rapports pour plus de détails." -Level "ERROR"
+    Write-Log "Des tests ont Ã©chouÃ©. Veuillez consulter les rapports pour plus de dÃ©tails." -Level "ERROR"
     exit 1
 }
 else {
-    Write-Log "Tous les tests ont réussi!" -Level "SUCCESS"
+    Write-Log "Tous les tests ont rÃ©ussi!" -Level "SUCCESS"
     exit 0
 }

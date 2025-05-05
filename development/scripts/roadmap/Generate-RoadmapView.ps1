@@ -1,5 +1,5 @@
-# Generate-RoadmapView.ps1
-# Script pour générer des vues dynamiques de la roadmap à partir des données stockées dans Qdrant
+﻿# Generate-RoadmapView.ps1
+# Script pour gÃ©nÃ©rer des vues dynamiques de la roadmap Ã  partir des donnÃ©es stockÃ©es dans Qdrant
 # Version: 1.0
 # Date: 2025-05-02
 
@@ -44,10 +44,10 @@ function Test-QdrantConnection {
 
     try {
         $response = Invoke-RestMethod -Uri $Url -Method Get -ErrorAction Stop
-        Write-Log "Qdrant est accessible à l'URL: $Url" -Level Success
+        Write-Log "Qdrant est accessible Ã  l'URL: $Url" -Level Success
         return $true
     } catch {
-        Write-Log "Impossible de se connecter à Qdrant à l'URL: $Url" -Level Error
+        Write-Log "Impossible de se connecter Ã  Qdrant Ã  l'URL: $Url" -Level Error
         Write-Log "Erreur: $_" -Level Error
         return $false
     }
@@ -78,36 +78,36 @@ collection_name = '$CollectionName'
 limit = $Limit
 force = $($Force.ToString().ToLower() -replace "true", "True" -replace "false", "False")
 
-# Fonction pour générer une vue de la roadmap
+# Fonction pour gÃ©nÃ©rer une vue de la roadmap
 def generate_roadmap_view():
     try:
-        # Vérifier si Qdrant est accessible
+        # VÃ©rifier si Qdrant est accessible
         try:
             response = requests.get(f"{qdrant_url}/collections")
             if response.status_code != 200:
-                print(f"Erreur lors de la connexion à Qdrant: {response.status_code}")
+                print(f"Erreur lors de la connexion Ã  Qdrant: {response.status_code}")
                 return False
         except Exception as e:
-            print(f"Erreur lors de la connexion à Qdrant: {str(e)}")
+            print(f"Erreur lors de la connexion Ã  Qdrant: {str(e)}")
             return False
 
-        # Vérifier si la collection existe
+        # VÃ©rifier si la collection existe
         response = requests.get(f"{qdrant_url}/collections/{collection_name}")
         if response.status_code != 200:
             print(f"La collection {collection_name} n'existe pas dans Qdrant.")
             return False
 
-        # Préparer les filtres en fonction du type de vue
+        # PrÃ©parer les filtres en fonction du type de vue
         filter_conditions = []
 
         if view_type == "ActiveRoadmap":
-            # Vue de la roadmap active (tâches non terminées)
+            # Vue de la roadmap active (tÃ¢ches non terminÃ©es)
             filter_conditions.append({
                 "key": "status",
                 "match": {"value": "Incomplete"}
             })
         elif view_type == "RecentlyCompleted":
-            # Vue des tâches récemment terminées (dans les 7 derniers jours)
+            # Vue des tÃ¢ches rÃ©cemment terminÃ©es (dans les 7 derniers jours)
             seven_days_ago = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
             filter_conditions.append({
                 "key": "status",
@@ -120,15 +120,15 @@ def generate_roadmap_view():
                 }
             })
         elif view_type == "NextPriorities":
-            # Vue des prochaines tâches prioritaires (non terminées)
-            # Pour l'instant, on se contente des tâches non terminées
-            # car nous n'avons pas encore implémenté la priorité
+            # Vue des prochaines tÃ¢ches prioritaires (non terminÃ©es)
+            # Pour l'instant, on se contente des tÃ¢ches non terminÃ©es
+            # car nous n'avons pas encore implÃ©mentÃ© la prioritÃ©
             filter_conditions.append({
                 "key": "status",
                 "match": {"value": "Incomplete"}
             })
 
-        # Construire la requête de recherche
+        # Construire la requÃªte de recherche
         search_request = {
             "filter": {
                 "must": filter_conditions
@@ -149,14 +149,14 @@ def generate_roadmap_view():
             print(response.text)
             return False
 
-        # Traiter les résultats
+        # Traiter les rÃ©sultats
         results = response.json()
 
         if not results['result']['points']:
-            print(f"Aucune tâche trouvée pour la vue '{view_type}'.")
+            print(f"Aucune tÃ¢che trouvÃ©e pour la vue '{view_type}'.")
             return False
 
-        # Extraire les tâches
+        # Extraire les tÃ¢ches
         tasks = []
         for point in results['result']['points']:
             if 'payload' in point:
@@ -170,40 +170,40 @@ def generate_roadmap_view():
                 }
                 tasks.append(task)
 
-        # Trier les tâches par ID
+        # Trier les tÃ¢ches par ID
         tasks.sort(key=lambda x: x['id'])
 
-        # Générer le contenu Markdown
-        markdown_content = f"# {view_type} - Générée le {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+        # GÃ©nÃ©rer le contenu Markdown
+        markdown_content = f"# {view_type} - GÃ©nÃ©rÃ©e le {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
 
         for task in tasks:
             checkbox = "x" if task['status'] == "Completed" else " "
             indent = "  " * task['level']
             markdown_content += f"{indent}- [{checkbox}] **{task['id']}** {task['description']}\n"
 
-        # Écrire le contenu dans le fichier de sortie
+        # Ã‰crire le contenu dans le fichier de sortie
         if output_path:
             os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
             with open(output_path, 'w', encoding='utf-8') as f:
                 f.write(markdown_content)
-            print(f"Vue '{view_type}' générée avec succès et enregistrée dans: {output_path}")
+            print(f"Vue '{view_type}' gÃ©nÃ©rÃ©e avec succÃ¨s et enregistrÃ©e dans: {output_path}")
         else:
             print(markdown_content)
 
         return True
 
     except Exception as e:
-        print(f"Erreur lors de la génération de la vue: {str(e)}")
+        print(f"Erreur lors de la gÃ©nÃ©ration de la vue: {str(e)}")
         return False
 
 if __name__ == "__main__":
-    print(f"Génération de la vue '{view_type}'...")
+    print(f"GÃ©nÃ©ration de la vue '{view_type}'...")
 
     if generate_roadmap_view():
-        print("Génération de la vue réussie.")
+        print("GÃ©nÃ©ration de la vue rÃ©ussie.")
         sys.exit(0)
     else:
-        print("Échec de la génération de la vue.")
+        print("Ã‰chec de la gÃ©nÃ©ration de la vue.")
         sys.exit(1)
 "@
 
@@ -211,46 +211,46 @@ if __name__ == "__main__":
 }
 
 function Invoke-GenerateView {
-    # Vérifier la connexion à Qdrant
+    # VÃ©rifier la connexion Ã  Qdrant
     if (-not (Test-QdrantConnection -Url $QdrantUrl)) {
         return
     }
 
-    # Définir le chemin de sortie par défaut si non spécifié
+    # DÃ©finir le chemin de sortie par dÃ©faut si non spÃ©cifiÃ©
     if (-not $OutputPath) {
         $OutputPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\projet\roadmaps\views\$ViewType.md"
     }
 
-    # Créer le répertoire de sortie s'il n'existe pas
+    # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     $outputDir = Split-Path -Parent $OutputPath
     if (-not (Test-Path -Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
     }
 
-    # Créer le script Python pour la génération de la vue
-    Write-Log "Création du script Python pour la génération de la vue '$ViewType'..." -Level Info
+    # CrÃ©er le script Python pour la gÃ©nÃ©ration de la vue
+    Write-Log "CrÃ©ation du script Python pour la gÃ©nÃ©ration de la vue '$ViewType'..." -Level Info
     $pythonScript = Get-PythonGenerateViewScript -ViewType $ViewType -OutputPath $OutputPath -QdrantUrl $QdrantUrl -CollectionName $CollectionName -Limit $Limit -Force $Force
 
-    # Créer un fichier temporaire pour le script Python
+    # CrÃ©er un fichier temporaire pour le script Python
     $tempFile = [System.IO.Path]::GetTempFileName() -replace "\.tmp$", ".py"
     Set-Content -Path $tempFile -Value $pythonScript -Encoding UTF8
 
-    # Exécuter le script Python
-    Write-Log "Exécution du script Python pour la génération de la vue '$ViewType'..." -Level Info
+    # ExÃ©cuter le script Python
+    Write-Log "ExÃ©cution du script Python pour la gÃ©nÃ©ration de la vue '$ViewType'..." -Level Info
     $output = python $tempFile 2>&1
     $exitCode = $LASTEXITCODE
 
     # Supprimer le fichier temporaire
     Remove-Item -Path $tempFile -Force
 
-    # Vérifier le résultat
+    # VÃ©rifier le rÃ©sultat
     if ($exitCode -eq 0) {
-        Write-Log "Génération de la vue '$ViewType' réussie." -Level Success
-        Write-Log "Vue enregistrée dans: $OutputPath" -Level Info
+        Write-Log "GÃ©nÃ©ration de la vue '$ViewType' rÃ©ussie." -Level Success
+        Write-Log "Vue enregistrÃ©e dans: $OutputPath" -Level Info
 
-        # Afficher un aperçu de la vue générée
+        # Afficher un aperÃ§u de la vue gÃ©nÃ©rÃ©e
         if (Test-Path -Path $OutputPath) {
-            Write-Log "Aperçu de la vue générée:" -Level Info
+            Write-Log "AperÃ§u de la vue gÃ©nÃ©rÃ©e:" -Level Info
             Get-Content -Path $OutputPath -TotalCount 20 | ForEach-Object { Write-Host $_ }
 
             if ((Get-Content -Path $OutputPath | Measure-Object -Line).Lines -gt 20) {
@@ -260,11 +260,11 @@ function Invoke-GenerateView {
 
         return $true
     } else {
-        Write-Log "Échec de la génération de la vue '$ViewType'." -Level Error
+        Write-Log "Ã‰chec de la gÃ©nÃ©ration de la vue '$ViewType'." -Level Error
         Write-Log "Sortie: $output" -Level Error
         return $false
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Invoke-GenerateView

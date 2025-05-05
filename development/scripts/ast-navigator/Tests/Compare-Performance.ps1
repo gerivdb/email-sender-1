@@ -1,10 +1,10 @@
-# Script de comparaison de performance très simple
+﻿# Script de comparaison de performance trÃ¨s simple
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script PowerShell simple
+# CrÃ©er un script PowerShell simple
 $sampleCode = @'
 function Test-Function1 {
     param (

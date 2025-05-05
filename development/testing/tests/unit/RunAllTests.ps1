@@ -1,60 +1,60 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Script pour exécuter tous les tests unitaires et d'intégration.
+    Script pour exÃ©cuter tous les tests unitaires et d'intÃ©gration.
 .DESCRIPTION
-    Ce script exécute tous les tests unitaires et d'intégration pour les modules
+    Ce script exÃ©cute tous les tests unitaires et d'intÃ©gration pour les modules
     DependencyCycleResolver et CycleDetector.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-04-20
+    Date de crÃ©ation: 2025-04-20
 #>
 
-# Initialiser les résultats des tests
+# Initialiser les rÃ©sultats des tests
 $testsPassed = 0
 $testsFailed = 0
 
-# Fonction pour exécuter un script de test
+# Fonction pour exÃ©cuter un script de test
 function Invoke-TestScript {
     param (
         [string]$Path
     )
     
-    Write-Host "Exécution des tests: $Path" -ForegroundColor Yellow
+    Write-Host "ExÃ©cution des tests: $Path" -ForegroundColor Yellow
     
-    # Exécuter le script de test
+    # ExÃ©cuter le script de test
     $result = & $Path
     
-    # Vérifier le code de sortie
+    # VÃ©rifier le code de sortie
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "  Tests réussis" -ForegroundColor Green
+        Write-Host "  Tests rÃ©ussis" -ForegroundColor Green
         return $true
     } else {
-        Write-Host "  Tests échoués" -ForegroundColor Red
+        Write-Host "  Tests Ã©chouÃ©s" -ForegroundColor Red
         return $false
     }
 }
 
-# Exécuter les tests unitaires pour DependencyCycleResolver
+# ExÃ©cuter les tests unitaires pour DependencyCycleResolver
 $result = Invoke-TestScript -Path "$PSScriptRoot\SimpleDependencyCycleResolverTests.ps1"
 if ($result) { $testsPassed++ } else { $testsFailed++ }
 
-# Exécuter les tests d'intégration
+# ExÃ©cuter les tests d'intÃ©gration
 $result = Invoke-TestScript -Path "$PSScriptRoot\DependencyCycleIntegrationTests.ps1"
 if ($result) { $testsPassed++ } else { $testsFailed++ }
 
-# Afficher le résumé des tests
-Write-Host "`nRésumé des tests:" -ForegroundColor Yellow
-Write-Host "  Tests réussis: $testsPassed" -ForegroundColor Green
-Write-Host "  Tests échoués: $testsFailed" -ForegroundColor Red
+# Afficher le rÃ©sumÃ© des tests
+Write-Host "`nRÃ©sumÃ© des tests:" -ForegroundColor Yellow
+Write-Host "  Tests rÃ©ussis: $testsPassed" -ForegroundColor Green
+Write-Host "  Tests Ã©chouÃ©s: $testsFailed" -ForegroundColor Red
 Write-Host "  Total: $($testsPassed + $testsFailed)" -ForegroundColor Yellow
 
-# Retourner un code de sortie en fonction des résultats des tests
+# Retourner un code de sortie en fonction des rÃ©sultats des tests
 if ($testsFailed -eq 0) {
-    Write-Host "`nTous les tests ont été exécutés avec succès." -ForegroundColor Green
+    Write-Host "`nTous les tests ont Ã©tÃ© exÃ©cutÃ©s avec succÃ¨s." -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }

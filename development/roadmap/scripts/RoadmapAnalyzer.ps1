@@ -1,9 +1,9 @@
-# Script d'analyse de la roadmap
-# Ce script analyse la roadmap et génère des rapports sur l'avancement
+﻿# Script d'analyse de la roadmap
+# Ce script analyse la roadmap et gÃ©nÃ¨re des rapports sur l'avancement
 
 
 # Script d'analyse de la roadmap
-# Ce script analyse la roadmap et génère des rapports sur l'avancement
+# Ce script analyse la roadmap et gÃ©nÃ¨re des rapports sur l'avancement
 
 param (
     [string]$RoadmapPath = "Roadmap\roadmap_perso.md",
@@ -34,12 +34,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
 
-    # Écrire dans le fichier journal
+    # Ã‰crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
 
-        # Créer le répertoire de logs si nécessaire
+        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -47,7 +47,7 @@ function Write-Log {
 
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     } catch {
-        # Ignorer les erreurs d'écriture dans le journal
+        # Ignorer les erreurs d'Ã©criture dans le journal
     }
 }
 try {
@@ -60,10 +60,10 @@ try {
     $jsonReportPath = "$OutputFolder\roadmap_report_$timestamp.json"
     $chartPath = "$OutputFolder\roadmap_chart_$timestamp.html"
 
-    # Créer le dossier de sortie s'il n'existe pas
+    # CrÃ©er le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputFolder)) {
         New-Item -Path $OutputFolder -ItemType Directory -Force | Out-Null
-        Write-Host "Dossier '$OutputFolder' créé." -ForegroundColor Green
+        Write-Host "Dossier '$OutputFolder' crÃ©Ã©." -ForegroundColor Green
     }
 
     # Fonction pour analyser la roadmap
@@ -72,7 +72,7 @@ try {
             [string]$Path
         )
 
-        # Vérifier si le fichier existe
+        # VÃ©rifier si le fichier existe
         if (-not (Test-Path -Path $Path)) {
             Write-Host "Le fichier roadmap n'existe pas: $Path" -ForegroundColor Red
             return $null
@@ -81,7 +81,7 @@ try {
         # Lire le contenu du fichier
         $content = Get-Content -Path $Path -Raw
 
-        # Structure pour stocker les données de la roadmap
+        # Structure pour stocker les donnÃ©es de la roadmap
         $roadmap = @{
             Title       = ""
             LastUpdated = (Get-Item -Path $Path).LastWriteTime
@@ -93,7 +93,7 @@ try {
             $roadmap.Title = $Matches[1]
         }
 
-        # Analyser les sections, phases et tâches
+        # Analyser les sections, phases et tÃ¢ches
         $lines = $content -split "`n"
         $currentSection = $null
         $currentPhase = $null
@@ -101,7 +101,7 @@ try {
         for ($i = 0; $i -lt $lines.Count; $i++) {
             $line = $lines[$i]
 
-            # Détecter une section
+            # DÃ©tecter une section
             if ($line -match "^## (\d+)\. (.+)$") {
                 $sectionId = $Matches[1]
                 $sectionTitle = $Matches[2]
@@ -120,7 +120,7 @@ try {
                 $roadmap.Sections += $currentSection
                 $currentPhase = $null
 
-                # Extraire les métadonnées de la section
+                # Extraire les mÃ©tadonnÃ©es de la section
                 $j = $i + 1
                 while ($j -lt $lines.Count -and -not $lines[$j].StartsWith("- ")) {
                     if ($lines[$j] -match "\*\*(.+)\*\*: (.+)") {
@@ -132,7 +132,7 @@ try {
                 }
             }
 
-            # Détecter une phase
+            # DÃ©tecter une phase
             elseif ($line -match "^  - \[([ x])\] \*\*Phase (\d+): (.+)\*\*$" -and $null -ne $currentSection) {
                 $isCompleted = $Matches[1] -eq "x"
                 $phaseId = $Matches[2]
@@ -152,7 +152,7 @@ try {
                 $currentSection.Phases += $currentPhase
             }
 
-            # Détecter une tâche
+            # DÃ©tecter une tÃ¢che
             elseif ($line -match "^    - \[([ x])\] (.+)$" -and $null -ne $currentPhase) {
                 $isCompleted = $Matches[1] -eq "x"
                 $taskTitle = $Matches[2]
@@ -177,7 +177,7 @@ try {
                 }
             }
 
-            # Détecter une sous-tâche
+            # DÃ©tecter une sous-tÃ¢che
             elseif ($line -match "^      - \[([ x])\] (.+)$" -and $null -ne $currentPhase -and $currentPhase.Tasks.Count -gt 0) {
                 $isCompleted = $Matches[1] -eq "x"
                 $subtaskTitle = $Matches[2]
@@ -221,7 +221,7 @@ try {
         return $roadmap
     }
 
-    # Fonction pour générer un rapport HTML
+    # Fonction pour gÃ©nÃ©rer un rapport HTML
     function New-HtmlReport {
         param (
             [hashtable]$Roadmap
@@ -320,10 +320,10 @@ try {
 </head>
 <body>
     <h1>Rapport de la Roadmap - $($Roadmap.Title)</h1>
-    <p class="timestamp">Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss") | Dernière mise à jour de la roadmap : $($Roadmap.LastUpdated.ToString("dd/MM/yyyy à HH:mm:ss"))</p>
+    <p class="timestamp">GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss") | DerniÃ¨re mise Ã  jour de la roadmap : $($Roadmap.LastUpdated.ToString("dd/MM/yyyy Ã  HH:mm:ss"))</p>
 
     <div class="summary">
-        <h2>Résumé</h2>
+        <h2>RÃ©sumÃ©</h2>
 "@
 
         # Calculer les statistiques globales
@@ -340,7 +340,7 @@ try {
 
         <table>
             <tr>
-                <th>Métrique</th>
+                <th>MÃ©trique</th>
                 <th>Valeur</th>
             </tr>
             <tr>
@@ -352,13 +352,13 @@ try {
                 <td>$totalPhases</td>
             </tr>
             <tr>
-                <td>Tâches</td>
+                <td>TÃ¢ches</td>
                 <td>$completedTasks / $totalTasks ($globalProgress%)</td>
             </tr>
         </table>
     </div>
 
-    <h2>Détails par section</h2>
+    <h2>DÃ©tails par section</h2>
 "@
 
         foreach ($section in $Roadmap.Sections) {
@@ -445,7 +445,7 @@ try {
         return $html
     }
 
-    # Fonction pour générer un graphique de progression
+    # Fonction pour gÃ©nÃ©rer un graphique de progression
     function New-ProgressChart {
         param (
             [hashtable]$Roadmap
@@ -534,13 +534,13 @@ try {
 </head>
 <body>
     <h1>Graphique de progression - $($Roadmap.Title)</h1>
-    <p class="timestamp">Généré le $(Get-Date -Format "dd/MM/yyyy à HH:mm:ss") | Dernière mise à jour de la roadmap : $($Roadmap.LastUpdated.ToString("dd/MM/yyyy à HH:mm:ss"))</p>
+    <p class="timestamp">GÃ©nÃ©rÃ© le $(Get-Date -Format "dd/MM/yyyy Ã  HH:mm:ss") | DerniÃ¨re mise Ã  jour de la roadmap : $($Roadmap.LastUpdated.ToString("dd/MM/yyyy Ã  HH:mm:ss"))</p>
 
     <div class="tabs">
         <div class="tab active" onclick="showTab('overview')">Vue d'ensemble</div>
         <div class="tab" onclick="showTab('sections')">Sections</div>
         <div class="tab" onclick="showTab('phases')">Phases</div>
-        <div class="tab" onclick="showTab('tasks')">Tâches</div>
+        <div class="tab" onclick="showTab('tasks')">TÃ¢ches</div>
     </div>
 
     <div id="overview" class="tab-content active">
@@ -565,14 +565,14 @@ try {
     </div>
 
     <div id="tasks" class="tab-content">
-        <h2>Progression par tâche</h2>
+        <h2>Progression par tÃ¢che</h2>
         <div class="chart-container">
             <canvas id="tasksChart"></canvas>
         </div>
     </div>
 
     <script>
-        // Données du graphique
+        // DonnÃ©es du graphique
         const chartData = $chartDataJson;
 
         // Fonction pour afficher un onglet
@@ -582,24 +582,24 @@ try {
                 tab.classList.remove('active');
             });
 
-            // Désactiver tous les boutons d'onglet
+            // DÃ©sactiver tous les boutons d'onglet
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
             });
 
-            // Afficher l'onglet sélectionné
+            // Afficher l'onglet sÃ©lectionnÃ©
             document.getElementById(tabId).classList.add('active');
 
-            // Activer le bouton d'onglet sélectionné
+            // Activer le bouton d'onglet sÃ©lectionnÃ©
             document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
         }
 
-        // Créer le graphique de vue d'ensemble
+        // CrÃ©er le graphique de vue d'ensemble
         const overviewCtx = document.getElementById('overviewChart').getContext('2d');
         const overviewChart = new Chart(overviewCtx, {
             type: 'doughnut',
             data: {
-                labels: ['Terminé', 'En cours'],
+                labels: ['TerminÃ©', 'En cours'],
                 datasets: [{
                     data: [$completedTasks, $totalTasks - $completedTasks],
                     backgroundColor: ['#27ae60', '#e74c3c']
@@ -620,7 +620,7 @@ try {
             }
         });
 
-        // Créer le graphique des sections
+        // CrÃ©er le graphique des sections
         const sectionsCtx = document.getElementById('sectionsChart').getContext('2d');
         const sectionsChart = new Chart(sectionsCtx, {
             type: 'bar',
@@ -644,7 +644,7 @@ try {
             }
         });
 
-        // Créer le graphique des phases
+        // CrÃ©er le graphique des phases
         const phasesCtx = document.getElementById('phasesChart').getContext('2d');
         const phasesData = [];
         const phasesLabels = [];
@@ -678,7 +678,7 @@ try {
             }
         });
 
-        // Créer le graphique des tâches
+        // CrÃ©er le graphique des tÃ¢ches
         const tasksCtx = document.getElementById('tasksChart').getContext('2d');
         const tasksData = [];
         const tasksLabels = [];
@@ -742,30 +742,30 @@ try {
     $globalProgress = if ($totalTasks -gt 0) { [math]::Round(($completedTasks / $totalTasks) * 100, 2) } else { 0 }
 
     Write-Host "Phases: $totalPhases" -ForegroundColor Green
-    Write-Host "Tâches: $completedTasks / $totalTasks ($globalProgress%)" -ForegroundColor Green
+    Write-Host "TÃ¢ches: $completedTasks / $totalTasks ($globalProgress%)" -ForegroundColor Green
 
-    # Générer le rapport HTML
+    # GÃ©nÃ©rer le rapport HTML
     if ($GenerateHtml) {
-        Write-Host "Génération du rapport HTML..." -ForegroundColor Cyan
+        Write-Host "GÃ©nÃ©ration du rapport HTML..." -ForegroundColor Cyan
         $htmlReport = New-HtmlReport -Roadmap $roadmap
         Set-Content -Path $htmlReportPath -Value $htmlReport -Encoding UTF8
-        Write-Host "Rapport HTML généré: $htmlReportPath" -ForegroundColor Green
+        Write-Host "Rapport HTML gÃ©nÃ©rÃ©: $htmlReportPath" -ForegroundColor Green
     }
 
-    # Générer le rapport JSON
+    # GÃ©nÃ©rer le rapport JSON
     if ($GenerateJson) {
-        Write-Host "Génération du rapport JSON..." -ForegroundColor Cyan
+        Write-Host "GÃ©nÃ©ration du rapport JSON..." -ForegroundColor Cyan
         $jsonReport = $roadmap | ConvertTo-Json -Depth 10
         Set-Content -Path $jsonReportPath -Value $jsonReport -Encoding UTF8
-        Write-Host "Rapport JSON généré: $jsonReportPath" -ForegroundColor Green
+        Write-Host "Rapport JSON gÃ©nÃ©rÃ©: $jsonReportPath" -ForegroundColor Green
     }
 
-    # Générer le graphique de progression
+    # GÃ©nÃ©rer le graphique de progression
     if ($GenerateChart) {
-        Write-Host "Génération du graphique de progression..." -ForegroundColor Cyan
+        Write-Host "GÃ©nÃ©ration du graphique de progression..." -ForegroundColor Cyan
         $chart = New-ProgressChart -Roadmap $roadmap
         Set-Content -Path $chartPath -Value $chart -Encoding UTF8
-        Write-Host "Graphique de progression généré: $chartPath" -ForegroundColor Green
+        Write-Host "Graphique de progression gÃ©nÃ©rÃ©: $chartPath" -ForegroundColor Green
     }
 
     # Ouvrir le rapport HTML
@@ -778,12 +778,12 @@ try {
         Start-Process $chartPath
     }
 
-    Write-Host "Analyse de la roadmap terminée !" -ForegroundColor Green
+    Write-Host "Analyse de la roadmap terminÃ©e !" -ForegroundColor Green
 
 } catch {
     Write-Log -Level ERROR -Message "Une erreur critique s'est produite: $_"
     exit 1
 } finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "Exécution du script terminée."
+    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }

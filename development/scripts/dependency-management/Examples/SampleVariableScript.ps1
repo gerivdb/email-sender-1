@@ -1,4 +1,4 @@
-# Configuration
+﻿# Configuration
 $config = @{
     MaxItems = 100
     DefaultColor = "Blue"
@@ -6,7 +6,7 @@ $config = @{
     LogPath = "C:\Logs\app.log"
 }
 
-# Variables dérivées
+# Variables dÃ©rivÃ©es
 $maxItems = $config.MaxItems
 $defaultColor = $config.DefaultColor
 $logFile = $config.LogPath
@@ -32,13 +32,13 @@ function Process-Items {
         $results += $item
         $processedItems++
         
-        # Variable non définie
+        # Variable non dÃ©finie
         if ($showProgress) {
-            Write-Progress -Activity "Traitement" -Status "Traitement de l'élément $i" -PercentComplete (($i / $count) * 100)
+            Write-Progress -Activity "Traitement" -Status "Traitement de l'Ã©lÃ©ment $i" -PercentComplete (($i / $count) * 100)
         }
     }
     
-    # Variable définie mais non utilisée
+    # Variable dÃ©finie mais non utilisÃ©e
     $endTime = Get-Date
     
     return [PSCustomObject]@{
@@ -49,10 +49,10 @@ function Process-Items {
 
 # Utilisation de la fonction
 $result = Process-Items -count 10
-Write-Output "Nombre d'éléments traités: $($result.ProcessedCount)"
+Write-Output "Nombre d'Ã©lÃ©ments traitÃ©s: $($result.ProcessedCount)"
 
-# Écriture du log
+# Ã‰criture du log
 if ($config.EnableLogging) {
-    $logMessage = "Traitement terminé à $(Get-Date) - $($result.ProcessedCount) éléments traités"
+    $logMessage = "Traitement terminÃ© Ã  $(Get-Date) - $($result.ProcessedCount) Ã©lÃ©ments traitÃ©s"
     Add-Content -Path $logFile -Value $logMessage
 }

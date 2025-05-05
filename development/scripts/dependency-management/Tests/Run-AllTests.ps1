@@ -1,38 +1,38 @@
-# Script pour exécuter tous les tests unitaires
-# Ce script exécute tous les tests unitaires et vérifie que tous les tests réussissent
+﻿# Script pour exÃ©cuter tous les tests unitaires
+# Ce script exÃ©cute tous les tests unitaires et vÃ©rifie que tous les tests rÃ©ussissent
 
-# Définir les couleurs pour les messages
+# DÃ©finir les couleurs pour les messages
 $successColor = "Green"
 $errorColor = "Red"
 $infoColor = "Cyan"
 
-# Fonction pour exécuter un test et vérifier son résultat
+# Fonction pour exÃ©cuter un test et vÃ©rifier son rÃ©sultat
 function Invoke-TestScript {
     param (
         [Parameter(Mandatory = $true)]
         [string]$TestScript
     )
     
-    Write-Host "`n========== Exécution du test: $TestScript ==========" -ForegroundColor $infoColor
+    Write-Host "`n========== ExÃ©cution du test: $TestScript ==========" -ForegroundColor $infoColor
     
     try {
-        # Exécuter le script de test
+        # ExÃ©cuter le script de test
         $output = & $TestScript 2>&1
         $exitCode = $LASTEXITCODE
         
         # Afficher la sortie du test
         $output | ForEach-Object { Write-Host $_ }
         
-        # Vérifier le résultat
+        # VÃ©rifier le rÃ©sultat
         if ($exitCode -eq 0) {
-            Write-Host "Test réussi: $TestScript" -ForegroundColor $successColor
+            Write-Host "Test rÃ©ussi: $TestScript" -ForegroundColor $successColor
             return $true
         } else {
-            Write-Host "Test échoué: $TestScript (Code de sortie: $exitCode)" -ForegroundColor $errorColor
+            Write-Host "Test Ã©chouÃ©: $TestScript (Code de sortie: $exitCode)" -ForegroundColor $errorColor
             return $false
         }
     } catch {
-        Write-Host "Erreur lors de l'exécution du test: $_" -ForegroundColor $errorColor
+        Write-Host "Erreur lors de l'exÃ©cution du test: $_" -ForegroundColor $errorColor
         return $false
     }
 }
@@ -40,13 +40,13 @@ function Invoke-TestScript {
 # Obtenir tous les scripts de test
 $testScripts = Get-ChildItem -Path $PSScriptRoot -Filter "Test-*.ps1" | Where-Object { $_.Name -ne "Run-AllTests.ps1" }
 
-Write-Host "Nombre de tests trouvés: $($testScripts.Count)" -ForegroundColor $infoColor
+Write-Host "Nombre de tests trouvÃ©s: $($testScripts.Count)" -ForegroundColor $infoColor
 
 # Initialiser les compteurs
 $successCount = 0
 $failureCount = 0
 
-# Exécuter chaque test
+# ExÃ©cuter chaque test
 foreach ($testScript in $testScripts) {
     $result = Invoke-TestScript -TestScript $testScript.FullName
     
@@ -57,21 +57,21 @@ foreach ($testScript in $testScripts) {
     }
 }
 
-# Afficher le résumé
-Write-Host "`n========== Résumé des tests ==========" -ForegroundColor $infoColor
-Write-Host "Tests réussis: $successCount" -ForegroundColor $successColor
-Write-Host "Tests échoués: $failureCount" -ForegroundColor $errorColor
+# Afficher le rÃ©sumÃ©
+Write-Host "`n========== RÃ©sumÃ© des tests ==========" -ForegroundColor $infoColor
+Write-Host "Tests rÃ©ussis: $successCount" -ForegroundColor $successColor
+Write-Host "Tests Ã©chouÃ©s: $failureCount" -ForegroundColor $errorColor
 Write-Host "Total des tests: $($testScripts.Count)" -ForegroundColor $infoColor
 
-# Calculer le pourcentage de réussite
+# Calculer le pourcentage de rÃ©ussite
 $successPercentage = ($successCount / $testScripts.Count) * 100
-Write-Host "Pourcentage de réussite: $successPercentage%" -ForegroundColor (if ($successPercentage -eq 100) { $successColor } else { $errorColor })
+Write-Host "Pourcentage de rÃ©ussite: $successPercentage%" -ForegroundColor (if ($successPercentage -eq 100) { $successColor } else { $errorColor })
 
-# Définir le code de sortie
+# DÃ©finir le code de sortie
 if ($failureCount -eq 0) {
-    Write-Host "`nTous les tests ont réussi !" -ForegroundColor $successColor
+    Write-Host "`nTous les tests ont rÃ©ussi !" -ForegroundColor $successColor
     exit 0
 } else {
-    Write-Host "`nCertains tests ont échoué." -ForegroundColor $errorColor
+    Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor $errorColor
     exit 1
 }

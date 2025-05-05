@@ -1,10 +1,10 @@
-# Script de test pour la fonction Invoke-AstTraversalDFS-Optimized
+﻿# Script de test pour la fonction Invoke-AstTraversalDFS-Optimized
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
 Import-Module $modulePath -Force
 
-# Créer un script PowerShell de test
+# CrÃ©er un script PowerShell de test
 $sampleCode = @'
 function Get-Example {
     param (
@@ -74,7 +74,7 @@ $stopwatch.Stop()
 Write-Host "Nombre de fonctions trouvees: $($functions.Count)" -ForegroundColor Yellow
 Write-Host "Temps d'execution: $($stopwatch.Elapsed.TotalMilliseconds) ms" -ForegroundColor Yellow
 
-# Tester avec le traitement parallèle (si PowerShell 7+)
+# Tester avec le traitement parallÃ¨le (si PowerShell 7+)
 if ($PSVersionTable.PSVersion.Major -ge 7) {
     Write-Host "`n=== Test avec traitement parallele ===" -ForegroundColor Cyan
 
@@ -86,7 +86,7 @@ if ($PSVersionTable.PSVersion.Major -ge 7) {
     Write-Host "Temps d'execution: $($stopwatch.Elapsed.TotalMilliseconds) ms" -ForegroundColor Yellow
 }
 
-# Comparer avec la version précédente
+# Comparer avec la version prÃ©cÃ©dente
 Write-Host "`n=== Comparaison avec Invoke-AstTraversalDFS-Enhanced ===" -ForegroundColor Cyan
 
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()

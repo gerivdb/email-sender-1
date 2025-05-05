@@ -1,61 +1,61 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Optimise la taille de lot pour un script parallÃ¨le en testant diffÃ©rentes valeurs et critÃ¨res.
+    Optimise la taille de lot pour un script parallÃƒÂ¨le en testant diffÃƒÂ©rentes valeurs et critÃƒÂ¨res.
 .DESCRIPTION
-    Ce script orchestre l'exÃ©cution d'un script de benchmark parallÃ¨le (`Test-ParallelPerformance.ps1`)
-    avec diffÃ©rentes tailles de lot spÃ©cifiÃ©es (`BatchSizes`). Pour chaque taille, il exÃ©cute le benchmark
-    plusieurs fois (`Iterations`) pour collecter des mÃ©triques de performance fiables (temps, CPU, mÃ©moire, taux de succÃ¨s).
-    Il analyse ensuite ces rÃ©sultats agrÃ©gÃ©s pour identifier la taille de lot "optimale" selon un critÃ¨re
+    Ce script orchestre l'exÃƒÂ©cution d'un script de benchmark parallÃƒÂ¨le (`Test-ParallelPerformance.ps1`)
+    avec diffÃƒÂ©rentes tailles de lot spÃƒÂ©cifiÃƒÂ©es (`BatchSizes`). Pour chaque taille, il exÃƒÂ©cute le benchmark
+    plusieurs fois (`Iterations`) pour collecter des mÃƒÂ©triques de performance fiables (temps, CPU, mÃƒÂ©moire, taux de succÃƒÂ¨s).
+    Il analyse ensuite ces rÃƒÂ©sultats agrÃƒÂ©gÃƒÂ©s pour identifier la taille de lot "optimale" selon un critÃƒÂ¨re
     configurable (`OptimizationMetric`).
-    Finalement, il gÃ©nÃ¨re un rapport comparatif dÃ©taillÃ© au format JSON et, optionnellement, un rapport HTML
-    interactif avec graphiques et recommandations dans un sous-rÃ©pertoire de sortie unique.
+    Finalement, il gÃƒÂ©nÃƒÂ¨re un rapport comparatif dÃƒÂ©taillÃƒÂ© au format JSON et, optionnellement, un rapport HTML
+    interactif avec graphiques et recommandations dans un sous-rÃƒÂ©pertoire de sortie unique.
 .PARAMETER ScriptBlock
-    Le bloc de script PowerShell Ã  exÃ©cuter par `Test-ParallelPerformance.ps1`.
-    Ce bloc doit typiquement appeler le script parallÃ¨le cible en utilisant le splatting
-    avec les paramÃ¨tres reÃ§us. Exemple:
+    Le bloc de script PowerShell ÃƒÂ  exÃƒÂ©cuter par `Test-ParallelPerformance.ps1`.
+    Ce bloc doit typiquement appeler le script parallÃƒÂ¨le cible en utilisant le splatting
+    avec les paramÃƒÂ¨tres reÃƒÂ§us. Exemple:
     {
-        param($params) # ReÃ§oit la fusion de BaseParameters et du paramÃ¨tre de lot courant
+        param($params) # ReÃƒÂ§oit la fusion de BaseParameters et du paramÃƒÂ¨tre de lot courant
         & "C:\Path\To\Your\ParallelScript.ps1" @params
     }
 .PARAMETER BaseParameters
-    Table de hachage contenant les paramÃ¨tres constants Ã  passer au ScriptBlock (et donc au script cible)
-    pour chaque test. Ces paramÃ¨tres ne varient pas avec la taille du lot.
+    Table de hachage contenant les paramÃƒÂ¨tres constants ÃƒÂ  passer au ScriptBlock (et donc au script cible)
+    pour chaque test. Ces paramÃƒÂ¨tres ne varient pas avec la taille du lot.
 .PARAMETER BatchSizeParameterName
-    Nom exact (sensible Ã  la casse) du paramÃ¨tre dans le script cible (via ScriptBlock/BaseParameters)
-    qui contrÃ´le la taille du lot. Ex: 'BatchSize', 'ChunkSize', 'ItemsPerBatch'.
-    Ce script injectera/modifiera cette clÃ© dans la table de hachage passÃ©e au ScriptBlock.
+    Nom exact (sensible ÃƒÂ  la casse) du paramÃƒÂ¨tre dans le script cible (via ScriptBlock/BaseParameters)
+    qui contrÃƒÂ´le la taille du lot. Ex: 'BatchSize', 'ChunkSize', 'ItemsPerBatch'.
+    Ce script injectera/modifiera cette clÃƒÂ© dans la table de hachage passÃƒÂ©e au ScriptBlock.
 .PARAMETER BatchSizes
-    Tableau d'entiers reprÃ©sentant les diffÃ©rentes tailles de lot Ã  Ã©valuer.
+    Tableau d'entiers reprÃƒÂ©sentant les diffÃƒÂ©rentes tailles de lot ÃƒÂ  ÃƒÂ©valuer.
     Exemple: @(10, 20, 50, 100, 200)
 .PARAMETER OutputPath
-    Chemin du rÃ©pertoire racine oÃ¹ les rÃ©sultats seront stockÃ©s. Un sous-rÃ©pertoire unique
-    (basÃ© sur le timestamp) sera crÃ©Ã© pour contenir les sorties de cette exÃ©cution.
+    Chemin du rÃƒÂ©pertoire racine oÃƒÂ¹ les rÃƒÂ©sultats seront stockÃƒÂ©s. Un sous-rÃƒÂ©pertoire unique
+    (basÃƒÂ© sur le timestamp) sera crÃƒÂ©ÃƒÂ© pour contenir les sorties de cette exÃƒÂ©cution.
 .PARAMETER TestDataPath
-    [Optionnel] Chemin vers un rÃ©pertoire contenant des donnÃ©es de test prÃ©-existantes.
-    Si fourni et valide, ce chemin sera utilisÃ© (et potentiellement injectÃ© dans les BaseParameters
-    via TestDataTargetParameterName). Sinon, si 'New-TestData.ps1' est trouvÃ©, il sera utilisÃ©
-    pour gÃ©nÃ©rer des donnÃ©es dans le sous-rÃ©pertoire de sortie.
+    [Optionnel] Chemin vers un rÃƒÂ©pertoire contenant des donnÃƒÂ©es de test prÃƒÂ©-existantes.
+    Si fourni et valide, ce chemin sera utilisÃƒÂ© (et potentiellement injectÃƒÂ© dans les BaseParameters
+    via TestDataTargetParameterName). Sinon, si 'New-TestData.ps1' est trouvÃƒÂ©, il sera utilisÃƒÂ©
+    pour gÃƒÂ©nÃƒÂ©rer des donnÃƒÂ©es dans le sous-rÃƒÂ©pertoire de sortie.
 .PARAMETER TestDataTargetParameterName
-    [Optionnel] Nom du paramÃ¨tre dans `BaseParameters` qui doit recevoir le chemin des donnÃ©es de test
-    (`$actualTestDataPath`) si des donnÃ©es sont utilisÃ©es/gÃ©nÃ©rÃ©es. Utile si le script cible
-    n'utilise pas 'ScriptsPath' pour ses donnÃ©es d'entrÃ©e.
-    DÃ©faut: 'ScriptsPath'.
+    [Optionnel] Nom du paramÃƒÂ¨tre dans `BaseParameters` qui doit recevoir le chemin des donnÃƒÂ©es de test
+    (`$actualTestDataPath`) si des donnÃƒÂ©es sont utilisÃƒÂ©es/gÃƒÂ©nÃƒÂ©rÃƒÂ©es. Utile si le script cible
+    n'utilise pas 'ScriptsPath' pour ses donnÃƒÂ©es d'entrÃƒÂ©e.
+    DÃƒÂ©faut: 'ScriptsPath'.
 .PARAMETER Iterations
-    Nombre de fois oÃ¹ `Test-ParallelPerformance.ps1` doit exÃ©cuter le `ScriptBlock` pour *chaque*
-    taille de lot afin de calculer des moyennes et statistiques fiables. DÃ©faut: 3.
+    Nombre de fois oÃƒÂ¹ `Test-ParallelPerformance.ps1` doit exÃƒÂ©cuter le `ScriptBlock` pour *chaque*
+    taille de lot afin de calculer des moyennes et statistiques fiables. DÃƒÂ©faut: 3.
 .PARAMETER OptimizationMetric
-    [Optionnel] CritÃ¨re utilisÃ© pour dÃ©terminer la taille de lot "optimale" parmi les rÃ©sultats.
+    [Optionnel] CritÃƒÂ¨re utilisÃƒÂ© pour dÃƒÂ©terminer la taille de lot "optimale" parmi les rÃƒÂ©sultats.
     Options:
-      - 'FastestSuccessful' (DÃ©faut): SÃ©lectionne la taille de lot la plus rapide (temps Ã©coulÃ© moyen le plus bas) parmi celles ayant atteint 100% de succÃ¨s.
-      - 'LowestMemorySuccessful': SÃ©lectionne la taille de lot avec la consommation mÃ©moire privÃ©e moyenne la plus basse parmi celles ayant atteint 100% de succÃ¨s.
-      - 'BestSuccessRate': SÃ©lectionne la taille de lot avec le taux de succÃ¨s le plus Ã©levÃ©. En cas d'Ã©galitÃ©, choisit la plus rapide parmi elles. Utile si aucune n'atteint 100%.
+      - 'FastestSuccessful' (DÃƒÂ©faut): SÃƒÂ©lectionne la taille de lot la plus rapide (temps ÃƒÂ©coulÃƒÂ© moyen le plus bas) parmi celles ayant atteint 100% de succÃƒÂ¨s.
+      - 'LowestMemorySuccessful': SÃƒÂ©lectionne la taille de lot avec la consommation mÃƒÂ©moire privÃƒÂ©e moyenne la plus basse parmi celles ayant atteint 100% de succÃƒÂ¨s.
+      - 'BestSuccessRate': SÃƒÂ©lectionne la taille de lot avec le taux de succÃƒÂ¨s le plus ÃƒÂ©levÃƒÂ©. En cas d'ÃƒÂ©galitÃƒÂ©, choisit la plus rapide parmi elles. Utile si aucune n'atteint 100%.
 .PARAMETER GenerateReport
-    Si spÃ©cifiÃ© ($true), gÃ©nÃ¨re un rapport HTML comparatif dÃ©taillÃ© incluant des graphiques interactifs
-    et des recommandations basÃ©es sur le critÃ¨re d'optimisation.
+    Si spÃƒÂ©cifiÃƒÂ© ($true), gÃƒÂ©nÃƒÂ¨re un rapport HTML comparatif dÃƒÂ©taillÃƒÂ© incluant des graphiques interactifs
+    et des recommandations basÃƒÂ©es sur le critÃƒÂ¨re d'optimisation.
 .PARAMETER ForceTestDataGeneration
-    [Optionnel] Si la gÃ©nÃ©ration de donnÃ©es via 'New-TestData.ps1' est applicable, force la suppression
-    et la regÃ©nÃ©ration des donnÃ©es mÃªme si elles existent dÃ©jÃ  dans le rÃ©pertoire de sortie.
+    [Optionnel] Si la gÃƒÂ©nÃƒÂ©ration de donnÃƒÂ©es via 'New-TestData.ps1' est applicable, force la suppression
+    et la regÃƒÂ©nÃƒÂ©ration des donnÃƒÂ©es mÃƒÂªme si elles existent dÃƒÂ©jÃƒÂ  dans le rÃƒÂ©pertoire de sortie.
 .EXAMPLE
     # Optimisation standard pour Analyze-Scripts.ps1, focus sur la vitesse
     $targetScript = ".\development\scripts\analysis\Analyze-Scripts.ps1"
@@ -74,9 +74,9 @@
         -Verbose
 
 .EXAMPLE
-    # Optimisation pour un script de traitement, focus sur la mÃ©moire, avec gÃ©nÃ©ration de donnÃ©es
+    # Optimisation pour un script de traitement, focus sur la mÃƒÂ©moire, avec gÃƒÂ©nÃƒÂ©ration de donnÃƒÂ©es
     $targetScript = ".\development\scripts\processing\Process-Data.ps1"
-    # Process-Data.ps1 attend les donnÃ©es dans -InputFolder
+    # Process-Data.ps1 attend les donnÃƒÂ©es dans -InputFolder
     $baseParams = @{ MaxWorkers = 4; OutputFolder = "C:\ProcessedData" }
     $batchSizes = 50, 100, 250, 500
     .\Optimize-ParallelBatchSize.ps1 -ScriptBlock { param($p) & $targetScript @p } `
@@ -84,72 +84,72 @@
         -BatchSizeParameterName "ItemsPerBatch" `
         -BatchSizes $batchSizes `
         -OutputPath "C:\PerfReports\MemOpt" `
-        -TestDataTargetParameterName "InputFolder" ` # Injecter le chemin gÃ©nÃ©rÃ© ici
+        -TestDataTargetParameterName "InputFolder" ` # Injecter le chemin gÃƒÂ©nÃƒÂ©rÃƒÂ© ici
         -Iterations 3 `
         -GenerateReport `
         -ForceTestDataGeneration `
         -OptimizationMetric LowestMemorySuccessful
 
 .NOTES
-    Auteur     : Votre Nom/Ã‰quipe
+    Auteur     : Votre Nom/Ãƒâ€°quipe
     Version    : 2.1
     Date       : 2023-10-27
-    DÃ©pendances:
-        - Test-ParallelPerformance.ps1 (Requis, doit Ãªtre dans le mÃªme rÃ©pertoire ou chemin connu)
-        - New-TestData.ps1 (Optionnel, pour gÃ©nÃ©ration de donnÃ©es, mÃªme rÃ©pertoire)
+    DÃƒÂ©pendances:
+        - Test-ParallelPerformance.ps1 (Requis, doit ÃƒÂªtre dans le mÃƒÂªme rÃƒÂ©pertoire ou chemin connu)
+        - New-TestData.ps1 (Optionnel, pour gÃƒÂ©nÃƒÂ©ration de donnÃƒÂ©es, mÃƒÂªme rÃƒÂ©pertoire)
         - Chart.js (via CDN pour le rapport HTML)
 
     Important:
-    - Le script `Test-ParallelPerformance.ps1` est essentiel et doit retourner un PSCustomObject avec les mÃ©triques attendues (AverageExecutionTimeS, SuccessRatePercent, etc.).
-    - Le `-ScriptBlock` doit Ãªtre correctement formulÃ© pour recevoir les paramÃ¨tres fusionnÃ©s (`BaseParameters` + le paramÃ¨tre de lot dynamique) et les passer au script cible via splatting (`@params` ou `@p`).
-    - La gestion des donnÃ©es de test (`-TestDataPath`, `-TestDataTargetParameterName`, `-ForceTestDataGeneration`) permet une certaine flexibilitÃ© mais dÃ©pend de la capacitÃ© du script cible Ã  utiliser le chemin fourni.
+    - Le script `Test-ParallelPerformance.ps1` est essentiel et doit retourner un PSCustomObject avec les mÃƒÂ©triques attendues (AverageExecutionTimeS, SuccessRatePercent, etc.).
+    - Le `-ScriptBlock` doit ÃƒÂªtre correctement formulÃƒÂ© pour recevoir les paramÃƒÂ¨tres fusionnÃƒÂ©s (`BaseParameters` + le paramÃƒÂ¨tre de lot dynamique) et les passer au script cible via splatting (`@params` ou `@p`).
+    - La gestion des donnÃƒÂ©es de test (`-TestDataPath`, `-TestDataTargetParameterName`, `-ForceTestDataGeneration`) permet une certaine flexibilitÃƒÂ© mais dÃƒÂ©pend de la capacitÃƒÂ© du script cible ÃƒÂ  utiliser le chemin fourni.
 #>
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 param(
-    [Parameter(Mandatory = $true, HelpMessage = "Bloc de script PowerShell qui exÃ©cute le script parallÃ¨le Ã  tester, acceptant les paramÃ¨tres via splatting.")]
+    [Parameter(Mandatory = $true, HelpMessage = "Bloc de script PowerShell qui exÃƒÂ©cute le script parallÃƒÂ¨le ÃƒÂ  tester, acceptant les paramÃƒÂ¨tres via splatting.")]
     [ValidateNotNullOrEmpty()]
     [scriptblock]$ScriptBlock,
 
-    [Parameter(Mandatory = $false, HelpMessage = "ParamÃ¨tres constants passÃ©s au ScriptBlock pour chaque test.")]
+    [Parameter(Mandatory = $false, HelpMessage = "ParamÃƒÂ¨tres constants passÃƒÂ©s au ScriptBlock pour chaque test.")]
     [hashtable]$BaseParameters = @{},
 
-    [Parameter(Mandatory = $true, HelpMessage = "Nom du paramÃ¨tre dans le script cible contrÃ´lant la taille du lot.")]
+    [Parameter(Mandatory = $true, HelpMessage = "Nom du paramÃƒÂ¨tre dans le script cible contrÃƒÂ´lant la taille du lot.")]
     [ValidateNotNullOrEmpty()]
     [string]$BatchSizeParameterName,
 
-    [Parameter(Mandatory = $true, HelpMessage = "Tableau des tailles de lot entiÃ¨res Ã  Ã©valuer.")]
+    [Parameter(Mandatory = $true, HelpMessage = "Tableau des tailles de lot entiÃƒÂ¨res ÃƒÂ  ÃƒÂ©valuer.")]
     [ValidateNotNullOrEmpty()]
     [int[]]$BatchSizes,
 
-    [Parameter(Mandatory = $true, HelpMessage = "RÃ©pertoire racine oÃ¹ le sous-dossier des rÃ©sultats sera crÃ©Ã©.")]
+    [Parameter(Mandatory = $true, HelpMessage = "RÃƒÂ©pertoire racine oÃƒÂ¹ le sous-dossier des rÃƒÂ©sultats sera crÃƒÂ©ÃƒÂ©.")]
     [ValidateNotNullOrEmpty()]
     [string]$OutputPath,
 
-    [Parameter(Mandatory = $false, HelpMessage = "[Optionnel] Chemin vers les donnÃ©es de test prÃ©-existantes.")]
+    [Parameter(Mandatory = $false, HelpMessage = "[Optionnel] Chemin vers les donnÃƒÂ©es de test prÃƒÂ©-existantes.")]
     [string]$TestDataPath,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Nom du paramÃ¨tre dans BaseParameters oÃ¹ injecter le chemin des donnÃ©es. DÃ©faut: 'ScriptsPath'.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Nom du paramÃƒÂ¨tre dans BaseParameters oÃƒÂ¹ injecter le chemin des donnÃƒÂ©es. DÃƒÂ©faut: 'ScriptsPath'.")]
     [string]$TestDataTargetParameterName = 'ScriptsPath',
 
-    [Parameter(Mandatory = $false, HelpMessage = "Nombre d'itÃ©rations du benchmark par taille de lot.")]
+    [Parameter(Mandatory = $false, HelpMessage = "Nombre d'itÃƒÂ©rations du benchmark par taille de lot.")]
     [ValidateRange(1, 100)]
     [int]$Iterations = 3,
 
-    [Parameter(Mandatory = $false, HelpMessage = "CritÃ¨re pour dÃ©terminer la taille de lot optimale.")]
+    [Parameter(Mandatory = $false, HelpMessage = "CritÃƒÂ¨re pour dÃƒÂ©terminer la taille de lot optimale.")]
     [ValidateSet('FastestSuccessful', 'LowestMemorySuccessful', 'BestSuccessRate')]
     [string]$OptimizationMetric = 'FastestSuccessful',
 
-    [Parameter(Mandatory = $false, HelpMessage = "GÃ©nÃ©rer un rapport HTML comparatif dÃ©taillÃ©.")]
+    [Parameter(Mandatory = $false, HelpMessage = "GÃƒÂ©nÃƒÂ©rer un rapport HTML comparatif dÃƒÂ©taillÃƒÂ©.")]
     [switch]$GenerateReport,
 
-    [Parameter(Mandatory = $false, HelpMessage = "Forcer la gÃ©nÃ©ration de donnÃ©es de test via New-TestData.ps1 (si applicable).")]
+    [Parameter(Mandatory = $false, HelpMessage = "Forcer la gÃƒÂ©nÃƒÂ©ration de donnÃƒÂ©es de test via New-TestData.ps1 (si applicable).")]
     [switch]$ForceTestDataGeneration
 )
 
 #region Global Variables and Helper Functions
 $startTimestamp = Get-Date
 
-# --- Helper pour la validation des chemins et crÃ©ation de dossiers ---
+# --- Helper pour la validation des chemins et crÃƒÂ©ation de dossiers ---
 function New-DirectoryIfNotExists {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param([string]$Path, [string]$Purpose)
@@ -157,29 +157,29 @@ function New-DirectoryIfNotExists {
     try {
         $resolvedPath = Resolve-Path -Path $Path -ErrorAction SilentlyContinue
         if ($resolvedPath -and (Test-Path $resolvedPath -PathType Container)) {
-            Write-Verbose "RÃ©pertoire existant trouvÃ© pour '$Purpose': $resolvedPath"
+            Write-Verbose "RÃƒÂ©pertoire existant trouvÃƒÂ© pour '$Purpose': $resolvedPath"
             return $resolvedPath.Path
         } elseif ($resolvedPath) {
-            Write-Error "Le chemin '$Path' pour '$Purpose' existe mais n'est pas un rÃ©pertoire."
+            Write-Error "Le chemin '$Path' pour '$Purpose' existe mais n'est pas un rÃƒÂ©pertoire."
             return $null
         } else {
-            # Le chemin n'existe pas, tenter de le crÃ©er
-            if ($PSCmdlet.ShouldProcess($Path, "CrÃ©er le rÃ©pertoire pour '$Purpose'")) {
+            # Le chemin n'existe pas, tenter de le crÃƒÂ©er
+            if ($PSCmdlet.ShouldProcess($Path, "CrÃƒÂ©er le rÃƒÂ©pertoire pour '$Purpose'")) {
                 $created = New-Item -Path $Path -ItemType Directory -Force -ErrorAction Stop
-                Write-Verbose "RÃ©pertoire crÃ©Ã© pour '$Purpose': $($created.FullName)"
+                Write-Verbose "RÃƒÂ©pertoire crÃƒÂ©ÃƒÂ© pour '$Purpose': $($created.FullName)"
                 return $created.FullName
             } else {
-                Write-Warning "CrÃ©ation du rÃ©pertoire pour '$Purpose' annulÃ©e."
+                Write-Warning "CrÃƒÂ©ation du rÃƒÂ©pertoire pour '$Purpose' annulÃƒÂ©e."
                 return $null
             }
         }
     } catch {
-        Write-Error "Impossible de crÃ©er ou valider le rÃ©pertoire pour '$Purpose' Ã  '$Path'. Erreur: $($_.Exception.Message)"
+        Write-Error "Impossible de crÃƒÂ©er ou valider le rÃƒÂ©pertoire pour '$Purpose' ÃƒÂ  '$Path'. Erreur: $($_.Exception.Message)"
         return $null
     }
 }
 
-# --- Helper pour prÃ©parer les donnÃ©es JS pour le rapport HTML ---
+# --- Helper pour prÃƒÂ©parer les donnÃƒÂ©es JS pour le rapport HTML ---
 function ConvertTo-JavaScriptData {
     param([object]$Data)
     return ($Data | ConvertTo-Json -Compress -Depth 5)
@@ -190,43 +190,43 @@ function ConvertTo-JavaScriptData {
 #region Initialisation et Validation Strictes
 Write-Host "=== Initialisation Optimisation Taille de Lot ($BatchSizeParameterName) ===" -ForegroundColor White -BackgroundColor DarkBlue
 
-# 1. Valider le script de benchmark dÃ©pendant
+# 1. Valider le script de benchmark dÃƒÂ©pendant
 $benchmarkScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Test-ParallelPerformance.ps1"
 if (-not (Test-Path $benchmarkScriptPath -PathType Leaf)) {
-    Write-Error "Script dÃ©pendant crucial 'Test-ParallelPerformance.ps1' introuvable dans '$PSScriptRoot'. Ce script est requis pour exÃ©cuter les mesures. ArrÃªt."
-    return # ArrÃªt immÃ©diat
+    Write-Error "Script dÃƒÂ©pendant crucial 'Test-ParallelPerformance.ps1' introuvable dans '$PSScriptRoot'. Ce script est requis pour exÃƒÂ©cuter les mesures. ArrÃƒÂªt."
+    return # ArrÃƒÂªt immÃƒÂ©diat
 }
-Write-Verbose "Script de benchmark dÃ©pendant trouvÃ© : $benchmarkScriptPath"
+Write-Verbose "Script de benchmark dÃƒÂ©pendant trouvÃƒÂ© : $benchmarkScriptPath"
 
-# 2. CrÃ©er le rÃ©pertoire de sortie racine si nÃ©cessaire
-$resolvedOutputPath = New-DirectoryIfNotExists -Path $OutputPath -Purpose "RÃ©sultats Globaux"
+# 2. CrÃƒÂ©er le rÃƒÂ©pertoire de sortie racine si nÃƒÂ©cessaire
+$resolvedOutputPath = New-DirectoryIfNotExists -Path $OutputPath -Purpose "RÃƒÂ©sultats Globaux"
 if (-not $resolvedOutputPath) { return }
 
-# 3. CrÃ©er le sous-rÃ©pertoire unique pour cette exÃ©cution
+# 3. CrÃƒÂ©er le sous-rÃƒÂ©pertoire unique pour cette exÃƒÂ©cution
 $timestamp = $startTimestamp.ToString('yyyyMMddHHmmss')
 $optimizationRunOutputPath = Join-Path -Path $resolvedOutputPath -ChildPath "BatchOpt_$(($BatchSizeParameterName -replace '[^a-zA-Z0-9]','_'))_$timestamp"
-$optimizationRunOutputPath = New-DirectoryIfNotExists -Path $optimizationRunOutputPath -Purpose "RÃ©sultats de cette ExÃ©cution d'Optimisation"
+$optimizationRunOutputPath = New-DirectoryIfNotExists -Path $optimizationRunOutputPath -Purpose "RÃƒÂ©sultats de cette ExÃƒÂ©cution d'Optimisation"
 if (-not $optimizationRunOutputPath) { return }
 
-Write-Host "RÃ©pertoire de sortie pour cette exÃ©cution : $optimizationRunOutputPath" -ForegroundColor Green
+Write-Host "RÃƒÂ©pertoire de sortie pour cette exÃƒÂ©cution : $optimizationRunOutputPath" -ForegroundColor Green
 
-# 4. Gestion des donnÃ©es de test
-$actualTestDataPath = $null # Chemin effectif qui sera utilisÃ©/injectÃ©
+# 4. Gestion des donnÃƒÂ©es de test
+$actualTestDataPath = $null # Chemin effectif qui sera utilisÃƒÂ©/injectÃƒÂ©
 $testDataStatus = "Non applicable"
 
-# 4a. VÃ©rifier le chemin explicite fourni
+# 4a. VÃƒÂ©rifier le chemin explicite fourni
 if (-not [string]::IsNullOrEmpty($TestDataPath)) {
     $resolvedTestDataPath = Resolve-Path -Path $TestDataPath -ErrorAction SilentlyContinue
     if ($resolvedTestDataPath -and (Test-Path $resolvedTestDataPath -PathType Container)) {
         $actualTestDataPath = $resolvedTestDataPath.Path
-        $testDataStatus = "Utilisation des donnÃ©es fournies : $actualTestDataPath"
+        $testDataStatus = "Utilisation des donnÃƒÂ©es fournies : $actualTestDataPath"
         Write-Verbose $testDataStatus
     } else {
-        Write-Warning "Le chemin TestDataPath fourni ('$TestDataPath') n'est pas valide. Tentative de gÃ©nÃ©ration si New-TestData.ps1 existe."
+        Write-Warning "Le chemin TestDataPath fourni ('$TestDataPath') n'est pas valide. Tentative de gÃƒÂ©nÃƒÂ©ration si New-TestData.ps1 existe."
     }
 }
 
-# 4b. Tenter la gÃ©nÃ©ration si pas de chemin valide fourni OU si on force la gÃ©nÃ©ration
+# 4b. Tenter la gÃƒÂ©nÃƒÂ©ration si pas de chemin valide fourni OU si on force la gÃƒÂ©nÃƒÂ©ration
 if (-not $actualTestDataPath -or $ForceTestDataGeneration) {
     $testDataScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "New-TestData.ps1"
     if (Test-Path $testDataScriptPath -PathType Leaf) {
@@ -234,85 +234,85 @@ if (-not $actualTestDataPath -or $ForceTestDataGeneration) {
         $generate = $false
         if (-not (Test-Path -Path $targetGeneratedDataPath -PathType Container)) {
             $generate = $true
-            Write-Verbose "Le rÃ©pertoire de donnÃ©es gÃ©nÃ©rÃ©es '$targetGeneratedDataPath' n'existe pas, gÃ©nÃ©ration planifiÃ©e."
+            Write-Verbose "Le rÃƒÂ©pertoire de donnÃƒÂ©es gÃƒÂ©nÃƒÂ©rÃƒÂ©es '$targetGeneratedDataPath' n'existe pas, gÃƒÂ©nÃƒÂ©ration planifiÃƒÂ©e."
         } elseif ($ForceTestDataGeneration) {
-            if ($PSCmdlet.ShouldProcess($targetGeneratedDataPath, "Supprimer et RegÃ©nÃ©rer les donnÃ©es de test (option -ForceTestDataGeneration)")) {
-                Write-Verbose "ForÃ§age de la regÃ©nÃ©ration des donnÃ©es de test."
-                try { Remove-Item -Path $targetGeneratedDataPath -Recurse -Force -ErrorAction Stop } catch { Write-Warning "Impossible de supprimer l'ancien dossier de donnÃ©es '$targetGeneratedDataPath': $($_.Exception.Message)" }
+            if ($PSCmdlet.ShouldProcess($targetGeneratedDataPath, "Supprimer et RegÃƒÂ©nÃƒÂ©rer les donnÃƒÂ©es de test (option -ForceTestDataGeneration)")) {
+                Write-Verbose "ForÃƒÂ§age de la regÃƒÂ©nÃƒÂ©ration des donnÃƒÂ©es de test."
+                try { Remove-Item -Path $targetGeneratedDataPath -Recurse -Force -ErrorAction Stop } catch { Write-Warning "Impossible de supprimer l'ancien dossier de donnÃƒÂ©es '$targetGeneratedDataPath': $($_.Exception.Message)" }
                 $generate = $true
             } else {
-                Write-Warning "RegÃ©nÃ©ration des donnÃ©es de test annulÃ©e par l'utilisateur. Utilisation des donnÃ©es existantes."
+                Write-Warning "RegÃƒÂ©nÃƒÂ©ration des donnÃƒÂ©es de test annulÃƒÂ©e par l'utilisateur. Utilisation des donnÃƒÂ©es existantes."
                 $actualTestDataPath = $targetGeneratedDataPath # Utiliser l'existant si annulation
-                $testDataStatus = "Utilisation des donnÃ©es existantes (regÃ©nÃ©ration annulÃ©e): $actualTestDataPath"
+                $testDataStatus = "Utilisation des donnÃƒÂ©es existantes (regÃƒÂ©nÃƒÂ©ration annulÃƒÂ©e): $actualTestDataPath"
             }
         } else {
             # Le dossier existe et on ne force pas -> utiliser l'existant
             $actualTestDataPath = $targetGeneratedDataPath
-            $testDataStatus = "RÃ©utilisation des donnÃ©es prÃ©cÃ©demment gÃ©nÃ©rÃ©es: $actualTestDataPath"
+            $testDataStatus = "RÃƒÂ©utilisation des donnÃƒÂ©es prÃƒÂ©cÃƒÂ©demment gÃƒÂ©nÃƒÂ©rÃƒÂ©es: $actualTestDataPath"
             Write-Verbose $testDataStatus
         }
 
         if ($generate) {
-            if ($PSCmdlet.ShouldProcess($targetGeneratedDataPath, "GÃ©nÃ©rer les donnÃ©es de test via $testDataScriptPath")) {
-                Write-Host "GÃ©nÃ©ration des donnÃ©es de test dans '$targetGeneratedDataPath'..." -ForegroundColor Yellow
+            if ($PSCmdlet.ShouldProcess($targetGeneratedDataPath, "GÃƒÂ©nÃƒÂ©rer les donnÃƒÂ©es de test via $testDataScriptPath")) {
+                Write-Host "GÃƒÂ©nÃƒÂ©ration des donnÃƒÂ©es de test dans '$targetGeneratedDataPath'..." -ForegroundColor Yellow
                 try {
                     $genParams = @{ OutputPath = $targetGeneratedDataPath; ErrorAction = 'Stop' }
                     if ($ForceTestDataGeneration) { $genParams.Force = $true }
                     $generatedPath = & $testDataScriptPath @genParams
 
                     if ($generatedPath -and (Test-Path $generatedPath -PathType Container)) {
-                        $actualTestDataPath = $generatedPath # Mise Ã  jour du chemin effectif
-                        $testDataStatus = "DonnÃ©es gÃ©nÃ©rÃ©es avec succÃ¨s: $actualTestDataPath"
+                        $actualTestDataPath = $generatedPath # Mise ÃƒÂ  jour du chemin effectif
+                        $testDataStatus = "DonnÃƒÂ©es gÃƒÂ©nÃƒÂ©rÃƒÂ©es avec succÃƒÂ¨s: $actualTestDataPath"
                         Write-Host $testDataStatus -ForegroundColor Green
                     } else {
-                        Write-Error "La gÃ©nÃ©ration des donnÃ©es de test via New-TestData.ps1 a Ã©chouÃ© ou n'a pas retournÃ© de chemin valide."
-                        $testDataStatus = "Ã‰chec de la gÃ©nÃ©ration."
+                        Write-Error "La gÃƒÂ©nÃƒÂ©ration des donnÃƒÂ©es de test via New-TestData.ps1 a ÃƒÂ©chouÃƒÂ© ou n'a pas retournÃƒÂ© de chemin valide."
+                        $testDataStatus = "Ãƒâ€°chec de la gÃƒÂ©nÃƒÂ©ration."
                         $actualTestDataPath = $null # Assurer qu'on n'utilise pas un chemin invalide
                     }
                 } catch {
-                    Write-Error "Erreur critique lors de l'appel Ã  New-TestData.ps1: $($_.Exception.Message)"
-                    $testDataStatus = "Ã‰chec critique de la gÃ©nÃ©ration."
+                    Write-Error "Erreur critique lors de l'appel ÃƒÂ  New-TestData.ps1: $($_.Exception.Message)"
+                    $testDataStatus = "Ãƒâ€°chec critique de la gÃƒÂ©nÃƒÂ©ration."
                     $actualTestDataPath = $null
                 }
             } else {
-                Write-Warning "GÃ©nÃ©ration des donnÃ©es de test annulÃ©e par l'utilisateur."
-                $testDataStatus = "GÃ©nÃ©ration annulÃ©e."
+                Write-Warning "GÃƒÂ©nÃƒÂ©ration des donnÃƒÂ©es de test annulÃƒÂ©e par l'utilisateur."
+                $testDataStatus = "GÃƒÂ©nÃƒÂ©ration annulÃƒÂ©e."
                 # Si le dossier existait avant l'annulation, s'assurer qu'on l'utilise
-                if ($actualTestDataPath -eq $targetGeneratedDataPath) { $testDataStatus += " Utilisation des donnÃ©es prÃ©-existantes." }
-                else { $actualTestDataPath = $null } # Si on a annulÃ© la crÃ©ation initiale
+                if ($actualTestDataPath -eq $targetGeneratedDataPath) { $testDataStatus += " Utilisation des donnÃƒÂ©es prÃƒÂ©-existantes." }
+                else { $actualTestDataPath = $null } # Si on a annulÃƒÂ© la crÃƒÂ©ation initiale
             }
         }
     } elseif (-not $actualTestDataPath) { # Si pas de chemin explicite et pas de New-TestData.ps1
-        $testDataStatus = "Non requis/gÃ©rÃ© (TestDataPath non fourni/valide et New-TestData.ps1 non trouvÃ©)."
+        $testDataStatus = "Non requis/gÃƒÂ©rÃƒÂ© (TestDataPath non fourni/valide et New-TestData.ps1 non trouvÃƒÂ©)."
         Write-Verbose $testDataStatus
     }
 }
 
-# 4c. Injecter le chemin des donnÃ©es effectif dans BaseParameters si applicable
+# 4c. Injecter le chemin des donnÃƒÂ©es effectif dans BaseParameters si applicable
 if ($actualTestDataPath -and $BaseParameters) {
     if ($BaseParameters.ContainsKey($TestDataTargetParameterName)) {
-        Write-Verbose "Mise Ã  jour de BaseParameters['$TestDataTargetParameterName'] avec '$actualTestDataPath'"
+        Write-Verbose "Mise ÃƒÂ  jour de BaseParameters['$TestDataTargetParameterName'] avec '$actualTestDataPath'"
         $BaseParameters[$TestDataTargetParameterName] = $actualTestDataPath
     } else {
-        Write-Warning "Le chemin des donnÃ©es '$actualTestDataPath' a Ã©tÃ© dÃ©terminÃ©, mais le paramÃ¨tre cible '$TestDataTargetParameterName' n'existe pas dans BaseParameters. Le ScriptBlock devra gÃ©rer l'accÃ¨s aux donnÃ©es autrement."
+        Write-Warning "Le chemin des donnÃƒÂ©es '$actualTestDataPath' a ÃƒÂ©tÃƒÂ© dÃƒÂ©terminÃƒÂ©, mais le paramÃƒÂ¨tre cible '$TestDataTargetParameterName' n'existe pas dans BaseParameters. Le ScriptBlock devra gÃƒÂ©rer l'accÃƒÂ¨s aux donnÃƒÂ©es autrement."
     }
 }
 
-# 5. Afficher le contexte d'exÃ©cution
-Write-Host "Contexte d'exÃ©cution :"
+# 5. Afficher le contexte d'exÃƒÂ©cution
+Write-Host "Contexte d'exÃƒÂ©cution :"
 Write-Host "  - Script de Benchmark : $benchmarkScriptPath"
 Write-Host "  - Tailles de Lot      : $($BatchSizes -join ', ')"
-Write-Host "  - ItÃ©rations par Taille: $Iterations"
-Write-Host "  - CritÃ¨re Optimisation: $OptimizationMetric"
-Write-Host "  - GÃ©nÃ©ration Rapport HTML: $($GenerateReport.IsPresent)"
-Write-Host "  - Statut DonnÃ©es Test : $testDataStatus"
-Write-Verbose "  - ParamÃ¨tres de Base (-BaseParameters):"
+Write-Host "  - ItÃƒÂ©rations par Taille: $Iterations"
+Write-Host "  - CritÃƒÂ¨re Optimisation: $OptimizationMetric"
+Write-Host "  - GÃƒÂ©nÃƒÂ©ration Rapport HTML: $($GenerateReport.IsPresent)"
+Write-Host "  - Statut DonnÃƒÂ©es Test : $testDataStatus"
+Write-Verbose "  - ParamÃƒÂ¨tres de Base (-BaseParameters):"
 Write-Verbose ($BaseParameters | Out-String)
 
-Write-Verbose "Validation et Initialisation terminÃ©es."
+Write-Verbose "Validation et Initialisation terminÃƒÂ©es."
 #endregion
 
-#region Fonction de GÃ©nÃ©ration du Rapport HTML (AdaptÃ©e)
+#region Fonction de GÃƒÂ©nÃƒÂ©ration du Rapport HTML (AdaptÃƒÂ©e)
 
 function New-BatchSizeHtmlReport {
     [CmdletBinding()]
@@ -328,19 +328,19 @@ function New-BatchSizeHtmlReport {
         [Parameter(Mandatory = $false)] [string]$OutputDirectory
     )
 
-    Write-Host "GÃ©nÃ©ration du rapport HTML comparatif : $ReportPath" -ForegroundColor Cyan
+    Write-Host "GÃƒÂ©nÃƒÂ©ration du rapport HTML comparatif : $ReportPath" -ForegroundColor Cyan
 
     $validResults = $AllBatchResults | Where-Object { $null -ne $_ -and $null -ne $_.PSObject.Properties['AverageExecutionTimeS'] -and $_.AverageExecutionTimeS -ge 0 }
     if ($validResults.Count -eq 0) {
-        Write-Warning "Aucune donnÃ©e de rÃ©sultat valide pour gÃ©nÃ©rer les graphiques du rapport HTML."
-        # Potentiellement crÃ©er un rapport minimal ici
+        Write-Warning "Aucune donnÃƒÂ©e de rÃƒÂ©sultat valide pour gÃƒÂ©nÃƒÂ©rer les graphiques du rapport HTML."
+        # Potentiellement crÃƒÂ©er un rapport minimal ici
         return
     }
 
-    # Trier les rÃ©sultats valides par taille de lot pour les graphiques/tableaux
+    # Trier les rÃƒÂ©sultats valides par taille de lot pour les graphiques/tableaux
     $sortedResults = $validResults | Sort-Object BatchSize
 
-    # PrÃ©parer les donnÃ©es pour JS
+    # PrÃƒÂ©parer les donnÃƒÂ©es pour JS
     $jsLabels = ConvertTo-JavaScriptData ($sortedResults.BatchSize)
     $jsAvgTimes = ConvertTo-JavaScriptData ($sortedResults | ForEach-Object { [Math]::Round($_.AverageExecutionTimeS, 3) })
     $jsAvgCpu = ConvertTo-JavaScriptData ($sortedResults | ForEach-Object { [Math]::Round($_.AverageProcessorTimeS, 3) })
@@ -348,33 +348,33 @@ function New-BatchSizeHtmlReport {
     $jsAvgPM = ConvertTo-JavaScriptData ($sortedResults | ForEach-Object { [Math]::Round($_.AveragePrivateMemoryMB, 2) })
     $jsSuccessRates = ConvertTo-JavaScriptData ($sortedResults | ForEach-Object { [Math]::Round($_.SuccessRatePercent, 1) })
 
-    $paramsHtml = "<i>Aucun paramÃ¨tre de base spÃ©cifiÃ©</i>"
+    $paramsHtml = "<i>Aucun paramÃƒÂ¨tre de base spÃƒÂ©cifiÃƒÂ©</i>"
     if ($BaseParametersUsed -and $BaseParametersUsed.Count -gt 0) {
         $paramsHtml = ($BaseParametersUsed.GetEnumerator() | ForEach-Object { "<li><strong>$($_.Name):</strong> <span class='param-value'>$($_.Value | Out-String -Width 100)</span></li>" }) -join ""
         $paramsHtml = "<ul>$paramsHtml</ul>"
     }
-    $dataInfoHtml = if (-not [string]::IsNullOrEmpty($TestDataInfo)) { "<p><span class='metric-label'>Statut DonnÃ©es Test:</span> $TestDataInfo</p>" } else { "" }
+    $dataInfoHtml = if (-not [string]::IsNullOrEmpty($TestDataInfo)) { "<p><span class='metric-label'>Statut DonnÃƒÂ©es Test:</span> $TestDataInfo</p>" } else { "" }
 
     # Section Optimale
     $optimalSectionHtml = ""
     if ($OptimalBatchInfo) {
         $optimalSectionHtml = @"
 <div class="section optimal" id="optimal-result">
-    <h2>ðŸ† Taille de Lot RecommandÃ©e (CritÃ¨re: $OptimizationReason)</h2>
+    <h2>Ã°Å¸Ââ€  Taille de Lot RecommandÃƒÂ©e (CritÃƒÂ¨re: $OptimizationReason)</h2>
     <p><span class="metric-label">Taille de Lot Optimale:</span> <span class="optimal-value">$($OptimalBatchInfo.BatchSize)</span></p>
-    <p><span class="metric-label tooltip">Temps Moyen Ã‰coulÃ©:<span class="tooltiptext">DurÃ©e totale moyenne pour cette taille de lot. Plus bas est mieux.</span></span> $($OptimalBatchInfo.AverageExecutionTimeS.ToString('F3')) s</p>
-    <p><span class="metric-label tooltip">Temps CPU Moyen:<span class="tooltiptext">Temps processeur moyen consommÃ©.</span></span> $($OptimalBatchInfo.AverageProcessorTimeS.ToString('F3')) s</p>
-    <p><span class="metric-label tooltip">Working Set Moyen:<span class="tooltiptext">MÃ©moire physique moyenne utilisÃ©e.</span></span> $($OptimalBatchInfo.AverageWorkingSetMB.ToString('F2')) MB</p>
-    <p><span class="metric-label tooltip">MÃ©moire PrivÃ©e Moyenne:<span class="tooltiptext">MÃ©moire non partagÃ©e moyenne allouÃ©e. Indicateur clÃ©.</span></span> $($OptimalBatchInfo.AveragePrivateMemoryMB.ToString('F2')) MB</p>
-    <p><span class="metric-label">Taux de SuccÃ¨s:</span> $($OptimalBatchInfo.SuccessRatePercent.ToString('F1')) %</p>
+    <p><span class="metric-label tooltip">Temps Moyen Ãƒâ€°coulÃƒÂ©:<span class="tooltiptext">DurÃƒÂ©e totale moyenne pour cette taille de lot. Plus bas est mieux.</span></span> $($OptimalBatchInfo.AverageExecutionTimeS.ToString('F3')) s</p>
+    <p><span class="metric-label tooltip">Temps CPU Moyen:<span class="tooltiptext">Temps processeur moyen consommÃƒÂ©.</span></span> $($OptimalBatchInfo.AverageProcessorTimeS.ToString('F3')) s</p>
+    <p><span class="metric-label tooltip">Working Set Moyen:<span class="tooltiptext">MÃƒÂ©moire physique moyenne utilisÃƒÂ©e.</span></span> $($OptimalBatchInfo.AverageWorkingSetMB.ToString('F2')) MB</p>
+    <p><span class="metric-label tooltip">MÃƒÂ©moire PrivÃƒÂ©e Moyenne:<span class="tooltiptext">MÃƒÂ©moire non partagÃƒÂ©e moyenne allouÃƒÂ©e. Indicateur clÃƒÂ©.</span></span> $($OptimalBatchInfo.AveragePrivateMemoryMB.ToString('F2')) MB</p>
+    <p><span class="metric-label">Taux de SuccÃƒÂ¨s:</span> $($OptimalBatchInfo.SuccessRatePercent.ToString('F1')) %</p>
 </div>
 "@
     } else {
         $optimalSectionHtml = @"
 <div class="section warning" id="optimal-result">
-    <h2>âš ï¸ Taille de Lot Optimale Non TrouvÃ©e</h2>
-    <p>Aucune taille de lot n'a satisfait le critÃ¨re d'optimisation '$OptimizationReason' (par exemple, aucune n'a atteint 100% de succÃ¨s si requis).</p>
-    <p>Consultez les rÃ©sultats dÃ©taillÃ©s et les graphiques pour identifier le meilleur compromis pour vos besoins.</p>
+    <h2>Ã¢Å¡Â Ã¯Â¸Â Taille de Lot Optimale Non TrouvÃƒÂ©e</h2>
+    <p>Aucune taille de lot n'a satisfait le critÃƒÂ¨re d'optimisation '$OptimizationReason' (par exemple, aucune n'a atteint 100% de succÃƒÂ¨s si requis).</p>
+    <p>Consultez les rÃƒÂ©sultats dÃƒÂ©taillÃƒÂ©s et les graphiques pour identifier le meilleur compromis pour vos besoins.</p>
 </div>
 "@
     }
@@ -387,13 +387,13 @@ function New-BatchSizeHtmlReport {
 
     $recoItems = @()
     if ($fastestOverall -and $OptimalBatchInfo -and $fastestOverall.BatchSize -ne $OptimalBatchInfo.BatchSize) {
-        $recoItems += "<li>La taille de lot <strong>$($fastestOverall.BatchSize)</strong> Ã©tait la plus rapide globalement ({$($fastestOverall.AverageExecutionTimeS.ToString('F3'))}s) mais n'a peut-Ãªtre pas atteint 100% de succÃ¨s ({$($fastestOverall.SuccessRatePercent.ToString('F1'))}%).</li>"
+        $recoItems += "<li>La taille de lot <strong>$($fastestOverall.BatchSize)</strong> ÃƒÂ©tait la plus rapide globalement ({$($fastestOverall.AverageExecutionTimeS.ToString('F3'))}s) mais n'a peut-ÃƒÂªtre pas atteint 100% de succÃƒÂ¨s ({$($fastestOverall.SuccessRatePercent.ToString('F1'))}%).</li>"
     }
     if ($lowestMemOverall -and $OptimalBatchInfo -and $lowestMemOverall.BatchSize -ne $OptimalBatchInfo.BatchSize) {
-         $recoItems += "<li>La taille de lot <strong>$($lowestMemOverall.BatchSize)</strong> utilisait le moins de mÃ©moire privÃ©e ({$($lowestMemOverall.AveragePrivateMemoryMB.ToString('F2'))}MB) avec un temps moyen de {$($lowestMemOverall.AverageExecutionTimeS.ToString('F3'))}s et {$($lowestMemOverall.SuccessRatePercent.ToString('F1'))}% de succÃ¨s.</li>"
+         $recoItems += "<li>La taille de lot <strong>$($lowestMemOverall.BatchSize)</strong> utilisait le moins de mÃƒÂ©moire privÃƒÂ©e ({$($lowestMemOverall.AveragePrivateMemoryMB.ToString('F2'))}MB) avec un temps moyen de {$($lowestMemOverall.AverageExecutionTimeS.ToString('F3'))}s et {$($lowestMemOverall.SuccessRatePercent.ToString('F1'))}% de succÃƒÂ¨s.</li>"
     }
      if ($bestSuccessOverall -and $OptimalBatchInfo -and $bestSuccessOverall.BatchSize -ne $OptimalBatchInfo.BatchSize -and $bestSuccessOverall.SuccessRatePercent -gt $OptimalBatchInfo.SuccessRatePercent) {
-         $recoItems += "<li>La taille de lot <strong>$($bestSuccessOverall.BatchSize)</strong> avait le meilleur taux de succÃ¨s ({$($bestSuccessOverall.SuccessRatePercent.ToString('F1'))}%) avec un temps moyen de {$($bestSuccessOverall.AverageExecutionTimeS.ToString('F3'))}s.</li>"
+         $recoItems += "<li>La taille de lot <strong>$($bestSuccessOverall.BatchSize)</strong> avait le meilleur taux de succÃƒÂ¨s ({$($bestSuccessOverall.SuccessRatePercent.ToString('F1'))}%) avec un temps moyen de {$($bestSuccessOverall.AverageExecutionTimeS.ToString('F3'))}s.</li>"
     }
 
     if ($recoItems.Count -gt 0) {
@@ -405,7 +405,7 @@ function New-BatchSizeHtmlReport {
 "@
     }
 
-    # Table des dÃ©tails (gÃ©nÃ©rÃ©e via boucle pour meilleur contrÃ´le)
+    # Table des dÃƒÂ©tails (gÃƒÂ©nÃƒÂ©rÃƒÂ©e via boucle pour meilleur contrÃƒÂ´le)
     $detailsTableRows = $AllBatchResults | ForEach-Object {
         $avgExecTimeStr = if($_.AverageExecutionTimeS -ge 0) { $_.AverageExecutionTimeS.ToString('F3') } else { 'N/A' }
         $minExecTimeStr = if($_.MinExecutionTimeS -ge 0) { $_.MinExecutionTimeS.ToString('F3') } else { 'N/A' }
@@ -431,7 +431,7 @@ function New-BatchSizeHtmlReport {
     }
     $detailsTableHtml = @"
 <table class='details-table'>
-    <thead><tr><th>Taille Lot</th><th>Taux SuccÃ¨s (%)</th><th>Temps Moyen (s)</th><th>Temps Min (s)</th><th>Temps Max (s)</th><th>CPU Moyen (s)</th><th>WS Moyen (MB)</th><th>PM Moyen (MB)</th></tr></thead>
+    <thead><tr><th>Taille Lot</th><th>Taux SuccÃƒÂ¨s (%)</th><th>Temps Moyen (s)</th><th>Temps Min (s)</th><th>Temps Max (s)</th><th>CPU Moyen (s)</th><th>WS Moyen (MB)</th><th>PM Moyen (MB)</th></tr></thead>
     <tbody>$($detailsTableRows -join '')</tbody>
 </table>
 "@
@@ -446,7 +446,7 @@ function New-BatchSizeHtmlReport {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rapport Optimisation Taille de Lot: $BatchSizeParamName</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-    <style>/* CSS Similaire Ã  Test-ParallelPerformance */
+    <style>/* CSS Similaire ÃƒÂ  Test-ParallelPerformance */
         :root { --success-color: #28a745; --failure-color: #dc3545; --warning-color: #ffc107; --primary-color: #0056b3; --secondary-color: #007bff; --light-gray: #f8f9fa; --medium-gray: #e9ecef; --dark-gray: #343a40; --border-color: #dee2e6; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; line-height: 1.6; margin: 20px; background-color: var(--light-gray); color: var(--dark-gray); }
         .container { max-width: 1300px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
@@ -477,13 +477,13 @@ function New-BatchSizeHtmlReport {
 <div class="container">
     <h1>Rapport d'Optimisation de Taille de Lot (<code class='param-value'>$BatchSizeParamName</code>)</h1>
     <div class="section" id="context">
-        <h2>Contexte de l'ExÃ©cution</h2>
-        <p><span class="metric-label">GÃ©nÃ©rÃ© le:</span> $(Get-Date -Format "yyyy-MM-dd 'Ã ' HH:mm:ss")</p>
-        <p><span class="metric-label">ItÃ©rations par Taille:</span> $IterationsPerBatch</p>
-        <p><span class="metric-label">CritÃ¨re d'Optimisation:</span> $OptimizationMetric</p>
+        <h2>Contexte de l'ExÃƒÂ©cution</h2>
+        <p><span class="metric-label">GÃƒÂ©nÃƒÂ©rÃƒÂ© le:</span> $(Get-Date -Format "yyyy-MM-dd 'ÃƒÂ ' HH:mm:ss")</p>
+        <p><span class="metric-label">ItÃƒÂ©rations par Taille:</span> $IterationsPerBatch</p>
+        <p><span class="metric-label">CritÃƒÂ¨re d'Optimisation:</span> $OptimizationMetric</p>
         $dataInfoHtml
-        <p><span class="metric-label">RÃ©pertoire des RÃ©sultats:</span> <code>$OutputDirectory</code></p>
-        <h3>ParamÃ¨tres de Base UtilisÃ©s :</h3>
+        <p><span class="metric-label">RÃƒÂ©pertoire des RÃƒÂ©sultats:</span> <code>$OutputDirectory</code></p>
+        <h3>ParamÃƒÂ¨tres de Base UtilisÃƒÂ©s :</h3>
         $paramsHtml
     </div>
 
@@ -491,9 +491,9 @@ function New-BatchSizeHtmlReport {
     $recommendationsHtml
 
     <div class="section" id="detailed-results">
-        <h2>RÃ©sultats Comparatifs DÃ©taillÃ©s par Taille de Lot</h2>
+        <h2>RÃƒÂ©sultats Comparatifs DÃƒÂ©taillÃƒÂ©s par Taille de Lot</h2>
         $detailsTableHtml
-        <p class="notes"><i>Les mÃ©triques sont moyennÃ©es sur $IterationsPerBatch exÃ©cutions pour chaque taille de lot.</i></p>
+        <p class="notes"><i>Les mÃƒÂ©triques sont moyennÃƒÂ©es sur $IterationsPerBatch exÃƒÂ©cutions pour chaque taille de lot.</i></p>
     </div>
 
     <div class="section" id="charts">
@@ -513,7 +513,7 @@ function New-BatchSizeHtmlReport {
 
     // Time Chart
     createChart('timeChart', { type: 'line', data: { labels: batchSizeLabels, datasets: [
-        { label: 'Temps Ã‰coulÃ© Moyen (s)', data: $jsAvgTimes, borderColor: 'rgb(220, 53, 69)', backgroundColor: 'rgba(220, 53, 69, 0.1)', yAxisID: 'yTime', tension: 0.1, borderWidth: 2 },
+        { label: 'Temps Ãƒâ€°coulÃƒÂ© Moyen (s)', data: $jsAvgTimes, borderColor: 'rgb(220, 53, 69)', backgroundColor: 'rgba(220, 53, 69, 0.1)', yAxisID: 'yTime', tension: 0.1, borderWidth: 2 },
         { label: 'Temps CPU Moyen (s)', data: $jsAvgCpu, borderColor: 'rgb(13, 110, 253)', backgroundColor: 'rgba(13, 110, 253, 0.1)', yAxisID: 'yTime', tension: 0.1, borderWidth: 2 } ] },
         options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'Performance Temps vs Taille de Lot'} }, scales: { ...commonChartOptions.scales, yTime: { ...commonChartOptions.scales.y, title: { ...commonChartOptions.scales.y.title, text: 'Secondes'}}} }
     });
@@ -521,13 +521,13 @@ function New-BatchSizeHtmlReport {
     // Memory Chart
     createChart('memoryChart', { type: 'line', data: { labels: batchSizeLabels, datasets: [
         { label: 'Working Set Moyen (MB)', data: $jsAvgWS, borderColor: 'rgb(25, 135, 84)', backgroundColor: 'rgba(25, 135, 84, 0.1)', yAxisID: 'yMemory', tension: 0.1, borderWidth: 2 },
-        { label: 'MÃ©moire PrivÃ©e Moyenne (MB)', data: $jsAvgPM, borderColor: 'rgb(108, 117, 125)', backgroundColor: 'rgba(108, 117, 125, 0.1)', yAxisID: 'yMemory', tension: 0.1, borderWidth: 2 } ] },
-        options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'Utilisation MÃ©moire vs Taille de Lot'} }, scales: { ...commonChartOptions.scales, yMemory: { ...commonChartOptions.scales.y, title: { ...commonChartOptions.scales.y.title, text: 'MB'}}} }
+        { label: 'MÃƒÂ©moire PrivÃƒÂ©e Moyenne (MB)', data: $jsAvgPM, borderColor: 'rgb(108, 117, 125)', backgroundColor: 'rgba(108, 117, 125, 0.1)', yAxisID: 'yMemory', tension: 0.1, borderWidth: 2 } ] },
+        options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'Utilisation MÃƒÂ©moire vs Taille de Lot'} }, scales: { ...commonChartOptions.scales, yMemory: { ...commonChartOptions.scales.y, title: { ...commonChartOptions.scales.y.title, text: 'MB'}}} }
     });
 
     // Success Rate Chart
-    createChart('successRateChart', { type: 'bar', data: { labels: batchSizeLabels, datasets: [{ label: 'Taux de SuccÃ¨s (%)', data: $jsSuccessRates, backgroundColor: 'rgba(255, 193, 7, 0.7)', borderColor: 'rgb(255, 193, 7)', borderWidth: 1 }] },
-        options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'Taux de SuccÃ¨s vs Taille de Lot'} }, scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, min: 0, max: 100, title: { ...commonChartOptions.scales.y.title, text: '%' } } } }
+    createChart('successRateChart', { type: 'bar', data: { labels: batchSizeLabels, datasets: [{ label: 'Taux de SuccÃƒÂ¨s (%)', data: $jsSuccessRates, backgroundColor: 'rgba(255, 193, 7, 0.7)', borderColor: 'rgb(255, 193, 7)', borderWidth: 1 }] },
+        options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, title: { ...commonChartOptions.plugins.title, text: 'Taux de SuccÃƒÂ¨s vs Taille de Lot'} }, scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, min: 0, max: 100, title: { ...commonChartOptions.scales.y.title, text: '%' } } } }
     });
 </script>
 </div> <!-- /container -->
@@ -538,104 +538,104 @@ function New-BatchSizeHtmlReport {
     # Sauvegarder le rapport HTML
     try {
         $htmlContent | Out-File -FilePath $ReportPath -Encoding UTF8 -Force -ErrorAction Stop
-        Write-Host "Rapport HTML comparatif gÃ©nÃ©rÃ© avec succÃ¨s : $ReportPath" -ForegroundColor Green
+        Write-Host "Rapport HTML comparatif gÃƒÂ©nÃƒÂ©rÃƒÂ© avec succÃƒÂ¨s : $ReportPath" -ForegroundColor Green
     } catch {
         Write-Error "Erreur critique lors de la sauvegarde du rapport HTML '$ReportPath': $($_.Exception.Message)"
-        # Ne pas arrÃªter le script principal pour une erreur de rapport, juste notifier.
+        # Ne pas arrÃƒÂªter le script principal pour une erreur de rapport, juste notifier.
     }
 }
 
 #endregion
 
-#region ExÃ©cution Principale du Benchmarking
+#region ExÃƒÂ©cution Principale du Benchmarking
 
-Write-Host "`n=== DÃ©marrage des Tests par Taille de Lot ($($startTimestamp.ToString('HH:mm:ss'))) ===" -ForegroundColor Cyan
-Write-Host "CritÃ¨re d'Optimisation : $OptimizationMetric"
+Write-Host "`n=== DÃƒÂ©marrage des Tests par Taille de Lot ($($startTimestamp.ToString('HH:mm:ss'))) ===" -ForegroundColor Cyan
+Write-Host "CritÃƒÂ¨re d'Optimisation : $OptimizationMetric"
 
 $allBatchSummaryResults = [System.Collections.Generic.List[PSCustomObject]]::new()
 $totalBatchSizes = $BatchSizes.Count
 $currentBatchIndex = 0
 
-# Boucle sur chaque taille de lot Ã  tester
+# Boucle sur chaque taille de lot ÃƒÂ  tester
 foreach ($batchSize in $BatchSizes) {
     $currentBatchIndex++
     $progressParams = @{
         Activity = "Optimisation Taille de Lot: $BatchSizeParameterName"
         Status   = "Test BatchSize $batchSize ($currentBatchIndex/$totalBatchSizes)"
         PercentComplete = (($currentBatchIndex -1) / $totalBatchSizes) * 100 # Start at 0%
-        CurrentOperation = "PrÃ©paration..."
+        CurrentOperation = "PrÃƒÂ©paration..."
     }
     Write-Progress @progressParams
 
     Write-Host "`n--- Test BatchSize = $batchSize ($currentBatchIndex/$totalBatchSizes) ---" -ForegroundColor Yellow
 
-    # PrÃ©parer les paramÃ¨tres spÃ©cifiques pour cette taille de lot
+    # PrÃƒÂ©parer les paramÃƒÂ¨tres spÃƒÂ©cifiques pour cette taille de lot
     $currentCombinedParameters = $BaseParameters.Clone() # Cloner pour isoler
     try {
         $currentCombinedParameters[$BatchSizeParameterName] = $batchSize
     } catch {
-         Write-Error "Impossible d'ajouter/modifier le paramÃ¨tre '$BatchSizeParameterName' dans les paramÃ¨tres. VÃ©rifiez le nom et la structure de BaseParameters. Erreur: $($_.Exception.Message)"
-         # Ajouter un rÃ©sultat d'Ã©chec pour cette taille de lot et continuer
+         Write-Error "Impossible d'ajouter/modifier le paramÃƒÂ¨tre '$BatchSizeParameterName' dans les paramÃƒÂ¨tres. VÃƒÂ©rifiez le nom et la structure de BaseParameters. Erreur: $($_.Exception.Message)"
+         # Ajouter un rÃƒÂ©sultat d'ÃƒÂ©chec pour cette taille de lot et continuer
          $allBatchSummaryResults.Add([PSCustomObject]@{ BatchSize=$batchSize; Status='SetupError'; ErrorMessage=$_.Exception.Message; SuccessRatePercent=0; AverageExecutionTimeS=-1; AveragePrivateMemoryMB=-1 })
-         continue # Passer Ã  la taille de lot suivante
+         continue # Passer ÃƒÂ  la taille de lot suivante
     }
 
-    Write-Verbose "ParamÃ¨tres combinÃ©s pour le ScriptBlock (BatchSize $batchSize):"
+    Write-Verbose "ParamÃƒÂ¨tres combinÃƒÂ©s pour le ScriptBlock (BatchSize $batchSize):"
     Write-Verbose ($currentCombinedParameters | Out-String)
 
     # Nom unique pour le test de performance sous-jacent
-    $benchmarkTestName = "BatchSize_$($batchSize)_$(Get-Date -Format 'HHmmssfff')" # Plus de prÃ©cision pour unicitÃ©
+    $benchmarkTestName = "BatchSize_$($batchSize)_$(Get-Date -Format 'HHmmssfff')" # Plus de prÃƒÂ©cision pour unicitÃƒÂ©
 
-    # ParamÃ¨tres pour Test-ParallelPerformance.ps1
+    # ParamÃƒÂ¨tres pour Test-ParallelPerformance.ps1
     $benchmarkParams = @{
         ScriptBlock             = $ScriptBlock                # Le bloc qui appelle le script cible
         Parameters              = $currentCombinedParameters   # Params pour le ScriptBlock
         TestName                = $benchmarkTestName          # Nom pour les logs/rapports de CE test
         OutputPath              = $optimizationRunOutputPath  # Sortie DANS le dossier de l'optimisation
-        Iterations              = $Iterations                 # RÃ©pÃ©titions pour cette taille
-        GenerateReport          = $false # Ne pas gÃ©nÃ©rer de rapport HTML pour chaque taille, seulement le global
-        NoGarbageCollection     = $true # Optimise-BatchSize ne force pas GC, laisser Test-ParallelPerformance gÃ©rer
+        Iterations              = $Iterations                 # RÃƒÂ©pÃƒÂ©titions pour cette taille
+        GenerateReport          = $false # Ne pas gÃƒÂ©nÃƒÂ©rer de rapport HTML pour chaque taille, seulement le global
+        NoGarbageCollection     = $true # Optimise-BatchSize ne force pas GC, laisser Test-ParallelPerformance gÃƒÂ©rer
         ErrorAction             = 'Continue'                  # Capturer les erreurs de Test-ParallelPerformance
     }
-    # Note: TestDataPath n'est pas passÃ© directement ici, il est injectÃ© dans $currentCombinedParameters si besoin
+    # Note: TestDataPath n'est pas passÃƒÂ© directement ici, il est injectÃƒÂ© dans $currentCombinedParameters si besoin
 
     $batchResultSummary = $null
     $benchmarkError = $null # Variable pour stocker les erreurs de l'appel &
 
     try {
-        Write-Progress @progressParams -CurrentOperation "ExÃ©cution de Test-ParallelPerformance ($Iterations itÃ©rations)..."
+        Write-Progress @progressParams -CurrentOperation "ExÃƒÂ©cution de Test-ParallelPerformance ($Iterations itÃƒÂ©rations)..."
         Write-Verbose "Lancement de Test-ParallelPerformance.ps1 pour BatchSize $batchSize..."
 
-        # ExÃ©cuter le benchmark et capturer sa sortie (le rÃ©sumÃ©) et ses erreurs
+        # ExÃƒÂ©cuter le benchmark et capturer sa sortie (le rÃƒÂ©sumÃƒÂ©) et ses erreurs
         $batchResultSummary = & $benchmarkScriptPath @benchmarkParams -ErrorVariable +benchmarkError # '+' pour ajouter aux erreurs existantes
 
         if ($benchmarkError) {
-            Write-Warning "Erreurs non bloquantes lors de l'exÃ©cution de Test-ParallelPerformance pour BatchSize $batchSize :"
+            Write-Warning "Erreurs non bloquantes lors de l'exÃƒÂ©cution de Test-ParallelPerformance pour BatchSize $batchSize :"
             $benchmarkError | ForEach-Object { Write-Warning ('    ' + $_.ToString()) }
         }
-         Write-Progress @progressParams -CurrentOperation "Benchmark terminÃ©"
+         Write-Progress @progressParams -CurrentOperation "Benchmark terminÃƒÂ©"
 
     } catch {
-        # Erreur critique qui a arrÃªtÃ© Test-ParallelPerformance
-        Write-Error "Ã‰chec critique lors de l'appel Ã  Test-ParallelPerformance.ps1 pour BatchSize $batchSize. Erreur : $($_.Exception.Message)"
+        # Erreur critique qui a arrÃƒÂªtÃƒÂ© Test-ParallelPerformance
+        Write-Error "Ãƒâ€°chec critique lors de l'appel ÃƒÂ  Test-ParallelPerformance.ps1 pour BatchSize $batchSize. Erreur : $($_.Exception.Message)"
         $benchmarkError = $_ # Sauvegarder l'erreur critique
         # $batchResultSummary restera $null
     }
 
-    # Traiter le rÃ©sultat (ou l'absence de rÃ©sultat) du benchmark
+    # Traiter le rÃƒÂ©sultat (ou l'absence de rÃƒÂ©sultat) du benchmark
     if ($batchResultSummary -is [PSCustomObject] -and $batchResultSummary.PSObject.Properties.Name -contains 'AverageExecutionTimeS') {
-        # RÃ©sultat valide reÃ§u
+        # RÃƒÂ©sultat valide reÃƒÂ§u
         $batchResultSummary | Add-Member -MemberType NoteProperty -Name "BatchSize" -Value $batchSize -Force
         $batchResultSummary | Add-Member -MemberType NoteProperty -Name "Status" -Value "Completed" -Force # Ajouter un statut
         $allBatchSummaryResults.Add($batchResultSummary)
-        Write-Host ("RÃ©sultat enregistrÃ© pour BatchSize {0}: TempsMoyen={1:F3}s, SuccÃ¨s={2:F1}%, MemPrivMoy={3:F2}MB" -f `
+        Write-Host ("RÃƒÂ©sultat enregistrÃƒÂ© pour BatchSize {0}: TempsMoyen={1:F3}s, SuccÃƒÂ¨s={2:F1}%, MemPrivMoy={3:F2}MB" -f `
             $batchSize, $batchResultSummary.AverageExecutionTimeS,
             $batchResultSummary.SuccessRatePercent, $batchResultSummary.AveragePrivateMemoryMB) -ForegroundColor Green
     } else {
-        # Ã‰chec de l'exÃ©cution ou rÃ©sultat invalide
-        $failureReason = if($benchmarkError) { $benchmarkError[0].ToString() } else { "Test-ParallelPerformance n'a pas retournÃ© un objet de rÃ©sumÃ© valide." }
-        Write-Warning "Le test pour BatchSize $batchSize a Ã©chouÃ© ou n'a pas retournÃ© de rÃ©sumÃ© valide. Raison: $failureReason"
-        # Ajouter un rÃ©sultat d'Ã©chec structurÃ©
+        # Ãƒâ€°chec de l'exÃƒÂ©cution ou rÃƒÂ©sultat invalide
+        $failureReason = if($benchmarkError) { $benchmarkError[0].ToString() } else { "Test-ParallelPerformance n'a pas retournÃƒÂ© un objet de rÃƒÂ©sumÃƒÂ© valide." }
+        Write-Warning "Le test pour BatchSize $batchSize a ÃƒÂ©chouÃƒÂ© ou n'a pas retournÃƒÂ© de rÃƒÂ©sumÃƒÂ© valide. Raison: $failureReason"
+        # Ajouter un rÃƒÂ©sultat d'ÃƒÂ©chec structurÃƒÂ©
         $failedResult = [PSCustomObject]@{
             BatchSize             = $batchSize
             TestName              = $benchmarkTestName
@@ -649,55 +649,55 @@ foreach ($batchSize in $BatchSizes) {
         }
         $allBatchSummaryResults.Add($failedResult)
     }
-     Write-Progress @progressParams -PercentComplete ($currentBatchIndex / $totalBatchSizes * 100) -CurrentOperation "TerminÃ©"
+     Write-Progress @progressParams -PercentComplete ($currentBatchIndex / $totalBatchSizes * 100) -CurrentOperation "TerminÃƒÂ©"
 
 } # Fin de la boucle foreach ($batchSize in $BatchSizes)
 
-Write-Progress @progressParams -Activity "Optimisation Taille de Lot: $BatchSizeParameterName" -Status "Analyse finale des rÃ©sultats..." -Completed
+Write-Progress @progressParams -Activity "Optimisation Taille de Lot: $BatchSizeParameterName" -Status "Analyse finale des rÃƒÂ©sultats..." -Completed
 
 #endregion
 
-#region Analyse Finale et GÃ©nÃ©ration des Rapports
+#region Analyse Finale et GÃƒÂ©nÃƒÂ©ration des Rapports
 
-Write-Host "`n=== Analyse Finale des RÃ©sultats ($($allBatchSummaryResults.Count) tailles testÃ©es) ===" -ForegroundColor Cyan
+Write-Host "`n=== Analyse Finale des RÃƒÂ©sultats ($($allBatchSummaryResults.Count) tailles testÃƒÂ©es) ===" -ForegroundColor Cyan
 
 if ($allBatchSummaryResults.Count -eq 0) {
-     Write-Warning "Aucun rÃ©sultat n'a Ã©tÃ© collectÃ© (probablement interrompu). Impossible d'analyser ou de gÃ©nÃ©rer des rapports."
+     Write-Warning "Aucun rÃƒÂ©sultat n'a ÃƒÂ©tÃƒÂ© collectÃƒÂ© (probablement interrompu). Impossible d'analyser ou de gÃƒÂ©nÃƒÂ©rer des rapports."
      return $null
 }
 
-# Trier les rÃ©sultats par taille de lot pour affichage cohÃ©rent
+# Trier les rÃƒÂ©sultats par taille de lot pour affichage cohÃƒÂ©rent
 $sortedResults = $allBatchSummaryResults | Sort-Object BatchSize
 
-# Analyser selon le critÃ¨re d'optimisation
+# Analyser selon le critÃƒÂ¨re d'optimisation
 $optimalBatchInfo = $null
 $optimizationReason = "" # Pour le rapport
 
 switch ($OptimizationMetric) {
     'FastestSuccessful' {
-        $optimizationReason = "Temps d'exÃ©cution le plus bas avec 100% de succÃ¨s"
+        $optimizationReason = "Temps d'exÃƒÂ©cution le plus bas avec 100% de succÃƒÂ¨s"
         $successfulRuns = $sortedResults | Where-Object { $_.SuccessRatePercent -eq 100 -and $_.AverageExecutionTimeS -ge 0 }
         if ($successfulRuns) {
             $optimalBatchInfo = $successfulRuns | Sort-Object -Property AverageExecutionTimeS | Select-Object -First 1
         }
     }
     'LowestMemorySuccessful' {
-         $optimizationReason = "Utilisation mÃ©moire privÃ©e la plus basse avec 100% de succÃ¨s"
+         $optimizationReason = "Utilisation mÃƒÂ©moire privÃƒÂ©e la plus basse avec 100% de succÃƒÂ¨s"
          $successfulRuns = $sortedResults | Where-Object { $_.SuccessRatePercent -eq 100 -and $_.AveragePrivateMemoryMB -ge 0 }
          if ($successfulRuns) {
             $optimalBatchInfo = $successfulRuns | Sort-Object -Property AveragePrivateMemoryMB | Select-Object -First 1
         }
     }
     'BestSuccessRate' {
-        $optimizationReason = "Taux de succÃ¨s le plus Ã©levÃ© (puis temps d'exÃ©cution le plus bas)"
-        # Trier d'abord par succÃ¨s (dÃ©croissant), puis par temps (croissant)
+        $optimizationReason = "Taux de succÃƒÂ¨s le plus ÃƒÂ©levÃƒÂ© (puis temps d'exÃƒÂ©cution le plus bas)"
+        # Trier d'abord par succÃƒÂ¨s (dÃƒÂ©croissant), puis par temps (croissant)
         $optimalBatchInfo = $sortedResults | Where-Object {$_.AverageExecutionTimeS -ge 0} | Sort-Object -Property SuccessRatePercent -Descending | Sort-Object -Property AverageExecutionTimeS | Select-Object -First 1
-        # Si plusieurs ont le mÃªme meilleur taux de succÃ¨s, Sort-Object par temps choisira le plus rapide.
+        # Si plusieurs ont le mÃƒÂªme meilleur taux de succÃƒÂ¨s, Sort-Object par temps choisira le plus rapide.
     }
     default {
-        # Ne devrait pas arriver avec ValidateSet, mais par sÃ©curitÃ©
-        Write-Warning "CritÃ¨re d'optimisation '$OptimizationMetric' non reconnu. Utilisation de 'FastestSuccessful' par dÃ©faut."
-        $optimizationReason = "Temps d'exÃ©cution le plus bas avec 100% de succÃ¨s (DÃ©faut)"
+        # Ne devrait pas arriver avec ValidateSet, mais par sÃƒÂ©curitÃƒÂ©
+        Write-Warning "CritÃƒÂ¨re d'optimisation '$OptimizationMetric' non reconnu. Utilisation de 'FastestSuccessful' par dÃƒÂ©faut."
+        $optimizationReason = "Temps d'exÃƒÂ©cution le plus bas avec 100% de succÃƒÂ¨s (DÃƒÂ©faut)"
         $successfulRuns = $sortedResults | Where-Object { $_.SuccessRatePercent -eq 100 -and $_.AverageExecutionTimeS -ge 0 }
         if ($successfulRuns) {
             $optimalBatchInfo = $successfulRuns | Sort-Object -Property AverageExecutionTimeS | Select-Object -First 1
@@ -705,48 +705,48 @@ switch ($OptimizationMetric) {
     }
 }
 
-# Afficher le rÃ©sultat de l'optimisation
+# Afficher le rÃƒÂ©sultat de l'optimisation
 if ($optimalBatchInfo) {
-    Write-Host "`nðŸ† Taille de Lot Optimale IdentifiÃ©e (CritÃ¨re: $optimizationReason) ðŸ†" -ForegroundColor Green
+    Write-Host "`nÃ°Å¸Ââ€  Taille de Lot Optimale IdentifiÃƒÂ©e (CritÃƒÂ¨re: $optimizationReason) Ã°Å¸Ââ€ " -ForegroundColor Green
     Write-Host ("  Taille de lot  : {0}" -f $optimalBatchInfo.BatchSize) -ForegroundColor White
     Write-Host ("  Temps Moyen    : {0:F3} s" -f $optimalBatchInfo.AverageExecutionTimeS) -ForegroundColor White
-    Write-Host ("  SuccÃ¨s         : {0:F1} %" -f $optimalBatchInfo.SuccessRatePercent) -ForegroundColor White
-    Write-Host ("  MÃ©moire PrivÃ©e : {0:F2} MB" -f $optimalBatchInfo.AveragePrivateMemoryMB) -ForegroundColor White
+    Write-Host ("  SuccÃƒÂ¨s         : {0:F1} %" -f $optimalBatchInfo.SuccessRatePercent) -ForegroundColor White
+    Write-Host ("  MÃƒÂ©moire PrivÃƒÂ©e : {0:F2} MB" -f $optimalBatchInfo.AveragePrivateMemoryMB) -ForegroundColor White
 } else {
-    Write-Warning "`nAucune taille de lot n'a pu satisfaire le critÃ¨re d'optimisation '$optimizationReason'."
-    # Chercher le meilleur compromis global (comme dans la version prÃ©cÃ©dente) peut Ãªtre utile ici
+    Write-Warning "`nAucune taille de lot n'a pu satisfaire le critÃƒÂ¨re d'optimisation '$optimizationReason'."
+    # Chercher le meilleur compromis global (comme dans la version prÃƒÂ©cÃƒÂ©dente) peut ÃƒÂªtre utile ici
     $bestCompromise = $sortedResults | Where-Object { $_.AverageExecutionTimeS -ge 0 } | Sort-Object -Property SuccessRatePercent -Descending | Sort-Object -Property AverageExecutionTimeS | Select-Object -First 1
      if($bestCompromise) {
-         Write-Host "ðŸ’¡ Suggestion (meilleur compromis succÃ¨s/vitesse trouvÃ©):" -ForegroundColor Yellow
-         Write-Host ("  Taille de lot : {0} (SuccÃ¨s: {1:F1}%)" -f $bestCompromise.BatchSize, $bestCompromise.SuccessRatePercent) -ForegroundColor Yellow
+         Write-Host "Ã°Å¸â€™Â¡ Suggestion (meilleur compromis succÃƒÂ¨s/vitesse trouvÃƒÂ©):" -ForegroundColor Yellow
+         Write-Host ("  Taille de lot : {0} (SuccÃƒÂ¨s: {1:F1}%)" -f $bestCompromise.BatchSize, $bestCompromise.SuccessRatePercent) -ForegroundColor Yellow
          Write-Host ("  Temps moyen   : {0:F3} s" -f $bestCompromise.AverageExecutionTimeS) -ForegroundColor Yellow
-         Write-Host ("  MÃ©moire PrivÃ©e: {0:F2} MB" -f $bestCompromise.AveragePrivateMemoryMB) -ForegroundColor Yellow
+         Write-Host ("  MÃƒÂ©moire PrivÃƒÂ©e: {0:F2} MB" -f $bestCompromise.AveragePrivateMemoryMB) -ForegroundColor Yellow
     } else {
-         Write-Warning "Aucune exÃ©cution n'a fourni de rÃ©sultats valides."
+         Write-Warning "Aucune exÃƒÂ©cution n'a fourni de rÃƒÂ©sultats valides."
     }
 }
 
-# Enregistrer les rÃ©sultats agrÃ©gÃ©s en JSON
-$resultsJsonFileName = "BatchSizeOptimization_Summary_$($BatchSizeParameterName).json" # Nom simplifiÃ©
+# Enregistrer les rÃƒÂ©sultats agrÃƒÂ©gÃƒÂ©s en JSON
+$resultsJsonFileName = "BatchSizeOptimization_Summary_$($BatchSizeParameterName).json" # Nom simplifiÃƒÂ©
 $resultsJsonPath = Join-Path -Path $optimizationRunOutputPath -ChildPath $resultsJsonFileName
 try {
-    # Exclure ErrorMessage dÃ©taillÃ© du JSON principal pour lisibilitÃ© si nÃ©cessaire
-    $resultsForJson = $sortedResults #| Select-Object * -ExcludeProperty ErrorMessage # DÃ©commenter pour exclure
+    # Exclure ErrorMessage dÃƒÂ©taillÃƒÂ© du JSON principal pour lisibilitÃƒÂ© si nÃƒÂ©cessaire
+    $resultsForJson = $sortedResults #| Select-Object * -ExcludeProperty ErrorMessage # DÃƒÂ©commenter pour exclure
     ConvertTo-Json -InputObject $resultsForJson -Depth 5 | Out-File -FilePath $resultsJsonPath -Encoding UTF8 -Force -ErrorAction Stop
-    Write-Host "`nðŸ“Š RÃ©sumÃ© complet de l'optimisation enregistrÃ© (JSON) : $resultsJsonPath" -ForegroundColor Green
+    Write-Host "`nÃ°Å¸â€œÅ  RÃƒÂ©sumÃƒÂ© complet de l'optimisation enregistrÃƒÂ© (JSON) : $resultsJsonPath" -ForegroundColor Green
 } catch {
-    Write-Error "Erreur critique lors de l'enregistrement du rÃ©sumÃ© JSON '$resultsJsonPath': $($_.Exception.Message)"
+    Write-Error "Erreur critique lors de l'enregistrement du rÃƒÂ©sumÃƒÂ© JSON '$resultsJsonPath': $($_.Exception.Message)"
 }
 
-# GÃ©nÃ©rer le rapport HTML comparatif si demandÃ©
+# GÃƒÂ©nÃƒÂ©rer le rapport HTML comparatif si demandÃƒÂ©
 if ($GenerateReport) {
     if ($sortedResults.Count -gt 0) {
-        $reportHtmlFileName = "BatchSizeOptimization_Report_$($BatchSizeParameterName).html" # Nom simplifiÃ©
+        $reportHtmlFileName = "BatchSizeOptimization_Report_$($BatchSizeParameterName).html" # Nom simplifiÃƒÂ©
         $reportHtmlPath = Join-Path -Path $optimizationRunOutputPath -ChildPath $reportHtmlFileName
         $reportParams = @{
-            AllBatchResults    = $sortedResults # Passer les rÃ©sultats triÃ©s
+            AllBatchResults    = $sortedResults # Passer les rÃƒÂ©sultats triÃƒÂ©s
             ReportPath         = $reportHtmlPath
-            OptimalBatchInfo   = $optimalBatchInfo # Peut Ãªtre $null
+            OptimalBatchInfo   = $optimalBatchInfo # Peut ÃƒÂªtre $null
             OptimizationReason = $optimizationReason
             BaseParametersUsed = $BaseParameters
             BatchSizeParamName = $BatchSizeParameterName
@@ -757,16 +757,16 @@ if ($GenerateReport) {
         }
         New-BatchSizeHtmlReport @reportParams
     } else {
-        Write-Warning "GÃ©nÃ©ration du rapport HTML annulÃ©e car aucun rÃ©sultat n'a Ã©tÃ© collectÃ©."
+        Write-Warning "GÃƒÂ©nÃƒÂ©ration du rapport HTML annulÃƒÂ©e car aucun rÃƒÂ©sultat n'a ÃƒÂ©tÃƒÂ© collectÃƒÂ©."
     }
 }
 
 $endTimestamp = Get-Date
 $totalDuration = $endTimestamp - $startTimestamp
-Write-Host "`n=== Optimisation Taille de Lot TerminÃ©e ($($endTimestamp.ToString('HH:mm:ss'))) ===" -ForegroundColor White -BackgroundColor DarkBlue
-Write-Host "DurÃ©e totale du script d'optimisation : $($totalDuration.ToString('g'))"
+Write-Host "`n=== Optimisation Taille de Lot TerminÃƒÂ©e ($($endTimestamp.ToString('HH:mm:ss'))) ===" -ForegroundColor White -BackgroundColor DarkBlue
+Write-Host "DurÃƒÂ©e totale du script d'optimisation : $($totalDuration.ToString('g'))"
 
 #endregion
 
-# Retourner le tableau des rÃ©sultats triÃ©s par taille de lot
+# Retourner le tableau des rÃƒÂ©sultats triÃƒÂ©s par taille de lot
 return $sortedResults

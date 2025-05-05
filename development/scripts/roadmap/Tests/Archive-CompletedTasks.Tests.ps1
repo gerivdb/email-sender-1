@@ -1,4 +1,4 @@
-BeforeAll {
+﻿BeforeAll {
     # Importer le module commun
     $scriptPath = Split-Path -Parent $PSScriptRoot
     $projectRoot = Split-Path -Parent $scriptPath
@@ -19,27 +19,27 @@ BeforeAll {
         throw "Script d'archivage introuvable: $archiveScriptPath"
     }
 
-    # Créer des fichiers de test
+    # CrÃ©er des fichiers de test
     $testRoadmapContent = @"
 # Roadmap de test
 
-## Tâches actives
+## TÃ¢ches actives
 
-- [ ] **1.1** Tâche incomplète 1
-  - [ ] **1.1.1** Sous-tâche incomplète 1.1
-  - [x] **1.1.2** Sous-tâche terminée 1.2
-- [x] **1.2** Tâche terminée 2
-  - [x] **1.2.1** Sous-tâche terminée 2.1
-  - [ ] **1.2.2** Sous-tâche incomplète 2.2
-- [ ] **1.3** Tâche incomplète 3
+- [ ] **1.1** TÃ¢che incomplÃ¨te 1
+  - [ ] **1.1.1** Sous-tÃ¢che incomplÃ¨te 1.1
+  - [x] **1.1.2** Sous-tÃ¢che terminÃ©e 1.2
+- [x] **1.2** TÃ¢che terminÃ©e 2
+  - [x] **1.2.1** Sous-tÃ¢che terminÃ©e 2.1
+  - [ ] **1.2.2** Sous-tÃ¢che incomplÃ¨te 2.2
+- [ ] **1.3** TÃ¢che incomplÃ¨te 3
 "@
 
     $testArchiveContent = @"
 # Roadmap Archive
 
-## Tâches archivées
+## TÃ¢ches archivÃ©es
 
-- [x] **0.1** Tâche archivée précédemment
+- [x] **0.1** TÃ¢che archivÃ©e prÃ©cÃ©demment
 "@
 
     $script:testRoadmapPath = Join-Path -Path $TestDrive -ChildPath "test_roadmap.md"
@@ -51,65 +51,65 @@ BeforeAll {
 
 Describe "Archive-CompletedTasks" {
     BeforeEach {
-        # Réinitialiser les fichiers de test avant chaque test
+        # RÃ©initialiser les fichiers de test avant chaque test
         $testRoadmapContent = @"
 # Roadmap de test
 
-## Tâches actives
+## TÃ¢ches actives
 
-- [ ] **1.1** Tâche incomplète 1
-  - [ ] **1.1.1** Sous-tâche incomplète 1.1
-  - [x] **1.1.2** Sous-tâche terminée 1.2
-- [x] **1.2** Tâche terminée 2
-  - [x] **1.2.1** Sous-tâche terminée 2.1
-  - [ ] **1.2.2** Sous-tâche incomplète 2.2
-- [ ] **1.3** Tâche incomplète 3
+- [ ] **1.1** TÃ¢che incomplÃ¨te 1
+  - [ ] **1.1.1** Sous-tÃ¢che incomplÃ¨te 1.1
+  - [x] **1.1.2** Sous-tÃ¢che terminÃ©e 1.2
+- [x] **1.2** TÃ¢che terminÃ©e 2
+  - [x] **1.2.1** Sous-tÃ¢che terminÃ©e 2.1
+  - [ ] **1.2.2** Sous-tÃ¢che incomplÃ¨te 2.2
+- [ ] **1.3** TÃ¢che incomplÃ¨te 3
 "@
 
         $testArchiveContent = @"
 # Roadmap Archive
 
-## Tâches archivées
+## TÃ¢ches archivÃ©es
 
-- [x] **0.1** Tâche archivée précédemment
+- [x] **0.1** TÃ¢che archivÃ©e prÃ©cÃ©demment
 "@
 
         Set-Content -Path $script:testRoadmapPath -Value $testRoadmapContent -Encoding UTF8
         Set-Content -Path $script:testArchivePath -Value $testArchiveContent -Encoding UTF8
     }
 
-    It "Identifie correctement les tâches terminées" {
+    It "Identifie correctement les tÃ¢ches terminÃ©es" {
         # Mock pour la fonction Get-CompletedTasks
         function Get-CompletedTasks {
             param (
                 [string]$RoadmapContent
             )
 
-            # Simuler l'identification des tâches terminées
+            # Simuler l'identification des tÃ¢ches terminÃ©es
             return @(
                 [PSCustomObject]@{
                     Id          = "1.1.2"
-                    Description = "Sous-tâche terminée 1.2"
-                    Section     = "Tâches actives"
+                    Description = "Sous-tÃ¢che terminÃ©e 1.2"
+                    Section     = "TÃ¢ches actives"
                     Line        = 5
                     IndentLevel = 2
-                    FullLine    = "  - [x] **1.1.2** Sous-tâche terminée 1.2"
+                    FullLine    = "  - [x] **1.1.2** Sous-tÃ¢che terminÃ©e 1.2"
                 },
                 [PSCustomObject]@{
                     Id          = "1.2"
-                    Description = "Tâche terminée 2"
-                    Section     = "Tâches actives"
+                    Description = "TÃ¢che terminÃ©e 2"
+                    Section     = "TÃ¢ches actives"
                     Line        = 6
                     IndentLevel = 1
-                    FullLine    = "- [x] **1.2** Tâche terminée 2"
+                    FullLine    = "- [x] **1.2** TÃ¢che terminÃ©e 2"
                 },
                 [PSCustomObject]@{
                     Id          = "1.2.1"
-                    Description = "Sous-tâche terminée 2.1"
-                    Section     = "Tâches actives"
+                    Description = "Sous-tÃ¢che terminÃ©e 2.1"
+                    Section     = "TÃ¢ches actives"
                     Line        = 7
                     IndentLevel = 2
-                    FullLine    = "  - [x] **1.2.1** Sous-tâche terminée 2.1"
+                    FullLine    = "  - [x] **1.2.1** Sous-tÃ¢che terminÃ©e 2.1"
                 }
             )
         }
@@ -118,7 +118,7 @@ Describe "Archive-CompletedTasks" {
         $roadmapContent = Get-Content -Path $script:testRoadmapPath -Raw
         $completedTasks = Get-CompletedTasks -RoadmapContent $roadmapContent
 
-        # Vérifier les résultats
+        # VÃ©rifier les rÃ©sultats
         $completedTasks | Should -Not -BeNullOrEmpty
         $completedTasks.Count | Should -Be 3
         $completedTasks[0].Id | Should -Be "1.1.2"
@@ -126,7 +126,7 @@ Describe "Archive-CompletedTasks" {
         $completedTasks[2].Id | Should -Be "1.2.1"
     }
 
-    It "Récupère correctement les tâches avec leurs sous-tâches" {
+    It "RÃ©cupÃ¨re correctement les tÃ¢ches avec leurs sous-tÃ¢ches" {
         # Mock pour la fonction Get-TaskWithChildren
         function Get-TaskWithChildren {
             param (
@@ -135,33 +135,33 @@ Describe "Archive-CompletedTasks" {
                 [int]$TaskIndentLevel
             )
 
-            # Simuler la récupération d'une tâche avec ses sous-tâches
+            # Simuler la rÃ©cupÃ©ration d'une tÃ¢che avec ses sous-tÃ¢ches
             if ($TaskLine -eq 6 -and $TaskIndentLevel -eq 1) {
-                # Pour la tâche "1.2"
+                # Pour la tÃ¢che "1.2"
                 return @(
-                    "- [x] **1.2** Tâche terminée 2",
-                    "  - [x] **1.2.1** Sous-tâche terminée 2.1",
-                    "  - [ ] **1.2.2** Sous-tâche incomplète 2.2"
+                    "- [x] **1.2** TÃ¢che terminÃ©e 2",
+                    "  - [x] **1.2.1** Sous-tÃ¢che terminÃ©e 2.1",
+                    "  - [ ] **1.2.2** Sous-tÃ¢che incomplÃ¨te 2.2"
                 )
             } else {
-                # Pour les autres tâches
+                # Pour les autres tÃ¢ches
                 return @($Lines[$TaskLine])
             }
         }
 
-        # Appeler la fonction avec les paramètres de test
+        # Appeler la fonction avec les paramÃ¨tres de test
         $lines = Get-Content -Path $script:testRoadmapPath
         $taskLines = Get-TaskWithChildren -Lines $lines -TaskLine 6 -TaskIndentLevel 1
 
-        # Vérifier les résultats
+        # VÃ©rifier les rÃ©sultats
         $taskLines | Should -Not -BeNullOrEmpty
         $taskLines.Count | Should -Be 3
-        $taskLines[0] | Should -Be "- [x] **1.2** Tâche terminée 2"
-        $taskLines[1] | Should -Be "  - [x] **1.2.1** Sous-tâche terminée 2.1"
-        $taskLines[2] | Should -Be "  - [ ] **1.2.2** Sous-tâche incomplète 2.2"
+        $taskLines[0] | Should -Be "- [x] **1.2** TÃ¢che terminÃ©e 2"
+        $taskLines[1] | Should -Be "  - [x] **1.2.1** Sous-tÃ¢che terminÃ©e 2.1"
+        $taskLines[2] | Should -Be "  - [ ] **1.2.2** Sous-tÃ¢che incomplÃ¨te 2.2"
     }
 
-    It "Met à jour correctement les fichiers de roadmap et d'archive" {
+    It "Met Ã  jour correctement les fichiers de roadmap et d'archive" {
         # Mock pour la fonction Update-RoadmapFiles
         function Update-RoadmapFiles {
             param (
@@ -172,31 +172,31 @@ Describe "Archive-CompletedTasks" {
                 [string]$ArchivePath
             )
 
-            # Simuler la mise à jour des fichiers
+            # Simuler la mise Ã  jour des fichiers
             $updatedRoadmapContent = @"
 # Roadmap de test
 
-## Tâches actives
+## TÃ¢ches actives
 
-- [ ] **1.1** Tâche incomplète 1
-  - [ ] **1.1.1** Sous-tâche incomplète 1.1
-- [ ] **1.3** Tâche incomplète 3
+- [ ] **1.1** TÃ¢che incomplÃ¨te 1
+  - [ ] **1.1.1** Sous-tÃ¢che incomplÃ¨te 1.1
+- [ ] **1.3** TÃ¢che incomplÃ¨te 3
 "@
 
             $updatedArchiveContent = @"
 # Roadmap Archive
 
-## Tâches archivées
+## TÃ¢ches archivÃ©es
 
-- [x] **0.1** Tâche archivée précédemment
+- [x] **0.1** TÃ¢che archivÃ©e prÃ©cÃ©demment
 
-- [x] **1.1.2** Sous-tâche terminée 1.2
-- [x] **1.2** Tâche terminée 2
-  - [x] **1.2.1** Sous-tâche terminée 2.1
-  - [ ] **1.2.2** Sous-tâche incomplète 2.2
+- [x] **1.1.2** Sous-tÃ¢che terminÃ©e 1.2
+- [x] **1.2** TÃ¢che terminÃ©e 2
+  - [x] **1.2.1** Sous-tÃ¢che terminÃ©e 2.1
+  - [ ] **1.2.2** Sous-tÃ¢che incomplÃ¨te 2.2
 "@
 
-            # Écrire les fichiers mis à jour
+            # Ã‰crire les fichiers mis Ã  jour
             Set-Content -Path $RoadmapPath -Value $updatedRoadmapContent -Encoding UTF8
             Set-Content -Path $ArchivePath -Value $updatedArchiveContent -Encoding UTF8
 
@@ -206,36 +206,36 @@ Describe "Archive-CompletedTasks" {
             }
         }
 
-        # Appeler la fonction avec les paramètres de test
+        # Appeler la fonction avec les paramÃ¨tres de test
         $roadmapContent = Get-Content -Path $script:testRoadmapPath -Raw
         $archiveContent = Get-Content -Path $script:testArchivePath -Raw
         $completedTasks = @(
             [PSCustomObject]@{
                 Id          = "1.1.2"
-                Description = "Sous-tâche terminée 1.2"
-                Section     = "Tâches actives"
+                Description = "Sous-tÃ¢che terminÃ©e 1.2"
+                Section     = "TÃ¢ches actives"
                 Line        = 5
                 IndentLevel = 2
-                FullLine    = "  - [x] **1.1.2** Sous-tâche terminée 1.2"
+                FullLine    = "  - [x] **1.1.2** Sous-tÃ¢che terminÃ©e 1.2"
             },
             [PSCustomObject]@{
                 Id          = "1.2"
-                Description = "Tâche terminée 2"
-                Section     = "Tâches actives"
+                Description = "TÃ¢che terminÃ©e 2"
+                Section     = "TÃ¢ches actives"
                 Line        = 6
                 IndentLevel = 1
-                FullLine    = "- [x] **1.2** Tâche terminée 2"
+                FullLine    = "- [x] **1.2** TÃ¢che terminÃ©e 2"
             }
         )
 
         $result = Update-RoadmapFiles -RoadmapContent $roadmapContent -ArchiveContent $archiveContent -CompletedTasks $completedTasks -RoadmapPath $script:testRoadmapPath -ArchivePath $script:testArchivePath
 
-        # Vérifier les résultats
+        # VÃ©rifier les rÃ©sultats
         $result | Should -Not -BeNullOrEmpty
         $result.RoadmapContent | Should -Not -BeNullOrEmpty
         $result.ArchiveContent | Should -Not -BeNullOrEmpty
 
-        # Vérifier le contenu des fichiers mis à jour
+        # VÃ©rifier le contenu des fichiers mis Ã  jour
         $updatedRoadmapContent = Get-Content -Path $script:testRoadmapPath -Raw
         $updatedArchiveContent = Get-Content -Path $script:testArchivePath -Raw
 
@@ -249,20 +249,20 @@ Describe "Archive-CompletedTasks" {
         $updatedArchiveContent | Should -Match "\*\*1\.2\*\*"
     }
 
-    It "Gère correctement l'absence de tâches terminées" {
-        # Créer un fichier de roadmap sans tâches terminées
+    It "GÃ¨re correctement l'absence de tÃ¢ches terminÃ©es" {
+        # CrÃ©er un fichier de roadmap sans tÃ¢ches terminÃ©es
         $noCompletedTasksContent = @"
 # Roadmap de test
 
-## Tâches actives
+## TÃ¢ches actives
 
-- [ ] **1.1** Tâche incomplète 1
-  - [ ] **1.1.1** Sous-tâche incomplète 1.1
-  - [ ] **1.1.2** Sous-tâche incomplète 1.2
-- [ ] **1.2** Tâche incomplète 2
-  - [ ] **1.2.1** Sous-tâche incomplète 2.1
-  - [ ] **1.2.2** Sous-tâche incomplète 2.2
-- [ ] **1.3** Tâche incomplète 3
+- [ ] **1.1** TÃ¢che incomplÃ¨te 1
+  - [ ] **1.1.1** Sous-tÃ¢che incomplÃ¨te 1.1
+  - [ ] **1.1.2** Sous-tÃ¢che incomplÃ¨te 1.2
+- [ ] **1.2** TÃ¢che incomplÃ¨te 2
+  - [ ] **1.2.1** Sous-tÃ¢che incomplÃ¨te 2.1
+  - [ ] **1.2.2** Sous-tÃ¢che incomplÃ¨te 2.2
+- [ ] **1.3** TÃ¢che incomplÃ¨te 3
 "@
 
         $noCompletedTasksPath = Join-Path -Path $TestDrive -ChildPath "no_completed_tasks.md"
@@ -274,7 +274,7 @@ Describe "Archive-CompletedTasks" {
                 [string]$RoadmapContent
             )
 
-            # Simuler l'absence de tâches terminées
+            # Simuler l'absence de tÃ¢ches terminÃ©es
             return @()
         }
 
@@ -282,12 +282,12 @@ Describe "Archive-CompletedTasks" {
         $roadmapContent = Get-Content -Path $noCompletedTasksPath -Raw
         $completedTasks = Get-CompletedTasks -RoadmapContent $roadmapContent
 
-        # Vérifier les résultats
+        # VÃ©rifier les rÃ©sultats
         $completedTasks | Should -BeNullOrEmpty
     }
 
-    It "Gère correctement les erreurs lors de la mise à jour des fichiers" {
-        # Mock pour la fonction Update-RoadmapFiles qui génère une erreur
+    It "GÃ¨re correctement les erreurs lors de la mise Ã  jour des fichiers" {
+        # Mock pour la fonction Update-RoadmapFiles qui gÃ©nÃ¨re une erreur
         function Update-RoadmapFiles {
             param (
                 [string]$RoadmapContent,
@@ -297,27 +297,27 @@ Describe "Archive-CompletedTasks" {
                 [string]$ArchivePath
             )
 
-            throw "Erreur simulée lors de la mise à jour des fichiers"
+            throw "Erreur simulÃ©e lors de la mise Ã  jour des fichiers"
         }
 
-        # Appeler la fonction avec les paramètres de test
+        # Appeler la fonction avec les paramÃ¨tres de test
         $roadmapContent = Get-Content -Path $script:testRoadmapPath -Raw
         $archiveContent = Get-Content -Path $script:testArchivePath -Raw
         $completedTasks = @(
             [PSCustomObject]@{
                 Id          = "1.1.2"
-                Description = "Sous-tâche terminée 1.2"
-                Section     = "Tâches actives"
+                Description = "Sous-tÃ¢che terminÃ©e 1.2"
+                Section     = "TÃ¢ches actives"
                 Line        = 5
                 IndentLevel = 2
-                FullLine    = "  - [x] **1.1.2** Sous-tâche terminée 1.2"
+                FullLine    = "  - [x] **1.1.2** Sous-tÃ¢che terminÃ©e 1.2"
             }
         )
 
-        # Vérifier que l'erreur est correctement gérée
-        { Update-RoadmapFiles -RoadmapContent $roadmapContent -ArchiveContent $archiveContent -CompletedTasks $completedTasks -RoadmapPath $script:testRoadmapPath -ArchivePath $script:testArchivePath } | Should -Throw "Erreur simulée lors de la mise à jour des fichiers"
+        # VÃ©rifier que l'erreur est correctement gÃ©rÃ©e
+        { Update-RoadmapFiles -RoadmapContent $roadmapContent -ArchiveContent $archiveContent -CompletedTasks $completedTasks -RoadmapPath $script:testRoadmapPath -ArchivePath $script:testArchivePath } | Should -Throw "Erreur simulÃ©e lors de la mise Ã  jour des fichiers"
     }
 }
 
-# Les tests pour les scripts de surveillance sont dans des fichiers séparés
-# pour éviter les problèmes d'exécution infinie
+# Les tests pour les scripts de surveillance sont dans des fichiers sÃ©parÃ©s
+# pour Ã©viter les problÃ¨mes d'exÃ©cution infinie

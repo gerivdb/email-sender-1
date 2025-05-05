@@ -1,20 +1,20 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute des tests de cas limites pour le script manager.
+    ExÃ©cute des tests de cas limites pour le script manager.
 .DESCRIPTION
-    Ce script exécute des tests de cas limites (edge cases) pour vérifier que
-    le script manager fonctionne correctement dans des situations extrêmes.
+    Ce script exÃ©cute des tests de cas limites (edge cases) pour vÃ©rifier que
+    le script manager fonctionne correctement dans des situations extrÃªmes.
 .PARAMETER OutputPath
     Chemin du dossier pour les rapports de tests.
 .PARAMETER GenerateHTML
-    Génère un rapport HTML des résultats des tests.
+    GÃ©nÃ¨re un rapport HTML des rÃ©sultats des tests.
 .EXAMPLE
     .\Run-EdgeCaseTests.ps1 -OutputPath ".\reports\tests" -GenerateHTML
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2023-06-15
+    Date de crÃ©ation: 2023-06-15
 #>
 
 [CmdletBinding()]
@@ -26,7 +26,7 @@ param (
     [switch]$GenerateHTML
 )
 
-# Fonction pour écrire dans le journal
+# Fonction pour Ã©crire dans le journal
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -51,19 +51,19 @@ function Write-Log {
     Write-Host $logMessage -ForegroundColor $color
 }
 
-# Vérifier si Pester est installé
+# VÃ©rifier si Pester est installÃ©
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Log "Le module Pester n'est pas installé. Installation en cours..." -Level "WARNING"
+    Write-Log "Le module Pester n'est pas installÃ©. Installation en cours..." -Level "WARNING"
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 # Importer Pester
 Import-Module Pester
 
-# Créer le dossier de sortie s'il n'existe pas
+# CrÃ©er le dossier de sortie s'il n'existe pas
 if (-not (Test-Path -Path $OutputPath)) {
     New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
-    Write-Log "Dossier de sortie créé: $OutputPath" -Level "INFO"
+    Write-Log "Dossier de sortie crÃ©Ã©: $OutputPath" -Level "INFO"
 }
 
 # Configuration de Pester
@@ -74,7 +74,7 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $OutputPath -ChildPath "EdgeCaseTestResults.xml"
 $pesterConfig.TestResult.OutputFormat = "NUnitXml"
 
-# Définir les fonctions pour les tests
+# DÃ©finir les fonctions pour les tests
 function Get-ScriptCategory {
     [CmdletBinding()]
     param (
@@ -85,7 +85,7 @@ function Get-ScriptCategory {
         [string]$Content = ""
     )
     
-    # Classification prédéfinie des scripts
+    # Classification prÃ©dÃ©finie des scripts
     $scriptClassification = @{
         "ScriptManager.ps1" = "core"
         "Reorganize-Scripts.ps1" = "organization"
@@ -93,14 +93,14 @@ function Get-ScriptCategory {
         "README.md" = "core"
     }
     
-    # Vérifier si le script a une classification prédéfinie
+    # VÃ©rifier si le script a une classification prÃ©dÃ©finie
     if ($scriptClassification.ContainsKey($FileName)) {
         return $scriptClassification[$FileName]
     }
     
     $lowerName = $FileName.ToLower()
     
-    # Catégorisation basée sur des mots-clés dans le nom du fichier
+    # CatÃ©gorisation basÃ©e sur des mots-clÃ©s dans le nom du fichier
     if ($lowerName -match 'analyze|analysis') { return 'analysis' }
     if ($lowerName -match 'organize|organization') { return 'organization' }
     if ($lowerName -match 'inventory|catalog') { return 'inventory' }
@@ -128,95 +128,95 @@ function Get-ScriptCategory {
         if ($Content -match 'ui|interface') { return 'ui' }
     }
     
-    # Par défaut, retourner 'core'
+    # Par dÃ©faut, retourner 'core'
     return 'core'
 }
 
 # Tests Pester pour les cas limites
 Describe "Tests de cas limites pour Get-ScriptCategory" {
-    Context "Cas limites pour le paramètre FileName" {
-        It "Gère correctement une chaîne vide" {
+    Context "Cas limites pour le paramÃ¨tre FileName" {
+        It "GÃ¨re correctement une chaÃ®ne vide" {
             { Get-ScriptCategory -FileName "" } | Should -Not -Throw
             Get-ScriptCategory -FileName "" | Should -Be "core"
         }
         
-        It "Gère correctement une chaîne avec des espaces" {
+        It "GÃ¨re correctement une chaÃ®ne avec des espaces" {
             Get-ScriptCategory -FileName "   " | Should -Be "core"
         }
         
-        It "Gère correctement une chaîne avec des caractères spéciaux" {
+        It "GÃ¨re correctement une chaÃ®ne avec des caractÃ¨res spÃ©ciaux" {
             Get-ScriptCategory -FileName "!@#$%^&*().ps1" | Should -Be "core"
         }
         
-        It "Gère correctement une chaîne très longue" {
+        It "GÃ¨re correctement une chaÃ®ne trÃ¨s longue" {
             $longFileName = "a" * 1000 + ".ps1"
             Get-ScriptCategory -FileName $longFileName | Should -Be "core"
         }
         
-        It "Gère correctement un nom de fichier avec plusieurs mots-clés" {
+        It "GÃ¨re correctement un nom de fichier avec plusieurs mots-clÃ©s" {
             Get-ScriptCategory -FileName "Analyze-Organize-Test.ps1" | Should -Be "analysis"
         }
         
-        It "Gère correctement un nom de fichier avec des majuscules et minuscules mélangées" {
+        It "GÃ¨re correctement un nom de fichier avec des majuscules et minuscules mÃ©langÃ©es" {
             Get-ScriptCategory -FileName "AnAlYzE-ScRiPtS.ps1" | Should -Be "analysis"
         }
         
-        It "Gère correctement un nom de fichier sans extension" {
+        It "GÃ¨re correctement un nom de fichier sans extension" {
             Get-ScriptCategory -FileName "Analyze-Scripts" | Should -Be "analysis"
         }
         
-        It "Gère correctement un nom de fichier avec une extension différente" {
+        It "GÃ¨re correctement un nom de fichier avec une extension diffÃ©rente" {
             Get-ScriptCategory -FileName "Analyze-Scripts.txt" | Should -Be "analysis"
         }
     }
     
-    Context "Cas limites pour le paramètre Content" {
-        It "Gère correctement un contenu vide" {
+    Context "Cas limites pour le paramÃ¨tre Content" {
+        It "GÃ¨re correctement un contenu vide" {
             Get-ScriptCategory -FileName "Unknown.ps1" -Content "" | Should -Be "core"
         }
         
-        It "Gère correctement un contenu avec des espaces" {
+        It "GÃ¨re correctement un contenu avec des espaces" {
             Get-ScriptCategory -FileName "Unknown.ps1" -Content "   " | Should -Be "core"
         }
         
-        It "Gère correctement un contenu avec des caractères spéciaux" {
+        It "GÃ¨re correctement un contenu avec des caractÃ¨res spÃ©ciaux" {
             Get-ScriptCategory -FileName "Unknown.ps1" -Content "!@#$%^&*()" | Should -Be "core"
         }
         
-        It "Gère correctement un contenu très long" {
+        It "GÃ¨re correctement un contenu trÃ¨s long" {
             $longContent = "a" * 10000
             Get-ScriptCategory -FileName "Unknown.ps1" -Content $longContent | Should -Be "core"
         }
         
-        It "Gère correctement un contenu avec plusieurs mots-clés" {
+        It "GÃ¨re correctement un contenu avec plusieurs mots-clÃ©s" {
             Get-ScriptCategory -FileName "Unknown.ps1" -Content "Ce script permet d'analyser, d'organiser et de tester des scripts" | Should -Be "analysis"
         }
         
-        It "Gère correctement un contenu avec des majuscules et minuscules mélangées" {
+        It "GÃ¨re correctement un contenu avec des majuscules et minuscules mÃ©langÃ©es" {
             Get-ScriptCategory -FileName "Unknown.ps1" -Content "Ce script permet d'AnAlYsEr des scripts" | Should -Be "analysis"
         }
         
-        It "Gère correctement un contenu avec des sauts de ligne" {
+        It "GÃ¨re correctement un contenu avec des sauts de ligne" {
             $contentWithLineBreaks = "Ligne 1`nLigne 2`nCe script permet d'analyser des scripts`nLigne 4"
             Get-ScriptCategory -FileName "Unknown.ps1" -Content $contentWithLineBreaks | Should -Be "analysis"
         }
         
-        It "Gère correctement un contenu avec des tabulations" {
+        It "GÃ¨re correctement un contenu avec des tabulations" {
             $contentWithTabs = "Colonne 1`tColonne 2`tCe script permet d'analyser des scripts`tColonne 4"
             Get-ScriptCategory -FileName "Unknown.ps1" -Content $contentWithTabs | Should -Be "analysis"
         }
     }
     
-    Context "Cas limites pour les deux paramètres" {
-        It "Priorité du nom de fichier sur le contenu" {
+    Context "Cas limites pour les deux paramÃ¨tres" {
+        It "PrioritÃ© du nom de fichier sur le contenu" {
             Get-ScriptCategory -FileName "Analyze-Scripts.ps1" -Content "Ce script permet d'organiser des scripts" | Should -Be "analysis"
         }
         
-        It "Utilisation du contenu si le nom de fichier ne contient pas de mot-clé" {
+        It "Utilisation du contenu si le nom de fichier ne contient pas de mot-clÃ©" {
             Get-ScriptCategory -FileName "Unknown.ps1" -Content "Ce script permet d'analyser des scripts" | Should -Be "analysis"
         }
         
-        It "Retourne 'core' si ni le nom de fichier ni le contenu ne contiennent de mot-clé" {
+        It "Retourne 'core' si ni le nom de fichier ni le contenu ne contiennent de mot-clÃ©" {
             Get-ScriptCategory -FileName "Unknown.ps1" -Content "Ce script fait quelque chose" | Should -Be "core"
         }
     }
@@ -233,22 +233,22 @@ Describe "Tests de cas limites pour Get-ScriptCategory" {
     }
 }
 
-# Exécuter les tests
+# ExÃ©cuter les tests
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Log "`nRésumé des tests:" -Level "INFO"
-Write-Log "  Tests exécutés: $($testResults.TotalCount)" -Level "INFO"
-Write-Log "  Tests réussis: $($testResults.PassedCount)" -Level "SUCCESS"
-Write-Log "  Tests échoués: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
-Write-Log "  Tests ignorés: $($testResults.SkippedCount)" -Level "WARNING"
-Write-Log "  Durée totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Log "`nRÃ©sumÃ© des tests:" -Level "INFO"
+Write-Log "  Tests exÃ©cutÃ©s: $($testResults.TotalCount)" -Level "INFO"
+Write-Log "  Tests rÃ©ussis: $($testResults.PassedCount)" -Level "SUCCESS"
+Write-Log "  Tests Ã©chouÃ©s: $($testResults.FailedCount)" -Level $(if ($testResults.FailedCount -eq 0) { "SUCCESS" } else { "ERROR" })
+Write-Log "  Tests ignorÃ©s: $($testResults.SkippedCount)" -Level "WARNING"
+Write-Log "  DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes" -Level "INFO"
 
-# Générer un rapport HTML si demandé
+# GÃ©nÃ©rer un rapport HTML si demandÃ©
 if ($GenerateHTML) {
     $htmlPath = Join-Path -Path $OutputPath -ChildPath "EdgeCaseTestResults.html"
     
-    # Créer un rapport HTML simple
+    # CrÃ©er un rapport HTML simple
     $htmlContent = @"
 <!DOCTYPE html>
 <html>
@@ -269,59 +269,59 @@ if ($GenerateHTML) {
 </head>
 <body>
     <h1>Rapport de tests de cas limites</h1>
-    <p>Généré le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
+    <p>GÃ©nÃ©rÃ© le $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     
     <div class="summary">
-        <h2>Résumé</h2>
-        <p>Tests exécutés: $($testResults.TotalCount)</p>
-        <p class="success">Tests réussis: $($testResults.PassedCount)</p>
-        <p class="error">Tests échoués: $($testResults.FailedCount)</p>
-        <p class="warning">Tests ignorés: $($testResults.SkippedCount)</p>
-        <p>Durée totale: $($testResults.Duration.TotalSeconds) secondes</p>
+        <h2>RÃ©sumÃ©</h2>
+        <p>Tests exÃ©cutÃ©s: $($testResults.TotalCount)</p>
+        <p class="success">Tests rÃ©ussis: $($testResults.PassedCount)</p>
+        <p class="error">Tests Ã©chouÃ©s: $($testResults.FailedCount)</p>
+        <p class="warning">Tests ignorÃ©s: $($testResults.SkippedCount)</p>
+        <p>DurÃ©e totale: $($testResults.Duration.TotalSeconds) secondes</p>
     </div>
     
     <h2>Qu'est-ce que les tests de cas limites?</h2>
-    <p>Les tests de cas limites (edge cases) sont des tests qui vérifient le comportement d'une fonction dans des situations extrêmes ou inhabituelles. Ces tests sont importants pour s'assurer que le code fonctionne correctement dans toutes les situations, même les plus rares.</p>
+    <p>Les tests de cas limites (edge cases) sont des tests qui vÃ©rifient le comportement d'une fonction dans des situations extrÃªmes ou inhabituelles. Ces tests sont importants pour s'assurer que le code fonctionne correctement dans toutes les situations, mÃªme les plus rares.</p>
     
     <h3>Exemples de cas limites</h3>
     <ul>
         <li>Valeurs vides ou nulles</li>
-        <li>Valeurs très grandes ou très petites</li>
-        <li>Chaînes de caractères très longues</li>
-        <li>Caractères spéciaux</li>
-        <li>Combinaisons de paramètres inhabituelles</li>
+        <li>Valeurs trÃ¨s grandes ou trÃ¨s petites</li>
+        <li>ChaÃ®nes de caractÃ¨res trÃ¨s longues</li>
+        <li>CaractÃ¨res spÃ©ciaux</li>
+        <li>Combinaisons de paramÃ¨tres inhabituelles</li>
     </ul>
     
-    <h2>Catégories de tests</h2>
-    <h3>Cas limites pour le paramètre FileName</h3>
+    <h2>CatÃ©gories de tests</h2>
+    <h3>Cas limites pour le paramÃ¨tre FileName</h3>
     <ul>
-        <li>Chaîne vide</li>
-        <li>Chaîne avec des espaces</li>
-        <li>Chaîne avec des caractères spéciaux</li>
-        <li>Chaîne très longue</li>
-        <li>Nom de fichier avec plusieurs mots-clés</li>
-        <li>Nom de fichier avec des majuscules et minuscules mélangées</li>
+        <li>ChaÃ®ne vide</li>
+        <li>ChaÃ®ne avec des espaces</li>
+        <li>ChaÃ®ne avec des caractÃ¨res spÃ©ciaux</li>
+        <li>ChaÃ®ne trÃ¨s longue</li>
+        <li>Nom de fichier avec plusieurs mots-clÃ©s</li>
+        <li>Nom de fichier avec des majuscules et minuscules mÃ©langÃ©es</li>
         <li>Nom de fichier sans extension</li>
-        <li>Nom de fichier avec une extension différente</li>
+        <li>Nom de fichier avec une extension diffÃ©rente</li>
     </ul>
     
-    <h3>Cas limites pour le paramètre Content</h3>
+    <h3>Cas limites pour le paramÃ¨tre Content</h3>
     <ul>
         <li>Contenu vide</li>
         <li>Contenu avec des espaces</li>
-        <li>Contenu avec des caractères spéciaux</li>
-        <li>Contenu très long</li>
-        <li>Contenu avec plusieurs mots-clés</li>
-        <li>Contenu avec des majuscules et minuscules mélangées</li>
+        <li>Contenu avec des caractÃ¨res spÃ©ciaux</li>
+        <li>Contenu trÃ¨s long</li>
+        <li>Contenu avec plusieurs mots-clÃ©s</li>
+        <li>Contenu avec des majuscules et minuscules mÃ©langÃ©es</li>
         <li>Contenu avec des sauts de ligne</li>
         <li>Contenu avec des tabulations</li>
     </ul>
     
-    <h3>Cas limites pour les deux paramètres</h3>
+    <h3>Cas limites pour les deux paramÃ¨tres</h3>
     <ul>
-        <li>Priorité du nom de fichier sur le contenu</li>
-        <li>Utilisation du contenu si le nom de fichier ne contient pas de mot-clé</li>
-        <li>Retour à la valeur par défaut si ni le nom de fichier ni le contenu ne contiennent de mot-clé</li>
+        <li>PrioritÃ© du nom de fichier sur le contenu</li>
+        <li>Utilisation du contenu si le nom de fichier ne contient pas de mot-clÃ©</li>
+        <li>Retour Ã  la valeur par dÃ©faut si ni le nom de fichier ni le contenu ne contiennent de mot-clÃ©</li>
     </ul>
     
     <h3>Cas d'erreur</h3>
@@ -330,25 +330,25 @@ if ($GenerateHTML) {
         <li>Content null</li>
     </ul>
     
-    <p>Pour plus de détails, consultez le rapport XML.</p>
+    <p>Pour plus de dÃ©tails, consultez le rapport XML.</p>
 </body>
 </html>
 "@
     
     $htmlContent | Out-File -FilePath $htmlPath -Encoding utf8
     
-    Write-Log "Rapport HTML généré: $htmlPath" -Level "SUCCESS"
+    Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlPath" -Level "SUCCESS"
 }
 
 # Afficher le chemin du rapport XML
-Write-Log "Rapport XML généré: $($pesterConfig.TestResult.OutputPath)" -Level "SUCCESS"
+Write-Log "Rapport XML gÃ©nÃ©rÃ©: $($pesterConfig.TestResult.OutputPath)" -Level "SUCCESS"
 
-# Retourner le code de sortie en fonction des résultats
+# Retourner le code de sortie en fonction des rÃ©sultats
 if ($testResults.FailedCount -gt 0) {
-    Write-Log "Des tests ont échoué. Veuillez consulter les rapports pour plus de détails." -Level "ERROR"
+    Write-Log "Des tests ont Ã©chouÃ©. Veuillez consulter les rapports pour plus de dÃ©tails." -Level "ERROR"
     exit 1
 }
 else {
-    Write-Log "Tous les tests ont réussi!" -Level "SUCCESS"
+    Write-Log "Tous les tests ont rÃ©ussi!" -Level "SUCCESS"
     exit 0
 }

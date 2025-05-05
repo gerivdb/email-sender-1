@@ -1,13 +1,13 @@
-<#
+﻿<#
 .SYNOPSIS
-    Applique des valeurs par défaut à une configuration.
+    Applique des valeurs par dÃ©faut Ã  une configuration.
 .DESCRIPTION
-    Cette fonction applique des valeurs par défaut aux propriétés manquantes d'une configuration.
+    Cette fonction applique des valeurs par dÃ©faut aux propriÃ©tÃ©s manquantes d'une configuration.
 .PARAMETER Config
-    L'objet de configuration à compléter.
+    L'objet de configuration Ã  complÃ©ter.
 .EXAMPLE
     $config = Set-DefaultConfiguration -Config $config
-    Applique des valeurs par défaut à la configuration.
+    Applique des valeurs par dÃ©faut Ã  la configuration.
 #>
 function Set-DefaultConfiguration {
     [CmdletBinding()]
@@ -16,7 +16,7 @@ function Set-DefaultConfiguration {
         [PSCustomObject]$Config
     )
     
-    # Définir la configuration par défaut
+    # DÃ©finir la configuration par dÃ©faut
     $defaultConfig = @{
         General = @{
             RoadmapPath = "Roadmap\roadmap_complete_converted.md"
@@ -65,7 +65,7 @@ function Set-DefaultConfiguration {
         }
     }
     
-    # Créer un nouvel objet pour stocker la configuration fusionnée
+    # CrÃ©er un nouvel objet pour stocker la configuration fusionnÃ©e
     $mergedConfig = [PSCustomObject]@{}
     
     # Fusionner les sections principales
@@ -76,7 +76,7 @@ function Set-DefaultConfiguration {
         else {
             $mergedSection = [PSCustomObject]@{}
             
-            # Fusionner les propriétés de la section
+            # Fusionner les propriÃ©tÃ©s de la section
             foreach ($prop in $defaultConfig[$section].Keys) {
                 if (-not $Config.$section.PSObject.Properties.Name.Contains($prop)) {
                     $mergedSection | Add-Member -MemberType NoteProperty -Name $prop -Value $defaultConfig[$section][$prop]
@@ -86,7 +86,7 @@ function Set-DefaultConfiguration {
                 }
             }
             
-            # Ajouter les propriétés supplémentaires de la configuration existante
+            # Ajouter les propriÃ©tÃ©s supplÃ©mentaires de la configuration existante
             foreach ($prop in $Config.$section.PSObject.Properties.Name) {
                 if (-not $mergedSection.PSObject.Properties.Name.Contains($prop)) {
                     $mergedSection | Add-Member -MemberType NoteProperty -Name $prop -Value $Config.$section.$prop
@@ -97,7 +97,7 @@ function Set-DefaultConfiguration {
         }
     }
     
-    # Ajouter les sections supplémentaires de la configuration existante
+    # Ajouter les sections supplÃ©mentaires de la configuration existante
     foreach ($section in $Config.PSObject.Properties.Name) {
         if (-not $mergedConfig.PSObject.Properties.Name.Contains($section)) {
             $mergedConfig | Add-Member -MemberType NoteProperty -Name $section -Value $Config.$section

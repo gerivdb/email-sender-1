@@ -1,24 +1,24 @@
-<#
+﻿<#
 .SYNOPSIS
     Adaptateur MCP pour le gestionnaire de modes.
 
 .DESCRIPTION
-    Ce script implémente un adaptateur MCP (Model Context Protocol) pour le gestionnaire de modes,
-    permettant à Augment d'interagir directement avec le gestionnaire de modes via le protocole MCP.
+    Ce script implÃ©mente un adaptateur MCP (Model Context Protocol) pour le gestionnaire de modes,
+    permettant Ã  Augment d'interagir directement avec le gestionnaire de modes via le protocole MCP.
 
 .PARAMETER Port
-    Port sur lequel le serveur MCP doit écouter. Par défaut : 7892.
+    Port sur lequel le serveur MCP doit Ã©couter. Par dÃ©faut : 7892.
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration. Par défaut : "development\config\unified-config.json".
+    Chemin vers le fichier de configuration. Par dÃ©faut : "development\config\unified-config.json".
 
 .EXAMPLE
     .\mcp-mode-manager-adapter.ps1
-    # Démarre l'adaptateur MCP pour le gestionnaire de modes sur le port par défaut
+    # DÃ©marre l'adaptateur MCP pour le gestionnaire de modes sur le port par dÃ©faut
 
 .EXAMPLE
     .\mcp-mode-manager-adapter.ps1 -Port 7893 -ConfigPath "config\custom-config.json"
-    # Démarre l'adaptateur MCP pour le gestionnaire de modes sur le port 7893 avec une configuration personnalisée
+    # DÃ©marre l'adaptateur MCP pour le gestionnaire de modes sur le port 7893 avec une configuration personnalisÃ©e
 
 .NOTES
     Version: 1.0
@@ -35,7 +35,7 @@ param (
     [string]$ConfigPath = "development\config\unified-config.json"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -45,7 +45,7 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
@@ -61,7 +61,7 @@ if (-not (Test-Path -Path $modeManagerPath)) {
     }
 }
 
-# Charger la configuration unifiée
+# Charger la configuration unifiÃ©e
 $configPath = Join-Path -Path $projectRoot -ChildPath $ConfigPath
 if (Test-Path -Path $configPath) {
     try {
@@ -72,7 +72,7 @@ if (Test-Path -Path $configPath) {
     }
 } else {
     Write-Warning "Le fichier de configuration est introuvable : $configPath"
-    # Créer une configuration par défaut
+    # CrÃ©er une configuration par dÃ©faut
     $config = [PSCustomObject]@{
         Modes = [PSCustomObject]@{
             Archi = [PSCustomObject]@{
@@ -119,7 +119,7 @@ if (Test-Path -Path $configPath) {
     }
 }
 
-# Fonction pour exécuter le gestionnaire de modes
+# Fonction pour exÃ©cuter le gestionnaire de modes
 function Invoke-ModeManager {
     [CmdletBinding()]
     param (
@@ -139,7 +139,7 @@ function Invoke-ModeManager {
         [switch]$Force
     )
 
-    # Construire les paramètres pour le gestionnaire de modes
+    # Construire les paramÃ¨tres pour le gestionnaire de modes
     $params = @{
         Mode = $Mode
     }
@@ -160,7 +160,7 @@ function Invoke-ModeManager {
         $params.Force = $true
     }
 
-    # Exécuter le gestionnaire de modes
+    # ExÃ©cuter le gestionnaire de modes
     & $modeManagerPath @params
     return $LASTEXITCODE -eq 0
 }
@@ -171,22 +171,22 @@ function Get-AvailableModes {
     param ()
 
     $modes = @{
-        "ARCHI" = "Structurer, modéliser, anticiper les dépendances"
-        "CHECK" = "Vérifier l'état d'avancement des tâches"
-        "C-BREAK" = "Détecter et résoudre les dépendances circulaires"
+        "ARCHI" = "Structurer, modÃ©liser, anticiper les dÃ©pendances"
+        "CHECK" = "VÃ©rifier l'Ã©tat d'avancement des tÃ¢ches"
+        "C-BREAK" = "DÃ©tecter et rÃ©soudre les dÃ©pendances circulaires"
         "DEBUG" = "Isoler, comprendre, corriger les anomalies"
-        "DEV-R" = "Implémenter ce qui est dans la roadmap"
-        "GRAN" = "Décomposer les blocs complexes"
-        "OPTI" = "Réduire complexité, taille ou temps d'exécution"
-        "PREDIC" = "Anticiper performances, détecter anomalies, analyser tendances"
-        "REVIEW" = "Vérifier lisibilité, standards, documentation"
-        "TEST" = "Maximiser couverture et fiabilité"
+        "DEV-R" = "ImplÃ©menter ce qui est dans la roadmap"
+        "GRAN" = "DÃ©composer les blocs complexes"
+        "OPTI" = "RÃ©duire complexitÃ©, taille ou temps d'exÃ©cution"
+        "PREDIC" = "Anticiper performances, dÃ©tecter anomalies, analyser tendances"
+        "REVIEW" = "VÃ©rifier lisibilitÃ©, standards, documentation"
+        "TEST" = "Maximiser couverture et fiabilitÃ©"
     }
 
     return $modes
 }
 
-# Fonction pour traiter les requêtes MCP
+# Fonction pour traiter les requÃªtes MCP
 function Process-MCPRequest {
     [CmdletBinding()]
     param (
@@ -195,17 +195,17 @@ function Process-MCPRequest {
     )
 
     try {
-        # Convertir la requête JSON en objet PowerShell
+        # Convertir la requÃªte JSON en objet PowerShell
         $request = $RequestJson | ConvertFrom-Json
 
-        # Extraire les informations de la requête
+        # Extraire les informations de la requÃªte
         $method = $request.method
         $params = $request.params
 
-        # Traiter la requête en fonction de la méthode
+        # Traiter la requÃªte en fonction de la mÃ©thode
         switch ($method) {
             "listModes" {
-                # Récupérer la liste des modes disponibles
+                # RÃ©cupÃ©rer la liste des modes disponibles
                 $modes = Get-AvailableModes
                 return @{
                     result = $modes
@@ -213,7 +213,7 @@ function Process-MCPRequest {
                 } | ConvertTo-Json -Depth 10
             }
             "executeMode" {
-                # Exécuter un mode
+                # ExÃ©cuter un mode
                 $mode = $params.mode
                 $filePath = $params.filePath
                 $taskIdentifier = $params.taskIdentifier
@@ -230,7 +230,7 @@ function Process-MCPRequest {
                 } | ConvertTo-Json
             }
             "getModeConfig" {
-                # Récupérer la configuration d'un mode
+                # RÃ©cupÃ©rer la configuration d'un mode
                 $mode = $params.mode
                 $modeKey = $mode -replace "-", ""
                 
@@ -251,7 +251,7 @@ function Process-MCPRequest {
                 }
             }
             "executeChain" {
-                # Exécuter une chaîne de modes
+                # ExÃ©cuter une chaÃ®ne de modes
                 $chain = $params.chain
                 $filePath = $params.filePath
                 $taskIdentifier = $params.taskIdentifier
@@ -279,18 +279,18 @@ function Process-MCPRequest {
                 } | ConvertTo-Json -Depth 10
             }
             default {
-                # Méthode non reconnue
+                # MÃ©thode non reconnue
                 return @{
                     result = $null
                     error = @{
                         code = -32601
-                        message = "Méthode non reconnue : $method"
+                        message = "MÃ©thode non reconnue : $method"
                     }
                 } | ConvertTo-Json
             }
         }
     } catch {
-        # Erreur lors du traitement de la requête
+        # Erreur lors du traitement de la requÃªte
         return @{
             result = $null
             error = @{
@@ -301,7 +301,7 @@ function Process-MCPRequest {
     }
 }
 
-# Fonction pour démarrer le serveur MCP
+# Fonction pour dÃ©marrer le serveur MCP
 function Start-MCPServer {
     [CmdletBinding()]
     param (
@@ -310,12 +310,12 @@ function Start-MCPServer {
     )
 
     try {
-        # Créer un écouteur TCP
+        # CrÃ©er un Ã©couteur TCP
         $listener = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::Loopback, $Port)
         $listener.Start()
 
-        Write-Host "Adaptateur MCP pour le gestionnaire de modes démarré sur le port $Port" -ForegroundColor Green
-        Write-Host "Appuyez sur Ctrl+C pour arrêter le serveur" -ForegroundColor Yellow
+        Write-Host "Adaptateur MCP pour le gestionnaire de modes dÃ©marrÃ© sur le port $Port" -ForegroundColor Green
+        Write-Host "Appuyez sur Ctrl+C pour arrÃªter le serveur" -ForegroundColor Yellow
 
         # Boucle principale du serveur
         while ($true) {
@@ -326,13 +326,13 @@ function Start-MCPServer {
             $writer = New-Object System.IO.StreamWriter($stream)
             $writer.AutoFlush = $true
 
-            # Lire la requête
+            # Lire la requÃªte
             $requestJson = $reader.ReadLine()
 
-            # Traiter la requête
+            # Traiter la requÃªte
             $responseJson = Process-MCPRequest -RequestJson $requestJson
 
-            # Envoyer la réponse
+            # Envoyer la rÃ©ponse
             $writer.WriteLine($responseJson)
 
             # Fermer la connexion
@@ -341,14 +341,14 @@ function Start-MCPServer {
             $client.Close()
         }
     } catch {
-        Write-Error "Erreur lors du démarrage du serveur MCP : $_"
+        Write-Error "Erreur lors du dÃ©marrage du serveur MCP : $_"
     } finally {
-        # Arrêter l'écouteur
+        # ArrÃªter l'Ã©couteur
         if ($listener) {
             $listener.Stop()
         }
     }
 }
 
-# Démarrer le serveur MCP
+# DÃ©marrer le serveur MCP
 Start-MCPServer -Port $Port

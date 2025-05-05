@@ -1,5 +1,5 @@
-# Search-TasksQdrant.ps1
-# Script pour rechercher des tâches dans Qdrant par contenu sémantique
+﻿# Search-TasksQdrant.ps1
+# Script pour rechercher des tÃ¢ches dans Qdrant par contenu sÃ©mantique
 # Version: 1.0
 # Date: 2025-05-02
 
@@ -78,10 +78,10 @@ function Test-QdrantConnection {
 
     try {
         $response = Invoke-RestMethod -Uri $Url -Method Get -ErrorAction Stop
-        Write-Log "Qdrant est accessible à l'URL: $Url" -Level Success
+        Write-Log "Qdrant est accessible Ã  l'URL: $Url" -Level Success
         return $true
     } catch {
-        Write-Log "Impossible de se connecter à Qdrant à l'URL: $Url" -Level Error
+        Write-Log "Impossible de se connecter Ã  Qdrant Ã  l'URL: $Url" -Level Error
         Write-Log "Erreur: $_" -Level Error
         return $false
     }
@@ -121,19 +121,19 @@ indent_level_filter = $($IndentLevel -gt 0 ? $IndentLevel.ToString() : "None")
 last_updated_filter = r'$LastUpdated'
 force = $($Force.ToString().ToLower() -replace "true", "True" -replace "false", "False")
 
-# Fonction pour générer un embedding à partir du texte
+# Fonction pour gÃ©nÃ©rer un embedding Ã  partir du texte
 def generate_embedding(text):
     try:
-        # Essayer d'utiliser OpenAI pour générer un embedding
+        # Essayer d'utiliser OpenAI pour gÃ©nÃ©rer un embedding
         import openai
 
-        # Vérifier si la clé API est définie
+        # VÃ©rifier si la clÃ© API est dÃ©finie
         api_key = os.environ.get('OPENROUTER_API_KEY')
         if not api_key:
-            print("Clé API OpenRouter non trouvée dans les variables d'environnement.")
-            print("Tentative de récupération depuis le fichier de credentials...")
+            print("ClÃ© API OpenRouter non trouvÃ©e dans les variables d'environnement.")
+            print("Tentative de rÃ©cupÃ©ration depuis le fichier de credentials...")
 
-            # Essayer de récupérer la clé depuis le fichier de credentials
+            # Essayer de rÃ©cupÃ©rer la clÃ© depuis le fichier de credentials
             credentials_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
                                           "tools", "security", "credentials.json")
             if os.path.exists(credentials_file):
@@ -143,12 +143,12 @@ def generate_embedding(text):
                         credentials = json.load(f)
                     if 'OPENROUTER_API_KEY' in credentials:
                         api_key = credentials['OPENROUTER_API_KEY']
-                        print("Clé API OpenRouter récupérée depuis le fichier de credentials.")
+                        print("ClÃ© API OpenRouter rÃ©cupÃ©rÃ©e depuis le fichier de credentials.")
                 except Exception as e:
                     print(f"Erreur lors de la lecture du fichier de credentials: {str(e)}")
 
             if not api_key:
-                print("Clé API OpenRouter non trouvée. Utilisation d'un embedding aléatoire.")
+                print("ClÃ© API OpenRouter non trouvÃ©e. Utilisation d'un embedding alÃ©atoire.")
                 return generate_random_embedding()
 
         # Configurer le client OpenAI avec OpenRouter
@@ -157,7 +157,7 @@ def generate_embedding(text):
             api_key=api_key
         )
 
-        # Générer l'embedding
+        # GÃ©nÃ©rer l'embedding
         response = client.embeddings.create(
             model="qwen/qwen1.5-7b-chat",
             input=text
@@ -168,41 +168,41 @@ def generate_embedding(text):
         return embedding
 
     except Exception as e:
-        print(f"Erreur lors de la génération de l'embedding: {str(e)}")
-        print("Utilisation d'un embedding aléatoire à la place.")
+        print(f"Erreur lors de la gÃ©nÃ©ration de l'embedding: {str(e)}")
+        print("Utilisation d'un embedding alÃ©atoire Ã  la place.")
         return generate_random_embedding()
 
-# Fonction pour générer un embedding aléatoire (fallback)
+# Fonction pour gÃ©nÃ©rer un embedding alÃ©atoire (fallback)
 def generate_random_embedding(dimension=1536):
-    # Générer un vecteur aléatoire
+    # GÃ©nÃ©rer un vecteur alÃ©atoire
     random_vector = np.random.rand(dimension)
     # Normaliser le vecteur
     normalized_vector = random_vector / np.linalg.norm(random_vector)
     return normalized_vector.tolist()
 
-# Fonction pour rechercher des tâches similaires dans Qdrant
+# Fonction pour rechercher des tÃ¢ches similaires dans Qdrant
 def search_tasks():
     try:
-        # Vérifier si Qdrant est accessible
+        # VÃ©rifier si Qdrant est accessible
         try:
             response = requests.get(f"{qdrant_url}/collections")
             if response.status_code != 200:
-                print(f"Erreur lors de la connexion à Qdrant: {response.status_code}")
+                print(f"Erreur lors de la connexion Ã  Qdrant: {response.status_code}")
                 return
         except Exception as e:
-            print(f"Erreur lors de la connexion à Qdrant: {str(e)}")
+            print(f"Erreur lors de la connexion Ã  Qdrant: {str(e)}")
             return
 
-        # Vérifier si la collection existe
+        # VÃ©rifier si la collection existe
         response = requests.get(f"{qdrant_url}/collections/{collection_name}")
         if response.status_code != 200:
             print(f"La collection {collection_name} n'existe pas dans Qdrant.")
             return
 
-        # Générer l'embedding pour la requête
+        # GÃ©nÃ©rer l'embedding pour la requÃªte
         query_embedding = generate_embedding(query)
 
-        # Préparer les filtres
+        # PrÃ©parer les filtres
         filter_conditions = []
 
         if status_filter:
@@ -239,14 +239,14 @@ def search_tasks():
                 "match": {"value": last_updated_filter}
             })
 
-        # Construire la requête de recherche
+        # Construire la requÃªte de recherche
         search_request = {
             "vector": query_embedding,
             "limit": limit,
             "with_payload": True
         }
 
-        # Ajouter les filtres si nécessaire
+        # Ajouter les filtres si nÃ©cessaire
         if filter_conditions:
             search_request["filter"] = {
                 "must": filter_conditions
@@ -263,12 +263,12 @@ def search_tasks():
             print(response.text)
             return
 
-        # Traiter les résultats
+        # Traiter les rÃ©sultats
         results = response.json()
 
-        # Afficher les résultats
-        print(f"Résultats de recherche pour: '{query}'")
-        print(f"Nombre de résultats: {len(results['result'])}")
+        # Afficher les rÃ©sultats
+        print(f"RÃ©sultats de recherche pour: '{query}'")
+        print(f"Nombre de rÃ©sultats: {len(results['result'])}")
         print("-" * 80)
 
         for i, result in enumerate(results['result']):
@@ -279,21 +279,21 @@ def search_tasks():
                 print(f"   Section: {result['payload'].get('section', 'N/A')}")
                 print(f"   Status: {result['payload'].get('status', 'N/A')}")
             else:
-                print(f"   Pas de payload disponible pour ce résultat")
+                print(f"   Pas de payload disponible pour ce rÃ©sultat")
             print("-" * 80)
 
         return results
 
     except Exception as e:
-        print(f"Erreur lors de la recherche des tâches: {str(e)}")
+        print(f"Erreur lors de la recherche des tÃ¢ches: {str(e)}")
         return None
 
 if __name__ == "__main__":
     if not query:
-        print("Veuillez spécifier une requête de recherche avec le paramètre -Query.")
+        print("Veuillez spÃ©cifier une requÃªte de recherche avec le paramÃ¨tre -Query.")
         sys.exit(1)
 
-    print(f"Recherche de tâches similaires à: '{query}'")
+    print(f"Recherche de tÃ¢ches similaires Ã : '{query}'")
 
     # Afficher les filtres actifs
     active_filters = []
@@ -306,7 +306,7 @@ if __name__ == "__main__":
     if indent_level_filter != "None":
         active_filters.append(f"Niveau d'indentation: {indent_level_filter}")
     if last_updated_filter:
-        active_filters.append(f"Date de mise à jour: {last_updated_filter}")
+        active_filters.append(f"Date de mise Ã  jour: {last_updated_filter}")
 
     if active_filters:
         print("Filtres actifs:")
@@ -321,60 +321,60 @@ if __name__ == "__main__":
 
 # Fonction principale
 function Invoke-TaskSearch {
-    # Vérifier la version de Python
+    # VÃ©rifier la version de Python
     $pythonVersion = python --version 2>&1
     if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-        Write-Log "Python $($matches[1]) détecté." -Level Info
+        Write-Log "Python $($matches[1]) dÃ©tectÃ©." -Level Info
     } else {
-        Write-Log "Python non détecté. Veuillez installer Python 3.6 ou supérieur." -Level Error
+        Write-Log "Python non dÃ©tectÃ©. Veuillez installer Python 3.6 ou supÃ©rieur." -Level Error
         return
     }
 
-    # Vérifier les packages Python requis
+    # VÃ©rifier les packages Python requis
     if (-not (Test-PythonPackages)) {
         Write-Log "Impossible d'installer les packages Python requis." -Level Error
         return
     }
 
-    # Vérifier la connexion à Qdrant
+    # VÃ©rifier la connexion Ã  Qdrant
     if (-not (Test-QdrantConnection -Url $QdrantUrl)) {
         return
     }
 
-    # Essayer de récupérer la clé API OpenRouter depuis le gestionnaire de credentials
+    # Essayer de rÃ©cupÃ©rer la clÃ© API OpenRouter depuis le gestionnaire de credentials
     $credentialManagerPath = Join-Path -Path $PSScriptRoot -ChildPath "..\..\tools\security\credential-manager.ps1"
     if (Test-Path -Path $credentialManagerPath) {
         try {
             # Importer le module de gestion des credentials
             . $credentialManagerPath
 
-            # Récupérer la clé API
+            # RÃ©cupÃ©rer la clÃ© API
             $apiKey = Get-SecureCredential -Name "OPENROUTER_API_KEY"
 
             if ($apiKey) {
-                Write-Log "Clé API OpenRouter récupérée depuis le gestionnaire de credentials." -Level Info
-                # Définir la variable d'environnement pour le script Python
+                Write-Log "ClÃ© API OpenRouter rÃ©cupÃ©rÃ©e depuis le gestionnaire de credentials." -Level Info
+                # DÃ©finir la variable d'environnement pour le script Python
                 [Environment]::SetEnvironmentVariable("OPENROUTER_API_KEY", $apiKey, "Process")
             } else {
-                Write-Log "Clé API OpenRouter non trouvée dans le gestionnaire de credentials." -Level Warning
+                Write-Log "ClÃ© API OpenRouter non trouvÃ©e dans le gestionnaire de credentials." -Level Warning
             }
         } catch {
-            Write-Log "Erreur lors de la récupération de la clé API OpenRouter: $_" -Level Warning
+            Write-Log "Erreur lors de la rÃ©cupÃ©ration de la clÃ© API OpenRouter: $_" -Level Warning
         }
     } else {
-        Write-Log "Gestionnaire de credentials non trouvé à l'emplacement: $credentialManagerPath" -Level Warning
+        Write-Log "Gestionnaire de credentials non trouvÃ© Ã  l'emplacement: $credentialManagerPath" -Level Warning
     }
 
-    # Créer le script Python pour la recherche
-    Write-Log "Création du script Python pour la recherche de tâches..." -Level Info
+    # CrÃ©er le script Python pour la recherche
+    Write-Log "CrÃ©ation du script Python pour la recherche de tÃ¢ches..." -Level Info
     $pythonScript = Get-PythonSearchScript -Query $Query -QdrantUrl $QdrantUrl -CollectionName $CollectionName -Limit $Limit -Status $Status -Section $Section -ParentId $ParentId -IndentLevel $IndentLevel -LastUpdated $LastUpdated -Force $Force
 
-    # Exécuter le script Python
-    Write-Log "Exécution du script Python pour la recherche de tâches..." -Level Info
+    # ExÃ©cuter le script Python
+    Write-Log "ExÃ©cution du script Python pour la recherche de tÃ¢ches..." -Level Info
     $pythonScript | python -
 
-    Write-Log "Opération terminée." -Level Success
+    Write-Log "OpÃ©ration terminÃ©e." -Level Success
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Invoke-TaskSearch

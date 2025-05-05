@@ -1,10 +1,10 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Start-DistributedAnalysis.ps1.
 
 .DESCRIPTION
-    Ce script contient des tests unitaires pour vÃ©rifier le bon fonctionnement
+    Ce script contient des tests unitaires pour vÃƒÂ©rifier le bon fonctionnement
     du script Start-DistributedAnalysis.ps1.
 
 .EXAMPLE
@@ -21,24 +21,24 @@ param()
 
 # Importer Pester si disponible
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installÃ©. Installation..."
+    Write-Warning "Le module Pester n'est pas installÃƒÂ©. Installation..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
 Import-Module Pester -Force
 
-# Fonction pour crÃ©er un environnement de test
+# Fonction pour crÃƒÂ©er un environnement de test
 function Initialize-TestEnvironment {
     param(
         [string]$TestDir = "$env:TEMP\DistributedAnalysisTest_$(Get-Random)"
     )
 
-    # CrÃ©er le rÃ©pertoire de test
+    # CrÃƒÂ©er le rÃƒÂ©pertoire de test
     if (-not (Test-Path -Path $TestDir)) {
         New-Item -Path $TestDir -ItemType Directory -Force | Out-Null
     }
 
-    # CrÃ©er des fichiers de test
+    # CrÃƒÂ©er des fichiers de test
     $testFiles = @(
         @{
             Path    = "PowerShell\test1.ps1"
@@ -72,7 +72,7 @@ def test_function(param1):
     # Erreur: Utilisation de eval()
     result = eval("2 + 2")
 
-    # Erreur: Exception gÃ©nÃ©rique
+    # Erreur: Exception gÃƒÂ©nÃƒÂ©rique
     try:
         x = 1 / 0
     except:
@@ -92,11 +92,11 @@ def test_function(param1):
         Set-Content -Path $filePath -Value $file.Content -Encoding UTF8
     }
 
-    # CrÃ©er un rÃ©pertoire pour les modules
+    # CrÃƒÂ©er un rÃƒÂ©pertoire pour les modules
     $modulesDir = Join-Path -Path $TestDir -ChildPath "modules"
     New-Item -Path $modulesDir -ItemType Directory -Force | Out-Null
 
-    # CrÃ©er des modules de test
+    # CrÃƒÂ©er des modules de test
     $moduleFiles = @(
         @{
             Path    = "FileContentIndexer.psm1"
@@ -134,7 +134,7 @@ function New-SyntaxAnalyzer {
         AnalyzeFile = {
             param([string]`$FilePath)
 
-            # Simuler des problÃ¨mes en fonction de l'extension du fichier
+            # Simuler des problÃƒÂ¨mes en fonction de l'extension du fichier
             `$extension = [System.IO.Path]::GetExtension(`$FilePath)
 
             if (`$extension -eq ".ps1") {
@@ -149,7 +149,7 @@ function New-SyntaxAnalyzer {
                         [PSCustomObject]@{
                             Line = 8
                             Column = 5
-                            Message = "Utilisation de Invoke-Expression peut prÃ©senter des risques de sÃ©curitÃ©"
+                            Message = "Utilisation de Invoke-Expression peut prÃƒÂ©senter des risques de sÃƒÂ©curitÃƒÂ©"
                             Severity = "Error"
                         }
                     )
@@ -161,13 +161,13 @@ function New-SyntaxAnalyzer {
                     [PSCustomObject]@{
                         Line = 3
                         Column = 13
-                        Message = "Utilisation de eval() peut prÃ©senter des risques de sÃ©curitÃ©"
+                        Message = "Utilisation de eval() peut prÃƒÂ©senter des risques de sÃƒÂ©curitÃƒÂ©"
                         Severity = "Error"
                     },
                     [PSCustomObject]@{
                         Line = 6
                         Column = 5
-                        Message = "Exception gÃ©nÃ©rique dÃ©tectÃ©e"
+                        Message = "Exception gÃƒÂ©nÃƒÂ©rique dÃƒÂ©tectÃƒÂ©e"
                         Severity = "Warning"
                     }
                 )
@@ -237,21 +237,21 @@ function Remove-TestEnvironment {
     }
 }
 
-# DÃ©finir les tests
+# DÃƒÂ©finir les tests
 Describe "Start-DistributedAnalysis" {
     BeforeAll {
         # Initialiser l'environnement de test
         $script:testDir = Initialize-TestEnvironment
 
-        # Chemin du script Ã  tester
+        # Chemin du script ÃƒÂ  tester
         $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Start-DistributedAnalysis.ps1"
 
-        # VÃ©rifier que le script existe
+        # VÃƒÂ©rifier que le script existe
         if (-not (Test-Path -Path $scriptPath)) {
             throw "Le script Start-DistributedAnalysis.ps1 n'existe pas: $scriptPath"
         }
 
-        # CrÃ©er une fonction de test qui exÃ©cute le script avec des paramÃ¨tres spÃ©cifiques
+        # CrÃƒÂ©er une fonction de test qui exÃƒÂ©cute le script avec des paramÃƒÂ¨tres spÃƒÂ©cifiques
         function Invoke-DistributedAnalysisTest {
             param(
                 [string]$RepositoryPath,
@@ -262,21 +262,21 @@ Describe "Start-DistributedAnalysis" {
                 [switch]$UseCache
             )
 
-            # CrÃ©er un script block qui exÃ©cute le script avec les paramÃ¨tres spÃ©cifiÃ©s
+            # CrÃƒÂ©er un script block qui exÃƒÂ©cute le script avec les paramÃƒÂ¨tres spÃƒÂ©cifiÃƒÂ©s
             $scriptBlock = {
                 param($ScriptPath, $RepositoryPath, $OutputPath, $ComputerNames, $MaxConcurrentJobs, $ChunkSize, $UseCache)
 
-                # ExÃ©cuter le script
+                # ExÃƒÂ©cuter le script
                 & $ScriptPath -RepositoryPath $RepositoryPath -OutputPath $OutputPath -ComputerNames $ComputerNames -MaxConcurrentJobs $MaxConcurrentJobs -ChunkSize $ChunkSize -UseCache:$UseCache
             }
 
-            # ExÃ©cuter le script block dans un job pour Ã©viter de polluer l'environnement de test
+            # ExÃƒÂ©cuter le script block dans un job pour ÃƒÂ©viter de polluer l'environnement de test
             $job = Start-Job -ScriptBlock $scriptBlock -ArgumentList $scriptPath, $RepositoryPath, $OutputPath, $ComputerNames, $MaxConcurrentJobs, $ChunkSize, $UseCache
 
-            # Attendre que le job soit terminÃ©
+            # Attendre que le job soit terminÃƒÂ©
             $job | Wait-Job | Out-Null
 
-            # RÃ©cupÃ©rer les rÃ©sultats
+            # RÃƒÂ©cupÃƒÂ©rer les rÃƒÂ©sultats
             $result = $job | Receive-Job
 
             # Supprimer le job
@@ -285,7 +285,7 @@ Describe "Start-DistributedAnalysis" {
             return $result
         }
 
-        # CrÃ©er une fonction pour tester les fonctions individuelles du script
+        # CrÃƒÂ©er une fonction pour tester les fonctions individuelles du script
         function Test-ScriptFunction {
             param(
                 [string]$FunctionName,
@@ -299,18 +299,18 @@ Describe "Start-DistributedAnalysis" {
                 # Copier le script dans la session temporaire
                 Copy-Item -Path $scriptPath -Destination "TestScript.ps1" -ToSession $tempSession
 
-                # CrÃ©er un script block qui charge le script et exÃ©cute la fonction
+                # CrÃƒÂ©er un script block qui charge le script et exÃƒÂ©cute la fonction
                 $scriptBlock = {
                     param($FunctionName, $Parameters)
 
                     # Charger le script
                     . .\development\testing\testscript.ps1
 
-                    # ExÃ©cuter la fonction
+                    # ExÃƒÂ©cuter la fonction
                     & $FunctionName @Parameters
                 }
 
-                # ExÃ©cuter le script block dans la session temporaire
+                # ExÃƒÂ©cuter le script block dans la session temporaire
                 $result = Invoke-Command -Session $tempSession -ScriptBlock $scriptBlock -ArgumentList $FunctionName, $Parameters
 
                 return $result
@@ -328,7 +328,7 @@ Describe "Start-DistributedAnalysis" {
 
     Context "Fonctions individuelles" {
         It "Split-FilesIntoChunks divise correctement les fichiers en lots" {
-            # CrÃ©er des fichiers de test
+            # CrÃƒÂ©er des fichiers de test
             $files = @(
                 "$testDir\file1.ps1",
                 "$testDir\file2.ps1",
@@ -343,15 +343,15 @@ Describe "Start-DistributedAnalysis" {
                 ChunkSize = 2
             }
 
-            # VÃ©rifier les rÃ©sultats
+            # VÃƒÂ©rifier les rÃƒÂ©sultats
             $result.Count | Should -Be 3
             $result[0].Count | Should -Be 2
             $result[1].Count | Should -Be 2
             $result[2].Count | Should -Be 1
         }
 
-        It "Merge-AnalysisResults fusionne correctement les rÃ©sultats" {
-            # CrÃ©er des rÃ©sultats de test
+        It "Merge-AnalysisResults fusionne correctement les rÃƒÂ©sultats" {
+            # CrÃƒÂ©er des rÃƒÂ©sultats de test
             $results = @(
                 @(
                     [PSCustomObject]@{
@@ -416,7 +416,7 @@ Describe "Start-DistributedAnalysis" {
                 Results = $results
             }
 
-            # VÃ©rifier les rÃ©sultats
+            # VÃƒÂ©rifier les rÃƒÂ©sultats
             $result.Count | Should -Be 3
             $result["$testDir\file1.ps1"].Issues.Count | Should -Be 2
             $result["$testDir\file2.ps1"].Issues.Count | Should -Be 1
@@ -424,57 +424,57 @@ Describe "Start-DistributedAnalysis" {
         }
     }
 
-    Context "ExÃ©cution complÃ¨te" {
-        It "Analyse correctement un dÃ©pÃ´t" {
-            # ExÃ©cuter le script avec des paramÃ¨tres de test
+    Context "ExÃƒÂ©cution complÃƒÂ¨te" {
+        It "Analyse correctement un dÃƒÂ©pÃƒÂ´t" {
+            # ExÃƒÂ©cuter le script avec des paramÃƒÂ¨tres de test
             $outputPath = "$testDir\report.html"
             $result = Invoke-DistributedAnalysisTest -RepositoryPath $testDir -OutputPath $outputPath -ComputerNames "localhost" -MaxConcurrentJobs 2 -ChunkSize 1 -UseCache
 
-            # VÃ©rifier les rÃ©sultats
+            # VÃƒÂ©rifier les rÃƒÂ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Results | Should -Not -BeNullOrEmpty
             $result.ReportPath | Should -Be $outputPath
 
-            # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
+            # VÃƒÂ©rifier que le rapport a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ©
             Test-Path -Path $outputPath | Should -Be $true
 
-            # VÃ©rifier le contenu du rapport
+            # VÃƒÂ©rifier le contenu du rapport
             $reportContent = Get-Content -Path $outputPath -Raw
-            $reportContent | Should -Match "Rapport d'analyse distribuÃ©e"
-            $reportContent | Should -Match "Nombre de fichiers analysÃ©s"
+            $reportContent | Should -Match "Rapport d'analyse distribuÃƒÂ©e"
+            $reportContent | Should -Match "Nombre de fichiers analysÃƒÂ©s"
         }
 
         It "Utilise correctement le cache" {
-            # ExÃ©cuter le script avec le cache activÃ©
+            # ExÃƒÂ©cuter le script avec le cache activÃƒÂ©
             $outputPath = "$testDir\report_cache.html"
             $result = Invoke-DistributedAnalysisTest -RepositoryPath $testDir -OutputPath $outputPath -ComputerNames "localhost" -MaxConcurrentJobs 2 -ChunkSize 1 -UseCache
 
-            # VÃ©rifier les rÃ©sultats
+            # VÃƒÂ©rifier les rÃƒÂ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Results | Should -Not -BeNullOrEmpty
             $result.ReportPath | Should -Be $outputPath
 
-            # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
+            # VÃƒÂ©rifier que le rapport a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ©
             Test-Path -Path $outputPath | Should -Be $true
         }
 
-        It "GÃ¨re correctement plusieurs ordinateurs" {
-            # ExÃ©cuter le script avec plusieurs ordinateurs
+        It "GÃƒÂ¨re correctement plusieurs ordinateurs" {
+            # ExÃƒÂ©cuter le script avec plusieurs ordinateurs
             $outputPath = "$testDir\report_multi.html"
             $result = Invoke-DistributedAnalysisTest -RepositoryPath $testDir -OutputPath $outputPath -ComputerNames "localhost", "localhost" -MaxConcurrentJobs 2 -ChunkSize 1 -UseCache
 
-            # VÃ©rifier les rÃ©sultats
+            # VÃƒÂ©rifier les rÃƒÂ©sultats
             $result | Should -Not -BeNullOrEmpty
             $result.Results | Should -Not -BeNullOrEmpty
             $result.ReportPath | Should -Be $outputPath
 
-            # VÃ©rifier que le rapport a Ã©tÃ© gÃ©nÃ©rÃ©
+            # VÃƒÂ©rifier que le rapport a ÃƒÂ©tÃƒÂ© gÃƒÂ©nÃƒÂ©rÃƒÂ©
             Test-Path -Path $outputPath | Should -Be $true
         }
     }
 }
 
-# ExÃ©cuter les tests
+# ExÃƒÂ©cuter les tests
 $config = [PesterConfiguration]::Default
 $config.Run.Path = $PSCommandPath
 $config.Output.Verbosity = "Detailed"

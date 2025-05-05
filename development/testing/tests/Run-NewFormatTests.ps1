@@ -1,18 +1,18 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Exécute les tests unitaires pour les nouveaux formats.
+    ExÃ©cute les tests unitaires pour les nouveaux formats.
 .DESCRIPTION
-    Ce script exécute les tests unitaires pour les formats CSV, YAML et la détection d'encodage.
+    Ce script exÃ©cute les tests unitaires pour les formats CSV, YAML et la dÃ©tection d'encodage.
 .NOTES
     Version: 1.0.0
     Auteur: EMAIL_SENDER_1 Team
-    Date de création: 2025-06-06
+    Date de crÃ©ation: 2025-06-06
 #>
 
 # Importer Pester
 if (-not (Get-Module -Name Pester -ListAvailable)) {
-    Write-Warning "Le module Pester n'est pas installé. Installation en cours..."
+    Write-Warning "Le module Pester n'est pas installÃ©. Installation en cours..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
 }
 
@@ -22,12 +22,12 @@ Import-Module Pester -Force
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "unit"
 $reportDir = Join-Path -Path $PSScriptRoot -ChildPath "reports"
 
-# Créer le répertoire de rapports s'il n'existe pas
+# CrÃ©er le rÃ©pertoire de rapports s'il n'existe pas
 if (-not (Test-Path -Path $reportDir)) {
     New-Item -Path $reportDir -ItemType Directory -Force | Out-Null
 }
 
-# Liste des fichiers de test à exécuter
+# Liste des fichiers de test Ã  exÃ©cuter
 $testFiles = @(
     "CsvYamlFormats.Tests.ps1",
     "EncodingDetection.Tests.ps1",
@@ -43,29 +43,29 @@ $pesterConfig.TestResult.Enabled = $true
 $pesterConfig.TestResult.OutputPath = Join-Path -Path $reportDir -ChildPath "NewFormatTestResults.xml"
 $pesterConfig.TestResult.OutputFormat = 'NUnitXml'
 
-# Exécuter les tests
-Write-Host "Exécution des tests unitaires pour les nouveaux formats..."
+# ExÃ©cuter les tests
+Write-Host "ExÃ©cution des tests unitaires pour les nouveaux formats..."
 $testResults = Invoke-Pester -Configuration $pesterConfig
 
-# Afficher un résumé des résultats
-Write-Host "`nRésumé des tests :"
+# Afficher un rÃ©sumÃ© des rÃ©sultats
+Write-Host "`nRÃ©sumÃ© des tests :"
 Write-Host "Total des tests : $($testResults.TotalCount)"
-Write-Host "Tests réussis : $($testResults.PassedCount)"
-Write-Host "Tests échoués : $($testResults.FailedCount)"
-Write-Host "Tests ignorés : $($testResults.SkippedCount)"
-Write-Host "Durée totale : $($testResults.Duration.TotalSeconds) secondes"
+Write-Host "Tests rÃ©ussis : $($testResults.PassedCount)"
+Write-Host "Tests Ã©chouÃ©s : $($testResults.FailedCount)"
+Write-Host "Tests ignorÃ©s : $($testResults.SkippedCount)"
+Write-Host "DurÃ©e totale : $($testResults.Duration.TotalSeconds) secondes"
 
-# Afficher les tests échoués
+# Afficher les tests Ã©chouÃ©s
 if ($testResults.FailedCount -gt 0) {
-    Write-Host "`nTests échoués :"
+    Write-Host "`nTests Ã©chouÃ©s :"
     foreach ($testResult in $testResults.Failed) {
         Write-Host "- $($testResult.Name) : $($testResult.ErrorRecord.Exception.Message)"
     }
 }
 
 # Afficher le chemin des rapports
-Write-Host "`nRapport généré :"
-Write-Host "- Résultats des tests : $($pesterConfig.TestResult.OutputPath)"
+Write-Host "`nRapport gÃ©nÃ©rÃ© :"
+Write-Host "- RÃ©sultats des tests : $($pesterConfig.TestResult.OutputPath)"
 
-# Retourner le nombre de tests échoués
+# Retourner le nombre de tests Ã©chouÃ©s
 return $testResults.FailedCount

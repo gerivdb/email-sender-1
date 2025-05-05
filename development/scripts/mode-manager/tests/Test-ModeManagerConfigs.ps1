@@ -1,21 +1,21 @@
-# Test des configurations spéciales pour le mode manager
+﻿# Test des configurations spÃ©ciales pour le mode manager
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Créer un fichier de configuration avec des chemins relatifs
+# CrÃ©er un fichier de configuration avec des chemins relatifs
 $relativeConfigPath = Join-Path -Path $testDir -ChildPath "relative-config.json"
 @{
     General = @{
@@ -31,7 +31,7 @@ $relativeConfigPath = Join-Path -Path $testDir -ChildPath "relative-config.json"
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $relativeConfigPath -Encoding UTF8
 
-# Créer un fichier de configuration avec des modes personnalisés
+# CrÃ©er un fichier de configuration avec des modes personnalisÃ©s
 $customConfigPath = Join-Path -Path $testDir -ChildPath "custom-config.json"
 @{
     General = @{
@@ -51,7 +51,7 @@ $customConfigPath = Join-Path -Path $testDir -ChildPath "custom-config.json"
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $customConfigPath -Encoding UTF8
 
-# Créer un fichier de configuration avec des modes désactivés
+# CrÃ©er un fichier de configuration avec des modes dÃ©sactivÃ©s
 $disabledConfigPath = Join-Path -Path $testDir -ChildPath "disabled-config.json"
 @{
     General = @{
@@ -71,7 +71,7 @@ $disabledConfigPath = Join-Path -Path $testDir -ChildPath "disabled-config.json"
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $disabledConfigPath -Encoding UTF8
 
-# Créer un fichier de configuration avec des paramètres par défaut
+# CrÃ©er un fichier de configuration avec des paramÃ¨tres par dÃ©faut
 $defaultsConfigPath = Join-Path -Path $testDir -ChildPath "defaults-config.json"
 @{
     General = @{
@@ -91,7 +91,7 @@ $defaultsConfigPath = Join-Path -Path $testDir -ChildPath "defaults-config.json"
     }
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $defaultsConfigPath -Encoding UTF8
 
-# Créer des scripts de mode simulés
+# CrÃ©er des scripts de mode simulÃ©s
 $mockCheckModePath = Join-Path -Path $PSScriptRoot -ChildPath "mock-check-mode.ps1"
 $mockCheckContent = @'
 param (
@@ -126,7 +126,7 @@ param (
     [string]$DefaultParam2
 )
 
-Write-Host "Mode CHECK exécuté avec les paramètres suivants :"
+Write-Host "Mode CHECK exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
@@ -138,7 +138,7 @@ Write-Host "CustomParam2 : $CustomParam2"
 Write-Host "DefaultParam1 : $DefaultParam1"
 Write-Host "DefaultParam2 : $DefaultParam2"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "check-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -173,13 +173,13 @@ param (
     [string]$ConfigPath
 )
 
-Write-Host "Mode GRAN exécuté avec les paramètres suivants :"
+Write-Host "Mode GRAN exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : $FilePath"
 Write-Host "TaskIdentifier : $TaskIdentifier"
 Write-Host "Force : $Force"
 Write-Host "ConfigPath : $ConfigPath"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 $outputPath = Join-Path -Path "$PSScriptRoot\temp" -ChildPath "gran-mode-output.txt"
 @"
 FilePath : $FilePath
@@ -192,80 +192,80 @@ exit 0
 '@
 Set-Content -Path $mockGranModePath -Value $mockGranContent -Encoding UTF8
 
-# Créer un fichier de roadmap de test
+# CrÃ©er un fichier de roadmap de test
 $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 "# Test Roadmap" | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
 # Test 1: Configuration avec chemins relatifs
 Write-Host "Test 1: Configuration avec chemins relatifs" -ForegroundColor Cyan
 try {
-    # Supprimer les fichiers de sortie des tests précédents
+    # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         Remove-Item -Path $checkOutputPath -Force
     }
     
-    # Exécuter le script avec la configuration relative
+    # ExÃ©cuter le script avec la configuration relative
     & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $relativeConfigPath
     
-    # Vérifier que le mode CHECK a été exécuté
+    # VÃ©rifier que le mode CHECK a Ã©tÃ© exÃ©cutÃ©
     if (Test-Path -Path $checkOutputPath) {
         $output = Get-Content -Path $checkOutputPath -Raw
         if ($output -match "FilePath : $([regex]::Escape($testRoadmapPath))") {
-            Write-Host "Test 1 réussi: Le script a exécuté le mode CHECK avec un chemin relatif" -ForegroundColor Green
+            Write-Host "Test 1 rÃ©ussi: Le script a exÃ©cutÃ© le mode CHECK avec un chemin relatif" -ForegroundColor Green
         } else {
-            Write-Host "Test 1 échoué: Le script n'a pas exécuté le mode CHECK avec les bons paramètres" -ForegroundColor Red
+            Write-Host "Test 1 Ã©chouÃ©: Le script n'a pas exÃ©cutÃ© le mode CHECK avec les bons paramÃ¨tres" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 1 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 1 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 1 échoué: Une erreur s'est produite lors de l'exécution du script avec une configuration relative" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec une configuration relative" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 2: Configuration avec des modes personnalisés
-Write-Host "Test 2: Configuration avec des modes personnalisés" -ForegroundColor Cyan
+# Test 2: Configuration avec des modes personnalisÃ©s
+Write-Host "Test 2: Configuration avec des modes personnalisÃ©s" -ForegroundColor Cyan
 try {
-    # Supprimer les fichiers de sortie des tests précédents
+    # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         Remove-Item -Path $checkOutputPath -Force
     }
     
-    # Exécuter le script avec la configuration personnalisée
+    # ExÃ©cuter le script avec la configuration personnalisÃ©e
     & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $customConfigPath
     
-    # Vérifier que le mode CHECK a été exécuté avec les paramètres personnalisés
+    # VÃ©rifier que le mode CHECK a Ã©tÃ© exÃ©cutÃ© avec les paramÃ¨tres personnalisÃ©s
     if (Test-Path -Path $checkOutputPath) {
         $output = Get-Content -Path $checkOutputPath -Raw
         $success = $true
         
         if (-not ($output -match "CustomParam1 : Value1")) {
-            Write-Host "Test 2 échoué: Le mode CHECK n'a pas reçu le paramètre CustomParam1" -ForegroundColor Red
+            Write-Host "Test 2 Ã©chouÃ©: Le mode CHECK n'a pas reÃ§u le paramÃ¨tre CustomParam1" -ForegroundColor Red
             $success = $false
         }
         
         if (-not ($output -match "CustomParam2 : Value2")) {
-            Write-Host "Test 2 échoué: Le mode CHECK n'a pas reçu le paramètre CustomParam2" -ForegroundColor Red
+            Write-Host "Test 2 Ã©chouÃ©: Le mode CHECK n'a pas reÃ§u le paramÃ¨tre CustomParam2" -ForegroundColor Red
             $success = $false
         }
         
         if ($success) {
-            Write-Host "Test 2 réussi: Le script a exécuté le mode CHECK avec des paramètres personnalisés" -ForegroundColor Green
+            Write-Host "Test 2 rÃ©ussi: Le script a exÃ©cutÃ© le mode CHECK avec des paramÃ¨tres personnalisÃ©s" -ForegroundColor Green
         }
     } else {
-        Write-Host "Test 2 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 2 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 2 échoué: Une erreur s'est produite lors de l'exécution du script avec une configuration personnalisée" -ForegroundColor Red
+    Write-Host "Test 2 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec une configuration personnalisÃ©e" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 3: Configuration avec des modes désactivés
-Write-Host "Test 3: Configuration avec des modes désactivés" -ForegroundColor Cyan
+# Test 3: Configuration avec des modes dÃ©sactivÃ©s
+Write-Host "Test 3: Configuration avec des modes dÃ©sactivÃ©s" -ForegroundColor Cyan
 try {
-    # Supprimer les fichiers de sortie des tests précédents
+    # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     $granOutputPath = Join-Path -Path $testDir -ChildPath "gran-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
@@ -275,70 +275,70 @@ try {
         Remove-Item -Path $granOutputPath -Force
     }
     
-    # Exécuter le script avec la configuration désactivée pour CHECK
+    # ExÃ©cuter le script avec la configuration dÃ©sactivÃ©e pour CHECK
     & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $disabledConfigPath
     
-    # Vérifier que le mode CHECK n'a pas été exécuté
+    # VÃ©rifier que le mode CHECK n'a pas Ã©tÃ© exÃ©cutÃ©
     if (Test-Path -Path $checkOutputPath) {
-        Write-Host "Test 3 échoué: Le fichier de sortie du mode CHECK a été créé alors qu'il ne devrait pas l'être" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Le fichier de sortie du mode CHECK a Ã©tÃ© crÃ©Ã© alors qu'il ne devrait pas l'Ãªtre" -ForegroundColor Red
     } else {
-        Write-Host "Test 3 réussi: Le script n'a pas exécuté le mode CHECK désactivé" -ForegroundColor Green
+        Write-Host "Test 3 rÃ©ussi: Le script n'a pas exÃ©cutÃ© le mode CHECK dÃ©sactivÃ©" -ForegroundColor Green
     }
     
-    # Exécuter le script avec la configuration activée pour GRAN
+    # ExÃ©cuter le script avec la configuration activÃ©e pour GRAN
     & $scriptPath -Mode "GRAN" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $disabledConfigPath
     
-    # Vérifier que le mode GRAN a été exécuté
+    # VÃ©rifier que le mode GRAN a Ã©tÃ© exÃ©cutÃ©
     if (Test-Path -Path $granOutputPath) {
         $output = Get-Content -Path $granOutputPath -Raw
         if ($output -match "FilePath : $([regex]::Escape($testRoadmapPath))") {
-            Write-Host "Test 3 réussi: Le script a exécuté le mode GRAN activé" -ForegroundColor Green
+            Write-Host "Test 3 rÃ©ussi: Le script a exÃ©cutÃ© le mode GRAN activÃ©" -ForegroundColor Green
         } else {
-            Write-Host "Test 3 échoué: Le script n'a pas exécuté le mode GRAN avec les bons paramètres" -ForegroundColor Red
+            Write-Host "Test 3 Ã©chouÃ©: Le script n'a pas exÃ©cutÃ© le mode GRAN avec les bons paramÃ¨tres" -ForegroundColor Red
         }
     } else {
-        Write-Host "Test 3 échoué: Le fichier de sortie du mode GRAN n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 3 Ã©chouÃ©: Le fichier de sortie du mode GRAN n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 3 échoué: Une erreur s'est produite lors de l'exécution du script avec une configuration désactivée" -ForegroundColor Red
+    Write-Host "Test 3 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec une configuration dÃ©sactivÃ©e" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
-# Test 4: Configuration avec des paramètres par défaut
-Write-Host "Test 4: Configuration avec des paramètres par défaut" -ForegroundColor Cyan
+# Test 4: Configuration avec des paramÃ¨tres par dÃ©faut
+Write-Host "Test 4: Configuration avec des paramÃ¨tres par dÃ©faut" -ForegroundColor Cyan
 try {
-    # Supprimer les fichiers de sortie des tests précédents
+    # Supprimer les fichiers de sortie des tests prÃ©cÃ©dents
     $checkOutputPath = Join-Path -Path $testDir -ChildPath "check-mode-output.txt"
     if (Test-Path -Path $checkOutputPath) {
         Remove-Item -Path $checkOutputPath -Force
     }
     
-    # Exécuter le script avec la configuration par défaut
+    # ExÃ©cuter le script avec la configuration par dÃ©faut
     & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $defaultsConfigPath
     
-    # Vérifier que le mode CHECK a été exécuté avec les paramètres par défaut
+    # VÃ©rifier que le mode CHECK a Ã©tÃ© exÃ©cutÃ© avec les paramÃ¨tres par dÃ©faut
     if (Test-Path -Path $checkOutputPath) {
         $output = Get-Content -Path $checkOutputPath -Raw
         $success = $true
         
         if (-not ($output -match "DefaultParam1 : DefaultValue1")) {
-            Write-Host "Test 4 échoué: Le mode CHECK n'a pas reçu le paramètre DefaultParam1" -ForegroundColor Red
+            Write-Host "Test 4 Ã©chouÃ©: Le mode CHECK n'a pas reÃ§u le paramÃ¨tre DefaultParam1" -ForegroundColor Red
             $success = $false
         }
         
         if (-not ($output -match "DefaultParam2 : DefaultValue2")) {
-            Write-Host "Test 4 échoué: Le mode CHECK n'a pas reçu le paramètre DefaultParam2" -ForegroundColor Red
+            Write-Host "Test 4 Ã©chouÃ©: Le mode CHECK n'a pas reÃ§u le paramÃ¨tre DefaultParam2" -ForegroundColor Red
             $success = $false
         }
         
         if ($success) {
-            Write-Host "Test 4 réussi: Le script a exécuté le mode CHECK avec des paramètres par défaut" -ForegroundColor Green
+            Write-Host "Test 4 rÃ©ussi: Le script a exÃ©cutÃ© le mode CHECK avec des paramÃ¨tres par dÃ©faut" -ForegroundColor Green
         }
     } else {
-        Write-Host "Test 4 échoué: Le fichier de sortie du mode CHECK n'a pas été créé" -ForegroundColor Red
+        Write-Host "Test 4 Ã©chouÃ©: Le fichier de sortie du mode CHECK n'a pas Ã©tÃ© crÃ©Ã©" -ForegroundColor Red
     }
 } catch {
-    Write-Host "Test 4 échoué: Une erreur s'est produite lors de l'exécution du script avec une configuration par défaut" -ForegroundColor Red
+    Write-Host "Test 4 Ã©chouÃ©: Une erreur s'est produite lors de l'exÃ©cution du script avec une configuration par dÃ©faut" -ForegroundColor Red
     Write-Host "Erreur: $_" -ForegroundColor Red
 }
 
@@ -360,4 +360,4 @@ foreach ($file in $mockFiles) {
     }
 }
 
-Write-Host "Tests terminés." -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s." -ForegroundColor Cyan

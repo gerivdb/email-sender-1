@@ -1,25 +1,25 @@
-<#
+﻿<#
 .SYNOPSIS
     Extrait les variables d'un script PowerShell.
 
 .DESCRIPTION
     Cette fonction extrait les variables d'un script PowerShell en utilisant l'arbre syntaxique (AST).
-    Elle permet de filtrer les variables par nom et d'obtenir des informations détaillées sur chaque variable.
+    Elle permet de filtrer les variables par nom et d'obtenir des informations dÃ©taillÃ©es sur chaque variable.
 
 .PARAMETER Ast
-    L'arbre syntaxique PowerShell à analyser. Peut être obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
+    L'arbre syntaxique PowerShell Ã  analyser. Peut Ãªtre obtenu via [System.Management.Automation.Language.Parser]::ParseFile() ou [System.Management.Automation.Language.Parser]::ParseInput().
 
 .PARAMETER Name
-    Nom de la variable à rechercher. Peut contenir des caractères génériques.
+    Nom de la variable Ã  rechercher. Peut contenir des caractÃ¨res gÃ©nÃ©riques.
 
 .PARAMETER Scope
-    Portée de la variable à rechercher (global, script, local, etc.).
+    PortÃ©e de la variable Ã  rechercher (global, script, local, etc.).
 
 .PARAMETER IncludeAssignments
-    Si spécifié, inclut les informations sur les assignations de valeurs aux variables.
+    Si spÃ©cifiÃ©, inclut les informations sur les assignations de valeurs aux variables.
 
 .PARAMETER ExcludeAutomaticVariables
-    Si spécifié, exclut les variables automatiques ($_, $PSItem, $args, etc.).
+    Si spÃ©cifiÃ©, exclut les variables automatiques ($_, $PSItem, $args, etc.).
 
 .EXAMPLE
     $ast = [System.Management.Automation.Language.Parser]::ParseFile("C:\path\to\script.ps1", [ref]$null, [ref]$null)
@@ -56,7 +56,7 @@ function Get-AstVariables {
 
     process {
         try {
-            # Liste des variables automatiques à exclure si demandé
+            # Liste des variables automatiques Ã  exclure si demandÃ©
             $automaticVariables = @(
                 "_", "PSItem", "args", "input", "PSCmdlet", "MyInvocation", "PSBoundParameters",
                 "PSScriptRoot", "PSCommandPath", "PSVersionTable", "error", "StackTrace", "Host"
@@ -67,22 +67,22 @@ function Get-AstVariables {
                 $args[0] -is [System.Management.Automation.Language.VariableExpressionAst]
             }, $true)
 
-            # Filtrer par nom si spécifié
+            # Filtrer par nom si spÃ©cifiÃ©
             if ($Name) {
                 $variables = $variables | Where-Object { $_.VariablePath.UserPath -like $Name }
             }
 
-            # Filtrer par portée si spécifiée
+            # Filtrer par portÃ©e si spÃ©cifiÃ©e
             if ($Scope -ne "All") {
                 $variables = $variables | Where-Object { $_.VariablePath.DriveName -eq $Scope }
             }
 
-            # Exclure les variables automatiques si demandé
+            # Exclure les variables automatiques si demandÃ©
             if ($ExcludeAutomaticVariables) {
                 $variables = $variables | Where-Object { $automaticVariables -notcontains $_.VariablePath.UserPath }
             }
 
-            # Rechercher les assignations si demandé
+            # Rechercher les assignations si demandÃ©
             $assignments = @{}
             if ($IncludeAssignments) {
                 $assignmentAsts = $Ast.FindAll({
@@ -104,7 +104,7 @@ function Get-AstVariables {
                 }
             }
 
-            # Créer une liste unique de variables
+            # CrÃ©er une liste unique de variables
             $uniqueVars = @{}
             foreach ($var in $variables) {
                 $varName = $var.VariablePath.UserPath
@@ -128,7 +128,7 @@ function Get-AstVariables {
                 }
             }
 
-            # Retourner les résultats
+            # Retourner les rÃ©sultats
             return $uniqueVars.Values
         }
         catch {

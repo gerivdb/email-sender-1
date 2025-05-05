@@ -1,27 +1,27 @@
-<#
+﻿<#
 .SYNOPSIS
-    DÃ©tecte les rÃ©fÃ©rences de variables dans les chaÃ®nes accentuÃ©es qui peuvent causer des problÃ¨mes.
+    DÃƒÂ©tecte les rÃƒÂ©fÃƒÂ©rences de variables dans les chaÃƒÂ®nes accentuÃƒÂ©es qui peuvent causer des problÃƒÂ¨mes.
 
 .DESCRIPTION
-    Ce script analyse les fichiers PowerShell pour dÃ©tecter les rÃ©fÃ©rences de variables ($var)
-    dans des chaÃ®nes contenant des caractÃ¨res accentuÃ©s, ce qui peut causer des problÃ¨mes
-    d'interprÃ©tation en fonction de l'encodage du fichier.
+    Ce script analyse les fichiers PowerShell pour dÃƒÂ©tecter les rÃƒÂ©fÃƒÂ©rences de variables ($var)
+    dans des chaÃƒÂ®nes contenant des caractÃƒÂ¨res accentuÃƒÂ©s, ce qui peut causer des problÃƒÂ¨mes
+    d'interprÃƒÂ©tation en fonction de l'encodage du fichier.
 
 .PARAMETER Path
-    Chemin du fichier ou du rÃ©pertoire Ã  analyser. Par dÃ©faut, analyse le rÃ©pertoire courant.
+    Chemin du fichier ou du rÃƒÂ©pertoire ÃƒÂ  analyser. Par dÃƒÂ©faut, analyse le rÃƒÂ©pertoire courant.
 
 .PARAMETER Recurse
-    Indique si l'analyse doit Ãªtre rÃ©cursive dans les sous-rÃ©pertoires.
+    Indique si l'analyse doit ÃƒÂªtre rÃƒÂ©cursive dans les sous-rÃƒÂ©pertoires.
 
 .PARAMETER OutputFormat
-    Format de sortie des rÃ©sultats. Valeurs possibles : "Text", "Object", "Json".
-    Par dÃ©faut : "Text".
+    Format de sortie des rÃƒÂ©sultats. Valeurs possibles : "Text", "Object", "Json".
+    Par dÃƒÂ©faut : "Text".
 
 .EXAMPLE
     .\Detect-VariableReferencesInAccentedStrings.ps1 -Path .\development\scripts -Recurse
 
 .NOTES
-    Auteur: SystÃ¨me d'analyse d'erreurs
+    Auteur: SystÃƒÂ¨me d'analyse d'erreurs
     Version: 1.0
 #>
 
@@ -47,7 +47,7 @@ function Test-FileEncoding {
     try {
         $bytes = [System.IO.File]::ReadAllBytes($FilePath)
 
-        # VÃ©rifier les diffÃ©rents BOM
+        # VÃƒÂ©rifier les diffÃƒÂ©rents BOM
         if ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF) {
             return @{
                 Encoding = "UTF-8 with BOM"
@@ -64,14 +64,14 @@ function Test-FileEncoding {
                 HasBOM   = $true
             }
         } else {
-            # Pas de BOM dÃ©tectÃ©, essayer de dÃ©terminer l'encodage
+            # Pas de BOM dÃƒÂ©tectÃƒÂ©, essayer de dÃƒÂ©terminer l'encodage
             return @{
                 Encoding = "Unknown (possibly UTF-8 without BOM or ANSI)"
                 HasBOM   = $false
             }
         }
     } catch {
-        Write-Error "Erreur lors de la dÃ©tection de l'encodage du fichier '$FilePath': $_"
+        Write-Error "Erreur lors de la dÃƒÂ©tection de l'encodage du fichier '$FilePath': $_"
         return $null
     }
 }
@@ -84,44 +84,44 @@ function Find-VariableReferencesInAccentedStrings {
     )
 
     try {
-        # VÃ©rifier si le fichier existe
+        # VÃƒÂ©rifier si le fichier existe
         if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
             Write-Error "Le fichier '$FilePath' n'existe pas ou n'est pas un fichier."
             return @()
         }
 
-        # VÃ©rifier l'encodage du fichier
+        # VÃƒÂ©rifier l'encodage du fichier
         $encodingInfo = Test-FileEncoding -FilePath $FilePath
 
         # Lire le contenu du fichier
         $content = Get-Content -Path $FilePath -Raw
 
-        # DÃ©finir les patterns de recherche
-        $accentedCharsPattern = '[\u00E0-\u00FF\u0100-\u017F]'  # Plage de caractÃ¨res accentuÃ©s latins
+        # DÃƒÂ©finir les patterns de recherche
+        $accentedCharsPattern = '[\u00E0-\u00FF\u0100-\u017F]'  # Plage de caractÃƒÂ¨res accentuÃƒÂ©s latins
         $variableReferencePattern = '\$[a-zA-Z0-9_]+'
 
-        # Rechercher les lignes contenant Ã  la fois des caractÃ¨res accentuÃ©s et des rÃ©fÃ©rences de variables
+        # Rechercher les lignes contenant ÃƒÂ  la fois des caractÃƒÂ¨res accentuÃƒÂ©s et des rÃƒÂ©fÃƒÂ©rences de variables
         $results = @()
         $lineNumber = 0
 
         foreach ($line in $content -split "`r`n|`r|`n") {
             $lineNumber++
 
-            # VÃ©rifier si la ligne contient des caractÃ¨res accentuÃ©s et des rÃ©fÃ©rences de variables
+            # VÃƒÂ©rifier si la ligne contient des caractÃƒÂ¨res accentuÃƒÂ©s et des rÃƒÂ©fÃƒÂ©rences de variables
             if ($line -match $accentedCharsPattern -and $line -match $variableReferencePattern) {
-                # Extraire toutes les rÃ©fÃ©rences de variables
+                # Extraire toutes les rÃƒÂ©fÃƒÂ©rences de variables
                 $variableMatches = [regex]::Matches($line, $variableReferencePattern)
                 $variables = $variableMatches | ForEach-Object { $_.Value }
 
-                # Extraire tous les caractÃ¨res accentuÃ©s
+                # Extraire tous les caractÃƒÂ¨res accentuÃƒÂ©s
                 $accentedMatches = [regex]::Matches($line, $accentedCharsPattern)
                 $accentedChars = $accentedMatches | ForEach-Object { $_.Value }
 
-                # VÃ©rifier si les variables sont Ã  proximitÃ© des caractÃ¨res accentuÃ©s
+                # VÃƒÂ©rifier si les variables sont ÃƒÂ  proximitÃƒÂ© des caractÃƒÂ¨res accentuÃƒÂ©s
                 $potentialIssue = $false
                 foreach ($var in $variables) {
                     foreach ($char in $accentedChars) {
-                        # VÃ©rifier si le caractÃ¨re accentuÃ© est Ã  moins de 10 caractÃ¨res de la variable
+                        # VÃƒÂ©rifier si le caractÃƒÂ¨re accentuÃƒÂ© est ÃƒÂ  moins de 10 caractÃƒÂ¨res de la variable
                         $varIndex = $line.IndexOf($var)
                         $charIndex = $line.IndexOf($char)
 
@@ -170,7 +170,7 @@ function Start-Detection {
     )
 
     try {
-        # VÃ©rifier si le chemin existe
+        # VÃƒÂ©rifier si le chemin existe
         if (-not (Test-Path -Path $Path)) {
             Write-Error "Le chemin '$Path' n'existe pas."
             return @()
@@ -200,27 +200,27 @@ function Start-Detection {
 
         return $results
     } catch {
-        Write-Error "Erreur lors de la dÃ©tection des rÃ©fÃ©rences de variables dans les chaÃ®nes accentuÃ©es: $_"
+        Write-Error "Erreur lors de la dÃƒÂ©tection des rÃƒÂ©fÃƒÂ©rences de variables dans les chaÃƒÂ®nes accentuÃƒÂ©es: $_"
         return @()
     }
 }
 
-# ExÃ©cuter la dÃ©tection
+# ExÃƒÂ©cuter la dÃƒÂ©tection
 $results = Start-Detection -Path $Path -Recurse:$Recurse
 
-# Afficher les rÃ©sultats selon le format demandÃ©
+# Afficher les rÃƒÂ©sultats selon le format demandÃƒÂ©
 switch ($OutputFormat) {
     "Text" {
         if ($results.Count -eq 0) {
-            Write-Host "Aucune rÃ©fÃ©rence de variable dans des chaÃ®nes accentuÃ©es n'a Ã©tÃ© dÃ©tectÃ©e." -ForegroundColor Green
+            Write-Host "Aucune rÃƒÂ©fÃƒÂ©rence de variable dans des chaÃƒÂ®nes accentuÃƒÂ©es n'a ÃƒÂ©tÃƒÂ© dÃƒÂ©tectÃƒÂ©e." -ForegroundColor Green
         } else {
-            Write-Host "$($results.Count) rÃ©fÃ©rences de variables potentiellement problÃ©matiques dÃ©tectÃ©es:" -ForegroundColor Yellow
+            Write-Host "$($results.Count) rÃƒÂ©fÃƒÂ©rences de variables potentiellement problÃƒÂ©matiques dÃƒÂ©tectÃƒÂ©es:" -ForegroundColor Yellow
 
             foreach ($result in $results) {
                 Write-Host "`nFichier: $($result.FilePath)" -ForegroundColor Cyan
                 Write-Host "Ligne $($result.LineNumber): $($result.Line)" -ForegroundColor White
                 Write-Host "Variables: $($result.Variables)" -ForegroundColor Yellow
-                Write-Host "CaractÃ¨res accentuÃ©s: $($result.AccentedChars)" -ForegroundColor Magenta
+                Write-Host "CaractÃƒÂ¨res accentuÃƒÂ©s: $($result.AccentedChars)" -ForegroundColor Magenta
                 Write-Host "Encodage: $($result.Encoding)" -ForegroundColor Gray
                 Write-Host "Niveau de risque: $($result.Risk)" -ForegroundColor $(if ($result.Risk -eq "Eleve") { "Red" } else { "Green" })
             }

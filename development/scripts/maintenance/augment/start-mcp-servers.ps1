@@ -1,24 +1,24 @@
-<#
+﻿<#
 .SYNOPSIS
-    Script de démarrage pour tous les serveurs MCP.
+    Script de dÃ©marrage pour tous les serveurs MCP.
 
 .DESCRIPTION
-    Ce script démarre tous les serveurs MCP nécessaires pour l'intégration avec Augment Code,
+    Ce script dÃ©marre tous les serveurs MCP nÃ©cessaires pour l'intÃ©gration avec Augment Code,
     notamment le serveur MCP pour les Memories et l'adaptateur MCP pour le gestionnaire de modes.
 
 .PARAMETER ConfigPath
-    Chemin vers le fichier de configuration. Par défaut : "development\config\unified-config.json".
+    Chemin vers le fichier de configuration. Par dÃ©faut : "development\config\unified-config.json".
 
 .PARAMETER LogPath
-    Chemin vers le répertoire des logs. Par défaut : "logs\mcp".
+    Chemin vers le rÃ©pertoire des logs. Par dÃ©faut : "logs\mcp".
 
 .EXAMPLE
     .\start-mcp-servers.ps1
-    # Démarre tous les serveurs MCP avec les paramètres par défaut
+    # DÃ©marre tous les serveurs MCP avec les paramÃ¨tres par dÃ©faut
 
 .EXAMPLE
     .\start-mcp-servers.ps1 -ConfigPath "config\custom-config.json" -LogPath "logs\custom"
-    # Démarre tous les serveurs MCP avec une configuration personnalisée et un répertoire de logs personnalisé
+    # DÃ©marre tous les serveurs MCP avec une configuration personnalisÃ©e et un rÃ©pertoire de logs personnalisÃ©
 
 .NOTES
     Version: 1.0
@@ -35,7 +35,7 @@ param (
     [string]$LogPath = "logs\mcp"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 $projectRoot = $PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty($projectRoot)) {
@@ -45,12 +45,12 @@ while (-not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -P
 if ([string]::IsNullOrEmpty($projectRoot) -or -not (Test-Path -Path (Join-Path -Path $projectRoot -ChildPath ".git") -PathType Container)) {
     $projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path $projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
 
-# Charger la configuration unifiée
+# Charger la configuration unifiÃ©e
 $configPath = Join-Path -Path $projectRoot -ChildPath $ConfigPath
 if (Test-Path -Path $configPath) {
     try {
@@ -61,7 +61,7 @@ if (Test-Path -Path $configPath) {
     }
 } else {
     Write-Warning "Le fichier de configuration est introuvable : $configPath"
-    # Créer une configuration par défaut
+    # CrÃ©er une configuration par dÃ©faut
     $config = [PSCustomObject]@{
         Augment = [PSCustomObject]@{
             MCP = [PSCustomObject]@{
@@ -83,14 +83,14 @@ if (Test-Path -Path $configPath) {
     }
 }
 
-# Créer le répertoire des logs s'il n'existe pas
+# CrÃ©er le rÃ©pertoire des logs s'il n'existe pas
 $logPath = Join-Path -Path $projectRoot -ChildPath $LogPath
 if (-not (Test-Path -Path $logPath -PathType Container)) {
     New-Item -Path $logPath -ItemType Directory -Force | Out-Null
-    Write-Host "Répertoire des logs créé : $logPath" -ForegroundColor Green
+    Write-Host "RÃ©pertoire des logs crÃ©Ã© : $logPath" -ForegroundColor Green
 }
 
-# Fonction pour démarrer un serveur MCP
+# Fonction pour dÃ©marrer un serveur MCP
 function Start-MCPServer {
     [CmdletBinding()]
     param (
@@ -107,25 +107,25 @@ function Start-MCPServer {
         [string]$LogPath
     )
 
-    # Vérifier si le script existe
+    # VÃ©rifier si le script existe
     $fullScriptPath = Join-Path -Path $projectRoot -ChildPath $ScriptPath
     if (-not (Test-Path -Path $fullScriptPath)) {
         Write-Warning "Script introuvable : $fullScriptPath"
         return $false
     }
 
-    # Vérifier si le port est disponible
+    # VÃ©rifier si le port est disponible
     try {
         $tcpClient = New-Object System.Net.Sockets.TcpClient
         $tcpClient.Connect("127.0.0.1", $Port)
         $tcpClient.Close()
-        Write-Warning "Le port $Port est déjà utilisé. Le serveur MCP $Name ne sera pas démarré."
+        Write-Warning "Le port $Port est dÃ©jÃ  utilisÃ©. Le serveur MCP $Name ne sera pas dÃ©marrÃ©."
         return $false
     } catch {
         # Le port est disponible
     }
 
-    # Créer le fichier de log
+    # CrÃ©er le fichier de log
     $logFile = Join-Path -Path $logPath -ChildPath "$Name.log"
     if (Test-Path -Path $logFile) {
         # Archiver le fichier de log existant
@@ -134,7 +134,7 @@ function Start-MCPServer {
         Move-Item -Path $logFile -Destination $archiveLogFile -Force
     }
 
-    # Démarrer le serveur MCP
+    # DÃ©marrer le serveur MCP
     try {
         $startInfo = New-Object System.Diagnostics.ProcessStartInfo
         $startInfo.FileName = "powershell"
@@ -149,18 +149,18 @@ function Start-MCPServer {
         $process.StartInfo = $startInfo
         $process.Start() | Out-Null
 
-        # Créer des tâches pour lire la sortie standard et la sortie d'erreur
+        # CrÃ©er des tÃ¢ches pour lire la sortie standard et la sortie d'erreur
         $outputTask = $process.StandardOutput.ReadToEndAsync()
         $errorTask = $process.StandardError.ReadToEndAsync()
 
-        # Attendre que le processus démarre
+        # Attendre que le processus dÃ©marre
         Start-Sleep -Seconds 2
 
-        # Vérifier si le processus est toujours en cours d'exécution
+        # VÃ©rifier si le processus est toujours en cours d'exÃ©cution
         if ($process.HasExited) {
             $output = $outputTask.Result
             $error = $errorTask.Result
-            Write-Warning "Le serveur MCP $Name s'est arrêté prématurément."
+            Write-Warning "Le serveur MCP $Name s'est arrÃªtÃ© prÃ©maturÃ©ment."
             Write-Warning "Sortie standard : $output"
             Write-Warning "Sortie d'erreur : $error"
             return $false
@@ -171,15 +171,15 @@ function Start-MCPServer {
         $pidFile = Join-Path -Path $logPath -ChildPath "$Name.pid"
         $pid | Out-File -FilePath $pidFile -Encoding UTF8
 
-        Write-Host "Serveur MCP $Name démarré sur le port $Port (PID: $pid)." -ForegroundColor Green
+        Write-Host "Serveur MCP $Name dÃ©marrÃ© sur le port $Port (PID: $pid)." -ForegroundColor Green
         return $true
     } catch {
-        Write-Error "Erreur lors du démarrage du serveur MCP $Name : $_"
+        Write-Error "Erreur lors du dÃ©marrage du serveur MCP $Name : $_"
         return $false
     }
 }
 
-# Fonction pour arrêter un serveur MCP
+# Fonction pour arrÃªter un serveur MCP
 function Stop-MCPServer {
     [CmdletBinding()]
     param (
@@ -190,7 +190,7 @@ function Stop-MCPServer {
         [string]$LogPath
     )
 
-    # Vérifier si le fichier PID existe
+    # VÃ©rifier si le fichier PID existe
     $pidFile = Join-Path -Path $logPath -ChildPath "$Name.pid"
     if (-not (Test-Path -Path $pidFile)) {
         Write-Warning "Fichier PID introuvable : $pidFile"
@@ -206,12 +206,12 @@ function Stop-MCPServer {
         return $false
     }
 
-    # Arrêter le processus
+    # ArrÃªter le processus
     try {
         $process = Get-Process -Id $pid -ErrorAction SilentlyContinue
         if ($process) {
             $process.Kill()
-            Write-Host "Serveur MCP $Name arrêté (PID: $pid)." -ForegroundColor Green
+            Write-Host "Serveur MCP $Name arrÃªtÃ© (PID: $pid)." -ForegroundColor Green
             Remove-Item -Path $pidFile -Force
             return $true
         } else {
@@ -220,21 +220,21 @@ function Stop-MCPServer {
             return $false
         }
     } catch {
-        Write-Warning "Erreur lors de l'arrêt du serveur MCP $Name : $_"
+        Write-Warning "Erreur lors de l'arrÃªt du serveur MCP $Name : $_"
         return $false
     }
 }
 
-# Vérifier si les serveurs MCP sont activés
+# VÃ©rifier si les serveurs MCP sont activÃ©s
 if (-not ($config.Augment -and $config.Augment.MCP -and $config.Augment.MCP.Enabled)) {
-    Write-Warning "Les serveurs MCP sont désactivés dans la configuration."
+    Write-Warning "Les serveurs MCP sont dÃ©sactivÃ©s dans la configuration."
     exit 0
 }
 
-# Démarrer les serveurs MCP
+# DÃ©marrer les serveurs MCP
 $servers = $config.Augment.MCP.Servers
 if (-not $servers) {
-    Write-Warning "Aucun serveur MCP défini dans la configuration."
+    Write-Warning "Aucun serveur MCP dÃ©fini dans la configuration."
     exit 0
 }
 
@@ -244,37 +244,37 @@ foreach ($server in $servers) {
     $port = $server.Port
     $scriptPath = $server.ScriptPath
 
-    Write-Host "Démarrage du serveur MCP $name sur le port $port..." -ForegroundColor Cyan
+    Write-Host "DÃ©marrage du serveur MCP $name sur le port $port..." -ForegroundColor Cyan
     $success = Start-MCPServer -Name $name -Port $port -ScriptPath $scriptPath -LogPath $logPath
     if ($success) {
         $startedServers += $name
     }
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé des serveurs MCP :" -ForegroundColor Cyan
-Write-Host "Serveurs démarrés : $($startedServers -join ", ")" -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des serveurs MCP :" -ForegroundColor Cyan
+Write-Host "Serveurs dÃ©marrÃ©s : $($startedServers -join ", ")" -ForegroundColor Green
 $failedServers = $servers | Where-Object { $_.Name -notin $startedServers } | Select-Object -ExpandProperty Name
 if ($failedServers) {
-    Write-Host "Serveurs non démarrés : $($failedServers -join ", ")" -ForegroundColor Red
+    Write-Host "Serveurs non dÃ©marrÃ©s : $($failedServers -join ", ")" -ForegroundColor Red
 }
 
-# Créer un script d'arrêt
+# CrÃ©er un script d'arrÃªt
 $stopScriptPath = Join-Path -Path $projectRoot -ChildPath "development\scripts\maintenance\augment\stop-mcp-servers.ps1"
 $stopScriptContent = @"
 <#
 .SYNOPSIS
-    Script d'arrêt pour tous les serveurs MCP.
+    Script d'arrÃªt pour tous les serveurs MCP.
 
 .DESCRIPTION
-    Ce script arrête tous les serveurs MCP démarrés par le script start-mcp-servers.ps1.
+    Ce script arrÃªte tous les serveurs MCP dÃ©marrÃ©s par le script start-mcp-servers.ps1.
 
 .PARAMETER LogPath
-    Chemin vers le répertoire des logs. Par défaut : "logs\mcp".
+    Chemin vers le rÃ©pertoire des logs. Par dÃ©faut : "logs\mcp".
 
 .EXAMPLE
     .\stop-mcp-servers.ps1
-    # Arrête tous les serveurs MCP
+    # ArrÃªte tous les serveurs MCP
 
 .NOTES
     Version: 1.0
@@ -288,7 +288,7 @@ param (
     [string]`$LogPath = "logs\mcp"
 )
 
-# Déterminer le chemin du projet
+# DÃ©terminer le chemin du projet
 `$projectRoot = `$PSScriptRoot
 while (-not (Test-Path -Path (Join-Path -Path `$projectRoot -ChildPath ".git") -PathType Container) -and
     -not [string]::IsNullOrEmpty(`$projectRoot)) {
@@ -298,19 +298,19 @@ while (-not (Test-Path -Path (Join-Path -Path `$projectRoot -ChildPath ".git") -
 if ([string]::IsNullOrEmpty(`$projectRoot) -or -not (Test-Path -Path (Join-Path -Path `$projectRoot -ChildPath ".git") -PathType Container)) {
     `$projectRoot = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
     if (-not (Test-Path -Path `$projectRoot -PathType Container)) {
-        Write-Error "Impossible de déterminer le chemin du projet."
+        Write-Error "Impossible de dÃ©terminer le chemin du projet."
         exit 1
     }
 }
 
-# Chemin vers le répertoire des logs
+# Chemin vers le rÃ©pertoire des logs
 `$logPath = Join-Path -Path `$projectRoot -ChildPath `$LogPath
 if (-not (Test-Path -Path `$logPath -PathType Container)) {
-    Write-Warning "Répertoire des logs introuvable : `$logPath"
+    Write-Warning "RÃ©pertoire des logs introuvable : `$logPath"
     exit 1
 }
 
-# Fonction pour arrêter un serveur MCP
+# Fonction pour arrÃªter un serveur MCP
 function Stop-MCPServer {
     [CmdletBinding()]
     param (
@@ -321,7 +321,7 @@ function Stop-MCPServer {
         [string]`$LogPath
     )
 
-    # Vérifier si le fichier PID existe
+    # VÃ©rifier si le fichier PID existe
     `$pidFile = Join-Path -Path `$logPath -ChildPath "`$Name.pid"
     if (-not (Test-Path -Path `$pidFile)) {
         Write-Warning "Fichier PID introuvable : `$pidFile"
@@ -337,12 +337,12 @@ function Stop-MCPServer {
         return `$false
     }
 
-    # Arrêter le processus
+    # ArrÃªter le processus
     try {
         `$process = Get-Process -Id `$pid -ErrorAction SilentlyContinue
         if (`$process) {
             `$process.Kill()
-            Write-Host "Serveur MCP `$Name arrêté (PID: `$pid)." -ForegroundColor Green
+            Write-Host "Serveur MCP `$Name arrÃªtÃ© (PID: `$pid)." -ForegroundColor Green
             Remove-Item -Path `$pidFile -Force
             return `$true
         } else {
@@ -351,40 +351,40 @@ function Stop-MCPServer {
             return `$false
         }
     } catch {
-        Write-Warning "Erreur lors de l'arrêt du serveur MCP `$Name : `$_"
+        Write-Warning "Erreur lors de l'arrÃªt du serveur MCP `$Name : `$_"
         return `$false
     }
 }
 
-# Récupérer la liste des serveurs MCP
+# RÃ©cupÃ©rer la liste des serveurs MCP
 `$pidFiles = Get-ChildItem -Path `$logPath -Filter "*.pid" | Select-Object -ExpandProperty Name
 `$servers = `$pidFiles | ForEach-Object { `$_ -replace "\.pid`$", "" }
 
 if (-not `$servers) {
-    Write-Warning "Aucun serveur MCP en cours d'exécution."
+    Write-Warning "Aucun serveur MCP en cours d'exÃ©cution."
     exit 0
 }
 
-# Arrêter les serveurs MCP
+# ArrÃªter les serveurs MCP
 `$stoppedServers = @()
 foreach (`$server in `$servers) {
-    Write-Host "Arrêt du serveur MCP `$server..." -ForegroundColor Cyan
+    Write-Host "ArrÃªt du serveur MCP `$server..." -ForegroundColor Cyan
     `$success = Stop-MCPServer -Name `$server -LogPath `$logPath
     if (`$success) {
         `$stoppedServers += `$server
     }
 }
 
-# Afficher un résumé
-Write-Host "`nRésumé des serveurs MCP :" -ForegroundColor Cyan
-Write-Host "Serveurs arrêtés : `$(`$stoppedServers -join ", ")" -ForegroundColor Green
+# Afficher un rÃ©sumÃ©
+Write-Host "`nRÃ©sumÃ© des serveurs MCP :" -ForegroundColor Cyan
+Write-Host "Serveurs arrÃªtÃ©s : `$(`$stoppedServers -join ", ")" -ForegroundColor Green
 `$failedServers = `$servers | Where-Object { `$_ -notin `$stoppedServers }
 if (`$failedServers) {
-    Write-Host "Serveurs non arrêtés : `$(`$failedServers -join ", ")" -ForegroundColor Red
+    Write-Host "Serveurs non arrÃªtÃ©s : `$(`$failedServers -join ", ")" -ForegroundColor Red
 }
 "@
 
-# Enregistrer le script d'arrêt
+# Enregistrer le script d'arrÃªt
 $stopScriptContent | Out-File -FilePath $stopScriptPath -Encoding UTF8
-Write-Host "`nScript d'arrêt créé : $stopScriptPath" -ForegroundColor Green
-Write-Host "Pour arrêter les serveurs MCP, exécutez : .\stop-mcp-servers.ps1" -ForegroundColor Yellow
+Write-Host "`nScript d'arrÃªt crÃ©Ã© : $stopScriptPath" -ForegroundColor Green
+Write-Host "Pour arrÃªter les serveurs MCP, exÃ©cutez : .\stop-mcp-servers.ps1" -ForegroundColor Yellow

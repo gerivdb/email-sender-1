@@ -1,14 +1,14 @@
-# Script PowerShell pour configurer et exÃ©cuter l'analyse du journal de bord
+﻿# Script PowerShell pour configurer et exÃƒÂ©cuter l'analyse du journal de bord
 
-# Chemin absolu vers le rÃ©pertoire du projet
+# Chemin absolu vers le rÃƒÂ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $PythonScriptsDir = Join-Path $ProjectDir "scripts\python\journal"
 
 # Fonction pour afficher un message de section
 
-# Script PowerShell pour configurer et exÃ©cuter l'analyse du journal de bord
+# Script PowerShell pour configurer et exÃƒÂ©cuter l'analyse du journal de bord
 
-# Chemin absolu vers le rÃ©pertoire du projet
+# Chemin absolu vers le rÃƒÂ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $PythonScriptsDir = Join-Path $ProjectDir "scripts\python\journal"
 
@@ -39,12 +39,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Ã‰crire dans le fichier journal
+    # Ãƒâ€°crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        # CrÃƒÂ©er le rÃƒÂ©pertoire de logs si nÃƒÂ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -53,7 +53,7 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'Ã©criture dans le journal
+        # Ignorer les erreurs d'ÃƒÂ©criture dans le journal
     }
 }
 try {
@@ -66,91 +66,91 @@ try {
 }
 
 # Afficher un message d'introduction
-Write-Host "Configuration et exÃ©cution de l'analyse du journal de bord" -ForegroundColor Magenta
+Write-Host "Configuration et exÃƒÂ©cution de l'analyse du journal de bord" -ForegroundColor Magenta
 Write-Host "=======================================================" -ForegroundColor Magenta
 Write-Host ""
 
-# 1. Installer les dÃ©pendances Python
-Write-Section "Installation des dÃ©pendances Python"
+# 1. Installer les dÃƒÂ©pendances Python
+Write-Section "Installation des dÃƒÂ©pendances Python"
 pip install numpy pandas matplotlib wordcloud scikit-learn
 
-# 2. CrÃ©er les rÃ©pertoires nÃ©cessaires
-Write-Section "CrÃ©ation des rÃ©pertoires"
+# 2. CrÃƒÂ©er les rÃƒÂ©pertoires nÃƒÂ©cessaires
+Write-Section "CrÃƒÂ©ation des rÃƒÂ©pertoires"
 $AnalysisDir = Join-Path $ProjectDir "docs\journal_de_bord\analysis"
 New-Item -ItemType Directory -Path $AnalysisDir -Force | Out-Null
-Write-Host "RÃ©pertoire d'analyse crÃ©Ã©: $AnalysisDir" -ForegroundColor Green
+Write-Host "RÃƒÂ©pertoire d'analyse crÃƒÂ©ÃƒÂ©: $AnalysisDir" -ForegroundColor Green
 
-# 3. ExÃ©cuter les analyses
-Write-Section "ExÃ©cution des analyses"
+# 3. ExÃƒÂ©cuter les analyses
+Write-Section "ExÃƒÂ©cution des analyses"
 
-Write-Host "Analyse de la frÃ©quence des termes..." -ForegroundColor Cyan
+Write-Host "Analyse de la frÃƒÂ©quence des termes..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --term-frequency
 
-Write-Host "GÃ©nÃ©ration du nuage de mots..." -ForegroundColor Cyan
+Write-Host "GÃƒÂ©nÃƒÂ©ration du nuage de mots..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --word-cloud
 
-Write-Host "Analyse de l'Ã©volution des tags..." -ForegroundColor Cyan
+Write-Host "Analyse de l'ÃƒÂ©volution des tags..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --tag-evolution
 
 Write-Host "Analyse des tendances des sujets..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --topic-trends
 
-Write-Host "Regroupement des entrÃ©es..." -ForegroundColor Cyan
+Write-Host "Regroupement des entrÃƒÂ©es..." -ForegroundColor Cyan
 python "$PythonScriptsDir\journal_analyzer.py" --cluster
 
-# 4. Configurer une tÃ¢che planifiÃ©e pour l'analyse pÃ©riodique
-Write-Section "Configuration de l'analyse pÃ©riodique"
+# 4. Configurer une tÃƒÂ¢che planifiÃƒÂ©e pour l'analyse pÃƒÂ©riodique
+Write-Section "Configuration de l'analyse pÃƒÂ©riodique"
 
-$ScheduleAnalysis = Read-Host "Voulez-vous configurer une analyse pÃ©riodique automatique? (O/N)"
+$ScheduleAnalysis = Read-Host "Voulez-vous configurer une analyse pÃƒÂ©riodique automatique? (O/N)"
 
 if ($ScheduleAnalysis -eq "O" -or $ScheduleAnalysis -eq "o") {
     $TaskName = "Journal_Analysis"
     $TaskPath = "\Journal\"
     
-    # CrÃ©er le dossier de tÃ¢ches s'il n'existe pas
+    # CrÃƒÂ©er le dossier de tÃƒÂ¢ches s'il n'existe pas
     $null = schtasks /query /tn $TaskPath 2>$null
     if ($LASTEXITCODE -ne 0) {
         $null = schtasks /create /tn "$TaskPath\dummy" /tr "cmd.exe" /sc once /st 00:00 /sd 01/01/2099
         $null = schtasks /delete /tn "$TaskPath\dummy" /f
     }
     
-    # CrÃ©er la tÃ¢che planifiÃ©e
+    # CrÃƒÂ©er la tÃƒÂ¢che planifiÃƒÂ©e
     $Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$PythonScriptsDir\journal_analyzer.py`" --all"
     $Trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At 3am
     $Settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopOnIdleEnd -AllowStartIfOnBatteries
     
-    # VÃ©rifier si la tÃ¢che existe dÃ©jÃ 
+    # VÃƒÂ©rifier si la tÃƒÂ¢che existe dÃƒÂ©jÃƒÂ 
     $ExistingTask = Get-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -ErrorAction SilentlyContinue
     
     if ($ExistingTask) {
-        # Mettre Ã  jour la tÃ¢che existante
+        # Mettre ÃƒÂ  jour la tÃƒÂ¢che existante
         Set-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -Action $Action -Trigger $Trigger -Settings $Settings
-        Write-Host "TÃ¢che planifiÃ©e mise Ã  jour: $TaskPath$TaskName" -ForegroundColor Green
+        Write-Host "TÃƒÂ¢che planifiÃƒÂ©e mise ÃƒÂ  jour: $TaskPath$TaskName" -ForegroundColor Green
     } else {
-        # CrÃ©er une nouvelle tÃ¢che
+        # CrÃƒÂ©er une nouvelle tÃƒÂ¢che
         Register-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -Action $Action -Trigger $Trigger -Settings $Settings -User "SYSTEM"
-        Write-Host "TÃ¢che planifiÃ©e crÃ©Ã©e: $TaskPath$TaskName" -ForegroundColor Green
+        Write-Host "TÃƒÂ¢che planifiÃƒÂ©e crÃƒÂ©ÃƒÂ©e: $TaskPath$TaskName" -ForegroundColor Green
     }
     
-    Write-Host "L'analyse sera exÃ©cutÃ©e automatiquement chaque dimanche Ã  3h du matin." -ForegroundColor Green
+    Write-Host "L'analyse sera exÃƒÂ©cutÃƒÂ©e automatiquement chaque dimanche ÃƒÂ  3h du matin." -ForegroundColor Green
 } else {
-    Write-Host "Configuration de l'analyse pÃ©riodique ignorÃ©e." -ForegroundColor Yellow
+    Write-Host "Configuration de l'analyse pÃƒÂ©riodique ignorÃƒÂ©e." -ForegroundColor Yellow
 }
 
 # Afficher un message de conclusion
-Write-Section "Analyse terminÃ©e"
-Write-Host "L'analyse du journal de bord a Ã©tÃ© exÃ©cutÃ©e avec succÃ¨s!" -ForegroundColor Green
+Write-Section "Analyse terminÃƒÂ©e"
+Write-Host "L'analyse du journal de bord a ÃƒÂ©tÃƒÂ© exÃƒÂ©cutÃƒÂ©e avec succÃƒÂ¨s!" -ForegroundColor Green
 Write-Host ""
-Write-Host "RÃ©sultats sauvegardÃ©s dans: $AnalysisDir"
+Write-Host "RÃƒÂ©sultats sauvegardÃƒÂ©s dans: $AnalysisDir"
 Write-Host ""
-Write-Host "Vous pouvez exÃ©cuter des analyses spÃ©cifiques avec:"
+Write-Host "Vous pouvez exÃƒÂ©cuter des analyses spÃƒÂ©cifiques avec:"
 Write-Host "  python development/scripts/python/journal/journal_analyzer.py --term-frequency"
 Write-Host "  python development/scripts/python/journal/journal_analyzer.py --word-cloud"
 Write-Host "  python development/scripts/python/journal/journal_analyzer.py --tag-evolution"
 Write-Host "  python development/scripts/python/journal/journal_analyzer.py --topic-trends"
 Write-Host "  python development/scripts/python/journal/journal_analyzer.py --cluster"
 Write-Host ""
-Write-Host "Ou toutes les analyses Ã  la fois:"
+Write-Host "Ou toutes les analyses ÃƒÂ  la fois:"
 Write-Host "  python development/scripts/python/journal/journal_analyzer.py --all"
 
 }
@@ -160,5 +160,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+    Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }

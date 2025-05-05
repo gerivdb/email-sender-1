@@ -1,40 +1,40 @@
-<#
+﻿<#
 .SYNOPSIS
     Analyse des scripts du projet
 .DESCRIPTION
-    Ce script analyse les rÃ©sultats de l'inventaire des scripts et propose
-    une organisation basÃ©e sur leur contenu et leur fonction.
+    Ce script analyse les rÃƒÂ©sultats de l'inventaire des scripts et propose
+    une organisation basÃƒÂ©e sur leur contenu et leur fonction.
 .PARAMETER InventoryPath
-    Chemin du fichier d'inventaire (par dÃ©faut : ..\D)
+    Chemin du fichier d'inventaire (par dÃƒÂ©faut : ..\D)
 .PARAMETER OutputPath
-    Chemin du fichier de sortie (par dÃ©faut : ..\D)
+    Chemin du fichier de sortie (par dÃƒÂ©faut : ..\D)
 .PARAMETER Verbose
-    Affiche des informations dÃ©taillÃ©es
+    Affiche des informations dÃƒÂ©taillÃƒÂ©es
 .EXAMPLE
     .\Analyze-Scripts.ps1
-    Analyse les scripts Ã  partir du fichier d'inventaire par dÃ©faut
+    Analyse les scripts ÃƒÂ  partir du fichier d'inventaire par dÃƒÂ©faut
 .EXAMPLE
     .\Analyze-Scripts.ps1 -InventoryPath custom-inventory.json -OutputPath custom-analysis.json
-    Analyse les scripts Ã  partir d'un fichier d'inventaire personnalisÃ©
+    Analyse les scripts ÃƒÂ  partir d'un fichier d'inventaire personnalisÃƒÂ©
 
 <#
 .SYNOPSIS
     Analyse des scripts du projet
 .DESCRIPTION
-    Ce script analyse les rÃ©sultats de l'inventaire des scripts et propose
-    une organisation basÃ©e sur leur contenu et leur fonction.
+    Ce script analyse les rÃƒÂ©sultats de l'inventaire des scripts et propose
+    une organisation basÃƒÂ©e sur leur contenu et leur fonction.
 .PARAMETER InventoryPath
-    Chemin du fichier d'inventaire (par dÃ©faut : ..\D)
+    Chemin du fichier d'inventaire (par dÃƒÂ©faut : ..\D)
 .PARAMETER OutputPath
-    Chemin du fichier de sortie (par dÃ©faut : ..\D)
+    Chemin du fichier de sortie (par dÃƒÂ©faut : ..\D)
 .PARAMETER Verbose
-    Affiche des informations dÃ©taillÃ©es
+    Affiche des informations dÃƒÂ©taillÃƒÂ©es
 .EXAMPLE
     .\Analyze-Scripts.ps1
-    Analyse les scripts Ã  partir du fichier d'inventaire par dÃ©faut
+    Analyse les scripts ÃƒÂ  partir du fichier d'inventaire par dÃƒÂ©faut
 .EXAMPLE
     .\Analyze-Scripts.ps1 -InventoryPath custom-inventory.json -OutputPath custom-analysis.json
-    Analyse les scripts Ã  partir d'un fichier d'inventaire personnalisÃ©
+    Analyse les scripts ÃƒÂ  partir d'un fichier d'inventaire personnalisÃƒÂ©
 #>
 
 param (
@@ -63,12 +63,12 @@ function Write-Log {
         "DEBUG" { Write-Verbose $logEntry }
     }
     
-    # Ã‰crire dans le fichier journal
+    # Ãƒâ€°crire dans le fichier journal
     try {
         $logDir = Split-Path -Path $PSScriptRoot -Parent
         $logPath = Join-Path -Path $logDir -ChildPath "logs\$(Get-Date -Format 'yyyy-MM-dd').log"
         
-        # CrÃ©er le rÃ©pertoire de logs si nÃ©cessaire
+        # CrÃƒÂ©er le rÃƒÂ©pertoire de logs si nÃƒÂ©cessaire
         $logDirPath = Split-Path -Path $logPath -Parent
         if (-not (Test-Path -Path $logDirPath -PathType Container)) {
             New-Item -Path $logDirPath -ItemType Directory -Force | Out-Null
@@ -77,21 +77,21 @@ function Write-Log {
         Add-Content -Path $logPath -Value $logEntry -ErrorAction SilentlyContinue
     }
     catch {
-        # Ignorer les erreurs d'Ã©criture dans le journal
+        # Ignorer les erreurs d'ÃƒÂ©criture dans le journal
     }
 }
 try {
     # Script principal
 
 
-# CrÃ©er le dossier de sortie s'il n'existe pas
+# CrÃƒÂ©er le dossier de sortie s'il n'existe pas
 $OutputDir = Split-Path -Path $OutputPath -Parent
 if (-not (Test-Path -Path $OutputDir)) {
     New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-    Write-Host "Dossier crÃ©Ã©: $OutputDir" -ForegroundColor Green
+    Write-Host "Dossier crÃƒÂ©ÃƒÂ©: $OutputDir" -ForegroundColor Green
 }
 
-# Fonction pour dÃ©terminer la catÃ©gorie d'un script en fonction de son contenu et de son chemin
+# Fonction pour dÃƒÂ©terminer la catÃƒÂ©gorie d'un script en fonction de son contenu et de son chemin
 function Get-ScriptCategory {
     param (
         [string]$Path,
@@ -99,7 +99,7 @@ function Get-ScriptCategory {
         [string]$ScriptType
     )
 
-    # DÃ©finir les catÃ©gories et les mots-clÃ©s associÃ©s
+    # DÃƒÂ©finir les catÃƒÂ©gories et les mots-clÃƒÂ©s associÃƒÂ©s
     $Categories = @{
         "Maintenance" = @("maintenance", "cleanup", "fix", "repair", "update", "clean", "remove", "delete")
         "Setup" = @("setup", "install", "configure", "config", "installation", "configuration")
@@ -107,7 +107,7 @@ function Get-ScriptCategory {
         "Utils" = @("util", "utility", "helper", "tool", "fonction", "function")
         "API" = @("api", "rest", "http", "endpoint", "request", "response")
         "Documentation" = @("doc", "documentation", "readme", "guide", "manuel", "manual")
-        "Roadmap" = @("roadmap", "plan", "task", "tÃ¢che", "planning")
+        "Roadmap" = @("roadmap", "plan", "task", "tÃƒÂ¢che", "planning")
         "Journal" = @("journal", "log", "entry", "rag", "rapport", "report")
         "MCP" = @("mcp", "model", "context", "protocol", "modelcontextprotocol")
         "N8N" = @("n8n", "workflow", "node", "nodered")
@@ -119,7 +119,7 @@ function Get-ScriptCategory {
         "Database" = @("database", "db", "sql", "query", "base de donnees")
     }
 
-    # Initialiser le score pour chaque catÃ©gorie
+    # Initialiser le score pour chaque catÃƒÂ©gorie
     $CategoryScores = @{}
     foreach ($Category in $Categories.Keys) {
         $CategoryScores[$Category] = 0
@@ -144,10 +144,10 @@ function Get-ScriptCategory {
         }
     }
 
-    # DÃ©terminer la catÃ©gorie avec le score le plus Ã©levÃ©
+    # DÃƒÂ©terminer la catÃƒÂ©gorie avec le score le plus ÃƒÂ©levÃƒÂ©
     $BestCategory = $CategoryScores.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 1
 
-    # Si aucune catÃ©gorie n'a de score, utiliser "Divers"
+    # Si aucune catÃƒÂ©gorie n'a de score, utiliser "Divers"
     if ($BestCategory.Value -eq 0) {
         return "Divers"
     }
@@ -155,7 +155,7 @@ function Get-ScriptCategory {
     return $BestCategory.Name
 }
 
-# Fonction pour dÃ©terminer la sous-catÃ©gorie d'un script en fonction de son contenu et de son chemin
+# Fonction pour dÃƒÂ©terminer la sous-catÃƒÂ©gorie d'un script en fonction de son contenu et de son chemin
 function Get-ScriptSubCategory {
     param (
         [string]$Category,
@@ -164,7 +164,7 @@ function Get-ScriptSubCategory {
         [string]$ScriptType
     )
 
-    # DÃ©finir les sous-catÃ©gories pour chaque catÃ©gorie
+    # DÃƒÂ©finir les sous-catÃƒÂ©gories pour chaque catÃƒÂ©gorie
     $SubCategories = @{
         "Maintenance" = @{
             "Repository" = @("repo", "repository", "git", "organize")
@@ -195,12 +195,12 @@ function Get-ScriptSubCategory {
         }
     }
 
-    # Si la catÃ©gorie n'a pas de sous-catÃ©gories dÃ©finies, retourner "General"
+    # Si la catÃƒÂ©gorie n'a pas de sous-catÃƒÂ©gories dÃƒÂ©finies, retourner "General"
     if (-not $SubCategories.ContainsKey($Category)) {
         return "General"
     }
 
-    # Initialiser le score pour chaque sous-catÃ©gorie
+    # Initialiser le score pour chaque sous-catÃƒÂ©gorie
     $SubCategoryScores = @{}
     foreach ($SubCategory in $SubCategories[$Category].Keys) {
         $SubCategoryScores[$SubCategory] = 0
@@ -225,10 +225,10 @@ function Get-ScriptSubCategory {
         }
     }
 
-    # DÃ©terminer la sous-catÃ©gorie avec le score le plus Ã©levÃ©
+    # DÃƒÂ©terminer la sous-catÃƒÂ©gorie avec le score le plus ÃƒÂ©levÃƒÂ©
     $BestSubCategory = $SubCategoryScores.GetEnumerator() | Sort-Object -Property Value -Descending | Select-Object -First 1
 
-    # Si aucune sous-catÃ©gorie n'a de score, utiliser "General"
+    # Si aucune sous-catÃƒÂ©gorie n'a de score, utiliser "General"
     if ($BestSubCategory.Value -eq 0) {
         return "General"
     }
@@ -236,7 +236,7 @@ function Get-ScriptSubCategory {
     return $BestSubCategory.Name
 }
 
-# Fonction pour dÃ©terminer le dossier cible pour un script
+# Fonction pour dÃƒÂ©terminer le dossier cible pour un script
 function Get-TargetFolder {
     param (
         [string]$Category,
@@ -259,24 +259,24 @@ function Get-TargetFolder {
     }
 }
 
-# Afficher la banniÃ¨re
+# Afficher la banniÃƒÂ¨re
 Write-Host "=== Analyse des scripts ===" -ForegroundColor Cyan
 Write-Host "Fichier d'inventaire: $InventoryPath" -ForegroundColor Yellow
 Write-Host "Fichier de sortie: $OutputPath" -ForegroundColor Yellow
 Write-Host ""
 
-# VÃ©rifier si le fichier d'inventaire existe
+# VÃƒÂ©rifier si le fichier d'inventaire existe
 if (-not (Test-Path -Path $InventoryPath)) {
-    Write-Host "Fichier d'inventaire non trouvÃ©: $InventoryPath" -ForegroundColor Red
+    Write-Host "Fichier d'inventaire non trouvÃƒÂ©: $InventoryPath" -ForegroundColor Red
     exit 1
 }
 
 # Charger l'inventaire
 $Inventory = Get-Content -Path $InventoryPath -Raw | ConvertFrom-Json
 
-Write-Host "Nombre de scripts Ã  analyser: $($Inventory.TotalScripts)" -ForegroundColor Cyan
+Write-Host "Nombre de scripts ÃƒÂ  analyser: $($Inventory.TotalScripts)" -ForegroundColor Cyan
 
-# CrÃ©er un tableau pour stocker les rÃ©sultats de l'analyse
+# CrÃƒÂ©er un tableau pour stocker les rÃƒÂ©sultats de l'analyse
 $AnalysisResults = @()
 
 # Traiter chaque script
@@ -291,14 +291,14 @@ foreach ($Script in $Inventory.Scripts) {
     # Lire le contenu du script
     $Content = Get-Content -Path $Script.Path -Raw -ErrorAction SilentlyContinue
 
-    # DÃ©terminer la catÃ©gorie et la sous-catÃ©gorie du script
+    # DÃƒÂ©terminer la catÃƒÂ©gorie et la sous-catÃƒÂ©gorie du script
     $Category = Get-ScriptCategory -Path $Script.Path -Content $Content -ScriptType $Script.Type
     $SubCategory = Get-ScriptSubCategory -Category $Category -Path $Script.Path -Content $Content -ScriptType $Script.Type
 
-    # DÃ©terminer le dossier cible
+    # DÃƒÂ©terminer le dossier cible
     $TargetFolder = Get-TargetFolder -Category $Category -SubCategory $SubCategory -ScriptType $Script.Type
 
-    # CrÃ©er un objet avec les rÃ©sultats de l'analyse
+    # CrÃƒÂ©er un objet avec les rÃƒÂ©sultats de l'analyse
     $AnalysisResult = [PSCustomObject]@{
         Path = $Script.Path
         Name = $Script.Name
@@ -316,7 +316,7 @@ foreach ($Script in $Inventory.Scripts) {
 
 Write-Progress -Activity "Analyse des scripts" -Completed
 
-# CrÃ©er un objet avec les rÃ©sultats de l'analyse
+# CrÃƒÂ©er un objet avec les rÃƒÂ©sultats de l'analyse
 $Analysis = [PSCustomObject]@{
     Timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     TotalScripts = $AnalysisResults.Count
@@ -342,22 +342,22 @@ $Analysis = [PSCustomObject]@{
 $Analysis | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath
 
 Write-Host ""
-Write-Host "=== Analyse terminÃ©e ===" -ForegroundColor Green
+Write-Host "=== Analyse terminÃƒÂ©e ===" -ForegroundColor Green
 Write-Host "Nombre total de scripts: $($Analysis.TotalScripts)" -ForegroundColor Cyan
 
-# Afficher les statistiques par catÃ©gorie
+# Afficher les statistiques par catÃƒÂ©gorie
 Write-Host ""
-Write-Host "Statistiques par catÃ©gorie:" -ForegroundColor Yellow
+Write-Host "Statistiques par catÃƒÂ©gorie:" -ForegroundColor Yellow
 foreach ($CategoryStat in $Analysis.ScriptsByCategory) {
     Write-Host "- $($CategoryStat.Category): $($CategoryStat.Count) script(s)" -ForegroundColor Cyan
 }
 
-# Afficher le nombre de scripts Ã  dÃ©placer
+# Afficher le nombre de scripts ÃƒÂ  dÃƒÂ©placer
 Write-Host ""
-Write-Host "Nombre de scripts Ã  dÃ©placer: $($Analysis.ScriptsToMove)" -ForegroundColor Magenta
+Write-Host "Nombre de scripts ÃƒÂ  dÃƒÂ©placer: $($Analysis.ScriptsToMove)" -ForegroundColor Magenta
 
 Write-Host ""
-Write-Host "RÃ©sultats enregistrÃ©s dans: $OutputPath" -ForegroundColor Green
+Write-Host "RÃƒÂ©sultats enregistrÃƒÂ©s dans: $OutputPath" -ForegroundColor Green
 
 
 }
@@ -367,5 +367,5 @@ catch {
 }
 finally {
     # Nettoyage final
-    Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
+    Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }

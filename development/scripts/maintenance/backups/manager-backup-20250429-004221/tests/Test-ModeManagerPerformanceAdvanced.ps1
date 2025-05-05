@@ -1,21 +1,21 @@
-# Tests de performance avancés pour le mode manager
+﻿# Tests de performance avancÃ©s pour le mode manager
 
-# Définir le chemin du script à tester
+# DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
 
-# Vérifier que le script existe
+# VÃ©rifier que le script existe
 if (-not (Test-Path -Path $scriptPath)) {
-    Write-Error "Le script mode-manager.ps1 est introuvable à l'emplacement : $scriptPath"
+    Write-Error "Le script mode-manager.ps1 est introuvable Ã  l'emplacement : $scriptPath"
     exit 1
 }
 
-# Créer un répertoire temporaire pour les tests
+# CrÃ©er un rÃ©pertoire temporaire pour les tests
 $testDir = Join-Path -Path $PSScriptRoot -ChildPath "temp"
 if (-not (Test-Path -Path $testDir)) {
     New-Item -Path $testDir -ItemType Directory -Force | Out-Null
 }
 
-# Fonction pour mesurer le temps d'exécution
+# Fonction pour mesurer le temps d'exÃ©cution
 function Measure-ExecutionTime {
     param (
         [ScriptBlock]$ScriptBlock
@@ -27,7 +27,7 @@ function Measure-ExecutionTime {
     return $stopwatch.ElapsedMilliseconds
 }
 
-# Fonction pour mesurer l'utilisation de la mémoire
+# Fonction pour mesurer l'utilisation de la mÃ©moire
 function Measure-MemoryUsage {
     param (
         [ScriptBlock]$ScriptBlock
@@ -41,7 +41,7 @@ function Measure-MemoryUsage {
     return ($finalMemory - $initialMemory) / 1MB
 }
 
-# Fonction pour créer un grand fichier de roadmap
+# Fonction pour crÃ©er un grand fichier de roadmap
 function Create-LargeRoadmap {
     param (
         [string]$FilePath,
@@ -51,15 +51,15 @@ function Create-LargeRoadmap {
     $content = "# Grand fichier de roadmap pour tests de performance`n`n"
     
     for ($i = 1; $i -le $TaskCount; $i++) {
-        $content += "## Tâche $i`n`n"
+        $content += "## TÃ¢che $i`n`n"
         
         for ($j = 1; $j -le 5; $j++) {
-            $content += "### Sous-tâche $i.$j`n`n"
+            $content += "### Sous-tÃ¢che $i.$j`n`n"
             
             for ($k = 1; $k -le 3; $k++) {
-                $content += "- [ ] Élément $i.$j.$k`n"
-                $content += "  - Description de l'élément $i.$j.$k`n"
-                $content += "  - Détails supplémentaires pour l'élément $i.$j.$k`n`n"
+                $content += "- [ ] Ã‰lÃ©ment $i.$j.$k`n"
+                $content += "  - Description de l'Ã©lÃ©ment $i.$j.$k`n"
+                $content += "  - DÃ©tails supplÃ©mentaires pour l'Ã©lÃ©ment $i.$j.$k`n`n"
             }
         }
     }
@@ -68,7 +68,7 @@ function Create-LargeRoadmap {
     return $FilePath
 }
 
-# Fonction pour créer une configuration avec de nombreux modes
+# Fonction pour crÃ©er une configuration avec de nombreux modes
 function Create-ComplexConfig {
     param (
         [string]$FilePath,
@@ -96,7 +96,7 @@ function Create-ComplexConfig {
         }
     }
     
-    # Ajouter des modes supplémentaires
+    # Ajouter des modes supplÃ©mentaires
     for ($i = 1; $i -le $ModeCount; $i++) {
         $modeName = "MODE$i"
         $config.Modes[$modeName] = @{
@@ -116,7 +116,7 @@ function Create-ComplexConfig {
         $workflowName = "Workflow$i"
         $modes = @()
         
-        # Ajouter des modes aléatoires au workflow
+        # Ajouter des modes alÃ©atoires au workflow
         $modeCount = Get-Random -Minimum 3 -Maximum 10
         $allModes = @($standardModes) + (1..$ModeCount | ForEach-Object { "MODE$_" })
         
@@ -136,7 +136,7 @@ function Create-ComplexConfig {
     return $FilePath
 }
 
-# Créer des scripts de mode simulés
+# CrÃ©er des scripts de mode simulÃ©s
 function Create-MockScripts {
     param (
         [string]$TestDir,
@@ -145,7 +145,7 @@ function Create-MockScripts {
     
     $mockScripts = @()
     
-    # Créer les scripts de mode standard
+    # CrÃ©er les scripts de mode standard
     $standardModes = @("check", "gran", "debug", "test")
     foreach ($mode in $standardModes) {
         $mockScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "mock-$mode-mode.ps1"
@@ -167,14 +167,14 @@ param (
     [string]`$WorkflowName
 )
 
-Write-Host "Mode $($mode.ToUpper()) exécuté avec les paramètres suivants :"
+Write-Host "Mode $($mode.ToUpper()) exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : `$FilePath"
 Write-Host "TaskIdentifier : `$TaskIdentifier"
 Write-Host "Force : `$Force"
 Write-Host "ConfigPath : `$ConfigPath"
 Write-Host "WorkflowName : `$WorkflowName"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$TestDir" -ChildPath "$mode-mode-output.txt"
 @"
 FilePath : `$FilePath
@@ -193,7 +193,7 @@ exit 0
         $mockScripts += $mockScriptPath
     }
     
-    # Créer des scripts de mode supplémentaires
+    # CrÃ©er des scripts de mode supplÃ©mentaires
     for ($i = 1; $i -le $ModeCount; $i++) {
         $mockScriptPath = Join-Path -Path $PSScriptRoot -ChildPath "mock-mode$i-mode.ps1"
         $mockScriptContent = @"
@@ -223,7 +223,7 @@ param (
     [string]`$Param3
 )
 
-Write-Host "Mode MODE$i exécuté avec les paramètres suivants :"
+Write-Host "Mode MODE$i exÃ©cutÃ© avec les paramÃ¨tres suivants :"
 Write-Host "FilePath : `$FilePath"
 Write-Host "TaskIdentifier : `$TaskIdentifier"
 Write-Host "Force : `$Force"
@@ -233,7 +233,7 @@ Write-Host "Param1 : `$Param1"
 Write-Host "Param2 : `$Param2"
 Write-Host "Param3 : `$Param3"
 
-# Créer un fichier de sortie pour vérifier que le script a été exécuté
+# CrÃ©er un fichier de sortie pour vÃ©rifier que le script a Ã©tÃ© exÃ©cutÃ©
 `$outputPath = Join-Path -Path "$TestDir" -ChildPath "mode$i-output.txt"
 @"
 FilePath : `$FilePath
@@ -258,15 +258,15 @@ exit 0
     return $mockScripts
 }
 
-# Créer un grand fichier de roadmap
+# CrÃ©er un grand fichier de roadmap
 $largeRoadmapPath = Join-Path -Path $testDir -ChildPath "large-roadmap.md"
 Create-LargeRoadmap -FilePath $largeRoadmapPath -TaskCount 100
 
-# Créer une configuration complexe
+# CrÃ©er une configuration complexe
 $complexConfigPath = Join-Path -Path $testDir -ChildPath "complex-config.json"
 Create-ComplexConfig -FilePath $complexConfigPath -ModeCount 20
 
-# Créer des scripts de mode simulés
+# CrÃ©er des scripts de mode simulÃ©s
 $mockScripts = Create-MockScripts -TestDir $testDir -ModeCount 20
 
 # Test 1: Performance avec un grand fichier de roadmap
@@ -274,11 +274,11 @@ Write-Host "Test 1: Performance avec un grand fichier de roadmap" -ForegroundCol
 $executionTime = Measure-ExecutionTime {
     & $scriptPath -Mode "CHECK" -FilePath $largeRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $complexConfigPath
 }
-Write-Host "Temps d'exécution avec un grand fichier de roadmap : $executionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution avec un grand fichier de roadmap : $executionTime ms" -ForegroundColor Cyan
 if ($executionTime -lt 5000) {
-    Write-Host "Test 1 réussi: Le script a traité un grand fichier de roadmap en moins de 5 secondes" -ForegroundColor Green
+    Write-Host "Test 1 rÃ©ussi: Le script a traitÃ© un grand fichier de roadmap en moins de 5 secondes" -ForegroundColor Green
 } else {
-    Write-Host "Test 1 échoué: Le script a pris plus de 5 secondes pour traiter un grand fichier de roadmap" -ForegroundColor Red
+    Write-Host "Test 1 Ã©chouÃ©: Le script a pris plus de 5 secondes pour traiter un grand fichier de roadmap" -ForegroundColor Red
 }
 
 # Test 2: Performance avec de nombreux modes
@@ -286,27 +286,27 @@ Write-Host "Test 2: Performance avec de nombreux modes" -ForegroundColor Cyan
 $memoryUsage = Measure-MemoryUsage {
     & $scriptPath -ListModes -ConfigPath $complexConfigPath
 }
-Write-Host "Utilisation de la mémoire avec de nombreux modes : $memoryUsage MB" -ForegroundColor Cyan
+Write-Host "Utilisation de la mÃ©moire avec de nombreux modes : $memoryUsage MB" -ForegroundColor Cyan
 if ($memoryUsage -lt 50) {
-    Write-Host "Test 2 réussi: Le script a utilisé moins de 50 MB de mémoire avec de nombreux modes" -ForegroundColor Green
+    Write-Host "Test 2 rÃ©ussi: Le script a utilisÃ© moins de 50 MB de mÃ©moire avec de nombreux modes" -ForegroundColor Green
 } else {
-    Write-Host "Test 2 échoué: Le script a utilisé plus de 50 MB de mémoire avec de nombreux modes" -ForegroundColor Red
+    Write-Host "Test 2 Ã©chouÃ©: Le script a utilisÃ© plus de 50 MB de mÃ©moire avec de nombreux modes" -ForegroundColor Red
 }
 
-# Test 3: Performance avec une chaîne de modes
-Write-Host "Test 3: Performance avec une chaîne de modes" -ForegroundColor Cyan
+# Test 3: Performance avec une chaÃ®ne de modes
+Write-Host "Test 3: Performance avec une chaÃ®ne de modes" -ForegroundColor Cyan
 $executionTime = Measure-ExecutionTime {
     & $scriptPath -Chain "CHECK,GRAN,TEST" -FilePath $largeRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $complexConfigPath
 }
-Write-Host "Temps d'exécution avec une chaîne de modes : $executionTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution avec une chaÃ®ne de modes : $executionTime ms" -ForegroundColor Cyan
 if ($executionTime -lt 10000) {
-    Write-Host "Test 3 réussi: Le script a exécuté une chaîne de modes en moins de 10 secondes" -ForegroundColor Green
+    Write-Host "Test 3 rÃ©ussi: Le script a exÃ©cutÃ© une chaÃ®ne de modes en moins de 10 secondes" -ForegroundColor Green
 } else {
-    Write-Host "Test 3 échoué: Le script a pris plus de 10 secondes pour exécuter une chaîne de modes" -ForegroundColor Red
+    Write-Host "Test 3 Ã©chouÃ©: Le script a pris plus de 10 secondes pour exÃ©cuter une chaÃ®ne de modes" -ForegroundColor Red
 }
 
-# Test 4: Performance avec des tâches spécifiques
-Write-Host "Test 4: Performance avec des tâches spécifiques" -ForegroundColor Cyan
+# Test 4: Performance avec des tÃ¢ches spÃ©cifiques
+Write-Host "Test 4: Performance avec des tÃ¢ches spÃ©cifiques" -ForegroundColor Cyan
 $executionTimes = @()
 for ($i = 1; $i -le 5; $i++) {
     $taskId = "$i.1.1"
@@ -314,34 +314,34 @@ for ($i = 1; $i -le 5; $i++) {
         & $scriptPath -Mode "CHECK" -FilePath $largeRoadmapPath -TaskIdentifier $taskId -ConfigPath $complexConfigPath
     }
     $executionTimes += $executionTime
-    Write-Host "Temps d'exécution pour la tâche $taskId : $executionTime ms" -ForegroundColor Cyan
+    Write-Host "Temps d'exÃ©cution pour la tÃ¢che $taskId : $executionTime ms" -ForegroundColor Cyan
 }
 $averageTime = ($executionTimes | Measure-Object -Average).Average
-Write-Host "Temps d'exécution moyen pour des tâches spécifiques : $averageTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution moyen pour des tÃ¢ches spÃ©cifiques : $averageTime ms" -ForegroundColor Cyan
 if ($averageTime -lt 2000) {
-    Write-Host "Test 4 réussi: Le script a traité des tâches spécifiques en moins de 2 secondes en moyenne" -ForegroundColor Green
+    Write-Host "Test 4 rÃ©ussi: Le script a traitÃ© des tÃ¢ches spÃ©cifiques en moins de 2 secondes en moyenne" -ForegroundColor Green
 } else {
-    Write-Host "Test 4 échoué: Le script a pris plus de 2 secondes en moyenne pour traiter des tâches spécifiques" -ForegroundColor Red
+    Write-Host "Test 4 Ã©chouÃ©: Le script a pris plus de 2 secondes en moyenne pour traiter des tÃ¢ches spÃ©cifiques" -ForegroundColor Red
 }
 
-# Test 5: Performance avec des exécutions répétées
-Write-Host "Test 5: Performance avec des exécutions répétées" -ForegroundColor Cyan
+# Test 5: Performance avec des exÃ©cutions rÃ©pÃ©tÃ©es
+Write-Host "Test 5: Performance avec des exÃ©cutions rÃ©pÃ©tÃ©es" -ForegroundColor Cyan
 $executionTimes = @()
 for ($i = 1; $i -le 5; $i++) {
     $executionTime = Measure-ExecutionTime {
         & $scriptPath -Mode "CHECK" -FilePath $largeRoadmapPath -TaskIdentifier "1.1.1" -ConfigPath $complexConfigPath
     }
     $executionTimes += $executionTime
-    Write-Host "Temps d'exécution pour l'exécution $i : $executionTime ms" -ForegroundColor Cyan
+    Write-Host "Temps d'exÃ©cution pour l'exÃ©cution $i : $executionTime ms" -ForegroundColor Cyan
 }
 $firstTime = $executionTimes[0]
 $averageTime = ($executionTimes | Select-Object -Skip 1 | Measure-Object -Average).Average
-Write-Host "Temps d'exécution pour la première exécution : $firstTime ms" -ForegroundColor Cyan
-Write-Host "Temps d'exécution moyen pour les exécutions suivantes : $averageTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution pour la premiÃ¨re exÃ©cution : $firstTime ms" -ForegroundColor Cyan
+Write-Host "Temps d'exÃ©cution moyen pour les exÃ©cutions suivantes : $averageTime ms" -ForegroundColor Cyan
 if ($averageTime -lt $firstTime) {
-    Write-Host "Test 5 réussi: Les exécutions suivantes sont plus rapides que la première exécution" -ForegroundColor Green
+    Write-Host "Test 5 rÃ©ussi: Les exÃ©cutions suivantes sont plus rapides que la premiÃ¨re exÃ©cution" -ForegroundColor Green
 } else {
-    Write-Host "Test 5 échoué: Les exécutions suivantes ne sont pas plus rapides que la première exécution" -ForegroundColor Red
+    Write-Host "Test 5 Ã©chouÃ©: Les exÃ©cutions suivantes ne sont pas plus rapides que la premiÃ¨re exÃ©cution" -ForegroundColor Red
 }
 
 # Nettoyer les fichiers temporaires
@@ -356,4 +356,4 @@ foreach ($script in $mockScripts) {
     }
 }
 
-Write-Host "Tests terminés." -ForegroundColor Cyan
+Write-Host "Tests terminÃ©s." -ForegroundColor Cyan

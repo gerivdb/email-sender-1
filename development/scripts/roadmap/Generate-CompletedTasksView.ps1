@@ -1,5 +1,5 @@
-# Generate-CompletedTasksView.ps1
-# Script pour générer une vue des tâches récemment terminées
+﻿# Generate-CompletedTasksView.ps1
+# Script pour gÃ©nÃ©rer une vue des tÃ¢ches rÃ©cemment terminÃ©es
 
 [CmdletBinding()]
 param (
@@ -35,7 +35,7 @@ param (
     [switch]$Force
 )
 
-# Fonction pour écrire des messages de log
+# Fonction pour Ã©crire des messages de log
 function Write-Log {
     [CmdletBinding()]
     param (
@@ -58,26 +58,26 @@ function Write-Log {
     }
 }
 
-# Fonction pour vérifier si Python est installé
+# Fonction pour vÃ©rifier si Python est installÃ©
 function Test-PythonInstalled {
     try {
         $pythonVersion = python --version 2>&1
         if ($pythonVersion -match "Python (\d+\.\d+\.\d+)") {
-            Write-Log "Python $($Matches[1]) détecté." -Level Info
+            Write-Log "Python $($Matches[1]) dÃ©tectÃ©." -Level Info
             return $true
         }
         else {
-            Write-Log "Python n'est pas correctement installé." -Level Error
+            Write-Log "Python n'est pas correctement installÃ©." -Level Error
             return $false
         }
     }
     catch {
-        Write-Log "Python n'est pas installé ou n'est pas dans le PATH." -Level Error
+        Write-Log "Python n'est pas installÃ© ou n'est pas dans le PATH." -Level Error
         return $false
     }
 }
 
-# Fonction pour vérifier si les packages Python nécessaires sont installés
+# Fonction pour vÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
 function Test-PythonPackages {
     $requiredPackages = @("chromadb", "json", "datetime")
     $missingPackages = @()
@@ -98,24 +98,24 @@ function Test-PythonPackages {
                 Write-Log "Installation du package $package..." -Level Info
                 python -m pip install $package
                 if ($LASTEXITCODE -ne 0) {
-                    Write-Log "Échec de l'installation du package $package." -Level Error
+                    Write-Log "Ã‰chec de l'installation du package $package." -Level Error
                     return $false
                 }
             }
-            Write-Log "Tous les packages ont été installés avec succès." -Level Success
+            Write-Log "Tous les packages ont Ã©tÃ© installÃ©s avec succÃ¨s." -Level Success
             return $true
         }
         else {
-            Write-Log "Installation des packages annulée. Le script ne peut pas continuer." -Level Error
+            Write-Log "Installation des packages annulÃ©e. Le script ne peut pas continuer." -Level Error
             return $false
         }
     }
     
-    Write-Log "Tous les packages Python requis sont installés." -Level Success
+    Write-Log "Tous les packages Python requis sont installÃ©s." -Level Success
     return $true
 }
 
-# Fonction pour créer un script Python temporaire pour générer la vue des tâches récemment terminées
+# Fonction pour crÃ©er un script Python temporaire pour gÃ©nÃ©rer la vue des tÃ¢ches rÃ©cemment terminÃ©es
 function New-CompletedTasksViewScript {
     [CmdletBinding()]
     param (
@@ -152,7 +152,7 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 
 def main():
-    # Paramètres
+    # ParamÃ¨tres
     chroma_db_path = r'$ChromaDbPath'
     collection_name = '$CollectionName'
     history_path = r'$HistoryPath'
@@ -161,7 +161,7 @@ def main():
     section_filter = r'$SectionFilter'
     include_metadata = $($IncludeMetadata.ToString().ToLower())
     
-    # Vérifier si le fichier d'historique existe
+    # VÃ©rifier si le fichier d'historique existe
     if not os.path.exists(history_path):
         print(f"Le fichier d'historique {history_path} n'existe pas.")
         sys.exit(1)
@@ -178,10 +178,10 @@ def main():
     try:
         client = chromadb.PersistentClient(path=chroma_db_path)
     except Exception as e:
-        print(f"Erreur lors de la connexion à la base Chroma: {e}")
+        print(f"Erreur lors de la connexion Ã  la base Chroma: {e}")
         sys.exit(1)
     
-    # Vérifier si la collection existe
+    # VÃ©rifier si la collection existe
     try:
         existing_collections = client.list_collections()
         collection_exists = any(c.name == collection_name for c in existing_collections)
@@ -190,27 +190,27 @@ def main():
             print(f"La collection {collection_name} n'existe pas dans la base Chroma.")
             sys.exit(1)
         
-        # Récupérer la collection
+        # RÃ©cupÃ©rer la collection
         collection = client.get_collection(name=collection_name)
         
         # Calculer la date limite
         cutoff_date = datetime.now() - timedelta(days=days_back)
         
-        # Trouver les tâches récemment terminées
+        # Trouver les tÃ¢ches rÃ©cemment terminÃ©es
         recently_completed_tasks = []
         
         for task_id, entries in history_data.get("tasks", {}).items():
-            # Trier les entrées par date (la plus récente en premier)
+            # Trier les entrÃ©es par date (la plus rÃ©cente en premier)
             sorted_entries = sorted(entries, key=lambda x: x.get("timestamp", ""), reverse=True)
             
             for entry in sorted_entries:
-                # Vérifier si c'est une transition vers "Complete"
+                # VÃ©rifier si c'est une transition vers "Complete"
                 if entry.get("newStatus") == "Complete" and entry.get("oldStatus") != "Complete":
-                    # Vérifier si c'est dans la période spécifiée
+                    # VÃ©rifier si c'est dans la pÃ©riode spÃ©cifiÃ©e
                     try:
                         entry_date = datetime.fromisoformat(entry.get("timestamp"))
                         if entry_date >= cutoff_date:
-                            # Ajouter la tâche à la liste
+                            # Ajouter la tÃ¢che Ã  la liste
                             recently_completed_tasks.append({
                                 "taskId": task_id,
                                 "completedAt": entry.get("timestamp"),
@@ -218,28 +218,28 @@ def main():
                                 "comment": entry.get("comment", ""),
                                 "assignee": entry.get("assignee", "")
                             })
-                            break  # Passer à la tâche suivante
+                            break  # Passer Ã  la tÃ¢che suivante
                     except (ValueError, TypeError):
                         # Ignorer les dates invalides
                         continue
         
-        # Trier par date de complétion (la plus récente en premier)
+        # Trier par date de complÃ©tion (la plus rÃ©cente en premier)
         recently_completed_tasks.sort(key=lambda x: x.get("completedAt", ""), reverse=True)
         
-        # Limiter le nombre de tâches
+        # Limiter le nombre de tÃ¢ches
         recently_completed_tasks = recently_completed_tasks[:max_tasks]
         
-        # Récupérer les détails des tâches depuis Chroma
+        # RÃ©cupÃ©rer les dÃ©tails des tÃ¢ches depuis Chroma
         task_ids = [task["taskId"] for task in recently_completed_tasks]
         
         if not task_ids:
-            print("Aucune tâche récemment terminée trouvée.")
+            print("Aucune tÃ¢che rÃ©cemment terminÃ©e trouvÃ©e.")
             sys.exit(0)
         
-        # Récupérer les détails des tâches
+        # RÃ©cupÃ©rer les dÃ©tails des tÃ¢ches
         task_details = collection.get(ids=task_ids)
         
-        # Créer un dictionnaire pour un accès facile aux détails
+        # CrÃ©er un dictionnaire pour un accÃ¨s facile aux dÃ©tails
         task_details_dict = {}
         for i, task_id in enumerate(task_details['ids']):
             task_details_dict[task_id] = {
@@ -247,7 +247,7 @@ def main():
                 "document": task_details['documents'][i]
             }
         
-        # Enrichir les tâches avec les détails
+        # Enrichir les tÃ¢ches avec les dÃ©tails
         enriched_tasks = []
         for task in recently_completed_tasks:
             task_id = task["taskId"]
@@ -255,7 +255,7 @@ def main():
                 details = task_details_dict[task_id]
                 metadata = details["metadata"]
                 
-                # Filtrer par section si nécessaire
+                # Filtrer par section si nÃ©cessaire
                 if section_filter and section_filter.lower() not in metadata.get("section", "").lower():
                     continue
                 
@@ -269,7 +269,7 @@ def main():
                     "assignee": task["assignee"] or metadata.get("assignee", "")
                 }
                 
-                # Ajouter d'autres métadonnées si demandé
+                # Ajouter d'autres mÃ©tadonnÃ©es si demandÃ©
                 if include_metadata:
                     for key, value in metadata.items():
                         if key not in enriched_task:
@@ -277,22 +277,22 @@ def main():
                 
                 enriched_tasks.append(enriched_task)
         
-        # Générer la vue Markdown
+        # GÃ©nÃ©rer la vue Markdown
         markdown_lines = []
-        markdown_lines.append("# Tâches Récemment Terminées")
+        markdown_lines.append("# TÃ¢ches RÃ©cemment TerminÃ©es")
         markdown_lines.append("")
-        markdown_lines.append(f"Générée le {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        markdown_lines.append(f"Période: derniers {days_back} jours")
+        markdown_lines.append(f"GÃ©nÃ©rÃ©e le {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        markdown_lines.append(f"PÃ©riode: derniers {days_back} jours")
         markdown_lines.append("")
         
         if section_filter:
-            markdown_lines.append(f"Filtré par section: {section_filter}")
+            markdown_lines.append(f"FiltrÃ© par section: {section_filter}")
             markdown_lines.append("")
         
         if not enriched_tasks:
-            markdown_lines.append("Aucune tâche récemment terminée trouvée.")
+            markdown_lines.append("Aucune tÃ¢che rÃ©cemment terminÃ©e trouvÃ©e.")
         else:
-            markdown_lines.append(f"## {len(enriched_tasks)} tâches terminées")
+            markdown_lines.append(f"## {len(enriched_tasks)} tÃ¢ches terminÃ©es")
             markdown_lines.append("")
             
             # Grouper par date
@@ -312,7 +312,7 @@ def main():
                 for task in tasks:
                     markdown_lines.append(f"- [x] **{task['taskId']}** {task['description']}")
                     
-                    # Ajouter les métadonnées
+                    # Ajouter les mÃ©tadonnÃ©es
                     metadata_parts = []
                     if task["section"]:
                         metadata_parts.append(f"Section: {task['section']}")
@@ -320,7 +320,7 @@ def main():
                     time_str = ""
                     try:
                         time_str = datetime.fromisoformat(task["completedAt"]).strftime("%H:%M")
-                        metadata_parts.append(f"Terminée à: {time_str}")
+                        metadata_parts.append(f"TerminÃ©e Ã : {time_str}")
                     except (ValueError, TypeError):
                         pass
                     
@@ -328,7 +328,7 @@ def main():
                         metadata_parts.append(f"Par: {task['completedBy']}")
                     
                     if task["assignee"]:
-                        metadata_parts.append(f"Assignée à: {task['assignee']}")
+                        metadata_parts.append(f"AssignÃ©e Ã : {task['assignee']}")
                     
                     if task["comment"]:
                         metadata_parts.append(f"Commentaire: {task['comment']}")
@@ -336,7 +336,7 @@ def main():
                     if metadata_parts:
                         markdown_lines.append(f"  _{', '.join(metadata_parts)}_")
                     
-                    # Ajouter d'autres métadonnées si demandé
+                    # Ajouter d'autres mÃ©tadonnÃ©es si demandÃ©
                     if include_metadata:
                         other_metadata = [f"{key}: {value}" for key, value in task.items() 
                                         if key not in ["taskId", "description", "section", "completedAt", 
@@ -349,7 +349,7 @@ def main():
         # Joindre les lignes
         markdown_content = "\n".join(markdown_lines)
         
-        # Créer un objet résultat
+        # CrÃ©er un objet rÃ©sultat
         result = {
             "markdown": markdown_content,
             "tasks": enriched_tasks,
@@ -362,11 +362,11 @@ def main():
             }
         }
         
-        # Afficher le résultat au format JSON
+        # Afficher le rÃ©sultat au format JSON
         print(json.dumps(result, indent=2, ensure_ascii=False))
         
     except Exception as e:
-        print(f"Erreur lors de la génération de la vue des tâches récemment terminées: {e}")
+        print(f"Erreur lors de la gÃ©nÃ©ration de la vue des tÃ¢ches rÃ©cemment terminÃ©es: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
@@ -440,10 +440,10 @@ code {
     $html = $html -replace '^### (.*?)$', '<h3>$1</h3>'
     $html = $html -replace '^#### (.*?)$', '<h4>$1</h4>'
     
-    # Convertir les listes et les tâches
+    # Convertir les listes et les tÃ¢ches
     $html = $html -replace '^\s*- \[x\] \*\*(.*?)\*\* (.*?)$', '<li class="task-complete"><input type="checkbox" checked disabled> <strong>$1</strong> $2</li>'
     
-    # Convertir les métadonnées en italique
+    # Convertir les mÃ©tadonnÃ©es en italique
     $html = $html -replace '^\s*_(.*?)_$', '<div class="metadata">$1</div>'
     
     # Convertir les sauts de ligne
@@ -457,7 +457,7 @@ code {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tâches Récemment Terminées</title>
+    <title>TÃ¢ches RÃ©cemment TerminÃ©es</title>
     $css
 </head>
 <body>
@@ -471,48 +471,48 @@ code {
 
 # Fonction principale
 function Main {
-    # Vérifier si la base Chroma existe
+    # VÃ©rifier si la base Chroma existe
     if (-not (Test-Path -Path $ChromaDbPath)) {
         Write-Log "La base Chroma $ChromaDbPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si le fichier d'historique existe
+    # VÃ©rifier si le fichier d'historique existe
     if (-not (Test-Path -Path $HistoryPath)) {
         Write-Log "Le fichier d'historique $HistoryPath n'existe pas." -Level Error
         return
     }
     
-    # Vérifier si Python est installé
+    # VÃ©rifier si Python est installÃ©
     if (-not (Test-PythonInstalled)) {
-        Write-Log "Python est requis pour ce script. Veuillez installer Python et réessayer." -Level Error
+        Write-Log "Python est requis pour ce script. Veuillez installer Python et rÃ©essayer." -Level Error
         return
     }
     
-    # Vérifier si les packages Python nécessaires sont installés
+    # VÃ©rifier si les packages Python nÃ©cessaires sont installÃ©s
     if (-not (Test-PythonPackages)) {
-        Write-Log "Les packages Python requis ne sont pas tous installés. Le script ne peut pas continuer." -Level Error
+        Write-Log "Les packages Python requis ne sont pas tous installÃ©s. Le script ne peut pas continuer." -Level Error
         return
     }
     
-    # Vérifier si le fichier de sortie existe déjà
+    # VÃ©rifier si le fichier de sortie existe dÃ©jÃ 
     if ($OutputPath -and (Test-Path -Path $OutputPath) -and -not $Force) {
-        Write-Log "Le fichier de sortie $OutputPath existe déjà. Utilisez -Force pour l'écraser." -Level Warning
+        Write-Log "Le fichier de sortie $OutputPath existe dÃ©jÃ . Utilisez -Force pour l'Ã©craser." -Level Warning
         return
     }
     
-    # Créer le script Python temporaire
-    Write-Log "Création du script Python pour générer la vue des tâches récemment terminées..." -Level Info
+    # CrÃ©er le script Python temporaire
+    Write-Log "CrÃ©ation du script Python pour gÃ©nÃ©rer la vue des tÃ¢ches rÃ©cemment terminÃ©es..." -Level Info
     $pythonScript = New-CompletedTasksViewScript -ChromaDbPath $ChromaDbPath -CollectionName $CollectionName -HistoryPath $HistoryPath -DaysBack $DaysBack -MaxTasks $MaxTasks -SectionFilter $SectionFilter -IncludeMetadata $IncludeMetadata
     
-    # Exécuter le script Python et capturer la sortie JSON
-    Write-Log "Génération de la vue des tâches récemment terminées..." -Level Info
+    # ExÃ©cuter le script Python et capturer la sortie JSON
+    Write-Log "GÃ©nÃ©ration de la vue des tÃ¢ches rÃ©cemment terminÃ©es..." -Level Info
     $output = python $pythonScript 2>&1
     
     # Supprimer le script temporaire
     Remove-Item -Path $pythonScript -Force
     
-    # Extraire les résultats JSON de la sortie
+    # Extraire les rÃ©sultats JSON de la sortie
     $jsonStartIndex = $output.IndexOf("{")
     $jsonEndIndex = $output.LastIndexOf("}")
     
@@ -520,14 +520,14 @@ function Main {
         $jsonString = $output.Substring($jsonStartIndex, $jsonEndIndex - $jsonStartIndex + 1)
         $result = $jsonString | ConvertFrom-Json
         
-        # Traiter les résultats selon le format demandé
+        # Traiter les rÃ©sultats selon le format demandÃ©
         switch ($OutputFormat) {
             "markdown" {
                 $content = $result.markdown
                 
                 if ($OutputPath) {
                     $content | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Vue des tâches récemment terminées sauvegardée au format Markdown dans $OutputPath" -Level Success
+                    Write-Log "Vue des tÃ¢ches rÃ©cemment terminÃ©es sauvegardÃ©e au format Markdown dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $content
@@ -538,7 +538,7 @@ function Main {
                 
                 if ($OutputPath) {
                     $html | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Vue des tâches récemment terminées sauvegardée au format HTML dans $OutputPath" -Level Success
+                    Write-Log "Vue des tÃ¢ches rÃ©cemment terminÃ©es sauvegardÃ©e au format HTML dans $OutputPath" -Level Success
                 }
                 else {
                     Write-Output $html
@@ -547,7 +547,7 @@ function Main {
             "json" {
                 if ($OutputPath) {
                     $result | ConvertTo-Json -Depth 10 | Set-Content -Path $OutputPath -Encoding UTF8
-                    Write-Log "Vue des tâches récemment terminées sauvegardée au format JSON dans $OutputPath" -Level Success
+                    Write-Log "Vue des tÃ¢ches rÃ©cemment terminÃ©es sauvegardÃ©e au format JSON dans $OutputPath" -Level Success
                 }
                 else {
                     $result | ConvertTo-Json -Depth 10
@@ -555,12 +555,12 @@ function Main {
             }
         }
         
-        Write-Log "Génération de la vue terminée. $($result.metadata.taskCount) tâches incluses." -Level Success
+        Write-Log "GÃ©nÃ©ration de la vue terminÃ©e. $($result.metadata.taskCount) tÃ¢ches incluses." -Level Success
     }
     else {
-        Write-Log "Erreur lors de la génération de la vue des tâches récemment terminées." -Level Error
+        Write-Log "Erreur lors de la gÃ©nÃ©ration de la vue des tÃ¢ches rÃ©cemment terminÃ©es." -Level Error
     }
 }
 
-# Exécuter la fonction principale
+# ExÃ©cuter la fonction principale
 Main
