@@ -1,0 +1,71 @@
+{
+  "modes": {
+    "GRAN-R": {
+      "script": "development\\scripts\\maintenance\\modes\\gran-mode-recursive.ps1",
+      "description": "Mode de granularisation récursive des tâches",
+      "parameters": {
+        "FilePath": {
+          "required": true,
+          "description": "Chemin vers le fichier de roadmap"
+        },
+        "TaskIdentifier": {
+          "required": true,
+          "description": "Identifiant de la tâche à granulariser"
+        },
+        "ComplexityLevel": {
+          "required": false,
+          "default": "Auto",
+          "description": "Niveau de complexité (Auto, Simple, Medium, Complex, VeryComplex)"
+        },
+        "Domain": {
+          "required": false,
+          "default": "None",
+          "description": "Domaine technique (Frontend, Backend, Database, etc.)"
+        },
+        "SubTasksFile": {
+          "required": false,
+          "default": "",
+          "description": "Fichier de sous-tâches personnalisées"
+        },
+        "AddTimeEstimation": {
+          "required": false,
+          "default": false,
+          "description": "Ajouter des estimations de temps"
+        },
+        "UseAI": {
+          "required": false,
+          "default": false,
+          "description": "Utiliser l'IA pour générer les sous-tâches"
+        },
+        "RecursionDepth": {
+          "required": false,
+          "default": 2,
+          "description": "Profondeur maximale de récursion"
+        },
+        "AnalyzeComplexity": {
+          "required": false,
+          "default": false,
+          "description": "Analyser la complexité de chaque sous-tâche"
+        }
+      },
+      "examples": [
+        {
+          "description": "Granulariser récursivement une tâche",
+          "command": "-Mode GRAN-R -FilePath \"projet\\roadmaps\\active\\roadmap_active.md\" -TaskIdentifier \"1.2.3\""
+        },
+        {
+          "description": "Granulariser récursivement avec analyse de complexité",
+          "command": "-Mode GRAN-R -FilePath \"projet\\roadmaps\\active\\roadmap_active.md\" -TaskIdentifier \"1.2.3\" -AnalyzeComplexity"
+        },
+        {
+          "description": "Granulariser récursivement avec profondeur 3",
+          "command": "-Mode GRAN-R -FilePath \"projet\\roadmaps\\active\\roadmap_active.md\" -TaskIdentifier \"1.2.3\" -RecursionDepth 3"
+        },
+        {
+          "description": "Granulariser récursivement avec estimation de temps",
+          "command": "-Mode GRAN-R -FilePath \"projet\\roadmaps\\active\\roadmap_active.md\" -TaskIdentifier \"1.2.3\" -AddTimeEstimation"
+        }
+      ]
+    }
+  }
+}
