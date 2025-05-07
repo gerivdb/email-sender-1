@@ -1,0 +1,133 @@
+﻿<html>
+<head>
+<title>Rapport de recommandations de jittering</title>
+<style>
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+h2 { margin-top: 20px; }
+.recommendations { margin-left: 20px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>Rapport de recommandations de jittering pour Ã©viter le chevauchement des points</h1>
+<p><strong>Type de distribution:</strong> AsymÃ©trique</p>
+<p><strong>Type de graphique:</strong> Nuage de points standard</p>
+<p><strong>Ã‰tendue des donnÃ©es:</strong> X=200, Y=150</p>
+<table>
+<tr><th>Taille d'Ã©chantillon</th><th>CatÃ©gorie</th><th>DensitÃ© (pts/pxÂ²)</th><th>Amplitude</th><th>Jitter X</th><th>Jitter Y</th><th>Distribution</th></tr>
+<tr><td>20</td><td>TrÃ¨s petit (< 30)</td><td>0.0001</td><td>0.6%</td><td>1.2</td><td>0.9</td><td>Uniforme</td></tr>
+<tr><td>50</td><td>Petit (30-100)</td><td>0.0002</td><td>1.2%</td><td>2.4</td><td>1.8</td><td>Uniforme</td></tr>
+<tr><td>100</td><td>Moyen (100-500)</td><td>0.0004</td><td>2.4%</td><td>4.8</td><td>3.6</td><td>Uniforme</td></tr>
+<tr><td>200</td><td>Moyen (100-500)</td><td>0.0008</td><td>2.4%</td><td>4.8</td><td>3.6</td><td>Uniforme</td></tr>
+<tr><td>500</td><td>Grand (500-1000)</td><td>0.002</td><td>3%</td><td>6</td><td>4.5</td><td>Uniforme</td></tr>
+<tr><td>1000</td><td>TrÃ¨s grand (> 1000)</td><td>0.004</td><td>3.6%</td><td>7.2</td><td>5.4</td><td>Uniforme</td></tr>
+<tr><td>5000</td><td>TrÃ¨s grand (> 1000)</td><td>0.02</td><td>3.6%</td><td>7.2</td><td>5.4</td><td>Uniforme</td></tr>
+</table>
+<h2>Taille d'Ã©chantillon: 20</h2>
+<p><strong>CatÃ©gorie de densitÃ©:</strong> TrÃ¨s faible (< 0.1 pts/pxÂ²)</p>
+<p><strong>Directions de jittering:</strong> XY</p>
+<p><strong>StratÃ©gie:</strong> Aucun jittering nÃ©cessaire</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>StratÃ©gie de jittering: Aucun jittering nÃ©cessaire</li>
+<li>Utiliser une distribution uniforme pour le jittering (rÃ©partition Ã©gale dans toute la plage)</li>
+<li>Appliquer le jittering dans les deux directions (X et Y)</li>
+<li>Techniques complÃ©mentaires recommandÃ©es:</li>
+<li>- Augmentation de la taille des points</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 50</h2>
+<p><strong>CatÃ©gorie de densitÃ©:</strong> TrÃ¨s faible (< 0.1 pts/pxÂ²)</p>
+<p><strong>Directions de jittering:</strong> XY</p>
+<p><strong>StratÃ©gie:</strong> Aucun jittering nÃ©cessaire</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>StratÃ©gie de jittering: Aucun jittering nÃ©cessaire</li>
+<li>Utiliser une distribution uniforme pour le jittering (rÃ©partition Ã©gale dans toute la plage)</li>
+<li>Appliquer le jittering dans les deux directions (X et Y)</li>
+<li>Techniques complÃ©mentaires recommandÃ©es:</li>
+<li>- Transparence lÃ©gÃ¨re (alpha = 0.8-0.9)</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 100</h2>
+<p><strong>CatÃ©gorie de densitÃ©:</strong> TrÃ¨s faible (< 0.1 pts/pxÂ²)</p>
+<p><strong>Directions de jittering:</strong> XY</p>
+<p><strong>StratÃ©gie:</strong> Aucun jittering nÃ©cessaire</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>StratÃ©gie de jittering: Aucun jittering nÃ©cessaire</li>
+<li>Utiliser une distribution uniforme pour le jittering (rÃ©partition Ã©gale dans toute la plage)</li>
+<li>Appliquer le jittering dans les deux directions (X et Y)</li>
+<li>Techniques complÃ©mentaires recommandÃ©es:</li>
+<li>- Transparence modÃ©rÃ©e (alpha = 0.6-0.8)</li>
+<li>- RÃ©duction de la taille des points</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 200</h2>
+<p><strong>CatÃ©gorie de densitÃ©:</strong> TrÃ¨s faible (< 0.1 pts/pxÂ²)</p>
+<p><strong>Directions de jittering:</strong> XY</p>
+<p><strong>StratÃ©gie:</strong> Aucun jittering nÃ©cessaire</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>StratÃ©gie de jittering: Aucun jittering nÃ©cessaire</li>
+<li>Utiliser une distribution uniforme pour le jittering (rÃ©partition Ã©gale dans toute la plage)</li>
+<li>Appliquer le jittering dans les deux directions (X et Y)</li>
+<li>Techniques complÃ©mentaires recommandÃ©es:</li>
+<li>- Transparence modÃ©rÃ©e (alpha = 0.6-0.8)</li>
+<li>- RÃ©duction de la taille des points</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 500</h2>
+<p><strong>CatÃ©gorie de densitÃ©:</strong> TrÃ¨s faible (< 0.1 pts/pxÂ²)</p>
+<p><strong>Directions de jittering:</strong> XY</p>
+<p><strong>StratÃ©gie:</strong> Aucun jittering nÃ©cessaire</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>StratÃ©gie de jittering: Aucun jittering nÃ©cessaire</li>
+<li>Utiliser une distribution uniforme pour le jittering (rÃ©partition Ã©gale dans toute la plage)</li>
+<li>Appliquer le jittering dans les deux directions (X et Y)</li>
+<li>Techniques complÃ©mentaires recommandÃ©es:</li>
+<li>- Transparence Ã©levÃ©e (alpha = 0.4-0.6)</li>
+<li>- RÃ©duction importante de la taille des points</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 1000</h2>
+<p><strong>CatÃ©gorie de densitÃ©:</strong> TrÃ¨s faible (< 0.1 pts/pxÂ²)</p>
+<p><strong>Directions de jittering:</strong> XY</p>
+<p><strong>StratÃ©gie:</strong> Aucun jittering nÃ©cessaire</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>StratÃ©gie de jittering: Aucun jittering nÃ©cessaire</li>
+<li>Utiliser une distribution uniforme pour le jittering (rÃ©partition Ã©gale dans toute la plage)</li>
+<li>Appliquer le jittering dans les deux directions (X et Y)</li>
+<li>Techniques complÃ©mentaires recommandÃ©es:</li>
+<li>- Transparence trÃ¨s Ã©levÃ©e (alpha = 0.2-0.4)</li>
+<li>- Heatmap</li>
+<li>- Contours de densitÃ©</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 5000</h2>
+<p><strong>CatÃ©gorie de densitÃ©:</strong> TrÃ¨s faible (< 0.1 pts/pxÂ²)</p>
+<p><strong>Directions de jittering:</strong> XY</p>
+<p><strong>StratÃ©gie:</strong> Aucun jittering nÃ©cessaire</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>StratÃ©gie de jittering: Aucun jittering nÃ©cessaire</li>
+<li>Utiliser une distribution uniforme pour le jittering (rÃ©partition Ã©gale dans toute la plage)</li>
+<li>Appliquer le jittering dans les deux directions (X et Y)</li>
+<li>Techniques complÃ©mentaires recommandÃ©es:</li>
+<li>- Transparence trÃ¨s Ã©levÃ©e (alpha = 0.2-0.4)</li>
+<li>- Heatmap</li>
+<li>- Contours de densitÃ©</li>
+</ul>
+</div>
+</body>
+</html>

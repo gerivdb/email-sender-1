@@ -1,0 +1,123 @@
+﻿<html>
+<head>
+<title>Rapport de recommandations de densitÃ© de points</title>
+<style>
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+h2 { margin-top: 20px; }
+.recommendations { margin-left: 20px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>Rapport de recommandations de densitÃ© de points pour graphiques de dispersion</h1>
+<p><strong>Taille du graphique:</strong> Grand (800x800)</p>
+<p><strong>RÃ©solution:</strong> Haute (300 DPI)</p>
+<p><strong>Type de distribution:</strong> DispersÃ©e</p>
+<table>
+<tr><th>Taille d'Ã©chantillon</th><th>CatÃ©gorie</th><th>Points recommandÃ©s</th><th>% de l'Ã©chantillon</th><th>DensitÃ© (pts/inÂ²)</th><th>Ã‰chantillonnage</th></tr>
+<tr><td>20</td><td>TrÃ¨s petit (< 30)</td><td>20</td><td>100%</td><td>2.81</td><td>Non</td></tr>
+<tr><td>50</td><td>Petit (30-100)</td><td>50</td><td>100%</td><td>7.03</td><td>Non</td></tr>
+<tr><td>100</td><td>Moyen (100-500)</td><td>100</td><td>100%</td><td>14.06</td><td>Non</td></tr>
+<tr><td>200</td><td>Moyen (100-500)</td><td>200</td><td>100%</td><td>28.12</td><td>Non</td></tr>
+<tr><td>500</td><td>Grand (500-1000)</td><td>427</td><td>85.4%</td><td>60.05</td><td>Oui</td></tr>
+<tr><td>1000</td><td>TrÃ¨s grand (> 1000)</td><td>427</td><td>42.7%</td><td>60.05</td><td>Oui</td></tr>
+<tr><td>5000</td><td>TrÃ¨s grand (> 1000)</td><td>427</td><td>8.54%</td><td>60.05</td><td>Oui</td></tr>
+<tr><td>10000</td><td>TrÃ¨s grand (> 1000)</td><td>427</td><td>4.27%</td><td>60.05</td><td>Oui</td></tr>
+</table>
+<h2>Taille d'Ã©chantillon: 20</h2>
+<p><strong>StratÃ©gie d'Ã©chantillonnage:</strong> Afficher tous les points</p>
+<p><strong>StratÃ©gie anti-chevauchement:</strong> Aucune action nÃ©cessaire</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>Afficher tous les points (20).</li>
+<li>Pour les donnÃ©es dispersÃ©es, conserver une taille de point plus grande pour amÃ©liorer la visibilitÃ©.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 50</h2>
+<p><strong>StratÃ©gie d'Ã©chantillonnage:</strong> Afficher tous les points</p>
+<p><strong>StratÃ©gie anti-chevauchement:</strong> Jittering lÃ©ger si nÃ©cessaire</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>Afficher tous les points (50).</li>
+<li>Si des chevauchements sont observÃ©s, appliquer un jittering lÃ©ger (Â±1-2%).</li>
+<li>Pour les donnÃ©es dispersÃ©es, conserver une taille de point plus grande pour amÃ©liorer la visibilitÃ©.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 100</h2>
+<p><strong>StratÃ©gie d'Ã©chantillonnage:</strong> Ã‰chantillonnage alÃ©atoire ou stratifiÃ© si nÃ©cessaire</p>
+<p><strong>StratÃ©gie anti-chevauchement:</strong> Jittering ou transparence</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>Afficher tous les points (100).</li>
+<li>Appliquer un jittering modÃ©rÃ© (Â±2-3%) et/ou une transparence (alpha = 0.6-0.8).</li>
+<li>Pour les donnÃ©es dispersÃ©es, conserver une taille de point plus grande pour amÃ©liorer la visibilitÃ©.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 200</h2>
+<p><strong>StratÃ©gie d'Ã©chantillonnage:</strong> Ã‰chantillonnage alÃ©atoire ou stratifiÃ© si nÃ©cessaire</p>
+<p><strong>StratÃ©gie anti-chevauchement:</strong> Jittering ou transparence</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>Afficher tous les points (200).</li>
+<li>Appliquer un jittering modÃ©rÃ© (Â±2-3%) et/ou une transparence (alpha = 0.6-0.8).</li>
+<li>Pour les donnÃ©es dispersÃ©es, conserver une taille de point plus grande pour amÃ©liorer la visibilitÃ©.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 500</h2>
+<p><strong>StratÃ©gie d'Ã©chantillonnage:</strong> Ã‰chantillonnage stratifiÃ© ou clustering</p>
+<p><strong>StratÃ©gie anti-chevauchement:</strong> Transparence et/ou rÃ©duction de taille des points</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>Ã‰chantillonnage recommandÃ©: afficher 427 points sur 500 (85.4%).</li>
+<li>Utiliser un Ã©chantillonnage stratifiÃ© pour prÃ©server les caractÃ©ristiques importantes.</li>
+<li>Utiliser une transparence Ã©levÃ©e (alpha = 0.4-0.6) et rÃ©duire la taille des points.</li>
+<li>Pour les donnÃ©es dispersÃ©es, conserver une taille de point plus grande pour amÃ©liorer la visibilitÃ©.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 1000</h2>
+<p><strong>StratÃ©gie d'Ã©chantillonnage:</strong> Ã‰chantillonnage, clustering ou heatmap</p>
+<p><strong>StratÃ©gie anti-chevauchement:</strong> Transparence, heatmap ou contours de densitÃ©</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>Ã‰chantillonnage recommandÃ©: afficher 427 points sur 1000 (42.7%).</li>
+<li>Envisager une heatmap ou des contours de densitÃ© au lieu d'un nuage de points.</li>
+<li>Si un nuage de points est nÃ©cessaire, utiliser un Ã©chantillonnage stratifiÃ© ou clustering.</li>
+<li>Utiliser une transparence trÃ¨s Ã©levÃ©e (alpha = 0.2-0.4) ou passer Ã  une heatmap.</li>
+<li>Pour les donnÃ©es dispersÃ©es, conserver une taille de point plus grande pour amÃ©liorer la visibilitÃ©.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 5000</h2>
+<p><strong>StratÃ©gie d'Ã©chantillonnage:</strong> Ã‰chantillonnage, clustering ou heatmap</p>
+<p><strong>StratÃ©gie anti-chevauchement:</strong> Transparence, heatmap ou contours de densitÃ©</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>Ã‰chantillonnage recommandÃ©: afficher 427 points sur 5000 (8.54%).</li>
+<li>Envisager une heatmap ou des contours de densitÃ© au lieu d'un nuage de points.</li>
+<li>Si un nuage de points est nÃ©cessaire, utiliser un Ã©chantillonnage stratifiÃ© ou clustering.</li>
+<li>Utiliser une transparence trÃ¨s Ã©levÃ©e (alpha = 0.2-0.4) ou passer Ã  une heatmap.</li>
+<li>Pour les donnÃ©es dispersÃ©es, conserver une taille de point plus grande pour amÃ©liorer la visibilitÃ©.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 10000</h2>
+<p><strong>StratÃ©gie d'Ã©chantillonnage:</strong> Ã‰chantillonnage, clustering ou heatmap</p>
+<p><strong>StratÃ©gie anti-chevauchement:</strong> Transparence, heatmap ou contours de densitÃ©</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>Ã‰chantillonnage recommandÃ©: afficher 427 points sur 10000 (4.27%).</li>
+<li>Envisager une heatmap ou des contours de densitÃ© au lieu d'un nuage de points.</li>
+<li>Si un nuage de points est nÃ©cessaire, utiliser un Ã©chantillonnage stratifiÃ© ou clustering.</li>
+<li>Utiliser une transparence trÃ¨s Ã©levÃ©e (alpha = 0.2-0.4) ou passer Ã  une heatmap.</li>
+<li>Pour les donnÃ©es dispersÃ©es, conserver une taille de point plus grande pour amÃ©liorer la visibilitÃ©.</li>
+</ul>
+</div>
+</body>
+</html>

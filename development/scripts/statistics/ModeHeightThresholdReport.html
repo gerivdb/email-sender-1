@@ -1,0 +1,581 @@
+﻿<html>
+<head>
+<title>Rapport de recommandations de seuils de hauteur relative pour l'identification des modes</title>
+<style>
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+h2, h3 { margin-top: 20px; }
+.recommendations { margin-left: 20px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>Rapport de recommandations de seuils de hauteur relative pour l'identification des modes</h1>
+<p><strong>Type de distribution:</strong> Queue lourde</p>
+<p><strong>Niveau de bruit:</strong> Ã‰levÃ©</p>
+<p><strong>MÃ©thode de lissage:</strong> RÃ©gression locale</p>
+<table>
+<tr><th>Taille d'Ã©chantillon</th><th>CatÃ©gorie</th><th>Exploration</th><th>Analyse</th><th>ContrÃ´le</th><th>DÃ©tection</th><th>Classification</th><th>Segmentation</th></tr>
+<tr><td>20</td><td>TrÃ¨s petit (< 30)</td><td>0.15</td><td>0.16</td><td>0.17</td><td>0.18</td><td>0.19</td><td>0.2</td></tr>
+<tr><td>50</td><td>Petit (30-100)</td><td>0.13</td><td>0.14</td><td>0.15</td><td>0.16</td><td>0.17</td><td>0.18</td></tr>
+<tr><td>100</td><td>Moyen (100-500)</td><td>0.11</td><td>0.12</td><td>0.13</td><td>0.14</td><td>0.15</td><td>0.16</td></tr>
+<tr><td>200</td><td>Moyen (100-500)</td><td>0.11</td><td>0.12</td><td>0.13</td><td>0.14</td><td>0.15</td><td>0.16</td></tr>
+<tr><td>500</td><td>Grand (500-1000)</td><td>0.1</td><td>0.11</td><td>0.12</td><td>0.13</td><td>0.14</td><td>0.15</td></tr>
+<tr><td>1000</td><td>TrÃ¨s grand (> 1000)</td><td>0.08</td><td>0.09</td><td>0.1</td><td>0.11</td><td>0.12</td><td>0.13</td></tr>
+<tr><td>5000</td><td>TrÃ¨s grand (> 1000)</td><td>0.08</td><td>0.09</td><td>0.1</td><td>0.11</td><td>0.12</td><td>0.13</td></tr>
+</table>
+<h2>Taille d'Ã©chantillon: 20</h2>
+<p><strong>CatÃ©gorie:</strong> TrÃ¨s petit (< 30)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.15 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): seuil de base Ã‰levÃ© (25%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Exploration de donnÃ©es': un seuil trÃ¨s bas est recommandÃ© pour dÃ©tecter tous les modes potentiels.</li>
+<li>Seuil final recommandÃ©: 0.15 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.16 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): seuil de base Ã‰levÃ© (25%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.16 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.17 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): seuil de base Ã‰levÃ© (25%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.17 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.18 (Standard (20%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): seuil de base Ã‰levÃ© (25%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'DÃ©tection d'anomalies': un seuil standard est recommandÃ© pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>Seuil final recommandÃ©: 0.18 (Standard (20%)).</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.19 (Standard (20%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): seuil de base Ã‰levÃ© (25%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.19 (Standard (20%)).</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.2 (Standard (20%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): seuil de base Ã‰levÃ© (25%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Segmentation': un seuil Ã©levÃ© est recommandÃ© pour ne dÃ©tecter que les modes principaux.</li>
+<li>Seuil final recommandÃ©: 0.2 (Standard (20%)).</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 50</h2>
+<p><strong>CatÃ©gorie:</strong> Petit (30-100)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.13 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): seuil de base Standard (20%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Exploration de donnÃ©es': un seuil trÃ¨s bas est recommandÃ© pour dÃ©tecter tous les modes potentiels.</li>
+<li>Seuil final recommandÃ©: 0.13 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.14 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): seuil de base Standard (20%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.14 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.15 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): seuil de base Standard (20%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.15 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.16 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): seuil de base Standard (20%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'DÃ©tection d'anomalies': un seuil standard est recommandÃ© pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>Seuil final recommandÃ©: 0.16 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.17 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): seuil de base Standard (20%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.17 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.18 (Standard (20%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): seuil de base Standard (20%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Segmentation': un seuil Ã©levÃ© est recommandÃ© pour ne dÃ©tecter que les modes principaux.</li>
+<li>Seuil final recommandÃ©: 0.18 (Standard (20%)).</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 100</h2>
+<p><strong>CatÃ©gorie:</strong> Moyen (100-500)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.11 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Exploration de donnÃ©es': un seuil trÃ¨s bas est recommandÃ© pour dÃ©tecter tous les modes potentiels.</li>
+<li>Seuil final recommandÃ©: 0.11 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.12 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.12 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.13 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.13 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.14 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'DÃ©tection d'anomalies': un seuil standard est recommandÃ© pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>Seuil final recommandÃ©: 0.14 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.15 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.15 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.16 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Segmentation': un seuil Ã©levÃ© est recommandÃ© pour ne dÃ©tecter que les modes principaux.</li>
+<li>Seuil final recommandÃ©: 0.16 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 200</h2>
+<p><strong>CatÃ©gorie:</strong> Moyen (100-500)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.11 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Exploration de donnÃ©es': un seuil trÃ¨s bas est recommandÃ© pour dÃ©tecter tous les modes potentiels.</li>
+<li>Seuil final recommandÃ©: 0.11 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.12 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.12 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.13 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.13 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.14 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'DÃ©tection d'anomalies': un seuil standard est recommandÃ© pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>Seuil final recommandÃ©: 0.14 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.15 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.15 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.16 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): seuil de base ModÃ©rÃ© (15%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Segmentation': un seuil Ã©levÃ© est recommandÃ© pour ne dÃ©tecter que les modes principaux.</li>
+<li>Seuil final recommandÃ©: 0.16 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 500</h2>
+<p><strong>CatÃ©gorie:</strong> Grand (500-1000)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.1 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): seuil de base Faible (10%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Exploration de donnÃ©es': un seuil trÃ¨s bas est recommandÃ© pour dÃ©tecter tous les modes potentiels.</li>
+<li>Seuil final recommandÃ©: 0.1 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.11 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): seuil de base Faible (10%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.11 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.12 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): seuil de base Faible (10%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.12 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.13 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): seuil de base Faible (10%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'DÃ©tection d'anomalies': un seuil standard est recommandÃ© pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>Seuil final recommandÃ©: 0.13 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.14 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): seuil de base Faible (10%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.14 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.15 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): seuil de base Faible (10%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Segmentation': un seuil Ã©levÃ© est recommandÃ© pour ne dÃ©tecter que les modes principaux.</li>
+<li>Seuil final recommandÃ©: 0.15 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 1000</h2>
+<p><strong>CatÃ©gorie:</strong> TrÃ¨s grand (> 1000)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.08 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Exploration de donnÃ©es': un seuil trÃ¨s bas est recommandÃ© pour dÃ©tecter tous les modes potentiels.</li>
+<li>Seuil final recommandÃ©: 0.08 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.09 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.09 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.1 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.1 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.11 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'DÃ©tection d'anomalies': un seuil standard est recommandÃ© pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>Seuil final recommandÃ©: 0.11 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.12 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.12 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.13 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Segmentation': un seuil Ã©levÃ© est recommandÃ© pour ne dÃ©tecter que les modes principaux.</li>
+<li>Seuil final recommandÃ©: 0.13 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 5000</h2>
+<p><strong>CatÃ©gorie:</strong> TrÃ¨s grand (> 1000)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.08 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Exploration de donnÃ©es': un seuil trÃ¨s bas est recommandÃ© pour dÃ©tecter tous les modes potentiels.</li>
+<li>Seuil final recommandÃ©: 0.08 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.09 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.09 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.1 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.1 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.11 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'DÃ©tection d'anomalies': un seuil standard est recommandÃ© pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>Seuil final recommandÃ©: 0.11 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.12 (Faible (10%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Seuil final recommandÃ©: 0.12 (Faible (10%)).</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>Seuil recommandÃ©:</strong> 0.13 (ModÃ©rÃ© (15%))</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): seuil de base TrÃ¨s faible (5%).</li>
+<li>Distribution Ã  queue lourde: utiliser un seuil lÃ©gÃ¨rement plus bas pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ© - un seuil plus Ã©levÃ© est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser un seuil plus bas.</li>
+<li>Application 'Segmentation': un seuil Ã©levÃ© est recommandÃ© pour ne dÃ©tecter que les modes principaux.</li>
+<li>Seuil final recommandÃ©: 0.13 (ModÃ©rÃ© (15%)).</li>
+</ul>
+</div>
+</body>
+</html>

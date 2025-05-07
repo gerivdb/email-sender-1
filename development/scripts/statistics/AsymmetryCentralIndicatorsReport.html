@@ -1,0 +1,200 @@
+﻿<html>
+<head>
+<title>Rapport d'Ã©valuation de l'asymÃ©trie basÃ© sur les indicateurs de position centrale</title>
+<style>
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+h2 { margin-top: 20px; }
+.recommendations { margin-left: 20px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>Rapport d'Ã©valuation de l'asymÃ©trie basÃ© sur les indicateurs de position centrale</h1>
+<p><strong>Ã‰cart-type:</strong> 10</p>
+<p><strong>Taille d'Ã©chantillon:</strong> 200</p>
+<p><strong>Niveau de confiance:</strong> 95%</p>
+<table>
+<tr><th>DiffÃ©rence normalisÃ©e</th><th>Moyenne</th><th>MÃ©diane</th><th>DiffÃ©rence</th><th>Z-score</th><th>Significatif</th><th>Direction</th><th>IntensitÃ©</th></tr>
+<tr><td>-1</td><td>100</td><td>110</td><td>-10</td><td>-8.82</td><td>Oui</td><td>NÃ©gative (queue Ã  gauche)</td><td>TrÃ¨s forte</td></tr>
+<tr><td>-0.5</td><td>100</td><td>105</td><td>-5</td><td>-4.41</td><td>Oui</td><td>NÃ©gative (queue Ã  gauche)</td><td>Forte</td></tr>
+<tr><td>-0.2</td><td>100</td><td>102</td><td>-2</td><td>-1.76</td><td>Non</td><td>NÃ©gative (queue Ã  gauche)</td><td>ModÃ©rÃ©e</td></tr>
+<tr><td>-0.1</td><td>100</td><td>101</td><td>-1</td><td>-0.88</td><td>Non</td><td>NÃ©gative (queue Ã  gauche)</td><td>Faible</td></tr>
+<tr><td>0</td><td>100</td><td>100</td><td>0</td><td>0</td><td>Non</td><td>Aucune (symÃ©trique)</td><td>NÃ©gligeable</td></tr>
+<tr><td>0.1</td><td>100</td><td>99</td><td>1</td><td>0.88</td><td>Non</td><td>Positive (queue Ã  droite)</td><td>Faible</td></tr>
+<tr><td>0.2</td><td>100</td><td>98</td><td>2</td><td>1.76</td><td>Non</td><td>Positive (queue Ã  droite)</td><td>ModÃ©rÃ©e</td></tr>
+<tr><td>0.5</td><td>100</td><td>95</td><td>5</td><td>4.41</td><td>Oui</td><td>Positive (queue Ã  droite)</td><td>Forte</td></tr>
+<tr><td>1</td><td>100</td><td>90</td><td>10</td><td>8.82</td><td>Oui</td><td>Positive (queue Ã  droite)</td><td>TrÃ¨s forte</td></tr>
+</table>
+<h2>DiffÃ©rence normalisÃ©e: -1</h2>
+<p><strong>Moyenne:</strong> 100</p>
+<p><strong>MÃ©diane:</strong> 110</p>
+<p><strong>DiffÃ©rence:</strong> -10</p>
+<p><strong>Z-score:</strong> -8.82</p>
+<p><strong>Statistiquement significatif:</strong> True</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> NÃ©gative (queue Ã  gauche)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> TrÃ¨s forte</p>
+<p><strong>Intervalle de confiance:</strong> [-12.22, -7.78]</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La diffÃ©rence entre la moyenne (100) et la mÃ©diane (110) est statistiquement significative (z = -8.82, p < 0.05).</li>
+<li>Cette diffÃ©rence indique une asymÃ©trie NÃ©gative (queue Ã  gauche) d'intensitÃ© TrÃ¨s forte.</li>
+<li>L'asymÃ©trie nÃ©gative suggÃ¨re la prÃ©sence de valeurs extrÃªmes basses qui tirent la moyenne vers le bas.</li>
+<li>L'asymÃ©trie est TrÃ¨s forte (diffÃ©rence normalisÃ©e = -1 Ã©carts-types). Utiliser des mÃ©thodes non paramÃ©triques ou appliquer des transformations appropriÃ©es.</li>
+<li>Pour une asymÃ©trie nÃ©gative, considÃ©rer une transformation exponentielle ou Box-Cox.</li>
+<li>La taille d'Ã©chantillon est grande (200). Les estimations d'asymÃ©trie sont trÃ¨s fiables.</li>
+</ul>
+</div>
+<h2>DiffÃ©rence normalisÃ©e: -0.5</h2>
+<p><strong>Moyenne:</strong> 100</p>
+<p><strong>MÃ©diane:</strong> 105</p>
+<p><strong>DiffÃ©rence:</strong> -5</p>
+<p><strong>Z-score:</strong> -4.41</p>
+<p><strong>Statistiquement significatif:</strong> True</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> NÃ©gative (queue Ã  gauche)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> Forte</p>
+<p><strong>Intervalle de confiance:</strong> [-7.22, -2.78]</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La diffÃ©rence entre la moyenne (100) et la mÃ©diane (105) est statistiquement significative (z = -4.41, p < 0.05).</li>
+<li>Cette diffÃ©rence indique une asymÃ©trie NÃ©gative (queue Ã  gauche) d'intensitÃ© Forte.</li>
+<li>L'asymÃ©trie nÃ©gative suggÃ¨re la prÃ©sence de valeurs extrÃªmes basses qui tirent la moyenne vers le bas.</li>
+<li>L'asymÃ©trie est Forte (diffÃ©rence normalisÃ©e = -0.5 Ã©carts-types). Utiliser des mÃ©thodes non paramÃ©triques ou appliquer des transformations appropriÃ©es.</li>
+<li>Pour une asymÃ©trie nÃ©gative, considÃ©rer une transformation exponentielle ou Box-Cox.</li>
+<li>La taille d'Ã©chantillon est grande (200). Les estimations d'asymÃ©trie sont trÃ¨s fiables.</li>
+</ul>
+</div>
+<h2>DiffÃ©rence normalisÃ©e: -0.2</h2>
+<p><strong>Moyenne:</strong> 100</p>
+<p><strong>MÃ©diane:</strong> 102</p>
+<p><strong>DiffÃ©rence:</strong> -2</p>
+<p><strong>Z-score:</strong> -1.76</p>
+<p><strong>Statistiquement significatif:</strong> False</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> NÃ©gative (queue Ã  gauche)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> ModÃ©rÃ©e</p>
+<p><strong>Intervalle de confiance:</strong> [-4.22, 0.22]</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La diffÃ©rence entre la moyenne (100) et la mÃ©diane (102) n'est pas statistiquement significative (z = -1.76, p > 0.05).</li>
+<li>Cette distribution peut Ãªtre considÃ©rÃ©e comme approximativement symÃ©trique selon ce critÃ¨re.</li>
+<li>L'asymÃ©trie est ModÃ©rÃ©e (diffÃ©rence normalisÃ©e = -0.2 Ã©carts-types). ConsidÃ©rer des transformations de donnÃ©es ou des mÃ©thodes non paramÃ©triques.</li>
+<li>La taille d'Ã©chantillon est grande (200). Les estimations d'asymÃ©trie sont trÃ¨s fiables.</li>
+</ul>
+</div>
+<h2>DiffÃ©rence normalisÃ©e: -0.1</h2>
+<p><strong>Moyenne:</strong> 100</p>
+<p><strong>MÃ©diane:</strong> 101</p>
+<p><strong>DiffÃ©rence:</strong> -1</p>
+<p><strong>Z-score:</strong> -0.88</p>
+<p><strong>Statistiquement significatif:</strong> False</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> NÃ©gative (queue Ã  gauche)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> Faible</p>
+<p><strong>Intervalle de confiance:</strong> [-3.22, 1.22]</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La diffÃ©rence entre la moyenne (100) et la mÃ©diane (101) n'est pas statistiquement significative (z = -0.88, p > 0.05).</li>
+<li>Cette distribution peut Ãªtre considÃ©rÃ©e comme approximativement symÃ©trique selon ce critÃ¨re.</li>
+<li>L'asymÃ©trie est Faible (diffÃ©rence normalisÃ©e = -0.1 Ã©carts-types). Les mÃ©thodes statistiques paramÃ©triques peuvent gÃ©nÃ©ralement Ãªtre utilisÃ©es.</li>
+<li>La taille d'Ã©chantillon est grande (200). Les estimations d'asymÃ©trie sont trÃ¨s fiables.</li>
+</ul>
+</div>
+<h2>DiffÃ©rence normalisÃ©e: 0</h2>
+<p><strong>Moyenne:</strong> 100</p>
+<p><strong>MÃ©diane:</strong> 100</p>
+<p><strong>DiffÃ©rence:</strong> 0</p>
+<p><strong>Z-score:</strong> 0</p>
+<p><strong>Statistiquement significatif:</strong> False</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> Aucune (symÃ©trique)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> NÃ©gligeable</p>
+<p><strong>Intervalle de confiance:</strong> [-2.22, 2.22]</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La diffÃ©rence entre la moyenne (100) et la mÃ©diane (100) n'est pas statistiquement significative (z = 0, p > 0.05).</li>
+<li>Cette distribution peut Ãªtre considÃ©rÃ©e comme approximativement symÃ©trique selon ce critÃ¨re.</li>
+<li>L'asymÃ©trie est NÃ©gligeable (diffÃ©rence normalisÃ©e = 0 Ã©carts-types). Les mÃ©thodes statistiques paramÃ©triques peuvent gÃ©nÃ©ralement Ãªtre utilisÃ©es.</li>
+<li>La taille d'Ã©chantillon est grande (200). Les estimations d'asymÃ©trie sont trÃ¨s fiables.</li>
+</ul>
+</div>
+<h2>DiffÃ©rence normalisÃ©e: 0.1</h2>
+<p><strong>Moyenne:</strong> 100</p>
+<p><strong>MÃ©diane:</strong> 99</p>
+<p><strong>DiffÃ©rence:</strong> 1</p>
+<p><strong>Z-score:</strong> 0.88</p>
+<p><strong>Statistiquement significatif:</strong> False</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> Positive (queue Ã  droite)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> Faible</p>
+<p><strong>Intervalle de confiance:</strong> [-1.22, 3.22]</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La diffÃ©rence entre la moyenne (100) et la mÃ©diane (99) n'est pas statistiquement significative (z = 0.88, p > 0.05).</li>
+<li>Cette distribution peut Ãªtre considÃ©rÃ©e comme approximativement symÃ©trique selon ce critÃ¨re.</li>
+<li>L'asymÃ©trie est Faible (diffÃ©rence normalisÃ©e = 0.1 Ã©carts-types). Les mÃ©thodes statistiques paramÃ©triques peuvent gÃ©nÃ©ralement Ãªtre utilisÃ©es.</li>
+<li>La taille d'Ã©chantillon est grande (200). Les estimations d'asymÃ©trie sont trÃ¨s fiables.</li>
+</ul>
+</div>
+<h2>DiffÃ©rence normalisÃ©e: 0.2</h2>
+<p><strong>Moyenne:</strong> 100</p>
+<p><strong>MÃ©diane:</strong> 98</p>
+<p><strong>DiffÃ©rence:</strong> 2</p>
+<p><strong>Z-score:</strong> 1.76</p>
+<p><strong>Statistiquement significatif:</strong> False</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> Positive (queue Ã  droite)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> ModÃ©rÃ©e</p>
+<p><strong>Intervalle de confiance:</strong> [-0.22, 4.22]</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La diffÃ©rence entre la moyenne (100) et la mÃ©diane (98) n'est pas statistiquement significative (z = 1.76, p > 0.05).</li>
+<li>Cette distribution peut Ãªtre considÃ©rÃ©e comme approximativement symÃ©trique selon ce critÃ¨re.</li>
+<li>L'asymÃ©trie est ModÃ©rÃ©e (diffÃ©rence normalisÃ©e = 0.2 Ã©carts-types). ConsidÃ©rer des transformations de donnÃ©es ou des mÃ©thodes non paramÃ©triques.</li>
+<li>La taille d'Ã©chantillon est grande (200). Les estimations d'asymÃ©trie sont trÃ¨s fiables.</li>
+</ul>
+</div>
+<h2>DiffÃ©rence normalisÃ©e: 0.5</h2>
+<p><strong>Moyenne:</strong> 100</p>
+<p><strong>MÃ©diane:</strong> 95</p>
+<p><strong>DiffÃ©rence:</strong> 5</p>
+<p><strong>Z-score:</strong> 4.41</p>
+<p><strong>Statistiquement significatif:</strong> True</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> Positive (queue Ã  droite)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> Forte</p>
+<p><strong>Intervalle de confiance:</strong> [2.78, 7.22]</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La diffÃ©rence entre la moyenne (100) et la mÃ©diane (95) est statistiquement significative (z = 4.41, p < 0.05).</li>
+<li>Cette diffÃ©rence indique une asymÃ©trie Positive (queue Ã  droite) d'intensitÃ© Forte.</li>
+<li>L'asymÃ©trie positive suggÃ¨re la prÃ©sence de valeurs extrÃªmes Ã©levÃ©es qui tirent la moyenne vers le haut.</li>
+<li>L'asymÃ©trie est Forte (diffÃ©rence normalisÃ©e = 0.5 Ã©carts-types). Utiliser des mÃ©thodes non paramÃ©triques ou appliquer des transformations appropriÃ©es.</li>
+<li>Pour une asymÃ©trie positive, considÃ©rer une transformation logarithmique, racine carrÃ©e ou Box-Cox.</li>
+<li>La taille d'Ã©chantillon est grande (200). Les estimations d'asymÃ©trie sont trÃ¨s fiables.</li>
+</ul>
+</div>
+<h2>DiffÃ©rence normalisÃ©e: 1</h2>
+<p><strong>Moyenne:</strong> 100</p>
+<p><strong>MÃ©diane:</strong> 90</p>
+<p><strong>DiffÃ©rence:</strong> 10</p>
+<p><strong>Z-score:</strong> 8.82</p>
+<p><strong>Statistiquement significatif:</strong> True</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> Positive (queue Ã  droite)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> TrÃ¨s forte</p>
+<p><strong>Intervalle de confiance:</strong> [7.78, 12.22]</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La diffÃ©rence entre la moyenne (100) et la mÃ©diane (90) est statistiquement significative (z = 8.82, p < 0.05).</li>
+<li>Cette diffÃ©rence indique une asymÃ©trie Positive (queue Ã  droite) d'intensitÃ© TrÃ¨s forte.</li>
+<li>L'asymÃ©trie positive suggÃ¨re la prÃ©sence de valeurs extrÃªmes Ã©levÃ©es qui tirent la moyenne vers le haut.</li>
+<li>L'asymÃ©trie est TrÃ¨s forte (diffÃ©rence normalisÃ©e = 1 Ã©carts-types). Utiliser des mÃ©thodes non paramÃ©triques ou appliquer des transformations appropriÃ©es.</li>
+<li>Pour une asymÃ©trie positive, considÃ©rer une transformation logarithmique, racine carrÃ©e ou Box-Cox.</li>
+<li>La taille d'Ã©chantillon est grande (200). Les estimations d'asymÃ©trie sont trÃ¨s fiables.</li>
+</ul>
+</div>
+</body>
+</html>

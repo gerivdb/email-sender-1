@@ -1,0 +1,82 @@
+﻿Categorie,Type d'analyse,Minimal,Acceptable,Recommande,Optimal
+Taille d'echantillon,Analyse exploratoire,10,30,100,300
+Taille d'echantillon,Analyse confirmatoire,30,100,300,1000
+Taille d'echantillon,Analyse predictive,50,200,500,2000
+Categorie,Type d'analyse,Description
+Taille d'echantillon,Analyse exploratoire,"Taille d'echantillon necessaire pour identifier les patterns et tendances dans les donnees."
+Taille d'echantillon,Analyse confirmatoire,"Taille d'echantillon necessaire pour tester des hypotheses avec une puissance statistique adequate."
+Taille d'echantillon,Analyse predictive,"Taille d'echantillon necessaire pour construire et valider des modeles predictifs robustes."
+
+Categorie,Type d'analyse,Valeur
+Puissance statistique,Analyse exploratoire,0.7
+Puissance statistique,Analyse confirmatoire,0.8
+Puissance statistique,Analyse predictive,0.9
+Categorie,Type d'analyse,Description
+Puissance statistique,Analyse exploratoire,"Moins critique pour l'analyse exploratoire, mais utile pour planifier des etudes confirmatoires ulterieures."
+Puissance statistique,Analyse confirmatoire,"Essentielle pour garantir la capacite a detecter des effets reels lorsqu'ils existent."
+Puissance statistique,Analyse predictive,"Importante pour les tests statistiques utilises dans l'evaluation des modeles."
+
+Categorie,Type d'analyse,Valeur
+Niveau de signification (alpha),Analyse exploratoire,0.1
+Niveau de signification (alpha),Analyse confirmatoire,0.05
+Niveau de signification (alpha),Analyse predictive,0.01
+Categorie,Type d'analyse,Description
+Niveau de signification (alpha),Analyse exploratoire,"Peut etre plus permissif pour encourager l'exploration et la generation d'hypotheses."
+Niveau de signification (alpha),Analyse confirmatoire,"Standard pour equilibrer les risques d'erreurs de type I et II."
+Niveau de signification (alpha),Analyse predictive,"Plus conservateur pour minimiser les faux positifs dans les modeles."
+
+Categorie,Type d'analyse,Exigence
+Distribution des donnees,Analyse exploratoire,Faible
+Distribution des donnees,Analyse confirmatoire,Moderee
+Distribution des donnees,Analyse predictive,Elevee
+Categorie,Type d'analyse,Description
+Distribution des donnees,Analyse exploratoire,"Peu d'exigences formelles; l'objectif est de comprendre la distribution reelle des donnees."
+Distribution des donnees,Analyse confirmatoire,"Importante pour les tests parametriques; des transformations ou des tests non-parametriques peuvent etre necessaires."
+Distribution des donnees,Analyse predictive,"Critique pour certains modeles (regression lineaire); moins importante pour d'autres (arbres de decision)."
+
+Categorie,Type d'analyse,Exigence
+Homogeneite des variances,Analyse exploratoire,Faible
+Homogeneite des variances,Analyse confirmatoire,Moderee
+Homogeneite des variances,Analyse predictive,Elevee
+Categorie,Type d'analyse,Description
+Homogeneite des variances,Analyse exploratoire,"Peu d'exigences formelles; l'heteroscedasticite peut etre un resultat interessant en soi."
+Homogeneite des variances,Analyse confirmatoire,"Importante pour les tests parametriques comme l'ANOVA; des corrections peuvent etre necessaires."
+Homogeneite des variances,Analyse predictive,"Peut affecter la precision et la generalisation des modeles; des transformations peuvent etre necessaires."
+
+Categorie,Type d'analyse,Traitement
+Valeurs aberrantes,Analyse exploratoire,Identification
+Valeurs aberrantes,Analyse confirmatoire,Traitement
+Valeurs aberrantes,Analyse predictive,Elimination ou modelisation
+Categorie,Type d'analyse,Description
+Valeurs aberrantes,Analyse exploratoire,"Les valeurs aberrantes doivent etre identifiees et examinees, mais pas necessairement eliminees."
+Valeurs aberrantes,Analyse confirmatoire,"Les valeurs aberrantes doivent etre traitees pour eviter de biaiser les resultats des tests."
+Valeurs aberrantes,Analyse predictive,"Les valeurs aberrantes doivent etre eliminees ou modelisees specifiquement pour ameliorer la precision."
+
+Categorie,Type d'analyse,Traitement
+Donnees manquantes,Analyse exploratoire,Identification
+Donnees manquantes,Analyse confirmatoire,Imputation simple
+Donnees manquantes,Analyse predictive,Imputation multiple ou modelisation
+Categorie,Type d'analyse,Description
+Donnees manquantes,Analyse exploratoire,"Les patterns de donnees manquantes doivent etre identifies et analyses."
+Donnees manquantes,Analyse confirmatoire,"Les donnees manquantes doivent etre imputees ou traitees par des methodes appropriees."
+Donnees manquantes,Analyse predictive,"Les donnees manquantes necessitent des techniques d'imputation avancees ou une modelisation specifique."
+
+Categorie,Type d'analyse,Techniques
+Techniques recommandees,Analyse exploratoire,"Statistiques descriptives; Histogrammes; Diagrammes de dispersion; Boites a moustaches; Matrices de correlation; Analyse en composantes principales (ACP); Analyse factorielle exploratoire"
+Techniques recommandees,Analyse confirmatoire,"Tests d'hypotheses; Tests parametriques; Tests non-parametriques; Analyse de variance (ANOVA); Analyse factorielle confirmatoire; Modelisation par equations structurelles"
+Techniques recommandees,Analyse predictive,"Regression lineaire; Regression logistique; Arbres de decision; Forets aleatoires; Machines a vecteurs de support; Reseaux de neurones; Validation croisee"
+Categorie,Type d'analyse,Description
+Techniques recommandees,Analyse exploratoire,"Techniques pour explorer et visualiser les donnees, identifier les patterns et generer des hypotheses."
+Techniques recommandees,Analyse confirmatoire,"Techniques pour tester formellement des hypotheses et evaluer leur significativite statistique."
+Techniques recommandees,Analyse predictive,"Techniques pour construire des modeles predictifs et evaluer leur performance."
+
+Categorie,Type d'analyse,Metriques
+Metriques d'evaluation,Analyse exploratoire,"Completude de l'exploration; Identification des patterns; Detection des anomalies; Qualite des visualisations"
+Metriques d'evaluation,Analyse confirmatoire,"Puissance statistique; Controle des erreurs de type I et II; Taille d'effet; Ajustement du modele"
+Metriques d'evaluation,Analyse predictive,"Precision; Rappel; F1-score; AUC-ROC; Erreur quadratique moyenne; RÂ²; Capacite de generalisation"
+Categorie,Type d'analyse,Description
+Metriques d'evaluation,Analyse exploratoire,"Metriques pour evaluer la qualite de l'exploration et la decouverte de patterns."
+Metriques d'evaluation,Analyse confirmatoire,"Metriques pour evaluer la validite et la fiabilite des tests d'hypotheses."
+Metriques d'evaluation,Analyse predictive,"Metriques pour evaluer la precision, la generalisation et l'utilite des modeles predictifs."
+
+

@@ -1,0 +1,208 @@
+﻿{
+    "categories":  [
+                       {
+                           "name":  "Taille d\u0027echantillon",
+                           "data":  {
+                                        "Analyse exploratoire":  {
+                                                                     "Minimal":  10,
+                                                                     "Optimal":  300,
+                                                                     "Acceptable":  30,
+                                                                     "Recommande":  100,
+                                                                     "Description":  "Taille d\u0027echantillon necessaire pour identifier les patterns et tendances dans les donnees."
+                                                                 },
+                                        "Analyse confirmatoire":  {
+                                                                      "Minimal":  30,
+                                                                      "Optimal":  1000,
+                                                                      "Acceptable":  100,
+                                                                      "Recommande":  300,
+                                                                      "Description":  "Taille d\u0027echantillon necessaire pour tester des hypotheses avec une puissance statistique adequate."
+                                                                  },
+                                        "Analyse predictive":  {
+                                                                   "Minimal":  50,
+                                                                   "Optimal":  2000,
+                                                                   "Acceptable":  200,
+                                                                   "Recommande":  500,
+                                                                   "Description":  "Taille d\u0027echantillon necessaire pour construire et valider des modeles predictifs robustes."
+                                                               }
+                                    }
+                       },
+                       {
+                           "name":  "Puissance statistique",
+                           "data":  {
+                                        "Analyse exploratoire":  {
+                                                                     "Valeur":  0.7,
+                                                                     "Description":  "Moins critique pour l\u0027analyse exploratoire, mais utile pour planifier des etudes confirmatoires ulterieures."
+                                                                 },
+                                        "Analyse confirmatoire":  {
+                                                                      "Valeur":  0.8,
+                                                                      "Description":  "Essentielle pour garantir la capacite a detecter des effets reels lorsqu\u0027ils existent."
+                                                                  },
+                                        "Analyse predictive":  {
+                                                                   "Valeur":  0.9,
+                                                                   "Description":  "Importante pour les tests statistiques utilises dans l\u0027evaluation des modeles."
+                                                               }
+                                    }
+                       },
+                       {
+                           "name":  "Niveau de signification (alpha)",
+                           "data":  {
+                                        "Analyse exploratoire":  {
+                                                                     "Valeur":  0.1,
+                                                                     "Description":  "Peut etre plus permissif pour encourager l\u0027exploration et la generation d\u0027hypotheses."
+                                                                 },
+                                        "Analyse confirmatoire":  {
+                                                                      "Valeur":  0.05,
+                                                                      "Description":  "Standard pour equilibrer les risques d\u0027erreurs de type I et II."
+                                                                  },
+                                        "Analyse predictive":  {
+                                                                   "Valeur":  0.01,
+                                                                   "Description":  "Plus conservateur pour minimiser les faux positifs dans les modeles."
+                                                               }
+                                    }
+                       },
+                       {
+                           "name":  "Distribution des donnees",
+                           "data":  {
+                                        "Analyse exploratoire":  {
+                                                                     "Exigence":  "Faible",
+                                                                     "Description":  "Peu d\u0027exigences formelles; l\u0027objectif est de comprendre la distribution reelle des donnees."
+                                                                 },
+                                        "Analyse confirmatoire":  {
+                                                                      "Exigence":  "Moderee",
+                                                                      "Description":  "Importante pour les tests parametriques; des transformations ou des tests non-parametriques peuvent etre necessaires."
+                                                                  },
+                                        "Analyse predictive":  {
+                                                                   "Exigence":  "Elevee",
+                                                                   "Description":  "Critique pour certains modeles (regression lineaire); moins importante pour d\u0027autres (arbres de decision)."
+                                                               }
+                                    }
+                       },
+                       {
+                           "name":  "Homogeneite des variances",
+                           "data":  {
+                                        "Analyse exploratoire":  {
+                                                                     "Exigence":  "Faible",
+                                                                     "Description":  "Peu d\u0027exigences formelles; l\u0027heteroscedasticite peut etre un resultat interessant en soi."
+                                                                 },
+                                        "Analyse confirmatoire":  {
+                                                                      "Exigence":  "Moderee",
+                                                                      "Description":  "Importante pour les tests parametriques comme l\u0027ANOVA; des corrections peuvent etre necessaires."
+                                                                  },
+                                        "Analyse predictive":  {
+                                                                   "Exigence":  "Elevee",
+                                                                   "Description":  "Peut affecter la precision et la generalisation des modeles; des transformations peuvent etre necessaires."
+                                                               }
+                                    }
+                       },
+                       {
+                           "name":  "Valeurs aberrantes",
+                           "data":  {
+                                        "Analyse exploratoire":  {
+                                                                     "Description":  "Les valeurs aberrantes doivent etre identifiees et examinees, mais pas necessairement eliminees.",
+                                                                     "Traitement":  "Identification"
+                                                                 },
+                                        "Analyse confirmatoire":  {
+                                                                      "Description":  "Les valeurs aberrantes doivent etre traitees pour eviter de biaiser les resultats des tests.",
+                                                                      "Traitement":  "Traitement"
+                                                                  },
+                                        "Analyse predictive":  {
+                                                                   "Description":  "Les valeurs aberrantes doivent etre eliminees ou modelisees specifiquement pour ameliorer la precision.",
+                                                                   "Traitement":  "Elimination ou modelisation"
+                                                               }
+                                    }
+                       },
+                       {
+                           "name":  "Donnees manquantes",
+                           "data":  {
+                                        "Analyse exploratoire":  {
+                                                                     "Description":  "Les patterns de donnees manquantes doivent etre identifies et analyses.",
+                                                                     "Traitement":  "Identification"
+                                                                 },
+                                        "Analyse confirmatoire":  {
+                                                                      "Description":  "Les donnees manquantes doivent etre imputees ou traitees par des methodes appropriees.",
+                                                                      "Traitement":  "Imputation simple"
+                                                                  },
+                                        "Analyse predictive":  {
+                                                                   "Description":  "Les donnees manquantes necessitent des techniques d\u0027imputation avancees ou une modelisation specifique.",
+                                                                   "Traitement":  "Imputation multiple ou modelisation"
+                                                               }
+                                    }
+                       },
+                       {
+                           "name":  "Techniques recommandees",
+                           "data":  {
+                                        "Analyse exploratoire":  {
+                                                                     "Techniques":  [
+                                                                                        "Statistiques descriptives",
+                                                                                        "Histogrammes",
+                                                                                        "Diagrammes de dispersion",
+                                                                                        "Boites a moustaches",
+                                                                                        "Matrices de correlation",
+                                                                                        "Analyse en composantes principales (ACP)",
+                                                                                        "Analyse factorielle exploratoire"
+                                                                                    ],
+                                                                     "Description":  "Techniques pour explorer et visualiser les donnees, identifier les patterns et generer des hypotheses."
+                                                                 },
+                                        "Analyse confirmatoire":  {
+                                                                      "Techniques":  [
+                                                                                         "Tests d\u0027hypotheses",
+                                                                                         "Tests parametriques",
+                                                                                         "Tests non-parametriques",
+                                                                                         "Analyse de variance (ANOVA)",
+                                                                                         "Analyse factorielle confirmatoire",
+                                                                                         "Modelisation par equations structurelles"
+                                                                                     ],
+                                                                      "Description":  "Techniques pour tester formellement des hypotheses et evaluer leur significativite statistique."
+                                                                  },
+                                        "Analyse predictive":  {
+                                                                   "Techniques":  [
+                                                                                      "Regression lineaire",
+                                                                                      "Regression logistique",
+                                                                                      "Arbres de decision",
+                                                                                      "Forets aleatoires",
+                                                                                      "Machines a vecteurs de support",
+                                                                                      "Reseaux de neurones",
+                                                                                      "Validation croisee"
+                                                                                  ],
+                                                                   "Description":  "Techniques pour construire des modeles predictifs et evaluer leur performance."
+                                                               }
+                                    }
+                       },
+                       {
+                           "name":  "Metriques d\u0027evaluation",
+                           "data":  {
+                                        "Analyse exploratoire":  {
+                                                                     "Metriques":  [
+                                                                                       "Completude de l\u0027exploration",
+                                                                                       "Identification des patterns",
+                                                                                       "Detection des anomalies",
+                                                                                       "Qualite des visualisations"
+                                                                                   ],
+                                                                     "Description":  "Metriques pour evaluer la qualite de l\u0027exploration et la decouverte de patterns."
+                                                                 },
+                                        "Analyse confirmatoire":  {
+                                                                      "Metriques":  [
+                                                                                        "Puissance statistique",
+                                                                                        "Controle des erreurs de type I et II",
+                                                                                        "Taille d\u0027effet",
+                                                                                        "Ajustement du modele"
+                                                                                    ],
+                                                                      "Description":  "Metriques pour evaluer la validite et la fiabilite des tests d\u0027hypotheses."
+                                                                  },
+                                        "Analyse predictive":  {
+                                                                   "Metriques":  [
+                                                                                     "Precision",
+                                                                                     "Rappel",
+                                                                                     "F1-score",
+                                                                                     "AUC-ROC",
+                                                                                     "Erreur quadratique moyenne",
+                                                                                     "RÂ²",
+                                                                                     "Capacite de generalisation"
+                                                                                 ],
+                                                                   "Description":  "Metriques pour evaluer la precision, la generalisation et l\u0027utilite des modeles predictifs."
+                                                               }
+                                    }
+                       }
+                   ],
+    "title":  "Tableau comparatif des criteres de qualite par domaine d\u0027application"
+}

@@ -1,0 +1,666 @@
+﻿<html>
+<head>
+<title>Rapport de recommandations de sÃ©paration minimale entre les modes</title>
+<style>
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+h2, h3 { margin-top: 20px; }
+.recommendations { margin-left: 20px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>Rapport de recommandations de sÃ©paration minimale entre les modes</h1>
+<p><strong>Type de distribution:</strong> Queue lourde</p>
+<p><strong>Niveau de bruit:</strong> Ã‰levÃ©</p>
+<p><strong>MÃ©thode de lissage:</strong> RÃ©gression locale</p>
+<p><strong>Ã‰cart-type:</strong> 2</p>
+<table>
+<tr><th>Taille d'Ã©chantillon</th><th>CatÃ©gorie</th><th>Exploration</th><th>Analyse</th><th>ContrÃ´le</th><th>DÃ©tection</th><th>Classification</th><th>Segmentation</th></tr>
+<tr><td>20</td><td>TrÃ¨s petit (< 30)</td><td>1.36</td><td>1.56</td><td>1.66</td><td>1.76</td><td>1.66</td><td>1.56</td></tr>
+<tr><td>50</td><td>Petit (30-100)</td><td>1.54</td><td>1.74</td><td>1.84</td><td>1.94</td><td>1.84</td><td>1.74</td></tr>
+<tr><td>100</td><td>Moyen (100-500)</td><td>1.72</td><td>1.92</td><td>2.02</td><td>2.12</td><td>2.02</td><td>1.92</td></tr>
+<tr><td>200</td><td>Moyen (100-500)</td><td>1.72</td><td>1.92</td><td>2.02</td><td>2.12</td><td>2.02</td><td>1.92</td></tr>
+<tr><td>500</td><td>Grand (500-1000)</td><td>1.9</td><td>2.1</td><td>2.2</td><td>2.3</td><td>2.2</td><td>2.1</td></tr>
+<tr><td>1000</td><td>TrÃ¨s grand (> 1000)</td><td>2.08</td><td>2.28</td><td>2.38</td><td>2.48</td><td>2.38</td><td>2.28</td></tr>
+<tr><td>5000</td><td>TrÃ¨s grand (> 1000)</td><td>2.08</td><td>2.28</td><td>2.38</td><td>2.48</td><td>2.38</td><td>2.28</td></tr>
+</table>
+<h2>Taille d'Ã©chantillon: 20</h2>
+<p><strong>CatÃ©gorie:</strong> TrÃ¨s petit (< 30)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.36 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 2.72</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): sÃ©paration de base Faible (1.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Exploration de donnÃ©es': une sÃ©paration faible est recommandÃ©e pour dÃ©tecter tous les modes potentiels.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.36 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 2.72.</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.56 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.12</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): sÃ©paration de base Faible (1.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.56 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.12.</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.66 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.32</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): sÃ©paration de base Faible (1.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.66 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.32.</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.76 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.52</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): sÃ©paration de base Faible (1.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'DÃ©tection d'anomalies': une sÃ©paration trÃ¨s Ã©levÃ©e est recommandÃ©e pour ne dÃ©tecter que les modes significatifs.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.76 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.52.</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.66 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.32</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): sÃ©paration de base Faible (1.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.66 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.32.</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.56 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.12</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (20 observations, catÃ©gorie: TrÃ¨s petit (< 30)): sÃ©paration de base Faible (1.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Segmentation': une sÃ©paration standard est recommandÃ©e pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.56 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.12.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 50</h2>
+<p><strong>CatÃ©gorie:</strong> Petit (30-100)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.54 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.08</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): sÃ©paration de base ModÃ©rÃ© (1.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Exploration de donnÃ©es': une sÃ©paration faible est recommandÃ©e pour dÃ©tecter tous les modes potentiels.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.54 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.08.</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.74 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.48</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): sÃ©paration de base ModÃ©rÃ© (1.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.74 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.48.</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.84 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.68</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): sÃ©paration de base ModÃ©rÃ© (1.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.84 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.68.</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.94 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.88</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): sÃ©paration de base ModÃ©rÃ© (1.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'DÃ©tection d'anomalies': une sÃ©paration trÃ¨s Ã©levÃ©e est recommandÃ©e pour ne dÃ©tecter que les modes significatifs.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.94 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.88.</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.84 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.68</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): sÃ©paration de base ModÃ©rÃ© (1.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.84 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.68.</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.74 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.48</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (50 observations, catÃ©gorie: Petit (30-100)): sÃ©paration de base ModÃ©rÃ© (1.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Segmentation': une sÃ©paration standard est recommandÃ©e pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.74 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.48.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 100</h2>
+<p><strong>CatÃ©gorie:</strong> Moyen (100-500)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.72 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.44</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Exploration de donnÃ©es': une sÃ©paration faible est recommandÃ©e pour dÃ©tecter tous les modes potentiels.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.72 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.44.</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.92 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.84</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.92 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.84.</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.02 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.04</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.02 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.04.</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.12 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.24</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'DÃ©tection d'anomalies': une sÃ©paration trÃ¨s Ã©levÃ©e est recommandÃ©e pour ne dÃ©tecter que les modes significatifs.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.12 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.24.</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.02 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.04</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.02 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.04.</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.92 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.84</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (100 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Segmentation': une sÃ©paration standard est recommandÃ©e pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.92 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.84.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 200</h2>
+<p><strong>CatÃ©gorie:</strong> Moyen (100-500)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.72 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.44</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Exploration de donnÃ©es': une sÃ©paration faible est recommandÃ©e pour dÃ©tecter tous les modes potentiels.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.72 Ã©carts-types (ModÃ©rÃ© (1.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.44.</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.92 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.84</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.92 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.84.</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.02 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.04</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.02 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.04.</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.12 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.24</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'DÃ©tection d'anomalies': une sÃ©paration trÃ¨s Ã©levÃ©e est recommandÃ©e pour ne dÃ©tecter que les modes significatifs.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.12 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.24.</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.02 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.04</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.02 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.04.</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.92 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.84</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (200 observations, catÃ©gorie: Moyen (100-500)): sÃ©paration de base Standard (2.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Segmentation': une sÃ©paration standard est recommandÃ©e pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.92 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.84.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 500</h2>
+<p><strong>CatÃ©gorie:</strong> Grand (500-1000)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 1.9 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 3.8</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): sÃ©paration de base Ã‰levÃ© (2.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Exploration de donnÃ©es': une sÃ©paration faible est recommandÃ©e pour dÃ©tecter tous les modes potentiels.</li>
+<li>SÃ©paration finale recommandÃ©e: 1.9 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 3.8.</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.1 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.2</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): sÃ©paration de base Ã‰levÃ© (2.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.1 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.2.</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.2 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.4</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): sÃ©paration de base Ã‰levÃ© (2.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.2 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.4.</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.3 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.6</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): sÃ©paration de base Ã‰levÃ© (2.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'DÃ©tection d'anomalies': une sÃ©paration trÃ¨s Ã©levÃ©e est recommandÃ©e pour ne dÃ©tecter que les modes significatifs.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.3 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.6.</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.2 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.4</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): sÃ©paration de base Ã‰levÃ© (2.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.2 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.4.</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.1 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.2</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (500 observations, catÃ©gorie: Grand (500-1000)): sÃ©paration de base Ã‰levÃ© (2.5Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Segmentation': une sÃ©paration standard est recommandÃ©e pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.1 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.2.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 1000</h2>
+<p><strong>CatÃ©gorie:</strong> TrÃ¨s grand (> 1000)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.08 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.16</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Exploration de donnÃ©es': une sÃ©paration faible est recommandÃ©e pour dÃ©tecter tous les modes potentiels.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.08 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.16.</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.28 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.56</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.28 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.56.</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.38 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.76</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.38 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.76.</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.48 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.96</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'DÃ©tection d'anomalies': une sÃ©paration trÃ¨s Ã©levÃ©e est recommandÃ©e pour ne dÃ©tecter que les modes significatifs.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.48 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.96.</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.38 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.76</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.38 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.76.</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.28 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.56</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (1000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Segmentation': une sÃ©paration standard est recommandÃ©e pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.28 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.56.</li>
+</ul>
+</div>
+<h2>Taille d'Ã©chantillon: 5000</h2>
+<p><strong>CatÃ©gorie:</strong> TrÃ¨s grand (> 1000)</p>
+<p><strong>Facteur d'ajustement pour distribution Queue lourde:</strong> 0.9</p>
+<h3>Recommandations par application:</h3>
+<h4>Exploration de donnÃ©es</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.08 Ã©carts-types (Standard (2.0Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.16</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Exploration de donnÃ©es': une sÃ©paration faible est recommandÃ©e pour dÃ©tecter tous les modes potentiels.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.08 Ã©carts-types (Standard (2.0Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.16.</li>
+</ul>
+</div>
+<h4>Analyse statistique</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.28 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.56</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.28 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.56.</li>
+</ul>
+</div>
+<h4>ContrÃ´le qualitÃ©</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.38 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.76</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.38 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.76.</li>
+</ul>
+</div>
+<h4>DÃ©tection d'anomalies</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.48 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.96</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'DÃ©tection d'anomalies': une sÃ©paration trÃ¨s Ã©levÃ©e est recommandÃ©e pour ne dÃ©tecter que les modes significatifs.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.48 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.96.</li>
+</ul>
+</div>
+<h4>Classification</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.38 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.76</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.38 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.76.</li>
+</ul>
+</div>
+<h4>Segmentation</h4>
+<p><strong>SÃ©paration recommandÃ©e:</strong> 2.28 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ))</p>
+<p><strong>SÃ©paration en unitÃ©s originales:</strong> 4.56</p>
+<div class='recommendations'>
+<h5>Recommandations spÃ©cifiques:</h5>
+<ul>
+<li>Taille d'Ã©chantillon (5000 observations, catÃ©gorie: TrÃ¨s grand (> 1000)): sÃ©paration de base TrÃ¨s Ã©levÃ© (3.0Ïƒ).</li>
+<li>Distribution Ã  queue lourde: utiliser une sÃ©paration lÃ©gÃ¨rement plus faible pour dÃ©tecter les modes dans les queues.</li>
+<li>Niveau de bruit Ã‰levÃ©: une sÃ©paration plus Ã©levÃ©e est nÃ©cessaire pour Ã©viter les faux positifs.</li>
+<li>MÃ©thode de lissage 'RÃ©gression locale': permet d'utiliser une sÃ©paration plus faible.</li>
+<li>Application 'Segmentation': une sÃ©paration standard est recommandÃ©e pour Ã©quilibrer sensibilitÃ© et spÃ©cificitÃ©.</li>
+<li>SÃ©paration finale recommandÃ©e: 2.28 Ã©carts-types (Ã‰levÃ© (2.5Ïƒ)).</li>
+<li>SÃ©paration en unitÃ©s originales: 4.56.</li>
+</ul>
+</div>
+</body>
+</html>

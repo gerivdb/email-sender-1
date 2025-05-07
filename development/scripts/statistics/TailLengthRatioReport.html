@@ -1,0 +1,96 @@
+﻿<html>
+<head>
+<title>Rapport d'Ã©valuation de l'asymÃ©trie basÃ© sur les ratios de longueur de queue</title>
+<style>
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+h2 { margin-top: 20px; }
+.recommendations { margin-left: 20px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>Rapport d'Ã©valuation de l'asymÃ©trie basÃ© sur les ratios de longueur de queue</h1>
+<p><strong>Nombre d'observations:</strong> 1000</p>
+<p><strong>Moyenne:</strong> 116.95</p>
+<p><strong>MÃ©diane:</strong> 115.22</p>
+<p><strong>Ã‰cart-type:</strong> 8.47</p>
+<p><strong>Q1:</strong> 110.67</p>
+<p><strong>Q3:</strong> 121.56</p>
+<p><strong>IQR:</strong> 10.89</p>
+<table>
+<tr><th>MÃ©thode</th><th>Queue gauche</th><th>Queue droite</th><th>Ratio</th><th>Direction</th><th>IntensitÃ©</th></tr>
+<tr><td>Percentile</td><td>107.87</td><td>127.93</td><td>1.19</td><td>Positive (queue Ã  droite)</td><td>Faible</td></tr>
+<tr><td>StdDev</td><td>12.7</td><td>12.7</td><td>1</td><td>Aucune (symÃ©trique)</td><td>NÃ©gligeable</td></tr>
+<tr><td>IQR</td><td>94.34</td><td>137.89</td><td>1.46</td><td>Positive (queue Ã  droite)</td><td>Faible</td></tr>
+</table>
+<h2>MÃ©thode: Percentile</h2>
+<p><strong>Longueur de la queue gauche:</strong> 107.87</p>
+<p><strong>Longueur de la queue droite:</strong> 127.93</p>
+<p><strong>Ratio des longueurs de queue (droite/gauche):</strong> 1.19</p>
+<p><strong>Nombre de points dans la queue gauche:</strong> 100</p>
+<p><strong>Nombre de points dans la queue droite:</strong> 99</p>
+<p><strong>Ratio des points dans les queues (droite/gauche):</strong> 0.99</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> Positive (queue Ã  droite)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> Faible</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La distribution prÃ©sente une asymÃ©trie positive (queue Ã  droite) d'intensitÃ© Faible.</li>
+<li>Le ratio des longueurs de queue (droite/gauche) est de 1.19.</li>
+<li>Cette asymÃ©trie est Faible et peut gÃ©nÃ©ralement Ãªtre ignorÃ©e pour la plupart des analyses statistiques.</li>
+<li>MÃ©thode utilisÃ©e pour calculer les longueurs de queue: Percentile.</li>
+<li>Seuil de percentile utilisÃ©: 10%.</li>
+<li>Nombre de points dans la queue gauche: 100.</li>
+<li>Nombre de points dans la queue droite: 99.</li>
+<li>Ratio des points dans les queues (droite/gauche): 0.99.</li>
+</ul>
+</div>
+<h2>MÃ©thode: StdDev</h2>
+<p><strong>Longueur de la queue gauche:</strong> 12.7</p>
+<p><strong>Longueur de la queue droite:</strong> 12.7</p>
+<p><strong>Ratio des longueurs de queue (droite/gauche):</strong> 1</p>
+<p><strong>Nombre de points dans la queue gauche:</strong> 0</p>
+<p><strong>Nombre de points dans la queue droite:</strong> 1000</p>
+<p><strong>Ratio des points dans les queues (droite/gauche):</strong> Infinity</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> Aucune (symÃ©trique)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> NÃ©gligeable</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La distribution est approximativement symÃ©trique selon le ratio des longueurs de queue.</li>
+<li>Le ratio des longueurs de queue (droite/gauche) est de 1.</li>
+<li>Les mÃ©thodes statistiques paramÃ©triques peuvent gÃ©nÃ©ralement Ãªtre utilisÃ©es.</li>
+<li>MÃ©thode utilisÃ©e pour calculer les longueurs de queue: StdDev.</li>
+<li>Multiplicateur d'Ã©cart-type utilisÃ©: 1.5.</li>
+<li>Nombre de points dans la queue gauche: 0.</li>
+<li>Nombre de points dans la queue droite: 1000.</li>
+<li>Ratio des points dans les queues (droite/gauche): Infinity.</li>
+<li>Attention: Une ou les deux queues contiennent moins de 5 points, ce qui peut rendre l'estimation de l'asymÃ©trie moins fiable.</li>
+</ul>
+</div>
+<h2>MÃ©thode: IQR</h2>
+<p><strong>Longueur de la queue gauche:</strong> 94.34</p>
+<p><strong>Longueur de la queue droite:</strong> 137.89</p>
+<p><strong>Ratio des longueurs de queue (droite/gauche):</strong> 1.46</p>
+<p><strong>Nombre de points dans la queue gauche:</strong> 0</p>
+<p><strong>Nombre de points dans la queue droite:</strong> 24</p>
+<p><strong>Ratio des points dans les queues (droite/gauche):</strong> Infinity</p>
+<p><strong>Direction de l'asymÃ©trie:</strong> Positive (queue Ã  droite)</p>
+<p><strong>IntensitÃ© de l'asymÃ©trie:</strong> Faible</p>
+<div class='recommendations'>
+<h3>Recommandations:</h3>
+<ul>
+<li>La distribution prÃ©sente une asymÃ©trie positive (queue Ã  droite) d'intensitÃ© Faible.</li>
+<li>Le ratio des longueurs de queue (droite/gauche) est de 1.46.</li>
+<li>Cette asymÃ©trie est Faible et peut gÃ©nÃ©ralement Ãªtre ignorÃ©e pour la plupart des analyses statistiques.</li>
+<li>MÃ©thode utilisÃ©e pour calculer les longueurs de queue: IQR.</li>
+<li>Multiplicateur d'IQR utilisÃ©: 1.5.</li>
+<li>Nombre de points dans la queue gauche: 0.</li>
+<li>Nombre de points dans la queue droite: 24.</li>
+<li>Ratio des points dans les queues (droite/gauche): Infinity.</li>
+<li>Attention: Une ou les deux queues contiennent moins de 5 points, ce qui peut rendre l'estimation de l'asymÃ©trie moins fiable.</li>
+</ul>
+</div>
+</body>
+</html>

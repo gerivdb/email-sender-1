@@ -1,0 +1,82 @@
+﻿<html>
+<head>
+<title>Rapport de recommandations de largeur de bin</title>
+<style>
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+h2 { margin-top: 20px; }
+.considerations { margin-left: 20px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>Rapport de recommandations de largeur de bin pour un Ã©chantillon de taille 300</h1>
+<table>
+<tr><th>Distribution</th><th>Description</th><th>MÃ©thode optimale</th><th>Formule</th><th>CatÃ©gorie de taille</th><th>Recommandation</th></tr>
+<tr><td>Normale</td><td>Distribution symÃ©trique en forme de cloche</td><td>Scott</td><td>h = 3.5 * std / (n^(1/3))</td><td>Moyen (100-500)</td><td>La rÃ¨gle de Scott est optimale</td></tr>
+<tr><td>AsymÃ©trique</td><td>Distribution avec une queue plus longue d'un cÃ´tÃ©</td><td>Freedman-Diaconis</td><td>h = 2 * IQR / (n^(1/3))</td><td>Moyen (100-500)</td><td>La rÃ¨gle de Freedman-Diaconis est optimale</td></tr>
+<tr><td>Multimodale</td><td>Distribution avec plusieurs pics</td><td>Freedman-Diaconis</td><td>h = 2 * IQR / (n^(1/3))</td><td>Moyen (100-500)</td><td>La rÃ¨gle de Freedman-Diaconis avec un facteur d'ajustement de 1.3</td></tr>
+<tr><td>Queue lourde</td><td>Distribution avec des queues plus Ã©paisses qu'une distribution normale</td><td>Freedman-Diaconis</td><td>h = 2 * IQR / (n^(1/3))</td><td>Moyen (100-500)</td><td>La rÃ¨gle de Freedman-Diaconis est optimale</td></tr>
+<tr><td>Uniforme</td><td>Distribution oÃ¹ toutes les valeurs ont la mÃªme probabilitÃ©</td><td>Square-root</td><td>k = ceiling(sqrt(n))</td><td>Moyen (100-500)</td><td>Utiliser la rÃ¨gle de la racine carrÃ©e avec un facteur d'ajustement de 0.9</td></tr>
+<tr><td>Exponentielle</td><td>Distribution avec une dÃ©croissance exponentielle</td><td>Freedman-Diaconis</td><td>h = 2 * IQR / (n^(1/3))</td><td>Moyen (100-500)</td><td>La rÃ¨gle de Freedman-Diaconis est optimale</td></tr>
+<tr><td>Inconnue</td><td>Distribution dont le type n'est pas connu a priori</td><td>Sturges</td><td>k = ceiling(log2(n) + 1)</td><td>Moyen (100-500)</td><td>Utiliser la rÃ¨gle de Freedman-Diaconis si l'IQR est connu, sinon Sturges</td></tr>
+</table>
+<h2>ConsidÃ©rations spÃ©ciales</h2>
+<h3>Normale</h3>
+<div class='considerations'>
+<ul>
+<li>Pour les distributions parfaitement normales, la rÃ¨gle de Scott est optimale</li>
+<li>Si la distribution est approximativement normale, un lÃ©ger ajustement peut Ãªtre nÃ©cessaire</li>
+<li>Pour les petits Ã©chantillons, privilÃ©gier la lisibilitÃ© Ã  la prÃ©cision statistique</li>
+</ul>
+</div>
+<h3>AsymÃ©trique</h3>
+<div class='considerations'>
+<ul>
+<li>Pour les distributions fortement asymÃ©triques, envisager une transformation logarithmique</li>
+<li>L'IQR est plus robuste que l'Ã©cart-type pour les distributions asymÃ©triques</li>
+<li>ConsidÃ©rer des bins de largeur variable pour les distributions trÃ¨s asymÃ©triques</li>
+</ul>
+</div>
+<h3>Multimodale</h3>
+<div class='considerations'>
+<ul>
+<li>Augmenter le nombre de bins pour mieux distinguer les modes</li>
+<li>Envisager des mÃ©thodes de dÃ©composition pour identifier les sous-distributions</li>
+<li>Pour les distributions avec des modes trÃ¨s sÃ©parÃ©s, envisager des histogrammes sÃ©parÃ©s</li>
+</ul>
+</div>
+<h3>Queue lourde</h3>
+<div class='considerations'>
+<ul>
+<li>L'IQR est plus robuste que l'Ã©cart-type pour les distributions Ã  queue lourde</li>
+<li>Envisager une Ã©chelle logarithmique pour les valeurs extrÃªmes</li>
+<li>Pour les distributions avec des valeurs aberrantes, utiliser des mÃ©thodes robustes</li>
+</ul>
+</div>
+<h3>Uniforme</h3>
+<div class='considerations'>
+<ul>
+<li>Pour les distributions uniformes, des bins de largeur Ã©gale sont optimaux</li>
+<li>Moins de bins sont gÃ©nÃ©ralement nÃ©cessaires pour les distributions uniformes</li>
+<li>VÃ©rifier si la distribution est rÃ©ellement uniforme avant d'appliquer ces recommandations</li>
+</ul>
+</div>
+<h3>Exponentielle</h3>
+<div class='considerations'>
+<ul>
+<li>Envisager une Ã©chelle logarithmique ou des bins de largeur variable</li>
+<li>Pour les distributions exponentielles, les petites valeurs sont plus frÃ©quentes</li>
+<li>ConsidÃ©rer des bins plus Ã©troits pour les petites valeurs et plus larges pour les grandes valeurs</li>
+</ul>
+</div>
+<h3>Inconnue</h3>
+<div class='considerations'>
+<ul>
+<li>Commencer par explorer la distribution avec diffÃ©rentes largeurs de bin</li>
+<li>Ajuster en fonction des caractÃ©ristiques observÃ©es</li>
+<li>PrivilÃ©gier les mÃ©thodes robustes en l'absence d'information sur la distribution</li>
+</ul>
+</div>
+</body>
+</html>

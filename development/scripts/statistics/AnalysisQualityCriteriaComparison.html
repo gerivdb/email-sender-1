@@ -1,0 +1,150 @@
+﻿<html>
+<head>
+<title>Tableau comparatif des criteres de qualite par domaine d'application</title>
+<style>
+table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; }
+h2 { margin-top: 20px; }
+.details { margin-left: 20px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>Tableau comparatif des criteres de qualite par domaine d'application</h1>
+<h2>Taille d'echantillon</h2>
+<table>
+<tr><th>Type d'analyse</th><th>Minimal</th><th>Acceptable</th><th>Recommande</th><th>Optimal</th></tr>
+<tr><td>Analyse exploratoire</td><td>10</td><td>30</td><td>100</td><td>300</td></tr>
+<tr><td>Analyse confirmatoire</td><td>30</td><td>100</td><td>300</td><td>1000</td></tr>
+<tr><td>Analyse predictive</td><td>50</td><td>200</td><td>500</td><td>2000</td></tr>
+</table>
+<div class='details'>
+<h3>Details</h3>
+<ul>
+<li><strong>Analyse exploratoire</strong> : Taille d'echantillon necessaire pour identifier les patterns et tendances dans les donnees.</li>
+<li><strong>Analyse confirmatoire</strong> : Taille d'echantillon necessaire pour tester des hypotheses avec une puissance statistique adequate.</li>
+<li><strong>Analyse predictive</strong> : Taille d'echantillon necessaire pour construire et valider des modeles predictifs robustes.</li>
+</ul>
+</div>
+<h2>Puissance statistique</h2>
+<table>
+<tr><th>Type d'analyse</th><th>Valeur</th></tr>
+<tr><td>Analyse exploratoire</td><td>0.7</td></tr>
+<tr><td>Analyse confirmatoire</td><td>0.8</td></tr>
+<tr><td>Analyse predictive</td><td>0.9</td></tr>
+</table>
+<div class='details'>
+<h3>Details</h3>
+<ul>
+<li><strong>Analyse exploratoire</strong> : Moins critique pour l'analyse exploratoire, mais utile pour planifier des etudes confirmatoires ulterieures.</li>
+<li><strong>Analyse confirmatoire</strong> : Essentielle pour garantir la capacite a detecter des effets reels lorsqu'ils existent.</li>
+<li><strong>Analyse predictive</strong> : Importante pour les tests statistiques utilises dans l'evaluation des modeles.</li>
+</ul>
+</div>
+<h2>Niveau de signification (alpha)</h2>
+<table>
+<tr><th>Type d'analyse</th><th>Valeur</th></tr>
+<tr><td>Analyse exploratoire</td><td>0.1</td></tr>
+<tr><td>Analyse confirmatoire</td><td>0.05</td></tr>
+<tr><td>Analyse predictive</td><td>0.01</td></tr>
+</table>
+<div class='details'>
+<h3>Details</h3>
+<ul>
+<li><strong>Analyse exploratoire</strong> : Peut etre plus permissif pour encourager l'exploration et la generation d'hypotheses.</li>
+<li><strong>Analyse confirmatoire</strong> : Standard pour equilibrer les risques d'erreurs de type I et II.</li>
+<li><strong>Analyse predictive</strong> : Plus conservateur pour minimiser les faux positifs dans les modeles.</li>
+</ul>
+</div>
+<h2>Distribution des donnees</h2>
+<table>
+<tr><th>Type d'analyse</th><th>Exigence</th></tr>
+<tr><td>Analyse exploratoire</td><td>Faible</td></tr>
+<tr><td>Analyse confirmatoire</td><td>Moderee</td></tr>
+<tr><td>Analyse predictive</td><td>Elevee</td></tr>
+</table>
+<div class='details'>
+<h3>Details</h3>
+<ul>
+<li><strong>Analyse exploratoire</strong> : Peu d'exigences formelles; l'objectif est de comprendre la distribution reelle des donnees.</li>
+<li><strong>Analyse confirmatoire</strong> : Importante pour les tests parametriques; des transformations ou des tests non-parametriques peuvent etre necessaires.</li>
+<li><strong>Analyse predictive</strong> : Critique pour certains modeles (regression lineaire); moins importante pour d'autres (arbres de decision).</li>
+</ul>
+</div>
+<h2>Homogeneite des variances</h2>
+<table>
+<tr><th>Type d'analyse</th><th>Exigence</th></tr>
+<tr><td>Analyse exploratoire</td><td>Faible</td></tr>
+<tr><td>Analyse confirmatoire</td><td>Moderee</td></tr>
+<tr><td>Analyse predictive</td><td>Elevee</td></tr>
+</table>
+<div class='details'>
+<h3>Details</h3>
+<ul>
+<li><strong>Analyse exploratoire</strong> : Peu d'exigences formelles; l'heteroscedasticite peut etre un resultat interessant en soi.</li>
+<li><strong>Analyse confirmatoire</strong> : Importante pour les tests parametriques comme l'ANOVA; des corrections peuvent etre necessaires.</li>
+<li><strong>Analyse predictive</strong> : Peut affecter la precision et la generalisation des modeles; des transformations peuvent etre necessaires.</li>
+</ul>
+</div>
+<h2>Valeurs aberrantes</h2>
+<table>
+<tr><th>Type d'analyse</th><th>Traitement</th></tr>
+<tr><td>Analyse exploratoire</td><td>Identification</td></tr>
+<tr><td>Analyse confirmatoire</td><td>Traitement</td></tr>
+<tr><td>Analyse predictive</td><td>Elimination ou modelisation</td></tr>
+</table>
+<div class='details'>
+<h3>Details</h3>
+<ul>
+<li><strong>Analyse exploratoire</strong> : Les valeurs aberrantes doivent etre identifiees et examinees, mais pas necessairement eliminees.</li>
+<li><strong>Analyse confirmatoire</strong> : Les valeurs aberrantes doivent etre traitees pour eviter de biaiser les resultats des tests.</li>
+<li><strong>Analyse predictive</strong> : Les valeurs aberrantes doivent etre eliminees ou modelisees specifiquement pour ameliorer la precision.</li>
+</ul>
+</div>
+<h2>Donnees manquantes</h2>
+<table>
+<tr><th>Type d'analyse</th><th>Traitement</th></tr>
+<tr><td>Analyse exploratoire</td><td>Identification</td></tr>
+<tr><td>Analyse confirmatoire</td><td>Imputation simple</td></tr>
+<tr><td>Analyse predictive</td><td>Imputation multiple ou modelisation</td></tr>
+</table>
+<div class='details'>
+<h3>Details</h3>
+<ul>
+<li><strong>Analyse exploratoire</strong> : Les patterns de donnees manquantes doivent etre identifies et analyses.</li>
+<li><strong>Analyse confirmatoire</strong> : Les donnees manquantes doivent etre imputees ou traitees par des methodes appropriees.</li>
+<li><strong>Analyse predictive</strong> : Les donnees manquantes necessitent des techniques d'imputation avancees ou une modelisation specifique.</li>
+</ul>
+</div>
+<h2>Techniques recommandees</h2>
+<table>
+<tr><th>Type d'analyse</th><th>Techniques</th></tr>
+<tr><td>Analyse exploratoire</td><td>Statistiques descriptives<br>Histogrammes<br>Diagrammes de dispersion<br>Boites a moustaches<br>Matrices de correlation<br>Analyse en composantes principales (ACP)<br>Analyse factorielle exploratoire</td></tr>
+<tr><td>Analyse confirmatoire</td><td>Tests d'hypotheses<br>Tests parametriques<br>Tests non-parametriques<br>Analyse de variance (ANOVA)<br>Analyse factorielle confirmatoire<br>Modelisation par equations structurelles</td></tr>
+<tr><td>Analyse predictive</td><td>Regression lineaire<br>Regression logistique<br>Arbres de decision<br>Forets aleatoires<br>Machines a vecteurs de support<br>Reseaux de neurones<br>Validation croisee</td></tr>
+</table>
+<div class='details'>
+<h3>Details</h3>
+<ul>
+<li><strong>Analyse exploratoire</strong> : Techniques pour explorer et visualiser les donnees, identifier les patterns et generer des hypotheses.</li>
+<li><strong>Analyse confirmatoire</strong> : Techniques pour tester formellement des hypotheses et evaluer leur significativite statistique.</li>
+<li><strong>Analyse predictive</strong> : Techniques pour construire des modeles predictifs et evaluer leur performance.</li>
+</ul>
+</div>
+<h2>Metriques d'evaluation</h2>
+<table>
+<tr><th>Type d'analyse</th><th>Metriques</th></tr>
+<tr><td>Analyse exploratoire</td><td>Completude de l'exploration<br>Identification des patterns<br>Detection des anomalies<br>Qualite des visualisations</td></tr>
+<tr><td>Analyse confirmatoire</td><td>Puissance statistique<br>Controle des erreurs de type I et II<br>Taille d'effet<br>Ajustement du modele</td></tr>
+<tr><td>Analyse predictive</td><td>Precision<br>Rappel<br>F1-score<br>AUC-ROC<br>Erreur quadratique moyenne<br>RÂ²<br>Capacite de generalisation</td></tr>
+</table>
+<div class='details'>
+<h3>Details</h3>
+<ul>
+<li><strong>Analyse exploratoire</strong> : Metriques pour evaluer la qualite de l'exploration et la decouverte de patterns.</li>
+<li><strong>Analyse confirmatoire</strong> : Metriques pour evaluer la validite et la fiabilite des tests d'hypotheses.</li>
+<li><strong>Analyse predictive</strong> : Metriques pour evaluer la precision, la generalisation et l'utilite des modeles predictifs.</li>
+</ul>
+</div>
+</body>
+</html>
