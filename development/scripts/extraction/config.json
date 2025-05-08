@@ -1,0 +1,54 @@
+{
+  "DefaultSerializationFormat": "Json",
+  "DefaultValidationEnabled": true,
+  "DefaultConfidenceThreshold": 75,
+  "DefaultLanguage": "fr",
+  "AdvancedOptions": {
+    "Performance": {
+      "EnableParallelProcessing": false,
+      "MaxParallelJobs": 4,
+      "UseRunspacePools": false,
+      "MaxRunspaces": 10,
+      "EnableCaching": true,
+      "CacheExpirationMinutes": 60
+    },
+    "Logging": {
+      "Enabled": true,
+      "Level": "Info",
+      "LogToFile": false,
+      "LogFilePath": "logs/extractedinfo.log",
+      "MaxLogSizeMB": 10,
+      "MaxLogFiles": 5,
+      "IncludeTimestamp": true,
+      "IncludeSource": true,
+      "LogFormat": "Text"
+    },
+    "Validation": {
+      "StrictMode": false,
+      "ValidateBeforeSerialization": true,
+      "AutoCorrectInvalidValues": false,
+      "CustomValidationRulesPath": ""
+    },
+    "Serialization": {
+      "Compression": "None",
+      "IncludeTypeInformation": true,
+      "MaxDepth": 10,
+      "Formatting": "Indented",
+      "DateTimeFormat": "o"
+    },
+    "Extraction": {
+      "DefaultExtractors": ["Text", "StructuredData", "Media"],
+      "EnabledExtractors": ["Text", "StructuredData", "Media"],
+      "ExtractorTimeout": 30,
+      "MaxExtractorRetries": 3,
+      "ExtractorRetryDelay": 5
+    },
+    "Storage": {
+      "DefaultStorageProvider": "FileSystem",
+      "FileSystemStoragePath": "data/extractedinfo",
+      "DatabaseConnectionString": "",
+      "CloudStorageProvider": "None",
+      "CloudStorageConfig": {}
+    }
+  }
+}

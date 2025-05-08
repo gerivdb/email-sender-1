@@ -47,13 +47,8 @@ function Initialize-Module {
             DefaultValidationRules = @{}
         }
 
-        # Configuration
-        Config   = @{
-            DefaultSerializationFormat = "Json"
-            DefaultValidationEnabled   = $true
-            DefaultConfidenceThreshold = 75
-            DefaultLanguage            = "fr"
-        }
+        # Configuration (sera initialisée plus tard)
+        Config   = @{}
 
         # Statistiques
         Stats    = @{
@@ -61,6 +56,27 @@ function Initialize-Module {
             OperationsPerformed = @{}
         }
     }
+
+    # Charger les fonctions de configuration (prioritaires)
+    $configFunctions = @(
+        "Get-ExtractedInfoConfiguration.ps1",
+        "Set-ExtractedInfoConfiguration.ps1",
+        "Import-ExtractedInfoConfiguration.ps1",
+        "Export-ExtractedInfoConfiguration.ps1",
+        "Import-ExtractedInfoConfigurationFromEnv.ps1",
+        "Initialize-ExtractedInfoConfiguration.ps1"
+    )
+
+    foreach ($function in $configFunctions) {
+        $path = "$script:ModuleRoot\Public\Configuration\$function"
+        if (Test-Path $path) {
+            Write-Verbose "Chargement de $path"
+            . $path
+        }
+    }
+
+    # Initialiser la configuration
+    Initialize-ExtractedInfoConfiguration
 
     # Charger les fonctions de base (uniquement celles qui existent)
     $baseFunctions = @(
@@ -102,6 +118,14 @@ function Initialize-Module {
 
 # Exporter les fonctions publiques
 Export-ModuleMember -Function @(
+    # Fonctions de configuration
+    'Get-ExtractedInfoConfiguration',
+    'Set-ExtractedInfoConfiguration',
+    'Import-ExtractedInfoConfiguration',
+    'Export-ExtractedInfoConfiguration',
+    'Import-ExtractedInfoConfigurationFromEnv',
+    'Initialize-ExtractedInfoConfiguration',
+
     # Fonctions de base
     'New-BaseExtractedInfo',
     'Add-ExtractedInfoMetadata',

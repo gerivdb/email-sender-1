@@ -1,0 +1,45 @@
+﻿=== RAPPORT D'ANALYSE D'ASYMÃ‰TRIE ===
+Date: 2025-05-08 05:31:50
+Taille d'Ã©chantillon: 100 observations
+
+=== STATISTIQUES DESCRIPTIVES ===
+Minimum: 0.0031
+Maximum: 3.1625
+Ã‰tendue: 3.1594
+Moyenne: 0.7185
+MÃ©diane: 0.5287
+Ã‰cart-type: 0.6813
+Q1 (25%): 0.1587
+Q3 (75%): 1.072
+IQR: 0.9133
+Coefficient d'asymÃ©trie (skewness): 1.2218
+Kurtosis: 1.2135
+
+=== MÃ‰THODE OPTIMALE ===
+MÃ©thode recommandÃ©e: Density
+Autres mÃ©thodes recommandÃ©es: Slope Quantiles Moments 
+
+=== COMPARAISON DES MÃ‰THODES ===
+MÃ©thodes utilisÃ©es: Slope, Moments, Quantiles
+MÃ©thode recommandÃ©e: Quantiles
+Score de cohÃ©rence: 0.6715
+
+Scores par mÃ©thode:
+- Slope : 1
+- Moments : -0.4073
+- Quantiles : -0.3796
+
+=== SCORE COMPOSITE ===
+Score composite: 0.0193
+Direction de l'asymÃ©trie: SymÃ©trique
+IntensitÃ© de l'asymÃ©trie: NÃ©gligeable
+
+=== RECOMMANDATIONS ===
+- Le score composite d'asymÃ©trie de 0.02 indique une distribution symã©trique avec une asymÃ©trie de niveau 'nã©gligeable'.
+- Cette asymÃ©trie nÃ©gligeable n'aura probablement pas d'impact significatif sur les analyses statistiques.
+- Ce score composite est basÃ© sur les mÃ©thodes suivantes: Slope (poids: 0.3), Moments (poids: 0.34), Quantiles (poids: 0.36).
+- Les diffÃ©rentes mÃ©thodes d'Ã©valuation de l'asymÃ©trie montrent une cohÃ©rence modÃ©rÃ©e (score de cohÃ©rence: 0.67). Le score composite doit Ãªtre interprÃ©tÃ© avec une certaine prudence.
+
+=== FIN DU RAPPORT ===
+GÃ©nÃ©rÃ© par le module TailSlopeAsymmetry
+Date: 2025-05-08 05:31:50

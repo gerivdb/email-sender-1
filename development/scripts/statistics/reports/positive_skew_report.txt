@@ -1,0 +1,77 @@
+﻿=== RAPPORT D'ANALYSE D'ASYMÃ‰TRIE ===
+Date: 2025-05-08 05:31:48
+Taille d'Ã©chantillon: 100 observations
+
+=== STATISTIQUES DESCRIPTIVES ===
+Minimum: -3.3641
+Maximum: 4.6258
+Ã‰tendue: 7.9899
+Moyenne: 0.9538
+MÃ©diane: 0.4576
+Ã‰cart-type: 1.6972
+Q1 (25%): -0.3801
+Q3 (75%): 2.1646
+IQR: 2.5446
+Coefficient d'asymÃ©trie (skewness): 0.3946
+Kurtosis: -0.5519
+
+=== MÃ‰THODE OPTIMALE ===
+MÃ©thode recommandÃ©e: Moments
+Autres mÃ©thodes recommandÃ©es: Density Slope 
+
+Justification:
+- La taille d'Ã©chantillon est grande (100 observations), ce qui favorise les mÃ©thodes basÃ©es sur les moments, les pentes et la densitÃ©.
+- La mÃ©thode optimale pour cette distribution est 'Moments' avec un score de 0.2.
+- Les autres mÃ©thodes recommandÃ©es sont: Density, Slope.
+
+=== COMPARAISON DES MÃ‰THODES ===
+MÃ©thodes utilisÃ©es: Slope, Moments, Quantiles
+MÃ©thode recommandÃ©e: Quantiles
+Score de cohÃ©rence: 0.8849
+
+Scores par mÃ©thode:
+- Slope : -0.5089
+- Moments : -0.1315
+- Quantiles : -0.6832
+
+FiabilitÃ© par mÃ©thode:
+- Slope : 0.7424
+- Moments : 0.7628
+- Quantiles : 0.8191
+
+=== SCORE COMPOSITE ===
+Score composite: -0.4465
+Direction de l'asymÃ©trie: AsymÃ©trie nÃ©gative
+IntensitÃ© de l'asymÃ©trie: ModÃ©rÃ©e
+
+Poids par mÃ©thode:
+- Slope : 0.3194
+- Moments : 0.3282
+- Quantiles : 0.3524
+
+=== DÃ‰TAILS DE LA MÃ‰THODE Slope ===
+Ratio des pentes: 1.781
+Direction de l'asymÃ©trie: Queue gauche plus pentue
+IntensitÃ© de l'asymÃ©trie: ModÃ©rÃ©e
+
+=== DÃ‰TAILS DE LA MÃ‰THODE Moments ===
+Coefficient d'asymÃ©trie (skewness): 0.3946
+Kurtosis: -0.5519
+Direction de l'asymÃ©trie: AsymÃ©trie positive
+IntensitÃ© de l'asymÃ©trie: TrÃ¨s faible
+
+=== DÃ‰TAILS DE LA MÃ‰THODE Quantiles ===
+Coefficient d'asymÃ©trie de Bowley: 0.3416
+Direction de l'asymÃ©trie: AsymÃ©trie positive
+IntensitÃ© de l'asymÃ©trie: Forte
+
+=== RECOMMANDATIONS ===
+- Le score composite d'asymÃ©trie de -0.45 indique une distribution asymã©trie nã©gative avec une asymÃ©trie de niveau 'modã©rã©e'.
+- Cette asymÃ©trie modÃ©rÃ©e peut affecter les analyses paramÃ©triques. ConsidÃ©rer des transformations ou des mÃ©thodes non paramÃ©triques.
+- Pour corriger l'asymÃ©trie nÃ©gative, considÃ©rer une transformation exponentielle, Ã©lÃ©vation au carrÃ© ou Box-Cox.
+- Ce score composite est basÃ© sur les mÃ©thodes suivantes: Slope (poids: 0.32), Moments (poids: 0.33), Quantiles (poids: 0.35).
+- Les diffÃ©rentes mÃ©thodes d'Ã©valuation de l'asymÃ©trie sont relativement cohÃ©rentes entre elles (score de cohÃ©rence: 0.88).
+
+=== FIN DU RAPPORT ===
+GÃ©nÃ©rÃ© par le module TailSlopeAsymmetry
+Date: 2025-05-08 05:31:48
