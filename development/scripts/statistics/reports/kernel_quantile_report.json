@@ -1,0 +1,47 @@
+﻿{
+    "metadata":  {
+                     "title":  "Rapport de quantiles par estimation de densitÃ©",
+                     "generationDate":  "2025-05-08T18:03:53Z",
+                     "version":  "1.0"
+                 },
+    "distributions":  {
+                          "normal":  {
+                                         "bandwidth":  0.95085344960961315,
+                                         "sampleSize":  100,
+                                         "name":  "Distribution normale",
+                                         "quantiles":  {
+                                                           "q50":  -1.3290868940863323,
+                                                           "q90":  -1.2378,
+                                                           "q10":  -1.4140799000765421,
+                                                           "q25":  -1.3807238011248837,
+                                                           "q75":  -1.2817527598996843
+                                                       },
+                                         "empiricalQuantiles":  {
+                                                                    "q50":  4.69,
+                                                                    "q90":  4.69,
+                                                                    "q10":  1.11,
+                                                                    "q25":  1.11,
+                                                                    "q75":  4.69
+                                                                }
+                                     },
+                          "positiveSkew":  {
+                                               "bandwidth":  1.6520414683161437,
+                                               "sampleSize":  100,
+                                               "name":  "Distribution asymÃ©trique positive",
+                                               "quantiles":  {
+                                                                 "q50":  -0.21987611780444841,
+                                                                 "q90":  -0.090760000000000063,
+                                                                 "q10":  -0.3253070982459057,
+                                                                 "q25":  -0.28550211155158373,
+                                                                 "q75":  -0.15499913541417162
+                                                             },
+                                               "empiricalQuantiles":  {
+                                                                          "q50":  0.27,
+                                                                          "q90":  6.49,
+                                                                          "q10":  0.27,
+                                                                          "q25":  0.27,
+                                                                          "q75":  6.49
+                                                                      }
+                                           }
+                      }
+}

@@ -1,0 +1,45 @@
+﻿{
+    "metadata":  {
+                     "title":  "Rapport de comparaison de quantiles",
+                     "generationDate":  "2025-05-08T18:20:55Z",
+                     "version":  "1.0"
+                 },
+    "comparisons":  {
+                        "normalVsWide":  {
+                                             "minDeviation":  -2.8330443566879033,
+                                             "name":  "Normale standard vs. Normale elargie",
+                                             "metrics":  {
+                                                             "KolmogorovSmirnov":  2.8330443566879033,
+                                                             "CramerVonMises":  0.7998890887703084,
+                                                             "AndersonDarling":  26.084403670521173,
+                                                             "Wasserstein":  0.67473543644347078
+                                                         },
+                                             "maxDeviation":  2.1833109184123529,
+                                             "meanDeviation":  0.1118710502332087
+                                         },
+                        "normalVsShifted":  {
+                                                "minDeviation":  1.6275371456483638,
+                                                "name":  "Normale standard vs. Normale decalee",
+                                                "metrics":  {
+                                                                "KolmogorovSmirnov":  2.2676926991881561,
+                                                                "CramerVonMises":  4.4382445088367755,
+                                                                "AndersonDarling":  42.844118669012332,
+                                                                "Wasserstein":  2.1042755846919814
+                                                            },
+                                                "maxDeviation":  2.2676926991881561,
+                                                "meanDeviation":  2.1042755846919814
+                                            },
+                        "normalVsExponential":  {
+                                                    "minDeviation":  0.63735107717692263,
+                                                    "name":  "Normale standard vs. Exponentielle",
+                                                    "metrics":  {
+                                                                    "KolmogorovSmirnov":  2.5584885455102118,
+                                                                    "CramerVonMises":  1.2087075304394792,
+                                                                    "AndersonDarling":  27.352748652012576,
+                                                                    "Wasserstein":  1.0310840039651679
+                                                                },
+                                                    "maxDeviation":  2.5584885455102118,
+                                                    "meanDeviation":  1.0310840039651679
+                                                }
+                    }
+}

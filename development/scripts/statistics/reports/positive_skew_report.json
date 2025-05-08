@@ -1,0 +1,99 @@
+﻿{
+    "methods":  {
+                    "quantiles":  {
+                                      "q3":  2.1646,
+                                      "q2":  0.4576,
+                                      "asymmetryDirection":  "AsymÃ©trie positive",
+                                      "asymmetryIntensity":  "Forte",
+                                      "q1":  -0.3801,
+                                      "score":  -0.6832,
+                                      "bowleySkewness":  0.3416
+                                  },
+                    "slope":  {
+                                  "rightSlope":  10.7537,
+                                  "asymmetryDirection":  "Queue gauche plus pentue",
+                                  "asymmetryIntensity":  "ModÃ©rÃ©e",
+                                  "score":  -0.5089,
+                                  "leftSlope":  19.1525,
+                                  "slopeRatio":  1.781
+                              },
+                    "moments":  {
+                                    "asymmetryIntensity":  "TrÃ¨s faible",
+                                    "kurtosis":  -0.5519,
+                                    "asymmetryDirection":  "AsymÃ©trie positive",
+                                    "skewness":  0.3946,
+                                    "score":  -0.1315
+                                }
+                },
+    "summary":  {
+                    "summaryText":  "L\u0027analyse de l\u0027asymÃ©trie de la distribution a rÃ©vÃ©lÃ© une asymÃ©trie asymã©trie nã©gative de niveau modã©rã©e.",
+                    "asymmetryDirection":  "AsymÃ©trie nÃ©gative",
+                    "recommendedMethod":  "Quantiles",
+                    "asymmetryIntensity":  "ModÃ©rÃ©e",
+                    "consistencyScore":  0.8849,
+                    "compositeScore":  -0.4465
+                },
+    "data":  {
+                 "histogram":  {
+                                   "bins":  [
+                                                -3.3641,
+                                                -2.5652,
+                                                -1.7662,
+                                                -0.9672,
+                                                -0.1682,
+                                                0.6308,
+                                                1.4298,
+                                                2.2288,
+                                                3.0278,
+                                                3.8268,
+                                                4.6258
+                                            ],
+                                   "frequencies":  {
+                                                       "value":  [
+                                                                     1,
+                                                                     1,
+                                                                     6,
+                                                                     24,
+                                                                     22,
+                                                                     11,
+                                                                     12,
+                                                                     7,
+                                                                     9,
+                                                                     7
+                                                                 ],
+                                                       "Count":  10
+                                                   }
+                               }
+             },
+    "recommendations":  [
+                            "Le score composite d\u0027asymÃ©trie de -0.45 indique une distribution asymã©trie nã©gative avec une asymÃ©trie de niveau \u0027modã©rã©e\u0027.",
+                            "Cette asymÃ©trie modÃ©rÃ©e peut affecter les analyses paramÃ©triques. ConsidÃ©rer des transformations ou des mÃ©thodes non paramÃ©triques.",
+                            "Pour corriger l\u0027asymÃ©trie nÃ©gative, considÃ©rer une transformation exponentielle, Ã©lÃ©vation au carrÃ© ou Box-Cox.",
+                            "Ce score composite est basÃ© sur les mÃ©thodes suivantes: Slope (poids: 0.32), Moments (poids: 0.33), Quantiles (poids: 0.35).",
+                            "Les diffÃ©rentes mÃ©thodes d\u0027Ã©valuation de l\u0027asymÃ©trie sont relativement cohÃ©rentes entre elles (score de cohÃ©rence: 0.88)."
+                        ],
+    "metadata":  {
+                     "title":  "Rapport d\u0027analyse d\u0027asymÃ©trie",
+                     "sampleSize":  100,
+                     "generationDate":  "2025-05-08T06:16:48Z",
+                     "version":  "1.0"
+                 },
+    "statistics":  {
+                       "quantiles":  {
+                                         "q3":  2.1646,
+                                         "q2":  0.4576,
+                                         "p90":  3.6284,
+                                         "p10":  -0.7616,
+                                         "q1":  -0.3801,
+                                         "iqr":  2.5446
+                                     },
+                       "stdDev":  1.6972,
+                       "kurtosis":  -0.5519,
+                       "mean":  0.9538,
+                       "median":  0.4576,
+                       "range":  7.9899,
+                       "min":  -3.3641,
+                       "skewness":  0.3946,
+                       "max":  4.6258
+                   }
+}

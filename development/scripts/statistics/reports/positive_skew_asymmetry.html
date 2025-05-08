@@ -1,0 +1,358 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AsymÃ©trie de la distribution asymÃ©trique positive</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .chart-container {
+            flex: 2;
+            min-width: 500px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .results-container {
+            flex: 1;
+            min-width: 300px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table th, table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+        .positive {
+            color: #27ae60;
+        }
+        .negative {
+            color: #e74c3c;
+        }
+        .symmetric {
+            color: #3498db;
+        }
+        .negligible {
+            font-weight: normal;
+        }
+        .veryweak, .weak {
+            font-weight: normal;
+        }
+        .moderate {
+            font-weight: bold;
+        }
+        .strong, .verystrong, .extreme {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .chart-container, .results-container {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>AsymÃ©trie de la distribution asymÃ©trique positive</h1>
+
+    <div class="summary">
+        <h2>RÃ©sumÃ©</h2>
+        <p>
+            <strong>Direction d'asymÃ©trie:</strong> <span class="positive">Positive</span><br>
+            <strong>IntensitÃ© d'asymÃ©trie:</strong> <span class="moderate">Moderate</span><br>
+            <strong>Score composite:</strong> 0.2181<br>
+            <strong>MÃ©thode la plus cohÃ©rente:</strong> PeakOffset<br>
+            <strong>Taille de l'Ã©chantillon:</strong> 50 points
+        </p>
+    </div>
+
+    <div class="container">
+        <div class="chart-container">
+            <h2>Histogramme</h2>
+            <canvas id="histogramChart"></canvas>
+        </div>
+
+        <div class="results-container">
+            <h2>RÃ©sultats par mÃ©thode</h2>
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th>MÃ©thode</th>
+                        <th>Score</th>
+                        <th>Direction</th>
+                        <th>IntensitÃ©</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // DonnÃ©es de l'histogramme
+        const histogramData = [
+    {
+        "frequency":  0.02,
+        "color":  "rgba(54, 162, 235, 0.6)",
+        "bin":  "[0.02, 0.31)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[0.31, 0.6)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[0.6, 0.88)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[0.88, 1.17)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[1.17, 1.46)"
+    },
+    {
+        "frequency":  0.36,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[1.46, 1.74)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[1.74, 2.03)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[2.03, 2.32)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[2.32, 2.61)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[2.61, 2.9)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[2.9, 3.18)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[3.18, 3.47)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[3.47, 3.76)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[3.76, 4.04)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[4.04, 4.33)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[4.33, 4.62)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[4.62, 4.91)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[4.91, 5.19)"
+    },
+    {
+        "frequency":  0,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[5.19, 5.48)"
+    },
+    {
+        "frequency":  0.62,
+        "color":  "rgba(255, 99, 132, 0.6)",
+        "bin":  "[5.48, 5.77)"
+    }
+];
+
+        // DonnÃ©es des rÃ©sultats
+        const resultsData = [
+    {
+        "method":  "AreaDifference",
+        "score":  0.96,
+        "direction":  "Positive",
+        "intensity":  "Extreme",
+        "consistency":  2
+    },
+    {
+        "method":  "ShapeDifference",
+        "score":  -1,
+        "direction":  "Negative",
+        "intensity":  "Extreme",
+        "consistency":  0
+    },
+    {
+        "method":  "PeakOffset",
+        "score":  -0.025,
+        "direction":  "Positive",
+        "intensity":  "Negligible",
+        "consistency":  2
+    },
+    {
+        "method":  "TailRatio",
+        "score":  0.9375,
+        "direction":  "Positive",
+        "intensity":  "Extreme",
+        "consistency":  2
+    }
+];
+
+        // CrÃ©er l'histogramme
+        const ctx = document.getElementById('histogramChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: histogramData.map(d => d.bin),
+                datasets: [{
+                    label: 'FrÃ©quence',
+                    data: histogramData.map(d => d.frequency),
+                    backgroundColor: histogramData.map(d => d.color),
+                    borderColor: histogramData.map(d => d.color.replace('0.6', '1')),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                return tooltipItems[0].label;
+                            },
+                            label: function(context) {
+                                return FrÃ©quence: ;
+                            }
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                yMin: 0,
+                                yMax: 1,
+                                xMin: 0,
+                                xMax: 0,
+                                borderColor: 'rgba(0, 0, 0, 0.5)',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'MÃ©diane',
+                                    enabled: true,
+                                    position: 'top'
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'FrÃ©quence'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Classes'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Remplir le tableau des rÃ©sultats
+        const tbody = document.querySelector('#resultsTable tbody');
+        resultsData.forEach(result => {
+            const row = document.createElement('tr');
+
+            const methodCell = document.createElement('td');
+            methodCell.textContent = result.method;
+            row.appendChild(methodCell);
+
+            const scoreCell = document.createElement('td');
+            scoreCell.textContent = result.score;
+            row.appendChild(scoreCell);
+
+            const directionCell = document.createElement('td');
+            directionCell.textContent = result.direction;
+            directionCell.className = result.direction.toLowerCase();
+            row.appendChild(directionCell);
+
+            const intensityCell = document.createElement('td');
+            intensityCell.textContent = result.intensity;
+            intensityCell.className = result.intensity.toLowerCase();
+            row.appendChild(intensityCell);
+
+            tbody.appendChild(row);
+        });
+    </script>
+</body>
+</html>

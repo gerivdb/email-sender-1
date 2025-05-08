@@ -1,0 +1,85 @@
+﻿{
+    "metadata":  {
+                     "title":  "Rapport d\u0027indicateurs basÃ©s sur les quantiles",
+                     "generationDate":  "2025-05-08T17:09:53Z",
+                     "version":  "1.0"
+                 },
+    "distributions":  {
+                          "bimodal":  {
+                                          "indicators":  {
+                                                             "classicSkewness":  0.0021733739951535118,
+                                                             "bowleySkewness":  0.1422924901185772,
+                                                             "iqr":  7.59
+                                                         },
+                                          "sampleSize":  100,
+                                          "name":  "Distribution bimodale",
+                                          "quantiles":  {
+                                                            "q50":  -0.36500000000000021,
+                                                            "q90":  3.97,
+                                                            "q10":  -3.62,
+                                                            "q25":  -3.62,
+                                                            "q75":  3.97
+                                                        },
+                                          "weightedQuantiles":  {
+                                                                    "q50":  2.9307399913282244
+                                                                }
+                                      },
+                          "negativeSkew":  {
+                                               "indicators":  {
+                                                                  "classicSkewness":  0.12021658495519812,
+                                                                  "bowleySkewness":  1,
+                                                                  "iqr":  0.59999999999999964
+                                                              },
+                                               "sampleSize":  100,
+                                               "name":  "Distribution asymÃ©trique nÃ©gative",
+                                               "quantiles":  {
+                                                                 "q50":  9.3,
+                                                                 "q90":  9.9,
+                                                                 "q10":  9.3,
+                                                                 "q25":  9.3,
+                                                                 "q75":  9.9
+                                                             },
+                                               "weightedQuantiles":  {
+                                                                         "q50":  9.3
+                                                                     }
+                                           },
+                          "positiveSkew":  {
+                                               "indicators":  {
+                                                                  "classicSkewness":  2.0750055037352304,
+                                                                  "bowleySkewness":  0,
+                                                                  "iqr":  0
+                                                              },
+                                               "sampleSize":  100,
+                                               "name":  "Distribution asymÃ©trique positive",
+                                               "quantiles":  {
+                                                                 "q50":  3,
+                                                                 "q90":  5.06,
+                                                                 "q10":  3,
+                                                                 "q25":  3,
+                                                                 "q75":  3
+                                                             },
+                                               "weightedQuantiles":  {
+                                                                         "q50":  3
+                                                                     }
+                                           },
+                          "normal":  {
+                                         "indicators":  {
+                                                            "classicSkewness":  0.43655029152220143,
+                                                            "bowleySkewness":  1,
+                                                            "iqr":  6.41
+                                                        },
+                                         "sampleSize":  100,
+                                         "name":  "Distribution normale",
+                                         "quantiles":  {
+                                                           "q50":  -3.42,
+                                                           "q90":  2.99,
+                                                           "q10":  -3.42,
+                                                           "q25":  -3.42,
+                                                           "q75":  2.99
+                                                       },
+                                         "weightedQuantiles":  {
+                                                                   "q50":  -3.42
+                                                               }
+                                     }
+                      }
+}

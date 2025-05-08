@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparaison des metriques entre distributions</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #333333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Comparaison des metriques entre distributions</h1>
+        
+        <div class="chart-container">
+            <canvas id="metricsChart"></canvas>
+        </div>
+    </div>
+    
+    <script>
+        // DonnÃ©es du graphique
+        const labels = [
+    "Comparaison 1",
+    "Comparaison 2",
+    "Comparaison 3"
+];
+        const datasets = [
+    {
+        "label":  "KolmogorovSmirnov",
+        "data":  [
+                     2.2676926991881561,
+                     2.8330443566879033,
+                     2.5584885455102118
+                 ],
+        "backgroundColor":  "#1f77b4"
+    },
+    {
+        "label":  "CramerVonMises",
+        "data":  [
+                     4.4382445088367755,
+                     0.7998890887703084,
+                     1.2087075304394792
+                 ],
+        "backgroundColor":  "#ff7f0e"
+    },
+    {
+        "label":  "AndersonDarling",
+        "data":  [
+                     42.844118669012332,
+                     26.084403670521173,
+                     27.352748652012576
+                 ],
+        "backgroundColor":  "#2ca02c"
+    },
+    {
+        "label":  "Wasserstein",
+        "data":  [
+                     2.1042755846919814,
+                     0.67473543644347078,
+                     1.0310840039651679
+                 ],
+        "backgroundColor":  "#d62728"
+    }
+];
+        
+        // CrÃ©er le graphique
+        const ctx = document.getElementById('metricsChart').getContext('2d');
+        
+        // Configuration du graphique
+        const config = {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Comparaisons',
+                            color: '#333333'
+                        },
+                        grid: {
+                            color: '#dddddd'
+                        },
+                        ticks: {
+                            color: '#333333'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Valeurs des mÃ©triques',
+                            color: '#333333'
+                        },
+                        grid: {
+                            color: '#dddddd'
+                        },
+                        ticks: {
+                            color: '#333333'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparaison des metriques entre distributions',
+                        color: '#333333',
+                        font: {
+                            size: 16
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#333333'
+                        }
+                    }
+                }
+            }
+        };
+        
+        // CrÃ©er le graphique
+        const metricsChart = new Chart(ctx, config);
+    </script>
+</body>
+</html>

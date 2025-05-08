@@ -1,5 +1,5 @@
 ﻿=== RAPPORT D'ANALYSE D'ASYMÃ‰TRIE ===
-Date: 2025-05-08 05:31:48
+Date: 2025-05-08 06:16:44
 Taille d'Ã©chantillon: 100 observations
 
 === STATISTIQUES DESCRIPTIVES ===
@@ -94,4 +94,4 @@ Histogramme (10 classes):
 
 === FIN DU RAPPORT ===
 GÃ©nÃ©rÃ© par le module TailSlopeAsymmetry
-Date: 2025-05-08 05:31:49
+Date: 2025-05-08 06:16:45

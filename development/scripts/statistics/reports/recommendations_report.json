@@ -1,0 +1,53 @@
+﻿{
+    "summary":  {
+                    "summaryText":  "L\u0027analyse de l\u0027asymÃ©trie de la distribution a rÃ©vÃ©lÃ© une asymÃ©trie asymã©trie positive de niveau modã©rã©e.",
+                    "asymmetryDirection":  "AsymÃ©trie positive",
+                    "recommendedMethod":  null,
+                    "asymmetryIntensity":  "ModÃ©rÃ©e",
+                    "consistencyScore":  0,
+                    "compositeScore":  0.5386
+                },
+    "recommendations":  {
+                            "items":  [
+                                          {
+                                              "priority":  100,
+                                              "ruleName":  "Ã‰valuation du score composite d\u0027asymÃ©trie",
+                                              "category":  "GÃ©nÃ©ral",
+                                              "ruleId":  "ASYM001",
+                                              "recommendation":  "Le score composite d\u0027asymÃ©trie de 0.54 indique une distribution asymã©trie positive avec une asymÃ©trie de niveau \u0027modã©rã©e\u0027."
+                                          },
+                                          {
+                                              "priority":  85,
+                                              "ruleName":  "Tests statistiques recommandÃ©s",
+                                              "category":  "Tests statistiques",
+                                              "ruleId":  "ASYM007",
+                                              "recommendation":  "Utilisez des tests non paramÃ©triques (Mann-Whitney, Kruskal-Wallis, etc.) ou transformez les donnÃ©es avant d\u0027appliquer des tests paramÃ©triques."
+                                          },
+                                          {
+                                              "priority":  75,
+                                              "ruleName":  "DÃ©tection des valeurs aberrantes",
+                                              "category":  "PrÃ©traitement",
+                                              "ruleId":  "ASYM008",
+                                              "recommendation":  "Pour la dÃ©tection des valeurs aberrantes, utilisez des mÃ©thodes robustes comme l\u0027IQR (1.5 Ã— IQR) ou la mÃ©thode MAD."
+                                          }
+                                      ],
+                            "byCategory":  {
+                                               "Tests statistiques":  "Utilisez des tests non paramÃ©triques (Mann-Whitney, Kruskal-Wallis, etc.) ou transformez les donnÃ©es avant d\u0027appliquer des tests paramÃ©triques.",
+                                               "PrÃ©traitement":  "Pour la dÃ©tection des valeurs aberrantes, utilisez des mÃ©thodes robustes comme l\u0027IQR (1.5 Ã— IQR) ou la mÃ©thode MAD.",
+                                               "GÃ©nÃ©ral":  "Le score composite d\u0027asymÃ©trie de 0.54 indique une distribution asymã©trie positive avec une asymÃ©trie de niveau \u0027modã©rã©e\u0027."
+                                           }
+                        },
+    "statistics":  {
+                       "median":  3.02,
+                       "stdDev":  3.88,
+                       "min":  0.77,
+                       "mean":  3.6727,
+                       "max":  10.59
+                   },
+    "metadata":  {
+                     "title":  "Rapport d\u0027analyse d\u0027asymÃ©trie avec recommandations",
+                     "sampleSize":  1000,
+                     "generationDate":  "2025-05-08T16:49:36Z",
+                     "version":  "1.0"
+                 }
+}

@@ -1,0 +1,440 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport d'asymÃ©trie - Distribution normale (avec donnÃ©es brutes)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            margin-bottom: 30px;
+        }
+        
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+        
+        .report-date {
+            font-style: italic;
+            color: #666;
+        }
+        
+        .summary-section, .visualization-section, .methods-section, .recommendations-section, .raw-data-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .summary-grid, .visualization-grid, .methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .summary-card, .visualization-card, .methods-card, .recommendation-card {
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .methods-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .methods-table th, .methods-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .methods-table th {
+            font-weight: bold;
+        }
+        
+        .recommendations-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .recommendation-text {
+            margin-bottom: 10px;
+        }
+        
+        .recommendation-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .raw-data-container {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        
+        .raw-data-pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        .symmetric {
+            color: #3498db;
+        }
+        
+        .negligible {
+            font-weight: normal;
+        }
+        
+        .veryweak, .weak {
+            font-weight: normal;
+        }
+        
+        .moderate {
+            font-weight: bold;
+        }
+        
+        .strong, .verystrong, .extreme {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .summary-grid, .visualization-grid, .methods-grid, .recommendations-list {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media print {
+            body {
+                padding: 0;
+            }
+            
+            .summary-section, .visualization-section, .methods-section, .recommendations-section, .raw-data-section {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+        }        .theme-default {
+            background-color: #ffffff;
+            color: #333333;
+        }
+        
+        .theme-default h1, .theme-default h2, .theme-default h3 {
+            color: #2c3e50;
+        }
+        
+        .theme-default .report-date {
+            color: #7f8c8d;
+        }
+        
+        .theme-default .summary-section, .theme-default .visualization-section, .theme-default .methods-section, .theme-default .recommendations-section, .theme-default .raw-data-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        
+        .theme-default .summary-card, .theme-default .visualization-card, .theme-default .methods-card, .theme-default .recommendation-card {
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-default .methods-table th, .theme-default .methods-table td {
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .theme-default .recommendation-meta {
+            color: #7f8c8d;
+        }
+        
+        .theme-default .raw-data-container {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        
+        .theme-default .positive {
+            color: #27ae60;
+        }
+        
+        .theme-default .negative {
+            color: #e74c3c;
+        }
+        
+        .theme-default .symmetric {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body class="theme-default">
+    <header>
+        <h1>Rapport d'asymÃ©trie - Distribution normale (avec donnÃ©es brutes)</h1>
+        <p class="report-date">GÃ©nÃ©rÃ© le 08/05/2025 Ã  17:36</p>
+    </header>
+    
+    <div class="summary-section">
+        <h2>RÃ©sumÃ© de l'analyse</h2>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>Analyse statistique</h3>
+                <p><strong>Direction d'asymÃ©trie:</strong> <span class="symã©trique">SymÃ©trique</span></p>
+                <p><strong>IntensitÃ© d'asymÃ©trie:</strong> <span class="extrãªme">ExtrÃªme</span></p>
+                <p><strong>Score composite:</strong> NaN</p>
+                <p><strong>MÃ©thode optimale:</strong> </p>
+            </div>
+            <div class="summary-card">
+                <h3>Ã‰valuation visuelle</h3>
+                <p><strong>Direction d'asymÃ©trie:</strong> <span class="positive">Positive</span></p>
+                <p><strong>IntensitÃ© d'asymÃ©trie:</strong> <span class="moderate">Moderate</span></p>
+                <p><strong>Score composite:</strong> 0.2338</p>
+                <p><strong>MÃ©thode la plus cohÃ©rente:</strong> PeakOffset</p>
+            </div>
+            <div class="summary-card">
+                <h3>Statistiques descriptives</h3>
+                <p><strong>Taille de l'Ã©chantillon:</strong> 100 points</p>
+                <p><strong>Minimum:</strong> Microsoft.PowerShell.Commands.GenericMeasureInfo.Minimum</p>
+                <p><strong>Maximum:</strong> Microsoft.PowerShell.Commands.GenericMeasureInfo.Maximum</p>
+                <p><strong>Moyenne:</strong> 4.3282</p>
+                <p><strong>MÃ©diane:</strong> 4.4</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="visualization-section">
+        <h2>Visualisations</h2>
+        <div class="visualization-grid">
+            <div class="visualization-card">
+                <h3>Histogramme</h3>
+                <canvas id="histogramChart"></canvas>
+            </div>
+        </div>
+    </div>    <div class="methods-section">
+        <h2>MÃ©thodes d'analyse</h2>
+        <div class="methods-grid">
+            <div class="methods-card">
+                <h3>MÃ©thodes statistiques</h3>
+                <table class="methods-table">
+                    <thead>
+                        <tr>
+                            <th>MÃ©thode</th>
+                            <th>Score</th>
+                            <th>Direction</th>
+                            <th>IntensitÃ©</th>
+                        </tr>
+                    </thead>
+                    <tbody>                        <tr>
+                            <td>Density</td>
+                            <td>0</td>
+                            <td class=""></td>
+                            <td class=""></td>
+                        </tr>                        <tr>
+                            <td>Slope</td>
+                            <td>0</td>
+                            <td class=""></td>
+                            <td class=""></td>
+                        </tr>                        <tr>
+                            <td>Moments</td>
+                            <td>0</td>
+                            <td class=""></td>
+                            <td class=""></td>
+                        </tr>                        <tr>
+                            <td>Quantiles</td>
+                            <td>0</td>
+                            <td class=""></td>
+                            <td class=""></td>
+                        </tr>                    </tbody>
+                </table>
+            </div>
+            <div class="methods-card">
+                <h3>MÃ©thodes visuelles</h3>
+                <table class="methods-table">
+                    <thead>
+                        <tr>
+                            <th>MÃ©thode</th>
+                            <th>Score</th>
+                            <th>Direction</th>
+                            <th>IntensitÃ©</th>
+                        </tr>
+                    </thead>
+                    <tbody>                        <tr>
+                            <td>AreaDifference</td>
+                            <td>0.98</td>
+                            <td class="positive">Positive</td>
+                            <td class="extreme">Extreme</td>
+                        </tr>                        <tr>
+                            <td>ShapeDifference</td>
+                            <td>-1</td>
+                            <td class="negative">Negative</td>
+                            <td class="extreme">Extreme</td>
+                        </tr>                        <tr>
+                            <td>PeakOffset</td>
+                            <td>-0.025</td>
+                            <td class="positive">Positive</td>
+                            <td class="negligible">Negligible</td>
+                        </tr>                        <tr>
+                            <td>TailRatio</td>
+                            <td>0.98</td>
+                            <td class="positive">Positive</td>
+                            <td class="extreme">Extreme</td>
+                        </tr>                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>    <div class="recommendations-section">
+        <h2>Recommandations</h2>
+        <div class="recommendations-list">            <div class="recommendation-card">
+                <h3>Ã‰valuation du score composite d'asymÃ©trie</h3>
+                <p class="recommendation-text">Le score composite d'asymÃ©trie de NaN indique une distribution symã©trique avec une asymÃ©trie de niveau 'extrãªme'.</p>
+                <div class="recommendation-meta">
+                    <span class="recommendation-category">CatÃ©gorie: GÃ©nÃ©ral</span>
+                    <span class="recommendation-priority">PrioritÃ©: 100</span>
+                </div>
+            </div>            <div class="recommendation-card">
+                <h3>Tests statistiques recommandÃ©s</h3>
+                <p class="recommendation-text">Utilisez des tests non paramÃ©triques (Mann-Whitney, Kruskal-Wallis, etc.) ou transformez les donnÃ©es avant d'appliquer des tests paramÃ©triques.</p>
+                <div class="recommendation-meta">
+                    <span class="recommendation-category">CatÃ©gorie: Tests statistiques</span>
+                    <span class="recommendation-priority">PrioritÃ©: 85</span>
+                </div>
+            </div>            <div class="recommendation-card">
+                <h3>DÃ©tection des valeurs aberrantes</h3>
+                <p class="recommendation-text">Pour la dÃ©tection des valeurs aberrantes, utilisez des mÃ©thodes robustes comme l'IQR (1.5 Ã— IQR) ou la mÃ©thode MAD.</p>
+                <div class="recommendation-meta">
+                    <span class="recommendation-category">CatÃ©gorie: PrÃ©traitement</span>
+                    <span class="recommendation-priority">PrioritÃ©: 75</span>
+                </div>
+            </div>        </div>
+    </div>    <div class="raw-data-section">
+        <h2>DonnÃ©es brutes</h2>
+        <div class="raw-data-container">
+            <pre class="raw-data-pre">-2,78, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4, 4,4</pre>
+        </div>
+    </div>    <script>
+        // DonnÃ©es pour l'histogramme
+        const histogramData = {
+            labels: [],
+            datasets: [{
+                label: 'FrÃ©quence',
+                data: [],
+                backgroundColor: [],
+                borderColor: [],
+                borderWidth: 1
+            }]
+        };
+        
+        // CrÃ©er l'histogramme
+        const histogram = new Chart(document.getElementById('histogramChart').getContext('2d'), {
+            type: 'bar',
+            data: histogramData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'FrÃ©quence'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Classes'
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Fonction pour mettre Ã  jour l'histogramme
+        function updateHistogram(data) {
+            // Calculer l'histogramme
+            const min = Math.min(...data);
+            const max = Math.max(...data);
+            const range = max - min;
+            const binCount = 20;
+            const binWidth = range / binCount;
+            
+            // CrÃ©er les classes
+            const bins = [];
+            for (let i = 0; i <= binCount; i++) {
+                bins.push(min + i * binWidth);
+            }
+            
+            // Compter les frÃ©quences
+            const frequencies = Array(binCount).fill(0);
+            data.forEach(value => {
+                const binIndex = Math.min(binCount - 1, Math.floor((value - min) / binWidth));
+                frequencies[binIndex]++;
+            });
+            
+            // Normaliser les frÃ©quences
+            const sum = frequencies.reduce((a, b) => a + b, 0);
+            const normalizedFrequencies = frequencies.map(f => f / sum);
+            
+            // CrÃ©er les Ã©tiquettes des classes
+            const binLabels = [];
+            for (let i = 0; i < bins.length - 1; i++) {
+                binLabels.push([, ));
+            }
+            
+            // Calculer la mÃ©diane
+            const sortedData = [...data].sort((a, b) => a - b);
+            const median = sortedData.length % 2 === 0
+                ? (sortedData[sortedData.length / 2 - 1] + sortedData[sortedData.length / 2]) / 2
+                : sortedData[Math.floor(sortedData.length / 2)];
+            
+            // Trouver l'indice de la classe contenant la mÃ©diane
+            let medianBinIndex = 0;
+            for (let i = 0; i < bins.length - 1; i++) {
+                if (median >= bins[i] && median < bins[i + 1]) {
+                    medianBinIndex = i;
+                    break;
+                }
+            }
+            
+            // Mettre Ã  jour les donnÃ©es de l'histogramme
+            histogramData.labels = binLabels;
+            histogramData.datasets[0].data = normalizedFrequencies;
+            
+            // DÃ©finir les couleurs en fonction de la position par rapport Ã  la mÃ©diane
+            histogramData.datasets[0].backgroundColor = binLabels.map((_, i) => 
+                i <= medianBinIndex ? 'rgba(54, 162, 235, 0.6)' : 'rgba(255, 99, 132, 0.6)'
+            );
+            histogramData.datasets[0].borderColor = binLabels.map((_, i) => 
+                i <= medianBinIndex ? 'rgba(54, 162, 235, 1)' : 'rgba(255, 99, 132, 1)'
+            );
+            
+            // Mettre Ã  jour le graphique
+            histogram.update();
+        }
+        
+        // Mettre Ã  jour l'histogramme avec les donnÃ©es
+        updateHistogram();
+    </script>
+</body>
+</html>

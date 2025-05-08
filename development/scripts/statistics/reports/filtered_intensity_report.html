@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Rapport d'analyse d'asymétrie de distribution statistique">
     <meta name="theme-color" content="#3498db">
-    <title>Rapport d'analyse d'asymÃ©trie</title>
+    <title>Rapport filtrÃ© par intensitÃ©</title>
     <style>
         /* Variables CSS */
         :root {
@@ -455,9 +455,9 @@
 </head>
 <body>
     <header>
-        <h1>Rapport d'analyse d'asymÃ©trie</h1>
+        <h1>Rapport filtrÃ© par intensitÃ©</h1>
         <div class="metadata">
-            <span>Date: 2025-05-08 06:16:45</span>
+            <span>Date: 2025-05-08 06:16:47</span>
             <span>Taille d'échantillon: 100</span>
         </div>
     </header>
@@ -465,19 +465,19 @@
     <section id="summary">
         <h2>Résumé</h2>
         <div class="alert alert-info">
-            L'analyse de l'asymÃ©trie de la distribution a rÃ©vÃ©lÃ© une asymÃ©trie symã©trique de niveau nã©gligeable.
+            L'analyse de l'asymÃ©trie de la distribution a rÃ©vÃ©lÃ© une asymÃ©trie asymã©trie nã©gative de niveau modã©rã©e.
         </div>
         <div class="grid">
             <div class="card">
                 <div class="card-header">Asymétrie</div>
-                <div>Direction: <span class="badge badge-primary">SymÃ©trique</span></div>
-                <div>Intensité: <span class="badge badge-info">NÃ©gligeable</span></div>
-                <div>Score composite: <strong>0.0345</strong></div>
+                <div>Direction: <span class="badge badge-primary">AsymÃ©trie nÃ©gative</span></div>
+                <div>Intensité: <span class="badge badge-warning">ModÃ©rÃ©e</span></div>
+                <div>Score composite: <strong>-0.4465</strong></div>
             </div>
             <div class="card">
                 <div class="card-header">Méthode recommandée</div>
                 <div>Méthode: <span class="badge badge-secondary">Quantiles</span></div>
-                <div>Cohérence: <strong>0.979</strong></div>
+                <div>Cohérence: <strong>0.8849</strong></div>
             </div>
         </div>
     </section>
@@ -489,7 +489,7 @@
                 <th>Statistique</th>
                 <th>Valeur</th>
             </tr>
-            <tr><td>Minimum</td><td>-2.2421</td></tr><tr><td>Maximum</td><td>3.132</td></tr><tr><td>Ã‰tendue</td><td>5.3741</td></tr><tr><td>Moyenne</td><td>0.1653</td></tr><tr><td>MÃ©diane</td><td>0.1764</td></tr><tr><td>Ã‰cart-type</td><td>1.0701</td></tr><tr><td>Q1 (25%)</td><td>-0.6053</td></tr><tr><td>Q3 (75%)</td><td>0.9483</td></tr><tr><td>IQR</td><td>1.5536</td></tr><tr><td>Coefficient d'asymÃ©trie (skewness)</td><td>-0.0271</td></tr><tr><td>Kurtosis</td><td>-0.4204</td></tr>
+            <tr><td>Minimum</td><td>-3.3641</td></tr><tr><td>Maximum</td><td>4.6258</td></tr><tr><td>Ã‰tendue</td><td>7.9899</td></tr><tr><td>Moyenne</td><td>0.9538</td></tr><tr><td>MÃ©diane</td><td>0.4576</td></tr><tr><td>Ã‰cart-type</td><td>1.6972</td></tr><tr><td>Q1 (25%)</td><td>-0.3801</td></tr><tr><td>Q3 (75%)</td><td>2.1646</td></tr><tr><td>IQR</td><td>2.5446</td></tr><tr><td>Coefficient d'asymÃ©trie (skewness)</td><td>0.3946</td></tr><tr><td>Kurtosis</td><td>-0.5519</td></tr>
         </table>
     </section>
 
@@ -506,7 +506,7 @@
             <div class="filter-group">
                 <label for="direction-filter">Filtrer par direction :</label>
                 <select id="direction-filter" onchange="applyFilter('direction')">
-                    <option value="All" selected>Toutes</option>
+                    <option value="All" >Toutes</option>
                     <option value="Positive" >Asymétrie positive</option>
                     <option value="Negative" >Asymétrie négative</option>
                     <option value="Symmetric" >Symétrique</option>
@@ -515,12 +515,12 @@
             <div class="filter-group">
                 <label for="intensity-filter">Filtrer par intensité :</label>
                 <select id="intensity-filter" onchange="applyFilter('intensity')">
-                    <option value="All" selected>Toutes</option>
+                    <option value="All" >Toutes</option>
                     <option value="Negligible" >Négligeable</option>
                     <option value="VeryWeak" >Très faible</option>
                     <option value="Weak" >Faible</option>
                     <option value="Moderate" >Modérée</option>
-                    <option value="Strong" >Forte</option>
+                    <option value="Strong" selected>Forte</option>
                     <option value="VeryStrong" >Très forte</option>
                     <option value="Extreme" >Extrême</option>
                 </select>
@@ -533,7 +533,7 @@
         </div>
         <button class="collapsible">Détails des méthodes</button>
         <div class="collapsible-content">
-            <div class='card'><div class='card-header'>MÃ©thode: Slope</div><div>Ratio des pentes: 1.0699</div><div>Direction de l'asymÃ©trie: Queue droite plus pentue</div><div>IntensitÃ© de l'asymÃ©trie: NÃ©gligeable</div><div>Pente de la queue gauche: 10.9573</div><div>Pente de la queue droite: 11.7232</div></div><div class='card'><div class='card-header'>MÃ©thode: Moments</div><div>Coefficient d'asymÃ©trie (skewness): -0.0271</div><div>Kurtosis: -0.4204</div><div>Direction de l'asymÃ©trie: AsymÃ©trie nÃ©gative</div><div>IntensitÃ© de l'asymÃ©trie: NÃ©gligeable</div></div><div class='card'><div class='card-header'>MÃ©thode: Quantiles</div><div>Coefficient d'asymÃ©trie de Bowley: -0.0063</div><div>Direction de l'asymÃ©trie: AsymÃ©trie nÃ©gative</div><div>IntensitÃ© de l'asymÃ©trie: NÃ©gligeable</div><div>Q1: -0.6053</div><div>Q2 (mÃ©diane): 0.1764</div><div>Q3: 0.9483</div></div>
+            <div class='card'><div class='card-header'>MÃ©thode: Slope</div><div>Ratio des pentes: 1.781</div><div>Direction de l'asymÃ©trie: Queue gauche plus pentue</div><div>IntensitÃ© de l'asymÃ©trie: ModÃ©rÃ©e</div><div>Pente de la queue gauche: 19.1525</div><div>Pente de la queue droite: 10.7537</div></div><div class='card'><div class='card-header'>MÃ©thode: Moments</div><div>Coefficient d'asymÃ©trie (skewness): 0.3946</div><div>Kurtosis: -0.5519</div><div>Direction de l'asymÃ©trie: AsymÃ©trie positive</div><div>IntensitÃ© de l'asymÃ©trie: TrÃ¨s faible</div></div><div class='card'><div class='card-header'>MÃ©thode: Quantiles</div><div>Coefficient d'asymÃ©trie de Bowley: 0.3416</div><div>Direction de l'asymÃ©trie: AsymÃ©trie positive</div><div>IntensitÃ© de l'asymÃ©trie: Forte</div><div>Q1: -0.3801</div><div>Q2 (mÃ©diane): 0.4576</div><div>Q3: 2.1646</div></div>
         </div>
     </section>
 
@@ -541,13 +541,13 @@
         <h2>Recommandations</h2>
         <div class="alert alert-success">
             <ul>
-                <li>Le score composite d'asymÃ©trie de 0.03 indique une distribution symã©trique avec une asymÃ©trie de niveau 'nã©gligeable'.</li><li>Cette asymÃ©trie nÃ©gligeable n'aura probablement pas d'impact significatif sur les analyses statistiques.</li><li>Ce score composite est basÃ© sur les mÃ©thodes suivantes: Slope (poids: 0.27), Moments (poids: 0.36), Quantiles (poids: 0.38).</li><li>Les diffÃ©rentes mÃ©thodes d'Ã©valuation de l'asymÃ©trie sont trÃ¨s cohÃ©rentes entre elles (score de cohÃ©rence: 0.98), ce qui renforce la confiance dans le score composite.</li>
+                <li>Le score composite d'asymÃ©trie de -0.45 indique une distribution asymã©trie nã©gative avec une asymÃ©trie de niveau 'modã©rã©e'.</li><li>Cette asymÃ©trie modÃ©rÃ©e peut affecter les analyses paramÃ©triques. ConsidÃ©rer des transformations ou des mÃ©thodes non paramÃ©triques.</li><li>Pour corriger l'asymÃ©trie nÃ©gative, considÃ©rer une transformation exponentielle, Ã©lÃ©vation au carrÃ© ou Box-Cox.</li><li>Ce score composite est basÃ© sur les mÃ©thodes suivantes: Slope (poids: 0.32), Moments (poids: 0.33), Quantiles (poids: 0.35).</li><li>Les diffÃ©rentes mÃ©thodes d'Ã©valuation de l'asymÃ©trie sont relativement cohÃ©rentes entre elles (score de cohÃ©rence: 0.88).</li>
             </ul>
         </div>
     </section>
 
     <footer>
-        Rapport généré par le module TailSlopeAsymmetry | 2025-05-08 06:16:45
+        Rapport généré par le module TailSlopeAsymmetry | 2025-05-08 06:16:47
     </footer>
 
     <script>
@@ -623,8 +623,8 @@ const histogramData = {
 };
 
 // Calculer les classes de l'histogramme
-const min = -2.24208732047581;
-const max = 3.13197453211224;
+const min = -3.36413980310608;
+const max = 4.62575567400821;
 const range = max - min;
 const binCount = 10;
 const binWidth = range / binCount;
@@ -641,7 +641,7 @@ for (let i = 0; i < binCount; i++) {
 }
 
 // Compter les frÃ©quences
-const data = [0,568527545497858,-2,01649972002186,-0,149182265602486,-0,800348851267153,0,13216422236142,-0,0783083536863482,-0,498818044132272,-0,0893641011902996,1,11975358060933,-0,567320225102145,0,783232817508717,-0,610076749109799,-0,617371661156271,-0,60368051195333,1,62575567400821,-0,85255448094653,1,77102486299297,-1,32955870897471,0,627743742561441,0,379677960568346,-0,56979125475515,1,92424677945887,0,481842217533292,0,724750290308843,0,233886731252293,-0,940132633457667,1,89347708065495,-0,998239514944253,-2,14202427678047,-0,576370781283388,1,73821370920582,-0,155216098608346,-0,459748858488841,-2,24208732047581,0,879772096364523,-1,27823646875285,1,17623152194116,0,610738298656346,3,13197453211224,0,899724635009498,0,383678466479968,-0,881575329229447,0,945293234640631,0,882635554880267,0,337886384008335,-0,911315372019703,1,3003987062739,-0,0965009979581961,2,06697653174681,-0,146243105638481,0,432423115511632,-2,03589298103544,0,242120458642266,1,2942703333416,-1,46904004999885,1,15183488070636,-0,343330356146928,-0,201106869724896,1,08781920916452,0,916117445863949,1,31565140495276,0,507449341684783,1,58133877020731,-1,46395025584858,1,09196226162752,0,0826608629739199,-0,91762499254359,0,0108636081136476,0,617659793933255,1,35538200204041,0,0351041605096124,0,220652787121614,-1,53246524003837,-0,673107401776861,-0,531360148270272,1,81109172201845,1,56482957451742,0,031414067446134,1,48713008336665,-0,508565514355437,-1,01041753394667,0,593370958960233,-0,786963921316713,-0,473686633879394,1,41514480362033,-1,19484995288042,0,121252391268747,1,58280965065955,1,42178158524591,-0,065531081112885,-1,13314565562198,0,957494002375888,0,421483765194581,0,224953652751437,-1,42942582351792,0,920796038293332,-0,0105484978409225,-0,851679340046934,0,379451939680227,1,27486817209599];
+const data = [1,39530996520346,-0,149182265602486,3,53330843335275,2,92169164631365,-1,10636672400256,1,11975358060933,2,16172676490731,-0,610076749109799,4,0677353098054,4,62575567400821,0,447425599948161,-1,32955870897471,-0,243064281406648,2,43020874524485,2,55958697674082,3,72475029030884,-0,176995828514676,1,89347708065495,1,09239448319276,-0,576370781283388,-1,94687073698061,-0,459748858488841,1,23554756447871,1,72176353124715,1,45981653625862,3,13197453211224,2,22075201980164,2,11842467077055,-1,73959249800249,0,337886384008335,-0,39663602122616,2,9034990020418,0,484208889512305,0,432423115511632,-0,629396029219993,4,2942703333416,-1,02118642084753,2,65666964385307,1,50888693415369,3,91611744586395,0,37804631419766,1,58133877020731,-0,903586595036146,0,0826608629739199,-0,674299930825097,3,61765979393325,0,467831431872561,0,220652787121614,-0,73096320273921,-0,531360148270272,0,318535076478127,3,03141406744613,0,192848754679099,-1,01041753394667,1,32660430950408,-0,473686633879394,-0,264510596816523,0,121252391268747,2,11239150856621,-0,065531081112885,-0,830122998736354,0,421483765194581,2,05723500869624,0,920796038293332,2,85458659223703,0,379451939680227,-0,249645659679417,0,215652710660909,3,82254682694293,0,480209972902342,3,28950931455337,0,472007413108363,0,248692479603243,-0,304617848598183,-0,378878640368531,0,248040524783705,-0,600220776979742,0,347718046848373,-0,683438553264131,-0,203302463229493,2,17305249381019,-0,383669129180695,3,8922560083697,1,70379402976177,-0,750885369511883,0,781246571898873,4,33370104478761,3,47859330991593,1,03623516673553,2,40440855242282,-0,0503207485800118,3,74048180086691,0,883574001886058,-0,753966473052654,-1,37718781619165,-0,437352885824365,1,41124255590426,4,55778507683817,-3,36413980310608,0,786667852205477];
 data.forEach(value => {
     const binIndex = Math.min(binCount - 1, Math.floor((value - min) / binWidth));
     bins[binIndex]++;
@@ -771,7 +771,7 @@ const methodsData = {
     }]
 };
 
-// Ajouter les donnÃ©es des mÃ©thodesmethodsData.labels.push('Slope');methodsData.datasets[0].data.push(0.0999);methodsData.labels.push('Moments');methodsData.datasets[0].data.push(0.009);methodsData.labels.push('Quantiles');methodsData.datasets[0].data.push(0.0126);
+// Ajouter les donnÃ©es des mÃ©thodesmethodsData.labels.push('Slope');methodsData.datasets[0].data.push(-0.5089);methodsData.labels.push('Moments');methodsData.datasets[0].data.push(-0.1315);methodsData.labels.push('Quantiles');methodsData.datasets[0].data.push(-0.6832);
 // CrÃ©er le graphique de comparaison des mÃ©thodes
 const methodsChart = new Chart(methodsCtx, {
     type: 'bar',

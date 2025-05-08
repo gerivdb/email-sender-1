@@ -1,0 +1,66 @@
+﻿{
+    "summary":  {
+                    "summaryText":  "L\u0027analyse de l\u0027asymÃ©trie de la distribution a rÃ©vÃ©lÃ© une asymÃ©trie symã©trique de niveau nã©gligeable.",
+                    "asymmetryDirection":  "SymÃ©trique",
+                    "recommendedMethod":  "Quantiles",
+                    "asymmetryIntensity":  "NÃ©gligeable",
+                    "consistencyScore":  0.979,
+                    "compositeScore":  0.0345
+                },
+    "recommendations":  [
+                            "Le score composite d\u0027asymÃ©trie de 0.03 indique une distribution symã©trique avec une asymÃ©trie de niveau \u0027nã©gligeable\u0027.",
+                            "Cette asymÃ©trie nÃ©gligeable n\u0027aura probablement pas d\u0027impact significatif sur les analyses statistiques.",
+                            "Ce score composite est basÃ© sur les mÃ©thodes suivantes: Slope (poids: 0.27), Moments (poids: 0.36), Quantiles (poids: 0.38).",
+                            "Les diffÃ©rentes mÃ©thodes d\u0027Ã©valuation de l\u0027asymÃ©trie sont trÃ¨s cohÃ©rentes entre elles (score de cohÃ©rence: 0.98), ce qui renforce la confiance dans le score composite."
+                        ],
+    "statistics":  {
+                       "quantiles":  {
+                                         "q3":  0.9483,
+                                         "q2":  0.1764,
+                                         "p90":  1.5665,
+                                         "p10":  -1.2032,
+                                         "q1":  -0.6053,
+                                         "iqr":  1.5536
+                                     },
+                       "stdDev":  1.0701,
+                       "kurtosis":  -0.4204,
+                       "mean":  0.1653,
+                       "median":  0.1764,
+                       "range":  5.3741,
+                       "min":  -2.2421,
+                       "skewness":  -0.0271,
+                       "max":  3.132
+                   },
+    "methods":  {
+                    "quantiles":  {
+                                      "q3":  0.9483,
+                                      "q2":  0.1764,
+                                      "asymmetryDirection":  "AsymÃ©trie nÃ©gative",
+                                      "asymmetryIntensity":  "NÃ©gligeable",
+                                      "q1":  -0.6053,
+                                      "score":  0.0126,
+                                      "bowleySkewness":  -0.0063
+                                  },
+                    "slope":  {
+                                  "rightSlope":  11.7232,
+                                  "asymmetryDirection":  "Queue droite plus pentue",
+                                  "asymmetryIntensity":  "NÃ©gligeable",
+                                  "score":  0.0999,
+                                  "leftSlope":  10.9573,
+                                  "slopeRatio":  1.0699
+                              },
+                    "moments":  {
+                                    "asymmetryIntensity":  "NÃ©gligeable",
+                                    "kurtosis":  -0.4204,
+                                    "asymmetryDirection":  "AsymÃ©trie nÃ©gative",
+                                    "skewness":  -0.0271,
+                                    "score":  0.009
+                                }
+                },
+    "metadata":  {
+                     "title":  "Rapport d\u0027analyse d\u0027asymÃ©trie",
+                     "sampleSize":  100,
+                     "generationDate":  "2025-05-08T06:16:47Z",
+                     "version":  "1.0"
+                 }
+}

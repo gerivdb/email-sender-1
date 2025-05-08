@@ -222,6 +222,45 @@ Write-Host "Titre personnalisé: Rapport d'asymétrie positive" -ForegroundColor
 Write-Host "Rapport écrit dans: $positiveSkewHtmlReportPath" -ForegroundColor Green
 Write-Host "Taille du rapport HTML: $((Get-Item -Path $positiveSkewHtmlReportPath).Length) octets" -ForegroundColor White
 
+# Test 7: Rapport HTML avec filtre par direction
+Write-Host "`n=== Test 7: Rapport HTML avec filtre par direction ===" -ForegroundColor Magenta
+$filteredDirectionReportPath = Join-Path -Path $reportsFolder -ChildPath "filtered_direction_report.html"
+Get-AsymmetryHtmlReport -Data $positiveSkewData -Methods @("Slope", "Moments", "Quantiles") -Title "Rapport filtré par direction" -Filter "Positive" -OutputPath $filteredDirectionReportPath
+Write-Host "Distribution: Asymétrique positive" -ForegroundColor White
+Write-Host "Filtre appliqué: Direction Positive" -ForegroundColor White
+Write-Host "Rapport écrit dans: $filteredDirectionReportPath" -ForegroundColor Green
+Write-Host "Taille du rapport HTML: $((Get-Item -Path $filteredDirectionReportPath).Length) octets" -ForegroundColor White
+
+# Test 8: Rapport HTML avec filtre par intensité
+Write-Host "`n=== Test 8: Rapport HTML avec filtre par intensité ===" -ForegroundColor Magenta
+$filteredIntensityReportPath = Join-Path -Path $reportsFolder -ChildPath "filtered_intensity_report.html"
+Get-AsymmetryHtmlReport -Data $positiveSkewData -Methods @("Slope", "Moments", "Quantiles") -Title "Rapport filtré par intensité" -Filter "Strong" -OutputPath $filteredIntensityReportPath
+Write-Host "Distribution: Asymétrique positive" -ForegroundColor White
+Write-Host "Filtre appliqué: Intensité Strong" -ForegroundColor White
+Write-Host "Rapport écrit dans: $filteredIntensityReportPath" -ForegroundColor Green
+Write-Host "Taille du rapport HTML: $((Get-Item -Path $filteredIntensityReportPath).Length) octets" -ForegroundColor White
+
+# Test 9: Rapport JSON pour une distribution normale
+Write-Host "`n=== Test 9: Rapport JSON pour une distribution normale ===" -ForegroundColor Magenta
+$normalJsonReportPath = Join-Path -Path $reportsFolder -ChildPath "normal_report.json"
+Get-AsymmetryJsonReport -Data $normalData -Methods @("Slope", "Moments", "Quantiles") -OutputPath $normalJsonReportPath
+Write-Host "Distribution: Normale" -ForegroundColor White
+Write-Host "Taille d'échantillon: $($normalData.Count)" -ForegroundColor White
+Write-Host "Méthodes utilisées: Slope, Moments, Quantiles" -ForegroundColor White
+Write-Host "Rapport écrit dans: $normalJsonReportPath" -ForegroundColor Green
+Write-Host "Taille du rapport JSON: $((Get-Item -Path $normalJsonReportPath).Length) octets" -ForegroundColor White
+
+# Test 10: Rapport JSON pour une distribution asymétrique positive avec données d'histogramme
+Write-Host "`n=== Test 10: Rapport JSON pour une distribution asymétrique positive avec données d'histogramme ===" -ForegroundColor Magenta
+$positiveSkewJsonReportPath = Join-Path -Path $reportsFolder -ChildPath "positive_skew_report.json"
+Get-AsymmetryJsonReport -Data $positiveSkewData -Methods @("All") -IncludeHistogramData -OutputPath $positiveSkewJsonReportPath
+Write-Host "Distribution: Asymétrique positive" -ForegroundColor White
+Write-Host "Taille d'échantillon: $($positiveSkewData.Count)" -ForegroundColor White
+Write-Host "Méthodes utilisées: Toutes" -ForegroundColor White
+Write-Host "Données d'histogramme incluses: Oui" -ForegroundColor White
+Write-Host "Rapport écrit dans: $positiveSkewJsonReportPath" -ForegroundColor Green
+Write-Host "Taille du rapport JSON: $((Get-Item -Path $positiveSkewJsonReportPath).Length) octets" -ForegroundColor White
+
 # Ouvrir le rapport HTML dans le navigateur par défaut
 Write-Host "`n=== Ouverture du rapport HTML dans le navigateur ===" -ForegroundColor Magenta
 Write-Host "Ouverture du rapport HTML pour la distribution asymétrique positive..." -ForegroundColor White
@@ -230,5 +269,5 @@ Start-Process $positiveSkewHtmlReportPath
 # Résumé des tests
 Write-Host "`n=== Résumé des tests ===" -ForegroundColor Cyan
 Write-Host "Tous les tests ont été exécutés avec succès." -ForegroundColor Green
-Write-Host "Les fonctions Get-AsymmetryTextReport et Get-AsymmetryHtmlReport fonctionnent correctement." -ForegroundColor Green
+Write-Host "Les fonctions Get-AsymmetryTextReport, Get-AsymmetryHtmlReport et Get-AsymmetryJsonReport fonctionnent correctement." -ForegroundColor Green
 Write-Host "Les rapports ont été écrits dans le dossier: $reportsFolder" -ForegroundColor Green

@@ -2176,7 +2176,11 @@ function Get-AsymmetryHtmlReport {
         [string]$Title = "Rapport d'analyse d'asymétrie",
 
         [Parameter(Mandatory = $false)]
-        [string]$OutputPath = ""
+        [string]$OutputPath = "",
+
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("All", "Positive", "Negative", "Symmetric", "Negligible", "VeryWeak", "Weak", "Moderate", "Strong", "VeryStrong", "Extreme")]
+        [string]$Filter = "All"
     )
 
     # Charger le template HTML
@@ -2190,6 +2194,61 @@ function Get-AsymmetryHtmlReport {
     # Obtenir les résultats d'analyse
     $comparison = Compare-AsymmetryMethods -Data $Data -Methods $Methods -TailProportion $TailProportion
     $compositeScore = Get-CompositeAsymmetryScore -Data $Data -Methods $Methods -TailProportion $TailProportion
+
+    # Appliquer le filtre si nécessaire
+    $filteredResults = @{}
+    $filteredMethodScores = @{}
+    $filteredMethods = @()
+
+    # Déterminer si le filtre est basé sur la direction ou l'intensité
+    $directionFilters = @("Positive", "Negative", "Symmetric")
+    $intensityFilters = @("Negligible", "VeryWeak", "Weak", "Moderate", "Strong", "VeryStrong", "Extreme")
+
+    $isDirectionFilter = $directionFilters -contains $Filter
+    $isIntensityFilter = $intensityFilters -contains $Filter
+
+    if ($Filter -ne "All") {
+        foreach ($method in $comparison.Methods) {
+            if ($comparison.Results.ContainsKey($method) -and -not $comparison.Results[$method].Error) {
+                $result = $comparison.Results[$method]
+                $includeMethod = $false
+
+                if ($isDirectionFilter) {
+                    # Filtrer par direction d'asymétrie
+                    switch ($Filter) {
+                        "Positive" { $includeMethod = $result.AsymmetryDirection -eq "Positive" -or $result.AsymmetryDirection -eq "Queue droite plus longue" }
+                        "Negative" { $includeMethod = $result.AsymmetryDirection -eq "Negative" -or $result.AsymmetryDirection -eq "Queue gauche plus longue" }
+                        "Symmetric" { $includeMethod = $result.AsymmetryDirection -eq "Symmetric" -or $result.AsymmetryDirection -eq "Symétrique" }
+                    }
+                } elseif ($isIntensityFilter) {
+                    # Filtrer par intensité d'asymétrie
+                    $includeMethod = $result.AsymmetryIntensity -eq $Filter
+                }
+
+                if ($includeMethod) {
+                    $filteredResults[$method] = $result
+                    $filteredMethodScores[$method] = $comparison.MethodScores[$method]
+                    $filteredMethods += $method
+                }
+            }
+        }
+
+        # Si aucune méthode ne correspond au filtre, utiliser toutes les méthodes
+        if ($filteredMethods.Count -eq 0) {
+            $filteredResults = $comparison.Results
+            $filteredMethodScores = $comparison.MethodScores
+            $filteredMethods = $comparison.Methods
+        } else {
+            # Mettre à jour les résultats de comparaison avec les méthodes filtrées
+            $comparison = @{
+                Results           = $filteredResults
+                MethodScores      = $filteredMethodScores
+                Methods           = $filteredMethods
+                RecommendedMethod = $comparison.RecommendedMethod
+                ConsistencyScore  = $comparison.ConsistencyScore
+            }
+        }
+    }
 
     # Calculer les statistiques descriptives
     $sortedData = $Data | Sort-Object
@@ -2361,13 +2420,42 @@ const histogramChart = new Chart(histogramCtx, {
     data: histogramData,
     options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top',
+                labels: {
+                    boxWidth: 12,
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 10 : 12;
+                        }
+                    }
+                }
             },
             title: {
                 display: true,
-                text: 'Distribution des données'
+                text: 'Distribution des données',
+                font: {
+                    size: function() {
+                        return window.innerWidth < 768 ? 14 : 16;
+                    }
+                }
+            },
+            tooltip: {
+                enabled: true,
+                mode: 'index',
+                intersect: false,
+                bodyFont: {
+                    size: function() {
+                        return window.innerWidth < 768 ? 10 : 12;
+                    }
+                },
+                titleFont: {
+                    size: function() {
+                        return window.innerWidth < 768 ? 11 : 13;
+                    }
+                }
             }
         },
         scales: {
@@ -2375,13 +2463,47 @@ const histogramChart = new Chart(histogramCtx, {
                 beginAtZero: true,
                 title: {
                     display: true,
-                    text: 'Fréquence'
+                    text: 'Fréquence',
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 10 : 12;
+                        }
+                    }
+                },
+                ticks: {
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 9 : 11;
+                        }
+                    },
+                    maxTicksLimit: function() {
+                        return window.innerWidth < 768 ? 5 : 10;
+                    }
                 }
             },
             x: {
                 title: {
                     display: true,
-                    text: 'Valeurs'
+                    text: 'Valeurs',
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 10 : 12;
+                        }
+                    }
+                },
+                ticks: {
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 9 : 11;
+                        }
+                    },
+                    maxRotation: function() {
+                        return window.innerWidth < 768 ? 45 : 0;
+                    },
+                    autoSkip: true,
+                    maxTicksLimit: function() {
+                        return window.innerWidth < 768 ? 5 : 10;
+                    }
                 }
             }
         }
@@ -2440,13 +2562,42 @@ const methodsChart = new Chart(methodsCtx, {
     data: methodsData,
     options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top',
+                labels: {
+                    boxWidth: 12,
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 10 : 12;
+                        }
+                    }
+                }
             },
             title: {
                 display: true,
-                text: 'Comparaison des méthodes d\'évaluation de l\'asymétrie'
+                text: 'Comparaison des méthodes d\'évaluation de l\'asymétrie',
+                font: {
+                    size: function() {
+                        return window.innerWidth < 768 ? 14 : 16;
+                    }
+                }
+            },
+            tooltip: {
+                enabled: true,
+                mode: 'index',
+                intersect: false,
+                bodyFont: {
+                    size: function() {
+                        return window.innerWidth < 768 ? 10 : 12;
+                    }
+                },
+                titleFont: {
+                    size: function() {
+                        return window.innerWidth < 768 ? 11 : 13;
+                    }
+                }
             }
         },
         scales: {
@@ -2454,19 +2605,81 @@ const methodsChart = new Chart(methodsCtx, {
                 beginAtZero: true,
                 title: {
                     display: true,
-                    text: 'Score d\'asymétrie'
+                    text: 'Score d\'asymétrie',
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 10 : 12;
+                        }
+                    }
+                },
+                ticks: {
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 9 : 11;
+                        }
+                    },
+                    maxTicksLimit: function() {
+                        return window.innerWidth < 768 ? 5 : 10;
+                    }
                 }
             },
             x: {
                 title: {
                     display: true,
-                    text: 'Méthode'
+                    text: 'Méthode',
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 10 : 12;
+                        }
+                    }
+                },
+                ticks: {
+                    font: {
+                        size: function() {
+                            return window.innerWidth < 768 ? 9 : 11;
+                        }
+                    },
+                    maxRotation: function() {
+                        return window.innerWidth < 768 ? 45 : 0;
+                    }
                 }
             }
         }
     }
 });
 "@
+
+    # Préparer les sélections des filtres
+    $directionSelections = @{
+        "All"       = ""
+        "Positive"  = ""
+        "Negative"  = ""
+        "Symmetric" = ""
+    }
+
+    $intensitySelections = @{
+        "All"        = ""
+        "Negligible" = ""
+        "VeryWeak"   = ""
+        "Weak"       = ""
+        "Moderate"   = ""
+        "Strong"     = ""
+        "VeryStrong" = ""
+        "Extreme"    = ""
+    }
+
+    # Définir la sélection active
+    $directionFilters = @("Positive", "Negative", "Symmetric")
+    $intensityFilters = @("Negligible", "VeryWeak", "Weak", "Moderate", "Strong", "VeryStrong", "Extreme")
+
+    if ($directionFilters -contains $Filter) {
+        $directionSelections[$Filter] = "selected"
+    } elseif ($intensityFilters -contains $Filter) {
+        $intensitySelections[$Filter] = "selected"
+    } else {
+        $directionSelections["All"] = "selected"
+        $intensitySelections["All"] = "selected"
+    }
 
     # Remplacer les placeholders dans le template
     $html = $template
@@ -2486,6 +2699,21 @@ const methodsChart = new Chart(methodsCtx, {
     $html = $html.Replace("{{GENERATION_DATE}}", $dateStr)
     $html = $html.Replace("{{CHART_SCRIPTS}}", $chartScripts)
 
+    # Remplacer les placeholders des filtres
+    $html = $html.Replace("{{DIRECTION_ALL_SELECTED}}", $directionSelections["All"])
+    $html = $html.Replace("{{DIRECTION_POSITIVE_SELECTED}}", $directionSelections["Positive"])
+    $html = $html.Replace("{{DIRECTION_NEGATIVE_SELECTED}}", $directionSelections["Negative"])
+    $html = $html.Replace("{{DIRECTION_SYMMETRIC_SELECTED}}", $directionSelections["Symmetric"])
+
+    $html = $html.Replace("{{INTENSITY_ALL_SELECTED}}", $intensitySelections["All"])
+    $html = $html.Replace("{{INTENSITY_NEGLIGIBLE_SELECTED}}", $intensitySelections["Negligible"])
+    $html = $html.Replace("{{INTENSITY_VERYWEAK_SELECTED}}", $intensitySelections["VeryWeak"])
+    $html = $html.Replace("{{INTENSITY_WEAK_SELECTED}}", $intensitySelections["Weak"])
+    $html = $html.Replace("{{INTENSITY_MODERATE_SELECTED}}", $intensitySelections["Moderate"])
+    $html = $html.Replace("{{INTENSITY_STRONG_SELECTED}}", $intensitySelections["Strong"])
+    $html = $html.Replace("{{INTENSITY_VERYSTRONG_SELECTED}}", $intensitySelections["VeryStrong"])
+    $html = $html.Replace("{{INTENSITY_EXTREME_SELECTED}}", $intensitySelections["Extreme"])
+
     # Écrire le rapport dans un fichier si un chemin est spécifié
     if ($OutputPath -ne "") {
         try {
@@ -2499,5 +2727,287 @@ const methodsChart = new Chart(methodsCtx, {
     return $html
 }
 
+<#
+.SYNOPSIS
+    Génère un rapport JSON sur l'asymétrie d'une distribution pour l'intégration avec d'autres outils.
+
+.DESCRIPTION
+    Cette fonction génère un rapport JSON standardisé sur l'asymétrie d'une distribution,
+    suivant un schéma prédéfini pour faciliter l'intégration avec d'autres outils.
+
+.PARAMETER Data
+    Les données de la distribution.
+
+.PARAMETER Methods
+    Les méthodes d'évaluation de l'asymétrie à utiliser (par défaut toutes).
+
+.PARAMETER TailProportion
+    La proportion de données à considérer comme faisant partie des queues (par défaut 0.1, soit 10%).
+
+.PARAMETER SchemaVersion
+    La version du schéma JSON à utiliser (par défaut "1.0").
+
+.PARAMETER IncludeHistogramData
+    Indique si les données de l'histogramme doivent être incluses dans le rapport (par défaut $false).
+
+.PARAMETER OutputPath
+    Le chemin du fichier de sortie (optionnel). Si non spécifié, le rapport est retourné sous forme de chaîne JSON.
+
+.EXAMPLE
+    Get-AsymmetryJsonReport -Data $data -Methods @("Slope", "Moments") -OutputPath "rapport.json"
+    Génère un rapport JSON sur l'asymétrie de la distribution et l'enregistre dans le fichier "rapport.json".
+
+.OUTPUTS
+    System.String
+#>
+function Get-AsymmetryJsonReport {
+    [CmdletBinding()]
+    [OutputType([string])]
+    param (
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNull()]
+        [double[]]$Data,
+
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("Density", "Slope", "Moments", "Quantiles", "All")]
+        [string[]]$Methods = @("All"),
+
+        [Parameter(Mandatory = $false)]
+        [ValidateRange(0.01, 0.49)]
+        [double]$TailProportion = 0.1,
+
+        [Parameter(Mandatory = $false)]
+        [string]$SchemaVersion = "1.0",
+
+        [Parameter(Mandatory = $false)]
+        [switch]$IncludeHistogramData = $false,
+
+        [Parameter(Mandatory = $false)]
+        [string]$OutputPath = ""
+    )
+
+    # Obtenir les résultats d'analyse
+    $comparison = Compare-AsymmetryMethods -Data $Data -Methods $Methods -TailProportion $TailProportion
+    $compositeScore = Get-CompositeAsymmetryScore -Data $Data -Methods $Methods -TailProportion $TailProportion
+
+    # Calculer les statistiques descriptives
+    $sortedData = $Data | Sort-Object
+    $mean = ($sortedData | Measure-Object -Average).Average
+    $median = if ($sortedData.Count % 2 -eq 0) {
+        ($sortedData[$sortedData.Count / 2 - 1] + $sortedData[$sortedData.Count / 2]) / 2
+    } else {
+        $sortedData[[Math]::Floor($sortedData.Count / 2)]
+    }
+    $stdDev = [Math]::Sqrt(($sortedData | ForEach-Object { [Math]::Pow($_ - $mean, 2) } | Measure-Object -Average).Average)
+    $min = $sortedData[0]
+    $max = $sortedData[-1]
+    $range = $max - $min
+
+    # Calculer les quantiles
+    $q1 = Get-Percentile -Data $sortedData -Percentile 25
+    $q2 = $median
+    $q3 = Get-Percentile -Data $sortedData -Percentile 75
+    $iqr = $q3 - $q1
+    $p10 = Get-Percentile -Data $sortedData -Percentile 10
+    $p90 = Get-Percentile -Data $sortedData -Percentile 90
+
+    # Calculer les moments centraux
+    $m2 = ($sortedData | ForEach-Object { [Math]::Pow($_ - $mean, 2) } | Measure-Object -Average).Average
+    $m3 = ($sortedData | ForEach-Object { [Math]::Pow($_ - $mean, 3) } | Measure-Object -Average).Average
+    $m4 = ($sortedData | ForEach-Object { [Math]::Pow($_ - $mean, 4) } | Measure-Object -Average).Average
+
+    # Calculer le coefficient d'asymétrie (skewness) et le kurtosis
+    $skewness = $m3 / [Math]::Pow($m2, 1.5)
+    $kurtosis = $m4 / [Math]::Pow($m2, 2) - 3
+
+    # Préparer les données pour le rapport JSON
+    $now = Get-Date
+    $dateStr = $now.ToString("yyyy-MM-ddTHH:mm:ssZ")
+
+    # Créer l'objet JSON
+    $jsonReport = @{
+        metadata        = @{
+            title          = "Rapport d'analyse d'asymétrie"
+            generationDate = $dateStr
+            version        = $SchemaVersion
+            sampleSize     = $Data.Count
+        }
+        summary         = @{
+            asymmetryDirection = $compositeScore.AsymmetryDirection
+            asymmetryIntensity = $compositeScore.AsymmetryIntensity
+            compositeScore     = [Math]::Round($compositeScore.CompositeScore, 4)
+            recommendedMethod  = $comparison.RecommendedMethod
+            consistencyScore   = [Math]::Round($comparison.ConsistencyScore, 4)
+            summaryText        = "L'analyse de l'asymétrie de la distribution a révélé une asymétrie $($compositeScore.AsymmetryDirection.ToLower()) de niveau $($compositeScore.AsymmetryIntensity.ToLower())."
+        }
+        statistics      = @{
+            min       = [Math]::Round($min, 4)
+            max       = [Math]::Round($max, 4)
+            range     = [Math]::Round($range, 4)
+            mean      = [Math]::Round($mean, 4)
+            median    = [Math]::Round($median, 4)
+            stdDev    = [Math]::Round($stdDev, 4)
+            skewness  = [Math]::Round($skewness, 4)
+            kurtosis  = [Math]::Round($kurtosis, 4)
+            quantiles = @{
+                q1  = [Math]::Round($q1, 4)
+                q2  = [Math]::Round($q2, 4)
+                q3  = [Math]::Round($q3, 4)
+                iqr = [Math]::Round($iqr, 4)
+                p10 = [Math]::Round($p10, 4)
+                p90 = [Math]::Round($p90, 4)
+            }
+        }
+        methods         = @{}
+        recommendations = $compositeScore.Recommendations
+    }
+
+    # Ajouter les résultats des méthodes
+    foreach ($method in $comparison.Methods) {
+        if ($comparison.Results.ContainsKey($method) -and -not $comparison.Results[$method].Error) {
+            $result = $comparison.Results[$method]
+
+            switch ($method) {
+                "Slope" {
+                    $jsonReport.methods.slope = @{
+                        slopeRatio         = [Math]::Round($result.SlopeRatio.SlopeRatio, 4)
+                        leftSlope          = [Math]::Round($result.SlopeRatio.LeftSlope, 4)
+                        rightSlope         = [Math]::Round($result.SlopeRatio.RightSlope, 4)
+                        asymmetryDirection = $result.AsymmetryDirection
+                        asymmetryIntensity = $result.AsymmetryIntensity
+                        score              = [Math]::Round($comparison.MethodScores[$method], 4)
+                    }
+                }
+                "Moments" {
+                    $jsonReport.methods.moments = @{
+                        skewness           = [Math]::Round($result.Skewness, 4)
+                        kurtosis           = [Math]::Round($result.Kurtosis, 4)
+                        asymmetryDirection = $result.AsymmetryDirection
+                        asymmetryIntensity = $result.AsymmetryIntensity
+                        score              = [Math]::Round($comparison.MethodScores[$method], 4)
+                    }
+                }
+                "Quantiles" {
+                    $jsonReport.methods.quantiles = @{
+                        bowleySkewness     = [Math]::Round($result.BowleySkewness, 4)
+                        q1                 = [Math]::Round($result.Q1, 4)
+                        q2                 = [Math]::Round($result.Q2, 4)
+                        q3                 = [Math]::Round($result.Q3, 4)
+                        asymmetryDirection = $result.AsymmetryDirection
+                        asymmetryIntensity = $result.AsymmetryIntensity
+                        score              = [Math]::Round($comparison.MethodScores[$method], 4)
+                    }
+                }
+                "Density" {
+                    if ($comparison.Results.ContainsKey("Density")) {
+                        $densityResult = $comparison.Results.Density
+                        if (-not $densityResult.Error) {
+                            $jsonReport.methods.density = @{
+                                densityRatio       = [Math]::Round($densityResult.DensityRatio, 4)
+                                asymmetryDirection = $densityResult.AsymmetryDirection
+                                asymmetryIntensity = $densityResult.AsymmetryIntensity
+                                score              = [Math]::Round($comparison.MethodScores[$method], 4)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    # Ajouter les données de l'histogramme si demandé
+    if ($IncludeHistogramData) {
+        # Calculer les classes de l'histogramme
+        $binCount = 10
+        $binWidth = $range / $binCount
+        $bins = @()
+        $frequencies = @()
+
+        # Initialiser les compteurs de fréquence
+        $binFrequencies = New-Object int[] $binCount
+
+        # Calculer les bornes des classes
+        for ($i = 0; $i -lt $binCount; $i++) {
+            $lowerBound = $min + $i * $binWidth
+            $upperBound = $min + ($i + 1) * $binWidth
+            $bins += [Math]::Round($lowerBound, 4)
+            if ($i -eq $binCount - 1) {
+                $bins += [Math]::Round($upperBound, 4)
+            }
+        }
+
+        # Compter les fréquences
+        foreach ($value in $Data) {
+            $binIndex = [Math]::Min($binCount - 1, [Math]::Floor(($value - $min) / $binWidth))
+            $binFrequencies[$binIndex]++
+        }
+
+        # Ajouter les fréquences à l'objet JSON
+        $frequencies = $binFrequencies
+
+        $jsonReport.data = @{
+            histogram = @{
+                bins        = $bins
+                frequencies = $frequencies
+            }
+        }
+    }
+
+    # Convertir l'objet en JSON
+    $jsonString = $jsonReport | ConvertTo-Json -Depth 10
+
+    # Écrire le rapport dans un fichier si un chemin est spécifié
+    if ($OutputPath -ne "") {
+        try {
+            $jsonString | Out-File -FilePath $OutputPath -Encoding UTF8
+            Write-Verbose "Rapport JSON écrit dans le fichier: $OutputPath"
+        } catch {
+            Write-Error "Erreur lors de l'écriture du rapport JSON dans le fichier: $_"
+        }
+    }
+
+    return $jsonString
+}
+
+# Importer les fonctions de calcul des quantiles et des indicateurs basés sur les quantiles
+$quantileIndicatorsModulePath = Join-Path -Path $PSScriptRoot -ChildPath "QuantileIndicators.psm1"
+if (Test-Path -Path $quantileIndicatorsModulePath) {
+    Import-Module $quantileIndicatorsModulePath -Force
+    # Exporter les fonctions importées
+    Export-ModuleMember -Function Get-Quantile, Get-WeightedQuantile, Get-InterquartileRange, Get-BowleySkewness
+}
+
+# Importer les fonctions d'évaluation visuelle de l'asymétrie
+$visualAsymmetryEvaluationModulePath = Join-Path -Path $PSScriptRoot -ChildPath "VisualAsymmetryEvaluation.psm1"
+if (Test-Path -Path $visualAsymmetryEvaluationModulePath) {
+    Import-Module $visualAsymmetryEvaluationModulePath -Force
+    # Exporter les fonctions importées
+    Export-ModuleMember -Function Get-HistogramAsymmetry, Get-Histogram, Get-VisualAsymmetryEvaluation, Get-AsymmetryVisualization
+}
+
+# Importer les fonctions de rapport visuel d'asymétrie
+$visualAsymmetryReportModulePath = Join-Path -Path $PSScriptRoot -ChildPath "VisualAsymmetryReport.psm1"
+if (Test-Path -Path $visualAsymmetryReportModulePath) {
+    Import-Module $visualAsymmetryReportModulePath -Force
+    # Exporter les fonctions importées
+    Export-ModuleMember -Function Get-AsymmetryVisualReport
+}
+
+# Importer les fonctions d'analyse comparative des quantiles
+$quantileComparisonPath = Join-Path -Path $PSScriptRoot -ChildPath "QuantileComparison.psm1"
+if (Test-Path -Path $quantileComparisonPath) {
+    Import-Module $quantileComparisonPath -Force
+    # Exporter les fonctions importées
+    Export-ModuleMember -Function Get-QuantileQuantilePlot, Get-NormalQuantile, Get-QuantileComparisonMetrics
+}
+
+# Importer les fonctions de visualisation des comparaisons de quantiles
+$quantileComparisonVisualizationPath = Join-Path -Path $PSScriptRoot -ChildPath "QuantileComparisonVisualization.psm1"
+if (Test-Path -Path $quantileComparisonVisualizationPath) {
+    Import-Module $quantileComparisonVisualizationPath -Force
+    # Exporter les fonctions importées
+    Export-ModuleMember -Function Get-QuantileQuantilePlotVisualization, Get-ComparisonMetricsVisualization
+}
+
 # Exporter les fonctions publiques
-Export-ModuleMember -Function Get-DistributionTails, Get-TailLinearRegression, Get-TailSlopeRatio, Get-TailSlopeAsymmetry, Compare-AsymmetryMethods, Get-CompositeAsymmetryScore, Get-OptimalAsymmetryMethod, Get-AsymmetryTextReport, Get-AsymmetryHtmlReport
+Export-ModuleMember -Function Get-DistributionTails, Get-TailLinearRegression, Get-TailSlopeRatio, Get-TailSlopeAsymmetry, Compare-AsymmetryMethods, Get-CompositeAsymmetryScore, Get-OptimalAsymmetryMethod, Get-AsymmetryTextReport, Get-AsymmetryHtmlReport, Get-AsymmetryJsonReport

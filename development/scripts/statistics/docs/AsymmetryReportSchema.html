@@ -1,0 +1,530 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation du schÃ©ma de rapport d'asymÃ©trie</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        .property {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .property-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .property-name {
+            font-weight: bold;
+            color: #3498db;
+        }
+        .property-type {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .property-required {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .property-description {
+            margin-bottom: 10px;
+        }
+        .nested-properties {
+            margin-left: 20px;
+        }
+        .schema-info {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table th, table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+        code {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .toc {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #3498db;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .property {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Documentation du schÃ©ma de rapport d'asymÃ©trie</h1>    <div class="schema-info">
+        <h2>Informations gÃ©nÃ©rales</h2>
+        <table>
+            <tr>
+                <th>Titre</th>
+                <td>Asymmetry Analysis Report Schema</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>Schema for standardized asymmetry analysis reports</td>
+            </tr>
+            <tr>
+                <th>Version du schÃ©ma</th>
+                <td>http://json-schema.org/draft-07/schema#</td>
+            </tr>
+        </table>
+    </div>    <div class="toc">
+        <h2>Table des matiÃ¨res</h2>
+        <ul>            <li><a href="#metadata">metadata</a></li>            <li><a href="#summary">summary</a></li>            <li><a href="#statistics">statistics</a></li>            <li><a href="#methods">methods</a></li>            <li><a href="#recommendations">recommendations</a></li>            <li><a href="#data">data</a></li>        </ul>
+    </div>    <h2>PropriÃ©tÃ©s</h2>    <div class="property" id="metadata">
+        <div class="property-header">
+            <span class="property-name">metadata</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Metadata about the report</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="title">
+        <div class="property-header">
+            <span class="property-name">title</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Title of the report</div>    </div>    <div class="property" id="generationDate">
+        <div class="property-header">
+            <span class="property-name">generationDate</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Date and time when the report was generated</div>    </div>    <div class="property" id="version">
+        <div class="property-header">
+            <span class="property-name">version</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Version of the report schema</div>    </div>    <div class="property" id="sampleSize">
+        <div class="property-header">
+            <span class="property-name">sampleSize</span>
+            <span class="property-type">integer</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Number of data points in the sample</div>    </div>    <div class="property" id="dataSource">
+        <div class="property-header">
+            <span class="property-name">dataSource</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Source of the data (optional)</div>    </div>    <div class="property" id="author">
+        <div class="property-header">
+            <span class="property-name">author</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Author of the report (optional)</div>    </div>        </div>    </div>    <div class="property" id="summary">
+        <div class="property-header">
+            <span class="property-name">summary</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Summary of the asymmetry analysis</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="asymmetryDirection">
+        <div class="property-header">
+            <span class="property-name">asymmetryDirection</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Direction of the asymmetry (Positive, Negative, Symmetric)</div>        <h4>Valeurs possibles</h4>
+        <ul>            <li><code>Positive</code></li>            <li><code>Negative</code></li>            <li><code>Symmetric</code></li>        </ul>    </div>    <div class="property" id="asymmetryIntensity">
+        <div class="property-header">
+            <span class="property-name">asymmetryIntensity</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Intensity of the asymmetry</div>        <h4>Valeurs possibles</h4>
+        <ul>            <li><code>Negligible</code></li>            <li><code>VeryWeak</code></li>            <li><code>Weak</code></li>            <li><code>Moderate</code></li>            <li><code>Strong</code></li>            <li><code>VeryStrong</code></li>            <li><code>Extreme</code></li>        </ul>    </div>    <div class="property" id="compositeScore">
+        <div class="property-header">
+            <span class="property-name">compositeScore</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Composite score of asymmetry</div>    </div>    <div class="property" id="recommendedMethod">
+        <div class="property-header">
+            <span class="property-name">recommendedMethod</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Recommended method for asymmetry evaluation</div>        <h4>Valeurs possibles</h4>
+        <ul>            <li><code>Slope</code></li>            <li><code>Moments</code></li>            <li><code>Quantiles</code></li>            <li><code>Density</code></li>        </ul>    </div>    <div class="property" id="consistencyScore">
+        <div class="property-header">
+            <span class="property-name">consistencyScore</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Consistency score between different methods</div>    </div>    <div class="property" id="summaryText">
+        <div class="property-header">
+            <span class="property-name">summaryText</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Textual summary of the analysis</div>    </div>        </div>    </div>    <div class="property" id="statistics">
+        <div class="property-header">
+            <span class="property-name">statistics</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Descriptive statistics of the distribution</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="min">
+        <div class="property-header">
+            <span class="property-name">min</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Minimum value in the distribution</div>    </div>    <div class="property" id="max">
+        <div class="property-header">
+            <span class="property-name">max</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Maximum value in the distribution</div>    </div>    <div class="property" id="range">
+        <div class="property-header">
+            <span class="property-name">range</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Range of the distribution (max - min)</div>    </div>    <div class="property" id="mean">
+        <div class="property-header">
+            <span class="property-name">mean</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Mean of the distribution</div>    </div>    <div class="property" id="median">
+        <div class="property-header">
+            <span class="property-name">median</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Median of the distribution</div>    </div>    <div class="property" id="mode">
+        <div class="property-header">
+            <span class="property-name">mode</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Mode of the distribution (if applicable)</div>    </div>    <div class="property" id="stdDev">
+        <div class="property-header">
+            <span class="property-name">stdDev</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Standard deviation of the distribution</div>    </div>    <div class="property" id="variance">
+        <div class="property-header">
+            <span class="property-name">variance</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Variance of the distribution</div>    </div>    <div class="property" id="skewness">
+        <div class="property-header">
+            <span class="property-name">skewness</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Skewness coefficient of the distribution</div>    </div>    <div class="property" id="kurtosis">
+        <div class="property-header">
+            <span class="property-name">kurtosis</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Kurtosis of the distribution</div>    </div>    <div class="property" id="quantiles">
+        <div class="property-header">
+            <span class="property-name">quantiles</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Quantiles of the distribution</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="q1">
+        <div class="property-header">
+            <span class="property-name">q1</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">First quartile (25th percentile)</div>    </div>    <div class="property" id="q2">
+        <div class="property-header">
+            <span class="property-name">q2</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Second quartile (50th percentile, median)</div>    </div>    <div class="property" id="q3">
+        <div class="property-header">
+            <span class="property-name">q3</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Third quartile (75th percentile)</div>    </div>    <div class="property" id="iqr">
+        <div class="property-header">
+            <span class="property-name">iqr</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Interquartile range (Q3 - Q1)</div>    </div>    <div class="property" id="p10">
+        <div class="property-header">
+            <span class="property-name">p10</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">10th percentile</div>    </div>    <div class="property" id="p90">
+        <div class="property-header">
+            <span class="property-name">p90</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">90th percentile</div>    </div>        </div>    </div>        </div>    </div>    <div class="property" id="methods">
+        <div class="property-header">
+            <span class="property-name">methods</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Results from different asymmetry evaluation methods</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="slope">
+        <div class="property-header">
+            <span class="property-name">slope</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Results from the slope-based method</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="slopeRatio">
+        <div class="property-header">
+            <span class="property-name">slopeRatio</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Ratio of the slopes of the left and right tails</div>    </div>    <div class="property" id="leftSlope">
+        <div class="property-header">
+            <span class="property-name">leftSlope</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Slope of the left tail</div>    </div>    <div class="property" id="rightSlope">
+        <div class="property-header">
+            <span class="property-name">rightSlope</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Slope of the right tail</div>    </div>    <div class="property" id="asymmetryDirection">
+        <div class="property-header">
+            <span class="property-name">asymmetryDirection</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Direction of asymmetry according to the slope method</div>    </div>    <div class="property" id="asymmetryIntensity">
+        <div class="property-header">
+            <span class="property-name">asymmetryIntensity</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Intensity of asymmetry according to the slope method</div>    </div>    <div class="property" id="score">
+        <div class="property-header">
+            <span class="property-name">score</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Asymmetry score according to the slope method</div>    </div>        </div>    </div>    <div class="property" id="moments">
+        <div class="property-header">
+            <span class="property-name">moments</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Results from the moments-based method</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="skewness">
+        <div class="property-header">
+            <span class="property-name">skewness</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Skewness coefficient</div>    </div>    <div class="property" id="kurtosis">
+        <div class="property-header">
+            <span class="property-name">kurtosis</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Kurtosis</div>    </div>    <div class="property" id="asymmetryDirection">
+        <div class="property-header">
+            <span class="property-name">asymmetryDirection</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Direction of asymmetry according to the moments method</div>    </div>    <div class="property" id="asymmetryIntensity">
+        <div class="property-header">
+            <span class="property-name">asymmetryIntensity</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Intensity of asymmetry according to the moments method</div>    </div>    <div class="property" id="score">
+        <div class="property-header">
+            <span class="property-name">score</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Asymmetry score according to the moments method</div>    </div>        </div>    </div>    <div class="property" id="quantiles">
+        <div class="property-header">
+            <span class="property-name">quantiles</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Results from the quantiles-based method</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="bowleySkewness">
+        <div class="property-header">
+            <span class="property-name">bowleySkewness</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Bowley's coefficient of skewness</div>    </div>    <div class="property" id="q1">
+        <div class="property-header">
+            <span class="property-name">q1</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">First quartile</div>    </div>    <div class="property" id="q2">
+        <div class="property-header">
+            <span class="property-name">q2</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Second quartile (median)</div>    </div>    <div class="property" id="q3">
+        <div class="property-header">
+            <span class="property-name">q3</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Third quartile</div>    </div>    <div class="property" id="asymmetryDirection">
+        <div class="property-header">
+            <span class="property-name">asymmetryDirection</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Direction of asymmetry according to the quantiles method</div>    </div>    <div class="property" id="asymmetryIntensity">
+        <div class="property-header">
+            <span class="property-name">asymmetryIntensity</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Intensity of asymmetry according to the quantiles method</div>    </div>    <div class="property" id="score">
+        <div class="property-header">
+            <span class="property-name">score</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Asymmetry score according to the quantiles method</div>    </div>        </div>    </div>    <div class="property" id="density">
+        <div class="property-header">
+            <span class="property-name">density</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Results from the density-based method</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="densityRatio">
+        <div class="property-header">
+            <span class="property-name">densityRatio</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Ratio of the densities of the left and right tails</div>    </div>    <div class="property" id="asymmetryDirection">
+        <div class="property-header">
+            <span class="property-name">asymmetryDirection</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Direction of asymmetry according to the density method</div>    </div>    <div class="property" id="asymmetryIntensity">
+        <div class="property-header">
+            <span class="property-name">asymmetryIntensity</span>
+            <span class="property-type">string</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Intensity of asymmetry according to the density method</div>    </div>    <div class="property" id="score">
+        <div class="property-header">
+            <span class="property-name">score</span>
+            <span class="property-type">number</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Asymmetry score according to the density method</div>    </div>        </div>    </div>        </div>    </div>    <div class="property" id="recommendations">
+        <div class="property-header">
+            <span class="property-name">recommendations</span>
+            <span class="property-type">array</span>
+        </div>
+        <div class="property-required"><span class="property-required">Requis</span></div>
+        <div class="property-description">Recommendations based on the asymmetry analysis</div>        <h4>Ã‰lÃ©ments</h4>
+        <div class="property-type">Type: string</div>
+        <div class="property-description"></div>    </div>    <div class="property" id="data">
+        <div class="property-header">
+            <span class="property-name">data</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Data used for visualization (optional)</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="histogram">
+        <div class="property-header">
+            <span class="property-name">histogram</span>
+            <span class="property-type">object</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Data for histogram visualization</div>        <h4>PropriÃ©tÃ©s</h4>
+        <div class="nested-properties">    <div class="property" id="bins">
+        <div class="property-header">
+            <span class="property-name">bins</span>
+            <span class="property-type">array</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Bin edges for the histogram</div>        <h4>Ã‰lÃ©ments</h4>
+        <div class="property-type">Type: number</div>
+        <div class="property-description"></div>    </div>    <div class="property" id="frequencies">
+        <div class="property-header">
+            <span class="property-name">frequencies</span>
+            <span class="property-type">array</span>
+        </div>
+        <div class="property-required">Optionnel</div>
+        <div class="property-description">Frequencies for each bin</div>        <h4>Ã‰lÃ©ments</h4>
+        <div class="property-type">Type: number</div>
+        <div class="property-description"></div>    </div>        </div>    </div>        </div>    </div></body>
+</html>

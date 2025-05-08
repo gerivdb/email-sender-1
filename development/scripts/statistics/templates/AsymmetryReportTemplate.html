@@ -2,7 +2,9 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Rapport d'analyse d'asymétrie de distribution statistique">
+    <meta name="theme-color" content="#3498db">
     <title>{{TITLE}}</title>
     <style>
         /* Variables CSS */
@@ -234,8 +236,100 @@
             font-size: 0.9em;
         }
 
+        /* Filtres */
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .filter-group select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: white;
+            font-family: var(--font-family);
+        }
+
+        .filter-button {
+            padding: 8px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            align-self: flex-end;
+            margin-top: auto;
+        }
+
+        .filter-button:hover {
+            background-color: #2980b9;
+        }
+
+        #reset-filter {
+            background-color: var(--secondary-color);
+        }
+
+        #reset-filter:hover {
+            background-color: #1a252f;
+        }
+
         /* Responsive */
+        @media (max-width: 1200px) {
+            body {
+                padding: 15px;
+            }
+
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            header .metadata {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .chart-container {
+                height: 320px;
+            }
+        }
+
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            header {
+                padding: 15px;
+            }
+
+            section {
+                padding: 15px;
+            }
+
             .grid {
                 grid-template-columns: 1fr;
             }
@@ -246,6 +340,113 @@
 
             .chart-container {
                 height: 300px;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .filter-group {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .filter-button {
+                width: 100%;
+                margin-top: 5px;
+            }
+
+            table th, table td {
+                padding: 8px 5px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            header {
+                padding: 10px;
+            }
+
+            header h1 {
+                font-size: 1.5em;
+            }
+
+            section {
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+
+            section h2 {
+                font-size: 1.3em;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            .card {
+                padding: 10px;
+            }
+
+            table th, table td {
+                padding: 6px 3px;
+                font-size: 0.8em;
+            }
+
+            .collapsible {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+
+            .alert {
+                padding: 10px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                padding: 0;
+                max-width: 100%;
+                font-size: 12pt;
+            }
+
+            header, section, footer {
+                page-break-inside: avoid;
+                margin-bottom: 20pt;
+            }
+
+            .chart-container {
+                height: 400pt;
+                page-break-inside: avoid;
+            }
+
+            .filter-controls, .collapsible, .filter-button {
+                display: none;
+            }
+
+            .collapsible-content {
+                max-height: none !important;
+                display: block;
+            }
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            table th, table td {
+                border: 1pt solid #ddd;
             }
         }
     </style>
@@ -301,6 +502,32 @@
 
     <section id="methods">
         <h2>Comparaison des méthodes</h2>
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label for="direction-filter">Filtrer par direction :</label>
+                <select id="direction-filter" onchange="applyFilter('direction')">
+                    <option value="All" {{DIRECTION_ALL_SELECTED}}>Toutes</option>
+                    <option value="Positive" {{DIRECTION_POSITIVE_SELECTED}}>Asymétrie positive</option>
+                    <option value="Negative" {{DIRECTION_NEGATIVE_SELECTED}}>Asymétrie négative</option>
+                    <option value="Symmetric" {{DIRECTION_SYMMETRIC_SELECTED}}>Symétrique</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="intensity-filter">Filtrer par intensité :</label>
+                <select id="intensity-filter" onchange="applyFilter('intensity')">
+                    <option value="All" {{INTENSITY_ALL_SELECTED}}>Toutes</option>
+                    <option value="Negligible" {{INTENSITY_NEGLIGIBLE_SELECTED}}>Négligeable</option>
+                    <option value="VeryWeak" {{INTENSITY_VERYWEAK_SELECTED}}>Très faible</option>
+                    <option value="Weak" {{INTENSITY_WEAK_SELECTED}}>Faible</option>
+                    <option value="Moderate" {{INTENSITY_MODERATE_SELECTED}}>Modérée</option>
+                    <option value="Strong" {{INTENSITY_STRONG_SELECTED}}>Forte</option>
+                    <option value="VeryStrong" {{INTENSITY_VERYSTRONG_SELECTED}}>Très forte</option>
+                    <option value="Extreme" {{INTENSITY_EXTREME_SELECTED}}>Extrême</option>
+                </select>
+            </div>
+            <button id="apply-filter" class="filter-button" onclick="applyFilters()">Appliquer les filtres</button>
+            <button id="reset-filter" class="filter-button" onclick="resetFilters()">Réinitialiser</button>
+        </div>
         <div class="chart-container">
             <canvas id="methodsChart"></canvas>
         </div>
@@ -336,6 +563,47 @@
                     content.style.maxHeight = content.scrollHeight + "px";
                 }
             });
+        }
+
+        // Gestion des filtres
+        function applyFilter(filterType) {
+            // Désactiver l'autre filtre si celui-ci est modifié
+            if (filterType === 'direction') {
+                document.getElementById('intensity-filter').value = 'All';
+            } else if (filterType === 'intensity') {
+                document.getElementById('direction-filter').value = 'All';
+            }
+        }
+
+        function applyFilters() {
+            const directionFilter = document.getElementById('direction-filter').value;
+            const intensityFilter = document.getElementById('intensity-filter').value;
+
+            // Construire l'URL avec les paramètres de filtre
+            let url = new URL(window.location.href);
+
+            // Supprimer les paramètres existants
+            url.search = '';
+
+            // Ajouter les nouveaux paramètres
+            if (directionFilter !== 'All') {
+                url.searchParams.append('filter', directionFilter);
+            } else if (intensityFilter !== 'All') {
+                url.searchParams.append('filter', intensityFilter);
+            }
+
+            // Rediriger vers la nouvelle URL
+            window.location.href = url.toString();
+        }
+
+        function resetFilters() {
+            document.getElementById('direction-filter').value = 'All';
+            document.getElementById('intensity-filter').value = 'All';
+
+            // Rediriger vers l'URL sans paramètres
+            let url = new URL(window.location.href);
+            url.search = '';
+            window.location.href = url.toString();
         }
 
         // Initialisation des graphiques

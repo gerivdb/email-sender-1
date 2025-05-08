@@ -1,0 +1,28 @@
+﻿{
+    "metadata": {
+        "title": "Rapport d'analyse d'asymÃ©trie",
+        "generationDate": "2025-05-08T06:16:47Z"
+        // Manque "version" et "sampleSize" qui sont requis
+    },
+    "summary": {
+        "asymmetryDirection": "SymÃ©trique",
+        "asymmetryIntensity": "NÃ©gligeable",
+        "compositeScore": 0.0345,
+        "consistencyScore": 0.979
+        // Manque "recommendedMethod" qui est requis
+    },
+    // Manque "statistics" qui est requis
+    "methods": {
+        "slope": {
+            "slopeRatio": 1.0699,
+            "leftSlope": 10.9573,
+            "rightSlope": 11.7232,
+            "asymmetryDirection": "Queue droite plus pentue",
+            "asymmetryIntensity": "NÃ©gligeable",
+            "score": 0.0999
+        }
+    },
+    "recommendations": [
+        "Le score composite d'asymÃ©trie de 0.03 indique une distribution symÃ©trique avec une asymÃ©trie de niveau 'nÃ©gligeable'."
+    ]
+}

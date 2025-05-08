@@ -1,0 +1,328 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Asymmetry Analysis Report Schema",
+  "description": "Schema for standardized asymmetry analysis reports",
+  "type": "object",
+  "required": [
+    "metadata",
+    "summary",
+    "statistics",
+    "methods",
+    "recommendations"
+  ],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "Metadata about the report",
+      "required": [
+        "title",
+        "generationDate",
+        "version",
+        "sampleSize"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title of the report"
+        },
+        "generationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date and time when the report was generated"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the report schema"
+        },
+        "sampleSize": {
+          "type": "integer",
+          "description": "Number of data points in the sample"
+        },
+        "dataSource": {
+          "type": "string",
+          "description": "Source of the data (optional)"
+        },
+        "author": {
+          "type": "string",
+          "description": "Author of the report (optional)"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "description": "Summary of the asymmetry analysis",
+      "required": [
+        "asymmetryDirection",
+        "asymmetryIntensity",
+        "compositeScore",
+        "recommendedMethod",
+        "consistencyScore"
+      ],
+      "properties": {
+        "asymmetryDirection": {
+          "type": "string",
+          "description": "Direction of the asymmetry (Positive, Negative, Symmetric)",
+          "enum": ["Positive", "Negative", "Symmetric"]
+        },
+        "asymmetryIntensity": {
+          "type": "string",
+          "description": "Intensity of the asymmetry",
+          "enum": ["Negligible", "VeryWeak", "Weak", "Moderate", "Strong", "VeryStrong", "Extreme"]
+        },
+        "compositeScore": {
+          "type": "number",
+          "description": "Composite score of asymmetry"
+        },
+        "recommendedMethod": {
+          "type": "string",
+          "description": "Recommended method for asymmetry evaluation",
+          "enum": ["Slope", "Moments", "Quantiles", "Density"]
+        },
+        "consistencyScore": {
+          "type": "number",
+          "description": "Consistency score between different methods"
+        },
+        "summaryText": {
+          "type": "string",
+          "description": "Textual summary of the analysis"
+        }
+      }
+    },
+    "statistics": {
+      "type": "object",
+      "description": "Descriptive statistics of the distribution",
+      "required": [
+        "min",
+        "max",
+        "mean",
+        "median",
+        "stdDev",
+        "skewness",
+        "kurtosis"
+      ],
+      "properties": {
+        "min": {
+          "type": "number",
+          "description": "Minimum value in the distribution"
+        },
+        "max": {
+          "type": "number",
+          "description": "Maximum value in the distribution"
+        },
+        "range": {
+          "type": "number",
+          "description": "Range of the distribution (max - min)"
+        },
+        "mean": {
+          "type": "number",
+          "description": "Mean of the distribution"
+        },
+        "median": {
+          "type": "number",
+          "description": "Median of the distribution"
+        },
+        "mode": {
+          "type": "number",
+          "description": "Mode of the distribution (if applicable)"
+        },
+        "stdDev": {
+          "type": "number",
+          "description": "Standard deviation of the distribution"
+        },
+        "variance": {
+          "type": "number",
+          "description": "Variance of the distribution"
+        },
+        "skewness": {
+          "type": "number",
+          "description": "Skewness coefficient of the distribution"
+        },
+        "kurtosis": {
+          "type": "number",
+          "description": "Kurtosis of the distribution"
+        },
+        "quantiles": {
+          "type": "object",
+          "description": "Quantiles of the distribution",
+          "properties": {
+            "q1": {
+              "type": "number",
+              "description": "First quartile (25th percentile)"
+            },
+            "q2": {
+              "type": "number",
+              "description": "Second quartile (50th percentile, median)"
+            },
+            "q3": {
+              "type": "number",
+              "description": "Third quartile (75th percentile)"
+            },
+            "iqr": {
+              "type": "number",
+              "description": "Interquartile range (Q3 - Q1)"
+            },
+            "p10": {
+              "type": "number",
+              "description": "10th percentile"
+            },
+            "p90": {
+              "type": "number",
+              "description": "90th percentile"
+            }
+          }
+        }
+      }
+    },
+    "methods": {
+      "type": "object",
+      "description": "Results from different asymmetry evaluation methods",
+      "properties": {
+        "slope": {
+          "type": "object",
+          "description": "Results from the slope-based method",
+          "properties": {
+            "slopeRatio": {
+              "type": "number",
+              "description": "Ratio of the slopes of the left and right tails"
+            },
+            "leftSlope": {
+              "type": "number",
+              "description": "Slope of the left tail"
+            },
+            "rightSlope": {
+              "type": "number",
+              "description": "Slope of the right tail"
+            },
+            "asymmetryDirection": {
+              "type": "string",
+              "description": "Direction of asymmetry according to the slope method"
+            },
+            "asymmetryIntensity": {
+              "type": "string",
+              "description": "Intensity of asymmetry according to the slope method"
+            },
+            "score": {
+              "type": "number",
+              "description": "Asymmetry score according to the slope method"
+            }
+          }
+        },
+        "moments": {
+          "type": "object",
+          "description": "Results from the moments-based method",
+          "properties": {
+            "skewness": {
+              "type": "number",
+              "description": "Skewness coefficient"
+            },
+            "kurtosis": {
+              "type": "number",
+              "description": "Kurtosis"
+            },
+            "asymmetryDirection": {
+              "type": "string",
+              "description": "Direction of asymmetry according to the moments method"
+            },
+            "asymmetryIntensity": {
+              "type": "string",
+              "description": "Intensity of asymmetry according to the moments method"
+            },
+            "score": {
+              "type": "number",
+              "description": "Asymmetry score according to the moments method"
+            }
+          }
+        },
+        "quantiles": {
+          "type": "object",
+          "description": "Results from the quantiles-based method",
+          "properties": {
+            "bowleySkewness": {
+              "type": "number",
+              "description": "Bowley's coefficient of skewness"
+            },
+            "q1": {
+              "type": "number",
+              "description": "First quartile"
+            },
+            "q2": {
+              "type": "number",
+              "description": "Second quartile (median)"
+            },
+            "q3": {
+              "type": "number",
+              "description": "Third quartile"
+            },
+            "asymmetryDirection": {
+              "type": "string",
+              "description": "Direction of asymmetry according to the quantiles method"
+            },
+            "asymmetryIntensity": {
+              "type": "string",
+              "description": "Intensity of asymmetry according to the quantiles method"
+            },
+            "score": {
+              "type": "number",
+              "description": "Asymmetry score according to the quantiles method"
+            }
+          }
+        },
+        "density": {
+          "type": "object",
+          "description": "Results from the density-based method",
+          "properties": {
+            "densityRatio": {
+              "type": "number",
+              "description": "Ratio of the densities of the left and right tails"
+            },
+            "asymmetryDirection": {
+              "type": "string",
+              "description": "Direction of asymmetry according to the density method"
+            },
+            "asymmetryIntensity": {
+              "type": "string",
+              "description": "Intensity of asymmetry according to the density method"
+            },
+            "score": {
+              "type": "number",
+              "description": "Asymmetry score according to the density method"
+            }
+          }
+        }
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "description": "Recommendations based on the asymmetry analysis",
+      "items": {
+        "type": "string"
+      }
+    },
+    "data": {
+      "type": "object",
+      "description": "Data used for visualization (optional)",
+      "properties": {
+        "histogram": {
+          "type": "object",
+          "description": "Data for histogram visualization",
+          "properties": {
+            "bins": {
+              "type": "array",
+              "description": "Bin edges for the histogram",
+              "items": {
+                "type": "number"
+              }
+            },
+            "frequencies": {
+              "type": "array",
+              "description": "Frequencies for each bin",
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

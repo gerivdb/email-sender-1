@@ -1,0 +1,97 @@
+﻿{
+    "metadata":  {
+                     "title":  "Rapport d\u0027Ã©valuation visuelle de l\u0027asymÃ©trie",
+                     "generationDate":  "2025-05-08T17:21:20Z",
+                     "version":  "1.0"
+                 },
+    "distributions":  {
+                          "bimodal":  {
+                                          "evaluation":  {
+                                                             "asymmetryIntensity":  "Weak",
+                                                             "mostConsistentMethod":  "TailRatio",
+                                                             "asymmetryDirection":  "Negative",
+                                                             "compositeScore":  -0.1188
+                                                         },
+                                          "sampleSize":  50,
+                                          "name":  "Distribution bimodale",
+                                          "methods":  {
+                                                          "ShapeDifference":  {
+                                                                                  "asymmetryDirection":  "Symmetric",
+                                                                                  "score":  0,
+                                                                                  "asymmetryIntensity":  "Negligible"
+                                                                              },
+                                                          "AreaDifference":  {
+                                                                                 "asymmetryDirection":  "Symmetric",
+                                                                                 "score":  0,
+                                                                                 "asymmetryIntensity":  "Negligible"
+                                                                             }
+                                                      }
+                                      },
+                          "negativeSkew":  {
+                                               "evaluation":  {
+                                                                  "asymmetryIntensity":  "Extreme",
+                                                                  "mostConsistentMethod":  "PeakOffset",
+                                                                  "asymmetryDirection":  "Negative",
+                                                                  "compositeScore":  -0.7237
+                                                              },
+                                               "sampleSize":  50,
+                                               "name":  "Distribution asymÃ©trique nÃ©gative",
+                                               "methods":  {
+                                                               "ShapeDifference":  {
+                                                                                       "asymmetryDirection":  "Negative",
+                                                                                       "score":  -1,
+                                                                                       "asymmetryIntensity":  "Extreme"
+                                                                                   },
+                                                               "AreaDifference":  {
+                                                                                      "asymmetryDirection":  "Negative",
+                                                                                      "score":  -0.96,
+                                                                                      "asymmetryIntensity":  "Extreme"
+                                                                                  }
+                                                           }
+                                           },
+                          "positiveSkew":  {
+                                               "evaluation":  {
+                                                                  "asymmetryIntensity":  "Moderate",
+                                                                  "mostConsistentMethod":  "PeakOffset",
+                                                                  "asymmetryDirection":  "Positive",
+                                                                  "compositeScore":  0.2181
+                                                              },
+                                               "sampleSize":  50,
+                                               "name":  "Distribution asymÃ©trique positive",
+                                               "methods":  {
+                                                               "ShapeDifference":  {
+                                                                                       "asymmetryDirection":  "Negative",
+                                                                                       "score":  -1,
+                                                                                       "asymmetryIntensity":  "Extreme"
+                                                                                   },
+                                                               "AreaDifference":  {
+                                                                                      "asymmetryDirection":  "Positive",
+                                                                                      "score":  0.96,
+                                                                                      "asymmetryIntensity":  "Extreme"
+                                                                                  }
+                                                           }
+                                           },
+                          "normal":  {
+                                         "evaluation":  {
+                                                            "asymmetryIntensity":  "Extreme",
+                                                            "mostConsistentMethod":  "PeakOffset",
+                                                            "asymmetryDirection":  "Negative",
+                                                            "compositeScore":  -0.7238
+                                                        },
+                                         "sampleSize":  50,
+                                         "name":  "Distribution normale",
+                                         "methods":  {
+                                                         "ShapeDifference":  {
+                                                                                 "asymmetryDirection":  "Negative",
+                                                                                 "score":  -1,
+                                                                                 "asymmetryIntensity":  "Extreme"
+                                                                             },
+                                                         "AreaDifference":  {
+                                                                                "asymmetryDirection":  "Negative",
+                                                                                "score":  -0.96,
+                                                                                "asymmetryIntensity":  "Extreme"
+                                                                            }
+                                                     }
+                                     }
+                      }
+}
