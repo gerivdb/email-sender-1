@@ -1,0 +1,143 @@
+{
+  "granularite_adaptative": {
+    "version": "1.0.0",
+    "description": "Configuration pour la granularité adaptative des roadmaps",
+    "niveaux_recommandes": {
+      "min": 4,
+      "max": 6,
+      "optimal": 5,
+      "description": "Nombre de niveaux de profondeur recommandés pour les roadmaps"
+    },
+    "profondeur_par_complexite": {
+      "simple": {
+        "min": 3,
+        "max": 4,
+        "description": "Tâches simples comme documentation, configuration"
+      },
+      "moyenne": {
+        "min": 4,
+        "max": 5,
+        "description": "Tâches de complexité moyenne comme développement frontend, scripts"
+      },
+      "elevee": {
+        "min": 5,
+        "max": 6,
+        "description": "Tâches complexes comme algorithmes, intégration système"
+      },
+      "tres_elevee": {
+        "min": 6,
+        "max": 7,
+        "description": "Tâches très complexes comme systèmes distribués, optimisation avancée"
+      }
+    },
+    "profondeur_par_domaine": {
+      "documentation": {
+        "min": 3,
+        "max": 4,
+        "description": "Documentation, guides, tutoriels"
+      },
+      "frontend": {
+        "min": 4,
+        "max": 5,
+        "description": "Développement d'interfaces utilisateur"
+      },
+      "backend": {
+        "min": 4,
+        "max": 6,
+        "description": "Développement de services backend"
+      },
+      "database": {
+        "min": 4,
+        "max": 5,
+        "description": "Conception et optimisation de bases de données"
+      },
+      "ai_ml": {
+        "min": 5,
+        "max": 6,
+        "description": "Intelligence artificielle et machine learning"
+      },
+      "devops": {
+        "min": 4,
+        "max": 5,
+        "description": "Infrastructure, CI/CD, déploiement"
+      },
+      "security": {
+        "min": 4,
+        "max": 6,
+        "description": "Sécurité, authentification, autorisation"
+      },
+      "testing": {
+        "min": 4,
+        "max": 5,
+        "description": "Tests unitaires, d'intégration, de performance"
+      },
+      "architecture": {
+        "min": 4,
+        "max": 6,
+        "description": "Conception d'architecture logicielle"
+      },
+      "research": {
+        "min": 5,
+        "max": 7,
+        "description": "Recherche et développement exploratoire"
+      }
+    },
+    "regles_granularisation": {
+      "regle_journee_travail": {
+        "description": "Une tâche de niveau 4 ne devrait pas prendre plus d'une journée de travail",
+        "niveau_application": 4
+      },
+      "regle_autonomie": {
+        "description": "Chaque tâche doit être suffisamment autonome pour être réalisée indépendamment",
+        "tous_niveaux": true
+      },
+      "regle_coherence": {
+        "description": "Les tâches de même niveau doivent avoir une complexité similaire",
+        "tous_niveaux": true
+      },
+      "regle_completude": {
+        "description": "L'ensemble des sous-tâches doit couvrir 100% de la tâche parente",
+        "tous_niveaux": true
+      },
+      "regle_non_redondance": {
+        "description": "Éviter les chevauchements entre sous-tâches",
+        "tous_niveaux": true
+      }
+    },
+    "regles_augment": {
+      "limite_profondeur": {
+        "description": "Ne pas dépasser 6 niveaux de profondeur, même pour les tâches très complexes",
+        "valeur": 6
+      },
+      "equilibre_branches": {
+        "description": "Maintenir un équilibre relatif entre les branches de l'arbre des tâches",
+        "ecart_max": 2
+      },
+      "granularite_progressive": {
+        "description": "Granulariser progressivement, en commençant par les niveaux supérieurs",
+        "ordre": ["niveau_1", "niveau_2", "niveau_3", "niveau_4", "niveau_5", "niveau_6"]
+      },
+      "adaptation_contexte": {
+        "description": "Ajuster la granularité en fonction du domaine technique",
+        "utiliser_profondeur_par_domaine": true
+      }
+    },
+    "optimisation_rag": {
+      "taille_chunk_optimale": {
+        "min": 3,
+        "max": 5,
+        "description": "Nombre de niveaux hiérarchiques à inclure dans un chunk pour l'indexation RAG"
+      },
+      "chevauchement_optimal": {
+        "min": 1,
+        "max": 2,
+        "description": "Nombre de niveaux de chevauchement entre chunks adjacents"
+      },
+      "contexte_hierarchique": {
+        "inclure_parents": true,
+        "profondeur_parents": 2,
+        "description": "Inclure les tâches parentes dans le contexte d'indexation"
+      }
+    }
+  }
+}

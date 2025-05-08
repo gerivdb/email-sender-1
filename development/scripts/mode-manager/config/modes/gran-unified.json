@@ -1,0 +1,132 @@
+{
+  "modes": {
+    "GRAN": {
+      "script": "development\\scripts\\maintenance\\modes\\gran-mode-unified.ps1",
+      "description": "Mode de granularisation des tâches avec support pour la granularité adaptative",
+      "parameters": {
+        "FilePath": {
+          "required": true,
+          "description": "Chemin vers le fichier de roadmap"
+        },
+        "TaskIdentifier": {
+          "required": true,
+          "description": "Identifiant de la tâche à granulariser"
+        },
+        "ComplexityLevel": {
+          "required": false,
+          "default": "Auto",
+          "description": "Niveau de complexité (Auto, Simple, Medium, Complex, VeryComplex)"
+        },
+        "Domain": {
+          "required": false,
+          "default": "None",
+          "description": "Domaine technique (Frontend, Backend, Database, etc.)"
+        },
+        "SubTasksFile": {
+          "required": false,
+          "default": "",
+          "description": "Fichier de sous-tâches personnalisées"
+        },
+        "AddTimeEstimation": {
+          "required": false,
+          "default": false,
+          "description": "Ajouter des estimations de temps aux sous-tâches"
+        },
+        "UseAI": {
+          "required": false,
+          "default": false,
+          "description": "Utiliser l'IA pour générer des sous-tâches"
+        },
+        "SimulateAI": {
+          "required": false,
+          "default": false,
+          "description": "Simuler l'utilisation de l'IA (pour les tests)"
+        },
+        "IndentationStyle": {
+          "required": false,
+          "default": "Auto",
+          "description": "Style d'indentation (Spaces2, Spaces4, Tab, Auto)"
+        },
+        "CheckboxStyle": {
+          "required": false,
+          "default": "Auto",
+          "description": "Style de case à cocher (GitHub, Custom, Auto)"
+        },
+        "AdaptiveGranularity": {
+          "required": false,
+          "default": true,
+          "description": "Utiliser la granularité adaptative basée sur la configuration"
+        }
+      }
+    },
+    "GRAN-R": {
+      "script": "development\\scripts\\maintenance\\modes\\gran-mode-recursive-unified.ps1",
+      "description": "Mode de granularisation récursive des tâches avec support pour la granularité adaptative",
+      "parameters": {
+        "FilePath": {
+          "required": true,
+          "description": "Chemin vers le fichier de roadmap"
+        },
+        "TaskIdentifier": {
+          "required": true,
+          "description": "Identifiant de la tâche à granulariser"
+        },
+        "ComplexityLevel": {
+          "required": false,
+          "default": "Auto",
+          "description": "Niveau de complexité (Auto, Simple, Medium, Complex, VeryComplex)"
+        },
+        "Domain": {
+          "required": false,
+          "default": "None",
+          "description": "Domaine technique (Frontend, Backend, Database, etc.)"
+        },
+        "SubTasksFile": {
+          "required": false,
+          "default": "",
+          "description": "Fichier de sous-tâches personnalisées"
+        },
+        "AddTimeEstimation": {
+          "required": false,
+          "default": false,
+          "description": "Ajouter des estimations de temps aux sous-tâches"
+        },
+        "UseAI": {
+          "required": false,
+          "default": false,
+          "description": "Utiliser l'IA pour générer des sous-tâches"
+        },
+        "SimulateAI": {
+          "required": false,
+          "default": false,
+          "description": "Simuler l'utilisation de l'IA (pour les tests)"
+        },
+        "IndentationStyle": {
+          "required": false,
+          "default": "Auto",
+          "description": "Style d'indentation (Spaces2, Spaces4, Tab, Auto)"
+        },
+        "CheckboxStyle": {
+          "required": false,
+          "default": "Auto",
+          "description": "Style de case à cocher (GitHub, Custom, Auto)"
+        },
+        "RecursionDepth": {
+          "required": false,
+          "default": 2,
+          "description": "Profondeur maximale de récursion"
+        },
+        "AnalyzeComplexity": {
+          "required": false,
+          "default": false,
+          "description": "Analyser la complexité de chaque sous-tâche"
+        },
+        "AdaptiveGranularity": {
+          "required": false,
+          "default": true,
+          "description": "Utiliser la granularité adaptative basée sur la configuration"
+        }
+      }
+    }
+  }
+}
