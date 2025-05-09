@@ -1,0 +1,37 @@
+# {{ title }}
+
+{{ description }}
+
+*Généré le {{ generated_at | replace("T", " ").split(".")[0] }}*
+
+{% if query %}
+**Requête de recherche :** {{ query }}
+{% endif %}
+
+**Nombre de tâches :** {{ task_count }}
+
+## Tableau Kanban
+
+{% for status in statuses %}
+### {{ status }}
+
+{% for task in tasks_by_status[status] %}
+- **{{ task.task_id if task.task_id else loop.index }}** : {{ task.text }}
+  {% if task.priority %}
+  - Priorité : {{ task.priority }}
+  {% endif %}
+  {% if task.assignee %}
+  - Assigné à : {{ task.assignee }}
+  {% endif %}
+  {% if task.due_date %}
+  - Échéance : {{ task.due_date }}
+  {% endif %}
+{% else %}
+*Aucune tâche dans cette colonne*
+{% endfor %}
+
+{% endfor %}
+
+---
+
+*Cette vue a été générée automatiquement par le système RAG de gestion des roadmaps.*

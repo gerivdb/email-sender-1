@@ -1,0 +1,24 @@
+﻿{
+    "Duplicates":  [
+                       {
+                           "CurrentFile":  "projet\\roadmaps\\analysis\\test\\files\\roadmap-v2.md",
+                           "DuplicateFile":  "projet\\roadmaps\\analysis\\test\\files\\roadmap-v1.md",
+                           "Similarity":  0.89880952380952384,
+                           "Group":  "roadmap"
+                       }
+                   ],
+    "VersionedFiles":  [
+                           {
+                               "Group":  "roadmap",
+                               "Files":  [
+                                             "projet\\roadmaps\\analysis\\test\\files\\roadmap-v2.md",
+                                             "projet\\roadmaps\\analysis\\test\\files\\roadmap-v1.md"
+                                         ],
+                               "CurrentVersion":  "projet\\roadmaps\\analysis\\test\\files\\roadmap-v2.md",
+                               "OlderVersions":  "projet\\roadmaps\\analysis\\test\\files\\roadmap-v1.md"
+                           }
+                       ],
+    "Obsolete":  [
+
+                 ]
+}

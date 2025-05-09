@@ -1,0 +1,34 @@
+# {{ title }}
+
+{{ description }}
+
+*Généré le {{ generated_at | replace("T", " ").split(".")[0] }}*
+
+{% if query %}
+**Requête de recherche :** {{ query }}
+{% endif %}
+
+**Nombre de tâches :** {{ task_count }}
+
+## Chronologie
+
+{% set current_date = None %}
+{% for task in tasks %}
+{% if task.due_date != current_date %}
+{% set current_date = task.due_date %}
+### {{ current_date }}
+{% endif %}
+
+- **{{ task.task_id if task.task_id else loop.index }}** : {{ task.text }}
+  - Statut : {{ task.status if task.status else "Non défini" }}
+  {% if task.priority %}
+  - Priorité : {{ task.priority }}
+  {% endif %}
+  {% if task.assignee %}
+  - Assigné à : {{ task.assignee }}
+  {% endif %}
+{% endfor %}
+
+---
+
+*Cette vue a été générée automatiquement par le système RAG de gestion des roadmaps.*

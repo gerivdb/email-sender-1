@@ -1,0 +1,38 @@
+# {{ title }}
+
+{{ description }}
+
+*Généré le {{ generated_at | replace("T", " ").split(".")[0] }}*
+
+{% if query %}
+**Requête de recherche :** {{ query }}
+{% endif %}
+
+**Nombre de tâches :** {{ task_count }}
+
+## Liste des tâches
+
+{% for task in tasks %}
+### {{ loop.index }}. {{ task.text }}
+
+- **ID :** {{ task.task_id if task.task_id else "N/A" }}
+- **Statut :** {{ task.status if task.status else "Non défini" }}
+- **Fichier source :** {{ task.file_path }}
+{% if task.path %}
+- **Chemin :** {{ task.path }}
+{% endif %}
+{% if task.due_date %}
+- **Date d'échéance :** {{ task.due_date }}
+{% endif %}
+{% if task.priority %}
+- **Priorité :** {{ task.priority }}
+{% endif %}
+{% if task.assignee %}
+- **Assigné à :** {{ task.assignee }}
+{% endif %}
+
+{% endfor %}
+
+---
+
+*Cette vue a été générée automatiquement par le système RAG de gestion des roadmaps.*

@@ -1,19 +1,19 @@
 # Plan de développement v8 : Système de gestion modulaire des roadmaps avec RAG
 
 ## 1. Nettoyage et consolidation des plans
-- [ ] **1.1** Analyser la structure actuelle des roadmaps et plans
-  - [ ] **1.1.1** Inventorier tous les fichiers de roadmap/plan existants
-    - [ ] **1.1.1.1** Parcourir le dossier `projet/roadmaps` et ses sous-dossiers
-    - [ ] **1.1.1.2** Parcourir le dossier `development/roadmap` et ses sous-dossiers
-    - [ ] **1.1.1.3** Identifier les doublons et versions obsolètes
-  - [ ] **1.1.2** Analyser le format et la structure de chaque fichier
-    - [ ] **1.1.2.1** Identifier les différents formats utilisés (indentation, numérotation)
-    - [ ] **1.1.2.2** Analyser les métadonnées existantes
-    - [ ] **1.1.2.3** Évaluer la compatibilité avec le système de cases à cocher
-  - [ ] **1.1.3** Identifier les catégories et domaines principaux
-    - [ ] **1.1.3.1** Extraire les thèmes récurrents
-    - [ ] **1.1.3.2** Définir une taxonomie cohérente
-    - [ ] **1.1.3.3** Préparer une structure de dossiers optimisée
+- [x] **1.1** Analyser la structure actuelle des roadmaps et plans
+  - [x] **1.1.1** Inventorier tous les fichiers de roadmap/plan existants
+    - [x] **1.1.1.1** Parcourir le dossier `projet/roadmaps` et ses sous-dossiers
+    - [x] **1.1.1.2** Parcourir le dossier `development/roadmap` et ses sous-dossiers
+    - [x] **1.1.1.3** Identifier les doublons et versions obsolètes
+  - [x] **1.1.2** Analyser le format et la structure de chaque fichier
+    - [x] **1.1.2.1** Identifier les différents formats utilisés (indentation, numérotation)
+    - [x] **1.1.2.2** Analyser les métadonnées existantes
+    - [x] **1.1.2.3** Évaluer la compatibilité avec le système de cases à cocher
+  - [x] **1.1.3** Identifier les catégories et domaines principaux
+    - [x] **1.1.3.1** Extraire les thèmes récurrents
+    - [x] **1.1.3.2** Définir une taxonomie cohérente
+    - [x] **1.1.3.3** Préparer une structure de dossiers optimisée
 - [ ] **1.2** Définir une structure standardisée pour les roadmaps
   - [ ] **1.2.1** Concevoir un format unifié pour les fichiers de roadmap
     - [ ] **1.2.1.1** Définir les règles d'indentation et de numérotation
@@ -42,21 +42,21 @@
     - [ ] **1.3.3.3** Vérifier la cohérence des métadonnées
 
 ## 2. Amélioration du système RAG pour les roadmaps
-- [ ] **2.1** Optimiser la vectorisation des tâches de roadmap
-  - [ ] **2.1.1** Définir un schéma de données optimisé pour les tâches
-    - [ ] **2.1.1.1** Concevoir la structure des documents
-      - [ ] **2.1.1.1.1** Analyser les besoins en métadonnées pour les tâches
-        - [ ] **2.1.1.1.1.1** Identifier les métadonnées essentielles (ID, statut, priorité)
-        - [ ] **2.1.1.1.1.2** Identifier les métadonnées contextuelles (dépendances, échéances)
-        - [ ] **2.1.1.1.1.3** Identifier les métadonnées spécifiques au domaine
-      - [ ] **2.1.1.1.2** Concevoir le schéma JSON pour les documents
-        - [ ] **2.1.1.1.2.1** Définir la structure hiérarchique des tâches
-        - [ ] **2.1.1.1.2.2** Concevoir le système de références entre tâches
-        - [ ] **2.1.1.1.2.3** Définir le format des métadonnées extensibles
-      - [ ] **2.1.1.1.3** Développer des validateurs de schéma
-        - [ ] **2.1.1.1.3.1** Créer le schéma JSON pour validation
-        - [ ] **2.1.1.1.3.2** Implémenter les fonctions de validation
-        - [ ] **2.1.1.1.3.3** Développer les mécanismes de correction automatique
+- [x] **2.1** Optimiser la vectorisation des tâches de roadmap
+  - [x] **2.1.1** Définir un schéma de données optimisé pour les tâches
+    - [x] **2.1.1.1** Concevoir la structure des documents
+      - [x] **2.1.1.1.1** Analyser les besoins en métadonnées pour les tâches
+        - [x] **2.1.1.1.1.1** Identifier les métadonnées essentielles (ID, statut, priorité)
+        - [x] **2.1.1.1.1.2** Identifier les métadonnées contextuelles (dépendances, échéances)
+        - [x] **2.1.1.1.1.3** Identifier les métadonnées spécifiques au domaine
+      - [x] **2.1.1.1.2** Concevoir le schéma JSON pour les documents
+        - [x] **2.1.1.1.2.1** Définir la structure hiérarchique des tâches
+        - [x] **2.1.1.1.2.2** Concevoir le système de références entre tâches
+        - [x] **2.1.1.1.2.3** Définir le format des métadonnées extensibles
+      - [x] **2.1.1.1.3** Développer des validateurs de schéma
+        - [x] **2.1.1.1.3.1** Créer le schéma JSON pour validation
+        - [x] **2.1.1.1.3.2** Implémenter les fonctions de validation
+        - [x] **2.1.1.1.3.3** Développer les mécanismes de correction automatique
     - [ ] **2.1.1.2** Définir les champs obligatoires et optionnels
       - [ ] **2.1.1.2.1** Établir la liste des champs obligatoires
         - [ ] **2.1.1.2.1.1** Définir les identifiants uniques (ID, chemin)
@@ -83,24 +83,24 @@
         - [ ] **2.1.1.3.3.1** Créer les fonctions de normalisation textuelle
         - [ ] **2.1.1.3.3.2** Implémenter les fonctions de normalisation structurelle
         - [ ] **2.1.1.3.3.3** Développer les mécanismes de détection d'anomalies
-  - [ ] **2.1.2** Améliorer les algorithmes d'extraction de tâches
-    - [ ] **2.1.2.1** Développer un parser robuste pour les roadmaps markdown
-      - [ ] **2.1.2.1.1** Concevoir l'architecture du parser
-        - [ ] **2.1.2.1.1.1** Définir les composants du parser (lexer, parser, AST)
-        - [ ] **2.1.2.1.1.2** Concevoir le système de gestion d'erreurs
-        - [ ] **2.1.2.1.1.3** Établir l'architecture modulaire extensible
-      - [ ] **2.1.2.1.2** Implémenter le lexer pour roadmaps markdown
-        - [ ] **2.1.2.1.2.1** Développer la tokenisation des listes à puces
-        - [ ] **2.1.2.1.2.2** Implémenter la détection des cases à cocher
-        - [ ] **2.1.2.1.2.3** Ajouter la reconnaissance des identifiants de tâches
-      - [ ] **2.1.2.1.3** Implémenter le parser syntaxique
-        - [ ] **2.1.2.1.3.1** Développer l'analyse de la structure hiérarchique
-        - [ ] **2.1.2.1.3.2** Implémenter la détection des métadonnées inline
-        - [ ] **2.1.2.1.3.3** Ajouter la gestion des commentaires et annotations
-      - [ ] **2.1.2.1.4** Développer le générateur d'AST (Abstract Syntax Tree)
-        - [ ] **2.1.2.1.4.1** Concevoir la structure de l'arbre syntaxique
-        - [ ] **2.1.2.1.4.2** Implémenter la construction de l'arbre
-        - [ ] **2.1.2.1.4.3** Ajouter les validations sémantiques
+  - [x] **2.1.2** Améliorer les algorithmes d'extraction de tâches
+    - [x] **2.1.2.1** Développer un parser robuste pour les roadmaps markdown
+      - [x] **2.1.2.1.1** Concevoir l'architecture du parser
+        - [x] **2.1.2.1.1.1** Définir les composants du parser (lexer, parser, AST)
+        - [x] **2.1.2.1.1.2** Concevoir le système de gestion d'erreurs
+        - [x] **2.1.2.1.1.3** Établir l'architecture modulaire extensible
+      - [x] **2.1.2.1.2** Implémenter le lexer pour roadmaps markdown
+        - [x] **2.1.2.1.2.1** Développer la tokenisation des listes à puces
+        - [x] **2.1.2.1.2.2** Implémenter la détection des cases à cocher
+        - [x] **2.1.2.1.2.3** Ajouter la reconnaissance des identifiants de tâches
+      - [x] **2.1.2.1.3** Implémenter le parser syntaxique
+        - [x] **2.1.2.1.3.1** Développer l'analyse de la structure hiérarchique
+        - [x] **2.1.2.1.3.2** Implémenter la détection des métadonnées inline
+        - [x] **2.1.2.1.3.3** Ajouter la gestion des commentaires et annotations
+      - [x] **2.1.2.1.4** Développer le générateur d'AST (Abstract Syntax Tree)
+        - [x] **2.1.2.1.4.1** Concevoir la structure de l'arbre syntaxique
+        - [x] **2.1.2.1.4.2** Implémenter la construction de l'arbre
+        - [x] **2.1.2.1.4.3** Ajouter les validations sémantiques
     - [ ] **2.1.2.2** Implémenter la détection intelligente de la hiérarchie
       - [ ] **2.1.2.2.1** Développer l'analyse des niveaux d'indentation
         - [ ] **2.1.2.2.1.1** Implémenter la détection des espaces et tabulations
@@ -127,33 +127,33 @@
         - [ ] **2.1.2.3.3.1** Développer la détection automatique de priorité
         - [ ] **2.1.2.3.3.2** Implémenter l'inférence de domaine/catégorie
         - [ ] **2.1.2.3.3.3** Ajouter l'estimation automatique de complexité
-  - [ ] **2.1.3** Optimiser le processus de vectorisation
-    - [ ] **2.1.3.1** Sélectionner le modèle d'embedding optimal
-      - [ ] **2.1.3.1.1** Évaluer les modèles d'embedding disponibles
-        - [ ] **2.1.3.1.1.1** Tester les modèles OpenAI (text-embedding-ada-002, etc.)
-        - [ ] **2.1.3.1.1.2** Évaluer les modèles open-source (SBERT, MPNet)
-        - [ ] **2.1.3.1.1.3** Tester les modèles spécialisés pour le code/documentation
-      - [ ] **2.1.3.1.2** Comparer les performances des modèles
-        - [ ] **2.1.3.1.2.1** Mesurer la qualité des recherches sémantiques
-        - [ ] **2.1.3.1.2.2** Évaluer les performances (temps, ressources)
-        - [ ] **2.1.3.1.2.3** Analyser le rapport qualité/coût
-      - [ ] **2.1.3.1.3** Implémenter l'intégration avec le modèle choisi
-        - [ ] **2.1.3.1.3.1** Développer le client API pour le modèle
-        - [ ] **2.1.3.1.3.2** Implémenter la gestion du cache d'embeddings
-        - [ ] **2.1.3.1.3.3** Ajouter le fallback vers des modèles alternatifs
-    - [ ] **2.1.3.2** Implémenter le chunking intelligent des tâches
-      - [ ] **2.1.3.2.1** Développer les stratégies de segmentation
-        - [ ] **2.1.3.2.1.1** Implémenter la segmentation par tâche individuelle
-        - [ ] **2.1.3.2.1.2** Développer la segmentation par groupe hiérarchique
-        - [ ] **2.1.3.2.1.3** Ajouter la segmentation par contexte thématique
-      - [ ] **2.1.3.2.2** Optimiser la taille et le chevauchement des chunks
-        - [ ] **2.1.3.2.2.1** Analyser l'impact de la taille des chunks
-        - [ ] **2.1.3.2.2.2** Tester différentes stratégies de chevauchement
-        - [ ] **2.1.3.2.2.3** Développer un algorithme adaptatif de chunking
-      - [ ] **2.1.3.2.3** Implémenter l'enrichissement contextuel des chunks
-        - [ ] **2.1.3.2.3.1** Ajouter les métadonnées hiérarchiques
-        - [ ] **2.1.3.2.3.2** Incorporer le contexte des tâches parentes
-        - [ ] **2.1.3.2.3.3** Développer l'inclusion des relations entre tâches
+  - [x] **2.1.3** Optimiser le processus de vectorisation
+    - [x] **2.1.3.1** Sélectionner le modèle d'embedding optimal
+      - [x] **2.1.3.1.1** Évaluer les modèles d'embedding disponibles
+        - [x] **2.1.3.1.1.1** Tester les modèles OpenAI (text-embedding-ada-002, etc.)
+        - [x] **2.1.3.1.1.2** Évaluer les modèles open-source (SBERT, MPNet)
+        - [x] **2.1.3.1.1.3** Tester les modèles spécialisés pour le code/documentation
+      - [x] **2.1.3.1.2** Comparer les performances des modèles
+        - [x] **2.1.3.1.2.1** Mesurer la qualité des recherches sémantiques
+        - [x] **2.1.3.1.2.2** Évaluer les performances (temps, ressources)
+        - [x] **2.1.3.1.2.3** Analyser le rapport qualité/coût
+      - [x] **2.1.3.1.3** Implémenter l'intégration avec le modèle choisi
+        - [x] **2.1.3.1.3.1** Développer le client API pour le modèle
+        - [x] **2.1.3.1.3.2** Implémenter la gestion du cache d'embeddings
+        - [x] **2.1.3.1.3.3** Ajouter le fallback vers des modèles alternatifs
+    - [x] **2.1.3.2** Implémenter le chunking intelligent des tâches
+      - [x] **2.1.3.2.1** Développer les stratégies de segmentation
+        - [x] **2.1.3.2.1.1** Implémenter la segmentation par tâche individuelle
+        - [x] **2.1.3.2.1.2** Développer la segmentation par groupe hiérarchique
+        - [x] **2.1.3.2.1.3** Ajouter la segmentation par contexte thématique
+      - [x] **2.1.3.2.2** Optimiser la taille et le chevauchement des chunks
+        - [x] **2.1.3.2.2.1** Analyser l'impact de la taille des chunks
+        - [x] **2.1.3.2.2.2** Tester différentes stratégies de chevauchement
+        - [x] **2.1.3.2.2.3** Développer un algorithme adaptatif de chunking
+      - [x] **2.1.3.2.3** Implémenter l'enrichissement contextuel des chunks
+        - [x] **2.1.3.2.3.1** Ajouter les métadonnées hiérarchiques
+        - [x] **2.1.3.2.3.2** Incorporer le contexte des tâches parentes
+        - [x] **2.1.3.2.3.3** Développer l'inclusion des relations entre tâches
     - [ ] **2.1.3.3** Développer des stratégies de mise à jour incrémentale
       - [ ] **2.1.3.3.1** Implémenter la détection des changements
         - [ ] **2.1.3.3.1.1** Développer le système de hachage de contenu
@@ -167,222 +167,222 @@
         - [ ] **2.1.3.3.3.1** Implémenter le suivi des versions d'embeddings
         - [ ] **2.1.3.3.3.2** Ajouter la gestion des migrations de modèles
         - [ ] **2.1.3.3.3.3** Développer les mécanismes de rollback
-- [ ] **2.2** Améliorer l'intégration avec Qdrant
-  - [ ] **2.2.1** Optimiser la structure de la collection Qdrant
-    - [ ] **2.2.1.1** Définir le schéma de la collection
-      - [ ] **2.2.1.1.1** Concevoir la structure des points vectoriels
-        - [ ] **2.2.1.1.1.1** Définir la dimension et le type des vecteurs
-        - [ ] **2.2.1.1.1.2** Établir la structure des payloads
-        - [ ] **2.2.1.1.1.3** Définir le système d'identifiants uniques
-      - [ ] **2.2.1.1.2** Définir les métadonnées à stocker dans Qdrant
-        - [ ] **2.2.1.1.2.1** Identifier les métadonnées essentielles pour la recherche
-        - [ ] **2.2.1.1.2.2** Définir le format de stockage des métadonnées hiérarchiques
-        - [ ] **2.2.1.1.2.3** Établir les règles de normalisation des métadonnées
-      - [ ] **2.2.1.1.3** Concevoir le système de références croisées
-        - [ ] **2.2.1.1.3.1** Définir les liens entre points vectoriels
-        - [ ] **2.2.1.1.3.2** Établir les références aux fichiers source
-        - [ ] **2.2.1.1.3.3** Concevoir le système de traçabilité des modifications
-    - [ ] **2.2.1.2** Configurer les index et les filtres optimaux
-      - [ ] **2.2.1.2.1** Optimiser les paramètres de l'index vectoriel
-        - [ ] **2.2.1.2.1.1** Sélectionner l'algorithme d'indexation optimal (HNSW, etc.)
-        - [ ] **2.2.1.2.1.2** Configurer les paramètres de performance (ef_construct, m)
-        - [ ] **2.2.1.2.1.3** Implémenter les tests de performance et ajustements
-      - [ ] **2.2.1.2.2** Configurer les index de filtrage
-        - [ ] **2.2.1.2.2.1** Identifier les champs de filtrage fréquents
-        - [ ] **2.2.1.2.2.2** Configurer les index pour les champs de statut
-        - [ ] **2.2.1.2.2.3** Configurer les index pour les champs de priorité
-        - [ ] **2.2.1.2.2.4** Configurer les index pour les champs de domaine
-      - [ ] **2.2.1.2.3** Optimiser les stratégies de requête
-        - [ ] **2.2.1.2.3.1** Développer des templates de requête optimisés
-        - [ ] **2.2.1.2.3.2** Implémenter la mise en cache des requêtes fréquentes
-        - [ ] **2.2.1.2.3.3** Configurer les paramètres de recherche approximative
-    - [ ] **2.2.1.3** Implémenter la gestion des versions
-      - [ ] **2.2.1.3.1** Concevoir le système de versionnage des collections
-        - [ ] **2.2.1.3.1.1** Définir la stratégie de nommage des versions
-        - [ ] **2.2.1.3.1.2** Établir les règles de migration entre versions
-        - [ ] **2.2.1.3.1.3** Concevoir le système de métadonnées de version
-      - [ ] **2.2.1.3.2** Développer les mécanismes de migration de données
-        - [ ] **2.2.1.3.2.1** Implémenter la migration incrémentale
-        - [ ] **2.2.1.3.2.2** Développer la migration complète avec validation
-        - [ ] **2.2.1.3.2.3** Ajouter les mécanismes de rollback
-      - [ ] **2.2.1.3.3** Implémenter le suivi des modifications
-        - [ ] **2.2.1.3.3.1** Développer le journal des modifications
-        - [ ] **2.2.1.3.3.2** Implémenter les snapshots de collection
-        - [ ] **2.2.1.3.3.3** Ajouter les mécanismes de restauration
-  - [ ] **2.2.2** Développer des fonctions avancées de requête
-    - [ ] **2.2.2.1** Implémenter la recherche par similarité sémantique
-      - [ ] **2.2.2.1.1** Développer le moteur de recherche vectorielle
-        - [ ] **2.2.2.1.1.1** Implémenter la vectorisation des requêtes
-        - [ ] **2.2.2.1.1.2** Développer l'algorithme de scoring de pertinence
-        - [ ] **2.2.2.1.1.3** Ajouter le réordonnancement des résultats
-      - [ ] **2.2.2.1.2** Optimiser les paramètres de recherche
-        - [ ] **2.2.2.1.2.1** Calibrer les seuils de similarité
-        - [ ] **2.2.2.1.2.2** Optimiser le nombre de résultats à récupérer
-        - [ ] **2.2.2.1.2.3** Implémenter l'ajustement dynamique des paramètres
-      - [ ] **2.2.2.1.3** Développer des fonctionnalités avancées
-        - [ ] **2.2.2.1.3.1** Implémenter la recherche par exemple
-        - [ ] **2.2.2.1.3.2** Ajouter la recherche par négation
-        - [ ] **2.2.2.1.3.3** Développer la recherche multi-requêtes
-    - [ ] **2.2.2.2** Ajouter le filtrage par métadonnées (statut, priorité, domaine)
-      - [ ] **2.2.2.2.1** Développer le système de filtres
-        - [ ] **2.2.2.2.1.1** Implémenter les filtres exacts (égalité)
-        - [ ] **2.2.2.2.1.2** Ajouter les filtres de plage (numérique, dates)
-        - [ ] **2.2.2.2.1.3** Développer les filtres textuels (contient, commence par)
-      - [ ] **2.2.2.2.2** Implémenter les combinaisons de filtres
-        - [ ] **2.2.2.2.2.1** Développer les opérateurs logiques (ET, OU, NON)
-        - [ ] **2.2.2.2.2.2** Implémenter les filtres imbriqués
-        - [ ] **2.2.2.2.2.3** Ajouter le support pour les expressions complexes
-      - [ ] **2.2.2.2.3** Optimiser les performances de filtrage
-        - [ ] **2.2.2.2.3.1** Analyser l'impact des filtres sur les performances
-        - [ ] **2.2.2.2.3.2** Implémenter des stratégies d'optimisation
-        - [ ] **2.2.2.2.3.3** Développer des mécanismes de mise en cache
-    - [ ] **2.2.2.3** Développer des requêtes hybrides (texte + filtres)
-      - [ ] **2.2.2.3.1** Concevoir l'architecture des requêtes hybrides
-        - [ ] **2.2.2.3.1.1** Définir le modèle de données des requêtes
-        - [ ] **2.2.2.3.1.2** Établir les règles de priorité et combinaison
-        - [ ] **2.2.2.3.1.3** Concevoir le système de scoring combiné
-      - [ ] **2.2.2.3.2** Implémenter le moteur de requêtes hybrides
-        - [ ] **2.2.2.3.2.1** Développer le parser de requêtes
-        - [ ] **2.2.2.3.2.2** Implémenter l'exécution parallèle des sous-requêtes
-        - [ ] **2.2.2.3.2.3** Ajouter la fusion et le réordonnancement des résultats
-      - [ ] **2.2.2.3.3** Optimiser les performances des requêtes hybrides
-        - [ ] **2.2.2.3.3.1** Analyser les patterns de requêtes fréquentes
-        - [ ] **2.2.2.3.3.2** Implémenter des stratégies d'optimisation
-        - [ ] **2.2.2.3.3.3** Développer des mécanismes de mise en cache
-  - [ ] **2.2.3** Créer un système de synchronisation bidirectionnelle
-    - [ ] **2.2.3.1** Développer le mécanisme de détection des changements
-      - [ ] **2.2.3.1.1** Implémenter la surveillance des fichiers markdown
-        - [ ] **2.2.3.1.1.1** Développer le système de surveillance en temps réel
-        - [ ] **2.2.3.1.1.2** Implémenter la détection des modifications
-        - [ ] **2.2.3.1.1.3** Ajouter le filtrage des modifications pertinentes
-      - [ ] **2.2.3.1.2** Développer l'analyse différentielle
-        - [ ] **2.2.3.1.2.1** Implémenter la comparaison structurelle des tâches
-        - [ ] **2.2.3.1.2.2** Développer la détection des changements de statut
-        - [ ] **2.2.3.1.2.3** Ajouter la détection des modifications de métadonnées
-      - [ ] **2.2.3.1.3** Implémenter le système de journalisation des changements
-        - [ ] **2.2.3.1.3.1** Développer le format de journal des modifications
-        - [ ] **2.2.3.1.3.2** Implémenter la persistance des journaux
-        - [ ] **2.2.3.1.3.3** Ajouter les mécanismes de rotation et archivage
-    - [ ] **2.2.3.2** Implémenter la mise à jour des fichiers markdown
-      - [ ] **2.2.3.2.1** Développer le générateur de markdown
-        - [ ] **2.2.3.2.1.1** Implémenter la conversion des données Qdrant en markdown
-        - [ ] **2.2.3.2.1.2** Développer la préservation de la structure et formatage
-        - [ ] **2.2.3.2.1.3** Ajouter la gestion des métadonnées spéciales
-      - [ ] **2.2.3.2.2** Implémenter les modifications ciblées
-        - [ ] **2.2.3.2.2.1** Développer les modifications atomiques (statut, texte)
-        - [ ] **2.2.3.2.2.2** Implémenter les modifications structurelles (déplacement)
-        - [ ] **2.2.3.2.2.3** Ajouter la gestion des ajouts et suppressions
-      - [ ] **2.2.3.2.3** Développer le système de validation et sauvegarde
-        - [ ] **2.2.3.2.3.1** Implémenter la validation syntaxique
-        - [ ] **2.2.3.2.3.2** Développer la sauvegarde sécurisée avec backup
-        - [ ] **2.2.3.2.3.3** Ajouter les mécanismes de notification
-    - [ ] **2.2.3.3** Ajouter la gestion des conflits
-      - [ ] **2.2.3.3.1** Développer la détection des conflits
-        - [ ] **2.2.3.3.1.1** Implémenter la détection des modifications concurrentes
-        - [ ] **2.2.3.3.1.2** Développer l'analyse des conflits structurels
-        - [ ] **2.2.3.3.1.3** Ajouter la détection des conflits de métadonnées
-      - [ ] **2.2.3.3.2** Implémenter les stratégies de résolution
-        - [ ] **2.2.3.3.2.1** Développer la résolution automatique simple
-        - [ ] **2.2.3.3.2.2** Implémenter l'interface de résolution manuelle
-        - [ ] **2.2.3.3.2.3** Ajouter les stratégies de fusion intelligente
-      - [ ] **2.2.3.3.3** Développer le système de journalisation des résolutions
-        - [ ] **2.2.3.3.3.1** Implémenter le journal des conflits
-        - [ ] **2.2.3.3.3.2** Développer le suivi des résolutions
-        - [ ] **2.2.3.3.3.3** Ajouter les mécanismes d'audit
-- [ ] **2.3** Développer des générateurs de vues dynamiques
-  - [ ] **2.3.1** Créer un système de templates pour les vues
-    - [ ] **2.3.1.1** Concevoir des templates markdown
-      - [ ] **2.3.1.1.1** Définir la structure des templates markdown
-        - [ ] **2.3.1.1.1.1** Concevoir le système de variables et placeholders
-        - [ ] **2.3.1.1.1.2** Définir les sections standard des templates
-        - [ ] **2.3.1.1.1.3** Établir les règles de formatage et indentation
-      - [ ] **2.3.1.1.2** Développer le moteur de rendu markdown
-        - [ ] **2.3.1.1.2.1** Implémenter le système de substitution de variables
-        - [ ] **2.3.1.1.2.2** Développer le mécanisme de rendu conditionnel
-        - [ ] **2.3.1.1.2.3** Ajouter le support pour les boucles et itérations
-      - [ ] **2.3.1.1.3** Créer une bibliothèque de templates markdown
-        - [ ] **2.3.1.1.3.1** Développer le template de vue complète
-        - [ ] **2.3.1.1.3.2** Créer le template de vue filtrée
-        - [ ] **2.3.1.1.3.3** Concevoir le template de rapport d'avancement
-    - [ ] **2.3.1.2** Concevoir des templates HTML interactifs
-      - [ ] **2.3.1.2.1** Définir l'architecture des templates HTML
-        - [ ] **2.3.1.2.1.1** Concevoir la structure de base des pages HTML
-        - [ ] **2.3.1.2.1.2** Définir les composants réutilisables
-        - [ ] **2.3.1.2.1.3** Établir les standards CSS et de responsive design
-      - [ ] **2.3.1.2.2** Développer le moteur de rendu HTML
-        - [ ] **2.3.1.2.2.1** Implémenter le système de templating
-        - [ ] **2.3.1.2.2.2** Développer le mécanisme d'injection de données
-        - [ ] **2.3.1.2.2.3** Ajouter le support pour les composants dynamiques
-      - [ ] **2.3.1.2.3** Implémenter les fonctionnalités interactives
-        - [ ] **2.3.1.2.3.1** Développer les filtres dynamiques côté client
-        - [ ] **2.3.1.2.3.2** Implémenter les fonctionnalités de tri et recherche
-        - [ ] **2.3.1.2.3.3** Ajouter les mécanismes de navigation et zoom
-    - [ ] **2.3.1.3** Concevoir des templates pour visualisations graphiques
-      - [ ] **2.3.1.3.1** Définir les types de visualisations
-        - [ ] **2.3.1.3.1.1** Concevoir les templates de diagrammes hiérarchiques
-        - [ ] **2.3.1.3.1.2** Définir les templates de diagrammes de Gantt
-        - [ ] **2.3.1.3.1.3** Établir les templates de graphes de dépendances
-      - [ ] **2.3.1.3.2** Développer les générateurs de code de visualisation
-        - [ ] **2.3.1.3.2.1** Implémenter le générateur de code D3.js
-        - [ ] **2.3.1.3.2.2** Développer le générateur de code Mermaid
-        - [ ] **2.3.1.3.2.3** Ajouter le générateur de code Chart.js
-      - [ ] **2.3.1.3.3** Créer les mécanismes d'intégration
-        - [ ] **2.3.1.3.3.1** Développer l'intégration dans les pages HTML
-        - [ ] **2.3.1.3.3.2** Implémenter l'export en images statiques
-        - [ ] **2.3.1.3.3.3** Ajouter le support pour l'intégration dans d'autres outils
-  - [ ] **2.3.2** Implémenter les générateurs de vues par critère
-    - [ ] **2.3.2.1** Vue par priorité (haute, moyenne, basse)
-      - [ ] **2.3.2.1.1** Concevoir le modèle de données pour les priorités
-        - [ ] **2.3.2.1.1.1** Définir les niveaux de priorité standard
-        - [ ] **2.3.2.1.1.2** Établir les règles d'héritage de priorité
-        - [ ] **2.3.2.1.1.3** Concevoir le système de priorité calculée
-      - [ ] **2.3.2.1.2** Développer les algorithmes de filtrage par priorité
-        - [ ] **2.3.2.1.2.1** Implémenter le filtrage exact par niveau
-        - [ ] **2.3.2.1.2.2** Développer le filtrage par plage de priorité
-        - [ ] **2.3.2.1.2.3** Ajouter le filtrage contextuel intelligent
-      - [ ] **2.3.2.1.3** Créer les templates de vue par priorité
-        - [ ] **2.3.2.1.3.1** Développer le template markdown par priorité
-        - [ ] **2.3.2.1.3.2** Implémenter le template HTML avec code couleur
-        - [ ] **2.3.2.1.3.3** Créer le template de visualisation par priorité
-    - [ ] **2.3.2.2** Vue par domaine/module
-      - [ ] **2.3.2.2.1** Concevoir le système de classification par domaine
-        - [ ] **2.3.2.2.1.1** Définir la taxonomie des domaines
-        - [ ] **2.3.2.2.1.2** Établir les règles de catégorisation
-        - [ ] **2.3.2.2.1.3** Concevoir le système de domaines hiérarchiques
-      - [ ] **2.3.2.2.2** Développer les algorithmes de filtrage par domaine
-        - [ ] **2.3.2.2.2.1** Implémenter le filtrage par domaine exact
-        - [ ] **2.3.2.2.2.2** Développer le filtrage par hiérarchie de domaines
-        - [ ] **2.3.2.2.2.3** Ajouter le filtrage par similarité de domaine
-      - [ ] **2.3.2.2.3** Créer les templates de vue par domaine
-        - [ ] **2.3.2.2.3.1** Développer le template markdown par domaine
-        - [ ] **2.3.2.2.3.2** Implémenter le template HTML avec navigation par domaine
-        - [ ] **2.3.2.2.3.3** Créer le template de visualisation par domaine
-    - [ ] **2.3.2.3** Vue par statut (à faire, en cours, bloqué, terminé)
-      - [ ] **2.3.2.3.1** Concevoir le modèle de données pour les statuts
-        - [ ] **2.3.2.3.1.1** Définir les statuts standard et leurs transitions
-        - [ ] **2.3.2.3.1.2** Établir les règles de propagation de statut
-        - [ ] **2.3.2.3.1.3** Concevoir le système de statut calculé
-      - [ ] **2.3.2.3.2** Développer les algorithmes de filtrage par statut
-        - [ ] **2.3.2.3.2.1** Implémenter le filtrage par statut exact
-        - [ ] **2.3.2.3.2.2** Développer le filtrage par groupe de statuts
-        - [ ] **2.3.2.3.2.3** Ajouter le filtrage par progression
-      - [ ] **2.3.2.3.3** Créer les templates de vue par statut
-        - [ ] **2.3.2.3.3.1** Développer le template markdown par statut
-        - [ ] **2.3.2.3.3.2** Implémenter le template HTML avec indicateurs visuels
-        - [ ] **2.3.2.3.3.3** Créer le template de tableau de bord de progression
-    - [ ] **2.3.2.4** Vue par échéance (court, moyen, long terme)
-      - [ ] **2.3.2.4.1** Concevoir le modèle de données pour les échéances
-        - [ ] **2.3.2.4.1.1** Définir les catégories d'échéance standard
-        - [ ] **2.3.2.4.1.2** Établir les règles de calcul d'échéance
-        - [ ] **2.3.2.4.1.3** Concevoir le système d'alerte d'échéance
-      - [ ] **2.3.2.4.2** Développer les algorithmes de filtrage par échéance
-        - [ ] **2.3.2.4.2.1** Implémenter le filtrage par période exacte
-        - [ ] **2.3.2.4.2.2** Développer le filtrage par plage de dates
-        - [ ] **2.3.2.4.2.3** Ajouter le filtrage par urgence relative
-      - [ ] **2.3.2.4.3** Créer les templates de vue par échéance
-        - [ ] **2.3.2.4.3.1** Développer le template markdown par échéance
-        - [ ] **2.3.2.4.3.2** Implémenter le template HTML avec timeline
-        - [ ] **2.3.2.4.3.3** Créer le template de calendrier d'échéances
+- [x] **2.2** Améliorer l'intégration avec Qdrant
+  - [x] **2.2.1** Optimiser la structure de la collection Qdrant
+    - [x] **2.2.1.1** Définir le schéma de la collection
+      - [x] **2.2.1.1.1** Concevoir la structure des points vectoriels
+        - [x] **2.2.1.1.1.1** Définir la dimension et le type des vecteurs
+        - [x] **2.2.1.1.1.2** Établir la structure des payloads
+        - [x] **2.2.1.1.1.3** Définir le système d'identifiants uniques
+      - [x] **2.2.1.1.2** Définir les métadonnées à stocker dans Qdrant
+        - [x] **2.2.1.1.2.1** Identifier les métadonnées essentielles pour la recherche
+        - [x] **2.2.1.1.2.2** Définir le format de stockage des métadonnées hiérarchiques
+        - [x] **2.2.1.1.2.3** Établir les règles de normalisation des métadonnées
+      - [x] **2.2.1.1.3** Concevoir le système de références croisées
+        - [x] **2.2.1.1.3.1** Définir les liens entre points vectoriels
+        - [x] **2.2.1.1.3.2** Établir les références aux fichiers source
+        - [x] **2.2.1.1.3.3** Concevoir le système de traçabilité des modifications
+    - [x] **2.2.1.2** Configurer les index et les filtres optimaux
+      - [x] **2.2.1.2.1** Optimiser les paramètres de l'index vectoriel
+        - [x] **2.2.1.2.1.1** Sélectionner l'algorithme d'indexation optimal (HNSW, etc.)
+        - [x] **2.2.1.2.1.2** Configurer les paramètres de performance (ef_construct, m)
+        - [x] **2.2.1.2.1.3** Implémenter les tests de performance et ajustements
+      - [x] **2.2.1.2.2** Configurer les index de filtrage
+        - [x] **2.2.1.2.2.1** Identifier les champs de filtrage fréquents
+        - [x] **2.2.1.2.2.2** Configurer les index pour les champs de statut
+        - [x] **2.2.1.2.2.3** Configurer les index pour les champs de priorité
+        - [x] **2.2.1.2.2.4** Configurer les index pour les champs de domaine
+      - [x] **2.2.1.2.3** Optimiser les stratégies de requête
+        - [x] **2.2.1.2.3.1** Développer des templates de requête optimisés
+        - [x] **2.2.1.2.3.2** Implémenter la mise en cache des requêtes fréquentes
+        - [x] **2.2.1.2.3.3** Configurer les paramètres de recherche approximative
+    - [x] **2.2.1.3** Implémenter la gestion des versions
+      - [x] **2.2.1.3.1** Concevoir le système de versionnage des collections
+        - [x] **2.2.1.3.1.1** Définir la stratégie de nommage des versions
+        - [x] **2.2.1.3.1.2** Établir les règles de migration entre versions
+        - [x] **2.2.1.3.1.3** Concevoir le système de métadonnées de version
+      - [x] **2.2.1.3.2** Développer les mécanismes de migration de données
+        - [x] **2.2.1.3.2.1** Implémenter la migration incrémentale
+        - [x] **2.2.1.3.2.2** Développer la migration complète avec validation
+        - [x] **2.2.1.3.2.3** Ajouter les mécanismes de rollback
+      - [x] **2.2.1.3.3** Implémenter le suivi des modifications
+        - [x] **2.2.1.3.3.1** Développer le journal des modifications
+        - [x] **2.2.1.3.3.2** Implémenter les snapshots de collection
+        - [x] **2.2.1.3.3.3** Ajouter les mécanismes de restauration
+  - [x] **2.2.2** Développer des fonctions avancées de requête
+    - [x] **2.2.2.1** Implémenter la recherche par similarité sémantique
+      - [x] **2.2.2.1.1** Développer le moteur de recherche vectorielle
+        - [x] **2.2.2.1.1.1** Implémenter la vectorisation des requêtes
+        - [x] **2.2.2.1.1.2** Développer l'algorithme de scoring de pertinence
+        - [x] **2.2.2.1.1.3** Ajouter le réordonnancement des résultats
+      - [x] **2.2.2.1.2** Optimiser les paramètres de recherche
+        - [x] **2.2.2.1.2.1** Calibrer les seuils de similarité
+        - [x] **2.2.2.1.2.2** Optimiser le nombre de résultats à récupérer
+        - [x] **2.2.2.1.2.3** Implémenter l'ajustement dynamique des paramètres
+      - [x] **2.2.2.1.3** Développer des fonctionnalités avancées
+        - [x] **2.2.2.1.3.1** Implémenter la recherche par exemple
+        - [x] **2.2.2.1.3.2** Ajouter la recherche par négation
+        - [x] **2.2.2.1.3.3** Développer la recherche multi-requêtes
+    - [x] **2.2.2.2** Ajouter le filtrage par métadonnées (statut, priorité, domaine)
+      - [x] **2.2.2.2.1** Développer le système de filtres
+        - [x] **2.2.2.2.1.1** Implémenter les filtres exacts (égalité)
+        - [x] **2.2.2.2.1.2** Ajouter les filtres de plage (numérique, dates)
+        - [x] **2.2.2.2.1.3** Développer les filtres textuels (contient, commence par)
+      - [x] **2.2.2.2.2** Implémenter les combinaisons de filtres
+        - [x] **2.2.2.2.2.1** Développer les opérateurs logiques (ET, OU, NON)
+        - [x] **2.2.2.2.2.2** Implémenter les filtres imbriqués
+        - [x] **2.2.2.2.2.3** Ajouter le support pour les expressions complexes
+      - [x] **2.2.2.2.3** Optimiser les performances de filtrage
+        - [x] **2.2.2.2.3.1** Analyser l'impact des filtres sur les performances
+        - [x] **2.2.2.2.3.2** Implémenter des stratégies d'optimisation
+        - [x] **2.2.2.2.3.3** Développer des mécanismes de mise en cache
+    - [x] **2.2.2.3** Développer des requêtes hybrides (texte + filtres)
+      - [x] **2.2.2.3.1** Concevoir l'architecture des requêtes hybrides
+        - [x] **2.2.2.3.1.1** Définir le modèle de données des requêtes
+        - [x] **2.2.2.3.1.2** Établir les règles de priorité et combinaison
+        - [x] **2.2.2.3.1.3** Concevoir le système de scoring combiné
+      - [x] **2.2.2.3.2** Implémenter le moteur de requêtes hybrides
+        - [x] **2.2.2.3.2.1** Développer le parser de requêtes
+        - [x] **2.2.2.3.2.2** Implémenter l'exécution parallèle des sous-requêtes
+        - [x] **2.2.2.3.2.3** Ajouter la fusion et le réordonnancement des résultats
+      - [x] **2.2.2.3.3** Optimiser les performances des requêtes hybrides
+        - [x] **2.2.2.3.3.1** Analyser les patterns de requêtes fréquentes
+        - [x] **2.2.2.3.3.2** Implémenter des stratégies d'optimisation
+        - [x] **2.2.2.3.3.3** Développer des mécanismes de mise en cache
+  - [x] **2.2.3** Créer un système de synchronisation bidirectionnelle
+    - [x] **2.2.3.1** Développer le mécanisme de détection des changements
+      - [x] **2.2.3.1.1** Implémenter la surveillance des fichiers markdown
+        - [x] **2.2.3.1.1.1** Développer le système de surveillance en temps réel
+        - [x] **2.2.3.1.1.2** Implémenter la détection des modifications
+        - [x] **2.2.3.1.1.3** Ajouter le filtrage des modifications pertinentes
+      - [x] **2.2.3.1.2** Développer l'analyse différentielle
+        - [x] **2.2.3.1.2.1** Implémenter la comparaison structurelle des tâches
+        - [x] **2.2.3.1.2.2** Développer la détection des changements de statut
+        - [x] **2.2.3.1.2.3** Ajouter la détection des modifications de métadonnées
+      - [x] **2.2.3.1.3** Implémenter le système de journalisation des changements
+        - [x] **2.2.3.1.3.1** Développer le format de journal des modifications
+        - [x] **2.2.3.1.3.2** Implémenter la persistance des journaux
+        - [x] **2.2.3.1.3.3** Ajouter les mécanismes de rotation et archivage
+    - [x] **2.2.3.2** Implémenter la mise à jour des fichiers markdown
+      - [x] **2.2.3.2.1** Développer le générateur de markdown
+        - [x] **2.2.3.2.1.1** Implémenter la conversion des données Qdrant en markdown
+        - [x] **2.2.3.2.1.2** Développer la préservation de la structure et formatage
+        - [x] **2.2.3.2.1.3** Ajouter la gestion des métadonnées spéciales
+      - [x] **2.2.3.2.2** Implémenter les modifications ciblées
+        - [x] **2.2.3.2.2.1** Développer les modifications atomiques (statut, texte)
+        - [x] **2.2.3.2.2.2** Implémenter les modifications structurelles (déplacement)
+        - [x] **2.2.3.2.2.3** Ajouter la gestion des ajouts et suppressions
+      - [x] **2.2.3.2.3** Développer le système de validation et sauvegarde
+        - [x] **2.2.3.2.3.1** Implémenter la validation syntaxique
+        - [x] **2.2.3.2.3.2** Développer la sauvegarde sécurisée avec backup
+        - [x] **2.2.3.2.3.3** Ajouter les mécanismes de notification
+    - [x] **2.2.3.3** Ajouter la gestion des conflits
+      - [x] **2.2.3.3.1** Développer la détection des conflits
+        - [x] **2.2.3.3.1.1** Implémenter la détection des modifications concurrentes
+        - [x] **2.2.3.3.1.2** Développer l'analyse des conflits structurels
+        - [x] **2.2.3.3.1.3** Ajouter la détection des conflits de métadonnées
+      - [x] **2.2.3.3.2** Implémenter les stratégies de résolution
+        - [x] **2.2.3.3.2.1** Développer la résolution automatique simple
+        - [x] **2.2.3.3.2.2** Implémenter l'interface de résolution manuelle
+        - [x] **2.2.3.3.2.3** Ajouter les stratégies de fusion intelligente
+      - [x] **2.2.3.3.3** Développer le système de journalisation des résolutions
+        - [x] **2.2.3.3.3.1** Implémenter le journal des conflits
+        - [x] **2.2.3.3.3.2** Développer le suivi des résolutions
+        - [x] **2.2.3.3.3.3** Ajouter les mécanismes d'audit
+- [x] **2.3** Développer des générateurs de vues dynamiques
+  - [x] **2.3.1** Créer un système de templates pour les vues
+    - [x] **2.3.1.1** Concevoir des templates markdown
+      - [x] **2.3.1.1.1** Définir la structure des templates markdown
+        - [x] **2.3.1.1.1.1** Concevoir le système de variables et placeholders
+        - [x] **2.3.1.1.1.2** Définir les sections standard des templates
+        - [x] **2.3.1.1.1.3** Établir les règles de formatage et indentation
+      - [x] **2.3.1.1.2** Développer le moteur de rendu markdown
+        - [x] **2.3.1.1.2.1** Implémenter le système de substitution de variables
+        - [x] **2.3.1.1.2.2** Développer le mécanisme de rendu conditionnel
+        - [x] **2.3.1.1.2.3** Ajouter le support pour les boucles et itérations
+      - [x] **2.3.1.1.3** Créer une bibliothèque de templates markdown
+        - [x] **2.3.1.1.3.1** Développer le template de vue complète
+        - [x] **2.3.1.1.3.2** Créer le template de vue filtrée
+        - [x] **2.3.1.1.3.3** Concevoir le template de rapport d'avancement
+    - [x] **2.3.1.2** Concevoir des templates HTML interactifs
+      - [x] **2.3.1.2.1** Définir l'architecture des templates HTML
+        - [x] **2.3.1.2.1.1** Concevoir la structure de base des pages HTML
+        - [x] **2.3.1.2.1.2** Définir les composants réutilisables
+        - [x] **2.3.1.2.1.3** Établir les standards CSS et de responsive design
+      - [x] **2.3.1.2.2** Développer le moteur de rendu HTML
+        - [x] **2.3.1.2.2.1** Implémenter le système de templating
+        - [x] **2.3.1.2.2.2** Développer le mécanisme d'injection de données
+        - [x] **2.3.1.2.2.3** Ajouter le support pour les composants dynamiques
+      - [x] **2.3.1.2.3** Implémenter les fonctionnalités interactives
+        - [x] **2.3.1.2.3.1** Développer les filtres dynamiques côté client
+        - [x] **2.3.1.2.3.2** Implémenter les fonctionnalités de tri et recherche
+        - [x] **2.3.1.2.3.3** Ajouter les mécanismes de navigation et zoom
+    - [x] **2.3.1.3** Concevoir des templates pour visualisations graphiques
+      - [x] **2.3.1.3.1** Définir les types de visualisations
+        - [x] **2.3.1.3.1.1** Concevoir les templates de diagrammes hiérarchiques
+        - [x] **2.3.1.3.1.2** Définir les templates de diagrammes de Gantt
+        - [x] **2.3.1.3.1.3** Établir les templates de graphes de dépendances
+      - [x] **2.3.1.3.2** Développer les générateurs de code de visualisation
+        - [x] **2.3.1.3.2.1** Implémenter le générateur de code D3.js
+        - [x] **2.3.1.3.2.2** Développer le générateur de code Mermaid
+        - [x] **2.3.1.3.2.3** Ajouter le générateur de code Chart.js
+      - [x] **2.3.1.3.3** Créer les mécanismes d'intégration
+        - [x] **2.3.1.3.3.1** Développer l'intégration dans les pages HTML
+        - [x] **2.3.1.3.3.2** Implémenter l'export en images statiques
+        - [x] **2.3.1.3.3.3** Ajouter le support pour l'intégration dans d'autres outils
+  - [x] **2.3.2** Implémenter les générateurs de vues par critère
+    - [x] **2.3.2.1** Vue par priorité (haute, moyenne, basse)
+      - [x] **2.3.2.1.1** Concevoir le modèle de données pour les priorités
+        - [x] **2.3.2.1.1.1** Définir les niveaux de priorité standard
+        - [x] **2.3.2.1.1.2** Établir les règles d'héritage de priorité
+        - [x] **2.3.2.1.1.3** Concevoir le système de priorité calculée
+      - [x] **2.3.2.1.2** Développer les algorithmes de filtrage par priorité
+        - [x] **2.3.2.1.2.1** Implémenter le filtrage exact par niveau
+        - [x] **2.3.2.1.2.2** Développer le filtrage par plage de priorité
+        - [x] **2.3.2.1.2.3** Ajouter le filtrage contextuel intelligent
+      - [x] **2.3.2.1.3** Créer les templates de vue par priorité
+        - [x] **2.3.2.1.3.1** Développer le template markdown par priorité
+        - [x] **2.3.2.1.3.2** Implémenter le template HTML avec code couleur
+        - [x] **2.3.2.1.3.3** Créer le template de visualisation par priorité
+    - [x] **2.3.2.2** Vue par domaine/module
+      - [x] **2.3.2.2.1** Concevoir le système de classification par domaine
+        - [x] **2.3.2.2.1.1** Définir la taxonomie des domaines
+        - [x] **2.3.2.2.1.2** Établir les règles de catégorisation
+        - [x] **2.3.2.2.1.3** Concevoir le système de domaines hiérarchiques
+      - [x] **2.3.2.2.2** Développer les algorithmes de filtrage par domaine
+        - [x] **2.3.2.2.2.1** Implémenter le filtrage par domaine exact
+        - [x] **2.3.2.2.2.2** Développer le filtrage par hiérarchie de domaines
+        - [x] **2.3.2.2.2.3** Ajouter le filtrage par similarité de domaine
+      - [x] **2.3.2.2.3** Créer les templates de vue par domaine
+        - [x] **2.3.2.2.3.1** Développer le template markdown par domaine
+        - [x] **2.3.2.2.3.2** Implémenter le template HTML avec navigation par domaine
+        - [x] **2.3.2.2.3.3** Créer le template de visualisation par domaine
+    - [x] **2.3.2.3** Vue par statut (à faire, en cours, bloqué, terminé)
+      - [x] **2.3.2.3.1** Concevoir le modèle de données pour les statuts
+        - [x] **2.3.2.3.1.1** Définir les statuts standard et leurs transitions
+        - [x] **2.3.2.3.1.2** Établir les règles de propagation de statut
+        - [x] **2.3.2.3.1.3** Concevoir le système de statut calculé
+      - [x] **2.3.2.3.2** Développer les algorithmes de filtrage par statut
+        - [x] **2.3.2.3.2.1** Implémenter le filtrage par statut exact
+        - [x] **2.3.2.3.2.2** Développer le filtrage par groupe de statuts
+        - [x] **2.3.2.3.2.3** Ajouter le filtrage par progression
+      - [x] **2.3.2.3.3** Créer les templates de vue par statut
+        - [x] **2.3.2.3.3.1** Développer le template markdown par statut
+        - [x] **2.3.2.3.3.2** Implémenter le template HTML avec indicateurs visuels
+        - [x] **2.3.2.3.3.3** Créer le template de tableau de bord de progression
+    - [x] **2.3.2.4** Vue par échéance (court, moyen, long terme)
+      - [x] **2.3.2.4.1** Concevoir le modèle de données pour les échéances
+        - [x] **2.3.2.4.1.1** Définir les catégories d'échéance standard
+        - [x] **2.3.2.4.1.2** Établir les règles de calcul d'échéance
+        - [x] **2.3.2.4.1.3** Concevoir le système d'alerte d'échéance
+      - [x] **2.3.2.4.2** Développer les algorithmes de filtrage par échéance
+        - [x] **2.3.2.4.2.1** Implémenter le filtrage par période exacte
+        - [x] **2.3.2.4.2.2** Développer le filtrage par plage de dates
+        - [x] **2.3.2.4.2.3** Ajouter le filtrage par urgence relative
+      - [x] **2.3.2.4.3** Créer les templates de vue par échéance
+        - [x] **2.3.2.4.3.1** Développer le template markdown par échéance
+        - [x] **2.3.2.4.3.2** Implémenter le template HTML avec timeline
+        - [x] **2.3.2.4.3.3** Créer le template de calendrier d'échéances
   - [ ] **2.3.3** Développer un système de vues personnalisées
     - [ ] **2.3.3.1** Interface de définition de vues personnalisées
       - [ ] **2.3.3.1.1** Concevoir l'interface de création de vues
