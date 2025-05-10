@@ -1,0 +1,200 @@
+<div class="kanban-board">
+    <div class="kanban-column todo">
+        <div class="kanban-column-header">
+            <h3>À FAIRE</h3>
+            <div class="kanban-column-count">{{tasks_todo}}</div>
+        </div>
+        <div class="kanban-column-body">
+            {{#each tasks_by_status.todo}}
+            <div class="kanban-card priority-{{priority}}">
+                <div class="kanban-card-header">
+                    <div class="kanban-card-id">{{id}}</div>
+                    <div class="kanban-card-title">{{title}}</div>
+                </div>
+                <div class="kanban-card-body">
+                    {{#if assignee}}
+                    <div class="kanban-card-assignee">{{assignee}}</div>
+                    {{/if}}
+                    {{#if due_date}}
+                    <div class="kanban-card-due-date">{{due_date}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    
+    <div class="kanban-column in-progress">
+        <div class="kanban-column-header">
+            <h3>EN COURS</h3>
+            <div class="kanban-column-count">{{tasks_in_progress}}</div>
+        </div>
+        <div class="kanban-column-body">
+            {{#each tasks_by_status.in_progress}}
+            <div class="kanban-card priority-{{priority}}">
+                <div class="kanban-card-header">
+                    <div class="kanban-card-id">{{id}}</div>
+                    <div class="kanban-card-title">{{title}}</div>
+                </div>
+                <div class="kanban-card-body">
+                    {{#if assignee}}
+                    <div class="kanban-card-assignee">{{assignee}}</div>
+                    {{/if}}
+                    {{#if due_date}}
+                    <div class="kanban-card-due-date">{{due_date}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    
+    <div class="kanban-column done">
+        <div class="kanban-column-header">
+            <h3>TERMINÉ</h3>
+            <div class="kanban-column-count">{{tasks_done}}</div>
+        </div>
+        <div class="kanban-column-body">
+            {{#each tasks_by_status.done}}
+            <div class="kanban-card priority-{{priority}}">
+                <div class="kanban-card-header">
+                    <div class="kanban-card-id">{{id}}</div>
+                    <div class="kanban-card-title">{{title}}</div>
+                </div>
+                <div class="kanban-card-body">
+                    {{#if assignee}}
+                    <div class="kanban-card-assignee">{{assignee}}</div>
+                    {{/if}}
+                    {{#if due_date}}
+                    <div class="kanban-card-due-date">{{due_date}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    
+    <div class="kanban-column blocked">
+        <div class="kanban-column-header">
+            <h3>BLOQUÉ</h3>
+            <div class="kanban-column-count">{{tasks_blocked}}</div>
+        </div>
+        <div class="kanban-column-body">
+            {{#each tasks_by_status.blocked}}
+            <div class="kanban-card priority-{{priority}}">
+                <div class="kanban-card-header">
+                    <div class="kanban-card-id">{{id}}</div>
+                    <div class="kanban-card-title">{{title}}</div>
+                </div>
+                <div class="kanban-card-body">
+                    {{#if assignee}}
+                    <div class="kanban-card-assignee">{{assignee}}</div>
+                    {{/if}}
+                    {{#if due_date}}
+                    <div class="kanban-card-due-date">{{due_date}}</div>
+                    {{/if}}
+                    {{#if blockers}}
+                    <div class="kanban-card-blockers">{{blockers}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+
+<style>
+.kanban-board {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+}
+.kanban-column {
+    min-width: 300px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+}
+.kanban-column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.kanban-column-header h3 {
+    margin: 0;
+}
+.kanban-column-count {
+    background-color: #ddd;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+.kanban-column-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.kanban-card {
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    border-left: 5px solid #ddd;
+}
+.kanban-card.priority-high {
+    border-left-color: #e74c3c;
+}
+.kanban-card.priority-medium {
+    border-left-color: #f39c12;
+}
+.kanban-card.priority-low {
+    border-left-color: #27ae60;
+}
+.kanban-card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.kanban-card-id {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+.kanban-card-title {
+    font-weight: bold;
+}
+.kanban-card-body {
+    font-size: 0.9em;
+}
+.kanban-card-assignee {
+    margin-top: 5px;
+}
+.kanban-card-due-date {
+    margin-top: 5px;
+    color: #7f8c8d;
+}
+.kanban-card-blockers {
+    margin-top: 5px;
+    color: #e74c3c;
+    font-weight: bold;
+}
+.kanban-column.todo .kanban-column-header h3 {
+    color: #f39c12;
+}
+.kanban-column.in-progress .kanban-column-header h3 {
+    color: #3498db;
+}
+.kanban-column.done .kanban-column-header h3 {
+    color: #27ae60;
+}
+.kanban-column.blocked .kanban-column-header h3 {
+    color: #e74c3c;
+}
+</style>

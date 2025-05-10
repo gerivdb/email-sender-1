@@ -2,6 +2,27 @@
 
 Ce dossier contient les scripts pour le système RAG (Retrieval-Augmented Generation) de gestion des roadmaps. Ce système permet d'analyser, vectoriser, rechercher et visualiser les roadmaps du projet.
 
+## 🆕 Exécution des tests (Nouveau)
+
+Pour exécuter les tests du système RAG de roadmaps, utilisez l'un des scripts batch suivants :
+
+- **RunTests.bat** : Exécute tous les tests
+- **RunChangeDetectionTests.bat** : Exécute uniquement les tests de détection des changements
+- **RunVectorUpdateTests.bat** : Exécute uniquement les tests de mise à jour des vecteurs
+- **RunVersioningTests.bat** : Exécute uniquement les tests de versionnage des embeddings
+
+Ces scripts automatisent complètement le processus de test, y compris :
+- La vérification et le démarrage de Qdrant
+- La configuration d'un environnement virtuel Python avec les dépendances exactes
+- L'exécution des tests
+- La génération d'un rapport HTML des résultats
+
+Pour une utilisation avancée, vous pouvez exécuter directement le script PowerShell :
+
+```powershell
+.\Run-CompleteTestSuite.ps1 -TestType All -Force
+```
+
 ## Fonctionnalités
 
 - **Analyse des roadmaps** : Inventaire, analyse de structure, détection de doublons
@@ -109,14 +130,24 @@ Options disponibles :
 
 ## Structure des fichiers
 
+### Scripts principaux
 - `Simple-RoadmapAnalysis.ps1` : Script principal pour l'analyse des roadmaps
 - `Invoke-RoadmapRAG.ps1` : Interface pour le système RAG
 - `Invoke-RoadmapVisualization.ps1` : Script pour générer des visualisations
 - `Start-RoadmapSync.ps1` : Script pour la synchronisation automatique
 - `Install-Dependencies.ps1` : Script pour installer les dépendances
+
+### Scripts Python
 - `vectorize_roadmaps.py` : Script Python pour vectoriser les roadmaps
 - `search_roadmaps.py` : Script Python pour rechercher dans les roadmaps
 - `Generate-RoadmapVisualization.py` : Script Python pour générer des visualisations
+
+### Scripts de test
+- `Run-CompleteTestSuite.ps1` : Script principal pour exécuter tous les tests
+- `RunTests.bat` : Script batch pour exécuter tous les tests
+- `RunChangeDetectionTests.bat` : Script batch pour les tests de détection des changements
+- `RunVectorUpdateTests.bat` : Script batch pour les tests de mise à jour des vecteurs
+- `RunVersioningTests.bat` : Script batch pour les tests de versionnage des embeddings
 
 ## Exemples d'utilisation
 
@@ -173,6 +204,47 @@ Puis utiliser ce fichier pour filtrer les résultats de recherche :
 .\Invoke-RoadmapRAG.ps1 -Action Search -Query "implémentation" -FilterPath "projet/roadmaps/analysis/filters.json"
 ```
 
+## Tests et validation
+
+### Exécution des tests automatisés
+
+Le système RAG de roadmaps comprend une suite complète de tests automatisés pour valider son fonctionnement. Ces tests sont organisés en trois catégories :
+
+1. **ChangeDetection** : Tests pour la détection des changements dans les roadmaps
+   - Détection des ajouts, suppressions, modifications
+   - Détection des changements de statut
+   - Détection des déplacements et changements structurels
+
+2. **VectorUpdate** : Tests pour la mise à jour sélective des vecteurs
+   - Mise à jour avec ajouts, modifications, changements de statut
+
+3. **Versioning** : Tests pour le système de versionnage des embeddings
+   - Enregistrement de versions, création de snapshots
+   - Migration vers un nouveau modèle, rollback
+
+Pour exécuter tous les tests avec une configuration automatique :
+
+```powershell
+.\Run-CompleteTestSuite.ps1 -Force
+```
+
+Pour exécuter un type de test spécifique :
+
+```powershell
+.\Run-CompleteTestSuite.ps1 -TestType ChangeDetection -Force
+```
+
+Options disponibles :
+- `-TestType` : Type de tests à exécuter (`All`, `ChangeDetection`, `VectorUpdate`, `Versioning`)
+- `-VenvPath` : Chemin de l'environnement virtuel (par défaut : `venv`)
+- `-QdrantUrl` : URL de Qdrant (par défaut : `http://localhost:6333`)
+- `-Force` : Forcer la recréation de l'environnement virtuel s'il existe déjà
+- `-SkipQdrantCheck` : Ignorer la vérification et le démarrage de Qdrant
+- `-SkipVenvSetup` : Ignorer la configuration de l'environnement virtuel
+- `-NoReport` : Ne pas générer de rapport HTML
+
+Le rapport de test sera généré dans le répertoire `projet\roadmaps\analysis\test\output`.
+
 ## Dépannage
 
 ### Qdrant n'est pas accessible
@@ -191,17 +263,35 @@ docker start qdrant
 
 ### Erreurs Python
 
-Si vous rencontrez des erreurs Python, vérifiez que toutes les dépendances sont installées :
+Si vous rencontrez des erreurs Python, utilisez le script de résolution automatique :
+
+```powershell
+.\Run-CompleteTestSuite.ps1 -Force
+```
+
+Ce script installera automatiquement toutes les dépendances nécessaires avec les versions exactes requises.
+
+Pour une installation manuelle, vérifiez que toutes les dépendances sont installées :
 
 ```powershell
 python -c "import sentence_transformers, qdrant_client, matplotlib, networkx, pyvis"
 ```
 
-Si des dépendances sont manquantes, installez-les :
+Si des dépendances sont manquantes, installez les versions compatibles :
 
 ```powershell
-pip install sentence-transformers qdrant-client matplotlib networkx pyvis
+pip install huggingface-hub==0.19.4 transformers==4.36.2 torch==2.1.2 sentence-transformers==2.2.2 qdrant-client==1.7.0 matplotlib networkx pyvis
 ```
+
+### Problèmes de compatibilité des dépendances
+
+Si vous rencontrez des problèmes de compatibilité entre les bibliothèques Python, consultez le guide de dépannage :
+
+```powershell
+notepad docs\guides\roadmap\TROUBLESHOOTING_DEPENDENCIES.md
+```
+
+Ce guide explique les problèmes courants et leurs solutions, notamment les incompatibilités entre `sentence-transformers`, `huggingface-hub` et `transformers`.
 
 ## Licence
 

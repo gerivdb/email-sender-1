@@ -1,0 +1,37 @@
+<div class="progress-container">
+    <div class="progress-header">
+        <div class="progress-title">{{title}}</div>
+        <div class="progress-percentage">{{percentage}}%</div>
+    </div>
+    <div class="progress-bar">
+        <div class="progress-value" style="width: {{percentage}}%"></div>
+    </div>
+</div>
+
+<style>
+.progress-container {
+    margin-bottom: 15px;
+}
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.progress-title {
+    font-weight: bold;
+}
+.progress-percentage {
+    font-weight: bold;
+}
+.progress-bar {
+    height: 20px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.progress-value {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 10px;
+}
+</style>

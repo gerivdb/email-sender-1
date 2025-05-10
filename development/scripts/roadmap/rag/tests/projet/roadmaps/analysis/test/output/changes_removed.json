@@ -1,0 +1,148 @@
+{
+  "OriginalPath": "projet\\roadmaps\\analysis\\test\\files\\roadmap_original.md",
+  "NewPath": "projet\\roadmaps\\analysis\\test\\files\\roadmap_removed.md",
+  "StructuralChanges": {
+    "NewStructure": null,
+    "OriginalStructure": null,
+    "Changes": {
+      "ModifiedHeaders": [],
+      "StructuralChanges": [],
+      "AddedHeaders": [],
+      "TaskCount": {
+        "Original": 12,
+        "New": 8
+      },
+      "HeaderCount": {
+        "Original": 3,
+        "New": 3
+      },
+      "RemovedHeaders": []
+    },
+    "HasStructuralChanges": false
+  },
+  "ContentChanges": {
+    "HasChanges": true,
+    "NewTaskCount": 8,
+    "Changes": {
+      "Modified": [],
+      "Unchanged": [
+        {
+          "TaskId": "1.1",
+          "Description": "Tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 0,
+          "OriginalLine": "- [ ] **1.1** Tâche 1",
+          "Hash": "C8B7352DA45BE3A648F5BC3BA3A4AEDD1EEA940D1F8AC66FE3C0FAB2FB083106"
+        },
+        {
+          "TaskId": "1.1.1",
+          "Description": "Sous-tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **1.1.1** Sous-tâche 1",
+          "Hash": "2023C0921FFD6877B77E65A213663C5D2F9D39A50FC6D8EAF5E59746B8C888F7"
+        },
+        {
+          "TaskId": "1.2",
+          "Description": "Tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 0,
+          "OriginalLine": "- [ ] **1.2** Tâche 2",
+          "Hash": "FC0727B690CCB14CA40E3D640A29B8FC031C6F9EE8877AD101628ADF8F6DCDA9"
+        },
+        {
+          "TaskId": "1.2.1",
+          "Description": "Sous-tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **1.2.1** Sous-tâche 1",
+          "Hash": "48ADF11D3F3425BBFEFFEF5C0C94DE8019C9F602380D08F3628AFE36E2E23306"
+        },
+        {
+          "TaskId": "1.2.2",
+          "Description": "Sous-tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **1.2.2** Sous-tâche 2",
+          "Hash": "EA2619124CEC27006F0C41EBE7CF892CE6A0C517A9F0FEE9645E3FC531754CAC"
+        },
+        {
+          "TaskId": "2.1",
+          "Description": "Tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 0,
+          "OriginalLine": "- [ ] **2.1** Tâche 1",
+          "Hash": "1BA7C5BCABFFAF6837B9AE4EEB985C7A7D621994EF800EFC791279D70E430631"
+        },
+        {
+          "TaskId": "2.1.1",
+          "Description": "Sous-tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **2.1.1** Sous-tâche 1",
+          "Hash": "00D8F982B062E269BA5FB2884AA86650DA3998223D6605ABDB63F6FC15C61280"
+        }
+      ],
+      "Removed": [
+        {
+          "TaskId": "1.1.2",
+          "Description": "Sous-tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **1.1.2** Sous-tâche 2",
+          "Hash": "DE782DCAA775CBC6E543A97AC0825A9AA0BA6764D2C14FDC1B44D44025BC15E3"
+        },
+        {
+          "TaskId": "2.2",
+          "Description": "Tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 0,
+          "OriginalLine": "- [ ] **2.2** Tâche 2",
+          "Hash": "8935D52DB5F6DFAA287BB7ACE0E5AC07DE5D22C2A3E7F777B8CF1BDF051A77AA"
+        },
+        {
+          "TaskId": "2.2.1",
+          "Description": "Sous-tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **2.2.1** Sous-tâche 1",
+          "Hash": "B00476F21B5844502E3134A00DD37B48BDE29AB5A61091445C4F35D0DF1C7DF9"
+        },
+        {
+          "TaskId": "2.2.2",
+          "Description": "Sous-tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **2.2.2** Sous-tâche 2\r",
+          "Hash": "FF3AA5F297813E6EDA59EA44D08611FAF08DD73FA9D74FC9F933510C54550946"
+        }
+      ],
+      "Added": [],
+      "Moved": [],
+      "StatusChanged": []
+    },
+    "OriginalTaskCount": 12,
+    "GlobalHashMatch": false
+  },
+  "AnalysisTime": "2025-05-09 09:03:38",
+  "TaskMovements": {
+    "Movements": {
+      "OrderChanges": [
+        {
+          "TaskId": "1.2",
+          "Description": "Tâche 2",
+          "OldPosition": 3,
+          "NewPosition": 2,
+          "RelativeChange": true
+        }
+      ],
+      "IndentChanges": [],
+      "ParentChanges": [],
+      "ContextChanges": []
+    },
+    "HasMovements": true,
+    "OriginalTasks": null,
+    "NewTasks": null
+  },
+  "HasChanges": true
+}

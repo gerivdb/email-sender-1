@@ -101,32 +101,32 @@
         - [x] **2.1.2.1.4.1** Concevoir la structure de l'arbre syntaxique
         - [x] **2.1.2.1.4.2** Implémenter la construction de l'arbre
         - [x] **2.1.2.1.4.3** Ajouter les validations sémantiques
-    - [ ] **2.1.2.2** Implémenter la détection intelligente de la hiérarchie
-      - [ ] **2.1.2.2.1** Développer l'analyse des niveaux d'indentation
-        - [ ] **2.1.2.2.1.1** Implémenter la détection des espaces et tabulations
-        - [ ] **2.1.2.2.1.2** Gérer les inconsistances d'indentation
-        - [ ] **2.1.2.2.1.3** Développer la normalisation des indentations
-      - [ ] **2.1.2.2.2** Implémenter l'analyse des identifiants numériques
-        - [ ] **2.1.2.2.2.1** Détecter les schémas de numérotation (1.2.3, etc.)
-        - [ ] **2.1.2.2.2.2** Gérer les incohérences de numérotation
-        - [ ] **2.1.2.2.2.3** Reconstruire la hiérarchie à partir des identifiants
-      - [ ] **2.1.2.2.3** Développer l'analyse contextuelle avancée
-        - [ ] **2.1.2.2.3.1** Implémenter la détection des relations implicites
-        - [ ] **2.1.2.2.3.2** Ajouter l'analyse sémantique des titres
-        - [ ] **2.1.2.2.3.3** Développer la détection des groupes thématiques
-    - [ ] **2.1.2.3** Ajouter la gestion des métadonnées enrichies
-      - [ ] **2.1.2.3.1** Implémenter l'extraction des métadonnées inline
-        - [ ] **2.1.2.3.1.1** Développer la détection des tags (#priority:high)
-        - [ ] **2.1.2.3.1.2** Implémenter l'extraction des attributs entre parenthèses
-        - [ ] **2.1.2.3.1.3** Ajouter la reconnaissance des dates et durées
-      - [ ] **2.1.2.3.2** Développer l'extraction des blocs de métadonnées
-        - [ ] **2.1.2.3.2.1** Implémenter la détection des blocs YAML/JSON
-        - [ ] **2.1.2.3.2.2** Ajouter le parsing des commentaires structurés
-        - [ ] **2.1.2.3.2.3** Développer la fusion des métadonnées multi-sources
-      - [ ] **2.1.2.3.3** Implémenter l'inférence de métadonnées
-        - [ ] **2.1.2.3.3.1** Développer la détection automatique de priorité
-        - [ ] **2.1.2.3.3.2** Implémenter l'inférence de domaine/catégorie
-        - [ ] **2.1.2.3.3.3** Ajouter l'estimation automatique de complexité
+    - [x] **2.1.2.2** Implémenter la détection intelligente de la hiérarchie
+      - [x] **2.1.2.2.1** Développer l'analyse des niveaux d'indentation
+        - [x] **2.1.2.2.1.1** Implémenter la détection des espaces et tabulations
+        - [x] **2.1.2.2.1.2** Gérer les inconsistances d'indentation
+        - [x] **2.1.2.2.1.3** Développer la normalisation des indentations
+      - [x] **2.1.2.2.2** Implémenter l'analyse des identifiants numériques
+        - [x] **2.1.2.2.2.1** Détecter les schémas de numérotation (1.2.3, etc.)
+        - [x] **2.1.2.2.2.2** Gérer les incohérences de numérotation
+        - [x] **2.1.2.2.2.3** Reconstruire la hiérarchie à partir des identifiants
+      - [x] **2.1.2.2.3** Développer l'analyse contextuelle avancée
+        - [x] **2.1.2.2.3.1** Implémenter la détection des relations implicites
+        - [x] **2.1.2.2.3.2** Ajouter l'analyse sémantique des titres
+        - [x] **2.1.2.2.3.3** Développer la détection des groupes thématiques
+    - [x] **2.1.2.3** Ajouter la gestion des métadonnées enrichies
+      - [x] **2.1.2.3.1** Implémenter l'extraction des métadonnées inline
+        - [x] **2.1.2.3.1.1** Développer la détection des tags (#priority:high)
+        - [x] **2.1.2.3.1.2** Implémenter l'extraction des attributs entre parenthèses
+        - [x] **2.1.2.3.1.3** Ajouter la reconnaissance des dates et durées
+      - [x] **2.1.2.3.2** Développer l'extraction des blocs de métadonnées
+        - [x] **2.1.2.3.2.1** Implémenter la détection des blocs YAML/JSON
+        - [x] **2.1.2.3.2.2** Ajouter le parsing des commentaires structurés
+        - [x] **2.1.2.3.2.3** Développer la fusion des métadonnées multi-sources
+      - [x] **2.1.2.3.3** Implémenter l'inférence de métadonnées
+        - [x] **2.1.2.3.3.1** Développer la détection automatique de priorité
+        - [x] **2.1.2.3.3.2** Implémenter l'inférence de domaine/catégorie
+        - [x] **2.1.2.3.3.3** Ajouter l'estimation automatique de complexité
   - [x] **2.1.3** Optimiser le processus de vectorisation
     - [x] **2.1.3.1** Sélectionner le modèle d'embedding optimal
       - [x] **2.1.3.1.1** Évaluer les modèles d'embedding disponibles
@@ -154,19 +154,19 @@
         - [x] **2.1.3.2.3.1** Ajouter les métadonnées hiérarchiques
         - [x] **2.1.3.2.3.2** Incorporer le contexte des tâches parentes
         - [x] **2.1.3.2.3.3** Développer l'inclusion des relations entre tâches
-    - [ ] **2.1.3.3** Développer des stratégies de mise à jour incrémentale
-      - [ ] **2.1.3.3.1** Implémenter la détection des changements
-        - [ ] **2.1.3.3.1.1** Développer le système de hachage de contenu
-        - [ ] **2.1.3.3.1.2** Implémenter la comparaison structurelle
-        - [ ] **2.1.3.3.1.3** Ajouter la détection des déplacements de tâches
-      - [ ] **2.1.3.3.2** Optimiser les mises à jour partielles
-        - [ ] **2.1.3.3.2.1** Implémenter la mise à jour sélective des vecteurs
-        - [ ] **2.1.3.3.2.2** Développer la propagation des changements
-        - [ ] **2.1.3.3.2.3** Optimiser les opérations batch pour Qdrant
-      - [ ] **2.1.3.3.3** Développer le système de versionnage des embeddings
-        - [ ] **2.1.3.3.3.1** Implémenter le suivi des versions d'embeddings
-        - [ ] **2.1.3.3.3.2** Ajouter la gestion des migrations de modèles
-        - [ ] **2.1.3.3.3.3** Développer les mécanismes de rollback
+    - [x] **2.1.3.3** Développer des stratégies de mise à jour incrémentale
+      - [x] **2.1.3.3.1** Implémenter la détection des changements
+        - [x] **2.1.3.3.1.1** Développer le système de hachage de contenu
+        - [x] **2.1.3.3.1.2** Implémenter la comparaison structurelle
+        - [x] **2.1.3.3.1.3** Ajouter la détection des déplacements de tâches
+      - [x] **2.1.3.3.2** Optimiser les mises à jour partielles
+        - [x] **2.1.3.3.2.1** Implémenter la mise à jour sélective des vecteurs
+        - [x] **2.1.3.3.2.2** Développer la propagation des changements
+        - [x] **2.1.3.3.2.3** Optimiser les opérations batch pour Qdrant
+      - [x] **2.1.3.3.3** Développer le système de versionnage des embeddings
+        - [x] **2.1.3.3.3.1** Implémenter le suivi des versions d'embeddings
+        - [x] **2.1.3.3.3.2** Ajouter la gestion des migrations de modèles
+        - [x] **2.1.3.3.3.3** Développer les mécanismes de rollback
 - [x] **2.2** Améliorer l'intégration avec Qdrant
   - [x] **2.2.1** Optimiser la structure de la collection Qdrant
     - [x] **2.2.1.1** Définir le schéma de la collection
@@ -383,46 +383,611 @@
         - [x] **2.3.2.4.3.1** Développer le template markdown par échéance
         - [x] **2.3.2.4.3.2** Implémenter le template HTML avec timeline
         - [x] **2.3.2.4.3.3** Créer le template de calendrier d'échéances
-  - [ ] **2.3.3** Développer un système de vues personnalisées
-    - [ ] **2.3.3.1** Interface de définition de vues personnalisées
-      - [ ] **2.3.3.1.1** Concevoir l'interface de création de vues
-        - [ ] **2.3.3.1.1.1** Développer l'interface de sélection de critères
-        - [ ] **2.3.3.1.1.2** Implémenter l'interface de combinaison de filtres
-        - [ ] **2.3.3.1.1.3** Créer l'interface de prévisualisation
-      - [ ] **2.3.3.1.2** Développer le système de requêtes personnalisées
-        - [ ] **2.3.3.1.2.1** Implémenter le langage de requête simplifié
-        - [ ] **2.3.3.1.2.2** Développer le parser de requêtes
-        - [ ] **2.3.3.1.2.3** Ajouter le générateur de requêtes Qdrant
-      - [ ] **2.3.3.1.3** Implémenter l'interface d'édition de template
-        - [ ] **2.3.3.1.3.1** Développer l'éditeur de template markdown
-        - [ ] **2.3.3.1.3.2** Implémenter l'éditeur de template HTML
-        - [ ] **2.3.3.1.3.3** Créer l'éditeur de visualisations
-    - [ ] **2.3.3.2** Système de sauvegarde des configurations
-      - [ ] **2.3.3.2.1** Concevoir le format de stockage des configurations
-        - [ ] **2.3.3.2.1.1** Définir le schéma JSON des configurations
-        - [ ] **2.3.3.2.1.2** Établir les règles de versionnage
-        - [ ] **2.3.3.2.1.3** Concevoir le système de métadonnées
-      - [ ] **2.3.3.2.2** Développer le système de persistance
-        - [ ] **2.3.3.2.2.1** Implémenter la sauvegarde dans des fichiers
-        - [ ] **2.3.3.2.2.2** Développer la sauvegarde dans Qdrant
-        - [ ] **2.3.3.2.2.3** Ajouter le support pour la sauvegarde dans Git
-      - [ ] **2.3.3.2.3** Implémenter le système de gestion des configurations
-        - [ ] **2.3.3.2.3.1** Développer les fonctionnalités CRUD
-        - [ ] **2.3.3.2.3.2** Implémenter l'historique des modifications
+  - [x] **2.3.3** Développer un système de vues personnalisées
+    - [x] **2.3.3.1** Interface de définition de vues personnalisées
+      - [x] **2.3.3.1.1** Concevoir l'interface de création de vues
+        - [x] **2.3.3.1.1.1** Développer l'interface de sélection de critères
+          - [x] **2.3.3.1.1.1.1** Concevoir la structure des critères disponibles
+            - [x] **2.3.3.1.1.1.1.1** Définir les types de critères (statut, priorité, catégorie, tags)
+            - [x] **2.3.3.1.1.1.1.2** Établir les valeurs possibles pour chaque type
+            - [x] **2.3.3.1.1.1.1.3** Implémenter la détection dynamique des valeurs
+          - [x] **2.3.3.1.1.1.2** Développer l'interface console
+            - [x] **2.3.3.1.1.1.2.1** Créer le menu de sélection des types de critères
+            - [x] **2.3.3.1.1.1.2.2** Implémenter la sélection multiple de valeurs
+            - [x] **2.3.3.1.1.1.2.3** Ajouter la validation des entrées utilisateur
+          - [x] **2.3.3.1.1.1.3** Préparer les interfaces alternatives
+            - [x] **2.3.3.1.1.1.3.1** Définir la structure pour l'interface GUI
+            - [x] **2.3.3.1.1.1.3.2** Concevoir l'interface Web
+            - [x] **2.3.3.1.1.1.3.3** Implémenter les adaptateurs d'interface
+        - [x] **2.3.3.1.1.2** Implémenter l'interface de combinaison de filtres
+          - [x] **2.3.3.1.1.2.1** Concevoir les modes de combinaison
+            - [x] **2.3.3.1.1.2.1.1** Implémenter le mode ET logique (AND)
+            - [x] **2.3.3.1.1.2.1.2** Développer le mode OU logique (OR)
+            - [x] **2.3.3.1.1.2.1.3** Créer le mode personnalisé (CUSTOM)
+          - [x] **2.3.3.1.1.2.2** Développer l'interface de définition des règles
+            - [x] **2.3.3.1.1.2.2.1** Créer l'interface de sélection du mode
+            - [x] **2.3.3.1.1.2.2.2** Implémenter l'interface de règles personnalisées
+            - [x] **2.3.3.1.1.2.2.3** Ajouter la validation des règles
+          - [x] **2.3.3.1.1.2.3** Implémenter la persistance des configurations
+            - [x] **2.3.3.1.1.2.3.1** Développer le format de stockage JSON
+            - [x] **2.3.3.1.1.2.3.2** Implémenter la sauvegarde des configurations
+            - [x] **2.3.3.1.1.2.3.3** Ajouter le chargement des configurations existantes
+        - [x] **2.3.3.1.1.3** Créer l'interface de prévisualisation
+          - [x] **2.3.3.1.1.3.1** Développer le moteur de filtrage
+            - [x] **2.3.3.1.1.3.1.1** Implémenter l'extraction des tâches du markdown
+            - [x] **2.3.3.1.1.3.1.2** Développer l'application des filtres selon le mode
+            - [x] **2.3.3.1.1.3.1.3** Ajouter le tri et l'organisation des résultats
+          - [x] **2.3.3.1.1.3.2** Créer les formats de sortie
+            - [x] **2.3.3.1.1.3.2.1** Implémenter l'affichage console
+            - [x] **2.3.3.1.1.3.2.2** Développer la génération de markdown
+            - [x] **2.3.3.1.1.3.2.3** Créer la génération de HTML interactif
+          - [x] **2.3.3.1.1.3.3** Ajouter les fonctionnalités d'export
+            - [x] **2.3.3.1.1.3.3.1** Implémenter la sauvegarde des résultats
+            - [x] **2.3.3.1.1.3.3.2** Développer l'export dans différents formats
+            - [x] **2.3.3.1.1.3.3.3** Ajouter les options de personnalisation
+      - [x] **2.3.3.1.2** Développer le système de requêtes personnalisées
+        - [x] **2.3.3.1.2.1** Implémenter le langage de requête simplifié
+          - [x] **2.3.3.1.2.1.1** Définir la syntaxe du langage de requête
+            - [x] **2.3.3.1.2.1.1.1** Concevoir les opérateurs de base (ET, OU, NON)
+            - [x] **2.3.3.1.2.1.1.2** Définir la syntaxe pour les filtres de champs
+            - [x] **2.3.3.1.2.1.1.3** Établir les règles pour les expressions complexes
+          - [x] **2.3.3.1.2.1.2** Développer la documentation du langage
+            - [x] **2.3.3.1.2.1.2.1** Créer le guide de référence de la syntaxe
+              - [x] **2.3.3.1.2.1.2.1.1** Documenter les opérateurs logiques et leur précédence
+                - [x] **2.3.3.1.2.1.2.1.1.1** Décrire l'opérateur ET (AND) et ses variantes
+                  - [x] **2.3.3.1.2.1.2.1.1.1.1** Documenter la syntaxe standard "AND"
+                  - [x] **2.3.3.1.2.1.2.1.1.1.2** Documenter la syntaxe alternative "&&"
+                  - [x] **2.3.3.1.2.1.2.1.1.1.3** Documenter la syntaxe alternative "ET"
+                  - [x] **2.3.3.1.2.1.2.1.1.1.4** Expliquer les règles de précédence avec AND
+                  - [x] **2.3.3.1.2.1.2.1.1.1.5** Fournir des exemples d'utilisation contextuels
+                - [x] **2.3.3.1.2.1.2.1.1.2** Documenter l'opérateur OU (OR) et ses variantes
+                  - [x] **2.3.3.1.2.1.2.1.1.2.1** Documenter la syntaxe standard "OR"
+                  - [x] **2.3.3.1.2.1.2.1.1.2.2** Documenter la syntaxe alternative "||"
+                  - [x] **2.3.3.1.2.1.2.1.1.2.3** Documenter la syntaxe alternative "OU"
+                  - [x] **2.3.3.1.2.1.2.1.1.2.4** Expliquer les règles de précédence avec OR
+                  - [x] **2.3.3.1.2.1.2.1.1.2.5** Fournir des exemples d'utilisation contextuels
+                - [x] **2.3.3.1.2.1.2.1.1.3** Expliquer l'opérateur NON (NOT) et ses variantes
+                  - [x] **2.3.3.1.2.1.2.1.1.3.1** Documenter la syntaxe standard "NOT"
+                  - [x] **2.3.3.1.2.1.2.1.1.3.2** Documenter la syntaxe alternative "!"
+                  - [x] **2.3.3.1.2.1.2.1.1.3.3** Documenter la syntaxe alternative "NON"
+                  - [x] **2.3.3.1.2.1.2.1.1.3.4** Expliquer les règles de précédence avec NOT
+                  - [x] **2.3.3.1.2.1.2.1.1.3.5** Fournir des exemples d'utilisation contextuels
+              - [x] **2.3.3.1.2.1.2.1.2** Documenter les opérateurs de comparaison
+                - [x] **2.3.3.1.2.1.2.1.2.1** Décrire les opérateurs d'égalité et d'inégalité
+                  - [x] **2.3.3.1.2.1.2.1.2.1.1** Documenter l'opérateur d'égalité (:)
+                    - [x] **2.3.3.1.2.1.2.1.2.1.1.1** Expliquer la syntaxe standard "field:value"
+                    - [x] **2.3.3.1.2.1.2.1.2.1.1.2** Documenter les variantes "=" et "=="
+                    - [x] **2.3.3.1.2.1.2.1.2.1.1.3** Fournir des exemples d'utilisation avec différents types de champs
+                  - [x] **2.3.3.1.2.1.2.1.2.1.2** Documenter l'opérateur d'inégalité (!=)
+                    - [x] **2.3.3.1.2.1.2.1.2.1.2.1** Expliquer la syntaxe standard "field!=value"
+                    - [x] **2.3.3.1.2.1.2.1.2.1.2.2** Documenter la variante "<>"
+                    - [x] **2.3.3.1.2.1.2.1.2.1.2.3** Fournir des exemples d'utilisation avec différents types de champs
+                  - [x] **2.3.3.1.2.1.2.1.2.1.3** Expliquer les cas particuliers et limitations
+                    - [x] **2.3.3.1.2.1.2.1.2.1.3.1** Documenter le comportement avec les valeurs nulles
+                    - [x] **2.3.3.1.2.1.2.1.2.1.3.2** Expliquer la sensibilité à la casse
+                    - [x] **2.3.3.1.2.1.2.1.2.1.3.3** Décrire le comportement avec les types de données spécifiques
+                - [x] **2.3.3.1.2.1.2.1.2.2** Documenter les opérateurs de contenance et de correspondance
+                  - [x] **2.3.3.1.2.1.2.1.2.2.1** Documenter l'opérateur de contenance (~)
+                    - [x] **2.3.3.1.2.1.2.1.2.2.1.1** Expliquer la syntaxe standard "field~value"
+                    - [x] **2.3.3.1.2.1.2.1.2.2.1.2** Documenter la variante "CONTAINS"
+                    - [x] **2.3.3.1.2.1.2.1.2.2.1.3** Fournir des exemples d'utilisation avec du texte
+                  - [x] **2.3.3.1.2.1.2.1.2.2.2** Documenter les opérateurs de début et fin
+                    - [x] **2.3.3.1.2.1.2.1.2.2.2.1** Expliquer l'opérateur "commence par" (^)
+                    - [x] **2.3.3.1.2.1.2.1.2.2.2.2** Documenter l'opérateur "termine par" ($)
+                    - [x] **2.3.3.1.2.1.2.1.2.2.2.3** Fournir des exemples d'utilisation combinée
+                  - [x] **2.3.3.1.2.1.2.1.2.2.3** Expliquer l'utilisation des caractères jokers
+                    - [x] **2.3.3.1.2.1.2.1.2.2.3.1** Documenter l'utilisation de l'astérisque (*)
+                    - [x] **2.3.3.1.2.1.2.1.2.2.3.2** Expliquer l'utilisation du point d'interrogation (?)
+                    - [x] **2.3.3.1.2.1.2.1.2.2.3.3** Fournir des exemples de recherche avec jokers
+                - [x] **2.3.3.1.2.1.2.1.2.3** Expliquer les opérateurs de comparaison numérique
+                  - [x] **2.3.3.1.2.1.2.1.2.3.1** Documenter les opérateurs supérieur/inférieur
+                    - [x] **2.3.3.1.2.1.2.1.2.3.1.1** Expliquer l'opérateur "supérieur à" (>)
+                    - [x] **2.3.3.1.2.1.2.1.2.3.1.2** Documenter l'opérateur "inférieur à" (<)
+                    - [x] **2.3.3.1.2.1.2.1.2.3.1.3** Fournir des exemples avec des valeurs numériques
+                  - [x] **2.3.3.1.2.1.2.1.2.3.2** Documenter les opérateurs supérieur/inférieur ou égal
+                    - [x] **2.3.3.1.2.1.2.1.2.3.2.1** Expliquer l'opérateur "supérieur ou égal à" (>=)
+                    - [x] **2.3.3.1.2.1.2.1.2.3.2.2** Documenter l'opérateur "inférieur ou égal à" (<=)
+                    - [x] **2.3.3.1.2.1.2.1.2.3.2.3** Fournir des exemples avec différents types de données
+                  - [x] **2.3.3.1.2.1.2.1.2.3.3** Expliquer les cas particuliers pour les comparaisons
+                    - [x] **2.3.3.1.2.1.2.1.2.3.3.1** Documenter le comportement avec les dates
+                    - [x] **2.3.3.1.2.1.2.1.2.3.3.2** Expliquer les comparaisons avec les énumérations
+                    - [x] **2.3.3.1.2.1.2.1.2.3.3.3** Décrire les limitations des comparaisons numériques
+              - [x] **2.3.3.1.2.1.2.1.3** Documenter les règles de syntaxe avancées
+                - [x] **2.3.3.1.2.1.2.1.3.1** Décrire les règles de groupement avec parenthèses
+                  - [x] **2.3.3.1.2.1.2.1.3.1.1** Expliquer la syntaxe des groupements
+                    - [x] **2.3.3.1.2.1.2.1.3.1.1.1** Documenter la structure de base "(expression)"
+                    - [x] **2.3.3.1.2.1.2.1.3.1.1.2** Expliquer les groupements imbriqués
+                    - [x] **2.3.3.1.2.1.2.1.3.1.1.3** Décrire les règles de priorité avec groupements
+                  - [x] **2.3.3.1.2.1.2.1.3.1.2** Documenter les cas d'utilisation courants
+                    - [x] **2.3.3.1.2.1.2.1.3.1.2.1** Expliquer l'utilisation avec AND et OR
+                    - [x] **2.3.3.1.2.1.2.1.3.1.2.2** Documenter l'utilisation avec NOT
+                    - [x] **2.3.3.1.2.1.2.1.3.1.2.3** Fournir des exemples de groupements complexes
+                  - [x] **2.3.3.1.2.1.2.1.3.1.3** Expliquer les bonnes pratiques et limitations
+                    - [x] **2.3.3.1.2.1.2.1.3.1.3.1** Documenter les limites de profondeur
+                    - [x] **2.3.3.1.2.1.2.1.3.1.3.2** Expliquer les erreurs courantes
+                    - [x] **2.3.3.1.2.1.2.1.3.1.3.3** Fournir des conseils d'optimisation
+                - [x] **2.3.3.1.2.1.2.1.3.2** Expliquer l'utilisation des guillemets pour les valeurs
+                  - [x] **2.3.3.1.2.1.2.1.3.2.1** Documenter les types de guillemets supportés
+                    - [x] **2.3.3.1.2.1.2.1.3.2.1.1** Expliquer l'utilisation des guillemets doubles
+                    - [x] **2.3.3.1.2.1.2.1.3.2.1.2** Documenter l'utilisation des guillemets simples
+                    - [x] **2.3.3.1.2.1.2.1.3.2.1.3** Décrire les différences et cas d'utilisation
+                  - [x] **2.3.3.1.2.1.2.1.3.2.2** Expliquer les cas d'utilisation des guillemets
+                    - [x] **2.3.3.1.2.1.2.1.3.2.2.1** Documenter l'utilisation pour les valeurs avec espaces
+                    - [x] **2.3.3.1.2.1.2.1.3.2.2.2** Expliquer l'utilisation pour les caractères spéciaux
+                    - [x] **2.3.3.1.2.1.2.1.3.2.2.3** Décrire l'utilisation pour les valeurs multilignes
+                  - [x] **2.3.3.1.2.1.2.1.3.2.3** Documenter les règles d'échappement dans les guillemets
+                    - [x] **2.3.3.1.2.1.2.1.3.2.3.1** Expliquer l'échappement des guillemets internes
+                    - [x] **2.3.3.1.2.1.2.1.3.2.3.2** Documenter l'échappement des caractères spéciaux
+                    - [x] **2.3.3.1.2.1.2.1.3.2.3.3** Fournir des exemples d'échappement complexes
+                - [x] **2.3.3.1.2.1.2.1.3.3** Documenter les caractères spéciaux et leur échappement
+                  - [x] **2.3.3.1.2.1.2.1.3.3.1** Lister les caractères spéciaux réservés
+                    - [x] **2.3.3.1.2.1.2.1.3.3.1.1** Documenter les caractères d'opérateurs
+                    - [x] **2.3.3.1.2.1.2.1.3.3.1.2** Expliquer les caractères de structure
+                    - [x] **2.3.3.1.2.1.2.1.3.3.1.3** Décrire les caractères de formatage
+                  - [x] **2.3.3.1.2.1.2.1.3.3.2** Expliquer les méthodes d'échappement
+                    - [x] **2.3.3.1.2.1.2.1.3.3.2.1** Documenter l'utilisation du backslash
+                    - [x] **2.3.3.1.2.1.2.1.3.3.2.2** Expliquer l'échappement par guillemets
+                    - [x] **2.3.3.1.2.1.2.1.3.3.2.3** Décrire les séquences d'échappement spéciales
+                  - [x] **2.3.3.1.2.1.2.1.3.3.3** Fournir des exemples et cas d'utilisation
+                    - [x] **2.3.3.1.2.1.2.1.3.3.3.1** Documenter des exemples pour chaque caractère spécial
+                    - [x] **2.3.3.1.2.1.2.1.3.3.3.2** Expliquer les erreurs courantes d'échappement
+                    - [x] **2.3.3.1.2.1.2.1.3.3.3.3** Fournir des exemples de requêtes complexes avec échappement
+            - [x] **2.3.3.1.2.1.2.2** Développer des exemples de requêtes courantes
+              - [x] **2.3.3.1.2.1.2.2.1** Créer des exemples de requêtes simples
+                - [x] **2.3.3.1.2.1.2.2.1.1** Développer des exemples de filtrage par statut
+                  - [x] **2.3.3.1.2.1.2.2.1.1.1** Créer des exemples pour le statut "à faire"
+                    - [x] **2.3.3.1.2.1.2.2.1.1.1.1** Documenter la requête simple "status:todo"
+                    - [x] **2.3.3.1.2.1.2.2.1.1.1.2** Fournir des variantes avec différentes syntaxes
+                    - [x] **2.3.3.1.2.1.2.2.1.1.1.3** Expliquer les résultats attendus
+                  - [x] **2.3.3.1.2.1.2.2.1.1.2** Créer des exemples pour le statut "en cours"
+                    - [x] **2.3.3.1.2.1.2.2.1.1.2.1** Documenter la requête simple "status:in_progress"
+                    - [x] **2.3.3.1.2.1.2.2.1.1.2.2** Fournir des variantes avec différentes syntaxes
+                    - [x] **2.3.3.1.2.1.2.2.1.1.2.3** Expliquer les résultats attendus
+                  - [x] **2.3.3.1.2.1.2.2.1.1.3** Créer des exemples pour le statut "terminé"
+                    - [x] **2.3.3.1.2.1.2.2.1.1.3.1** Documenter la requête simple "status:done"
+                    - [x] **2.3.3.1.2.1.2.2.1.1.3.2** Fournir des variantes avec différentes syntaxes
+                    - [x] **2.3.3.1.2.1.2.2.1.1.3.3** Expliquer les résultats attendus
+                - [x] **2.3.3.1.2.1.2.2.1.2** Créer des exemples de filtrage par priorité
+                  - [x] **2.3.3.1.2.1.2.2.1.2.1** Développer des exemples pour la priorité haute
+                    - [x] **2.3.3.1.2.1.2.2.1.2.1.1** Documenter la requête simple "priority:high"
+                    - [x] **2.3.3.1.2.1.2.2.1.2.1.2** Fournir des variantes avec différentes syntaxes
+                    - [x] **2.3.3.1.2.1.2.2.1.2.1.3** Expliquer les résultats attendus
+                  - [x] **2.3.3.1.2.1.2.2.1.2.2** Développer des exemples pour la priorité moyenne
+                    - [x] **2.3.3.1.2.1.2.2.1.2.2.1** Documenter la requête simple "priority:medium"
+                    - [x] **2.3.3.1.2.1.2.2.1.2.2.2** Fournir des variantes avec différentes syntaxes
+                    - [x] **2.3.3.1.2.1.2.2.1.2.2.3** Expliquer les résultats attendus
+                  - [x] **2.3.3.1.2.1.2.2.1.2.3** Développer des exemples pour la priorité basse
+                    - [x] **2.3.3.1.2.1.2.2.1.2.3.1** Documenter la requête simple "priority:low"
+                    - [x] **2.3.3.1.2.1.2.2.1.2.3.2** Fournir des variantes avec différentes syntaxes
+                    - [x] **2.3.3.1.2.1.2.2.1.2.3.3** Expliquer les résultats attendus
+                - [x] **2.3.3.1.2.1.2.2.1.3** Élaborer des exemples de filtrage par catégorie
+                  - [x] **2.3.3.1.2.1.2.2.1.3.1** Créer des exemples pour la catégorie développement
+                    - [x] **2.3.3.1.2.1.2.2.1.3.1.1** Documenter la requête simple "category:development"
+                    - [x] **2.3.3.1.2.1.2.2.1.3.1.2** Fournir des variantes avec différentes syntaxes
+                    - [x] **2.3.3.1.2.1.2.2.1.3.1.3** Expliquer les résultats attendus
+                  - [x] **2.3.3.1.2.1.2.2.1.3.2** Créer des exemples pour la catégorie documentation
+                    - [x] **2.3.3.1.2.1.2.2.1.3.2.1** Documenter la requête simple "category:documentation"
+                    - [x] **2.3.3.1.2.1.2.2.1.3.2.2** Fournir des variantes avec différentes syntaxes
+                    - [x] **2.3.3.1.2.1.2.2.1.3.2.3** Expliquer les résultats attendus
+                  - [x] **2.3.3.1.2.1.2.2.1.3.3** Créer des exemples pour la catégorie tests
+                    - [x] **2.3.3.1.2.1.2.2.1.3.3.1** Documenter la requête simple "category:testing"
+                    - [x] **2.3.3.1.2.1.2.2.1.3.3.2** Fournir des variantes avec différentes syntaxes
+                    - [x] **2.3.3.1.2.1.2.2.1.3.3.3** Expliquer les résultats attendus
+              - [x] **2.3.3.1.2.1.2.2.2** Créer des exemples de requêtes combinées
+                - [x] **2.3.3.1.2.1.2.2.2.1** Développer des exemples avec opérateurs ET
+                - [x] **2.3.3.1.2.1.2.2.2.2** Créer des exemples avec opérateurs OU
+                - [x] **2.3.3.1.2.1.2.2.2.3** Élaborer des exemples avec opérateurs NON
+              - [x] **2.3.3.1.2.1.2.2.3** Créer des exemples de requêtes avancées
+                - [x] **2.3.3.1.2.1.2.2.3.1** Développer des exemples avec groupements complexes
+                - [x] **2.3.3.1.2.1.2.2.3.2** Créer des exemples avec recherche textuelle
+                - [x] **2.3.3.1.2.1.2.2.3.3** Élaborer des exemples avec filtres de date
+            - [x] **2.3.3.1.2.1.2.3** Documenter les bonnes pratiques et limitations
+              - [x] **2.3.3.1.2.1.2.3.1** Établir les bonnes pratiques d'utilisation
+                - [x] **2.3.3.1.2.1.2.3.1.1** Documenter les pratiques pour optimiser les requêtes
+                - [x] **2.3.3.1.2.1.2.3.1.2** Créer des recommandations pour la lisibilité
+                - [x] **2.3.3.1.2.1.2.3.1.3** Établir des conventions de nommage et formatage
+              - [x] **2.3.3.1.2.1.2.3.2** Identifier et documenter les limitations
+                - [x] **2.3.3.1.2.1.2.3.2.1** Documenter les limitations de complexité
+                - [x] **2.3.3.1.2.1.2.3.2.2** Décrire les limitations de performance
+                - [x] **2.3.3.1.2.1.2.3.2.3** Expliquer les cas particuliers non supportés
+              - [x] **2.3.3.1.2.1.2.3.3** Créer un guide de résolution des problèmes
+                - [x] **2.3.3.1.2.1.2.3.3.1** Documenter les erreurs syntaxiques courantes
+                - [x] **2.3.3.1.2.1.2.3.3.2** Créer des solutions pour les problèmes fréquents
+                - [x] **2.3.3.1.2.1.2.3.3.3** Développer un processus de débogage des requêtes
+          - [x] **2.3.3.1.2.1.3** Implémenter l'interface utilisateur de saisie
+            - [x] **2.3.3.1.2.1.3.1** Créer l'éditeur de requête en mode texte
+            - [x] **2.3.3.1.2.1.3.2** Développer l'assistance à la saisie (suggestions)
+            - [x] **2.3.3.1.2.1.3.3** Ajouter la validation en temps réel
+        - [x] **2.3.3.1.2.2** Développer le parser de requêtes
+          - [x] **2.3.3.1.2.2.1** Implémenter l'analyseur lexical
+            - [x] **2.3.3.1.2.2.1.1** Développer la tokenisation des requêtes
+            - [x] **2.3.3.1.2.2.1.2** Implémenter la reconnaissance des opérateurs
+            - [x] **2.3.3.1.2.2.1.3** Ajouter la gestion des expressions entre parenthèses
+          - [x] **2.3.3.1.2.2.2** Créer l'analyseur syntaxique
+            - [x] **2.3.3.1.2.2.2.1** Développer la construction de l'arbre syntaxique
+            - [x] **2.3.3.1.2.2.2.2** Implémenter la validation des règles grammaticales
+            - [x] **2.3.3.1.2.2.2.3** Ajouter la détection et gestion des erreurs
+          - [x] **2.3.3.1.2.2.3** Implémenter l'évaluateur sémantique
+            - [x] **2.3.3.1.2.2.3.1** Développer la résolution des références de champs
+            - [x] **2.3.3.1.2.2.3.2** Implémenter l'évaluation des expressions
+            - [x] **2.3.3.1.2.2.3.3** Ajouter l'optimisation des requêtes
+        - [x] **2.3.3.1.2.3** Ajouter le générateur de requêtes Qdrant
+          - [x] **2.3.3.1.2.3.1** Développer le convertisseur de syntaxe
+            - [x] **2.3.3.1.2.3.1.1** Implémenter la conversion des opérateurs logiques
+            - [x] **2.3.3.1.2.3.1.2** Développer la conversion des filtres de champs
+            - [x] **2.3.3.1.2.3.1.3** Ajouter la gestion des expressions imbriquées
+          - [x] **2.3.3.1.2.3.2** Implémenter l'optimisation des requêtes Qdrant
+            - [x] **2.3.3.1.2.3.2.1** Développer l'analyse des performances de requête
+            - [x] **2.3.3.1.2.3.2.2** Implémenter les stratégies d'optimisation
+            - [x] **2.3.3.1.2.3.2.3** Ajouter la mise en cache des requêtes fréquentes
+          - [x] **2.3.3.1.2.3.3** Créer le système de validation et test
+            - [x] **2.3.3.1.2.3.3.1** Développer les tests unitaires pour les conversions
+            - [x] **2.3.3.1.2.3.3.2** Implémenter les tests d'intégration avec Qdrant
+            - [x] **2.3.3.1.2.3.3.3** Ajouter les mécanismes de débogage
+      - [x] **2.3.3.1.3** Implémenter l'interface d'édition de template
+        - [x] **2.3.3.1.3.1** Développer l'éditeur de template markdown
+          - [x] **2.3.3.1.3.1.1** Concevoir l'interface d'édition
+            - [x] **2.3.3.1.3.1.1.1** Développer l'éditeur de texte avec coloration syntaxique
+            - [x] **2.3.3.1.3.1.1.2** Implémenter l'insertion de variables et placeholders
+            - [x] **2.3.3.1.3.1.1.3** Ajouter la prévisualisation en temps réel
+          - [x] **2.3.3.1.3.1.2** Créer la bibliothèque de templates prédéfinis
+            - [x] **2.3.3.1.3.1.2.1** Développer les templates de base (liste, tableau)
+            - [x] **2.3.3.1.3.1.2.2** Implémenter les templates spécialisés (rapport, kanban)
+            - [x] **2.3.3.1.3.1.2.3** Ajouter le système d'import/export de templates
+          - [x] **2.3.3.1.3.1.3** Implémenter le système de validation
+            - [x] **2.3.3.1.3.1.3.1** Développer la validation syntaxique du markdown
+            - [x] **2.3.3.1.3.1.3.2** Implémenter la vérification des variables utilisées
+            - [x] **2.3.3.1.3.1.3.3** Ajouter les suggestions de correction
+        - [x] **2.3.3.1.3.2** Implémenter l'éditeur de template HTML
+          - [x] **2.3.3.1.3.2.1** Concevoir l'interface d'édition HTML
+            - [x] **2.3.3.1.3.2.1.1** Développer l'éditeur de code HTML/CSS/JS
+            - [x] **2.3.3.1.3.2.1.2** Implémenter l'insertion de composants prédéfinis
+            - [x] **2.3.3.1.3.2.1.3** Ajouter la prévisualisation interactive
+          - [x] **2.3.3.1.3.2.2** Créer la bibliothèque de composants
+            - [x] **2.3.3.1.3.2.2.1** Développer les composants de base (tableaux, listes)
+            - [x] **2.3.3.1.3.2.2.2** Implémenter les composants interactifs (filtres, tri)
+            - [x] **2.3.3.1.3.2.2.3** Ajouter les composants de navigation et pagination
+          - [x] **2.3.3.1.3.2.3** Implémenter le système d'intégration de données
+            - [x] **2.3.3.1.3.2.3.1** Développer les balises de template pour l'injection de données
+            - [x] **2.3.3.1.3.2.3.2** Implémenter le rendu côté serveur
+            - [x] **2.3.3.1.3.2.3.3** Ajouter le support pour le rendu côté client
+        - [x] **2.3.3.1.3.3** Créer l'éditeur de visualisations
+          - [x] **2.3.3.1.3.3.1** Concevoir l'interface d'édition de visualisations
+            - [x] **2.3.3.1.3.3.1.1** Développer l'éditeur de configuration de graphiques
+            - [x] **2.3.3.1.3.3.1.2** Implémenter l'interface de mappage de données
+            - [x] **2.3.3.1.3.3.1.3** Ajouter la prévisualisation des visualisations
+          - [x] **2.3.3.1.3.3.2** Implémenter les types de visualisations
+            - [x] **2.3.3.1.3.3.2.1** Développer les visualisations hiérarchiques (arbre, treemap)
+            - [x] **2.3.3.1.3.3.2.2** Implémenter les visualisations temporelles (timeline, Gantt)
+            - [x] **2.3.3.1.3.3.2.3** Ajouter les visualisations de relations (graphe, dépendances)
+          - [x] **2.3.3.1.3.3.3** Créer le système d'export et partage
+            - [x] **2.3.3.1.3.3.3.1** Développer l'export en images statiques (PNG, SVG)
+            - [x] **2.3.3.1.3.3.3.2** Implémenter l'export en HTML interactif
+            - [x] **2.3.3.1.3.3.3.3** Ajouter les options d'intégration dans d'autres systèmes
+    - [x] **2.3.3.2** Système de sauvegarde des configurations
+      - [x] **2.3.3.2.1** Concevoir le format de stockage des configurations
+        - [x] **2.3.3.2.1.1** Définir le schéma JSON des configurations
+        - [x] **2.3.3.2.1.2** Établir les règles de versionnage
+        - [x] **2.3.3.2.1.3** Concevoir le système de métadonnées
+      - [x] **2.3.3.2.2** Développer le système de persistance
+        - [x] **2.3.3.2.2.1** Implémenter la sauvegarde dans des fichiers
+        - [x] **2.3.3.2.2.2** Développer la sauvegarde dans Qdrant
+          - [x] **2.3.3.2.2.2.1** Concevoir le schéma de collection pour Qdrant
+            - [x] **2.3.3.2.2.2.1.1** Définir la structure des points vectoriels
+            - [x] **2.3.3.2.2.2.1.2** Établir le mapping des métadonnées
+            - [x] **2.3.3.2.2.2.1.3** Optimiser les paramètres d'indexation
+          - [x] **2.3.3.2.2.2.2** Implémenter l'interface de connexion à Qdrant
+            - [x] **2.3.3.2.2.2.2.1** Développer les fonctions de connexion au serveur
+            - [x] **2.3.3.2.2.2.2.2** Gérer les erreurs de connexion et les timeouts
+            - [x] **2.3.3.2.2.2.2.3** Implémenter la gestion du pool de connexions
+          - [x] **2.3.3.2.2.2.3** Développer les opérations CRUD pour Qdrant
+            - [x] **2.3.3.2.2.2.3.1** Implémenter la création et mise à jour de points
+            - [x] **2.3.3.2.2.2.3.2** Développer la récupération par ID et par requête
+            - [x] **2.3.3.2.2.2.3.3** Ajouter la suppression et l'archivage de points
+          - [x] **2.3.3.2.2.2.4** Créer le système de vectorisation des configurations
+            - [x] **2.3.3.2.2.2.4.1** Implémenter l'extraction de caractéristiques
+            - [x] **2.3.3.2.2.2.4.2** Développer la génération d'embeddings
+            - [x] **2.3.3.2.2.2.4.3** Optimiser la dimensionnalité des vecteurs
+        - [x] **2.3.3.2.2.3** Ajouter le support pour la sauvegarde dans Git
+          - [x] **2.3.3.2.2.3.1** Concevoir l'intégration avec Git
+            - [x] **2.3.3.2.2.3.1.1** Définir la structure du dépôt Git
+            - [x] **2.3.3.2.2.3.1.2** Établir les conventions de nommage des branches
+            - [x] **2.3.3.2.2.3.1.3** Concevoir le format des messages de commit
+          - [x] **2.3.3.2.2.3.2** Implémenter les opérations Git de base
+            - [x] **2.3.3.2.2.3.2.1** Développer l'initialisation et la configuration du dépôt
+            - [x] **2.3.3.2.2.3.2.2** Implémenter les opérations add, commit et push
+            - [x] **2.3.3.2.2.3.2.3** Ajouter le support pour les branches et les tags
+          - [x] **2.3.3.2.2.3.3** Développer le système de synchronisation
+            - [x] **2.3.3.2.2.3.3.1** Implémenter la détection de conflits
+            - [x] **2.3.3.2.2.3.3.2** Développer la résolution automatique de conflits
+            - [x] **2.3.3.2.2.3.3.3** Ajouter la journalisation des opérations Git
+          - [x] **2.3.3.2.2.3.4** Créer l'interface utilisateur pour Git
+            - [x] **2.3.3.2.2.3.4.1** Développer la visualisation de l'historique
+              - [x] **2.3.3.2.2.3.4.1.1** Créer l'interface de navigation dans l'historique
+              - [x] **2.3.3.2.2.3.4.1.2** Implémenter l'affichage coloré des commits
+              - [x] **2.3.3.2.2.3.4.1.3** Ajouter la visualisation du graphe de branches
+              - [x] **2.3.3.2.2.3.4.1.4** Développer l'affichage des détails de commit
+              - [x] **2.3.3.2.2.3.4.1.5** Optimiser la pagination et le filtrage des résultats
+            - [x] **2.3.3.2.2.3.4.2** Implémenter la comparaison de versions
+              - [x] **2.3.3.2.2.3.4.2.1** Créer l'interface de sélection des commits à comparer
+              - [x] **2.3.3.2.2.3.4.2.2** Développer l'affichage des différences entre commits
+              - [x] **2.3.3.2.2.3.4.2.3** Ajouter la comparaison par fichier spécifique
+              - [x] **2.3.3.2.2.3.4.2.4** Implémenter l'affichage des statistiques de changement
+              - [x] **2.3.3.2.2.3.4.2.5** Ajouter l'option d'ignorer les espaces blancs
+            - [x] **2.3.3.2.2.3.4.3** Ajouter la restauration de versions antérieures
+              - [x] **2.3.3.2.2.3.4.3.1** Développer l'interface de sélection de version à restaurer
+              - [x] **2.3.3.2.2.3.4.3.2** Implémenter la restauration de fichiers individuels
+              - [x] **2.3.3.2.2.3.4.3.3** Ajouter la restauration complète d'un commit
+              - [x] **2.3.3.2.2.3.4.3.4** Développer la création de branches de restauration
+              - [x] **2.3.3.2.2.3.4.3.5** Implémenter les confirmations de sécurité
+      - [x] **2.3.3.2.3** Implémenter le système de gestion des configurations
+        - [x] **2.3.3.2.3.1** Développer les fonctionnalités CRUD
+        - [x] **2.3.3.2.3.2** Implémenter l'historique des modifications
         - [ ] **2.3.3.2.3.3** Ajouter les mécanismes de restauration
+          - [x] **2.3.3.2.3.3.1** Développer le système de points de restauration
+            - [x] **2.3.3.2.3.3.1.1** Définir la structure des points de restauration
+              - [x] **2.3.3.2.3.3.1.1.1** Concevoir le schéma de métadonnées des points de restauration
+              - [x] **2.3.3.2.3.3.1.1.2** Implémenter le stockage des états de configuration
+              - [x] **2.3.3.2.3.3.1.1.3** Développer le système de référencement temporel
+              - [x] **2.3.3.2.3.3.1.1.4** Ajouter la gestion des dépendances entre configurations
+              - [x] **2.3.3.2.3.3.1.1.5** Optimiser le stockage pour minimiser la duplication
+            - [x] **2.3.3.2.3.3.1.2** Implémenter la création automatique de points de restauration
+              - [x] **2.3.3.2.3.3.1.2.1** Développer les déclencheurs d'événements système
+                - [x] **2.3.3.2.3.3.1.2.1.1** Implémenter les hooks pour les modifications de configuration
+                - [x] **2.3.3.2.3.3.1.2.1.2** Créer les déclencheurs pour les commits Git
+                - [x] **2.3.3.2.3.3.1.2.1.3** Ajouter les déclencheurs pour les mises à jour système
+                - [x] **2.3.3.2.3.3.1.2.1.4** Développer les déclencheurs pour les migrations de données
+                - [x] **2.3.3.2.3.3.1.2.1.5** Implémenter les hooks pour les opérations en masse
+              - [x] **2.3.3.2.3.3.1.2.2** Créer le système de planification temporelle
+                - [x] **2.3.3.2.3.3.1.2.2.1** Développer le planificateur de tâches périodiques
+                - [x] **2.3.3.2.3.3.1.2.2.2** Implémenter les règles de fréquence configurable
+                - [x] **2.3.3.2.3.3.1.2.2.3** Ajouter la gestion des fenêtres temporelles
+                - [x] **2.3.3.2.3.3.1.2.2.4** Créer le système de priorités des tâches planifiées
+                - [x] **2.3.3.2.3.3.1.2.2.5** Développer la persistance des planifications
+              - [x] **2.3.3.2.3.3.1.2.3** Implémenter les règles de création intelligente
+                - [x] **2.3.3.2.3.3.1.2.3.1** Développer la détection des changements significatifs
+                - [x] **2.3.3.2.3.3.1.2.3.2** Créer l'analyse d'impact des modifications
+                - [x] **2.3.3.2.3.3.1.2.3.3** Implémenter les seuils de déclenchement adaptatifs
+                - [x] **2.3.3.2.3.3.1.2.3.4** Ajouter la classification des points par importance
+                - [x] **2.3.3.2.3.3.1.2.3.5** Développer l'apprentissage des patterns d'utilisation
+            - [ ] **2.3.3.2.3.3.1.3** Développer la rotation et l'expiration des points anciens
+              - [ ] **2.3.3.2.3.3.1.3.1** Implémenter les politiques de rétention
+                - [ ] **2.3.3.2.3.3.1.3.1.1** Développer la rétention basée sur le temps
+                - [ ] **2.3.3.2.3.3.1.3.1.2** Créer la rétention basée sur le nombre de versions
+                - [ ] **2.3.3.2.3.3.1.3.1.3** Implémenter la rétention basée sur l'importance
+                - [ ] **2.3.3.2.3.3.1.3.1.4** Ajouter la rétention basée sur l'utilisation
+                - [ ] **2.3.3.2.3.3.1.3.1.5** Développer les règles de rétention composites
+              - [ ] **2.3.3.2.3.3.1.3.2** Créer le système de nettoyage automatique
+                - [ ] **2.3.3.2.3.3.1.3.2.1** Développer le processus de nettoyage en arrière-plan
+                - [ ] **2.3.3.2.3.3.1.3.2.2** Implémenter la vérification de cohérence avant suppression
+                - [ ] **2.3.3.2.3.3.1.3.2.3** Ajouter la journalisation détaillée des suppressions
+                - [ ] **2.3.3.2.3.3.1.3.2.4** Créer le mécanisme de récupération d'urgence
+                - [ ] **2.3.3.2.3.3.1.3.2.5** Développer les notifications de nettoyage
+              - [ ] **2.3.3.2.3.3.1.3.3** Implémenter l'archivage des points expirés
+                - [ ] **2.3.3.2.3.3.1.3.3.1** Développer le système de compression d'archives
+                - [ ] **2.3.3.2.3.3.1.3.3.2** Créer le stockage hiérarchique par âge
+                - [ ] **2.3.3.2.3.3.1.3.3.3** Implémenter l'exportation vers stockage externe
+                - [ ] **2.3.3.2.3.3.1.3.3.4** Ajouter l'indexation des archives pour recherche
+                - [ ] **2.3.3.2.3.3.1.3.3.5** Développer la restauration depuis les archives
+          - [ ] **2.3.3.2.3.3.2** Créer l'interface de restauration
+            - [ ] **2.3.3.2.3.3.2.1** Développer la visualisation des points disponibles
+              - [ ] **2.3.3.2.3.3.2.1.1** Créer la liste paginée des points de restauration
+              - [ ] **2.3.3.2.3.3.2.1.2** Implémenter les filtres par type, date et tags
+              - [ ] **2.3.3.2.3.3.2.1.3** Développer la vue détaillée d'un point de restauration
+              - [ ] **2.3.3.2.3.3.2.1.4** Ajouter la visualisation des dépendances
+              - [ ] **2.3.3.2.3.3.2.1.5** Créer la timeline interactive des points
+            - [ ] **2.3.3.2.3.3.2.2** Implémenter la comparaison entre points de restauration
+              - [ ] **2.3.3.2.3.3.2.2.1** Développer la sélection de points à comparer
+              - [ ] **2.3.3.2.3.3.2.2.2** Créer l'affichage côte à côte des configurations
+              - [ ] **2.3.3.2.3.3.2.2.3** Implémenter la mise en évidence des différences
+              - [ ] **2.3.3.2.3.3.2.2.4** Ajouter la comparaison structurelle des objets
+              - [ ] **2.3.3.2.3.3.2.2.5** Développer les statistiques de changement
+            - [ ] **2.3.3.2.3.3.2.3** Ajouter la restauration sélective par configuration
+              - [ ] **2.3.3.2.3.3.2.3.1** Développer la sélection granulaire des éléments
+              - [ ] **2.3.3.2.3.3.2.3.2** Créer la prévisualisation des effets de restauration
+              - [ ] **2.3.3.2.3.3.2.3.3** Implémenter la résolution des conflits
+              - [ ] **2.3.3.2.3.3.2.3.4** Ajouter la validation de cohérence post-restauration
+              - [ ] **2.3.3.2.3.3.2.3.5** Développer l'annulation de restauration
+            - [ ] **2.3.3.2.3.3.2.4** Développer la restauration complète d'un état
+              - [ ] **2.3.3.2.3.3.2.4.1** Créer le processus de sauvegarde préalable
+              - [ ] **2.3.3.2.3.3.2.4.2** Implémenter la restauration atomique
+              - [ ] **2.3.3.2.3.3.2.4.3** Développer la gestion des erreurs de restauration
+              - [ ] **2.3.3.2.3.3.2.4.4** Ajouter le mode de restauration en arrière-plan
+              - [ ] **2.3.3.2.3.3.2.4.5** Créer le rapport détaillé de restauration
+            - [ ] **2.3.3.2.3.3.2.5** Implémenter les vérifications de cohérence
+              - [ ] **2.3.3.2.3.3.2.5.1** Développer la validation des dépendances
+              - [ ] **2.3.3.2.3.3.2.5.2** Créer la vérification d'intégrité des données
+              - [ ] **2.3.3.2.3.3.2.5.3** Implémenter les tests de compatibilité de version
+              - [ ] **2.3.3.2.3.3.2.5.4** Ajouter la détection des références circulaires
+              - [ ] **2.3.3.2.3.3.2.5.5** Développer les alertes de risque
+
+          - [ ] **2.3.3.2.3.3.3** Intégrer avec le système de versionnement Git
+            - [ ] **2.3.3.2.3.3.3.1** Synchroniser les points de restauration avec les commits
+              - [ ] **2.3.3.2.3.3.3.1.1** Développer les hooks Git pour la création automatique
+              - [ ] **2.3.3.2.3.3.3.1.2** Créer le mapping bidirectionnel entre commits et points
+              - [ ] **2.3.3.2.3.3.3.1.3** Implémenter la propagation des métadonnées Git
+              - [ ] **2.3.3.2.3.3.3.1.4** Ajouter la détection des changements significatifs
+              - [ ] **2.3.3.2.3.3.3.1.5** Développer la synchronisation différentielle
+            - [ ] **2.3.3.2.3.3.3.2** Développer la création de branches de restauration
+              - [ ] **2.3.3.2.3.3.3.2.1** Créer le mécanisme de branchement automatique
+              - [ ] **2.3.3.2.3.3.3.2.2** Implémenter le nommage intelligent des branches
+              - [ ] **2.3.3.2.3.3.3.2.3** Développer la gestion des métadonnées de branche
+              - [ ] **2.3.3.2.3.3.3.2.4** Ajouter la validation de cohérence des branches
+              - [ ] **2.3.3.2.3.3.3.2.5** Créer l'interface de gestion des branches
+            - [ ] **2.3.3.2.3.3.3.3** Implémenter la résolution des conflits de restauration
+              - [ ] **2.3.3.2.3.3.3.3.1** Développer la détection automatique des conflits
+              - [ ] **2.3.3.2.3.3.3.3.2** Créer l'interface de résolution interactive
+              - [ ] **2.3.3.2.3.3.3.3.3** Implémenter les stratégies de fusion intelligente
+              - [ ] **2.3.3.2.3.3.3.3.4** Ajouter la journalisation des résolutions de conflit
+              - [ ] **2.3.3.2.3.3.3.3.5** Développer les tests de validation post-fusion
+            - [ ] **2.3.3.2.3.3.3.4** Créer le système de versionnement sémantique
+              - [ ] **2.3.3.2.3.3.3.4.1** Développer l'attribution automatique de versions
+              - [ ] **2.3.3.2.3.3.3.4.2** Implémenter les règles d'incrémentation de version
+              - [ ] **2.3.3.2.3.3.3.4.3** Créer la gestion des versions majeures/mineures
+              - [ ] **2.3.3.2.3.3.3.4.4** Ajouter la génération de changelogs
+              - [ ] **2.3.3.2.3.3.3.4.5** Développer la détection des ruptures de compatibilité
+            - [ ] **2.3.3.2.3.3.3.5** Implémenter l'historique Git enrichi
+              - [ ] **2.3.3.2.3.3.3.5.1** Développer la visualisation de l'historique combiné
+              - [ ] **2.3.3.2.3.3.3.5.2** Créer les annotations de points de restauration
+              - [ ] **2.3.3.2.3.3.3.5.3** Implémenter la recherche contextuelle dans l'historique
+              - [ ] **2.3.3.2.3.3.3.5.4** Ajouter les statistiques d'évolution temporelle
+              - [ ] **2.3.3.2.3.3.3.5.5** Développer l'exportation de l'historique enrichi
+          - [ ] **2.3.3.2.3.3.4** Créer l'interface utilisateur de restauration
+            - [ ] **2.3.3.2.3.3.4.1** Développer la visualisation des points de restauration
+            - [ ] **2.3.3.2.3.3.4.2** Implémenter la comparaison avant/après restauration
+            - [ ] **2.3.3.2.3.3.4.3** Ajouter la prévisualisation des effets de la restauration
+          - [ ] **2.3.3.2.3.3.5** Développer le système de journalisation des restaurations
+            - [ ] **2.3.3.2.3.3.5.1** Implémenter l'enregistrement détaillé des opérations
+              - [ ] **2.3.3.2.3.3.5.1.1** Développer la capture des événements de restauration
+              - [ ] **2.3.3.2.3.3.5.1.2** Créer le stockage structuré des journaux
+              - [ ] **2.3.3.2.3.3.5.1.3** Implémenter la journalisation des métadonnées contextuelles
+              - [ ] **2.3.3.2.3.3.5.1.4** Ajouter la journalisation des performances d'opération
+              - [ ] **2.3.3.2.3.3.5.1.5** Développer la rotation et l'archivage des journaux
+            - [ ] **2.3.3.2.3.3.5.2** Développer les alertes et notifications
+              - [ ] **2.3.3.2.3.3.5.2.1** Créer le système de règles d'alerte configurables
+              - [ ] **2.3.3.2.3.3.5.2.2** Implémenter les canaux de notification multiples
+              - [ ] **2.3.3.2.3.3.5.2.3** Développer les alertes basées sur les seuils
+              - [ ] **2.3.3.2.3.3.5.2.4** Ajouter la priorisation intelligente des alertes
+              - [ ] **2.3.3.2.3.3.5.2.5** Créer les modèles de notification personnalisables
+            - [ ] **2.3.3.2.3.3.5.3** Ajouter la génération de rapports de restauration
+              - [ ] **2.3.3.2.3.3.5.3.1** Développer les rapports détaillés par opération
+              - [ ] **2.3.3.2.3.3.5.3.2** Créer les rapports de synthèse périodiques
+              - [ ] **2.3.3.2.3.3.5.3.3** Implémenter les rapports d'audit de conformité
+              - [ ] **2.3.3.2.3.3.5.3.4** Ajouter les visualisations graphiques des tendances
+              - [ ] **2.3.3.2.3.3.5.3.5** Développer l'exportation des rapports en multiformats
+            - [ ] **2.3.3.2.3.3.5.4** Implémenter l'analyse des patterns de restauration
+              - [ ] **2.3.3.2.3.3.5.4.1** Développer la détection des restaurations fréquentes
+              - [ ] **2.3.3.2.3.3.5.4.2** Créer l'identification des configurations problématiques
+              - [ ] **2.3.3.2.3.3.5.4.3** Implémenter l'analyse des causes racines
+              - [ ] **2.3.3.2.3.3.5.4.4** Ajouter les recommandations d'amélioration
+              - [ ] **2.3.3.2.3.3.5.4.5** Développer les prédictions de besoins de restauration
+            - [ ] **2.3.3.2.3.3.5.5** Créer le tableau de bord de monitoring
+              - [ ] **2.3.3.2.3.3.5.5.1** Développer la vue d'ensemble des activités
+              - [ ] **2.3.3.2.3.3.5.5.2** Implémenter les indicateurs clés de performance
+              - [ ] **2.3.3.2.3.3.5.5.3** Créer les filtres et vues personnalisables
+              - [ ] **2.3.3.2.3.3.5.5.4** Ajouter les alertes visuelles en temps réel
+              - [ ] **2.3.3.2.3.3.5.5.5** Développer l'intégration avec les systèmes externes
     - [ ] **2.3.3.3** Mécanisme de partage des vues
       - [ ] **2.3.3.3.1** Concevoir le système de partage
         - [ ] **2.3.3.3.1.1** Définir les formats d'export/import
+          - [ ] **2.3.3.3.1.1.1** Concevoir le format d'échange universel
+            - [ ] **2.3.3.3.1.1.1.1** Définir la structure du format JSON
+            - [ ] **2.3.3.3.1.1.1.2** Établir les règles de validation
+            - [ ] **2.3.3.3.1.1.1.3** Développer le système de versionnage du format
+          - [ ] **2.3.3.3.1.1.2** Implémenter les convertisseurs de format
+            - [ ] **2.3.3.3.1.1.2.1** Développer la conversion vers/depuis JSON
+            - [ ] **2.3.3.3.1.1.2.2** Implémenter la conversion vers/depuis XML
+            - [ ] **2.3.3.3.1.1.2.3** Ajouter la conversion vers/depuis YAML
+          - [ ] **2.3.3.3.1.1.3** Créer le système de compression et d'optimisation
+            - [ ] **2.3.3.3.1.1.3.1** Implémenter la compression des données
+            - [ ] **2.3.3.3.1.1.3.2** Développer l'optimisation des tailles de fichier
+            - [ ] **2.3.3.3.1.1.3.3** Ajouter le support pour les formats binaires
         - [ ] **2.3.3.3.1.2** Établir les mécanismes de sécurité
+          - [ ] **2.3.3.3.1.2.1** Concevoir le système de chiffrement
+            - [ ] **2.3.3.3.1.2.1.1** Implémenter le chiffrement symétrique
+            - [ ] **2.3.3.3.1.2.1.2** Développer le chiffrement asymétrique
+            - [ ] **2.3.3.3.1.2.1.3** Ajouter la gestion des clés de chiffrement
+          - [ ] **2.3.3.3.1.2.2** Développer le système d'authentification
+            - [ ] **2.3.3.3.1.2.2.1** Implémenter l'authentification par mot de passe
+            - [ ] **2.3.3.3.1.2.2.2** Ajouter l'authentification par token
+            - [ ] **2.3.3.3.1.2.2.3** Développer l'authentification par certificat
+          - [ ] **2.3.3.3.1.2.3** Créer le système de contrôle d'accès
+            - [ ] **2.3.3.3.1.2.3.1** Implémenter les rôles et permissions
+            - [ ] **2.3.3.3.1.2.3.2** Développer les listes de contrôle d'accès
+            - [ ] **2.3.3.3.1.2.3.3** Ajouter la journalisation des accès
         - [ ] **2.3.3.3.1.3** Concevoir le système de permissions
+          - [ ] **2.3.3.3.1.3.1** Définir les niveaux de permission
+            - [ ] **2.3.3.3.1.3.1.1** Implémenter les permissions de lecture
+            - [ ] **2.3.3.3.1.3.1.2** Développer les permissions d'écriture
+            - [ ] **2.3.3.3.1.3.1.3** Ajouter les permissions d'administration
+          - [ ] **2.3.3.3.1.3.2** Créer le système de gestion des permissions
+            - [ ] **2.3.3.3.1.3.2.1** Implémenter l'attribution de permissions
+            - [ ] **2.3.3.3.1.3.2.2** Développer la révocation de permissions
+            - [ ] **2.3.3.3.1.3.2.3** Ajouter la délégation de permissions
+          - [ ] **2.3.3.3.1.3.3** Développer le système de vérification des permissions
+            - [ ] **2.3.3.3.1.3.3.1** Implémenter la vérification à l'accès
+            - [ ] **2.3.3.3.1.3.3.2** Développer la vérification en temps réel
+            - [ ] **2.3.3.3.1.3.3.3** Ajouter la journalisation des violations
       - [ ] **2.3.3.3.2** Développer les fonctionnalités d'export
         - [ ] **2.3.3.3.2.1** Implémenter l'export en fichier JSON
+          - [ ] **2.3.3.3.2.1.1** Concevoir le format d'export JSON
+            - [ ] **2.3.3.3.2.1.1.1** Définir la structure du document JSON
+            - [ ] **2.3.3.3.2.1.1.2** Établir les règles de sérialisation
+            - [ ] **2.3.3.3.2.1.1.3** Développer le système de métadonnées
+          - [ ] **2.3.3.3.2.1.2** Implémenter le moteur de sérialisation
+            - [ ] **2.3.3.3.2.1.2.1** Développer la conversion des objets en JSON
+            - [ ] **2.3.3.3.2.1.2.2** Implémenter la gestion des références circulaires
+            - [ ] **2.3.3.3.2.1.2.3** Ajouter le support pour les types complexes
+          - [ ] **2.3.3.3.2.1.3** Créer l'interface utilisateur d'export
+            - [ ] **2.3.3.3.2.1.3.1** Développer le dialogue de configuration d'export
+            - [ ] **2.3.3.3.2.1.3.2** Implémenter la prévisualisation de l'export
+            - [ ] **2.3.3.3.2.1.3.3** Ajouter les options de post-traitement
         - [ ] **2.3.3.3.2.2** Développer l'export en URL paramétré
+          - [ ] **2.3.3.3.2.2.1** Concevoir le format d'URL
+            - [ ] **2.3.3.3.2.2.1.1** Définir la structure des paramètres d'URL
+            - [ ] **2.3.3.3.2.2.1.2** Établir les règles d'encodage
+            - [ ] **2.3.3.3.2.2.1.3** Développer le système de compression d'URL
+          - [ ] **2.3.3.3.2.2.2** Implémenter le moteur de génération d'URL
+            - [ ] **2.3.3.3.2.2.2.1** Développer la conversion des objets en paramètres
+            - [ ] **2.3.3.3.2.2.2.2** Implémenter la gestion des limites de taille
+            - [ ] **2.3.3.3.2.2.2.3** Ajouter le support pour les URLs courts
+          - [ ] **2.3.3.3.2.2.3** Créer l'interface utilisateur de partage d'URL
+            - [ ] **2.3.3.3.2.2.3.1** Développer le dialogue de génération d'URL
+            - [ ] **2.3.3.3.2.2.3.2** Implémenter les options de partage direct
+            - [ ] **2.3.3.3.2.2.3.3** Ajouter le suivi des URLs partagés
         - [ ] **2.3.3.3.2.3** Ajouter l'export en fichier autonome
+          - [ ] **2.3.3.3.2.3.1** Concevoir le format de fichier autonome
+            - [ ] **2.3.3.3.2.3.1.1** Définir la structure du fichier HTML+JS
+            - [ ] **2.3.3.3.2.3.1.2** Établir les règles d'encapsulation des données
+            - [ ] **2.3.3.3.2.3.1.3** Développer le système de rendu client-side
+          - [ ] **2.3.3.3.2.3.2** Implémenter le moteur de génération de fichiers
+            - [ ] **2.3.3.3.2.3.2.1** Développer la génération du HTML de base
+            - [ ] **2.3.3.3.2.3.2.2** Implémenter l'intégration des bibliothèques JS
+            - [ ] **2.3.3.3.2.3.2.3** Ajouter l'injection des données de visualisation
+          - [ ] **2.3.3.3.2.3.3** Créer l'interface utilisateur d'export autonome
+            - [ ] **2.3.3.3.2.3.3.1** Développer le dialogue de configuration
+            - [ ] **2.3.3.3.2.3.3.2** Implémenter la prévisualisation du fichier
+            - [ ] **2.3.3.3.2.3.3.3** Ajouter les options de personnalisation
       - [ ] **2.3.3.3.3** Implémenter les fonctionnalités d'import
         - [ ] **2.3.3.3.3.1** Développer l'import depuis un fichier
+          - [ ] **2.3.3.3.3.1.1** Concevoir le système de validation des fichiers
+            - [ ] **2.3.3.3.3.1.1.1** Implémenter la validation de structure
+            - [ ] **2.3.3.3.3.1.1.2** Développer la validation de contenu
+            - [ ] **2.3.3.3.3.1.1.3** Ajouter la détection de fichiers malveillants
+          - [ ] **2.3.3.3.3.1.2** Implémenter le moteur de désérialisation
+            - [ ] **2.3.3.3.3.1.2.1** Développer la conversion du JSON en objets
+            - [ ] **2.3.3.3.3.1.2.2** Implémenter la résolution des références
+            - [ ] **2.3.3.3.3.1.2.3** Ajouter la gestion des versions incompatibles
+          - [ ] **2.3.3.3.3.1.3** Créer l'interface utilisateur d'import
+            - [ ] **2.3.3.3.3.1.3.1** Développer le dialogue de sélection de fichier
+            - [ ] **2.3.3.3.3.1.3.2** Implémenter la prévisualisation de l'import
+            - [ ] **2.3.3.3.3.1.3.3** Ajouter les options de résolution de conflits
         - [ ] **2.3.3.3.3.2** Implémenter l'import depuis une URL
+          - [ ] **2.3.3.3.3.2.1** Concevoir le système de récupération d'URL
+            - [ ] **2.3.3.3.3.2.1.1** Implémenter la récupération HTTP/HTTPS
+            - [ ] **2.3.3.3.3.2.1.2** Développer la gestion des redirections
+            - [ ] **2.3.3.3.3.2.1.3** Ajouter le support pour l'authentification
+          - [ ] **2.3.3.3.3.2.2** Implémenter le décodeur de paramètres d'URL
+            - [ ] **2.3.3.3.3.2.2.1** Développer le parsing des paramètres
+            - [ ] **2.3.3.3.3.2.2.2** Implémenter la décompression des données
+            - [ ] **2.3.3.3.3.2.2.3** Ajouter la validation des paramètres
+          - [ ] **2.3.3.3.3.2.3** Créer l'interface utilisateur d'import par URL
+            - [ ] **2.3.3.3.3.2.3.1** Développer le dialogue de saisie d'URL
+            - [ ] **2.3.3.3.3.2.3.2** Implémenter la prévisualisation du contenu
+            - [ ] **2.3.3.3.3.2.3.3** Ajouter les options d'import sélectif
         - [ ] **2.3.3.3.3.3** Ajouter la validation et sécurisation des imports
+          - [ ] **2.3.3.3.3.3.1** Concevoir le système de validation de sécurité
+            - [ ] **2.3.3.3.3.3.1.1** Implémenter la détection de contenu malveillant
+            - [ ] **2.3.3.3.3.3.1.2** Développer la validation des signatures
+            - [ ] **2.3.3.3.3.3.1.3** Ajouter la vérification des certificats
+          - [ ] **2.3.3.3.3.3.2** Implémenter le système de quarantaine
+            - [ ] **2.3.3.3.3.3.2.1** Développer l'isolation des fichiers suspects
+            - [ ] **2.3.3.3.3.3.2.2** Implémenter l'analyse approfondie
+            - [ ] **2.3.3.3.3.3.2.3** Ajouter la gestion des fichiers en quarantaine
+          - [ ] **2.3.3.3.3.3.3** Créer le système de journalisation de sécurité
+            - [ ] **2.3.3.3.3.3.3.1** Développer l'enregistrement des tentatives
+            - [ ] **2.3.3.3.3.3.3.2** Implémenter les alertes de sécurité
+            - [ ] **2.3.3.3.3.3.3.3** Ajouter la génération de rapports de sécurité
 
 ## 3. Visualisation graphique de la roadmap
 - [ ] **3.1** Concevoir les visualisations graphiques
@@ -508,41 +1073,124 @@
     - [ ] **4.3.3.3** Développer des tutoriels interactifs
 
 ## 5. Tests et déploiement
-- [ ] **5.1** Développer une suite de tests complète
-  - [ ] **5.1.1** Créer les tests unitaires
-    - [ ] **5.1.1.1** Tests pour les parsers et extracteurs
-    - [ ] **5.1.1.2** Tests pour les générateurs de vues
-    - [ ] **5.1.1.3** Tests pour les visualisations
-  - [ ] **5.1.2** Développer les tests d'intégration
-    - [ ] **5.1.2.1** Tests pour l'intégration avec Qdrant
-    - [ ] **5.1.2.2** Tests pour la synchronisation bidirectionnelle
-    - [ ] **5.1.2.3** Tests pour les modes de développement
-  - [ ] **5.1.3** Créer les tests de performance
-    - [ ] **5.1.3.1** Tests de charge pour les requêtes RAG
-    - [ ] **5.1.3.2** Tests de performance pour les visualisations
-    - [ ] **5.1.3.3** Tests de scalabilité
-- [ ] **5.2** Préparer le déploiement
-  - [ ] **5.2.1** Documenter le processus d'installation
-    - [ ] **5.2.1.1** Rédiger le guide d'installation
-    - [ ] **5.2.1.2** Documenter les dépendances
-    - [ ] **5.2.1.3** Créer les scripts d'installation
-  - [ ] **5.2.2** Préparer la migration des données
-    - [ ] **5.2.2.1** Développer le plan de migration
-    - [ ] **5.2.2.2** Créer les scripts de sauvegarde
-    - [ ] **5.2.2.3** Tester la procédure de rollback
-  - [ ] **5.2.3** Planifier le déploiement progressif
-    - [ ] **5.2.3.1** Définir les phases de déploiement
-    - [ ] **5.2.3.2** Établir les critères de validation
-    - [ ] **5.2.3.3** Préparer le plan de communication
-- [ ] **5.3** Déployer et valider le système
-  - [ ] **5.3.1** Exécuter le déploiement initial
-    - [ ] **5.3.1.1** Installer les composants de base
-    - [ ] **5.3.1.2** Configurer l'environnement
-    - [ ] **5.3.1.3** Vérifier l'installation
-  - [ ] **5.3.2** Migrer les données existantes
-    - [ ] **5.3.2.1** Exécuter les scripts de migration
-    - [ ] **5.3.2.2** Valider l'intégrité des données
-    - [ ] **5.3.2.3** Résoudre les problèmes éventuels
-  - [ ] **5.3.3** Finaliser le déploiement
-    - [ ] **5.3.3.1** Activer toutes les fonctionnalités
-    - [ ] **5.3.3.3** Recueillir les retours et itérer
+- [x] **5.1** Développer une suite de tests complète
+  - [x] **5.1.1** Créer les tests unitaires
+    - [x] **5.1.1.1** Tests pour les parsers et extracteurs
+    - [x] **5.1.1.2** Tests pour les générateurs de vues
+    - [x] **5.1.1.3** Tests pour les visualisations
+  - [x] **5.1.2** Développer les tests d'intégration
+    - [x] **5.1.2.1** Tests pour l'intégration avec Qdrant
+    - [x] **5.1.2.2** Tests pour la synchronisation bidirectionnelle
+    - [x] **5.1.2.3** Tests pour les modes de développement
+  - [x] **5.1.3** Créer les tests de performance
+    - [x] **5.1.3.1** Tests de charge pour les requêtes RAG
+    - [x] **5.1.3.2** Tests de performance pour les visualisations
+    - [x] **5.1.3.3** Tests de scalabilité
+- [x] **5.2** Préparer le déploiement
+  - [x] **5.2.1** Documenter le processus d'installation
+    - [x] **5.2.1.1** Rédiger le guide d'installation
+    - [x] **5.2.1.2** Documenter les dépendances
+    - [x] **5.2.1.3** Créer les scripts d'installation
+  - [x] **5.2.2** Préparer la migration des données
+    - [x] **5.2.2.1** Développer le plan de migration
+    - [x] **5.2.2.2** Créer les scripts de sauvegarde
+    - [x] **5.2.2.3** Tester la procédure de rollback
+  - [x] **5.2.3** Planifier le déploiement progressif
+    - [x] **5.2.3.1** Définir les phases de déploiement
+    - [x] **5.2.3.2** Établir les critères de validation
+    - [x] **5.2.3.3** Préparer le plan de communication
+- [x] **5.3** Déployer et valider le système
+  - [x] **5.3.1** Exécuter le déploiement initial
+    - [x] **5.3.1.1** Installer les composants de base
+    - [x] **5.3.1.2** Configurer l'environnement
+    - [x] **5.3.1.3** Vérifier l'installation
+  - [x] **5.3.2** Migrer les données existantes
+    - [x] **5.3.2.1** Exécuter les scripts de migration
+    - [x] **5.3.2.2** Valider l'intégrité des données
+    - [x] **5.3.2.3** Résoudre les problèmes éventuels
+  - [x] **5.3.3** Finaliser le déploiement
+    - [x] **5.3.3.1** Activer toutes les fonctionnalités
+    - [x] **5.3.3.2** Former les utilisateurs
+    - [x] **5.3.3.3** Recueillir les retours et itérer
+
+## 6. Amélioration continue et maintenance
+- [x] **6.1** Mettre en place un système de tests automatisés
+  - [x] **6.1.1** Développer des scripts de test tout-en-un
+    - [x] **6.1.1.1** Créer le script principal d'exécution des tests
+    - [x] **6.1.1.2** Implémenter la vérification et le démarrage automatique de Qdrant
+    - [x] **6.1.1.3** Ajouter la génération de rapports de test
+  - [x] **6.1.2** Créer des interfaces simplifiées pour les tests
+    - [x] **6.1.2.1** Développer des scripts batch pour l'exécution facile
+    - [x] **6.1.2.2** Implémenter des interfaces utilisateur simples
+    - [x] **6.1.2.3** Créer une documentation claire pour les utilisateurs
+  - [x] **6.1.3** Résoudre les problèmes de dépendances
+    - [x] **6.1.3.1** Documenter les versions compatibles des bibliothèques
+    - [x] **6.1.3.2** Créer des scripts d'installation des dépendances
+    - [x] **6.1.3.3** Implémenter un système d'environnement virtuel
+- [ ] **6.2** Planifier les évolutions futures
+  - [ ] **6.2.1** Recueillir les retours des utilisateurs
+    - [ ] **6.2.1.1** Mettre en place un système de feedback
+    - [ ] **6.2.1.2** Analyser les patterns d'utilisation
+    - [ ] **6.2.1.3** Identifier les points d'amélioration
+  - [ ] **6.2.2** Définir la roadmap des fonctionnalités futures
+    - [ ] **6.2.2.1** Prioriser les améliorations potentielles
+    - [ ] **6.2.2.2** Planifier les nouvelles fonctionnalités
+    - [ ] **6.2.2.3** Établir un calendrier de développement
+  - [ ] **6.2.3** Préparer l'architecture pour les extensions
+    - [ ] **6.2.3.1** Documenter les points d'extension
+    - [ ] **6.2.3.2** Créer des templates pour les plugins
+    - [ ] **6.2.3.3** Développer un système de gestion des extensions
+- [ ] **6.3** Mettre en place la maintenance continue
+  - [ ] **6.3.1** Établir un processus de mise à jour régulière
+    - [ ] **6.3.1.1** Définir la fréquence des mises à jour
+    - [ ] **6.3.1.2** Créer des scripts d'automatisation
+    - [ ] **6.3.1.3** Documenter le processus de mise à jour
+  - [ ] **6.3.2** Implémenter la surveillance et les alertes
+    - [ ] **6.3.2.1** Mettre en place la surveillance des performances
+    - [ ] **6.3.2.2** Configurer les alertes en cas de problème
+    - [ ] **6.3.2.3** Développer des tableaux de bord de monitoring
+  - [ ] **6.3.3** Créer un système de sauvegarde et restauration
+    - [ ] **6.3.3.1** Implémenter les sauvegardes automatiques
+    - [ ] **6.3.3.2** Tester régulièrement les restaurations
+    - [ ] **6.3.3.3** Documenter les procédures d'urgence
+
+## 7. Outils de test et validation
+- [x] **7.1** Développer des outils de test pour l'analyse de hiérarchie
+  - [x] **7.1.1** Créer des scripts de test pour l'analyse d'indentation
+    - [x] **7.1.1.1** Développer le script de test principal
+    - [x] **7.1.1.2** Implémenter la génération de données de test
+    - [x] **7.1.1.3** Ajouter la validation des résultats
+  - [x] **7.1.2** Créer des scripts de test pour l'analyse des identifiants
+    - [x] **7.1.2.1** Développer le script de test principal
+    - [x] **7.1.2.2** Implémenter la détection des incohérences
+    - [x] **7.1.2.3** Ajouter la validation de la reconstruction
+  - [x] **7.1.3** Créer des scripts de test pour l'analyse contextuelle
+    - [x] **7.1.3.1** Développer le script de test principal
+    - [x] **7.1.3.2** Implémenter la validation des relations
+    - [x] **7.1.3.3** Ajouter la génération de graphes de relations
+- [x] **7.2** Développer des outils de test pour l'extraction de métadonnées
+  - [x] **7.2.1** Créer des scripts de test pour les métadonnées inline
+    - [x] **7.2.1.1** Développer le script de test principal
+    - [x] **7.2.1.2** Implémenter la validation des tags et attributs
+    - [x] **7.2.1.3** Ajouter la validation des dates
+  - [x] **7.2.2** Créer des scripts de test pour les blocs de métadonnées
+    - [x] **7.2.2.1** Développer le script de test principal
+    - [x] **7.2.2.2** Implémenter la validation des blocs YAML/JSON
+    - [x] **7.2.2.3** Ajouter la validation des commentaires structurés
+  - [x] **7.2.3** Créer des scripts de test pour l'inférence de métadonnées
+    - [x] **7.2.3.1** Développer le script de test principal
+    - [x] **7.2.3.2** Implémenter la validation des priorités et catégories
+    - [x] **7.2.3.3** Ajouter la validation des dépendances inférées
+- [x] **7.3** Développer un système de test intégré
+  - [x] **7.3.1** Créer un script principal d'exécution des tests
+    - [x] **7.3.1.1** Développer l'interface de ligne de commande
+    - [x] **7.3.1.2** Implémenter la sélection des types de tests
+    - [x] **7.3.1.3** Ajouter la génération de rapports
+  - [x] **7.3.2** Créer des scripts batch pour faciliter l'exécution
+    - [x] **7.3.2.1** Développer le script pour tous les tests
+    - [x] **7.3.2.2** Créer des scripts pour chaque type de test
+    - [x] **7.3.2.3** Ajouter des options de configuration
+  - [x] **7.3.3** Documenter le système de test
+    - [x] **7.3.3.1** Rédiger le guide d'utilisation
+    - [x] **7.3.3.2** Documenter les options et paramètres
+    - [x] **7.3.3.3** Créer des exemples d'utilisation

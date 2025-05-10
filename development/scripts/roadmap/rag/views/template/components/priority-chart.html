@@ -1,0 +1,50 @@
+<div class="chart-container">
+    <h3>Répartition par priorité</h3>
+    <canvas id="priorityChart" width="400" height="300"></canvas>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('priorityChart').getContext('2d');
+            var priorityChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Haute', 'Moyenne', 'Basse'],
+                    datasets: [{
+                        label: 'Nombre de tâches',
+                        data: [{{tasks_high}}, {{tasks_medium}}, {{tasks_low}}],
+                        backgroundColor: [
+                            '#e74c3c', // Haute (rouge)
+                            '#f39c12', // Moyenne (jaune)
+                            '#27ae60'  // Basse (vert)
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 1
+                            }
+                        }]
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var dataset = data.datasets[tooltipItem.datasetIndex];
+                                var total = dataset.data.reduce(function(previousValue, currentValue) {
+                                    return previousValue + currentValue;
+                                });
+                                var currentValue = dataset.data[tooltipItem.index];
+                                var percentage = Math.floor(((currentValue/total) * 100)+0.5);
+                                return data.labels[tooltipItem.index] + ': ' + currentValue + ' (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</div>

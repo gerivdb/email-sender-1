@@ -1,0 +1,33 @@
+<div class="task-card">
+    <div class="task-card-header">
+        <div class="task-card-id">{{id}}</div>
+        <div class="task-card-title">{{title}}</div>
+    </div>
+    <div class="task-card-body">
+        <div class="task-card-status status-{{status}}">
+            <span class="label">Statut:</span>
+            <span class="value">{{status}}</span>
+        </div>
+        <div class="task-card-priority priority-{{priority}}">
+            <span class="label">Priorité:</span>
+            <span class="value">{{priority}}</span>
+        </div>
+        {{#if assignee}}
+        <div class="task-card-assignee">
+            <span class="label">Assigné à:</span>
+            <span class="value">{{assignee}}</span>
+        </div>
+        {{/if}}
+        {{#if due_date}}
+        <div class="task-card-due-date">
+            <span class="label">Échéance:</span>
+            <span class="value">{{due_date}}</span>
+        </div>
+        {{/if}}
+        {{#if description}}
+        <div class="task-card-description">
+            <p>{{description}}</p>
+        </div>
+        {{/if}}
+    </div>
+</div>

@@ -1,22 +1,38 @@
 # Start-RoadmapSync.ps1
 # Script pour synchroniser automatiquement les roadmaps avec Qdrant
-# Version: 1.0
+# Version: 2.0
 # Date: 2025-05-15
 
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $false)]
     [string]$RoadmapPath = "projet/roadmaps/active/roadmap_active.md",
-    
+
     [Parameter(Mandatory = $false)]
     [string]$OutputDirectory = "projet/roadmaps/analysis",
-    
+
     [Parameter(Mandatory = $false)]
     [int]$IntervalMinutes = 20,
-    
+
+    [Parameter(Mandatory = $false)]
+    [string]$QdrantUrl = "http://localhost:6333",
+
+    [Parameter(Mandatory = $false)]
+    [string]$CollectionName = "roadmap_tasks",
+
+    [Parameter(Mandatory = $false)]
+    [string]$ModelName = "all-MiniLM-L6-v2",
+
+    [Parameter(Mandatory = $false)]
+    [string]$ModelVersion = "1.0",
+
+    [Parameter(Mandatory = $false)]
+    [ValidateSet("Full", "Selective", "Detect", "Propagate")]
+    [string]$SyncMode = "Selective",
+
     [Parameter(Mandatory = $false)]
     [switch]$Force,
-    
+
     [Parameter(Mandatory = $false)]
     [switch]$NoPrompt
 )
@@ -27,19 +43,19 @@ function Write-Log {
         [string]$Message,
         [string]$Level = "Info"
     )
-    
+
     $color = switch ($Level) {
         "Info" { "White" }
         "Warning" { "Yellow" }
         "Error" { "Red" }
         "Success" { "Green" }
     }
-    
+
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $formattedMessage = "[$timestamp] [$Level] $Message"
-    
+
     Write-Host $formattedMessage -ForegroundColor $color
-    
+
     # Ajouter au fichier de log
     $logPath = Join-Path -Path $OutputDirectory -ChildPath "sync_log.txt"
     Add-Content -Path $logPath -Value $formattedMessage
@@ -51,12 +67,12 @@ function Test-FileModified {
         [string]$FilePath,
         [datetime]$LastSyncTime
     )
-    
+
     if (-not (Test-Path -Path $FilePath)) {
         Write-Log "Le fichier $FilePath n'existe pas." -Level "Error"
         return $false
     }
-    
+
     $fileInfo = Get-Item -Path $FilePath
     return $fileInfo.LastWriteTime -gt $LastSyncTime
 }
@@ -65,18 +81,18 @@ function Test-FileModified {
 function Test-IDEOpen {
     # Vérifier si VS Code est ouvert
     $vsCodeProcess = Get-Process -Name "Code" -ErrorAction SilentlyContinue
-    
+
     if ($vsCodeProcess) {
         return $true
     }
-    
+
     # Vérifier si Visual Studio est ouvert
     $vsProcess = Get-Process -Name "devenv" -ErrorAction SilentlyContinue
-    
+
     if ($vsProcess) {
         return $true
     }
-    
+
     return $false
 }
 
@@ -86,70 +102,79 @@ function Invoke-RoadmapAnalysis {
         [string]$OutputDirectory,
         [switch]$Force
     )
-    
+
     Write-Log "Exécution de l'analyse des roadmaps..." -Level "Info"
-    
+
     $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Simple-RoadmapAnalysis.ps1"
-    
+
     if (-not (Test-Path -Path $scriptPath)) {
         Write-Log "Le script $scriptPath n'existe pas." -Level "Error"
         return $false
     }
-    
+
     $params = @{
-        Action = "All"
+        Action          = "All"
         OutputDirectory = $OutputDirectory
     }
-    
+
     if ($Force) {
         $params.Force = $true
     }
-    
+
     & $scriptPath @params
-    
+
     if ($LASTEXITCODE -eq 0) {
         Write-Log "Analyse des roadmaps terminée avec succès." -Level "Success"
         return $true
-    }
-    else {
+    } else {
         Write-Log "Erreur lors de l'analyse des roadmaps." -Level "Error"
         return $false
     }
 }
 
-# Fonction pour vectoriser les roadmaps
-function Invoke-RoadmapVectorization {
+# Fonction pour synchroniser les vecteurs de roadmap
+function Invoke-RoadmapVectorSync {
     param (
-        [string]$InventoryPath,
+        [string]$RoadmapPath,
+        [string]$OutputDirectory,
+        [string]$QdrantUrl,
+        [string]$CollectionName,
+        [string]$ModelName,
+        [string]$ModelVersion,
+        [string]$SyncMode,
         [switch]$Force
     )
-    
-    Write-Log "Vectorisation des roadmaps..." -Level "Info"
-    
-    $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-RoadmapRAG.ps1"
-    
+
+    Write-Log "Synchronisation des vecteurs de roadmap ($SyncMode)..." -Level "Info"
+
+    $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "Invoke-RoadmapVectorSync.ps1"
+
     if (-not (Test-Path -Path $scriptPath)) {
         Write-Log "Le script $scriptPath n'existe pas." -Level "Error"
         return $false
     }
-    
+
     $params = @{
-        Action = "Vectorize"
-        InventoryPath = $InventoryPath
+        RoadmapPath     = $RoadmapPath
+        QdrantUrl       = $QdrantUrl
+        CollectionName  = $CollectionName
+        ModelName       = $ModelName
+        ModelVersion    = $ModelVersion
+        OutputDirectory = $OutputDirectory
+        SyncMode        = $SyncMode
     }
-    
+
     if ($Force) {
         $params.Force = $true
     }
-    
+
     & $scriptPath @params
-    
+
     if ($LASTEXITCODE -eq 0) {
-        Write-Log "Vectorisation des roadmaps terminée avec succès." -Level "Success"
+        Write-Log "Synchronisation des vecteurs terminée avec succès." -Level "Success"
         return $true
-    }
-    else {
-        Write-Log "Erreur lors de la vectorisation des roadmaps." -Level "Error"
+    } else {
+        Write-Log "Erreur lors de la synchronisation des vecteurs." -Level "Error"
         return $false
     }
 }
@@ -159,26 +184,26 @@ function Invoke-TaskArchiving {
     param (
         [string]$RoadmapPath
     )
-    
+
     Write-Log "Archivage des tâches terminées..." -Level "Info"
-    
+
     # Vérifier si le fichier existe
     if (-not (Test-Path -Path $RoadmapPath)) {
         Write-Log "Le fichier $RoadmapPath n'existe pas." -Level "Error"
         return $false
     }
-    
+
     # Lire le contenu du fichier
     $content = Get-Content -Path $RoadmapPath -Raw
-    
+
     # Identifier les tâches terminées
     $completedTasksCount = ([regex]::Matches($content, "\s*[-*+]\s*\[[xX]\]")).Count
-    
+
     Write-Log "Trouvé $completedTasksCount tâches terminées." -Level "Info"
-    
+
     # Pour l'instant, nous ne faisons pas d'archivage réel
     # Cette fonction sera implémentée ultérieurement
-    
+
     return $true
 }
 
@@ -188,20 +213,29 @@ function Start-RoadmapSync {
         [string]$RoadmapPath,
         [string]$OutputDirectory,
         [int]$IntervalMinutes,
+        [string]$QdrantUrl,
+        [string]$CollectionName,
+        [string]$ModelName,
+        [string]$ModelVersion,
+        [string]$SyncMode,
         [switch]$Force,
         [switch]$NoPrompt
     )
-    
+
     Write-Log "Démarrage de la synchronisation automatique des roadmaps..." -Level "Info"
     Write-Log "  - Fichier roadmap: $RoadmapPath" -Level "Info"
     Write-Log "  - Dossier de sortie: $OutputDirectory" -Level "Info"
     Write-Log "  - Intervalle: $IntervalMinutes minutes" -Level "Info"
-    
+    Write-Log "  - Mode de synchronisation: $SyncMode" -Level "Info"
+    Write-Log "  - URL Qdrant: $QdrantUrl" -Level "Info"
+    Write-Log "  - Collection: $CollectionName" -Level "Info"
+    Write-Log "  - Modèle: $ModelName (version $ModelVersion)" -Level "Info"
+
     # Créer le dossier de sortie s'il n'existe pas
     if (-not (Test-Path -Path $OutputDirectory)) {
         New-Item -Path $OutputDirectory -ItemType Directory -Force | Out-Null
     }
-    
+
     # Demander confirmation si -NoPrompt n'est pas spécifié
     if (-not $NoPrompt) {
         $confirmation = Read-Host "Voulez-vous démarrer la synchronisation automatique des roadmaps ? (O/N)"
@@ -210,10 +244,10 @@ function Start-RoadmapSync {
             return
         }
     }
-    
+
     # Initialiser la dernière heure de synchronisation
     $lastSyncTime = [datetime]::MinValue
-    
+
     # Boucle principale
     while ($true) {
         # Vérifier si l'IDE est ouvert
@@ -222,23 +256,22 @@ function Start-RoadmapSync {
             Start-Sleep -Seconds 60
             continue
         }
-        
+
         # Vérifier si le fichier a été modifié
         if (Test-FileModified -FilePath $RoadmapPath -LastSyncTime $lastSyncTime) {
             Write-Log "Le fichier $RoadmapPath a été modifié depuis la dernière synchronisation." -Level "Info"
-            
+
             # Exécuter l'analyse des roadmaps
             $analysisSuccess = Invoke-RoadmapAnalysis -OutputDirectory $OutputDirectory -Force:$Force
-            
+
             if ($analysisSuccess) {
-                # Vectoriser les roadmaps
-                $inventoryPath = Join-Path -Path $OutputDirectory -ChildPath "inventory.json"
-                $vectorizationSuccess = Invoke-RoadmapVectorization -InventoryPath $inventoryPath -Force:$Force
-                
-                if ($vectorizationSuccess) {
+                # Synchroniser les vecteurs
+                $syncSuccess = Invoke-RoadmapVectorSync -RoadmapPath $RoadmapPath -OutputDirectory $OutputDirectory -QdrantUrl $QdrantUrl -CollectionName $CollectionName -ModelName $ModelName -ModelVersion $ModelVersion -SyncMode $SyncMode -Force:$Force
+
+                if ($syncSuccess) {
                     # Archiver les tâches terminées
                     $archivingSuccess = Invoke-TaskArchiving -RoadmapPath $RoadmapPath
-                    
+
                     if ($archivingSuccess) {
                         # Mettre à jour la dernière heure de synchronisation
                         $lastSyncTime = Get-Date
@@ -246,11 +279,10 @@ function Start-RoadmapSync {
                     }
                 }
             }
-        }
-        else {
+        } else {
             Write-Log "Aucune modification détectée depuis la dernière synchronisation." -Level "Info"
         }
-        
+
         # Attendre l'intervalle spécifié
         Write-Log "En attente de la prochaine synchronisation dans $IntervalMinutes minutes..." -Level "Info"
         Start-Sleep -Seconds ($IntervalMinutes * 60)
@@ -259,9 +291,8 @@ function Start-RoadmapSync {
 
 # Exécution principale
 try {
-    Start-RoadmapSync -RoadmapPath $RoadmapPath -OutputDirectory $OutputDirectory -IntervalMinutes $IntervalMinutes -Force:$Force -NoPrompt:$NoPrompt
-}
-catch {
+    Start-RoadmapSync -RoadmapPath $RoadmapPath -OutputDirectory $OutputDirectory -IntervalMinutes $IntervalMinutes -QdrantUrl $QdrantUrl -CollectionName $CollectionName -ModelName $ModelName -ModelVersion $ModelVersion -SyncMode $SyncMode -Force:$Force -NoPrompt:$NoPrompt
+} catch {
     Write-Log "Erreur lors de la synchronisation des roadmaps : $_" -Level "Error"
     throw $_
 }

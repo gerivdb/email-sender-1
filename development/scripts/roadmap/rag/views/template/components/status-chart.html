@@ -1,0 +1,45 @@
+<div class="chart-container">
+    <h3>Répartition par statut</h3>
+    <canvas id="statusChart" width="400" height="300"></canvas>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('statusChart').getContext('2d');
+            var statusChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['À faire', 'En cours', 'Terminé', 'Bloqué'],
+                    datasets: [{
+                        data: [{{tasks_todo}}, {{tasks_in_progress}}, {{tasks_done}}, {{tasks_blocked}}],
+                        backgroundColor: [
+                            '#f39c12', // À faire (jaune)
+                            '#3498db', // En cours (bleu)
+                            '#27ae60', // Terminé (vert)
+                            '#e74c3c'  // Bloqué (rouge)
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'right'
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var dataset = data.datasets[tooltipItem.datasetIndex];
+                                var total = dataset.data.reduce(function(previousValue, currentValue) {
+                                    return previousValue + currentValue;
+                                });
+                                var currentValue = dataset.data[tooltipItem.index];
+                                var percentage = Math.floor(((currentValue/total) * 100)+0.5);
+                                return data.labels[tooltipItem.index] + ': ' + currentValue + ' (' + percentage + '%)';
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</div>

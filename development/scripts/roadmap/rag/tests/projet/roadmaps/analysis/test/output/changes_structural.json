@@ -1,0 +1,229 @@
+{
+  "OriginalPath": "projet\\roadmaps\\analysis\\test\\files\\roadmap_original.md",
+  "NewPath": "projet\\roadmaps\\analysis\\test\\files\\roadmap_structural.md",
+  "StructuralChanges": {
+    "NewStructure": null,
+    "OriginalStructure": null,
+    "Changes": {
+      "ModifiedHeaders": [],
+      "StructuralChanges": [
+        {
+          "Type": "Added",
+          "Path": "Roadmap Test > Section 1 Renommée"
+        },
+        {
+          "Type": "Added",
+          "Path": "Roadmap Test > Nouvelle Section"
+        },
+        {
+          "Type": "Removed",
+          "Path": "Roadmap Test > Section 1"
+        }
+      ],
+      "AddedHeaders": [
+        {
+          "Type": "Header",
+          "Level": 2,
+          "Title": "Section 1 Renommée",
+          "Path": "Roadmap Test > Section 1 Renommée",
+          "OriginalLine": "## Section 1 Renommée"
+        },
+        {
+          "Type": "Header",
+          "Level": 2,
+          "Title": "Nouvelle Section",
+          "Path": "Roadmap Test > Nouvelle Section",
+          "OriginalLine": "## Nouvelle Section"
+        }
+      ],
+      "TaskCount": {
+        "Original": 12,
+        "New": 14
+      },
+      "HeaderCount": {
+        "Original": 3,
+        "New": 4
+      },
+      "RemovedHeaders": [
+        {
+          "Type": "Header",
+          "Level": 2,
+          "Title": "Section 1",
+          "Path": "Roadmap Test > Section 1",
+          "OriginalLine": "## Section 1"
+        }
+      ]
+    },
+    "HasStructuralChanges": true
+  },
+  "ContentChanges": {
+    "HasChanges": true,
+    "NewTaskCount": 14,
+    "Changes": {
+      "Modified": [],
+      "Unchanged": [
+        {
+          "TaskId": "1.1",
+          "Description": "Tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 0,
+          "OriginalLine": "- [ ] **1.1** Tâche 1",
+          "Hash": "C8B7352DA45BE3A648F5BC3BA3A4AEDD1EEA940D1F8AC66FE3C0FAB2FB083106"
+        },
+        {
+          "TaskId": "1.1.1",
+          "Description": "Sous-tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **1.1.1** Sous-tâche 1",
+          "Hash": "2023C0921FFD6877B77E65A213663C5D2F9D39A50FC6D8EAF5E59746B8C888F7"
+        },
+        {
+          "TaskId": "1.1.2",
+          "Description": "Sous-tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **1.1.2** Sous-tâche 2",
+          "Hash": "DE782DCAA775CBC6E543A97AC0825A9AA0BA6764D2C14FDC1B44D44025BC15E3"
+        },
+        {
+          "TaskId": "1.2",
+          "Description": "Tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 0,
+          "OriginalLine": "- [ ] **1.2** Tâche 2",
+          "Hash": "FC0727B690CCB14CA40E3D640A29B8FC031C6F9EE8877AD101628ADF8F6DCDA9"
+        },
+        {
+          "TaskId": "1.2.1",
+          "Description": "Sous-tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **1.2.1** Sous-tâche 1",
+          "Hash": "48ADF11D3F3425BBFEFFEF5C0C94DE8019C9F602380D08F3628AFE36E2E23306"
+        },
+        {
+          "TaskId": "1.2.2",
+          "Description": "Sous-tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **1.2.2** Sous-tâche 2",
+          "Hash": "EA2619124CEC27006F0C41EBE7CF892CE6A0C517A9F0FEE9645E3FC531754CAC"
+        },
+        {
+          "TaskId": "2.1",
+          "Description": "Tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 0,
+          "OriginalLine": "- [ ] **2.1** Tâche 1",
+          "Hash": "1BA7C5BCABFFAF6837B9AE4EEB985C7A7D621994EF800EFC791279D70E430631"
+        },
+        {
+          "TaskId": "2.1.1",
+          "Description": "Sous-tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **2.1.1** Sous-tâche 1",
+          "Hash": "00D8F982B062E269BA5FB2884AA86650DA3998223D6605ABDB63F6FC15C61280"
+        },
+        {
+          "TaskId": "2.1.2",
+          "Description": "Sous-tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **2.1.2** Sous-tâche 2",
+          "Hash": "237B04379A6A9824A76BC7AE998D1F910EF82D989AFA0725C8CC06163957AA98"
+        },
+        {
+          "TaskId": "2.2",
+          "Description": "Tâche 2",
+          "Status": "Incomplete",
+          "IndentLevel": 0,
+          "OriginalLine": "- [ ] **2.2** Tâche 2",
+          "Hash": "8935D52DB5F6DFAA287BB7ACE0E5AC07DE5D22C2A3E7F777B8CF1BDF051A77AA"
+        },
+        {
+          "TaskId": "2.2.1",
+          "Description": "Sous-tâche 1",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **2.2.1** Sous-tâche 1",
+          "Hash": "B00476F21B5844502E3134A00DD37B48BDE29AB5A61091445C4F35D0DF1C7DF9"
+        }
+      ],
+      "Removed": [],
+      "Added": [
+        {
+          "TaskId": "3.1",
+          "Description": "Nouvelle tâche",
+          "Status": "Incomplete",
+          "IndentLevel": 0,
+          "OriginalLine": "- [ ] **3.1** Nouvelle tâche",
+          "Hash": "68637994CC0E62BAB8917F5D24AEB1F3A512248200EDEFB951AE745CACC17F95"
+        },
+        {
+          "TaskId": "3.1.1",
+          "Description": "Nouvelle sous-tâche",
+          "Status": "Incomplete",
+          "IndentLevel": 2,
+          "OriginalLine": "  - [ ] **3.1.1** Nouvelle sous-tâche\r",
+          "Hash": "A629F129AA45363A5304A338227D10362C43B5C161578999B5F350DA1DB909F2"
+        }
+      ],
+      "Moved": [],
+      "StatusChanged": []
+    },
+    "OriginalTaskCount": 12,
+    "GlobalHashMatch": false
+  },
+  "AnalysisTime": "2025-05-09 09:03:38",
+  "TaskMovements": {
+    "Movements": {
+      "OrderChanges": [],
+      "IndentChanges": [],
+      "ParentChanges": [],
+      "ContextChanges": [
+        {
+          "TaskId": "1.1.1",
+          "Description": "Sous-tâche 1",
+          "OldContext": "Roadmap Test > Section 1",
+          "NewContext": "Roadmap Test > Section 1 Renommée"
+        },
+        {
+          "TaskId": "1.1.2",
+          "Description": "Sous-tâche 2",
+          "OldContext": "Roadmap Test > Section 1",
+          "NewContext": "Roadmap Test > Section 1 Renommée"
+        },
+        {
+          "TaskId": "1.2.2",
+          "Description": "Sous-tâche 2",
+          "OldContext": "Roadmap Test > Section 1",
+          "NewContext": "Roadmap Test > Section 1 Renommée"
+        },
+        {
+          "TaskId": "1.1",
+          "Description": "Tâche 1",
+          "OldContext": "Roadmap Test > Section 1",
+          "NewContext": "Roadmap Test > Section 1 Renommée"
+        },
+        {
+          "TaskId": "1.2",
+          "Description": "Tâche 2",
+          "OldContext": "Roadmap Test > Section 1",
+          "NewContext": "Roadmap Test > Section 1 Renommée"
+        },
+        {
+          "TaskId": "1.2.1",
+          "Description": "Sous-tâche 1",
+          "OldContext": "Roadmap Test > Section 1",
+          "NewContext": "Roadmap Test > Section 1 Renommée"
+        }
+      ]
+    },
+    "HasMovements": true,
+    "OriginalTasks": null,
+    "NewTasks": null
+  },
+  "HasChanges": true
+}

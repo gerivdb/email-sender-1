@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport de tests - Système de synchronisation des roadmaps</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; color: #333; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; margin-top: 20px; }
+        .summary { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .test-results { margin-bottom: 30px; }
+        .test-category { margin-bottom: 20px; }
+        .success { color: #27ae60; }
+        .error { color: #c0392b; }
+        .warning { color: #f39c12; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <h1>Rapport de tests - Système de synchronisation des roadmaps</h1>
+
+    <div class="summary">
+        <h2>Résumé</h2>
+        <p><strong>Date d'exécution</strong>: 2025-05-09 09:04:01</p>
+        <p><strong>Total des tests</strong>: 13</p>
+        <p><strong>Tests réussis</strong>: <span class="success">13</span></p>
+        <p><strong>Tests échoués</strong>: <span class="error">0</span></p>
+        <p><strong>Taux de réussite</strong>: 100%</p>
+    </div>
+
+    <div class="test-results">
+        <h2>Résultats détaillés</h2>
+
+        <div class="test-category">
+            <h3>Détection des changements</h3>
+            <table>
+                <tr>
+                    <th>Test</th>
+                    <th>Résultat</th>
+                </tr>
+                <tr>
+                    <td>Détection des ajouts</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Détection des suppressions</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Détection des modifications</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Détection des changements de statut</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Détection des déplacements</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Détection des changements structurels</td>
+                    <td class="success">Réussi</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="test-category">
+            <h3>Mise à jour sélective des vecteurs</h3>
+            <table>
+                <tr>
+                    <th>Test</th>
+                    <th>Résultat</th>
+                </tr>
+                <tr>
+                    <td>Mise à jour avec ajouts</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Mise à jour avec modifications</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Mise à jour avec changements de statut</td>
+                    <td class="success">Réussi</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="test-category">
+            <h3>Versionnage des embeddings</h3>
+            <table>
+                <tr>
+                    <th>Test</th>
+                    <th>Résultat</th>
+                </tr>
+                <tr>
+                    <td>Enregistrement d'une version</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Création d'un snapshot</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Migration vers un nouveau modèle</td>
+                    <td class="success">Réussi</td>
+                </tr>
+                <tr>
+                    <td>Rollback vers une version précédente</td>
+                    <td class="success">Réussi</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Rapport généré le 2025-05-09 09:04:01</p>
+    </div>
+</body>
+</html>
