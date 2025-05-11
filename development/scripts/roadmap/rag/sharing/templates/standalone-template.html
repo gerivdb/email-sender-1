@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue RAG Partagée</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --background-color: #f5f5f5;
+            --text-color: #333;
+            --border-color: #ddd;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --error-color: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            color: var(--secondary-color);
+        }
+
+        .view-container {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .view-header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-title {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .view-metadata {
+            background-color: #f9f9f9;
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .view-content {
+            padding: 20px;
+        }
+
+        .view-section {
+            margin-bottom: 20px;
+        }
+
+        .view-section-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .view-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: #fff;
+        }
+
+        .view-item:hover {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .view-item-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .view-item-content {
+            font-size: 0.95rem;
+        }
+
+        .view-item-metadata {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .score {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .view-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .view-title {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Dark mode */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #2980b9;
+                --secondary-color: #34495e;
+                --background-color: #222;
+                --text-color: #f5f5f5;
+                --border-color: #444;
+            }
+            
+            body {
+                background-color: var(--background-color);
+                color: var(--text-color);
+            }
+            
+            .view-container {
+                background-color: #333;
+            }
+            
+            .view-metadata {
+                background-color: #2c2c2c;
+                color: #ccc;
+            }
+            
+            .view-item {
+                background-color: #3a3a3a;
+                border-color: var(--border-color);
+            }
+            
+            .view-item-metadata {
+                color: #aaa;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vue RAG Partagée</h1>
+        </header>
+        
+        <div id="view-container" class="view-container">
+            <div class="view-header">
+                <h2 class="view-title" id="view-title">Chargement...</h2>
+                <div id="view-date"></div>
+            </div>
+            
+            <div class="view-metadata" id="view-metadata">
+                Chargement des métadonnées...
+            </div>
+            
+            <div class="view-content" id="view-content">
+                <div class="view-section">
+                    <h3 class="view-section-title">Chargement du contenu...</h3>
+                    <div id="view-items">
+                        <p>Chargement des éléments de la vue...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Cette vue a été générée et partagée via le système RAG.</p>
+            <p>© 2025 Système RAG - Tous droits réservés</p>
+        </div>
+    </div>
+
+    <script>
+        // Données de la vue (remplacées lors de l'export)
+        const viewData = {{VIEW_DATA}};
+
+        // Fonction pour formater une date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Fonction pour échapper le HTML
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Fonction pour rendre les tags
+        function renderTags(tags) {
+            if (!tags || tags.length === 0) return '';
+            
+            return tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('');
+        }
+
+        // Fonction pour rendre un score
+        function renderScore(score) {
+            if (score === undefined || score === null) return '';
+            
+            return `<span class="score">${score.toFixed(2)}</span>`;
+        }
+
+        // Fonction pour rendre les éléments de la vue
+        function renderViewItems(items) {
+            if (!items || items.length === 0) {
+                return '<p>Aucun élément trouvé dans cette vue.</p>';
+            }
+            
+            return items.map(item => `
+                <div class="view-item">
+                    <div class="view-item-title">${escapeHtml(item.title || 'Sans titre')}</div>
+                    <div class="view-item-content">${escapeHtml(item.content || '')}</div>
+                    <div class="view-item-metadata">
+                        ${renderTags(item.tags)}
+                        ${renderScore(item.score)}
+                        ${item.source ? `<div>Source: ${escapeHtml(item.source)}</div>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Fonction pour rendre les métadonnées
+        function renderMetadata(metadata) {
+            if (!metadata) return '';
+            
+            const parts = [];
+            
+            if (metadata.creator) {
+                parts.push(`Créé par: ${escapeHtml(metadata.creator)}`);
+            }
+            
+            if (metadata.createdAt) {
+                parts.push(`Créé le: ${formatDate(metadata.createdAt)}`);
+            }
+            
+            if (metadata.description) {
+                parts.push(`Description: ${escapeHtml(metadata.description)}`);
+            }
+            
+            return parts.join(' | ');
+        }
+
+        // Fonction pour initialiser la vue
+        function initView() {
+            if (!viewData) {
+                document.getElementById('view-content').innerHTML = '<p>Erreur: Données de vue non disponibles.</p>';
+                return;
+            }
+            
+            // Définir le titre
+            document.getElementById('view-title').textContent = viewData.title || 'Vue sans titre';
+            document.title = `Vue RAG: ${viewData.title || 'Vue partagée'}`;
+            
+            // Définir la date
+            if (viewData.metadata && viewData.metadata.createdAt) {
+                document.getElementById('view-date').textContent = formatDate(viewData.metadata.createdAt);
+            }
+            
+            // Définir les métadonnées
+            document.getElementById('view-metadata').innerHTML = renderMetadata(viewData.metadata);
+            
+            // Définir le contenu
+            const contentHtml = `
+                <div class="view-section">
+                    <h3 class="view-section-title">Résultats (${viewData.items ? viewData.items.length : 0})</h3>
+                    <div id="view-items">
+                        ${renderViewItems(viewData.items)}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('view-content').innerHTML = contentHtml;
+        }
+
+        // Initialiser la vue au chargement de la page
+        document.addEventListener('DOMContentLoaded', initView);
+    </script>
+</body>
+</html>
