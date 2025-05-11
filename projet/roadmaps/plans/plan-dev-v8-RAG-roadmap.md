@@ -380,14 +380,17 @@
         - [x] **2.3.1.3.1.1** Concevoir les templates de diagrammes hiérarchiques
         - [x] **2.3.1.3.1.2** Définir les templates de diagrammes de Gantt
         - [x] **2.3.1.3.1.3** Établir les templates de graphes de dépendances
+        - [x] **2.3.1.3.1.4** Développer les templates de visualisation en carte de métro
       - [x] **2.3.1.3.2** Développer les générateurs de code de visualisation
         - [x] **2.3.1.3.2.1** Implémenter le générateur de code D3.js
         - [x] **2.3.1.3.2.2** Développer le générateur de code Mermaid
         - [x] **2.3.1.3.2.3** Ajouter le générateur de code Chart.js
+        - [x] **2.3.1.3.2.4** Implémenter le générateur de code Cytoscape.js
       - [x] **2.3.1.3.3** Créer les mécanismes d'intégration
         - [x] **2.3.1.3.3.1** Développer l'intégration dans les pages HTML
         - [x] **2.3.1.3.3.2** Implémenter l'export en images statiques
         - [x] **2.3.1.3.3.3** Ajouter le support pour l'intégration dans d'autres outils
+        - [x] **2.3.1.3.3.4** Développer l'intégration avec Qdrant pour les visualisations
   - [x] **2.3.2** Implémenter les générateurs de vues par critère
     - [x] **2.3.2.1** Vue par priorité (haute, moyenne, basse)
       - [x] **2.3.2.1.1** Concevoir le modèle de données pour les priorités
@@ -1763,7 +1766,7 @@
                   - [x] **8.1.1.1.1.2.1.1.3.4.2** Créer le système de calcul de criticité basé sur les dépendances
                   - [x] **8.1.1.1.1.2.1.1.3.4.3** Ajouter la génération de scores d'impact et d'effort
                 - [ ] **8.1.1.1.1.2.1.1.3.5** Créer le système de génération de tags et catégories
-                  - [ ] **8.1.1.1.1.2.1.1.3.5.1** Développer la génération de tags thématiques cohérents
+                  - [x] **8.1.1.1.1.2.1.1.3.5.1** Développer la génération de tags thématiques cohérents
                   - [ ] **8.1.1.1.1.2.1.1.3.5.2** Implémenter la classification automatique des tâches
                   - [ ] **8.1.1.1.1.2.1.1.3.5.3** Ajouter la génération de taxonomies hiérarchiques
             - [ ] **8.1.1.1.1.2.1.2** Implémenter différents profils de données

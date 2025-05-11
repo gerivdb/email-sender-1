@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation des Roadmaps - Carte de Métro</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #f39c12;
+            --danger-color: #e74c3c;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --border-radius: 4px;
+            --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        select, button, input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        select[multiple] {
+            height: 150px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button.btn-success {
+            background-color: var(--secondary-color);
+        }
+
+        button.btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        button.btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        button.btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .visualization {
+            height: 600px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        #metro-map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .info-panel {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .common-nodes, .conflicts {
+            margin-top: 1rem;
+        }
+
+        .node-list {
+            list-style: none;
+            margin-top: 0.5rem;
+        }
+
+        .node-item {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .conflict-item {
+            border-left-color: var(--danger-color);
+        }
+
+        .metro-map-modal {
+            display: block;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .metro-map-modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .metro-map-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .metro-map-modal-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .metro-map-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .metro-map-btn-edit {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .metro-map-btn-delete {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .create-roadmap-form {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .metro-map-modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Visualisation des Roadmaps - Carte de Métro</h1>
+            <p>Visualisez vos roadmaps sous forme de carte de métro et identifiez les interconnexions</p>
+        </header>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="roadmap-selector">Sélectionner les roadmaps à visualiser:</label>
+                <select id="roadmap-selector" multiple>
+                    <!-- Les options seront ajoutées dynamiquement -->
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Actions:</label>
+                <button id="visualize-btn">Visualiser</button>
+                <button id="detect-conflicts-btn" class="btn-danger">Détecter les conflits</button>
+                <button id="create-roadmap-btn" class="btn-success">Créer une nouvelle roadmap</button>
+            </div>
+        </div>
+
+        <div class="create-roadmap-form" id="create-roadmap-form">
+            <h3>Créer une nouvelle roadmap</h3>
+            <div class="form-group">
+                <label for="roadmap-title">Titre:</label>
+                <input type="text" id="roadmap-title" placeholder="Titre de la roadmap">
+            </div>
+            <div class="form-group">
+                <label for="roadmap-description">Description:</label>
+                <textarea id="roadmap-description" placeholder="Description de la roadmap"></textarea>
+            </div>
+            <div class="form-actions">
+                <button id="cancel-create-btn">Annuler</button>
+                <button id="save-roadmap-btn" class="btn-success">Enregistrer</button>
+            </div>
+        </div>
+
+        <div class="visualization">
+            <div id="metro-map"></div>
+        </div>
+
+        <div class="info-panel">
+            <h3>Informations</h3>
+            <div class="common-nodes">
+                <h4>Nœuds communs</h4>
+                <ul class="node-list" id="common-nodes-list">
+                    <!-- Les nœuds communs seront ajoutés dynamiquement -->
+                </ul>
+            </div>
+            <div class="conflicts">
+                <h4>Conflits détectés</h4>
+                <ul class="node-list" id="conflicts-list">
+                    <!-- Les conflits seront ajoutés dynamiquement -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chargement des dépendances -->
+    <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+    <script src="https://unpkg.com/cytoscape-dagre/cytoscape-dagre.js"></script>
+    <script src="https://unpkg.com/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js"></script>
+    <script src="https://unpkg.com/cytoscape-klay/cytoscape-klay.js"></script>
+    <script src="https://unpkg.com/cytoscape-popper/cytoscape-popper.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <script type="module">
+        import MetroMapVisualizer from './MetroMapVisualizer.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialiser le visualiseur
+            const visualizer = new MetroMapVisualizer('metro-map', {
+                qdrantUrl: 'http://localhost:6333',
+                qdrantCollection: 'roadmaps'
+            });
+
+            await visualizer.initialize();
+
+            // Gérer la visualisation
+            const visualizeBtn = document.getElementById('visualize-btn');
+            visualizeBtn.addEventListener('click', () => {
+                const selector = document.getElementById('roadmap-selector');
+                const selectedRoadmaps = Array.from(selector.selectedOptions).map(option => option.value);
+                
+                if (selectedRoadmaps.length > 0) {
+                    visualizer.visualizeRoadmaps(selectedRoadmaps);
+                    updateCommonNodesList();
+                } else {
+                    alert('Veuillez sélectionner au moins une roadmap.');
+                }
+            });
+
+            // Gérer la détection des conflits
+            const detectConflictsBtn = document.getElementById('detect-conflicts-btn');
+            detectConflictsBtn.addEventListener('click', async () => {
+                const conflicts = await visualizer.detectConflicts();
+                updateConflictsList(conflicts);
+            });
+
+            // Gérer la création de roadmap
+            const createRoadmapBtn = document.getElementById('create-roadmap-btn');
+            const createRoadmapForm = document.getElementById('create-roadmap-form');
+            const cancelCreateBtn = document.getElementById('cancel-create-btn');
+            const saveRoadmapBtn = document.getElementById('save-roadmap-btn');
+
+            createRoadmapBtn.addEventListener('click', () => {
+                createRoadmapForm.style.display = 'block';
+            });
+
+            cancelCreateBtn.addEventListener('click', () => {
+                createRoadmapForm.style.display = 'none';
+                document.getElementById('roadmap-title').value = '';
+                document.getElementById('roadmap-description').value = '';
+            });
+
+            saveRoadmapBtn.addEventListener('click', async () => {
+                const title = document.getElementById('roadmap-title').value;
+                const description = document.getElementById('roadmap-description').value;
+                
+                if (!title) {
+                    alert('Veuillez saisir un titre pour la roadmap.');
+                    return;
+                }
+                
+                try {
+                    await visualizer.createRoadmap({
+                        title,
+                        description,
+                        tasks: []
+                    });
+                    
+                    createRoadmapForm.style.display = 'none';
+                    document.getElementById('roadmap-title').value = '';
+                    document.getElementById('roadmap-description').value = '';
+                    
+                    alert('Roadmap créée avec succès !');
+                } catch (error) {
+                    alert(`Erreur lors de la création de la roadmap: ${error.message}`);
+                }
+            });
+
+            // Fonction pour mettre à jour la liste des nœuds communs
+            async function updateCommonNodesList() {
+                const selector = document.getElementById('roadmap-selector');
+                const selectedRoadmaps = Array.from(selector.selectedOptions).map(option => option.value);
+                
+                if (selectedRoadmaps.length > 1) {
+                    const commonNodes = await visualizer.findCommonNodes(selectedRoadmaps);
+                    const commonNodesList = document.getElementById('common-nodes-list');
+                    
+                    commonNodesList.innerHTML = '';
+                    
+                    if (commonNodes.length === 0) {
+                        commonNodesList.innerHTML = '<li>Aucun nœud commun trouvé.</li>';
+                    } else {
+                        commonNodes.forEach(node => {
+                            const li = document.createElement('li');
+                            li.className = 'node-item';
+                            li.innerHTML = `
+                                <strong>${node.title}</strong>
+                                <p>${node.description || 'Aucune description'}</p>
+                                <p>Présent dans ${node.roadmaps.length} roadmaps</p>
+                            `;
+                            commonNodesList.appendChild(li);
+                        });
+                    }
+                }
+            }
+
+            // Fonction pour mettre à jour la liste des conflits
+            function updateConflictsList(conflicts) {
+                const conflictsList = document.getElementById('conflicts-list');
+                
+                conflictsList.innerHTML = '';
+                
+                if (conflicts.length === 0) {
+                    conflictsList.innerHTML = '<li>Aucun conflit détecté.</li>';
+                } else {
+                    conflicts.forEach(conflict => {
+                        const li = document.createElement('li');
+                        li.className = 'node-item conflict-item';
+                        
+                        let conflictDetails = '';
+                        if (conflict.type === 'dependency_conflict') {
+                            conflictDetails = `
+                                <p>Conflit de dépendances pour "${conflict.nodeTitle}"</p>
+                                <p>Roadmap "${conflict.roadmap1.title}": ${conflict.roadmap1.dependencies.join(', ') || 'Aucune dépendance'}</p>
+                                <p>Roadmap "${conflict.roadmap2.title}": ${conflict.roadmap2.dependencies.join(', ') || 'Aucune dépendance'}</p>
+                            `;
+                        } else if (conflict.type === 'status_conflict') {
+                            conflictDetails = `
+                                <p>Conflit de statut pour "${conflict.nodeTitle}"</p>
+                                <p>Roadmap "${conflict.roadmap1.title}": ${conflict.roadmap1.status}</p>
+                                <p>Roadmap "${conflict.roadmap2.title}": ${conflict.roadmap2.status}</p>
+                            `;
+                        }
+                        
+                        li.innerHTML = conflictDetails;
+                        conflictsList.appendChild(li);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
