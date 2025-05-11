@@ -1,0 +1,6 @@
+﻿Test d'encodage avec des caractÃ¨res accentuÃ©s : Ã© Ã¨ Ãª Ã  Ã§ Ã¹
+
+Documents de test:
+  - doc1: Rapport annuel 2024 (Type: document, Description: PrÃ©sentation des rÃ©sultats financiers)
+  - doc2: Logo de l'entreprise (Type: image, Description: Logo officiel en haute rÃ©solution)
+  - doc3: PrÃ©sentation du produit (Type: vidÃ©o, Description: DÃ©monstration des fonctionnalitÃ©s)

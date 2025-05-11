@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation de Diagramme Hiérarchique</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4A86E8;
+            --secondary-color: #6C8EAD;
+            --tertiary-color: #2C4A52;
+            --background-color: #FFFFFF;
+            --background-secondary: #F5F7FA;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #DDDDDD;
+            --status-todo: #D3D3D3;
+            --status-in-progress: #4A86E8;
+            --status-blocked: #E74C3C;
+            --status-done: #2ECC71;
+            --priority-low: #A9DFBF;
+            --priority-medium: #F9E79F;
+            --priority-high: #F5B041;
+            --priority-critical: #E74C3C;
+        }
+
+        body {
+            font-family: 'Roboto', 'Segoe UI', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-secondary);
+            color: var(--text-primary);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 300px;
+            background-color: var(--background-color);
+            border-right: 1px solid var(--border-color);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .visualization-container {
+            flex: 1;
+            overflow: auto;
+            padding: 1rem;
+            background-color: var(--background-color);
+        }
+
+        #hierarchy-container {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .details-panel {
+            width: 350px;
+            background-color: var(--background-color);
+            border-left: 1px solid var(--border-color);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .details-panel.hidden {
+            display: none;
+        }
+
+        .node {
+            cursor: pointer;
+        }
+
+        .node rect {
+            stroke-width: 2px;
+        }
+
+        .node text {
+            font-size: 12px;
+        }
+
+        .link {
+            fill: none;
+            stroke: var(--border-color);
+            stroke-width: 1.5px;
+        }
+
+        .tooltip {
+            position: absolute;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            z-index: 1000;
+        }
+
+        .tooltip h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .tooltip p {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .color-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--secondary-color);
+            color: white;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--tertiary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #2A66C8;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 5px;
+        }
+
+        .zoom-btn {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .zoom-btn:hover {
+            background-color: var(--background-secondary);
+        }
+
+        .minimap {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 150px;
+            height: 100px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .minimap-content {
+            width: 100%;
+            height: 100%;
+        }
+
+        .minimap-viewport {
+            position: absolute;
+            border: 1px solid var(--primary-color);
+            background-color: rgba(74, 134, 232, 0.1);
+            pointer-events: none;
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 250px;
+            }
+            
+            .details-panel {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar, .details-panel {
+                width: 100%;
+                height: 200px;
+                border: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            .visualization-container {
+                height: calc(100vh - 400px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Visualisation de la Roadmap</h1>
+            <div class="controls">
+                <button id="export-btn" class="btn">Exporter</button>
+                <button id="fullscreen-btn" class="btn">Plein écran</button>
+                <button id="toggle-details-btn" class="btn btn-primary">Détails</button>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="filter-group">
+                    <h3>Statut</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="status-todo" checked>
+                            <span class="color-indicator" style="background-color: var(--status-todo);"></span>
+                            <label for="status-todo">À faire</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="status-in-progress" checked>
+                            <span class="color-indicator" style="background-color: var(--status-in-progress);"></span>
+                            <label for="status-in-progress">En cours</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="status-blocked" checked>
+                            <span class="color-indicator" style="background-color: var(--status-blocked);"></span>
+                            <label for="status-blocked">Bloqué</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="status-done" checked>
+                            <span class="color-indicator" style="background-color: var(--status-done);"></span>
+                            <label for="status-done">Terminé</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h3>Priorité</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="priority-low" checked>
+                            <span class="color-indicator" style="background-color: var(--priority-low);"></span>
+                            <label for="priority-low">Basse</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="priority-medium" checked>
+                            <span class="color-indicator" style="background-color: var(--priority-medium);"></span>
+                            <label for="priority-medium">Moyenne</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="priority-high" checked>
+                            <span class="color-indicator" style="background-color: var(--priority-high);"></span>
+                            <label for="priority-high">Haute</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="priority-critical" checked>
+                            <span class="color-indicator" style="background-color: var(--priority-critical);"></span>
+                            <label for="priority-critical">Critique</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h3>Niveau</h3>
+                    <div class="filter-options">
+                        <input type="range" id="max-depth" min="1" max="10" value="5">
+                        <label for="max-depth">Profondeur max: <span id="depth-value">5</span></label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <h3>Orientation</h3>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="radio" id="orientation-vertical" name="orientation" checked>
+                            <label for="orientation-vertical">Verticale</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="orientation-horizontal" name="orientation">
+                            <label for="orientation-horizontal">Horizontale</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <button id="apply-filters-btn" class="btn btn-primary">Appliquer les filtres</button>
+                    <button id="reset-filters-btn" class="btn">Réinitialiser</button>
+                </div>
+            </div>
+            
+            <div class="visualization-container">
+                <div id="hierarchy-container"></div>
+                
+                <div class="zoom-controls">
+                    <button class="zoom-btn" id="zoom-in">+</button>
+                    <button class="zoom-btn" id="zoom-reset">⟳</button>
+                    <button class="zoom-btn" id="zoom-out">-</button>
+                </div>
+                
+                <div class="minimap">
+                    <div class="minimap-content"></div>
+                    <div class="minimap-viewport"></div>
+                </div>
+                
+                <div class="tooltip"></div>
+            </div>
+            
+            <div class="details-panel hidden">
+                <h2 id="details-title">Détails</h2>
+                <div id="details-content">
+                    <p>Sélectionnez un élément pour afficher ses détails.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Ce script sera remplacé par le code généré par le générateur de diagrammes hiérarchiques
+        document.addEventListener('DOMContentLoaded', function() {
+            // Exemple de données (à remplacer par les données réelles)
+            const sampleData = {
+                id: "root",
+                title: "Roadmap",
+                status: "En cours",
+                priority: "Haute",
+                progress: 65,
+                description: "Vue d'ensemble de la roadmap",
+                children: [
+                    {
+                        id: "1",
+                        title: "Section 1",
+                        status: "En cours",
+                        priority: "Haute",
+                        progress: 75,
+                        description: "Première section de la roadmap",
+                        children: [
+                            {
+                                id: "1.1",
+                                title: "Tâche 1.1",
+                                status: "Terminé",
+                                priority: "Moyenne",
+                                progress: 100,
+                                description: "Tâche terminée",
+                                children: []
+                            },
+                            {
+                                id: "1.2",
+                                title: "Tâche 1.2",
+                                status: "En cours",
+                                priority: "Haute",
+                                progress: 50,
+                                description: "Tâche en cours",
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        id: "2",
+                        title: "Section 2",
+                        status: "À faire",
+                        priority: "Basse",
+                        progress: 20,
+                        description: "Deuxième section de la roadmap",
+                        children: [
+                            {
+                                id: "2.1",
+                                title: "Tâche 2.1",
+                                status: "Bloqué",
+                                priority: "Critique",
+                                progress: 30,
+                                description: "Tâche bloquée",
+                                children: []
+                            }
+                        ]
+                    }
+                ]
+            };
+            
+            // Initialisation des variables
+            let width = document.querySelector('.visualization-container').clientWidth;
+            let height = document.querySelector('.visualization-container').clientHeight;
+            let currentZoom = 1;
+            let selectedNode = null;
+            
+            // Configuration
+            const margin = {top: 20, right: 90, bottom: 30, left: 90};
+            const nodeWidth = 200;
+            const nodeHeight = 80;
+            let orientation = "vertical";
+            
+            // Couleurs
+            const statusColors = {
+                "À faire": getComputedStyle(document.documentElement).getPropertyValue('--status-todo').trim(),
+                "En cours": getComputedStyle(document.documentElement).getPropertyValue('--status-in-progress').trim(),
+                "Bloqué": getComputedStyle(document.documentElement).getPropertyValue('--status-blocked').trim(),
+                "Terminé": getComputedStyle(document.documentElement).getPropertyValue('--status-done').trim()
+            };
+            
+            const priorityColors = {
+                "Basse": getComputedStyle(document.documentElement).getPropertyValue('--priority-low').trim(),
+                "Moyenne": getComputedStyle(document.documentElement).getPropertyValue('--priority-medium').trim(),
+                "Haute": getComputedStyle(document.documentElement).getPropertyValue('--priority-high').trim(),
+                "Critique": getComputedStyle(document.documentElement).getPropertyValue('--priority-critical').trim()
+            };
+            
+            // Créer le conteneur SVG
+            const svg = d3.select("#hierarchy-container")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .call(d3.zoom().on("zoom", function(event) {
+                    currentZoom = event.transform.k;
+                    g.attr("transform", event.transform);
+                    updateMinimap();
+                }))
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+            
+            const g = svg.append("g");
+            
+            // Créer la hiérarchie D3
+            const root = d3.hierarchy(sampleData);
+            
+            // Définir le layout de l'arbre
+            let treeLayout = d3.tree()
+                .size([width - margin.left - margin.right, height - margin.top - margin.bottom]);
+            
+            // Calculer les positions des nœuds
+            treeLayout(root);
+            
+            // Créer les liens entre les nœuds
+            const links = g.selectAll(".link")
+                .data(root.links())
+                .enter()
+                .append("path")
+                .attr("class", "link")
+                .attr("d", d3.linkVertical()
+                    .x(d => d.x)
+                    .y(d => d.y))
+                .attr("fill", "none")
+                .attr("stroke", "#ccc")
+                .attr("stroke-width", 1.5);
+            
+            // Créer les groupes de nœuds
+            const nodes = g.selectAll(".node")
+                .data(root.descendants())
+                .enter()
+                .append("g")
+                .attr("class", d => `node ${d.children ? "node--internal" : "node--leaf"}`)
+                .attr("transform", d => `translate(${d.x},${d.y})`)
+                .on("click", function(event, d) {
+                    // Sélectionner le nœud
+                    if (selectedNode) {
+                        d3.select(selectedNode)
+                            .select("rect")
+                            .attr("stroke-width", 2);
+                    }
+                    
+                    selectedNode = this;
+                    d3.select(this)
+                        .select("rect")
+                        .attr("stroke-width", 4);
+                    
+                    // Afficher les détails
+                    showDetails(d.data);
+                    
+                    // Toggle des enfants
+                    if (d.children) {
+                        d._children = d.children;
+                        d.children = null;
+                    } else if (d._children) {
+                        d.children = d._children;
+                        d._children = null;
+                    }
+                    
+                    update(d);
+                })
+                .on("mouseover", function(event, d) {
+                    // Afficher la tooltip
+                    const tooltip = d3.select(".tooltip");
+                    tooltip.transition()
+                        .duration(200)
+                        .style("opacity", 0.9);
+                    
+                    tooltip.html(`
+                        <h3>${d.data.id}: ${d.data.title}</h3>
+                        <p><strong>Statut:</strong> ${d.data.status}</p>
+                        <p><strong>Priorité:</strong> ${d.data.priority}</p>
+                        <p><strong>Progression:</strong> ${d.data.progress}%</p>
+                        <p>${d.data.description}</p>
+                    `)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function() {
+                    // Masquer la tooltip
+                    d3.select(".tooltip").transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
+            
+            // Ajouter les rectangles des nœuds
+            nodes.append("rect")
+                .attr("width", nodeWidth)
+                .attr("height", nodeHeight)
+                .attr("x", -nodeWidth / 2)
+                .attr("y", -nodeHeight / 2)
+                .attr("rx", 5)
+                .attr("ry", 5)
+                .attr("fill", d => statusColors[d.data.status] || "#ccc")
+                .attr("stroke", d => priorityColors[d.data.priority] || "#999")
+                .attr("stroke-width", 2);
+            
+            // Ajouter les identifiants
+            nodes.append("text")
+                .attr("x", -nodeWidth / 2 + 10)
+                .attr("y", -nodeHeight / 2 + 15)
+                .attr("font-size", "10px")
+                .attr("fill", "#666")
+                .text(d => d.data.id);
+            
+            // Ajouter les titres
+            nodes.append("text")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+                .attr("font-weight", "bold")
+                .attr("fill", "#333")
+                .text(d => {
+                    // Tronquer le titre s'il est trop long
+                    const maxLength = 25;
+                    return d.data.title.length > maxLength 
+                        ? d.data.title.substring(0, maxLength) + "..." 
+                        : d.data.title;
+                });
+            
+            // Ajouter les barres de progression
+            nodes.append("rect")
+                .attr("class", "progress-bar-bg")
+                .attr("width", nodeWidth - 20)
+                .attr("height", 5)
+                .attr("x", -nodeWidth / 2 + 10)
+                .attr("y", nodeHeight / 2 - 10)
+                .attr("rx", 2)
+                .attr("ry", 2)
+                .attr("fill", "#eee");
+            
+            nodes.append("rect")
+                .attr("class", "progress-bar")
+                .attr("width", d => (nodeWidth - 20) * (d.data.progress / 100))
+                .attr("height", 5)
+                .attr("x", -nodeWidth / 2 + 10)
+                .attr("y", nodeHeight / 2 - 10)
+                .attr("rx", 2)
+                .attr("ry", 2)
+                .attr("fill", d => {
+                    // Couleur basée sur la progression
+                    if (d.data.progress < 30) return "#E74C3C";
+                    if (d.data.progress < 70) return "#F5B041";
+                    return "#2ECC71";
+                });
+            
+            // Ajouter le pourcentage de progression
+            nodes.append("text")
+                .attr("x", nodeWidth / 2 - 25)
+                .attr("y", nodeHeight / 2 - 12)
+                .attr("font-size", "10px")
+                .attr("fill", "#666")
+                .text(d => `${d.data.progress}%`);
+            
+            // Fonction pour mettre à jour le diagramme
+            function update(source) {
+                // Recalculer le layout
+                treeLayout(root);
+                
+                // Mettre à jour les liens
+                links.data(root.links())
+                    .transition()
+                    .duration(750)
+                    .attr("d", orientation === "vertical" 
+                        ? d3.linkVertical().x(d => d.x).y(d => d.y)
+                        : d3.linkHorizontal().x(d => d.y).y(d => d.x));
+                
+                // Mettre à jour les nœuds
+                nodes.data(root.descendants())
+                    .transition()
+                    .duration(750)
+                    .attr("transform", d => orientation === "vertical"
+                        ? `translate(${d.x},${d.y})`
+                        : `translate(${d.y},${d.x})`);
+                
+                // Mettre à jour la minimap
+                updateMinimap();
+            }
+            
+            // Fonction pour afficher les détails d'un nœud
+            function showDetails(nodeData) {
+                const detailsPanel = document.querySelector('.details-panel');
+                detailsPanel.classList.remove('hidden');
+                
+                document.getElementById('details-title').textContent = `${nodeData.id}: ${nodeData.title}`;
+                
+                const content = document.getElementById('details-content');
+                content.innerHTML = `
+                    <p><strong>Statut:</strong> ${nodeData.status}</p>
+                    <p><strong>Priorité:</strong> ${nodeData.priority}</p>
+                    <p><strong>Progression:</strong> ${nodeData.progress}%</p>
+                    <p><strong>Description:</strong> ${nodeData.description}</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${nodeData.progress}%; background-color: ${
+                            nodeData.progress < 30 ? '#E74C3C' : 
+                            nodeData.progress < 70 ? '#F5B041' : 
+                            '#2ECC71'
+                        };"></div>
+                    </div>
+                `;
+                
+                if (nodeData.children && nodeData.children.length > 0) {
+                    content.innerHTML += `
+                        <h3>Sous-tâches (${nodeData.children.length})</h3>
+                        <ul>
+                            ${nodeData.children.map(child => `
+                                <li>${child.id}: ${child.title} - ${child.status} (${child.progress}%)</li>
+                            `).join('')}
+                        </ul>
+                    `;
+                }
+            }
+            
+            // Fonction pour mettre à jour la minimap
+            function updateMinimap() {
+                // À implémenter
+            }
+            
+            // Gestionnaires d'événements pour les contrôles
+            document.getElementById('toggle-details-btn').addEventListener('click', function() {
+                const detailsPanel = document.querySelector('.details-panel');
+                detailsPanel.classList.toggle('hidden');
+            });
+            
+            document.getElementById('orientation-vertical').addEventListener('change', function() {
+                if (this.checked) {
+                    orientation = "vertical";
+                    treeLayout = d3.tree()
+                        .size([width - margin.left - margin.right, height - margin.top - margin.bottom]);
+                    update(root);
+                }
+            });
+            
+            document.getElementById('orientation-horizontal').addEventListener('change', function() {
+                if (this.checked) {
+                    orientation = "horizontal";
+                    treeLayout = d3.tree()
+                        .size([height - margin.top - margin.bottom, width - margin.left - margin.right]);
+                    update(root);
+                }
+            });
+            
+            document.getElementById('zoom-in').addEventListener('click', function() {
+                svg.transition().call(
+                    d3.zoom().transform,
+                    d3.zoomIdentity.scale(currentZoom * 1.2)
+                );
+            });
+            
+            document.getElementById('zoom-out').addEventListener('click', function() {
+                svg.transition().call(
+                    d3.zoom().transform,
+                    d3.zoomIdentity.scale(currentZoom / 1.2)
+                );
+            });
+            
+            document.getElementById('zoom-reset').addEventListener('click', function() {
+                svg.transition().call(
+                    d3.zoom().transform,
+                    d3.zoomIdentity
+                );
+            });
+            
+            // Redimensionnement de la fenêtre
+            window.addEventListener('resize', function() {
+                width = document.querySelector('.visualization-container').clientWidth;
+                height = document.querySelector('.visualization-container').clientHeight;
+                
+                d3.select("#hierarchy-container svg")
+                    .attr("width", width)
+                    .attr("height", height);
+                
+                treeLayout = orientation === "vertical"
+                    ? d3.tree().size([width - margin.left - margin.right, height - margin.top - margin.bottom])
+                    : d3.tree().size([height - margin.top - margin.bottom, width - margin.left - margin.right]);
+                
+                update(root);
+            });
+            
+            // Initialiser la minimap
+            updateMinimap();
+        });
+    </script>
+</body>
+</html>

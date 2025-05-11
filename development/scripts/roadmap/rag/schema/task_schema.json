@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Roadmap Task Schema",
+  "description": "Schéma définissant la structure des tâches de roadmap pour le système RAG",
+  "type": "object",
+  "required": ["id", "title", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d+)*$",
+      "description": "Identifiant unique de la tâche, suivant le format de numérotation hiérarchique (ex: 1.1.2.3)"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Titre de la tâche"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["NotStarted", "InProgress", "Completed", "Blocked"],
+      "description": "Statut actuel de la tâche"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date et heure de création de la tâche (format ISO 8601)"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date et heure de dernière mise à jour de la tâche (format ISO 8601)"
+    },
+    "parentId": {
+      "type": ["string", "null"],
+      "pattern": "^\\d+(\\.\\d+)*$",
+      "description": "Identifiant de la tâche parente"
+    },
+    "description": {
+      "type": ["string", "null"],
+      "description": "Description détaillée de la tâche"
+    },
+    "dueDate": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Date d'échéance prévue (format ISO 8601)"
+    },
+    "startDate": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Date de début prévue ou réelle (format ISO 8601)"
+    },
+    "completionDate": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Date d'achèvement réelle (format ISO 8601)"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^\\d+(\\.\\d+)*$"
+      },
+      "description": "Liste des identifiants des tâches dont dépend cette tâche"
+    },
+    "subTasks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^\\d+(\\.\\d+)*$"
+      },
+      "description": "Liste des identifiants des sous-tâches"
+    },
+    "owner": {
+      "type": ["string", "null"],
+      "description": "Personne responsable de la tâche"
+    },
+    "assignees": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des personnes assignées à la tâche"
+    },
+    "progress": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Pourcentage de progression de la tâche (0-100)"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["Low", "Medium", "High", "Critical"],
+      "description": "Priorité de la tâche"
+    },
+    "complexity": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Niveau de complexité de la tâche (1-5)"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des tags associés à la tâche"
+    },
+    "category": {
+      "type": ["string", "null"],
+      "description": "Catégorie de la tâche"
+    },
+    "estimatedHours": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Temps estimé pour compléter la tâche (en heures)"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Métadonnées additionnelles pour la tâche",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

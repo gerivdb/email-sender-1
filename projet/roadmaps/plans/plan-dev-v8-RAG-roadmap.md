@@ -57,32 +57,32 @@
         - [x] **2.1.1.1.3.1** Créer le schéma JSON pour validation
         - [x] **2.1.1.1.3.2** Implémenter les fonctions de validation
         - [x] **2.1.1.1.3.3** Développer les mécanismes de correction automatique
-    - [ ] **2.1.1.2** Définir les champs obligatoires et optionnels
-      - [ ] **2.1.1.2.1** Établir la liste des champs obligatoires
-        - [ ] **2.1.1.2.1.1** Définir les identifiants uniques (ID, chemin)
-        - [ ] **2.1.1.2.1.2** Définir les champs de contenu (titre, description)
-        - [ ] **2.1.1.2.1.3** Définir les champs de statut (état, progression)
-      - [ ] **2.1.1.2.2** Établir la liste des champs optionnels
-        - [ ] **2.1.1.2.2.1** Définir les champs de planification (dates, durée)
-        - [ ] **2.1.1.2.2.2** Définir les champs de relations (dépendances, blocages)
-        - [ ] **2.1.1.2.2.3** Définir les champs d'attribution (responsable, équipe)
-      - [ ] **2.1.1.2.3** Développer le système de valeurs par défaut
-        - [ ] **2.1.1.2.3.1** Définir les valeurs par défaut pour chaque champ
-        - [ ] **2.1.1.2.3.2** Implémenter la logique d'initialisation
-        - [ ] **2.1.1.2.3.3** Créer les mécanismes d'héritage de valeurs
-    - [ ] **2.1.1.3** Établir les règles de normalisation
-      - [ ] **2.1.1.3.1** Définir les règles de normalisation textuelle
-        - [ ] **2.1.1.3.1.1** Standardiser la casse et la ponctuation
-        - [ ] **2.1.1.3.1.2** Normaliser les espaces et caractères spéciaux
-        - [ ] **2.1.1.3.1.3** Implémenter la gestion des encodages
-      - [ ] **2.1.1.3.2** Définir les règles de normalisation structurelle
-        - [ ] **2.1.1.3.2.1** Standardiser les formats de dates et durées
-        - [ ] **2.1.1.3.2.2** Normaliser les références et identifiants
-        - [ ] **2.1.1.3.2.3** Établir les règles de fusion de données
-      - [ ] **2.1.1.3.3** Développer les outils de normalisation automatique
-        - [ ] **2.1.1.3.3.1** Créer les fonctions de normalisation textuelle
-        - [ ] **2.1.1.3.3.2** Implémenter les fonctions de normalisation structurelle
-        - [ ] **2.1.1.3.3.3** Développer les mécanismes de détection d'anomalies
+    - [x] **2.1.1.2** Définir les champs obligatoires et optionnels
+      - [x] **2.1.1.2.1** Établir la liste des champs obligatoires
+        - [x] **2.1.1.2.1.1** Définir les identifiants uniques (ID, chemin)
+        - [x] **2.1.1.2.1.2** Définir les champs de contenu (titre, description)
+        - [x] **2.1.1.2.1.3** Définir les champs de statut (état, progression)
+      - [x] **2.1.1.2.2** Établir la liste des champs optionnels
+        - [x] **2.1.1.2.2.1** Définir les champs de planification (dates, durée)
+        - [x] **2.1.1.2.2.2** Définir les champs de relations (dépendances, blocages)
+        - [x] **2.1.1.2.2.3** Définir les champs d'attribution (responsable, équipe)
+      - [x] **2.1.1.2.3** Développer le système de valeurs par défaut
+        - [x] **2.1.1.2.3.1** Définir les valeurs par défaut pour chaque champ
+        - [x] **2.1.1.2.3.2** Implémenter la logique d'initialisation
+        - [x] **2.1.1.2.3.3** Créer les mécanismes d'héritage de valeurs
+    - [x] **2.1.1.3** Établir les règles de normalisation
+      - [x] **2.1.1.3.1** Définir les règles de normalisation textuelle
+        - [x] **2.1.1.3.1.1** Standardiser la casse et la ponctuation
+        - [x] **2.1.1.3.1.2** Normaliser les espaces et caractères spéciaux
+        - [x] **2.1.1.3.1.3** Implémenter la gestion des encodages
+      - [x] **2.1.1.3.2** Définir les règles de normalisation structurelle
+        - [x] **2.1.1.3.2.1** Standardiser les formats de dates et durées
+        - [x] **2.1.1.3.2.2** Normaliser les références et identifiants
+        - [x] **2.1.1.3.2.3** Établir les règles de fusion de données
+      - [x] **2.1.1.3.3** Développer les outils de normalisation automatique
+        - [x] **2.1.1.3.3.1** Créer les fonctions de normalisation textuelle
+        - [x] **2.1.1.3.3.2** Implémenter les fonctions de normalisation structurelle
+        - [x] **2.1.1.3.3.3** Développer les mécanismes de détection d'anomalies
   - [x] **2.1.2** Améliorer les algorithmes d'extraction de tâches
     - [x] **2.1.2.1** Développer un parser robuste pour les roadmaps markdown
       - [x] **2.1.2.1.1** Concevoir l'architecture du parser
@@ -228,6 +228,10 @@
         - [x] **2.2.2.2.1.1** Implémenter les filtres exacts (égalité)
         - [x] **2.2.2.2.1.2** Ajouter les filtres de plage (numérique, dates)
         - [x] **2.2.2.2.1.3** Développer les filtres textuels (contient, commence par)
+          - [x] **2.2.2.2.1.3.1** Implémenter le filtre CONTAINS pour la recherche de sous-chaînes
+          - [x] **2.2.2.2.1.3.2** Développer le filtre STARTS_WITH pour les préfixes
+          - [x] **2.2.2.2.1.3.3** Ajouter le filtre ENDS_WITH pour les suffixes
+          - [x] **2.2.2.2.1.3.4** Implémenter le filtre MATCHES pour les expressions régulières
       - [x] **2.2.2.2.2** Implémenter les combinaisons de filtres
         - [x] **2.2.2.2.2.1** Développer les opérateurs logiques (ET, OU, NON)
         - [x] **2.2.2.2.2.2** Implémenter les filtres imbriqués
@@ -421,6 +425,11 @@
             - [x] **2.3.3.1.1.3.2.1** Implémenter l'affichage console
             - [x] **2.3.3.1.1.3.2.2** Développer la génération de markdown
             - [x] **2.3.3.1.1.3.2.3** Créer la génération de HTML interactif
+            - [x] **2.3.3.1.1.3.2.4** Implémenter la prévisualisation des résultats
+              - [x] **2.3.3.1.1.3.2.4.1** Développer l'extraction de snippets de texte
+              - [x] **2.3.3.1.1.3.2.4.2** Implémenter la mise en évidence des termes de recherche
+              - [x] **2.3.3.1.1.3.2.4.3** Ajouter la génération de prévisualisations de documents
+              - [x] **2.3.3.1.1.3.2.4.4** Développer le formatage des prévisualisations (texte, HTML, JSON)
           - [x] **2.3.3.1.1.3.3** Ajouter les fonctionnalités d'export
             - [x] **2.3.3.1.1.3.3.1** Implémenter la sauvegarde des résultats
             - [x] **2.3.3.1.1.3.3.2** Développer l'export dans différents formats
@@ -750,43 +759,175 @@
                 - [x] **2.3.3.2.3.3.1.2.3.3** Implémenter les seuils de déclenchement adaptatifs
                 - [x] **2.3.3.2.3.3.1.2.3.4** Ajouter la classification des points par importance
                 - [x] **2.3.3.2.3.3.1.2.3.5** Développer l'apprentissage des patterns d'utilisation
-            - [ ] **2.3.3.2.3.3.1.3** Développer la rotation et l'expiration des points anciens
-              - [ ] **2.3.3.2.3.3.1.3.1** Implémenter les politiques de rétention
-                - [ ] **2.3.3.2.3.3.1.3.1.1** Développer la rétention basée sur le temps
-                - [ ] **2.3.3.2.3.3.1.3.1.2** Créer la rétention basée sur le nombre de versions
-                - [ ] **2.3.3.2.3.3.1.3.1.3** Implémenter la rétention basée sur l'importance
-                - [ ] **2.3.3.2.3.3.1.3.1.4** Ajouter la rétention basée sur l'utilisation
-                - [ ] **2.3.3.2.3.3.1.3.1.5** Développer les règles de rétention composites
-              - [ ] **2.3.3.2.3.3.1.3.2** Créer le système de nettoyage automatique
-                - [ ] **2.3.3.2.3.3.1.3.2.1** Développer le processus de nettoyage en arrière-plan
-                - [ ] **2.3.3.2.3.3.1.3.2.2** Implémenter la vérification de cohérence avant suppression
-                - [ ] **2.3.3.2.3.3.1.3.2.3** Ajouter la journalisation détaillée des suppressions
-                - [ ] **2.3.3.2.3.3.1.3.2.4** Créer le mécanisme de récupération d'urgence
-                - [ ] **2.3.3.2.3.3.1.3.2.5** Développer les notifications de nettoyage
-              - [ ] **2.3.3.2.3.3.1.3.3** Implémenter l'archivage des points expirés
-                - [ ] **2.3.3.2.3.3.1.3.3.1** Développer le système de compression d'archives
-                - [ ] **2.3.3.2.3.3.1.3.3.2** Créer le stockage hiérarchique par âge
-                - [ ] **2.3.3.2.3.3.1.3.3.3** Implémenter l'exportation vers stockage externe
+            - [x] **2.3.3.2.3.3.1.3** Développer la rotation et l'expiration des points anciens
+              - [x] **2.3.3.2.3.3.1.3.1** Implémenter les politiques de rétention
+                - [x] **2.3.3.2.3.3.1.3.1.1** Développer la rétention basée sur le temps
+                - [x] **2.3.3.2.3.3.1.3.1.2** Créer la rétention basée sur le nombre de versions
+                - [x] **2.3.3.2.3.3.1.3.1.3** Implémenter la rétention basée sur l'importance
+                - [x] **2.3.3.2.3.3.1.3.1.4** Ajouter la rétention basée sur l'utilisation
+                - [x] **2.3.3.2.3.3.1.3.1.5** Développer les règles de rétention composites
+              - [x] **2.3.3.2.3.3.1.3.2** Créer le système de nettoyage automatique
+                - [x] **2.3.3.2.3.3.1.3.2.1** Développer le processus de nettoyage en arrière-plan
+                - [x] **2.3.3.2.3.3.1.3.2.2** Implémenter la vérification de cohérence avant suppression
+                - [x] **2.3.3.2.3.3.1.3.2.3** Ajouter la journalisation détaillée des suppressions
+                - [x] **2.3.3.2.3.3.1.3.2.4** Créer le mécanisme de récupération d'urgence
+                - [x] **2.3.3.2.3.3.1.3.2.5** Développer les notifications de nettoyage
+              - [x] **2.3.3.2.3.3.1.3.3** Implémenter l'archivage des points expirés
+                - [x] **2.3.3.2.3.3.1.3.3.1** Développer le système de compression d'archives
+                - [x] **2.3.3.2.3.3.1.3.3.2** Créer le stockage hiérarchique par âge
+                - [x] **2.3.3.2.3.3.1.3.3.3** Implémenter l'exportation vers stockage externe
+                  - [x] **2.3.3.2.3.3.1.3.3.3.1** Développer les connecteurs pour différents types de stockage
+                    - [x] **2.3.3.2.3.3.1.3.3.3.1.1** Créer le connecteur pour stockage local/réseau (SMB/NFS)
+                    - [x] **2.3.3.2.3.3.1.3.3.3.1.2** Implémenter le connecteur pour stockage cloud (Azure/AWS/GCP)
+                    - [x] **2.3.3.2.3.3.1.3.3.3.1.3** Ajouter le connecteur pour FTP/SFTP
+                  - [x] **2.3.3.2.3.3.1.3.3.3.2** Créer le système de planification d'exportation
+                    - [x] **2.3.3.2.3.3.1.3.3.3.2.1** Développer la configuration des tâches planifiées
+                    - [x] **2.3.3.2.3.3.1.3.3.3.2.2** Implémenter le déclenchement manuel d'exportation
+                  - [x] **2.3.3.2.3.3.1.3.3.3.3** Ajouter la gestion des erreurs et reprises
+                    - [x] **2.3.3.2.3.3.1.3.3.3.3.1** Implémenter la détection des échecs de transfert
+                    - [x] **2.3.3.2.3.3.1.3.3.3.3.2** Créer le mécanisme de reprise après interruption
+                  - [x] **2.3.3.2.3.3.1.3.3.3.4** Développer la journalisation des exportations
+                    - [x] **2.3.3.2.3.3.1.3.3.3.4.1** Créer le format de journal d'exportation
+                    - [x] **2.3.3.2.3.3.1.3.3.3.4.2** Implémenter les alertes en cas d'échec
                 - [ ] **2.3.3.2.3.3.1.3.3.4** Ajouter l'indexation des archives pour recherche
-                - [ ] **2.3.3.2.3.3.1.3.3.5** Développer la restauration depuis les archives
-          - [ ] **2.3.3.2.3.3.2** Créer l'interface de restauration
-            - [ ] **2.3.3.2.3.3.2.1** Développer la visualisation des points disponibles
-              - [ ] **2.3.3.2.3.3.2.1.1** Créer la liste paginée des points de restauration
-              - [ ] **2.3.3.2.3.3.2.1.2** Implémenter les filtres par type, date et tags
-              - [ ] **2.3.3.2.3.3.2.1.3** Développer la vue détaillée d'un point de restauration
-              - [ ] **2.3.3.2.3.3.2.1.4** Ajouter la visualisation des dépendances
-              - [ ] **2.3.3.2.3.3.2.1.5** Créer la timeline interactive des points
-            - [ ] **2.3.3.2.3.3.2.2** Implémenter la comparaison entre points de restauration
-              - [ ] **2.3.3.2.3.3.2.2.1** Développer la sélection de points à comparer
-              - [ ] **2.3.3.2.3.3.2.2.2** Créer l'affichage côte à côte des configurations
-              - [ ] **2.3.3.2.3.3.2.2.3** Implémenter la mise en évidence des différences
-              - [ ] **2.3.3.2.3.3.2.2.4** Ajouter la comparaison structurelle des objets
-              - [ ] **2.3.3.2.3.3.2.2.5** Développer les statistiques de changement
+                  - [x] **2.3.3.2.3.3.1.3.3.4.1** Développer le système d'extraction de métadonnées
+                    - [x] **2.3.3.2.3.3.1.3.3.4.1.1** Créer l'extracteur de métadonnées des points de restauration
+                    - [x] **2.3.3.2.3.3.1.3.3.4.1.2** Implémenter la normalisation des données extraites
+                  - [ ] **2.3.3.2.3.3.1.3.3.4.2** Créer le moteur d'indexation
+                    - [x] **2.3.3.2.3.3.1.3.3.4.2.1** Développer la structure d'index optimisée
+                      - [x] **2.3.3.2.3.3.1.3.3.4.2.1.1** Concevoir le schéma d'index pour les métadonnées
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.1.1** Définir les champs indexables prioritaires
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.1.2** Créer la structure de mapping des champs
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.1.3** Définir les types de données et formats
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.1.4** Concevoir le schéma de stockage JSON
+                      - [x] **2.3.3.2.3.3.1.3.3.4.2.1.2** Implémenter les structures de données pour l'indexation
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.2.1** Créer les classes d'index principal
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.2.2** Développer les index inversés pour recherche
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.2.3** Implémenter les structures pour filtrage
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.2.4** Ajouter les mécanismes de tri et pagination
+                      - [x] **2.3.3.2.3.3.1.3.3.4.2.1.3** Créer les mécanismes de persistance d'index
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.3.1** Développer le système de sérialisation/désérialisation
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.3.2** Implémenter la gestion des fichiers d'index
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.3.3** Créer le mécanisme de segmentation d'index
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.3.4** Ajouter la gestion des transactions et verrouillage
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.3.5** Développer la récupération après crash
+                      - [x] **2.3.3.2.3.3.1.3.3.4.2.1.4** Optimiser les performances de recherche
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.4.1** Implémenter la mise en cache des résultats fréquents
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.4.2** Optimiser les algorithmes de recherche
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.4.3** Ajouter l'exécution parallèle des requêtes
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.4.4** Développer le préchargement intelligent des segments
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.1.4.5** Créer les métriques de performance
+                    - [x] **2.3.3.2.3.3.1.3.3.4.2.2** Implémenter l'indexation incrémentale
+                      - [x] **2.3.3.2.3.3.1.3.3.4.2.2.1** Développer la détection des changements
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.1.1** Créer le système de suivi des modifications
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.1.2** Implémenter la comparaison de signatures
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.1.3** Développer la détection de nouveaux fichiers
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.1.4** Ajouter la détection de fichiers modifiés
+                      - [x] **2.3.3.2.3.3.1.3.3.4.2.2.2** Créer le mécanisme de mise à jour partielle
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.2.1** Implémenter l'ajout incrémental de documents
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.2.2** Développer la mise à jour des documents existants
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.2.3** Créer le mécanisme de fusion des modifications
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.2.4** Optimiser les performances de mise à jour
+                      - [x] **2.3.3.2.3.3.1.3.3.4.2.2.3** Implémenter la gestion des suppressions
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.3.1** Développer le marquage des documents supprimés
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.3.2** Créer le nettoyage différé des documents supprimés
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.3.3** Implémenter la compaction des segments
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.3.4** Ajouter la récupération d'espace disque
+                      - [x] **2.3.3.2.3.3.1.3.3.4.2.2.4** Ajouter la journalisation des opérations d'indexation
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.4.1** Créer le format de journal d'indexation
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.4.2** Implémenter la rotation des journaux
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.4.3** Développer les statistiques d'indexation
+                        - [x] **2.3.3.2.3.3.1.3.3.4.2.2.4.4** Ajouter les alertes en cas d'erreur d'indexation
+                  - [ ] **2.3.3.2.3.3.1.3.3.4.3** Ajouter l'interface de recherche
+                    - [x] **2.3.3.2.3.3.1.3.3.4.3.1** Créer les filtres de recherche avancée
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.1.1** Développer les filtres par type de point
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.1.2** Implémenter les filtres par date
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.1.3** Ajouter les filtres par configuration
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.1.4** Créer les filtres par contenu
+                    - [x] **2.3.3.2.3.3.1.3.3.4.3.2** Implémenter la prévisualisation des résultats
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.2.1** Développer l'affichage des métadonnées principales
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.2.2** Créer la visualisation des configurations
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.2.3** Implémenter la navigation dans les résultats
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.2.4** Ajouter les options d'exportation des résultats
+                    - [x] **2.3.3.2.3.3.1.3.3.4.3.3** Implémenter la gestion des versions des documents
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.3.1** Développer le système de versionnement
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.3.1.1** Implémenter la création de versions
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.3.1.2** Ajouter la récupération de versions spécifiques
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.3.1.3** Développer la comparaison de versions
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.3.2** Créer l'interface de gestion des versions
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.3.2.1** Implémenter la visualisation des versions
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.3.2.2** Ajouter la restauration de versions
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.3.2.3** Développer la purge de l'historique des versions
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.3.3** Optimiser le stockage des versions
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.3.3.1** Implémenter la fonction Copy-PSObject pour la copie profonde
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.3.3.2** Développer la gestion efficace de la mémoire
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.3.3.3** Ajouter des tests de performance
+                    - [x] **2.3.3.2.3.3.1.3.3.4.3.4** Implémenter la gestion des étiquettes (tags) des documents
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.4.1** Développer le système d'étiquetage
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.4.1.1** Implémenter l'ajout d'étiquettes
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.4.1.2** Ajouter la suppression d'étiquettes
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.4.1.3** Développer la normalisation des étiquettes
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.4.2** Créer les fonctionnalités de recherche par étiquettes
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.4.2.1** Implémenter le filtrage par étiquettes (Any, All, None)
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.4.2.2** Ajouter l'extraction des étiquettes uniques
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.4.2.3** Développer le comptage des occurrences d'étiquettes
+                      - [x] **2.3.3.2.3.3.1.3.3.4.3.4.3** Implémenter la suggestion d'étiquettes
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.4.3.1** Développer l'extraction de mots-clés du contenu
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.4.3.2** Ajouter l'utilisation des documents similaires
+                        - [x] **2.3.3.2.3.3.1.3.3.4.3.4.3.3** Implémenter le système de score pour les suggestions
+                - [x] **2.3.3.2.3.3.1.3.3.5** Développer la restauration depuis les archives
+                  - [x] **2.3.3.2.3.3.1.3.3.5.1** Créer le système de localisation d'archives
+                    - [x] **2.3.3.2.3.3.1.3.3.5.1.1** Développer la recherche dans les index
+                      - [x] **2.3.3.2.3.3.1.3.3.5.1.1.1** Implémenter la fonction Find-ArchiveIndex
+                      - [x] **2.3.3.2.3.3.1.3.3.5.1.1.2** Développer le filtrage par date d'archive
+                      - [x] **2.3.3.2.3.3.1.3.3.5.1.1.3** Ajouter la recherche par métadonnées
+                      - [x] **2.3.3.2.3.3.1.3.3.5.1.1.4** Créer le système de cache des résultats
+                    - [x] **2.3.3.2.3.3.1.3.3.5.1.2** Implémenter la résolution des chemins d'archives
+                      - [x] **2.3.3.2.3.3.1.3.3.5.1.2.1** Développer la fonction Resolve-ArchivePath
+                      - [x] **2.3.3.2.3.3.1.3.3.5.1.2.2** Implémenter la validation des chemins
+                      - [x] **2.3.3.2.3.3.1.3.3.5.1.2.3** Ajouter la gestion des erreurs de résolution
+                      - [x] **2.3.3.2.3.3.1.3.3.5.1.2.4** Créer le système de résolution relative/absolue
+                  - [x] **2.3.3.2.3.3.1.3.3.5.2** Ajouter l'extraction sélective
+                    - [x] **2.3.3.2.3.3.1.3.3.5.2.1** Créer l'extraction de points spécifiques
+                      - [x] **2.3.3.2.3.3.1.3.3.5.2.1.1** Développer la fonction Extract-ArchiveItem
+                      - [x] **2.3.3.2.3.3.1.3.3.5.2.1.2** Implémenter l'extraction par identifiant
+                      - [x] **2.3.3.2.3.3.1.3.3.5.2.1.3** Ajouter l'extraction par chemin
+                      - [x] **2.3.3.2.3.3.1.3.3.5.2.1.4** Créer le système de filtrage d'extraction
+                    - [x] **2.3.3.2.3.3.1.3.3.5.2.2** Implémenter la validation avant restauration
+                      - [x] **2.3.3.2.3.3.1.3.3.5.2.2.1** Développer la fonction Test-RestoreValidity
+                      - [x] **2.3.3.2.3.3.1.3.3.5.2.2.2** Implémenter la vérification d'intégrité
+                      - [x] **2.3.3.2.3.3.1.3.3.5.2.2.3** Ajouter la détection de conflits
+                      - [x] **2.3.3.2.3.3.1.3.3.5.2.2.4** Créer le rapport de validation
+                  - [x] **2.3.3.2.3.3.1.3.3.5.3** Développer la restauration vers emplacement alternatif
+                    - [x] **2.3.3.2.3.3.1.3.3.5.3.1** Créer le système de redirection de restauration
+                      - [x] **2.3.3.2.3.3.1.3.3.5.3.1.1** Développer la fonction Restore-ToAlternateLocation
+                      - [x] **2.3.3.2.3.3.1.3.3.5.3.1.2** Implémenter la transformation des chemins
+                      - [x] **2.3.3.2.3.3.1.3.3.5.3.1.3** Ajouter la gestion des permissions
+                      - [x] **2.3.3.2.3.3.1.3.3.5.3.1.4** Créer le système de journalisation des redirections
+                    - [x] **2.3.3.2.3.3.1.3.3.5.3.2** Implémenter la résolution des conflits
+                      - [x] **2.3.3.2.3.3.1.3.3.5.3.2.1** Développer la fonction Resolve-RestoreConflict
+                      - [x] **2.3.3.2.3.3.1.3.3.5.3.2.2** Implémenter les stratégies de résolution (Skip, Overwrite, Rename)
+                      - [x] **2.3.3.2.3.3.1.3.3.5.3.2.3** Ajouter l'interface interactive de résolution
+                      - [x] **2.3.3.2.3.3.1.3.3.5.3.2.4** Créer le rapport de résolution des conflits
+          - [x] **2.3.3.2.3.3.1** Développer le mécanisme de restauration
+          - [x] **2.3.3.2.3.3.2** Créer l'interface de restauration
+            - [x] **2.3.3.2.3.3.2.1** Développer la visualisation des points disponibles
+              - [x] **2.3.3.2.3.3.2.1.1** Créer la liste paginée des points de restauration
+              - [x] **2.3.3.2.3.3.2.1.2** Implémenter les filtres par type, date et tags
+              - [x] **2.3.3.2.3.3.2.1.3** Développer la vue détaillée d'un point de restauration
+              - [x] **2.3.3.2.3.3.2.1.4** Ajouter la visualisation des dépendances
+              - [x] **2.3.3.2.3.3.2.1.5** Créer la timeline interactive des points
+            - [x] **2.3.3.2.3.3.2.2** Implémenter la comparaison entre points de restauration
+              - [x] **2.3.3.2.3.3.2.2.1** Développer la sélection de points à comparer
+              - [x] **2.3.3.2.3.3.2.2.2** Créer l'affichage côte à côte des configurations
+              - [x] **2.3.3.2.3.3.2.2.3** Implémenter la mise en évidence des différences
+              - [x] **2.3.3.2.3.3.2.2.4** Ajouter la comparaison structurelle des objets
+              - [x] **2.3.3.2.3.3.2.2.5** Développer les statistiques de changement
             - [ ] **2.3.3.2.3.3.2.3** Ajouter la restauration sélective par configuration
               - [ ] **2.3.3.2.3.3.2.3.1** Développer la sélection granulaire des éléments
               - [ ] **2.3.3.2.3.3.2.3.2** Créer la prévisualisation des effets de restauration
               - [ ] **2.3.3.2.3.3.2.3.3** Implémenter la résolution des conflits
-              - [ ] **2.3.3.2.3.3.2.3.4** Ajouter la validation de cohérence post-restauration
+              - [x] **2.3.3.2.3.3.2.3.4** Ajouter la validation de cohérence post-restauration
               - [ ] **2.3.3.2.3.3.2.3.5** Développer l'annulation de restauration
             - [ ] **2.3.3.2.3.3.2.4** Développer la restauration complète d'un état
               - [ ] **2.3.3.2.3.3.2.4.1** Créer le processus de sauvegarde préalable
@@ -794,12 +935,12 @@
               - [ ] **2.3.3.2.3.3.2.4.3** Développer la gestion des erreurs de restauration
               - [ ] **2.3.3.2.3.3.2.4.4** Ajouter le mode de restauration en arrière-plan
               - [ ] **2.3.3.2.3.3.2.4.5** Créer le rapport détaillé de restauration
-            - [ ] **2.3.3.2.3.3.2.5** Implémenter les vérifications de cohérence
-              - [ ] **2.3.3.2.3.3.2.5.1** Développer la validation des dépendances
-              - [ ] **2.3.3.2.3.3.2.5.2** Créer la vérification d'intégrité des données
-              - [ ] **2.3.3.2.3.3.2.5.3** Implémenter les tests de compatibilité de version
-              - [ ] **2.3.3.2.3.3.2.5.4** Ajouter la détection des références circulaires
-              - [ ] **2.3.3.2.3.3.2.5.5** Développer les alertes de risque
+            - [x] **2.3.3.2.3.3.2.5** Implémenter les vérifications de cohérence
+              - [x] **2.3.3.2.3.3.2.5.1** Développer la validation des dépendances
+              - [x] **2.3.3.2.3.3.2.5.2** Créer la vérification d'intégrité des données
+              - [x] **2.3.3.2.3.3.2.5.3** Implémenter les tests de compatibilité de version
+              - [x] **2.3.3.2.3.3.2.5.4** Ajouter la détection des références circulaires
+              - [x] **2.3.3.2.3.3.2.5.5** Développer les alertes de risque
 
           - [ ] **2.3.3.2.3.3.3** Intégrer avec le système de versionnement Git
             - [ ] **2.3.3.2.3.3.3.1** Synchroniser les points de restauration avec les commits
@@ -990,33 +1131,289 @@
             - [ ] **2.3.3.3.3.3.3.3** Ajouter la génération de rapports de sécurité
 
 ## 3. Visualisation graphique de la roadmap
-- [ ] **3.1** Concevoir les visualisations graphiques
-  - [ ] **3.1.1** Définir les types de visualisations nécessaires
-    - [ ] **3.1.1.1** Diagramme hiérarchique (arborescence)
-    - [ ] **3.1.1.2** Diagramme de Gantt simplifié
-    - [ ] **3.1.1.3** Graphe de dépendances
-    - [ ] **3.1.1.4** Carte de chaleur des priorités
-  - [ ] **3.1.2** Sélectionner les technologies de visualisation
-    - [ ] **3.1.2.1** Évaluer les options (D3.js, Mermaid, Chart.js)
-    - [ ] **3.1.2.2** Définir les critères d'interactivité
-    - [ ] **3.1.2.3** Établir les standards de rendu
-  - [ ] **3.1.3** Concevoir l'interface utilisateur
-    - [ ] **3.1.3.1** Maquetter les écrans principaux
-    - [ ] **3.1.3.2** Définir les interactions utilisateur
-    - [ ] **3.1.3.3** Concevoir les contrôles de filtrage et navigation
+- [x] **3.1** Concevoir les visualisations graphiques
+  - [x] **3.1.1** Définir les types de visualisations nécessaires
+    - [x] **3.1.1.1** Diagramme hiérarchique (arborescence)
+      - [x] **3.1.1.1.1** Définir les caractéristiques clés du diagramme hiérarchique
+        - [x] **3.1.1.1.1.1** Spécifier la représentation des nœuds et branches
+        - [x] **3.1.1.1.1.2** Définir les indicateurs visuels de statut et priorité
+        - [x] **3.1.1.1.1.3** Établir les règles de pliage/dépliage des branches
+      - [x] **3.1.1.1.2** Identifier les métadonnées à afficher
+        - [x] **3.1.1.1.2.1** Déterminer les informations essentielles par nœud
+        - [x] **3.1.1.1.2.2** Définir les informations contextuelles au survol
+        - [x] **3.1.1.1.2.3** Spécifier les indicateurs de progression
+      - [x] **3.1.1.1.3** Documenter les cas d'utilisation spécifiques
+        - [x] **3.1.1.1.3.1** Décrire le cas d'utilisation de vue d'ensemble
+        - [x] **3.1.1.1.3.2** Détailler le cas d'utilisation de navigation hiérarchique
+        - [x] **3.1.1.1.3.3** Spécifier le cas d'utilisation d'analyse de structure
+    - [x] **3.1.1.2** Diagramme de Gantt simplifié
+      - [x] **3.1.1.2.1** Définir les caractéristiques clés du diagramme de Gantt
+        - [x] **3.1.1.2.1.1** Spécifier la représentation de l'axe temporel
+        - [x] **3.1.1.2.1.2** Définir la visualisation des barres de tâches
+        - [x] **3.1.1.2.1.3** Établir la représentation des dépendances
+      - [x] **3.1.1.2.2** Identifier les métadonnées à afficher
+        - [x] **3.1.1.2.2.1** Déterminer les informations essentielles par tâche
+        - [x] **3.1.1.2.2.2** Définir les indicateurs de progression
+        - [x] **3.1.1.2.2.3** Spécifier les informations de retard/avance
+      - [x] **3.1.1.2.3** Documenter les cas d'utilisation spécifiques
+        - [x] **3.1.1.2.3.1** Décrire le cas d'utilisation de planification
+        - [x] **3.1.1.2.3.2** Détailler le cas d'utilisation de suivi d'avancement
+        - [x] **3.1.1.2.3.3** Spécifier le cas d'utilisation d'analyse de chemin critique
+    - [x] **3.1.1.3** Graphe de dépendances
+      - [x] **3.1.1.3.1** Définir les caractéristiques clés du graphe de dépendances
+        - [x] **3.1.1.3.1.1** Spécifier la représentation des nœuds
+        - [x] **3.1.1.3.1.2** Définir la visualisation des relations
+        - [x] **3.1.1.3.1.3** Établir les indicateurs de dépendances problématiques
+      - [x] **3.1.1.3.2** Identifier les métadonnées à afficher
+        - [x] **3.1.1.3.2.1** Déterminer les informations essentielles par nœud
+        - [x] **3.1.1.3.2.2** Définir les informations sur les relations
+        - [x] **3.1.1.3.2.3** Spécifier les indicateurs de blocage
+      - [x] **3.1.1.3.3** Documenter les cas d'utilisation spécifiques
+        - [x] **3.1.1.3.3.1** Décrire le cas d'utilisation d'analyse de dépendances
+        - [x] **3.1.1.3.3.2** Détailler le cas d'utilisation d'identification de blocages
+        - [x] **3.1.1.3.3.3** Spécifier le cas d'utilisation de planification d'exécution
+    - [x] **3.1.1.4** Carte de chaleur des priorités
+      - [x] **3.1.1.4.1** Définir les caractéristiques clés de la carte de chaleur
+        - [x] **3.1.1.4.1.1** Spécifier la représentation des zones de priorité
+        - [x] **3.1.1.4.1.2** Définir l'échelle de couleurs et la légende
+        - [x] **3.1.1.4.1.3** Établir les règles de regroupement des tâches
+      - [x] **3.1.1.4.2** Identifier les métadonnées à afficher
+        - [x] **3.1.1.4.2.1** Déterminer les informations essentielles par zone
+        - [x] **3.1.1.4.2.2** Définir les indicateurs de concentration
+        - [x] **3.1.1.4.2.3** Spécifier les informations contextuelles
+      - [x] **3.1.1.4.3** Documenter les cas d'utilisation spécifiques
+        - [x] **3.1.1.4.3.1** Décrire le cas d'utilisation d'identification des priorités
+        - [x] **3.1.1.4.3.2** Détailler le cas d'utilisation d'allocation de ressources
+        - [x] **3.1.1.4.3.3** Spécifier le cas d'utilisation de communication aux parties prenantes
+  - [x] **3.1.2** Sélectionner les technologies de visualisation
+    - [x] **3.1.2.1** Évaluer les options (D3.js, Mermaid, Chart.js)
+      - [x] **3.1.2.1.1** Analyser D3.js
+        - [x] **3.1.2.1.1.1** Évaluer les capacités et limites pour chaque type de visualisation
+        - [x] **3.1.2.1.1.2** Estimer la complexité d'implémentation
+        - [x] **3.1.2.1.1.3** Identifier les exemples et ressources disponibles
+      - [x] **3.1.2.1.2** Analyser Mermaid
+        - [x] **3.1.2.1.2.1** Évaluer les capacités et limites pour chaque type de visualisation
+        - [x] **3.1.2.1.2.2** Estimer la complexité d'implémentation
+        - [x] **3.1.2.1.2.3** Identifier les exemples et ressources disponibles
+      - [x] **3.1.2.1.3** Analyser Chart.js
+        - [x] **3.1.2.1.3.1** Évaluer les capacités et limites pour chaque type de visualisation
+        - [x] **3.1.2.1.3.2** Estimer la complexité d'implémentation
+        - [x] **3.1.2.1.3.3** Identifier les exemples et ressources disponibles
+      - [x] **3.1.2.1.4** Comparer les performances
+        - [x] **3.1.2.1.4.1** Définir les métriques de performance à évaluer
+        - [x] **3.1.2.1.4.2** Réaliser des tests comparatifs
+        - [x] **3.1.2.1.4.3** Analyser les résultats et formuler des recommandations
+    - [x] **3.1.2.2** Définir les critères d'interactivité
+      - [x] **3.1.2.2.1** Identifier les fonctionnalités interactives essentielles
+        - [x] **3.1.2.2.1.1** Spécifier les fonctionnalités de zoom et navigation
+        - [x] **3.1.2.2.1.2** Définir les interactions de filtrage et sélection
+        - [x] **3.1.2.2.1.3** Établir les comportements de survol et clic
+      - [x] **3.1.2.2.2** Définir les niveaux d'interactivité
+        - [x] **3.1.2.2.2.1** Spécifier le niveau d'interactivité basique
+        - [x] **3.1.2.2.2.2** Définir le niveau d'interactivité intermédiaire
+        - [x] **3.1.2.2.2.3** Établir le niveau d'interactivité avancé
+      - [x] **3.1.2.2.3** Documenter les exigences techniques
+        - [x] **3.1.2.2.3.1** Identifier les dépendances techniques
+        - [x] **3.1.2.2.3.2** Définir les contraintes de performance
+        - [x] **3.1.2.2.3.3** Spécifier les exigences de compatibilité
+    - [x] **3.1.2.3** Établir les standards de rendu
+      - [x] **3.1.2.3.1** Définir la palette de couleurs
+        - [x] **3.1.2.3.1.1** Spécifier les couleurs pour les statuts
+        - [x] **3.1.2.3.1.2** Définir les couleurs pour les priorités
+        - [x] **3.1.2.3.1.3** Établir les règles de contraste et accessibilité
+      - [x] **3.1.2.3.2** Définir les standards typographiques
+        - [x] **3.1.2.3.2.1** Spécifier les polices et tailles
+        - [x] **3.1.2.3.2.2** Définir la hiérarchie visuelle
+        - [x] **3.1.2.3.2.3** Établir les règles de lisibilité
+      - [x] **3.1.2.3.3** Définir les standards d'accessibilité
+        - [x] **3.1.2.3.3.1** Spécifier les exigences de contraste
+        - [x] **3.1.2.3.3.2** Définir les alternatives textuelles
+        - [x] **3.1.2.3.3.3** Établir les règles de navigation au clavier
+  - [x] **3.1.3** Concevoir l'interface utilisateur
+    - [x] **3.1.3.1** Maquetter les écrans principaux
+      - [x] **3.1.3.1.1** Concevoir le dashboard de visualisation
+        - [x] **3.1.3.1.1.1** Créer la maquette du sélecteur de visualisation
+        - [x] **3.1.3.1.1.2** Concevoir la zone principale de visualisation
+        - [x] **3.1.3.1.1.3** Définir le panneau de contrôles et filtres
+      - [x] **3.1.3.1.2** Concevoir la vue détaillée
+        - [x] **3.1.3.1.2.1** Créer la maquette de visualisation plein écran
+        - [x] **3.1.3.1.2.2** Concevoir le panneau latéral de détails
+        - [x] **3.1.3.1.2.3** Définir les contrôles d'interaction avancés
+      - [x] **3.1.3.1.3** Concevoir le mode comparaison
+        - [x] **3.1.3.1.3.1** Créer la maquette d'affichage côte à côte
+        - [x] **3.1.3.1.3.2** Concevoir les contrôles synchronisés
+        - [x] **3.1.3.1.3.3** Définir les indicateurs de différences
+    - [x] **3.1.3.2** Définir les interactions utilisateur
+      - [x] **3.1.3.2.1** Spécifier les interactions de navigation
+        - [x] **3.1.3.2.1.1** Définir les contrôles de zoom et déplacement
+        - [x] **3.1.3.2.1.2** Spécifier les interactions de sélection
+        - [x] **3.1.3.2.1.3** Établir les comportements d'expansion/réduction
+      - [x] **3.1.3.2.2** Spécifier les interactions de filtrage
+        - [x] **3.1.3.2.2.1** Définir les contrôles de filtrage contextuel
+        - [x] **3.1.3.2.2.2** Spécifier la gestion des préréglages
+        - [x] **3.1.3.2.2.3** Établir l'historique des configurations
+      - [x] **3.1.3.2.3** Spécifier les interactions d'export et partage
+        - [x] **3.1.3.2.3.1** Définir les options d'export (PNG, SVG, PDF)
+        - [x] **3.1.3.2.3.2** Spécifier la génération de liens partageables
+        - [x] **3.1.3.2.3.3** Établir les mécanismes d'intégration
+    - [x] **3.1.3.3** Concevoir les contrôles de filtrage et navigation
+      - [x] **3.1.3.3.1** Définir les contrôles de filtrage
+        - [x] **3.1.3.3.1.1** Concevoir les filtres par statut
+        - [x] **3.1.3.3.1.2** Définir les filtres par priorité
+        - [x] **3.1.3.3.1.3** Établir les filtres par domaine et catégorie
+      - [x] **3.1.3.3.2** Définir les contrôles de navigation
+        - [x] **3.1.3.3.2.1** Concevoir les contrôles de zoom et pan
+        - [x] **3.1.3.3.2.2** Définir la navigation hiérarchique
+        - [x] **3.1.3.3.2.3** Établir les raccourcis de navigation
+      - [x] **3.1.3.3.3** Définir les contrôles de personnalisation
+        - [x] **3.1.3.3.3.1** Concevoir les options de personnalisation visuelle
+        - [x] **3.1.3.3.3.2** Définir les préférences utilisateur
+        - [x] **3.1.3.3.3.3** Établir le système de sauvegarde des configurations
 - [ ] **3.2** Développer les générateurs de visualisations
   - [ ] **3.2.1** Implémenter le générateur de diagrammes hiérarchiques
-    - [ ] **3.2.1.1** Développer l'algorithme de conversion
+    - [x] **3.2.1.1** Développer l'algorithme de conversion
+      - [x] **3.2.1.1.1** Créer la structure de données hiérarchique
+        - [x] **3.2.1.1.1.1** Définir la classe HierarchicalNode
+        - [x] **3.2.1.1.1.2** Implémenter les méthodes de manipulation (ajout, suppression)
+        - [x] **3.2.1.1.1.3** Ajouter les méthodes de calcul (progression, statistiques)
+      - [x] **3.2.1.1.2** Développer le convertisseur Roadmap vers hiérarchie
+        - [x] **3.2.1.1.2.1** Implémenter l'analyse des tâches et sous-tâches
+        - [x] **3.2.1.1.2.2** Ajouter la gestion des statuts et priorités
+        - [x] **3.2.1.1.2.3** Gérer les métadonnées et informations contextuelles
+      - [x] **3.2.1.1.3** Créer les convertisseurs vers formats de visualisation
+        - [x] **3.2.1.1.3.1** Développer le convertisseur vers D3.js
+        - [x] **3.2.1.1.3.2** Développer le convertisseur vers Mermaid
+        - [x] **3.2.1.1.3.3** Ajouter les options de personnalisation
     - [ ] **3.2.1.2** Implémenter le rendu interactif
+      - [x] **3.2.1.2.1** Développer les templates HTML/JS
+        - [x] **3.2.1.2.1.1** Créer le template de base avec conteneur SVG
+        - [x] **3.2.1.2.1.2** Ajouter les styles CSS et thèmes
+        - [x] **3.2.1.2.1.3** Implémenter le chargement dynamique des données
+          - [x] **3.2.1.2.1.3.1** Créer le module de chargement AJAX
+          - [x] **3.2.1.2.1.3.2** Développer le système de mise à jour incrémentale
+          - [x] **3.2.1.2.1.3.3** Implémenter la gestion des erreurs et états de chargement
+          - [x] **3.2.1.2.1.3.4** Ajouter le support pour différentes sources de données
+      - [x] **3.2.1.2.2** Implémenter les interactions de base
+        - [x] **3.2.1.2.2.1** Ajouter la sélection de nœuds
+        - [x] **3.2.1.2.2.2** Implémenter l'expansion/réduction des branches
+        - [x] **3.2.1.2.2.3** Développer les infobulles détaillées
+      - [ ] **3.2.1.2.3** Créer le système d'événements et callbacks
+        - [x] **3.2.1.2.3.1** Implémenter les gestionnaires d'événements
+          - [x] **3.2.1.2.3.1.1** Créer la classe EventManager
+          - [x] **3.2.1.2.3.1.2** Implémenter les méthodes d'abonnement et désabonnement
+          - [x] **3.2.1.2.3.1.3** Développer le système de propagation d'événements
+          - [x] **3.2.1.2.3.1.4** Ajouter la gestion des événements standard (clic, survol, etc.)
+        - [x] **3.2.1.2.3.2** Ajouter le système de callbacks personnalisables
+          - [x] **3.2.1.2.3.2.1** Créer le registre de callbacks
+          - [x] **3.2.1.2.3.2.2** Implémenter les mécanismes d'invocation
+          - [x] **3.2.1.2.3.2.3** Développer la gestion des erreurs et timeouts
+          - [x] **3.2.1.2.3.2.4** Ajouter le support pour les callbacks asynchrones
+        - [ ] **3.2.1.2.3.3** Développer la communication bidirectionnelle
+          - [x] **3.2.1.2.3.3.1** Créer le système de messages entre composants
+          - [x] **3.2.1.2.3.3.2** Implémenter le bus d'événements centralisé
+          - [ ] **3.2.1.2.3.3.3** Développer les mécanismes de synchronisation
+            - [ ] **3.2.1.2.3.3.3.1** Créer la classe SynchronizationManager
+            - [ ] **3.2.1.2.3.3.3.2** Implémenter les verrous distribués
+            - [ ] **3.2.1.2.3.3.3.3** Développer le système de transactions
+            - [ ] **3.2.1.2.3.3.3.4** Ajouter la gestion des conflits
+          - [ ] **3.2.1.2.3.3.4** Ajouter l'API de communication externe
+            - [ ] **3.2.1.2.3.3.4.1** Créer l'interface d'API publique
+            - [ ] **3.2.1.2.3.3.4.2** Implémenter les méthodes d'accès aux données
+            - [ ] **3.2.1.2.3.3.4.3** Développer les mécanismes de sécurité
+            - [ ] **3.2.1.2.3.3.4.4** Ajouter la documentation de l'API
     - [ ] **3.2.1.3** Ajouter les fonctionnalités de zoom et filtrage
+      - [ ] **3.2.1.3.1** Implémenter le système de zoom
+        - [ ] **3.2.1.3.1.1** Développer le zoom géométrique (agrandissement)
+        - [ ] **3.2.1.3.1.2** Ajouter le zoom sémantique (niveau de détail)
+        - [ ] **3.2.1.3.1.3** Créer les contrôles de zoom (boutons, molette)
+      - [ ] **3.2.1.3.2** Développer le système de filtrage
+        - [ ] **3.2.1.3.2.1** Implémenter le filtrage par statut
+        - [ ] **3.2.1.3.2.2** Ajouter le filtrage par priorité
+        - [ ] **3.2.1.3.2.3** Développer le filtrage textuel et par attributs
+      - [ ] **3.2.1.3.3** Créer les contrôles de navigation avancée
+        - [ ] **3.2.1.3.3.1** Implémenter la minimap de navigation
+        - [ ] **3.2.1.3.3.2** Ajouter l'historique de navigation
+        - [ ] **3.2.1.3.3.3** Développer les raccourcis clavier
   - [ ] **3.2.2** Implémenter le générateur de diagrammes de Gantt
     - [ ] **3.2.2.1** Développer l'extraction des données temporelles
+      - [ ] **3.2.2.1.1** Créer le système d'analyse de dates
+        - [ ] **3.2.2.1.1.1** Implémenter la détection de dates dans le texte
+        - [ ] **3.2.2.1.1.2** Développer l'extraction des durées et délais
+        - [ ] **3.2.2.1.1.3** Ajouter la gestion des formats de date personnalisés
+      - [ ] **3.2.2.1.2** Développer l'analyse des dépendances temporelles
+        - [ ] **3.2.2.1.2.1** Implémenter la détection des relations fin-début
+        - [ ] **3.2.2.1.2.2** Ajouter la gestion des délais entre tâches
+        - [ ] **3.2.2.1.2.3** Développer l'analyse des chemins critiques
+      - [ ] **3.2.2.1.3** Créer le modèle de données temporelles
+        - [ ] **3.2.2.1.3.1** Définir la classe GanttTask
+        - [ ] **3.2.2.1.3.2** Implémenter les méthodes de calcul de dates
+        - [ ] **3.2.2.1.3.3** Ajouter les fonctions de validation et normalisation
     - [ ] **3.2.2.2** Implémenter le rendu du diagramme
+      - [ ] **3.2.2.2.1** Développer le générateur de code pour D3.js
+        - [ ] **3.2.2.2.1.1** Créer le système d'échelle temporelle
+        - [ ] **3.2.2.2.1.2** Implémenter le rendu des barres de tâches
+        - [ ] **3.2.2.2.1.3** Ajouter la visualisation des dépendances
+      - [ ] **3.2.2.2.2** Développer le générateur pour Mermaid
+        - [ ] **3.2.2.2.2.1** Implémenter la syntaxe de diagramme Gantt
+        - [ ] **3.2.2.2.2.2** Ajouter la gestion des sections et groupes
+        - [ ] **3.2.2.2.2.3** Développer les options de personnalisation
+      - [ ] **3.2.2.2.3** Créer les styles et thèmes visuels
+        - [ ] **3.2.2.2.3.1** Développer les styles par défaut
+        - [ ] **3.2.2.2.3.2** Ajouter les thèmes clair et sombre
+        - [ ] **3.2.2.2.3.3** Implémenter les styles par statut et priorité
     - [ ] **3.2.2.3** Ajouter les fonctionnalités de navigation temporelle
+      - [ ] **3.2.2.3.1** Implémenter le zoom temporel
+        - [ ] **3.2.2.3.1.1** Développer les niveaux de granularité (jour, semaine, mois)
+        - [ ] **3.2.2.3.1.2** Ajouter les contrôles de zoom temporel
+        - [ ] **3.2.2.3.1.3** Implémenter l'ajustement automatique de l'échelle
+      - [ ] **3.2.2.3.2** Développer les fonctionnalités de filtrage temporel
+        - [ ] **3.2.2.3.2.1** Créer le filtrage par période
+        - [ ] **3.2.2.3.2.2** Ajouter le filtrage par jalon
+        - [ ] **3.2.2.3.2.3** Implémenter le filtrage par statut d'avancement
+      - [ ] **3.2.2.3.3** Créer les outils d'analyse temporelle
+        - [ ] **3.2.2.3.3.1** Développer la visualisation du chemin critique
+        - [ ] **3.2.2.3.3.2** Ajouter l'analyse des marges et retards
+        - [ ] **3.2.2.3.3.3** Implémenter la comparaison prévu/réel
   - [ ] **3.2.3** Implémenter le générateur de graphes de dépendances
     - [ ] **3.2.3.1** Développer l'algorithme d'extraction des dépendances
+      - [ ] **3.2.3.1.1** Créer le système d'analyse de relations
+        - [ ] **3.2.3.1.1.1** Implémenter la détection des dépendances explicites
+        - [ ] **3.2.3.1.1.2** Développer l'inférence des dépendances implicites
+        - [ ] **3.2.3.1.1.3** Ajouter la classification des types de dépendances
+      - [ ] **3.2.3.1.2** Développer l'analyse de graphe
+        - [ ] **3.2.3.1.2.1** Implémenter la détection des cycles
+        - [ ] **3.2.3.1.2.2** Ajouter l'identification des nœuds critiques
+        - [ ] **3.2.3.1.2.3** Développer le calcul des métriques de centralité
+      - [ ] **3.2.3.1.3** Créer le modèle de données de graphe
+        - [ ] **3.2.3.1.3.1** Définir les classes Node et Edge
+        - [ ] **3.2.3.1.3.2** Implémenter les algorithmes de parcours
+        - [ ] **3.2.3.1.3.3** Ajouter les méthodes d'analyse et transformation
     - [ ] **3.2.3.2** Implémenter le rendu du graphe
+      - [ ] **3.2.3.2.1** Développer le générateur pour D3.js force-directed
+        - [ ] **3.2.3.2.1.1** Implémenter la simulation de forces
+        - [ ] **3.2.3.2.1.2** Ajouter le rendu des nœuds et liens
+        - [ ] **3.2.3.2.1.3** Développer les interactions de base
+      - [ ] **3.2.3.2.2** Créer le générateur pour layout hiérarchique
+        - [ ] **3.2.3.2.2.1** Implémenter l'algorithme de Sugiyama
+        - [ ] **3.2.3.2.2.2** Ajouter l'optimisation des croisements
+        - [ ] **3.2.3.2.2.3** Développer le positionnement des étiquettes
+      - [ ] **3.2.3.2.3** Développer les styles visuels pour les dépendances
+        - [ ] **3.2.3.2.3.1** Créer les styles pour les différents types de relations
+        - [ ] **3.2.3.2.3.2** Implémenter les indicateurs visuels de problèmes
+        - [ ] **3.2.3.2.3.3** Ajouter les styles pour les chemins et cycles
     - [ ] **3.2.3.3** Ajouter les fonctionnalités d'analyse de chemin critique
+      - [ ] **3.2.3.3.1** Implémenter l'algorithme de chemin critique
+        - [ ] **3.2.3.3.1.1** Développer le calcul des dates au plus tôt/tard
+        - [ ] **3.2.3.3.1.2** Ajouter l'identification des tâches critiques
+        - [ ] **3.2.3.3.1.3** Implémenter le calcul des marges
+      - [ ] **3.2.3.3.2** Créer les outils d'analyse de dépendances
+        - [ ] **3.2.3.3.2.1** Développer la détection des goulots d'étranglement
+        - [ ] **3.2.3.3.2.2** Ajouter l'analyse d'impact des retards
+        - [ ] **3.2.3.3.2.3** Implémenter la simulation de modifications
+      - [ ] **3.2.3.3.3** Développer les visualisations spécialisées
+        - [ ] **3.2.3.3.3.1** Créer la vue de chemin critique
+        - [ ] **3.2.3.3.3.2** Ajouter la visualisation des marges
+        - [ ] **3.2.3.3.3.3** Implémenter la vue de densité des dépendances
 - [ ] **3.3** Intégrer les visualisations au système existant
   - [ ] **3.3.1** Développer l'API de génération à la demande
     - [ ] **3.3.1.1** Concevoir les endpoints de l'API
