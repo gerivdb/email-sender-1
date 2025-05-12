@@ -1,0 +1,3994 @@
+{
+  "id": "id-sz1qcl5wp",
+  "title": "Plan de développement v9 : Intégration des concepts de Task Master avec LWM/LCM",
+  "type": "cosmos",
+  "status": "planned",
+  "description": "",
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "children": [
+    {
+      "id": "id-ppsstekd6",
+      "title": "1. Introduction et vision",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "id-2sneefnfk",
+          "title": "1.1 Objectifs principaux",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "id-lyhx4yfsw",
+      "title": "2. Architecture proposée",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "id-xxksb9y27",
+          "title": "2.1 Composants principaux",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "id-ccz8a7kgj",
+          "title": "2.2 Structure des données",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "id-p3eyrj1jg",
+              "title": "2.2.1 Format de tâche standardisé (JSON)",
+              "type": "planet",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "id-gkwwn0bl3",
+          "title": "2.2.2 Format de roadmap standardisé",
+          "type": "planet",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "id-p5fne31vk",
+      "title": "3. Plan d'implémentation",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "id-18o828eem",
+          "title": "3.1 Phase 1: Standardisation du format (2 semaines)",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.1.1",
+              "title": "Définir le schéma JSON des tâches",
+              "type": "locality",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "3.1.1.1",
+                  "title": "Spécifier les champs obligatoires et optionnels",
+                  "type": "district",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "3.1.1.2",
+              "title": "Définir les types de données et contraintes",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.1.1.3",
+              "title": "Documenter le schéma avec des exemples",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.1.3",
+          "title": "Adapter les roadmaps existantes",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.1.3.1",
+              "title": "Créer un script de migration pour les roadmaps existantes",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.1.3.3",
+              "title": "Mettre en place un système de versionnage des formats",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.1.3.2",
+              "title": "Valider la conversion avec des tests automatisés",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.1.2",
+          "title": "Créer les convertisseurs Markdown ↔ JSON",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.1.2.3",
+              "title": "Ajouter la gestion des métadonnées spéciales (tags, durées)",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.1.2.1",
+              "title": "Développer le parser Markdown → JSON",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.1.2.2",
+              "title": "Implémenter le générateur JSON → Markdown",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-33wfpbh8r",
+      "title": "3.2 Phase 2: Serveur MCP-Roadmap (3 semaines)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "3.2.1.3",
+          "title": "Ajouter l'authentification et la sécurité",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "3.2.3",
+          "title": "Ajouter les fonctionnalités d'analyse et de recherche",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.2.3.3",
+              "title": "Ajouter l'analyse de dépendances et de structure",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.2.3.1",
+              "title": "Développer la recherche par mots-clés",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.2.3.2",
+              "title": "Implémenter la recherche sémantique avec embeddings",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.2.1.2",
+          "title": "Créer l'architecture du serveur (routes, handlers)",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "3.2.1",
+          "title": "Développer le serveur MCP de base",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.2.1.1",
+              "title": "Implémenter le protocole MCP standard",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.2.2",
+          "title": "Implémenter les fonctions CRUD pour les tâches",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.2.2.2",
+              "title": "Ajouter les endpoints de mise à jour/suppression",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.2.2.1",
+              "title": "Développer les endpoints de création/lecture",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.2.2.3",
+              "title": "Implémenter la validation des données",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.2.4",
+          "title": "Intégrer la visualisation",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.2.4.3",
+              "title": "Ajouter la visualisation de l'avancement global",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.2.4.1",
+              "title": "Développer la génération de graphes de dépendances",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.2.4.2",
+              "title": "Implémenter la création de diagrammes de Gantt",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-wqs41shk4",
+      "title": "3.3 Phase 3: Interface utilisateur (2 semaines)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "3.3.4",
+          "title": "Ajouter l'aide interactive",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.3.4.2",
+              "title": "Créer les tutoriels interactifs",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.3.4.1",
+              "title": "Développer le système d'aide contextuelle",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.3.4.3",
+              "title": "Implémenter la documentation dynamique",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.3.1.3",
+          "title": "Ajouter la gestion des ambiguïtés",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "3.3.2",
+          "title": "Créer les templates de réponse",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.3.2.3",
+              "title": "Ajouter le support multilingue",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.3.2.1",
+              "title": "Développer les templates pour les différentes actions",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.3.2.2",
+              "title": "Implémenter la personnalisation des réponses",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.3.1",
+          "title": "Développer le parser de commandes en langage naturel",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.3.1.1",
+              "title": "Créer le système d'analyse d'intentions",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.3.1.2",
+          "title": "Implémenter l'extraction de paramètres",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "3.3.3",
+          "title": "Implémenter les suggestions contextuelles",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.3.3.2",
+              "title": "Créer le système de recommandation de tâches",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.3.3.1",
+              "title": "Développer l'analyse du contexte utilisateur",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.3.3.3",
+              "title": "Implémenter les suggestions d'optimisation",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-s817eo62p",
+      "title": "3.4 Phase 4: Intégrations (3 semaines)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "3.4.4",
+          "title": "Ajouter l'extension VS Code",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.4.4.3",
+              "title": "Ajouter les fonctionnalités de visualisation",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.4.4.1",
+              "title": "Développer l'interface utilisateur de l'extension",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.4.4.2",
+              "title": "Implémenter l'édition directe des roadmaps",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.4.1.3",
+          "title": "Ajouter les actions d'automatisation",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "3.4.2",
+          "title": "Créer l'intégration Notion",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.4.2.3",
+              "title": "Ajouter la gestion des conflits",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.4.2.1",
+              "title": "Développer la synchronisation bidirectionnelle",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.4.2.2",
+              "title": "Implémenter la conversion de format",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.4.1",
+          "title": "Développer les connecteurs n8n",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.4.1.1",
+              "title": "Créer les nodes pour la gestion des roadmaps",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.4.3",
+          "title": "Implémenter la synchronisation GitHub",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.4.3.2",
+              "title": "Créer la synchronisation avec les projets",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.4.3.1",
+              "title": "Développer l'intégration avec les issues",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.4.3.3",
+              "title": "Implémenter les webhooks pour les mises à jour",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.4.1.2",
+          "title": "Implémenter les triggers d'événements",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "id-2b7v2w3ci",
+      "title": "3.5 Phase 5: Fonctionnalités avancées (4 semaines)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "3.5.4",
+          "title": "Ajouter la génération de sous-tâches",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.5.4.3",
+              "title": "Créer le système de validation des sous-tâches générées",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.5.4.1",
+              "title": "Développer l'analyse de complexité des tâches",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.5.4.2",
+              "title": "Implémenter la génération automatique de sous-tâches",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.5.1.3",
+          "title": "Ajouter la prédiction des dates de fin",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "3.5.3",
+          "title": "Créer le système de clustering",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.5.3.3",
+              "title": "Ajouter les suggestions de réorganisation",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.5.3.1",
+              "title": "Développer l'algorithme de clustering sémantique",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.5.3.2",
+              "title": "Implémenter la visualisation des clusters",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.5.1.2",
+          "title": "Créer le système de détection des risques",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "3.5.1",
+          "title": "Développer l'analyse prédictive",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.5.1.1",
+              "title": "Implémenter l'estimation de durée basée sur l'historique",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "3.5.2",
+          "title": "Implémenter la détection de dépendances",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "3.5.2.2",
+              "title": "Créer le système de suggestion de dépendances",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.5.2.1",
+              "title": "Développer l'analyse sémantique pour détecter les dépendances",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "3.5.2.3",
+              "title": "Implémenter la validation des dépendances",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-28yp45e84",
+      "title": "4. Intégration avec les concepts LWM/LCM",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "id-wgmntak9x",
+          "title": "4.1 Large Workflow Models (LWM)",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "4.1.1",
+              "title": "Adapter le format de tâche pour inclure les métadonnées de workflow",
+              "type": "locality",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "4.1.1.1",
+                  "title": "Ajouter les champs spécifiques aux workflows",
+                  "type": "district",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "4.1.1.3",
+              "title": "Créer les convertisseurs pour les formats de workflow",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "4.1.1.2",
+              "title": "Implémenter la validation des workflows",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "4.1.3",
+          "title": "Créer les visualisations spécifiques aux workflows",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "4.1.3.3",
+              "title": "Ajouter les rapports d'exécution",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "4.1.3.1",
+              "title": "Développer les diagrammes de flux",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "4.1.3.2",
+              "title": "Implémenter les tableaux de bord de suivi",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "4.1.2",
+          "title": "Intégrer les fonctionnalités de workflow dans le serveur MCP",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "4.1.2.3",
+              "title": "Ajouter le monitoring des workflows",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "4.1.2.1",
+              "title": "Développer les endpoints pour la gestion des workflows",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "4.1.2.2",
+              "title": "Implémenter l'exécution des workflows",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-j9ulp1c5j",
+      "title": "4.2 Large Concept Models (LCM)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "4.2.1",
+          "title": "Adapter le format de tâche pour inclure les métadonnées conceptuelles",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "4.2.1.1",
+              "title": "Ajouter les champs pour les concepts et relations",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "4.2.1.3",
+          "title": "Créer les convertisseurs pour les formats conceptuels",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "4.2.3",
+          "title": "Créer les visualisations spécifiques aux concepts",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "4.2.3.3",
+              "title": "Ajouter les visualisations de relations",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "4.2.3.1",
+              "title": "Développer les graphes conceptuels",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "4.2.3.2",
+              "title": "Implémenter les cartes mentales",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "4.2.1.2",
+          "title": "Implémenter la validation des concepts",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "4.2.2",
+          "title": "Intégrer les fonctionnalités conceptuelles dans le serveur MCP",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "4.2.2.3",
+              "title": "Ajouter la recherche basée sur les concepts",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "4.2.2.1",
+              "title": "Développer les endpoints pour la gestion des concepts",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "4.2.2.2",
+              "title": "Implémenter l'analyse conceptuelle",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-u8ofaofro",
+      "title": "5. Conclusion",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    }
+  ],
+  "metroMap": {
+    "lines": [
+      {
+        "id": "line-cosmos",
+        "name": "COSMOS",
+        "color": "#1a237e",
+        "order": 0
+      },
+      {
+        "id": "line-galaxy",
+        "name": "GALAXY",
+        "color": "#7b1fa2",
+        "order": 1
+      },
+      {
+        "id": "line-stellar_system",
+        "name": "STELLAR_SYSTEM",
+        "color": "#d32f2f",
+        "order": 2
+      },
+      {
+        "id": "line-planet",
+        "name": "PLANET",
+        "color": "#ff9800",
+        "order": 3
+      },
+      {
+        "id": "line-continent",
+        "name": "CONTINENT",
+        "color": "#ffc107",
+        "order": 4
+      },
+      {
+        "id": "line-region",
+        "name": "REGION",
+        "color": "#4caf50",
+        "order": 5
+      },
+      {
+        "id": "line-locality",
+        "name": "LOCALITY",
+        "color": "#00bcd4",
+        "order": 6
+      },
+      {
+        "id": "line-district",
+        "name": "DISTRICT",
+        "color": "#2196f3",
+        "order": 7
+      },
+      {
+        "id": "line-building",
+        "name": "BUILDING",
+        "color": "#3f51b5",
+        "order": 8
+      },
+      {
+        "id": "line-foundation",
+        "name": "FOUNDATION",
+        "color": "#212121",
+        "order": 9
+      }
+    ],
+    "stations": [
+      {
+        "id": "id-sz1qcl5wp",
+        "name": "Plan de développement v9 : Intégration des concepts de Task Master avec LWM/LCM",
+        "lineId": "line-cosmos",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ppsstekd6",
+        "name": "1. Introduction et vision",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-2sneefnfk",
+        "name": "1.1 Objectifs principaux",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-lyhx4yfsw",
+        "name": "2. Architecture proposée",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-xxksb9y27",
+        "name": "2.1 Composants principaux",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ccz8a7kgj",
+        "name": "2.2 Structure des données",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-p3eyrj1jg",
+        "name": "2.2.1 Format de tâche standardisé (JSON)",
+        "lineId": "line-planet",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-gkwwn0bl3",
+        "name": "2.2.2 Format de roadmap standardisé",
+        "lineId": "line-planet",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-p5fne31vk",
+        "name": "3. Plan d'implémentation",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-18o828eem",
+        "name": "3.1 Phase 1: Standardisation du format (2 semaines)",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.1",
+        "name": "Définir le schéma JSON des tâches",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.1.1",
+        "name": "Spécifier les champs obligatoires et optionnels",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.1.2",
+        "name": "Définir les types de données et contraintes",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.1.3",
+        "name": "Documenter le schéma avec des exemples",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.3",
+        "name": "Adapter les roadmaps existantes",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.3.1",
+        "name": "Créer un script de migration pour les roadmaps existantes",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.3.3",
+        "name": "Mettre en place un système de versionnage des formats",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.3.2",
+        "name": "Valider la conversion avec des tests automatisés",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.2",
+        "name": "Créer les convertisseurs Markdown ↔ JSON",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.2.3",
+        "name": "Ajouter la gestion des métadonnées spéciales (tags, durées)",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.2.1",
+        "name": "Développer le parser Markdown → JSON",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.1.2.2",
+        "name": "Implémenter le générateur JSON → Markdown",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-33wfpbh8r",
+        "name": "3.2 Phase 2: Serveur MCP-Roadmap (3 semaines)",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.1.3",
+        "name": "Ajouter l'authentification et la sécurité",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.3",
+        "name": "Ajouter les fonctionnalités d'analyse et de recherche",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.3.3",
+        "name": "Ajouter l'analyse de dépendances et de structure",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.3.1",
+        "name": "Développer la recherche par mots-clés",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.3.2",
+        "name": "Implémenter la recherche sémantique avec embeddings",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.1.2",
+        "name": "Créer l'architecture du serveur (routes, handlers)",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.1",
+        "name": "Développer le serveur MCP de base",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.1.1",
+        "name": "Implémenter le protocole MCP standard",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.2",
+        "name": "Implémenter les fonctions CRUD pour les tâches",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.2.2",
+        "name": "Ajouter les endpoints de mise à jour/suppression",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.2.1",
+        "name": "Développer les endpoints de création/lecture",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.2.3",
+        "name": "Implémenter la validation des données",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.4",
+        "name": "Intégrer la visualisation",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.4.3",
+        "name": "Ajouter la visualisation de l'avancement global",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.4.1",
+        "name": "Développer la génération de graphes de dépendances",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.2.4.2",
+        "name": "Implémenter la création de diagrammes de Gantt",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-wqs41shk4",
+        "name": "3.3 Phase 3: Interface utilisateur (2 semaines)",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.4",
+        "name": "Ajouter l'aide interactive",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.4.2",
+        "name": "Créer les tutoriels interactifs",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.4.1",
+        "name": "Développer le système d'aide contextuelle",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.4.3",
+        "name": "Implémenter la documentation dynamique",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.1.3",
+        "name": "Ajouter la gestion des ambiguïtés",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.2",
+        "name": "Créer les templates de réponse",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.2.3",
+        "name": "Ajouter le support multilingue",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.2.1",
+        "name": "Développer les templates pour les différentes actions",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.2.2",
+        "name": "Implémenter la personnalisation des réponses",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.1",
+        "name": "Développer le parser de commandes en langage naturel",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.1.1",
+        "name": "Créer le système d'analyse d'intentions",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.1.2",
+        "name": "Implémenter l'extraction de paramètres",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.3",
+        "name": "Implémenter les suggestions contextuelles",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.3.2",
+        "name": "Créer le système de recommandation de tâches",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.3.1",
+        "name": "Développer l'analyse du contexte utilisateur",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.3.3.3",
+        "name": "Implémenter les suggestions d'optimisation",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-s817eo62p",
+        "name": "3.4 Phase 4: Intégrations (3 semaines)",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.4",
+        "name": "Ajouter l'extension VS Code",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.4.3",
+        "name": "Ajouter les fonctionnalités de visualisation",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.4.1",
+        "name": "Développer l'interface utilisateur de l'extension",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.4.2",
+        "name": "Implémenter l'édition directe des roadmaps",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.1.3",
+        "name": "Ajouter les actions d'automatisation",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.2",
+        "name": "Créer l'intégration Notion",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.2.3",
+        "name": "Ajouter la gestion des conflits",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.2.1",
+        "name": "Développer la synchronisation bidirectionnelle",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.2.2",
+        "name": "Implémenter la conversion de format",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.1",
+        "name": "Développer les connecteurs n8n",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.1.1",
+        "name": "Créer les nodes pour la gestion des roadmaps",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.3",
+        "name": "Implémenter la synchronisation GitHub",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.3.2",
+        "name": "Créer la synchronisation avec les projets",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.3.1",
+        "name": "Développer l'intégration avec les issues",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.3.3",
+        "name": "Implémenter les webhooks pour les mises à jour",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.4.1.2",
+        "name": "Implémenter les triggers d'événements",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-2b7v2w3ci",
+        "name": "3.5 Phase 5: Fonctionnalités avancées (4 semaines)",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.4",
+        "name": "Ajouter la génération de sous-tâches",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.4.3",
+        "name": "Créer le système de validation des sous-tâches générées",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.4.1",
+        "name": "Développer l'analyse de complexité des tâches",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.4.2",
+        "name": "Implémenter la génération automatique de sous-tâches",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.1.3",
+        "name": "Ajouter la prédiction des dates de fin",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.3",
+        "name": "Créer le système de clustering",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.3.3",
+        "name": "Ajouter les suggestions de réorganisation",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.3.1",
+        "name": "Développer l'algorithme de clustering sémantique",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.3.2",
+        "name": "Implémenter la visualisation des clusters",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.1.2",
+        "name": "Créer le système de détection des risques",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.1",
+        "name": "Développer l'analyse prédictive",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.1.1",
+        "name": "Implémenter l'estimation de durée basée sur l'historique",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.2",
+        "name": "Implémenter la détection de dépendances",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.2.2",
+        "name": "Créer le système de suggestion de dépendances",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.2.1",
+        "name": "Développer l'analyse sémantique pour détecter les dépendances",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "3.5.2.3",
+        "name": "Implémenter la validation des dépendances",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-28yp45e84",
+        "name": "4. Intégration avec les concepts LWM/LCM",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-wgmntak9x",
+        "name": "4.1 Large Workflow Models (LWM)",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.1",
+        "name": "Adapter le format de tâche pour inclure les métadonnées de workflow",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.1.1",
+        "name": "Ajouter les champs spécifiques aux workflows",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.1.3",
+        "name": "Créer les convertisseurs pour les formats de workflow",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.1.2",
+        "name": "Implémenter la validation des workflows",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.3",
+        "name": "Créer les visualisations spécifiques aux workflows",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.3.3",
+        "name": "Ajouter les rapports d'exécution",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.3.1",
+        "name": "Développer les diagrammes de flux",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.3.2",
+        "name": "Implémenter les tableaux de bord de suivi",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.2",
+        "name": "Intégrer les fonctionnalités de workflow dans le serveur MCP",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.2.3",
+        "name": "Ajouter le monitoring des workflows",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.2.1",
+        "name": "Développer les endpoints pour la gestion des workflows",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.1.2.2",
+        "name": "Implémenter l'exécution des workflows",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-j9ulp1c5j",
+        "name": "4.2 Large Concept Models (LCM)",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.1",
+        "name": "Adapter le format de tâche pour inclure les métadonnées conceptuelles",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.1.1",
+        "name": "Ajouter les champs pour les concepts et relations",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.1.3",
+        "name": "Créer les convertisseurs pour les formats conceptuels",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.3",
+        "name": "Créer les visualisations spécifiques aux concepts",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.3.3",
+        "name": "Ajouter les visualisations de relations",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.3.1",
+        "name": "Développer les graphes conceptuels",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.3.2",
+        "name": "Implémenter les cartes mentales",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.1.2",
+        "name": "Implémenter la validation des concepts",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.2",
+        "name": "Intégrer les fonctionnalités conceptuelles dans le serveur MCP",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.2.3",
+        "name": "Ajouter la recherche basée sur les concepts",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.2.1",
+        "name": "Développer les endpoints pour la gestion des concepts",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "4.2.2.2",
+        "name": "Implémenter l'analyse conceptuelle",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-u8ofaofro",
+        "name": "5. Conclusion",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-id-sz1qcl5wp-id-ppsstekd6",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-ppsstekd6",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ppsstekd6-id-2sneefnfk",
+        "sourceId": "id-ppsstekd6",
+        "targetId": "id-2sneefnfk",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-sz1qcl5wp-id-lyhx4yfsw",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-lyhx4yfsw",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-lyhx4yfsw-id-xxksb9y27",
+        "sourceId": "id-lyhx4yfsw",
+        "targetId": "id-xxksb9y27",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-lyhx4yfsw-id-ccz8a7kgj",
+        "sourceId": "id-lyhx4yfsw",
+        "targetId": "id-ccz8a7kgj",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ccz8a7kgj-id-p3eyrj1jg",
+        "sourceId": "id-ccz8a7kgj",
+        "targetId": "id-p3eyrj1jg",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-lyhx4yfsw-id-gkwwn0bl3",
+        "sourceId": "id-lyhx4yfsw",
+        "targetId": "id-gkwwn0bl3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-sz1qcl5wp-id-p5fne31vk",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-p5fne31vk",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-p5fne31vk-id-18o828eem",
+        "sourceId": "id-p5fne31vk",
+        "targetId": "id-18o828eem",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-18o828eem-3.1.1",
+        "sourceId": "id-18o828eem",
+        "targetId": "3.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.1.1-3.1.1.1",
+        "sourceId": "3.1.1",
+        "targetId": "3.1.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-18o828eem-3.1.1.2",
+        "sourceId": "id-18o828eem",
+        "targetId": "3.1.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-18o828eem-3.1.1.3",
+        "sourceId": "id-18o828eem",
+        "targetId": "3.1.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-p5fne31vk-3.1.3",
+        "sourceId": "id-p5fne31vk",
+        "targetId": "3.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.1.3-3.1.3.1",
+        "sourceId": "3.1.3",
+        "targetId": "3.1.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.1.3-3.1.3.3",
+        "sourceId": "3.1.3",
+        "targetId": "3.1.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.1.3-3.1.3.2",
+        "sourceId": "3.1.3",
+        "targetId": "3.1.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-p5fne31vk-3.1.2",
+        "sourceId": "id-p5fne31vk",
+        "targetId": "3.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.1.2-3.1.2.3",
+        "sourceId": "3.1.2",
+        "targetId": "3.1.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.1.2-3.1.2.1",
+        "sourceId": "3.1.2",
+        "targetId": "3.1.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.1.2-3.1.2.2",
+        "sourceId": "3.1.2",
+        "targetId": "3.1.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-sz1qcl5wp-id-33wfpbh8r",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-33wfpbh8r",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-33wfpbh8r-3.2.1.3",
+        "sourceId": "id-33wfpbh8r",
+        "targetId": "3.2.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-33wfpbh8r-3.2.3",
+        "sourceId": "id-33wfpbh8r",
+        "targetId": "3.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.3-3.2.3.3",
+        "sourceId": "3.2.3",
+        "targetId": "3.2.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.3-3.2.3.1",
+        "sourceId": "3.2.3",
+        "targetId": "3.2.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.3-3.2.3.2",
+        "sourceId": "3.2.3",
+        "targetId": "3.2.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-33wfpbh8r-3.2.1.2",
+        "sourceId": "id-33wfpbh8r",
+        "targetId": "3.2.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-33wfpbh8r-3.2.1",
+        "sourceId": "id-33wfpbh8r",
+        "targetId": "3.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.1-3.2.1.1",
+        "sourceId": "3.2.1",
+        "targetId": "3.2.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-33wfpbh8r-3.2.2",
+        "sourceId": "id-33wfpbh8r",
+        "targetId": "3.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.2-3.2.2.2",
+        "sourceId": "3.2.2",
+        "targetId": "3.2.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.2-3.2.2.1",
+        "sourceId": "3.2.2",
+        "targetId": "3.2.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.2-3.2.2.3",
+        "sourceId": "3.2.2",
+        "targetId": "3.2.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-33wfpbh8r-3.2.4",
+        "sourceId": "id-33wfpbh8r",
+        "targetId": "3.2.4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.4-3.2.4.3",
+        "sourceId": "3.2.4",
+        "targetId": "3.2.4.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.4-3.2.4.1",
+        "sourceId": "3.2.4",
+        "targetId": "3.2.4.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.2.4-3.2.4.2",
+        "sourceId": "3.2.4",
+        "targetId": "3.2.4.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-sz1qcl5wp-id-wqs41shk4",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-wqs41shk4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wqs41shk4-3.3.4",
+        "sourceId": "id-wqs41shk4",
+        "targetId": "3.3.4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.4-3.3.4.2",
+        "sourceId": "3.3.4",
+        "targetId": "3.3.4.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.4-3.3.4.1",
+        "sourceId": "3.3.4",
+        "targetId": "3.3.4.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.4-3.3.4.3",
+        "sourceId": "3.3.4",
+        "targetId": "3.3.4.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wqs41shk4-3.3.1.3",
+        "sourceId": "id-wqs41shk4",
+        "targetId": "3.3.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wqs41shk4-3.3.2",
+        "sourceId": "id-wqs41shk4",
+        "targetId": "3.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.2-3.3.2.3",
+        "sourceId": "3.3.2",
+        "targetId": "3.3.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.2-3.3.2.1",
+        "sourceId": "3.3.2",
+        "targetId": "3.3.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.2-3.3.2.2",
+        "sourceId": "3.3.2",
+        "targetId": "3.3.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wqs41shk4-3.3.1",
+        "sourceId": "id-wqs41shk4",
+        "targetId": "3.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.1-3.3.1.1",
+        "sourceId": "3.3.1",
+        "targetId": "3.3.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wqs41shk4-3.3.1.2",
+        "sourceId": "id-wqs41shk4",
+        "targetId": "3.3.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wqs41shk4-3.3.3",
+        "sourceId": "id-wqs41shk4",
+        "targetId": "3.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.3-3.3.3.2",
+        "sourceId": "3.3.3",
+        "targetId": "3.3.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.3-3.3.3.1",
+        "sourceId": "3.3.3",
+        "targetId": "3.3.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.3.3-3.3.3.3",
+        "sourceId": "3.3.3",
+        "targetId": "3.3.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-sz1qcl5wp-id-s817eo62p",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-s817eo62p",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-s817eo62p-3.4.4",
+        "sourceId": "id-s817eo62p",
+        "targetId": "3.4.4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.4-3.4.4.3",
+        "sourceId": "3.4.4",
+        "targetId": "3.4.4.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.4-3.4.4.1",
+        "sourceId": "3.4.4",
+        "targetId": "3.4.4.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.4-3.4.4.2",
+        "sourceId": "3.4.4",
+        "targetId": "3.4.4.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-s817eo62p-3.4.1.3",
+        "sourceId": "id-s817eo62p",
+        "targetId": "3.4.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-s817eo62p-3.4.2",
+        "sourceId": "id-s817eo62p",
+        "targetId": "3.4.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.2-3.4.2.3",
+        "sourceId": "3.4.2",
+        "targetId": "3.4.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.2-3.4.2.1",
+        "sourceId": "3.4.2",
+        "targetId": "3.4.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.2-3.4.2.2",
+        "sourceId": "3.4.2",
+        "targetId": "3.4.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-s817eo62p-3.4.1",
+        "sourceId": "id-s817eo62p",
+        "targetId": "3.4.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.1-3.4.1.1",
+        "sourceId": "3.4.1",
+        "targetId": "3.4.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-s817eo62p-3.4.3",
+        "sourceId": "id-s817eo62p",
+        "targetId": "3.4.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.3-3.4.3.2",
+        "sourceId": "3.4.3",
+        "targetId": "3.4.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.3-3.4.3.1",
+        "sourceId": "3.4.3",
+        "targetId": "3.4.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.4.3-3.4.3.3",
+        "sourceId": "3.4.3",
+        "targetId": "3.4.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-s817eo62p-3.4.1.2",
+        "sourceId": "id-s817eo62p",
+        "targetId": "3.4.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-sz1qcl5wp-id-2b7v2w3ci",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-2b7v2w3ci",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-2b7v2w3ci-3.5.4",
+        "sourceId": "id-2b7v2w3ci",
+        "targetId": "3.5.4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.4-3.5.4.3",
+        "sourceId": "3.5.4",
+        "targetId": "3.5.4.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.4-3.5.4.1",
+        "sourceId": "3.5.4",
+        "targetId": "3.5.4.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.4-3.5.4.2",
+        "sourceId": "3.5.4",
+        "targetId": "3.5.4.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-2b7v2w3ci-3.5.1.3",
+        "sourceId": "id-2b7v2w3ci",
+        "targetId": "3.5.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-2b7v2w3ci-3.5.3",
+        "sourceId": "id-2b7v2w3ci",
+        "targetId": "3.5.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.3-3.5.3.3",
+        "sourceId": "3.5.3",
+        "targetId": "3.5.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.3-3.5.3.1",
+        "sourceId": "3.5.3",
+        "targetId": "3.5.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.3-3.5.3.2",
+        "sourceId": "3.5.3",
+        "targetId": "3.5.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-2b7v2w3ci-3.5.1.2",
+        "sourceId": "id-2b7v2w3ci",
+        "targetId": "3.5.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-2b7v2w3ci-3.5.1",
+        "sourceId": "id-2b7v2w3ci",
+        "targetId": "3.5.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.1-3.5.1.1",
+        "sourceId": "3.5.1",
+        "targetId": "3.5.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-2b7v2w3ci-3.5.2",
+        "sourceId": "id-2b7v2w3ci",
+        "targetId": "3.5.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.2-3.5.2.2",
+        "sourceId": "3.5.2",
+        "targetId": "3.5.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.2-3.5.2.1",
+        "sourceId": "3.5.2",
+        "targetId": "3.5.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-3.5.2-3.5.2.3",
+        "sourceId": "3.5.2",
+        "targetId": "3.5.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-sz1qcl5wp-id-28yp45e84",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-28yp45e84",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-28yp45e84-id-wgmntak9x",
+        "sourceId": "id-28yp45e84",
+        "targetId": "id-wgmntak9x",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wgmntak9x-4.1.1",
+        "sourceId": "id-wgmntak9x",
+        "targetId": "4.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.1.1-4.1.1.1",
+        "sourceId": "4.1.1",
+        "targetId": "4.1.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wgmntak9x-4.1.1.3",
+        "sourceId": "id-wgmntak9x",
+        "targetId": "4.1.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wgmntak9x-4.1.1.2",
+        "sourceId": "id-wgmntak9x",
+        "targetId": "4.1.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-28yp45e84-4.1.3",
+        "sourceId": "id-28yp45e84",
+        "targetId": "4.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.1.3-4.1.3.3",
+        "sourceId": "4.1.3",
+        "targetId": "4.1.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.1.3-4.1.3.1",
+        "sourceId": "4.1.3",
+        "targetId": "4.1.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.1.3-4.1.3.2",
+        "sourceId": "4.1.3",
+        "targetId": "4.1.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-28yp45e84-4.1.2",
+        "sourceId": "id-28yp45e84",
+        "targetId": "4.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.1.2-4.1.2.3",
+        "sourceId": "4.1.2",
+        "targetId": "4.1.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.1.2-4.1.2.1",
+        "sourceId": "4.1.2",
+        "targetId": "4.1.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.1.2-4.1.2.2",
+        "sourceId": "4.1.2",
+        "targetId": "4.1.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-sz1qcl5wp-id-j9ulp1c5j",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-j9ulp1c5j",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-j9ulp1c5j-4.2.1",
+        "sourceId": "id-j9ulp1c5j",
+        "targetId": "4.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.2.1-4.2.1.1",
+        "sourceId": "4.2.1",
+        "targetId": "4.2.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-j9ulp1c5j-4.2.1.3",
+        "sourceId": "id-j9ulp1c5j",
+        "targetId": "4.2.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-j9ulp1c5j-4.2.3",
+        "sourceId": "id-j9ulp1c5j",
+        "targetId": "4.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.2.3-4.2.3.3",
+        "sourceId": "4.2.3",
+        "targetId": "4.2.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.2.3-4.2.3.1",
+        "sourceId": "4.2.3",
+        "targetId": "4.2.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.2.3-4.2.3.2",
+        "sourceId": "4.2.3",
+        "targetId": "4.2.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-j9ulp1c5j-4.2.1.2",
+        "sourceId": "id-j9ulp1c5j",
+        "targetId": "4.2.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-j9ulp1c5j-4.2.2",
+        "sourceId": "id-j9ulp1c5j",
+        "targetId": "4.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.2.2-4.2.2.3",
+        "sourceId": "4.2.2",
+        "targetId": "4.2.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.2.2-4.2.2.1",
+        "sourceId": "4.2.2",
+        "targetId": "4.2.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-4.2.2-4.2.2.2",
+        "sourceId": "4.2.2",
+        "targetId": "4.2.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-sz1qcl5wp-id-u8ofaofro",
+        "sourceId": "id-sz1qcl5wp",
+        "targetId": "id-u8ofaofro",
+        "type": "hierarchical"
+      }
+    ]
+  }
+}

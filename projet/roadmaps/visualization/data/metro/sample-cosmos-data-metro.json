@@ -1,0 +1,262 @@
+{
+  "id": "root",
+  "title": "Email Sender Cognitive Architecture",
+  "type": "cosmos",
+  "status": "in_progress",
+  "description": "Représentation holistique de l'écosystème complet du projet Email Sender",
+  "metadata": {
+    "temporal": {
+      "horizon": "long_term"
+    },
+    "cognitive": {
+      "complexity": "systemic"
+    },
+    "organizational": {
+      "responsibility": "organizational"
+    },
+    "strategic": {
+      "priority": "high"
+    }
+  },
+  "children": [
+    {
+      "id": "galaxy-1",
+      "title": "Automatisation des Processus",
+      "type": "galaxy",
+      "status": "in_progress",
+      "description": "Branche stratégique couvrant tous les aspects d'automatisation",
+      "metadata": {
+        "temporal": {
+          "horizon": "medium_term"
+        },
+        "strategic": {
+          "value": "high"
+        }
+      },
+      "children": [
+        {
+          "id": "system-1",
+          "title": "Backend Intelligent",
+          "type": "stellar_system",
+          "status": "in_progress",
+          "description": "Système principal pour le traitement intelligent des emails",
+          "metadata": {
+            "cognitive": {
+              "complexity": "complex"
+            },
+            "organizational": {
+              "responsibility": "team"
+            }
+          },
+          "children": [
+            {
+              "id": "planet-1",
+              "title": "Module d'Analyse Sémantique",
+              "type": "planet",
+              "status": "planned",
+              "description": "Composant majeur pour l'analyse sémantique des emails",
+              "metadata": {
+                "cognitive": {
+                  "complexity": "complex"
+                },
+                "strategic": {
+                  "value": "high"
+                }
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "galaxy-2",
+      "title": "Interface Utilisateur",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "Branche stratégique pour l'expérience utilisateur",
+      "metadata": {
+        "temporal": {
+          "horizon": "short_term"
+        },
+        "strategic": {
+          "priority": "medium"
+        }
+      },
+      "children": []
+    }
+  ],
+  "metroMap": {
+    "lines": [
+      {
+        "id": "line-cosmos",
+        "name": "COSMOS",
+        "color": "#1a237e",
+        "order": 0
+      },
+      {
+        "id": "line-galaxy",
+        "name": "GALAXY",
+        "color": "#7b1fa2",
+        "order": 1
+      },
+      {
+        "id": "line-stellar_system",
+        "name": "STELLAR_SYSTEM",
+        "color": "#d32f2f",
+        "order": 2
+      },
+      {
+        "id": "line-planet",
+        "name": "PLANET",
+        "color": "#ff9800",
+        "order": 3
+      },
+      {
+        "id": "line-continent",
+        "name": "CONTINENT",
+        "color": "#ffc107",
+        "order": 4
+      },
+      {
+        "id": "line-region",
+        "name": "REGION",
+        "color": "#4caf50",
+        "order": 5
+      },
+      {
+        "id": "line-locality",
+        "name": "LOCALITY",
+        "color": "#00bcd4",
+        "order": 6
+      },
+      {
+        "id": "line-district",
+        "name": "DISTRICT",
+        "color": "#2196f3",
+        "order": 7
+      },
+      {
+        "id": "line-building",
+        "name": "BUILDING",
+        "color": "#3f51b5",
+        "order": 8
+      },
+      {
+        "id": "line-foundation",
+        "name": "FOUNDATION",
+        "color": "#212121",
+        "order": 9
+      }
+    ],
+    "stations": [
+      {
+        "id": "root",
+        "name": "Email Sender Cognitive Architecture",
+        "lineId": "line-cosmos",
+        "status": "in_progress",
+        "description": "Représentation holistique de l'écosystème complet du projet Email Sender",
+        "metadata": {
+          "temporal": {
+            "horizon": "long_term"
+          },
+          "cognitive": {
+            "complexity": "systemic"
+          },
+          "organizational": {
+            "responsibility": "organizational"
+          },
+          "strategic": {
+            "priority": "high"
+          }
+        }
+      },
+      {
+        "id": "galaxy-1",
+        "name": "Automatisation des Processus",
+        "lineId": "line-galaxy",
+        "status": "in_progress",
+        "description": "Branche stratégique couvrant tous les aspects d'automatisation",
+        "metadata": {
+          "temporal": {
+            "horizon": "medium_term"
+          },
+          "strategic": {
+            "value": "high"
+          }
+        }
+      },
+      {
+        "id": "system-1",
+        "name": "Backend Intelligent",
+        "lineId": "line-stellar_system",
+        "status": "in_progress",
+        "description": "Système principal pour le traitement intelligent des emails",
+        "metadata": {
+          "cognitive": {
+            "complexity": "complex"
+          },
+          "organizational": {
+            "responsibility": "team"
+          }
+        }
+      },
+      {
+        "id": "planet-1",
+        "name": "Module d'Analyse Sémantique",
+        "lineId": "line-planet",
+        "status": "planned",
+        "description": "Composant majeur pour l'analyse sémantique des emails",
+        "metadata": {
+          "cognitive": {
+            "complexity": "complex"
+          },
+          "strategic": {
+            "value": "high"
+          }
+        }
+      },
+      {
+        "id": "galaxy-2",
+        "name": "Interface Utilisateur",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "Branche stratégique pour l'expérience utilisateur",
+        "metadata": {
+          "temporal": {
+            "horizon": "short_term"
+          },
+          "strategic": {
+            "priority": "medium"
+          }
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-root-galaxy-1",
+        "sourceId": "root",
+        "targetId": "galaxy-1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-galaxy-1-system-1",
+        "sourceId": "galaxy-1",
+        "targetId": "system-1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-system-1-planet-1",
+        "sourceId": "system-1",
+        "targetId": "planet-1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-root-galaxy-2",
+        "sourceId": "root",
+        "targetId": "galaxy-2",
+        "type": "hierarchical"
+      }
+    ]
+  }
+}

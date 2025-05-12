@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualisation Cognitive "Ligne de Métro"</title>
+  <link rel="stylesheet" href="metro-map-cognitive.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Visualisation Cognitive "Ligne de Métro"</h1>
+      <p>Visualisez l'architecture cognitive à 10 niveaux sous forme de carte de métro</p>
+    </header>
+
+    <div class="controls">
+      <div class="control-group">
+        <select id="level-selector">
+          <option value="cosmos">COSMOS (Méta-roadmap)</option>
+          <option value="galaxy">GALAXIES (Branches stratégiques)</option>
+          <option value="stellar_system">SYSTÈMES STELLAIRES (Main roadmaps)</option>
+          <option value="planet">PLANÈTES (Sections)</option>
+          <option value="continent">CONTINENTS (Sous-sections)</option>
+          <option value="region">RÉGIONS (Groupes de tâches)</option>
+          <option value="locality">LOCALITÉS (Tâches)</option>
+          <option value="district">QUARTIERS (Sous-tâches)</option>
+          <option value="building">BÂTIMENTS (Actions)</option>
+          <option value="foundation">FONDATIONS (Micro-actions)</option>
+        </select>
+        <button id="apply-level-btn">Appliquer</button>
+      </div>
+
+      <div class="control-group">
+        <select id="filter-selector">
+          <option value="none">Aucun filtre</option>
+          <option value="status">Filtrer par statut</option>
+          <option value="temporal">Filtrer par dimension temporelle</option>
+          <option value="cognitive">Filtrer par dimension cognitive</option>
+          <option value="organizational">Filtrer par dimension organisationnelle</option>
+          <option value="strategic">Filtrer par dimension stratégique</option>
+        </select>
+        <select id="filter-value-selector" disabled>
+          <option value="">Sélectionnez une valeur</option>
+        </select>
+        <button id="apply-filter-btn">Appliquer</button>
+        <button id="clear-filter-btn" class="btn-danger">Effacer</button>
+      </div>
+    </div>
+
+    <div class="visualization">
+      <div id="metro-map"></div>
+    </div>
+
+    <div class="info-panel">
+      <h2>Informations</h2>
+      <p>Cette visualisation représente l'architecture cognitive des roadmaps sous forme de carte de métro. Chaque ligne représente un niveau hiérarchique, et les stations représentent les éléments de ce niveau.</p>
+      <p>Utilisez les contrôles ci-dessus pour naviguer entre les différents niveaux et filtrer les éléments selon différents critères.</p>
+      <p>Cliquez sur une station pour voir les détails et développer/réduire les éléments enfants.</p>
+    </div>
+  </div>
+
+  <!-- Chargement des dépendances -->
+  <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/cytoscape-dagre/cytoscape-dagre.js"></script>
+  <script src="https://unpkg.com/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js"></script>
+  <script src="https://unpkg.com/cytoscape-klay/cytoscape-klay.js"></script>
+  <script src="https://unpkg.com/cytoscape-popper/cytoscape-popper.js"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+
+  <!-- Chargement de notre visualiseur -->
+  <script src="metro-map-cognitive.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialiser le visualiseur
+      const visualizer = new MetroMapCognitiveVisualizer('metro-map');
+      visualizer.initialize();
+
+      // Charger les données d'exemple
+      const response = await fetch('data/plan-dev-v12-architecture-cognitive-cosmos.json');
+      const data = await response.json();
+      visualizer.loadData(data);
+
+      // Gérer le changement de niveau
+      const levelSelector = document.getElementById('level-selector');
+      const applyLevelBtn = document.getElementById('apply-level-btn');
+
+      applyLevelBtn.addEventListener('click', () => {
+        const selectedLevel = levelSelector.value;
+        visualizer.setLevel(selectedLevel);
+      });
+
+      // Gérer les filtres
+      const filterSelector = document.getElementById('filter-selector');
+      const filterValueSelector = document.getElementById('filter-value-selector');
+      const applyFilterBtn = document.getElementById('apply-filter-btn');
+      const clearFilterBtn = document.getElementById('clear-filter-btn');
+
+      // Mettre à jour les valeurs de filtre en fonction du type de filtre sélectionné
+      filterSelector.addEventListener('change', () => {
+        const filterType = filterSelector.value;
+        filterValueSelector.innerHTML = '<option value="">Sélectionnez une valeur</option>';
+        filterValueSelector.disabled = filterType === 'none';
+
+        if (filterType === 'status') {
+          const statuses = ['planned', 'in_progress', 'completed', 'blocked', 'cancelled'];
+          statuses.forEach(status => {
+            const option = document.createElement('option');
+            option.value = status;
+            option.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            filterValueSelector.appendChild(option);
+          });
+        } else if (filterType === 'temporal') {
+          const values = ['immediate', 'short_term', 'medium_term', 'long_term'];
+          values.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value.replace('_', ' ');
+            filterValueSelector.appendChild(option);
+          });
+        } else if (filterType === 'cognitive') {
+          const values = ['simple', 'moderate', 'complex', 'systemic'];
+          values.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            filterValueSelector.appendChild(option);
+          });
+        } else if (filterType === 'organizational') {
+          const values = ['individual', 'team', 'inter_team', 'organizational'];
+          values.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value.replace('_', ' ');
+            filterValueSelector.appendChild(option);
+          });
+        } else if (filterType === 'strategic') {
+          const values = ['low', 'medium', 'high', 'critical'];
+          values.forEach(value => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            filterValueSelector.appendChild(option);
+          });
+        }
+      });
+
+      // Appliquer le filtre
+      applyFilterBtn.addEventListener('click', () => {
+        const filterType = filterSelector.value;
+        const filterValue = filterValueSelector.value;
+
+        if (filterType === 'none') {
+          visualizer.clearFilter();
+          return;
+        }
+
+        if (!filterValue) {
+          alert('Veuillez sélectionner une valeur pour le filtre.');
+          return;
+        }
+
+        // Créer la fonction de filtre
+        const filterFn = (node) => {
+          if (filterType === 'status') {
+            return node.status === filterValue;
+          } else {
+            // Pour les dimensions
+            const metadata = node.metadata && node.metadata[filterType];
+            if (!metadata) return false;
+
+            // Vérifier si l'une des propriétés de la dimension a la valeur recherchée
+            return Object.values(metadata).some(val => val === filterValue);
+          }
+        };
+
+        visualizer.setFilter(filterFn);
+      });
+
+      // Effacer le filtre
+      clearFilterBtn.addEventListener('click', () => {
+        filterSelector.value = 'none';
+        filterValueSelector.innerHTML = '<option value="">Sélectionnez une valeur</option>';
+        filterValueSelector.disabled = true;
+        visualizer.clearFilter();
+      });
+    });
+  </script>
+</body>
+</html>

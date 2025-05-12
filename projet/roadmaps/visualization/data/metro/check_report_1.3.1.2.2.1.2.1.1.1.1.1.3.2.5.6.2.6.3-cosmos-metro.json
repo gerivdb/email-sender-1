@@ -1,0 +1,361 @@
+{
+  "id": "id-xu103bzy8",
+  "title": "",
+  "type": "cosmos",
+  "status": "planned",
+  "description": "",
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "children": [
+    {
+      "id": "id-xpwn9tt0b",
+      "title": "DÃ©tails des tÃ¢ches",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "id-nno13waxw",
+          "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3 - Créer une fonction d'analyse des ACL de partages réseau",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "id-9tzd1g43c",
+      "title": "RÃ©sumÃ©",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-kd9dlg3u8",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.1 - Implémenter l'analyse des permissions de partage SMB",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-emt3bae0u",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.2 - Implémenter l'analyse des permissions NTFS sous-jacentes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-zjcbgcowh",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.3 - Implémenter la détection des conflits entre permissions de partage et NTFS",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-w4km2zqqq",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.4 - Implémenter l'analyse des permissions effectives résultantes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-rsori8xa5",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.5 - Implémenter la génération de rapports de permissions réseau",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    }
+  ],
+  "metroMap": {
+    "lines": [
+      {
+        "id": "line-cosmos",
+        "name": "COSMOS",
+        "color": "#1a237e",
+        "order": 0
+      },
+      {
+        "id": "line-galaxy",
+        "name": "GALAXY",
+        "color": "#7b1fa2",
+        "order": 1
+      },
+      {
+        "id": "line-stellar_system",
+        "name": "STELLAR_SYSTEM",
+        "color": "#d32f2f",
+        "order": 2
+      },
+      {
+        "id": "line-planet",
+        "name": "PLANET",
+        "color": "#ff9800",
+        "order": 3
+      },
+      {
+        "id": "line-continent",
+        "name": "CONTINENT",
+        "color": "#ffc107",
+        "order": 4
+      },
+      {
+        "id": "line-region",
+        "name": "REGION",
+        "color": "#4caf50",
+        "order": 5
+      },
+      {
+        "id": "line-locality",
+        "name": "LOCALITY",
+        "color": "#00bcd4",
+        "order": 6
+      },
+      {
+        "id": "line-district",
+        "name": "DISTRICT",
+        "color": "#2196f3",
+        "order": 7
+      },
+      {
+        "id": "line-building",
+        "name": "BUILDING",
+        "color": "#3f51b5",
+        "order": 8
+      },
+      {
+        "id": "line-foundation",
+        "name": "FOUNDATION",
+        "color": "#212121",
+        "order": 9
+      }
+    ],
+    "stations": [
+      {
+        "id": "id-xu103bzy8",
+        "name": "",
+        "lineId": "line-cosmos",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-xpwn9tt0b",
+        "name": "DÃ©tails des tÃ¢ches",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-nno13waxw",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3 - Créer une fonction d'analyse des ACL de partages réseau",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-9tzd1g43c",
+        "name": "RÃ©sumÃ©",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-kd9dlg3u8",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.1 - Implémenter l'analyse des permissions de partage SMB",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-emt3bae0u",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.2 - Implémenter l'analyse des permissions NTFS sous-jacentes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-zjcbgcowh",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.3 - Implémenter la détection des conflits entre permissions de partage et NTFS",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-w4km2zqqq",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.4 - Implémenter l'analyse des permissions effectives résultantes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-rsori8xa5",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.3.5 - Implémenter la génération de rapports de permissions réseau",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-id-xu103bzy8-id-xpwn9tt0b",
+        "sourceId": "id-xu103bzy8",
+        "targetId": "id-xpwn9tt0b",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-xpwn9tt0b-id-nno13waxw",
+        "sourceId": "id-xpwn9tt0b",
+        "targetId": "id-nno13waxw",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-xu103bzy8-id-9tzd1g43c",
+        "sourceId": "id-xu103bzy8",
+        "targetId": "id-9tzd1g43c",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-xu103bzy8-id-kd9dlg3u8",
+        "sourceId": "id-xu103bzy8",
+        "targetId": "id-kd9dlg3u8",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-xu103bzy8-id-emt3bae0u",
+        "sourceId": "id-xu103bzy8",
+        "targetId": "id-emt3bae0u",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-xu103bzy8-id-zjcbgcowh",
+        "sourceId": "id-xu103bzy8",
+        "targetId": "id-zjcbgcowh",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-xu103bzy8-id-w4km2zqqq",
+        "sourceId": "id-xu103bzy8",
+        "targetId": "id-w4km2zqqq",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-xu103bzy8-id-rsori8xa5",
+        "sourceId": "id-xu103bzy8",
+        "targetId": "id-rsori8xa5",
+        "type": "hierarchical"
+      }
+    ]
+  }
+}

@@ -1,0 +1,3430 @@
+{
+  "id": "id-ojdou3awl",
+  "title": "",
+  "type": "cosmos",
+  "status": "planned",
+  "description": "",
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "children": [
+    {
+      "id": "id-5tbla2421",
+      "title": "DÃ©tails des tÃ¢ches",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "id-tk7bd967f",
+          "title": "TÃ¢che 1.1.1.2.2 - Analyser gran-mode.ps1",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "id-21ghigbde",
+      "title": "RÃ©sumÃ©",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-m7kxg8g0w",
+      "title": "TÃ¢che 1.1.2.2 - Concevoir la bibliothèque de fonctions communes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-vvtnxxhw1",
+      "title": "TÃ¢che 1.1.2.2.1 - Identifier les fonctions à inclure dans la bibliothèque",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-w6t5zjm6p",
+      "title": "TÃ¢che 1.1.2.2.2 - Définir les interfaces des fonctions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-4ktcqudyk",
+      "title": "TÃ¢che 1.1.2.2.3 - Concevoir le mécanisme de chargement de la bibliothèque",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-caftfvnqt",
+      "title": "TÃ¢che 1.1.2.2.4 - Établir les conventions de documentation des fonctions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-blvugo29m",
+      "title": "TÃ¢che 1.2.1.2.2 - Créer les fonctions de validation de configuration",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-p2mdbwpr8",
+      "title": "TÃ¢che 1.2.1.2.2.1 - Développer le système de schémas de validation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-tulwtrtr2",
+      "title": "TÃ¢che 1.2.1.2.2.2 - Implémenter la validation des types de données",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-bknpa5s3i",
+      "title": "TÃ¢che 1.2.1.2.2.3 - Créer les fonctions de validation des valeurs obligatoires",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-72emtb00n",
+      "title": "TÃ¢che 1.2.1.2.2.4 - Développer la validation des contraintes personnalisées",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ef86dgzq0",
+      "title": "TÃ¢che 1.2.1.2.2.5 - Implémenter le rapport d'erreurs de validation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-av88w2a9l",
+      "title": "TÃ¢che 1.2.1.3.1.2.2 - Créer la fonction `Write-LogInfo`",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-66d3mw1gp",
+      "title": "TÃ¢che 1.2.1.4.1.2.2 - Créer le validateur d'URLs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ji1mzflht",
+      "title": "TÃ¢che 1.2.2 - Tests de la bibliothèque commune",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-me7nwuvxi",
+      "title": "TÃ¢che 1.2.2.1 - Créer les tests unitaires pour les fonctions de configuration",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-72lueag01",
+      "title": "TÃ¢che 1.2.2.1.1 - Développer les tests de chargement de configuration",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-aub1ap7nr",
+      "title": "TÃ¢che 1.2.2.1.2 - Créer les tests de validation de configuration",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-davtmhlq9",
+      "title": "TÃ¢che 1.2.2.1.3 - Implémenter les tests de fusion de configurations",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-pg2usfsu3",
+      "title": "TÃ¢che 1.2.2.1.4 - Développer les tests de gestion des valeurs par défaut",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-sv11t4of1",
+      "title": "TÃ¢che 1.2.2.2 - Implémenter les tests pour les fonctions de journalisation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-opfshgx7u",
+      "title": "TÃ¢che 1.2.2.2.1 - Créer les tests des fonctions de log par niveau",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-g2xp267rl",
+      "title": "TÃ¢che 1.2.2.2.2 - Développer les tests de formatage des messages",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-tf63872pv",
+      "title": "TÃ¢che 1.2.2.2.3 - Implémenter les tests de rotation des fichiers",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-qsaqrjlj1",
+      "title": "TÃ¢che 1.2.2.2.4 - Créer les tests de filtrage des logs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-bnsdgpxad",
+      "title": "TÃ¢che 1.2.2.3 - Développer les tests pour les fonctions utilitaires",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-iqy4vg5y2",
+      "title": "TÃ¢che 1.2.2.3.1 - Implémenter les tests de validation d'entrées",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-8n732gxj2",
+      "title": "TÃ¢che 1.2.2.3.2 - Créer les tests de manipulation de fichiers",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-i33wdymtn",
+      "title": "TÃ¢che 1.2.2.3.3 - Développer les tests de gestion d'erreurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-tb4e6qycb",
+      "title": "TÃ¢che 1.2.2.3.4 - Implémenter les tests de reporting",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-0w7g58i8t",
+      "title": "TÃ¢che 1.2.2.4 - Exécuter et valider tous les tests",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-8fgprnkfd",
+      "title": "TÃ¢che 1.2.2.4.1 - Configurer l'environnement de test",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-mdlmp2tom",
+      "title": "TÃ¢che 1.2.2.4.2 - Exécuter la suite de tests complète",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gzk1auta9",
+      "title": "TÃ¢che 1.2.2.4.3 - Corriger les bugs identifiés",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3eewjafeu",
+      "title": "TÃ¢che 1.2.2.4.4 - Valider la couverture de tests",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-raw8niyu0",
+      "title": "TÃ¢che 1.3.1.2.2 - Implémenter les fonctions de diagnostic",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-hjadwhr7e",
+      "title": "TÃ¢che 1.3.1.2.2.1 - Développer les fonctions d'analyse d'erreurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-i8qe7qiwc",
+      "title": "TÃ¢che 1.3.1.2.2.1.1 - Créer la fonction d'analyse de stack trace",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-he49dmwz2",
+      "title": "TÃ¢che 1.3.1.2.2.1.1.1 - Développer le parseur de stack trace PowerShell",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-5knl541sx",
+      "title": "TÃ¢che 1.3.1.2.2.1.1.2 - Implémenter l'extraction des informations de ligne et fichier",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ahkfpvwrk",
+      "title": "TÃ¢che 1.3.1.2.2.1.1.3 - Créer la résolution des chemins de fichiers",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-un8uzjscs",
+      "title": "TÃ¢che 1.3.1.2.2.1.1.4 - Développer l'analyse de la séquence d'appels",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-hqopyzkxk",
+      "title": "TÃ¢che 1.3.1.2.2.1.1.5 - Implémenter la visualisation hiérarchique de la stack",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-662m4ames",
+      "title": "TÃ¢che 1.3.1.2.2.1.2 - Implémenter la catégorisation des erreurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-cjpxpal1n",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1 - Développer la classification par type d'exception",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-2qlilkp0g",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1 - Créer la taxonomie des exceptions PowerShell",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-0niyg8na5",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1 - Identifier les exceptions système PowerShell",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3rpql6uub",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1 - Recenser les exceptions .NET courantes en PowerShell",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-42g6vdram",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1 - Identifier les exceptions System.Exception de base",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-878vtfvvq",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1 - Créer la structure de base de la taxonomie des exceptions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-e1hmjje92",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1 - Définir le format de stockage des informations d'exceptions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-1p0uo07y8",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1 - Analyser les besoins en stockage pour la taxonomie",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-fjmqfhplr",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.1 - Identifier les informations essentielles à stocker",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-c8y7lajmo",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.2 - Définir les relations entre les différentes exceptions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-1ox5ahqnk",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.3 - Évaluer les besoins en performance et taille",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-fdokdiwp2",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.4 - Déterminer les exigences de mise à jour et maintenance",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-qt1kluayv",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.5 - Créer le document de spécifications de stockage",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-erd092mzj",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.2 - Comparer les formats JSON, XML et PowerShell Data",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-0ips4i1o9",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.3 - Définir le schéma de données pour les exceptions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-dxedpsd6a",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.4 - Créer les fonctions de sérialisation/désérialisation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-hikur9z3t",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.5 - Implémenter la validation du format de données",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-75phc18sd",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.2 - Créer les classes/structures pour représenter les exceptions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gwmlaglvc",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.3 - Implémenter le système de métadonnées des exceptions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-13bsy380w",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.4 - Développer le mécanisme d'indexation des exceptions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-2rdpyaxxu",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.5 - Créer les fonctions d'accès à la taxonomie",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-c34vwgbr9",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2 - Documenter les propriétés communes de System.Exception",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-yxzwlkdqf",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.1 - Documenter la propriété Message et ses caractéristiques",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-8n5jxpg40",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.2 - Documenter la propriété StackTrace et son format",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-uhwn9jbut",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.3 - Documenter la propriété InnerException et sa hiérarchie",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-zqu5mmu1t",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.4 - Documenter la propriété Source et son utilisation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-g4yhva43d",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.5 - Documenter la propriété HResult et ses codes d'erreur",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-vu2jxic2z",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.6 - Documenter les méthodes ToString() et GetBaseException()",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-l2miib35w",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.7 - Documenter les propriétés Data et TargetSite",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-nnrctduxa",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.8 - Créer un tableau récapitulatif des propriétés communes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-7nvya55d4",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3 - Recenser les exceptions de base du framework .NET",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gb33y2q0w",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1 - Identifier et documenter les exceptions du namespace System",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-v5nnh5r87",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.1 - Documenter ArgumentException et ses dérivées",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-krxzc7j8k",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.2 - Documenter InvalidOperationException et ses cas d'usage",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-4iam47rmj",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.3 - Documenter NullReferenceException et ses causes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-udc1u4h2a",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.4 - Documenter FormatException et ses scénarios",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-fcdp5g33o",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.5 - Documenter IndexOutOfRangeException et ses contextes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-qxtl7xt6g",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2 - Identifier et documenter les exceptions du namespace System.IO",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-seqjs7jbp",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.1 - Documenter IOException et ses caractéristiques",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-09lewz626",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.2 - Documenter FileNotFoundException et ses détails",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-a98k0zr1p",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.3 - Documenter DirectoryNotFoundException et ses contextes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-yqi88yveq",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.4 - Documenter PathTooLongException et ses limites",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-yr01a3q2o",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5 - Documenter UnauthorizedAccessException et ses permissions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-dwfd5y6r7",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.1 - Créer la structure de documentation pour UnauthorizedAccessException",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-kp3lc79jt",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.2 - Documenter la hiérarchie et les propriétés de UnauthorizedAccessException",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-wtwsg9idg",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.3 - Documenter les scénarios courants d'accès non autorisé",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-y1adjmfun",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.4 - Documenter les différents types de permissions (lecture, écriture, exécution)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3m38k3m1b",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.5 - Créer des exemples PowerShell pour illustrer les problèmes d'accès",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-1xoofw0kd",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6 - Documenter les techniques de prévention et de débogage",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-zbavook9s",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.1 - Documenter les techniques de prévention des UnauthorizedAccessException",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-slqqnhn1e",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2 - Documenter les techniques de débogage des problèmes d'accès",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-wqsp1tdmk",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.1 - Créer une fonction de diagnostic des permissions de fichiers et dossiers",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-yl2kq24co",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.2 - Implémenter la détection et l'analyse des erreurs UnauthorizedAccessException",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-hc68g9cpg",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.3 - Développer des outils de vérification préalable des permissions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-0f9y1gh8i",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.4 - Documenter les techniques d'élévation de privilèges temporaires",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    }
+  ],
+  "metroMap": {
+    "lines": [
+      {
+        "id": "line-cosmos",
+        "name": "COSMOS",
+        "color": "#1a237e",
+        "order": 0
+      },
+      {
+        "id": "line-galaxy",
+        "name": "GALAXY",
+        "color": "#7b1fa2",
+        "order": 1
+      },
+      {
+        "id": "line-stellar_system",
+        "name": "STELLAR_SYSTEM",
+        "color": "#d32f2f",
+        "order": 2
+      },
+      {
+        "id": "line-planet",
+        "name": "PLANET",
+        "color": "#ff9800",
+        "order": 3
+      },
+      {
+        "id": "line-continent",
+        "name": "CONTINENT",
+        "color": "#ffc107",
+        "order": 4
+      },
+      {
+        "id": "line-region",
+        "name": "REGION",
+        "color": "#4caf50",
+        "order": 5
+      },
+      {
+        "id": "line-locality",
+        "name": "LOCALITY",
+        "color": "#00bcd4",
+        "order": 6
+      },
+      {
+        "id": "line-district",
+        "name": "DISTRICT",
+        "color": "#2196f3",
+        "order": 7
+      },
+      {
+        "id": "line-building",
+        "name": "BUILDING",
+        "color": "#3f51b5",
+        "order": 8
+      },
+      {
+        "id": "line-foundation",
+        "name": "FOUNDATION",
+        "color": "#212121",
+        "order": 9
+      }
+    ],
+    "stations": [
+      {
+        "id": "id-ojdou3awl",
+        "name": "",
+        "lineId": "line-cosmos",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-5tbla2421",
+        "name": "DÃ©tails des tÃ¢ches",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-tk7bd967f",
+        "name": "TÃ¢che 1.1.1.2.2 - Analyser gran-mode.ps1",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-21ghigbde",
+        "name": "RÃ©sumÃ©",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-m7kxg8g0w",
+        "name": "TÃ¢che 1.1.2.2 - Concevoir la bibliothèque de fonctions communes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-vvtnxxhw1",
+        "name": "TÃ¢che 1.1.2.2.1 - Identifier les fonctions à inclure dans la bibliothèque",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-w6t5zjm6p",
+        "name": "TÃ¢che 1.1.2.2.2 - Définir les interfaces des fonctions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-4ktcqudyk",
+        "name": "TÃ¢che 1.1.2.2.3 - Concevoir le mécanisme de chargement de la bibliothèque",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-caftfvnqt",
+        "name": "TÃ¢che 1.1.2.2.4 - Établir les conventions de documentation des fonctions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-blvugo29m",
+        "name": "TÃ¢che 1.2.1.2.2 - Créer les fonctions de validation de configuration",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-p2mdbwpr8",
+        "name": "TÃ¢che 1.2.1.2.2.1 - Développer le système de schémas de validation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-tulwtrtr2",
+        "name": "TÃ¢che 1.2.1.2.2.2 - Implémenter la validation des types de données",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-bknpa5s3i",
+        "name": "TÃ¢che 1.2.1.2.2.3 - Créer les fonctions de validation des valeurs obligatoires",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-72emtb00n",
+        "name": "TÃ¢che 1.2.1.2.2.4 - Développer la validation des contraintes personnalisées",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ef86dgzq0",
+        "name": "TÃ¢che 1.2.1.2.2.5 - Implémenter le rapport d'erreurs de validation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-av88w2a9l",
+        "name": "TÃ¢che 1.2.1.3.1.2.2 - Créer la fonction `Write-LogInfo`",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-66d3mw1gp",
+        "name": "TÃ¢che 1.2.1.4.1.2.2 - Créer le validateur d'URLs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ji1mzflht",
+        "name": "TÃ¢che 1.2.2 - Tests de la bibliothèque commune",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-me7nwuvxi",
+        "name": "TÃ¢che 1.2.2.1 - Créer les tests unitaires pour les fonctions de configuration",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-72lueag01",
+        "name": "TÃ¢che 1.2.2.1.1 - Développer les tests de chargement de configuration",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-aub1ap7nr",
+        "name": "TÃ¢che 1.2.2.1.2 - Créer les tests de validation de configuration",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-davtmhlq9",
+        "name": "TÃ¢che 1.2.2.1.3 - Implémenter les tests de fusion de configurations",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-pg2usfsu3",
+        "name": "TÃ¢che 1.2.2.1.4 - Développer les tests de gestion des valeurs par défaut",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-sv11t4of1",
+        "name": "TÃ¢che 1.2.2.2 - Implémenter les tests pour les fonctions de journalisation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-opfshgx7u",
+        "name": "TÃ¢che 1.2.2.2.1 - Créer les tests des fonctions de log par niveau",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-g2xp267rl",
+        "name": "TÃ¢che 1.2.2.2.2 - Développer les tests de formatage des messages",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-tf63872pv",
+        "name": "TÃ¢che 1.2.2.2.3 - Implémenter les tests de rotation des fichiers",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-qsaqrjlj1",
+        "name": "TÃ¢che 1.2.2.2.4 - Créer les tests de filtrage des logs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-bnsdgpxad",
+        "name": "TÃ¢che 1.2.2.3 - Développer les tests pour les fonctions utilitaires",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-iqy4vg5y2",
+        "name": "TÃ¢che 1.2.2.3.1 - Implémenter les tests de validation d'entrées",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-8n732gxj2",
+        "name": "TÃ¢che 1.2.2.3.2 - Créer les tests de manipulation de fichiers",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-i33wdymtn",
+        "name": "TÃ¢che 1.2.2.3.3 - Développer les tests de gestion d'erreurs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-tb4e6qycb",
+        "name": "TÃ¢che 1.2.2.3.4 - Implémenter les tests de reporting",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-0w7g58i8t",
+        "name": "TÃ¢che 1.2.2.4 - Exécuter et valider tous les tests",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-8fgprnkfd",
+        "name": "TÃ¢che 1.2.2.4.1 - Configurer l'environnement de test",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-mdlmp2tom",
+        "name": "TÃ¢che 1.2.2.4.2 - Exécuter la suite de tests complète",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-gzk1auta9",
+        "name": "TÃ¢che 1.2.2.4.3 - Corriger les bugs identifiés",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-3eewjafeu",
+        "name": "TÃ¢che 1.2.2.4.4 - Valider la couverture de tests",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-raw8niyu0",
+        "name": "TÃ¢che 1.3.1.2.2 - Implémenter les fonctions de diagnostic",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-hjadwhr7e",
+        "name": "TÃ¢che 1.3.1.2.2.1 - Développer les fonctions d'analyse d'erreurs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-i8qe7qiwc",
+        "name": "TÃ¢che 1.3.1.2.2.1.1 - Créer la fonction d'analyse de stack trace",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-he49dmwz2",
+        "name": "TÃ¢che 1.3.1.2.2.1.1.1 - Développer le parseur de stack trace PowerShell",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-5knl541sx",
+        "name": "TÃ¢che 1.3.1.2.2.1.1.2 - Implémenter l'extraction des informations de ligne et fichier",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ahkfpvwrk",
+        "name": "TÃ¢che 1.3.1.2.2.1.1.3 - Créer la résolution des chemins de fichiers",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-un8uzjscs",
+        "name": "TÃ¢che 1.3.1.2.2.1.1.4 - Développer l'analyse de la séquence d'appels",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-hqopyzkxk",
+        "name": "TÃ¢che 1.3.1.2.2.1.1.5 - Implémenter la visualisation hiérarchique de la stack",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-662m4ames",
+        "name": "TÃ¢che 1.3.1.2.2.1.2 - Implémenter la catégorisation des erreurs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-cjpxpal1n",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1 - Développer la classification par type d'exception",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-2qlilkp0g",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1 - Créer la taxonomie des exceptions PowerShell",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-0niyg8na5",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1 - Identifier les exceptions système PowerShell",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-3rpql6uub",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1 - Recenser les exceptions .NET courantes en PowerShell",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-42g6vdram",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1 - Identifier les exceptions System.Exception de base",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-878vtfvvq",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1 - Créer la structure de base de la taxonomie des exceptions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-e1hmjje92",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1 - Définir le format de stockage des informations d'exceptions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-1p0uo07y8",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1 - Analyser les besoins en stockage pour la taxonomie",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-fjmqfhplr",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.1 - Identifier les informations essentielles à stocker",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-c8y7lajmo",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.2 - Définir les relations entre les différentes exceptions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-1ox5ahqnk",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.3 - Évaluer les besoins en performance et taille",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-fdokdiwp2",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.4 - Déterminer les exigences de mise à jour et maintenance",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-qt1kluayv",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.1.5 - Créer le document de spécifications de stockage",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-erd092mzj",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.2 - Comparer les formats JSON, XML et PowerShell Data",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-0ips4i1o9",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.3 - Définir le schéma de données pour les exceptions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-dxedpsd6a",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.4 - Créer les fonctions de sérialisation/désérialisation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-hikur9z3t",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.1.5 - Implémenter la validation du format de données",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-75phc18sd",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.2 - Créer les classes/structures pour représenter les exceptions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-gwmlaglvc",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.3 - Implémenter le système de métadonnées des exceptions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-13bsy380w",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.4 - Développer le mécanisme d'indexation des exceptions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-2rdpyaxxu",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.1.5 - Créer les fonctions d'accès à la taxonomie",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-c34vwgbr9",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2 - Documenter les propriétés communes de System.Exception",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-yxzwlkdqf",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.1 - Documenter la propriété Message et ses caractéristiques",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-8n5jxpg40",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.2 - Documenter la propriété StackTrace et son format",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-uhwn9jbut",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.3 - Documenter la propriété InnerException et sa hiérarchie",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-zqu5mmu1t",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.4 - Documenter la propriété Source et son utilisation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-g4yhva43d",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.5 - Documenter la propriété HResult et ses codes d'erreur",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-vu2jxic2z",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.6 - Documenter les méthodes ToString() et GetBaseException()",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-l2miib35w",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.7 - Documenter les propriétés Data et TargetSite",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-nnrctduxa",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.8 - Créer un tableau récapitulatif des propriétés communes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-7nvya55d4",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3 - Recenser les exceptions de base du framework .NET",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-gb33y2q0w",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1 - Identifier et documenter les exceptions du namespace System",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-v5nnh5r87",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.1 - Documenter ArgumentException et ses dérivées",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-krxzc7j8k",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.2 - Documenter InvalidOperationException et ses cas d'usage",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-4iam47rmj",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.3 - Documenter NullReferenceException et ses causes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-udc1u4h2a",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.4 - Documenter FormatException et ses scénarios",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-fcdp5g33o",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.1.5 - Documenter IndexOutOfRangeException et ses contextes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-qxtl7xt6g",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2 - Identifier et documenter les exceptions du namespace System.IO",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-seqjs7jbp",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.1 - Documenter IOException et ses caractéristiques",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-09lewz626",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.2 - Documenter FileNotFoundException et ses détails",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-a98k0zr1p",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.3 - Documenter DirectoryNotFoundException et ses contextes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-yqi88yveq",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.4 - Documenter PathTooLongException et ses limites",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-yr01a3q2o",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5 - Documenter UnauthorizedAccessException et ses permissions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-dwfd5y6r7",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.1 - Créer la structure de documentation pour UnauthorizedAccessException",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-kp3lc79jt",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.2 - Documenter la hiérarchie et les propriétés de UnauthorizedAccessException",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-wtwsg9idg",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.3 - Documenter les scénarios courants d'accès non autorisé",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-y1adjmfun",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.4 - Documenter les différents types de permissions (lecture, écriture, exécution)",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-3m38k3m1b",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.5 - Créer des exemples PowerShell pour illustrer les problèmes d'accès",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-1xoofw0kd",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6 - Documenter les techniques de prévention et de débogage",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-zbavook9s",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.1 - Documenter les techniques de prévention des UnauthorizedAccessException",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-slqqnhn1e",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2 - Documenter les techniques de débogage des problèmes d'accès",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-wqsp1tdmk",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.1 - Créer une fonction de diagnostic des permissions de fichiers et dossiers",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-yl2kq24co",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.2 - Implémenter la détection et l'analyse des erreurs UnauthorizedAccessException",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-hc68g9cpg",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.3 - Développer des outils de vérification préalable des permissions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-0f9y1gh8i",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.4 - Documenter les techniques d'élévation de privilèges temporaires",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-id-ojdou3awl-id-5tbla2421",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-5tbla2421",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-5tbla2421-id-tk7bd967f",
+        "sourceId": "id-5tbla2421",
+        "targetId": "id-tk7bd967f",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-21ghigbde",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-21ghigbde",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-m7kxg8g0w",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-m7kxg8g0w",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-vvtnxxhw1",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-vvtnxxhw1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-w6t5zjm6p",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-w6t5zjm6p",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-4ktcqudyk",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-4ktcqudyk",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-caftfvnqt",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-caftfvnqt",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-blvugo29m",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-blvugo29m",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-p2mdbwpr8",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-p2mdbwpr8",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-tulwtrtr2",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-tulwtrtr2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-bknpa5s3i",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-bknpa5s3i",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-72emtb00n",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-72emtb00n",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-ef86dgzq0",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-ef86dgzq0",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-av88w2a9l",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-av88w2a9l",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-66d3mw1gp",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-66d3mw1gp",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-ji1mzflht",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-ji1mzflht",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-me7nwuvxi",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-me7nwuvxi",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-72lueag01",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-72lueag01",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-aub1ap7nr",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-aub1ap7nr",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-davtmhlq9",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-davtmhlq9",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-pg2usfsu3",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-pg2usfsu3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-sv11t4of1",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-sv11t4of1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-opfshgx7u",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-opfshgx7u",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-g2xp267rl",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-g2xp267rl",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-tf63872pv",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-tf63872pv",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-qsaqrjlj1",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-qsaqrjlj1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-bnsdgpxad",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-bnsdgpxad",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-iqy4vg5y2",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-iqy4vg5y2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-8n732gxj2",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-8n732gxj2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-i33wdymtn",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-i33wdymtn",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-tb4e6qycb",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-tb4e6qycb",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-0w7g58i8t",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-0w7g58i8t",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-8fgprnkfd",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-8fgprnkfd",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-mdlmp2tom",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-mdlmp2tom",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-gzk1auta9",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-gzk1auta9",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-3eewjafeu",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-3eewjafeu",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-raw8niyu0",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-raw8niyu0",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-hjadwhr7e",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-hjadwhr7e",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-i8qe7qiwc",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-i8qe7qiwc",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-he49dmwz2",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-he49dmwz2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-5knl541sx",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-5knl541sx",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-ahkfpvwrk",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-ahkfpvwrk",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-un8uzjscs",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-un8uzjscs",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-hqopyzkxk",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-hqopyzkxk",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-662m4ames",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-662m4ames",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-cjpxpal1n",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-cjpxpal1n",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-2qlilkp0g",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-2qlilkp0g",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-0niyg8na5",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-0niyg8na5",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-3rpql6uub",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-3rpql6uub",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-42g6vdram",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-42g6vdram",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-878vtfvvq",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-878vtfvvq",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-e1hmjje92",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-e1hmjje92",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-1p0uo07y8",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-1p0uo07y8",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-fjmqfhplr",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-fjmqfhplr",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-c8y7lajmo",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-c8y7lajmo",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-1ox5ahqnk",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-1ox5ahqnk",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-fdokdiwp2",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-fdokdiwp2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-qt1kluayv",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-qt1kluayv",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-erd092mzj",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-erd092mzj",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-0ips4i1o9",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-0ips4i1o9",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-dxedpsd6a",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-dxedpsd6a",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-hikur9z3t",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-hikur9z3t",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-75phc18sd",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-75phc18sd",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-gwmlaglvc",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-gwmlaglvc",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-13bsy380w",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-13bsy380w",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-2rdpyaxxu",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-2rdpyaxxu",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-c34vwgbr9",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-c34vwgbr9",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-yxzwlkdqf",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-yxzwlkdqf",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-8n5jxpg40",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-8n5jxpg40",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-uhwn9jbut",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-uhwn9jbut",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-zqu5mmu1t",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-zqu5mmu1t",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-g4yhva43d",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-g4yhva43d",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-vu2jxic2z",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-vu2jxic2z",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-l2miib35w",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-l2miib35w",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-nnrctduxa",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-nnrctduxa",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-7nvya55d4",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-7nvya55d4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-gb33y2q0w",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-gb33y2q0w",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-v5nnh5r87",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-v5nnh5r87",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-krxzc7j8k",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-krxzc7j8k",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-4iam47rmj",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-4iam47rmj",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-udc1u4h2a",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-udc1u4h2a",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-fcdp5g33o",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-fcdp5g33o",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-qxtl7xt6g",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-qxtl7xt6g",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-seqjs7jbp",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-seqjs7jbp",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-09lewz626",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-09lewz626",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-a98k0zr1p",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-a98k0zr1p",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-yqi88yveq",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-yqi88yveq",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-yr01a3q2o",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-yr01a3q2o",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-dwfd5y6r7",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-dwfd5y6r7",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-kp3lc79jt",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-kp3lc79jt",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-wtwsg9idg",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-wtwsg9idg",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-y1adjmfun",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-y1adjmfun",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-3m38k3m1b",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-3m38k3m1b",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-1xoofw0kd",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-1xoofw0kd",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-zbavook9s",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-zbavook9s",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-slqqnhn1e",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-slqqnhn1e",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-wqsp1tdmk",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-wqsp1tdmk",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-yl2kq24co",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-yl2kq24co",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-hc68g9cpg",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-hc68g9cpg",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-ojdou3awl-id-0f9y1gh8i",
+        "sourceId": "id-ojdou3awl",
+        "targetId": "id-0f9y1gh8i",
+        "type": "hierarchical"
+      }
+    ]
+  }
+}

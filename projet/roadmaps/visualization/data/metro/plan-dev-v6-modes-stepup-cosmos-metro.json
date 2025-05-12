@@ -1,0 +1,94 @@
+{
+  "id": "id-xzl7bmq4p",
+  "title": "",
+  "type": "cosmos",
+  "status": "planned",
+  "description": "",
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "children": [],
+  "metroMap": {
+    "lines": [
+      {
+        "id": "line-cosmos",
+        "name": "COSMOS",
+        "color": "#1a237e",
+        "order": 0
+      },
+      {
+        "id": "line-galaxy",
+        "name": "GALAXY",
+        "color": "#7b1fa2",
+        "order": 1
+      },
+      {
+        "id": "line-stellar_system",
+        "name": "STELLAR_SYSTEM",
+        "color": "#d32f2f",
+        "order": 2
+      },
+      {
+        "id": "line-planet",
+        "name": "PLANET",
+        "color": "#ff9800",
+        "order": 3
+      },
+      {
+        "id": "line-continent",
+        "name": "CONTINENT",
+        "color": "#ffc107",
+        "order": 4
+      },
+      {
+        "id": "line-region",
+        "name": "REGION",
+        "color": "#4caf50",
+        "order": 5
+      },
+      {
+        "id": "line-locality",
+        "name": "LOCALITY",
+        "color": "#00bcd4",
+        "order": 6
+      },
+      {
+        "id": "line-district",
+        "name": "DISTRICT",
+        "color": "#2196f3",
+        "order": 7
+      },
+      {
+        "id": "line-building",
+        "name": "BUILDING",
+        "color": "#3f51b5",
+        "order": 8
+      },
+      {
+        "id": "line-foundation",
+        "name": "FOUNDATION",
+        "color": "#212121",
+        "order": 9
+      }
+    ],
+    "stations": [
+      {
+        "id": "id-xzl7bmq4p",
+        "name": "",
+        "lineId": "line-cosmos",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      }
+    ],
+    "connections": []
+  }
+}

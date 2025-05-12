@@ -93,20 +93,20 @@ Ce plan définit l'implémentation d'une architecture cognitive complète pour n
     - [x] **3.1.3.3** Implémenter les visualisations organisationnelles
     - [x] **3.1.3.4** Développer les indicateurs stratégiques
 
-- [ ] **3.2** Améliorer la visualisation "ligne de métro"
-  - [ ] **3.2.1** Adapter pour la hiérarchie à 10 niveaux
-    - [ ] **3.2.1.1** Développer la représentation des méta-lignes (COSMOS)
-    - [ ] **3.2.1.2** Créer le système de lignes principales (GALAXIES)
-    - [ ] **3.2.1.3** Implémenter les lignes secondaires (SYSTÈMES STELLAIRES)
-    - [ ] **3.2.1.4** Développer la représentation des niveaux inférieurs
-  - [ ] **3.2.2** Implémenter les correspondances multi-niveaux
-    - [ ] **3.2.2.1** Créer le système de correspondances verticales (hiérarchiques)
-    - [ ] **3.2.2.2** Développer les correspondances horizontales (dépendances)
-    - [ ] **3.2.2.3** Implémenter les correspondances dimensionnelles
-  - [ ] **3.2.3** Ajouter les filtres cognitifs
-    - [ ] **3.2.3.1** Développer le filtrage par niveau hiérarchique
-    - [ ] **3.2.3.2** Créer le filtrage par dimension
-    - [ ] **3.2.3.3** Implémenter les filtres combinés multi-critères
+- [x] **3.2** Améliorer la visualisation "ligne de métro"
+  - [x] **3.2.1** Adapter pour la hiérarchie à 10 niveaux
+    - [x] **3.2.1.1** Développer la représentation des méta-lignes (COSMOS)
+    - [x] **3.2.1.2** Créer le système de lignes principales (GALAXIES)
+    - [x] **3.2.1.3** Implémenter les lignes secondaires (SYSTÈMES STELLAIRES)
+    - [x] **3.2.1.4** Développer la représentation des niveaux inférieurs
+  - [x] **3.2.2** Implémenter les correspondances multi-niveaux
+    - [x] **3.2.2.1** Créer le système de correspondances verticales (hiérarchiques)
+    - [x] **3.2.2.2** Développer les correspondances horizontales (dépendances)
+    - [x] **3.2.2.3** Implémenter les correspondances dimensionnelles
+  - [x] **3.2.3** Ajouter les filtres cognitifs
+    - [x] **3.2.3.1** Développer le filtrage par niveau hiérarchique
+    - [x] **3.2.3.2** Créer le filtrage par dimension
+    - [x] **3.2.3.3** Implémenter les filtres combinés multi-critères
 
 ## 4. Système d'orchestration cognitive
 

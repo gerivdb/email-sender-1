@@ -1,0 +1,6427 @@
+{
+  "id": "id-b9of7kzlp",
+  "title": "Plan de développement v9 : Intégration des concepts de Task Master avec LWM/LCM",
+  "type": "cosmos",
+  "status": "planned",
+  "description": "",
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "children": [
+    {
+      "id": "id-pss19341g",
+      "title": "10. Visualisation \"ligne de métro\" pour les roadmaps",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "10.1",
+          "title": "Concevoir le système de visualisation",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "10.1.1.3",
+              "title": "Créer le système de positionnement",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "10.1.1",
+              "title": "Définir le modèle de données pour la visualisation",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "10.1.1.1",
+                  "title": "Concevoir la structure des lignes et stations",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "10.1.1.2",
+              "title": "Définir les métadonnées visuelles",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "10.3",
+          "title": "Créer le système de filtrage et d'affichage",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "10.3.2",
+              "title": "Ajouter les modes d'affichage spécialisés",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "10.3.2.1",
+                  "title": "Créer la vue des chemins critiques",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "10.3.2.3",
+                  "title": "Développer la vue des tâches prioritaires",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "10.3.2.2",
+                  "title": "Implémenter la vue des tâches bloquées",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "10.3.1.2",
+              "title": "Créer le filtrage par domaine/branche",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "10.3.1.3",
+              "title": "Développer le filtrage par section/thème",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "10.3.1",
+              "title": "Développer les filtres par critères",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "10.3.1.1",
+                  "title": "Implémenter le filtrage par priorité",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "10.1.2",
+          "title": "Développer le moteur de rendu",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "10.1.2.2",
+              "title": "Créer le système de thèmes et styles",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "10.1.2.3",
+              "title": "Développer les animations et transitions",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "10.1.2.1",
+              "title": "Implémenter le rendu SVG/Canvas",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "10.2",
+          "title": "Implémenter la navigation interactive",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "10.2.2",
+              "title": "Ajouter l'interaction avec les nœuds",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "10.2.2.2",
+                  "title": "Créer les popups d'information",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "10.2.2.3",
+                  "title": "Développer l'édition directe via les nœuds",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "10.2.2.1",
+                  "title": "Implémenter la sélection de nœuds",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "10.2.1.3",
+              "title": "Développer la focalisation sur les nœuds",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "10.2.1",
+              "title": "Développer le zoom et la navigation",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "10.2.1.1",
+                  "title": "Créer le système de zoom sémantique",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "10.2.1.2",
+              "title": "Implémenter la navigation par déplacement",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-fmgpel2qt",
+      "title": "6. Standardisation du format des tâches (Task Master)",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "6.1",
+          "title": "Définir le format de tâche standardisé",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "6.1.1.3",
+              "title": "Concevoir la structure des métadonnées (priorité, durée, tags)",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.1.1",
+              "title": "Concevoir le schéma JSON des tâches",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "6.1.1.1",
+                  "title": "Spécifier les champs obligatoires (id, titre, statut)",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "6.1.1.5",
+              "title": "Créer le schéma pour l'historique des modifications",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.1.1.4",
+              "title": "Définir le format des dépendances et sous-tâches",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.1.1.2",
+              "title": "Définir les champs optionnels (description, métadonnées)",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "6.1.2",
+          "title": "Développer la validation du format",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "6.1.2.2",
+              "title": "Créer les tests de validation automatisés",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.1.2.3",
+              "title": "Développer les fonctions de normalisation des données",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.1.2.1",
+              "title": "Implémenter la validation JSON Schema",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "6.1.3",
+          "title": "Documenter le format standardisé",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "6.1.3.1",
+              "title": "Créer la documentation technique du schéma",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.1.3.2",
+              "title": "Développer des exemples d'utilisation",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.1.3.3",
+              "title": "Rédiger les guides de migration",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-zk7qfe9ns",
+      "title": "7. Serveur MCP pour roadmaps (Task Master)",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "7.1.3",
+          "title": "Ajouter l'authentification et la sécurité",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "7.1.3.3",
+              "title": "Créer le système de journalisation sécurisée",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.1.3.2",
+              "title": "Développer le contrôle d'accès",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.1.3.1",
+              "title": "Implémenter l'authentification par token",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "7.3",
+          "title": "Ajouter les fonctionnalités d'analyse et de recherche",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "7.3.3",
+              "title": "Ajouter l'analyse de dépendances et de structure",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.3.3.3",
+                  "title": "Créer le système de suggestion d'optimisations",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.3.3.2",
+                  "title": "Développer l'analyse des goulots d'étranglement",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.3.3.1",
+                  "title": "Implémenter la détection des chemins critiques",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "7.3.1.2",
+              "title": "Créer le moteur de recherche textuelle",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.3.1",
+              "title": "Développer la recherche par mots-clés",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.3.1.1",
+                  "title": "Implémenter l'indexation du contenu",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "7.3.1.3",
+              "title": "Développer le système de filtres",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.3.2",
+              "title": "Implémenter la recherche sémantique avec embeddings",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.3.2.3",
+                  "title": "Créer les requêtes de similarité sémantique",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.3.2.2",
+                  "title": "Développer la génération d'embeddings",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.3.2.1",
+                  "title": "Intégrer Qdrant pour le stockage vectoriel",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "7.1.2",
+          "title": "Créer l'architecture du serveur",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "7.1.2.3",
+              "title": "Créer le système de configuration",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.1.2.1",
+              "title": "Développer la structure modulaire",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.1.2.2",
+              "title": "Implémenter le système de plugins",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "7.1",
+          "title": "Développer le serveur MCP de base",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "7.1.1.2",
+              "title": "Développer le système de réponses formatées",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.1.1.3",
+              "title": "Implémenter la gestion des erreurs",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.1.1",
+              "title": "Implémenter le protocole MCP standard",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.1.1.1",
+                  "title": "Créer les handlers de requêtes MCP",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "7.2",
+          "title": "Implémenter les fonctions CRUD pour les tâches",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "7.2.2",
+              "title": "Ajouter les endpoints de mise à jour/suppression",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.2.2.1",
+                  "title": "Créer l'endpoint de mise à jour de tâche",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.2.2.3",
+                  "title": "Développer l'endpoint de modification en masse",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.2.2.2",
+                  "title": "Implémenter l'endpoint de suppression",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "7.2.1.3",
+              "title": "Développer l'endpoint de création de tâche",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.2.1",
+              "title": "Développer les endpoints de création/lecture",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.2.1.1",
+                  "title": "Créer l'endpoint de listing des roadmaps",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "7.2.1.2",
+              "title": "Implémenter l'endpoint de récupération d'une roadmap",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.2.3",
+              "title": "Implémenter la validation des données",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.2.3.1",
+                  "title": "Créer le système de validation des entrées",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.2.3.2",
+                  "title": "Développer la validation des dépendances",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.2.3.3",
+                  "title": "Implémenter la détection des conflits",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "7.4",
+          "title": "Intégrer la visualisation",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "7.4.3",
+              "title": "Ajouter la visualisation de l'avancement global",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.4.3.1",
+                  "title": "Créer les tableaux de bord d'avancement",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.4.3.2",
+                  "title": "Développer les graphiques de progression",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.4.3.3",
+                  "title": "Implémenter les indicateurs de performance",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "7.4.1",
+              "title": "Développer la génération de graphes de dépendances",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.4.1.1",
+                  "title": "Créer le générateur de graphes DOT",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "7.4.1.3",
+              "title": "Développer la visualisation interactive",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.4.1.2",
+              "title": "Implémenter l'export en SVG/PNG",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "7.4.2",
+              "title": "Implémenter la création de diagrammes de Gantt",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "7.4.2.1",
+                  "title": "Créer le générateur de diagrammes de Gantt",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.4.2.2",
+                  "title": "Développer l'export en formats standards",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "7.4.2.3",
+                  "title": "Implémenter la visualisation interactive",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-kp8rjl97g",
+      "title": "8. Interface utilisateur en langage naturel (Task Master)",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "8.1.3",
+          "title": "Ajouter la gestion des ambiguïtés",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "8.1.3.2",
+              "title": "Créer le système de clarification",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "8.1.3.1",
+              "title": "Développer la détection des ambiguïtés",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "8.1.3.3",
+              "title": "Implémenter la résolution contextuelle",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "8.2",
+          "title": "Créer les templates de réponse",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "8.2.3",
+              "title": "Ajouter le support multilingue",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "8.2.3.1",
+                  "title": "Créer le système de traduction des templates",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "8.2.3.2",
+                  "title": "Développer la détection automatique de langue",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "8.2.3.3",
+                  "title": "Implémenter la gestion des locales",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "8.2.1.2",
+              "title": "Développer les templates d'information",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "8.2.1",
+              "title": "Développer les templates pour les différentes actions",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "8.2.1.1",
+                  "title": "Créer les templates de confirmation",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "8.2.2",
+              "title": "Implémenter la personnalisation des réponses",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "8.2.2.1",
+                  "title": "Créer le système de variables de template",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "8.2.2.2",
+                  "title": "Développer les formats de sortie configurables",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "8.2.2.3",
+                  "title": "Implémenter les niveaux de détail ajustables",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "8.2.1.3",
+              "title": "Implémenter les templates d'erreur",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "8.1",
+          "title": "Développer le parser de commandes en langage naturel",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "8.1.1.3",
+              "title": "Créer la classification des intentions",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "8.1.1",
+              "title": "Créer le système d'analyse d'intentions",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "8.1.1.1",
+                  "title": "Développer la détection des verbes d'action",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "8.1.1.2",
+              "title": "Implémenter la reconnaissance des entités",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "8.1.2",
+          "title": "Implémenter l'extraction de paramètres",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "8.1.2.2",
+              "title": "Créer la détection des attributs",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "8.1.2.1",
+              "title": "Développer l'extraction des identifiants",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "8.1.2.3",
+              "title": "Implémenter l'extraction des valeurs",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "8.3",
+          "title": "Implémenter les suggestions contextuelles",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "8.3.2",
+              "title": "Créer le système de recommandation de tâches",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "8.3.2.3",
+                  "title": "Créer le système de priorisation des suggestions",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "8.3.2.2",
+                  "title": "Développer le filtrage contextuel",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "8.3.2.1",
+                  "title": "Implémenter l'algorithme de recommandation",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "8.3.1",
+              "title": "Développer l'analyse du contexte utilisateur",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "8.3.1.1",
+                  "title": "Créer le système de suivi de session",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "8.3.1.3",
+              "title": "Développer la détection des patterns d'utilisation",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "8.3.1.2",
+              "title": "Implémenter l'analyse des actions récentes",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "8.3.3",
+              "title": "Implémenter les suggestions d'optimisation",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "8.3.3.2",
+                  "title": "Créer le système de suggestions d'amélioration",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "8.3.3.1",
+                  "title": "Développer la détection des inefficacités",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "8.3.3.3",
+                  "title": "Implémenter les recommandations de restructuration",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id-0e99bplzq",
+      "title": "9. Intégration avec les outils existants (Task Master)",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "9.1.3",
+          "title": "Ajouter l'intégration avec le serveur MCP",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "9.1.3.2",
+              "title": "Créer la synchronisation bidirectionnelle",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "9.1.3.1",
+              "title": "Développer le client MCP pour VS Code",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "9.1.3.3",
+              "title": "Implémenter la gestion des conflits",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "9.1",
+          "title": "Développer l'extension VS Code",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "9.1.1.3",
+              "title": "Créer l'interface de recherche",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "9.1.1",
+              "title": "Créer l'interface utilisateur de l'extension",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "9.1.1.1",
+                  "title": "Développer le panneau de commandes",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "9.1.1.2",
+              "title": "Implémenter la visualisation des roadmaps",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "9.1.2",
+          "title": "Implémenter l'édition directe des roadmaps",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "9.1.2.2",
+              "title": "Créer les fonctionnalités de drag-and-drop",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "9.1.2.1",
+              "title": "Développer l'éditeur de tâches",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "9.1.2.3",
+              "title": "Implémenter la validation en temps réel",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "9.2",
+          "title": "Intégrer avec n8n et Notion",
+          "type": "locality",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "9.2.2",
+              "title": "Créer l'intégration Notion",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "9.2.2.3",
+                  "title": "Créer la gestion des conflits",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "9.2.2.1",
+                  "title": "Développer la synchronisation bidirectionnelle",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                },
+                {
+                  "id": "9.2.2.2",
+                  "title": "Implémenter la conversion de format",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "9.2.1.3",
+              "title": "Développer les actions d'automatisation",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "9.2.1",
+              "title": "Développer les nodes n8n pour la gestion des roadmaps",
+              "type": "district",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": [
+                {
+                  "id": "9.2.1.1",
+                  "title": "Créer les nodes de lecture/écriture",
+                  "type": "building",
+                  "status": "planned",
+                  "description": "",
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "9.2.1.2",
+              "title": "Implémenter les triggers d'événements",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "6.3",
+      "title": "Adapter les roadmaps existantes",
+      "type": "locality",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "6.3.1",
+          "title": "Analyser les formats actuels",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "6.3.1.1",
+              "title": "Inventorier les différents formats utilisés",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "6.3.1.3",
+          "title": "Analyser les structures hiérarchiques",
+          "type": "building",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "6.3.2",
+          "title": "Développer les scripts de migration",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "6.3.2.1",
+              "title": "Créer le script de conversion pour plan-dev-v8",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.3.2.2",
+              "title": "Développer le script pour plan-dev-v9",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.3.2.3",
+              "title": "Implémenter la conversion des autres plans",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "6.3.1.2",
+          "title": "Identifier les patterns de métadonnées existants",
+          "type": "building",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "6.3.3",
+          "title": "Valider les conversions",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "6.3.3.1",
+              "title": "Créer les tests de non-régression",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.3.3.2",
+              "title": "Développer les outils de comparaison",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.3.3.3",
+              "title": "Implémenter la vérification d'intégrité",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "6.2",
+      "title": "Créer les convertisseurs Markdown ↔ JSON",
+      "type": "locality",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "6.2.1.5",
+          "title": "Ajouter la gestion des descriptions multi-lignes",
+          "type": "building",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "6.2.1.2",
+          "title": "Créer l'extraction des métadonnées depuis les tags",
+          "type": "building",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "6.2.3",
+          "title": "Créer les outils de conversion batch",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "6.2.3.3",
+              "title": "Créer les rapports de conversion",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.2.3.1",
+              "title": "Développer l'outil de conversion de répertoires",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.2.3.2",
+              "title": "Implémenter la validation post-conversion",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "6.2.1.3",
+          "title": "Développer la détection des dépendances",
+          "type": "building",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "6.2.1",
+          "title": "Développer le parser Markdown → JSON",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "6.2.1.1",
+              "title": "Implémenter la détection des tâches dans le Markdown",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "6.2.1.4",
+          "title": "Implémenter l'extraction des sous-tâches",
+          "type": "building",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        },
+        {
+          "id": "6.2.2",
+          "title": "Implémenter le générateur JSON → Markdown",
+          "type": "district",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": [
+            {
+              "id": "6.2.2.5",
+              "title": "Ajouter la gestion des limites de taille (500 lignes max)",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.2.2.2",
+              "title": "Créer la génération des tags à partir des métadonnées",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.2.2.1",
+              "title": "Développer la génération de la ligne de titre",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.2.2.4",
+              "title": "Développer la génération des sous-tâches indentées",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            },
+            {
+              "id": "6.2.2.3",
+              "title": "Implémenter la génération des descriptions formatées",
+              "type": "building",
+              "status": "planned",
+              "description": "",
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metroMap": {
+    "lines": [
+      {
+        "id": "line-cosmos",
+        "name": "COSMOS",
+        "color": "#1a237e",
+        "order": 0
+      },
+      {
+        "id": "line-galaxy",
+        "name": "GALAXY",
+        "color": "#7b1fa2",
+        "order": 1
+      },
+      {
+        "id": "line-stellar_system",
+        "name": "STELLAR_SYSTEM",
+        "color": "#d32f2f",
+        "order": 2
+      },
+      {
+        "id": "line-planet",
+        "name": "PLANET",
+        "color": "#ff9800",
+        "order": 3
+      },
+      {
+        "id": "line-continent",
+        "name": "CONTINENT",
+        "color": "#ffc107",
+        "order": 4
+      },
+      {
+        "id": "line-region",
+        "name": "REGION",
+        "color": "#4caf50",
+        "order": 5
+      },
+      {
+        "id": "line-locality",
+        "name": "LOCALITY",
+        "color": "#00bcd4",
+        "order": 6
+      },
+      {
+        "id": "line-district",
+        "name": "DISTRICT",
+        "color": "#2196f3",
+        "order": 7
+      },
+      {
+        "id": "line-building",
+        "name": "BUILDING",
+        "color": "#3f51b5",
+        "order": 8
+      },
+      {
+        "id": "line-foundation",
+        "name": "FOUNDATION",
+        "color": "#212121",
+        "order": 9
+      }
+    ],
+    "stations": [
+      {
+        "id": "id-b9of7kzlp",
+        "name": "Plan de développement v9 : Intégration des concepts de Task Master avec LWM/LCM",
+        "lineId": "line-cosmos",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-pss19341g",
+        "name": "10. Visualisation \"ligne de métro\" pour les roadmaps",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.1",
+        "name": "Concevoir le système de visualisation",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.1.1.3",
+        "name": "Créer le système de positionnement",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.1.1",
+        "name": "Définir le modèle de données pour la visualisation",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.1.1.1",
+        "name": "Concevoir la structure des lignes et stations",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.1.1.2",
+        "name": "Définir les métadonnées visuelles",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.3",
+        "name": "Créer le système de filtrage et d'affichage",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.3.2",
+        "name": "Ajouter les modes d'affichage spécialisés",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.3.2.1",
+        "name": "Créer la vue des chemins critiques",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.3.2.3",
+        "name": "Développer la vue des tâches prioritaires",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.3.2.2",
+        "name": "Implémenter la vue des tâches bloquées",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.3.1.2",
+        "name": "Créer le filtrage par domaine/branche",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.3.1.3",
+        "name": "Développer le filtrage par section/thème",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.3.1",
+        "name": "Développer les filtres par critères",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.3.1.1",
+        "name": "Implémenter le filtrage par priorité",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.1.2",
+        "name": "Développer le moteur de rendu",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.1.2.2",
+        "name": "Créer le système de thèmes et styles",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.1.2.3",
+        "name": "Développer les animations et transitions",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.1.2.1",
+        "name": "Implémenter le rendu SVG/Canvas",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.2",
+        "name": "Implémenter la navigation interactive",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.2.2",
+        "name": "Ajouter l'interaction avec les nœuds",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.2.2.2",
+        "name": "Créer les popups d'information",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.2.2.3",
+        "name": "Développer l'édition directe via les nœuds",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.2.2.1",
+        "name": "Implémenter la sélection de nœuds",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.2.1.3",
+        "name": "Développer la focalisation sur les nœuds",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.2.1",
+        "name": "Développer le zoom et la navigation",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.2.1.1",
+        "name": "Créer le système de zoom sémantique",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "10.2.1.2",
+        "name": "Implémenter la navigation par déplacement",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-fmgpel2qt",
+        "name": "6. Standardisation du format des tâches (Task Master)",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1",
+        "name": "Définir le format de tâche standardisé",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.1.3",
+        "name": "Concevoir la structure des métadonnées (priorité, durée, tags)",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.1",
+        "name": "Concevoir le schéma JSON des tâches",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.1.1",
+        "name": "Spécifier les champs obligatoires (id, titre, statut)",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.1.5",
+        "name": "Créer le schéma pour l'historique des modifications",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.1.4",
+        "name": "Définir le format des dépendances et sous-tâches",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.1.2",
+        "name": "Définir les champs optionnels (description, métadonnées)",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.2",
+        "name": "Développer la validation du format",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.2.2",
+        "name": "Créer les tests de validation automatisés",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.2.3",
+        "name": "Développer les fonctions de normalisation des données",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.2.1",
+        "name": "Implémenter la validation JSON Schema",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.3",
+        "name": "Documenter le format standardisé",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.3.1",
+        "name": "Créer la documentation technique du schéma",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.3.2",
+        "name": "Développer des exemples d'utilisation",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.1.3.3",
+        "name": "Rédiger les guides de migration",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-zk7qfe9ns",
+        "name": "7. Serveur MCP pour roadmaps (Task Master)",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.3",
+        "name": "Ajouter l'authentification et la sécurité",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.3.3",
+        "name": "Créer le système de journalisation sécurisée",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.3.2",
+        "name": "Développer le contrôle d'accès",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.3.1",
+        "name": "Implémenter l'authentification par token",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3",
+        "name": "Ajouter les fonctionnalités d'analyse et de recherche",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.3",
+        "name": "Ajouter l'analyse de dépendances et de structure",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.3.3",
+        "name": "Créer le système de suggestion d'optimisations",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.3.2",
+        "name": "Développer l'analyse des goulots d'étranglement",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.3.1",
+        "name": "Implémenter la détection des chemins critiques",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.1.2",
+        "name": "Créer le moteur de recherche textuelle",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.1",
+        "name": "Développer la recherche par mots-clés",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.1.1",
+        "name": "Implémenter l'indexation du contenu",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.1.3",
+        "name": "Développer le système de filtres",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.2",
+        "name": "Implémenter la recherche sémantique avec embeddings",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.2.3",
+        "name": "Créer les requêtes de similarité sémantique",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.2.2",
+        "name": "Développer la génération d'embeddings",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.3.2.1",
+        "name": "Intégrer Qdrant pour le stockage vectoriel",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.2",
+        "name": "Créer l'architecture du serveur",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.2.3",
+        "name": "Créer le système de configuration",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.2.1",
+        "name": "Développer la structure modulaire",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.2.2",
+        "name": "Implémenter le système de plugins",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1",
+        "name": "Développer le serveur MCP de base",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.1.2",
+        "name": "Développer le système de réponses formatées",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.1.3",
+        "name": "Implémenter la gestion des erreurs",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.1",
+        "name": "Implémenter le protocole MCP standard",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.1.1.1",
+        "name": "Créer les handlers de requêtes MCP",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2",
+        "name": "Implémenter les fonctions CRUD pour les tâches",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.2",
+        "name": "Ajouter les endpoints de mise à jour/suppression",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.2.1",
+        "name": "Créer l'endpoint de mise à jour de tâche",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.2.3",
+        "name": "Développer l'endpoint de modification en masse",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.2.2",
+        "name": "Implémenter l'endpoint de suppression",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.1.3",
+        "name": "Développer l'endpoint de création de tâche",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.1",
+        "name": "Développer les endpoints de création/lecture",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.1.1",
+        "name": "Créer l'endpoint de listing des roadmaps",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.1.2",
+        "name": "Implémenter l'endpoint de récupération d'une roadmap",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.3",
+        "name": "Implémenter la validation des données",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.3.1",
+        "name": "Créer le système de validation des entrées",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.3.2",
+        "name": "Développer la validation des dépendances",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.2.3.3",
+        "name": "Implémenter la détection des conflits",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4",
+        "name": "Intégrer la visualisation",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.3",
+        "name": "Ajouter la visualisation de l'avancement global",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.3.1",
+        "name": "Créer les tableaux de bord d'avancement",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.3.2",
+        "name": "Développer les graphiques de progression",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.3.3",
+        "name": "Implémenter les indicateurs de performance",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.1",
+        "name": "Développer la génération de graphes de dépendances",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.1.1",
+        "name": "Créer le générateur de graphes DOT",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.1.3",
+        "name": "Développer la visualisation interactive",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.1.2",
+        "name": "Implémenter l'export en SVG/PNG",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.2",
+        "name": "Implémenter la création de diagrammes de Gantt",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.2.1",
+        "name": "Créer le générateur de diagrammes de Gantt",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.2.2",
+        "name": "Développer l'export en formats standards",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "7.4.2.3",
+        "name": "Implémenter la visualisation interactive",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-kp8rjl97g",
+        "name": "8. Interface utilisateur en langage naturel (Task Master)",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.3",
+        "name": "Ajouter la gestion des ambiguïtés",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.3.2",
+        "name": "Créer le système de clarification",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.3.1",
+        "name": "Développer la détection des ambiguïtés",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.3.3",
+        "name": "Implémenter la résolution contextuelle",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2",
+        "name": "Créer les templates de réponse",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.3",
+        "name": "Ajouter le support multilingue",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.3.1",
+        "name": "Créer le système de traduction des templates",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.3.2",
+        "name": "Développer la détection automatique de langue",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.3.3",
+        "name": "Implémenter la gestion des locales",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.1.2",
+        "name": "Développer les templates d'information",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.1",
+        "name": "Développer les templates pour les différentes actions",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.1.1",
+        "name": "Créer les templates de confirmation",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.2",
+        "name": "Implémenter la personnalisation des réponses",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.2.1",
+        "name": "Créer le système de variables de template",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.2.2",
+        "name": "Développer les formats de sortie configurables",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.2.3",
+        "name": "Implémenter les niveaux de détail ajustables",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.2.1.3",
+        "name": "Implémenter les templates d'erreur",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1",
+        "name": "Développer le parser de commandes en langage naturel",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.1.3",
+        "name": "Créer la classification des intentions",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.1",
+        "name": "Créer le système d'analyse d'intentions",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.1.1",
+        "name": "Développer la détection des verbes d'action",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.1.2",
+        "name": "Implémenter la reconnaissance des entités",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.2",
+        "name": "Implémenter l'extraction de paramètres",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.2.2",
+        "name": "Créer la détection des attributs",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.2.1",
+        "name": "Développer l'extraction des identifiants",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.1.2.3",
+        "name": "Implémenter l'extraction des valeurs",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3",
+        "name": "Implémenter les suggestions contextuelles",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.2",
+        "name": "Créer le système de recommandation de tâches",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.2.3",
+        "name": "Créer le système de priorisation des suggestions",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.2.2",
+        "name": "Développer le filtrage contextuel",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.2.1",
+        "name": "Implémenter l'algorithme de recommandation",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.1",
+        "name": "Développer l'analyse du contexte utilisateur",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.1.1",
+        "name": "Créer le système de suivi de session",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.1.3",
+        "name": "Développer la détection des patterns d'utilisation",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.1.2",
+        "name": "Implémenter l'analyse des actions récentes",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.3",
+        "name": "Implémenter les suggestions d'optimisation",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.3.2",
+        "name": "Créer le système de suggestions d'amélioration",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.3.1",
+        "name": "Développer la détection des inefficacités",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "8.3.3.3",
+        "name": "Implémenter les recommandations de restructuration",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-0e99bplzq",
+        "name": "9. Intégration avec les outils existants (Task Master)",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.3",
+        "name": "Ajouter l'intégration avec le serveur MCP",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.3.2",
+        "name": "Créer la synchronisation bidirectionnelle",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.3.1",
+        "name": "Développer le client MCP pour VS Code",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.3.3",
+        "name": "Implémenter la gestion des conflits",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1",
+        "name": "Développer l'extension VS Code",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.1.3",
+        "name": "Créer l'interface de recherche",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.1",
+        "name": "Créer l'interface utilisateur de l'extension",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.1.1",
+        "name": "Développer le panneau de commandes",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.1.2",
+        "name": "Implémenter la visualisation des roadmaps",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.2",
+        "name": "Implémenter l'édition directe des roadmaps",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.2.2",
+        "name": "Créer les fonctionnalités de drag-and-drop",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.2.1",
+        "name": "Développer l'éditeur de tâches",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.1.2.3",
+        "name": "Implémenter la validation en temps réel",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.2",
+        "name": "Intégrer avec n8n et Notion",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.2.2",
+        "name": "Créer l'intégration Notion",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.2.2.3",
+        "name": "Créer la gestion des conflits",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.2.2.1",
+        "name": "Développer la synchronisation bidirectionnelle",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.2.2.2",
+        "name": "Implémenter la conversion de format",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.2.1.3",
+        "name": "Développer les actions d'automatisation",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.2.1",
+        "name": "Développer les nodes n8n pour la gestion des roadmaps",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.2.1.1",
+        "name": "Créer les nodes de lecture/écriture",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "9.2.1.2",
+        "name": "Implémenter les triggers d'événements",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3",
+        "name": "Adapter les roadmaps existantes",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.1",
+        "name": "Analyser les formats actuels",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.1.1",
+        "name": "Inventorier les différents formats utilisés",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.1.3",
+        "name": "Analyser les structures hiérarchiques",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.2",
+        "name": "Développer les scripts de migration",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.2.1",
+        "name": "Créer le script de conversion pour plan-dev-v8",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.2.2",
+        "name": "Développer le script pour plan-dev-v9",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.2.3",
+        "name": "Implémenter la conversion des autres plans",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.1.2",
+        "name": "Identifier les patterns de métadonnées existants",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.3",
+        "name": "Valider les conversions",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.3.1",
+        "name": "Créer les tests de non-régression",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.3.2",
+        "name": "Développer les outils de comparaison",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.3.3.3",
+        "name": "Implémenter la vérification d'intégrité",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2",
+        "name": "Créer les convertisseurs Markdown ↔ JSON",
+        "lineId": "line-locality",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.1.5",
+        "name": "Ajouter la gestion des descriptions multi-lignes",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.1.2",
+        "name": "Créer l'extraction des métadonnées depuis les tags",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.3",
+        "name": "Créer les outils de conversion batch",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.3.3",
+        "name": "Créer les rapports de conversion",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.3.1",
+        "name": "Développer l'outil de conversion de répertoires",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.3.2",
+        "name": "Implémenter la validation post-conversion",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.1.3",
+        "name": "Développer la détection des dépendances",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.1",
+        "name": "Développer le parser Markdown → JSON",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.1.1",
+        "name": "Implémenter la détection des tâches dans le Markdown",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.1.4",
+        "name": "Implémenter l'extraction des sous-tâches",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.2",
+        "name": "Implémenter le générateur JSON → Markdown",
+        "lineId": "line-district",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.2.5",
+        "name": "Ajouter la gestion des limites de taille (500 lignes max)",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.2.2",
+        "name": "Créer la génération des tags à partir des métadonnées",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.2.1",
+        "name": "Développer la génération de la ligne de titre",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.2.4",
+        "name": "Développer la génération des sous-tâches indentées",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "6.2.2.3",
+        "name": "Implémenter la génération des descriptions formatées",
+        "lineId": "line-building",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-id-b9of7kzlp-id-pss19341g",
+        "sourceId": "id-b9of7kzlp",
+        "targetId": "id-pss19341g",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-pss19341g-10.1",
+        "sourceId": "id-pss19341g",
+        "targetId": "10.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.1-10.1.1.3",
+        "sourceId": "10.1",
+        "targetId": "10.1.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.1-10.1.1",
+        "sourceId": "10.1",
+        "targetId": "10.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.1.1-10.1.1.1",
+        "sourceId": "10.1.1",
+        "targetId": "10.1.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.1-10.1.1.2",
+        "sourceId": "10.1",
+        "targetId": "10.1.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-pss19341g-10.3",
+        "sourceId": "id-pss19341g",
+        "targetId": "10.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.3-10.3.2",
+        "sourceId": "10.3",
+        "targetId": "10.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.3.2-10.3.2.1",
+        "sourceId": "10.3.2",
+        "targetId": "10.3.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.3.2-10.3.2.3",
+        "sourceId": "10.3.2",
+        "targetId": "10.3.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.3.2-10.3.2.2",
+        "sourceId": "10.3.2",
+        "targetId": "10.3.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.3-10.3.1.2",
+        "sourceId": "10.3",
+        "targetId": "10.3.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.3-10.3.1.3",
+        "sourceId": "10.3",
+        "targetId": "10.3.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.3-10.3.1",
+        "sourceId": "10.3",
+        "targetId": "10.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.3.1-10.3.1.1",
+        "sourceId": "10.3.1",
+        "targetId": "10.3.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-pss19341g-10.1.2",
+        "sourceId": "id-pss19341g",
+        "targetId": "10.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.1.2-10.1.2.2",
+        "sourceId": "10.1.2",
+        "targetId": "10.1.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.1.2-10.1.2.3",
+        "sourceId": "10.1.2",
+        "targetId": "10.1.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.1.2-10.1.2.1",
+        "sourceId": "10.1.2",
+        "targetId": "10.1.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-pss19341g-10.2",
+        "sourceId": "id-pss19341g",
+        "targetId": "10.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.2-10.2.2",
+        "sourceId": "10.2",
+        "targetId": "10.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.2.2-10.2.2.2",
+        "sourceId": "10.2.2",
+        "targetId": "10.2.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.2.2-10.2.2.3",
+        "sourceId": "10.2.2",
+        "targetId": "10.2.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.2.2-10.2.2.1",
+        "sourceId": "10.2.2",
+        "targetId": "10.2.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.2-10.2.1.3",
+        "sourceId": "10.2",
+        "targetId": "10.2.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.2-10.2.1",
+        "sourceId": "10.2",
+        "targetId": "10.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.2.1-10.2.1.1",
+        "sourceId": "10.2.1",
+        "targetId": "10.2.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-10.2-10.2.1.2",
+        "sourceId": "10.2",
+        "targetId": "10.2.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-b9of7kzlp-id-fmgpel2qt",
+        "sourceId": "id-b9of7kzlp",
+        "targetId": "id-fmgpel2qt",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-fmgpel2qt-6.1",
+        "sourceId": "id-fmgpel2qt",
+        "targetId": "6.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1-6.1.1.3",
+        "sourceId": "6.1",
+        "targetId": "6.1.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1-6.1.1",
+        "sourceId": "6.1",
+        "targetId": "6.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1.1-6.1.1.1",
+        "sourceId": "6.1.1",
+        "targetId": "6.1.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1-6.1.1.5",
+        "sourceId": "6.1",
+        "targetId": "6.1.1.5",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1-6.1.1.4",
+        "sourceId": "6.1",
+        "targetId": "6.1.1.4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1-6.1.1.2",
+        "sourceId": "6.1",
+        "targetId": "6.1.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-fmgpel2qt-6.1.2",
+        "sourceId": "id-fmgpel2qt",
+        "targetId": "6.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1.2-6.1.2.2",
+        "sourceId": "6.1.2",
+        "targetId": "6.1.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1.2-6.1.2.3",
+        "sourceId": "6.1.2",
+        "targetId": "6.1.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1.2-6.1.2.1",
+        "sourceId": "6.1.2",
+        "targetId": "6.1.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-fmgpel2qt-6.1.3",
+        "sourceId": "id-fmgpel2qt",
+        "targetId": "6.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1.3-6.1.3.1",
+        "sourceId": "6.1.3",
+        "targetId": "6.1.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1.3-6.1.3.2",
+        "sourceId": "6.1.3",
+        "targetId": "6.1.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.1.3-6.1.3.3",
+        "sourceId": "6.1.3",
+        "targetId": "6.1.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-b9of7kzlp-id-zk7qfe9ns",
+        "sourceId": "id-b9of7kzlp",
+        "targetId": "id-zk7qfe9ns",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zk7qfe9ns-7.1.3",
+        "sourceId": "id-zk7qfe9ns",
+        "targetId": "7.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1.3-7.1.3.3",
+        "sourceId": "7.1.3",
+        "targetId": "7.1.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1.3-7.1.3.2",
+        "sourceId": "7.1.3",
+        "targetId": "7.1.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1.3-7.1.3.1",
+        "sourceId": "7.1.3",
+        "targetId": "7.1.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zk7qfe9ns-7.3",
+        "sourceId": "id-zk7qfe9ns",
+        "targetId": "7.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3-7.3.3",
+        "sourceId": "7.3",
+        "targetId": "7.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3.3-7.3.3.3",
+        "sourceId": "7.3.3",
+        "targetId": "7.3.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3.3-7.3.3.2",
+        "sourceId": "7.3.3",
+        "targetId": "7.3.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3.3-7.3.3.1",
+        "sourceId": "7.3.3",
+        "targetId": "7.3.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3-7.3.1.2",
+        "sourceId": "7.3",
+        "targetId": "7.3.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3-7.3.1",
+        "sourceId": "7.3",
+        "targetId": "7.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3.1-7.3.1.1",
+        "sourceId": "7.3.1",
+        "targetId": "7.3.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3-7.3.1.3",
+        "sourceId": "7.3",
+        "targetId": "7.3.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3-7.3.2",
+        "sourceId": "7.3",
+        "targetId": "7.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3.2-7.3.2.3",
+        "sourceId": "7.3.2",
+        "targetId": "7.3.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3.2-7.3.2.2",
+        "sourceId": "7.3.2",
+        "targetId": "7.3.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.3.2-7.3.2.1",
+        "sourceId": "7.3.2",
+        "targetId": "7.3.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zk7qfe9ns-7.1.2",
+        "sourceId": "id-zk7qfe9ns",
+        "targetId": "7.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1.2-7.1.2.3",
+        "sourceId": "7.1.2",
+        "targetId": "7.1.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1.2-7.1.2.1",
+        "sourceId": "7.1.2",
+        "targetId": "7.1.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1.2-7.1.2.2",
+        "sourceId": "7.1.2",
+        "targetId": "7.1.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zk7qfe9ns-7.1",
+        "sourceId": "id-zk7qfe9ns",
+        "targetId": "7.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1-7.1.1.2",
+        "sourceId": "7.1",
+        "targetId": "7.1.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1-7.1.1.3",
+        "sourceId": "7.1",
+        "targetId": "7.1.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1-7.1.1",
+        "sourceId": "7.1",
+        "targetId": "7.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.1.1-7.1.1.1",
+        "sourceId": "7.1.1",
+        "targetId": "7.1.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zk7qfe9ns-7.2",
+        "sourceId": "id-zk7qfe9ns",
+        "targetId": "7.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2-7.2.2",
+        "sourceId": "7.2",
+        "targetId": "7.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2.2-7.2.2.1",
+        "sourceId": "7.2.2",
+        "targetId": "7.2.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2.2-7.2.2.3",
+        "sourceId": "7.2.2",
+        "targetId": "7.2.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2.2-7.2.2.2",
+        "sourceId": "7.2.2",
+        "targetId": "7.2.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2-7.2.1.3",
+        "sourceId": "7.2",
+        "targetId": "7.2.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2-7.2.1",
+        "sourceId": "7.2",
+        "targetId": "7.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2.1-7.2.1.1",
+        "sourceId": "7.2.1",
+        "targetId": "7.2.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2-7.2.1.2",
+        "sourceId": "7.2",
+        "targetId": "7.2.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2-7.2.3",
+        "sourceId": "7.2",
+        "targetId": "7.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2.3-7.2.3.1",
+        "sourceId": "7.2.3",
+        "targetId": "7.2.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2.3-7.2.3.2",
+        "sourceId": "7.2.3",
+        "targetId": "7.2.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.2.3-7.2.3.3",
+        "sourceId": "7.2.3",
+        "targetId": "7.2.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zk7qfe9ns-7.4",
+        "sourceId": "id-zk7qfe9ns",
+        "targetId": "7.4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4-7.4.3",
+        "sourceId": "7.4",
+        "targetId": "7.4.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4.3-7.4.3.1",
+        "sourceId": "7.4.3",
+        "targetId": "7.4.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4.3-7.4.3.2",
+        "sourceId": "7.4.3",
+        "targetId": "7.4.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4.3-7.4.3.3",
+        "sourceId": "7.4.3",
+        "targetId": "7.4.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4-7.4.1",
+        "sourceId": "7.4",
+        "targetId": "7.4.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4.1-7.4.1.1",
+        "sourceId": "7.4.1",
+        "targetId": "7.4.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4-7.4.1.3",
+        "sourceId": "7.4",
+        "targetId": "7.4.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4-7.4.1.2",
+        "sourceId": "7.4",
+        "targetId": "7.4.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4-7.4.2",
+        "sourceId": "7.4",
+        "targetId": "7.4.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4.2-7.4.2.1",
+        "sourceId": "7.4.2",
+        "targetId": "7.4.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4.2-7.4.2.2",
+        "sourceId": "7.4.2",
+        "targetId": "7.4.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-7.4.2-7.4.2.3",
+        "sourceId": "7.4.2",
+        "targetId": "7.4.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-b9of7kzlp-id-kp8rjl97g",
+        "sourceId": "id-b9of7kzlp",
+        "targetId": "id-kp8rjl97g",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-kp8rjl97g-8.1.3",
+        "sourceId": "id-kp8rjl97g",
+        "targetId": "8.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1.3-8.1.3.2",
+        "sourceId": "8.1.3",
+        "targetId": "8.1.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1.3-8.1.3.1",
+        "sourceId": "8.1.3",
+        "targetId": "8.1.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1.3-8.1.3.3",
+        "sourceId": "8.1.3",
+        "targetId": "8.1.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-kp8rjl97g-8.2",
+        "sourceId": "id-kp8rjl97g",
+        "targetId": "8.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2-8.2.3",
+        "sourceId": "8.2",
+        "targetId": "8.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2.3-8.2.3.1",
+        "sourceId": "8.2.3",
+        "targetId": "8.2.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2.3-8.2.3.2",
+        "sourceId": "8.2.3",
+        "targetId": "8.2.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2.3-8.2.3.3",
+        "sourceId": "8.2.3",
+        "targetId": "8.2.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2-8.2.1.2",
+        "sourceId": "8.2",
+        "targetId": "8.2.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2-8.2.1",
+        "sourceId": "8.2",
+        "targetId": "8.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2.1-8.2.1.1",
+        "sourceId": "8.2.1",
+        "targetId": "8.2.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2-8.2.2",
+        "sourceId": "8.2",
+        "targetId": "8.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2.2-8.2.2.1",
+        "sourceId": "8.2.2",
+        "targetId": "8.2.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2.2-8.2.2.2",
+        "sourceId": "8.2.2",
+        "targetId": "8.2.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2.2-8.2.2.3",
+        "sourceId": "8.2.2",
+        "targetId": "8.2.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.2-8.2.1.3",
+        "sourceId": "8.2",
+        "targetId": "8.2.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-kp8rjl97g-8.1",
+        "sourceId": "id-kp8rjl97g",
+        "targetId": "8.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1-8.1.1.3",
+        "sourceId": "8.1",
+        "targetId": "8.1.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1-8.1.1",
+        "sourceId": "8.1",
+        "targetId": "8.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1.1-8.1.1.1",
+        "sourceId": "8.1.1",
+        "targetId": "8.1.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1-8.1.1.2",
+        "sourceId": "8.1",
+        "targetId": "8.1.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-kp8rjl97g-8.1.2",
+        "sourceId": "id-kp8rjl97g",
+        "targetId": "8.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1.2-8.1.2.2",
+        "sourceId": "8.1.2",
+        "targetId": "8.1.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1.2-8.1.2.1",
+        "sourceId": "8.1.2",
+        "targetId": "8.1.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.1.2-8.1.2.3",
+        "sourceId": "8.1.2",
+        "targetId": "8.1.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-kp8rjl97g-8.3",
+        "sourceId": "id-kp8rjl97g",
+        "targetId": "8.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3-8.3.2",
+        "sourceId": "8.3",
+        "targetId": "8.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3.2-8.3.2.3",
+        "sourceId": "8.3.2",
+        "targetId": "8.3.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3.2-8.3.2.2",
+        "sourceId": "8.3.2",
+        "targetId": "8.3.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3.2-8.3.2.1",
+        "sourceId": "8.3.2",
+        "targetId": "8.3.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3-8.3.1",
+        "sourceId": "8.3",
+        "targetId": "8.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3.1-8.3.1.1",
+        "sourceId": "8.3.1",
+        "targetId": "8.3.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3-8.3.1.3",
+        "sourceId": "8.3",
+        "targetId": "8.3.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3-8.3.1.2",
+        "sourceId": "8.3",
+        "targetId": "8.3.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3-8.3.3",
+        "sourceId": "8.3",
+        "targetId": "8.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3.3-8.3.3.2",
+        "sourceId": "8.3.3",
+        "targetId": "8.3.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3.3-8.3.3.1",
+        "sourceId": "8.3.3",
+        "targetId": "8.3.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-8.3.3-8.3.3.3",
+        "sourceId": "8.3.3",
+        "targetId": "8.3.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-b9of7kzlp-id-0e99bplzq",
+        "sourceId": "id-b9of7kzlp",
+        "targetId": "id-0e99bplzq",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-0e99bplzq-9.1.3",
+        "sourceId": "id-0e99bplzq",
+        "targetId": "9.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1.3-9.1.3.2",
+        "sourceId": "9.1.3",
+        "targetId": "9.1.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1.3-9.1.3.1",
+        "sourceId": "9.1.3",
+        "targetId": "9.1.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1.3-9.1.3.3",
+        "sourceId": "9.1.3",
+        "targetId": "9.1.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-0e99bplzq-9.1",
+        "sourceId": "id-0e99bplzq",
+        "targetId": "9.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1-9.1.1.3",
+        "sourceId": "9.1",
+        "targetId": "9.1.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1-9.1.1",
+        "sourceId": "9.1",
+        "targetId": "9.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1.1-9.1.1.1",
+        "sourceId": "9.1.1",
+        "targetId": "9.1.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1-9.1.1.2",
+        "sourceId": "9.1",
+        "targetId": "9.1.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-0e99bplzq-9.1.2",
+        "sourceId": "id-0e99bplzq",
+        "targetId": "9.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1.2-9.1.2.2",
+        "sourceId": "9.1.2",
+        "targetId": "9.1.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1.2-9.1.2.1",
+        "sourceId": "9.1.2",
+        "targetId": "9.1.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.1.2-9.1.2.3",
+        "sourceId": "9.1.2",
+        "targetId": "9.1.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-0e99bplzq-9.2",
+        "sourceId": "id-0e99bplzq",
+        "targetId": "9.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.2-9.2.2",
+        "sourceId": "9.2",
+        "targetId": "9.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.2.2-9.2.2.3",
+        "sourceId": "9.2.2",
+        "targetId": "9.2.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.2.2-9.2.2.1",
+        "sourceId": "9.2.2",
+        "targetId": "9.2.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.2.2-9.2.2.2",
+        "sourceId": "9.2.2",
+        "targetId": "9.2.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.2-9.2.1.3",
+        "sourceId": "9.2",
+        "targetId": "9.2.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.2-9.2.1",
+        "sourceId": "9.2",
+        "targetId": "9.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.2.1-9.2.1.1",
+        "sourceId": "9.2.1",
+        "targetId": "9.2.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-9.2-9.2.1.2",
+        "sourceId": "9.2",
+        "targetId": "9.2.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-b9of7kzlp-6.3",
+        "sourceId": "id-b9of7kzlp",
+        "targetId": "6.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3-6.3.1",
+        "sourceId": "6.3",
+        "targetId": "6.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3.1-6.3.1.1",
+        "sourceId": "6.3.1",
+        "targetId": "6.3.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3-6.3.1.3",
+        "sourceId": "6.3",
+        "targetId": "6.3.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3-6.3.2",
+        "sourceId": "6.3",
+        "targetId": "6.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3.2-6.3.2.1",
+        "sourceId": "6.3.2",
+        "targetId": "6.3.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3.2-6.3.2.2",
+        "sourceId": "6.3.2",
+        "targetId": "6.3.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3.2-6.3.2.3",
+        "sourceId": "6.3.2",
+        "targetId": "6.3.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3-6.3.1.2",
+        "sourceId": "6.3",
+        "targetId": "6.3.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3-6.3.3",
+        "sourceId": "6.3",
+        "targetId": "6.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3.3-6.3.3.1",
+        "sourceId": "6.3.3",
+        "targetId": "6.3.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3.3-6.3.3.2",
+        "sourceId": "6.3.3",
+        "targetId": "6.3.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.3.3-6.3.3.3",
+        "sourceId": "6.3.3",
+        "targetId": "6.3.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-b9of7kzlp-6.2",
+        "sourceId": "id-b9of7kzlp",
+        "targetId": "6.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2-6.2.1.5",
+        "sourceId": "6.2",
+        "targetId": "6.2.1.5",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2-6.2.1.2",
+        "sourceId": "6.2",
+        "targetId": "6.2.1.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2-6.2.3",
+        "sourceId": "6.2",
+        "targetId": "6.2.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2.3-6.2.3.3",
+        "sourceId": "6.2.3",
+        "targetId": "6.2.3.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2.3-6.2.3.1",
+        "sourceId": "6.2.3",
+        "targetId": "6.2.3.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2.3-6.2.3.2",
+        "sourceId": "6.2.3",
+        "targetId": "6.2.3.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2-6.2.1.3",
+        "sourceId": "6.2",
+        "targetId": "6.2.1.3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2-6.2.1",
+        "sourceId": "6.2",
+        "targetId": "6.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2.1-6.2.1.1",
+        "sourceId": "6.2.1",
+        "targetId": "6.2.1.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2-6.2.1.4",
+        "sourceId": "6.2",
+        "targetId": "6.2.1.4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2-6.2.2",
+        "sourceId": "6.2",
+        "targetId": "6.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2.2-6.2.2.5",
+        "sourceId": "6.2.2",
+        "targetId": "6.2.2.5",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2.2-6.2.2.2",
+        "sourceId": "6.2.2",
+        "targetId": "6.2.2.2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2.2-6.2.2.1",
+        "sourceId": "6.2.2",
+        "targetId": "6.2.2.1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2.2-6.2.2.4",
+        "sourceId": "6.2.2",
+        "targetId": "6.2.2.4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-6.2.2-6.2.2.3",
+        "sourceId": "6.2.2",
+        "targetId": "6.2.2.3",
+        "type": "hierarchical"
+      }
+    ]
+  }
+}

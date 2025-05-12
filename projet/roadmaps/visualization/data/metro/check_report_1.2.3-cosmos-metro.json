@@ -1,0 +1,3364 @@
+{
+  "id": "id-zsmm1921f",
+  "title": "",
+  "type": "cosmos",
+  "status": "planned",
+  "description": "",
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "children": [
+    {
+      "id": "id-2kxp4nauu",
+      "title": "DÃ©tails des tÃ¢ches",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "id-sl9s6sjvt",
+          "title": "TÃ¢che 1.1.1.2.3 - Identifier les patterns de conception communs",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "id-imczjyh70",
+      "title": "RÃ©sumÃ©",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ldkocxw9d",
+      "title": "TÃ¢che 1.1.2.3 - Définir les mécanismes de configuration",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-j9qaeyw1c",
+      "title": "TÃ¢che 1.1.2.3.1 - Concevoir le format du fichier de configuration",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-f658t98v9",
+      "title": "TÃ¢che 1.1.2.3.2 - Définir les paramètres configurables globaux",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-odu9trzke",
+      "title": "TÃ¢che 1.1.2.3.3 - Établir les règles de priorité (ligne de commande vs fichier)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-t0n0saua4",
+      "title": "TÃ¢che 1.1.2.3.4 - Concevoir le mécanisme de chargement de la configuration",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-v6jde7hy7",
+      "title": "TÃ¢che 1.2.1.2.3 - Développer les fonctions de fusion de configurations",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-lkd0c5v5w",
+      "title": "TÃ¢che 1.2.1.2.3.1 - Implémenter la fusion simple de hashtables",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gcbseveho",
+      "title": "TÃ¢che 1.2.1.2.3.2 - Développer la fusion récursive d'objets complexes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-r7k8os61r",
+      "title": "TÃ¢che 1.2.1.2.3.3 - Créer les stratégies de résolution de conflits",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-7bnjw3yqr",
+      "title": "TÃ¢che 1.2.1.2.3.4 - Implémenter la fusion avec priorités",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-bzo0i6njo",
+      "title": "TÃ¢che 1.2.1.2.3.5 - Développer la journalisation des opérations de fusion",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-lj4ufhkn7",
+      "title": "TÃ¢che 1.2.1.3.1.2.3 - Implémenter la fonction `Write-LogWarning`",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-s3kk91q9m",
+      "title": "TÃ¢che 1.2.1.4.1.2.3 - Implémenter le validateur d'adresses IP",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-9u64x7aee",
+      "title": "TÃ¢che 1.2.3 - Documentation de la bibliothèque",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-s5dbxhack",
+      "title": "TÃ¢che 1.2.3.1 - Créer la documentation des fonctions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-kelm0b5or",
+      "title": "TÃ¢che 1.2.3.1.1 - Documenter les paramètres et types de retour",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-r8c2wizo0",
+      "title": "TÃ¢che 1.2.3.1.2 - Ajouter des exemples d'utilisation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-kt0rtgsor",
+      "title": "TÃ¢che 1.2.3.1.3 - Documenter les cas d'erreur et exceptions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-0efjyig1o",
+      "title": "TÃ¢che 1.2.3.1.4 - Créer des diagrammes explicatifs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-a04ed90z3",
+      "title": "TÃ¢che 1.2.3.2 - Développer le guide d'utilisation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-w1otidfxr",
+      "title": "TÃ¢che 1.2.3.2.1 - Créer le guide d'installation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ue9mf38j1",
+      "title": "TÃ¢che 1.2.3.2.2 - Documenter les scénarios d'utilisation courants",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-lsqjsr3x3",
+      "title": "TÃ¢che 1.2.3.2.3 - Ajouter des exemples de code",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3anm3wt7d",
+      "title": "TÃ¢che 1.2.3.2.4 - Créer la FAQ",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-zyqqgadye",
+      "title": "TÃ¢che 1.2.3.3 - Implémenter l'aide intégrée",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-m3fgzsj1m",
+      "title": "TÃ¢che 1.2.3.3.1 - Ajouter les commentaires d'aide PowerShell",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-t6p4rqtsg",
+      "title": "TÃ¢che 1.2.3.3.2 - Créer les fichiers d'aide XML",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-s14y027u8",
+      "title": "TÃ¢che 1.2.3.3.3 - Implémenter les exemples interactifs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-af0zn24df",
+      "title": "TÃ¢che 1.2.3.3.4 - Tester l'aide avec Get-Help",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ifg3sh6bs",
+      "title": "TÃ¢che 1.2.3.4 - Créer la documentation de contribution",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-xnlxvgk9l",
+      "title": "TÃ¢che 1.2.3.4.1 - Documenter les conventions de code",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-twaakyclq",
+      "title": "TÃ¢che 1.2.3.4.2 - Créer le guide de contribution",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-f0px1rhg6",
+      "title": "TÃ¢che 1.2.3.4.3 - Documenter le processus de test",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-2kaq1rok4",
+      "title": "TÃ¢che 1.2.3.4.4 - Ajouter les informations de licence",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-7xunhjwyd",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.3 - Documenter la propriété InnerException et sa hiérarchie",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-neukixt9d",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.2.3 - Cataloguer les exceptions de parsing et d'exécution de scripts",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-s3rw0cxfi",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.3 - Implémenter la priorisation des erreurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-7zsny71nw",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.3.1 - Développer les critères de sévérité des erreurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-0w7uhlet9",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.3.2 - Créer l'algorithme de scoring d'impact",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-mguh1fnaf",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.3.3 - Implémenter la détection des erreurs bloquantes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-wy533uj3f",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.3.4 - Développer la priorisation basée sur la fréquence",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-joxro400u",
+      "title": "TÃ¢che 1.3.1.2.2.1.2.3.5 - Créer les mécanismes de priorisation contextuelle",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-v50r6a109",
+      "title": "TÃ¢che 1.3.1.2.3 - Développer les mécanismes de simulation de contexte",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-9cz6s9i98",
+      "title": "TÃ¢che 1.3.1.2.3.1 - Implémenter la création d'environnements virtuels",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-d9muq1ve6",
+      "title": "TÃ¢che 1.3.1.2.3.1.1 - Développer la virtualisation de système de fichiers",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-a7t8i9kkw",
+      "title": "TÃ¢che 1.3.1.2.3.1.2 - Créer la simulation de registre Windows",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-2isobpqf1",
+      "title": "TÃ¢che 1.3.1.2.3.1.3 - Implémenter la virtualisation de variables d'environnement",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-bnl8c2nru",
+      "title": "TÃ¢che 1.3.1.2.3.1.4 - Développer la simulation de configuration utilisateur",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-lqazacggl",
+      "title": "TÃ¢che 1.3.1.2.3.1.5 - Créer les mécanismes d'isolation d'environnement",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ds3aolzy3",
+      "title": "TÃ¢che 1.3.1.2.3.2 - Développer la simulation d'entrées/sorties",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-bgge8avuj",
+      "title": "TÃ¢che 1.3.1.2.3.2.1 - Créer la simulation d'entrées utilisateur",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-f7ccjer9d",
+      "title": "TÃ¢che 1.3.1.2.3.2.2 - Implémenter la simulation de sorties console",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-miz3y5913",
+      "title": "TÃ¢che 1.3.1.2.3.2.3 - Développer la simulation d'E/S fichier",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ybdv8p0sm",
+      "title": "TÃ¢che 1.3.1.2.3.2.4 - Créer la simulation d'E/S réseau",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ul998zfws",
+      "title": "TÃ¢che 1.3.1.2.3.2.5 - Implémenter la simulation de pipes et flux",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-av2wbuinb",
+      "title": "TÃ¢che 1.3.1.2.3.3 - Implémenter la simulation d'erreurs et exceptions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-k5ezzerip",
+      "title": "TÃ¢che 1.3.1.2.3.3.1 - Développer l'injection d'erreurs contrôlée",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-64jvqinm0",
+      "title": "TÃ¢che 1.3.1.2.3.3.2 - Créer la simulation de conditions de course",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ey1dzbtog",
+      "title": "TÃ¢che 1.3.1.2.3.3.3 - Implémenter la simulation de timeouts",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-tbapo77hd",
+      "title": "TÃ¢che 1.3.1.2.3.3.4 - Développer la simulation de corruptions de données",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-4h346zygh",
+      "title": "TÃ¢che 1.3.1.2.3.3.5 - Créer les scénarios d'erreurs complexes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ndd3bsnhz",
+      "title": "TÃ¢che 1.3.1.2.3.4 - Développer la simulation de charge et stress",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ce2glv4rg",
+      "title": "TÃ¢che 1.3.1.2.3.4.1 - Créer la simulation de charge CPU",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-tyzalyh46",
+      "title": "TÃ¢che 1.3.1.2.3.4.2 - Implémenter la simulation de pression mémoire",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-tsx5zrp8y",
+      "title": "TÃ¢che 1.3.1.2.3.4.3 - Développer la simulation de latence réseau",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-6yefntmfk",
+      "title": "TÃ¢che 1.3.1.2.3.4.4 - Créer la simulation de contention de ressources",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-9f74cabln",
+      "title": "TÃ¢che 1.3.1.2.3.4.5 - Implémenter les scénarios de charge variables",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ciqk38s3e",
+      "title": "TÃ¢che 1.3.1.2.3.5 - Créer les mécanismes de reproduction de bugs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-envzx3j0x",
+      "title": "TÃ¢che 1.3.1.2.3.5.1 - Développer l'enregistrement d'états système",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-4jvryr1s2",
+      "title": "TÃ¢che 1.3.1.2.3.5.2 - Implémenter la reproduction déterministe",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-amkr84mnf",
+      "title": "TÃ¢che 1.3.1.2.3.5.3 - Créer les scénarios de test automatisés",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-d0ykjai1j",
+      "title": "TÃ¢che 1.3.1.2.3.5.4 - Développer la minimisation de cas de test",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-wl4wslz5z",
+      "title": "TÃ¢che 1.3.1.2.3.5.5 - Implémenter la génération de cas de test",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-kcdv6kb7c",
+      "title": "TÃ¢che 1.3.1.3.1.2.3 - Implémenter la journalisation des erreurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-vlafq6til",
+      "title": "TÃ¢che 1.3.1.4.1.2.3 - Implémenter la journalisation des erreurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-hmkf6bbuq",
+      "title": "TÃ¢che 1.3.3.1.2.3 - Implémenter la détection des tâches et sous-tâches",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-8a86gh6ww",
+      "title": "TÃ¢che 1.4.1.2.3 - Développer des exemples d'utilisation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-7ditt9l45",
+      "title": "TÃ¢che 2.1.1.2.3 - Analyser les besoins pour la gestion des interfaces utilisateur",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-81vvz7djm",
+      "title": "TÃ¢che 2.1.2.3 - Concevoir le mode UI",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3fpvnrclq",
+      "title": "TÃ¢che 2.1.2.3.1 - Définir les objectifs et le périmètre",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-4at6jguoi",
+      "title": "TÃ¢che 2.1.2.3.2 - Identifier les fonctionnalités clés",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-xu03kxyu3",
+      "title": "TÃ¢che 2.1.2.3.3 - Concevoir l'architecture du mode",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-8zrrfgoq7",
+      "title": "TÃ¢che 2.1.2.3.4 - Définir les interfaces avec les autres modes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-6hxrqa0q0",
+      "title": "TÃ¢che 2.2.1.2.3 - Créer les mécanismes de renouvellement de tokens",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-kvjnuzoja",
+      "title": "TÃ¢che 2.3.1.2.3 - Créer les mécanismes de pooling de connexions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-u7h3oeo2w",
+      "title": "TÃ¢che 2.4.1.2.3 - Créer les fonctions de génération de maquettes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-c3di0l0jb",
+      "title": "TÃ¢che 2.5.1.2.3 - Analyser les résultats",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-aqbsv6hy4",
+      "title": "TÃ¢che 3.1.1.2.3 - Analyser les différences de validation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-l0m4h6214",
+      "title": "TÃ¢che 3.1.2.3 - Adapter les modes existants",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-xifdpn4og",
+      "title": "TÃ¢che 3.1.2.3.1 - Modifier les modes d'architecture",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-tb47ttsgj",
+      "title": "TÃ¢che 3.1.2.3.2 - Adapter les modes de qualité",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-xt6kr2505",
+      "title": "TÃ¢che 3.1.2.3.3 - Mettre à jour les modes de développement",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-76montun1",
+      "title": "TÃ¢che 3.1.2.3.4 - Adapter les modes d'analyse",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-10bsgcton",
+      "title": "TÃ¢che 3.2.1.2.3 - Créer les mécanismes de fusion",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-0cwqb8z2s",
+      "title": "TÃ¢che 3.3.1.2.3 - Définir les interfaces avec les autres modes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-niwko7342",
+      "title": "TÃ¢che 3.4.1.2.3 - Créer des exemples de personnalisation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    }
+  ],
+  "metroMap": {
+    "lines": [
+      {
+        "id": "line-cosmos",
+        "name": "COSMOS",
+        "color": "#1a237e",
+        "order": 0
+      },
+      {
+        "id": "line-galaxy",
+        "name": "GALAXY",
+        "color": "#7b1fa2",
+        "order": 1
+      },
+      {
+        "id": "line-stellar_system",
+        "name": "STELLAR_SYSTEM",
+        "color": "#d32f2f",
+        "order": 2
+      },
+      {
+        "id": "line-planet",
+        "name": "PLANET",
+        "color": "#ff9800",
+        "order": 3
+      },
+      {
+        "id": "line-continent",
+        "name": "CONTINENT",
+        "color": "#ffc107",
+        "order": 4
+      },
+      {
+        "id": "line-region",
+        "name": "REGION",
+        "color": "#4caf50",
+        "order": 5
+      },
+      {
+        "id": "line-locality",
+        "name": "LOCALITY",
+        "color": "#00bcd4",
+        "order": 6
+      },
+      {
+        "id": "line-district",
+        "name": "DISTRICT",
+        "color": "#2196f3",
+        "order": 7
+      },
+      {
+        "id": "line-building",
+        "name": "BUILDING",
+        "color": "#3f51b5",
+        "order": 8
+      },
+      {
+        "id": "line-foundation",
+        "name": "FOUNDATION",
+        "color": "#212121",
+        "order": 9
+      }
+    ],
+    "stations": [
+      {
+        "id": "id-zsmm1921f",
+        "name": "",
+        "lineId": "line-cosmos",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-2kxp4nauu",
+        "name": "DÃ©tails des tÃ¢ches",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-sl9s6sjvt",
+        "name": "TÃ¢che 1.1.1.2.3 - Identifier les patterns de conception communs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-imczjyh70",
+        "name": "RÃ©sumÃ©",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ldkocxw9d",
+        "name": "TÃ¢che 1.1.2.3 - Définir les mécanismes de configuration",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-j9qaeyw1c",
+        "name": "TÃ¢che 1.1.2.3.1 - Concevoir le format du fichier de configuration",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-f658t98v9",
+        "name": "TÃ¢che 1.1.2.3.2 - Définir les paramètres configurables globaux",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-odu9trzke",
+        "name": "TÃ¢che 1.1.2.3.3 - Établir les règles de priorité (ligne de commande vs fichier)",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-t0n0saua4",
+        "name": "TÃ¢che 1.1.2.3.4 - Concevoir le mécanisme de chargement de la configuration",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-v6jde7hy7",
+        "name": "TÃ¢che 1.2.1.2.3 - Développer les fonctions de fusion de configurations",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-lkd0c5v5w",
+        "name": "TÃ¢che 1.2.1.2.3.1 - Implémenter la fusion simple de hashtables",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-gcbseveho",
+        "name": "TÃ¢che 1.2.1.2.3.2 - Développer la fusion récursive d'objets complexes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-r7k8os61r",
+        "name": "TÃ¢che 1.2.1.2.3.3 - Créer les stratégies de résolution de conflits",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-7bnjw3yqr",
+        "name": "TÃ¢che 1.2.1.2.3.4 - Implémenter la fusion avec priorités",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-bzo0i6njo",
+        "name": "TÃ¢che 1.2.1.2.3.5 - Développer la journalisation des opérations de fusion",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-lj4ufhkn7",
+        "name": "TÃ¢che 1.2.1.3.1.2.3 - Implémenter la fonction `Write-LogWarning`",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-s3kk91q9m",
+        "name": "TÃ¢che 1.2.1.4.1.2.3 - Implémenter le validateur d'adresses IP",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-9u64x7aee",
+        "name": "TÃ¢che 1.2.3 - Documentation de la bibliothèque",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-s5dbxhack",
+        "name": "TÃ¢che 1.2.3.1 - Créer la documentation des fonctions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-kelm0b5or",
+        "name": "TÃ¢che 1.2.3.1.1 - Documenter les paramètres et types de retour",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-r8c2wizo0",
+        "name": "TÃ¢che 1.2.3.1.2 - Ajouter des exemples d'utilisation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-kt0rtgsor",
+        "name": "TÃ¢che 1.2.3.1.3 - Documenter les cas d'erreur et exceptions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-0efjyig1o",
+        "name": "TÃ¢che 1.2.3.1.4 - Créer des diagrammes explicatifs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-a04ed90z3",
+        "name": "TÃ¢che 1.2.3.2 - Développer le guide d'utilisation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-w1otidfxr",
+        "name": "TÃ¢che 1.2.3.2.1 - Créer le guide d'installation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ue9mf38j1",
+        "name": "TÃ¢che 1.2.3.2.2 - Documenter les scénarios d'utilisation courants",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-lsqjsr3x3",
+        "name": "TÃ¢che 1.2.3.2.3 - Ajouter des exemples de code",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-3anm3wt7d",
+        "name": "TÃ¢che 1.2.3.2.4 - Créer la FAQ",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-zyqqgadye",
+        "name": "TÃ¢che 1.2.3.3 - Implémenter l'aide intégrée",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-m3fgzsj1m",
+        "name": "TÃ¢che 1.2.3.3.1 - Ajouter les commentaires d'aide PowerShell",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-t6p4rqtsg",
+        "name": "TÃ¢che 1.2.3.3.2 - Créer les fichiers d'aide XML",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-s14y027u8",
+        "name": "TÃ¢che 1.2.3.3.3 - Implémenter les exemples interactifs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-af0zn24df",
+        "name": "TÃ¢che 1.2.3.3.4 - Tester l'aide avec Get-Help",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ifg3sh6bs",
+        "name": "TÃ¢che 1.2.3.4 - Créer la documentation de contribution",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-xnlxvgk9l",
+        "name": "TÃ¢che 1.2.3.4.1 - Documenter les conventions de code",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-twaakyclq",
+        "name": "TÃ¢che 1.2.3.4.2 - Créer le guide de contribution",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-f0px1rhg6",
+        "name": "TÃ¢che 1.2.3.4.3 - Documenter le processus de test",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-2kaq1rok4",
+        "name": "TÃ¢che 1.2.3.4.4 - Ajouter les informations de licence",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-7xunhjwyd",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.2.3 - Documenter la propriété InnerException et sa hiérarchie",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-neukixt9d",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.2.3 - Cataloguer les exceptions de parsing et d'exécution de scripts",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-s3rw0cxfi",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.3 - Implémenter la priorisation des erreurs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-7zsny71nw",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.3.1 - Développer les critères de sévérité des erreurs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-0w7uhlet9",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.3.2 - Créer l'algorithme de scoring d'impact",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-mguh1fnaf",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.3.3 - Implémenter la détection des erreurs bloquantes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-wy533uj3f",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.3.4 - Développer la priorisation basée sur la fréquence",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-joxro400u",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.3.5 - Créer les mécanismes de priorisation contextuelle",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-v50r6a109",
+        "name": "TÃ¢che 1.3.1.2.3 - Développer les mécanismes de simulation de contexte",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-9cz6s9i98",
+        "name": "TÃ¢che 1.3.1.2.3.1 - Implémenter la création d'environnements virtuels",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-d9muq1ve6",
+        "name": "TÃ¢che 1.3.1.2.3.1.1 - Développer la virtualisation de système de fichiers",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-a7t8i9kkw",
+        "name": "TÃ¢che 1.3.1.2.3.1.2 - Créer la simulation de registre Windows",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-2isobpqf1",
+        "name": "TÃ¢che 1.3.1.2.3.1.3 - Implémenter la virtualisation de variables d'environnement",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-bnl8c2nru",
+        "name": "TÃ¢che 1.3.1.2.3.1.4 - Développer la simulation de configuration utilisateur",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-lqazacggl",
+        "name": "TÃ¢che 1.3.1.2.3.1.5 - Créer les mécanismes d'isolation d'environnement",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ds3aolzy3",
+        "name": "TÃ¢che 1.3.1.2.3.2 - Développer la simulation d'entrées/sorties",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-bgge8avuj",
+        "name": "TÃ¢che 1.3.1.2.3.2.1 - Créer la simulation d'entrées utilisateur",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-f7ccjer9d",
+        "name": "TÃ¢che 1.3.1.2.3.2.2 - Implémenter la simulation de sorties console",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-miz3y5913",
+        "name": "TÃ¢che 1.3.1.2.3.2.3 - Développer la simulation d'E/S fichier",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ybdv8p0sm",
+        "name": "TÃ¢che 1.3.1.2.3.2.4 - Créer la simulation d'E/S réseau",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ul998zfws",
+        "name": "TÃ¢che 1.3.1.2.3.2.5 - Implémenter la simulation de pipes et flux",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-av2wbuinb",
+        "name": "TÃ¢che 1.3.1.2.3.3 - Implémenter la simulation d'erreurs et exceptions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-k5ezzerip",
+        "name": "TÃ¢che 1.3.1.2.3.3.1 - Développer l'injection d'erreurs contrôlée",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-64jvqinm0",
+        "name": "TÃ¢che 1.3.1.2.3.3.2 - Créer la simulation de conditions de course",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ey1dzbtog",
+        "name": "TÃ¢che 1.3.1.2.3.3.3 - Implémenter la simulation de timeouts",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-tbapo77hd",
+        "name": "TÃ¢che 1.3.1.2.3.3.4 - Développer la simulation de corruptions de données",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-4h346zygh",
+        "name": "TÃ¢che 1.3.1.2.3.3.5 - Créer les scénarios d'erreurs complexes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ndd3bsnhz",
+        "name": "TÃ¢che 1.3.1.2.3.4 - Développer la simulation de charge et stress",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ce2glv4rg",
+        "name": "TÃ¢che 1.3.1.2.3.4.1 - Créer la simulation de charge CPU",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-tyzalyh46",
+        "name": "TÃ¢che 1.3.1.2.3.4.2 - Implémenter la simulation de pression mémoire",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-tsx5zrp8y",
+        "name": "TÃ¢che 1.3.1.2.3.4.3 - Développer la simulation de latence réseau",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-6yefntmfk",
+        "name": "TÃ¢che 1.3.1.2.3.4.4 - Créer la simulation de contention de ressources",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-9f74cabln",
+        "name": "TÃ¢che 1.3.1.2.3.4.5 - Implémenter les scénarios de charge variables",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-ciqk38s3e",
+        "name": "TÃ¢che 1.3.1.2.3.5 - Créer les mécanismes de reproduction de bugs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-envzx3j0x",
+        "name": "TÃ¢che 1.3.1.2.3.5.1 - Développer l'enregistrement d'états système",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-4jvryr1s2",
+        "name": "TÃ¢che 1.3.1.2.3.5.2 - Implémenter la reproduction déterministe",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-amkr84mnf",
+        "name": "TÃ¢che 1.3.1.2.3.5.3 - Créer les scénarios de test automatisés",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-d0ykjai1j",
+        "name": "TÃ¢che 1.3.1.2.3.5.4 - Développer la minimisation de cas de test",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-wl4wslz5z",
+        "name": "TÃ¢che 1.3.1.2.3.5.5 - Implémenter la génération de cas de test",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-kcdv6kb7c",
+        "name": "TÃ¢che 1.3.1.3.1.2.3 - Implémenter la journalisation des erreurs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-vlafq6til",
+        "name": "TÃ¢che 1.3.1.4.1.2.3 - Implémenter la journalisation des erreurs",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-hmkf6bbuq",
+        "name": "TÃ¢che 1.3.3.1.2.3 - Implémenter la détection des tâches et sous-tâches",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-8a86gh6ww",
+        "name": "TÃ¢che 1.4.1.2.3 - Développer des exemples d'utilisation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-7ditt9l45",
+        "name": "TÃ¢che 2.1.1.2.3 - Analyser les besoins pour la gestion des interfaces utilisateur",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-81vvz7djm",
+        "name": "TÃ¢che 2.1.2.3 - Concevoir le mode UI",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-3fpvnrclq",
+        "name": "TÃ¢che 2.1.2.3.1 - Définir les objectifs et le périmètre",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-4at6jguoi",
+        "name": "TÃ¢che 2.1.2.3.2 - Identifier les fonctionnalités clés",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-xu03kxyu3",
+        "name": "TÃ¢che 2.1.2.3.3 - Concevoir l'architecture du mode",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-8zrrfgoq7",
+        "name": "TÃ¢che 2.1.2.3.4 - Définir les interfaces avec les autres modes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-6hxrqa0q0",
+        "name": "TÃ¢che 2.2.1.2.3 - Créer les mécanismes de renouvellement de tokens",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-kvjnuzoja",
+        "name": "TÃ¢che 2.3.1.2.3 - Créer les mécanismes de pooling de connexions",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-u7h3oeo2w",
+        "name": "TÃ¢che 2.4.1.2.3 - Créer les fonctions de génération de maquettes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-c3di0l0jb",
+        "name": "TÃ¢che 2.5.1.2.3 - Analyser les résultats",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-aqbsv6hy4",
+        "name": "TÃ¢che 3.1.1.2.3 - Analyser les différences de validation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-l0m4h6214",
+        "name": "TÃ¢che 3.1.2.3 - Adapter les modes existants",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-xifdpn4og",
+        "name": "TÃ¢che 3.1.2.3.1 - Modifier les modes d'architecture",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-tb47ttsgj",
+        "name": "TÃ¢che 3.1.2.3.2 - Adapter les modes de qualité",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-xt6kr2505",
+        "name": "TÃ¢che 3.1.2.3.3 - Mettre à jour les modes de développement",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-76montun1",
+        "name": "TÃ¢che 3.1.2.3.4 - Adapter les modes d'analyse",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-10bsgcton",
+        "name": "TÃ¢che 3.2.1.2.3 - Créer les mécanismes de fusion",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-0cwqb8z2s",
+        "name": "TÃ¢che 3.3.1.2.3 - Définir les interfaces avec les autres modes",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-niwko7342",
+        "name": "TÃ¢che 3.4.1.2.3 - Créer des exemples de personnalisation",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-id-zsmm1921f-id-2kxp4nauu",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-2kxp4nauu",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-2kxp4nauu-id-sl9s6sjvt",
+        "sourceId": "id-2kxp4nauu",
+        "targetId": "id-sl9s6sjvt",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-imczjyh70",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-imczjyh70",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ldkocxw9d",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ldkocxw9d",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-j9qaeyw1c",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-j9qaeyw1c",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-f658t98v9",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-f658t98v9",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-odu9trzke",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-odu9trzke",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-t0n0saua4",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-t0n0saua4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-v6jde7hy7",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-v6jde7hy7",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-lkd0c5v5w",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-lkd0c5v5w",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-gcbseveho",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-gcbseveho",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-r7k8os61r",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-r7k8os61r",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-7bnjw3yqr",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-7bnjw3yqr",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-bzo0i6njo",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-bzo0i6njo",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-lj4ufhkn7",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-lj4ufhkn7",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-s3kk91q9m",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-s3kk91q9m",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-9u64x7aee",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-9u64x7aee",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-s5dbxhack",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-s5dbxhack",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-kelm0b5or",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-kelm0b5or",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-r8c2wizo0",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-r8c2wizo0",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-kt0rtgsor",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-kt0rtgsor",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-0efjyig1o",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-0efjyig1o",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-a04ed90z3",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-a04ed90z3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-w1otidfxr",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-w1otidfxr",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ue9mf38j1",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ue9mf38j1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-lsqjsr3x3",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-lsqjsr3x3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-3anm3wt7d",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-3anm3wt7d",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-zyqqgadye",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-zyqqgadye",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-m3fgzsj1m",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-m3fgzsj1m",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-t6p4rqtsg",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-t6p4rqtsg",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-s14y027u8",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-s14y027u8",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-af0zn24df",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-af0zn24df",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ifg3sh6bs",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ifg3sh6bs",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-xnlxvgk9l",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-xnlxvgk9l",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-twaakyclq",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-twaakyclq",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-f0px1rhg6",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-f0px1rhg6",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-2kaq1rok4",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-2kaq1rok4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-7xunhjwyd",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-7xunhjwyd",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-neukixt9d",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-neukixt9d",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-s3rw0cxfi",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-s3rw0cxfi",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-7zsny71nw",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-7zsny71nw",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-0w7uhlet9",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-0w7uhlet9",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-mguh1fnaf",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-mguh1fnaf",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-wy533uj3f",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-wy533uj3f",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-joxro400u",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-joxro400u",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-v50r6a109",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-v50r6a109",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-9cz6s9i98",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-9cz6s9i98",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-d9muq1ve6",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-d9muq1ve6",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-a7t8i9kkw",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-a7t8i9kkw",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-2isobpqf1",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-2isobpqf1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-bnl8c2nru",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-bnl8c2nru",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-lqazacggl",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-lqazacggl",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ds3aolzy3",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ds3aolzy3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-bgge8avuj",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-bgge8avuj",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-f7ccjer9d",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-f7ccjer9d",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-miz3y5913",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-miz3y5913",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ybdv8p0sm",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ybdv8p0sm",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ul998zfws",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ul998zfws",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-av2wbuinb",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-av2wbuinb",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-k5ezzerip",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-k5ezzerip",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-64jvqinm0",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-64jvqinm0",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ey1dzbtog",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ey1dzbtog",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-tbapo77hd",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-tbapo77hd",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-4h346zygh",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-4h346zygh",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ndd3bsnhz",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ndd3bsnhz",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ce2glv4rg",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ce2glv4rg",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-tyzalyh46",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-tyzalyh46",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-tsx5zrp8y",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-tsx5zrp8y",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-6yefntmfk",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-6yefntmfk",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-9f74cabln",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-9f74cabln",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-ciqk38s3e",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-ciqk38s3e",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-envzx3j0x",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-envzx3j0x",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-4jvryr1s2",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-4jvryr1s2",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-amkr84mnf",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-amkr84mnf",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-d0ykjai1j",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-d0ykjai1j",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-wl4wslz5z",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-wl4wslz5z",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-kcdv6kb7c",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-kcdv6kb7c",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-vlafq6til",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-vlafq6til",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-hmkf6bbuq",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-hmkf6bbuq",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-8a86gh6ww",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-8a86gh6ww",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-7ditt9l45",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-7ditt9l45",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-81vvz7djm",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-81vvz7djm",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-3fpvnrclq",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-3fpvnrclq",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-4at6jguoi",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-4at6jguoi",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-xu03kxyu3",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-xu03kxyu3",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-8zrrfgoq7",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-8zrrfgoq7",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-6hxrqa0q0",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-6hxrqa0q0",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-kvjnuzoja",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-kvjnuzoja",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-u7h3oeo2w",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-u7h3oeo2w",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-c3di0l0jb",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-c3di0l0jb",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-aqbsv6hy4",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-aqbsv6hy4",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-l0m4h6214",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-l0m4h6214",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-xifdpn4og",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-xifdpn4og",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-tb47ttsgj",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-tb47ttsgj",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-xt6kr2505",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-xt6kr2505",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-76montun1",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-76montun1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-10bsgcton",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-10bsgcton",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-0cwqb8z2s",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-0cwqb8z2s",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-zsmm1921f-id-niwko7342",
+        "sourceId": "id-zsmm1921f",
+        "targetId": "id-niwko7342",
+        "type": "hierarchical"
+      }
+    ]
+  }
+}

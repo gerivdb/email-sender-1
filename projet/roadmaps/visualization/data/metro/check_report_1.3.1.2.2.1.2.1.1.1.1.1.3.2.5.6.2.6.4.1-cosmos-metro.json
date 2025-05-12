@@ -1,0 +1,196 @@
+{
+  "id": "id-6tev52hyc",
+  "title": "",
+  "type": "cosmos",
+  "status": "planned",
+  "description": "",
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "children": [
+    {
+      "id": "id-wzutyufbs",
+      "title": "DÃ©tails des tÃ¢ches",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "id-t2onq2io1",
+          "title": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.1 - Implémenter l'analyse des permissions au niveau serveur",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "id-vsf4um6th",
+      "title": "RÃ©sumÃ©",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    }
+  ],
+  "metroMap": {
+    "lines": [
+      {
+        "id": "line-cosmos",
+        "name": "COSMOS",
+        "color": "#1a237e",
+        "order": 0
+      },
+      {
+        "id": "line-galaxy",
+        "name": "GALAXY",
+        "color": "#7b1fa2",
+        "order": 1
+      },
+      {
+        "id": "line-stellar_system",
+        "name": "STELLAR_SYSTEM",
+        "color": "#d32f2f",
+        "order": 2
+      },
+      {
+        "id": "line-planet",
+        "name": "PLANET",
+        "color": "#ff9800",
+        "order": 3
+      },
+      {
+        "id": "line-continent",
+        "name": "CONTINENT",
+        "color": "#ffc107",
+        "order": 4
+      },
+      {
+        "id": "line-region",
+        "name": "REGION",
+        "color": "#4caf50",
+        "order": 5
+      },
+      {
+        "id": "line-locality",
+        "name": "LOCALITY",
+        "color": "#00bcd4",
+        "order": 6
+      },
+      {
+        "id": "line-district",
+        "name": "DISTRICT",
+        "color": "#2196f3",
+        "order": 7
+      },
+      {
+        "id": "line-building",
+        "name": "BUILDING",
+        "color": "#3f51b5",
+        "order": 8
+      },
+      {
+        "id": "line-foundation",
+        "name": "FOUNDATION",
+        "color": "#212121",
+        "order": 9
+      }
+    ],
+    "stations": [
+      {
+        "id": "id-6tev52hyc",
+        "name": "",
+        "lineId": "line-cosmos",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-wzutyufbs",
+        "name": "DÃ©tails des tÃ¢ches",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-t2onq2io1",
+        "name": "TÃ¢che 1.3.1.2.2.1.2.1.1.1.1.1.3.2.5.6.2.6.4.1 - Implémenter l'analyse des permissions au niveau serveur",
+        "lineId": "line-stellar_system",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      },
+      {
+        "id": "id-vsf4um6th",
+        "name": "RÃ©sumÃ©",
+        "lineId": "line-galaxy",
+        "status": "planned",
+        "description": "",
+        "metadata": {
+          "temporal": {},
+          "cognitive": {},
+          "organizational": {},
+          "strategic": {}
+        }
+      }
+    ],
+    "connections": [
+      {
+        "id": "conn-id-6tev52hyc-id-wzutyufbs",
+        "sourceId": "id-6tev52hyc",
+        "targetId": "id-wzutyufbs",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-wzutyufbs-id-t2onq2io1",
+        "sourceId": "id-wzutyufbs",
+        "targetId": "id-t2onq2io1",
+        "type": "hierarchical"
+      },
+      {
+        "id": "conn-id-6tev52hyc-id-vsf4um6th",
+        "sourceId": "id-6tev52hyc",
+        "targetId": "id-vsf4um6th",
+        "type": "hierarchical"
+      }
+    ]
+  }
+}
