@@ -1,0 +1,228 @@
+[
+  {
+    "original_tag": "Projet de développement web de vingt jours environ",
+    "normalized_tag": "Projet de développement web de 20 jours environ",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [
+        {
+          "TextualNumber": "vingt",
+          "NumericValue": 20,
+          "StartIndex": 31,
+          "Length": 5
+        }
+      ],
+      "time_units": []
+    }
+  },
+  {
+    "original_tag": "Réunion de planification de 1 heure et 30 minutes",
+    "normalized_tag": "Réunion de planification de 1 heure et 30 minutes",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "1 heure",
+          "StartIndex": 28,
+          "Length": 7,
+          "Info": {
+            "Value": 1.0,
+            "Unit": "heure",
+            "UnitType": "hours",
+            "NormalizedValue": 3600.0,
+            "NormalizedUnit": "seconds"
+          }
+        },
+        {
+          "Expression": "30 minute",
+          "StartIndex": 39,
+          "Length": 9,
+          "Info": {
+            "Value": 30.0,
+            "Unit": "minute",
+            "UnitType": "minutes",
+            "NormalizedValue": 1800.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Tâche de documentation de 3 jours",
+    "normalized_tag": "Tâche de documentation de 3 jours",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "3 jour",
+          "StartIndex": 26,
+          "Length": 6,
+          "Info": {
+            "Value": 3.0,
+            "Unit": "jour",
+            "UnitType": "days",
+            "NormalizedValue": 259200.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Environ 5 jours de tests et débogage",
+    "normalized_tag": "Environ 5 jours de tests et débogage",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "5 jour",
+          "StartIndex": 8,
+          "Length": 6,
+          "Info": {
+            "Value": 5.0,
+            "Unit": "jour",
+            "UnitType": "days",
+            "NormalizedValue": 432000.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Déploiement en production de 2 heures environ",
+    "normalized_tag": "Déploiement en production de 2 heures environ",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "2 heure",
+          "StartIndex": 29,
+          "Length": 7,
+          "Info": {
+            "Value": 2.0,
+            "Unit": "heure",
+            "UnitType": "hours",
+            "NormalizedValue": 7200.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Maintenance mensuelle de 4 heures",
+    "normalized_tag": "Maintenance mensuelle de 4 heures",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "4 heure",
+          "StartIndex": 25,
+          "Length": 7,
+          "Info": {
+            "Value": 4.0,
+            "Unit": "heure",
+            "UnitType": "hours",
+            "NormalizedValue": 14400.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Formation des utilisateurs de 2 jours",
+    "normalized_tag": "Formation des utilisateurs de 2 jours",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "2 jour",
+          "StartIndex": 30,
+          "Length": 6,
+          "Info": {
+            "Value": 2.0,
+            "Unit": "jour",
+            "UnitType": "days",
+            "NormalizedValue": 172800.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Revue de code de 3 heures",
+    "normalized_tag": "Revue de code de 3 heures",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "3 heure",
+          "StartIndex": 17,
+          "Length": 7,
+          "Info": {
+            "Value": 3.0,
+            "Unit": "heure",
+            "UnitType": "hours",
+            "NormalizedValue": 10800.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Intégration continue de 1 jour",
+    "normalized_tag": "Intégration continue de 1 jour",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "1 jour",
+          "StartIndex": 24,
+          "Length": 6,
+          "Info": {
+            "Value": 1.0,
+            "Unit": "jour",
+            "UnitType": "days",
+            "NormalizedValue": 86400.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Mise à jour des dépendances de 2 heures",
+    "normalized_tag": "Mise à jour des dépendances de 2 heures",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "2 heure",
+          "StartIndex": 31,
+          "Length": 7,
+          "Info": {
+            "Value": 2.0,
+            "Unit": "heure",
+            "UnitType": "hours",
+            "NormalizedValue": 7200.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  }
+]

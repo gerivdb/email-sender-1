@@ -1,0 +1,328 @@
+# Fonction pour synchroniser Notion avec une roadmap
+function Sync-NotionToRoadmap {
+    <#
+    .SYNOPSIS
+        Synchronise Notion avec une roadmap.
+
+    .DESCRIPTION
+        Cette fonction synchronise une base de données Notion avec une roadmap,
+        en créant ou mettant à jour un fichier de roadmap.
+
+    .PARAMETER Connection
+        La connexion à l'API Notion créée par Connect-NotionApi.
+
+    .PARAMETER DatabaseId
+        L'ID de la base de données Notion.
+
+    .PARAMETER OutputPath
+        Le chemin où sauvegarder la roadmap générée.
+
+    .PARAMETER MergeWithExisting
+        Indique si la roadmap doit être fusionnée avec une roadmap existante.
+
+    .EXAMPLE
+        Sync-NotionToRoadmap -Connection $connection -DatabaseId "abcdef123456" -OutputPath "C:\Roadmaps\notion-roadmap.md"
+        Synchronise la base de données Notion spécifiée avec une nouvelle roadmap.
+
+    .OUTPUTS
+        PSObject
+    #>
+    [CmdletBinding()]
+    [OutputType([PSObject])]
+    param (
+        [Parameter(Mandatory = $true)]
+        [PSObject]$Connection,
+
+        [Parameter(Mandatory = $true)]
+        [string]$DatabaseId,
+
+        [Parameter(Mandatory = $true)]
+        [string]$OutputPath,
+
+        [Parameter(Mandatory = $false)]
+        [switch]$MergeWithExisting
+    )
+
+    try {
+        # Convertir la base de données Notion en roadmap
+        $notionRoadmap = ConvertFrom-NotionDatabase -Connection $Connection -DatabaseId $DatabaseId
+        
+        if ($null -eq $notionRoadmap) {
+            return $null
+        }
+        
+        # Vérifier si une fusion est demandée et si le fichier existe
+        if ($MergeWithExisting -and (Test-Path $OutputPath)) {
+            # Parser la roadmap existante
+            $existingRoadmap = Parse-RoadmapFile -FilePath $OutputPath
+            
+            if ($null -ne $existingRoadmap) {
+                # Créer un dictionnaire des tâches existantes par ID
+                $existingTasksById = @{}
+                foreach ($task in $existingRoadmap.Tasks) {
+                    $existingTasksById[$task.Id] = $task
+                }
+                
+                # Fusionner les tâches
+                $mergedTasks = @()
+                
+                # Ajouter les tâches de Notion, en remplaçant les tâches existantes
+                foreach ($task in $notionRoadmap.Tasks) {
+                    $mergedTasks += $task
+                    $existingTasksById.Remove($task.Id)
+                }
+                
+                # Ajouter les tâches existantes qui n'ont pas été remplacées
+                foreach ($taskId in $existingTasksById.Keys) {
+                    $mergedTasks += $existingTasksById[$taskId]
+                }
+                
+                # Trier les tâches par ID
+                $mergedTasks = $mergedTasks | Sort-Object -Property Id
+                
+                # Mettre à jour les relations parent-enfant
+                foreach ($task in $mergedTasks) {
+                    $task.Children = @()
+                }
+                
+                foreach ($task in $mergedTasks) {
+                    if ($task.ParentId) {
+                        $parent = $mergedTasks | Where-Object { $_.Id -eq $task.ParentId } | Select-Object -First 1
+                        
+                        if ($parent) {
+                            $parent.Children += $task.Id
+                        }
+                    }
+                }
+                
+                # Créer la roadmap fusionnée
+                $title = if ([string]::IsNullOrEmpty($notionRoadmap.Title)) { $existingRoadmap.Title } else { $notionRoadmap.Title }
+                
+                # Générer la roadmap
+                New-RoadmapFromTasks -Title $title -Tasks $mergedTasks -OutputPath $OutputPath
+                
+                # Créer l'objet de résultat
+                $result = [PSCustomObject]@{
+                    OutputPath = $OutputPath
+                    Title = $title
+                    TaskCount = $mergedTasks.Count
+                    MergedTaskCount = $notionRoadmap.Tasks.Count
+                    ExistingTaskCount = $existingRoadmap.Tasks.Count
+                    IsMerged = $true
+                }
+                
+                return $result
+            }
+        }
+        
+        # Si pas de fusion ou si le fichier n'existe pas, générer une nouvelle roadmap
+        New-RoadmapFromTasks -Title $notionRoadmap.Title -Tasks $notionRoadmap.Tasks -OutputPath $OutputPath
+        
+        # Créer l'objet de résultat
+        $result = [PSCustomObject]@{
+            OutputPath = $OutputPath
+            Title = $notionRoadmap.Title
+            TaskCount = $notionRoadmap.Tasks.Count
+            IsMerged = $false
+        }
+        
+        return $result
+    } catch {
+        Write-Error "Échec de la synchronisation de Notion avec la roadmap: $_"
+        return $null
+    }
+}
+
+# Fonction pour synchroniser bidirectionnellement une roadmap avec Notion
+function Sync-RoadmapBidirectional {
+    <#
+    .SYNOPSIS
+        Synchronise bidirectionnellement une roadmap avec Notion.
+
+    .DESCRIPTION
+        Cette fonction synchronise bidirectionnellement une roadmap avec Notion,
+        en fusionnant les modifications des deux côtés.
+
+    .PARAMETER Connection
+        La connexion à l'API Notion créée par Connect-NotionApi.
+
+    .PARAMETER RoadmapPath
+        Le chemin vers le fichier de roadmap.
+
+    .PARAMETER DatabaseId
+        L'ID de la base de données Notion existante.
+        Si non spécifié, une nouvelle base de données sera créée.
+
+    .PARAMETER ParentPageId
+        L'ID de la page parent pour la nouvelle base de données.
+        Requis si DatabaseId n'est pas spécifié.
+
+    .PARAMETER Direction
+        La direction de la synchronisation (ToNotion, FromNotion, Bidirectional).
+
+    .EXAMPLE
+        Sync-RoadmapBidirectional -Connection $connection -RoadmapPath "C:\Roadmaps\plan-dev-v8.md" -DatabaseId "abcdef123456" -Direction "Bidirectional"
+        Synchronise bidirectionnellement la roadmap spécifiée avec la base de données Notion.
+
+    .OUTPUTS
+        PSObject
+    #>
+    [CmdletBinding()]
+    [OutputType([PSObject])]
+    param (
+        [Parameter(Mandatory = $true)]
+        [PSObject]$Connection,
+
+        [Parameter(Mandatory = $true)]
+        [string]$RoadmapPath,
+
+        [Parameter(Mandatory = $false)]
+        [string]$DatabaseId = "",
+
+        [Parameter(Mandatory = $false)]
+        [string]$ParentPageId = "",
+
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("ToNotion", "FromNotion", "Bidirectional")]
+        [string]$Direction = "Bidirectional"
+    )
+
+    try {
+        # Vérifier les paramètres
+        if ([string]::IsNullOrEmpty($DatabaseId) -and [string]::IsNullOrEmpty($ParentPageId)) {
+            Write-Error "Vous devez spécifier soit DatabaseId, soit ParentPageId."
+            return $null
+        }
+        
+        # Créer un dossier temporaire pour les fichiers intermédiaires
+        $tempDir = Join-Path -Path $env:TEMP -ChildPath "RoadmapSync_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+        New-Item -Path $tempDir -ItemType Directory -Force | Out-Null
+        
+        # Définir les chemins des fichiers temporaires
+        $tempRoadmapPath = Join-Path -Path $tempDir -ChildPath "temp_roadmap.md"
+        $tempNotionPath = Join-Path -Path $tempDir -ChildPath "temp_notion.md"
+        $tempMergedPath = Join-Path -Path $tempDir -ChildPath "temp_merged.md"
+        
+        # Copier la roadmap existante dans le dossier temporaire
+        if (Test-Path $RoadmapPath) {
+            Copy-Item -Path $RoadmapPath -Destination $tempRoadmapPath -Force
+        }
+        
+        # Synchroniser selon la direction spécifiée
+        $result = $null
+        
+        if ($Direction -eq "ToNotion" -or $Direction -eq "Bidirectional") {
+            # Synchroniser la roadmap vers Notion
+            $toNotionResult = Sync-RoadmapToNotion -Connection $Connection -RoadmapPath $RoadmapPath -DatabaseId $DatabaseId -ParentPageId $ParentPageId
+            
+            if ($null -eq $toNotionResult) {
+                Write-Error "Échec de la synchronisation de la roadmap vers Notion."
+                return $null
+            }
+            
+            $DatabaseId = $toNotionResult.DatabaseId
+            $result = $toNotionResult
+        }
+        
+        if ($Direction -eq "FromNotion" -or $Direction -eq "Bidirectional") {
+            # Synchroniser Notion vers la roadmap
+            $fromNotionResult = Sync-NotionToRoadmap -Connection $Connection -DatabaseId $DatabaseId -OutputPath $tempNotionPath
+            
+            if ($null -eq $fromNotionResult) {
+                Write-Error "Échec de la synchronisation de Notion vers la roadmap."
+                return $null
+            }
+            
+            if ($Direction -eq "Bidirectional" -and (Test-Path $RoadmapPath)) {
+                # Fusionner les roadmaps
+                $roadmap = Parse-RoadmapFile -FilePath $RoadmapPath
+                $notionRoadmap = Parse-RoadmapFile -FilePath $tempNotionPath
+                
+                if ($null -ne $roadmap -and $null -ne $notionRoadmap) {
+                    # Créer des dictionnaires des tâches par ID
+                    $roadmapTasksById = @{}
+                    foreach ($task in $roadmap.Tasks) {
+                        $roadmapTasksById[$task.Id] = $task
+                    }
+                    
+                    $notionTasksById = @{}
+                    foreach ($task in $notionRoadmap.Tasks) {
+                        $notionTasksById[$task.Id] = $task
+                    }
+                    
+                    # Fusionner les tâches
+                    $mergedTasks = @()
+                    $allTaskIds = @($roadmapTasksById.Keys) + @($notionTasksById.Keys) | Select-Object -Unique
+                    
+                    foreach ($taskId in $allTaskIds) {
+                        $roadmapTask = $roadmapTasksById[$taskId]
+                        $notionTask = $notionTasksById[$taskId]
+                        
+                        if ($null -ne $roadmapTask -and $null -ne $notionTask) {
+                            # La tâche existe des deux côtés, prendre la plus récente
+                            # Pour simplifier, on prend celle de Notion (qui vient d'être mise à jour)
+                            $mergedTasks += $notionTask
+                        } elseif ($null -ne $roadmapTask) {
+                            # La tâche existe seulement dans la roadmap
+                            $mergedTasks += $roadmapTask
+                        } elseif ($null -ne $notionTask) {
+                            # La tâche existe seulement dans Notion
+                            $mergedTasks += $notionTask
+                        }
+                    }
+                    
+                    # Trier les tâches par ID
+                    $mergedTasks = $mergedTasks | Sort-Object -Property Id
+                    
+                    # Mettre à jour les relations parent-enfant
+                    foreach ($task in $mergedTasks) {
+                        $task.Children = @()
+                    }
+                    
+                    foreach ($task in $mergedTasks) {
+                        if ($task.ParentId) {
+                            $parent = $mergedTasks | Where-Object { $_.Id -eq $task.ParentId } | Select-Object -First 1
+                            
+                            if ($parent) {
+                                $parent.Children += $task.Id
+                            }
+                        }
+                    }
+                    
+                    # Créer la roadmap fusionnée
+                    $title = if ([string]::IsNullOrEmpty($notionRoadmap.Title)) { $roadmap.Title } else { $notionRoadmap.Title }
+                    
+                    # Générer la roadmap fusionnée
+                    New-RoadmapFromTasks -Title $title -Tasks $mergedTasks -OutputPath $tempMergedPath
+                    
+                    # Copier la roadmap fusionnée vers le chemin original
+                    Copy-Item -Path $tempMergedPath -Destination $RoadmapPath -Force
+                    
+                    # Mettre à jour le résultat
+                    $result = [PSCustomObject]@{
+                        DatabaseId = $DatabaseId
+                        Title = $title
+                        TaskCount = $mergedTasks.Count
+                        RoadmapTaskCount = $roadmap.Tasks.Count
+                        NotionTaskCount = $notionRoadmap.Tasks.Count
+                        IsBidirectional = $true
+                    }
+                }
+            } else {
+                # Copier la roadmap de Notion vers le chemin original
+                Copy-Item -Path $tempNotionPath -Destination $RoadmapPath -Force
+                $result = $fromNotionResult
+            }
+        }
+        
+        # Nettoyer les fichiers temporaires
+        if (Test-Path $tempDir) {
+            Remove-Item -Path $tempDir -Recurse -Force
+        }
+        
+        return $result
+    } catch {
+        Write-Error "Échec de la synchronisation bidirectionnelle: $_"
+        return $null
+    }
+}

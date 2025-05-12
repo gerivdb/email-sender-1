@@ -1,0 +1,205 @@
+[
+  {
+    "original_tag": "Web development project of about twenty days",
+    "normalized_tag": "Web development project of about 20 days",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [
+        {
+          "TextualNumber": "twenty",
+          "NumericValue": 20,
+          "StartIndex": 33,
+          "Length": 6
+        }
+      ],
+      "time_units": []
+    }
+  },
+  {
+    "original_tag": "Planning meeting of 1 hour and 30 minutes",
+    "normalized_tag": "Planning meeting of 1 hour and 30 minutes",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "30 minute",
+          "StartIndex": 31,
+          "Length": 9,
+          "Info": {
+            "Value": 30.0,
+            "Unit": "minute",
+            "UnitType": "minutes",
+            "NormalizedValue": 1800.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Documentation task of 3 days",
+    "normalized_tag": "Documentation task of 3 days",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "3 day",
+          "StartIndex": 22,
+          "Length": 5,
+          "Info": {
+            "Value": 3.0,
+            "Unit": "day",
+            "UnitType": "days",
+            "NormalizedValue": 259200.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "About 5 days of testing and debugging",
+    "normalized_tag": "About 5 days of testing and debugging",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": []
+    }
+  },
+  {
+    "original_tag": "Production deployment of approximately 2 hours",
+    "normalized_tag": "Production deployment of 2 (±5%) hours",
+    "metadata": {
+      "approximate_expressions": [
+        {
+          "Expression": "approximately 2",
+          "StartIndex": 25,
+          "Length": 15,
+          "Info": {
+            "Type": "MarkerNumber",
+            "Value": 2.0,
+            "Marker": "approximately",
+            "Precision": 0.05,
+            "LowerBound": 1.9,
+            "UpperBound": 2.1,
+            "PrecisionType": "Percentage"
+          }
+        }
+      ],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "2 hour",
+          "StartIndex": 39,
+          "Length": 6,
+          "Info": {
+            "Value": 2.0,
+            "Unit": "hour",
+            "UnitType": "hours",
+            "NormalizedValue": 7200.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Monthly maintenance of 4 hours",
+    "normalized_tag": "Monthly maintenance of 4 hours",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": []
+    }
+  },
+  {
+    "original_tag": "User training of 2 days",
+    "normalized_tag": "User training of 2 days",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "2 day",
+          "StartIndex": 17,
+          "Length": 5,
+          "Info": {
+            "Value": 2.0,
+            "Unit": "day",
+            "UnitType": "days",
+            "NormalizedValue": 172800.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Code review of 3 hours",
+    "normalized_tag": "Code review of 3 hours",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "3 hour",
+          "StartIndex": 15,
+          "Length": 6,
+          "Info": {
+            "Value": 3.0,
+            "Unit": "hour",
+            "UnitType": "hours",
+            "NormalizedValue": 10800.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Continuous integration of 1 day",
+    "normalized_tag": "Continuous integration of 1 day",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "1 day",
+          "StartIndex": 26,
+          "Length": 5,
+          "Info": {
+            "Value": 1.0,
+            "Unit": "day",
+            "UnitType": "days",
+            "NormalizedValue": 86400.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "original_tag": "Dependencies update of 2 hours",
+    "normalized_tag": "Dependencies update of 2 hours",
+    "metadata": {
+      "approximate_expressions": [],
+      "textual_numbers": [],
+      "time_units": [
+        {
+          "Expression": "2 hour",
+          "StartIndex": 23,
+          "Length": 6,
+          "Info": {
+            "Value": 2.0,
+            "Unit": "hour",
+            "UnitType": "hours",
+            "NormalizedValue": 7200.0,
+            "NormalizedUnit": "seconds"
+          }
+        }
+      ]
+    }
+  }
+]
