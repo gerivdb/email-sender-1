@@ -235,14 +235,14 @@
                                           - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.3.1** Créer le calcul des écarts entre estimation et réalité
                                           - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.3.2** Implémenter l'analyse des tendances de sous/surestimation
                                           - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.3.3** Développer la génération de rapports de précision
-                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3** Développer la normalisation des durées
-                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3.1** Créer la conversion des durées en format standard
-                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3.2** Implémenter la gestion des unités de temps différentes
-                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3.3** Développer le calcul des équivalences temporelles
-                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2** Développer l'analyse des expressions de délai
-                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1** Implémenter la détection des délais relatifs
-                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1.1** Créer l'analyse des expressions "dans X jours/semaines"
-                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1.2** Développer la détection des délais par rapport à aujourd'hui
+                                    - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3** Développer la normalisation des durées
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3.1** Créer la conversion des durées en format standard
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3.2** Implémenter la gestion des unités de temps différentes
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3.3** Développer le calcul des équivalences temporelles
+                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2** Développer l'analyse des expressions de délai
+                                    - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1** Implémenter la détection des délais relatifs
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1.1** Créer l'analyse des expressions "dans X jours/semaines"
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1.2** Développer la détection des délais par rapport à aujourd'hui
                                       - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1.3** Implémenter l'extraction des délais par rapport à d'autres tâches
                                     - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.2** Développer l'analyse des délais absolus
                                       - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.2.1** Créer la détection des dates limites explicites
