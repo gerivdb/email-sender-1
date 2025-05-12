@@ -1,0 +1,20 @@
+Tâche 1: Développer la fonctionnalité X (a pris 4 heures)
+Tâche 2: Implémenter le module Y (environ 2.5 jours) - durée réelle: 3 jours
+Tâche 3: Créer la documentation (temps passé: 5 heures)
+Tâche 4: Tester l'application (6 heures réelles)
+Tâche 5: Déployer en production (réalisé en 2 heures)
+Tâche 6: Former les utilisateurs (durée effective: 4 heures)
+Tâche 7: Corriger les bugs (8 heures effectives)
+Tâche 8: Optimiser les performances (a nécessité 12 heures)
+Tâche 9: Réunion de lancement #actual:1.5h
+Tâche 10: Revue de code #temps_réel:3h
+Tâche 11: Réalisé le 2023-05-15
+Tâche 12: Développement du module Z (du 2023-06-01 au 2023-06-15)
+Tâche 13: Intégration continue (terminé en 3 jours)
+Tâche 14: Refactoring (a demandé 10 heures de travail)
+Tâche 15: Mise à jour des dépendances (complété en 2 heures)
+Tâche 16: Analyse des besoins (5 jours réels)
+Tâche 17: Conception de l'architecture (temps réel: 3 jours)
+Tâche 18: Implémentation des tests unitaires (durée constatée: 8 heures)
+Tâche 19: Revue de sécurité (terminé le 2023-07-20)
+Tâche 20: Déploiement en staging (du 2023-08-01 au 2023-08-03)

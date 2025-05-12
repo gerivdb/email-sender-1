@@ -1,0 +1,5 @@
+Cette tâche prendra environ 3,5 jours.
+Le développement durera à peu près 2.5 semaines.
+La mise en place devrait prendre plus ou moins 5,5 heures.
+Cette fonctionnalité nécessitera autour de 10.25 jours de travail.
+Le temps de développement est estimé à 4,75 jours.

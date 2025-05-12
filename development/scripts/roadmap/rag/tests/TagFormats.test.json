@@ -1,0 +1,206 @@
+{
+    "name": "Tag Formats Configuration",
+    "description": "Configuration des formats de tags pour les tests",
+    "version": "1.0.0",
+    "updated_at": "2025-05-15T12:00:00Z",
+    "tag_formats": {
+        "priority": {
+            "name": "priority",
+            "description": "Tags de priorité",
+            "formats": [
+                {
+                    "name": "High",
+                    "pattern": "#priority:high",
+                    "description": "Priorité haute",
+                    "example": "#priority:high",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Medium",
+                    "pattern": "#priority:medium",
+                    "description": "Priorité moyenne",
+                    "example": "#priority:medium",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Low",
+                    "pattern": "#priority:low",
+                    "description": "Priorité basse",
+                    "example": "#priority:low",
+                    "value_group": 0,
+                    "unit": ""
+                }
+            ]
+        },
+        "category": {
+            "name": "category",
+            "description": "Tags de catégorie",
+            "formats": [
+                {
+                    "name": "Frontend",
+                    "pattern": "#category:frontend",
+                    "description": "Catégorie frontend",
+                    "example": "#category:frontend",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Backend",
+                    "pattern": "#category:backend",
+                    "description": "Catégorie backend",
+                    "example": "#category:backend",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Database",
+                    "pattern": "#category:database",
+                    "description": "Catégorie base de données",
+                    "example": "#category:database",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "DevOps",
+                    "pattern": "#category:devops",
+                    "description": "Catégorie DevOps",
+                    "example": "#category:devops",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Documentation",
+                    "pattern": "#category:documentation",
+                    "description": "Catégorie documentation",
+                    "example": "#category:documentation",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Testing",
+                    "pattern": "#category:testing",
+                    "description": "Catégorie tests",
+                    "example": "#category:testing",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "UI",
+                    "pattern": "#category:ui",
+                    "description": "Catégorie interface utilisateur",
+                    "example": "#category:ui",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Performance",
+                    "pattern": "#category:performance",
+                    "description": "Catégorie performance",
+                    "example": "#category:performance",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Reporting",
+                    "pattern": "#category:reporting",
+                    "description": "Catégorie rapports",
+                    "example": "#category:reporting",
+                    "value_group": 0,
+                    "unit": ""
+                }
+            ]
+        },
+        "time": {
+            "name": "time",
+            "description": "Tags de temps",
+            "formats": [
+                {
+                    "name": "Hours",
+                    "pattern": "#time:(\\d+)h",
+                    "description": "Temps en heures",
+                    "example": "#time:3h",
+                    "value_group": 1,
+                    "unit": "h"
+                },
+                {
+                    "name": "Days",
+                    "pattern": "#time:(\\d+)d",
+                    "description": "Temps en jours",
+                    "example": "#time:2d",
+                    "value_group": 1,
+                    "unit": "d"
+                },
+                {
+                    "name": "Weeks",
+                    "pattern": "#time:(\\d+)w",
+                    "description": "Temps en semaines",
+                    "example": "#time:1w",
+                    "value_group": 1,
+                    "unit": "w"
+                }
+            ]
+        },
+        "status": {
+            "name": "status",
+            "description": "Tags de statut",
+            "formats": [
+                {
+                    "name": "Todo",
+                    "pattern": "#status:todo",
+                    "description": "Statut à faire",
+                    "example": "#status:todo",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "InProgress",
+                    "pattern": "#status:in-progress",
+                    "description": "Statut en cours",
+                    "example": "#status:in-progress",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Done",
+                    "pattern": "#status:done",
+                    "description": "Statut terminé",
+                    "example": "#status:done",
+                    "value_group": 0,
+                    "unit": ""
+                },
+                {
+                    "name": "Blocked",
+                    "pattern": "#status:blocked",
+                    "description": "Statut bloqué",
+                    "example": "#status:blocked",
+                    "value_group": 0,
+                    "unit": ""
+                }
+            ]
+        },
+        "dependency": {
+            "name": "dependency",
+            "description": "Tags de dépendance",
+            "formats": [
+                {
+                    "name": "Depends",
+                    "pattern": "#depends:(\\d+\\.\\d+)",
+                    "description": "Dépend de la tâche spécifiée",
+                    "example": "#depends:1.2",
+                    "value_group": 1,
+                    "unit": ""
+                },
+                {
+                    "name": "Blocks",
+                    "pattern": "#blocks:(\\d+\\.\\d+)",
+                    "description": "Bloque la tâche spécifiée",
+                    "example": "#blocks:1.2",
+                    "value_group": 1,
+                    "unit": ""
+                }
+            ]
+        }
+    }
+}

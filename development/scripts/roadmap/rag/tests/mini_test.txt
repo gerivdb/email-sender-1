@@ -1,0 +1,2 @@
+Tâche 1: Développer la fonctionnalité X (exactement 4 heures)
+Tâche 2: Implémenter le module Y (environ 2.5 jours)

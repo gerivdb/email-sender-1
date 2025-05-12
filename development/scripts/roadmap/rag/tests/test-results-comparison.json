@@ -1,0 +1,732 @@
+﻿{
+    "EstimatedDurations":  {
+                               "DayWeekMonthDurations":  {
+                                                             "1.5":  {
+                                                                         "Composite":  [
+
+                                                                                       ],
+                                                                         "DayWeekMonth":  [
+                                                                                              {
+                                                                                                  "Original":  "3 jour",
+                                                                                                  "Unit":  "jours",
+                                                                                                  "Type":  "DayWeekMonth",
+                                                                                                  "Value":  "3"
+                                                                                              }
+                                                                                          ],
+                                                                         "HourMinute":  [
+
+                                                                                        ]
+                                                                     },
+                                                             "3.1":  {
+                                                                         "Composite":  [
+
+                                                                                       ],
+                                                                         "DayWeekMonth":  [
+                                                                                              {
+                                                                                                  "Original":  "4 jour",
+                                                                                                  "Unit":  "jours",
+                                                                                                  "Type":  "DayWeekMonth",
+                                                                                                  "Value":  "4"
+                                                                                              }
+                                                                                          ],
+                                                                         "HourMinute":  [
+
+                                                                                        ]
+                                                                     }
+                                                         },
+                               "CompositeDurations":  {
+
+                                                      },
+                               "Tasks":  {
+                                             "1.2":  {
+                                                         "Id":  "1.2",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  5,
+                                                         "Title":  "TÃ¢che avec Ã©cart positif (prÃ©vu: 2 jours, effectif: 3 jours, Ã©cart: +1 jour)"
+                                                     },
+                                             "1.1":  {
+                                                         "Id":  "1.1",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  4,
+                                                         "Title":  "TÃ¢che avec durÃ©e estimÃ©e et rÃ©elle (estimÃ©: 3 jours, rÃ©el: 4 jours)"
+                                                     },
+                                             "1.3":  {
+                                                         "Id":  "1.3",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  6,
+                                                         "Title":  "TÃ¢che avec Ã©cart nÃ©gatif (prÃ©vu: 5 jours, effectif: 4 jours, Ã©cart: -1 jour)"
+                                                     },
+                                             "2.3":  {
+                                                         "Id":  "2.3",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  14,
+                                                         "Title":  "TÃ¢che avec les deux types de tags (#duration:3d #durÃ©e-rÃ©elle:4j)"
+                                                     },
+                                             "2.1":  {
+                                                         "Id":  "2.1",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  12,
+                                                         "Title":  "TÃ¢che avec tag de durÃ©e estimÃ©e (#duration:5d)"
+                                                     },
+                                             "3.1":  {
+                                                         "Id":  "3.1",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+                                                                                                         {
+                                                                                                             "Original":  "4 jour",
+                                                                                                             "Unit":  "jours",
+                                                                                                             "Type":  "DayWeekMonth",
+                                                                                                             "Value":  "4"
+                                                                                                         }
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  17,
+                                                         "Title":  "TÃ¢che avec dates (commencÃ© le 2025-01-01, terminÃ© le 2025-01-05, durÃ©e: 4 jours)"
+                                                     },
+                                             "1.4":  {
+                                                         "Id":  "1.4",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  7,
+                                                         "Title":  "TÃ¢che avec unitÃ©s diffÃ©rentes (estimÃ©: 1 semaine, rÃ©el: 6 jours)"
+                                                     },
+                                             "3.2":  {
+                                                         "Id":  "3.2",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+                                                                                                       {
+                                                                                                           "Original":  "8 heure",
+                                                                                                           "Unit":  "heures",
+                                                                                                           "Type":  "HourMinute",
+                                                                                                           "Value":  "8"
+                                                                                                       }
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  18,
+                                                         "Title":  "TÃ¢che avec heures (dÃ©butÃ© le 2025-01-01 Ã  9h, fini le 2025-01-01 Ã  17h, durÃ©e: 8 heures)"
+                                                     },
+                                             "1.6":  {
+                                                         "Id":  "1.6",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  9,
+                                                         "Title":  "TÃ¢che avec durÃ©e rÃ©elle uniquement (durÃ©e rÃ©elle: 4 jours)"
+                                                     },
+                                             "1.5":  {
+                                                         "Id":  "1.5",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+                                                                                                         {
+                                                                                                             "Original":  "3 jour",
+                                                                                                             "Unit":  "jours",
+                                                                                                             "Type":  "DayWeekMonth",
+                                                                                                             "Value":  "3"
+                                                                                                         }
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  8,
+                                                         "Title":  "TÃ¢che avec durÃ©e estimÃ©e uniquement (durÃ©e: 3 jours)"
+                                                     },
+                                             "2.2":  {
+                                                         "Id":  "2.2",
+                                                         "DurationAttributes":  {
+                                                                                    "Composite":  [
+
+                                                                                                  ],
+                                                                                    "DayWeekMonth":  [
+
+                                                                                                     ],
+                                                                                    "HourMinute":  [
+
+                                                                                                   ]
+                                                                                },
+                                                         "Status":  "Pending",
+                                                         "LineNumber":  13,
+                                                         "Title":  "TÃ¢che avec tag de durÃ©e rÃ©elle (#durÃ©e-rÃ©elle:4j)"
+                                                     }
+                                         },
+                               "Stats":  {
+                                             "TasksWithCompositeDurations":  0,
+                                             "TotalTasks":  11,
+                                             "TasksWithDayWeekMonthDurations":  2,
+                                             "TasksWithHourMinuteDurations":  5
+                                         },
+                               "HourMinuteDurations":  {
+                                                           "3.2":  {
+                                                                       "Composite":  [
+
+                                                                                     ],
+                                                                       "DayWeekMonth":  [
+
+                                                                                        ],
+                                                                       "HourMinute":  [
+                                                                                          {
+                                                                                              "Original":  "8 heure",
+                                                                                              "Unit":  "heures",
+                                                                                              "Type":  "HourMinute",
+                                                                                              "Value":  "8"
+                                                                                          }
+                                                                                      ]
+                                                                   }
+                                                       }
+                           },
+    "ExplicitComparisons":  {
+                                "1.3":  {
+                                            "Calculated":  [
+
+                                                           ],
+                                            "Explicit":  [
+                                                             {
+                                                                 "Confidence":  0.95,
+                                                                 "Estimated":  {
+                                                                                   "Hours":  40,
+                                                                                   "Unit":  "jours",
+                                                                                   "Value":  5
+                                                                               },
+                                                                 "Source":  "Text",
+                                                                 "Difference":  {
+                                                                                    "Hours":  -8,
+                                                                                    "Percentage":  -20
+                                                                                },
+                                                                 "Type":  "Explicit",
+                                                                 "Actual":  {
+                                                                                "Hours":  32,
+                                                                                "Unit":  "jours",
+                                                                                "Value":  4
+                                                                            },
+                                                                 "Original":  "prÃ©vu: 5 jours, effectif: 4 jours"
+                                                             },
+                                                             {
+                                                                 "Confidence":  0.9,
+                                                                 "Difference":  {
+                                                                                    "Hours":  -8,
+                                                                                    "Percentage":  0,
+                                                                                    "Unit":  "jours",
+                                                                                    "Value":  -1
+                                                                                },
+                                                                 "Source":  "Text",
+                                                                 "Type":  "ExplicitDifference",
+                                                                 "Original":  "Ã©cart: -1 jour"
+                                                             }
+                                                         ]
+                                        },
+                                "1.1":  {
+                                            "Calculated":  [
+
+                                                           ],
+                                            "Explicit":  [
+                                                             {
+                                                                 "Confidence":  0.95,
+                                                                 "Estimated":  {
+                                                                                   "Hours":  24,
+                                                                                   "Unit":  "jours",
+                                                                                   "Value":  3
+                                                                               },
+                                                                 "Source":  "Text",
+                                                                 "Difference":  {
+                                                                                    "Hours":  8,
+                                                                                    "Percentage":  33.333333333333329
+                                                                                },
+                                                                 "Type":  "Explicit",
+                                                                 "Actual":  {
+                                                                                "Hours":  32,
+                                                                                "Unit":  "jours",
+                                                                                "Value":  4
+                                                                            },
+                                                                 "Original":  "estimÃ©: 3 jours, rÃ©el: 4 jours"
+                                                             }
+                                                         ]
+                                        },
+                                "1.2":  {
+                                            "Calculated":  [
+
+                                                           ],
+                                            "Explicit":  [
+                                                             {
+                                                                 "Confidence":  0.95,
+                                                                 "Estimated":  {
+                                                                                   "Hours":  16,
+                                                                                   "Unit":  "jours",
+                                                                                   "Value":  2
+                                                                               },
+                                                                 "Source":  "Text",
+                                                                 "Difference":  {
+                                                                                    "Hours":  8,
+                                                                                    "Percentage":  50
+                                                                                },
+                                                                 "Type":  "Explicit",
+                                                                 "Actual":  {
+                                                                                "Hours":  24,
+                                                                                "Unit":  "jours",
+                                                                                "Value":  3
+                                                                            },
+                                                                 "Original":  "prÃ©vu: 2 jours, effectif: 3 jours"
+                                                             },
+                                                             {
+                                                                 "Confidence":  0.9,
+                                                                 "Difference":  {
+                                                                                    "Hours":  8,
+                                                                                    "Percentage":  0,
+                                                                                    "Unit":  "jours",
+                                                                                    "Value":  1
+                                                                                },
+                                                                 "Source":  "Text",
+                                                                 "Type":  "ExplicitDifference",
+                                                                 "Original":  "Ã©cart: +1 jour"
+                                                             }
+                                                         ]
+                                        },
+                                "1.4":  {
+                                            "Calculated":  [
+
+                                                           ],
+                                            "Explicit":  [
+                                                             {
+                                                                 "Confidence":  0.95,
+                                                                 "Estimated":  {
+                                                                                   "Hours":  40,
+                                                                                   "Unit":  "semaines",
+                                                                                   "Value":  1
+                                                                               },
+                                                                 "Source":  "Text",
+                                                                 "Difference":  {
+                                                                                    "Hours":  8,
+                                                                                    "Percentage":  20
+                                                                                },
+                                                                 "Type":  "Explicit",
+                                                                 "Actual":  {
+                                                                                "Hours":  48,
+                                                                                "Unit":  "jours",
+                                                                                "Value":  6
+                                                                            },
+                                                                 "Original":  "estimÃ©: 1 semaine, rÃ©el: 6 jours"
+                                                             }
+                                                         ]
+                                        }
+                            },
+    "Tasks":  {
+
+              },
+    "CalculatedComparisons":  {
+
+                              },
+    "Stats":  {
+                  "MaxNegativeDeviation":  0,
+                  "MaxPositiveDeviation":  0,
+                  "MedianDeviation":  0,
+                  "TotalTasks":  11,
+                  "TasksWithExplicitComparisons":  4,
+                  "AverageDeviation":  0,
+                  "TasksWithActualDurations":  11,
+                  "TasksWithCalculatedComparisons":  0,
+                  "TasksWithEstimatedDurations":  11
+              },
+    "ActualDurations":  {
+                            "ExplicitActualDurations":  {
+                                                            "1.6":  {
+                                                                        "Tags":  [
+
+                                                                                 ],
+                                                                        "Calculated":  [
+
+                                                                                       ],
+                                                                        "Explicit":  [
+                                                                                         {
+                                                                                             "Value":  4,
+                                                                                             "Source":  "Text",
+                                                                                             "Type":  "Explicit",
+                                                                                             "Confidence":  0.9,
+                                                                                             "Unit":  "jours",
+                                                                                             "Original":  "durÃ©e rÃ©elle: 4 jours"
+                                                                                         }
+                                                                                     ]
+                                                                    },
+                                                            "2.2":  {
+                                                                        "Tags":  [
+                                                                                     {
+                                                                                         "Value":  4,
+                                                                                         "Source":  "ActualDurationDays",
+                                                                                         "Type":  "Tag",
+                                                                                         "Confidence":  0.95,
+                                                                                         "Unit":  "jours",
+                                                                                         "Original":  "Days"
+                                                                                     }
+                                                                                 ],
+                                                                        "Calculated":  [
+
+                                                                                       ],
+                                                                        "Explicit":  [
+
+                                                                                     ]
+                                                                    },
+                                                            "2.3":  {
+                                                                        "Tags":  [
+                                                                                     {
+                                                                                         "Value":  4,
+                                                                                         "Source":  "ActualDurationDays",
+                                                                                         "Type":  "Tag",
+                                                                                         "Confidence":  0.95,
+                                                                                         "Unit":  "jours",
+                                                                                         "Original":  "Days"
+                                                                                     }
+                                                                                 ],
+                                                                        "Calculated":  [
+
+                                                                                       ],
+                                                                        "Explicit":  [
+
+                                                                                     ]
+                                                                    }
+                                                        },
+                            "Tasks":  {
+                                          "1.2":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+
+                                                                                       ],
+                                                                              "Calculated":  [
+
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec Ã©cart positif (prÃ©vu: 2 jours, effectif: 3 jours, Ã©cart: +1 jour)",
+                                                      "Id":  "1.2"
+                                                  },
+                                          "1.1":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+
+                                                                                       ],
+                                                                              "Calculated":  [
+
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec durÃ©e estimÃ©e et rÃ©elle (estimÃ©: 3 jours, rÃ©el: 4 jours)",
+                                                      "Id":  "1.1"
+                                                  },
+                                          "1.3":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+
+                                                                                       ],
+                                                                              "Calculated":  [
+
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec Ã©cart nÃ©gatif (prÃ©vu: 5 jours, effectif: 4 jours, Ã©cart: -1 jour)",
+                                                      "Id":  "1.3"
+                                                  },
+                                          "2.3":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+                                                                                           {
+                                                                                               "Value":  4,
+                                                                                               "Source":  "ActualDurationDays",
+                                                                                               "Type":  "Tag",
+                                                                                               "Confidence":  0.95,
+                                                                                               "Unit":  "jours",
+                                                                                               "Original":  "Days"
+                                                                                           }
+                                                                                       ],
+                                                                              "Calculated":  [
+
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec les deux types de tags (#duration:3d #durÃ©e-rÃ©elle:4j)",
+                                                      "Id":  "2.3"
+                                                  },
+                                          "2.1":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+
+                                                                                       ],
+                                                                              "Calculated":  [
+
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec tag de durÃ©e estimÃ©e (#duration:5d)",
+                                                      "Id":  "2.1"
+                                                  },
+                                          "3.1":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+
+                                                                                       ],
+                                                                              "Calculated":  [
+                                                                                                 {
+                                                                                                     "Confidence":  0.85,
+                                                                                                     "StartDate":  "\/Date(1735686000000)\/",
+                                                                                                     "Unit":  "jours",
+                                                                                                     "Original":  "Du 2025-01-01 au 2025-01-05",
+                                                                                                     "EndDate":  "\/Date(1736031600000)\/",
+                                                                                                     "Type":  "Calculated",
+                                                                                                     "Source":  "DateDifference",
+                                                                                                     "Value":  4
+                                                                                                 }
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec dates (commencÃ© le 2025-01-01, terminÃ© le 2025-01-05, durÃ©e: 4 jours)",
+                                                      "Id":  "3.1"
+                                                  },
+                                          "1.4":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+
+                                                                                       ],
+                                                                              "Calculated":  [
+
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec unitÃ©s diffÃ©rentes (estimÃ©: 1 semaine, rÃ©el: 6 jours)",
+                                                      "Id":  "1.4"
+                                                  },
+                                          "3.2":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+
+                                                                                       ],
+                                                                              "Calculated":  [
+                                                                                                 {
+                                                                                                     "Confidence":  0.85,
+                                                                                                     "StartDate":  "\/Date(1735686000000)\/",
+                                                                                                     "Unit":  "jours",
+                                                                                                     "Original":  "Du 2025-01-01 au 2025-01-01",
+                                                                                                     "EndDate":  "\/Date(1735686000000)\/",
+                                                                                                     "Type":  "Calculated",
+                                                                                                     "Source":  "DateDifference",
+                                                                                                     "Value":  0
+                                                                                                 }
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec heures (dÃ©butÃ© le 2025-01-01 Ã  9h, fini le 2025-01-01 Ã  17h, durÃ©e: 8 heures)",
+                                                      "Id":  "3.2"
+                                                  },
+                                          "1.6":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+
+                                                                                       ],
+                                                                              "Calculated":  [
+
+                                                                                             ],
+                                                                              "Explicit":  [
+                                                                                               {
+                                                                                                   "Value":  4,
+                                                                                                   "Source":  "Text",
+                                                                                                   "Type":  "Explicit",
+                                                                                                   "Confidence":  0.9,
+                                                                                                   "Unit":  "jours",
+                                                                                                   "Original":  "durÃ©e rÃ©elle: 4 jours"
+                                                                                               }
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec durÃ©e rÃ©elle uniquement (durÃ©e rÃ©elle: 4 jours)",
+                                                      "Id":  "1.6"
+                                                  },
+                                          "1.5":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+
+                                                                                       ],
+                                                                              "Calculated":  [
+
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec durÃ©e estimÃ©e uniquement (durÃ©e: 3 jours)",
+                                                      "Id":  "1.5"
+                                                  },
+                                          "2.2":  {
+                                                      "ActualDurations":  {
+                                                                              "Tags":  [
+                                                                                           {
+                                                                                               "Value":  4,
+                                                                                               "Source":  "ActualDurationDays",
+                                                                                               "Type":  "Tag",
+                                                                                               "Confidence":  0.95,
+                                                                                               "Unit":  "jours",
+                                                                                               "Original":  "Days"
+                                                                                           }
+                                                                                       ],
+                                                                              "Calculated":  [
+
+                                                                                             ],
+                                                                              "Explicit":  [
+
+                                                                                           ]
+                                                                          },
+                                                      "Title":  "TÃ¢che avec tag de durÃ©e rÃ©elle (#durÃ©e-rÃ©elle:4j)",
+                                                      "Id":  "2.2"
+                                                  }
+                                      },
+                            "Stats":  {
+                                          "TotalTasks":  11,
+                                          "TasksWithEstimateActualComparison":  0,
+                                          "TasksWithExplicitActualDurations":  3,
+                                          "TasksWithCalculatedActualDurations":  2
+                                      },
+                            "CalculatedActualDurations":  {
+                                                              "3.2":  {
+                                                                          "Tags":  [
+
+                                                                                   ],
+                                                                          "Calculated":  [
+                                                                                             {
+                                                                                                 "Confidence":  0.85,
+                                                                                                 "StartDate":  "\/Date(1735686000000)\/",
+                                                                                                 "Unit":  "jours",
+                                                                                                 "Original":  "Du 2025-01-01 au 2025-01-01",
+                                                                                                 "EndDate":  "\/Date(1735686000000)\/",
+                                                                                                 "Type":  "Calculated",
+                                                                                                 "Source":  "DateDifference",
+                                                                                                 "Value":  0
+                                                                                             }
+                                                                                         ],
+                                                                          "Explicit":  [
+
+                                                                                       ]
+                                                                      },
+                                                              "3.1":  {
+                                                                          "Tags":  [
+
+                                                                                   ],
+                                                                          "Calculated":  [
+                                                                                             {
+                                                                                                 "Confidence":  0.85,
+                                                                                                 "StartDate":  "\/Date(1735686000000)\/",
+                                                                                                 "Unit":  "jours",
+                                                                                                 "Original":  "Du 2025-01-01 au 2025-01-05",
+                                                                                                 "EndDate":  "\/Date(1736031600000)\/",
+                                                                                                 "Type":  "Calculated",
+                                                                                                 "Source":  "DateDifference",
+                                                                                                 "Value":  4
+                                                                                             }
+                                                                                         ],
+                                                                          "Explicit":  [
+
+                                                                                       ]
+                                                                      }
+                                                          }
+                        }
+}

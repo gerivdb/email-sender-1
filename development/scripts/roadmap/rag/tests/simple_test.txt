@@ -1,0 +1,3 @@
+Tâche 1: Développer la fonctionnalité X (environ 4 heures)
+Tâche 2: Implémenter le module Y (estimation: 2.5 jours)
+Tâche 9: Réunion de planification (45 minutes)

@@ -1,0 +1,9 @@
+﻿{
+    "tag_formats":  {
+
+                    },
+    "updated_at":  "2025-05-12T08:04:30Z",
+    "description":  "Configuration des formats de tags",
+    "name":  "Tag Formats Configuration",
+    "version":  "1.0.0"
+}

@@ -1,0 +1,22 @@
+﻿{
+    "tag_formats":  {
+                        "imported":  {
+                                         "description":  "Tags importÃ©s",
+                                         "name":  "Imported",
+                                         "formats":  [
+                                                         {
+                                                             "pattern":  "#imported:(\\\\d+)",
+                                                             "name":  "ImportedFormat",
+                                                             "description":  "Format importÃ©",
+                                                             "example":  "#imported:123",
+                                                             "unit":  "units",
+                                                             "value_group":  1
+                                                         }
+                                                     ]
+                                     }
+                    },
+    "updated_at":  "2025-05-12T07:53:08Z",
+    "description":  "Configuration importÃ©e pour les tests",
+    "name":  "Imported Configuration",
+    "version":  "1.0.0"
+}

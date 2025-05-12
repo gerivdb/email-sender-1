@@ -1,0 +1,4 @@
+Tache 1: a pris 4 heures
+Tache 2: duree reelle: 3 jours
+Tache 3: temps passe: 5 heures
+Tache 4: 6 heures reelles

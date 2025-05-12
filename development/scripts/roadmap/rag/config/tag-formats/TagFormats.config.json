@@ -1,0 +1,374 @@
+{
+  "name": "Tag Formats Configuration",
+  "description": "Configuration des formats de tags pour les roadmaps",
+  "version": "1.0.0",
+  "updated_at": "2025-05-15T12:00:00Z",
+  "tag_formats": {
+    "priority": {
+      "name": "priority",
+      "description": "Tags de priorité",
+      "formats": [
+        {
+          "name": "High",
+          "pattern": "#priority:high",
+          "description": "Priorité haute",
+          "example": "#priority:high",
+          "value_group": 0,
+          "unit": ""
+        },
+        {
+          "name": "Medium",
+          "pattern": "#priority:medium",
+          "description": "Priorité moyenne",
+          "example": "#priority:medium",
+          "value_group": 0,
+          "unit": ""
+        },
+        {
+          "name": "Low",
+          "pattern": "#priority:low",
+          "description": "Priorité basse",
+          "example": "#priority:low",
+          "value_group": 0,
+          "unit": ""
+        }
+      ]
+    },
+    "category": {
+      "name": "category",
+      "description": "Tags de catégorie",
+      "formats": [
+        {
+          "name": "Frontend",
+          "pattern": "#category:frontend",
+          "description": "Catégorie frontend",
+          "example": "#category:frontend",
+          "value_group": 0,
+          "unit": ""
+        },
+        {
+          "name": "Backend",
+          "pattern": "#category:backend",
+          "description": "Catégorie backend",
+          "example": "#category:backend",
+          "value_group": 0,
+          "unit": ""
+        },
+        {
+          "name": "Database",
+          "pattern": "#category:database",
+          "description": "Catégorie base de données",
+          "example": "#category:database",
+          "value_group": 0,
+          "unit": ""
+        },
+        {
+          "name": "DevOps",
+          "pattern": "#category:devops",
+          "description": "Catégorie DevOps",
+          "example": "#category:devops",
+          "value_group": 0,
+          "unit": ""
+        }
+      ]
+    },
+    "status": {
+      "name": "status",
+      "description": "Tags de statut",
+      "formats": [
+        {
+          "name": "Todo",
+          "pattern": "#status:todo",
+          "description": "Statut à faire",
+          "example": "#status:todo",
+          "value_group": 0,
+          "unit": ""
+        },
+        {
+          "name": "InProgress",
+          "pattern": "#status:in-progress",
+          "description": "Statut en cours",
+          "example": "#status:in-progress",
+          "value_group": 0,
+          "unit": ""
+        },
+        {
+          "name": "Done",
+          "pattern": "#status:done",
+          "description": "Statut terminé",
+          "example": "#status:done",
+          "value_group": 0,
+          "unit": ""
+        }
+      ]
+    },
+    "dependency": {
+      "name": "dependency",
+      "description": "Tags de dépendance",
+      "formats": [
+        {
+          "name": "Depends",
+          "pattern": "#depends:(\\d+\\.\\d+\\.\\d+)",
+          "description": "Dépend de la tâche spécifiée",
+          "example": "#depends:1.2.3",
+          "value_group": 1,
+          "unit": ""
+        },
+        {
+          "name": "Blocks",
+          "pattern": "#blocks:(\\d+\\.\\d+\\.\\d+)",
+          "description": "Bloque la tâche spécifiée",
+          "example": "#blocks:1.2.3",
+          "value_group": 1,
+          "unit": ""
+        }
+      ]
+    },
+    "time": {
+      "name": "time",
+      "description": "Tags de temps",
+      "formats": [
+        {
+          "name": "Hours",
+          "pattern": "#time:(\\d+)h",
+          "description": "Temps en heures",
+          "example": "#time:3h",
+          "value_group": 1,
+          "unit": "h"
+        },
+        {
+          "name": "Days",
+          "pattern": "#time:(\\d+)d",
+          "description": "Temps en jours",
+          "example": "#time:2d",
+          "value_group": 1,
+          "unit": "d"
+        },
+        {
+          "name": "Weeks",
+          "pattern": "#time:(\\d+)w",
+          "description": "Temps en semaines",
+          "example": "#time:1w",
+          "value_group": 1,
+          "unit": "w"
+        }
+      ]
+    },
+    "duration": {
+      "name": "Duration",
+      "description": "Tags pour la durée en anglais",
+      "formats": [
+        {
+          "name": "DurationDays",
+          "pattern": "#duration:(\\d+(?:\\.\\d+)?)d\\b",
+          "description": "Format #duration:Xd (jours)",
+          "example": "#duration:5d",
+          "value_group": 1,
+          "unit": "days"
+        },
+        {
+          "name": "DurationWeeks",
+          "pattern": "#duration:(\\d+(?:\\.\\d+)?)w\\b",
+          "description": "Format #duration:Xw (semaines)",
+          "example": "#duration:2w",
+          "value_group": 1,
+          "unit": "weeks"
+        },
+        {
+          "name": "DurationMonths",
+          "pattern": "#duration:(\\d+(?:\\.\\d+)?)m\\b",
+          "description": "Format #duration:Xm (mois)",
+          "example": "#duration:3m",
+          "value_group": 1,
+          "unit": "months"
+        },
+        {
+          "name": "DurationParenDays",
+          "pattern": "#duration\\((\\d+(?:\\.\\d+)?)d\\)",
+          "description": "Format #duration(Xd) (jours)",
+          "example": "#duration(5d)",
+          "value_group": 1,
+          "unit": "days"
+        },
+        {
+          "name": "DurationParenWeeks",
+          "pattern": "#duration\\((\\d+(?:\\.\\d+)?)w\\)",
+          "description": "Format #duration(Xw) (semaines)",
+          "example": "#duration(2w)",
+          "value_group": 1,
+          "unit": "weeks"
+        },
+        {
+          "name": "DurationParenMonths",
+          "pattern": "#duration\\((\\d+(?:\\.\\d+)?)m\\)",
+          "description": "Format #duration(Xm) (mois)",
+          "example": "#duration(3m)",
+          "value_group": 1,
+          "unit": "months"
+        },
+        {
+          "name": "DurationDaysHours",
+          "pattern": "#duration:(\\d+(?:\\.\\d+)?)d[-_]?(\\d+(?:\\.\\d+)?)h\\b",
+          "description": "Format #duration:XdYh (jours et heures)",
+          "example": "#duration:5d3h",
+          "value_groups": [1, 2],
+          "units": ["days", "hours"],
+          "composite": true
+        },
+        {
+          "name": "DurationHoursMinutes",
+          "pattern": "#duration:(\\d+(?:\\.\\d+)?)h[-_]?(\\d+(?:\\.\\d+)?)m\\b",
+          "description": "Format #duration:XhYm (heures et minutes)",
+          "example": "#duration:2h30m",
+          "value_groups": [1, 2],
+          "units": ["hours", "minutes"],
+          "composite": true
+        }
+      ]
+    },
+    "temps": {
+      "name": "Temps",
+      "description": "Tags pour le temps en français",
+      "formats": [
+        {
+          "name": "TempsDays",
+          "pattern": "#temps:(\\d+(?:\\.\\d+)?)j\\b",
+          "description": "Format #temps:Xj (jours)",
+          "example": "#temps:5j",
+          "value_group": 1,
+          "unit": "days"
+        },
+        {
+          "name": "TempsWeeks",
+          "pattern": "#temps:(\\d+(?:\\.\\d+)?)s\\b",
+          "description": "Format #temps:Xs (semaines)",
+          "example": "#temps:2s",
+          "value_group": 1,
+          "unit": "weeks"
+        },
+        {
+          "name": "TempsMonths",
+          "pattern": "#temps:(\\d+(?:\\.\\d+)?)m\\b",
+          "description": "Format #temps:Xm (mois)",
+          "example": "#temps:3m",
+          "value_group": 1,
+          "unit": "months"
+        },
+        {
+          "name": "TempsParenDays",
+          "pattern": "#temps\\((\\d+(?:\\.\\d+)?)j\\)",
+          "description": "Format #temps(Xj) (jours)",
+          "example": "#temps(5j)",
+          "value_group": 1,
+          "unit": "days"
+        },
+        {
+          "name": "TempsParenWeeks",
+          "pattern": "#temps\\((\\d+(?:\\.\\d+)?)s\\)",
+          "description": "Format #temps(Xs) (semaines)",
+          "example": "#temps(2s)",
+          "value_group": 1,
+          "unit": "weeks"
+        },
+        {
+          "name": "TempsParenMonths",
+          "pattern": "#temps\\((\\d+(?:\\.\\d+)?)m\\)",
+          "description": "Format #temps(Xm) (mois)",
+          "example": "#temps(3m)",
+          "value_group": 1,
+          "unit": "months"
+        },
+        {
+          "name": "TempsDaysHours",
+          "pattern": "#temps:(\\d+(?:\\.\\d+)?)j[-_]?(\\d+(?:\\.\\d+)?)h\\b",
+          "description": "Format #temps:XjYh (jours et heures)",
+          "example": "#temps:5j3h",
+          "value_groups": [1, 2],
+          "units": ["days", "hours"],
+          "composite": true
+        },
+        {
+          "name": "TempsHoursMinutes",
+          "pattern": "#temps:(\\d+(?:\\.\\d+)?)h[-_]?(\\d+(?:\\.\\d+)?)m\\b",
+          "description": "Format #temps:XhYm (heures et minutes)",
+          "example": "#temps:2h30m",
+          "value_groups": [1, 2],
+          "units": ["hours", "minutes"],
+          "composite": true
+        }
+      ]
+    },
+    "duree": {
+      "name": "Durée",
+      "description": "Tags pour la durée en français",
+      "formats": [
+        {
+          "name": "DureeDays",
+          "pattern": "#durée:(\\d+(?:\\.\\d+)?)j\\b",
+          "description": "Format #durée:Xj (jours)",
+          "example": "#durée:5j",
+          "value_group": 1,
+          "unit": "days"
+        },
+        {
+          "name": "DureeWeeks",
+          "pattern": "#durée:(\\d+(?:\\.\\d+)?)s\\b",
+          "description": "Format #durée:Xs (semaines)",
+          "example": "#durée:2s",
+          "value_group": 1,
+          "unit": "weeks"
+        },
+        {
+          "name": "DureeMonths",
+          "pattern": "#durée:(\\d+(?:\\.\\d+)?)m\\b",
+          "description": "Format #durée:Xm (mois)",
+          "example": "#durée:3m",
+          "value_group": 1,
+          "unit": "months"
+        },
+        {
+          "name": "DureeParenDays",
+          "pattern": "#durée\\((\\d+(?:\\.\\d+)?)j\\)",
+          "description": "Format #durée(Xj) (jours)",
+          "example": "#durée(5j)",
+          "value_group": 1,
+          "unit": "days"
+        },
+        {
+          "name": "DureeParenWeeks",
+          "pattern": "#durée\\((\\d+(?:\\.\\d+)?)s\\)",
+          "description": "Format #durée(Xs) (semaines)",
+          "example": "#durée(2s)",
+          "value_group": 1,
+          "unit": "weeks"
+        },
+        {
+          "name": "DureeParenMonths",
+          "pattern": "#durée\\((\\d+(?:\\.\\d+)?)m\\)",
+          "description": "Format #durée(Xm) (mois)",
+          "example": "#durée(3m)",
+          "value_group": 1,
+          "unit": "months"
+        },
+        {
+          "name": "DureeDaysHours",
+          "pattern": "#durée:(\\d+(?:\\.\\d+)?)j[-_]?(\\d+(?:\\.\\d+)?)h\\b",
+          "description": "Format #durée:XjYh (jours et heures)",
+          "example": "#durée:5j3h",
+          "value_groups": [1, 2],
+          "units": ["days", "hours"],
+          "composite": true
+        },
+        {
+          "name": "DureeHoursMinutes",
+          "pattern": "#durée:(\\d+(?:\\.\\d+)?)h[-_]?(\\d+(?:\\.\\d+)?)m\\b",
+          "description": "Format #durée:XhYm (heures et minutes)",
+          "example": "#durée:2h30m",
+          "value_groups": [1, 2],
+          "units": ["hours", "minutes"],
+          "composite": true
+        }
+      ]
+    }
+  }
+}
