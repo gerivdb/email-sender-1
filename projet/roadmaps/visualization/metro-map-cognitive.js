@@ -1,6 +1,6 @@
 /**
  * Metro Map Cognitive Visualization
- * 
+ *
  * Visualisation "ligne de métro" adaptée à l'architecture cognitive à 10 niveaux.
  * Basée sur Cytoscape.js et intégrée avec le modèle hiérarchique cognitif.
  */
@@ -28,7 +28,7 @@ class MetroMapCognitiveVisualizer {
       // Configuration générale
       nodeSize: 30,
       lineWidth: 4,
-      
+
       // Couleurs pour les différents niveaux hiérarchiques
       levelColors: {
         cosmos: '#1a237e',     // Bleu profond
@@ -42,7 +42,7 @@ class MetroMapCognitiveVisualizer {
         building: '#3f51b5',   // Indigo
         foundation: '#212121'  // Noir
       },
-      
+
       // Couleurs pour les dimensions
       dimensionColors: {
         temporal: '#2196f3',   // Bleu
@@ -50,7 +50,7 @@ class MetroMapCognitiveVisualizer {
         organizational: '#4caf50', // Vert
         strategic: '#f44336'   // Rouge
       },
-      
+
       // Couleurs pour les statuts
       statusColors: {
         planned: '#2196f3',    // Bleu
@@ -59,7 +59,7 @@ class MetroMapCognitiveVisualizer {
         blocked: '#f44336',    // Rouge
         cancelled: '#9e9e9e'   // Gris
       },
-      
+
       // Configuration du layout
       layout: {
         name: 'dagre',
@@ -73,11 +73,11 @@ class MetroMapCognitiveVisualizer {
         animate: true,         // Animation lors de l'application du layout
         animationDuration: 800 // Durée de l'animation
       },
-      
+
       // Autres options
       ...options
     };
-    
+
     this.cy = null;
     this.data = null;
     this.currentLevel = 'cosmos'; // Niveau de visualisation actuel
@@ -90,24 +90,43 @@ class MetroMapCognitiveVisualizer {
    * Initialise la visualisation
    */
   initialize() {
-    // Créer l'instance Cytoscape
-    this.cy = cytoscape({
-      container: document.getElementById(this.containerId),
-      style: this._createStylesheet(),
-      layout: {
-        name: 'preset'
-      },
-      wheelSensitivity: 0.3,
-      minZoom: 0.2,
-      maxZoom: 3
-    });
+    try {
+      // Vérifier que Cytoscape est disponible
+      if (typeof cytoscape === 'undefined') {
+        console.error('Cytoscape.js n\'est pas chargé. Veuillez inclure la bibliothèque.');
+        return this;
+      }
 
-    // Ajouter les interactions
-    this._setupInteractions();
-    
-    // Créer les contrôles de l'interface utilisateur
-    this._createControls();
-    
+      // Vérifier que le conteneur existe
+      const container = document.getElementById(this.containerId);
+      if (!container) {
+        console.error(`Le conteneur avec l'ID "${this.containerId}" n'existe pas.`);
+        return this;
+      }
+
+      // Créer l'instance Cytoscape
+      this.cy = cytoscape({
+        container: container,
+        style: this._createStylesheet(),
+        layout: {
+          name: 'preset'
+        },
+        wheelSensitivity: 0.3,
+        minZoom: 0.2,
+        maxZoom: 3
+      });
+
+      // Ajouter les interactions
+      this._setupInteractions();
+
+      // Créer les contrôles de l'interface utilisateur
+      this._createControls();
+
+      console.log('Visualisation "ligne de métro" cognitive initialisée avec succès.');
+    } catch (error) {
+      console.error('Erreur lors de l\'initialisation de la visualisation:', error);
+    }
+
     return this;
   }
 
@@ -129,21 +148,21 @@ class MetroMapCognitiveVisualizer {
       console.error('Aucune donnée à visualiser');
       return this;
     }
-    
+
     // Construire les éléments du graphe
     const elements = this._buildGraphElements();
-    
+
     // Réinitialiser et ajouter les éléments
     this.cy.elements().remove();
     this.cy.add(elements);
-    
+
     // Appliquer le layout
     this._applyLayout();
-    
+
     // Centrer la vue
     this.cy.fit();
     this.cy.zoom(0.8);
-    
+
     return this;
   }
 
@@ -294,10 +313,10 @@ class MetroMapCognitiveVisualizer {
     this.cy.on('tap', 'node', (event) => {
       const node = event.target;
       const nodeData = node.data();
-      
+
       // Afficher les détails du nœud
       this._showNodeDetails(nodeData);
-      
+
       // Si le nœud a des enfants, les développer/réduire
       if (nodeData.hasChildren) {
         if (this.expandedNodes.has(nodeData.id)) {
@@ -308,30 +327,30 @@ class MetroMapCognitiveVisualizer {
         this.visualize();
       }
     });
-    
+
     // Interaction au survol d'un nœud
     this.cy.on('mouseover', 'node', (event) => {
       const node = event.target;
       node.style('border-width', 5);
-      
+
       // Mettre en évidence les nœuds connectés
       const connectedNodes = node.connectedNodes();
       connectedNodes.style('border-width', 4);
-      
+
       // Mettre en évidence les liens
       const connectedEdges = node.connectedEdges();
       connectedEdges.style('width', this.options.lineWidth * 1.5);
     });
-    
+
     // Fin du survol d'un nœud
     this.cy.on('mouseout', 'node', (event) => {
       const node = event.target;
       node.style('border-width', 3);
-      
+
       // Restaurer les nœuds connectés
       const connectedNodes = node.connectedNodes();
       connectedNodes.style('border-width', 3);
-      
+
       // Restaurer les liens
       const connectedEdges = node.connectedEdges();
       connectedEdges.style('width', this.options.lineWidth);
@@ -343,7 +362,163 @@ class MetroMapCognitiveVisualizer {
    * @private
    */
   _createControls() {
-    // À implémenter selon les besoins de l'interface
+    try {
+      // Vérifier si nous sommes dans un environnement navigateur
+      if (typeof document === 'undefined') {
+        return;
+      }
+
+      // Créer le conteneur des contrôles
+      const controlsContainer = document.createElement('div');
+      controlsContainer.className = 'metro-map-controls';
+
+      // Créer le bouton de zoom +
+      const zoomInBtn = document.createElement('button');
+      zoomInBtn.className = 'metro-map-control-btn';
+      zoomInBtn.innerHTML = '+';
+      zoomInBtn.title = 'Zoom avant';
+      zoomInBtn.addEventListener('click', () => {
+        this.cy.zoom(this.cy.zoom() * 1.2);
+        this.cy.center();
+      });
+
+      // Créer le bouton de zoom -
+      const zoomOutBtn = document.createElement('button');
+      zoomOutBtn.className = 'metro-map-control-btn';
+      zoomOutBtn.innerHTML = '-';
+      zoomOutBtn.title = 'Zoom arrière';
+      zoomOutBtn.addEventListener('click', () => {
+        this.cy.zoom(this.cy.zoom() / 1.2);
+        this.cy.center();
+      });
+
+      // Créer le bouton de réinitialisation de la vue
+      const resetViewBtn = document.createElement('button');
+      resetViewBtn.className = 'metro-map-control-btn';
+      resetViewBtn.innerHTML = '⟲';
+      resetViewBtn.title = 'Réinitialiser la vue';
+      resetViewBtn.addEventListener('click', () => {
+        this.cy.fit();
+        this.cy.zoom(0.8);
+      });
+
+      // Créer le bouton de légende
+      const legendBtn = document.createElement('button');
+      legendBtn.className = 'metro-map-control-btn';
+      legendBtn.innerHTML = 'ℹ';
+      legendBtn.title = 'Afficher la légende';
+      legendBtn.addEventListener('click', () => {
+        this._toggleLegend();
+      });
+
+      // Ajouter les boutons au conteneur
+      controlsContainer.appendChild(zoomInBtn);
+      controlsContainer.appendChild(zoomOutBtn);
+      controlsContainer.appendChild(resetViewBtn);
+      controlsContainer.appendChild(legendBtn);
+
+      // Créer la légende (cachée par défaut)
+      const legend = document.createElement('div');
+      legend.className = 'metro-map-legend';
+      legend.style.display = 'none';
+      legend.innerHTML = this._createLegendContent();
+
+      // Ajouter les contrôles au conteneur parent
+      const container = document.getElementById(this.containerId);
+      const parent = container.parentNode;
+
+      if (parent) {
+        parent.style.position = 'relative';
+        parent.appendChild(controlsContainer);
+        parent.appendChild(legend);
+
+        // Stocker les références pour pouvoir les manipuler plus tard
+        this.controlsContainer = controlsContainer;
+        this.legend = legend;
+      }
+    } catch (error) {
+      console.error('Erreur lors de la création des contrôles:', error);
+    }
+  }
+
+  /**
+   * Crée le contenu HTML de la légende
+   * @private
+   */
+  _createLegendContent() {
+    const levelOrder = ['cosmos', 'galaxy', 'stellar_system', 'planet', 'continent', 'region', 'locality', 'district', 'building', 'foundation'];
+    const levelNames = {
+      cosmos: 'COSMOS (Méta-roadmap)',
+      galaxy: 'GALAXIES (Branches stratégiques)',
+      stellar_system: 'SYSTÈMES STELLAIRES (Main roadmaps)',
+      planet: 'PLANÈTES (Sections)',
+      continent: 'CONTINENTS (Sous-sections)',
+      region: 'RÉGIONS (Groupes de tâches)',
+      locality: 'LOCALITÉS (Tâches)',
+      district: 'QUARTIERS (Sous-tâches)',
+      building: 'BÂTIMENTS (Actions)',
+      foundation: 'FONDATIONS (Micro-actions)'
+    };
+
+    let html = '<h3>Légende</h3>';
+
+    // Niveaux hiérarchiques
+    html += '<h4>Niveaux hiérarchiques</h4>';
+    html += '<div class="legend-section">';
+    levelOrder.forEach(level => {
+      html += `
+        <div class="legend-item">
+          <div class="legend-color legend-${level.replace('_', '-')}" style="background-color: ${this.options.levelColors[level]}"></div>
+          <span>${levelNames[level]}</span>
+        </div>
+      `;
+    });
+    html += '</div>';
+
+    // Statuts
+    html += '<h4>Statuts</h4>';
+    html += '<div class="legend-section">';
+    Object.entries(this.options.statusColors).forEach(([status, color]) => {
+      const statusName = status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ');
+      html += `
+        <div class="legend-item">
+          <div class="legend-color legend-${status}" style="background-color: ${color}"></div>
+          <span>${statusName}</span>
+        </div>
+      `;
+    });
+    html += '</div>';
+
+    // Types de liens
+    html += '<h4>Types de liens</h4>';
+    html += '<div class="legend-section">';
+    html += `
+      <div class="legend-item">
+        <div class="legend-line legend-hierarchical"></div>
+        <span>Hiérarchique</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-line legend-dependency"></div>
+        <span>Dépendance</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-line legend-dimensional"></div>
+        <span>Dimensionnel</span>
+      </div>
+    `;
+    html += '</div>';
+
+    return html;
+  }
+
+  /**
+   * Affiche ou masque la légende
+   * @private
+   */
+  _toggleLegend() {
+    if (this.legend) {
+      this.legend.style.display = this.legend.style.display === 'none' ? 'block' : 'none';
+    }
   }
 
   /**
@@ -352,20 +527,20 @@ class MetroMapCognitiveVisualizer {
    */
   _buildGraphElements() {
     const elements = [];
-    
+
     // Fonction récursive pour ajouter les nœuds et les liens
     const addNodeAndEdges = (node, parent = null, depth = 0) => {
       // Appliquer le filtre si défini
       if (this.currentFilter && !this.currentFilter(node)) {
         return;
       }
-      
+
       // Déterminer si le nœud doit être affiché selon le niveau actuel
       const shouldDisplay = this._shouldDisplayNode(node, depth);
       if (!shouldDisplay) {
         return;
       }
-      
+
       // Ajouter le nœud
       elements.push({
         group: 'nodes',
@@ -382,7 +557,7 @@ class MetroMapCognitiveVisualizer {
           metadata: node.metadata || {}
         }
       });
-      
+
       // Ajouter le lien avec le parent si existant
       if (parent) {
         elements.push({
@@ -397,14 +572,14 @@ class MetroMapCognitiveVisualizer {
           }
         });
       }
-      
+
       // Ajouter les enfants si le nœud est développé ou si on est à un niveau peu profond
       if (node.children && (this.expandedNodes.has(node.id) || depth < 2)) {
         node.children.forEach(child => {
           addNodeAndEdges(child, node, depth + 1);
         });
       }
-      
+
       // Ajouter les dépendances si définies
       if (node.dependencies) {
         node.dependencies.forEach(dep => {
@@ -422,10 +597,10 @@ class MetroMapCognitiveVisualizer {
         });
       }
     };
-    
+
     // Commencer par le nœud racine
     addNodeAndEdges(this.data);
-    
+
     return elements;
   }
 
@@ -438,29 +613,29 @@ class MetroMapCognitiveVisualizer {
   _shouldDisplayNode(node, depth) {
     // Logique pour déterminer si un nœud doit être affiché
     // selon le niveau de visualisation actuel
-    
+
     // Si on est au niveau COSMOS, afficher seulement les niveaux supérieurs
     if (this.currentLevel === 'cosmos') {
       return node.type === 'cosmos' || node.type === 'galaxy' || node.type === 'stellar_system';
     }
-    
+
     // Si on est au niveau GALAXIES, afficher les galaxies et leurs enfants directs
     if (this.currentLevel === 'galaxy') {
-      return node.type === 'galaxy' || node.type === 'stellar_system' || node.type === 'planet' || 
+      return node.type === 'galaxy' || node.type === 'stellar_system' || node.type === 'planet' ||
              (node.type === 'cosmos' && depth === 0);
     }
-    
+
     // Si on est au niveau SYSTÈMES STELLAIRES
     if (this.currentLevel === 'stellar_system') {
       return node.type === 'stellar_system' || node.type === 'planet' || node.type === 'continent' ||
              (node.type === 'galaxy' && depth <= 1) || (node.type === 'cosmos' && depth === 0);
     }
-    
+
     // Pour les autres niveaux, afficher les nœuds de ce niveau et adjacents
     const levelOrder = ['cosmos', 'galaxy', 'stellar_system', 'planet', 'continent', 'region', 'locality', 'district', 'building', 'foundation'];
     const currentLevelIndex = levelOrder.indexOf(this.currentLevel);
     const nodeTypeIndex = levelOrder.indexOf(node.type);
-    
+
     // Afficher les nœuds du niveau actuel et des niveaux adjacents (±2)
     return Math.abs(nodeTypeIndex - currentLevelIndex) <= 2 || this.expandedNodes.has(node.id);
   }
@@ -482,7 +657,7 @@ class MetroMapCognitiveVisualizer {
   _showNodeDetails(nodeData) {
     // À implémenter selon les besoins de l'interface
     console.log('Détails du nœud:', nodeData);
-    
+
     // Exemple d'implémentation avec une boîte de dialogue
     if (typeof document !== 'undefined') {
       // Créer une modal pour afficher les détails
@@ -495,14 +670,14 @@ class MetroMapCognitiveVisualizer {
           <p>${nodeData.description || 'Aucune description'}</p>
           <p><strong>Type:</strong> ${nodeData.type.toUpperCase()}</p>
           <p><strong>Statut:</strong> ${nodeData.status || 'Non défini'}</p>
-          
+
           <div class="metro-map-modal-metadata">
             <h3>Métadonnées</h3>
             <div class="metro-map-modal-dimensions">
               ${this._formatMetadata(nodeData.metadata)}
             </div>
           </div>
-          
+
           <div class="metro-map-modal-actions">
             <button class="metro-map-btn metro-map-btn-edit">Modifier</button>
             <button class="metro-map-btn metro-map-btn-expand">
@@ -511,15 +686,15 @@ class MetroMapCognitiveVisualizer {
           </div>
         </div>
       `;
-      
+
       document.body.appendChild(modal);
-      
+
       // Gérer la fermeture de la modal
       const closeBtn = modal.querySelector('.metro-map-modal-close');
       closeBtn.addEventListener('click', () => {
         document.body.removeChild(modal);
       });
-      
+
       // Gérer l'expansion/réduction
       const expandBtn = modal.querySelector('.metro-map-btn-expand');
       expandBtn.addEventListener('click', () => {
@@ -541,26 +716,26 @@ class MetroMapCognitiveVisualizer {
    */
   _formatMetadata(metadata) {
     if (!metadata) return 'Aucune métadonnée';
-    
+
     let html = '';
-    
+
     // Formater chaque dimension
     for (const [dimension, data] of Object.entries(metadata)) {
       if (Object.keys(data).length === 0) continue;
-      
+
       const dimensionColor = this.options.dimensionColors[dimension] || '#999';
-      
+
       html += `<div class="dimension-section">
         <h4 style="color: ${dimensionColor}">${dimension.charAt(0).toUpperCase() + dimension.slice(1)}</h4>
         <ul>`;
-      
+
       for (const [key, value] of Object.entries(data)) {
         html += `<li><strong>${key}:</strong> ${value}</li>`;
       }
-      
+
       html += `</ul></div>`;
     }
-    
+
     return html || 'Aucune métadonnée';
   }
 }

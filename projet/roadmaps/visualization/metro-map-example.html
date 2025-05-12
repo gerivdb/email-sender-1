@@ -78,9 +78,29 @@
       visualizer.initialize();
 
       // Charger les données d'exemple
-      const response = await fetch('data/plan-dev-v12-architecture-cognitive-cosmos.json');
-      const data = await response.json();
-      visualizer.loadData(data);
+      try {
+        // Essayer d'abord de charger les données du format metro
+        let response = await fetch('data/metro/plan-dev-v12-architecture-cognitive-cosmos-metro.json');
+
+        // Si le fichier n'existe pas, essayer le format cosmos standard
+        if (!response.ok) {
+          console.warn('Fichier metro non trouvé, tentative avec le format cosmos standard...');
+          response = await fetch('data/plan-dev-v12-architecture-cognitive-cosmos.json');
+
+          // Si toujours pas trouvé, utiliser les données d'exemple
+          if (!response.ok) {
+            console.warn('Fichier cosmos standard non trouvé, utilisation des données d\'exemple...');
+            response = await fetch('data/metro/sample-cosmos-data-metro.json');
+          }
+        }
+
+        const data = await response.json();
+        visualizer.loadData(data);
+        console.log('Données chargées avec succès');
+      } catch (error) {
+        console.error('Erreur lors du chargement des données:', error);
+        alert('Erreur lors du chargement des données. Veuillez vérifier la console pour plus de détails.');
+      }
 
       // Gérer le changement de niveau
       const levelSelector = document.getElementById('level-selector');

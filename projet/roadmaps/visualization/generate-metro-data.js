@@ -103,7 +103,34 @@ function convertToMetroFormat(data) {
   };
 
   // Commencer le traitement par le nœud racine
-  processNode(metroData);
+  try {
+    // Vérifier si les données ont la structure attendue
+    if (!metroData.id || !metroData.title) {
+      console.warn('Structure de données non standard, ajout d\'attributs par défaut');
+      metroData.id = metroData.id || 'root-' + Date.now();
+      metroData.title = metroData.title || 'Roadmap';
+      metroData.type = metroData.type || 'cosmos';
+      metroData.status = metroData.status || 'planned';
+    }
+
+    processNode(metroData);
+  } catch (error) {
+    console.error('Erreur lors du traitement du nœud racine:', error);
+    // Créer un nœud racine minimal pour éviter l'échec complet
+    metroData.metroMap.stations.push({
+      id: 'error-node',
+      name: 'Erreur de traitement',
+      lineId: 'line-cosmos',
+      status: 'blocked',
+      description: 'Une erreur est survenue lors du traitement des données: ' + error.message,
+      metadata: {
+        temporal: { horizon: 'immediate' },
+        cognitive: { complexity: 'high' },
+        organizational: { responsibility: 'technical' },
+        strategic: { priority: 'high' }
+      }
+    });
+  }
 
   return metroData;
 }
