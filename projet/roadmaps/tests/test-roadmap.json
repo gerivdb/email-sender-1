@@ -1,0 +1,193 @@
+{
+  "id": "id-6ngx4che9",
+  "title": "Test Cognitive Roadmap",
+  "description": "This is a test roadmap for the cognitive architecture system.\nIt demonstrates the various levels and dimensions.",
+  "type": "cosmos",
+  "level": 1,
+  "status": "planned",
+  "children": [
+    {
+      "id": "id-q468321et",
+      "title": "Backend Integration",
+      "description": "This branch focuses on backend integration components.",
+      "type": "galaxies",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-ydhdfepp6",
+          "title": "API Development [SYSTÈMES STELLAIRES]",
+          "description": "Development of the API layer for the system.",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-nc6kwez2o",
+              "title": "Authentication Module [PLANÈTES]",
+              "description": "Authentication and authorization module.",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "id-9nncl1cit",
+                  "title": "OAuth Implementation",
+                  "description": "Implementation of OAuth authentication.",
+                  "type": "continents",
+                  "level": 5,
+                  "status": "planned",
+                  "children": [
+                    {
+                      "id": "id-8avvgjy3r",
+                      "title": "Token Management [RÉGIONS]",
+                      "description": "Management of OAuth tokens.",
+                      "type": "region",
+                      "level": 6,
+                      "status": "planned",
+                      "children": [
+                        {
+                          "id": "task-001",
+                          "title": "Implement token generation",
+                          "description": "> Generate OAuth tokens for authenticated users.\n  >\n  > **Dimension temporelle**: Horizon: Court terme, Séquence: Début\n  > **Dimension cognitive**: Complexité: Modérée, Abstraction: Fonctionnelle",
+                          "type": "locality",
+                          "level": 7,
+                          "status": "planned",
+                          "children": [
+                            {
+                              "id": "subtask-001",
+                              "title": "Define token structure",
+                              "description": "> Define the structure of the OAuth tokens.",
+                              "type": "district",
+                              "level": 8,
+                              "status": "planned",
+                              "children": [
+                                {
+                                  "id": "micro-001",
+                                  "title": "Research JWT standards",
+                                  "description": "> Research JWT standards and best practices.",
+                                  "type": "building",
+                                  "level": 9,
+                                  "status": "planned",
+                                  "children": [
+                                    {
+                                      "id": "P.1",
+                                      "title": "Follow security best practices",
+                                      "description": "> Ensure all security best practices are followed.",
+                                      "type": "foundation",
+                                      "level": 10,
+                                      "status": "planned",
+                                      "children": [],
+                                      "metadata": {
+                                        "temporal": {},
+                                        "cognitive": {},
+                                        "organizational": {},
+                                        "strategic": {}
+                                      },
+                                      "tags": [],
+                                      "created_at": "2025-05-12T20:29:48.886Z",
+                                      "updated_at": "2025-05-12T20:29:48.886Z"
+                                    }
+                                  ],
+                                  "metadata": {
+                                    "temporal": {},
+                                    "cognitive": {},
+                                    "organizational": {},
+                                    "strategic": {}
+                                  },
+                                  "tags": [],
+                                  "created_at": "2025-05-12T20:29:48.886Z",
+                                  "updated_at": "2025-05-12T20:29:48.886Z"
+                                }
+                              ],
+                              "metadata": {
+                                "temporal": {},
+                                "cognitive": {},
+                                "organizational": {},
+                                "strategic": {}
+                              },
+                              "tags": [],
+                              "created_at": "2025-05-12T20:29:48.886Z",
+                              "updated_at": "2025-05-12T20:29:48.886Z"
+                            }
+                          ],
+                          "metadata": {
+                            "temporal": {},
+                            "cognitive": {
+                              "complexity": "moderate"
+                            },
+                            "organizational": {},
+                            "strategic": {
+                              "priority": "high"
+                            }
+                          },
+                          "tags": [],
+                          "created_at": "2025-05-12T20:29:48.886Z",
+                          "updated_at": "2025-05-12T20:29:48.886Z"
+                        }
+                      ],
+                      "metadata": {
+                        "temporal": {},
+                        "cognitive": {},
+                        "organizational": {},
+                        "strategic": {}
+                      },
+                      "tags": [],
+                      "created_at": "2025-05-12T20:29:48.884Z",
+                      "updated_at": "2025-05-12T20:29:48.884Z"
+                    }
+                  ],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:29:48.884Z",
+                  "updated_at": "2025-05-12T20:29:48.884Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:29:48.884Z",
+              "updated_at": "2025-05-12T20:29:48.884Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:29:48.884Z",
+          "updated_at": "2025-05-12T20:29:48.884Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:29:48.884Z",
+      "updated_at": "2025-05-12T20:29:48.884Z"
+    }
+  ],
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "tags": [],
+  "created_at": "2025-05-12T20:29:48.879Z",
+  "updated_at": "2025-05-12T20:29:48.882Z"
+}

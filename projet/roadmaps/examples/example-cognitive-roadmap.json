@@ -1,0 +1,311 @@
+{
+  "id": "id-ld2iwo8ys",
+  "title": "Email Sender Cognitive Architecture",
+  "description": "Représentation holistique de l'écosystème complet du projet Email Sender,\nintégrant tous les domaines, temporalités et dimensions stratégiques.",
+  "type": "cosmos",
+  "level": 1,
+  "status": "planned",
+  "children": [
+    {
+      "id": "id-y944drrwo",
+      "title": "Automatisation des Processus",
+      "description": "Branche stratégique couvrant tous les aspects d'automatisation\ndes processus d'envoi d'emails et de gestion des réponses.",
+      "type": "galaxies",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-2ql841sat",
+          "title": "Backend Intelligent [SYSTÈMES STELLAIRES]",
+          "description": "Système principal pour le traitement intelligent des emails,\nincluant l'analyse, la personnalisation et l'automatisation.",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-0glsnf240",
+              "title": "Module d'Analyse Sémantique [PLANÈTES]",
+              "description": "Composant majeur pour l'analyse sémantique des emails\net l'extraction d'informations pertinentes.",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "id-r5bojo54z",
+                  "title": "Système de Classification",
+                  "description": "Fonctionnalité de classification automatique des emails\nbasée sur leur contenu et leur contexte.",
+                  "type": "continents",
+                  "level": 5,
+                  "status": "planned",
+                  "children": [
+                    {
+                      "id": "id-vudj45gq5",
+                      "title": "Algorithmes de Classification [RÉGIONS]",
+                      "description": "Ensemble des algorithmes utilisés pour la classification des emails.",
+                      "type": "region",
+                      "level": 6,
+                      "status": "planned",
+                      "children": [
+                        {
+                          "id": "task-001",
+                          "title": "Implémenter l'algorithme de classification par mots-clés",
+                          "description": "> Développer l'algorithme de base pour la classification par mots-clés.\n  > \n  > **Dimension temporelle**: Horizon: Court terme, Séquence: Début\n  > **Dimension cognitive**: Complexité: Modérée, Abstraction: Fonctionnelle",
+                          "type": "locality",
+                          "level": 7,
+                          "status": "planned",
+                          "children": [
+                            {
+                              "id": "subtask-001",
+                              "title": "Définir la structure de données pour les mots-clés",
+                              "description": "> Concevoir la structure de données optimale pour stocker et rechercher les mots-clés.\n    > \n    > **Dimension cognitive**: Complexité: Simple, Abstraction: Technique",
+                              "type": "district",
+                              "level": 8,
+                              "status": "planned",
+                              "children": [
+                                {
+                                  "id": "micro-001",
+                                  "title": "Créer la classe KeywordRepository",
+                                  "description": "> Implémenter la classe qui gère le stockage et la recherche des mots-clés.\n      > \n      > **Dimension organisationnelle**: Responsabilité: Individuelle",
+                                  "type": "building",
+                                  "level": 9,
+                                  "status": "planned",
+                                  "children": [
+                                    {
+                                      "id": "P.1",
+                                      "title": "Optimiser pour la recherche rapide",
+                                      "description": "> Utiliser des structures de données optimisées pour la recherche rapide.",
+                                      "type": "foundation",
+                                      "level": 10,
+                                      "status": "planned",
+                                      "children": [],
+                                      "metadata": {
+                                        "temporal": {},
+                                        "cognitive": {},
+                                        "organizational": {},
+                                        "strategic": {}
+                                      },
+                                      "tags": [],
+                                      "created_at": "2025-05-12T20:19:30.274Z",
+                                      "updated_at": "2025-05-12T20:19:30.274Z"
+                                    }
+                                  ],
+                                  "metadata": {
+                                    "temporal": {},
+                                    "cognitive": {},
+                                    "organizational": {},
+                                    "strategic": {}
+                                  },
+                                  "tags": [],
+                                  "created_at": "2025-05-12T20:19:30.274Z",
+                                  "updated_at": "2025-05-12T20:19:30.274Z"
+                                }
+                              ],
+                              "metadata": {
+                                "temporal": {},
+                                "cognitive": {},
+                                "organizational": {},
+                                "strategic": {}
+                              },
+                              "tags": [],
+                              "created_at": "2025-05-12T20:19:30.274Z",
+                              "updated_at": "2025-05-12T20:19:30.274Z"
+                            }
+                          ],
+                          "metadata": {
+                            "temporal": {},
+                            "cognitive": {
+                              "complexity": "moderate"
+                            },
+                            "organizational": {},
+                            "strategic": {
+                              "priority": "high"
+                            }
+                          },
+                          "tags": [],
+                          "created_at": "2025-05-12T20:19:30.274Z",
+                          "updated_at": "2025-05-12T20:19:30.274Z"
+                        }
+                      ],
+                      "metadata": {
+                        "temporal": {},
+                        "cognitive": {},
+                        "organizational": {},
+                        "strategic": {}
+                      },
+                      "tags": [],
+                      "created_at": "2025-05-12T20:19:30.273Z",
+                      "updated_at": "2025-05-12T20:19:30.273Z"
+                    },
+                    {
+                      "id": "task-002",
+                      "title": "Implémenter l'algorithme de classification par embeddings",
+                      "description": "> Développer l'algorithme avancé utilisant des embeddings vectoriels.\n  > \n  > **Dimension temporelle**: Horizon: Court terme, Séquence: Milieu\n  > **Dimension cognitive**: Complexité: Complexe, Abstraction: Fonctionnelle\n  > **Dimension stratégique**: Valeur: Élevée, Risque: Élevé",
+                      "type": "locality",
+                      "level": 7,
+                      "status": "in_progress",
+                      "children": [
+                        {
+                          "id": "subtask-002",
+                          "title": "Rechercher les modèles d'embeddings appropriés",
+                          "description": "> Évaluer différents modèles d'embeddings pour trouver le plus adapté.",
+                          "type": "district",
+                          "level": 8,
+                          "status": "completed",
+                          "children": [],
+                          "metadata": {
+                            "temporal": {},
+                            "cognitive": {},
+                            "organizational": {},
+                            "strategic": {}
+                          },
+                          "tags": [],
+                          "created_at": "2025-05-12T20:19:30.274Z",
+                          "updated_at": "2025-05-12T20:19:30.274Z"
+                        },
+                        {
+                          "id": "subtask-003",
+                          "title": "Implémenter l'intégration avec le modèle d'embeddings",
+                          "description": "> Développer le code d'intégration avec le modèle d'embeddings sélectionné.",
+                          "type": "district",
+                          "level": 8,
+                          "status": "planned",
+                          "children": [],
+                          "metadata": {
+                            "temporal": {},
+                            "cognitive": {},
+                            "organizational": {},
+                            "strategic": {}
+                          },
+                          "tags": [],
+                          "created_at": "2025-05-12T20:19:30.274Z",
+                          "updated_at": "2025-05-12T20:19:30.274Z"
+                        }
+                      ],
+                      "metadata": {
+                        "temporal": {},
+                        "cognitive": {
+                          "complexity": "complex"
+                        },
+                        "organizational": {},
+                        "strategic": {
+                          "priority": "high"
+                        }
+                      },
+                      "tags": [],
+                      "created_at": "2025-05-12T20:19:30.274Z",
+                      "updated_at": "2025-05-12T20:19:30.274Z"
+                    }
+                  ],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:30.273Z",
+                  "updated_at": "2025-05-12T20:19:30.273Z"
+                },
+                {
+                  "id": "id-2792ohc2c",
+                  "title": "Évaluation et Métriques [RÉGIONS]",
+                  "description": "Méthodes et outils pour évaluer la performance des algorithmes de classification.",
+                  "type": "region",
+                  "level": 6,
+                  "status": "planned",
+                  "children": [
+                    {
+                      "id": "task-003",
+                      "title": "Définir les métriques d'évaluation",
+                      "description": "> Identifier et définir les métriques pertinentes pour évaluer la performance.\n  > \n  > **Dimension cognitive**: Complexité: Modérée, Abstraction: Conceptuelle",
+                      "type": "locality",
+                      "level": 7,
+                      "status": "planned",
+                      "children": [],
+                      "metadata": {
+                        "temporal": {},
+                        "cognitive": {},
+                        "organizational": {},
+                        "strategic": {
+                          "priority": "medium"
+                        }
+                      },
+                      "tags": [],
+                      "created_at": "2025-05-12T20:19:30.274Z",
+                      "updated_at": "2025-05-12T20:19:30.274Z"
+                    },
+                    {
+                      "id": "task-004",
+                      "title": "Implémenter le système d'évaluation automatique",
+                      "description": "> Développer un système pour évaluer automatiquement les performances.\n  > \n  > **Dimension temporelle**: Horizon: Court terme, Séquence: Fin",
+                      "type": "locality",
+                      "level": 7,
+                      "status": "planned",
+                      "children": [],
+                      "metadata": {
+                        "temporal": {},
+                        "cognitive": {},
+                        "organizational": {},
+                        "strategic": {
+                          "priority": "medium"
+                        }
+                      },
+                      "tags": [],
+                      "created_at": "2025-05-12T20:19:30.274Z",
+                      "updated_at": "2025-05-12T20:19:30.274Z"
+                    }
+                  ],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:30.274Z",
+                  "updated_at": "2025-05-12T20:19:30.274Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:30.273Z",
+              "updated_at": "2025-05-12T20:19:30.273Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:30.273Z",
+          "updated_at": "2025-05-12T20:19:30.273Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:30.272Z",
+      "updated_at": "2025-05-12T20:19:30.273Z"
+    }
+  ],
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "tags": [],
+  "created_at": "2025-05-12T20:19:30.268Z",
+  "updated_at": "2025-05-12T20:19:30.271Z"
+}

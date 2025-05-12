@@ -1,0 +1,555 @@
+{
+  "dimensions": [
+    {
+      "name": "Dimension temporelle",
+      "key": "temporal",
+      "description": "Aspects liés au temps, à la durée et à la séquence des éléments de roadmap",
+      "aspects": [
+        {
+          "name": "Horizons",
+          "key": "horizon",
+          "description": "Perspective temporelle de l'élément de roadmap",
+          "values": [
+            {
+              "name": "Immédiat",
+              "key": "immediate",
+              "description": "Horizon de temps très court, typiquement un sprint ou moins",
+              "numeric_value": 1,
+              "icon": "bolt"
+            },
+            {
+              "name": "Court terme",
+              "key": "short_term",
+              "description": "Horizon de quelques sprints à une release",
+              "numeric_value": 2,
+              "icon": "calendar-day"
+            },
+            {
+              "name": "Moyen terme",
+              "key": "medium_term",
+              "description": "Horizon d'une version majeure ou d'un trimestre",
+              "numeric_value": 3,
+              "icon": "calendar-week"
+            },
+            {
+              "name": "Long terme",
+              "key": "long_term",
+              "description": "Horizon stratégique de plusieurs mois à années",
+              "numeric_value": 4,
+              "icon": "calendar"
+            }
+          ],
+          "visualization": {
+            "type": "gradient",
+            "color_scheme": "Bleu clair à bleu foncé",
+            "icon": "clock"
+          }
+        },
+        {
+          "name": "Rythmes",
+          "key": "rhythm",
+          "description": "Cadence et synchronisation des cycles de développement",
+          "values": [
+            {
+              "name": "Continu",
+              "key": "continuous",
+              "description": "Développement et déploiement continus",
+              "numeric_value": 1,
+              "icon": "wave-square"
+            },
+            {
+              "name": "Itératif",
+              "key": "iterative",
+              "description": "Cycles courts et répétitifs",
+              "numeric_value": 2,
+              "icon": "sync"
+            },
+            {
+              "name": "Incrémental",
+              "key": "incremental",
+              "description": "Ajouts progressifs de fonctionnalités",
+              "numeric_value": 3,
+              "icon": "layer-group"
+            },
+            {
+              "name": "Planifié",
+              "key": "planned",
+              "description": "Cycles planifiés à l'avance",
+              "numeric_value": 4,
+              "icon": "calendar-check"
+            }
+          ],
+          "visualization": {
+            "type": "pattern",
+            "color_scheme": "Nuances de bleu",
+            "icon": "sync-alt"
+          }
+        },
+        {
+          "name": "Séquences",
+          "key": "sequence",
+          "description": "Position dans la séquence d'exécution",
+          "values": [
+            {
+              "name": "Début",
+              "key": "start",
+              "description": "Au début d'une séquence",
+              "numeric_value": 1,
+              "icon": "step-forward"
+            },
+            {
+              "name": "Précoce",
+              "key": "early",
+              "description": "Tôt dans la séquence",
+              "numeric_value": 2,
+              "icon": "angle-double-right"
+            },
+            {
+              "name": "Milieu",
+              "key": "middle",
+              "description": "Au milieu d'une séquence",
+              "numeric_value": 3,
+              "icon": "grip-lines"
+            },
+            {
+              "name": "Tardif",
+              "key": "late",
+              "description": "Tard dans la séquence",
+              "numeric_value": 4,
+              "icon": "angle-double-left"
+            },
+            {
+              "name": "Fin",
+              "key": "end",
+              "description": "À la fin d'une séquence",
+              "numeric_value": 5,
+              "icon": "step-backward"
+            }
+          ],
+          "visualization": {
+            "type": "position",
+            "color_scheme": "Dégradé de gauche à droite",
+            "icon": "arrows-alt-h"
+          }
+        }
+      ],
+      "visualization": {
+        "primary_metaphor": "Horloge et calendrier",
+        "representation": "Gradients de couleur, lignes temporelles, indicateurs de phase",
+        "color_scheme": "Nuances de bleu",
+        "icon": "clock"
+      },
+      "markdown_representation": {
+        "format": "**Temporel**: Horizon: {horizon}, Rythme: {rhythm}, Séquence: {sequence}",
+        "example": "**Temporel**: Horizon: Court terme, Rythme: Itératif, Séquence: Milieu"
+      }
+    },
+    {
+      "name": "Dimension cognitive",
+      "key": "cognitive",
+      "description": "Aspects liés à la complexité mentale, l'abstraction et l'incertitude",
+      "aspects": [
+        {
+          "name": "Complexité",
+          "key": "complexity",
+          "description": "Niveau de complexité cognitive de l'élément",
+          "values": [
+            {
+              "name": "Simple",
+              "key": "simple",
+              "description": "Facilement compréhensible, peu de composants",
+              "numeric_value": 1,
+              "icon": "circle"
+            },
+            {
+              "name": "Modérée",
+              "key": "moderate",
+              "description": "Complexité moyenne, plusieurs composants",
+              "numeric_value": 2,
+              "icon": "dot-circle"
+            },
+            {
+              "name": "Complexe",
+              "key": "complex",
+              "description": "Nombreux composants avec interactions",
+              "numeric_value": 3,
+              "icon": "object-group"
+            },
+            {
+              "name": "Systémique",
+              "key": "systemic",
+              "description": "Système complexe avec émergence",
+              "numeric_value": 4,
+              "icon": "project-diagram"
+            }
+          ],
+          "visualization": {
+            "type": "density",
+            "color_scheme": "Jaune à rouge",
+            "icon": "brain"
+          }
+        },
+        {
+          "name": "Abstraction",
+          "key": "abstraction",
+          "description": "Niveau d'abstraction de l'élément",
+          "values": [
+            {
+              "name": "Conceptuelle",
+              "key": "conceptual",
+              "description": "Idées et concepts abstraits",
+              "numeric_value": 4,
+              "icon": "lightbulb"
+            },
+            {
+              "name": "Architecturale",
+              "key": "architectural",
+              "description": "Structure et organisation",
+              "numeric_value": 3,
+              "icon": "cubes"
+            },
+            {
+              "name": "Fonctionnelle",
+              "key": "functional",
+              "description": "Comportements et fonctionnalités",
+              "numeric_value": 2,
+              "icon": "cogs"
+            },
+            {
+              "name": "Technique",
+              "key": "technical",
+              "description": "Implémentation concrète",
+              "numeric_value": 1,
+              "icon": "code"
+            }
+          ],
+          "visualization": {
+            "type": "texture",
+            "color_scheme": "Violet à bleu",
+            "icon": "layer-group"
+          }
+        },
+        {
+          "name": "Incertitude",
+          "key": "uncertainty",
+          "description": "Niveau d'incertitude associé à l'élément",
+          "values": [
+            {
+              "name": "Connue",
+              "key": "known",
+              "description": "Solution bien comprise et prévisible",
+              "numeric_value": 1,
+              "icon": "check-circle"
+            },
+            {
+              "name": "Estimable",
+              "key": "estimable",
+              "description": "Solution générale connue mais détails à préciser",
+              "numeric_value": 2,
+              "icon": "question-circle"
+            },
+            {
+              "name": "Exploratoire",
+              "key": "exploratory",
+              "description": "Nécessite exploration et expérimentation",
+              "numeric_value": 3,
+              "icon": "compass"
+            },
+            {
+              "name": "Innovante",
+              "key": "innovative",
+              "description": "Solution inconnue, nécessite innovation",
+              "numeric_value": 4,
+              "icon": "flask"
+            }
+          ],
+          "visualization": {
+            "type": "transparency",
+            "color_scheme": "Blanc à gris",
+            "icon": "question"
+          }
+        }
+      ],
+      "visualization": {
+        "primary_metaphor": "Cerveau et réseau neuronal",
+        "representation": "Textures, densité visuelle, transparence",
+        "color_scheme": "Nuances de violet",
+        "icon": "brain"
+      },
+      "markdown_representation": {
+        "format": "**Cognitif**: Complexité: {complexity}, Abstraction: {abstraction}, Incertitude: {uncertainty}",
+        "example": "**Cognitif**: Complexité: Modérée, Abstraction: Fonctionnelle, Incertitude: Estimable"
+      }
+    },
+    {
+      "name": "Dimension organisationnelle",
+      "key": "organizational",
+      "description": "Aspects liés à l'organisation, aux compétences et à la collaboration",
+      "aspects": [
+        {
+          "name": "Responsabilité",
+          "key": "responsibility",
+          "description": "Niveau de responsabilité organisationnelle",
+          "values": [
+            {
+              "name": "Individuelle",
+              "key": "individual",
+              "description": "Responsabilité d'une seule personne",
+              "numeric_value": 1,
+              "icon": "user"
+            },
+            {
+              "name": "Équipe",
+              "key": "team",
+              "description": "Responsabilité d'une équipe",
+              "numeric_value": 2,
+              "icon": "users"
+            },
+            {
+              "name": "Inter-équipes",
+              "key": "inter_team",
+              "description": "Responsabilité partagée entre équipes",
+              "numeric_value": 3,
+              "icon": "user-friends"
+            },
+            {
+              "name": "Organisationnelle",
+              "key": "organizational",
+              "description": "Responsabilité de l'organisation entière",
+              "numeric_value": 4,
+              "icon": "building"
+            }
+          ],
+          "visualization": {
+            "type": "icon",
+            "color_scheme": "Vert clair à vert foncé",
+            "icon": "user-tag"
+          }
+        },
+        {
+          "name": "Compétences",
+          "key": "skills",
+          "description": "Compétences requises pour l'élément",
+          "values": [
+            {
+              "name": "Techniques",
+              "key": "technical",
+              "description": "Compétences techniques spécifiques",
+              "icon": "tools"
+            },
+            {
+              "name": "Fonctionnelles",
+              "key": "functional",
+              "description": "Compétences liées au domaine métier",
+              "icon": "briefcase"
+            },
+            {
+              "name": "Analytiques",
+              "key": "analytical",
+              "description": "Compétences d'analyse et résolution de problèmes",
+              "icon": "chart-line"
+            },
+            {
+              "name": "Créatives",
+              "key": "creative",
+              "description": "Compétences créatives et innovantes",
+              "icon": "paint-brush"
+            }
+          ],
+          "visualization": {
+            "type": "tag",
+            "color_scheme": "Multicolore par catégorie",
+            "icon": "graduation-cap"
+          }
+        },
+        {
+          "name": "Collaboration",
+          "key": "collaboration",
+          "description": "Mode de collaboration requis",
+          "values": [
+            {
+              "name": "Autonome",
+              "key": "autonomous",
+              "description": "Travail principalement individuel",
+              "numeric_value": 1,
+              "icon": "user"
+            },
+            {
+              "name": "Collaborative",
+              "key": "collaborative",
+              "description": "Collaboration ponctuelle",
+              "numeric_value": 2,
+              "icon": "user-friends"
+            },
+            {
+              "name": "Coordonnée",
+              "key": "coordinated",
+              "description": "Coordination régulière nécessaire",
+              "numeric_value": 3,
+              "icon": "users"
+            },
+            {
+              "name": "Intégrée",
+              "key": "integrated",
+              "description": "Collaboration étroite et continue",
+              "numeric_value": 4,
+              "icon": "people-arrows"
+            }
+          ],
+          "visualization": {
+            "type": "connection",
+            "color_scheme": "Jaune à orange",
+            "icon": "handshake"
+          }
+        }
+      ],
+      "visualization": {
+        "primary_metaphor": "Organigramme et réseau social",
+        "representation": "Icônes, symboles, connecteurs",
+        "color_scheme": "Nuances de vert",
+        "icon": "sitemap"
+      },
+      "markdown_representation": {
+        "format": "**Organisationnel**: Responsabilité: {responsibility}, Compétences: {skills}, Collaboration: {collaboration}",
+        "example": "**Organisationnel**: Responsabilité: Équipe, Compétences: [Techniques, Analytiques], Collaboration: Coordonnée"
+      }
+    },
+    {
+      "name": "Dimension stratégique",
+      "key": "strategic",
+      "description": "Aspects liés à la valeur, au risque et à la priorité",
+      "aspects": [
+        {
+          "name": "Valeur",
+          "key": "value",
+          "description": "Valeur apportée par l'élément",
+          "values": [
+            {
+              "name": "Faible",
+              "key": "low",
+              "description": "Valeur limitée ou indirecte",
+              "numeric_value": 1,
+              "icon": "star"
+            },
+            {
+              "name": "Moyenne",
+              "key": "medium",
+              "description": "Valeur modérée",
+              "numeric_value": 2,
+              "icon": "star-half-alt"
+            },
+            {
+              "name": "Élevée",
+              "key": "high",
+              "description": "Valeur importante",
+              "numeric_value": 3,
+              "icon": "star"
+            },
+            {
+              "name": "Critique",
+              "key": "critical",
+              "description": "Valeur essentielle ou transformative",
+              "numeric_value": 4,
+              "icon": "award"
+            }
+          ],
+          "visualization": {
+            "type": "size",
+            "color_scheme": "Jaune à or",
+            "icon": "gem"
+          }
+        },
+        {
+          "name": "Risque",
+          "key": "risk",
+          "description": "Niveau de risque associé à l'élément",
+          "values": [
+            {
+              "name": "Faible",
+              "key": "low",
+              "description": "Risque minimal",
+              "numeric_value": 1,
+              "icon": "shield-alt"
+            },
+            {
+              "name": "Moyen",
+              "key": "medium",
+              "description": "Risque modéré",
+              "numeric_value": 2,
+              "icon": "exclamation"
+            },
+            {
+              "name": "Élevé",
+              "key": "high",
+              "description": "Risque important",
+              "numeric_value": 3,
+              "icon": "exclamation-triangle"
+            },
+            {
+              "name": "Critique",
+              "key": "critical",
+              "description": "Risque majeur",
+              "numeric_value": 4,
+              "icon": "radiation"
+            }
+          ],
+          "visualization": {
+            "type": "alert",
+            "color_scheme": "Vert à rouge",
+            "icon": "exclamation-triangle"
+          }
+        },
+        {
+          "name": "Priorité",
+          "key": "priority",
+          "description": "Niveau de priorité de l'élément",
+          "values": [
+            {
+              "name": "Faible",
+              "key": "low",
+              "description": "Peut être reporté",
+              "numeric_value": 1,
+              "icon": "arrow-down"
+            },
+            {
+              "name": "Moyenne",
+              "key": "medium",
+              "description": "À faire dans les délais normaux",
+              "numeric_value": 2,
+              "icon": "minus"
+            },
+            {
+              "name": "Élevée",
+              "key": "high",
+              "description": "Prioritaire",
+              "numeric_value": 3,
+              "icon": "arrow-up"
+            },
+            {
+              "name": "Critique",
+              "key": "critical",
+              "description": "Urgent et important",
+              "numeric_value": 4,
+              "icon": "exclamation"
+            }
+          ],
+          "visualization": {
+            "type": "brightness",
+            "color_scheme": "Gris à rouge vif",
+            "icon": "sort-amount-up"
+          }
+        }
+      ],
+      "visualization": {
+        "primary_metaphor": "Tableau de bord stratégique",
+        "representation": "Taille, luminosité, saturation",
+        "color_scheme": "Nuances de rouge",
+        "icon": "chess"
+      },
+      "markdown_representation": {
+        "format": "**Stratégique**: Valeur: {value}, Risque: {risk}, Priorité: {priority}",
+        "example": "**Stratégique**: Valeur: Élevée, Risque: Moyen, Priorité: Élevée"
+      }
+    }
+  ]
+}

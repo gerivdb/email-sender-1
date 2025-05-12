@@ -1,0 +1,89 @@
+{
+  "id": "root",
+  "title": "Email Sender Cognitive Architecture",
+  "type": "cosmos",
+  "status": "in_progress",
+  "description": "Représentation holistique de l'écosystème complet du projet Email Sender",
+  "metadata": {
+    "temporal": {
+      "horizon": "long_term"
+    },
+    "cognitive": {
+      "complexity": "systemic"
+    },
+    "organizational": {
+      "responsibility": "organizational"
+    },
+    "strategic": {
+      "priority": "high"
+    }
+  },
+  "children": [
+    {
+      "id": "galaxy-1",
+      "title": "Automatisation des Processus",
+      "type": "galaxy",
+      "status": "in_progress",
+      "description": "Branche stratégique couvrant tous les aspects d'automatisation",
+      "metadata": {
+        "temporal": {
+          "horizon": "medium_term"
+        },
+        "strategic": {
+          "value": "high"
+        }
+      },
+      "children": [
+        {
+          "id": "system-1",
+          "title": "Backend Intelligent",
+          "type": "stellar_system",
+          "status": "in_progress",
+          "description": "Système principal pour le traitement intelligent des emails",
+          "metadata": {
+            "cognitive": {
+              "complexity": "complex"
+            },
+            "organizational": {
+              "responsibility": "team"
+            }
+          },
+          "children": [
+            {
+              "id": "planet-1",
+              "title": "Module d'Analyse Sémantique",
+              "type": "planet",
+              "status": "planned",
+              "description": "Composant majeur pour l'analyse sémantique des emails",
+              "metadata": {
+                "cognitive": {
+                  "complexity": "complex"
+                },
+                "strategic": {
+                  "value": "high"
+                }
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "galaxy-2",
+      "title": "Interface Utilisateur",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "Branche stratégique pour l'expérience utilisateur",
+      "metadata": {
+        "temporal": {
+          "horizon": "short_term"
+        },
+        "strategic": {
+          "priority": "medium"
+        }
+      },
+      "children": []
+    }
+  ]
+}

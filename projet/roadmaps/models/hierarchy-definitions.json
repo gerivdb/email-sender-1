@@ -1,0 +1,373 @@
+{
+  "levels": [
+    {
+      "level": 1,
+      "name": "COSMOS",
+      "type": "cosmos",
+      "description": "Représentation holistique de l'écosystème complet du projet, intégrant tous les domaines, temporalités et dimensions stratégiques",
+      "function": "Orchestration systémique, alignement stratégique, vision unifiée",
+      "characteristics": [
+        "Auto-organisante",
+        "Adaptative",
+        "Émergente",
+        "Holistique",
+        "Intégrative"
+      ],
+      "visualization": {
+        "primary_metaphor": "Constellation stellaire",
+        "representation": "Constellation interconnectée avec gravité proportionnelle à l'importance stratégique",
+        "color_scheme": "Dégradés de bleu profond à violet",
+        "icon": "universe"
+      },
+      "markdown_representation": {
+        "prefix": "# ",
+        "indentation": 0,
+        "format": "# {title} [COSMOS]\n\n{description}\n\n**Vision globale**: {vision}\n",
+        "example": "# EMAIL_SENDER_1 [COSMOS]\n\nÉcosystème complet du projet d'automatisation d'emails\n\n**Vision globale**: Système intelligent d'orchestration d'emails"
+      },
+      "typical_scope": {
+        "time_horizon": "1-5 ans",
+        "complexity": "Systémique",
+        "team_size": "Organisation entière"
+      },
+      "examples": [
+        "Méta-roadmap globale du projet EMAIL_SENDER_1",
+        "Vision stratégique complète de la plateforme",
+        "Écosystème d'automatisation intelligent"
+      ]
+    },
+    {
+      "level": 2,
+      "name": "GALAXIES",
+      "type": "galaxy",
+      "description": "Regroupements organiques de roadmaps partageant une orientation stratégique commune",
+      "function": "Segmentation cognitive des préoccupations, cohérence directionnelle",
+      "characteristics": [
+        "Émergentes selon les besoins",
+        "Frontières perméables",
+        "Évolutives",
+        "Orientées stratégiquement",
+        "Semi-autonomes"
+      ],
+      "visualization": {
+        "primary_metaphor": "Bras spiraux de galaxie",
+        "representation": "Bras spiraux rattachés au cosmos central",
+        "color_scheme": "Teintes de violet à rose",
+        "icon": "galaxy"
+      },
+      "markdown_representation": {
+        "prefix": "## ",
+        "indentation": 0,
+        "format": "## {title} [GALAXIE]\n\n{description}\n\n**Orientation stratégique**: {orientation}\n",
+        "example": "## Automatisation [GALAXIE]\n\nBranche stratégique couvrant tous les aspects d'automatisation\n\n**Orientation stratégique**: Maximiser l'efficacité opérationnelle"
+      },
+      "typical_scope": {
+        "time_horizon": "1-3 ans",
+        "complexity": "Stratégique",
+        "team_size": "Multiple équipes"
+      },
+      "examples": [
+        "Branche Automatisation",
+        "Branche Intelligence",
+        "Branche Interface",
+        "Branche Infrastructure"
+      ]
+    },
+    {
+      "level": 3,
+      "name": "SYSTÈMES STELLAIRES",
+      "type": "stellar_system",
+      "description": "Roadmaps principales par domaine fondamental (Backend, Frontend, UX/UI, IA, Sécurité, Infrastructure, Data, DevOps, QA)",
+      "function": "Gouvernance technique par domaine, cohérence architecturale",
+      "characteristics": [
+        "Autonomie relative",
+        "Interfaces standardisées",
+        "Évolution synchronisée",
+        "Cohérence interne",
+        "Spécialisation technique"
+      ],
+      "visualization": {
+        "primary_metaphor": "Système solaire",
+        "representation": "Systèmes solaires avec planètes orbitant autour d'un soleil (concept central)",
+        "color_scheme": "Teintes de rouge à orange",
+        "icon": "solar-system"
+      },
+      "markdown_representation": {
+        "prefix": "### ",
+        "indentation": 0,
+        "format": "### {title} [SYSTÈME]\n\n{description}\n\n**Domaine**: {domain}\n**Interfaces**: {interfaces}\n",
+        "example": "### Backend [SYSTÈME]\n\nRoadmap principale pour le backend du système\n\n**Domaine**: Serveur, API, Base de données\n**Interfaces**: REST API, WebSockets"
+      },
+      "typical_scope": {
+        "time_horizon": "6-18 mois",
+        "complexity": "Architecturale",
+        "team_size": "Équipe complète"
+      },
+      "examples": [
+        "Main roadmap Backend",
+        "Main roadmap Frontend",
+        "Main roadmap IA",
+        "Main roadmap Sécurité"
+      ]
+    },
+    {
+      "level": 4,
+      "name": "PLANÈTES",
+      "type": "planet",
+      "description": "Roadmaps intermédiaires pour composants majeurs ou initiatives transversales (plugins, modules, frameworks internes)",
+      "function": "Orchestration de capacités cohérentes, encapsulation fonctionnelle",
+      "characteristics": [
+        "Indépendance opérationnelle",
+        "Interfaces bien définies",
+        "Cycle de vie propre",
+        "Cohésion fonctionnelle",
+        "Réutilisabilité"
+      ],
+      "visualization": {
+        "primary_metaphor": "Planète",
+        "representation": "Planètes avec leurs propres caractéristiques et atmosphères",
+        "color_scheme": "Teintes de orange à jaune",
+        "icon": "planet"
+      },
+      "markdown_representation": {
+        "prefix": "#### ",
+        "indentation": 0,
+        "format": "#### {title} [PLANÈTE]\n\n{description}\n\n**Composant**: {component}\n**Interfaces**: {interfaces}\n",
+        "example": "#### Plugin n8n [PLANÈTE]\n\nModule d'intégration avec n8n pour l'automatisation\n\n**Composant**: Intégration\n**Interfaces**: API REST, Webhooks"
+      },
+      "typical_scope": {
+        "time_horizon": "3-12 mois",
+        "complexity": "Fonctionnelle",
+        "team_size": "Sous-équipe"
+      },
+      "examples": [
+        "Mid-roadmap Plugin n8n",
+        "Mid-roadmap Intégration Notion",
+        "Mid-roadmap Système d'authentification",
+        "Mid-roadmap Module de reporting"
+      ]
+    },
+    {
+      "level": 5,
+      "name": "CONTINENTS",
+      "type": "continent",
+      "description": "Roadmaps spécifiques pour missions ou fonctionnalités distinctes, potentiellement transversales",
+      "function": "Livraison de valeur cohérente, unité fonctionnelle complète",
+      "characteristics": [
+        "Autonomie fonctionnelle",
+        "Frontières naturelles",
+        "Écosystème interne",
+        "Valeur métier identifiable",
+        "Testabilité indépendante"
+      ],
+      "visualization": {
+        "primary_metaphor": "Continent",
+        "representation": "Continents sur une planète avec leurs propres biomes",
+        "color_scheme": "Teintes de jaune à vert",
+        "icon": "continent"
+      },
+      "markdown_representation": {
+        "prefix": "##### ",
+        "indentation": 0,
+        "format": "##### {title} [CONTINENT]\n\n{description}\n\n**Fonctionnalité**: {functionality}\n**Valeur métier**: {business_value}\n",
+        "example": "##### Système de tagging [CONTINENT]\n\nFonctionnalité de tagging multi-critères pour les emails\n\n**Fonctionnalité**: Catégorisation\n**Valeur métier**: Organisation et recherche efficace"
+      },
+      "typical_scope": {
+        "time_horizon": "1-6 mois",
+        "complexity": "Fonctionnelle",
+        "team_size": "Petite équipe"
+      },
+      "examples": [
+        "Mini-roadmap Système de tagging",
+        "Mini-roadmap Visualisation ligne de métro",
+        "Mini-roadmap Analyse de sentiment",
+        "Mini-roadmap Système de templates"
+      ]
+    },
+    {
+      "level": 6,
+      "name": "RÉGIONS",
+      "type": "region",
+      "description": "Segments logiques au sein d'une roadmap, regroupant des tâches connexes",
+      "function": "Organisation thématique, progression séquentielle, cohérence locale",
+      "characteristics": [
+        "Frontières thématiques",
+        "Progression naturelle",
+        "Interdépendances internes",
+        "Cohésion logique",
+        "Complétude relative"
+      ],
+      "visualization": {
+        "primary_metaphor": "Région géographique",
+        "representation": "Régions géographiques avec caractéristiques distinctes",
+        "color_scheme": "Teintes de vert à turquoise",
+        "icon": "region"
+      },
+      "markdown_representation": {
+        "prefix": "###### ",
+        "indentation": 0,
+        "format": "###### {title} [RÉGION]\n\n{description}\n",
+        "example": "###### Standardisation du format [RÉGION]\n\nEnsemble des tâches liées à la standardisation du format de données"
+      },
+      "typical_scope": {
+        "time_horizon": "2-8 semaines",
+        "complexity": "Thématique",
+        "team_size": "2-5 personnes"
+      },
+      "examples": [
+        "Section Standardisation du format",
+        "Section Interface utilisateur",
+        "Section Algorithmes de matching",
+        "Section Tests d'intégration"
+      ]
+    },
+    {
+      "level": 7,
+      "name": "LOCALITÉS",
+      "type": "locality",
+      "description": "Unités de travail discrètes, accomplissables, mesurables",
+      "function": "Exécution concrète, progression tangible, responsabilité claire",
+      "characteristics": [
+        "Atomicité relative",
+        "Définition précise",
+        "Critères d'achèvement",
+        "Assignabilité",
+        "Estimabilité"
+      ],
+      "visualization": {
+        "primary_metaphor": "Ville ou village",
+        "representation": "Villes et villages avec leurs infrastructures propres",
+        "color_scheme": "Teintes de turquoise à cyan",
+        "icon": "city"
+      },
+      "markdown_representation": {
+        "prefix": "- [ ] ",
+        "indentation": 2,
+        "format": "- [ ] **{id}** {title}\n  > {description}\n",
+        "example": "- [ ] **7.1.1** Définir le schéma JSON des tâches\n  > Créer un schéma JSON qui définit la structure des tâches"
+      },
+      "typical_scope": {
+        "time_horizon": "1-5 jours",
+        "complexity": "Unitaire",
+        "team_size": "1-2 personnes"
+      },
+      "examples": [
+        "Tâche Définir le schéma JSON des tâches",
+        "Tâche Créer le parser Markdown",
+        "Tâche Implémenter l'algorithme de recherche",
+        "Tâche Développer l'interface de visualisation"
+      ]
+    },
+    {
+      "level": 8,
+      "name": "QUARTIERS",
+      "type": "district",
+      "description": "Composantes d'une tâche, étapes nécessaires à son accomplissement",
+      "function": "Décomposition opérationnelle, progression incrémentale",
+      "characteristics": [
+        "Granularité fine",
+        "Séquence logique",
+        "Dépendances explicites",
+        "Complétude vérifiable",
+        "Durée limitée"
+      ],
+      "visualization": {
+        "primary_metaphor": "Quartier urbain",
+        "representation": "Quartiers d'une ville avec leurs fonctions spécifiques",
+        "color_scheme": "Teintes de cyan à bleu clair",
+        "icon": "district"
+      },
+      "markdown_representation": {
+        "prefix": "  - [ ] ",
+        "indentation": 4,
+        "format": "  - [ ] **{id}** {title}\n    > {description}\n",
+        "example": "  - [ ] **7.1.1.1** Spécifier les champs obligatoires\n    > Définir les champs qui doivent être présents dans toutes les tâches"
+      },
+      "typical_scope": {
+        "time_horizon": "2-8 heures",
+        "complexity": "Opérationnelle",
+        "team_size": "1 personne"
+      },
+      "examples": [
+        "Sous-tâche Spécifier les champs obligatoires",
+        "Sous-tâche Définir les contraintes",
+        "Sous-tâche Implémenter la validation",
+        "Sous-tâche Créer les tests unitaires"
+      ]
+    },
+    {
+      "level": 9,
+      "name": "BÂTIMENTS",
+      "type": "building",
+      "description": "Unités atomiques de travail, indivisibles et directement exécutables",
+      "function": "Implémentation concrète, action directe",
+      "characteristics": [
+        "Spécificité maximale",
+        "Durée minimale",
+        "Résultat immédiat",
+        "Indivisibilité",
+        "Vérifiabilité directe"
+      ],
+      "visualization": {
+        "primary_metaphor": "Bâtiment",
+        "representation": "Bâtiments individuels avec fonction unique",
+        "color_scheme": "Teintes de bleu clair à bleu",
+        "icon": "building"
+      },
+      "markdown_representation": {
+        "prefix": "    - [ ] ",
+        "indentation": 6,
+        "format": "    - [ ] **{id}** {title}\n      > {description}\n",
+        "example": "    - [ ] **7.1.1.1.1** Créer la classe JsonValidator\n      > Implémenter la classe qui validera le format JSON des tâches"
+      },
+      "typical_scope": {
+        "time_horizon": "30min-2 heures",
+        "complexity": "Technique",
+        "team_size": "1 personne"
+      },
+      "examples": [
+        "Micro-tâche Créer la classe JsonValidator",
+        "Micro-tâche Implémenter la méthode validateField()",
+        "Micro-tâche Écrire le test pour la validation des IDs",
+        "Micro-tâche Documenter l'API de validation"
+      ]
+    },
+    {
+      "level": 10,
+      "name": "FONDATIONS",
+      "type": "foundation",
+      "description": "Directives, patterns et standards guidant l'implémentation",
+      "function": "Cohérence technique, qualité intrinsèque, maintenabilité",
+      "characteristics": [
+        "Universalité",
+        "Invariance",
+        "Fondamentalité",
+        "Transversalité",
+        "Pérennité"
+      ],
+      "visualization": {
+        "primary_metaphor": "Fondation architecturale",
+        "representation": "Fondations invisibles mais essentielles soutenant toute la structure",
+        "color_scheme": "Gris à noir",
+        "icon": "foundation"
+      },
+      "markdown_representation": {
+        "prefix": "      - [ ] ",
+        "indentation": 8,
+        "format": "      - [ ] **{id}** {title}\n        > {description}\n",
+        "example": "      - [ ] **P.1** Validation des entrées utilisateur\n        > Toutes les entrées utilisateur doivent être validées avant traitement"
+      },
+      "typical_scope": {
+        "time_horizon": "Permanent",
+        "complexity": "Fondamentale",
+        "team_size": "Équipe architecture"
+      },
+      "examples": [
+        "Principe Validation des entrées utilisateur",
+        "Principe Gestion des erreurs",
+        "Principe Séparation des préoccupations",
+        "Principe Testabilité"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "id-faz3da3jl",
+  "title": "Plans",
+  "description": "",
+  "type": "cosmos",
+  "level": 1,
+  "status": "planned",
+  "children": [
+    {
+      "id": "id-g67wl7zrx",
+      "title": "Contenu",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-nir4tkvrl",
+          "title": "Fichiers",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:09.748Z",
+          "updated_at": "2025-05-12T20:19:09.748Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:09.748Z",
+      "updated_at": "2025-05-12T20:19:09.748Z"
+    }
+  ],
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "tags": [],
+  "created_at": "2025-05-12T20:19:09.748Z",
+  "updated_at": "2025-05-12T20:19:09.748Z"
+}

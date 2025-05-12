@@ -1,0 +1,304 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Cognitive Architecture Hierarchical Model",
+  "description": "Schema for the 10-level hierarchical model of the cognitive architecture for roadmaps",
+  "type": "object",
+  "required": ["id", "title", "type", "level", "metadata"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the roadmap element"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the roadmap element"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the roadmap element"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["cosmos", "galaxy", "stellar_system", "planet", "continent", "region", "locality", "district", "building", "foundation"],
+      "description": "Type of the roadmap element corresponding to its hierarchical level"
+    },
+    "level": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Numeric level in the hierarchy (1-10)"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "in_progress", "completed", "blocked", "cancelled"],
+      "default": "planned",
+      "description": "Current status of the roadmap element"
+    },
+    "parent": {
+      "type": ["string", "null"],
+      "description": "ID of the parent element in the hierarchy (null for top-level elements)"
+    },
+    "children": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "IDs of child elements in the hierarchy"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the dependency"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["blocks", "is_blocked_by", "relates_to", "precedes", "follows", "implements", "is_implemented_by"],
+            "description": "Type of dependency relationship"
+          },
+          "strength": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Strength of the dependency (0-1)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the dependency relationship"
+          }
+        }
+      },
+      "description": "Dependencies on other roadmap elements"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["temporal", "cognitive", "organizational", "strategic"],
+      "properties": {
+        "temporal": {
+          "type": "object",
+          "properties": {
+            "horizon": {
+              "type": "string",
+              "enum": ["immediate", "short_term", "medium_term", "long_term"],
+              "description": "Temporal horizon of the roadmap element"
+            },
+            "estimated_start": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Estimated start date/time"
+            },
+            "estimated_end": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Estimated end date/time"
+            },
+            "estimated_duration": {
+              "type": "string",
+              "description": "Estimated duration (e.g., '2d', '4h', '1w')"
+            },
+            "actual_start": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Actual start date/time"
+            },
+            "actual_end": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Actual end date/time"
+            },
+            "actual_duration": {
+              "type": "string",
+              "description": "Actual duration"
+            },
+            "sequence_position": {
+              "type": "string",
+              "enum": ["start", "early", "middle", "late", "end"],
+              "description": "Position in the sequence of related elements"
+            },
+            "is_milestone": {
+              "type": "boolean",
+              "default": false,
+              "description": "Whether this element represents a milestone"
+            }
+          }
+        },
+        "cognitive": {
+          "type": "object",
+          "properties": {
+            "complexity": {
+              "type": "string",
+              "enum": ["simple", "moderate", "complex", "systemic"],
+              "description": "Cognitive complexity of the roadmap element"
+            },
+            "abstraction": {
+              "type": "string",
+              "enum": ["conceptual", "architectural", "functional", "technical"],
+              "description": "Level of abstraction"
+            },
+            "uncertainty": {
+              "type": "string",
+              "enum": ["known", "estimable", "exploratory", "innovative"],
+              "description": "Level of uncertainty"
+            },
+            "cognitive_load": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "description": "Estimated cognitive load (1-10)"
+            },
+            "learning_curve": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "description": "Steepness of learning curve (1-10)"
+            }
+          }
+        },
+        "organizational": {
+          "type": "object",
+          "properties": {
+            "responsibility": {
+              "type": "string",
+              "enum": ["individual", "team", "inter_team", "organizational"],
+              "description": "Level of organizational responsibility"
+            },
+            "assigned_to": {
+              "type": ["string", "null"],
+              "description": "Person or team assigned to this element"
+            },
+            "skills": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Skills required for this element"
+            },
+            "collaboration": {
+              "type": "string",
+              "enum": ["autonomous", "collaborative", "coordinated", "integrated"],
+              "description": "Type of collaboration required"
+            },
+            "stakeholders": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Stakeholders involved or affected"
+            }
+          }
+        },
+        "strategic": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "object",
+              "properties": {
+                "business": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high", "critical"],
+                  "description": "Business value"
+                },
+                "technical": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high", "critical"],
+                  "description": "Technical value"
+                },
+                "user": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high", "critical"],
+                  "description": "User value"
+                },
+                "organizational": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high", "critical"],
+                  "description": "Organizational value"
+                }
+              }
+            },
+            "risk": {
+              "type": "object",
+              "properties": {
+                "probability": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high", "critical"],
+                  "description": "Risk probability"
+                },
+                "impact": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high", "critical"],
+                  "description": "Risk impact"
+                },
+                "category": {
+                  "type": "string",
+                  "enum": ["technical", "business", "schedule", "resource", "scope"],
+                  "description": "Risk category"
+                },
+                "mitigation": {
+                  "type": "string",
+                  "description": "Risk mitigation strategy"
+                }
+              }
+            },
+            "priority": {
+              "type": "string",
+              "enum": ["low", "medium", "high", "critical"],
+              "description": "Priority level"
+            },
+            "alignment": {
+              "type": "object",
+              "properties": {
+                "strategic_goals": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Strategic goals this element aligns with"
+                },
+                "kpis": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "KPIs this element impacts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorization and filtering"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Creator of the roadmap element"
+    },
+    "updated_by": {
+      "type": "string",
+      "description": "Last updater of the roadmap element"
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the roadmap element"
+    }
+  }
+}

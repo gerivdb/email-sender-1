@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Cognitive Architecture Hierarchy Levels",
+  "description": "Definition of the 10 levels in the cognitive architecture hierarchy",
+  "type": "object",
+  "properties": {
+    "levels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["level", "name", "type", "description", "characteristics", "visualization", "markdown_representation"],
+        "properties": {
+          "level": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "Numeric level in the hierarchy (1-10)"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the hierarchical level"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type identifier for the level"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the level"
+          },
+          "function": {
+            "type": "string",
+            "description": "Primary function of this level in the hierarchy"
+          },
+          "characteristics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Key characteristics of this level"
+          },
+          "visualization": {
+            "type": "object",
+            "properties": {
+              "primary_metaphor": {
+                "type": "string",
+                "description": "Primary visual metaphor for this level"
+              },
+              "representation": {
+                "type": "string",
+                "description": "How this level is represented visually"
+              },
+              "color_scheme": {
+                "type": "string",
+                "description": "Color scheme used for this level"
+              },
+              "icon": {
+                "type": "string",
+                "description": "Icon or symbol representing this level"
+              }
+            }
+          },
+          "markdown_representation": {
+            "type": "object",
+            "properties": {
+              "prefix": {
+                "type": "string",
+                "description": "Prefix used in Markdown representation"
+              },
+              "indentation": {
+                "type": "integer",
+                "description": "Indentation level in Markdown"
+              },
+              "format": {
+                "type": "string",
+                "description": "Format string for Markdown representation"
+              },
+              "example": {
+                "type": "string",
+                "description": "Example of Markdown representation"
+              }
+            }
+          },
+          "typical_scope": {
+            "type": "object",
+            "properties": {
+              "time_horizon": {
+                "type": "string",
+                "description": "Typical time horizon for elements at this level"
+              },
+              "complexity": {
+                "type": "string",
+                "description": "Typical complexity for elements at this level"
+              },
+              "team_size": {
+                "type": "string",
+                "description": "Typical team size for elements at this level"
+              }
+            }
+          },
+          "examples": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Examples of elements at this level"
+          }
+        }
+      }
+    }
+  }
+}

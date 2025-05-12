@@ -1,0 +1,74 @@
+{
+  "id": "id-h0a8j0qt2",
+  "title": "Plans",
+  "description": "",
+  "type": "cosmos",
+  "level": 1,
+  "status": "planned",
+  "children": [
+    {
+      "id": "id-zre5edh56",
+      "title": "Contenu",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-9bipg0cca",
+          "title": "Fichiers",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:09.753Z",
+          "updated_at": "2025-05-12T20:19:09.753Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:09.753Z",
+      "updated_at": "2025-05-12T20:19:09.753Z"
+    },
+    {
+      "id": "id-o90gx5era",
+      "title": "Sous-sections",
+      "description": "",
+      "type": "stellar_system",
+      "level": 3,
+      "status": "planned",
+      "children": [],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:09.753Z",
+      "updated_at": "2025-05-12T20:19:09.753Z"
+    }
+  ],
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "tags": [],
+  "created_at": "2025-05-12T20:19:09.752Z",
+  "updated_at": "2025-05-12T20:19:09.752Z"
+}

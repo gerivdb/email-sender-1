@@ -1,0 +1,2032 @@
+{
+  "id": "id-yk6xa5x70",
+  "title": "Plan de Développement Magistral : Normalisation Intégrale du Dépôt avec Hygen",
+  "description": "",
+  "type": "cosmos",
+  "level": 1,
+  "status": "planned",
+  "children": [
+    {
+      "id": "id-r9c5ljk7y",
+      "title": "1. Analyse de l'état actuel",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-qyrwln0l7",
+          "title": "1.1 Diagnostic des problèmes actuels",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.646Z",
+      "updated_at": "2025-05-12T20:20:46.646Z"
+    },
+    {
+      "id": "id-fuyz0lqz3",
+      "title": "1.2 Inventaire des ressources existantes",
+      "description": "",
+      "type": "stellar_system",
+      "level": 3,
+      "status": "planned",
+      "children": [],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.646Z",
+      "updated_at": "2025-05-12T20:20:46.646Z"
+    },
+    {
+      "id": "id-kflqq5zof",
+      "title": "2. Architecture de la Solution Unifiée",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-ontjtbna8",
+          "title": "2.1 Principes directeurs",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        },
+        {
+          "id": "id-0dceycddg",
+          "title": "2.2 Architecture globale",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.646Z",
+      "updated_at": "2025-05-12T20:20:46.646Z"
+    },
+    {
+      "id": "id-0hjuzpugd",
+      "title": "3. Plan d'Implémentation",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-xdrhu4y80",
+          "title": "3.1 Phase 1 : Mise en place de l'infrastructure Hygen (1 semaine)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-kapvesigb",
+              "title": "3.1.1 Configuration de l'environnement Hygen global",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        },
+        {
+          "id": "id-wo4xwrbox",
+          "title": "3.1.2 Intégration de Hygen dans le workflow de développement",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        },
+        {
+          "id": "id-1n1x0d77v",
+          "title": "3.1.3 Documentation et formation Hygen",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        },
+        {
+          "id": "id-fqi9sfdui",
+          "title": "3.2 Phase 2 : Standardisation de la Roadmap avec Hygen (2 semaines)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-9zm4opuq7",
+              "title": "3.2.1 Création des templates Hygen pour la roadmap",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            },
+            {
+              "id": "id-l5ff5esj5",
+              "title": "3.2.2 Développement des outils de gestion de la roadmap",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            },
+            {
+              "id": "id-iuwfu57pz",
+              "title": "3.2.3 Migration de la roadmap existante",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        },
+        {
+          "id": "id-ednnyt29h",
+          "title": "3.3 Phase 3 : Unification du Système de Journalisation avec Hygen (2 semaines)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-ir1pexori",
+              "title": "3.3.1 Création des templates Hygen pour la journalisation",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            },
+            {
+              "id": "id-ta6kyvsra",
+              "title": "3.3.2 Développement des outils de journalisation",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            },
+            {
+              "id": "id-4vzb4o0w8",
+              "title": "3.3.3 Intégration avec le système de gestion des erreurs",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        },
+        {
+          "id": "id-kxn93sney",
+          "title": "3.4 Phase 4 : Intégration de la Gestion des Erreurs avec Hygen (1 semaine)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-fbeudwfh6",
+              "title": "3.4.1 Création des templates Hygen pour la gestion des erreurs",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            },
+            {
+              "id": "id-ph46fnkn7",
+              "title": "3.4.2 Intégration avec la roadmap",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            },
+            {
+              "id": "id-suc76ooi9",
+              "title": "3.4.3 Développement d'outils d'analyse prédictive",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        },
+        {
+          "id": "id-zf030d5m0",
+          "title": "3.5 Phase 5 : Mise en place du système RAG avec Hygen (1 semaine)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-6eb5vepyo",
+              "title": "3.5.1 Création des templates Hygen pour le système d'indexation",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            },
+            {
+              "id": "id-y5jgvsmzt",
+              "title": "3.5.2 Implémentation du système de récupération avec Hygen",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            },
+            {
+              "id": "id-kdeehrznu",
+              "title": "3.5.3 Création du système de génération avec Hygen",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        },
+        {
+          "id": "id-d1chpg1bc",
+          "title": "3.6 Phase 6 : Standardisation des Tests avec Hygen (1 semaine)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-jurxnqkqq",
+              "title": "3.6.1 Création des templates Hygen pour les tests",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.646Z",
+              "updated_at": "2025-05-12T20:20:46.646Z"
+            },
+            {
+              "id": "id-fyzt7lque",
+              "title": "3.6.2 Intégration des tests avec les composants",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-c44amd1so",
+              "title": "3.6.3 Migration des tests existants",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.646Z",
+          "updated_at": "2025-05-12T20:20:46.646Z"
+        },
+        {
+          "id": "id-7rpy37c5w",
+          "title": "3.7 Phase 7 : Standardisation des Configurations avec Hygen (1 semaine)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-hid4xd5kr",
+              "title": "3.7.1 Création des templates Hygen pour les configurations",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-lmzaoiufl",
+              "title": "3.7.2 Intégration des configurations avec les composants",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-7abf057dc",
+              "title": "3.7.3 Migration des configurations existantes",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-82060tx7j",
+          "title": "3.8 Phase 8 : Standardisation de n8n avec Hygen (1 semaine)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-t9pk0b2jk",
+              "title": "3.8.1 Création des templates Hygen pour n8n",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-2ectmfvbi",
+              "title": "3.8.2 Intégration de n8n avec les autres composants",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-2crtofktl",
+              "title": "3.8.3 Migration des workflows n8n existants",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-fj0gm1jgf",
+          "title": "3.9 Phase 9 : Développement de l'Interface Web avec Hygen (2 semaines)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-j66u29adl",
+              "title": "3.9.1 Création des templates Hygen pour l'interface utilisateur",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-id43g3v7t",
+              "title": "3.9.2 Implémentation du backend avec Hygen",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-8gjp0adlx",
+              "title": "3.9.3 Développement du frontend avec Hygen",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.646Z",
+      "updated_at": "2025-05-12T20:20:46.646Z"
+    },
+    {
+      "id": "id-a2ra1q3j2",
+      "title": "4. Standardisation et Documentation",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-8yjzxwmws",
+          "title": "4.1 Définition des standards",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-ailb1dhju",
+              "title": "4.1.1 Standards de format",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-7dug1nc1r",
+          "title": "4.1.2 Standards de nommage",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-k7t0n5xqq",
+          "title": "4.1.3 Standards de documentation",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-5p2497gwl",
+          "title": "4.2 Création de la documentation",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-ahobg0hdw",
+              "title": "4.2.1 Documentation technique",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-c1mlw1bio",
+              "title": "4.2.2 Documentation utilisateur",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-xry76babg",
+              "title": "4.2.3 Documentation de maintenance",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.647Z",
+      "updated_at": "2025-05-12T20:20:46.647Z"
+    },
+    {
+      "id": "id-hwekikaur",
+      "title": "5. Plan de Déploiement et Formation",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-t9dzn4sm2",
+          "title": "5.1 Stratégie de déploiement",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-8tjevbnpw",
+              "title": "5.1.1 Déploiement progressif",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-mvpkwf6k9",
+          "title": "5.1.2 Tests et validation",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-13kskn80v",
+          "title": "5.1.3 Migration des données",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-fcekf756k",
+          "title": "5.2 Formation et adoption",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-r9s00xxp9",
+              "title": "5.2.1 Matériel de formation",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-3qp71c4po",
+              "title": "5.2.2 Sessions de formation",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-nt6x9ry2z",
+              "title": "5.2.3 Support et assistance",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.647Z",
+      "updated_at": "2025-05-12T20:20:46.647Z"
+    },
+    {
+      "id": "id-p9ulcqbox",
+      "title": "6. Métriques et Évaluation",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-sm7n1y987",
+          "title": "6.1 Métriques de succès",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-df7qykrpv",
+              "title": "6.1.1 Métriques d'utilisation",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-vm0lyny06",
+          "title": "6.1.2 Métriques de performance",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-3tgp2a2ja",
+          "title": "6.1.3 Métriques d'impact",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-9w9eazdql",
+          "title": "6.2 Processus d'amélioration continue",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-k7awomnj3",
+              "title": "6.2.1 Collecte de feedback",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-srgx6hm0b",
+              "title": "6.2.2 Analyse et planification",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-nrrpaa1us",
+              "title": "6.2.3 Implémentation et validation",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.647Z",
+      "updated_at": "2025-05-12T20:20:46.647Z"
+    },
+    {
+      "id": "id-sc3nughk1",
+      "title": "7. Calendrier et Ressources",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-u5m5f19zh",
+          "title": "7.1 Calendrier global",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-l8wz083ow",
+          "title": "7.2 Ressources nécessaires",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-6vzu6vba6",
+              "title": "7.2.1 Ressources humaines",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-jkamiua9h",
+          "title": "7.2.2 Ressources techniques",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-n1h7hnnpa",
+          "title": "7.2.3 Budget et coûts",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.647Z",
+      "updated_at": "2025-05-12T20:20:46.647Z"
+    },
+    {
+      "id": "id-lbe79s9cm",
+      "title": "8. Gestion des Risques",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-cdfeklz0m",
+          "title": "8.1 Identification des risques",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-ucxpe737r",
+              "title": "8.1.1 Risques techniques",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-bna1fprca",
+          "title": "8.1.2 Risques organisationnels",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-eovv2kylo",
+          "title": "8.1.3 Risques de calendrier",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-r3af7c0s9",
+          "title": "8.2 Stratégies d'atténuation",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-vbmdywdmf",
+              "title": "8.2.1 Atténuation des risques techniques",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-xx0xzu92x",
+              "title": "8.2.2 Atténuation des risques organisationnels",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-9247dqkux",
+              "title": "8.2.3 Atténuation des risques de calendrier",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.647Z",
+      "updated_at": "2025-05-12T20:20:46.647Z"
+    },
+    {
+      "id": "id-q3wnp20b0",
+      "title": "9. Gouvernance et Maintenance",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-5o3y474p7",
+          "title": "9.1 Structure de gouvernance",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-ycr4odt7p",
+              "title": "9.1.1 Comité de pilotage",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-k9ri6cjyy",
+          "title": "9.1.2 Équipe de projet",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-07y6as0qb",
+          "title": "9.1.3 Groupe d'utilisateurs",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-tgt2gnhle",
+          "title": "9.2 Processus de maintenance",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-1dzafeb49",
+              "title": "9.2.1 Maintenance corrective",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-iy7n2zgzl",
+              "title": "9.2.2 Maintenance évolutive",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-gtsqwnro4",
+              "title": "9.2.3 Maintenance préventive",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.647Z",
+      "updated_at": "2025-05-12T20:20:46.647Z"
+    },
+    {
+      "id": "id-o1c5rdcq5",
+      "title": "10. Premiers Pas et Implémentation Immédiate",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "id-ucxbyw09j",
+          "title": "10.1 Actions immédiates (Semaine 1)",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-y0xp32q1y",
+              "title": "10.1.1 Configuration de l'environnement Hygen pour la base de connaissances",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-qdxrt9cvy",
+          "title": "10.1.2 Standardisation de la roadmap avec Hygen",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-r8nkk60n8",
+          "title": "10.1.3 Mise en place du système de journalisation unifié avec Hygen",
+          "description": "",
+          "type": "planet",
+          "level": 4,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-s14qmh1el",
+          "title": "10.2 Livrables de la première semaine",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-um6uodwpw",
+              "title": "10.2.1 Templates Hygen",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-6bwye2qhx",
+              "title": "10.2.2 Documentation",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-o6drc4m1z",
+              "title": "10.2.3 Code et scripts",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-pm62sqs87",
+              "title": "10.2.4 Environnement de développement",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        },
+        {
+          "id": "id-7x25pjlsd",
+          "title": "10.3 Plan pour la deuxième semaine",
+          "description": "",
+          "type": "stellar_system",
+          "level": 3,
+          "status": "planned",
+          "children": [
+            {
+              "id": "id-10iqhncnh",
+              "title": "10.3.1 Extension des templates Hygen",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-vhr2euvlh",
+              "title": "10.3.2 Roadmap avec Hygen",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-vxrnhu4yk",
+              "title": "10.3.3 Journalisation avec Hygen",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            },
+            {
+              "id": "id-raojta0zm",
+              "title": "10.3.4 Gestion des erreurs avec Hygen",
+              "description": "",
+              "type": "planet",
+              "level": 4,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.647Z",
+              "updated_at": "2025-05-12T20:20:46.647Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.647Z",
+          "updated_at": "2025-05-12T20:20:46.647Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.647Z",
+      "updated_at": "2025-05-12T20:20:46.647Z"
+    },
+    {
+      "id": "id-2zkfh3yky",
+      "title": "Conclusion",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.647Z",
+      "updated_at": "2025-05-12T20:20:46.647Z"
+    }
+  ],
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "tags": [],
+  "created_at": "2025-05-12T20:20:46.646Z",
+  "updated_at": "2025-05-12T20:20:46.646Z"
+}

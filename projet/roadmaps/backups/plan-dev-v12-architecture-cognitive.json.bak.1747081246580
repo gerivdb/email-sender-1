@@ -1,0 +1,3299 @@
+{
+  "id": "id-a8kwt3qir",
+  "title": "Plan de développement v12 : Architecture cognitive des roadmaps",
+  "description": "",
+  "type": "cosmos",
+  "level": 1,
+  "status": "planned",
+  "children": [
+    {
+      "id": "id-9qmwr5xoh",
+      "title": "1. Fondations de l'architecture cognitive",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "1.1",
+          "title": "Définir le modèle hiérarchique complet",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "1.1.1",
+              "title": "Concevoir la structure à 10 niveaux",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "1.1.1.1",
+                  "title": "Définir le niveau COSMOS (Méta-roadmap)",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [
+                    {
+                      "id": "1.1.1.1.1",
+                      "title": "Spécifier les attributs et métadonnées",
+                      "description": "",
+                      "type": "foundation",
+                      "level": 10,
+                      "status": "planned",
+                      "children": [],
+                      "metadata": {
+                        "temporal": {},
+                        "cognitive": {},
+                        "organizational": {},
+                        "strategic": {}
+                      },
+                      "tags": [],
+                      "created_at": "2025-05-12T20:19:55.913Z",
+                      "updated_at": "2025-05-12T20:19:55.913Z"
+                    }
+                  ],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.1.1.2",
+                  "title": "Définir les relations avec les niveaux inférieurs",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.1.1.3",
+                  "title": "Créer les mécanismes d'orchestration globale",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.1.2",
+              "title": "Définir le niveau GALAXIES (Branches stratégiques)",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "1.1.1.2.1",
+                  "title": "Spécifier les attributs et métadonnées",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.1.2.2",
+                  "title": "Définir les relations avec les autres niveaux",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.1.2.3",
+                  "title": "Créer les mécanismes de segmentation cognitive",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.1.3",
+              "title": "Définir le niveau SYSTÈMES STELLAIRES (Main roadmaps)",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "1.1.1.3.1",
+                  "title": "Spécifier les attributs et métadonnées",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.1.3.2",
+                  "title": "Définir les relations avec les autres niveaux",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.1.3.3",
+                  "title": "Créer les mécanismes de gouvernance technique",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.1.4",
+              "title": "Définir les niveaux inférieurs (PLANÈTES à FONDATIONS)",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "1.1.1.4.1",
+                  "title": "Spécifier les attributs et métadonnées pour chaque niveau",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.1.4.2",
+                  "title": "Définir les relations inter-niveaux",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.1.4.3",
+                  "title": "Créer les mécanismes de navigation entre niveaux",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.913Z",
+          "updated_at": "2025-05-12T20:19:55.913Z"
+        },
+        {
+          "id": "1.1.2",
+          "title": "Implémenter les dimensions transversales",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "1.1.2.1",
+              "title": "Développer la dimension temporelle",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "1.1.2.1.1",
+                  "title": "Créer le système d'horizons temporels",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.2.1.2",
+              "title": "Implémenter les mécanismes de synchronisation des cycles",
+              "description": "",
+              "type": "foundation",
+              "level": 10,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.2.1.3",
+              "title": "Développer l'analyse des séquences et chemins critiques",
+              "description": "",
+              "type": "foundation",
+              "level": 10,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.2.2",
+              "title": "Développer la dimension cognitive",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "1.1.2.2.1",
+                  "title": "Créer le système d'évaluation de complexité",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.2.2.2",
+                  "title": "Implémenter les niveaux d'abstraction",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.2.2.3",
+                  "title": "Développer la gestion de l'incertitude",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.2.3",
+              "title": "Développer la dimension organisationnelle",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "1.1.2.3.1",
+                  "title": "Créer le système d'attribution des responsabilités",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.2.3.2",
+                  "title": "Implémenter la gestion des compétences requises",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.2.3.3",
+                  "title": "Développer les modes de collaboration",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.2.4",
+              "title": "Développer la dimension stratégique",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "1.1.2.4.1",
+                  "title": "Créer le système d'évaluation de valeur",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.2.4.2",
+                  "title": "Implémenter l'analyse de risque multi-factorielle",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                },
+                {
+                  "id": "1.1.2.4.3",
+                  "title": "Développer le mécanisme de priorisation dynamique",
+                  "description": "",
+                  "type": "foundation",
+                  "level": 10,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.913Z",
+          "updated_at": "2025-05-12T20:19:55.913Z"
+        },
+        {
+          "id": "1.1.3",
+          "title": "Créer le système d'émergence et d'auto-organisation",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "1.1.3.1",
+              "title": "Développer les algorithmes d'auto-organisation",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.3.2",
+              "title": "Implémenter les mécanismes d'adaptation dynamique",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "1.1.3.3",
+              "title": "Créer le système de détection des patterns émergents",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.913Z",
+          "updated_at": "2025-05-12T20:19:55.913Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:55.912Z",
+      "updated_at": "2025-05-12T20:19:55.912Z"
+    },
+    {
+      "id": "id-jvmx1eu65",
+      "title": "2. Modèle de données cognitif",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "2.1",
+          "title": "Concevoir le schéma de données hiérarchique",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "2.1.1",
+              "title": "Développer le modèle de données pour chaque niveau",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "2.1.1.1",
+                  "title": "Créer le schéma pour le niveau COSMOS",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.1.1.2",
+              "title": "Développer le schéma pour le niveau GALAXIES",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.1.1.3",
+              "title": "Implémenter le schéma pour le niveau SYSTÈMES STELLAIRES",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.1.1.4",
+              "title": "Créer les schémas pour les niveaux inférieurs",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.913Z",
+          "updated_at": "2025-05-12T20:19:55.913Z"
+        },
+        {
+          "id": "2.1.2",
+          "title": "Implémenter les relations inter-niveaux",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "2.1.2.1",
+              "title": "Développer le système de références hiérarchiques",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.1.2.2",
+              "title": "Créer le mécanisme de propagation des changements",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.1.2.3",
+              "title": "Implémenter la résolution des conflits inter-niveaux",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.913Z",
+          "updated_at": "2025-05-12T20:19:55.913Z"
+        },
+        {
+          "id": "2.1.3",
+          "title": "Créer le système de métadonnées dimensionnelles",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "2.1.3.1",
+              "title": "Développer le schéma de métadonnées temporelles",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.1.3.2",
+              "title": "Implémenter le schéma de métadonnées cognitives",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.1.3.3",
+              "title": "Créer le schéma de métadonnées organisationnelles",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.1.3.4",
+              "title": "Développer le schéma de métadonnées stratégiques",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.913Z",
+          "updated_at": "2025-05-12T20:19:55.913Z"
+        },
+        {
+          "id": "2.2",
+          "title": "Implémenter le format de sérialisation",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "2.2.1",
+              "title": "Développer le format JSON étendu",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "2.2.1.1",
+                  "title": "Créer le schéma JSON pour la hiérarchie complète",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.913Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.2.1.2",
+              "title": "Implémenter la validation du schéma",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.2.1.3",
+              "title": "Développer les mécanismes de compression intelligente",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.2.2",
+              "title": "Créer le format Markdown hiérarchique",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "2.2.2.1",
+                  "title": "Développer la syntaxe pour représenter les 10 niveaux",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.913Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "2.2.2.2",
+                  "title": "Implémenter le système de références croisées",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "2.2.2.3",
+                  "title": "Créer le mécanisme de segmentation (500 lignes max)",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.913Z",
+              "updated_at": "2025-05-12T20:19:55.913Z"
+            },
+            {
+              "id": "2.2.3",
+              "title": "Implémenter les convertisseurs bidirectionnels",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "2.2.3.1",
+                  "title": "Développer le convertisseur JSON → Markdown",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "2.2.3.2",
+                  "title": "Créer le convertisseur Markdown → JSON",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "2.2.3.3",
+                  "title": "Implémenter la préservation des métadonnées dimensionnelles",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.913Z",
+          "updated_at": "2025-05-12T20:19:55.913Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:55.913Z",
+      "updated_at": "2025-05-12T20:19:55.913Z"
+    },
+    {
+      "id": "id-nmbc0lpqi",
+      "title": "3. Visualisation cognitive",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "3.1",
+          "title": "Développer la visualisation \"cosmos\"",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "3.1.1",
+              "title": "Créer le système de représentation cosmique",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "3.1.1.1",
+                  "title": "Développer le rendu du niveau COSMOS",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.1.1.2",
+              "title": "Implémenter la visualisation des GALAXIES",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.1.1.3",
+              "title": "Créer la représentation des SYSTÈMES STELLAIRES",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        },
+        {
+          "id": "3.1.2",
+          "title": "Implémenter la navigation multi-échelle",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "3.1.2.1",
+              "title": "Développer le zoom sémantique entre niveaux",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.1.2.2",
+              "title": "Créer le système de focus contextuel",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.1.2.3",
+              "title": "Implémenter les transitions fluides entre niveaux",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        },
+        {
+          "id": "3.1.3",
+          "title": "Ajouter les visualisations dimensionnelles",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "3.1.3.1",
+              "title": "Développer les indicateurs temporels",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.1.3.2",
+              "title": "Créer les représentations de complexité cognitive",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.1.3.3",
+              "title": "Implémenter les visualisations organisationnelles",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.1.3.4",
+              "title": "Développer les indicateurs stratégiques",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        },
+        {
+          "id": "3.2",
+          "title": "Améliorer la visualisation \"ligne de métro\"",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "3.2.1",
+              "title": "Adapter pour la hiérarchie à 10 niveaux",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "3.2.1.1",
+                  "title": "Développer la représentation des méta-lignes (COSMOS)",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.2.1.2",
+              "title": "Créer le système de lignes principales (GALAXIES)",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.2.1.3",
+              "title": "Implémenter les lignes secondaires (SYSTÈMES STELLAIRES)",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.2.1.4",
+              "title": "Développer la représentation des niveaux inférieurs",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.2.2",
+              "title": "Implémenter les correspondances multi-niveaux",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "3.2.2.1",
+                  "title": "Créer le système de correspondances verticales (hiérarchiques)",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "3.2.2.2",
+                  "title": "Développer les correspondances horizontales (dépendances)",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "3.2.2.3",
+                  "title": "Implémenter les correspondances dimensionnelles",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "3.2.3",
+              "title": "Ajouter les filtres cognitifs",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "3.2.3.1",
+                  "title": "Développer le filtrage par niveau hiérarchique",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "3.2.3.2",
+                  "title": "Créer le filtrage par dimension",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "3.2.3.3",
+                  "title": "Implémenter les filtres combinés multi-critères",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:55.914Z",
+      "updated_at": "2025-05-12T20:19:55.914Z"
+    },
+    {
+      "id": "id-tgmfc77z4",
+      "title": "4. Système d'orchestration cognitive",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "4.1",
+          "title": "Développer le moteur d'orchestration",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "4.1.1",
+              "title": "Créer le système d'analyse des dépendances multi-niveaux",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "4.1.1.1",
+                  "title": "Développer la détection des dépendances hiérarchiques",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.1.1.2",
+              "title": "Implémenter l'analyse des dépendances transversales",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.1.1.3",
+              "title": "Créer le système de résolution des conflits de dépendances",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        },
+        {
+          "id": "4.1.2",
+          "title": "Implémenter l'optimisation des chemins critiques",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "4.1.2.1",
+              "title": "Développer l'algorithme d'identification des chemins critiques",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.1.2.2",
+              "title": "Créer le système de suggestion d'optimisation",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.1.2.3",
+              "title": "Implémenter la simulation d'impact des modifications",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        },
+        {
+          "id": "4.1.3",
+          "title": "Créer le système d'équilibrage des ressources",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "4.1.3.1",
+              "title": "Développer l'analyse de charge cognitive",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.1.3.2",
+              "title": "Implémenter l'allocation optimale des ressources",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.1.3.3",
+              "title": "Créer le système de détection des surcharges",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        },
+        {
+          "id": "4.2",
+          "title": "Implémenter l'intelligence collective",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "4.2.1",
+              "title": "Développer le système de collaboration multi-agents",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "4.2.1.1",
+                  "title": "Créer l'architecture des agents spécialisés",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.2.1.2",
+              "title": "Implémenter les protocoles de communication inter-agents",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.2.1.3",
+              "title": "Développer les mécanismes de consensus et décision",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.2.2",
+              "title": "Créer le système d'apprentissage organisationnel",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "4.2.2.1",
+                  "title": "Développer la capture des patterns de succès",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "4.2.2.2",
+                  "title": "Implémenter l'analyse des échecs et blocages",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "4.2.2.3",
+                  "title": "Créer le mécanisme d'amélioration continue",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "4.2.3",
+              "title": "Implémenter l'adaptation contextuelle",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "4.2.3.1",
+                  "title": "Développer la détection des changements de contexte",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "4.2.3.2",
+                  "title": "Créer le système de réponse adaptative",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                },
+                {
+                  "id": "4.2.3.3",
+                  "title": "Implémenter l'anticipation des besoins émergents",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:55.914Z",
+      "updated_at": "2025-05-12T20:19:55.914Z"
+    },
+    {
+      "id": "id-g7im5b8tw",
+      "title": "5. Intégration avec l'écosystème existant",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "5.1",
+          "title": "Adapter le serveur MCP pour l'architecture cognitive",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "5.1.1",
+              "title": "Étendre le protocole MCP pour les 10 niveaux",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "5.1.1.1",
+                  "title": "Développer les endpoints pour chaque niveau",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.914Z",
+                  "updated_at": "2025-05-12T20:19:55.914Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "5.1.1.2",
+              "title": "Implémenter les opérations inter-niveaux",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "5.1.1.3",
+              "title": "Créer les mécanismes de navigation cognitive",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        },
+        {
+          "id": "5.1.2",
+          "title": "Implémenter l'intégration avec Qdrant",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "5.1.2.1",
+              "title": "Développer le schéma vectoriel hiérarchique",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "5.1.2.2",
+              "title": "Créer les embeddings multi-niveaux",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "5.1.2.3",
+              "title": "Implémenter la recherche cognitive contextuelle",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        },
+        {
+          "id": "5.1.3",
+          "title": "Créer l'API cognitive pour les modèles d'IA",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "5.1.3.1",
+              "title": "Développer l'interface pour les LWM",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "5.1.3.2",
+              "title": "Implémenter l'intégration avec les LCM",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            },
+            {
+              "id": "5.1.3.3",
+              "title": "Créer les mécanismes d'orchestration IA-assistée",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.914Z",
+              "updated_at": "2025-05-12T20:19:55.914Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.914Z"
+        },
+        {
+          "id": "5.2",
+          "title": "Intégrer avec les outils de développement",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "5.2.1",
+              "title": "Développer l'extension VS Code cognitive",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "5.2.1.1",
+                  "title": "Créer l'interface de navigation multi-niveaux",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "5.2.1.2",
+              "title": "Implémenter la visualisation dimensionnelle",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "5.2.1.3",
+              "title": "Développer les commandes en langage naturel étendues",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "5.2.2",
+              "title": "Implémenter l'intégration avec n8n et Notion",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "5.2.2.1",
+                  "title": "Créer les nodes n8n pour l'architecture cognitive",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                },
+                {
+                  "id": "5.2.2.2",
+                  "title": "Développer la synchronisation avec Notion",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                },
+                {
+                  "id": "5.2.2.3",
+                  "title": "Implémenter les workflows d'orchestration cognitive",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "5.2.3",
+              "title": "Intégrer avec GitHub et les outils de CI/CD",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "5.2.3.1",
+                  "title": "Développer la synchronisation avec GitHub Projects",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                },
+                {
+                  "id": "5.2.3.2",
+                  "title": "Créer l'intégration avec les pipelines CI/CD",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                },
+                {
+                  "id": "5.2.3.3",
+                  "title": "Implémenter l'orchestration du déploiement continu",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.914Z",
+          "updated_at": "2025-05-12T20:19:55.915Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:55.914Z",
+      "updated_at": "2025-05-12T20:19:55.914Z"
+    },
+    {
+      "id": "id-zzhaww1sm",
+      "title": "6. Documentation et formation",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "6.1",
+          "title": "Créer la documentation de l'architecture cognitive",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.1.1",
+              "title": "Développer le guide conceptuel",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "6.1.1.1",
+                  "title": "Rédiger l'explication des 10 niveaux",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.1.1.2",
+              "title": "Créer la documentation des dimensions transversales",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.1.1.3",
+              "title": "Développer les exemples d'utilisation",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.915Z",
+          "updated_at": "2025-05-12T20:19:55.915Z"
+        },
+        {
+          "id": "6.1.2",
+          "title": "Créer la documentation technique",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.1.2.1",
+              "title": "Rédiger la spécification du modèle de données",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.1.2.2",
+              "title": "Développer la documentation de l'API",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.1.2.3",
+              "title": "Créer les guides d'intégration",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.915Z",
+          "updated_at": "2025-05-12T20:19:55.915Z"
+        },
+        {
+          "id": "6.1.3",
+          "title": "Développer les tutoriels interactifs",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.1.3.1",
+              "title": "Créer les tutoriels de navigation cognitive",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.1.3.2",
+              "title": "Développer les guides d'orchestration",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.1.3.3",
+              "title": "Implémenter les exercices pratiques",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.915Z",
+          "updated_at": "2025-05-12T20:19:55.915Z"
+        },
+        {
+          "id": "6.2",
+          "title": "Créer le système d'aide contextuelle",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.2.1",
+              "title": "Développer l'assistant cognitif",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "6.2.1.1",
+                  "title": "Créer le système de détection de contexte",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.2.1.2",
+              "title": "Implémenter les suggestions contextuelles",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.2.1.3",
+              "title": "Développer les explications adaptatives",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.2.2",
+              "title": "Implémenter la documentation intégrée",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "6.2.2.1",
+                  "title": "Créer le système de documentation in-situ",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                },
+                {
+                  "id": "6.2.2.2",
+                  "title": "Développer les tooltips contextuels",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                },
+                {
+                  "id": "6.2.2.3",
+                  "title": "Implémenter les exemples dynamiques",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            },
+            {
+              "id": "6.2.3",
+              "title": "Créer le système de feedback et amélioration",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "6.2.3.1",
+                  "title": "Développer le mécanisme de collecte de feedback",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                },
+                {
+                  "id": "6.2.3.2",
+                  "title": "Implémenter l'analyse des patterns d'utilisation",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                },
+                {
+                  "id": "6.2.3.3",
+                  "title": "Créer le système d'amélioration continue",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:19:55.915Z",
+                  "updated_at": "2025-05-12T20:19:55.915Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:19:55.915Z",
+              "updated_at": "2025-05-12T20:19:55.915Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:19:55.915Z",
+          "updated_at": "2025-05-12T20:19:55.915Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:19:55.915Z",
+      "updated_at": "2025-05-12T20:19:55.915Z"
+    }
+  ],
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "tags": [],
+  "created_at": "2025-05-12T20:19:55.909Z",
+  "updated_at": "2025-05-12T20:19:55.911Z"
+}

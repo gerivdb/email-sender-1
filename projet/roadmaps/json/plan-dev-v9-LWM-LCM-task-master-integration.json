@@ -1,0 +1,3500 @@
+{
+  "id": "id-b9of7kzlp",
+  "title": "Plan de développement v9 : Intégration des concepts de Task Master avec LWM/LCM",
+  "description": "",
+  "type": "cosmos",
+  "level": 1,
+  "status": "planned",
+  "children": [
+    {
+      "id": "id-fmgpel2qt",
+      "title": "6. Standardisation du format des tâches (Task Master)",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "6.1",
+          "title": "Définir le format de tâche standardisé",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.1.1",
+              "title": "Concevoir le schéma JSON des tâches",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "6.1.1.1",
+                  "title": "Spécifier les champs obligatoires (id, titre, statut)",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.841Z",
+                  "updated_at": "2025-05-12T20:20:46.841Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.841Z",
+              "updated_at": "2025-05-12T20:20:46.841Z"
+            },
+            {
+              "id": "6.1.1.2",
+              "title": "Définir les champs optionnels (description, métadonnées)",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.841Z",
+              "updated_at": "2025-05-12T20:20:46.841Z"
+            },
+            {
+              "id": "6.1.1.3",
+              "title": "Concevoir la structure des métadonnées (priorité, durée, tags)",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.841Z",
+              "updated_at": "2025-05-12T20:20:46.841Z"
+            },
+            {
+              "id": "6.1.1.4",
+              "title": "Définir le format des dépendances et sous-tâches",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.841Z",
+              "updated_at": "2025-05-12T20:20:46.841Z"
+            },
+            {
+              "id": "6.1.1.5",
+              "title": "Créer le schéma pour l'historique des modifications",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.841Z",
+              "updated_at": "2025-05-12T20:20:46.841Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.841Z",
+          "updated_at": "2025-05-12T20:20:46.841Z"
+        },
+        {
+          "id": "6.1.2",
+          "title": "Développer la validation du format",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.1.2.1",
+              "title": "Implémenter la validation JSON Schema",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.841Z",
+              "updated_at": "2025-05-12T20:20:46.841Z"
+            },
+            {
+              "id": "6.1.2.2",
+              "title": "Créer les tests de validation automatisés",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.841Z",
+              "updated_at": "2025-05-12T20:20:46.841Z"
+            },
+            {
+              "id": "6.1.2.3",
+              "title": "Développer les fonctions de normalisation des données",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.841Z",
+              "updated_at": "2025-05-12T20:20:46.841Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.841Z",
+          "updated_at": "2025-05-12T20:20:46.841Z"
+        },
+        {
+          "id": "6.1.3",
+          "title": "Documenter le format standardisé",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.1.3.1",
+              "title": "Créer la documentation technique du schéma",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.841Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.1.3.2",
+              "title": "Développer des exemples d'utilisation",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.1.3.3",
+              "title": "Rédiger les guides de migration",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.841Z",
+          "updated_at": "2025-05-12T20:20:46.841Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.841Z",
+      "updated_at": "2025-05-12T20:20:46.841Z"
+    },
+    {
+      "id": "6.2",
+      "title": "Créer les convertisseurs Markdown ↔ JSON",
+      "description": "",
+      "type": "locality",
+      "level": 7,
+      "status": "planned",
+      "children": [
+        {
+          "id": "6.2.1",
+          "title": "Développer le parser Markdown → JSON",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.2.1.1",
+              "title": "Implémenter la détection des tâches dans le Markdown",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.2.1.2",
+          "title": "Créer l'extraction des métadonnées depuis les tags",
+          "description": "",
+          "type": "building",
+          "level": 9,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.2.1.3",
+          "title": "Développer la détection des dépendances",
+          "description": "",
+          "type": "building",
+          "level": 9,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.2.1.4",
+          "title": "Implémenter l'extraction des sous-tâches",
+          "description": "",
+          "type": "building",
+          "level": 9,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.2.1.5",
+          "title": "Ajouter la gestion des descriptions multi-lignes",
+          "description": "",
+          "type": "building",
+          "level": 9,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.2.2",
+          "title": "Implémenter le générateur JSON → Markdown",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.2.2.1",
+              "title": "Développer la génération de la ligne de titre",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.2.2.2",
+              "title": "Créer la génération des tags à partir des métadonnées",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.2.2.3",
+              "title": "Implémenter la génération des descriptions formatées",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.2.2.4",
+              "title": "Développer la génération des sous-tâches indentées",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.2.2.5",
+              "title": "Ajouter la gestion des limites de taille (500 lignes max)",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.2.3",
+          "title": "Créer les outils de conversion batch",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.2.3.1",
+              "title": "Développer l'outil de conversion de répertoires",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.2.3.2",
+              "title": "Implémenter la validation post-conversion",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.2.3.3",
+              "title": "Créer les rapports de conversion",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.842Z",
+      "updated_at": "2025-05-12T20:20:46.842Z"
+    },
+    {
+      "id": "6.3",
+      "title": "Adapter les roadmaps existantes",
+      "description": "",
+      "type": "locality",
+      "level": 7,
+      "status": "planned",
+      "children": [
+        {
+          "id": "6.3.1",
+          "title": "Analyser les formats actuels",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.3.1.1",
+              "title": "Inventorier les différents formats utilisés",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.3.1.2",
+          "title": "Identifier les patterns de métadonnées existants",
+          "description": "",
+          "type": "building",
+          "level": 9,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.3.1.3",
+          "title": "Analyser les structures hiérarchiques",
+          "description": "",
+          "type": "building",
+          "level": 9,
+          "status": "planned",
+          "children": [],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.3.2",
+          "title": "Développer les scripts de migration",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.3.2.1",
+              "title": "Créer le script de conversion pour plan-dev-v8",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.3.2.2",
+              "title": "Développer le script pour plan-dev-v9",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.3.2.3",
+              "title": "Implémenter la conversion des autres plans",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        },
+        {
+          "id": "6.3.3",
+          "title": "Valider les conversions",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "6.3.3.1",
+              "title": "Créer les tests de non-régression",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.3.3.2",
+              "title": "Développer les outils de comparaison",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            },
+            {
+              "id": "6.3.3.3",
+              "title": "Implémenter la vérification d'intégrité",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.842Z",
+              "updated_at": "2025-05-12T20:20:46.842Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.842Z",
+          "updated_at": "2025-05-12T20:20:46.842Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.842Z",
+      "updated_at": "2025-05-12T20:20:46.842Z"
+    },
+    {
+      "id": "id-zk7qfe9ns",
+      "title": "7. Serveur MCP pour roadmaps (Task Master)",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "7.1",
+          "title": "Développer le serveur MCP de base",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "7.1.1",
+              "title": "Implémenter le protocole MCP standard",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.1.1.1",
+                  "title": "Créer les handlers de requêtes MCP",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.843Z",
+                  "updated_at": "2025-05-12T20:20:46.843Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.1.1.2",
+              "title": "Développer le système de réponses formatées",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.1.1.3",
+              "title": "Implémenter la gestion des erreurs",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.843Z",
+          "updated_at": "2025-05-12T20:20:46.843Z"
+        },
+        {
+          "id": "7.1.2",
+          "title": "Créer l'architecture du serveur",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "7.1.2.1",
+              "title": "Développer la structure modulaire",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.1.2.2",
+              "title": "Implémenter le système de plugins",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.1.2.3",
+              "title": "Créer le système de configuration",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.843Z",
+          "updated_at": "2025-05-12T20:20:46.843Z"
+        },
+        {
+          "id": "7.1.3",
+          "title": "Ajouter l'authentification et la sécurité",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "7.1.3.1",
+              "title": "Implémenter l'authentification par token",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.1.3.2",
+              "title": "Développer le contrôle d'accès",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.1.3.3",
+              "title": "Créer le système de journalisation sécurisée",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.843Z",
+          "updated_at": "2025-05-12T20:20:46.843Z"
+        },
+        {
+          "id": "7.2",
+          "title": "Implémenter les fonctions CRUD pour les tâches",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "7.2.1",
+              "title": "Développer les endpoints de création/lecture",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.2.1.1",
+                  "title": "Créer l'endpoint de listing des roadmaps",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.843Z",
+                  "updated_at": "2025-05-12T20:20:46.843Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.2.1.2",
+              "title": "Implémenter l'endpoint de récupération d'une roadmap",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.2.1.3",
+              "title": "Développer l'endpoint de création de tâche",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.2.2",
+              "title": "Ajouter les endpoints de mise à jour/suppression",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.2.2.1",
+                  "title": "Créer l'endpoint de mise à jour de tâche",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.843Z",
+                  "updated_at": "2025-05-12T20:20:46.843Z"
+                },
+                {
+                  "id": "7.2.2.2",
+                  "title": "Implémenter l'endpoint de suppression",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.843Z",
+                  "updated_at": "2025-05-12T20:20:46.843Z"
+                },
+                {
+                  "id": "7.2.2.3",
+                  "title": "Développer l'endpoint de modification en masse",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.843Z",
+                  "updated_at": "2025-05-12T20:20:46.843Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.843Z",
+              "updated_at": "2025-05-12T20:20:46.843Z"
+            },
+            {
+              "id": "7.2.3",
+              "title": "Implémenter la validation des données",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.2.3.1",
+                  "title": "Créer le système de validation des entrées",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.2.3.2",
+                  "title": "Développer la validation des dépendances",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.2.3.3",
+                  "title": "Implémenter la détection des conflits",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.843Z",
+          "updated_at": "2025-05-12T20:20:46.843Z"
+        },
+        {
+          "id": "7.3",
+          "title": "Ajouter les fonctionnalités d'analyse et de recherche",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "7.3.1",
+              "title": "Développer la recherche par mots-clés",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.3.1.1",
+                  "title": "Implémenter l'indexation du contenu",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "7.3.1.2",
+              "title": "Créer le moteur de recherche textuelle",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "7.3.1.3",
+              "title": "Développer le système de filtres",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "7.3.2",
+              "title": "Implémenter la recherche sémantique avec embeddings",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.3.2.1",
+                  "title": "Intégrer Qdrant pour le stockage vectoriel",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.3.2.2",
+                  "title": "Développer la génération d'embeddings",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.3.2.3",
+                  "title": "Créer les requêtes de similarité sémantique",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "7.3.3",
+              "title": "Ajouter l'analyse de dépendances et de structure",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.3.3.1",
+                  "title": "Implémenter la détection des chemins critiques",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.3.3.2",
+                  "title": "Développer l'analyse des goulots d'étranglement",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.3.3.3",
+                  "title": "Créer le système de suggestion d'optimisations",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.844Z",
+          "updated_at": "2025-05-12T20:20:46.844Z"
+        },
+        {
+          "id": "7.4",
+          "title": "Intégrer la visualisation",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "7.4.1",
+              "title": "Développer la génération de graphes de dépendances",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.4.1.1",
+                  "title": "Créer le générateur de graphes DOT",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "7.4.1.2",
+              "title": "Implémenter l'export en SVG/PNG",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "7.4.1.3",
+              "title": "Développer la visualisation interactive",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "7.4.2",
+              "title": "Implémenter la création de diagrammes de Gantt",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.4.2.1",
+                  "title": "Créer le générateur de diagrammes de Gantt",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.4.2.2",
+                  "title": "Développer l'export en formats standards",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.4.2.3",
+                  "title": "Implémenter la visualisation interactive",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "7.4.3",
+              "title": "Ajouter la visualisation de l'avancement global",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "7.4.3.1",
+                  "title": "Créer les tableaux de bord d'avancement",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.4.3.2",
+                  "title": "Développer les graphiques de progression",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                },
+                {
+                  "id": "7.4.3.3",
+                  "title": "Implémenter les indicateurs de performance",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.844Z",
+          "updated_at": "2025-05-12T20:20:46.844Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.842Z",
+      "updated_at": "2025-05-12T20:20:46.842Z"
+    },
+    {
+      "id": "id-kp8rjl97g",
+      "title": "8. Interface utilisateur en langage naturel (Task Master)",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "8.1",
+          "title": "Développer le parser de commandes en langage naturel",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "8.1.1",
+              "title": "Créer le système d'analyse d'intentions",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "8.1.1.1",
+                  "title": "Développer la détection des verbes d'action",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.844Z",
+                  "updated_at": "2025-05-12T20:20:46.844Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "8.1.1.2",
+              "title": "Implémenter la reconnaissance des entités",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "8.1.1.3",
+              "title": "Créer la classification des intentions",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.844Z",
+          "updated_at": "2025-05-12T20:20:46.844Z"
+        },
+        {
+          "id": "8.1.2",
+          "title": "Implémenter l'extraction de paramètres",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "8.1.2.1",
+              "title": "Développer l'extraction des identifiants",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "8.1.2.2",
+              "title": "Créer la détection des attributs",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            },
+            {
+              "id": "8.1.2.3",
+              "title": "Implémenter l'extraction des valeurs",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.844Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.844Z",
+          "updated_at": "2025-05-12T20:20:46.844Z"
+        },
+        {
+          "id": "8.1.3",
+          "title": "Ajouter la gestion des ambiguïtés",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "8.1.3.1",
+              "title": "Développer la détection des ambiguïtés",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.844Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.1.3.2",
+              "title": "Créer le système de clarification",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.1.3.3",
+              "title": "Implémenter la résolution contextuelle",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.844Z",
+          "updated_at": "2025-05-12T20:20:46.844Z"
+        },
+        {
+          "id": "8.2",
+          "title": "Créer les templates de réponse",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "8.2.1",
+              "title": "Développer les templates pour les différentes actions",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "8.2.1.1",
+                  "title": "Créer les templates de confirmation",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.2.1.2",
+              "title": "Développer les templates d'information",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.2.1.3",
+              "title": "Implémenter les templates d'erreur",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.2.2",
+              "title": "Implémenter la personnalisation des réponses",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "8.2.2.1",
+                  "title": "Créer le système de variables de template",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                },
+                {
+                  "id": "8.2.2.2",
+                  "title": "Développer les formats de sortie configurables",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                },
+                {
+                  "id": "8.2.2.3",
+                  "title": "Implémenter les niveaux de détail ajustables",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.2.3",
+              "title": "Ajouter le support multilingue",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "8.2.3.1",
+                  "title": "Créer le système de traduction des templates",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                },
+                {
+                  "id": "8.2.3.2",
+                  "title": "Développer la détection automatique de langue",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                },
+                {
+                  "id": "8.2.3.3",
+                  "title": "Implémenter la gestion des locales",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.845Z",
+          "updated_at": "2025-05-12T20:20:46.845Z"
+        },
+        {
+          "id": "8.3",
+          "title": "Implémenter les suggestions contextuelles",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "8.3.1",
+              "title": "Développer l'analyse du contexte utilisateur",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "8.3.1.1",
+                  "title": "Créer le système de suivi de session",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.3.1.2",
+              "title": "Implémenter l'analyse des actions récentes",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.3.1.3",
+              "title": "Développer la détection des patterns d'utilisation",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.3.2",
+              "title": "Créer le système de recommandation de tâches",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "8.3.2.1",
+                  "title": "Implémenter l'algorithme de recommandation",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                },
+                {
+                  "id": "8.3.2.2",
+                  "title": "Développer le filtrage contextuel",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                },
+                {
+                  "id": "8.3.2.3",
+                  "title": "Créer le système de priorisation des suggestions",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "8.3.3",
+              "title": "Implémenter les suggestions d'optimisation",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "8.3.3.1",
+                  "title": "Développer la détection des inefficacités",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                },
+                {
+                  "id": "8.3.3.2",
+                  "title": "Créer le système de suggestions d'amélioration",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                },
+                {
+                  "id": "8.3.3.3",
+                  "title": "Implémenter les recommandations de restructuration",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.845Z",
+          "updated_at": "2025-05-12T20:20:46.845Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.844Z",
+      "updated_at": "2025-05-12T20:20:46.844Z"
+    },
+    {
+      "id": "id-0e99bplzq",
+      "title": "9. Intégration avec les outils existants (Task Master)",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "9.1",
+          "title": "Développer l'extension VS Code",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "9.1.1",
+              "title": "Créer l'interface utilisateur de l'extension",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "9.1.1.1",
+                  "title": "Développer le panneau de commandes",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.845Z",
+                  "updated_at": "2025-05-12T20:20:46.845Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "9.1.1.2",
+              "title": "Implémenter la visualisation des roadmaps",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "9.1.1.3",
+              "title": "Créer l'interface de recherche",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.845Z",
+          "updated_at": "2025-05-12T20:20:46.845Z"
+        },
+        {
+          "id": "9.1.2",
+          "title": "Implémenter l'édition directe des roadmaps",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "9.1.2.1",
+              "title": "Développer l'éditeur de tâches",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "9.1.2.2",
+              "title": "Créer les fonctionnalités de drag-and-drop",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "9.1.2.3",
+              "title": "Implémenter la validation en temps réel",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.845Z",
+          "updated_at": "2025-05-12T20:20:46.845Z"
+        },
+        {
+          "id": "9.1.3",
+          "title": "Ajouter l'intégration avec le serveur MCP",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "9.1.3.1",
+              "title": "Développer le client MCP pour VS Code",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "9.1.3.2",
+              "title": "Créer la synchronisation bidirectionnelle",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.845Z"
+            },
+            {
+              "id": "9.1.3.3",
+              "title": "Implémenter la gestion des conflits",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.845Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.845Z",
+          "updated_at": "2025-05-12T20:20:46.845Z"
+        },
+        {
+          "id": "9.2",
+          "title": "Intégrer avec n8n et Notion",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "9.2.1",
+              "title": "Développer les nodes n8n pour la gestion des roadmaps",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "9.2.1.1",
+                  "title": "Créer les nodes de lecture/écriture",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "9.2.1.2",
+              "title": "Implémenter les triggers d'événements",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "9.2.1.3",
+              "title": "Développer les actions d'automatisation",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "9.2.2",
+              "title": "Créer l'intégration Notion",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "9.2.2.1",
+                  "title": "Développer la synchronisation bidirectionnelle",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                },
+                {
+                  "id": "9.2.2.2",
+                  "title": "Implémenter la conversion de format",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                },
+                {
+                  "id": "9.2.2.3",
+                  "title": "Créer la gestion des conflits",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.846Z",
+          "updated_at": "2025-05-12T20:20:46.846Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.845Z",
+      "updated_at": "2025-05-12T20:20:46.845Z"
+    },
+    {
+      "id": "id-pss19341g",
+      "title": "10. Visualisation \"ligne de métro\" pour les roadmaps",
+      "description": "",
+      "type": "galaxy",
+      "level": 2,
+      "status": "planned",
+      "children": [
+        {
+          "id": "10.1",
+          "title": "Concevoir le système de visualisation",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "10.1.1",
+              "title": "Définir le modèle de données pour la visualisation",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "10.1.1.1",
+                  "title": "Concevoir la structure des lignes et stations",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.1.1.2",
+              "title": "Définir les métadonnées visuelles",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.1.1.3",
+              "title": "Créer le système de positionnement",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.846Z",
+          "updated_at": "2025-05-12T20:20:46.846Z"
+        },
+        {
+          "id": "10.1.2",
+          "title": "Développer le moteur de rendu",
+          "description": "",
+          "type": "district",
+          "level": 8,
+          "status": "planned",
+          "children": [
+            {
+              "id": "10.1.2.1",
+              "title": "Implémenter le rendu SVG/Canvas",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.1.2.2",
+              "title": "Créer le système de thèmes et styles",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.1.2.3",
+              "title": "Développer les animations et transitions",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.846Z",
+          "updated_at": "2025-05-12T20:20:46.846Z"
+        },
+        {
+          "id": "10.2",
+          "title": "Implémenter la navigation interactive",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "10.2.1",
+              "title": "Développer le zoom et la navigation",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "10.2.1.1",
+                  "title": "Créer le système de zoom sémantique",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.2.1.2",
+              "title": "Implémenter la navigation par déplacement",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.2.1.3",
+              "title": "Développer la focalisation sur les nœuds",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.2.2",
+              "title": "Ajouter l'interaction avec les nœuds",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "10.2.2.1",
+                  "title": "Implémenter la sélection de nœuds",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                },
+                {
+                  "id": "10.2.2.2",
+                  "title": "Créer les popups d'information",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                },
+                {
+                  "id": "10.2.2.3",
+                  "title": "Développer l'édition directe via les nœuds",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.846Z",
+          "updated_at": "2025-05-12T20:20:46.846Z"
+        },
+        {
+          "id": "10.3",
+          "title": "Créer le système de filtrage et d'affichage",
+          "description": "",
+          "type": "locality",
+          "level": 7,
+          "status": "planned",
+          "children": [
+            {
+              "id": "10.3.1",
+              "title": "Développer les filtres par critères",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "10.3.1.1",
+                  "title": "Implémenter le filtrage par priorité",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.3.1.2",
+              "title": "Créer le filtrage par domaine/branche",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.3.1.3",
+              "title": "Développer le filtrage par section/thème",
+              "description": "",
+              "type": "building",
+              "level": 9,
+              "status": "planned",
+              "children": [],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            },
+            {
+              "id": "10.3.2",
+              "title": "Ajouter les modes d'affichage spécialisés",
+              "description": "",
+              "type": "district",
+              "level": 8,
+              "status": "planned",
+              "children": [
+                {
+                  "id": "10.3.2.1",
+                  "title": "Créer la vue des chemins critiques",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                },
+                {
+                  "id": "10.3.2.2",
+                  "title": "Implémenter la vue des tâches bloquées",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                },
+                {
+                  "id": "10.3.2.3",
+                  "title": "Développer la vue des tâches prioritaires",
+                  "description": "",
+                  "type": "building",
+                  "level": 9,
+                  "status": "planned",
+                  "children": [],
+                  "metadata": {
+                    "temporal": {},
+                    "cognitive": {},
+                    "organizational": {},
+                    "strategic": {}
+                  },
+                  "tags": [],
+                  "created_at": "2025-05-12T20:20:46.846Z",
+                  "updated_at": "2025-05-12T20:20:46.846Z"
+                }
+              ],
+              "metadata": {
+                "temporal": {},
+                "cognitive": {},
+                "organizational": {},
+                "strategic": {}
+              },
+              "tags": [],
+              "created_at": "2025-05-12T20:20:46.846Z",
+              "updated_at": "2025-05-12T20:20:46.846Z"
+            }
+          ],
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "tags": [],
+          "created_at": "2025-05-12T20:20:46.846Z",
+          "updated_at": "2025-05-12T20:20:46.846Z"
+        }
+      ],
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "tags": [],
+      "created_at": "2025-05-12T20:20:46.846Z",
+      "updated_at": "2025-05-12T20:20:46.846Z"
+    }
+  ],
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "tags": [],
+  "created_at": "2025-05-12T20:20:46.841Z",
+  "updated_at": "2025-05-12T20:20:46.841Z"
+}

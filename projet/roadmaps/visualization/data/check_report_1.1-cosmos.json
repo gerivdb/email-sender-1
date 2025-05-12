@@ -1,0 +1,1430 @@
+{
+  "id": "id-rncofroqa",
+  "title": "",
+  "type": "cosmos",
+  "status": "planned",
+  "description": "",
+  "metadata": {
+    "temporal": {},
+    "cognitive": {},
+    "organizational": {},
+    "strategic": {}
+  },
+  "children": [
+    {
+      "id": "id-xu3djrh9p",
+      "title": "DÃ©tails des tÃ¢ches",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": [
+        {
+          "id": "id-kk7f9rumv",
+          "title": "TÃ¢che 1.1.1 - Étude de la structure actuelle du fichier markdown de roadmap",
+          "type": "stellar_system",
+          "status": "planned",
+          "description": "",
+          "metadata": {
+            "temporal": {},
+            "cognitive": {},
+            "organizational": {},
+            "strategic": {}
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "id-34amkthm8",
+      "title": "RÃ©sumÃ©",
+      "type": "galaxy",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-a6ld4nz67",
+      "title": "TÃ¢che 1.1.1 - Étude de l'architecture Hygen",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-nn4zkwkl4",
+      "title": "TÃ¢che 1.1.1 - Étude des besoins utilisateurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-39e9h2m8q",
+      "title": "TÃ¢che 1.1.1 - Étude des modèles prédictifs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ez14xj981",
+      "title": "TÃ¢che 1.1.1 - Étude des workflows GitHub Actions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-bfvo4o8bg",
+      "title": "TÃ¢che 1.1.1.1 - Analyser le fonctionnement des templates Hygen",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-6l9lgjs6y",
+      "title": "TÃ¢che 1.1.1.1 - Analyser les différents algorithmes de prédiction",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-bh2fw81c9",
+      "title": "TÃ¢che 1.1.1.1 - Analyser les fonctionnalités de GitHub Actions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-fh7mnujib",
+      "title": "TÃ¢che 1.1.1.1 - Identifier les cas d'utilisation principaux",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-8e6uzn96f",
+      "title": "TÃ¢che 1.1.1.1 - Identifier les patterns de formatage des tâches",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3cual3o3n",
+      "title": "TÃ¢che 1.1.1.1.1 - Analyser les marqueurs de liste (-, *, +)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-9d60inphu",
+      "title": "TÃ¢che 1.1.1.1.1 - Étudier la structure des templates EJS de Hygen",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-7dawt9x18",
+      "title": "TÃ¢che 1.1.1.1.1 - Étudier la syntaxe YAML des workflows GitHub Actions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-nkhekqpws",
+      "title": "TÃ¢che 1.1.1.1.1 - Étudier les algorithmes de régression linéaire et polynomiale",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-unp5j2l6z",
+      "title": "TÃ¢che 1.1.1.1.1 - Recueillir les besoins des utilisateurs finaux",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-fk8flwdra",
+      "title": "TÃ¢che 1.1.1.1.2 - Analyser le système de prompts et d'arguments",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-6itvl699y",
+      "title": "TÃ¢che 1.1.1.1.2 - Analyser les modèles d'apprentissage par arbre de décision",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-sirf6lwve",
+      "title": "TÃ¢che 1.1.1.1.2 - Analyser les runners disponibles et leurs caractéristiques",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-6wh1i5v3n",
+      "title": "TÃ¢che 1.1.1.1.2 - Analyser les scénarios de navigation courants",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-6znoa0tpt",
+      "title": "TÃ¢che 1.1.1.1.2 - Identifier les conventions d'indentation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-q61lbvtmr",
+      "title": "TÃ¢che 1.1.1.1.3 - Comprendre le mécanisme de génération de fichiers",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-8q882f153",
+      "title": "TÃ¢che 1.1.1.1.3 - Comprendre le système d'actions et de marketplace",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-2agkus1xa",
+      "title": "TÃ¢che 1.1.1.1.3 - Comprendre les réseaux de neurones pour la prédiction",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-br2jcwdgq",
+      "title": "TÃ¢che 1.1.1.1.3 - Identifier les opérations fréquentes sur la roadmap",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3cry6io71",
+      "title": "TÃ¢che 1.1.1.1.3 - Reconnaître les formats de titres et sous-titres",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-pqk1orqld",
+      "title": "TÃ¢che 1.1.1.1.4 - Cataloguer les styles d'emphase (gras, italique)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-t4277a8y4",
+      "title": "TÃ¢che 1.1.1.1.4 - Étudier les helpers et fonctions disponibles",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-r718ive20",
+      "title": "TÃ¢che 1.1.1.1.4 - Étudier les mécanismes de sécurité et de secrets",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-82wxuefw5",
+      "title": "TÃ¢che 1.1.1.1.4 - Étudier les méthodes d'ensemble (random forest, gradient boosting)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-fygubxq8d",
+      "title": "TÃ¢che 1.1.1.1.4 - Prioriser les cas d'utilisation selon leur importance",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-rk912vpbz",
+      "title": "TÃ¢che 1.1.1.2 - Analyser la hiérarchie des tâches et sous-tâches",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-nxpdooji5",
+      "title": "TÃ¢che 1.1.1.2 - Analyser les patterns de recherche fréquents",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gpjacuhjq",
+      "title": "TÃ¢che 1.1.1.2 - Identifier les facteurs influant sur le temps d'implémentation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-h6qsjg1wv",
+      "title": "TÃ¢che 1.1.1.2 - Identifier les patterns de CI/CD adaptés à la roadmap",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ycf07flun",
+      "title": "TÃ¢che 1.1.1.2 - Identifier les points d'extension",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-g24oima7n",
+      "title": "TÃ¢che 1.1.1.2.1 - Analyser l'impact de la complexité algorithmique",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-5wigumudi",
+      "title": "TÃ¢che 1.1.1.2.1 - Analyser les hooks disponibles dans Hygen",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-s085nfa37",
+      "title": "TÃ¢che 1.1.1.2.1 - Analyser les patterns de validation de code",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-5sjq8a372",
+      "title": "TÃ¢che 1.1.1.2.1 - Étudier les méthodes de recherche actuelles",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3ydczt660",
+      "title": "TÃ¢che 1.1.1.2.1 - Identifier les niveaux de profondeur",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-453ihssio",
+      "title": "TÃ¢che 1.1.1.2.2 - Analyser les conventions de numérotation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gwrqcr3vl",
+      "title": "TÃ¢che 1.1.1.2.2 - Étudier l'influence des dépendances entre tâches",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-bs9tk3erx",
+      "title": "TÃ¢che 1.1.1.2.2 - Étudier les patterns de test automatisé",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-yoes9rivn",
+      "title": "TÃ¢che 1.1.1.2.2 - Étudier les possibilités de personnalisation des templates",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-sgbrcenbl",
+      "title": "TÃ¢che 1.1.1.2.2 - Identifier les termes de recherche les plus utilisés",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-x0k1yduq7",
+      "title": "TÃ¢che 1.1.1.2.3 - Analyser les stratégies de navigation des utilisateurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3xtlx8tac",
+      "title": "TÃ¢che 1.1.1.2.3 - Comprendre l'effet de l'expérience des développeurs",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-kcw53d6rj",
+      "title": "TÃ¢che 1.1.1.2.3 - Comprendre les patterns de déploiement continu",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3s1f9vsqk",
+      "title": "TÃ¢che 1.1.1.2.3 - Étudier les relations parent-enfant",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-h2wg5ch7a",
+      "title": "TÃ¢che 1.1.1.2.3 - Identifier les options de configuration avancées",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-8meo016jd",
+      "title": "TÃ¢che 1.1.1.2.4 - Analyser l'impact des contraintes techniques",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-c4eav4dij",
+      "title": "TÃ¢che 1.1.1.2.4 - Analyser les mécanismes d'extension via plugins",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-686ywalfa",
+      "title": "TÃ¢che 1.1.1.2.4 - Analyser les patterns de notification et reporting",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-hejgbuh6v",
+      "title": "TÃ¢che 1.1.1.2.4 - Cartographier la structure arborescente",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-uv9pyykmf",
+      "title": "TÃ¢che 1.1.1.2.4 - Déterminer les patterns de recherche inefficaces à améliorer",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-76s92p2il",
+      "title": "TÃ¢che 1.1.1.3 - Déterminer les critères de filtrage nécessaires",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-i63xs0xmj",
+      "title": "TÃ¢che 1.1.1.3 - Déterminer les déclencheurs optimaux",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gcfk76p29",
+      "title": "TÃ¢che 1.1.1.3 - Déterminer les mécanismes d'intégration avec la roadmap",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-p0xr1eifg",
+      "title": "TÃ¢che 1.1.1.3 - Déterminer les métriques de précision",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-c463ejt5z",
+      "title": "TÃ¢che 1.1.1.3 - Déterminer les règles de détection des statuts (terminé/non terminé)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-04pultj5b",
+      "title": "TÃ¢che 1.1.1.3.1 - Définir les métriques d'erreur (MAE, RMSE, etc.)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-dm32bycfa",
+      "title": "TÃ¢che 1.1.1.3.1 - Étudier les déclencheurs basés sur les événements Git",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-guouhefrc",
+      "title": "TÃ¢che 1.1.1.3.1 - Étudier les formats d'entrée acceptés par Hygen",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-62jtgsxmn",
+      "title": "TÃ¢che 1.1.1.3.1 - Identifier les marqueurs de statut ([x], [ ])",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-b5d1m3ks6",
+      "title": "TÃ¢che 1.1.1.3.1 - Identifier les propriétés de tâches pertinentes pour le filtrage",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-de19jxdhx",
+      "title": "TÃ¢che 1.1.1.3.2 - Analyser les déclencheurs programmés (cron)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gahlar5cp",
+      "title": "TÃ¢che 1.1.1.3.2 - Analyser les indicateurs textuels de progression",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-aqnl1oti2",
+      "title": "TÃ¢che 1.1.1.3.2 - Analyser les options de passage de données structurées",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-oerzhx2pr",
+      "title": "TÃ¢che 1.1.1.3.2 - Définir les critères de filtrage par statut et priorité",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-ybzlqfngd",
+      "title": "TÃ¢che 1.1.1.3.2 - Établir les métriques de calibration",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gd6vhv4g1",
+      "title": "TÃ¢che 1.1.1.3.3 - Comprendre les déclencheurs manuels et leur paramétrage",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-uwc4yzksh",
+      "title": "TÃ¢che 1.1.1.3.3 - Définir les métriques de robustesse",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-sn7z74yhk",
+      "title": "TÃ¢che 1.1.1.3.3 - Établir les critères de filtrage hiérarchiques",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-lybw7a411",
+      "title": "TÃ¢che 1.1.1.3.3 - Étudier les conventions de statut spécifiques au projet",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-r42o5grjc",
+      "title": "TÃ¢che 1.1.1.3.3 - Identifier les méthodes d'extraction de données de la roadmap",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-zgvw2qf04",
+      "title": "TÃ¢che 1.1.1.3.4 - Définir les règles de détection automatique",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-1ytsa6m6v",
+      "title": "TÃ¢che 1.1.1.3.4 - Déterminer les critères de filtrage temporels et par assignation",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3wagph2g6",
+      "title": "TÃ¢che 1.1.1.3.4 - Établir les seuils d'acceptabilité des prédictions",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-6rc645m4v",
+      "title": "TÃ¢che 1.1.1.3.4 - Étudier les déclencheurs basés sur d'autres workflows",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-8x3wihsz5",
+      "title": "TÃ¢che 1.1.1.3.4 - Étudier les possibilités d'automatisation des générations",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-y6kvx0roq",
+      "title": "TÃ¢che 1.1.2 - Conception de l'architecture des pipelines",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-2pg7t77da",
+      "title": "TÃ¢che 1.1.2 - Conception de l'architecture du système",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-t9xst21je",
+      "title": "TÃ¢che 1.1.2 - Conception de l'interface utilisateur",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-xz8j1u7o5",
+      "title": "TÃ¢che 1.1.2 - Conception des templates spécifiques",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-0btfr1jiu",
+      "title": "TÃ¢che 1.1.2 - Conception du modèle objet pour représenter la roadmap",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-qtihv06i9",
+      "title": "TÃ¢che 1.1.2.1 - Définir l'architecture du modèle prédictif",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-py4q3nn30",
+      "title": "TÃ¢che 1.1.2.1 - Définir la classe Task avec ses propriétés et méthodes",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-n4htryuzp",
+      "title": "TÃ¢che 1.1.2.1 - Définir la structure de l'interface",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-gby4rhjg6",
+      "title": "TÃ¢che 1.1.2.1 - Définir les étapes des pipelines",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-pxveh4z5b",
+      "title": "TÃ¢che 1.1.2.1 - Définir les types de tâches à supporter",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-v1a0g1hyy",
+      "title": "TÃ¢che 1.1.2.1.1 - Concevoir l'architecture modulaire du modèle",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3jcl1ann3",
+      "title": "TÃ¢che 1.1.2.1.1 - Concevoir la disposition générale de l'interface",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-pne2i1bis",
+      "title": "TÃ¢che 1.1.2.1.1 - Identifier les catégories de tâches dans la roadmap",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-3bhcrhax0",
+      "title": "TÃ¢che 1.1.2.1.1 - Identifier les étapes de validation de code",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-7f32im6t4",
+      "title": "TÃ¢che 1.1.2.1.1 - Identifier les propriétés essentielles (ID, titre, description, statut)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-if7bj791i",
+      "title": "TÃ¢che 1.1.2.1.2 - Analyser les besoins spécifiques de chaque type de tâche",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-lvbp1rm0y",
+      "title": "TÃ¢che 1.1.2.1.2 - Définir les étapes de test et couverture",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-4i3cl5jt9",
+      "title": "TÃ¢che 1.1.2.1.2 - Définir les interfaces entre composants",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    },
+    {
+      "id": "id-7fgo3ov2m",
+      "title": "TÃ¢che 1.1.2.1.2 - Définir les propriétés de relation (parent, enfants, dépendances)",
+      "type": "stellar_system",
+      "status": "planned",
+      "description": "",
+      "metadata": {
+        "temporal": {},
+        "cognitive": {},
+        "organizational": {},
+        "strategic": {}
+      },
+      "children": []
+    }
+  ]
+}
