@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moteur d'Orchestration Cognitive (Version Simplifiée)</title>
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2ecc71;
+      --danger-color: #e74c3c;
+      --dark-color: #2c3e50;
+      --light-color: #ecf0f1;
+      --border-radius: 4px;
+      --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    h1 {
+      color: var(--dark-color);
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: #666;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .panel {
+      background-color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      background-color: var(--dark-color);
+      color: white;
+      padding: 1rem;
+      font-weight: bold;
+    }
+
+    .panel-body {
+      padding: 1rem;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 1rem;
+    }
+
+    .tab {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      margin-bottom: -1px;
+    }
+
+    .tab.active {
+      background-color: white;
+      border-color: #ddd;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    pre {
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      overflow: auto;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Moteur d'Orchestration Cognitive (Version Simplifiée)</h1>
+      <p>Exemple d'utilisation du moteur d'orchestration pour l'architecture cognitive à 10 niveaux</p>
+    </header>
+
+    <div class="controls">
+      <div class="control-group">
+        <button id="load-roadmap-btn">Charger la roadmap</button>
+        <button id="analyze-dependencies-btn">Analyser les dépendances</button>
+        <button id="optimize-paths-btn">Optimiser les chemins critiques</button>
+        <button id="balance-resources-btn">Équilibrer les ressources</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        Roadmap
+      </div>
+      <div class="panel-body">
+        <div id="roadmap-info">
+          <p>Aucune roadmap chargée</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="dependencies">Dépendances</div>
+      <div class="tab" data-tab="critical-paths">Chemins Critiques</div>
+      <div class="tab" data-tab="resources">Ressources</div>
+      <div class="tab" data-tab="execution-plan">Plan d'Exécution</div>
+    </div>
+
+    <div class="tab-content active" id="dependencies-tab">
+      <div class="panel">
+        <div class="panel-header">
+          Analyse des Dépendances
+        </div>
+        <div class="panel-body">
+          <div id="dependencies-info">
+            <p>Aucune analyse effectuée</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="critical-paths-tab">
+      <div class="panel">
+        <div class="panel-header">
+          Optimisation des Chemins Critiques
+        </div>
+        <div class="panel-body">
+          <div id="critical-paths-info">
+            <p>Aucune optimisation effectuée</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="resources-tab">
+      <div class="panel">
+        <div class="panel-header">
+          Équilibrage des Ressources
+        </div>
+        <div class="panel-body">
+          <div id="resources-info">
+            <p>Aucun équilibrage effectué</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="execution-plan-tab">
+      <div class="panel">
+        <div class="panel-header">
+          Plan d'Exécution
+        </div>
+        <div class="panel-body">
+          <div id="execution-plan-info">
+            <p>Aucun plan généré</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Données de test -->
+  <script>
+    // Roadmap de test
+    const testRoadmap = {
+      id: "plan-dev-v12-architecture-cognitive",
+      title: "Architecture Cognitive (v12)",
+      description: "Plan de développement de l'architecture cognitive à 10 niveaux",
+      type: "cosmos",
+      status: "in_progress",
+      metadata: {
+        temporal: { horizon: "medium_term" },
+        cognitive: { complexity: "complex" },
+        strategic: { priority: "high" }
+      },
+      children: [
+        {
+          id: "section-1",
+          title: "Fondations conceptuelles",
+          type: "galaxy",
+          status: "completed",
+          children: []
+        },
+        {
+          id: "section-4",
+          title: "Système d'orchestration cognitive",
+          type: "galaxy",
+          status: "in_progress",
+          children: [
+            {
+              id: "task-4-1",
+              title: "Développer le moteur d'orchestration",
+              type: "stellar_system",
+              status: "completed",
+              children: []
+            }
+          ]
+        }
+      ]
+    };
+
+    // Résultats de l'analyse des dépendances
+    const testDependencies = {
+      hierarchicalDependencies: [
+        { parentId: "plan-dev-v12-architecture-cognitive", childId: "section-1", type: "hierarchical" },
+        { parentId: "plan-dev-v12-architecture-cognitive", childId: "section-4", type: "hierarchical" },
+        { parentId: "section-4", childId: "task-4-1", type: "hierarchical" }
+      ],
+      transversalDependencies: [
+        { sourceId: "section-1", targetId: "section-4", type: "transversal", strength: 0.8, explicit: true }
+      ],
+      conflicts: [],
+      dependencyGraph: {
+        nodes: [
+          { id: "plan-dev-v12-architecture-cognitive", label: "Architecture Cognitive (v12)", type: "cosmos", status: "in_progress" },
+          { id: "section-1", label: "Fondations conceptuelles", type: "galaxy", status: "completed" },
+          { id: "section-4", label: "Système d'orchestration cognitive", type: "galaxy", status: "in_progress" },
+          { id: "task-4-1", label: "Développer le moteur d'orchestration", type: "stellar_system", status: "completed" }
+        ],
+        edges: [
+          { id: "h-plan-dev-v12-architecture-cognitive-section-1", source: "plan-dev-v12-architecture-cognitive", target: "section-1", type: "hierarchical" },
+          { id: "h-plan-dev-v12-architecture-cognitive-section-4", source: "plan-dev-v12-architecture-cognitive", target: "section-4", type: "hierarchical" },
+          { id: "h-section-4-task-4-1", source: "section-4", target: "task-4-1", type: "hierarchical" },
+          { id: "t-section-1-section-4", source: "section-1", target: "section-4", type: "transversal", strength: 0.8 }
+        ]
+      }
+    };
+
+    // Résultats de l'optimisation des chemins critiques
+    const testCriticalPaths = {
+      criticalPaths: [
+        {
+          id: "path-section-1",
+          nodes: ["section-1", "section-4", "task-4-1"],
+          criticality: 0.85,
+          duration: 60,
+          risk: 0.4
+        }
+      ],
+      criticalNodes: ["section-1", "section-4", "task-4-1"],
+      mainPath: {
+        id: "path-section-1",
+        nodes: ["section-1", "section-4", "task-4-1"],
+        criticality: 0.85,
+        duration: 60,
+        risk: 0.4
+      },
+      riskFactors: {
+        complexity: 0.6,
+        dependencies: 0.7,
+        resources: 0.5,
+        uncertainty: 0.4,
+        overall: 0.55
+      },
+      estimatedCompletion: {
+        duration: 60,
+        startDate: new Date(),
+        endDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000),
+        confidence: 0.7
+      }
+    };
+
+    // Résultats de l'équilibrage des ressources
+    const testResourceAllocations = {
+      resourceAllocation: {
+        totalAllocation: {
+          developers: 4.5,
+          designers: 1.8,
+          testers: 2.7,
+          cognitive_load: 80
+        },
+        utilizationRate: {
+          developers: 0.9,
+          designers: 0.9,
+          testers: 0.9,
+          cognitive_load: 0.8
+        },
+        allocationEfficiency: 0.85
+      },
+      overloadDetection: {
+        overloadedResources: ["developers"],
+        overloadedNodes: ["section-4"],
+        overloadSeverity: {
+          developers: "medium"
+        },
+        recommendations: [
+          {
+            type: "increase_resources",
+            resources: ["developers"],
+            description: "Augmenter les ressources disponibles pour les développeurs"
+          }
+        ]
+      }
+    };
+
+    // Plan d'exécution de test
+    const testExecutionPlan = {
+      tasks: [
+        {
+          id: "section-1",
+          title: "Fondations conceptuelles",
+          type: "galaxy",
+          status: "completed",
+          isCritical: true,
+          priority: 0.9
+        },
+        {
+          id: "section-4",
+          title: "Système d'orchestration cognitive",
+          type: "galaxy",
+          status: "in_progress",
+          isCritical: true,
+          priority: 0.85
+        },
+        {
+          id: "task-4-1",
+          title: "Développer le moteur d'orchestration",
+          type: "stellar_system",
+          status: "completed",
+          isCritical: true,
+          priority: 0.8
+        }
+      ],
+      estimatedCompletion: testCriticalPaths.estimatedCompletion,
+      riskFactors: testCriticalPaths.riskFactors
+    };
+
+    // Variables pour stocker les résultats
+    let roadmap = null;
+    let dependencies = null;
+    let criticalPaths = null;
+    let resourceAllocations = null;
+    let executionPlan = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialiser les onglets
+      const tabs = document.querySelectorAll('.tab');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Désactiver tous les onglets
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          
+          // Activer l'onglet cliqué
+          tab.classList.add('active');
+          document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+        });
+      });
+
+      // Charger la roadmap
+      const loadRoadmapBtn = document.getElementById('load-roadmap-btn');
+      loadRoadmapBtn.addEventListener('click', () => {
+        roadmap = testRoadmap;
+        displayRoadmapInfo(roadmap);
+        
+        // Réinitialiser les résultats
+        dependencies = null;
+        criticalPaths = null;
+        resourceAllocations = null;
+        executionPlan = null;
+        
+        // Réinitialiser les affichages
+        document.getElementById('dependencies-info').innerHTML = '<p>Aucune analyse effectuée</p>';
+        document.getElementById('critical-paths-info').innerHTML = '<p>Aucune optimisation effectuée</p>';
+        document.getElementById('resources-info').innerHTML = '<p>Aucun équilibrage effectué</p>';
+        document.getElementById('execution-plan-info').innerHTML = '<p>Aucun plan généré</p>';
+        
+        console.log('Roadmap chargée:', roadmap);
+      });
+      
+      // Analyser les dépendances
+      const analyzeDependenciesBtn = document.getElementById('analyze-dependencies-btn');
+      analyzeDependenciesBtn.addEventListener('click', () => {
+        if (!roadmap) {
+          alert('Veuillez d\'abord charger une roadmap.');
+          return;
+        }
+        
+        dependencies = testDependencies;
+        displayDependenciesInfo(dependencies);
+        
+        // Activer l'onglet des dépendances
+        tabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        document.querySelector('.tab[data-tab="dependencies"]').classList.add('active');
+        document.getElementById('dependencies-tab').classList.add('active');
+        
+        console.log('Dépendances analysées:', dependencies);
+      });
+      
+      // Optimiser les chemins critiques
+      const optimizePathsBtn = document.getElementById('optimize-paths-btn');
+      optimizePathsBtn.addEventListener('click', () => {
+        if (!roadmap || !dependencies) {
+          alert('Veuillez d\'abord charger une roadmap et analyser les dépendances.');
+          return;
+        }
+        
+        criticalPaths = testCriticalPaths;
+        displayCriticalPathsInfo(criticalPaths);
+        
+        // Activer l'onglet des chemins critiques
+        tabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        document.querySelector('.tab[data-tab="critical-paths"]').classList.add('active');
+        document.getElementById('critical-paths-tab').classList.add('active');
+        
+        console.log('Chemins critiques optimisés:', criticalPaths);
+      });
+      
+      // Équilibrer les ressources
+      const balanceResourcesBtn = document.getElementById('balance-resources-btn');
+      balanceResourcesBtn.addEventListener('click', () => {
+        if (!roadmap || !dependencies || !criticalPaths) {
+          alert('Veuillez d\'abord charger une roadmap, analyser les dépendances et optimiser les chemins critiques.');
+          return;
+        }
+        
+        const resources = {
+          developers: 5,
+          designers: 2,
+          testers: 3,
+          cognitive_load: 100
+        };
+        
+        resourceAllocations = testResourceAllocations;
+        displayResourcesInfo(resourceAllocations, resources);
+        
+        executionPlan = testExecutionPlan;
+        displayExecutionPlanInfo(executionPlan);
+        
+        // Activer l'onglet des ressources
+        tabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        document.querySelector('.tab[data-tab="resources"]').classList.add('active');
+        document.getElementById('resources-tab').classList.add('active');
+        
+        console.log('Ressources équilibrées:', resourceAllocations);
+        console.log('Plan d\'exécution généré:', executionPlan);
+      });
+      
+      // Fonctions d'affichage
+      function displayRoadmapInfo(roadmap) {
+        const roadmapInfo = document.getElementById('roadmap-info');
+        
+        roadmapInfo.innerHTML = `
+          <h2>${roadmap.title}</h2>
+          <p>${roadmap.description || 'Aucune description'}</p>
+          <p><strong>Type:</strong> ${roadmap.type.toUpperCase()}</p>
+          <p><strong>Statut:</strong> ${roadmap.status || 'Non défini'}</p>
+        `;
+      }
+      
+      function displayDependenciesInfo(dependencies) {
+        const dependenciesInfo = document.getElementById('dependencies-info');
+        
+        dependenciesInfo.innerHTML = `
+          <h3>Résumé des Dépendances</h3>
+          <p><strong>Dépendances hiérarchiques:</strong> ${dependencies.hierarchicalDependencies.length}</p>
+          <p><strong>Dépendances transversales:</strong> ${dependencies.transversalDependencies.length}</p>
+          <p><strong>Conflits détectés:</strong> ${dependencies.conflicts.length}</p>
+          
+          <h3>Graphe de Dépendances</h3>
+          <p><strong>Nœuds:</strong> ${dependencies.dependencyGraph.nodes.length}</p>
+          <p><strong>Arêtes:</strong> ${dependencies.dependencyGraph.edges.length}</p>
+          
+          <h3>Conflits</h3>
+          <pre>${JSON.stringify(dependencies.conflicts, null, 2)}</pre>
+        `;
+      }
+      
+      function displayCriticalPathsInfo(criticalPaths) {
+        const criticalPathsInfo = document.getElementById('critical-paths-info');
+        
+        criticalPathsInfo.innerHTML = `
+          <h3>Chemins Critiques</h3>
+          <p><strong>Nombre de chemins critiques:</strong> ${criticalPaths.criticalPaths.length}</p>
+          <p><strong>Nœuds critiques:</strong> ${criticalPaths.criticalNodes.length}</p>
+          
+          <h3>Chemin Critique Principal</h3>
+          <pre>${JSON.stringify(criticalPaths.mainPath, null, 2)}</pre>
+          
+          <h3>Facteurs de Risque</h3>
+          <pre>${JSON.stringify(criticalPaths.riskFactors, null, 2)}</pre>
+          
+          <h3>Estimation de la Date d'Achèvement</h3>
+          <pre>${JSON.stringify(criticalPaths.estimatedCompletion, null, 2)}</pre>
+        `;
+      }
+      
+      function displayResourcesInfo(resourceAllocations, resources) {
+        const resourcesInfo = document.getElementById('resources-info');
+        
+        resourcesInfo.innerHTML = `
+          <h3>Ressources Disponibles</h3>
+          <pre>${JSON.stringify(resources, null, 2)}</pre>
+          
+          <h3>Allocation Totale</h3>
+          <pre>${JSON.stringify(resourceAllocations.resourceAllocation.totalAllocation, null, 2)}</pre>
+          
+          <h3>Taux d'Utilisation</h3>
+          <pre>${JSON.stringify(resourceAllocations.resourceAllocation.utilizationRate, null, 2)}</pre>
+          
+          <h3>Efficacité de l'Allocation</h3>
+          <p>${(resourceAllocations.resourceAllocation.allocationEfficiency * 100).toFixed(2)}%</p>
+          
+          <h3>Surcharges Détectées</h3>
+          <pre>${JSON.stringify(resourceAllocations.overloadDetection, null, 2)}</pre>
+        `;
+      }
+      
+      function displayExecutionPlanInfo(executionPlan) {
+        const executionPlanInfo = document.getElementById('execution-plan-info');
+        
+        executionPlanInfo.innerHTML = `
+          <h3>Plan d'Exécution</h3>
+          <p><strong>Nombre de tâches:</strong> ${executionPlan.tasks.length}</p>
+          <p><strong>Date d'achèvement estimée:</strong> ${new Date(executionPlan.estimatedCompletion.endDate).toLocaleDateString()}</p>
+          <p><strong>Confiance:</strong> ${(executionPlan.estimatedCompletion.confidence * 100).toFixed(2)}%</p>
+          
+          <h3>Tâches Critiques</h3>
+          <ul>
+            ${executionPlan.tasks
+              .filter(task => task.isCritical)
+              .map(task => `<li>${task.title} (Priorité: ${(task.priority * 100).toFixed(2)}%)</li>`)
+              .join('')}
+          </ul>
+          
+          <h3>Facteurs de Risque</h3>
+          <pre>${JSON.stringify(executionPlan.riskFactors, null, 2)}</pre>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

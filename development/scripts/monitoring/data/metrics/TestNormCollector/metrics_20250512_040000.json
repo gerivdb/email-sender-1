@@ -1,0 +1,21 @@
+﻿{
+    "Timestamp":  "2025-05-12T04:00:00.0000000+02:00",
+    "Metrics":  [
+                    {
+                        "Unit":  "%",
+                        "Name":  "CPU_Usage",
+                        "Value":  73
+                    },
+                    {
+                        "Unit":  "GB",
+                        "Name":  "Memory_Usage",
+                        "Value":  11
+                    },
+                    {
+                        "Unit":  "MB/s",
+                        "Name":  "Disk_IO",
+                        "Value":  460
+                    }
+                ],
+    "CollectorName":  "TestNormCollector"
+}

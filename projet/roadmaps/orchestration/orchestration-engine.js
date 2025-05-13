@@ -5,7 +5,8 @@
  * Il gère l'analyse des dépendances, l'optimisation des chemins critiques et l'équilibrage des ressources.
  */
 
-// Importation des dépendances dans un environnement Node.js
+// Dans un environnement navigateur, les classes sont déjà disponibles globalement
+// Dans un environnement Node.js, nous les importons
 if (typeof require !== 'undefined') {
   var { DependencyAnalyzer } = require('./dependency-analyzer');
   var CriticalPathOptimizer = require('./critical-path-optimizer');

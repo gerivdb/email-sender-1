@@ -1,0 +1,11 @@
+﻿{
+    "Timestamp":  "2025-05-10T05:00:00.0000000+02:00",
+    "Metrics":  [
+                    {
+                        "Unit":  "%",
+                        "Name":  "CPU_Usage",
+                        "Value":  56
+                    }
+                ],
+    "CollectorName":  "TestCyclicCollector"
+}

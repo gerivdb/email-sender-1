@@ -1,0 +1,20 @@
+﻿{
+    "Name":  "TestImage",
+    "CreatedAt":  {
+                      "value":  "\/Date(1747092346025)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "mardi 13 mai 2025 01:25:46"
+                  },
+    "ModuleDependencies":  [
+                               "Microsoft.PowerShell.Management",
+                               "Microsoft.PowerShell.Utility"
+                           ],
+    "ScriptDependencies":  [
+
+                           ],
+    "EnvironmentVariables":  {
+                                 "TEST_VAR1":  "Value1",
+                                 "TEST_VAR2":  "Value2"
+                             },
+    "BaseImage":  ""
+}

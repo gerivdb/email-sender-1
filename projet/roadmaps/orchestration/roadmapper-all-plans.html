@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Exemple du Moteur d'Orchestration Cognitive</title>
+  <title>Roadmapper - Tous les Plans</title>
   <style>
     :root {
       --primary-color: #3498db;
@@ -60,9 +60,10 @@
     .control-group {
       display: flex;
       gap: 0.5rem;
+      align-items: center;
     }
 
-    select, button, input {
+    select, button {
       padding: 0.5rem 1rem;
       border: 1px solid #ddd;
       border-radius: var(--border-radius);
@@ -85,22 +86,6 @@
       background-color: #2980b9;
     }
 
-    button.btn-success {
-      background-color: var(--secondary-color);
-    }
-
-    button.btn-success:hover {
-      background-color: #27ae60;
-    }
-
-    button.btn-danger {
-      background-color: var(--danger-color);
-    }
-
-    button.btn-danger:hover {
-      background-color: #c0392b;
-    }
-
     .panel {
       background-color: white;
       border-radius: var(--border-radius);
@@ -118,42 +103,6 @@
 
     .panel-body {
       padding: 1rem;
-    }
-
-    .panel-footer {
-      background-color: #f8f9fa;
-      padding: 1rem;
-      border-top: 1px solid #eee;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1rem;
-    }
-
-    .card {
-      background-color: white;
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-      overflow: hidden;
-    }
-
-    .card-header {
-      background-color: var(--primary-color);
-      color: white;
-      padding: 0.5rem 1rem;
-      font-weight: bold;
-    }
-
-    .card-body {
-      padding: 1rem;
-    }
-
-    .card-footer {
-      background-color: #f8f9fa;
-      padding: 0.5rem 1rem;
-      border-top: 1px solid #eee;
     }
 
     .tabs {
@@ -193,46 +142,68 @@
       font-size: 0.9rem;
     }
 
-    .badge {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      border-radius: 10px;
-      font-size: 0.8rem;
+    .task-list {
+      list-style-type: none;
+    }
+
+    .task-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .task-list li:last-child {
+      border-bottom: none;
+    }
+
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .task-title {
       font-weight: bold;
-      color: white;
     }
 
-    .badge-primary {
-      background-color: var(--primary-color);
+    .task-status {
+      font-size: 0.8rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      background-color: #eee;
     }
 
-    .badge-success {
-      background-color: var(--secondary-color);
+    .task-status.planned {
+      background-color: #f8f9fa;
+      color: #6c757d;
     }
 
-    .badge-danger {
-      background-color: var(--danger-color);
+    .task-status.in_progress {
+      background-color: #cce5ff;
+      color: #004085;
     }
 
-    .progress {
-      height: 10px;
-      background-color: #f5f5f5;
-      border-radius: 5px;
-      overflow: hidden;
-      margin-bottom: 1rem;
+    .task-status.completed {
+      background-color: #d4edda;
+      color: #155724;
     }
 
-    .progress-bar {
-      height: 100%;
-      background-color: var(--primary-color);
-      border-radius: 5px;
+    .task-details {
+      margin-top: 0.5rem;
+      padding-left: 1rem;
+      display: none;
+    }
+
+    .task-details.active {
+      display: block;
+    }
+
+    .subtasks {
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
     }
 
     @media (max-width: 768px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
       .controls {
         flex-direction: column;
       }
@@ -242,20 +213,22 @@
 <body>
   <div class="container">
     <header>
-      <h1>Moteur d'Orchestration Cognitive</h1>
-      <p>Exemple d'utilisation du moteur d'orchestration pour l'architecture cognitive à 10 niveaux</p>
+      <h1>Roadmapper - Tous les Plans</h1>
+      <p>Visualisation et gestion de tous les plans de roadmap</p>
     </header>
 
     <div class="controls">
       <div class="control-group">
-        <select id="roadmap-selector">
-          <option value="plan-dev-v12-architecture-cognitive">Architecture Cognitive (v12)</option>
-          <option value="plan-dev-v11-orchestrateur-roadmaps">Orchestrateur de Roadmaps (v11)</option>
-          <option value="plan-dev-v10-CRUD-thematique">CRUD Thématique (v10)</option>
+        <label for="plan-selector">Plan :</label>
+        <select id="plan-selector">
+          <option value="v12">Architecture Cognitive (v12)</option>
+          <option value="v11">Orchestrateur de Roadmaps (v11)</option>
+          <option value="v10">CRUD Thématique (v10)</option>
+          <option value="v9">Task Master avec LWM/LCM (v9)</option>
+          <option value="v8">RAG Roadmap (v8)</option>
         </select>
-        <button id="load-roadmap-btn">Charger</button>
+        <button id="load-plan-btn">Charger le plan</button>
       </div>
-
       <div class="control-group">
         <button id="analyze-dependencies-btn">Analyser les dépendances</button>
         <button id="optimize-paths-btn">Optimiser les chemins critiques</button>
@@ -275,13 +248,27 @@
     </div>
 
     <div class="tabs">
-      <div class="tab active" data-tab="dependencies">Dépendances</div>
+      <div class="tab active" data-tab="tasks">Tâches</div>
+      <div class="tab" data-tab="dependencies">Dépendances</div>
       <div class="tab" data-tab="critical-paths">Chemins Critiques</div>
       <div class="tab" data-tab="resources">Ressources</div>
       <div class="tab" data-tab="execution-plan">Plan d'Exécution</div>
     </div>
 
-    <div class="tab-content active" id="dependencies-tab">
+    <div class="tab-content active" id="tasks-tab">
+      <div class="panel">
+        <div class="panel-header">
+          Liste des Tâches
+        </div>
+        <div class="panel-body">
+          <div id="tasks-info">
+            <p>Aucune tâche disponible</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="dependencies-tab">
       <div class="panel">
         <div class="panel-header">
           Analyse des Dépendances
@@ -334,24 +321,20 @@
     </div>
   </div>
 
-  <!-- Chargement du moteur d'orchestration -->
-  <script src="dependency-analyzer.js"></script>
-  <script src="critical-path-optimizer.js"></script>
-  <script src="resource-balancer.js"></script>
-  <script src="orchestration-engine.js"></script>
+  <!-- Chargement des scripts -->
   <script src="mock-data.js"></script>
+  <script src="roadmap-loader.js"></script>
 
   <script>
-    // Fonction de débogage pour afficher les messages dans la console
-    function debug(message, data) {
-      console.log(`DEBUG: ${message}`, data);
-    }
-
-    // Vérifier que le script est chargé
-    debug('Script chargé');
-
     document.addEventListener('DOMContentLoaded', () => {
-      debug('DOM chargé');
+      // Variables pour stocker les résultats
+      let currentPlan = null;
+      let roadmap = null;
+      let dependencies = null;
+      let criticalPaths = null;
+      let resourceAllocations = null;
+      let executionPlan = null;
+
       // Initialiser les onglets
       const tabs = document.querySelectorAll('.tab');
       const tabContents = document.querySelectorAll('.tab-content');
@@ -368,142 +351,51 @@
         });
       });
 
-      // Vérifier que les classes sont disponibles
-      debug('DependencyAnalyzer disponible:', typeof DependencyAnalyzer !== 'undefined');
-      debug('CriticalPathOptimizer disponible:', typeof CriticalPathOptimizer !== 'undefined');
-      debug('ResourceBalancer disponible:', typeof ResourceBalancer !== 'undefined');
-      debug('OrchestrationEngine disponible:', typeof OrchestrationEngine !== 'undefined');
-
-      // Variables pour stocker les résultats
-      let orchestrationEngine = null;
-      let roadmap = null;
-      let dependencies = null;
-      let criticalPaths = null;
-      let resourceAllocations = null;
-      let executionPlan = null;
-
-      // Initialiser le moteur d'orchestration
-      try {
-        orchestrationEngine = new OrchestrationEngine();
-        debug('Moteur d\'orchestration initialisé:', orchestrationEngine);
-      } catch (error) {
-        debug('Erreur lors de l\'initialisation du moteur d\'orchestration:', error);
-        alert('Erreur lors de l\'initialisation du moteur d\'orchestration. Utilisation des données de test.');
-      }
-
-      // Charger une roadmap
-      const loadRoadmapBtn = document.getElementById('load-roadmap-btn');
-      debug('Bouton de chargement trouvé:', loadRoadmapBtn);
-
-      loadRoadmapBtn.addEventListener('click', async () => {
-        debug('Clic sur le bouton de chargement');
-        const roadmapSelector = document.getElementById('roadmap-selector');
-        const roadmapId = roadmapSelector.value;
+      // Charger le plan sélectionné
+      const loadPlanBtn = document.getElementById('load-plan-btn');
+      loadPlanBtn.addEventListener('click', async () => {
+        const planSelector = document.getElementById('plan-selector');
+        const planId = planSelector.value;
 
         try {
-          // Charger les données de la roadmap
-          // Utiliser une roadmap de test intégrée si le fichier n'existe pas
-          try {
-            const response = await fetch(`../visualization/data/${roadmapId}-cosmos.json`);
-            roadmap = await response.json();
-          } catch (error) {
-            console.warn('Fichier JSON non trouvé, utilisation des données de test intégrées');
-            // Données de test intégrées
-            roadmap = {
-              id: roadmapId,
-              title: "Architecture Cognitive (v12)",
-              description: "Plan de développement de l'architecture cognitive à 10 niveaux",
-              type: "cosmos",
-              status: "in_progress",
-              metadata: {
-                temporal: { horizon: "medium_term" },
-                cognitive: { complexity: "complex" },
-                strategic: { priority: "high" }
-              },
-              children: [
-                {
-                  id: "section-1",
-                  title: "Fondations conceptuelles",
-                  type: "galaxy",
-                  status: "completed",
-                  children: []
-                },
-                {
-                  id: "section-4",
-                  title: "Système d'orchestration cognitive",
-                  type: "galaxy",
-                  status: "in_progress",
-                  children: [
-                    {
-                      id: "task-4-1",
-                      title: "Développer le moteur d'orchestration",
-                      type: "stellar_system",
-                      status: "completed",
-                      children: []
-                    }
-                  ]
-                }
-              ]
-            };
-          }
+          // Charger le plan
+          roadmap = await RoadmapLoader.loadPlan(planId);
+          currentPlan = planId;
 
-          // Charger la roadmap dans le moteur d'orchestration
-          if (orchestrationEngine) {
-            try {
-              orchestrationEngine.loadRoadmap(roadmap);
-              debug('Roadmap chargée dans le moteur d\'orchestration');
-            } catch (error) {
-              debug('Erreur lors du chargement de la roadmap dans le moteur d\'orchestration:', error);
-            }
-          } else {
-            debug('Moteur d\'orchestration non disponible, utilisation des données de test');
-          }
-
-          // Afficher les informations de la roadmap
+          // Afficher les informations du plan
           displayRoadmapInfo(roadmap);
 
-          // Réinitialiser les résultats
-          dependencies = null;
-          criticalPaths = null;
-          resourceAllocations = null;
-          executionPlan = null;
+          // Afficher les tâches
+          displayTasks(roadmap);
 
-          // Réinitialiser les affichages
+          // Réinitialiser les autres onglets
           document.getElementById('dependencies-info').innerHTML = '<p>Aucune analyse effectuée</p>';
           document.getElementById('critical-paths-info').innerHTML = '<p>Aucune optimisation effectuée</p>';
           document.getElementById('resources-info').innerHTML = '<p>Aucun équilibrage effectué</p>';
           document.getElementById('execution-plan-info').innerHTML = '<p>Aucun plan généré</p>';
+
+          // Activer l'onglet des tâches
+          tabs.forEach(t => t.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          document.querySelector('.tab[data-tab="tasks"]').classList.add('active');
+          document.getElementById('tasks-tab').classList.add('active');
         } catch (error) {
-          console.error('Erreur lors du chargement de la roadmap:', error);
-          alert('Erreur lors du chargement de la roadmap. Veuillez vérifier la console pour plus de détails.');
+          console.error('Erreur lors du chargement du plan:', error);
+          alert('Erreur lors du chargement du plan. Veuillez vérifier la console pour plus de détails.');
         }
       });
 
       // Analyser les dépendances
       const analyzeDependenciesBtn = document.getElementById('analyze-dependencies-btn');
-      debug('Bouton d\'analyse trouvé:', analyzeDependenciesBtn);
-
       analyzeDependenciesBtn.addEventListener('click', () => {
-        debug('Clic sur le bouton d\'analyse');
         if (!roadmap) {
-          alert('Veuillez d\'abord charger une roadmap.');
+          alert('Veuillez d\'abord charger un plan.');
           return;
         }
 
         try {
           // Analyser les dépendances
-          try {
-            if (orchestrationEngine) {
-              dependencies = orchestrationEngine.analyzeDependencies(roadmap.id);
-              debug('Dépendances analysées avec le moteur d\'orchestration');
-            } else {
-              dependencies = analyzeTestDependencies();
-              debug('Dépendances analysées avec les données de test');
-            }
-          } catch (error) {
-            debug('Erreur lors de l\'analyse des dépendances, utilisation des données de test', error);
-            dependencies = analyzeTestDependencies();
-          }
+          dependencies = analyzeTestDependencies();
 
           // Afficher les résultats
           displayDependenciesInfo(dependencies);
@@ -521,29 +413,15 @@
 
       // Optimiser les chemins critiques
       const optimizePathsBtn = document.getElementById('optimize-paths-btn');
-      debug('Bouton d\'optimisation trouvé:', optimizePathsBtn);
-
       optimizePathsBtn.addEventListener('click', () => {
-        debug('Clic sur le bouton d\'optimisation');
         if (!roadmap || !dependencies) {
-          alert('Veuillez d\'abord charger une roadmap et analyser les dépendances.');
+          alert('Veuillez d\'abord charger un plan et analyser les dépendances.');
           return;
         }
 
         try {
           // Optimiser les chemins critiques
-          try {
-            if (orchestrationEngine) {
-              criticalPaths = orchestrationEngine.optimizeCriticalPaths(roadmap.id);
-              debug('Chemins critiques optimisés avec le moteur d\'orchestration');
-            } else {
-              criticalPaths = optimizeTestCriticalPaths();
-              debug('Chemins critiques optimisés avec les données de test');
-            }
-          } catch (error) {
-            debug('Erreur lors de l\'optimisation des chemins critiques, utilisation des données de test', error);
-            criticalPaths = optimizeTestCriticalPaths();
-          }
+          criticalPaths = optimizeTestCriticalPaths();
 
           // Afficher les résultats
           displayCriticalPathsInfo(criticalPaths);
@@ -561,12 +439,9 @@
 
       // Équilibrer les ressources
       const balanceResourcesBtn = document.getElementById('balance-resources-btn');
-      debug('Bouton d\'équilibrage trouvé:', balanceResourcesBtn);
-
       balanceResourcesBtn.addEventListener('click', () => {
-        debug('Clic sur le bouton d\'équilibrage');
         if (!roadmap || !dependencies || !criticalPaths) {
-          alert('Veuillez d\'abord charger une roadmap, analyser les dépendances et optimiser les chemins critiques.');
+          alert('Veuillez d\'abord charger un plan, analyser les dépendances et optimiser les chemins critiques.');
           return;
         }
 
@@ -580,35 +455,13 @@
           };
 
           // Équilibrer les ressources
-          try {
-            if (orchestrationEngine) {
-              resourceAllocations = orchestrationEngine.balanceResources(roadmap.id, resources);
-              debug('Ressources équilibrées avec le moteur d\'orchestration');
-            } else {
-              resourceAllocations = balanceTestResources();
-              debug('Ressources équilibrées avec les données de test');
-            }
-          } catch (error) {
-            debug('Erreur lors de l\'équilibrage des ressources, utilisation des données de test', error);
-            resourceAllocations = balanceTestResources();
-          }
+          resourceAllocations = balanceTestResources();
 
           // Afficher les résultats
           displayResourcesInfo(resourceAllocations, resources);
 
           // Générer le plan d'exécution
-          try {
-            if (orchestrationEngine) {
-              executionPlan = orchestrationEngine.generateExecutionPlan(roadmap.id);
-              debug('Plan d\'exécution généré avec le moteur d\'orchestration');
-            } else {
-              executionPlan = generateTestExecutionPlan();
-              debug('Plan d\'exécution généré avec les données de test');
-            }
-          } catch (error) {
-            debug('Erreur lors de la génération du plan d\'exécution, utilisation des données de test', error);
-            executionPlan = generateTestExecutionPlan();
-          }
+          executionPlan = generateTestExecutionPlan();
 
           // Afficher le plan d'exécution
           displayExecutionPlanInfo(executionPlan);
@@ -634,6 +487,55 @@
           <p><strong>Type:</strong> ${roadmap.type.toUpperCase()}</p>
           <p><strong>Statut:</strong> ${roadmap.status || 'Non défini'}</p>
         `;
+      }
+
+      function displayTasks(roadmap) {
+        const tasksInfo = document.getElementById('tasks-info');
+
+        if (!roadmap.sections || roadmap.sections.length === 0) {
+          tasksInfo.innerHTML = '<p>Aucune tâche disponible</p>';
+          return;
+        }
+
+        let html = '<ul class="task-list">';
+
+        roadmap.sections.forEach(section => {
+          html += `
+            <li>
+              <div class="task-header" onclick="toggleTaskDetails(this)">
+                <span class="task-title">${section.id}. ${section.title}</span>
+                <span class="task-status ${section.status}">${section.status}</span>
+              </div>
+              <div class="task-details">
+                <p>${section.description || 'Aucune description'}</p>
+          `;
+
+          if (section.tasks && section.tasks.length > 0) {
+            html += '<ul class="subtasks">';
+            section.tasks.forEach(task => {
+              html += `
+                <li>
+                  <div class="task-header" onclick="toggleTaskDetails(this)">
+                    <span class="task-title">${task.id}. ${task.title}</span>
+                    <span class="task-status ${task.status}">${task.status}</span>
+                  </div>
+                  <div class="task-details">
+                    <p>${task.description || 'Aucune description'}</p>
+                  </div>
+                </li>
+              `;
+            });
+            html += '</ul>';
+          }
+
+          html += `
+              </div>
+            </li>
+          `;
+        });
+
+        html += '</ul>';
+        tasksInfo.innerHTML = html;
       }
 
       function displayDependenciesInfo(dependencies) {
@@ -715,7 +617,22 @@
           <pre>${JSON.stringify(executionPlan.riskFactors, null, 2)}</pre>
         `;
       }
+
+      // Charger la liste des plans disponibles
+      const planSelector = document.getElementById('plan-selector');
+      RoadmapLoader.getAvailablePlans().forEach(plan => {
+        const option = document.createElement('option');
+        option.value = plan.id;
+        option.textContent = plan.title;
+        planSelector.appendChild(option);
+      });
     });
+
+    // Fonction pour afficher/masquer les détails d'une tâche
+    window.toggleTaskDetails = function(element) {
+      const details = element.nextElementSibling;
+      details.classList.toggle('active');
+    }
   </script>
 </body>
 </html>
