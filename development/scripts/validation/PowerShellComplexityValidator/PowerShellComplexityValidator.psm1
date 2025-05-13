@@ -17,6 +17,7 @@ $metricsConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "MetricsConfigurat
 $metricsAnalyzerPath = Join-Path -Path $PSScriptRoot -ChildPath "MetricsAnalyzer.psm1"
 $htmlReportPath = Join-Path -Path $PSScriptRoot -ChildPath "HtmlReportGenerator.psm1"
 $visualizationPath = Join-Path -Path $PSScriptRoot -ChildPath "VisualizationIntegrator.psm1"
+$nestingDepthPath = Join-Path -Path $PSScriptRoot -ChildPath "NestingDepthAnalyzer.psm1"
 
 # Importer le module de configuration des métriques
 if (Test-Path -Path $metricsConfigPath) {
@@ -44,6 +45,13 @@ if (Test-Path -Path $visualizationPath) {
     Import-Module -Name $visualizationPath -Force
 } else {
     Write-Warning "Le module d'intégration des visualisations est introuvable au chemin: $visualizationPath"
+}
+
+# Importer le module d'analyse de la profondeur d'imbrication
+if (Test-Path -Path $nestingDepthPath) {
+    Import-Module -Name $nestingDepthPath -Force
+} else {
+    Write-Warning "Le module d'analyse de la profondeur d'imbrication est introuvable au chemin: $nestingDepthPath"
 }
 
 # Variables globales du module
@@ -102,8 +110,8 @@ function Test-PowerShellComplexity {
         [string]$ConfigPath,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet("CyclomaticComplexity", "NestingDepth", "FunctionLength", "ParameterCount", "CognitiveComplexity", "Coupling")]
-        [string[]]$Metrics,
+        [ValidateSet("CyclomaticComplexity", "NestingDepth", "FunctionLength", "ParameterCount", "CognitiveComplexity", "Coupling", "All")]
+        [string[]]$Metrics = @("CyclomaticComplexity"),
 
         [Parameter(Mandatory = $false)]
         [switch]$Recurse,
@@ -535,5 +543,91 @@ function New-FunctionComplexityReport {
     }
 }
 
+<#
+.SYNOPSIS
+    Génère une visualisation des structures imbriquées dans un fichier PowerShell.
+.DESCRIPTION
+    Cette fonction génère une visualisation HTML des structures imbriquées dans un fichier PowerShell.
+.PARAMETER FilePath
+    Chemin du fichier PowerShell à analyser.
+.PARAMETER OutputPath
+    Chemin du fichier HTML de sortie.
+.PARAMETER Title
+    Titre de la visualisation.
+.PARAMETER Config
+    Configuration de la visualisation.
+.EXAMPLE
+    New-NestedStructuresReport -FilePath "C:\Scripts\MyScript.ps1" -OutputPath "C:\Reports\NestedStructures.html"
+    Génère une visualisation des structures imbriquées pour le script spécifié.
+.OUTPUTS
+    System.String
+    Retourne le chemin du fichier HTML généré.
+#>
+function New-NestedStructuresReport {
+    [CmdletBinding()]
+    [OutputType([string])]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$FilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string]$OutputPath,
+
+        [Parameter(Mandatory = $false)]
+        [string]$Title = "Visualisation des structures imbriquées",
+
+        [Parameter(Mandatory = $false)]
+        [hashtable]$Config = @{}
+    )
+
+    # Vérifier si le fichier existe
+    if (-not (Test-Path -Path $FilePath)) {
+        Write-Error "Le fichier spécifié n'existe pas : $FilePath"
+        return $null
+    }
+
+    # Lire le contenu du fichier
+    $sourceCode = Get-Content -Path $FilePath -Raw
+
+    # Analyser les structures de contrôle
+    $controlStructures = [System.Collections.ArrayList]::new()
+
+    # Analyser le code PowerShell
+    $ast = [System.Management.Automation.Language.Parser]::ParseInput($sourceCode, [ref]$null, [ref]$null)
+
+    # Parcourir l'AST pour trouver les structures de contrôle
+    $ast.FindAll({
+            $args[0] -is [System.Management.Automation.Language.IfStatementAst] -or
+            $args[0] -is [System.Management.Automation.Language.ForStatementAst] -or
+            $args[0] -is [System.Management.Automation.Language.ForEachStatementAst] -or
+            $args[0] -is [System.Management.Automation.Language.WhileStatementAst] -or
+            $args[0] -is [System.Management.Automation.Language.DoUntilStatementAst] -or
+            $args[0] -is [System.Management.Automation.Language.SwitchStatementAst] -or
+            $args[0] -is [System.Management.Automation.Language.TryStatementAst]
+        }, $true) | ForEach-Object {
+        $type = $_.GetType().Name -replace "Ast$" -replace "Statement", ""
+        $line = $_.Extent.StartLineNumber
+        $column = $_.Extent.StartColumnNumber
+
+        $null = $controlStructures.Add([PSCustomObject]@{
+                Type     = $type
+                Line     = $line
+                Column   = $column
+                Function = "Unknown"
+            })
+    }
+
+    # Générer la visualisation des structures imbriquées
+    if (Get-Command -Name New-NestedStructuresVisualization -ErrorAction SilentlyContinue) {
+        $visualizationPath = New-NestedStructuresVisualization -ControlStructures $controlStructures -SourceCode $sourceCode -OutputPath $OutputPath -Title $Title -Config $Config
+
+        Write-Verbose "Visualisation des structures imbriquées générée : $visualizationPath"
+        return $visualizationPath
+    } else {
+        Write-Warning "La fonction New-NestedStructuresVisualization n'est pas disponible."
+        return $null
+    }
+}
+
 # Exporter les fonctions publiques
-Export-ModuleMember -Function Test-PowerShellComplexity, New-PowerShellComplexityReport, New-FunctionComplexityReport
+Export-ModuleMember -Function Test-PowerShellComplexity, New-PowerShellComplexityReport, New-FunctionComplexityReport, New-NestedStructuresReport

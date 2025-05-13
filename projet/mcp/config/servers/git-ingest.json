@@ -1,0 +1,26 @@
+﻿{
+    "outputDir":  "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/projet/mcp/servers/git-ingest/output",
+    "cloneDir":  "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/projet/mcp/servers/git-ingest/repos",
+    "maxFiles":  100,
+    "excludePatterns":  [
+                            "node_modules/**",
+                            ".git/**",
+                            "**/*.min.js",
+                            "**/*.bundle.js",
+                            "**/*.map",
+                            "**/dist/**",
+                            "**/build/**"
+                        ],
+    "cacheEnabled":  true,
+    "port":  8001,
+    "cacheTTL":  3600,
+    "includePatterns":  [
+                            "**/*.md",
+                            "**/*.py",
+                            "**/*.js",
+                            "**/*.ts",
+                            "**/*.json",
+                            "**/*.yaml",
+                            "**/*.yml"
+                        ]
+}

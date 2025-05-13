@@ -1,0 +1,53 @@
+{
+  "id": "memory_123456",
+  "content": "Ceci est un exemple de contenu de mémoire.",
+  "metadata": {
+    "source": "exemple",
+    "type": "document",
+    "embedding_model": "openai/text-embedding-3-small",
+    "doc_type": "markdown",
+    "title": "Exemple de mémoire",
+    "tags": [
+      "exemple",
+      "test"
+    ],
+    "categories": [
+      "documentation"
+    ],
+    "author": "Système",
+    "created_by": "validate_memory_schema.py",
+    "chunk_info": {
+      "chunk_id": "chunk_1",
+      "chunk_index": 0,
+      "total_chunks": 1,
+      "chunk_size": 1000,
+      "chunk_overlap": 200,
+      "start_index": 0,
+      "end_index": 1000
+    },
+    "file_info": {
+      "file_path": "/path/to/file.md",
+      "file_name": "file.md",
+      "file_extension": ".md",
+      "file_size": 1024,
+      "file_modified_at": "2025-05-13T23:36:12.802691",
+      "file_created_at": "2025-05-13T23:36:12.803692"
+    },
+    "content_stats": {
+      "char_count": 100,
+      "word_count": 20,
+      "line_count": 5
+    }
+  },
+  "embedding": [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5
+  ],
+  "created_at": "2025-05-13T23:36:12.803692",
+  "updated_at": "2025-05-13T23:36:12.803692",
+  "importance": 0.8,
+  "version": 1
+}

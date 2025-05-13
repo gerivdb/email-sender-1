@@ -15,6 +15,7 @@
 # Importer les modules nécessaires
 $metricsConfigPath = Join-Path -Path $PSScriptRoot -ChildPath "MetricsConfiguration.psm1"
 $cyclomaticComplexityAnalyzerPath = Join-Path -Path $PSScriptRoot -ChildPath "CyclomaticComplexityAnalyzer.psm1"
+$nestingDepthAnalyzerPath = Join-Path -Path $PSScriptRoot -ChildPath "NestingDepthAnalyzer.psm1"
 
 # Importer le module de configuration des métriques
 if (Test-Path -Path $metricsConfigPath) {
@@ -28,6 +29,13 @@ if (Test-Path -Path $cyclomaticComplexityAnalyzerPath) {
     Import-Module -Name $cyclomaticComplexityAnalyzerPath -Force
 } else {
     throw "Le module d'analyse de la complexité cyclomatique est introuvable au chemin: $cyclomaticComplexityAnalyzerPath"
+}
+
+# Importer le module d'analyse de la profondeur d'imbrication
+if (Test-Path -Path $nestingDepthAnalyzerPath) {
+    Import-Module -Name $nestingDepthAnalyzerPath -Force
+} else {
+    throw "Le module d'analyse de la profondeur d'imbrication est introuvable au chemin: $nestingDepthAnalyzerPath"
 }
 
 <#
@@ -123,13 +131,49 @@ function Invoke-MetricsAnalysis {
                 }
             }
             "NestingDepth" {
-                # Sera implémenté dans la tâche 1.2.2.3.4
+                Write-Verbose "  Analyse de la profondeur d'imbrication"
+
+                # Lire le contenu du fichier
+                $fileContent = Get-Content -Path $FilePath -Raw
+
+                # Parser le contenu du fichier
+                $parseErrors = $null
+                $ast = [System.Management.Automation.Language.Parser]::ParseInput($fileContent, [ref]$null, [ref]$parseErrors)
+
+                if ($parseErrors -and $parseErrors.Count -gt 0) {
+                    Write-Warning "Erreurs de parsing dans le fichier '$FilePath':"
+                    foreach ($error in $parseErrors) {
+                        Write-Warning "  Ligne $($error.Extent.StartLineNumber), colonne $($error.Extent.StartColumnNumber): $($error.Message)"
+                    }
+                }
+
+                # Extraire les fonctions du fichier
+                $functions = Get-PowerShellFunctions -Ast $ast
+
+                # Récupérer les structures de contrôle
+                $controlStructures = Get-ControlStructures -Ast $ast
+
+                # Analyser la profondeur d'imbrication
+                $nestingResults = Measure-NestingDepth -Ast $ast -ControlStructures $controlStructures
+
                 $metricResults = @{
                     FilePath = $FilePath
                     Metric   = $metric
                     Results  = @()
                 }
-                Write-Verbose "  Analyse de la profondeur d'imbrication non implémentée"
+
+                foreach ($result in $nestingResults) {
+                    $metricResults.Results += [PSCustomObject]@{
+                        Line      = $result.Line
+                        Function  = $result.Function
+                        Value     = $result.Value
+                        Threshold = $result.Threshold
+                        Severity  = $result.Severity
+                        Message   = $result.Message
+                        Rule      = "HighNestingDepth"
+                        Details   = $result.NestingLevels
+                    }
+                }
             }
             "FunctionLength" {
                 # Sera implémenté dans la tâche 1.2.2.3.5

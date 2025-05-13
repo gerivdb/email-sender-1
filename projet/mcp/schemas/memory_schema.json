@@ -1,0 +1,326 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Memory Schema",
+  "description": "Schéma pour les mémoires du système MCP",
+  "type": "object",
+  "required": [
+    "id",
+    "content",
+    "metadata",
+    "created_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Identifiant unique de la mémoire",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "content": {
+      "type": "string",
+      "description": "Contenu textuel de la mémoire"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Métadonnées associées à la mémoire",
+      "required": [
+        "source",
+        "type",
+        "embedding_model"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Source de la mémoire (fichier, API, etc.)"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type de mémoire",
+          "enum": [
+            "document",
+            "conversation",
+            "code",
+            "task",
+            "roadmap",
+            "system",
+            "user_preference",
+            "custom"
+          ]
+        },
+        "embedding_model": {
+          "type": "string",
+          "description": "Modèle utilisé pour générer l'embedding"
+        },
+        "doc_type": {
+          "type": "string",
+          "description": "Type de document (pour les mémoires de type document)",
+          "enum": [
+            "markdown",
+            "python",
+            "javascript",
+            "typescript",
+            "html",
+            "css",
+            "json",
+            "text",
+            "other"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "description": "Titre de la mémoire"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associés à la mémoire",
+          "items": {
+            "type": "string"
+          }
+        },
+        "categories": {
+          "type": "array",
+          "description": "Catégories associées à la mémoire",
+          "items": {
+            "type": "string"
+          }
+        },
+        "author": {
+          "type": "string",
+          "description": "Auteur de la mémoire"
+        },
+        "created_by": {
+          "type": "string",
+          "description": "Utilisateur ou processus ayant créé la mémoire"
+        },
+        "modified_by": {
+          "type": "string",
+          "description": "Utilisateur ou processus ayant modifié la mémoire en dernier"
+        },
+        "parent_id": {
+          "type": "string",
+          "description": "Identifiant de la mémoire parente (pour les mémoires hiérarchiques)"
+        },
+        "chunk_info": {
+          "type": "object",
+          "description": "Informations sur le chunking",
+          "properties": {
+            "chunk_id": {
+              "type": "string",
+              "description": "Identifiant du chunk"
+            },
+            "chunk_index": {
+              "type": "integer",
+              "description": "Index du chunk dans le document original"
+            },
+            "total_chunks": {
+              "type": "integer",
+              "description": "Nombre total de chunks dans le document original"
+            },
+            "chunk_size": {
+              "type": "integer",
+              "description": "Taille du chunk en caractères"
+            },
+            "chunk_overlap": {
+              "type": "integer",
+              "description": "Chevauchement avec le chunk précédent en caractères"
+            },
+            "start_index": {
+              "type": "integer",
+              "description": "Index de début du chunk dans le document original"
+            },
+            "end_index": {
+              "type": "integer",
+              "description": "Index de fin du chunk dans le document original"
+            }
+          }
+        },
+        "file_info": {
+          "type": "object",
+          "description": "Informations sur le fichier source",
+          "properties": {
+            "file_path": {
+              "type": "string",
+              "description": "Chemin du fichier source"
+            },
+            "file_name": {
+              "type": "string",
+              "description": "Nom du fichier source"
+            },
+            "file_extension": {
+              "type": "string",
+              "description": "Extension du fichier source"
+            },
+            "file_size": {
+              "type": "integer",
+              "description": "Taille du fichier source en octets"
+            },
+            "file_modified_at": {
+              "type": "string",
+              "description": "Date de dernière modification du fichier source",
+              "format": "date-time"
+            },
+            "file_created_at": {
+              "type": "string",
+              "description": "Date de création du fichier source",
+              "format": "date-time"
+            }
+          }
+        },
+        "code_info": {
+          "type": "object",
+          "description": "Informations spécifiques au code",
+          "properties": {
+            "language": {
+              "type": "string",
+              "description": "Langage de programmation"
+            },
+            "functions": {
+              "type": "array",
+              "description": "Fonctions présentes dans le code",
+              "items": {
+                "type": "string"
+              }
+            },
+            "classes": {
+              "type": "array",
+              "description": "Classes présentes dans le code",
+              "items": {
+                "type": "string"
+              }
+            },
+            "imports": {
+              "type": "array",
+              "description": "Imports présents dans le code",
+              "items": {
+                "type": "string"
+              }
+            },
+            "dependencies": {
+              "type": "array",
+              "description": "Dépendances du code",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "roadmap_info": {
+          "type": "object",
+          "description": "Informations spécifiques aux roadmaps",
+          "properties": {
+            "roadmap_id": {
+              "type": "string",
+              "description": "Identifiant de la roadmap"
+            },
+            "version": {
+              "type": "string",
+              "description": "Version de la roadmap"
+            },
+            "status": {
+              "type": "string",
+              "description": "Statut de la roadmap",
+              "enum": [
+                "draft",
+                "in_progress",
+                "completed",
+                "archived"
+              ]
+            },
+            "progress": {
+              "type": "number",
+              "description": "Progression de la roadmap (0-100)",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "priority": {
+              "type": "string",
+              "description": "Priorité de la roadmap",
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "critical"
+              ]
+            },
+            "due_date": {
+              "type": "string",
+              "description": "Date d'échéance de la roadmap",
+              "format": "date-time"
+            }
+          }
+        },
+        "content_stats": {
+          "type": "object",
+          "description": "Statistiques sur le contenu",
+          "properties": {
+            "char_count": {
+              "type": "integer",
+              "description": "Nombre de caractères"
+            },
+            "word_count": {
+              "type": "integer",
+              "description": "Nombre de mots"
+            },
+            "line_count": {
+              "type": "integer",
+              "description": "Nombre de lignes"
+            }
+          }
+        },
+        "custom_metadata": {
+          "type": "object",
+          "description": "Métadonnées personnalisées"
+        }
+      }
+    },
+    "embedding": {
+      "type": "array",
+      "description": "Embedding vectoriel de la mémoire",
+      "items": {
+        "type": "number"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Date de création de la mémoire",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "Date de dernière mise à jour de la mémoire",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "description": "Date d'expiration de la mémoire (optionnelle)",
+      "format": "date-time"
+    },
+    "ttl": {
+      "type": "integer",
+      "description": "Durée de vie de la mémoire en secondes (optionnelle)"
+    },
+    "importance": {
+      "type": "number",
+      "description": "Importance de la mémoire (0-1)",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "relevance_score": {
+      "type": "number",
+      "description": "Score de pertinence de la mémoire (0-1)",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "related_memories": {
+      "type": "array",
+      "description": "Identifiants des mémoires liées",
+      "items": {
+        "type": "string"
+      }
+    },
+    "version": {
+      "type": "integer",
+      "description": "Version de la mémoire",
+      "default": 1
+    }
+  }
+}
