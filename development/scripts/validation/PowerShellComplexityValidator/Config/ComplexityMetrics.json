@@ -1,0 +1,215 @@
+{
+  "ComplexityMetrics": {
+    "CyclomaticComplexity": {
+      "Enabled": true,
+      "Description": "Mesure le nombre de chemins d'exécution indépendants dans une fonction",
+      "Structures": {
+        "If": 1,
+        "ElseIf": 1,
+        "Switch": {
+          "PerCase": 1
+        },
+        "Foreach": 1,
+        "While": 1,
+        "DoWhile": 1,
+        "DoUntil": 1,
+        "For": 1,
+        "TernaryOperator": 1,
+        "LogicalOperator": 1,
+        "PipelineFilter": 1,
+        "CatchBlock": 1
+      },
+      "Thresholds": {
+        "Low": {
+          "Value": 10,
+          "Severity": "Information",
+          "Message": "Complexité cyclomatique acceptable"
+        },
+        "Medium": {
+          "Value": 20,
+          "Severity": "Warning",
+          "Message": "Complexité cyclomatique à surveiller"
+        },
+        "High": {
+          "Value": 30,
+          "Severity": "Error",
+          "Message": "Complexité cyclomatique problématique"
+        },
+        "VeryHigh": {
+          "Value": 31,
+          "Severity": "Error",
+          "Message": "Complexité cyclomatique critique, refactorisation nécessaire"
+        }
+      }
+    },
+    "NestingDepth": {
+      "Enabled": true,
+      "Description": "Mesure le nombre de niveaux de structures de contrôle imbriquées",
+      "Structures": {
+        "If": 1,
+        "ElseIf": 1,
+        "Else": 1,
+        "Foreach": 1,
+        "For": 1,
+        "While": 1,
+        "Do": 1,
+        "Switch": 1,
+        "SwitchCase": 1,
+        "ScriptBlock": 1,
+        "TryCatch": 1
+      },
+      "Thresholds": {
+        "Low": {
+          "Value": 3,
+          "Severity": "Information",
+          "Message": "Profondeur d'imbrication acceptable"
+        },
+        "Medium": {
+          "Value": 5,
+          "Severity": "Warning",
+          "Message": "Profondeur d'imbrication à surveiller"
+        },
+        "High": {
+          "Value": 7,
+          "Severity": "Error",
+          "Message": "Profondeur d'imbrication problématique"
+        },
+        "VeryHigh": {
+          "Value": 8,
+          "Severity": "Error",
+          "Message": "Profondeur d'imbrication critique, refactorisation nécessaire"
+        }
+      }
+    },
+    "FunctionLength": {
+      "Enabled": true,
+      "Description": "Mesure le nombre de lignes de code dans une fonction",
+      "ExcludeComments": true,
+      "ExcludeEmptyLines": true,
+      "IncludeBraces": true,
+      "Thresholds": {
+        "Low": {
+          "Value": 50,
+          "Severity": "Information",
+          "Message": "Longueur de fonction acceptable"
+        },
+        "Medium": {
+          "Value": 100,
+          "Severity": "Warning",
+          "Message": "Longueur de fonction à surveiller"
+        },
+        "High": {
+          "Value": 200,
+          "Severity": "Error",
+          "Message": "Longueur de fonction problématique"
+        },
+        "VeryHigh": {
+          "Value": 201,
+          "Severity": "Error",
+          "Message": "Longueur de fonction critique, refactorisation nécessaire"
+        }
+      }
+    },
+    "ParameterCount": {
+      "Enabled": true,
+      "Description": "Mesure le nombre de paramètres d'une fonction",
+      "Thresholds": {
+        "Low": {
+          "Value": 4,
+          "Severity": "Information",
+          "Message": "Nombre de paramètres acceptable"
+        },
+        "Medium": {
+          "Value": 7,
+          "Severity": "Warning",
+          "Message": "Nombre de paramètres à surveiller"
+        },
+        "High": {
+          "Value": 10,
+          "Severity": "Error",
+          "Message": "Nombre de paramètres problématique"
+        },
+        "VeryHigh": {
+          "Value": 11,
+          "Severity": "Error",
+          "Message": "Nombre de paramètres critique, refactorisation nécessaire"
+        }
+      }
+    },
+    "CognitiveComplexity": {
+      "Enabled": true,
+      "Description": "Mesure la difficulté à comprendre le code",
+      "Factors": {
+        "ComplexPipeline": 2,
+        "LambdaExpression": 2,
+        "ComplexComparison": 1,
+        "RegularExpression": 3,
+        "NestedScriptBlock": 2
+      },
+      "Thresholds": {
+        "Low": {
+          "Value": 15,
+          "Severity": "Information",
+          "Message": "Complexité cognitive acceptable"
+        },
+        "Medium": {
+          "Value": 30,
+          "Severity": "Warning",
+          "Message": "Complexité cognitive à surveiller"
+        },
+        "High": {
+          "Value": 50,
+          "Severity": "Error",
+          "Message": "Complexité cognitive problématique"
+        },
+        "VeryHigh": {
+          "Value": 51,
+          "Severity": "Error",
+          "Message": "Complexité cognitive critique, refactorisation nécessaire"
+        }
+      }
+    },
+    "Coupling": {
+      "Enabled": true,
+      "Description": "Mesure les dépendances entre modules",
+      "AfferentCoupling": {
+        "Thresholds": {
+          "Low": {
+            "Value": 5,
+            "Severity": "Information",
+            "Message": "Couplage afférent acceptable"
+          },
+          "Medium": {
+            "Value": 10,
+            "Severity": "Warning",
+            "Message": "Couplage afférent à surveiller"
+          },
+          "High": {
+            "Value": 11,
+            "Severity": "Error",
+            "Message": "Couplage afférent problématique"
+          }
+        }
+      },
+      "EfferentCoupling": {
+        "Thresholds": {
+          "Low": {
+            "Value": 10,
+            "Severity": "Information",
+            "Message": "Couplage efférent acceptable"
+          },
+          "Medium": {
+            "Value": 20,
+            "Severity": "Warning",
+            "Message": "Couplage efférent à surveiller"
+          },
+          "High": {
+            "Value": 21,
+            "Severity": "Error",
+            "Message": "Couplage efférent problématique"
+          }
+        }
+      }
+    }
+  }
+}

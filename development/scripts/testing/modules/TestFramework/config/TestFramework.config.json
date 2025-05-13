@@ -1,0 +1,13 @@
+﻿{
+    "Settings":  {
+                     "TestResultsPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\testing\\modules\\TestFramework\\results",
+                     "DefaultTimeout":  30,
+                     "TestDataPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\testing\\modules\\TestFramework\\data",
+                     "PesterVersion":  "5.0.0"
+                 },
+    "Version":  "1.0.0",
+    "LogLevel":  "Info",
+    "LogPath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\testing\\modules\\TestFramework\\logs\\TestFramework.log",
+    "ModuleName":  "TestFramework",
+    "Enabled":  true
+}

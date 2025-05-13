@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Rapport de validation de la documentation PowerShell</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #0066cc; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .error { color: #cc0000; }
+        .warning { color: #ff9900; }
+        .summary { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Rapport de validation de la documentation PowerShell</h1>
+    <div class="summary">
+        <h2>RÃ©sumÃ©</h2>
+        <p>Nombre total de problÃ¨mes : 6</p>
+        <p>Erreurs : 5</p>
+        <p>Avertissements : 1</p>
+    </div>
+    <h2>DÃ©tails</h2>
+    <table>
+        <tr>
+            <th>SÃ©vÃ©ritÃ©</th>
+            <th>Fichier</th>
+            <th>Ligne</th>
+            <th>RÃ¨gle</th>
+            <th>Message</th>
+        </tr><tr><td class='error'>Error</td><td>D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\validation\PowerShellDocumentationValidator\Tests\TestFile.ps1</td><td>1</td><td>RequireHeader</td><td>Le fichier doit avoir un bloc de commentaires d'en-tÃªte.</td></tr>
+<tr><td class='error'>Error</td><td>D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\validation\PowerShellDocumentationValidator\Tests\TestFile.ps1</td><td>7</td><td>RequireExample</td><td>La fonction 'Test-Function' doit avoir au moins un exemple dans son bloc de documentation.</td></tr>
+<tr><td class='error'>Error</td><td>D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\validation\PowerShellDocumentationValidator\Tests\TestFile.ps1</td><td>7</td><td>RequireExample</td><td>La fonction 'Test-Function' doit avoir au moins un exemple dans son bloc de documentation.</td></tr>
+<tr><td class='warning'>Warning</td><td>D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\validation\PowerShellDocumentationValidator\Tests\TestFile.ps1</td><td>7</td><td>RequireOutputType</td><td>La fonction 'Test-Function' doit avoir une section OUTPUTS dans son bloc de documentation.</td></tr>
+<tr><td class='error'>Error</td><td>D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\validation\PowerShellDocumentationValidator\Tests\TestFile.ps1</td><td>9</td><td>RequireParameterDocumentation</td><td>Le paramÃ¨tre 'Parameter1' de la fonction 'Test-Function' doit Ãªtre documentÃ©.</td></tr>
+<tr><td class='error'>Error</td><td>D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\validation\PowerShellDocumentationValidator\Tests\TestFile.ps1</td><td>10</td><td>RequireParameterDocumentation</td><td>Le paramÃ¨tre 'Parameter2' de la fonction 'Test-Function' doit Ãªtre documentÃ©.</td></tr>    </table>
+</body>
+</html>

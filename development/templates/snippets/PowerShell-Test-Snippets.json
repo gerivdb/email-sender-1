@@ -1,0 +1,279 @@
+{
+  "Pester Test File": {
+    "prefix": "test-file",
+    "body": [
+      "BeforeAll {",
+      "    # Import the module to test",
+      "    \\$modulePath = Join-Path -Path \\$PSScriptRoot -ChildPath '..\\\\${1:ModuleName}.psm1'",
+      "    Import-Module -Name \\$modulePath -Force",
+      "}",
+      "",
+      "Describe '${1:ModuleName}' {",
+      "    Context '${2:FunctionName}' {",
+      "        It '${3:Should do something}' {",
+      "            # Arrange",
+      "            ${4}",
+      "",
+      "            # Act",
+      "            ${5}",
+      "",
+      "            # Assert",
+      "            ${0}",
+      "        }",
+      "    }",
+      "}",
+      "",
+      "AfterAll {",
+      "    # Clean up",
+      "    Remove-Module -Name '${1:ModuleName}' -Force -ErrorAction SilentlyContinue",
+      "}"
+    ],
+    "description": "Basic Pester test file structure"
+  },
+  "Pester Describe Block": {
+    "prefix": "test-describe",
+    "body": [
+      "Describe '${1:Module or function name}' {",
+      "    Context '${2:Specific functionality}' {",
+      "        It '${3:Should do something}' {",
+      "            # Arrange",
+      "            ${4}",
+      "",
+      "            # Act",
+      "            ${5}",
+      "",
+      "            # Assert",
+      "            ${0}",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "Pester Describe block"
+  },
+  "Pester Context Block": {
+    "prefix": "test-context",
+    "body": [
+      "Context '${1:Specific functionality}' {",
+      "    It '${2:Should do something}' {",
+      "        # Arrange",
+      "        ${3}",
+      "",
+      "        # Act",
+      "        ${4}",
+      "",
+      "        # Assert",
+      "        ${0}",
+      "    }",
+      "}"
+    ],
+    "description": "Pester Context block"
+  },
+  "Pester It Block": {
+    "prefix": "test-it",
+    "body": [
+      "It '${1:Should do something}' {",
+      "    # Arrange",
+      "    ${2}",
+      "",
+      "    # Act",
+      "    ${3}",
+      "",
+      "    # Assert",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Pester It block"
+  },
+  "Pester BeforeAll Block": {
+    "prefix": "test-beforeall",
+    "body": [
+      "BeforeAll {",
+      "    # Setup code that runs before all tests",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Pester BeforeAll block"
+  },
+  "Pester AfterAll Block": {
+    "prefix": "test-afterall",
+    "body": [
+      "AfterAll {",
+      "    # Cleanup code that runs after all tests",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Pester AfterAll block"
+  },
+  "Pester BeforeEach Block": {
+    "prefix": "test-beforeeach",
+    "body": [
+      "BeforeEach {",
+      "    # Setup code that runs before each test",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Pester BeforeEach block"
+  },
+  "Pester AfterEach Block": {
+    "prefix": "test-aftereach",
+    "body": [
+      "AfterEach {",
+      "    # Cleanup code that runs after each test",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Pester AfterEach block"
+  },
+  "Pester Mock": {
+    "prefix": "test-mock",
+    "body": [
+      "Mock -CommandName ${1:CommandName} -MockWith {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "Pester Mock command"
+  },
+  "Pester Should Be": {
+    "prefix": "test-shouldbe",
+    "body": [
+      "${1:actual} | Should -Be ${2:expected}"
+    ],
+    "description": "Pester Should -Be assertion"
+  },
+  "Pester Should BeExactly": {
+    "prefix": "test-shouldbeexactly",
+    "body": [
+      "${1:actual} | Should -BeExactly ${2:expected}"
+    ],
+    "description": "Pester Should -BeExactly assertion"
+  },
+  "Pester Should Contain": {
+    "prefix": "test-shouldcontain",
+    "body": [
+      "${1:actual} | Should -Contain ${2:expected}"
+    ],
+    "description": "Pester Should -Contain assertion"
+  },
+  "Pester Should BeTrue": {
+    "prefix": "test-shouldbetrue",
+    "body": [
+      "${1:actual} | Should -BeTrue"
+    ],
+    "description": "Pester Should -BeTrue assertion"
+  },
+  "Pester Should BeFalse": {
+    "prefix": "test-shouldbefalse",
+    "body": [
+      "${1:actual} | Should -BeFalse"
+    ],
+    "description": "Pester Should -BeFalse assertion"
+  },
+  "Pester Should BeNull": {
+    "prefix": "test-shouldbenull",
+    "body": [
+      "${1:actual} | Should -BeNull"
+    ],
+    "description": "Pester Should -BeNull assertion"
+  },
+  "Pester Should Not BeNull": {
+    "prefix": "test-shouldnotbenull",
+    "body": [
+      "${1:actual} | Should -Not -BeNull"
+    ],
+    "description": "Pester Should -Not -BeNull assertion"
+  },
+  "Pester Should Throw": {
+    "prefix": "test-shouldthrow",
+    "body": [
+      "{ ${1:scriptblock} } | Should -Throw ${2:expectedMessage}"
+    ],
+    "description": "Pester Should -Throw assertion"
+  },
+  "Pester Should Not Throw": {
+    "prefix": "test-shouldnotthrow",
+    "body": [
+      "{ ${1:scriptblock} } | Should -Not -Throw"
+    ],
+    "description": "Pester Should -Not -Throw assertion"
+  },
+  "Pester Test Function": {
+    "prefix": "test-function",
+    "body": [
+      "Describe '${1:Function-Name}' {",
+      "    BeforeAll {",
+      "        # Import the module",
+      "        \\$modulePath = Join-Path -Path \\$PSScriptRoot -ChildPath '..\\\\${2:ModuleName}.psm1'",
+      "        Import-Module -Name \\$modulePath -Force",
+      "    }",
+      "",
+      "    Context 'Parameter validation' {",
+      "        It 'Should throw when required parameters are not provided' {",
+      "            { ${1:Function-Name} } | Should -Throw",
+      "        }",
+      "",
+      "        It 'Should not throw with valid parameters' {",
+      "            { ${1:Function-Name} -${3:Parameter} '${4:Value}' } | Should -Not -Throw",
+      "        }",
+      "    }",
+      "",
+      "    Context 'Functionality' {",
+      "        It 'Should return expected results' {",
+      "            # Arrange",
+      "            ${5}",
+      "",
+      "            # Act",
+      "            \\$result = ${1:Function-Name} -${3:Parameter} '${4:Value}'",
+      "",
+      "            # Assert",
+      "            \\$result | Should -Not -BeNull",
+      "            ${0}",
+      "        }",
+      "    }",
+      "",
+      "    AfterAll {",
+      "        # Clean up",
+      "        Remove-Module -Name '${2:ModuleName}' -Force -ErrorAction SilentlyContinue",
+      "    }",
+      "}"
+    ],
+    "description": "Complete Pester test for a function"
+  },
+  "Pester Test Module": {
+    "prefix": "test-module",
+    "body": [
+      "Describe '${1:ModuleName} Module' {",
+      "    BeforeAll {",
+      "        # Import the module",
+      "        \\$modulePath = Join-Path -Path \\$PSScriptRoot -ChildPath '..\\\\${1:ModuleName}.psm1'",
+      "        Import-Module -Name \\$modulePath -Force",
+      "    }",
+      "",
+      "    Context 'Module loading' {",
+      "        It 'Should be loaded' {",
+      "            Get-Module -Name '${1:ModuleName}' | Should -Not -BeNull",
+      "        }",
+      "",
+      "        It 'Should export the expected functions' {",
+      "            \\$exportedFunctions = (Get-Module -Name '${1:ModuleName}').ExportedFunctions.Keys",
+      "            \\$expectedFunctions = @(",
+      "                '${2:Function1}'",
+      "                '${3:Function2}'",
+      "            )",
+      "",
+      "            foreach (\\$function in \\$expectedFunctions) {",
+      "                \\$exportedFunctions | Should -Contain \\$function",
+      "            }",
+      "        }",
+      "    }",
+      "",
+      "    ${0}",
+      "",
+      "    AfterAll {",
+      "        # Clean up",
+      "        Remove-Module -Name '${1:ModuleName}' -Force -ErrorAction SilentlyContinue",
+      "    }",
+      "}"
+    ],
+    "description": "Complete Pester test for a module"
+  }
+}

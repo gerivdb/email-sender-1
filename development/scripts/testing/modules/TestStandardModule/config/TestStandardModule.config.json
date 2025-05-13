@@ -1,0 +1,12 @@
+{
+  "Enabled": true,
+  "ModuleName": "TestStandardModule",
+  "LogLevel": "Info",
+  "Version": "1.0.0",
+  "LogPath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\development\\scripts\\testing\\modules\\TestStandardModule\\logs\\TestStandardModule.log",
+  "Settings": {
+    "MaxLogAge": 30,
+    "MaxLogSize": 10485760,
+    "DefaultTimeout": 30
+  }
+}
