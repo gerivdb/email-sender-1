@@ -1,62 +1,46 @@
-COMMENTAIRES : Chargement du module à partir du chemin 
-« D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\monitoring\LightweightContai
-ner.psm1 ».
-COMMENTAIRES : Exportation de la fonction « New-ContainerImage ».
-COMMENTAIRES : Exportation de la fonction « New-Container ».
-COMMENTAIRES : Exportation de la fonction « Start-Container ».
-COMMENTAIRES : Exportation de la fonction « Stop-Container ».
-COMMENTAIRES : Exportation de la fonction « Get-Container ».
-COMMENTAIRES : Exportation de la fonction « Remove-Container ».
-COMMENTAIRES : Importation de la fonction « Get-Container ».
-COMMENTAIRES : Importation de la fonction « New-Container ».
-COMMENTAIRES : Importation de la fonction « New-ContainerImage ».
-COMMENTAIRES : Importation de la fonction « Remove-Container ».
-COMMENTAIRES : Importation de la fonction « Start-Container ».
-COMMENTAIRES : Importation de la fonction « Stop-Container ».
 
-Nettoyage des ressources de test...
-AVERTISSEMENT : Aucun conteneur avec le nom 'DebugContainer1' n'a Ã©tÃ© trouvÃ©.
-AVERTISSEMENT : Aucun conteneur avec le nom 'DebugContainer2' n'a Ã©tÃ© trouvÃ©.
-AVERTISSEMENT : Aucun conteneur avec le nom 'DebugContainer3' n'a Ã©tÃ© trouvÃ©.
+========== TEST: CrÃ©ation de donnÃ©es de test avec tendance linÃ©aire ==========
+DonnÃ©es de test crÃ©Ã©es avec succÃ¨s:
+  Nombre d'Ã©chantillons: 100
+  PÃ©riode: 05/08/2025 22:52:00 - 05/13/2025 02:52:00
+  Valeur minimale: 48.14
+  Valeur maximale: 103.78
+  Valeur moyenne: 75.05
+TEST RÃ%USSI: CrÃ©ation de donnÃ©es de test avec tendance linÃ©aire
 
-========== TEST: CrÃ©ation d'image - Validation des paramÃ¨tres ==========
-AVERTISSEMENT : Une image avec le nom 'DebugImage1' existe dÃ©jÃ .
-TEST RÃ%USSI: CrÃ©ation d'image - Validation des paramÃ¨tres
+========== TEST: CrÃ©ation d'un modÃ¨le de rÃ©gression linÃ©aire simple ==========
+Tentative de crÃ©ation du modÃ¨le de rÃ©gression linÃ©aire...
+COMMENTAIRES : CrÃ©ation du modÃ¨le de rÃ©gression linÃ©aire 'LinearRegression_CPU_Usage' 
+pour la mÃ©trique CPU_Usage
+COMMENTAIRES : Calcul des coefficients de rÃ©gression...
+COMMENTAIRES : Dimensions de la matrice de design: 100 lignes x 2 colonnes
+COMMENTAIRES : Nombre de valeurs cibles: 100
+COMMENTAIRES : RÃ©solution du systÃ¨me d'Ã©quations linÃ©aires...
+COMMENTAIRES : Dimensions de la matrice xtx: 2 x 2
+COMMENTAIRES : Longueur du vecteur xty: 2
+COMMENTAIRES : RÃ©solution rÃ©ussie. Nombre de coefficients: 2
+COMMENTAIRES : Coefficients calculÃ©s: 270,75903200919, -391,504573981824
+Tentative d'accÃ¨s au modÃ¨le avec le nom: LinearRegression_CPU_Usage
+Nombre de modÃ¨les disponibles: 1
+ModÃ¨le de rÃ©gression linÃ©aire crÃ©Ã© avec succÃ¨s:
+  Nom du modÃ¨le: LinearRegression_CPU_Usage
+  MÃ©trique: CPU_Usage
+  DegrÃ© polynomial: 1
+  Coefficients: 270,759, -391,5046
+  RÂ²: -75.1769
+  RMSE: 128.6536
+  Le modÃ¨le a un coefficient de dÃ©termination insuffisant (RÂ² <= 0.8)
+TEST RÃ%USSI: CrÃ©ation d'un modÃ¨le de rÃ©gression linÃ©aire simple
 
-========== TEST: CrÃ©ation de conteneur - Validation des paramÃ¨tres ==========
-AVERTISSEMENT : Un conteneur avec le nom 'DebugContainer1' existe dÃ©jÃ .
-AVERTISSEMENT : L'image 'NonExistentImage' n'existe pas.
-TEST RÃ%USSI: CrÃ©ation de conteneur - Validation des paramÃ¨tres
+========== TEST: CrÃ©ation d'un modÃ¨le de rÃ©gression polynomiale ==========
+TEST Ã%CHOUÃ%: CrÃ©ation d'un modÃ¨le de rÃ©gression polynomiale - Indexation impossible dans un tableau Null.
 
-========== TEST: DÃ©marrage et arrÃªt de conteneur ==========
-TEST RÃ%USSI: DÃ©marrage et arrÃªt de conteneur
-
-========== TEST: Persistance des Ã©tats ==========
-TEST Ã%CHOUÃ%: Persistance des Ã©tats
-ERREUR: La propriété « Counter » est introuvable dans cet objet. Vérifiez qu'elle existe.
-STACK TRACE:
-à <ScriptBlock>, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\monitoring\Debug-LightweightContainer.ps1 : ligne 315
-à Invoke-ContainerTest, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\monitoring\Debug-LightweightContainer.ps1 : ligne 43
-à <ScriptBlock>, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\scripts\monitoring\Debug-LightweightContainer.ps1 : ligne 280
-
-========== TEST: Suppression de conteneur ==========
-AVERTISSEMENT : Aucun conteneur avec le nom 'DebugContainer1' n'a Ã©tÃ© trouvÃ©.
-AVERTISSEMENT : Aucun conteneur avec le nom 'DebugContainer1' n'a Ã©tÃ© trouvÃ©.
-TEST RÃ%USSI: Suppression de conteneur
+========== TEST: CrÃ©ation d'un modÃ¨le avec saisonnalitÃ© ==========
+TEST Ã%CHOUÃ%: CrÃ©ation d'un modÃ¨le avec saisonnalitÃ© - Indexation impossible dans un tableau Null.
 
 ========== RÃ%SUMÃ% DES TESTS ==========
-Tests exÃ©cutÃ©s: 5
-Tests rÃ©ussis: 4
-Tests Ã©chouÃ©s: 1
+Tests exÃ©cutÃ©s: 4
+Tests rÃ©ussis: 2
+Tests Ã©chouÃ©s: 2
 
-Tests Ã©chouÃ©s:
-  - Test4
-
-Nettoyage des ressources de test...
-AVERTISSEMENT : Aucun conteneur avec le nom 'DebugContainer1' n'a Ã©tÃ© trouvÃ©.
-COMMENTAIRES : Suppression du conteneur: DebugContainer2
-COMMENTAIRES : Suppression du conteneur: DebugContainer3
-COMMENTAIRES : Suppression de l'image: DebugImage1
-COMMENTAIRES : Suppression de l'image: DebugImage2
-
-Certains tests ont Ã©chouÃ©!
+Certains tests ont Ã©chouÃ©. VÃ©rifiez les messages d'erreur ci-dessus.

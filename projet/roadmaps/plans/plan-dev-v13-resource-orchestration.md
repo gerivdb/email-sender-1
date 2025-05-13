@@ -29,8 +29,8 @@ Ce plan de développement vise à créer un système d'orchestration des ressour
         - [x] **2.2.3.1.3** Développer le système de normalisation des données
         - [x] **2.2.3.1.4** Intégrer l'analyse de saisonnalité
       - [ ] **2.2.3.2** Implémenter les modèles prédictifs
-        - [ ] **2.2.3.2.1** Créer le modèle de régression linéaire avancée
-        - [ ] **2.2.3.2.2** Développer le modèle ARIMA pour séries temporelles
+        - [x] **2.2.3.2.1** Créer le modèle de régression linéaire avancée
+        - [x] **2.2.3.2.2** Développer le modèle ARIMA pour séries temporelles
         - [ ] **2.2.3.2.3** Implémenter l'algorithme de prédiction exponentielle
         - [ ] **2.2.3.2.4** Intégrer le système d'auto-ajustement des modèles
       - [ ] **2.2.3.3** Développer le système d'évaluation des prédictions
