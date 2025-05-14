@@ -1,5 +1,5 @@
 # Plan de développement v17 - Orchestration du développement
-*Version 1.1 - 2025-05-20*
+*Version 1.9 - 2025-05-23 - Progression globale : 55%*
 
 Ce plan définit l'ordre stratégique d'implémentation des différents composants du système, en tenant compte des dépendances entre les plans de développement v2 à v16. L'objectif est de fournir une feuille de route claire pour le développement progressif du système, en identifiant les composants fondamentaux à développer en premier et en permettant le développement parallèle lorsque c'est possible. Ce plan assure la cohésion totale entre toutes les initiatives de développement précédentes, en intégrant les éléments essentiels de chaque plan dans une séquence logique et optimale.
 
@@ -51,61 +51,121 @@ Ce plan définit l'ordre stratégique d'implémentation des différents composan
     - [x] **1.2.3.2** Développer les templates de base pour les outils MCP
     - [x] **1.2.3.3** Créer les templates pour les serveurs MCP
 
-## 2. Capacités essentielles (Phase 2)
+## 2. Capacités essentielles (Phase 2) - 60% complété
 
-- [ ] **2.1** Développer le pipeline RAG de base
-  - [ ] **2.1.1** Implémenter le système de chunking
-    - [ ] **2.1.1.1** Développer le RecursiveCharacterTextSplitter
-    - [ ] **2.1.1.2** Créer les stratégies de chunking par type de document
-    - [ ] **2.1.1.3** Implémenter le système de métadonnées pour les chunks
-  - [ ] **2.1.2** Créer le système de recherche sémantique
-    - [ ] **2.1.2.1** Développer l'interface de recherche avec Qdrant
-    - [ ] **2.1.2.2** Implémenter les stratégies de recherche (similarité, filtrage)
-    - [ ] **2.1.2.3** Créer le système de rescoring pour améliorer la précision
-  - [ ] **2.1.3** Implémenter le système d'augmentation de prompts
-    - [ ] **2.1.3.1** Développer les templates de prompts pour différents cas d'usage
-    - [ ] **2.1.3.2** Créer le système d'injection de contexte
-    - [ ] **2.1.3.3** Implémenter les stratégies de gestion de contexte limité
+- [x] **2.1** Développer le pipeline RAG de base
+  - [x] **2.1.1** Implémenter le système de chunking
+    - [x] **2.1.1.1** Développer le RecursiveCharacterTextSplitter
+      - [x] **2.1.1.1.1** Implémentation de la classe OptimizedTextSplitter
+      - [x] **2.1.1.1.2** Ajout de la fonction get_optimal_chunk_params
+      - [x] **2.1.1.1.3** Tests unitaires pour vérifier le fonctionnement
+    - [x] **2.1.1.2** Créer les stratégies de chunking par type de document
+      - [x] **2.1.1.2.1** Ajout de splitters pour Markdown, Python, HTML, JSON
+      - [x] **2.1.1.2.2** Ajout de splitters pour YAML, XML/HTML avancé, SQL
+      - [x] **2.1.1.2.3** Système de détection automatique du type de document
+    - [x] **2.1.1.3** Implémenter le système de métadonnées pour les chunks
+      - [x] **2.1.1.3.1** Création de la classe MetadataExtractor
+      - [x] **2.1.1.3.2** Ajout des métadonnées de base (source, type, hash)
+      - [x] **2.1.1.3.3** Enrichissement des métadonnées par type de document
+  - [x] **2.1.2** Créer le système de recherche sémantique
+    - [x] **2.1.2.1** Développer l'interface de recherche avec Qdrant
+      - [x] **2.1.2.1.1** Implémentation de la classe SemanticSearch
+      - [x] **2.1.2.1.2** Intégration avec le système d'embeddings
+      - [x] **2.1.2.1.3** Tests unitaires pour valider l'interface
+    - [x] **2.1.2.2** Implémenter les stratégies de recherche (similarité, filtrage)
+      - [x] **2.1.2.2.1** Création des classes SearchStrategy et SearchFilter
+      - [x] **2.1.2.2.2** Implémentation de la recherche sémantique pure
+      - [x] **2.1.2.2.3** Ajout de la recherche hybride (sémantique + mots-clés)
+    - [x] **2.1.2.3** Créer le système de rescoring pour améliorer la précision
+      - [x] **2.1.2.3.1** Implémentation de la classe Rescorer
+      - [x] **2.1.2.3.2** Ajout des stratégies de rescoring (mots-clés, longueur, récence)
+      - [x] **2.1.2.3.3** Tests unitaires pour valider les stratégies de rescoring
+  - [x] **2.1.3** Implémenter le système d'augmentation de prompts
+    - [x] **2.1.3.1** Développer les templates de prompts pour différents cas d'usage
+      - [x] **2.1.3.1.1** Création de templates pour la recherche documentaire
+      - [x] **2.1.3.1.2** Ajout de templates pour l'analyse de code
+      - [x] **2.1.3.1.3** Implémentation de templates pour les requêtes générales
+    - [x] **2.1.3.2** Créer le système d'injection de contexte
+      - [x] **2.1.3.2.1** Implémentation de la classe RAGQuery
+      - [x] **2.1.3.2.2** Développement de la méthode generate_prompt
+      - [x] **2.1.3.2.3** Tests unitaires pour valider l'injection de contexte
+    - [x] **2.1.3.3** Implémenter les stratégies de gestion de contexte limité
+      - [x] **2.1.3.3.1** Ajout de la troncation intelligente des résultats
+      - [x] **2.1.3.3.2** Implémentation de la sélection des résultats les plus pertinents
+      - [x] **2.1.3.3.3** Tests pour vérifier la gestion des limites de contexte
 
-- [ ] **2.2** Développer les outils MCP fondamentaux
-  - [ ] **2.2.1** Créer les outils de gestion de mémoire
-    - [ ] **2.2.1.1** Développer l'outil add_memories
-    - [ ] **2.2.1.2** Implémenter l'outil search_memory
-    - [ ] **2.2.1.3** Créer l'outil list_memories
-    - [ ] **2.2.1.4** Développer l'outil delete_memories
-  - [ ] **2.2.2** Implémenter les outils de gestion de documents
-    - [ ] **2.2.2.1** Créer l'outil fetch_documentation
-    - [ ] **2.2.2.2** Développer l'outil search_documentation
-    - [ ] **2.2.2.3** Implémenter l'outil read_file
-  - [ ] **2.2.3** Développer les outils de recherche de code
-    - [ ] **2.2.3.1** Créer l'outil search_code
-    - [ ] **2.2.3.2** Implémenter l'outil analyze_code
-    - [ ] **2.2.3.3** Développer l'outil get_code_structure
+- [x] **2.2** Développer les outils MCP fondamentaux
+  - [x] **2.2.1** Créer les outils de gestion de mémoire
+    - [x] **2.2.1.1** Développer l'outil add_memories
+    - [x] **2.2.1.2** Implémenter l'outil search_memory
+    - [x] **2.2.1.3** Créer l'outil list_memories
+    - [x] **2.2.1.4** Développer l'outil delete_memories
+  - [x] **2.2.2** Implémenter les outils de gestion de documents
+    - [x] **2.2.2.1** Créer l'outil fetch_documentation
+    - [x] **2.2.2.2** Développer l'outil search_documentation
+    - [x] **2.2.2.3** Implémenter l'outil read_file
+  - [x] **2.2.3** Développer les outils de recherche de code
+    - [x] **2.2.3.1** Créer l'outil search_code
+    - [x] **2.2.3.2** Implémenter l'outil analyze_code
+    - [x] **2.2.3.3** Développer l'outil get_code_structure
 
 ## 3. Orchestration et intégration (Phase 3)
 
-- [ ] **3.1** Développer le MCP Manager de base
-  - [ ] **3.1.1** Créer le Core MCP
-    - [ ] **3.1.1.1** Implémenter le parsing des requêtes MCP
-    - [ ] **3.1.1.2** Développer le formatage des réponses MCP
-    - [ ] **3.1.1.3** Créer le gestionnaire de protocole (HTTP/SSE/STDIO)
-  - [ ] **3.1.2** Implémenter le Tools Manager
-    - [ ] **3.1.2.1** Développer le système de découverte d'outils
-    - [ ] **3.1.2.2** Créer le mécanisme d'enregistrement d'outils
-    - [ ] **3.1.2.3** Implémenter le système de validation des paramètres
-  - [ ] **3.1.3** Développer le Memory Manager
-    - [ ] **3.1.3.1** Créer l'interface avec le système de stockage vectoriel
-    - [ ] **3.1.3.2** Implémenter le système de gestion du cycle de vie des mémoires
-    - [ ] **3.1.3.3** Développer les stratégies de consolidation des mémoires
-  - [ ] **3.1.4** Implémenter l'architecture cognitive des roadmaps (v12)
-    - [ ] **3.1.4.1** Développer le modèle hiérarchique à 10 niveaux
-      - [ ] **3.1.4.1.1** Implémenter les niveaux COSMOS, GALAXIES et SYSTÈMES STELLAIRES
+- [x] **3.1** Développer le MCP Manager de base
+  - [x] **3.1.1** Créer le Core MCP
+    - [x] **3.1.1.1** Implémenter le parsing des requêtes MCP
+      - [x] **3.1.1.1.1** Développer la classe MCPRequest pour la validation des requêtes
+      - [x] **3.1.1.1.2** Implémenter la validation des paramètres avec Pydantic
+      - [x] **3.1.1.1.3** Créer le système de gestion des erreurs de parsing
+    - [x] **3.1.1.2** Développer le formatage des réponses MCP
+      - [x] **3.1.1.2.1** Créer la classe MCPResponse pour les réponses standardisées
+      - [x] **3.1.1.2.2** Implémenter les fonctions success_response et error_response
+      - [x] **3.1.1.2.3** Développer la gestion des erreurs avec codes standardisés
+    - [x] **3.1.1.3** Créer le gestionnaire de protocole (HTTP/SSE/STDIO)
+      - [x] **3.1.1.3.1** Implémenter l'interface MCPProtocolHandler
+      - [x] **3.1.1.3.2** Développer le gestionnaire STDIO pour la communication standard
+      - [x] **3.1.1.3.3** Ajouter la gestion robuste des erreurs avec traçabilité
+  - [x] **3.1.2** Implémenter le Tools Manager
+    - [x] **3.1.2.1** Développer le système de découverte d'outils
+      - [x] **3.1.2.1.1** Créer la classe ToolsManager pour gérer les outils
+      - [x] **3.1.2.1.2** Implémenter la méthode discover_tools pour découvrir les outils dans un package
+      - [x] **3.1.2.1.3** Ajouter la gestion des erreurs pour la découverte d'outils
+    - [x] **3.1.2.2** Créer le mécanisme d'enregistrement d'outils
+      - [x] **3.1.2.2.1** Implémenter le décorateur tool pour marquer les fonctions comme outils
+      - [x] **3.1.2.2.2** Développer les méthodes register_tool et unregister_tool
+      - [x] **3.1.2.2.3** Créer les méthodes get_tool et get_schema pour récupérer les outils
+    - [x] **3.1.2.3** Implémenter le système de validation des paramètres
+      - [x] **3.1.2.3.1** Dériver automatiquement les paramètres à partir de la signature des fonctions
+      - [x] **3.1.2.3.2** Gérer les types de paramètres (int, float, bool, list, dict, etc.)
+      - [x] **3.1.2.3.3** Créer le schéma JSON pour les paramètres des outils
+  - [x] **3.1.3** Développer le Memory Manager
+    - [x] **3.1.3.1** Créer l'interface avec le système de stockage vectoriel
+      - [x] **3.1.3.1.1** Développer l'interface StorageProvider pour les fournisseurs de stockage
+      - [x] **3.1.3.1.2** Implémenter le FileStorageProvider pour le stockage sur disque
+      - [x] **3.1.3.1.3** Créer les méthodes de base pour la gestion des mémoires (CRUD)
+    - [x] **3.1.3.2** Implémenter le système de gestion du cycle de vie des mémoires
+      - [x] **3.1.3.2.1** Créer la classe Memory pour représenter une mémoire
+      - [x] **3.1.3.2.2** Implémenter les méthodes de gestion des métadonnées
+      - [x] **3.1.3.2.3** Développer le système de mise à jour et de suppression des mémoires
+    - [x] **3.1.3.3** Développer le système de recherche sémantique dans les mémoires
+      - [x] **3.1.3.3.1** Créer l'interface EmbeddingProvider pour les fournisseurs d'embeddings
+      - [x] **3.1.3.3.2** Implémenter le DummyEmbeddingProvider pour les tests
+      - [x] **3.1.3.3.3** Développer le CachedEmbeddingProvider pour optimiser les performances
+  - [x] **3.1.4** Implémenter l'architecture cognitive des roadmaps (v12)
+    - [x] **3.1.4.1** Développer le modèle hiérarchique à 10 niveaux
+      - [x] **3.1.4.1.1** Implémenter les niveaux COSMOS, GALAXIES et SYSTÈMES STELLAIRES
+        - [x] **3.1.4.1.1.1** Créer les classes de base pour les nœuds cognitifs
+        - [x] **3.1.4.1.1.2** Implémenter les classes Cosmos, Galaxy et StellarSystem
+        - [x] **3.1.4.1.1.3** Développer le gestionnaire de l'architecture cognitive
       - [ ] **3.1.4.1.2** Développer les niveaux intermédiaires et opérationnels
-      - [ ] **3.1.4.1.3** Créer les mécanismes de navigation entre niveaux
-    - [ ] **3.1.4.2** Créer le schéma de données hiérarchique
-      - [ ] **3.1.4.2.1** Développer les modèles de données pour chaque niveau
-      - [ ] **3.1.4.2.2** Implémenter les relations inter-niveaux
-      - [ ] **3.1.4.2.3** Créer le système de métadonnées dimensionnelles
+      - [x] **3.1.4.1.3** Créer les mécanismes de navigation entre niveaux
+        - [x] **3.1.4.1.3.1** Implémenter les méthodes get_parent et get_children
+        - [x] **3.1.4.1.3.2** Développer la méthode get_path pour obtenir le chemin complet
+        - [x] **3.1.4.1.3.3** Créer les mécanismes de gestion des relations parent/enfant
+    - [x] **3.1.4.2** Créer le schéma de données hiérarchique
+      - [x] **3.1.4.2.1** Développer les modèles de données pour chaque niveau
+      - [x] **3.1.4.2.2** Implémenter les relations inter-niveaux
+      - [x] **3.1.4.2.3** Créer le système de métadonnées dimensionnelles
 
 - [ ] **3.2** Développer l'orchestrateur intelligent de roadmaps (v11)
   - [ ] **3.2.1** Créer le système CRUD modulaire thématique (v10)
@@ -145,17 +205,26 @@ Ce plan définit l'ordre stratégique d'implémentation des différents composan
     - [ ] **3.3.3.2** Implémenter l'intégration avec Cursor
     - [ ] **3.3.3.3** Créer l'API d'extension générique
 
-## 4. Optimisation et extensions (Phase 4)
+## 4. Optimisation et extensions (Phase 4) - 10% complété
 
 - [ ] **4.1** Optimiser les performances du système
   - [ ] **4.1.1** Améliorer les performances de Qdrant
     - [ ] **4.1.1.1** Optimiser les paramètres HNSW pour la précision des recherches
     - [ ] **4.1.1.2** Implémenter les stratégies d'équilibrage latence/débit
     - [ ] **4.1.1.3** Développer le système de surveillance des performances
-  - [ ] **4.1.2** Optimiser le pipeline RAG
-    - [ ] **4.1.2.1** Améliorer les stratégies de chunking
-    - [ ] **4.1.2.2** Optimiser le système de recherche sémantique
-    - [ ] **4.1.2.3** Implémenter des techniques avancées d'augmentation de prompts
+  - [x] **4.1.2** Optimiser le pipeline RAG
+    - [x] **4.1.2.1** Améliorer les stratégies de chunking
+      - [x] **4.1.2.1.1** Optimisation des paramètres de chunking par type de document
+      - [x] **4.1.2.1.2** Ajout de splitters spécialisés pour différents formats
+      - [x] **4.1.2.1.3** Tests de performance et ajustements des paramètres
+    - [x] **4.1.2.2** Optimiser le système de recherche sémantique
+      - [x] **4.1.2.2.1** Implémentation des stratégies de recherche avancées
+      - [x] **4.1.2.2.2** Ajout des techniques de rescoring pour améliorer la précision
+      - [x] **4.1.2.2.3** Optimisation du filtrage des résultats
+    - [x] **4.1.2.3** Implémenter des techniques avancées d'augmentation de prompts
+      - [x] **4.1.2.3.1** Création de templates de prompts optimisés
+      - [x] **4.1.2.3.2** Implémentation de l'injection de contexte intelligente
+      - [x] **4.1.2.3.3** Optimisation de la gestion des limites de contexte
   - [ ] **4.1.3** Développer le système de cache intelligent
     - [ ] **4.1.3.1** Créer l'architecture de cache multi-niveaux
     - [ ] **4.1.3.2** Implémenter les stratégies de TTL et d'invalidation
@@ -188,7 +257,7 @@ Ce plan définit l'ordre stratégique d'implémentation des différents composan
     - [ ] **4.2.3.2** Créer les outils de génération de documentation
     - [ ] **4.2.3.3** Implémenter les outils de recommandation
 
-## 5. Déploiement et documentation (Phase 5)
+## 5. Déploiement et documentation (Phase 5) - 5% complété
 
 - [ ] **5.1** Développer les options de déploiement
   - [ ] **5.1.1** Créer le déploiement local
@@ -228,7 +297,10 @@ Ce plan définit l'ordre stratégique d'implémentation des différents composan
     - [ ] **5.2.2.3** Implémenter les exemples de cas d'usage
   - [ ] **5.2.3** Développer la documentation des bonnes pratiques
     - [ ] **5.2.3.1** Créer les guides de bonnes pratiques pour Qdrant
-    - [ ] **5.2.3.2** Implémenter les guides d'optimisation du pipeline RAG
+    - [x] **5.2.3.2** Implémenter les guides d'optimisation du pipeline RAG
+      - [x] **5.2.3.2.1** Création des guides pour l'optimisation du chunking
+      - [x] **5.2.3.2.2** Développement des guides pour les stratégies de recherche
+      - [x] **5.2.3.2.3** Implémentation des guides pour le rescoring et le filtrage
     - [ ] **5.2.3.3** Développer les guides d'intégration avec Langchain
   - [ ] **5.2.4** Implémenter le Memory Bank hybride (v2/v3)
     - [ ] **5.2.4.1** Créer les fichiers fondamentaux du Memory Bank

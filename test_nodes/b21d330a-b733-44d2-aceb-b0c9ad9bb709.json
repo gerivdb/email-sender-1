@@ -1,0 +1,17 @@
+{
+  "node_id": "b21d330a-b733-44d2-aceb-b0c9ad9bb709",
+  "name": "SYSTEME 3 de la GALAXIE f4432037",
+  "level": "SYSTEMES",
+  "level_value": 3,
+  "description": "Description du SYSTEME 3 de la GALAXIE f4432037",
+  "metadata": {
+    "status": "planned",
+    "index": 2,
+    "created_at": "2025-05-14T06:15:20.743577",
+    "updated_at": "2025-05-14T06:15:20.743577",
+    "type": "stellar_system"
+  },
+  "status": "PLANNED",
+  "parent_id": "f4432037-cf4c-4c0c-99bc-522f8924d39d",
+  "children_ids": []
+}

@@ -1,0 +1,17 @@
+{
+  "node_id": "11ec6fe1-7dba-442a-a1a3-34c792bf8149",
+  "name": "SYSTEME 2 de la GALAXIE dcbeb345",
+  "level": "SYSTEMES",
+  "level_value": 3,
+  "description": "Description du SYSTEME 2 de la GALAXIE dcbeb345",
+  "metadata": {
+    "status": "completed",
+    "index": 1,
+    "created_at": "2025-05-14T06:15:20.947104",
+    "updated_at": "2025-05-14T06:15:20.947104",
+    "type": "stellar_system"
+  },
+  "status": "PLANNED",
+  "parent_id": "dcbeb345-8b89-47b4-a687-b2c5a8871d1f",
+  "children_ids": []
+}

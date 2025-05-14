@@ -1,0 +1,17 @@
+{
+  "node_id": "a9cafe19-ea10-4435-aad9-9bc4ff7fd242",
+  "name": "SYSTEME 1 de la GALAXIE f4432037",
+  "level": "SYSTEMES",
+  "level_value": 3,
+  "description": "Description du SYSTEME 1 de la GALAXIE f4432037",
+  "metadata": {
+    "status": "completed",
+    "index": 0,
+    "created_at": "2025-05-14T06:15:20.678330",
+    "updated_at": "2025-05-14T06:15:20.678330",
+    "type": "stellar_system"
+  },
+  "status": "PLANNED",
+  "parent_id": "f4432037-cf4c-4c0c-99bc-522f8924d39d",
+  "children_ids": []
+}

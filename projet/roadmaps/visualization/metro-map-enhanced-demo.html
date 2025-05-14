@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualiseur de Carte de Métro Amélioré</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 300px;
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .visualization {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #metro-map {
+      width: 100%;
+      height: 100%;
+      background-color: #f8f9fa;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-group h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #2c3e50;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.9rem;
+    }
+
+    select, input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .button-group button {
+      flex: 1;
+    }
+
+    .stats {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      font-size: 0.9rem;
+    }
+
+    .stats h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: #2c3e50;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .stats-item {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .stats-label {
+      font-weight: 600;
+    }
+
+    /* Styles pour les tooltips et modals de Cytoscape */
+    .tippy-box {
+      background-color: #fff;
+      color: #333;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      font-size: 0.9rem;
+      max-width: 300px !important;
+    }
+
+    .tippy-arrow {
+      color: #fff;
+    }
+
+    .metro-map-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .metro-map-modal-content {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      width: 500px;
+      max-width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .metro-map-modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .metro-map-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .metro-map-btn {
+      padding: 8px 15px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .metro-map-btn-edit {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .metro-map-btn-delete {
+      background-color: #e74c3c;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Visualiseur de Carte de Métro Amélioré</h1>
+      <div class="button-group">
+        <button id="export-btn">Exporter en SVG</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <aside class="sidebar">
+        <div class="control-group">
+          <h3>Roadmaps</h3>
+          <select id="roadmap-selector" multiple size="5">
+            <!-- Les options seront ajoutées dynamiquement -->
+          </select>
+          <div class="button-group">
+            <button id="visualize-btn">Visualiser</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <h3>Options de Layout</h3>
+          <label>
+            Algorithme
+            <select id="algorithm">
+              <option value="metro" selected>Metro (personnalisé)</option>
+              <option value="dagre">Dagre</option>
+              <option value="cose-bilkent">Cose-Bilkent</option>
+              <option value="klay">Klay</option>
+            </select>
+          </label>
+
+          <label>
+            Direction préférée
+            <select id="direction">
+              <option value="horizontal" selected>Horizontale</option>
+              <option value="vertical">Verticale</option>
+            </select>
+          </label>
+
+          <label>
+            Séparation des nœuds
+            <input type="range" id="node-separation" min="20" max="100" value="50" step="5">
+            <span id="node-separation-value">50</span>
+          </label>
+
+          <label>
+            Séparation des rangs
+            <input type="range" id="rank-separation" min="50" max="200" value="100" step="10">
+            <span id="rank-separation-value">100</span>
+          </label>
+
+          <button id="apply-layout-btn">Appliquer le layout</button>
+        </div>
+
+        <div class="stats" id="layout-stats">
+          <h3>Statistiques du Layout</h3>
+          <div class="stats-grid">
+            <div class="stats-item">
+              <span class="stats-label">Nœuds:</span>
+              <span id="stat-nodes">-</span>
+            </div>
+            <div class="stats-item">
+              <span class="stats-label">Arêtes:</span>
+              <span id="stat-edges">-</span>
+            </div>
+            <div class="stats-item">
+              <span class="stats-label">Largeur:</span>
+              <span id="stat-width">-</span>
+            </div>
+            <div class="stats-item">
+              <span class="stats-label">Hauteur:</span>
+              <span id="stat-height">-</span>
+            </div>
+            <div class="stats-item">
+              <span class="stats-label">Croisements:</span>
+              <span id="stat-crossings">-</span>
+            </div>
+            <div class="stats-item">
+              <span class="stats-label">Densité:</span>
+              <span id="stat-density">-</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="visualization">
+        <div id="metro-map"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Chargement des dépendances -->
+  <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+  <script src="https://unpkg.com/cytoscape-dagre/cytoscape-dagre.js"></script>
+  <script src="https://unpkg.com/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js"></script>
+  <script src="https://unpkg.com/cytoscape-klay/cytoscape-klay.js"></script>
+  <script src="https://unpkg.com/cytoscape-popper/cytoscape-popper.js"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+  <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+  <script type="module">
+    import MetroMapVisualizerEnhanced from './MetroMapVisualizerEnhanced.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Éléments DOM
+      const roadmapSelector = document.getElementById('roadmap-selector');
+      const visualizeBtn = document.getElementById('visualize-btn');
+      const algorithmSelect = document.getElementById('algorithm');
+      const directionSelect = document.getElementById('direction');
+      const nodeSeparationInput = document.getElementById('node-separation');
+      const nodeSeparationValue = document.getElementById('node-separation-value');
+      const rankSeparationInput = document.getElementById('rank-separation');
+      const rankSeparationValue = document.getElementById('rank-separation-value');
+      const applyLayoutBtn = document.getElementById('apply-layout-btn');
+      const exportBtn = document.getElementById('export-btn');
+      const statNodes = document.getElementById('stat-nodes');
+      const statEdges = document.getElementById('stat-edges');
+      const statWidth = document.getElementById('stat-width');
+      const statHeight = document.getElementById('stat-height');
+      const statCrossings = document.getElementById('stat-crossings');
+      const statDensity = document.getElementById('stat-density');
+
+      // Mettre à jour les valeurs affichées
+      nodeSeparationInput.addEventListener('input', () => {
+        nodeSeparationValue.textContent = nodeSeparationInput.value;
+      });
+
+      rankSeparationInput.addEventListener('input', () => {
+        rankSeparationValue.textContent = rankSeparationInput.value;
+      });
+
+      // Données de test pour les roadmaps
+      const testRoadmaps = {
+        'roadmap1': {
+          id: 'roadmap1',
+          name: 'Roadmap 1 - Architecture Cognitive',
+          nodes: [
+            { id: 'roadmap1_1', label: 'Cosmos', description: 'Niveau le plus élevé', status: 'completed' },
+            { id: 'roadmap1_2', label: 'Galaxie', description: 'Grand domaine', status: 'in_progress' },
+            { id: 'roadmap1_3', label: 'Système Stellaire', description: 'Groupe de projets', status: 'in_progress' },
+            { id: 'roadmap1_4', label: 'Planète', description: 'Projet individuel', status: 'planned' },
+            { id: 'roadmap1_5', label: 'Continent', description: 'Grande fonctionnalité', status: 'planned' }
+          ],
+          edges: [
+            { source: 'roadmap1_1', target: 'roadmap1_2' },
+            { source: 'roadmap1_2', target: 'roadmap1_3' },
+            { source: 'roadmap1_3', target: 'roadmap1_4' },
+            { source: 'roadmap1_4', target: 'roadmap1_5' }
+          ],
+          color: '#FF6B6B'
+        },
+        'roadmap2': {
+          id: 'roadmap2',
+          name: 'Roadmap 2 - Système d\'Attribution Thématique',
+          nodes: [
+            { id: 'roadmap2_1', label: 'Initialisation', description: 'Configuration du système', status: 'completed' },
+            { id: 'roadmap2_2', label: 'Analyse de Contenu', description: 'Extraction des thèmes', status: 'completed' },
+            { id: 'roadmap2_3', label: 'Attribution', description: 'Attribution des thèmes', status: 'in_progress' },
+            { id: 'roadmap2_4', label: 'Tests', description: 'Vérification de la précision', status: 'planned' },
+            { id: 'roadmap2_5', label: 'Intégration', description: 'Intégration avec les roadmaps', status: 'planned' }
+          ],
+          edges: [
+            { source: 'roadmap2_1', target: 'roadmap2_2' },
+            { source: 'roadmap2_2', target: 'roadmap2_3' },
+            { source: 'roadmap2_3', target: 'roadmap2_4' },
+            { source: 'roadmap2_4', target: 'roadmap2_5' }
+          ],
+          color: '#4ECDC4'
+        },
+        'roadmap3': {
+          id: 'roadmap3',
+          name: 'Roadmap 3 - Visualisation en Carte de Métro',
+          nodes: [
+            { id: 'roadmap3_1', label: 'Moteur de Layout', description: 'Algorithmes de positionnement', status: 'completed' },
+            { id: 'roadmap3_2', label: 'Rendu Graphique', description: 'Rendu des stations et lignes', status: 'in_progress' },
+            { id: 'roadmap3_3', label: 'Interactivité', description: 'Navigation et zoom', status: 'planned' },
+            { id: 'roadmap3_4', label: 'Filtres', description: 'Filtrage par thème et niveau', status: 'planned' },
+            { id: 'roadmap3_5', label: 'Exportation', description: 'Export en SVG et PNG', status: 'planned' }
+          ],
+          edges: [
+            { source: 'roadmap3_1', target: 'roadmap3_2' },
+            { source: 'roadmap3_2', target: 'roadmap3_3' },
+            { source: 'roadmap3_3', target: 'roadmap3_4' },
+            { source: 'roadmap3_4', target: 'roadmap3_5' }
+          ],
+          color: '#F9C74F'
+        }
+      };
+
+      // Remplir le sélecteur de roadmaps
+      Object.keys(testRoadmaps).forEach(roadmapId => {
+        const option = document.createElement('option');
+        option.value = roadmapId;
+        option.textContent = testRoadmaps[roadmapId].name;
+        roadmapSelector.appendChild(option);
+      });
+
+      // Initialiser le visualiseur avec des options de test
+      const visualizer = new MetroMapVisualizerEnhanced('metro-map', {
+        testRoadmaps: testRoadmaps, // Utiliser des données de test au lieu de Qdrant
+        layoutOptions: {
+          layoutAlgorithm: algorithmSelect.value,
+          preferredDirection: directionSelect.value,
+          nodeSeparation: parseInt(nodeSeparationInput.value),
+          rankSeparation: parseInt(rankSeparationInput.value)
+        }
+      });
+
+      // Initialisation simplifiée sans Qdrant
+      try {
+        await visualizer.initialize();
+      } catch (error) {
+        console.warn('Erreur lors de l\'initialisation:', error);
+        console.info('Utilisation du mode de secours sans Qdrant');
+      }
+
+      // Gérer la visualisation
+      visualizeBtn.addEventListener('click', async () => {
+        const selectedRoadmaps = Array.from(roadmapSelector.selectedOptions).map(option => option.value);
+
+        if (selectedRoadmaps.length > 0) {
+          try {
+            // Essayer d'utiliser la méthode standard
+            await visualizer.visualizeRoadmaps(selectedRoadmaps);
+          } catch (error) {
+            console.warn('Erreur lors de la visualisation avec la méthode standard:', error);
+            console.info('Utilisation du mode de secours avec les données de test');
+
+            // Mode de secours: visualiser directement les roadmaps de test
+            const selectedRoadmapData = selectedRoadmaps.map(id => testRoadmaps[id]);
+
+            // Créer un graphe Cytoscape à partir des données de test
+            const elements = [];
+
+            // Ajouter les nœuds
+            selectedRoadmapData.forEach(roadmap => {
+              roadmap.nodes.forEach(node => {
+                elements.push({
+                  group: 'nodes',
+                  data: {
+                    id: node.id,
+                    label: node.label,
+                    description: node.description,
+                    status: node.status,
+                    roadmapId: roadmap.id,
+                    originalColor: roadmap.color
+                  }
+                });
+              });
+
+              // Ajouter les arêtes
+              roadmap.edges.forEach(edge => {
+                elements.push({
+                  group: 'edges',
+                  data: {
+                    id: `${edge.source}_${edge.target}`,
+                    source: edge.source,
+                    target: edge.target,
+                    roadmapId: roadmap.id,
+                    originalColor: roadmap.color
+                  }
+                });
+              });
+            });
+
+            // Ajouter les éléments au graphe Cytoscape
+            visualizer.cy.elements().remove();
+            visualizer.cy.add(elements);
+
+            // Appliquer le layout
+            visualizer._applyMetroLayout();
+          }
+
+          // Mettre à jour les statistiques
+          updateLayoutStats();
+        } else {
+          alert('Veuillez sélectionner au moins une roadmap.');
+        }
+      });
+
+      // Gérer l'application du layout
+      applyLayoutBtn.addEventListener('click', () => {
+        // Mettre à jour les options de layout
+        visualizer.updateLayoutOptions({
+          layoutAlgorithm: algorithmSelect.value,
+          preferredDirection: directionSelect.value,
+          nodeSeparation: parseInt(nodeSeparationInput.value),
+          rankSeparation: parseInt(rankSeparationInput.value)
+        });
+
+        // Réappliquer le layout
+        visualizer._applyMetroLayout();
+
+        // Mettre à jour les statistiques
+        updateLayoutStats();
+      });
+
+      // Gérer l'exportation
+      exportBtn.addEventListener('click', async () => {
+        try {
+          const svgBlob = await visualizer.exportAsSVG();
+          saveAs(svgBlob, 'metro-map.png');
+        } catch (error) {
+          console.error('Erreur lors de l\'exportation:', error);
+          alert('Erreur lors de l\'exportation. Veuillez réessayer.');
+        }
+      });
+
+      // Fonction pour mettre à jour les statistiques du layout
+      function updateLayoutStats() {
+        const stats = visualizer.getLayoutStats();
+
+        if (stats) {
+          statNodes.textContent = stats.nodeCount;
+          statEdges.textContent = stats.edgeCount;
+          statWidth.textContent = `${Math.round(stats.width)}px`;
+          statHeight.textContent = `${Math.round(stats.height)}px`;
+          statCrossings.textContent = stats.crossings;
+          statDensity.textContent = stats.density.toFixed(6);
+        } else {
+          statNodes.textContent = '-';
+          statEdges.textContent = '-';
+          statWidth.textContent = '-';
+          statHeight.textContent = '-';
+          statCrossings.textContent = '-';
+          statDensity.textContent = '-';
+        }
+      }
+
+      // Fonction pour mettre à jour la liste des nœuds communs
+      function updateCommonNodesList() {
+        // À implémenter si nécessaire
+      }
+    });
+  </script>
+</body>
+</html>

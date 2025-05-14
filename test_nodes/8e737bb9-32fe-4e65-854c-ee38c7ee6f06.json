@@ -1,0 +1,17 @@
+{
+  "node_id": "8e737bb9-32fe-4e65-854c-ee38c7ee6f06",
+  "name": "SYSTEME 4 de la GALAXIE 7cd80f39",
+  "level": "SYSTEMES",
+  "level_value": 3,
+  "description": "Description du SYSTEME 4 de la GALAXIE 7cd80f39",
+  "metadata": {
+    "status": "in_progress",
+    "index": 3,
+    "created_at": "2025-05-14T06:15:20.844562",
+    "updated_at": "2025-05-14T06:15:20.844562",
+    "type": "stellar_system"
+  },
+  "status": "PLANNED",
+  "parent_id": "7cd80f39-0c9b-4c65-9796-b502c1c3e5aa",
+  "children_ids": []
+}

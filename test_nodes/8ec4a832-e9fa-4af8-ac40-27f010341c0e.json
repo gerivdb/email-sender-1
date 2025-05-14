@@ -1,0 +1,17 @@
+{
+  "node_id": "8ec4a832-e9fa-4af8-ac40-27f010341c0e",
+  "name": "SYSTEME 2 de la GALAXIE 582d348e",
+  "level": "SYSTEMES",
+  "level_value": 3,
+  "description": "Description du SYSTEME 2 de la GALAXIE 582d348e",
+  "metadata": {
+    "status": "completed",
+    "index": 1,
+    "created_at": "2025-05-14T06:15:21.038294",
+    "updated_at": "2025-05-14T06:15:21.038294",
+    "type": "stellar_system"
+  },
+  "status": "PLANNED",
+  "parent_id": "582d348e-d913-4a92-a592-f9f296cbf095",
+  "children_ids": []
+}

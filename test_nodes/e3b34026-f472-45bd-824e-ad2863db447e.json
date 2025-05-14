@@ -1,0 +1,17 @@
+{
+  "node_id": "e3b34026-f472-45bd-824e-ad2863db447e",
+  "name": "SYSTEME 3 de la GALAXIE 1da5faa2",
+  "level": "SYSTEMES",
+  "level_value": 3,
+  "description": "Description du SYSTEME 3 de la GALAXIE 1da5faa2",
+  "metadata": {
+    "status": "completed",
+    "index": 2,
+    "created_at": "2025-05-14T06:15:20.893440",
+    "updated_at": "2025-05-14T06:15:20.893440",
+    "type": "stellar_system"
+  },
+  "status": "PLANNED",
+  "parent_id": "1da5faa2-05b3-452a-88ad-55a69319ef4d",
+  "children_ids": []
+}

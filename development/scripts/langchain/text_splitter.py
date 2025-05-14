@@ -117,6 +117,36 @@ class OptimizedTextSplitter:
             add_start_index=self.add_start_index
         )
 
+        # Splitter pour YAML
+        self.yaml_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=self.chunk_size,
+            chunk_overlap=self.chunk_overlap,
+            separators=["\n---\n", "\n...\n", "\n\n", "\n", ":", " ", ""],
+            length_function=self.length_function,
+            add_start_index=self.add_start_index
+        )
+
+        # Splitter pour XML/HTML avancé
+        self.xml_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=self.chunk_size,
+            chunk_overlap=self.chunk_overlap,
+            separators=["</div>", "</section>", "</article>", "</header>", "</footer>",
+                       "</p>", "</li>", "</table>", "</tr>", "</td>",
+                       "<br>", "\n", " ", ""],
+            length_function=self.length_function,
+            add_start_index=self.add_start_index
+        )
+
+        # Splitter pour SQL
+        self.sql_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=self.chunk_size,
+            chunk_overlap=self.chunk_overlap,
+            separators=[";", "\nCREATE ", "\nALTER ", "\nDROP ", "\nSELECT ",
+                       "\nINSERT ", "\nUPDATE ", "\nDELETE ", "\n\n", "\n", " ", ""],
+            length_function=self.length_function,
+            add_start_index=self.add_start_index
+        )
+
     def split_documents(self, documents: List[Document]) -> List[Document]:
         """
         Divise les documents en chunks en utilisant le splitter approprié pour chaque type.
@@ -171,22 +201,40 @@ class OptimizedTextSplitter:
         Returns:
             Splitter approprié.
         """
-        if doc_type == "markdown":
-            return self.markdown_splitter
-        elif doc_type == "python":
-            return self.python_splitter
-        elif doc_type == "html":
-            return self.html_splitter
-        elif doc_type == "json":
-            return self.json_splitter
-        elif doc_type == "latex":
-            return self.latex_splitter
-        elif doc_type in ["javascript", "typescript", "js", "ts"]:
-            return self.js_splitter
-        elif doc_type == "css":
-            return self.css_splitter
-        else:
-            return self.text_splitter
+        doc_type = doc_type.lower()
+
+        # Mapping des types de documents aux splitters
+        splitter_map = {
+            "markdown": self.markdown_splitter,
+            "md": self.markdown_splitter,
+            "python": self.python_splitter,
+            "py": self.python_splitter,
+            "html": self.html_splitter,
+            "htm": self.html_splitter,
+            "xml": self.xml_splitter,
+            "svg": self.xml_splitter,
+            "json": self.json_splitter,
+            "latex": self.latex_splitter,
+            "tex": self.latex_splitter,
+            "javascript": self.js_splitter,
+            "typescript": self.js_splitter,
+            "js": self.js_splitter,
+            "ts": self.js_splitter,
+            "jsx": self.js_splitter,
+            "tsx": self.js_splitter,
+            "css": self.css_splitter,
+            "scss": self.css_splitter,
+            "less": self.css_splitter,
+            "yaml": self.yaml_splitter,
+            "yml": self.yaml_splitter,
+            "sql": self.sql_splitter,
+            "mysql": self.sql_splitter,
+            "pgsql": self.sql_splitter,
+            "sqlite": self.sql_splitter
+        }
+
+        # Retourner le splitter approprié ou le splitter par défaut
+        return splitter_map.get(doc_type, self.text_splitter)
 
     def split_text(self, text: str, doc_type: str = "text", metadata: Optional[Dict[str, Any]] = None) -> List[Document]:
         """
@@ -231,23 +279,80 @@ def get_optimal_chunk_params(
     # (varie selon le modèle et la langue)
     token_to_char_ratio = 4.0
 
-    # Ajuster le ratio en fonction du type de document
-    if doc_type in ["python", "javascript", "typescript", "js", "ts"]:
-        # Le code a généralement moins de tokens par caractère
-        token_to_char_ratio = 3.0
-    elif doc_type == "markdown":
-        # Le markdown a un ratio intermédiaire
-        token_to_char_ratio = 3.5
-    elif doc_type == "html":
-        # HTML a beaucoup de balises qui consomment des tokens
-        token_to_char_ratio = 2.5
+    # Normaliser le type de document
+    doc_type = doc_type.lower()
+
+    # Mapping des types de documents aux ratios token/caractère
+    ratio_map = {
+        # Code source (moins de tokens par caractère)
+        "python": 3.0,
+        "py": 3.0,
+        "javascript": 3.0,
+        "typescript": 3.0,
+        "js": 3.0,
+        "ts": 3.0,
+        "jsx": 3.0,
+        "tsx": 3.0,
+        "java": 3.0,
+        "c": 3.0,
+        "cpp": 3.0,
+        "csharp": 3.0,
+        "cs": 3.0,
+        "go": 3.0,
+        "rust": 3.0,
+        "swift": 3.0,
+        "kotlin": 3.0,
+        "php": 3.0,
+        "ruby": 3.0,
+        "sql": 3.0,
+
+        # Markup (ratio intermédiaire)
+        "markdown": 3.5,
+        "md": 3.5,
+        "latex": 3.5,
+        "tex": 3.5,
+        "yaml": 3.5,
+        "yml": 3.5,
+        "json": 3.2,
+        "toml": 3.5,
+        "ini": 3.5,
+
+        # Markup avec beaucoup de balises (moins de caractères par token)
+        "html": 2.5,
+        "htm": 2.5,
+        "xml": 2.5,
+        "svg": 2.5,
+        "css": 2.8,
+        "scss": 2.8,
+        "less": 2.8
+    }
+
+    # Obtenir le ratio pour le type de document ou utiliser la valeur par défaut
+    token_to_char_ratio = ratio_map.get(doc_type, token_to_char_ratio)
 
     # Calculer la taille maximale du chunk en caractères
     # On utilise 80% de la taille du contexte pour laisser de la place pour la requête et la réponse
-    max_chunk_chars = int(model_context_size * 0.8 * token_to_char_ratio)
+    context_utilization = 0.8
+
+    # Ajuster l'utilisation du contexte pour les documents très structurés
+    if doc_type in ["html", "xml", "svg"]:
+        context_utilization = 0.75  # Réduire pour les documents très structurés
+    elif doc_type in ["markdown", "md", "latex", "tex"]:
+        context_utilization = 0.85  # Augmenter pour les documents semi-structurés
+
+    max_chunk_chars = int(model_context_size * context_utilization * token_to_char_ratio)
 
     # Calculer le chevauchement en caractères
-    overlap_chars = int(max_chunk_chars * token_overlap_ratio)
+    # Ajuster le ratio de chevauchement en fonction du type de document
+    adjusted_overlap_ratio = token_overlap_ratio
+
+    # Augmenter le chevauchement pour les documents avec beaucoup de contexte entre les chunks
+    if doc_type in ["markdown", "md", "latex", "tex"]:
+        adjusted_overlap_ratio = max(token_overlap_ratio, 0.15)  # Au moins 15% pour les documents structurés
+    elif doc_type in ["python", "js", "java", "cpp", "cs", "go", "rust"]:
+        adjusted_overlap_ratio = max(token_overlap_ratio, 0.12)  # Au moins 12% pour le code
+
+    overlap_chars = int(max_chunk_chars * adjusted_overlap_ratio)
 
     return max_chunk_chars, overlap_chars
 
