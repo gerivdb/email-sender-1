@@ -93,6 +93,26 @@
         "max_recursion_depth": 10,
         "logs_path": "${workspace_root}/logs/cycles"
       }
+    },
+    "code_quality": {
+      "file_length_limits": {
+        "enabled": true,
+        "ps1": 300,
+        "psm1": 500,
+        "psd1": 200,
+        "py": 500,
+        "js": 300,
+        "ts": 300,
+        "html": 300,
+        "css": 300,
+        "json": 200,
+        "yml": 200,
+        "md": 600
+      },
+      "warnings": {
+        "show_on_exceed": true,
+        "suggest_refactoring": true
+      }
     }
   }
 }

@@ -6,9 +6,35 @@ Ce document définit les meilleures pratiques pour l'implémentation de code ave
 ## 1. Granularité optimale
 
 ### 1.1 Taille des modules
-- **Optimal**: 100-200 lignes de code par module
-- **Maximum**: 300 lignes avant de considérer une division
+
+#### Limites par type de fichier
+| Type de fichier | Longueur optimale | Maximum recommandé | Commentaires |
+|-----------------|-------------------|-------------------|--------------|
+| **PowerShell (.ps1)** | 100-200 lignes | 300 lignes | Les scripts d'automatisation devraient être modulaires |
+| **Modules PS (.psm1)** | 200-300 lignes | 500 lignes | Diviser en sous-modules si plus grand |
+| **Manifestes (.psd1)** | 50-100 lignes | 200 lignes | Contient principalement des métadonnées |
+| **Python (.py)** | 200-300 lignes | 500 lignes | Suivre le principe "une classe/fonction par fichier" |
+| **JavaScript (.js)** | 100-200 lignes | 300 lignes | Modules plus petits pour faciliter le tree-shaking |
+| **TypeScript (.ts)** | 100-200 lignes | 300 lignes | Similaire à JavaScript |
+| **HTML (.html)** | 100-200 lignes | 300 lignes | Utiliser des composants et partials |
+| **CSS (.css)** | 100-200 lignes | 300 lignes | Utiliser des modules CSS ou SCSS |
+| **JSON (.json)** | 50-100 lignes | 200 lignes | Diviser les configurations complexes |
+| **YAML (.yml)** | 50-100 lignes | 200 lignes | Utiliser des références pour réduire la duplication |
+| **Markdown (.md)** | 200-400 lignes | 600 lignes | Diviser les documents longs en sections |
+
+#### Règles générales
 - **Fonctions**: 30-50 lignes maximum par fonction
+- **Classes**: 100-200 lignes maximum par classe
+- **Méthodes**: 20-30 lignes maximum par méthode
+
+#### Avantages des fichiers courts
+- Chargement plus rapide en mémoire
+- Meilleure utilisation du cache
+- Compilation/interprétation plus rapide
+- Moins de conflits lors des merges
+- Plus facile à comprendre et à maintenir
+- Tests unitaires simplifiés
+- Revues de code plus efficaces
 
 ### 1.2 Découpage des tâches
 - **Unité atomique**: Une fonctionnalité cohérente et testable indépendamment
@@ -301,9 +327,84 @@ Pour chaque tâche identifiée :
 6. **Intégration** - Intégrer avec les autres modules
 7. **Mise à jour du statut** - Marquer la tâche comme terminée
 
-## 7. Contextualisation efficace pour Augment
+## 7. Stratégies de découpage des fichiers trop longs
 
-### 7.1 Référencement de fichiers
+### 7.1 Identification des fichiers à découper
+
+Un fichier est probablement trop long si :
+- Il dépasse les limites recommandées pour son type
+- Il contient plusieurs responsabilités ou fonctionnalités non liées
+- Il est difficile à comprendre dans son ensemble
+- Il change fréquemment pour différentes raisons
+- Il a une complexité cyclomatique élevée
+- Il est difficile à tester unitairement
+
+### 7.2 Stratégies de découpage par type de fichier
+
+#### PowerShell (.ps1, .psm1)
+```
+/MonModule
+  MonModule.psm1        # Fichier principal qui importe les sous-modules
+  MonModule.psd1        # Manifeste du module
+  /Public               # Fonctions exportées
+    Function1.ps1
+    Function2.ps1
+  /Private              # Fonctions internes
+    HelperFunction1.ps1
+    HelperFunction2.ps1
+  /Classes              # Définitions de classes
+    Class1.ps1
+    Class2.ps1
+```
+
+#### Python (.py)
+```
+/my_package
+  __init__.py              # Expose l'API publique
+  /module1
+    __init__.py            # Importe et expose les sous-modules
+    component1.py
+    component2.py
+  /module2
+    __init__.py
+    component3.py
+    component4.py
+```
+
+#### JavaScript/TypeScript (.js, .ts)
+```
+/src
+  /components
+    /Button
+      Button.js           # Composant principal
+      Button.test.js      # Tests unitaires
+      Button.css          # Styles spécifiques
+      index.js            # Point d'entrée qui exporte le composant
+    /Modal
+      Modal.js
+      Modal.test.js
+      Modal.css
+      index.js
+```
+
+### 7.3 Techniques pour éviter les dépendances circulaires
+
+1. **Injection de dépendances** : Passer les dépendances en paramètres plutôt que de les importer directement
+2. **Module central de coordination** : Créer un module qui importe tous les autres et gère leurs interactions
+3. **Interfaces et abstractions** : Utiliser des interfaces que les modules implémentent
+4. **Pattern Mediator** : Créer un médiateur qui coordonne la communication entre modules
+5. **Restructuration hiérarchique** : Revoir la conception pour éliminer les cycles
+
+### 7.4 Outils d'analyse
+
+- **PowerShell** : PSScriptAnalyzer avec règles personnalisées
+- **Python** : Pylint avec `max-module-lines`
+- **JavaScript** : ESLint avec règles de complexité
+- **Général** : SonarQube, qui analyse la complexité et suggère des refactorisations
+
+## 8. Contextualisation efficace pour Augment
+
+### 8.1 Référencement de fichiers
 
 Plutôt que de copier-coller de grands blocs de code ou de documentation, référencer les fichiers pertinents :
 
@@ -312,7 +413,7 @@ Plutôt que de copier-coller de grands blocs de code ou de documentation, réfé
 @chemin/vers/module.psm1 Comment puis-je étendre ce module pour ajouter la fonctionnalité Y?
 ```
 
-### 7.2 Règles et memories Augment
+### 8.2 Règles et memories Augment
 
 Définir des règles claires pour guider Augment :
 
