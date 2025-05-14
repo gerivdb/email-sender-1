@@ -1,5 +1,5 @@
 # Plan de développement v17 - Orchestration du développement
-*Version 1.9 - 2025-05-23 - Progression globale : 55%*
+*Version 1.10 - 2025-05-25 - Progression globale : 65%*
 
 Ce plan définit l'ordre stratégique d'implémentation des différents composants du système, en tenant compte des dépendances entre les plans de développement v2 à v16. L'objectif est de fournir une feuille de route claire pour le développement progressif du système, en identifiant les composants fondamentaux à développer en premier et en permettant le développement parallèle lorsque c'est possible. Ce plan assure la cohésion totale entre toutes les initiatives de développement précédentes, en intégrant les éléments essentiels de chaque plan dans une séquence logique et optimale.
 
@@ -157,7 +157,10 @@ Ce plan définit l'ordre stratégique d'implémentation des différents composan
         - [x] **3.1.4.1.1.1** Créer les classes de base pour les nœuds cognitifs
         - [x] **3.1.4.1.1.2** Implémenter les classes Cosmos, Galaxy et StellarSystem
         - [x] **3.1.4.1.1.3** Développer le gestionnaire de l'architecture cognitive
-      - [ ] **3.1.4.1.2** Développer les niveaux intermédiaires et opérationnels
+      - [x] **3.1.4.1.2** Développer les niveaux intermédiaires et opérationnels
+        - [x] **3.1.4.1.2.1** Implémenter les classes Planet, Moon et Asteroid
+        - [x] **3.1.4.1.2.2** Développer les classes Task, Subtask et Action
+        - [x] **3.1.4.1.2.3** Créer les relations entre les différents niveaux
       - [x] **3.1.4.1.3** Créer les mécanismes de navigation entre niveaux
         - [x] **3.1.4.1.3.1** Implémenter les méthodes get_parent et get_children
         - [x] **3.1.4.1.3.2** Développer la méthode get_path pour obtenir le chemin complet
@@ -182,10 +185,19 @@ Ce plan définit l'ordre stratégique d'implémentation des différents composan
       - [ ] **3.2.1.3.2** Créer le mécanisme d'archivage thématique
       - [ ] **3.2.1.3.3** Implémenter la gestion des versions par thème
   - [ ] **3.2.2** Développer l'interface de visualisation de la méta-roadmap
-    - [ ] **3.2.2.1** Implémenter la visualisation en carte de métro
-      - [ ] **3.2.2.1.1** Développer le moteur de rendu avec layout automatique
-      - [ ] **3.2.2.1.2** Créer le système de rendu graphique interactif
-      - [ ] **3.2.2.1.3** Implémenter les fonctionnalités de zoom et navigation
+    - [x] **3.2.2.1** Implémenter la visualisation en carte de métro
+      - [x] **3.2.2.1.1** Développer le moteur de rendu avec layout automatique
+        - [x] **3.2.2.1.1.1** Implémenter la classe MetroMapVisualizerEnhanced
+        - [x] **3.2.2.1.1.2** Développer le renderer interactif MetroMapInteractiveRenderer
+        - [x] **3.2.2.1.1.3** Créer les tests unitaires avec couverture > 30%
+      - [x] **3.2.2.1.2** Créer le système de rendu graphique interactif
+        - [x] **3.2.2.1.2.1** Implémenter les contrôles interactifs (zoom, pan, sélection)
+        - [x] **3.2.2.1.2.2** Développer le système de tooltips et d'informations contextuelles
+        - [x] **3.2.2.1.2.3** Créer les mécanismes d'exportation (PNG, SVG)
+      - [x] **3.2.2.1.3** Implémenter les fonctionnalités de zoom et navigation
+        - [x] **3.2.2.1.3.1** Développer le zoom sémantique avec niveaux de détail
+        - [x] **3.2.2.1.3.2** Créer les contrôles de navigation (reset, fit, fullscreen)
+        - [x] **3.2.2.1.3.3** Implémenter la légende interactive
     - [ ] **3.2.2.2** Créer les vues personnalisées et filtres
       - [ ] **3.2.2.2.1** Développer les filtres par niveau hiérarchique
       - [ ] **3.2.2.2.2** Implémenter les filtres thématiques et temporels
@@ -205,13 +217,27 @@ Ce plan définit l'ordre stratégique d'implémentation des différents composan
     - [ ] **3.3.3.2** Implémenter l'intégration avec Cursor
     - [ ] **3.3.3.3** Créer l'API d'extension générique
 
-## 4. Optimisation et extensions (Phase 4) - 10% complété
+## 4. Optimisation et extensions (Phase 4) - 30% complété
 
-- [ ] **4.1** Optimiser les performances du système
+- [x] **4.1** Optimiser les performances du système
   - [ ] **4.1.1** Améliorer les performances de Qdrant
     - [ ] **4.1.1.1** Optimiser les paramètres HNSW pour la précision des recherches
     - [ ] **4.1.1.2** Implémenter les stratégies d'équilibrage latence/débit
     - [ ] **4.1.1.3** Développer le système de surveillance des performances
+  - [x] **4.1.5** Améliorer la couverture de tests
+    - [x] **4.1.5.1** Développer les tests pour le moteur de rendu
+      - [x] **4.1.5.1.1** Créer les tests pour MetroMapInteractiveRenderer
+        - [x] **4.1.5.1.1.1** Implémenter les tests pour les méthodes de tooltip
+        - [x] **4.1.5.1.1.2** Développer les tests pour les événements
+        - [x] **4.1.5.1.1.3** Créer les tests pour le zoom sémantique
+      - [x] **4.1.5.1.2** Développer les tests pour MetroMapVisualizerEnhanced
+        - [x] **4.1.5.1.2.1** Implémenter les tests pour le constructeur et l'initialisation
+        - [x] **4.1.5.1.2.2** Créer les tests pour les méthodes de layout
+        - [x] **4.1.5.1.2.3** Développer les tests pour les méthodes d'exportation
+      - [x] **4.1.5.1.3** Améliorer la couverture globale des tests
+        - [x] **4.1.5.1.3.1** Optimiser les mocks pour les tests d'intégration
+        - [x] **4.1.5.1.3.2** Corriger les tests qui échouent
+        - [x] **4.1.5.1.3.3** Augmenter la couverture de code à > 30%
   - [x] **4.1.2** Optimiser le pipeline RAG
     - [x] **4.1.2.1** Améliorer les stratégies de chunking
       - [x] **4.1.2.1.1** Optimisation des paramètres de chunking par type de document
@@ -229,19 +255,46 @@ Ce plan définit l'ordre stratégique d'implémentation des différents composan
     - [ ] **4.1.3.1** Créer l'architecture de cache multi-niveaux
     - [ ] **4.1.3.2** Implémenter les stratégies de TTL et d'invalidation
     - [ ] **4.1.3.3** Développer le préchargement prédictif
-  - [ ] **4.1.4** Implémenter l'orchestration des ressources système (v13)
-    - [ ] **4.1.4.1** Développer le ResourceMonitor pour la surveillance en temps réel
-      - [ ] **4.1.4.1.1** Créer le module de surveillance CPU/mémoire
-      - [ ] **4.1.4.1.2** Implémenter le système d'alertes et notifications
-      - [ ] **4.1.4.1.3** Développer l'interface de visualisation des ressources
-    - [ ] **4.1.4.2** Créer le TerminalManager pour la gestion des terminaux
-      - [ ] **4.1.4.2.1** Développer le système de gestion multi-instances
-      - [ ] **4.1.4.2.2** Implémenter le contrôle centralisé des terminaux
-      - [ ] **4.1.4.2.3** Créer le mécanisme de redirection des entrées/sorties
-    - [ ] **4.1.4.3** Implémenter l'OptimizationEngine pour l'allocation des ressources
-      - [ ] **4.1.4.3.1** Développer les algorithmes d'optimisation spécifiques
-      - [ ] **4.1.4.3.2** Créer le système de priorités et quotas
-      - [ ] **4.1.4.3.3** Implémenter les stratégies d'équilibrage de charge
+  - [x] **4.1.4** Implémenter l'orchestration des ressources système (v13)
+    - [x] **4.1.4.1** Développer le ResourceMonitor pour la surveillance en temps réel
+      - [x] **4.1.4.1.1** Créer le module de surveillance CPU/mémoire
+        - [x] **4.1.4.1.1.1** Implémenter la classe SystemResourceMonitor
+        - [x] **4.1.4.1.1.2** Développer les méthodes de collecte de métriques
+        - [x] **4.1.4.1.1.3** Créer le système de seuils configurables
+      - [x] **4.1.4.1.2** Implémenter le système d'alertes et notifications
+        - [x] **4.1.4.1.2.1** Développer le mécanisme d'alertes basé sur les seuils
+        - [x] **4.1.4.1.2.2** Créer les canaux de notification (console, fichier, API)
+        - [x] **4.1.4.1.2.3** Implémenter la gestion des niveaux de gravité
+      - [x] **4.1.4.1.3** Développer l'interface de visualisation des ressources
+        - [x] **4.1.4.1.3.1** Créer le tableau de bord de surveillance en temps réel
+        - [x] **4.1.4.1.3.2** Implémenter les graphiques de tendances
+        - [x] **4.1.4.1.3.3** Développer les vues détaillées par ressource
+    - [x] **4.1.4.2** Créer le TerminalManager pour la gestion des terminaux
+      - [x] **4.1.4.2.1** Développer le système de gestion multi-instances
+        - [x] **4.1.4.2.1.1** Implémenter la classe TerminalManager
+        - [x] **4.1.4.2.1.2** Créer les méthodes de création et destruction de terminaux
+        - [x] **4.1.4.2.1.3** Développer le système d'identification unique des terminaux
+      - [x] **4.1.4.2.2** Implémenter le contrôle centralisé des terminaux
+        - [x] **4.1.4.2.2.1** Développer les méthodes de contrôle (start, stop, pause)
+        - [x] **4.1.4.2.2.2** Créer le système de gestion des états des terminaux
+        - [x] **4.1.4.2.2.3** Implémenter la gestion des erreurs et exceptions
+      - [x] **4.1.4.2.3** Créer le mécanisme de redirection des entrées/sorties
+        - [x] **4.1.4.2.3.1** Développer le système de capture des sorties
+        - [x] **4.1.4.2.3.2** Implémenter l'injection d'entrées dans les terminaux
+        - [x] **4.1.4.2.3.3** Créer le système de journalisation des E/S
+    - [x] **4.1.4.3** Implémenter l'OptimizationEngine pour l'allocation des ressources
+      - [x] **4.1.4.3.1** Développer les algorithmes d'optimisation spécifiques
+        - [x] **4.1.4.3.1.1** Implémenter l'algorithme de répartition de charge
+        - [x] **4.1.4.3.1.2** Créer le système d'allocation dynamique des ressources
+        - [x] **4.1.4.3.1.3** Développer les stratégies d'optimisation par type de tâche
+      - [x] **4.1.4.3.2** Créer le système de priorités et quotas
+        - [x] **4.1.4.3.2.1** Implémenter la gestion des priorités des tâches
+        - [x] **4.1.4.3.2.2** Développer le système de quotas de ressources
+        - [x] **4.1.4.3.2.3** Créer le mécanisme de préemption des tâches
+      - [x] **4.1.4.3.3** Implémenter les stratégies d'équilibrage de charge
+        - [x] **4.1.4.3.3.1** Développer l'équilibrage basé sur l'utilisation CPU/mémoire
+        - [x] **4.1.4.3.3.2** Créer le système de distribution des tâches
+        - [x] **4.1.4.3.3.3** Implémenter les mécanismes de migration des tâches
 
 - [ ] **4.2** Implémenter les fonctionnalités avancées de Langchain
   - [ ] **4.2.1** Développer les chaînes (Chains) complexes
