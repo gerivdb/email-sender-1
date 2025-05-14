@@ -194,11 +194,24 @@ switch ($Command) {
 - Mécanismes de restauration
 - Synchronisation entre sessions
 
+### 5.4 Génération avec Hygen
+- Templates pour tous les composants des modes
+- Génération automatisée des scripts, tests et documentation
+- Hooks personnalisés pour l'intégration avec l'environnement
+- Prompts interactifs pour la configuration
+- Injection de dépendances automatique
+
 ## 6. Plan d'implémentation
 
 ### 6.1 Phase 1: Fondations (2 semaines)
 - [x] Analyse des modes existants
 - [x] Conception de l'architecture commune
+- [ ] Configuration de Hygen et création des templates de base
+  - [ ] Installation et configuration de Hygen
+  - [ ] Création des templates pour les modes opérationnels
+  - [ ] Développement des helpers et hooks personnalisés
+  - [ ] Tests de génération automatisée
+  - [ ] Documentation des templates
 - [ ] Implémentation du module ModesCommon
 - [ ] Standardisation des interfaces de commande
 - [ ] Tests unitaires des composants fondamentaux
