@@ -1,6 +1,5 @@
-<#
 ---
-to: D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/scripts/maintenance/organize/<%= name %>.ps1
+to: "<%= template === 'standard' ? `development/scripts/maintenance/organize/${name}.ps1` : null %>"
 ---
 <#
 .SYNOPSIS
@@ -96,7 +95,7 @@ $folders = @(
 # Créer les dossiers
 foreach ($folder in $folders) {
     $folderPath = Join-Path -Path $targetDir -ChildPath $folder
-    
+
     if (-not (Test-Path -Path $folderPath)) {
         if ($DryRun) {
             Write-Host "[DRYRUN] Création du dossier : $folderPath" -ForegroundColor Yellow
@@ -154,10 +153,10 @@ function Move-FileToNewLocation {
         [string]$SourceFile,
         [string]$DestinationFolder
     )
-    
+
     $fileName = Split-Path -Path $SourceFile -Leaf
     $destinationPath = Join-Path -Path $DestinationFolder -ChildPath $fileName
-    
+
     if (Test-Path -Path $destinationPath) {
         if ($Force) {
             $shouldContinue = $true
@@ -167,7 +166,7 @@ function Move-FileToNewLocation {
     } else {
         $shouldContinue = $true
     }
-    
+
     if ($shouldContinue) {
         if ($DryRun) {
             Write-Host "[DRYRUN] Déplacement du fichier : $SourceFile -> $destinationPath" -ForegroundColor Yellow
@@ -187,7 +186,7 @@ $files = Get-ChildItem -Path $targetDir -File -Recurse | Where-Object { $_.Direc
 
 foreach ($file in $files) {
     $matched = $false
-    
+
     foreach ($pattern in $fileMappings.Keys) {
         if ($file.Name -like $pattern) {
             $destinationFolder = Join-Path -Path $targetDir -ChildPath $fileMappings[$pattern]
@@ -196,7 +195,7 @@ foreach ($file in $files) {
             break
         }
     }
-    
+
     if (-not $matched) {
         Write-Host "Aucun mapping trouvé pour le fichier : $($file.Name)" -ForegroundColor Yellow
     }
