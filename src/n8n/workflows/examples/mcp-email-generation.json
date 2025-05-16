@@ -1,0 +1,192 @@
+{
+  "id": "a7e02c09-7de7-4f87-a22b-32f7f4962239",
+  "name": "MCP Context-Aware Email Generation",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://notion-api.example.com/contacts/{{ $json.contactId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "name": "Get Contact Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [
+        450,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "1",
+          "name": "Notion API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getContext",
+        "connectionType": "http",
+        "prompt": "=Generate a personalized email for {{ $json.name }} who works at {{ $json.company }} as a {{ $json.role }}. They are interested in booking our artist for a concert. Use the contact's interests and previous interactions to personalize the message.",
+        "sources": [
+          "notion",
+          "calendar",
+          "memory"
+        ]
+      },
+      "name": "Get Context from MCP",
+      "type": "n8n-nodes-mcp.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        650,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": {
+          "id": "1",
+          "name": "MCP Standard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Process the context and contact data to create an email\nfor (const item of items) {\n  // Extract the context from MCP\n  const context = item.json.context || '';\n  const contact = item.json;\n  \n  // Create a structured email object\n  item.json.email = {\n    to: contact.email,\n    subject: `Booking opportunity for ${contact.company}`,\n    body: context,\n    personalization: {\n      contactName: contact.name,\n      company: contact.company,\n      role: contact.role\n    },\n    metadata: {\n      source: 'mcp-workflow',\n      timestamp: new Date().toISOString(),\n      contactId: contact.id\n    }\n  };\n}\n\nreturn items;"
+      },
+      "name": "Format Email",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        850,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addMemory",
+        "connectionType": "http",
+        "content": "={{ $json.email.body }}",
+        "metadata": "={{ JSON.stringify({\n  \"type\": \"email\",\n  \"recipient\": $json.name,\n  \"company\": $json.company,\n  \"timestamp\": $now,\n  \"contactId\": $json.id\n}) }}"
+      },
+      "name": "Save Email to Memory",
+      "type": "n8n-nodes-mcp.mcpMemory",
+      "typeVersion": 1,
+      "position": [
+        1050,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": {
+          "id": "1",
+          "name": "MCP Standard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "genericCredentialType",
+        "resource": "message",
+        "operation": "send",
+        "to": "={{ $json.email.to }}",
+        "subject": "={{ $json.email.subject }}",
+        "text": "={{ $json.email.body }}"
+      },
+      "name": "Send Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        1250,
+        300
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Get Contact Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Contact Data": {
+      "main": [
+        [
+          {
+            "node": "Get Context from MCP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Context from MCP": {
+      "main": [
+        [
+          {
+            "node": "Format Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Email": {
+      "main": [
+        [
+          {
+            "node": "Save Email to Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Email to Memory": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "1",
+  "meta": {
+    "instanceId": "1"
+  },
+  "tags": [
+    {
+      "name": "MCP",
+      "color": "#00FF00"
+    },
+    {
+      "name": "Email",
+      "color": "#FF0000"
+    }
+  ]
+}

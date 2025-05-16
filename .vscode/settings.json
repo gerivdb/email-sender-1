@@ -110,7 +110,7 @@
   "diffEditor.ignoreTrimWhitespace": false,
   "diffEditor.renderSideBySide": true,
   "explorer.compactFolders": false,
-  "explorer.confirmDelete": true,
+  "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "augment.guidelines.maxLength": 2000,
   "augment.input.maxSizeKB": 5,

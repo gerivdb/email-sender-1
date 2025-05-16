@@ -1,0 +1,48 @@
+{
+  "name": "mcpClient",
+  "displayName": "MCP Client",
+  "description": "Interact with Model Context Protocol (MCP) servers",
+  "icon": "file:mcp.svg",
+  "group": ["transform"],
+  "version": 1,
+  "defaults": {
+    "name": "MCP Client"
+  },
+  "inputs": ["main"],
+  "outputs": ["main"],
+  "credentials": [
+    {
+      "name": "mcpClientApi",
+      "required": true
+    }
+  ],
+  "properties": [
+    {
+      "displayName": "Operation",
+      "name": "operation",
+      "type": "options",
+      "noDataExpression": true,
+      "options": [
+        {
+          "name": "Get Context",
+          "value": "getContext",
+          "description": "Get context from MCP server",
+          "action": "Get context from MCP server"
+        },
+        {
+          "name": "List Tools",
+          "value": "listTools",
+          "description": "List available tools on MCP server",
+          "action": "List available tools on MCP server"
+        },
+        {
+          "name": "Execute Tool",
+          "value": "executeTool",
+          "description": "Execute a tool on MCP server",
+          "action": "Execute a tool on MCP server"
+        }
+      ],
+      "default": "getContext"
+    }
+  ]
+}

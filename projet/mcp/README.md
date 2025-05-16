@@ -17,6 +17,7 @@ Le Model Context Protocol (MCP) est un protocole qui permet aux modèles d'IA d'
 | notion | Accès à Notion | - | [Guide](../guides/mcp/GUIDE_FINAL_MCP.md) |
 | gateway | Passerelle MCP | - | [Guide](../guides/mcp/GUIDE_MCP_GATEWAY.md) |
 | n8n | Accès à n8n | 5678 | [Guide](../guides/mcp/GUIDE_FINAL_MCP.md) |
+| desktop-commander | Manipulation de fichiers et exécution de commandes terminal | 8080 | [Guide](../guides/mcp/GUIDE_MCP_DESKTOP_COMMANDER.md) |
 
 ## Structure des répertoires
 
@@ -40,7 +41,8 @@ Le Model Context Protocol (MCP) est un protocole qui permet aux modèles d'IA d'
 │   ├── gcp/              # Serveur MCP GCP
 │   ├── github/           # Serveur MCP GitHub
 │   ├── git-ingest/       # Serveur MCP Git Ingest
-│   └── notion/           # Serveur MCP Notion
+│   ├── notion/           # Serveur MCP Notion
+│   └── desktop-commander/ # Serveur MCP Desktop Commander
 ├── tests/                # Tests des serveurs MCP
 └── versioning/           # Gestion des versions
 ```
@@ -62,6 +64,7 @@ Le Model Context Protocol (MCP) est un protocole qui permet aux modèles d'IA d'
 - `scripts/start-gcp-mcp.cmd` : Démarre le serveur MCP GCP
 - `scripts/start-notion-mcp.cmd` : Démarre le serveur MCP Notion
 - `scripts/start-gateway-mcp.cmd` : Démarre le serveur MCP Gateway
+- `scripts/start-desktop-commander-mcp.cmd` : Démarre le serveur MCP Desktop Commander
 
 ### Outils
 

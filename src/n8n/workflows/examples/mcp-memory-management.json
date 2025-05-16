@@ -1,0 +1,194 @@
+{
+  "id": "a7e02c09-7de7-4f87-a22b-32f7f4962238",
+  "name": "MCP Memory Management Example",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "addMemory",
+        "connectionType": "http",
+        "content": "This is an example memory for testing the MCP Memory node.",
+        "metadata": "{\"category\": \"test\", \"tags\": [\"example\", \"n8n\", \"mcp\"], \"created_by\": \"n8n-workflow\"}"
+      },
+      "name": "Add Memory",
+      "type": "n8n-nodes-mcp.mcpMemory",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": {
+          "id": "1",
+          "name": "MCP Standard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getMemory",
+        "connectionType": "http",
+        "memoryId": "={{ $json.memory_id }}"
+      },
+      "name": "Get Memory",
+      "type": "n8n-nodes-mcp.mcpMemory",
+      "typeVersion": 1,
+      "position": [
+        650,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": {
+          "id": "1",
+          "name": "MCP Standard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "updateMemory",
+        "connectionType": "http",
+        "memoryId": "={{ $json.memory_id }}",
+        "newContent": "This is an updated example memory for testing the MCP Memory node.",
+        "newMetadata": "{\"category\": \"test\", \"tags\": [\"example\", \"n8n\", \"mcp\", \"updated\"], \"created_by\": \"n8n-workflow\", \"updated_at\": \"{{ $now }}\"}"
+      },
+      "name": "Update Memory",
+      "type": "n8n-nodes-mcp.mcpMemory",
+      "typeVersion": 1,
+      "position": [
+        850,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": {
+          "id": "1",
+          "name": "MCP Standard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "searchMemories",
+        "connectionType": "http",
+        "query": "example memory",
+        "metadataFilter": "{\"category\": \"test\"}",
+        "limit": 10
+      },
+      "name": "Search Memories",
+      "type": "n8n-nodes-mcp.mcpMemory",
+      "typeVersion": 1,
+      "position": [
+        1050,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": {
+          "id": "1",
+          "name": "MCP Standard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteMemory",
+        "connectionType": "http",
+        "memoryId": "={{ $json.memory_id }}"
+      },
+      "name": "Delete Memory",
+      "type": "n8n-nodes-mcp.mcpMemory",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        300
+      ],
+      "credentials": {
+        "mcpClientApi": {
+          "id": "1",
+          "name": "MCP Standard"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Add Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Memory": {
+      "main": [
+        [
+          {
+            "node": "Get Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Memory": {
+      "main": [
+        [
+          {
+            "node": "Update Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Memory": {
+      "main": [
+        [
+          {
+            "node": "Search Memories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Memories": {
+      "main": [
+        [
+          {
+            "node": "Delete Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "1",
+  "meta": {
+    "instanceId": "1"
+  },
+  "tags": [
+    {
+      "name": "MCP",
+      "color": "#00FF00"
+    },
+    {
+      "name": "Example",
+      "color": "#0000FF"
+    }
+  ]
+}

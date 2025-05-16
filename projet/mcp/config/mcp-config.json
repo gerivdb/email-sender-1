@@ -68,7 +68,16 @@
                                           "command":  "python",
                                           "configPath":  "config/servers/git-ingest.json",
                                           "enabled":  true
-                                      }
+                                      },
+                       "desktop-commander":  {
+                                                "command":  "npx",
+                                                "args":  [
+                                                             "-y",
+                                                             "@wonderwhy-er/desktop-commander"
+                                                         ],
+                                                "enabled":  true,
+                                                "configPath":  "config/servers/desktop-commander.json"
+                                            }
                    },
     "global":  {
                    "logLevel":  "info",

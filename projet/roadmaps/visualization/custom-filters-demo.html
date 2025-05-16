@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Démo des filtres personnalisés</title>
+
+  <!-- Styles -->
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 10px 0 0;
+      font-size: 16px;
+      opacity: 0.8;
+    }
+
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .visualization {
+      flex: 1;
+      min-width: 600px;
+      height: 600px;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .filters {
+      flex: 0 0 300px;
+      background-color: white;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-container {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .filter-container h3 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #2c3e50;
+    }
+
+    .hierarchy-level-filter-checkboxes,
+    .thematic-filter-checkboxes,
+    .temporal-filter-checkboxes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hierarchy-level-filter-checkbox,
+    .thematic-filter-checkbox,
+    .temporal-filter-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-priority-view-selector {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .status-priority-view-create-button,
+    .apply-filters-button,
+    .reset-filters-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .reset-filters-button {
+      background-color: #e74c3c;
+    }
+
+    .status-priority-view-dialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      width: 400px;
+    }
+
+    .status-priority-view-dialog h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    .status-priority-view-dialog form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .status-priority-view-dialog input[type="text"],
+    .status-priority-view-dialog textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .status-priority-view-dialog textarea {
+      height: 80px;
+      resize: vertical;
+    }
+
+    .status-priority-view-dialog-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .status-priority-view-dialog-buttons button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .status-priority-view-dialog-buttons button[type="submit"] {
+      background-color: #2ecc71;
+      color: white;
+    }
+
+    .status-priority-view-dialog-buttons button[type="button"] {
+      background-color: #95a5a6;
+      color: white;
+    }
+
+    /* Styles pour les éléments filtrés */
+    .filtered-out {
+      opacity: 0.2;
+      transition: opacity 0.3s ease;
+    }
+  </style>
+
+  <!-- Cytoscape.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.23.0/cytoscape.min.js"></script>
+
+  <!-- Modules personnalisés -->
+  <script src="MetroMapVisualizerEnhanced.mock.js" type="module"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Démo des filtres personnalisés pour les roadmaps</h1>
+      <p>Cette démo illustre l'utilisation des filtres hiérarchiques, thématiques, temporels et des vues par statut et priorité.</p>
+    </header>
+
+    <div class="content">
+      <div class="visualization" id="visualization-container"></div>
+
+      <div class="filters" id="custom-filters-container"></div>
+    </div>
+  </div>
+
+  <!-- Script principal -->
+  <script type="module">
+    // Importer les modules
+    import MetroMapVisualizerEnhancedMock from './MetroMapVisualizerEnhanced.mock.js';
+    import HierarchyLevelFilter from './HierarchyLevelFilter.js';
+    import { ThematicFilter, TemporalFilter } from './ThematicTemporalFilter.js';
+    import StatusPriorityView from './StatusPriorityView.js';
+    import CustomFiltersManager from './CustomFiltersManager.js';
+
+    // Données de test
+    const testRoadmap = {
+      id: "plan-dev-v12-architecture-cognitive",
+      title: "Architecture Cognitive (v12)",
+      description: "Plan de développement de l'architecture cognitive à 10 niveaux",
+      type: "cosmos",
+      status: "in_progress",
+      metadata: {
+        temporal: { horizon: "medium_term" },
+        cognitive: { complexity: "complex" },
+        strategic: { priority: 0.85 },
+        themes: { "architecture": 1.0, "cognitive": 0.9 }
+      },
+      children: [
+        {
+          id: "section-1",
+          title: "Fondations conceptuelles",
+          type: "galaxy",
+          status: "completed",
+          metadata: {
+            temporal: { horizon: "short_term" },
+            strategic: { priority: 0.95 },
+            themes: { "architecture": 0.8, "fondation": 0.9 }
+          },
+          children: [
+            {
+              id: "task-1-1",
+              title: "Définir les niveaux hiérarchiques",
+              type: "stellar_system",
+              status: "completed",
+              metadata: {
+                temporal: { horizon: "immediate" },
+                strategic: { priority: 0.9 },
+                themes: { "architecture": 0.7, "hiérarchie": 0.95 }
+              },
+              children: []
+            }
+          ]
+        },
+        {
+          id: "section-2",
+          title: "Système d'orchestration cognitive",
+          type: "galaxy",
+          status: "in_progress",
+          metadata: {
+            temporal: { horizon: "medium_term" },
+            strategic: { priority: 0.8 },
+            themes: { "orchestration": 1.0, "cognitive": 0.85 }
+          },
+          children: [
+            {
+              id: "task-2-1",
+              title: "Développer le moteur d'orchestration",
+              type: "stellar_system",
+              status: "in_progress",
+              metadata: {
+                temporal: { horizon: "short_term" },
+                strategic: { priority: 0.75 },
+                themes: { "orchestration": 0.9, "développement": 0.8 }
+              },
+              children: []
+            },
+            {
+              id: "task-2-2",
+              title: "Implémenter les filtres avancés",
+              type: "stellar_system",
+              status: "planned",
+              metadata: {
+                temporal: { horizon: "short_term" },
+                strategic: { priority: 0.7 },
+                themes: { "filtres": 1.0, "développement": 0.75 }
+              },
+              children: []
+            }
+          ]
+        },
+        {
+          id: "section-3",
+          title: "Intégration et déploiement",
+          type: "galaxy",
+          status: "planned",
+          metadata: {
+            temporal: { horizon: "long_term" },
+            strategic: { priority: 0.6 },
+            themes: { "intégration": 0.9, "déploiement": 0.85 }
+          },
+          children: [
+            {
+              id: "task-3-1",
+              title: "Intégrer avec les systèmes existants",
+              type: "stellar_system",
+              status: "planned",
+              metadata: {
+                temporal: { horizon: "medium_term" },
+                strategic: { priority: 0.5 },
+                themes: { "intégration": 0.95, "systèmes": 0.8 }
+              },
+              children: []
+            },
+            {
+              id: "task-3-2",
+              title: "Déployer en production",
+              type: "stellar_system",
+              status: "planned",
+              metadata: {
+                temporal: { horizon: "long_term" },
+                strategic: { priority: 0.4 },
+                themes: { "déploiement": 0.9, "production": 0.85 }
+              },
+              children: []
+            }
+          ]
+        }
+      ]
+    };
+
+    // Fonction pour convertir la roadmap en format Cytoscape
+    function convertRoadmapToCytoscape(roadmap) {
+      const elements = [];
+
+      // Fonction récursive pour traiter les nœuds
+      function processNode(node, parentId = null) {
+        // Ajouter le nœud
+        elements.push({
+          data: {
+            id: node.id,
+            label: node.title,
+            description: node.description,
+            type: node.type,
+            status: node.status,
+            metadata: node.metadata || {},
+            parent: parentId
+          }
+        });
+
+        // Ajouter l'arête si le nœud a un parent
+        if (parentId) {
+          elements.push({
+            data: {
+              id: `${parentId}-${node.id}`,
+              source: parentId,
+              target: node.id
+            }
+          });
+        }
+
+        // Traiter les enfants
+        if (node.children && node.children.length > 0) {
+          for (const child of node.children) {
+            processNode(child, node.id);
+          }
+        }
+      }
+
+      // Traiter le nœud racine
+      processNode(roadmap);
+
+      return elements;
+    }
+
+    // Initialiser la visualisation et les filtres
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        // Convertir la roadmap en format Cytoscape
+        const elements = convertRoadmapToCytoscape(testRoadmap);
+
+        // Nous n'avons plus besoin de créer l'instance Cytoscape directement
+        // car elle sera créée par le visualiseur
+
+        // Créer le visualiseur
+        const visualizer = new MetroMapVisualizerEnhancedMock('visualization-container', {
+          testRoadmaps: {
+            'roadmap1': testRoadmap
+          }
+        });
+
+        // Initialiser le visualiseur
+        await visualizer.initialize();
+
+        // Visualiser la roadmap
+        await visualizer.visualizeRoadmaps(['roadmap1']);
+
+        // Créer le gestionnaire de filtres
+        const filtersManager = new CustomFiltersManager(visualizer, {
+          uiContainer: 'custom-filters-container',
+          autoApply: true
+        });
+
+        // Initialiser les filtres
+        await filtersManager.initialize();
+
+        // Créer l'interface utilisateur
+        filtersManager.createUI();
+
+        // Enregistrer les événements
+        filtersManager.registerEvents();
+
+      } catch (error) {
+        console.error('Erreur lors de l\'initialisation:', error);
+        alert('Une erreur est survenue lors de l\'initialisation. Veuillez rafraîchir la page.');
+      }
+    });
+  </script>
+</body>
+</html>

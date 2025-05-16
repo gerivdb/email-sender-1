@@ -1,0 +1,286 @@
+{
+  "name": "Augment Integration Example",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e8b8f83a-b2b3-4cd1-9a1f-9c4e13c71234",
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeMode",
+        "mode": "GRAN",
+        "filePath": "projet/roadmaps/plans/plan-dev-v24-integration-n8n.md",
+        "taskIdentifier": "2.1",
+        "updateMemories": true
+      },
+      "id": "a1b2c3d4-e5f6-4a5b-9c8d-7e6f5a4b3c2d",
+      "name": "Augment Client",
+      "type": "n8n-nodes-augment-client.augmentClient",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json[\"success\"] }}",
+              "operation": "equal",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "f1e2d3c4-b5a6-4c5d-8e7f-6a5b4c3d2e1f",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeMode",
+        "mode": "DEV-R",
+        "filePath": "={{ $json[\"filePath\"] }}",
+        "taskIdentifier": "={{ $json[\"taskIdentifier\"] }}.1",
+        "updateMemories": true
+      },
+      "id": "d4c3b2a1-e5f6-4a5b-9c8d-7e6f5a4b3c2d",
+      "name": "Implement First Subtask",
+      "type": "n8n-nodes-augment-client.augmentClient",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Augment Integration Failed\n\nThe Augment integration failed with the following error:\n\n```\n{{ $json[\"error\"] }}\n```\n\nPlease check the logs for more details.",
+        "additionalFields": {}
+      },
+      "id": "a9b8c7d6-e5f4-4a3b-9c2d-1e0f9a8b7c6d",
+      "name": "Error Message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeMode",
+        "mode": "DEV-R",
+        "filePath": "={{ $json[\"filePath\"] }}",
+        "taskIdentifier": "={{ $json[\"taskIdentifier\"] }}.2",
+        "updateMemories": true
+      },
+      "id": "b2a1c3d4-e5f6-4a5b-9c8d-7e6f5a4b3c2d",
+      "name": "Implement Second Subtask",
+      "type": "n8n-nodes-augment-client.augmentClient",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeMode",
+        "mode": "DEV-R",
+        "filePath": "={{ $json[\"filePath\"] }}",
+        "taskIdentifier": "={{ $json[\"taskIdentifier\"] }}.3",
+        "updateMemories": true
+      },
+      "id": "c3d4e5f6-a1b2-4c5d-9e8f-7a6b5c4d3e2f",
+      "name": "Implement Third Subtask",
+      "type": "n8n-nodes-augment-client.augmentClient",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeMode",
+        "mode": "CHECK",
+        "filePath": "={{ $json[\"filePath\"] }}",
+        "taskIdentifier": "={{ $json[\"taskIdentifier\"] }}",
+        "updateMemories": true
+      },
+      "id": "e5f6a1b2-c3d4-4e5f-9a8b-7c6d5e4f3a2b",
+      "name": "Verify Implementation",
+      "type": "n8n-nodes-augment-client.augmentClient",
+      "typeVersion": 1,
+      "position": [
+        1750,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "updateMemories",
+        "memoryContent": "=Task {{ $json[\"taskIdentifier\"] }} from {{ $json[\"filePath\"] }} has been implemented and verified successfully.",
+        "memoryCategory": "n8n-augment-integration"
+      },
+      "id": "a1b2c3d4-e5f6-4a5b-9c8d-7e6f5a4b3c2d",
+      "name": "Update Memories",
+      "type": "n8n-nodes-augment-client.augmentClient",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Augment Integration Success\n\nThe Augment integration completed successfully!\n\n### Task Information\n- **File**: {{ $json[\"filePath\"] }}\n- **Task**: {{ $json[\"taskIdentifier\"] }}\n\n### Implementation Steps\n1. Task decomposition (GRAN)\n2. Implementation of subtasks (DEV-R)\n3. Verification (CHECK)\n4. Memory update\n\nAll steps completed successfully.",
+        "additionalFields": {}
+      },
+      "id": "f6e5d4c3-b2a1-4c5d-8e7f-6a5b4c3d2e1f",
+      "name": "Success Message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        2250,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Augment Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Augment Client": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Implement First Subtask",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Implement First Subtask": {
+      "main": [
+        [
+          {
+            "node": "Implement Second Subtask",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Implement Second Subtask": {
+      "main": [
+        [
+          {
+            "node": "Implement Third Subtask",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Implement Third Subtask": {
+      "main": [
+        [
+          {
+            "node": "Verify Implementation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify Implementation": {
+      "main": [
+        [
+          {
+            "node": "Update Memories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Memories": {
+      "main": [
+        [
+          {
+            "node": "Success Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "augment",
+      "color": "#6366F1"
+    },
+    {
+      "name": "integration",
+      "color": "#00FF00"
+    },
+    {
+      "name": "example",
+      "color": "#FF9900"
+    }
+  ],
+  "pinData": {},
+  "versionId": "1234abcd-5678-90ef-abcd-1234567890ab",
+  "id": "abcdef12-3456-7890-abcd-ef1234567890",
+  "meta": {
+    "instanceId": "local-instance"
+  }
+}

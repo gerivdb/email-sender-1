@@ -39,7 +39,50 @@ L'intégration entre Augment et n8n permet de combiner la puissance de l'IA gén
 
 ## 3. Méthodes d'intégration
 
-### 3.1 Génération de workflows n8n par Augment
+### 3.1 Node Augment Client pour n8n
+
+Un node personnalisé a été développé pour faciliter l'intégration entre n8n et Augment :
+
+```
+src/n8n/nodes/augment-client/
+```
+
+Ce node permet d'exécuter directement les modes opérationnels d'Augment depuis n8n.
+
+#### Installation du node
+
+1. Naviguez vers le répertoire du node Augment Client :
+   ```
+   cd src/n8n/nodes/augment-client
+   ```
+
+2. Exécutez le script d'installation :
+   ```
+   .\Install-AugmentNode.ps1
+   ```
+   ou
+   ```
+   .\install-node.cmd
+   ```
+
+3. Redémarrez n8n pour charger le nouveau node.
+
+#### Opérations disponibles
+
+Le node Augment Client prend en charge les opérations suivantes :
+
+- **Execute Mode** : Exécute un mode opérationnel Augment sur un fichier ou une tâche spécifique
+- **Update Memories** : Met à jour les mémoires Augment avec un nouveau contenu
+- **Get Mode Description** : Récupère la description d'un mode opérationnel Augment
+
+#### Exemples de workflows
+
+Des workflows d'exemple sont disponibles dans :
+```
+src/n8n/workflows/examples/
+```
+
+### 3.2 Génération de workflows n8n par Augment
 
 Augment peut générer des workflows n8n complets ou partiels :
 
@@ -66,17 +109,17 @@ function Invoke-EmailSenderWorkflow {
     param (
         [Parameter(Mandatory = $true)]
         [string]$ContactId,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$WebhookUrl = $env:N8N_WEBHOOK_URL
     )
-    
+
     $payload = @{
         contactId = $ContactId
         timestamp = Get-Date -Format "o"
         source = "PowerShell"
     } | ConvertTo-Json
-    
+
     Invoke-RestMethod -Uri $WebhookUrl -Method Post -Body $payload -ContentType "application/json"
 }
 ```
@@ -99,7 +142,7 @@ const { exec } = require('child_process');
 function executeAugmentScript(contactData) {
   return new Promise((resolve, reject) => {
     const command = `powershell -Command "& {Import-Module AugmentIntegration; Invoke-AugmentAnalysis -ContactData '${JSON.stringify(contactData)}' -Mode 'ANALYZE'}"`;
-    
+
     exec(command, (error, stdout, stderr) => {
       if (error) {
         reject(`Error: ${error.message}`);
@@ -184,7 +227,7 @@ async function getMCPResponse(prompt, contactData) {
       }
     }
   );
-  
+
   return response.data.completion;
 }
 
@@ -218,14 +261,14 @@ async function generatePersonalizedEmail(items) {
       role: item.json.role,
       interests: item.json.interests || []
     };
-    
+
     const artistData = {
       name: "Nom de l'artiste",
       genre: "Style musical",
       achievements: ["Prix XYZ", "Concert à ABC"],
       availableDates: ["2025-06-15", "2025-06-22", "2025-07-10"]
     };
-    
+
     const prompt = `
     Rédige un email de prospection personnalisé avec les caractéristiques suivantes :
     - Destinataire : ${contactData.name}, ${contactData.role} chez ${contactData.company}
@@ -237,10 +280,10 @@ async function generatePersonalizedEmail(items) {
     - Longueur : environ 200 mots
     - Structure : introduction, présentation, proposition, conclusion
     `;
-    
+
     item.json.emailBody = await getMCPResponse(prompt, { contact: contactData, artist: artistData });
   }
-  
+
   return items;
 }
 ```
@@ -252,7 +295,7 @@ async function generatePersonalizedEmail(items) {
 async function analyzeEmailResponse(items) {
   for (const item of items) {
     const responseText = item.json.emailBody;
-    
+
     const prompt = `
     Analyse cette réponse à un email de prospection et extrais les informations suivantes :
     - Sentiment général (positif, neutre, négatif)
@@ -261,16 +304,16 @@ async function analyzeEmailResponse(items) {
     - Questions posées
     - Informations supplémentaires demandées
     - Actions requises de notre part
-    
+
     Réponse à analyser :
     "${responseText}"
-    
+
     Format de sortie : JSON
     `;
-    
+
     const analysisResult = await getMCPResponse(prompt, { responseText });
     item.json.analysis = JSON.parse(analysisResult);
-    
+
     // Déterminer le nouveau statut en fonction de l'analyse
     if (item.json.analysis.interest === "très intéressé" || item.json.analysis.interest === "intéressé") {
       item.json.newStatus = "Intéressé";
@@ -282,7 +325,7 @@ async function analyzeEmailResponse(items) {
       item.json.newStatus = "Suivi requis";
     }
   }
-  
+
   return items;
 }
 ```
@@ -299,11 +342,11 @@ function New-EmailSenderWorkflow {
         [Parameter(Mandatory = $true)]
         [ValidateSet("Phase1", "Phase2", "Phase3", "Config")]
         [string]$Phase,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$OutputPath = "src/n8n/workflows/email-sender-$Phase.json"
     )
-    
+
     # Préparer la description du workflow en fonction de la phase
     $description = switch ($Phase) {
         "Phase1" { "Workflow de prospection initiale" }
@@ -311,13 +354,13 @@ function New-EmailSenderWorkflow {
         "Phase3" { "Workflow de traitement des réponses" }
         "Config" { "Workflow de configuration centralisée" }
     }
-    
+
     # Appeler Augment pour générer le workflow
     $result = Invoke-AugmentMode -Mode "DEV-R" -Task "Créer un workflow n8n pour $description" -OutputFormat "JSON"
-    
+
     # Sauvegarder le résultat
     $result | ConvertTo-Json -Depth 10 | Out-File -FilePath $OutputPath -Encoding utf8
-    
+
     Write-Output "Workflow généré avec succès : $OutputPath"
 }
 ```

@@ -1,0 +1,65 @@
+{
+  "enabled": true,
+  "servers": {
+    "filesystem": {
+      "enabled": true,
+      "port": 3000,
+      "host": "localhost",
+      "apiKey": "test-api-key",
+      "logLevel": "info",
+      "storagePath": "src/mcp/storage/filesystem"
+    },
+    "github": {
+      "enabled": false,
+      "port": 3001,
+      "host": "localhost",
+      "apiKey": "test-api-key-github",
+      "logLevel": "info",
+      "repositories": [
+        {
+          "owner": "augmentcode",
+          "repo": "mcp",
+          "branch": "main"
+        }
+      ]
+    },
+    "gcp": {
+      "enabled": false,
+      "port": 3002,
+      "host": "localhost",
+      "apiKey": "test-api-key-gcp",
+      "logLevel": "info",
+      "projectId": "augment-mcp",
+      "bucketName": "augment-mcp-storage"
+    }
+  },
+  "tools": {
+    "memory": {
+      "enabled": true,
+      "defaultProvider": "filesystem"
+    },
+    "documentation": {
+      "enabled": true,
+      "defaultProvider": "filesystem"
+    },
+    "code": {
+      "enabled": true,
+      "defaultProvider": "filesystem"
+    }
+  },
+  "logging": {
+    "level": "info",
+    "file": true,
+    "console": true,
+    "path": "logs/mcp"
+  },
+  "security": {
+    "requireApiKey": true,
+    "allowedOrigins": ["http://localhost:5678", "http://localhost:8080"]
+  },
+  "performance": {
+    "cacheEnabled": true,
+    "cacheTTL": 3600,
+    "maxConcurrentRequests": 10
+  }
+}

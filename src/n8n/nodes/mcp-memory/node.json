@@ -1,0 +1,60 @@
+{
+  "name": "mcpMemory",
+  "displayName": "MCP Memory",
+  "description": "Manage memories in MCP",
+  "icon": "file:memory.svg",
+  "group": ["transform"],
+  "version": 1,
+  "defaults": {
+    "name": "MCP Memory"
+  },
+  "inputs": ["main"],
+  "outputs": ["main"],
+  "credentials": [
+    {
+      "name": "mcpClientApi",
+      "required": true
+    }
+  ],
+  "properties": [
+    {
+      "displayName": "Operation",
+      "name": "operation",
+      "type": "options",
+      "noDataExpression": true,
+      "options": [
+        {
+          "name": "Add Memory",
+          "value": "addMemory",
+          "description": "Add a new memory to MCP",
+          "action": "Add a new memory to MCP"
+        },
+        {
+          "name": "Get Memory",
+          "value": "getMemory",
+          "description": "Get a memory by ID",
+          "action": "Get a memory by ID"
+        },
+        {
+          "name": "Search Memories",
+          "value": "searchMemories",
+          "description": "Search memories by content or metadata",
+          "action": "Search memories by content or metadata"
+        },
+        {
+          "name": "Update Memory",
+          "value": "updateMemory",
+          "description": "Update an existing memory",
+          "action": "Update an existing memory"
+        },
+        {
+          "name": "Delete Memory",
+          "value": "deleteMemory",
+          "description": "Delete a memory by ID",
+          "action": "Delete a memory by ID"
+        }
+      ],
+      "default": "addMemory"
+    }
+  ]
+}

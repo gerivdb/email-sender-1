@@ -1,0 +1,290 @@
+{
+  "name": "Augment Code Analysis",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e8b8f83a-b2b3-4cd1-9a1f-9c4e13c71234",
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "path": "={{ $json[\"filePath\"] }}"
+      },
+      "id": "a1b2c3d4-e5f6-4a5b-9c8d-7e6f5a4b3c2d",
+      "name": "Read File",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $binary[\"data\"].toString(\"utf8\") }}",
+        "rules": {
+          "rules": [
+            {
+              "operation": "length",
+              "value2": 5000
+            }
+          ]
+        }
+      },
+      "id": "f1e2d3c4-b5a6-4c5d-8e7f-6a5b4c3d2e1f",
+      "name": "Check File Size",
+      "type": "n8n-nodes-base.compareOperations",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json[\"outcome\"] }}",
+              "operation": "smaller",
+              "value2": 1
+            }
+          ]
+        }
+      },
+      "id": "d4c3b2a1-e5f6-4a5b-9c8d-7e6f5a4b3c2d",
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeMode",
+        "mode": "REVIEW",
+        "filePath": "={{ $node[\"Read File\"].json[\"filePath\"] }}",
+        "updateMemories": true
+      },
+      "id": "a9b8c7d6-e5f4-4a3b-9c2d-1e0f9a8b7c6d",
+      "name": "Review Code",
+      "type": "n8n-nodes-augment-client.augmentClient",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Split the file into smaller chunks\nconst fileContent = $input.item.json.fileContent;\nconst chunkSize = 4000; // Characters per chunk\nconst chunks = [];\n\nfor (let i = 0; i < fileContent.length; i += chunkSize) {\n  chunks.push({\n    chunkNumber: Math.floor(i / chunkSize) + 1,\n    totalChunks: Math.ceil(fileContent.length / chunkSize),\n    content: fileContent.substring(i, i + chunkSize),\n    filePath: $input.item.json.filePath\n  });\n}\n\nreturn chunks.map(chunk => ({ json: chunk }));"
+      },
+      "id": "b2a1c3d4-e5f6-4a5b-9c8d-7e6f5a4b3c2d",
+      "name": "Split File",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1250,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeMode",
+        "mode": "REVIEW",
+        "filePath": "={{ $json[\"filePath\"] }}",
+        "updateMemories": true
+      },
+      "id": "c3d4e5f6-a1b2-4c5d-9e8f-7a6b5c4d3e2f",
+      "name": "Review Chunk",
+      "type": "n8n-nodes-augment-client.augmentClient",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        400
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "e5f6a1b2-c3d4-4e5f-9a8b-7c6d5e4f3a2b",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        1750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeMode",
+        "mode": "OPTI",
+        "filePath": "={{ $json[\"filePath\"] }}",
+        "updateMemories": true
+      },
+      "id": "a1b2c3d4-e5f6-4a5b-9c8d-7e6f5a4b3c2d",
+      "name": "Optimize Code",
+      "type": "n8n-nodes-augment-client.augmentClient",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Code Analysis Report\n\n### File Information\n- **Path**: {{ $json[\"filePath\"] }}\n- **Size**: {{ $node[\"Check File Size\"].json[\"value1\"].length }} characters\n\n### Review Results\n{{ $json[\"output\"] }}\n\n### Optimization Suggestions\n{{ $node[\"Optimize Code\"].json[\"output\"] }}\n\n### Next Steps\n1. Review the suggested optimizations\n2. Implement the changes\n3. Run tests to ensure functionality is preserved\n4. Commit the changes",
+        "additionalFields": {}
+      },
+      "id": "f6e5d4c3-b2a1-4c5d-8e7f-6a5b4c3d2e1f",
+      "name": "Generate Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        2250,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Read File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read File": {
+      "main": [
+        [
+          {
+            "node": "Check File Size",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check File Size": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [
+          {
+            "node": "Review Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Split File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Review Code": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split File": {
+      "main": [
+        [
+          {
+            "node": "Review Chunk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Review Chunk": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Optimize Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Optimize Code": {
+      "main": [
+        [
+          {
+            "node": "Generate Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "augment",
+      "color": "#6366F1"
+    },
+    {
+      "name": "code-analysis",
+      "color": "#FF0000"
+    },
+    {
+      "name": "example",
+      "color": "#FF9900"
+    }
+  ],
+  "pinData": {},
+  "versionId": "5678efgh-1234-56ab-cdef-5678901234cd",
+  "id": "fedcba98-7654-3210-fedc-ba9876543210",
+  "meta": {
+    "instanceId": "local-instance"
+  }
+}

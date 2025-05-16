@@ -1,0 +1,53 @@
+{
+  "name": "n8n-nodes-augment-client",
+  "version": "1.0.0",
+  "description": "n8n node to interact with Augment Code",
+  "keywords": [
+    "n8n",
+    "node",
+    "augment",
+    "ai",
+    "code"
+  ],
+  "license": "MIT",
+  "homepage": "https://docs.augmentcode.com/",
+  "author": {
+    "name": "Augment Integration Team",
+    "email": "support@augmentcode.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/augmentcode/n8n-nodes-augment-client.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "lintfix": "eslint . --fix",
+    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js src"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "credentials": [
+      "dist/credentials/AugmentClientApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/AugmentClient.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "@types/request-promise-native": "~1.0.15",
+    "@typescript-eslint/parser": "~5.45",
+    "eslint-plugin-n8n-nodes-base": "^1.11.0",
+    "gulp": "^4.0.2",
+    "n8n-core": "^0.125.0",
+    "n8n-workflow": "^0.107.0",
+    "prettier": "^2.7.1",
+    "typescript": "~4.8.4"
+  }
+}
