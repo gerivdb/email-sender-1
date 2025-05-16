@@ -171,19 +171,25 @@ Ce plan définit l'ordre stratégique d'implémentation des différents composan
       - [x] **3.1.4.2.3** Créer le système de métadonnées dimensionnelles
 
 - [ ] **3.2** Développer l'orchestrateur intelligent de roadmaps (v11)
-  - [ ] **3.2.1** Créer le système CRUD modulaire thématique (v10)
-    - [ ] **3.2.1.1** Implémenter la création et mise à jour thématique
-      - [ ] **3.2.1.1.1** Développer le système d'attribution thématique automatique
-      - [ ] **3.2.1.1.2** Créer le mécanisme de détection des changements thématiques
-      - [ ] **3.2.1.1.3** Implémenter la mise à jour sélective par thème
-    - [ ] **3.2.1.2** Développer la lecture et recherche thématique
-      - [ ] **3.2.1.2.1** Implémenter la recherche par thème et multi-critères
-      - [ ] **3.2.1.2.2** Créer les vues thématiques personnalisées
-      - [ ] **3.2.1.2.3** Développer les requêtes vectorielles thématiques
-    - [ ] **3.2.1.3** Implémenter la suppression et l'archivage thématique
-      - [ ] **3.2.1.3.1** Développer le système de suppression sélective
-      - [ ] **3.2.1.3.2** Créer le mécanisme d'archivage thématique
-      - [ ] **3.2.1.3.3** Implémenter la gestion des versions par thème
+  - [x] **3.2.1** Créer le système CRUD modulaire thématique (v10)
+    - [x] **3.2.1.1** Implémenter la création et mise à jour thématique
+      - [x] **3.2.1.1.1** Développer le système d'attribution thématique automatique
+      - [x] **3.2.1.1.2** Créer le mécanisme de détection des changements thématiques
+      - [x] **3.2.1.1.3** Implémenter la mise à jour sélective par thème
+    - [x] **3.2.1.2** Développer la lecture et recherche thématique
+      - [x] **3.2.1.2.1** Implémenter la recherche par thème et multi-critères
+      - [x] **3.2.1.2.2** Créer les vues thématiques personnalisées
+      - [x] **3.2.1.2.3** Développer les requêtes vectorielles thématiques
+    - [x] **3.2.1.3** Implémenter la suppression et l'archivage thématique
+      - [x] **3.2.1.3.1** Développer la suppression sélective par thème
+        - [x] **3.2.1.3.1.1** Implémenter la suppression de sections thématiques
+        - [x] **3.2.1.3.1.2** Développer l'analyse d'impact des suppressions
+        - [x] **3.2.1.3.1.3** Créer le système de mise à jour des références
+      - [x] **3.2.1.3.2** Implémenter le mécanisme d'archivage thématique
+        - [x] **3.2.1.3.2.1** Développer le format d'archive avec métadonnées enrichies
+        - [x] **3.2.1.3.2.2** Créer le système de sélection avancée pour l'archivage
+        - [x] **3.2.1.3.2.3** Implémenter la restauration et la gestion des archives
+      - [x] **3.2.1.3.3** Implémenter la gestion des versions par thème
   - [ ] **3.2.2** Développer l'interface de visualisation de la méta-roadmap
     - [x] **3.2.2.1** Implémenter la visualisation en carte de métro
       - [x] **3.2.2.1.1** Développer le moteur de rendu avec layout automatique

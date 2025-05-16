@@ -1,0 +1,14 @@
+
+================================================================================
+===== Tests pour les fonctionnalités de création et mise à jour thématique =====
+================================================================================
+Répertoire temporaire créé: C:\Users\user\AppData\Local\Temp\tmp5z836qbe
+Création du répertoire C:\Users\user\AppData\Local\Temp\tmp5z836qbe\storage...
+
+================================================================================
+==================== Test d'attribution thématique avancée =====================
+================================================================================
+Test 1: Attribution simple
+Thèmes attribués: {'organizational': 0.760653409090909, 'monitoring': 0.2839772727272727, 'automation': 0.2570435762584522, 'architecture': 0.8648755105794568, 'documentation': 0.2839772727272727, 'technical': 1.0, 'planning': 0.8464485759438446}
+ERREUR: 'charmap' codec can't encode character '\u2705' in position 0: character maps to <undefined>
+Suppression du répertoire temporaire C:\Users\user\AppData\Local\Temp\tmp5z836qbe...

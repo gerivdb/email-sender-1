@@ -211,15 +211,15 @@
         - [ ] **3.1.4.1.2.1** Développer la détection des références orphelines
         - [ ] **3.1.4.1.2.2** Implémenter la correction automatique
         - [ ] **3.1.4.1.2.3** Ajouter la notification des changements
-    - [ ] **3.1.4.2** Développer le système d'archivage thématique
-      - [ ] **3.1.4.2.1** Implémenter l'archivage par thème
-        - [ ] **3.1.4.2.1.1** Développer le format d'archive
-        - [ ] **3.1.4.2.1.2** Implémenter le processus d'archivage
-        - [ ] **3.1.4.2.1.3** Ajouter la journalisation des archives
-      - [ ] **3.1.4.2.2** Implémenter la restauration thématique
-        - [ ] **3.1.4.2.2.1** Développer le processus de restauration
-        - [ ] **3.1.4.2.2.2** Implémenter la résolution de conflits
-        - [ ] **3.1.4.2.2.3** Ajouter la validation post-restauration
+    - [x] **3.1.4.2** Développer le système d'archivage thématique
+      - [x] **3.1.4.2.1** Implémenter l'archivage par thème
+        - [x] **3.1.4.2.1.1** Développer le format d'archive
+        - [x] **3.1.4.2.1.2** Implémenter le processus d'archivage
+        - [x] **3.1.4.2.1.3** Ajouter la journalisation des archives
+      - [x] **3.1.4.2.2** Implémenter la restauration thématique
+        - [x] **3.1.4.2.2.1** Développer le processus de restauration
+        - [x] **3.1.4.2.2.2** Implémenter la résolution de conflits
+        - [x] **3.1.4.2.2.3** Ajouter la validation post-restauration
 
 ## 4. Développement de l'intégration avec Qdrant
 - [ ] **4.1** Implémenter la vectorisation thématique
@@ -378,10 +378,10 @@
         - [ ] **5.1.1.4.1.1** Implémenter les options de sélection
         - [ ] **5.1.1.4.1.2** Développer les paramètres de confirmation
         - [ ] **5.1.1.4.1.3** Ajouter les options de sauvegarde
-      - [ ] **5.1.1.4.2** Implémenter la commande d'archivage
-        - [ ] **5.1.1.4.2.1** Développer les options de sélection
-        - [ ] **5.1.1.4.2.2** Implémenter les paramètres de destination
-        - [ ] **5.1.1.4.2.3** Ajouter les options de métadonnées
+      - [x] **5.1.1.4.2** Implémenter la commande d'archivage
+        - [x] **5.1.1.4.2.1** Développer les options de sélection
+        - [x] **5.1.1.4.2.2** Implémenter les paramètres de destination
+        - [x] **5.1.1.4.2.3** Ajouter les options de métadonnées
   - [ ] **5.1.2** Développer les commandes avancées
     - [ ] **5.1.2.1** Implémenter les commandes d'analyse
       - [ ] **5.1.2.1.1** Développer la commande d'analyse thématique
@@ -475,7 +475,7 @@
       - [ ] **6.1.1.1.1** Implémenter les tests de création
       - [ ] **6.1.1.1.2** Développer les tests de lecture
       - [ ] **6.1.1.1.3** Implémenter les tests de mise à jour
-      - [ ] **6.1.1.1.4** Développer les tests de suppression
+      - [x] **6.1.1.1.4** Développer les tests de suppression
     - [ ] **6.1.1.2** Implémenter les tests pour l'intégration Qdrant
       - [ ] **6.1.1.2.1** Développer les tests de vectorisation
       - [ ] **6.1.1.2.2** Implémenter les tests de synchronisation

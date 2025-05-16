@@ -1,0 +1,586 @@
+{
+  "items": {
+    "2aab40c6-ef8c-48b9-8461-2eda079790fe": {
+      "themes": {
+        "development": 0.648710129419967,
+        "monitoring": 0.43313309898360147,
+        "automation": 0.41757217651078543,
+        "integration": 0.2690654475171061,
+        "organizational": 0.4394669235709698,
+        "security": 0.5091697662341416,
+        "architecture": 0.5827445609685279,
+        "features": 0.2690654475171061,
+        "deployment": 0.5091697662341416,
+        "technical": 1.0,
+        "testing": 0.5843223670048129,
+        "ui_ux": 0.2690654475171061,
+        "planning": 0.544583656511173,
+        "data": 0.2690654475171061,
+        "documentation": 0.43313309898360147,
+        "performance": 0.5091697662341416
+      },
+      "timestamp": "2025-05-16T09:16:57.594954",
+      "content_length": 82,
+      "metadata": {
+        "title": "Architecture et développement",
+        "id": "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "created_at": "2025-05-16T09:16:57.263953",
+        "updated_at": "2025-05-16T09:16:57.576955",
+        "themes": {
+          "development": 0.4542159540876445,
+          "monitoring": 0.2589656579610285,
+          "automation": 0.24983207303133217,
+          "integration": 0.16266507992634646,
+          "organizational": 0.2579479768786127,
+          "security": 0.36335872154484355,
+          "architecture": 0.5231688488710992,
+          "features": 0.16266507992634646,
+          "deployment": 0.36335872154484355,
+          "technical": 1.0,
+          "testing": 0.36335872154484355,
+          "ui_ux": 0.16266507992634646,
+          "planning": 0.3263437401910247,
+          "data": 0.16266507992634646,
+          "documentation": 0.2589656579610285,
+          "performance": 0.36335872154484355
+        }
+      }
+    },
+    "5f69d4e8-277b-4b28-a050-2efba59495aa": {
+      "themes": {
+        "architecture": 0.4215988471725519,
+        "development": 0.4817820268309959,
+        "automation": 0.3142567205263651,
+        "deployment": 0.3774831114481705,
+        "ui_ux": 0.20232973679693517,
+        "features": 0.20232973679693517,
+        "planning": 0.40979244291763983,
+        "organizational": 0.33121871000366643,
+        "integration": 0.20232973679693517,
+        "technical": 1.0,
+        "testing": 0.4384121080693425,
+        "performance": 0.3774831114481705,
+        "monitoring": 0.32598472186497063,
+        "documentation": 0.32598472186497063,
+        "data": 0.20232973679693517,
+        "security": 0.3774831114481705
+      },
+      "timestamp": "2025-05-16T09:19:13.472145",
+      "content_length": 82,
+      "metadata": {
+        "title": "Architecture et développement",
+        "id": "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "created_at": "2025-05-16T09:19:13.243148",
+        "updated_at": "2025-05-16T09:19:13.454144",
+        "themes": {
+          "architecture": 0.4067349514120914,
+          "development": 0.35312787528363193,
+          "automation": 0.19423067008834358,
+          "deployment": 0.2824913835592588,
+          "ui_ux": 0.12646313618070115,
+          "features": 0.12646313618070115,
+          "planning": 0.2537142752223395,
+          "organizational": 0.20054033811256144,
+          "integration": 0.12646313618070115,
+          "technical": 1.0,
+          "testing": 0.2824913835592588,
+          "performance": 0.2824913835592588,
+          "monitoring": 0.20133152907605742,
+          "documentation": 0.20133152907605742,
+          "data": 0.12646313618070115,
+          "security": 0.2824913835592588
+        }
+      }
+    },
+    "14bb8a40-f239-46f9-8d61-f78d26ce12ae": {
+      "themes": {
+        "architecture": 0.3273119901345359,
+        "data": 0.16167565022514088,
+        "development": 0.38150134174359224,
+        "monitoring": 0.26064646418238224,
+        "technical": 1.0,
+        "testing": 0.34975585738347953,
+        "organizational": 0.26510039452832496,
+        "documentation": 0.26064646418238224,
+        "automation": 0.25125962192984574,
+        "features": 0.16167565022514088,
+        "performance": 0.2985232886867174,
+        "ui_ux": 0.16167565022514088,
+        "planning": 0.3276147112111243,
+        "deployment": 0.2985232886867174,
+        "security": 0.2985232886867174,
+        "integration": 0.16167565022514088
+      },
+      "timestamp": "2025-05-16T09:24:17.830213",
+      "content_length": 82,
+      "metadata": {
+        "title": "Architecture et développement",
+        "id": "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "created_at": "2025-05-16T09:24:17.609212",
+        "updated_at": "2025-05-16T09:24:17.816211",
+        "themes": {
+          "architecture": 0.3326925307104328,
+          "data": 0.10344166556492498,
+          "development": 0.28884413814115384,
+          "monitoring": 0.16468094440266343,
+          "technical": 1.0,
+          "testing": 0.23106638112592617,
+          "organizational": 0.16403378260108517,
+          "documentation": 0.16468094440266343,
+          "automation": 0.15887273259632934,
+          "features": 0.10344166556492498,
+          "performance": 0.23106638112592617,
+          "ui_ux": 0.10344166556492498,
+          "planning": 0.20752788519411736,
+          "deployment": 0.23106638112592617,
+          "security": 0.23106638112592617,
+          "integration": 0.10344166556492498
+        }
+      }
+    },
+    "922441a7-46b7-4149-a660-5dd1278dd8eb": {
+      "themes": {
+        "monitoring": 0.21682591978172494,
+        "planning": 0.2725091787076272,
+        "automation": 0.20901123719477147,
+        "organizational": 0.22069993094378298,
+        "deployment": 0.24626329195074995,
+        "integration": 0.10670500024626751,
+        "performance": 0.24626329195074995,
+        "architecture": 0.2661407528884197,
+        "features": 0.10670500024626751,
+        "security": 0.24626329195074995,
+        "testing": 0.2904619502257784,
+        "development": 0.3150297787413706,
+        "data": 0.10670500024626751,
+        "ui_ux": 0.10670500024626751,
+        "technical": 1.0,
+        "documentation": 0.21682591978172494
+      },
+      "timestamp": "2025-05-16T09:39:35.323989",
+      "content_length": 82,
+      "metadata": {
+        "title": "Architecture et développement",
+        "id": "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "created_at": "2025-05-16T09:39:35.193984",
+        "updated_at": "2025-05-16T09:39:35.313986",
+        "themes": {
+          "monitoring": 0.13931915228378738,
+          "planning": 0.17556742308810788,
+          "automation": 0.13440543777918398,
+          "organizational": 0.13877165704131492,
+          "deployment": 0.1954808581922725,
+          "performance": 0.1954808581922725,
+          "architecture": 0.2814560088773438,
+          "security": 0.1954808581922725,
+          "testing": 0.1954808581922725,
+          "development": 0.24436051550428134,
+          "technical": 1.0,
+          "documentation": 0.13931915228378738
+        }
+      }
+    }
+  },
+  "themes": {
+    "development": {
+      "count": 8,
+      "total_score": 3.1675717597526374,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "monitoring": {
+      "count": 8,
+      "total_score": 2.000887488536216,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "automation": {
+      "count": 8,
+      "total_score": 1.9294406696569566,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "integration": {
+      "count": 7,
+      "total_score": 1.1323457164574222,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "organizational": {
+      "count": 8,
+      "total_score": 2.0177797136803184,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "security": {
+      "count": 8,
+      "total_score": 2.503836802742081,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "architecture": {
+      "count": 8,
+      "total_score": 3.1418484910350024,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "features": {
+      "count": 7,
+      "total_score": 1.1323457164574222,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "deployment": {
+      "count": 8,
+      "total_score": 2.503836802742081,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "technical": {
+      "count": 8,
+      "total_score": 8.0,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "testing": {
+      "count": 8,
+      "total_score": 2.7353496271057147,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "ui_ux": {
+      "count": 7,
+      "total_score": 1.1323457164574222,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "planning": {
+      "count": 8,
+      "total_score": 2.5176533130431538,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "data": {
+      "count": 7,
+      "total_score": 1.1323457164574222,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "documentation": {
+      "count": 8,
+      "total_score": 2.000887488536216,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    },
+    "performance": {
+      "count": 8,
+      "total_score": 2.503836802742081,
+      "items": [
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "2aab40c6-ef8c-48b9-8461-2eda079790fe",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "5f69d4e8-277b-4b28-a050-2efba59495aa",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "14bb8a40-f239-46f9-8d61-f78d26ce12ae",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb",
+        "922441a7-46b7-4149-a660-5dd1278dd8eb"
+      ]
+    }
+  },
+  "keywords": {
+    "document": {
+      "count": 8,
+      "themes": {
+        "development": 3.1675717597526374,
+        "monitoring": 2.000887488536216,
+        "automation": 1.9294406696569566,
+        "integration": 1.1323457164574222,
+        "organizational": 2.0177797136803184,
+        "security": 2.503836802742081,
+        "architecture": 3.1418484910350024,
+        "features": 1.1323457164574222,
+        "deployment": 2.503836802742081,
+        "technical": 8.0,
+        "testing": 2.7353496271057147,
+        "ui_ux": 1.1323457164574222,
+        "planning": 2.5176533130431538,
+        "data": 1.1323457164574222,
+        "documentation": 2.000887488536216,
+        "performance": 2.503836802742081
+      }
+    },
+    "décrit": {
+      "count": 8,
+      "themes": {
+        "development": 3.1675717597526374,
+        "monitoring": 2.000887488536216,
+        "automation": 1.9294406696569566,
+        "integration": 1.1323457164574222,
+        "organizational": 2.0177797136803184,
+        "security": 2.503836802742081,
+        "architecture": 3.1418484910350024,
+        "features": 1.1323457164574222,
+        "deployment": 2.503836802742081,
+        "technical": 8.0,
+        "testing": 2.7353496271057147,
+        "ui_ux": 1.1323457164574222,
+        "planning": 2.5176533130431538,
+        "data": 1.1323457164574222,
+        "documentation": 2.000887488536216,
+        "performance": 2.503836802742081
+      }
+    },
+    "architecture": {
+      "count": 4,
+      "themes": {
+        "development": 1.3405484830167116,
+        "monitoring": 0.7642972837235367,
+        "automation": 0.737340913495189,
+        "integration": 0.3925698816719726,
+        "organizational": 0.7612937546335742,
+        "security": 1.072397344422301,
+        "architecture": 1.5440523398709671,
+        "features": 0.3925698816719726,
+        "deployment": 1.072397344422301,
+        "technical": 4.0,
+        "testing": 1.072397344422301,
+        "ui_ux": 0.3925698816719726,
+        "planning": 0.9631533236955895,
+        "data": 0.3925698816719726,
+        "documentation": 0.7642972837235367,
+        "performance": 1.072397344422301
+      }
+    },
+    "développement": {
+      "count": 8,
+      "themes": {
+        "development": 3.1675717597526374,
+        "monitoring": 2.000887488536216,
+        "automation": 1.9294406696569566,
+        "integration": 1.1323457164574222,
+        "organizational": 2.0177797136803184,
+        "security": 2.503836802742081,
+        "architecture": 3.1418484910350024,
+        "features": 1.1323457164574222,
+        "deployment": 2.503836802742081,
+        "technical": 8.0,
+        "testing": 2.7353496271057147,
+        "ui_ux": 1.1323457164574222,
+        "planning": 2.5176533130431538,
+        "data": 1.1323457164574222,
+        "documentation": 2.000887488536216,
+        "performance": 2.503836802742081
+      }
+    },
+    "système": {
+      "count": 8,
+      "themes": {
+        "development": 3.1675717597526374,
+        "monitoring": 2.000887488536216,
+        "automation": 1.9294406696569566,
+        "integration": 1.1323457164574222,
+        "organizational": 2.0177797136803184,
+        "security": 2.503836802742081,
+        "architecture": 3.1418484910350024,
+        "features": 1.1323457164574222,
+        "deployment": 2.503836802742081,
+        "technical": 8.0,
+        "testing": 2.7353496271057147,
+        "ui_ux": 1.1323457164574222,
+        "planning": 2.5176533130431538,
+        "data": 1.1323457164574222,
+        "documentation": 2.000887488536216,
+        "performance": 2.503836802742081
+      }
+    },
+    "gestion": {
+      "count": 8,
+      "themes": {
+        "development": 3.1675717597526374,
+        "monitoring": 2.000887488536216,
+        "automation": 1.9294406696569566,
+        "integration": 1.1323457164574222,
+        "organizational": 2.0177797136803184,
+        "security": 2.503836802742081,
+        "architecture": 3.1418484910350024,
+        "features": 1.1323457164574222,
+        "deployment": 2.503836802742081,
+        "technical": 8.0,
+        "testing": 2.7353496271057147,
+        "ui_ux": 1.1323457164574222,
+        "planning": 2.5176533130431538,
+        "data": 1.1323457164574222,
+        "documentation": 2.000887488536216,
+        "performance": 2.503836802742081
+      }
+    },
+    "contenu": {
+      "count": 8,
+      "themes": {
+        "development": 3.1675717597526374,
+        "monitoring": 2.000887488536216,
+        "automation": 1.9294406696569566,
+        "integration": 1.1323457164574222,
+        "organizational": 2.0177797136803184,
+        "security": 2.503836802742081,
+        "architecture": 3.1418484910350024,
+        "features": 1.1323457164574222,
+        "deployment": 2.503836802742081,
+        "technical": 8.0,
+        "testing": 2.7353496271057147,
+        "ui_ux": 1.1323457164574222,
+        "planning": 2.5176533130431538,
+        "data": 1.1323457164574222,
+        "documentation": 2.000887488536216,
+        "performance": 2.503836802742081
+      }
+    },
+    "tests": {
+      "count": 4,
+      "themes": {
+        "development": 1.8270232767359258,
+        "monitoring": 1.2365902048126793,
+        "automation": 1.1920997561617677,
+        "integration": 0.7397758347854496,
+        "organizational": 1.256485959046744,
+        "security": 1.4314394583197794,
+        "architecture": 1.5977961511640353,
+        "features": 0.7397758347854496,
+        "deployment": 1.4314394583197794,
+        "technical": 4.0,
+        "testing": 1.6629522826834133,
+        "ui_ux": 0.7397758347854496,
+        "planning": 1.5544999893475644,
+        "data": 0.7397758347854496,
+        "documentation": 1.2365902048126793,
+        "performance": 1.4314394583197794
+      }
+    }
+  },
+  "user_feedback": {
+    "test_item_1": {
+      "themes": {
+        "architecture": 0.9,
+        "documentation": 0.7
+      },
+      "timestamp": "2025-05-16T09:39:35.127006"
+    }
+  },
+  "last_updated": "2025-05-16T09:39:35.323989"
+}
