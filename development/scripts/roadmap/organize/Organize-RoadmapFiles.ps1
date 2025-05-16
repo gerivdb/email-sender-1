@@ -195,7 +195,13 @@ function Start-FileOrganization {
     foreach ($file in $files) {
         # Vérifier si le fichier est dans le dossier organize
         $organizeDir = Join-Path -Path $roadmapRoot -ChildPath "organize"
-        if ($file.DirectoryName -eq $organizeDir) {
+        $fileDir = Split-Path -Path $file.FullName -Parent
+
+        # Normaliser les chemins pour une comparaison correcte
+        $organizeDir = [System.IO.Path]::GetFullPath($organizeDir)
+        $fileDir = [System.IO.Path]::GetFullPath($fileDir)
+
+        if ($fileDir -eq $organizeDir) {
             Write-Host "Fichier dans le dossier organize, ignoré: $($file.Name)" -ForegroundColor Cyan
             continue
         }

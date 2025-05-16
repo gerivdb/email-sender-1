@@ -211,7 +211,8 @@ function New-DirectoryWithMCP {
 }
 
 # Fonction principale pour organiser les fichiers
-function Organize-Files {
+function Start-FileOrganization {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $false)]
         [switch]$DryRun,
@@ -246,12 +247,27 @@ function Organize-Files {
 
     # Déplacer les fichiers
     foreach ($file in $files.files) {
+        # Vérifier si le fichier est dans le dossier organize
+        $organizeDir = Join-Path -Path $rootPath -ChildPath "organize"
+        $fileDir = Split-Path -Path (Join-Path -Path $rootPath -ChildPath $file.name) -Parent
+
+        # Normaliser les chemins pour une comparaison correcte
+        $organizeDir = [System.IO.Path]::GetFullPath($organizeDir)
+        $fileDir = [System.IO.Path]::GetFullPath($fileDir)
+
+        if ($fileDir -eq $organizeDir) {
+            Write-Host "Fichier dans le dossier organize, ignoré: $($file.name)" -ForegroundColor Cyan
+            continue
+        }
+
         if ($file.type -eq "file" -and $fileMappings.ContainsKey($file.name)) {
             $sourcePath = Join-Path -Path $rootPath -ChildPath $file.name
             $destDir = Join-Path -Path $rootPath -ChildPath $fileMappings[$file.name]
             $destPath = Join-Path -Path $destDir -ChildPath $file.name
 
             Move-FileWithMCP -SourcePath $sourcePath -DestinationPath $destPath -DryRun:$DryRun -Force:$Force
+        } else {
+            Write-Host "Aucun mapping défini pour le fichier: $($file.name)" -ForegroundColor Yellow
         }
     }
 }
@@ -266,10 +282,45 @@ if (-not (Test-MCPDesktopCommander)) {
 Write-Host "Démarrage du MCP Desktop Commander..." -ForegroundColor Cyan
 $mcpProcess = Start-MCPDesktopCommander
 
+# Créer le répertoire organize s'il n'existe pas
+$organizeDir = Join-Path -Path $rootPath -ChildPath "organize"
+$dirExists = Invoke-MCPCommand -Command "directory_exists" -Parameters @{
+    path = $organizeDir
+}
+
+if (-not $dirExists.result) {
+    if (-not $DryRun) {
+        $result = Invoke-MCPCommand -Command "create_directory" -Parameters @{
+            path = $organizeDir
+        }
+        if ($result.success) {
+            Write-Host "Créé: $organizeDir" -ForegroundColor Green
+        }
+    } else {
+        Write-Host "[SIMULATION] Création du répertoire: $organizeDir" -ForegroundColor Yellow
+    }
+}
+
 try {
     # Organiser les fichiers
     Write-Host "<%= description %>..." -ForegroundColor Cyan
-    Organize-Files -DryRun:$DryRun -Force:$Force
+    Write-Host "Répertoire racine: $rootPath" -ForegroundColor Cyan
+
+    # Lister les fichiers à la racine pour vérification
+    $files = Invoke-MCPCommand -Command "list_directory" -Parameters @{
+        path = $rootPath
+    }
+
+    if ($null -ne $files -and $null -ne $files.files) {
+        Write-Host "Fichiers à la racine:" -ForegroundColor Cyan
+        foreach ($file in $files.files) {
+            if ($file.type -eq "file") {
+                Write-Host "- $($file.name)" -ForegroundColor Gray
+            }
+        }
+    }
+
+    Start-FileOrganization -DryRun:$DryRun -Force:$Force
 
     Write-Host "Organisation terminée." -ForegroundColor Green
 }

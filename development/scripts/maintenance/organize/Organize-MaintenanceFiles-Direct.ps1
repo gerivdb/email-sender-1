@@ -178,10 +178,36 @@ function Start-FileOrganization {
 
     # Déplacer les fichiers
     foreach ($file in $files) {
+        # Vérifier si le fichier est dans le dossier organize
+        $organizeDir = Join-Path -Path $maintenanceRoot -ChildPath "organize"
+        $fileDir = Split-Path -Path $file.FullName -Parent
+
+        # Normaliser les chemins pour une comparaison correcte
+        $organizeDir = [System.IO.Path]::GetFullPath($organizeDir)
+        $fileDir = [System.IO.Path]::GetFullPath($fileDir)
+
+        if ($fileDir -eq $organizeDir) {
+            Write-Host "Fichier dans le dossier organize, ignoré: $($file.Name)" -ForegroundColor Cyan
+            continue
+        }
+
         if ($fileMappings.ContainsKey($file.Name)) {
             $destDir = Join-Path -Path $maintenanceRoot -ChildPath $fileMappings[$file.Name]
             Move-FileToDirectory -SourcePath $file.FullName -DestinationDirectory $destDir -DryRun:$DryRun -Force:$Force
+        } else {
+            Write-Host "Aucun mapping défini pour le fichier: $($file.Name)" -ForegroundColor Yellow
         }
+    }
+}
+
+# Créer le répertoire organize s'il n'existe pas
+$organizeDir = Join-Path -Path $maintenanceRoot -ChildPath "organize"
+if (-not (Test-Path -Path $organizeDir)) {
+    if (-not $DryRun) {
+        New-Item -Path $organizeDir -ItemType Directory -Force | Out-Null
+        Write-Host "Créé: $organizeDir" -ForegroundColor Green
+    } else {
+        Write-Host "[SIMULATION] Création du répertoire: $organizeDir" -ForegroundColor Yellow
     }
 }
 
