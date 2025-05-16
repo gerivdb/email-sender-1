@@ -300,7 +300,7 @@ function Get-Configuration {
     StratÃ©gie de fusion Ã  utiliser. Les valeurs possibles sont :
     - Replace : Les valeurs de CustomConfig remplacent celles de DefaultConfig (par dÃ©faut)
     - Append : Les valeurs de CustomConfig sont ajoutÃ©es Ã  celles de DefaultConfig (pour les tableaux)
-    - KeepExisting : Les valeurs existantes dans DefaultConfig sont conservÃ©es si elles existent dÃ©jÃ 
+    - KeepExisting : Les valeurs existantes dans DefaultConfig sont conservÃ©es si elles existent dÃ©jÃ
 
 .PARAMETER ExcludeSections
     Sections Ã  exclure de la fusion.
@@ -1056,4 +1056,7 @@ function Convert-ConfigurationToString {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Get-DefaultConfiguration, Get-Configuration, Merge-Configuration, Test-Configuration, Save-Configuration, Set-DefaultConfiguration, Convert-ConfigurationToString
+if ($MyInvocation.ScriptName -ne '') {
+    # Nous sommes dans un module
+    Export-ModuleMember -Function Get-DefaultConfiguration, Get-Configuration, Merge-Configuration, Test-Configuration, Save-Configuration, Set-DefaultConfiguration, Convert-ConfigurationToString
+}

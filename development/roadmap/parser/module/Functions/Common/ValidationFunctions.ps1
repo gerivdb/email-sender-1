@@ -40,14 +40,14 @@ function Assert-NotNullOrEmpty {
         [AllowNull()]
         [AllowEmptyString()]
         [string]$String,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ParameterName = "String",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage = "Le paramÃ¨tre '$ParameterName' ne peut pas Ãªtre nul ou vide."
     )
-    
+
     if ([string]::IsNullOrEmpty($String)) {
         throw $ErrorMessage
     }
@@ -80,21 +80,21 @@ function Assert-ValidPath {
     param(
         [Parameter(Mandatory = $true)]
         [string]$Path,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ParameterName = "Path",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage = "Le chemin '$Path' n'est pas valide."
     )
-    
+
     # VÃ©rifier si la chaÃ®ne est nulle ou vide
     Assert-NotNullOrEmpty -String $Path -ParameterName $ParameterName
-    
+
     # VÃ©rifier si le chemin contient des caractÃ¨res invalides
     $invalidChars = [System.IO.Path]::GetInvalidPathChars()
     $invalidCharsFound = $invalidChars | Where-Object { $Path.Contains($_) }
-    
+
     if ($invalidCharsFound) {
         throw $ErrorMessage
     }
@@ -127,17 +127,17 @@ function Assert-ValidTaskIdentifier {
     param(
         [Parameter(Mandatory = $true)]
         [string]$TaskIdentifier,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ParameterName = "TaskIdentifier",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage = "L'identifiant de tÃ¢che '$TaskIdentifier' n'est pas valide. Il doit Ãªtre au format 'X.Y.Z'."
     )
-    
+
     # VÃ©rifier si la chaÃ®ne est nulle ou vide
     Assert-NotNullOrEmpty -String $TaskIdentifier -ParameterName $ParameterName
-    
+
     # VÃ©rifier si l'identifiant de tÃ¢che est au format X.Y.Z
     if (-not ($TaskIdentifier -match '^[0-9]+(\.[0-9]+)*$')) {
         throw $ErrorMessage
@@ -174,20 +174,20 @@ function Assert-ValidFile {
     param(
         [Parameter(Mandatory = $true)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$FileType,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ParameterName = "FilePath",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage
     )
-    
+
     # VÃ©rifier si le chemin est valide
     Assert-ValidPath -Path $FilePath -ParameterName $ParameterName
-    
+
     # VÃ©rifier si le fichier existe
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         if (-not $ErrorMessage) {
@@ -195,7 +195,7 @@ function Assert-ValidFile {
         }
         throw $ErrorMessage
     }
-    
+
     # VÃ©rifier le type de fichier si spÃ©cifiÃ©
     if ($FileType) {
         $extension = [System.IO.Path]::GetExtension($FilePath)
@@ -235,17 +235,17 @@ function Assert-ValidDirectory {
     param(
         [Parameter(Mandatory = $true)]
         [string]$DirectoryPath,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ParameterName = "DirectoryPath",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage
     )
-    
+
     # VÃ©rifier si le chemin est valide
     Assert-ValidPath -Path $DirectoryPath -ParameterName $ParameterName
-    
+
     # VÃ©rifier si le rÃ©pertoire existe
     if (-not (Test-Path -Path $DirectoryPath -PathType Container)) {
         if (-not $ErrorMessage) {
@@ -288,20 +288,20 @@ function Assert-InRange {
     param(
         [Parameter(Mandatory = $true)]
         [int]$Value,
-        
+
         [Parameter(Mandatory = $true)]
         [int]$Minimum,
-        
+
         [Parameter(Mandatory = $true)]
         [int]$Maximum,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ParameterName = "Value",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage
     )
-    
+
     if ($Value -lt $Minimum -or $Value -gt $Maximum) {
         if (-not $ErrorMessage) {
             $ErrorMessage = "La valeur '$Value' du paramÃ¨tre '$ParameterName' doit Ãªtre comprise entre $Minimum et $Maximum."
@@ -340,17 +340,17 @@ function Assert-ValidValue {
     param(
         [Parameter(Mandatory = $true)]
         [string]$Value,
-        
+
         [Parameter(Mandatory = $true)]
         [string[]]$ValidValues,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ParameterName = "Value",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage
     )
-    
+
     if ($ValidValues -notcontains $Value) {
         if (-not $ErrorMessage) {
             $ErrorMessage = "La valeur '$Value' du paramÃ¨tre '$ParameterName' n'est pas valide. Les valeurs valides sont : $($ValidValues -join ', ')."
@@ -389,17 +389,17 @@ function Assert-ValidType {
     param(
         [Parameter(Mandatory = $true)]
         [object]$Object,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$Type,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ParameterName = "Object",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage
     )
-    
+
     if ($Object -isnot $Type) {
         if (-not $ErrorMessage) {
             $ErrorMessage = "Le paramÃ¨tre '$ParameterName' doit Ãªtre de type '$Type'."
@@ -409,4 +409,7 @@ function Assert-ValidType {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Assert-NotNullOrEmpty, Assert-ValidPath, Assert-ValidTaskIdentifier, Assert-ValidFile, Assert-ValidDirectory, Assert-InRange, Assert-ValidValue, Assert-ValidType
+if ($MyInvocation.ScriptName -ne '') {
+    # Nous sommes dans un module
+    Export-ModuleMember -Function Assert-NotNullOrEmpty, Assert-ValidPath, Assert-ValidTaskIdentifier, Assert-ValidFile, Assert-ValidDirectory, Assert-InRange, Assert-ValidValue, Assert-ValidType
+}

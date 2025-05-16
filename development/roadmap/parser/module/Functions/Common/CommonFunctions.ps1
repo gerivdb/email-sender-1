@@ -35,11 +35,11 @@ function Assert-FileExists {
     param(
         [Parameter(Mandatory = $true)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage = "Le fichier est introuvable Ã  l'emplacement : $FilePath"
     )
-    
+
     if (-not (Test-Path -Path $FilePath -PathType Leaf)) {
         throw $ErrorMessage
     }
@@ -72,14 +72,14 @@ function Assert-DirectoryExists {
     param(
         [Parameter(Mandatory = $true)]
         [string]$DirectoryPath,
-        
+
         [Parameter(Mandatory = $false)]
         [bool]$CreateIfNotExists = $true,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$ErrorMessage = "Le rÃ©pertoire est introuvable Ã  l'emplacement : $DirectoryPath"
     )
-    
+
     if (-not (Test-Path -Path $DirectoryPath -PathType Container)) {
         if ($CreateIfNotExists) {
             New-Item -Path $DirectoryPath -ItemType Directory -Force | Out-Null
@@ -116,23 +116,23 @@ function Backup-File {
     param(
         [Parameter(Mandatory = $true)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$BackupPath = "backup",
-        
+
         [Parameter(Mandatory = $false)]
         [bool]$Timestamp = $true
     )
-    
+
     # VÃ©rifier si le fichier existe
     Assert-FileExists -FilePath $FilePath
-    
+
     # CrÃ©er le rÃ©pertoire de sauvegarde s'il n'existe pas
     Assert-DirectoryExists -DirectoryPath $BackupPath -CreateIfNotExists $true
-    
+
     # Obtenir le nom du fichier
     $fileName = Split-Path -Leaf $FilePath
-    
+
     # Ajouter un horodatage si demandÃ©
     if ($Timestamp) {
         $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
@@ -140,13 +140,13 @@ function Backup-File {
     } else {
         $backupFileName = $fileName
     }
-    
+
     # Chemin complet du fichier de sauvegarde
     $backupFilePath = Join-Path -Path $BackupPath -ChildPath $backupFileName
-    
+
     # Copier le fichier
     Copy-Item -Path $FilePath -Destination $backupFilePath -Force
-    
+
     return $backupFilePath
 }
 
@@ -174,14 +174,14 @@ function Restore-File {
     param(
         [Parameter(Mandatory = $true)]
         [string]$BackupFilePath,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$OriginalFilePath
     )
-    
+
     # VÃ©rifier si le fichier de sauvegarde existe
     Assert-FileExists -FilePath $BackupFilePath -ErrorMessage "Le fichier de sauvegarde est introuvable Ã  l'emplacement : $BackupFilePath"
-    
+
     # Copier le fichier de sauvegarde vers le fichier original
     Copy-Item -Path $BackupFilePath -Destination $OriginalFilePath -Force
 }
@@ -216,13 +216,13 @@ function Convert-MarkdownToHtml {
     param(
         [Parameter(Mandatory = $true)]
         [string]$MarkdownFile,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$HtmlFile,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$Title = "Markdown to HTML",
-        
+
         [Parameter(Mandatory = $false)]
         [string]$Css = @"
 body {
@@ -282,23 +282,23 @@ tr:nth-child(even) {
 }
 "@
     )
-    
+
     # VÃ©rifier si le fichier Markdown existe
     Assert-FileExists -FilePath $MarkdownFile -ErrorMessage "Le fichier Markdown est introuvable Ã  l'emplacement : $MarkdownFile"
-    
+
     # CrÃ©er le rÃ©pertoire parent du fichier HTML s'il n'existe pas
     $htmlDir = Split-Path -Parent $HtmlFile
     if (-not [string]::IsNullOrEmpty($htmlDir)) {
         Assert-DirectoryExists -DirectoryPath $htmlDir -CreateIfNotExists $true
     }
-    
+
     # Lire le contenu du fichier Markdown
     $markdownContent = Get-Content -Path $MarkdownFile -Raw
-    
+
     # Convertir le Markdown en HTML
     # Note: Cette implÃ©mentation est simplifiÃ©e et ne gÃ¨re pas toutes les fonctionnalitÃ©s de Markdown
     # Pour une conversion complÃ¨te, il faudrait utiliser une bibliothÃ¨que comme Markdig
-    
+
     # Remplacer les titres
     $htmlContent = $markdownContent -replace '# (.*)', '<h1>$1</h1>'
     $htmlContent = $htmlContent -replace '## (.*)', '<h2>$1</h2>'
@@ -306,33 +306,33 @@ tr:nth-child(even) {
     $htmlContent = $htmlContent -replace '#### (.*)', '<h4>$1</h4>'
     $htmlContent = $htmlContent -replace '##### (.*)', '<h5>$1</h5>'
     $htmlContent = $htmlContent -replace '###### (.*)', '<h6>$1</h6>'
-    
+
     # Remplacer les listes
     $htmlContent = $htmlContent -replace '- (.*)', '<li>$1</li>'
     $htmlContent = $htmlContent -replace '\* (.*)', '<li>$1</li>'
     $htmlContent = $htmlContent -replace '\d+\. (.*)', '<li>$1</li>'
-    
+
     # Entourer les listes avec <ul> ou <ol>
     $htmlContent = $htmlContent -replace '(<li>.*?</li>)+', '<ul>$0</ul>'
-    
+
     # Remplacer les liens
     $htmlContent = $htmlContent -replace '\[(.*?)\]\((.*?)\)', '<a href="$2">$1</a>'
-    
+
     # Remplacer les images
     $htmlContent = $htmlContent -replace '!\[(.*?)\]\((.*?)\)', '<img src="$2" alt="$1">'
-    
+
     # Remplacer les blocs de code
     $htmlContent = $htmlContent -replace '```(.*?)```', '<pre><code>$1</code></pre>'
-    
+
     # Remplacer le texte en gras
     $htmlContent = $htmlContent -replace '\*\*(.*?)\*\*', '<strong>$1</strong>'
-    
+
     # Remplacer le texte en italique
     $htmlContent = $htmlContent -replace '\*(.*?)\*', '<em>$1</em>'
-    
+
     # Remplacer les sauts de ligne
     $htmlContent = $htmlContent -replace '\r\n', '<br>'
-    
+
     # CrÃ©er le document HTML complet
     $html = @"
 <!DOCTYPE html>
@@ -349,7 +349,7 @@ $htmlContent
 </body>
 </html>
 "@
-    
+
     # Ã‰crire le contenu HTML dans le fichier de sortie
     Set-Content -Path $HtmlFile -Value $html -Encoding UTF8
 }
@@ -378,44 +378,44 @@ function Get-RoadmapTasks {
     param(
         [Parameter(Mandatory = $true)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$TaskIdentifier
     )
-    
+
     # VÃ©rifier si le fichier existe
     Assert-FileExists -FilePath $FilePath -ErrorMessage "Le fichier de roadmap est introuvable Ã  l'emplacement : $FilePath"
-    
+
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath -Raw
-    
+
     # Extraire les tÃ¢ches
     $tasks = New-Object System.Collections.ArrayList
-    
+
     # Expression rÃ©guliÃ¨re pour extraire les tÃ¢ches
     $taskRegex = '- \[([ x])\] \*\*([0-9.]+)\*\* (.*)'
-    
+
     # Parcourir chaque ligne du fichier
     foreach ($line in ($content -split "`r`n")) {
         if ($line -match $taskRegex) {
             $completed = $matches[1] -eq 'x'
             $id = $matches[2]
             $description = $matches[3]
-            
+
             # VÃ©rifier si l'identifiant correspond Ã  celui demandÃ©
             if (-not $TaskIdentifier -or $id -eq $TaskIdentifier -or $id.StartsWith("$TaskIdentifier.")) {
                 $task = [PSCustomObject]@{
-                    ID = $id
+                    ID          = $id
                     Description = $description
-                    Completed = $completed
-                    Line = $line
+                    Completed   = $completed
+                    Line        = $line
                 }
-                
+
                 [void]$tasks.Add($task)
             }
         }
     }
-    
+
     return $tasks
 }
 
@@ -452,35 +452,35 @@ function Update-RoadmapTask {
     param(
         [Parameter(Mandatory = $true)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$TaskIdentifier,
-        
+
         [Parameter(Mandatory = $true)]
         [bool]$Completed,
-        
+
         [Parameter(Mandatory = $false)]
         [bool]$BackupFile = $true,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$BackupPath = "backup"
     )
-    
+
     # VÃ©rifier si le fichier existe
     Assert-FileExists -FilePath $FilePath -ErrorMessage "Le fichier de roadmap est introuvable Ã  l'emplacement : $FilePath"
-    
+
     # CrÃ©er une sauvegarde si demandÃ©
     if ($BackupFile) {
         $backupFilePath = Backup-File -FilePath $FilePath -BackupPath $BackupPath -Timestamp $true
         Write-LogInfo "Sauvegarde crÃ©Ã©e : $backupFilePath"
     }
-    
+
     # Lire le contenu du fichier
     $content = Get-Content -Path $FilePath
-    
+
     # Expression rÃ©guliÃ¨re pour identifier la tÃ¢che
     $taskRegex = "- \[([ x])\] \*\*$([regex]::Escape($TaskIdentifier))\*\* (.*)"
-    
+
     # Parcourir chaque ligne du fichier
     $modified = $false
     for ($i = 0; $i -lt $content.Count; $i++) {
@@ -491,7 +491,7 @@ function Update-RoadmapTask {
             $modified = $true
         }
     }
-    
+
     # Ã‰crire le contenu modifiÃ© dans le fichier
     if ($modified) {
         Set-Content -Path $FilePath -Value $content -Encoding UTF8
@@ -531,41 +531,41 @@ function Generate-RoadmapReport {
     param(
         [Parameter(Mandatory = $true)]
         [string]$FilePath,
-        
+
         [Parameter(Mandatory = $false)]
         [string]$OutputPath = "reports",
-        
+
         [Parameter(Mandatory = $false)]
         [ValidateSet("Markdown", "HTML", "JSON", "CSV")]
         [string]$Format = "Markdown",
-        
+
         [Parameter(Mandatory = $false)]
         [bool]$IncludeSubtasks = $true
     )
-    
+
     # VÃ©rifier si le fichier existe
     Assert-FileExists -FilePath $FilePath -ErrorMessage "Le fichier de roadmap est introuvable Ã  l'emplacement : $FilePath"
-    
+
     # CrÃ©er le rÃ©pertoire de sortie s'il n'existe pas
     Assert-DirectoryExists -DirectoryPath $OutputPath -CreateIfNotExists $true
-    
+
     # Extraire les tÃ¢ches
     $tasks = Get-RoadmapTasks -FilePath $FilePath
-    
+
     # Filtrer les sous-tÃ¢ches si demandÃ©
     if (-not $IncludeSubtasks) {
         $tasks = $tasks | Where-Object { $_.ID -notmatch '\.[0-9]+$' }
     }
-    
+
     # Calculer les statistiques
     $totalTasks = $tasks.Count
     $completedTasks = ($tasks | Where-Object { $_.Completed }).Count
     $completionRate = if ($totalTasks -gt 0) { [Math]::Round(($completedTasks / $totalTasks) * 100, 2) } else { 0 }
-    
+
     # GÃ©nÃ©rer le rapport selon le format demandÃ©
     $reportFileName = "roadmap_report_$(Get-Date -Format 'yyyyMMdd_HHmmss').$($Format.ToLower())"
     $reportFilePath = Join-Path -Path $OutputPath -ChildPath $reportFileName
-    
+
     switch ($Format) {
         "Markdown" {
             $report = @"
@@ -584,12 +584,12 @@ function Generate-RoadmapReport {
 | ID | Description | Ã‰tat |
 |---|---|---|
 "@
-            
+
             foreach ($task in $tasks) {
                 $status = if ($task.Completed) { "âœ… ComplÃ©tÃ©e" } else { "â³ En cours" }
                 $report += "`n| $($task.ID) | $($task.Description) | $status |"
             }
-            
+
             Set-Content -Path $reportFilePath -Value $report -Encoding UTF8
         }
         "HTML" {
@@ -650,18 +650,18 @@ function Generate-RoadmapReport {
 </head>
 <body>
     <h1>Rapport de l'Ã©tat de la roadmap</h1>
-    
+
     <h2>RÃ©sumÃ©</h2>
     <p><strong>Date du rapport :</strong> $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")</p>
     <p><strong>Fichier analysÃ© :</strong> $FilePath</p>
     <p><strong>Nombre total de tÃ¢ches :</strong> $totalTasks</p>
     <p><strong>TÃ¢ches complÃ©tÃ©es :</strong> $completedTasks</p>
     <p><strong>Taux de complÃ©tion :</strong> $completionRate%</p>
-    
+
     <div class="progress-bar">
         <div class="progress" style="width: $completionRate%">$completionRate%</div>
     </div>
-    
+
     <h2>DÃ©tail des tÃ¢ches</h2>
     <table>
         <tr>
@@ -670,7 +670,7 @@ function Generate-RoadmapReport {
             <th>Ã‰tat</th>
         </tr>
 "@
-            
+
             foreach ($task in $tasks) {
                 $statusClass = if ($task.Completed) { "completed" } else { "in-progress" }
                 $status = if ($task.Completed) { "âœ… ComplÃ©tÃ©e" } else { "â³ En cours" }
@@ -682,34 +682,37 @@ function Generate-RoadmapReport {
         </tr>
 "@
             }
-            
+
             $report += @"
     </table>
 </body>
 </html>
 "@
-            
+
             Set-Content -Path $reportFilePath -Value $report -Encoding UTF8
         }
         "JSON" {
             $reportData = [PSCustomObject]@{
-                ReportDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-                FilePath = $FilePath
-                TotalTasks = $totalTasks
+                ReportDate     = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+                FilePath       = $FilePath
+                TotalTasks     = $totalTasks
                 CompletedTasks = $completedTasks
                 CompletionRate = $completionRate
-                Tasks = $tasks | Select-Object ID, Description, Completed
+                Tasks          = $tasks | Select-Object ID, Description, Completed
             }
-            
+
             $reportData | ConvertTo-Json -Depth 10 | Set-Content -Path $reportFilePath -Encoding UTF8
         }
         "CSV" {
             $tasks | Select-Object ID, Description, Completed | Export-Csv -Path $reportFilePath -NoTypeInformation -Encoding UTF8
         }
     }
-    
+
     return $reportFilePath
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Assert-FileExists, Assert-DirectoryExists, Backup-File, Restore-File, Convert-MarkdownToHtml, Get-RoadmapTasks, Update-RoadmapTask, Generate-RoadmapReport
+if ($MyInvocation.ScriptName -ne '') {
+    # Nous sommes dans un module
+    Export-ModuleMember -Function Assert-FileExists, Assert-DirectoryExists, Backup-File, Restore-File, Convert-MarkdownToHtml, Get-RoadmapTasks, Update-RoadmapTask, Generate-RoadmapReport
+}

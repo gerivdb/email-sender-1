@@ -12,10 +12,30 @@
 #>
 
 # Variables globales
-$script:ProjectRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
-$script:ConfigPath = Join-Path -Path $script:ProjectRoot -ChildPath "projet\mcp\config\mcp-config.json"
-$script:DetectedServersPath = Join-Path -Path $script:ProjectRoot -ChildPath "projet\mcp\monitoring\detected-servers.json"
-$script:LogPath = Join-Path -Path $script:ProjectRoot -ChildPath "projet\mcp\monitoring\logs\mcp-manager.log"
+$script:ProjectRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$script:ConfigPath = Join-Path -Path $script:ProjectRoot -ChildPath "config\mcp-config.json"
+# Vérifier si le chemin existe, sinon utiliser un chemin alternatif
+if (-not (Test-Path $script:ConfigPath)) {
+    $script:ConfigPath = Join-Path -Path $script:ProjectRoot -ChildPath "..\config\mcp-config.json"
+}
+$script:DetectedServersPath = Join-Path -Path $script:ProjectRoot -ChildPath "monitoring\detected-servers.json"
+$script:LogPath = Join-Path -Path $script:ProjectRoot -ChildPath "monitoring\logs\mcp-manager.log"
+
+# Créer les répertoires nécessaires s'ils n'existent pas
+$configDir = Split-Path -Parent $script:ConfigPath
+if (-not (Test-Path $configDir)) {
+    New-Item -Path $configDir -ItemType Directory -Force | Out-Null
+}
+
+$logDir = Split-Path -Parent $script:LogPath
+if (-not (Test-Path $logDir)) {
+    New-Item -Path $logDir -ItemType Directory -Force | Out-Null
+}
+
+$monitoringDir = Split-Path -Parent $script:DetectedServersPath
+if (-not (Test-Path $monitoringDir)) {
+    New-Item -Path $monitoringDir -ItemType Directory -Force | Out-Null
+}
 
 # Fonctions d'aide
 function Write-MCPLog {
@@ -23,15 +43,15 @@ function Write-MCPLog {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Message,
-        
+
         [Parameter(Mandatory = $false)]
         [ValidateSet("INFO", "SUCCESS", "WARNING", "ERROR", "DEBUG")]
         [string]$Level = "INFO"
     )
-    
+
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logMessage = "[$timestamp] [$Level] $Message"
-    
+
     # Afficher le message dans la console
     $color = switch ($Level) {
         "INFO" { "White" }
@@ -41,19 +61,18 @@ function Write-MCPLog {
         "DEBUG" { "Gray" }
         default { "White" }
     }
-    
+
     Write-Host $logMessage -ForegroundColor $color
-    
+
     # Écrire dans le fichier de log
     try {
         $logDir = Split-Path -Parent $script:LogPath
         if (-not (Test-Path $logDir)) {
             New-Item -Path $logDir -ItemType Directory -Force | Out-Null
         }
-        
+
         Add-Content -Path $script:LogPath -Value $logMessage -ErrorAction SilentlyContinue
-    }
-    catch {
+    } catch {
         Write-Host "Erreur lors de l'écriture dans le fichier de log: $_" -ForegroundColor Red
     }
 }
@@ -61,18 +80,16 @@ function Write-MCPLog {
 function Get-MCPConfig {
     [CmdletBinding()]
     param ()
-    
+
     try {
         if (Test-Path $script:ConfigPath) {
             $config = Get-Content -Path $script:ConfigPath -Raw | ConvertFrom-Json
             return $config
-        }
-        else {
+        } else {
             Write-MCPLog "Fichier de configuration non trouvé: $script:ConfigPath" -Level "ERROR"
             return $null
         }
-    }
-    catch {
+    } catch {
         Write-MCPLog "Erreur lors de la lecture de la configuration: $_" -Level "ERROR"
         return $null
     }
@@ -84,18 +101,17 @@ function Save-MCPConfig {
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Config
     )
-    
+
     try {
         $configDir = Split-Path -Parent $script:ConfigPath
         if (-not (Test-Path $configDir)) {
             New-Item -Path $configDir -ItemType Directory -Force | Out-Null
         }
-        
+
         $Config | ConvertTo-Json -Depth 10 | Set-Content -Path $script:ConfigPath
         Write-MCPLog "Configuration enregistrée: $script:ConfigPath" -Level "SUCCESS"
         return $true
-    }
-    catch {
+    } catch {
         Write-MCPLog "Erreur lors de l'enregistrement de la configuration: $_" -Level "ERROR"
         return $false
     }
@@ -104,9 +120,9 @@ function Save-MCPConfig {
 function Get-MCPProcesses {
     [CmdletBinding()]
     param ()
-    
+
     $mcpProcesses = @()
-    
+
     # Rechercher les processus MCP
     $processes = Get-Process | Where-Object {
         $_.ProcessName -like "*mcp*" -or
@@ -114,31 +130,30 @@ function Get-MCPProcesses {
         $_.ProcessName -like "*python*" -or
         $_.ProcessName -like "*gateway*"
     }
-    
+
     foreach ($process in $processes) {
         # Vérifier si le processus est un serveur MCP
         $commandLine = $null
         try {
             $commandLine = (Get-WmiObject -Class Win32_Process -Filter "ProcessId = $($process.Id)").CommandLine
-        }
-        catch {
+        } catch {
             # Ignorer les erreurs
         }
-        
+
         if ($commandLine -and ($commandLine -like "*mcp*" -or $commandLine -like "*modelcontextprotocol*")) {
             $mcpProcesses += @{
-                Process = $process
+                Process     = $process
                 CommandLine = $commandLine
-                ServerName = if ($commandLine -like "*filesystem*") { "filesystem" }
-                            elseif ($commandLine -like "*github*") { "github" }
-                            elseif ($commandLine -like "*gcp*") { "gcp" }
-                            elseif ($commandLine -like "*notion*") { "notion" }
-                            elseif ($commandLine -like "*gateway*") { "gateway" }
-                            else { "unknown" }
+                ServerName  = if ($commandLine -like "*filesystem*") { "filesystem" }
+                elseif ($commandLine -like "*github*") { "github" }
+                elseif ($commandLine -like "*gcp*") { "gcp" }
+                elseif ($commandLine -like "*notion*") { "notion" }
+                elseif ($commandLine -like "*gateway*") { "gateway" }
+                else { "unknown" }
             }
         }
     }
-    
+
     return $mcpProcesses
 }
 
@@ -155,29 +170,29 @@ function Get-MCPServers {
     #>
     [CmdletBinding()]
     param ()
-    
+
     $config = Get-MCPConfig
-    
+
     if ($null -eq $config) {
         return @()
     }
-    
+
     $servers = @()
-    
+
     foreach ($serverName in $config.mcpServers.PSObject.Properties.Name) {
         $serverConfig = $config.mcpServers.$serverName
-        
+
         $servers += [PSCustomObject]@{
-            Name = $serverName
-            Enabled = $serverConfig.enabled
-            Type = if ($serverConfig.url) { "URL" } else { "Command" }
-            URL = $serverConfig.url
-            Command = $serverConfig.command
-            Args = $serverConfig.args
+            Name       = $serverName
+            Enabled    = $serverConfig.enabled
+            Type       = if ($serverConfig.url) { "URL" } else { "Command" }
+            URL        = $serverConfig.url
+            Command    = $serverConfig.command
+            Args       = $serverConfig.args
             ConfigPath = $serverConfig.configPath
         }
     }
-    
+
     return $servers
 }
 
@@ -201,46 +216,46 @@ function Get-MCPServerStatus {
         [Parameter(Mandatory = $false)]
         [string]$ServerName
     )
-    
+
     $config = Get-MCPConfig
-    
+
     if ($null -eq $config) {
         return @()
     }
-    
+
     $mcpProcesses = Get-MCPProcesses
     $results = @()
-    
+
     foreach ($name in $config.mcpServers.PSObject.Properties.Name) {
         # Filtrer par serveur si spécifié
         if ($ServerName -and $name -ne $ServerName) {
             continue
         }
-        
+
         $serverConfig = $config.mcpServers.$name
-        
+
         # Ignorer les serveurs désactivés
         if ($serverConfig.enabled -eq $false) {
             continue
         }
-        
+
         $status = [PSCustomObject]@{
-            Name = $name
-            Status = "Stopped"
-            Process = $null
-            PID = $null
-            Memory = $null
-            CPU = $null
+            Name      = $name
+            Status    = "Stopped"
+            Process   = $null
+            PID       = $null
+            Memory    = $null
+            CPU       = $null
             StartTime = $null
-            Uptime = $null
+            Uptime    = $null
         }
-        
+
         # Vérifier si le serveur est en cours d'exécution
         $serverProcess = $mcpProcesses | Where-Object { $_.ServerName -eq $name }
-        
+
         if ($serverProcess) {
             $process = $serverProcess.Process
-            
+
             $status.Status = "Running"
             $status.Process = $process
             $status.PID = $process.Id
@@ -249,10 +264,10 @@ function Get-MCPServerStatus {
             $status.StartTime = $process.StartTime
             $status.Uptime = (Get-Date) - $process.StartTime
         }
-        
+
         $results += $status
     }
-    
+
     return $results
 }
 
@@ -277,42 +292,42 @@ function Start-MCPServer {
     param (
         [Parameter(Mandatory = $false)]
         [string]$ServerName,
-        
+
         [Parameter(Mandatory = $false)]
         [switch]$Force
     )
-    
+
     $config = Get-MCPConfig
-    
+
     if ($null -eq $config) {
         return $false
     }
-    
+
     $startedServers = 0
     $failedServers = 0
-    
+
     foreach ($name in $config.mcpServers.PSObject.Properties.Name) {
         # Filtrer par serveur si spécifié
         if ($ServerName -and $name -ne $ServerName) {
             continue
         }
-        
+
         $serverConfig = $config.mcpServers.$name
-        
+
         # Ignorer les serveurs désactivés
         if ($serverConfig.enabled -eq $false) {
             Write-MCPLog "Serveur $name désactivé, ignoré." -Level "INFO"
             continue
         }
-        
+
         # Vérifier si le serveur est déjà en cours d'exécution
         $serverStatus = Get-MCPServerStatus -ServerName $name
-        
+
         if ($serverStatus.Status -eq "Running") {
             Write-MCPLog "Serveur $name déjà en cours d'exécution (PID: $($serverStatus.PID))." -Level "INFO"
             continue
         }
-        
+
         # Démarrer le serveur
         if ($PSCmdlet.ShouldProcess($name, "Start MCP server")) {
             try {
@@ -321,53 +336,50 @@ function Start-MCPServer {
                     Write-MCPLog "Le serveur $name est basé sur une URL: $($serverConfig.url)" -Level "INFO"
                     Write-MCPLog "Aucune action nécessaire pour le démarrage." -Level "SUCCESS"
                     $startedServers++
-                }
-                elseif ($serverConfig.command) {
+                } elseif ($serverConfig.command) {
                     # Serveur basé sur commande
                     $command = $serverConfig.command
-                    $args = $serverConfig.args -join " "
-                    $env = $serverConfig.env
-                    
+                    $argString = $serverConfig.args -join " "
+                    $envConfig = $serverConfig.env
+
                     # Préparer les variables d'environnement
                     $envVars = @{}
-                    if ($env) {
-                        foreach ($key in $env.PSObject.Properties.Name) {
-                            $value = $env.$key
+                    if ($envConfig) {
+                        foreach ($key in $envConfig.PSObject.Properties.Name) {
+                            $value = $envConfig.$key
                             $envVars[$key] = $value
                         }
                     }
-                    
+
                     # Démarrer le processus
                     Write-MCPLog "Démarrage du serveur $name..." -Level "INFO"
-                    
+
                     $processInfo = @{
-                        FilePath = $command
-                        ArgumentList = $args
+                        FilePath               = $command
+                        ArgumentList           = $argString
                         RedirectStandardOutput = $true
-                        RedirectStandardError = $true
-                        UseShellExecute = $false
-                        CreateNoWindow = $false
+                        RedirectStandardError  = $true
+                        UseShellExecute        = $false
+                        CreateNoWindow         = $false
                     }
-                    
+
                     $process = Start-Process @processInfo -PassThru
-                    
+
                     Write-MCPLog "Serveur $name démarré avec PID: $($process.Id)" -Level "SUCCESS"
                     $startedServers++
-                }
-                else {
-                    Write-MCPLog "Configuration invalide pour le serveur $name: ni URL ni commande spécifiée" -Level "ERROR"
+                } else {
+                    Write-MCPLog "Configuration invalide pour le serveur ${name} - ni URL ni commande spécifiée" -Level "ERROR"
                     $failedServers++
                 }
-            }
-            catch {
-                Write-MCPLog "Erreur lors du démarrage du serveur $name: $_" -Level "ERROR"
+            } catch {
+                Write-MCPLog "Erreur lors du démarrage du serveur ${name} - $_" -Level "ERROR"
                 $failedServers++
             }
         }
     }
-    
-    Write-MCPLog "Démarrage des serveurs MCP terminé. $startedServers serveurs démarrés, $failedServers échecs." -Level "INFO"
-    
+
+    Write-MCPLog "Démarrage des serveurs MCP terminé. ${startedServers} serveurs démarrés, ${failedServers} échecs." -Level "INFO"
+
     return $startedServers -gt 0 -and $failedServers -eq 0
 }
 
@@ -392,47 +404,45 @@ function Stop-MCPServer {
     param (
         [Parameter(Mandatory = $false)]
         [string]$ServerName,
-        
+
         [Parameter(Mandatory = $false)]
         [switch]$Force
     )
-    
+
     $serverStatus = Get-MCPServerStatus -ServerName $ServerName
-    
+
     if ($serverStatus.Count -eq 0) {
         if ($ServerName) {
             Write-MCPLog "Serveur MCP $ServerName non trouvé ou non en cours d'exécution." -Level "WARNING"
-        }
-        else {
+        } else {
             Write-MCPLog "Aucun serveur MCP en cours d'exécution." -Level "WARNING"
         }
         return $true
     }
-    
+
     $stoppedServers = 0
     $failedServers = 0
-    
+
     foreach ($server in $serverStatus) {
         if ($server.Status -ne "Running") {
             Write-MCPLog "Serveur $($server.Name) non en cours d'exécution." -Level "INFO"
             continue
         }
-        
+
         if ($PSCmdlet.ShouldProcess($server.Name, "Stop MCP server")) {
             try {
                 $server.Process | Stop-Process -Force
                 Write-MCPLog "Serveur $($server.Name) arrêté avec succès." -Level "SUCCESS"
                 $stoppedServers++
-            }
-            catch {
-                Write-MCPLog "Erreur lors de l'arrêt du serveur $($server.Name): $_" -Level "ERROR"
+            } catch {
+                Write-MCPLog "Erreur lors de l'arrêt du serveur $($server.Name) - $_" -Level "ERROR"
                 $failedServers++
             }
         }
     }
-    
-    Write-MCPLog "Arrêt des serveurs MCP terminé. $stoppedServers serveurs arrêtés, $failedServers échecs." -Level "INFO"
-    
+
+    Write-MCPLog "Arrêt des serveurs MCP terminé. ${stoppedServers} serveurs arrêtés, ${failedServers} échecs." -Level "INFO"
+
     return $stoppedServers -gt 0 -and $failedServers -eq 0
 }
 
@@ -457,32 +467,32 @@ function Restart-MCPServer {
     param (
         [Parameter(Mandatory = $false)]
         [string]$ServerName,
-        
+
         [Parameter(Mandatory = $false)]
         [switch]$Force
     )
-    
+
     if ($PSCmdlet.ShouldProcess($ServerName, "Restart MCP server")) {
         $stopResult = Stop-MCPServer -ServerName $ServerName -Force:$Force
-        
+
         if (-not $stopResult) {
-            Write-MCPLog "Erreur lors de l'arrêt du serveur $ServerName." -Level "ERROR"
+            Write-MCPLog "Erreur lors de l'arrêt du serveur ${ServerName}." -Level "ERROR"
             return $false
         }
-        
+
         # Attendre que les processus soient complètement arrêtés
         Start-Sleep -Seconds 2
-        
+
         $startResult = Start-MCPServer -ServerName $ServerName -Force:$Force
-        
+
         if (-not $startResult) {
-            Write-MCPLog "Erreur lors du démarrage du serveur $ServerName." -Level "ERROR"
+            Write-MCPLog "Erreur lors du démarrage du serveur ${ServerName}." -Level "ERROR"
             return $false
         }
-        
+
         return $true
     }
-    
+
     return $false
 }
 
@@ -506,41 +516,39 @@ function Enable-MCPServer {
         [Parameter(Mandatory = $false)]
         [string]$ServerName
     )
-    
+
     $config = Get-MCPConfig
-    
+
     if ($null -eq $config) {
         return $false
     }
-    
+
     $enabledServers = 0
-    
+
     foreach ($name in $config.mcpServers.PSObject.Properties.Name) {
         # Filtrer par serveur si spécifié
         if ($ServerName -and $name -ne $ServerName) {
             continue
         }
-        
+
         if ($PSCmdlet.ShouldProcess($name, "Enable MCP server")) {
             # Activer le serveur
             $config.mcpServers.$name.enabled = $true
             $enabledServers++
         }
     }
-    
+
     if ($enabledServers -gt 0) {
         $saveResult = Save-MCPConfig -Config $config
-        
+
         if ($saveResult) {
             Write-MCPLog "$enabledServers serveurs MCP activés." -Level "SUCCESS"
             return $true
-        }
-        else {
+        } else {
             Write-MCPLog "Erreur lors de l'enregistrement de la configuration." -Level "ERROR"
             return $false
         }
-    }
-    else {
+    } else {
         Write-MCPLog "Aucun serveur MCP activé." -Level "WARNING"
         return $true
     }
@@ -566,41 +574,39 @@ function Disable-MCPServer {
         [Parameter(Mandatory = $false)]
         [string]$ServerName
     )
-    
+
     $config = Get-MCPConfig
-    
+
     if ($null -eq $config) {
         return $false
     }
-    
+
     $disabledServers = 0
-    
+
     foreach ($name in $config.mcpServers.PSObject.Properties.Name) {
         # Filtrer par serveur si spécifié
         if ($ServerName -and $name -ne $ServerName) {
             continue
         }
-        
+
         if ($PSCmdlet.ShouldProcess($name, "Disable MCP server")) {
             # Désactiver le serveur
             $config.mcpServers.$name.enabled = $false
             $disabledServers++
         }
     }
-    
+
     if ($disabledServers -gt 0) {
         $saveResult = Save-MCPConfig -Config $config
-        
+
         if ($saveResult) {
             Write-MCPLog "$disabledServers serveurs MCP désactivés." -Level "SUCCESS"
             return $true
-        }
-        else {
+        } else {
             Write-MCPLog "Erreur lors de l'enregistrement de la configuration." -Level "ERROR"
             return $false
         }
-    }
-    else {
+    } else {
         Write-MCPLog "Aucun serveur MCP désactivé." -Level "WARNING"
         return $true
     }
@@ -626,61 +632,60 @@ function Invoke-MCPCommand {
     param (
         [Parameter(Mandatory = $true)]
         [string]$ServerName,
-        
+
         [Parameter(Mandatory = $true)]
         [string]$Command,
-        
+
         [Parameter(Mandatory = $false)]
         [hashtable]$Arguments = @{}
     )
-    
+
     $config = Get-MCPConfig
-    
+
     if ($null -eq $config) {
         return $null
     }
-    
+
     # Vérifier si le serveur existe
     if (-not $config.mcpServers.PSObject.Properties.Name.Contains($ServerName)) {
         Write-MCPLog "Serveur MCP $ServerName non trouvé." -Level "ERROR"
         return $null
     }
-    
+
     $serverConfig = $config.mcpServers.$ServerName
-    
+
     # Vérifier si le serveur est activé
     if ($serverConfig.enabled -eq $false) {
         Write-MCPLog "Serveur MCP $ServerName désactivé." -Level "ERROR"
         return $null
     }
-    
+
     # Vérifier si le serveur est en cours d'exécution
     $serverStatus = Get-MCPServerStatus -ServerName $ServerName
-    
+
     if ($serverStatus.Status -ne "Running") {
         Write-MCPLog "Serveur MCP $ServerName non en cours d'exécution." -Level "ERROR"
         return $null
     }
-    
+
     # Exécuter la commande
     try {
         # Ici, vous devriez implémenter la logique pour exécuter la commande sur le serveur MCP
         # Cela dépend du type de serveur et de la façon dont il expose ses commandes
-        
+
         # Pour l'instant, nous simulons l'exécution
         Write-MCPLog "Exécution de la commande $Command sur le serveur $ServerName..." -Level "INFO"
-        
+
         # Simuler un résultat
         $result = @{
-            success = $true
-            result = "Résultat de la commande $Command sur le serveur $ServerName"
+            success   = $true
+            result    = "Résultat de la commande $Command sur le serveur $ServerName"
             arguments = $Arguments
         }
-        
+
         return $result
-    }
-    catch {
-        Write-MCPLog "Erreur lors de l'exécution de la commande $Command sur le serveur $ServerName: $_" -Level "ERROR"
+    } catch {
+        Write-MCPLog "Erreur lors de l'exécution de la commande ${Command} sur le serveur ${ServerName} - $_" -Level "ERROR"
         return $null
     }
 }
