@@ -224,29 +224,29 @@ function Start-Qdrant {
     Write-Log "Démarrage de Qdrant..." -Level "Info"
 
     # Vérifier si le conteneur Qdrant existe déjà
-    $qdrantContainer = docker ps -a --filter "name=qdrant" --format "{{.Names}}" 2>&1
+    $qdrantContainer = docker ps -a --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
 
-    if ($qdrantContainer -eq "qdrant") {
+    if ($qdrantContainer -eq "roadmap-qdrant") {
         # Vérifier si le conteneur est en cours d'exécution
-        $qdrantRunning = docker ps --filter "name=qdrant" --format "{{.Names}}" 2>&1
+        $qdrantRunning = docker ps --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
 
-        if ($qdrantRunning -eq "qdrant") {
+        if ($qdrantRunning -eq "roadmap-qdrant") {
             Write-Log "Qdrant est déjà en cours d'exécution." -Level "Info"
         } else {
             # Démarrer le conteneur existant
             Write-Log "Démarrage du conteneur Qdrant existant..." -Level "Info"
-            docker start qdrant
+            docker start roadmap-qdrant
         }
     } else {
         # Créer et démarrer un nouveau conteneur
         Write-Log "Création d'un nouveau conteneur Qdrant..." -Level "Info"
-        docker run -d --name qdrant -p 6333:6333 -p 6334:6334 -v qdrant_storage:/qdrant/storage qdrant/qdrant
+        docker run -d --name roadmap-qdrant -p 6333:6333 -p 6334:6334 -v qdrant_storage:/qdrant/storage qdrant/qdrant:latest
     }
 
     # Vérifier si Qdrant est en cours d'exécution
-    $qdrantRunning = docker ps --filter "name=qdrant" --format "{{.Names}}" 2>&1
+    $qdrantRunning = docker ps --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
 
-    if ($qdrantRunning -eq "qdrant") {
+    if ($qdrantRunning -eq "roadmap-qdrant") {
         Write-Log "Qdrant démarré avec succès." -Level "Success"
         return $true
     } else {

@@ -149,7 +149,25 @@ function Start-N8NServer {
 
 function Start-QdrantServer {
     Write-Host "Démarrage de Qdrant via Docker..." -ForegroundColor Cyan
-    docker run -d -p $env:QDRANT_PORT`:6333 -v qdrant_storage:/qdrant/storage qdrant/qdrant
+    # Vérifier si le conteneur roadmap-qdrant existe déjà
+    $containerExists = docker ps -a --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
+
+    if ($containerExists -eq "roadmap-qdrant") {
+        # Vérifier si le conteneur est en cours d'exécution
+        $containerRunning = docker ps --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
+
+        if ($containerRunning -eq "roadmap-qdrant") {
+            Write-Host "Le conteneur Qdrant est déjà en cours d'exécution." -ForegroundColor Green
+        } else {
+            # Démarrer le conteneur existant
+            Write-Host "Démarrage du conteneur Qdrant existant..." -ForegroundColor Yellow
+            docker start roadmap-qdrant
+        }
+    } else {
+        # Créer et démarrer un nouveau conteneur
+        Write-Host "Création d'un nouveau conteneur Qdrant..." -ForegroundColor Yellow
+        docker run -d --name roadmap-qdrant -p $env:QDRANT_PORT`:6333 -p 6334:6334 -v qdrant_storage:/qdrant/storage qdrant/qdrant:latest
+    }
 }
 
 function Show-GitStatus {

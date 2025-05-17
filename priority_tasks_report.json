@@ -1,0 +1,13 @@
+{
+  "statistics": {
+    "mvp_count": 0,
+    "p0_count": 0,
+    "p1_count": 0,
+    "foundation_count": 0,
+    "core_count": 0,
+    "mvp_p0_count": 0,
+    "mvp_p1_count": 0
+  },
+  "priority_tasks_by_file": {},
+  "foundation_priority_tasks": []
+}

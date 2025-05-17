@@ -1,0 +1,348 @@
+﻿﻿# Plan de développement v25 - Système de gestion de méta-roadmap avec synchronisation bidirectionnelle
+*Version 1.0 - 2025-06-01 - Progression globale : 0%*
+
+Ce plan définit l'implémentation d'un système complet de gestion de méta-roadmap avec synchronisation bidirectionnelle entre les fichiers Markdown et la base vectorielle Qdrant. L'objectif est de créer une "source unique de vérité" pour toutes les tâches de développement, en intégrant les 296 tâches fondamentales et 149 tâches core identifiées comme prioritaires.
+
+## 1. Fondations du système de synchronisation (Phase 1)
+
+- [ ] **1.1** Développer le système de synchronisation Markdown → Qdrant
+  - [ ] **1.1.1** Implémenter le watcher de fichiers Markdown
+    - [ ] **1.1.1.1** Créer le système de détection des modifications en temps réel
+      - [ ] **1.1.1.1.1** Développer le moniteur de changements de fichiers
+        - [ ] **1.1.1.1.1.1** Implémenter la classe `MarkdownFileWatcher` avec gestion des événements
+          - [ ] **1.1.1.1.1.1.1** Créer la structure de base de la classe avec constructeur et propriétés
+            - [ ] **1.1.1.1.1.1.1.1** Définir l'interface et les membres de la classe MarkdownFileWatcher
+              - [ ] **1.1.1.1.1.1.1.1.1** Créer le fichier de classe MarkdownFileWatcher.ps1 avec en-tête de documentation
+                - [ ] **1.1.1.1.1.1.1.1.1.1** Créer le répertoire de destination pour la classe dans development/scripts/roadmap/rag/watcher
+                - [ ] **1.1.1.1.1.1.1.1.1.2** Initialiser le fichier avec la directive #Requires -Version 5.1
+                - [ ] **1.1.1.1.1.1.1.1.1.3** Ajouter le bloc de commentaires .SYNOPSIS décrivant le but de la classe
+                - [ ] **1.1.1.1.1.1.1.1.1.4** Implémenter le bloc .DESCRIPTION avec les détails de fonctionnalité
+                - [ ] **1.1.1.1.1.1.1.1.1.5** Ajouter le bloc .NOTES avec les informations d'auteur et de version
+                - [ ] **1.1.1.1.1.1.1.1.1.6** Créer le bloc .EXAMPLE avec un exemple d'utilisation basique
+                - [ ] **1.1.1.1.1.1.1.1.1.7** Ajouter les directives using pour les espaces de noms requis
+                - [ ] **1.1.1.1.1.1.1.1.1.8** Définir la structure initiale du namespace/module
+              - [ ] **1.1.1.1.1.1.1.1.2** Définir la déclaration de classe avec héritage et interfaces appropriés
+                - [ ] **1.1.1.1.1.1.1.1.2.1** Rechercher les classes parentes potentielles dans le framework .NET
+                - [ ] **1.1.1.1.1.1.1.1.2.2** Définir la classe comme publique avec le mot-clé "class"
+                - [ ] **1.1.1.1.1.1.1.1.2.3** Ajouter les attributs de classe nécessaires (Serializable, etc.)
+                - [ ] **1.1.1.1.1.1.1.1.2.4** Implémenter l'interface IDisposable pour la gestion des ressources
+                - [ ] **1.1.1.1.1.1.1.1.2.5** Créer l'interface personnalisée IFileWatcher si nécessaire
+                - [ ] **1.1.1.1.1.1.1.1.2.6** Définir les modificateurs d'accès appropriés (public, internal)
+                - [ ] **1.1.1.1.1.1.1.1.2.7** Ajouter les commentaires XML de documentation pour la classe
+                - [ ] **1.1.1.1.1.1.1.1.2.8** Implémenter les attributs pour l'intégration avec PowerShell
+              - [ ] **1.1.1.1.1.1.1.1.3** Implémenter les champs privés pour le chemin de surveillance et le filtre
+                - [ ] **1.1.1.1.1.1.1.1.3.1** Définir le champ privé _watchPath pour stocker le chemin de surveillance
+                - [ ] **1.1.1.1.1.1.1.1.3.2** Créer le champ privé _filter pour les patterns de fichiers à surveiller
+                - [ ] **1.1.1.1.1.1.1.1.3.3** Implémenter le champ privé _resolvedPath pour le chemin absolu résolu
+                - [ ] **1.1.1.1.1.1.1.1.3.4** Ajouter le champ privé _excludePatterns pour les fichiers à ignorer
+                - [ ] **1.1.1.1.1.1.1.1.3.5** Définir le champ privé _lastError pour stocker la dernière erreur
+                - [ ] **1.1.1.1.1.1.1.1.3.6** Créer le champ privé _pathValidator pour la validation des chemins
+                - [ ] **1.1.1.1.1.1.1.1.3.7** Implémenter les commentaires XML pour chaque champ privé
+                - [ ] **1.1.1.1.1.1.1.1.3.8** Définir les valeurs par défaut pour les champs essentiels
+              - [ ] **1.1.1.1.1.1.1.1.4** Créer les champs privés pour les options de surveillance (récursivité, intervalle)
+              - [ ] **1.1.1.1.1.1.1.1.5** Définir le champ privé pour l'objet FileSystemWatcher sous-jacent
+              - [ ] **1.1.1.1.1.1.1.1.6** Implémenter les champs pour le suivi des événements et des gestionnaires
+              - [ ] **1.1.1.1.1.1.1.1.7** Créer les champs pour la gestion de l'état (actif, en pause, erreur)
+              - [ ] **1.1.1.1.1.1.1.1.8** Définir les propriétés publiques en lecture seule pour les paramètres de configuration
+              - [ ] **1.1.1.1.1.1.1.1.9** Implémenter la propriété IsActive pour vérifier l'état de surveillance
+              - [ ] **1.1.1.1.1.1.1.1.10** Créer les signatures des méthodes principales (Start, Stop, Pause, Resume)
+              - [ ] **1.1.1.1.1.1.1.1.11** Définir les signatures des méthodes de gestion d'événements
+              - [ ] **1.1.1.1.1.1.1.1.12** Implémenter les signatures des méthodes utilitaires internes
+              - [ ] **1.1.1.1.1.1.1.1.13** Créer les définitions d'événements publics (FileCreated, FileChanged, etc.)
+              - [ ] **1.1.1.1.1.1.1.1.14** Définir les classes d'arguments d'événements personnalisés
+              - [ ] **1.1.1.1.1.1.1.1.15** Implémenter les constantes et valeurs par défaut
+            - [ ] **1.1.1.1.1.1.1.2** Implémenter le constructeur avec validation des paramètres
+            - [ ] **1.1.1.1.1.1.1.3** Créer les propriétés pour la configuration de surveillance
+            - [ ] **1.1.1.1.1.1.1.4** Développer les structures de données internes pour le suivi d'état
+            - [ ] **1.1.1.1.1.1.1.5** Implémenter les méthodes d'initialisation et de nettoyage
+          - [ ] **1.1.1.1.1.1.2** Implémenter les méthodes Start() et Stop() pour contrôler la surveillance
+            - [ ] **1.1.1.1.1.1.2.1** Développer la méthode Start() avec vérification d'état
+            - [ ] **1.1.1.1.1.1.2.2** Implémenter la méthode Stop() avec libération des ressources
+            - [ ] **1.1.1.1.1.1.2.3** Créer le mécanisme de verrouillage pour éviter les démarrages multiples
+            - [ ] **1.1.1.1.1.1.2.4** Développer la gestion des états de transition (démarrage/arrêt)
+            - [ ] **1.1.1.1.1.1.2.5** Implémenter les événements de notification de changement d'état
+          - [ ] **1.1.1.1.1.1.3** Développer le système d'enregistrement des gestionnaires d'événements
+            - [ ] **1.1.1.1.1.1.3.1** Créer l'interface pour les gestionnaires d'événements
+            - [ ] **1.1.1.1.1.1.3.2** Implémenter les méthodes d'enregistrement et désenregistrement
+            - [ ] **1.1.1.1.1.1.3.3** Développer le mécanisme de délégation des événements
+            - [ ] **1.1.1.1.1.1.3.4** Créer le système de filtrage des événements par type
+            - [ ] **1.1.1.1.1.1.3.5** Implémenter la gestion des erreurs dans les gestionnaires
+          - [ ] **1.1.1.1.1.1.4** Créer les méthodes de gestion des événements Created, Changed, Deleted et Renamed
+            - [ ] **1.1.1.1.1.1.4.1** Implémenter le gestionnaire d'événements Created avec validation
+            - [ ] **1.1.1.1.1.1.4.2** Développer le gestionnaire d'événements Changed avec détection des modifications
+            - [ ] **1.1.1.1.1.1.4.3** Créer le gestionnaire d'événements Deleted avec vérification d'existence
+            - [ ] **1.1.1.1.1.1.4.4** Implémenter le gestionnaire d'événements Renamed avec suivi des chemins
+            - [ ] **1.1.1.1.1.1.4.5** Développer le mécanisme commun de traitement des événements
+          - [ ] **1.1.1.1.1.1.5** Implémenter le système de journalisation des événements détectés
+            - [ ] **1.1.1.1.1.1.5.1** Créer la structure de données pour les entrées de journal
+            - [ ] **1.1.1.1.1.1.5.2** Développer le mécanisme de formatage des messages de journal
+            - [ ] **1.1.1.1.1.1.5.3** Implémenter les niveaux de journalisation (debug, info, warning, error)
+            - [ ] **1.1.1.1.1.1.5.4** Créer le système de rotation des fichiers de journal
+            - [ ] **1.1.1.1.1.1.5.5** Développer l'interface de consultation des journaux
+        - [ ] **1.1.1.1.1.2** Développer le mécanisme de debounce pour éviter les traitements multiples
+          - [ ] **1.1.1.1.1.2.1** Implémenter la structure de données pour suivre les événements récents
+          - [ ] **1.1.1.1.1.2.2** Créer le système de temporisation configurable
+          - [ ] **1.1.1.1.1.2.3** Développer la logique de regroupement des événements similaires
+          - [ ] **1.1.1.1.1.2.4** Implémenter le mécanisme de file d'attente pour les événements
+          - [ ] **1.1.1.1.1.2.5** Créer le système de traitement asynchrone des événements
+        - [ ] **1.1.1.1.1.3** Créer le système de filtrage par extension et répertoire
+          - [ ] **1.1.1.1.1.3.1** Développer le système de filtres par extension de fichier
+          - [ ] **1.1.1.1.1.3.2** Implémenter le filtrage par chemin et sous-répertoires
+          - [ ] **1.1.1.1.1.3.3** Créer le système d'exclusion de répertoires spécifiques
+          - [ ] **1.1.1.1.1.3.4** Développer le support des expressions régulières pour les filtres
+          - [ ] **1.1.1.1.1.3.5** Implémenter la validation et normalisation des chemins
+        - [ ] **1.1.1.1.1.4** Implémenter la gestion des erreurs et la récupération robuste
+          - [ ] **1.1.1.1.1.4.1** Développer le système de capture et classification des exceptions
+          - [ ] **1.1.1.1.1.4.2** Créer le mécanisme de redémarrage automatique en cas d'échec
+          - [ ] **1.1.1.1.1.4.3** Implémenter la stratégie de retry avec backoff exponentiel
+          - [ ] **1.1.1.1.1.4.4** Développer le système de notification des erreurs critiques
+          - [ ] **1.1.1.1.1.4.5** Créer le mécanisme de diagnostic et rapport d'erreurs
+        - [ ] **1.1.1.1.1.5** Développer le système de configuration flexible (intervalles, chemins)
+          - [ ] **1.1.1.1.1.5.1** Créer la structure de configuration avec valeurs par défaut
+          - [ ] **1.1.1.1.1.5.2** Implémenter le chargement de configuration depuis un fichier
+          - [ ] **1.1.1.1.1.5.3** Développer le système de validation des paramètres de configuration
+          - [ ] **1.1.1.1.1.5.4** Créer le mécanisme de mise à jour dynamique de la configuration
+          - [ ] **1.1.1.1.1.5.5** Implémenter la persistance des paramètres de configuration
+        - [ ] **1.1.1.1.1.6** Créer les hooks pour les actions personnalisées lors des événements
+          - [ ] **1.1.1.1.1.6.1** Développer l'interface pour les hooks personnalisables
+          - [ ] **1.1.1.1.1.6.2** Implémenter le système d'enregistrement des hooks
+          - [ ] **1.1.1.1.1.6.3** Créer le mécanisme d'exécution des hooks avec gestion des erreurs
+          - [ ] **1.1.1.1.1.6.4** Développer les hooks par défaut pour les opérations courantes
+          - [ ] **1.1.1.1.1.6.5** Implémenter le système de priorité et ordonnancement des hooks
+      - [ ] **1.1.1.1.2** Implémenter la détection des créations/suppressions
+        - [ ] **1.1.1.1.2.1** Développer les gestionnaires d'événements pour les créations de fichiers
+          - [ ] **1.1.1.1.2.1.1** Implémenter la détection des nouveaux fichiers Markdown
+          - [ ] **1.1.1.1.2.1.2** Créer le système d'analyse initiale des nouveaux fichiers
+          - [ ] **1.1.1.1.2.1.3** Développer le mécanisme de validation des nouveaux fichiers
+          - [ ] **1.1.1.1.2.1.4** Implémenter la notification de création aux composants concernés
+          - [ ] **1.1.1.1.2.1.5** Créer le système de journalisation des créations de fichiers
+        - [ ] **1.1.1.1.2.2** Implémenter les gestionnaires d'événements pour les suppressions
+          - [ ] **1.1.1.1.2.2.1** Développer la détection fiable des suppressions de fichiers
+          - [ ] **1.1.1.1.2.2.2** Créer le système de sauvegarde avant suppression
+          - [ ] **1.1.1.1.2.2.3** Implémenter le mécanisme de nettoyage des références
+          - [ ] **1.1.1.1.2.2.4** Développer la notification de suppression aux composants concernés
+          - [ ] **1.1.1.1.2.2.5** Créer le système de journalisation des suppressions
+        - [ ] **1.1.1.1.2.3** Créer le système de détection des renommages de fichiers
+        - [ ] **1.1.1.1.2.4** Développer le mécanisme de suivi des déplacements de fichiers
+        - [ ] **1.1.1.1.2.5** Implémenter la détection des modifications de structure de répertoires
+        - [ ] **1.1.1.1.2.6** Créer le système de notification pour les événements de fichiers
+      - [ ] **1.1.1.1.3** Ajouter le support pour les hooks Git
+        - [ ] **1.1.1.1.3.1** Développer le script d'installation des hooks Git (post-commit, post-merge)
+        - [ ] **1.1.1.1.3.2** Implémenter le gestionnaire d'événements pour les hooks Git
+        - [ ] **1.1.1.1.3.3** Créer le système de détection des fichiers modifiés dans les commits
+        - [ ] **1.1.1.1.3.4** Développer le mécanisme de synchronisation post-pull/merge
+        - [ ] **1.1.1.1.3.5** Implémenter la gestion des conflits lors des merges
+        - [ ] **1.1.1.1.3.6** Créer le système de journalisation des opérations Git
+    - [ ] **1.1.1.2** Implémenter le parser Markdown avancé
+      - [ ] **1.1.1.2.1** Développer l'extracteur de tâches avec regex optimisées
+      - [ ] **1.1.1.2.2** Créer le système de détection des métadonnées (MVP, priorité)
+      - [ ] **1.1.1.2.3** Implémenter la préservation de la structure hiérarchique
+    - [ ] **1.1.1.3** Créer le système de journalisation des modifications
+      - [ ] **1.1.1.3.1** Développer le format JSON structuré pour l'audit
+      - [ ] **1.1.1.3.2** Implémenter la rotation des journaux avec compression
+      - [ ] **1.1.1.3.3** Créer l'interface de consultation des journaux
+  - [ ] **1.1.2** Développer le système de vectorisation des tâches
+    - [ ] **1.1.2.1** Implémenter l'interface avec Qdrant
+      - [ ] **1.1.2.1.1** Créer la classe QdrantClient avec gestion des erreurs
+      - [ ] **1.1.2.1.2** Développer les opérations CRUD pour les vecteurs
+      - [ ] **1.1.2.1.3** Implémenter la gestion des collections et des schémas
+    - [ ] **1.1.2.2** Créer le système de génération d'embeddings
+      - [ ] **1.1.2.2.1** Implémenter l'interface avec les modèles d'embeddings
+      - [ ] **1.1.2.2.2** Développer le cache d'embeddings pour optimiser les performances
+      - [ ] **1.1.2.2.3** Créer le système de batch processing pour les grandes quantités
+    - [ ] **1.1.2.3** Implémenter le système de gestion des métadonnées
+      - [ ] **1.1.2.3.1** Développer le schéma de métadonnées standardisé
+      - [ ] **1.1.2.3.2** Créer le système de validation des métadonnées
+      - [ ] **1.1.2.3.3** Implémenter la préservation des métadonnées lors des mises à jour
+  - [ ] **1.1.3** Développer le système de détection des modifications
+    - [ ] **1.1.3.1** Implémenter l'algorithme de diff pour les tâches
+      - [ ] **1.1.3.1.1** Créer le système de comparaison structurelle
+      - [ ] **1.1.3.1.2** Développer la détection des changements de statut
+      - [ ] **1.1.3.1.3** Implémenter la détection des modifications de contenu
+    - [ ] **1.1.3.2** Créer le système de versionnage léger
+      - [ ] **1.1.3.2.1** Développer le système d'horodatage précis
+      - [ ] **1.1.3.2.2** Implémenter la gestion des versions avec historique
+      - [ ] **1.1.3.2.3** Créer le système de restauration des versions antérieures
+    - [ ] **1.1.3.3** Implémenter le système de marquage des tâches obsolètes
+      - [ ] **1.1.3.3.1** Développer le mécanisme de soft delete
+      - [ ] **1.1.3.3.2** Créer le système de purge programmée
+      - [ ] **1.1.3.3.3** Implémenter la restauration des tâches supprimées
+
+- [ ] **1.2** Développer le système de synchronisation Qdrant → Markdown
+  - [ ] **1.2.1** Implémenter le détecteur de modifications dans Qdrant
+    - [ ] **1.2.1.1** Créer le système de polling optimisé
+      - [ ] **1.2.1.1.1** Développer le mécanisme de détection des changements
+      - [ ] **1.2.1.1.2** Implémenter la gestion des intervalles adaptatifs
+      - [ ] **1.2.1.1.3** Créer le système de notification des changements
+    - [ ] **1.2.1.2** Implémenter le système de webhooks pour Qdrant
+      - [ ] **1.2.1.2.1** Développer le serveur de webhooks
+      - [ ] **1.2.1.2.2** Créer le système de validation des payloads
+      - [ ] **1.2.1.2.3** Implémenter la file d'attente des événements
+    - [ ] **1.2.1.3** Créer le système de suivi des modifications
+      - [ ] **1.2.1.3.1** Développer le format de suivi des changements
+      - [ ] **1.2.1.3.2** Implémenter la persistance des modifications
+      - [ ] **1.2.1.3.3** Créer l'interface de consultation des modifications
+  - [ ] **1.2.2** Développer le générateur de Markdown
+    - [ ] **1.2.2.1** Implémenter le système de templating Markdown
+      - [ ] **1.2.2.1.1** Créer les templates pour différents niveaux hiérarchiques
+      - [ ] **1.2.2.1.2** Développer le système de rendu avec préservation du formatage
+      - [ ] **1.2.2.1.3** Implémenter la gestion des styles et de l'indentation
+    - [ ] **1.2.2.2** Créer le système de génération incrémentale
+      - [ ] **1.2.2.2.1** Développer l'algorithme de mise à jour partielle
+      - [ ] **1.2.2.2.2** Implémenter la préservation des commentaires et annotations
+      - [ ] **1.2.2.2.3** Créer le système de validation structurelle
+    - [ ] **1.2.2.3** Implémenter le système de sauvegarde des fichiers
+      - [ ] **1.2.2.3.1** Développer le mécanisme de sauvegarde atomique
+      - [ ] **1.2.2.3.2** Créer le système de backup automatique
+      - [ ] **1.2.2.3.3** Implémenter la restauration en cas d'échec
+  - [ ] **1.2.3** Développer le système de verrouillage
+    - [ ] **1.2.3.1** Implémenter le mécanisme de verrouillage temporaire
+      - [ ] **1.2.3.1.1** Créer le système de verrouillage distribué
+      - [ ] **1.2.3.1.2** Développer la gestion des timeouts et expirations
+      - [ ] **1.2.3.1.3** Implémenter la détection des deadlocks
+    - [ ] **1.2.3.2** Créer le système de notification des verrouillages
+      - [ ] **1.2.3.2.1** Développer l'interface utilisateur pour les notifications
+      - [ ] **1.2.3.2.2** Implémenter le système de messages en temps réel
+      - [ ] **1.2.3.2.3** Créer le mécanisme de demande de déverrouillage
+    - [ ] **1.2.3.3** Implémenter le système de résolution des conflits
+      - [ ] **1.2.3.3.1** Développer l'algorithme de détection des conflits
+      - [ ] **1.2.3.3.2** Créer l'interface de résolution manuelle
+      - [ ] **1.2.3.3.3** Implémenter les stratégies de résolution automatique
+
+## 2. Interface de monitoring dynamique (Phase 2)
+
+- [ ] **2.1** Développer le tableau de bord filtrable
+  - [ ] **2.1.1** Implémenter le système de filtrage avancé
+    - [ ] **2.1.1.1** Créer les filtres par type (fondamentale/core)
+    - [ ] **2.1.1.2** Développer les filtres par priorité (P0-P3)
+    - [ ] **2.1.1.3** Implémenter les filtres par statut
+    - [ ] **2.1.1.4** Créer les filtres par plan source (v2-v24)
+    - [ ] **2.1.1.5** Développer les filtres par catégorie
+    - [ ] **2.1.1.6** Implémenter les filtres par phase d'implémentation
+  - [ ] **2.1.2** Développer le système de recherche avancée
+    - [ ] **2.1.2.1** Implémenter la recherche full-text
+    - [ ] **2.1.2.2** Créer la recherche sémantique avec Qdrant
+    - [ ] **2.1.2.3** Développer le système de suggestions et auto-complétion
+  - [ ] **2.1.3** Implémenter le système de tri et pagination
+    - [ ] **2.1.3.1** Créer le tri multi-critères
+    - [ ] **2.1.3.2** Développer la pagination optimisée
+    - [ ] **2.1.3.3** Implémenter la persistance des préférences utilisateur
+
+- [ ] **2.2** Développer les visualisations multiples
+  - [ ] **2.2.1** Implémenter la vue liste avancée
+    - [ ] **2.2.1.1** Créer le système de colonnes personnalisables
+    - [ ] **2.2.1.2** Développer les fonctionnalités d'édition inline
+    - [ ] **2.2.1.3** Implémenter le groupement hiérarchique
+  - [ ] **2.2.2** Créer la vue Kanban
+    - [ ] **2.2.2.1** Développer le système de colonnes configurables
+    - [ ] **2.2.2.2** Implémenter le drag-and-drop avec mise à jour en temps réel
+    - [ ] **2.2.2.3** Créer le système de limites WIP
+  - [ ] **2.2.3** Implémenter le diagramme de Gantt
+    - [ ] **2.2.3.1** Développer le moteur de rendu de diagramme
+    - [ ] **2.2.3.2** Créer le système de gestion des dépendances
+    - [ ] **2.2.3.3** Implémenter la mise en évidence du chemin critique
+  - [ ] **2.2.4** Développer la carte mentale/graphe de dépendances
+    - [ ] **2.2.4.1** Créer le moteur de rendu de graphe interactif
+    - [ ] **2.2.4.2** Implémenter le zoom et focus contextuel
+    - [ ] **2.2.4.3** Développer l'algorithme de layout automatique
+  - [ ] **2.2.5** Implémenter la carte métro
+    - [ ] **2.2.5.1** Créer le moteur de rendu de carte métro
+    - [ ] **2.2.5.2** Développer le système de noeuds pour points communs
+    - [ ] **2.2.5.3** Implémenter le zoom et contexte adaptatif
+  - [ ] **2.2.6** Développer le système d'exportation
+    - [ ] **2.2.6.1** Implémenter l'exportation PDF
+    - [ ] **2.2.6.2** Créer l'exportation Excel/CSV
+    - [ ] **2.2.6.3** Développer les options de mise en forme
+
+- [ ] **2.3** Implémenter les métriques et KPIs
+  - [ ] **2.3.1** Développer le système de calcul de progression
+    - [ ] **2.3.1.1** Créer les métriques de complétion par phase
+    - [ ] **2.3.1.2** Implémenter les métriques par plan/catégorie
+    - [ ] **2.3.1.3** Développer l'historique d'évolution
+  - [ ] **2.3.2** Créer le système d'identification des goulots d'étranglement
+    - [ ] **2.3.2.1** Implémenter la détection des dépendances bloquantes
+    - [ ] **2.3.2.2** Développer les suggestions de résolution
+    - [ ] **2.3.2.3** Créer le système d'alerte proactive
+  - [ ] **2.3.3** Implémenter le système de prédiction des délais
+    - [ ] **2.3.3.1** Développer l'algorithme de calcul de vélocité
+    - [ ] **2.3.3.2** Créer le système de prédiction par catégorie
+    - [ ] **2.3.3.3** Implémenter les simulations de scénarios
+  - [ ] **2.3.4** Développer le tableau de bord de santé globale
+    - [ ] **2.3.4.1** Créer les indicateurs configurables
+    - [ ] **2.3.4.2** Implémenter le système de seuils et alertes
+    - [ ] **2.3.4.3** Développer les rapports automatisés
+
+## 3. Organisation thématique intelligente (Phase 3)
+
+- [ ] **3.1** Implémenter la préservation de la structure thématique
+  - [ ] **3.1.1** Développer la visualisation arborescente
+    - [ ] **3.1.1.1** Créer le moteur de rendu d'arborescence
+    - [ ] **3.1.1.2** Implémenter l'expansion/contraction des noeuds
+    - [ ] **3.1.1.3** Développer le système de recherche dans l'arborescence
+  - [ ] **3.1.2** Implémenter la gestion des relations parent-enfant
+    - [ ] **3.1.2.1** Créer le système de validation d'intégrité
+    - [ ] **3.1.2.2** Développer la propagation des statuts
+    - [ ] **3.1.2.3** Implémenter la gestion des orphelins
+  - [ ] **3.1.3** Développer le système de réorganisation manuelle
+    - [ ] **3.1.3.1** Créer l'interface de drag-and-drop hiérarchique
+    - [ ] **3.1.3.2** Implémenter la propagation cohérente des changements
+    - [ ] **3.1.3.3** Développer le système d'annulation/rétablissement
+
+- [ ] **3.2** Créer le système d'analyse RAG avancée
+  - [ ] **3.2.1** Implémenter l'identification des clusters thématiques
+    - [ ] **3.2.1.1** Développer l'algorithme de clustering vectoriel
+    - [ ] **3.2.1.2** Créer le système de seuil de similarité ajustable
+    - [ ] **3.2.1.3** Implémenter la visualisation des clusters
+  - [ ] **3.2.2** Développer le système de proposition de regroupements
+    - [ ] **3.2.2.1** Créer l'algorithme de suggestion de regroupements
+    - [ ] **3.2.2.2** Implémenter la prévisualisation des regroupements
+    - [ ] **3.2.2.3** Développer le système d'application des regroupements
+  - [ ] **3.2.3** Implémenter la détection de doublons et redondances
+    - [ ] **3.2.3.1** Créer l'algorithme de détection de similarité
+    - [ ] **3.2.3.2** Développer le système de score de confiance
+    - [ ] **3.2.3.3** Implémenter l'interface de validation des doublons
+  - [ ] **3.2.4** Développer le système de fusion de tâches
+    - [ ] **3.2.4.1** Créer l'algorithme de fusion intelligente
+    - [ ] **3.2.4.2** Implémenter la préservation de l'historique
+    - [ ] **3.2.4.3** Développer l'interface de validation des fusions
+
+- [ ] **3.3** Implémenter les vues contextuelles adaptatives
+  - [ ] **3.3.1** Développer la vue par phase d'implémentation
+    - [ ] **3.3.1.1** Créer l'interface de visualisation des phases
+    - [ ] **3.3.1.2** Implémenter le focus sur les dépendances inter-phases
+    - [ ] **3.3.1.3** Développer le système de progression par phase
+  - [ ] **3.3.2** Créer la vue par composant fonctionnel
+    - [ ] **3.3.2.1** Implémenter le regroupement intelligent
+    - [ ] **3.3.2.2** Développer la visualisation des composants
+    - [ ] **3.3.2.3** Créer le système de navigation entre composants
+  - [ ] **3.3.3** Développer la vue par chemin critique
+    - [ ] **3.3.3.1** Implémenter l'algorithme de calcul du chemin critique
+    - [ ] **3.3.3.2** Créer la mise en évidence des dépendances bloquantes
+    - [ ] **3.3.3.3** Développer la simulation d'impact des retards
+  - [ ] **3.3.4** Implémenter la vue personnalisée
+    - [ ] **3.3.4.1** Créer le système de combinaison de critères
+    - [ ] **3.3.4.2** Développer la sauvegarde des vues personnalisées
+    - [ ] **3.3.4.3** Implémenter le partage des configurations
+
+## 4. Intégration et déploiement (Phase 4)
+
+- [ ] **4.1** Développer l'API REST standardisée
+  - [ ] **4.1.1** Implémenter les endpoints CRUD pour les tâches
+  - [ ] **4.1.2** Créer les endpoints pour la synchronisation
+  - [ ] **4.1.3** Développer les endpoints pour les métriques et KPIs
+  - [ ] **4.1.4** Implémenter la documentation OpenAPI 3.0
+
+- [ ] **4.2** Créer le système d'intégration avec les outils existants
+  - [ ] **4.2.1** Développer l'intégration avec n8n
+  - [ ] **4.2.2** Implémenter l'intégration avec MCP
+  - [ ] **4.2.3** Créer l'intégration avec Git
+
+- [ ] **4.3** Implémenter les tests complets
+  - [ ] **4.3.1** Développer les tests unitaires
+  - [ ] **4.3.2** Créer les tests d'intégration
+  - [ ] **4.3.3** Implémenter les tests de performance
+
+- [ ] **4.4** Développer la documentation complète
+  - [ ] **4.4.1** Créer la documentation technique
+  - [ ] **4.4.2** Développer le guide utilisateur
+  - [ ] **4.4.3** Implémenter les tutoriels interactifs

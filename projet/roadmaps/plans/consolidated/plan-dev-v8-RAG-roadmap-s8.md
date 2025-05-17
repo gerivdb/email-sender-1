@@ -1,0 +1,923 @@
+﻿# Plan de développement v8b : Système de gestion modulaire des roadmaps avec RAG et classification automatique
+
+
+## 8. Extension et amélioration du système de roadmapping (TERMINÉ)
+- [x] **8.1** Optimisation des performances
+  - [x] **8.1.1** Améliorer les performances pour les vues volumineuses
+    - [x] **8.1.1.1** Analyser les goulots d'étranglement actuels
+      - [x] **8.1.1.1.1** Profiler le chargement des vues complexes
+        - [x] **8.1.1.1.1.1** Développer des scripts de benchmarking pour les vues
+          - [x] **8.1.1.1.1.1.1** Créer un script de mesure du temps de chargement initial
+          - [x] **8.1.1.1.1.1.2** Implémenter la mesure du temps de rendu des composants
+          - [x] **8.1.1.1.1.1.3** Ajouter la mesure de l'utilisation mémoire pendant le chargement
+            - [x] **8.1.1.1.1.1.3.1** Développer les fonctions de capture de l'utilisation mémoire
+        - [x] **8.1.1.1.1.2** Développer des outils d'extraction et normalisation des métadonnées
+          - [x] **8.1.1.1.1.2.1** Créer un module pour la détection des expressions approximatives
+          - [x] **8.1.1.1.1.2.2** Implémenter la conversion des nombres textuels en valeurs numériques
+          - [x] **8.1.1.1.1.2.3** Développer la détection et normalisation des unités de temps
+          - [x] **8.1.1.1.1.2.4** Créer un normalisateur de tags pour standardiser les formats
+        - [x] **8.1.1.1.1.3** Développer des outils de mesure de la mémoire
+          - [x] **8.1.1.1.1.3.1** Implémenter la mesure de la mémoire utilisée par PowerShell
+          - [x] **8.1.1.1.1.3.2** Créer les fonctions de capture de mémoire à différents points d'exécution
+          - [x] **8.1.1.1.1.3.3** Ajouter le calcul des deltas de consommation mémoire
+          - [x] **8.1.1.1.1.3.4** Intégrer les mesures mémoire dans les scripts existants
+            - [x] **8.1.1.1.1.3.4.1** Modifier Measure-ViewLoadTime.ps1 pour inclure les métriques mémoire
+            - [x] **8.1.1.1.1.3.4.2** Adapter Measure-ComponentRenderTime.ps1 pour le suivi mémoire
+            - [x] **8.1.1.1.1.3.4.3** Implémenter des points de contrôle mémoire dans le processus de rendu
+          - [x] **8.1.1.1.1.3.5** Développer les fonctionnalités de rapport et d'analyse
+            - [x] **8.1.1.1.1.3.5.1** Créer des graphiques d'utilisation mémoire au fil du temps
+            - [x] **8.1.1.1.1.3.5.2** Implémenter la détection des fuites mémoire potentielles
+            - [x] **8.1.1.1.1.3.5.3** Ajouter des seuils d'alerte pour la consommation excessive
+        - [x] **8.1.1.1.1.4** Tester avec différentes tailles de roadmaps
+          - [x] **8.1.1.1.1.4.1** Générer des jeux de données synthétiques de différentes tailles
+            - [x] **8.1.1.1.1.4.1.1** Développer un générateur de roadmaps synthétiques
+              - [x] **8.1.1.1.1.4.1.1.1** Créer les fonctions de génération de tâches aléatoires
+              - [x] **8.1.1.1.1.4.1.1.2** Implémenter la génération de structures hiérarchiques
+              - [x] **8.1.1.1.1.4.1.1.3** Ajouter la génération de métadonnées réalistes
+                - [x] **8.1.1.1.1.4.1.1.3.1** Développer le système de génération de dates cohérentes
+                  - [x] **8.1.1.1.1.4.1.1.3.1.1** Implémenter la génération de dates de début et fin respectant les contraintes
+                  - [x] **8.1.1.1.1.4.1.1.3.1.2** Créer les fonctions de calcul de durée automatique
+                  - [x] **8.1.1.1.1.4.1.1.3.1.3** Ajouter la gestion des dépendances temporelles entre tâches
+                - [x] **8.1.1.1.1.4.1.1.3.2** Créer le système de génération d'attributions et responsabilités
+                  - [x] **8.1.1.1.1.4.1.1.3.2.1** Développer la génération de noms d'assignés réalistes
+                  - [x] **8.1.1.1.1.4.1.1.3.2.2** Implémenter la distribution équilibrée des tâches
+                  - [x] **8.1.1.1.1.4.1.1.3.2.3** Ajouter la gestion des compétences et spécialisations
+                - [x] **8.1.1.1.1.4.1.1.3.3** Implémenter la génération de métadonnées de suivi et statut
+                  - [x] **8.1.1.1.1.4.1.1.3.3.1** Développer la génération de statuts cohérents avec la structure
+                  - [x] **8.1.1.1.1.4.1.1.3.3.2** Créer les fonctions de génération de pourcentages d'avancement
+                  - [x] **8.1.1.1.1.4.1.1.3.3.3** Ajouter la génération d'historiques de modifications
+                - [x] **8.1.1.1.1.4.1.1.3.4** Développer la génération de métadonnées de priorité et criticité
+                  - [x] **8.1.1.1.1.4.1.1.3.4.1** Implémenter l'attribution de niveaux de priorité cohérents
+                  - [x] **8.1.1.1.1.4.1.1.3.4.2** Créer le système de calcul de criticité basé sur les dépendances
+                  - [x] **8.1.1.1.1.4.1.1.3.4.3** Ajouter la génération de scores d'impact et d'effort
+                - [x] **8.1.1.1.1.4.1.1.3.5** Créer le système de génération de tags et catégories
+                  - [x] **8.1.1.1.1.4.1.1.3.5.1** Développer la génération de tags thématiques cohérents
+                  - [x] **8.1.1.1.1.4.1.1.3.5.2** Implémenter la classification automatique des tâches
+                    - [x] **8.1.1.1.1.4.1.1.3.5.2.1** Développer les algorithmes de classification
+                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.1** Implémenter l'algorithme de classification par similarité sémantique
+                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2** Créer l'algorithme de classification par analyse de métadonnées
+                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1** Développer le système d'extraction de caractéristiques des métadonnées
+                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.1** Implémenter l'extraction des attributs temporels (dates, durées, échéances)
+                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.2** Développer l'extraction des attributs de responsabilité (assignés, équipes)
+                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.3** Créer l'extraction des attributs de statut et progression
+                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.4** Implémenter l'extraction des attributs de priorité et criticité
+                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5** Développer l'extraction des attributs de dépendances et relations
+                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.1** Implémenter l'extraction des dépendances explicites
+                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.1.1** Développer la détection des références directes entre tâches
+                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.1.2** Implémenter l'extraction des dépendances de type "bloqué par"
+                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.1.3** Créer l'extraction des dépendances de type "dépend de"
+                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.1.4** Développer l'extraction des dépendances de type "requis pour"
+                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.1.5** Implémenter l'analyse des tags de dépendance personnalisés
+                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.2** Granulariser les tâches d'extraction des dépendances
+                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.3** Granulariser les tâches d'analyse temporelle
+                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.4** Granulariser les tâches d'extraction des tags de durée
+                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.5** Granulariser les tâches d'extraction des attributs de durée
+                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.5.6** Granulariser les tâches de gestion des précisions variables
+                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6** Développer l'extraction des dépendances implicites
+                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1** Implémenter l'analyse des relations temporelles
+                                - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.1** Développer la détection des séquences chronologiques
+                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.1.1** Implémenter l'extraction des dates explicites
+                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.1.2** Créer l'analyse des expressions temporelles relatives
+                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.1.3** Développer l'ordonnancement chronologique des tâches
+                                - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2** Implémenter l'analyse des délais et durées
+                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1** Créer l'extraction des durées explicites
+                                    - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.1** Développer la détection des formats de durée standards
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.1.1** Implémenter l'extraction des durées en jours/semaines/mois
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.1.2** Créer la détection des durées en heures/minutes
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.1.3** Développer l'analyse des durées avec unités composées
+                                    - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2** Implémenter l'extraction des attributs de durée
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1** Créer la détection des tags de durée explicites
+                                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1** Implémenter la reconnaissance des formats de tags standards
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1** Développer la détection des tags de type #duration
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.1** Implémenter la reconnaissance des formats #duration:X
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.1.1** Créer la détection du format #duration:Xd (jours)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.1.2** Développer l'analyse du format #duration:Xw (semaines)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.1.3** Implémenter la détection du format #duration:Xm (mois)
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.2** Développer l'analyse des formats #duration(X)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.2.1** Créer la détection du format #duration(Xd) (jours)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.2.2** Implémenter l'analyse du format #duration(Xw) (semaines)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.2.3** Développer la détection du format #duration(Xm) (mois)
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.3** Implémenter la reconnaissance des formats composés
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.3.1** Créer la détection du format #duration:XdYh (jours et heures)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.3.2** Développer l'analyse du format #duration:XhYm (heures et minutes)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.1.3.3** Implémenter la détection des formats avec plusieurs unités
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2** Créer l'analyse des tags de type #temps
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.1** Implémenter la reconnaissance des formats #temps:X
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.1.1** Créer la détection du format #temps:Xj (jours)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.1.2** Développer l'analyse du format #temps:Xs (semaines)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.1.3** Implémenter la détection du format #temps:Xm (mois)
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.2** Développer l'analyse des formats #temps(X)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.2.1** Créer la détection du format #temps(Xj) (jours)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.2.2** Implémenter l'analyse du format #temps(Xs) (semaines)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.2.3** Développer la détection du format #temps(Xm) (mois)
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.3** Implémenter la reconnaissance des formats composés
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.3.1** Créer la détection du format #temps:XjYh (jours et heures)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.3.2** Développer l'analyse du format #temps:XhYm (heures et minutes)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.2.3.3** Implémenter la détection des formats avec plusieurs unités
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3** Implémenter la détection des tags de type #durée
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.1** Développer la reconnaissance des formats #durée:X
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.1.1** Créer la détection du format #durée:Xj (jours)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.1.2** Implémenter l'analyse du format #durée:Xs (semaines)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.1.3** Développer la détection du format #durée:Xm (mois)
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.2** Implémenter l'analyse des formats #durée(X)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.2.1** Créer la détection du format #durée(Xj) (jours)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.2.2** Développer l'analyse du format #durée(Xs) (semaines)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.2.3** Implémenter la détection du format #durée(Xm) (mois)
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.3** Développer la reconnaissance des formats composés
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.3.1** Créer la détection du format #durée:XjYh (jours et heures)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.3.2** Implémenter l'analyse du format #durée:XhYm (heures et minutes)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.1.3.3.3** Développer la détection des formats avec plusieurs unités
+                                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2** Développer l'extraction des attributs de durée dans les tags
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1** Créer l'analyse des valeurs numériques dans les tags
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.1** Implémenter l'extraction des nombres entiers
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.1.1** Développer la détection des nombres simples (1, 2, 3...)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.1.2** Créer l'analyse des nombres avec séparateurs (1,000, 1_000)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.1.3** Implémenter la gestion des nombres en notation scientifique
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2** Développer l'extraction des nombres décimaux
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.1** Créer la détection des décimales avec point (1.5, 2.75)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.2** Implémenter l'analyse des décimales avec virgule (1,5, 2,75)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3** Développer la gestion des précisions variables
+                                                - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.1** Implémenter la détection des nombres avec précision fixe
+                                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.1.1** Créer l'analyse des nombres avec 1 décimale
+                                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.1.2** Développer la détection des nombres avec 2 décimales
+                                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.1.3** Implémenter l'extraction des nombres avec 3+ décimales
+                                                - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.2** Développer la gestion des nombres avec précision variable
+                                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.2.1** Créer la détection des nombres avec précision contextuelle
+                                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.2.2** Implémenter l'analyse des nombres avec précision adaptative
+                                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.2.3** Développer la gestion des nombres avec précision dynamique
+                                                - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.3** Implémenter la normalisation des précisions
+                                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.3.1** Créer la standardisation des précisions numériques
+                                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.3.2** Développer les règles d'arrondi et de troncature
+                                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.2.3.3.3** Implémenter la conversion entre différentes précisions
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.3** Implémenter la conversion des valeurs textuelles en nombres
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.3.1** Créer la détection des nombres écrits en toutes lettres
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.3.2** Développer l'analyse des expressions numériques approximatives
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.1.3.3** Implémenter la gestion des fractions et pourcentages
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2** Implémenter la détection des unités de temps dans les tags
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.1** Développer la reconnaissance des unités de base
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.1.1** Créer la détection des unités de jours (j, jour, jours, d, day, days)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.1.2** Implémenter l'analyse des unités de semaines (s, sem, semaine, w, week)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.1.3** Développer la détection des unités de mois (m, mois, month)
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.2** Implémenter la reconnaissance des unités précises
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.2.1** Créer la détection des unités d'heures (h, heure, heures, hour)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.2.2** Développer l'analyse des unités de minutes (min, minute, minutes)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.2.3** Implémenter la détection des unités de secondes (s, sec, seconde)
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.3** Développer la gestion des unités composées
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.3.1** Créer l'analyse des combinaisons d'unités (jours-heures, heures-minutes)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.3.2** Implémenter la détection des séparateurs entre unités (espace, tiret, underscore)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.2.3.3** Développer la gestion des unités avec multiplicateurs (homme-jour, personne-semaine)
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3** Développer la normalisation des formats de tags
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.1** Implémenter la standardisation des formats de valeurs
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.1.1** Créer la conversion des nombres en format décimal standard
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.1.2** Développer la normalisation des précisions numériques
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.1.3** Implémenter la gestion des arrondis et troncatures
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.2** Développer la standardisation des formats d'unités
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.2.1** Créer la conversion des unités en format canonique (j, s, m, h, min)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.2.2** Implémenter la normalisation des séparateurs entre unités
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.2.3** Développer la gestion des conversions entre unités (jours en heures, etc.)
+                                            - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.3** Implémenter la normalisation des formats de tags complets
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.3.1** Créer la standardisation des préfixes de tags (#duration, #temps, #durée)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.3.2** Développer la normalisation des séparateurs de tags (:, parenthèses)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.2.3.3.3** Implémenter la conversion entre formats de tags équivalents
+                                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3** Implémenter la gestion des tags personnalisés
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.1** Créer le système de configuration des formats de tags
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.1.1** Définir la structure JSON de configuration des formats de tags
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.1.2** Implémenter les fonctions de chargement et sauvegarde de la configuration
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.1.3** Développer les fonctions CRUD pour gérer les formats de tags
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.1.4** Créer les tests unitaires pour le système de configuration
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.1.5** Documenter l'utilisation du système de configuration
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.2** Développer la détection des tags avec expressions régulières
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.2.1** Implémenter la fonction de détection des tâches dans le contenu
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.2.2** Développer la fonction de détection des tags dans les tâches
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.2.3** Créer les fonctions de formatage des résultats (JSON, Markdown, CSV, Text)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.2.4** Implémenter la gestion des formats composites (multiples valeurs/unités)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.2.5** Créer les tests unitaires pour la détection des tags
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.2.6** Documenter l'utilisation du système de détection
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.3** Implémenter l'apprentissage des nouveaux formats de tags
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.3.1** Développer la détection des potentiels nouveaux formats de tags
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.3.2** Implémenter la création automatique de patterns regex
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.3.3** Créer les fonctions d'ajout des nouveaux formats à la configuration
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.3.4** Implémenter les modes d'apprentissage (Auto, Interactive, Silent)
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.3.5** Créer les tests unitaires pour l'apprentissage des formats
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.3.6** Documenter l'utilisation du système d'apprentissage
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.4** Intégrer le système de tags avec Qdrant
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.4.1** Développer la fonction d'indexation des tags dans Qdrant
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.4.2** Implémenter la recherche de tâches par tags via Qdrant
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.4.3** Créer les fonctions de filtrage et tri des résultats
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.4.4** Développer les tests d'intégration avec Qdrant
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.5** Créer une interface utilisateur pour la gestion des tags
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.5.1** Développer un module PowerShell pour l'interface en ligne de commande
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.5.2** Implémenter une interface web simple pour la visualisation des tags
+                                              - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.1.3.5.3** Créer des rapports visuels sur l'utilisation des tags
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2** Développer l'analyse des attributs de durée estimée
+                                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.1** Implémenter la détection des indicateurs d'estimation
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.1.1** Créer l'analyse des expressions d'estimation explicites
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.1.2** Développer la détection des termes d'approximation
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.1.3** Implémenter la reconnaissance des formats d'estimation
+                                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.2** Développer l'extraction des valeurs estimées
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.2.1** Créer l'analyse des plages de durée
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.2.2** Implémenter la détection des valeurs minimales et maximales
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.2.3** Développer l'extraction des marges d'erreur
+                                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.3** Implémenter la normalisation des estimations
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.3.1** Créer la conversion des estimations en format standard
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.3.2** Développer le calcul des valeurs moyennes
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.2.3.3** Implémenter la gestion des niveaux de confiance
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3** Implémenter l'extraction des attributs de durée réelle
+                                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.1** Développer la détection des indicateurs de durée réelle
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.1.1** Créer l'analyse des expressions de durée effective
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.1.2** Implémenter la détection des termes de réalisation
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.1.3** Développer la reconnaissance des formats de durée réelle
+                                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.2** Implémenter l'extraction des valeurs de durée réelle
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.2.1** Créer l'analyse des durées effectives déclarées
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.2.2** Développer la détection des durées calculées
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.2.3** Implémenter l'extraction des durées par différence de dates
+                                        - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.3** Développer la comparaison avec les durées estimées
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.3.1** Créer le calcul des écarts entre estimation et réalité
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.3.2** Implémenter l'analyse des tendances de sous/surestimation
+                                          - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.2.3.3.3** Développer la génération de rapports de précision
+                                    - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3** Développer la normalisation des durées
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3.1** Créer la conversion des durées en format standard
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3.2** Implémenter la gestion des unités de temps différentes
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.1.3.3** Développer le calcul des équivalences temporelles
+                                  - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2** Développer l'analyse des expressions de délai
+                                    - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1** Implémenter la détection des délais relatifs
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1.1** Créer l'analyse des expressions "dans X jours/semaines"
+                                      - [x] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1.2** Développer la détection des délais par rapport à aujourd'hui
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.1.3** Implémenter l'extraction des délais par rapport à d'autres tâches
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.2** Développer l'analyse des délais absolus
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.2.1** Créer la détection des dates limites explicites
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.2.2** Implémenter l'analyse des contraintes temporelles fixes
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.2.3** Développer la gestion des jalons temporels
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.3** Implémenter la conversion des délais en dates
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.3.1** Créer le calcul des dates à partir des délais relatifs
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.3.2** Développer la normalisation des formats de date
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.2.3.3** Implémenter la gestion des fuseaux horaires
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3** Implémenter le calcul des chevauchements temporels
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.1** Développer la détection des périodes qui se chevauchent
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.1.1** Créer l'algorithme de détection des intersections temporelles
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.1.2** Implémenter l'analyse des chevauchements partiels
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.1.3** Développer la détection des inclusions temporelles
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.2** Implémenter le calcul des conflits de ressources
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.2.1** Créer la détection des surcharges temporelles
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.2.2** Développer l'analyse des allocations de ressources
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.2.3** Implémenter la priorisation des tâches en conflit
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.3** Développer la visualisation des chevauchements
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.3.1** Créer la représentation graphique des périodes
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.3.2** Implémenter les indicateurs visuels de conflits
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.2.3.3.3** Développer les rapports de chevauchements
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3** Développer l'inférence des dépendances temporelles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1** Créer l'algorithme de détection des prérequis temporels
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.1** Implémenter l'analyse des relations de précédence
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.1.1** Développer la détection des séquences obligatoires
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.1.2** Créer l'analyse des dépendances chronologiques
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.1.3** Implémenter la détection des prérequis implicites
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.2** Développer l'inférence des relations causales
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.2.1** Créer l'analyse des expressions de causalité
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.2.2** Implémenter la détection des relations cause-effet
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.2.3** Développer l'inférence des chaînes causales
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.3** Implémenter la validation des prérequis détectés
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.3.1** Créer le système de vérification de cohérence
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.3.2** Développer l'évaluation de la confiance des inférences
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.1.3.3** Implémenter la résolution des conflits de prérequis
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2** Implémenter l'analyse des contraintes de séquence
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.1** Développer la détection des séquences obligatoires
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.1.1** Créer l'analyse des expressions d'ordre
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.1.2** Implémenter la détection des marqueurs de séquence
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.1.3** Développer l'inférence des séquences implicites
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.2** Implémenter l'analyse des contraintes temporelles
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.2.1** Créer la détection des délais imposés
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.2.2** Développer l'analyse des fenêtres temporelles
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.2.3** Implémenter la gestion des contraintes de calendrier
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.3** Développer la modélisation des séquences
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.3.1** Créer la représentation des chaînes de séquences
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.3.2** Implémenter la détection des cycles de séquence
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.2.3.3** Développer l'optimisation des séquences
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3** Développer la détection des dépendances de type fin-début
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.1** Implémenter l'analyse des relations fin-début explicites
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.1.1** Créer la détection des marqueurs fin-début
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.1.2** Développer l'analyse des expressions de succession
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.1.3** Implémenter l'extraction des contraintes de transition
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.2** Développer l'inférence des relations fin-début implicites
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.2.1** Créer l'analyse des dépendances logiques
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.2.2** Implémenter la détection par analyse contextuelle
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.2.3** Développer l'inférence par similarité avec patterns connus
+                                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.3** Implémenter la gestion des délais entre fin et début
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.3.1** Créer l'analyse des délais de transition
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.3.2** Développer la gestion des temps d'attente obligatoires
+                                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.1.3.3.3.3** Implémenter l'optimisation des enchaînements
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2** Créer la détection des dépendances par analyse sémantique
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.1** Implémenter l'analyse des champs lexicaux
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.1.1** Développer l'extraction des termes significatifs
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.1.2** Créer la classification par domaine sémantique
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.1.3** Implémenter la détection des relations sémantiques
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.2** Développer l'analyse des verbes d'action
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.2.1** Créer l'extraction des verbes et leurs compléments
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.2.2** Implémenter la classification des actions
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.2.3** Développer la détection des séquences d'actions
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.3** Implémenter l'analyse des relations causales
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.3.1** Créer la détection des expressions de causalité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.3.2** Développer l'inférence des relations cause-effet
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.2.3.3** Implémenter l'analyse des chaînes causales
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3** Développer l'inférence de dépendances par structure hiérarchique
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.1** Implémenter l'analyse des relations parent-enfant
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.1.1** Créer la détection des dépendances verticales
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.1.2** Développer l'analyse des contraintes de complétude
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.1.3** Implémenter la propagation des statuts hiérarchiques
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.2** Développer l'analyse des relations entre niveaux
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.2.1** Créer la détection des dépendances inter-niveaux
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.2.2** Implémenter l'analyse des sauts hiérarchiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.2.3** Développer la détection des anomalies structurelles
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.3** Implémenter l'inférence des dépendances implicites
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.3.1** Créer l'algorithme de propagation des dépendances
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.3.2** Développer la détection des dépendances transitives
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.3.3.3** Implémenter l'analyse des groupes de tâches liées
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4** Implémenter la détection des dépendances par similarité de contenu
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.1** Développer l'analyse de similarité textuelle
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.1.1** Créer le calcul de similarité par TF-IDF
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.1.2** Implémenter la comparaison par embeddings vectoriels
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.1.3** Développer la détection des phrases similaires
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.2** Implémenter l'analyse des métadonnées communes
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.2.1** Créer la détection des tags communs
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.2.2** Développer l'analyse des attributs partagés
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.2.3** Implémenter la détection des groupes thématiques
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.3** Développer l'inférence des relations par similarité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.3.1** Créer l'algorithme de clustering par similarité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.3.2** Implémenter la détection des dépendances potentielles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.4.3.3** Développer le système de suggestion de relations
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5** Créer l'analyse des patterns récurrents de dépendance
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.1** Implémenter la détection des motifs de dépendance
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.1.1** Créer l'algorithme de recherche de motifs
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.1.2** Développer l'analyse des structures répétitives
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.1.3** Implémenter la détection des séquences typiques
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.2** Développer l'apprentissage des patterns
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.2.1** Créer le système d'enregistrement des patterns
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.2.2** Implémenter l'algorithme d'apprentissage incrémental
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.2.3** Développer la validation des patterns détectés
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.3** Implémenter l'application des patterns connus
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.3.1** Créer le système de suggestion de dépendances
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.3.2** Développer l'évaluation de confiance des suggestions
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.6.5.3.3** Implémenter l'application automatique des patterns fiables
+                            - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7** Implémenter l'extraction des relations entre tâches
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1** Développer la détection des relations parent-enfant
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.1** Implémenter l'analyse de la structure hiérarchique
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.1.1** Créer la détection des niveaux d'indentation
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.1.2** Développer l'analyse des préfixes numériques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.1.3** Implémenter la construction de l'arbre hiérarchique
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.2** Développer l'analyse des dépendances verticales
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.2.1** Créer la détection des relations de contenance
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.2.2** Implémenter l'analyse des contraintes de complétude
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.2.3** Développer la propagation des statuts hiérarchiques
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.3** Implémenter la gestion des relations parent-enfant
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.3.1** Créer le système de navigation hiérarchique
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.3.2** Développer la validation des relations parent-enfant
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.1.3.3** Implémenter la détection des anomalies structurelles
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2** Créer l'extraction des relations de séquence
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.1** Implémenter l'analyse des séquences explicites
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.1.1** Créer la détection des marqueurs de séquence
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.1.2** Développer l'analyse des expressions d'ordre
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.1.3** Implémenter la reconnaissance des étapes numérotées
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.2** Développer l'analyse des séquences implicites
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.2.1** Créer la détection des relations temporelles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.2.2** Implémenter l'analyse des dépendances logiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.2.3** Développer l'inférence des séquences par contexte
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.3** Implémenter la gestion des relations de séquence
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.3.1** Créer le système d'ordonnancement des tâches
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.3.2** Développer la validation des séquences
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.2.3.3** Implémenter la détection des cycles et incohérences
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3** Implémenter l'analyse des relations de complémentarité
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.1** Développer la détection des tâches complémentaires
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.1.1** Créer l'analyse des champs lexicaux communs
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.1.2** Implémenter la détection des objectifs partagés
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.1.3** Développer l'analyse des compétences requises similaires
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.2** Implémenter l'analyse des relations de synergie
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.2.1** Créer la détection des effets multiplicateurs
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.2.2** Développer l'analyse des optimisations potentielles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.2.3** Implémenter la reconnaissance des groupes de travail
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.3** Développer la gestion des relations de complémentarité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.3.1** Créer le système de regroupement des tâches complémentaires
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.3.2** Implémenter la suggestion d'assignations optimales
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.3.3.3** Développer l'analyse des gains d'efficacité
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4** Développer la détection des relations d'alternative
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.1** Implémenter l'analyse des tâches alternatives
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.1.1** Créer la détection des marqueurs d'alternative
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.1.2** Développer l'analyse des objectifs similaires
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.1.3** Implémenter la reconnaissance des approches différentes
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.2** Développer l'analyse des conditions de choix
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.2.1** Créer la détection des critères de décision
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.2.2** Implémenter l'analyse des contraintes spécifiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.2.3** Développer l'évaluation comparative des alternatives
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.3** Implémenter la gestion des relations d'alternative
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.3.1** Créer le système de représentation des choix
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.3.2** Développer l'aide à la décision entre alternatives
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.4.3.3** Implémenter la gestion des exclusions mutuelles
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5** Créer l'extraction des relations de similarité
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.1** Implémenter l'analyse de similarité textuelle
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.1.1** Créer le calcul de similarité par TF-IDF
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.1.2** Développer la comparaison par embeddings vectoriels
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.1.3** Implémenter la détection des phrases similaires
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.2** Développer l'analyse des attributs communs
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.2.1** Créer la détection des métadonnées partagées
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.2.2** Implémenter l'analyse des tags et catégories
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.2.3** Développer la reconnaissance des patterns communs
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.3** Implémenter la gestion des relations de similarité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.3.1** Créer le système de clustering des tâches similaires
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.3.2** Développer la suggestion de standardisation
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.7.5.3.3** Implémenter la détection des duplications potentielles
+                            - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8** Développer le système d'analyse de graphe de dépendances
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1** Implémenter la construction du graphe de dépendances
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.1** Développer la modélisation des nœuds et arêtes
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.1.1** Créer les structures de données pour les tâches (nœuds)
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.1.2** Implémenter les structures pour les dépendances (arêtes)
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.1.3** Développer le système d'attributs et métadonnées du graphe
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.2** Implémenter l'extraction des relations pour le graphe
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.2.1** Créer l'intégration des dépendances explicites
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.2.2** Développer l'intégration des dépendances implicites
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.2.3** Implémenter la pondération des relations
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.3** Développer les algorithmes de construction du graphe
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.3.1** Créer l'algorithme de construction incrémentale
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.3.2** Implémenter l'optimisation de la structure du graphe
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.1.3.3** Développer la validation de cohérence du graphe
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2** Créer l'analyse des chemins critiques
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.1** Implémenter l'algorithme du chemin critique
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.1.1** Créer le calcul des dates au plus tôt
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.1.2** Développer le calcul des dates au plus tard
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.1.3** Implémenter l'identification des tâches critiques
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.2** Développer l'analyse des marges et flexibilités
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.2.1** Créer le calcul des marges libres
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.2.2** Implémenter le calcul des marges totales
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.2.3** Développer l'analyse des zones de flexibilité
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.3** Implémenter la visualisation des chemins critiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.3.1** Créer la représentation graphique du chemin critique
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.3.2** Développer les indicateurs visuels de criticité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.2.3.3** Implémenter les alertes sur contraintes temporelles
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3** Développer la détection des cycles de dépendances
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.1** Implémenter les algorithmes de détection de cycles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.1.1** Créer l'algorithme de recherche en profondeur (DFS)
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.1.2** Développer la détection des composantes fortement connexes
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.1.3** Implémenter l'optimisation pour grands graphes
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.2** Développer l'analyse des cycles problématiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.2.1** Créer l'évaluation de la criticité des cycles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.2.2** Implémenter la classification des types de cycles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.2.3** Développer l'identification des points de rupture optimaux
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.3** Implémenter la résolution des cycles de dépendances
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.3.1** Créer les suggestions de rupture de cycles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.3.2** Développer les stratégies de réorganisation
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.3.3.3** Implémenter la validation des solutions proposées
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4** Implémenter le calcul des métriques de centralité
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.1** Développer les algorithmes de centralité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.1.1** Créer le calcul de la centralité de degré
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.1.2** Implémenter la centralité d'intermédiarité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.1.3** Développer la centralité de proximité
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.2** Implémenter l'analyse des nœuds critiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.2.1** Créer l'identification des tâches pivots
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.2.2** Développer l'analyse des goulots d'étranglement
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.2.3** Implémenter l'évaluation des risques par centralité
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.3** Développer la visualisation des métriques de centralité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.3.1** Créer les représentations visuelles de centralité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.3.2** Implémenter les filtres et seuils de visualisation
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.4.3.3** Développer les rapports d'analyse de centralité
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5** Créer l'analyse des clusters de dépendances
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.1** Implémenter les algorithmes de clustering de graphe
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.1.1** Créer l'algorithme de détection de communautés
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.1.2** Développer le clustering hiérarchique de dépendances
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.1.3** Implémenter l'optimisation de la modularité
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.2** Développer l'analyse des groupes fonctionnels
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.2.1** Créer l'identification des domaines fonctionnels
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.2.2** Implémenter l'analyse des interfaces entre clusters
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.2.3** Développer la détection des dépendances inter-clusters
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.3** Implémenter la visualisation des clusters
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.3.1** Créer la représentation visuelle des clusters
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.3.2** Développer les vues hiérarchiques de clusters
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.8.5.3.3** Implémenter les rapports d'analyse de clusters
+                            - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9** Implémenter la validation et correction des dépendances
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1** Développer la détection des dépendances circulaires
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.1** Implémenter les algorithmes de détection de cycles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.1.1** Créer l'algorithme de recherche en profondeur (DFS)
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.1.2** Développer la détection des composantes fortement connexes
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.1.3** Implémenter l'optimisation pour grands graphes
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.2** Développer l'analyse des cycles problématiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.2.1** Créer l'évaluation de la criticité des cycles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.2.2** Implémenter la classification des types de cycles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.2.3** Développer l'identification des points de rupture optimaux
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.3** Implémenter la visualisation des dépendances circulaires
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.3.1** Créer la représentation graphique des cycles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.3.2** Développer les indicateurs visuels de criticité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.1.3.3** Implémenter les alertes sur cycles critiques
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2** Créer la validation des dépendances temporelles
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.1** Implémenter l'analyse des contraintes temporelles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.1.1** Créer la détection des incohérences de dates
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.1.2** Développer l'analyse des délais impossibles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.1.3** Implémenter la vérification des durées estimées
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.2** Développer la détection des conflits temporels
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.2.1** Créer l'analyse des chevauchements problématiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.2.2** Implémenter la détection des goulots d'étranglement
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.2.3** Développer l'identification des surcharges de ressources
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.3** Implémenter la validation des séquences temporelles
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.3.1** Créer la vérification des prérequis temporels
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.3.2** Développer l'analyse des chemins critiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.2.3.3** Implémenter la détection des marges négatives
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3** Implémenter la résolution des conflits de dépendances
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.1** Développer les stratégies de résolution automatique
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.1.1** Créer l'algorithme de rupture de cycles optimale
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.1.2** Implémenter l'ajustement automatique des dates
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.1.3** Développer la réorganisation des dépendances
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.2** Implémenter les suggestions de résolution manuelle
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.2.1** Créer le système de recommandations priorisées
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.2.2** Développer l'interface de résolution interactive
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.2.3** Implémenter la simulation des impacts de modifications
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.3** Développer le système de validation des corrections
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.3.1** Créer la vérification post-correction
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.3.2** Implémenter l'historique des modifications
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.3.3.3** Développer la possibilité de rollback des corrections
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4** Développer la suggestion de dépendances manquantes
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.1** Implémenter l'analyse des dépendances implicites
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.1.1** Créer la détection des relations sémantiques
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.1.2** Développer l'analyse des patterns récurrents
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.1.3** Implémenter l'inférence par similarité de contenu
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.2** Développer le système de recommandation
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.2.1** Créer l'algorithme de suggestion par confiance
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.2.2** Implémenter le filtrage des suggestions pertinentes
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.2.3** Développer la priorisation des recommandations
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.3** Implémenter l'interface de validation des suggestions
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.3.1** Créer la présentation des suggestions à l'utilisateur
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.3.2** Développer le système d'acceptation/rejet
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.4.3.3** Implémenter l'apprentissage des préférences utilisateur
+                              - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5** Créer le système de rapport de qualité des dépendances
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.1** Implémenter les métriques de qualité
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.1.1** Créer les indicateurs de cohérence
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.1.2** Développer les métriques de complétude
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.1.3** Implémenter les scores de fiabilité
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.2** Développer la génération de rapports
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.2.1** Créer les rapports de synthèse
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.2.2** Implémenter les rapports détaillés par type
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.2.3** Développer les rapports d'évolution temporelle
+                                - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.3** Implémenter le système d'alerte et notification
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.3.1** Créer la configuration des seuils d'alerte
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.3.2** Développer le système de notification
+                                  - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.1.9.5.3.3** Implémenter le tableau de bord de suivi
+                        - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.2** Implémenter les algorithmes de classification basés sur les métadonnées
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.2.1** Développer l'algorithme de classification par règles prédéfinies
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.2.2** Créer l'algorithme de classification par apprentissage supervisé
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.2.3** Implémenter l'algorithme de classification par clustering
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.2.4** Développer l'algorithme hybride combinant plusieurs approches
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.2.5** Créer le système d'évaluation et sélection du meilleur algorithme
+                        - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.3** Développer le système de pondération et scoring des métadonnées
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.3.1** Implémenter le calcul des poids par type de métadonnée
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.3.2** Créer le système de normalisation des scores
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.3.3** Développer l'algorithme d'agrégation des scores
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.3.4** Implémenter l'ajustement dynamique des poids
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.3.5** Créer le système de seuils de confiance adaptatifs
+                        - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.4** Implémenter le système de validation et correction des classifications
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.4.1** Développer les métriques d'évaluation de qualité des classifications
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.4.2** Créer le système de détection des anomalies de classification
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.4.3** Implémenter les mécanismes de correction automatique
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.4.4** Développer l'interface de validation manuelle assistée
+                          - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.2.4.5** Créer le système de feedback pour amélioration continue
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.1.3** Développer l'algorithme de classification par position hiérarchique
+                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.2** Créer le système d'entraînement des classifieurs
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.2.1** Implémenter la génération de données d'entraînement
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.2.2** Développer le pipeline d'entraînement supervisé
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.2.3** Créer le système d'évaluation des performances
+                    - [ ] **8.1.1.1.1.4.1.1.3.5.2.3** Implémenter l'interface de classification
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.3.1** Développer l'API de classification par lot
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.3.2** Créer l'interface de classification interactive
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.2.3.3** Implémenter le système de feedback et d'amélioration continue
+                  - [ ] **8.1.1.1.1.4.1.1.3.5.3** Ajouter la génération de taxonomies hiérarchiques
+                    - [ ] **8.1.1.1.1.4.1.1.3.5.3.1** Développer les algorithmes de génération de taxonomies
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.3.1.1** Implémenter l'algorithme de clustering hiérarchique
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.3.1.2** Créer l'algorithme d'extraction de relations taxonomiques
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.3.1.3** Développer l'algorithme de fusion de taxonomies existantes
+                    - [ ] **8.1.1.1.1.4.1.1.3.5.3.2** Créer le système de validation de taxonomies
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.3.2.1** Implémenter les métriques de cohérence taxonomique
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.3.2.2** Développer le système de détection d'anomalies
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.3.2.3** Créer l'interface de validation manuelle assistée
+                    - [ ] **8.1.1.1.1.4.1.1.3.5.3.3** Implémenter l'interface de gestion des taxonomies
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.3.3.1** Développer l'éditeur visuel de taxonomies
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.3.3.2** Créer le système d'import/export de taxonomies
+                      - [ ] **8.1.1.1.1.4.1.1.3.5.3.3.3** Implémenter l'API d'intégration avec d'autres systèmes
+            - [ ] **8.1.1.1.1.4.1.2** Implémenter différents profils de données
+              - [ ] **8.1.1.1.1.4.1.2.1** Créer un profil "simple" (peu de hiérarchie, peu de métadonnées)
+              - [ ] **8.1.1.1.1.4.1.2.2** Développer un profil "complexe" (hiérarchie profonde, métadonnées riches)
+              - [ ] **8.1.1.1.1.4.1.2.3** Implémenter un profil "réaliste" (basé sur des roadmaps existantes)
+                - [ ] **8.1.1.1.1.4.1.2.3.1** Développer le système d'analyse des roadmaps existantes
+                  - [ ] **8.1.1.1.1.4.1.2.3.1.1** Créer les fonctions d'extraction de statistiques structurelles
+                    - [ ] **8.1.1.1.1.4.1.2.3.1.1.1** Développer la fonction d'analyse de profondeur hiérarchique
+                    - [ ] **8.1.1.1.1.4.1.2.3.1.1.2** Implémenter l'extraction des distributions de tâches par niveau
+                    - [ ] **8.1.1.1.1.4.1.2.3.1.1.3** Créer la fonction d'analyse des relations parent-enfant
+                    - [ ] **8.1.1.1.1.4.1.2.3.1.1.4** Développer l'extraction des métriques de densité de tâches
+                    - [ ] **8.1.1.1.1.4.1.2.3.1.1.5** Implémenter la détection des déséquilibres structurels
+                  - [ ] **8.1.1.1.1.4.1.2.3.1.2** Implémenter l'analyse des distributions de métadonnées
+                  - [ ] **8.1.1.1.1.4.1.2.3.1.3** Développer la détection des patterns récurrents
+                - [ ] **8.1.1.1.1.4.1.2.3.2** Créer le système de modélisation statistique
+                  - [ ] **8.1.1.1.1.4.1.2.3.2.1** Implémenter les modèles de distribution pour chaque type de métadonnée
+                  - [ ] **8.1.1.1.1.4.1.2.3.2.2** Développer les corrélations entre métadonnées
+                  - [ ] **8.1.1.1.1.4.1.2.3.2.3** Ajouter la modélisation des dépendances structurelles
+                - [ ] **8.1.1.1.1.4.1.2.3.3** Développer le générateur basé sur les modèles statistiques
+                  - [ ] **8.1.1.1.1.4.1.2.3.3.1** Créer le système d'échantillonnage à partir des distributions
+                  - [ ] **8.1.1.1.1.4.1.2.3.3.2** Implémenter la génération respectant les corrélations
+                  - [ ] **8.1.1.1.1.4.1.2.3.3.3** Ajouter la validation de cohérence des données générées
+            - [ ] **8.1.1.1.1.4.1.3** Créer des outils de validation et d'export
+              - [ ] **8.1.1.1.1.4.1.3.1** Développer la validation de cohérence des données générées
+              - [ ] **8.1.1.1.1.4.1.3.2** Implémenter l'export vers différents formats (Markdown, JSON)
+                - [ ] **8.1.1.1.1.4.1.3.2.1** Développer le système d'export vers Markdown
+                  - [ ] **8.1.1.1.1.4.1.3.2.1.1** Créer les fonctions de formatage hiérarchique en Markdown
+                  - [ ] **8.1.1.1.1.4.1.3.2.1.2** Implémenter le rendu des métadonnées en Markdown
+                  - [ ] **8.1.1.1.1.4.1.3.2.1.3** Ajouter le support pour les extensions Markdown (tables, détails)
+                - [ ] **8.1.1.1.1.4.1.3.2.2** Développer le système d'export vers JSON
+                  - [ ] **8.1.1.1.1.4.1.3.2.2.1** Créer le schéma JSON pour les roadmaps
+                  - [ ] **8.1.1.1.1.4.1.3.2.2.2** Implémenter la sérialisation optimisée
+                  - [ ] **8.1.1.1.1.4.1.3.2.2.3** Ajouter la validation du schéma JSON
+                - [ ] **8.1.1.1.1.4.1.3.2.3** Implémenter l'export vers formats visuels
+                  - [ ] **8.1.1.1.1.4.1.3.2.3.1** Développer l'export vers Mermaid
+                  - [ ] **8.1.1.1.1.4.1.3.2.3.2** Créer l'export vers HTML interactif
+                  - [ ] **8.1.1.1.1.4.1.3.2.3.3** Ajouter l'export vers formats d'échange (CSV, XLSX)
+              - [ ] **8.1.1.1.1.4.1.3.3** Ajouter des options de personnalisation des exports
+          - [ ] **8.1.1.1.1.4.2** Mesurer les performances avec 100, 1000 et 10000 tâches
+          - [ ] **8.1.1.1.1.4.3** Analyser la courbe de dégradation des performances
+            - [ ] **8.1.1.1.1.4.3.1** Développer des outils d'analyse statistique
+              - [ ] **8.1.1.1.1.4.3.1.1** Implémenter le calcul des métriques de performance clés
+              - [ ] **8.1.1.1.1.4.3.1.2** Créer des fonctions d'analyse de régression
+              - [ ] **8.1.1.1.1.4.3.1.3** Ajouter la détection des points d'inflexion
+            - [ ] **8.1.1.1.1.4.3.2** Créer des visualisations de performance
+              - [ ] **8.1.1.1.1.4.3.2.1** Développer des graphiques de temps de chargement vs taille
+              - [ ] **8.1.1.1.1.4.3.2.2** Implémenter des visualisations de consommation mémoire
+              - [ ] **8.1.1.1.1.4.3.2.3** Créer des tableaux de bord comparatifs
+            - [ ] **8.1.1.1.1.4.3.3** Établir des modèles prédictifs
+              - [ ] **8.1.1.1.1.4.3.3.1** Développer des modèles de prédiction de performance
+              - [ ] **8.1.1.1.1.4.3.3.2** Implémenter l'estimation des limites du système
+              - [ ] **8.1.1.1.1.4.3.3.3** Créer des recommandations automatiques d'optimisation
+        - [ ] **8.1.1.1.1.5** Analyser les métriques de performance du navigateur
+          - [ ] **8.1.1.1.1.5.1** Collecter les métriques de performance Web Vitals
+          - [ ] **8.1.1.1.1.5.2** Analyser les temps de réponse du DOM
+          - [ ] **8.1.1.1.1.5.3** Mesurer les temps de calcul JavaScript
+      - [ ] **8.1.1.1.2** Identifier les opérations coûteuses
+        - [ ] **8.1.1.1.2.1** Profiler les opérations de parsing de markdown
+          - [ ] **8.1.1.1.2.1.1** Mesurer le temps d'exécution de Parse-MarkdownTasks
+          - [ ] **8.1.1.1.2.1.2** Analyser la complexité algorithmique du parsing
+          - [ ] **8.1.1.1.2.1.3** Identifier les expressions régulières inefficaces
+        - [ ] **8.1.1.1.2.2** Analyser les performances des requêtes Qdrant
+          - [ ] **8.1.1.1.2.2.1** Mesurer les temps de réponse des requêtes vectorielles
+          - [ ] **8.1.1.1.2.2.2** Analyser l'impact des filtres sur les performances
+          - [ ] **8.1.1.1.2.2.3** Évaluer l'efficacité des index configurés
+        - [ ] **8.1.1.1.2.3** Évaluer les performances de génération des visualisations
+          - [ ] **8.1.1.1.2.3.1** Mesurer le temps de génération des diagrammes Mermaid
+          - [ ] **8.1.1.1.2.3.2** Analyser les performances des visualisations D3.js
+          - [ ] **8.1.1.1.2.3.3** Évaluer le temps de rendu des graphiques complexes
+      - [ ] **8.1.1.1.3** Mesurer l'impact de la taille des données
+        - [ ] **8.1.1.1.3.1** Analyser la consommation mémoire
+          - [ ] **8.1.1.1.3.1.1** Mesurer l'utilisation mémoire de PowerShell pendant le traitement
+          - [ ] **8.1.1.1.3.1.2** Analyser la consommation mémoire du navigateur
+          - [ ] **8.1.1.1.3.1.3** Identifier les fuites mémoire potentielles
+        - [ ] **8.1.1.1.3.2** Évaluer les temps de chargement selon la taille
+          - [ ] **8.1.1.1.3.2.1** Mesurer la relation entre taille des fichiers et temps de parsing
+          - [ ] **8.1.1.1.3.2.2** Analyser l'impact de la profondeur hiérarchique
+          - [ ] **8.1.1.1.3.2.3** Évaluer l'effet du nombre de métadonnées
+        - [ ] **8.1.1.1.3.3** Tester les limites du système
+          - [ ] **8.1.1.1.3.3.1** Déterminer la taille maximale de roadmap supportée
+          - [ ] **8.1.1.1.3.3.2** Identifier les points de rupture des performances
+          - [ ] **8.1.1.1.3.3.3** Documenter les recommandations de taille optimale
+    - [ ] **8.1.1.2** Implémenter le chargement paresseux (lazy loading)
+      - [ ] **8.1.1.2.1** Développer le mécanisme de chargement progressif
+        - [ ] **8.1.1.2.1.1** Concevoir l'architecture de chargement progressif
+          - [ ] **8.1.1.2.1.1.1** Définir les interfaces de données paginées
+          - [ ] **8.1.1.2.1.1.2** Concevoir le système de gestion d'état
+          - [ ] **8.1.1.2.1.1.3** Établir les stratégies de mise en cache
+        - [ ] **8.1.1.2.1.2** Implémenter le chargement à la demande
+          - [ ] **8.1.1.2.1.2.1** Développer la détection de défilement (scroll)
+          - [ ] **8.1.1.2.1.2.2** Implémenter le chargement au scroll
+          - [ ] **8.1.1.2.1.2.3** Ajouter les indicateurs de chargement
+        - [ ] **8.1.1.2.1.3** Optimiser les performances de chargement
+          - [ ] **8.1.1.2.1.3.1** Implémenter la précharge intelligente
+          - [ ] **8.1.1.2.1.3.2** Développer le mécanisme de priorité de chargement
+          - [ ] **8.1.1.2.1.3.3** Ajouter la gestion des erreurs et retries
+      - [ ] **8.1.1.2.2** Ajouter la pagination des résultats
+        - [ ] **8.1.1.2.2.1** Concevoir l'interface de pagination
+          - [ ] **8.1.1.2.2.1.1** Développer les contrôles de navigation
+          - [ ] **8.1.1.2.2.1.2** Implémenter l'affichage du statut de pagination
+          - [ ] **8.1.1.2.2.1.3** Créer les options de taille de page
+        - [ ] **8.1.1.2.2.2** Implémenter le backend de pagination
+          - [ ] **8.1.1.2.2.2.1** Développer l'API de pagination pour Qdrant
+          - [ ] **8.1.1.2.2.2.2** Implémenter la pagination pour les fichiers markdown
+          - [ ] **8.1.1.2.2.2.3** Ajouter le support de pagination pour les visualisations
+        - [ ] **8.1.1.2.2.3** Optimiser les performances de pagination
+          - [ ] **8.1.1.2.2.3.1** Implémenter la mise en cache des pages
+          - [ ] **8.1.1.2.2.3.2** Développer le préchargement des pages adjacentes
+          - [ ] **8.1.1.2.2.3.3** Optimiser les requêtes de pagination
+      - [ ] **8.1.1.2.3** Optimiser le rendu des vues partielles
+        - [ ] **8.1.1.2.3.1** Implémenter le rendu virtuel
+          - [ ] **8.1.1.2.3.1.1** Développer le système de fenêtre virtuelle
+          - [ ] **8.1.1.2.3.1.2** Implémenter le recyclage des composants DOM
+          - [ ] **8.1.1.2.3.1.3** Optimiser les calculs de position et taille
+        - [ ] **8.1.1.2.3.2** Développer le rendu progressif
+          - [ ] **8.1.1.2.3.2.1** Implémenter le rendu par priorité
+          - [ ] **8.1.1.2.3.2.2** Développer le rendu asynchrone
+          - [ ] **8.1.1.2.3.2.3** Ajouter les animations de transition
+        - [ ] **8.1.1.2.3.3** Optimiser les performances de rendu
+          - [ ] **8.1.1.2.3.3.1** Implémenter la mémoïsation des composants
+          - [ ] **8.1.1.2.3.3.2** Optimiser les cycles de rendu
+          - [ ] **8.1.1.2.3.3.3** Réduire les reflows et repaints
+    - [ ] **8.1.1.3** Optimiser les requêtes vectorielles
+      - [ ] **8.1.1.3.1** Implémenter l'indexation avancée
+        - [ ] **8.1.1.3.1.1** Optimiser les paramètres d'index HNSW
+          - [ ] **8.1.1.3.1.1.1** Analyser l'impact des paramètres M et ef_construct
+          - [ ] **8.1.1.3.1.1.2** Tester différentes configurations d'index
+          - [ ] **8.1.1.3.1.1.3** Mesurer le compromis précision/performance
+        - [ ] **8.1.1.3.1.2** Implémenter les index de filtrage optimaux
+          - [ ] **8.1.1.3.1.2.1** Analyser les patterns de filtrage fréquents
+          - [ ] **8.1.1.3.1.2.2** Configurer les index pour les champs critiques
+          - [ ] **8.1.1.3.1.2.3** Mesurer l'impact des index sur les performances
+        - [ ] **8.1.1.3.1.3** Développer la maintenance automatique des index
+          - [ ] **8.1.1.3.1.3.1** Implémenter la détection de fragmentation
+          - [ ] **8.1.1.3.1.3.2** Développer les procédures de réindexation
+          - [ ] **8.1.1.3.1.3.3** Ajouter la planification des maintenances
+      - [ ] **8.1.1.3.2** Ajouter la mise en cache intelligente
+        - [ ] **8.1.1.3.2.1** Concevoir l'architecture de cache
+          - [ ] **8.1.1.3.2.1.1** Définir les niveaux de cache (mémoire, disque, distribué)
+          - [ ] **8.1.1.3.2.1.2** Concevoir les stratégies d'invalidation
+          - [ ] **8.1.1.3.2.1.3** Établir les politiques de rétention
+        - [ ] **8.1.1.3.2.2** Implémenter le cache adaptatif
+          - [ ] **8.1.1.3.2.2.1** Développer l'analyse des patterns d'accès
+          - [ ] **8.1.1.3.2.2.2** Implémenter l'ajustement dynamique de la taille du cache
+          - [ ] **8.1.1.3.2.2.3** Ajouter la priorisation des éléments fréquemment accédés
+        - [ ] **8.1.1.3.2.3** Optimiser les performances du cache
+          - [ ] **8.1.1.3.2.3.1** Implémenter la compression des données en cache
+          - [ ] **8.1.1.3.2.3.2** Développer le partitionnement du cache
+          - [ ] **8.1.1.3.2.3.3** Ajouter les métriques de performance du cache
+      - [ ] **8.1.1.3.3** Développer des stratégies de préchargement
+        - [ ] **8.1.1.3.3.1** Implémenter la prédiction des requêtes
+          - [ ] **8.1.1.3.3.1.1** Développer l'analyse des séquences de requêtes
+          - [ ] **8.1.1.3.3.1.2** Implémenter les modèles prédictifs simples
+          - [ ] **8.1.1.3.3.1.3** Ajouter l'apprentissage des patterns utilisateur
+        - [ ] **8.1.1.3.3.2** Développer le préchargement contextuel
+          - [ ] **8.1.1.3.3.2.1** Implémenter le préchargement basé sur la navigation
+          - [ ] **8.1.1.3.3.2.2** Développer le préchargement basé sur les relations
+          - [ ] **8.1.1.3.3.2.3** Ajouter le préchargement basé sur l'historique
+        - [ ] **8.1.1.3.3.3** Optimiser l'utilisation des ressources
+          - [ ] **8.1.1.3.3.3.1** Implémenter la gestion de priorité des préchargements
+          - [ ] **8.1.1.3.3.3.2** Développer l'annulation intelligente des préchargements
+          - [ ] **8.1.1.3.3.3.3** Ajouter l'ajustement dynamique selon la charge système
+  - [ ] **8.1.2** Réduire l'empreinte mémoire
+    - [ ] **8.1.2.1** Optimiser les structures de données
+      - [ ] **8.1.2.1.1** Revoir les modèles de données pour minimiser la redondance
+      - [ ] **8.1.2.1.2** Implémenter la compression des données
+      - [ ] **8.1.2.1.3** Développer des structures de données spécialisées
+    - [ ] **8.1.2.2** Améliorer la gestion de la mémoire
+      - [ ] **8.1.2.2.1** Implémenter le nettoyage périodique
+      - [ ] **8.1.2.2.2** Optimiser l'allocation des ressources
+      - [ ] **8.1.2.2.3** Ajouter la libération proactive des ressources
+    - [ ] **8.1.2.3** Optimiser les opérations batch
+      - [ ] **8.1.2.3.1** Développer le traitement par lots
+      - [ ] **8.1.2.3.2** Implémenter la parallélisation des opérations
+      - [ ] **8.1.2.3.3** Optimiser les algorithmes de fusion
+  - [ ] **8.1.3** Améliorer les temps de réponse
+    - [ ] **8.1.3.1** Optimiser les algorithmes de recherche
+      - [ ] **8.1.3.1.1** Implémenter des index spécialisés
+      - [ ] **8.1.3.1.2** Développer des heuristiques de recherche
+      - [ ] **8.1.3.1.3** Ajouter des filtres de pré-traitement
+    - [ ] **8.1.3.2** Mettre en place un système de cache multi-niveau
+      - [ ] **8.1.3.2.1** Développer le cache de premier niveau (mémoire)
+      - [ ] **8.1.3.2.2** Implémenter le cache de second niveau (disque)
+      - [ ] **8.1.3.2.3** Ajouter des stratégies d'invalidation intelligentes
+    - [ ] **8.1.3.3** Optimiser les opérations d'I/O
+      - [ ] **8.1.3.3.1** Implémenter des opérations asynchrones
+      - [ ] **8.1.3.3.2** Développer le streaming de données
+      - [ ] **8.1.3.3.3** Optimiser les formats de sérialisation
+
+- [ ] **8.2** Intégration avec d'autres systèmes
+  - [ ] **8.2.1** Développer des connecteurs pour outils externes
+    - [ ] **8.2.1.1** Créer un connecteur pour Notion
+      - [ ] **8.2.1.1.1** Implémenter l'authentification OAuth
+      - [ ] **8.2.1.1.2** Développer la synchronisation bidirectionnelle
+      - [ ] **8.2.1.1.3** Ajouter la gestion des conflits
+    - [ ] **8.2.1.2** Créer un connecteur pour GitHub
+      - [ ] **8.2.1.2.1** Implémenter l'intégration avec les issues
+      - [ ] **8.2.1.2.2** Développer la synchronisation avec les projets GitHub
+      - [ ] **8.2.1.2.3** Ajouter l'intégration avec les pull requests
+    - [ ] **8.2.1.3** Créer un connecteur pour Jira
+      - [ ] **8.2.1.3.1** Implémenter l'authentification API
+      - [ ] **8.2.1.3.2** Développer la synchronisation des tickets
+      - [ ] **8.2.1.3.3** Ajouter la gestion des workflows
+  - [ ] **8.2.2** Développer une API REST complète
+    - [ ] **8.2.2.1** Concevoir l'architecture de l'API
+      - [ ] **8.2.2.1.1** Définir les endpoints et ressources
+      - [ ] **8.2.2.1.2** Établir les conventions de nommage
+      - [ ] **8.2.2.1.3** Concevoir le système de versionnement
+    - [ ] **8.2.2.2** Implémenter les opérations CRUD
+      - [ ] **8.2.2.2.1** Développer les endpoints de création
+      - [ ] **8.2.2.2.2** Implémenter les endpoints de lecture
+      - [ ] **8.2.2.2.3** Ajouter les endpoints de mise à jour et suppression
+    - [ ] **8.2.2.3** Ajouter l'authentification et l'autorisation
+      - [ ] **8.2.2.3.1** Implémenter l'authentification JWT
+      - [ ] **8.2.2.3.2** Développer le système de rôles et permissions
+      - [ ] **8.2.2.3.3** Ajouter la gestion des tokens d'API
+  - [ ] **8.2.3** Créer des webhooks pour l'intégration événementielle
+    - [ ] **8.2.3.1** Concevoir le système d'événements
+      - [ ] **8.2.3.1.1** Définir les types d'événements
+      - [ ] **8.2.3.1.2** Établir le format des payloads
+      - [ ] **8.2.3.1.3** Concevoir le système de souscription
+    - [ ] **8.2.3.2** Implémenter le mécanisme de déclenchement
+      - [ ] **8.2.3.2.1** Développer le système de file d'attente
+      - [ ] **8.2.3.2.2** Implémenter les tentatives de livraison
+      - [ ] **8.2.3.2.3** Ajouter la gestion des échecs
+    - [ ] **8.2.3.3** Développer l'interface de configuration
+      - [ ] **8.2.3.3.1** Créer l'interface de gestion des webhooks
+      - [ ] **8.2.3.3.2** Implémenter les tests de validation
+      - [ ] **8.2.3.3.3** Ajouter les mécanismes de sécurité
+
+- [ ] **8.3** Interface utilisateur graphique
+  - [ ] **8.3.1** Concevoir une interface utilisateur moderne
+    - [ ] **8.3.1.1** Réaliser les maquettes UI/UX
+      - [ ] **8.3.1.1.1** Créer les wireframes des écrans principaux
+      - [ ] **8.3.1.1.2** Développer les prototypes interactifs
+      - [ ] **8.3.1.1.3** Valider l'expérience utilisateur
+    - [ ] **8.3.1.2** Définir la charte graphique
+      - [ ] **8.3.1.2.1** Créer le système de design
+      - [ ] **8.3.1.2.2** Définir la palette de couleurs
+      - [ ] **8.3.1.2.3** Établir la typographie et l'iconographie
+    - [ ] **8.3.1.3** Concevoir l'architecture de l'interface
+      - [ ] **8.3.1.3.1** Définir la structure de navigation
+      - [ ] **8.3.1.3.2** Établir les patterns d'interaction
+      - [ ] **8.3.1.3.3** Concevoir les composants réutilisables
+  - [ ] **8.3.2** Développer l'interface web
+    - [ ] **8.3.2.1** Implémenter le frontend avec React/Vue
+      - [ ] **8.3.2.1.1** Développer les composants UI de base
+      - [ ] **8.3.2.1.2** Implémenter la gestion d'état
+      - [ ] **8.3.2.1.3** Ajouter les interactions utilisateur
+    - [ ] **8.3.2.2** Créer les vues principales
+      - [ ] **8.3.2.2.1** Développer le tableau de bord
+      - [ ] **8.3.2.2.2** Implémenter l'éditeur de roadmap
+      - [ ] **8.3.2.2.3** Créer les vues de visualisation
+    - [ ] **8.3.2.3** Optimiser pour différents appareils
+      - [ ] **8.3.2.3.1** Implémenter le design responsive
+      - [ ] **8.3.2.3.2** Optimiser pour mobile et tablette
+      - [ ] **8.3.2.3.3** Ajouter le support pour les thèmes sombres/clairs
+  - [ ] **8.3.3** Développer l'extension VSCode
+    - [ ] **8.3.3.1** Configurer l'environnement de développement
+      - [ ] **8.3.3.1.1** Mettre en place le scaffolding de l'extension
+      - [ ] **8.3.3.1.2** Configurer le système de build
+      - [ ] **8.3.3.1.3** Établir la structure du projet
+    - [ ] **8.3.3.2** Implémenter les fonctionnalités principales
+      - [ ] **8.3.3.2.1** Développer l'éditeur de roadmap intégré
+      - [ ] **8.3.3.2.2** Implémenter la synchronisation avec le backend
+      - [ ] **8.3.3.2.3** Ajouter les commandes et raccourcis
+    - [ ] **8.3.3.3** Créer l'interface utilisateur de l'extension
+      - [ ] **8.3.3.3.1** Développer les webviews personnalisés
+      - [ ] **8.3.3.3.2** Implémenter les palettes de commandes
+      - [ ] **8.3.3.3.3** Ajouter les indicateurs visuels dans l'éditeur
+
+- [ ] **8.4** Fonctionnalités collaboratives
+  - [ ] **8.4.1** Développer l'édition collaborative en temps réel
+    - [ ] **8.4.1.1** Implémenter le système de transformation opérationnelle
+      - [ ] **8.4.1.1.1** Développer le modèle de données collaboratif
+      - [ ] **8.4.1.1.2** Implémenter les algorithmes de fusion
+      - [ ] **8.4.1.1.3** Ajouter la gestion des conflits
+    - [ ] **8.4.1.2** Créer l'infrastructure temps réel
+      - [ ] **8.4.1.2.1** Implémenter le serveur WebSocket
+      - [ ] **8.4.1.2.2** Développer le système de salles
+      - [ ] **8.4.1.2.3** Ajouter la gestion des connexions
+    - [ ] **8.4.1.3** Développer l'interface utilisateur collaborative
+      - [ ] **8.4.1.3.1** Implémenter les indicateurs de présence
+      - [ ] **8.4.1.3.2** Ajouter les curseurs et sélections partagés
+      - [ ] **8.4.1.3.3** Développer le système de commentaires en ligne
+  - [ ] **8.4.2** Implémenter un système de commentaires et discussions
+    - [ ] **8.4.2.1** Concevoir le modèle de données pour les commentaires
+      - [ ] **8.4.2.1.1** Définir la structure des commentaires
+      - [ ] **8.4.2.1.2** Établir les relations avec les tâches
+      - [ ] **8.4.2.1.3** Concevoir le système de fils de discussion
+    - [ ] **8.4.2.2** Développer l'interface de commentaires
+      - [ ] **8.4.2.2.1** Implémenter l'ajout et l'édition de commentaires
+      - [ ] **8.4.2.2.2** Développer la visualisation des fils de discussion
+      - [ ] **8.4.2.2.3** Ajouter les notifications de commentaires
+    - [ ] **8.4.2.3** Intégrer avec le système de notifications
+      - [ ] **8.4.2.3.1** Implémenter les notifications en temps réel
+      - [ ] **8.4.2.3.2** Développer les notifications par email
+      - [ ] **8.4.2.3.3** Ajouter les préférences de notification
+  - [ ] **8.4.3** Créer un système de gestion des versions collaboratives
+    - [ ] **8.4.3.1** Concevoir le système de branches
+      - [ ] **8.4.3.1.1** Définir le modèle de données des branches
+      - [ ] **8.4.3.1.2** Implémenter la création et le switch de branches
+      - [ ] **8.4.3.1.3** Développer la visualisation des différences
+    - [ ] **8.4.3.2** Implémenter le système de fusion (merge)
+      - [ ] **8.4.3.2.1** Développer les algorithmes de fusion automatique
+      - [ ] **8.4.3.2.2** Implémenter la résolution de conflits
+      - [ ] **8.4.3.2.3** Ajouter l'historique des fusions
+    - [ ] **8.4.3.3** Créer le système de revue et approbation
+      - [ ] **8.4.3.3.1** Développer le workflow de demande de fusion
+      - [ ] **8.4.3.3.2** Implémenter le système de revue
+      - [ ] **8.4.3.3.3** Ajouter les règles d'approbation
+
+- [ ] **8.5** Analyse avancée et intelligence
+  - [ ] **8.5.1** Développer des outils d'analyse d'utilisation
+    - [ ] **8.5.1.1** Implémenter la collecte de métriques
+      - [ ] **8.5.1.1.1** Développer le système de tracking d'événements
+      - [ ] **8.5.1.1.2** Implémenter l'agrégation des données
+      - [ ] **8.5.1.1.3** Ajouter l'anonymisation des données sensibles
+    - [ ] **8.5.1.2** Créer des tableaux de bord analytiques
+      - [ ] **8.5.1.2.1** Développer le système de visualisation des données
+      - [ ] **8.5.1.2.2** Implémenter les indicateurs clés de performance
+      - [ ] **8.5.1.2.3** Ajouter des fonctionnalités d'export de données
+    - [ ] **8.5.1.3** Intégrer avec des outils d'analyse de données
+      - [ ] **8.5.1.3.1** Implémenter l'export de données vers des formats standard
+      - [ ] **8.5.1.3.2** Intégrer avec des outils d'analyse de données externes
+      - [ ] **8.5.1.3.3** Ajouter des fonctionnalités d'automatisation des rapports
+
