@@ -1,0 +1,29 @@
+{
+    "DefaultMaxThreads": 8,
+    "DefaultThrottleLimit": 10,
+    "ResourceThresholds": {
+        "CPU": 80,
+        "Memory": 80,
+        "DiskIO": 70,
+        "Network": 70
+    },
+    "BackpressureSettings": {
+        "Enabled": true,
+        "QueueSizeWarning": 100,
+        "QueueSizeCritical": 500,
+        "RejectionThreshold": 1000
+    },
+    "ErrorHandling": {
+        "RetryCount": 3,
+        "RetryDelay": 1000,
+        "CircuitBreakerThreshold": 5
+    },
+    "AdvancedSettings": {
+        "EnableDynamicScaling": true,
+        "MinThreads": 1,
+        "MaxThreads": 16,
+        "ThreadIdleTimeoutMs": 30000,
+        "EnablePrioritization": true,
+        "EnableMetricsCollection": true
+    }
+}

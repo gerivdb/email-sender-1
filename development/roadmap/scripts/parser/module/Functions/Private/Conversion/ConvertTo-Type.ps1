@@ -94,48 +94,101 @@ function ConvertTo-Type {
             "Integer" {
                 if ($null -eq $Value) {
                     $result = 0
+                    $conversionSucceeded = $true
                 } elseif ($Value -is [int]) {
                     $result = $Value
+                    $conversionSucceeded = $true
                 } else {
-                    $result = [int]::Parse($Value.ToString())
+                    # Utiliser TryParse au lieu de Parse pour de meilleures performances et gestion d'erreurs
+                    $conversionSucceeded = [int]::TryParse($Value.ToString(), [ref]$result)
+                    if (-not $conversionSucceeded) {
+                        # Essayer avec InvariantCulture si la première tentative échoue
+                        $conversionSucceeded = [int]::TryParse($Value.ToString(),
+                            [System.Globalization.NumberStyles]::Integer,
+                            [System.Globalization.CultureInfo]::InvariantCulture,
+                            [ref]$result)
+                    }
                 }
-                $conversionSucceeded = $true
             }
             "Decimal" {
                 if ($null -eq $Value) {
                     $result = 0.0
+                    $conversionSucceeded = $true
                 } elseif ($Value -is [decimal] -or $Value -is [double] -or $Value -is [float]) {
                     $result = [decimal]$Value
+                    $conversionSucceeded = $true
                 } else {
-                    # Utiliser InvariantCulture pour gÃ©rer les dÃ©cimaux avec point ou virgule
-                    $result = [decimal]::Parse($Value.ToString(), [System.Globalization.CultureInfo]::InvariantCulture)
+                    # Utiliser TryParse avec InvariantCulture pour de meilleures performances et gestion d'erreurs
+                    $conversionSucceeded = [decimal]::TryParse($Value.ToString(),
+                        [System.Globalization.NumberStyles]::Number,
+                        [System.Globalization.CultureInfo]::InvariantCulture,
+                        [ref]$result)
+
+                    if (-not $conversionSucceeded) {
+                        # Essayer avec la culture actuelle si la première tentative échoue
+                        $conversionSucceeded = [decimal]::TryParse($Value.ToString(),
+                            [System.Globalization.NumberStyles]::Number,
+                            [System.Globalization.CultureInfo]::CurrentCulture,
+                            [ref]$result)
+                    }
                 }
-                $conversionSucceeded = $true
             }
             "Boolean" {
                 if ($null -eq $Value) {
                     $result = $false
+                    $conversionSucceeded = $true
                 } elseif ($Value -is [bool]) {
                     $result = $Value
+                    $conversionSucceeded = $true
                 } elseif ($Value -is [string]) {
                     $strValue = $Value.ToLower()
-                    $result = $strValue -eq "true" -or $strValue -eq "1" -or $strValue -eq "yes" -or $strValue -eq "y" -or $strValue -eq "on"
+                    if ($strValue -eq "true" -or $strValue -eq "1" -or $strValue -eq "yes" -or $strValue -eq "y" -or $strValue -eq "on") {
+                        $result = $true
+                        $conversionSucceeded = $true
+                    } elseif ($strValue -eq "false" -or $strValue -eq "0" -or $strValue -eq "no" -or $strValue -eq "n" -or $strValue -eq "off") {
+                        $result = $false
+                        $conversionSucceeded = $true
+                    } else {
+                        # Utiliser TryParse pour de meilleures performances et gestion d'erreurs
+                        $conversionSucceeded = [bool]::TryParse($Value.ToString(), [ref]$result)
+                    }
                 } else {
-                    $result = [bool]::Parse($Value.ToString())
+                    # Utiliser TryParse pour de meilleures performances et gestion d'erreurs
+                    $conversionSucceeded = [bool]::TryParse($Value.ToString(), [ref]$result)
                 }
-                $conversionSucceeded = $true
             }
             "DateTime" {
                 if ($null -eq $Value) {
                     $result = [datetime]::MinValue
+                    $conversionSucceeded = $true
                 } elseif ($Value -is [datetime]) {
                     $result = $Value
+                    $conversionSucceeded = $true
                 } elseif ($Value -is [string] -and -not [string]::IsNullOrEmpty($Format)) {
-                    $result = [datetime]::ParseExact($Value, $Format, [System.Globalization.CultureInfo]::InvariantCulture)
+                    # Utiliser TryParseExact pour de meilleures performances et gestion d'erreurs
+                    $conversionSucceeded = [datetime]::TryParseExact(
+                        $Value,
+                        $Format,
+                        [System.Globalization.CultureInfo]::InvariantCulture,
+                        [System.Globalization.DateTimeStyles]::None,
+                        [ref]$result)
                 } else {
-                    $result = [datetime]::Parse($Value.ToString())
+                    # Utiliser TryParse pour de meilleures performances et gestion d'erreurs
+                    $conversionSucceeded = [datetime]::TryParse(
+                        $Value.ToString(),
+                        [System.Globalization.CultureInfo]::InvariantCulture,
+                        [System.Globalization.DateTimeStyles]::None,
+                        [ref]$result)
+
+                    if (-not $conversionSucceeded) {
+                        # Essayer avec la culture actuelle si la première tentative échoue
+                        $conversionSucceeded = [datetime]::TryParse(
+                            $Value.ToString(),
+                            [System.Globalization.CultureInfo]::CurrentCulture,
+                            [System.Globalization.DateTimeStyles]::None,
+                            [ref]$result)
+                    }
                 }
-                $conversionSucceeded = $true
             }
             "Array" {
                 if ($null -eq $Value) {
@@ -191,14 +244,20 @@ function ConvertTo-Type {
             "Guid" {
                 if ($null -eq $Value) {
                     $result = [guid]::Empty
+                    $conversionSucceeded = $true
                 } elseif ($Value -is [guid]) {
                     $result = $Value
+                    $conversionSucceeded = $true
                 } elseif ($Value -is [string]) {
-                    $result = [guid]::Parse($Value)
+                    # Utiliser TryParse pour de meilleures performances et gestion d'erreurs
+                    $conversionSucceeded = [guid]::TryParse($Value, [ref]$result)
+                    if (-not $conversionSucceeded) {
+                        throw "Impossible de convertir la valeur en GUID."
+                    }
                 } else {
+                    $conversionSucceeded = $false
                     throw "Impossible de convertir la valeur en GUID."
                 }
-                $conversionSucceeded = $true
             }
         }
     } catch {

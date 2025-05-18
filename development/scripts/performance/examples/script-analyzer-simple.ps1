@@ -159,10 +159,16 @@ function Find-PowerShellScripts {
         [string[]]$Patterns = @("*.ps1", "*.psm1")
     )
 
-    $files = @()
+    # Utiliser List<T> au lieu d'un tableau standard pour de meilleures performances
+    $files = [System.Collections.Generic.List[string]]::new()
 
-    foreach ($pattern in $Patterns) {
-        $files += Get-ChildItem -Path $Path -Filter $pattern -Recurse -File | Select-Object -ExpandProperty FullName
+    # Utiliser for au lieu de foreach pour de meilleures performances
+    for ($i = 0; $i -lt $Patterns.Count; $i++) {
+        $pattern = $Patterns[$i]
+        $matchingFiles = Get-ChildItem -Path $Path -Filter $pattern -Recurse -File | Select-Object -ExpandProperty FullName
+        for ($j = 0; $j -lt $matchingFiles.Count; $j++) {
+            $files.Add($matchingFiles[$j])
+        }
     }
 
     return $files
@@ -208,16 +214,19 @@ function Start-ScriptAnalysis {
     $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
     # Analyser les scripts directement en PowerShell pour simplifier
-    $results = @()
+    # Utiliser List<T> au lieu d'un tableau standard pour de meilleures performances
+    $results = [System.Collections.Generic.List[PSCustomObject]]::new($scriptFiles.Count)
 
-    foreach ($scriptFile in $scriptFiles) {
+    # Utiliser for au lieu de foreach pour de meilleures performances
+    for ($i = 0; $i -lt $scriptFiles.Count; $i++) {
+        $scriptFile = $scriptFiles[$i]
         Write-Host "Analyse de $scriptFile..." -ForegroundColor Cyan
 
         # VÃ©rifier si le fichier est dÃ©jÃ  en cache
         $fileKey = [System.IO.Path]::GetFullPath($scriptFile)
         if ($UseCache -and $script:cachedResults.ContainsKey($fileKey)) {
             Write-Verbose "Utilisation du cache pour $scriptFile"
-            $results += $script:cachedResults[$fileKey]
+            $results.Add($script:cachedResults[$fileKey])
             continue
         }
 
@@ -232,8 +241,12 @@ function Start-ScriptAnalysis {
             $commentLines = ($lines | Where-Object { $_.Trim() -match '^#' }).Count
             $codeLines = $nonEmptyLines - $commentLines
 
-            # Extraire les fonctions
-            $functions = [regex]::Matches($content, 'function\s+([A-Za-z0-9_-]+)') | ForEach-Object { $_.Groups[1].Value }
+            # Extraire les fonctions et les stocker dans une collection optimisée
+            $functionsMatches = [regex]::Matches($content, 'function\s+([A-Za-z0-9_-]+)')
+            $functions = [System.Collections.Generic.List[string]]::new($functionsMatches.Count)
+            for ($i = 0; $i -lt $functionsMatches.Count; $i++) {
+                $functions.Add($functionsMatches[$i].Groups[1].Value)
+            }
 
             # Calculer la complexitÃ© approximative
             $ifCount = [regex]::Matches($content, '\bif\b').Count
@@ -245,32 +258,31 @@ function Start-ScriptAnalysis {
 
             # CrÃ©er le rÃ©sultat
             $result = [PSCustomObject]@{
-                file_path = $scriptFile
-                file_name = [System.IO.Path]::GetFileName($scriptFile)
-                file_size = (Get-Item -Path $scriptFile).Length
-                total_lines = $totalLines
-                code_lines = $codeLines
-                comment_lines = $commentLines
-                functions = $functions
+                file_path       = $scriptFile
+                file_name       = [System.IO.Path]::GetFileName($scriptFile)
+                file_size       = (Get-Item -Path $scriptFile).Length
+                total_lines     = $totalLines
+                code_lines      = $codeLines
+                comment_lines   = $commentLines
+                functions       = $functions
                 functions_count = $functions.Count
-                complexity = $complexity
+                complexity      = $complexity
             }
 
-            $results += $result
+            $results.Add($result)
 
             # Stocker le rÃ©sultat dans le cache si activÃ©
             if ($UseCache) {
                 $script:cachedResults[$fileKey] = $result
             }
-        }
-        catch {
+        } catch {
             Write-Warning "Erreur lors de l'analyse de $scriptFile : $_"
 
-            $results += [PSCustomObject]@{
-                file_path = $scriptFile
-                file_name = [System.IO.Path]::GetFileName($scriptFile)
-                error = $_.ToString()
-            }
+            $results.Add([PSCustomObject]@{
+                    file_path = $scriptFile
+                    file_name = [System.IO.Path]::GetFileName($scriptFile)
+                    error     = $_.ToString()
+                })
         }
     }
 
@@ -304,7 +316,9 @@ function Start-ScriptAnalysis {
 
     if ($complexFiles) {
         Write-Host "`nFichiers les plus complexes :" -ForegroundColor Yellow
-        foreach ($file in $complexFiles) {
+        # Utiliser for au lieu de foreach pour de meilleures performances
+        for ($i = 0; $i -lt $complexFiles.Count; $i++) {
+            $file = $complexFiles[$i]
             Write-Host "  $($file.file_name) - ComplexitÃ© : $($file.complexity)" -ForegroundColor Yellow
         }
     }
@@ -324,8 +338,7 @@ try {
 
     # Retourner les rÃ©sultats
     return $results
-}
-catch {
+} catch {
     Write-Error "Erreur lors de l'analyse des scripts : $_"
     return $null
 }
