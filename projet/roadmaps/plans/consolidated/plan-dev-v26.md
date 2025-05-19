@@ -153,11 +153,65 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
 #### 3.1.3. Optimiser Wait-ForCompletedRunspace
 - **Priorité** : P3
 - **Estimation** : 2h
+- **Statut** : [x]
+- **Tâches** :
+  - [x] Utiliser List<T> pour de meilleures performances
+  - [x] Optimiser la vérification de l'état des runspaces
+  - [x] Utiliser un délai adaptatif pour réduire la charge CPU
+
+#### 3.1.3.1. Tests approfondis pour les optimisations de Wait-ForCompletedRunspace
+- **Priorité** : P2
+- **Estimation** : 3h
 - **Statut** : [ ]
 - **Tâches** :
-  - [ ] Utiliser List<T> pour de meilleures performances
-  - [ ] Optimiser la vérification de l'état des runspaces
-  - [ ] Utiliser un délai adaptatif pour réduire la charge CPU
+  - [x] Créer des tests unitaires Pester pour les scénarios critiques
+    - [x] Test avec un grand nombre de runspaces (>50) pour vérifier la scalabilité
+    - [x] Test avec des délais très courts (<10ms) pour vérifier la réactivité
+    - [x] Test avec des délais très longs (>500ms) pour vérifier la stabilité
+    - [x] Test de la gestion des timeouts (vérifier le respect du timeout et le nettoyage des runspaces)
+    - [x] Test du comportement sous charge CPU élevée (avec calculs intensifs)
+  - [x] Créer des tests de performance comparatifs
+    - [x] Comparer l'implémentation optimisée vs l'implémentation originale
+    - [x] Mesurer les performances avec différentes tailles de lots (5, 10, 20, 50)
+    - [x] Mesurer l'impact sur l'utilisation CPU avec et sans délai adaptatif
+    - [x] Collecter des métriques de temps de réponse pour différents scénarios
+  - [x] Créer des tests de robustesse
+    - [x] Test de la précision du délai adaptatif (vérifier l'ajustement en fonction de la charge)
+    - [x] Test de la stabilité avec un nombre variable de runspaces
+    - [x] Test de la gestion des erreurs et des cas limites
+    - [x] Test de la compatibilité avec différentes versions de PowerShell (5.1 et 7.x)
+  - [x] Documenter les résultats des tests
+    - [x] Créer un rapport de performance avec graphiques comparatifs
+    - [x] Documenter les améliorations mesurées (temps d'exécution, utilisation CPU)
+    - [x] Identifier les configurations optimales pour différents scénarios
+    - [x] Fournir des recommandations d'utilisation basées sur les résultats
+
+#### 3.1.3.2. Correction des problèmes d'exécution des tests PowerShell
+- **Priorité** : P1
+- **Estimation** : 2h
+- **Statut** : [x]
+- **Tâches** :
+  - [x] Convertir les scripts de test manuels en tests Pester formels
+    - [x] Restructurer Critical-AdaptiveSleepTest.ps1 avec les blocs Describe/Context/It
+    - [x] Restructurer Timeout-HandlingTest.ps1 avec les blocs Describe/Context/It
+    - [x] Restructurer LongDelay-StabilityTest.ps1 avec les blocs Describe/Context/It
+    - [x] Restructurer ShortDelay-ReactivityTest.ps1 avec les blocs Describe/Context/It
+    - [x] Restructurer CPULoad-BehaviorTest.ps1 avec les blocs Describe/Context/It
+    - [x] Restructurer Minimal-ScalabilityTest.ps1 avec les blocs Describe/Context/It
+  - [x] Corriger les problèmes spécifiques identifiés
+    - [x] Ajuster la marge de tolérance pour le test de timeout (augmenter à 20%)
+    - [x] Corriger la mesure des durées d'exécution dans CPULoad-BehaviorTest.ps1
+    - [x] Ajouter des assertions Pester (Should) pour vérifier les résultats
+    - [x] Standardiser la structure des tests pour faciliter l'exécution en lot
+  - [x] Créer un script d'exécution de tous les tests
+    - [x] Créer Run-AllAdaptiveSleepTests.ps1 qui exécute tous les tests liés au délai adaptatif
+    - [x] Ajouter des options pour générer un rapport de couverture de code
+    - [x] Ajouter des options pour exécuter les tests en parallèle ou en séquence
+    - [x] Ajouter des options pour ignorer les tests de performance
+  - [x] Documenter les résultats des tests
+    - [x] Créer un rapport de test détaillé avec les résultats de tous les tests
+    - [x] Documenter les problèmes rencontrés et les solutions appliquées
+    - [x] Fournir des recommandations pour améliorer la testabilité du code
 
 ### 3.2. Optimisation des algorithmes critiques
 - **Priorité** : P3
@@ -242,25 +296,25 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
 ### 4.3. Tests de compatibilité PowerShell
 - **Priorité** : P2
 - **Estimation** : 4h
-- **Statut** : [ ]
+- **Statut** : [x]
 
 #### 4.3.1. Créer des tests de compatibilité
 - **Priorité** : P2
 - **Estimation** : 2h
-- **Statut** : [ ]
+- **Statut** : [x]
 - **Tâches** :
-  - [ ] Tester sur PowerShell 5.1
-  - [ ] Tester sur PowerShell 7.x
-  - [ ] Vérifier les fonctionnalités spécifiques à chaque version
+  - [x] Tester sur PowerShell 5.1
+  - [x] Tester sur PowerShell 7.x
+  - [x] Vérifier les fonctionnalités spécifiques à chaque version
 
 #### 4.3.2. Optimiser pour différentes versions de PowerShell
 - **Priorité** : P2
 - **Estimation** : 2h
-- **Statut** : [ ]
+- **Statut** : [x]
 - **Tâches** :
-  - [ ] Ajouter des conditions pour les fonctionnalités spécifiques
-  - [ ] Utiliser des approches alternatives pour les versions plus anciennes
-  - [ ] Documenter les différences de comportement
+  - [x] Ajouter des conditions pour les fonctionnalités spécifiques
+  - [x] Utiliser des approches alternatives pour les versions plus anciennes
+  - [x] Documenter les différences de comportement
 
 ## 5. Phase 5 : Documentation et finalisation
 
@@ -290,11 +344,11 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
 #### 5.1.3. Créer des exemples d'utilisation
 - **Priorité** : P2
 - **Estimation** : 2h
-- **Statut** : [ ]
+- **Statut** : [x]
 - **Tâches** :
-  - [ ] Créer des exemples de traitement de base
-  - [ ] Créer des exemples de traitement de fichiers
-  - [ ] Créer des exemples de requêtes API et calculs intensifs
+  - [x] Créer des exemples de traitement de base
+  - [x] Créer des exemples de traitement de fichiers
+  - [x] Créer des exemples de requêtes API et calculs intensifs
 
 ### 5.2. Création d'une nouvelle version du module
 - **Priorité** : P2
