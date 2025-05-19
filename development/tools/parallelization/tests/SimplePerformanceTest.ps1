@@ -12,13 +12,23 @@ Initialize-UnifiedParallel
 function Measure-SimpleTime {
     param (
         [Parameter(Mandatory = $true)]
-        [scriptblock]$ScriptBlock
+        [scriptblock]$ScriptBlock,
+
+        [Parameter(Mandatory = $false)]
+        [object[]]$ArgumentList
     )
-    
+
     $startTime = [datetime]::Now
-    Invoke-Command -ScriptBlock $ScriptBlock
+
+    # Utiliser Invoke-Command au lieu de l'opérateur &
+    if ($ArgumentList) {
+        $result = Invoke-Command -ScriptBlock $ScriptBlock -ArgumentList $ArgumentList
+    } else {
+        $result = Invoke-Command -ScriptBlock $ScriptBlock
+    }
+
     $endTime = [datetime]::Now
-    
+
     return ($endTime - $startTime).TotalMilliseconds
 }
 
@@ -29,17 +39,17 @@ $scriptBlock = { param($item) Start-Sleep -Milliseconds 10; return $item }
 
 foreach ($size in $sizes) {
     $testData = 1..$size
-    
+
     Write-Host "`nTaille des données: $size éléments" -ForegroundColor Yellow
-    
+
     # Test séquentiel
     $sequentialTime = Measure-SimpleTime -ScriptBlock {
         foreach ($item in $testData) {
-            & $scriptBlock $item
+            Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $item
         }
     }
     Write-Host "Temps d'exécution séquentiel: $sequentialTime ms" -ForegroundColor White
-    
+
     # Test parallèle avec 2 threads
     $parallel2Time = Measure-SimpleTime -ScriptBlock {
         Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $testData -MaxThreads 2 -UseRunspacePool -NoProgress
@@ -47,7 +57,7 @@ foreach ($size in $sizes) {
     $speedup2 = if ($parallel2Time -gt 0) { $sequentialTime / $parallel2Time } else { 0 }
     Write-Host "Temps d'exécution parallèle (2 threads): $parallel2Time ms" -ForegroundColor White
     Write-Host "Accélération avec 2 threads: $([math]::Round($speedup2, 2))x" -ForegroundColor Green
-    
+
     # Test parallèle avec 4 threads
     $parallel4Time = Measure-SimpleTime -ScriptBlock {
         Invoke-UnifiedParallel -ScriptBlock $scriptBlock -InputObject $testData -MaxThreads 4 -UseRunspacePool -NoProgress
@@ -82,7 +92,7 @@ $ioScriptBlock = {
 Write-Host "`nType de tâche: CPU-bound" -ForegroundColor Yellow
 $cpuSequentialTime = Measure-SimpleTime -ScriptBlock {
     foreach ($item in $testData) {
-        & $cpuScriptBlock $item
+        Invoke-Command -ScriptBlock $cpuScriptBlock -ArgumentList $item
     }
 }
 Write-Host "Temps d'exécution séquentiel: $cpuSequentialTime ms" -ForegroundColor White
@@ -98,7 +108,7 @@ Write-Host "Accélération: $([math]::Round($cpuSpeedup, 2))x" -ForegroundColor 
 Write-Host "`nType de tâche: IO-bound" -ForegroundColor Yellow
 $ioSequentialTime = Measure-SimpleTime -ScriptBlock {
     foreach ($item in $testData) {
-        & $ioScriptBlock $item
+        Invoke-Command -ScriptBlock $ioScriptBlock -ArgumentList $item
     }
 }
 Write-Host "Temps d'exécution séquentiel: $ioSequentialTime ms" -ForegroundColor White

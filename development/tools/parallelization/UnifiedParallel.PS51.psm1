@@ -1,4 +1,8 @@
-﻿# Version minimale requise : PowerShell 5.1 pour le support des classes et des Runspace Pools
+# Module UnifiedParallel - Version compatible avec PowerShell 5.1
+# Généré automatiquement par Make-PS51Compatible-Improved.ps1
+# Date: 2025-05-19 00:35:54
+# Cette version a été modifiée pour être compatible avec PowerShell 5.1
+# Version minimale requise : PowerShell 5.1 pour le support des classes et des Runspace Pools
 # Compatible avec PowerShell Desktop (Windows PowerShell) et Core (PowerShell 7+)
 # Note: Certaines fonctionnalités de surveillance des ressources système peuvent nécessiter des privilèges d'administrateur
 # pour accéder à toutes les métriques système, mais le module de base fonctionne sans privilèges élevés.
@@ -32,7 +36,9 @@
 
     Différences de comportement entre PowerShell 5.1 et PowerShell 7+:
     - PowerShell 5.1 utilise les Runspace Pools pour la parallélisation
-    - PowerShell 7+ peut utiliser ForEach-Object -Parallel pour une meilleure performance
+    - PowerShell 7+ peut utiliser # ForEach-Object -Parallel (remplacé pour compatibilité PS 5.1)
+            # Utiliser une implémentation compatible avec PS 5.1
+            ForEach-Object pour une meilleure performance
 
 .EXAMPLE
     # Exemple d'utilisation basique
@@ -53,7 +59,7 @@ Set-Variable -Name 'DEFAULT_CONFIG_PATH' -Value (Join-Path -Path $PSScriptRoot -
 Set-Variable -Name 'DEFAULT_LOG_PATH' -Value (Join-Path -Path $PSScriptRoot -ChildPath "logs") -Option Constant -Scope Script
 Set-Variable -Name 'MAX_QUEUE_SIZE' -Value 10000 -Option Constant -Scope Script
 Set-Variable -Name 'DEFAULT_TIMEOUT_SECONDS' -Value 300 -Option Constant -Scope Script
-Set-Variable -Name 'MODULE_VERSION' -Value '1.1.0' -Option Constant -Scope Script
+Set-Variable -Name 'MODULE_VERSION' -Value '1.0.0' -Option Constant -Scope Script
 
 # Variables globales du module
 # Note: Ce module est conçu pour fonctionner de manière autonome, sans dépendances externes.
@@ -77,10 +83,6 @@ $script:IsInitialized = $false
 
 # Compteur de tâches pour générer des IDs uniques
 $script:TaskCounter = 0
-
-# Cache des pools de runspaces pour optimiser leur réutilisation
-# Clé = hash de la configuration du pool, Valeur = objet contenant le pool et ses métadonnées
-$script:RunspacePoolCache = @{}
 
 # Structures de données internes
 class ParallelResult {
@@ -664,25 +666,6 @@ function Initialize-UnifiedParallel {
 
     begin {
         Write-Verbose "Initialisation du module UnifiedParallel..."
-
-        # Configurer l'encodage UTF-8 pour la console et les fichiers
-        $encodingResult = Initialize-EncodingSettings -UseBOM $true -ConfigureConsole $true -ConfigureDefaultParameters $true -Force:$Force
-        if ($encodingResult.Success) {
-            Write-Verbose "Encodage UTF-8 configuré avec succès pour la console et les fichiers"
-            if ($encodingResult.ConfiguredConsole) {
-                Write-Verbose "Encodage de la console configuré avec succès"
-            }
-            if ($encodingResult.ConfiguredParameters) {
-                Write-Verbose "Paramètres par défaut configurés avec succès pour l'encodage"
-            }
-        } else {
-            Write-Warning "Impossible de configurer l'encodage UTF-8 pour la console et les fichiers"
-            if ($encodingResult.Errors.Count -gt 0) {
-                foreach ($error in $encodingResult.Errors) {
-                    Write-Warning "Erreur d'encodage: $error"
-                }
-            }
-        }
     }
 
     process {
@@ -702,17 +685,7 @@ function Initialize-UnifiedParallel {
                     $null = New-Item -Path $LogPath -ItemType Directory -Force
                     Write-Verbose "Répertoire de logs créé: $LogPath"
                 } catch {
-                    $errorParams = @{
-                        Message        = "Impossible de créer le répertoire de logs"
-                        Source         = "Initialize-UnifiedParallel"
-                        ErrorRecord    = $_
-                        Category       = [System.Management.Automation.ErrorCategory]::ResourceUnavailable
-                        AdditionalInfo = @{
-                            "LogPath" = $LogPath
-                            "Action"  = "Création du répertoire de logs"
-                        }
-                    }
-                    New-UnifiedError @errorParams -WriteError
+                    Write-Warning "Impossible de créer le répertoire de logs: $_"
                 }
             }
 
@@ -727,20 +700,7 @@ function Initialize-UnifiedParallel {
                     $script:Config | Add-Member -NotePropertyName 'LogPath' -NotePropertyValue $LogPath -Force
                     $script:Config | Add-Member -NotePropertyName 'ModuleVersion' -NotePropertyValue $script:MODULE_VERSION -Force
                 } catch {
-                    $errorParams = @{
-                        Message        = "Erreur lors du chargement de la configuration"
-                        Source         = "Initialize-UnifiedParallel"
-                        ErrorRecord    = $_
-                        Category       = [System.Management.Automation.ErrorCategory]::InvalidData
-                        AdditionalInfo = @{
-                            "ConfigPath"     = $ConfigPath
-                            "Action"         = "Chargement de la configuration"
-                            "FallbackAction" = "Utilisation de la configuration par défaut"
-                        }
-                    }
-                    New-UnifiedError @errorParams
-
-                    Write-Warning "Utilisation de la configuration par défaut suite à une erreur de chargement"
+                    Write-Warning "Erreur lors du chargement de la configuration: $_"
                     # Utiliser la configuration par défaut
                     $script:Config = [PSCustomObject]@{
                         DefaultMaxThreads    = [Environment]::ProcessorCount
@@ -899,45 +859,9 @@ function Initialize-UnifiedParallel {
 
 # Fonction de nettoyage du module
 function Clear-UnifiedParallel {
-    <#
-    .SYNOPSIS
-        Nettoie les ressources utilisées par le module UnifiedParallel.
-
-    .DESCRIPTION
-        Cette fonction nettoie toutes les ressources utilisées par le module UnifiedParallel,
-        y compris les pools de runspaces, les gestionnaires de ressources, et les variables globales.
-        Elle permet de libérer la mémoire et de réinitialiser l'état du module.
-
-        La fonction prend en charge ShouldProcess, ce qui permet d'utiliser -WhatIf et -Confirm
-        pour contrôler son exécution.
-
-    .PARAMETER KeepLogs
-        Indique si les fichiers de log doivent être conservés lors du nettoyage.
-        Par défaut, les logs sont supprimés.
-
-    .EXAMPLE
-        Clear-UnifiedParallel
-
-        Nettoie toutes les ressources utilisées par le module UnifiedParallel.
-
-    .EXAMPLE
-        Clear-UnifiedParallel -KeepLogs
-
-        Nettoie toutes les ressources utilisées par le module UnifiedParallel, mais conserve les fichiers de log.
-
-    .EXAMPLE
-        Clear-UnifiedParallel -WhatIf
-
-        Affiche ce qui serait nettoyé sans effectuer le nettoyage.
-
-    .OUTPUTS
-        None
-
-        Cette fonction ne retourne aucune valeur.
-    #>
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
-        [Parameter(Mandatory = $false, HelpMessage = "Conserver les fichiers de log lors du nettoyage")]
+        [Parameter(Mandatory = $false)]
         [switch]$KeepLogs
     )
 
@@ -987,16 +911,11 @@ function Clear-UnifiedParallel {
                 Write-Verbose "Gestionnaire de throttling désactivé"
             }
 
-            # Nettoyer le cache des pools de runspaces
-            Clear-RunspacePoolCache -Force
-            Write-Verbose "Cache des pools de runspaces nettoyé"
-
             # Réinitialiser les variables globales
             $script:Config = $null
             $script:ResourceMonitor = $null
             $script:BackpressureManager = $null
             $script:ThrottlingManager = $null
-            $script:RunspacePoolCache = @{}
             $script:TaskCounter = 0
             Set-ModuleInitialized -Value $false
 
@@ -1210,45 +1129,14 @@ function Get-ModuleInitialized {
     <#
     .SYNOPSIS
         Récupère l'état d'initialisation du module UnifiedParallel.
-
     .DESCRIPTION
-        Cette fonction permet de vérifier si le module UnifiedParallel a été initialisé
-        via la fonction Initialize-UnifiedParallel. Elle retourne la valeur de la variable
-        script $script:IsInitialized.
-
-        L'état d'initialisation est important pour déterminer si les fonctionnalités
-        du module sont disponibles et si les ressources nécessaires ont été allouées.
-        De nombreuses fonctions du module vérifient cet état avant d'exécuter leurs
-        opérations pour éviter des erreurs.
-
+        Cette fonction permet de vérifier si le module UnifiedParallel a été initialisé.
+        Elle retourne la valeur de la variable script $script:IsInitialized.
     .EXAMPLE
         Get-ModuleInitialized
         # Retourne $true si le module est initialisé, $false sinon
-
-    .EXAMPLE
-        if (Get-ModuleInitialized) {
-            # Le module est initialisé, on peut utiliser ses fonctionnalités
-            Invoke-UnifiedParallel -ScriptBlock { "Hello World" }
-        } else {
-            # Le module n'est pas initialisé, on doit l'initialiser d'abord
-            Initialize-UnifiedParallel
-        }
-
     .OUTPUTS
         System.Boolean
-
-        Retourne $true si le module est initialisé, $false sinon.
-
-    .NOTES
-        Cette fonction est utilisée en interne par de nombreuses autres fonctions
-        du module pour vérifier l'état d'initialisation avant d'exécuter leurs opérations.
-
-        Si la fonction retourne $false, vous devez appeler Initialize-UnifiedParallel
-        avant d'utiliser les fonctionnalités du module.
-
-    .LINK
-        Initialize-UnifiedParallel
-        Set-ModuleInitialized
     #>
     [CmdletBinding()]
     [OutputType([bool])]
@@ -1262,61 +1150,20 @@ function Set-ModuleInitialized {
     <#
     .SYNOPSIS
         Définit l'état d'initialisation du module UnifiedParallel.
-
     .DESCRIPTION
         Cette fonction permet de définir manuellement l'état d'initialisation du module UnifiedParallel.
         Elle modifie la valeur de la variable script $script:IsInitialized.
-
-        ATTENTION: Cette fonction est principalement destinée à un usage interne ou pour des
-        scénarios de test. L'utilisation incorrecte de cette fonction peut entraîner des
-        comportements inattendus dans le module. Dans la plupart des cas, vous devriez
-        utiliser Initialize-UnifiedParallel et Clear-UnifiedParallel pour gérer l'état
-        d'initialisation du module.
-
+        Note: Cette fonction est principalement destinée à un usage interne ou pour des scénarios de test.
     .PARAMETER Value
         Valeur booléenne indiquant si le module doit être considéré comme initialisé.
-        - $true: Marque le module comme initialisé
-        - $false: Marque le module comme non initialisé
-
     .EXAMPLE
         Set-ModuleInitialized -Value $true
         # Marque le module comme initialisé
-
     .EXAMPLE
         Set-ModuleInitialized -Value $false
         # Marque le module comme non initialisé
-
-    .EXAMPLE
-        # Scénario de test
-        # Sauvegarder l'état actuel
-        $originalState = Get-ModuleInitialized
-
-        # Modifier l'état pour le test
-        Set-ModuleInitialized -Value $true
-
-        # Exécuter le test
-        # ...
-
-        # Restaurer l'état original
-        Set-ModuleInitialized -Value $originalState
-
     .OUTPUTS
         System.Boolean
-
-        Retourne la valeur qui a été définie.
-
-    .NOTES
-        Cette fonction modifie uniquement l'état d'initialisation du module sans
-        effectuer les opérations d'initialisation ou de nettoyage normalement
-        effectuées par Initialize-UnifiedParallel et Clear-UnifiedParallel.
-
-        Utilisez cette fonction avec précaution, car elle peut entraîner des
-        incohérences dans l'état du module si elle est mal utilisée.
-
-    .LINK
-        Get-ModuleInitialized
-        Initialize-UnifiedParallel
-        Clear-UnifiedParallel
     #>
     [CmdletBinding()]
     [OutputType([bool])]
@@ -1334,66 +1181,16 @@ function Get-ModuleConfig {
     <#
     .SYNOPSIS
         Récupère la configuration du module UnifiedParallel.
-
     .DESCRIPTION
         Cette fonction permet d'accéder à la configuration actuelle du module UnifiedParallel.
         Elle retourne l'objet de configuration stocké dans la variable script $script:Config.
-        Si le module n'est pas initialisé, elle retourne $null et affiche un avertissement.
-
-        L'objet de configuration contient des paramètres tels que:
-        - DefaultMaxThreads: Nombre maximum de threads par défaut
-        - DefaultThrottleLimit: Limite de throttling par défaut
-        - DefaultTimeout: Timeout par défaut en secondes
-        - LogPath: Chemin vers le répertoire des logs
-        - ModuleVersion: Version du module
-        - ResourceThresholds: Seuils d'utilisation des ressources (CPU, mémoire, etc.)
-        - BackpressureSettings: Paramètres de backpressure
-        - ErrorHandling: Paramètres de gestion des erreurs
-
+        Si le module n'est pas initialisé, elle retourne $null.
     .EXAMPLE
         $config = Get-ModuleConfig
         $config.DefaultMaxThreads
         # Affiche le nombre maximum de threads par défaut
-
-    .EXAMPLE
-        $config = Get-ModuleConfig
-        if ($config) {
-            Write-Host "Chemin des logs: $($config.LogPath)"
-            Write-Host "Version du module: $($config.ModuleVersion)"
-        }
-
-    .EXAMPLE
-        # Modifier temporairement la configuration
-        $config = Get-ModuleConfig
-        $originalMaxThreads = $config.DefaultMaxThreads
-        $config.DefaultMaxThreads = 16
-        Set-ModuleConfig -Value $config
-
-        # Utiliser la nouvelle configuration
-        # ...
-
-        # Restaurer la configuration d'origine
-        $config = Get-ModuleConfig
-        $config.DefaultMaxThreads = $originalMaxThreads
-        Set-ModuleConfig -Value $config
-
     .OUTPUTS
         System.Management.Automation.PSObject
-
-        Un objet contenant la configuration du module, ou $null si le module n'est pas initialisé.
-
-    .NOTES
-        Cette fonction vérifie si le module est initialisé avant de retourner la configuration.
-        Si le module n'est pas initialisé, elle affiche un avertissement et retourne $null.
-
-        La modification directe de l'objet de configuration retourné par cette fonction
-        n'affecte pas la configuration du module. Pour appliquer les modifications,
-        vous devez utiliser Set-ModuleConfig.
-
-    .LINK
-        Initialize-UnifiedParallel
-        Set-ModuleConfig
-        Get-ModuleInitialized
     #>
     [CmdletBinding()]
     [OutputType([PSObject])]
@@ -1412,70 +1209,19 @@ function Set-ModuleConfig {
     <#
     .SYNOPSIS
         Définit la configuration du module UnifiedParallel.
-
     .DESCRIPTION
         Cette fonction permet de modifier la configuration du module UnifiedParallel.
         Elle remplace l'objet de configuration stocké dans la variable script $script:Config.
-
-        ATTENTION: Cette fonction est principalement destinée à un usage interne ou pour
-        des scénarios de test. L'utilisation incorrecte de cette fonction peut entraîner
-        des comportements inattendus dans le module. Dans la plupart des cas, vous devriez
-        utiliser Initialize-UnifiedParallel avec les paramètres appropriés pour configurer
-        le module.
-
-        La modification de la configuration peut affecter le comportement de toutes les
-        fonctions du module qui utilisent cette configuration.
-
+        Note: Cette fonction est principalement destinée à un usage interne ou pour des scénarios de test.
     .PARAMETER Value
-        Objet de configuration à utiliser pour le module. Cet objet doit contenir
-        toutes les propriétés nécessaires au bon fonctionnement du module, notamment:
-        - DefaultMaxThreads: Nombre maximum de threads par défaut
-        - DefaultThrottleLimit: Limite de throttling par défaut
-        - DefaultTimeout: Timeout par défaut en secondes
-        - LogPath: Chemin vers le répertoire des logs
-        - ModuleVersion: Version du module
-        - ResourceThresholds: Seuils d'utilisation des ressources
-        - BackpressureSettings: Paramètres de backpressure
-        - ErrorHandling: Paramètres de gestion des erreurs
-
+        Objet de configuration à utiliser pour le module.
     .EXAMPLE
         $config = Get-ModuleConfig
         $config.DefaultMaxThreads = 16
         Set-ModuleConfig -Value $config
         # Modifie le nombre maximum de threads par défaut
-
-    .EXAMPLE
-        # Modifier temporairement la configuration pour un test
-        $config = Get-ModuleConfig
-        $originalConfig = $config.PSObject.Copy()  # Créer une copie pour restauration
-
-        # Modifier la configuration
-        $config.DefaultTimeout = 120
-        $config.BackpressureSettings.Enabled = $false
-        Set-ModuleConfig -Value $config
-
-        # Exécuter le test avec la nouvelle configuration
-        # ...
-
-        # Restaurer la configuration d'origine
-        Set-ModuleConfig -Value $originalConfig
-
     .OUTPUTS
         System.Management.Automation.PSObject
-
-        L'objet de configuration qui a été défini, ou $null si le module n'est pas initialisé.
-
-    .NOTES
-        Cette fonction vérifie si le module est initialisé avant de modifier la configuration.
-        Si le module n'est pas initialisé, elle affiche un avertissement et retourne $null.
-
-        Il est recommandé de créer une copie de la configuration actuelle avant de la modifier,
-        afin de pouvoir la restaurer en cas de problème.
-
-    .LINK
-        Initialize-UnifiedParallel
-        Get-ModuleConfig
-        Get-ModuleInitialized
     #>
     [CmdletBinding()]
     [OutputType([PSObject])]
@@ -1648,7 +1394,9 @@ function Invoke-UnifiedParallel {
         Cette fonction exécute un script block ou une commande en parallèle sur chaque élément
         d'une collection d'objets. Elle supporte différentes méthodes de parallélisation :
         - Runspace Pool (compatible PowerShell 5.1 et 7+)
-        - ForEach-Object -Parallel (PowerShell 7+ uniquement)
+        - # ForEach-Object -Parallel (remplacé pour compatibilité PS 5.1)
+            # Utiliser une implémentation compatible avec PS 5.1
+            ForEach-Object (PowerShell 7+ uniquement)
 
         Elle offre de nombreuses options pour contrôler l'exécution parallèle, comme le nombre
         de threads, le timeout, la gestion des erreurs, etc.
@@ -1734,10 +1482,14 @@ function Invoke-UnifiedParallel {
         Si spécifié, utilise un pool de runspaces pour l'exécution parallèle.
         Cette méthode est compatible avec PowerShell 5.1 et 7+.
 
-        Par défaut : $false (utilise ForEach-Object -Parallel si disponible)
+        Par défaut : $false (utilise # ForEach-Object -Parallel (remplacé pour compatibilité PS 5.1)
+            # Utiliser une implémentation compatible avec PS 5.1
+            ForEach-Object si disponible)
 
     .PARAMETER UseForeachParallel
-        Si spécifié, utilise ForEach-Object -Parallel pour l'exécution parallèle.
+        Si spécifié, utilise # ForEach-Object -Parallel (remplacé pour compatibilité PS 5.1)
+            # Utiliser une implémentation compatible avec PS 5.1
+            ForEach-Object pour l'exécution parallèle.
         Cette méthode n'est disponible qu'à partir de PowerShell 7.
 
         Par défaut : $false (déterminé automatiquement)
@@ -1876,7 +1628,9 @@ function Invoke-UnifiedParallel {
         [Parameter(Mandatory = $false, HelpMessage = "Utiliser un pool de runspaces (compatible PS 5.1 et 7+)")]
         [switch]$UseRunspacePool,
 
-        [Parameter(Mandatory = $false, HelpMessage = "Utiliser ForEach-Object -Parallel (PS 7+ uniquement)")]
+        [Parameter(Mandatory = $false, HelpMessage = "Utiliser # ForEach-Object -Parallel (remplacé pour compatibilité PS 5.1)
+            # Utiliser une implémentation compatible avec PS 5.1
+            ForEach-Object (PS 7+ uniquement)")]
         [switch]$UseForeachParallel,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'Command', HelpMessage = "Nom de la commande à exécuter")]
@@ -1971,7 +1725,9 @@ function Invoke-UnifiedParallel {
         # Déterminer la méthode de parallélisation à utiliser
         $useForEachParallel = $false
         if ($PSVersionTable.PSVersion.Major -ge 7 -and -not $UseRunspacePool) {
-            # PowerShell 7+ supporte ForEach-Object -Parallel
+            # PowerShell 7+ supporte # ForEach-Object -Parallel (remplacé pour compatibilité PS 5.1)
+            # Utiliser une implémentation compatible avec PS 5.1
+            ForEach-Object
             $useForEachParallel = $true
             if ($UseForeachParallel) {
                 $useForEachParallel = $true
@@ -1992,12 +1748,17 @@ function Invoke-UnifiedParallel {
                 }
             }
 
-            # Utiliser le cache de pools de runspaces pour optimiser les performances
-            $runspacePool = Get-RunspacePoolFromCache -MinRunspaces 1 -MaxRunspaces $MaxThreads -SessionState $sessionState -ThreadOptions "ReuseThread" -ApartmentState "MTA" -Verbose:$VerbosePreference
+            # Créer le pool de runspaces
+            $runspacePool = [runspacefactory]::CreateRunspacePool(1, $MaxThreads, $sessionState, $Host)
+            $runspacePool.ThreadOptions = "ReuseThread"
+            $runspacePool.ApartmentState = "MTA"
+            $runspacePool.Open()
 
             Write-Verbose "Pool de runspaces créé avec $MaxThreads threads maximum"
         } else {
-            Write-Verbose "Utilisation de ForEach-Object -Parallel avec $MaxThreads threads maximum"
+            Write-Verbose "Utilisation de # ForEach-Object -Parallel (remplacé pour compatibilité PS 5.1)
+            # Utiliser une implémentation compatible avec PS 5.1
+            ForEach-Object avec $MaxThreads threads maximum"
         }
 
         # Initialiser la barre de progression
@@ -2014,10 +1775,6 @@ function Invoke-UnifiedParallel {
         $totalItems = 0
         $processedItems = 0
         $startTime = [datetime]::Now
-
-        # Initialiser les variables pour la gestion optimisée de la progression
-        $script:LastProgressUpdate = 0
-        $script:ProgressIterationCounter = 0
 
         # Préparer le script block à exécuter
         if ($PSCmdlet.ParameterSetName -eq 'Command') {
@@ -2076,7 +1833,9 @@ function Invoke-UnifiedParallel {
 
         # Traiter les éléments en parallèle
         if ($useForEachParallel) {
-            # Utiliser ForEach-Object -Parallel (PowerShell 7+)
+            # Utiliser # ForEach-Object -Parallel (remplacé pour compatibilité PS 5.1)
+            # Utiliser une implémentation compatible avec PS 5.1
+            ForEach-Object (PowerShell 7+)
             try {
                 $parallelParams = @{
                     ThrottleLimit = $MaxThreads
@@ -2086,46 +1845,48 @@ function Invoke-UnifiedParallel {
                     $parallelParams.TimeoutSeconds = $TimeoutSeconds
                 }
 
-                $foreachResults = $inputItems | ForEach-Object -Parallel {
-                    $item = $_
-                    $result = [PSCustomObject]@{
-                        Item      = $item
-                        Output    = $null
-                        Success   = $true
-                        Error     = $null
-                        StartTime = [datetime]::Now
-                        EndTime   = $null
-                        Duration  = $null
-                        ThreadId  = [System.Threading.Thread]::CurrentThread.ManagedThreadId
-                    }
+                $foreachResults = $inputItems | # ForEach-Object -Parallel (remplacé pour compatibilité PS 5.1)
+                    # Utiliser une implémentation compatible avec PS 5.1
+                    ForEach-Object {
+                        $item = $_
+                        $result = [PSCustomObject]@{
+                            Item      = $item
+                            Output    = $null
+                            Success   = $true
+                            Error     = $null
+                            StartTime = [datetime]::Now
+                            EndTime   = $null
+                            Duration  = $null
+                            ThreadId  = [System.Threading.Thread]::CurrentThread.ManagedThreadId
+                        }
 
-                    try {
-                        # Exécuter le script block avec l'élément courant
-                        if ($using:SharedVariables) {
-                            $sharedVars = $using:SharedVariables
-                            foreach ($key in $sharedVars.Keys) {
-                                Set-Variable -Name $key -Value $sharedVars[$key]
+                        try {
+                            # Exécuter le script block avec l'élément courant
+                            if ($using:SharedVariables) {
+                                $sharedVars = $using:SharedVariables
+                                foreach ($key in $sharedVars.Keys) {
+                                    Set-Variable -Name $key -Value $sharedVars[$key]
+                                }
                             }
+
+                            $output = if ($using:PSCmdlet.ParameterSetName -eq 'Command') {
+                                & $using:ScriptBlock $item $using:Command $using:ArgumentList
+                            } else {
+                                & $using:ScriptBlock $item
+                            }
+
+                            $result.Output = $output
+                            $result.Success = $true
+                        } catch {
+                            $result.Success = $false
+                            $result.Error = $_
+                        } finally {
+                            $result.EndTime = [datetime]::Now
+                            $result.Duration = $result.EndTime - $result.StartTime
                         }
 
-                        $output = if ($using:PSCmdlet.ParameterSetName -eq 'Command') {
-                            & $using:ScriptBlock $item $using:Command $using:ArgumentList
-                        } else {
-                            & $using:ScriptBlock $item
-                        }
-
-                        $result.Output = $output
-                        $result.Success = $true
-                    } catch {
-                        $result.Success = $false
-                        $result.Error = $_
-                    } finally {
-                        $result.EndTime = [datetime]::Now
-                        $result.Duration = $result.EndTime - $result.StartTime
-                    }
-
-                    $result
-                } @parallelParams
+                        $result
+                    } @parallelParams
 
                 # Convertir les résultats en objets ParallelResult
                 foreach ($foreachResult in $foreachResults) {
@@ -2149,27 +1910,15 @@ function Invoke-UnifiedParallel {
                     }
                     $processedItems++
 
-                    # Mettre à jour la barre de progression par lots pour réduire l'overhead
+                    # Mettre à jour la barre de progression
                     if (-not $NoProgress -and $totalItems -gt 0) {
-                        # Mettre à jour la barre de progression seulement si des éléments ont été traités
-                        # ou toutes les 10 éléments pour montrer que le traitement est toujours en cours
-                        $updateProgress = $false
-
-                        # Mettre à jour si des éléments ont été traités ou tous les 10 éléments
-                        if ($processedItems -gt $script:LastProgressUpdate -or $processedItems % 10 -eq 0) {
-                            $updateProgress = $true
-                            $script:LastProgressUpdate = $processedItems
+                        $percentComplete = [Math]::Min(100, [Math]::Floor(($processedItems / $totalItems) * 100))
+                        $progressParams = @{
+                            Activity        = $ActivityName
+                            Status          = "Traitement de l'élément $processedItems sur $totalItems"
+                            PercentComplete = $percentComplete
                         }
-
-                        if ($updateProgress) {
-                            $percentComplete = [Math]::Min(100, [Math]::Floor(($processedItems / $totalItems) * 100))
-                            $progressParams = @{
-                                Activity        = $ActivityName
-                                Status          = "Traitement de l'élément $processedItems sur $totalItems"
-                                PercentComplete = $percentComplete
-                            }
-                            Write-Progress @progressParams
-                        }
+                        Write-Progress @progressParams
                     }
                 }
             } catch {
@@ -2181,63 +1930,65 @@ function Invoke-UnifiedParallel {
         } else {
             # Utiliser les runspaces (compatible PowerShell 5.1 et 7+)
             try {
-                # Créer et démarrer les runspaces en batch pour réduire l'overhead
-                # Préparer le script wrapper
-                $wrapperScriptBlock = {
-                    param($Item, $ScriptBlock, $Command, $ArgumentList, $PSCmdlet_ParameterSetName)
+                # Créer et démarrer les runspaces
+                foreach ($item in $inputItems) {
+                    $powershell = [powershell]::Create()
+                    $powershell.RunspacePool = $runspacePool
 
-                    $result = [PSCustomObject]@{
-                        Item      = $Item
-                        Output    = $null
-                        Success   = $true
-                        Error     = $null
-                        StartTime = [datetime]::Now
-                        EndTime   = $null
-                        Duration  = $null
-                        ThreadId  = [System.Threading.Thread]::CurrentThread.ManagedThreadId
-                    }
+                    # Ajouter le script à exécuter
+                    [void]$powershell.AddScript({
+                            param($Item, $ScriptBlock, $Command, $ArgumentList, $PSCmdlet_ParameterSetName)
 
-                    try {
-                        # Exécuter le script block avec l'élément courant
-                        $output = if ($PSCmdlet_ParameterSetName -eq 'Command') {
-                            & $ScriptBlock $Item $Command $ArgumentList
-                        } else {
-                            & $ScriptBlock $Item
-                        }
+                            $result = [PSCustomObject]@{
+                                Item      = $Item
+                                Output    = $null
+                                Success   = $true
+                                Error     = $null
+                                StartTime = [datetime]::Now
+                                EndTime   = $null
+                                Duration  = $null
+                                ThreadId  = [System.Threading.Thread]::CurrentThread.ManagedThreadId
+                            }
 
-                        $result.Output = $output
-                        $result.Success = $true
-                    } catch {
-                        $result.Success = $false
-                        $result.Error = $_
-                    } finally {
-                        $result.EndTime = [datetime]::Now
-                        $result.Duration = $result.EndTime - $result.StartTime
-                    }
+                            try {
+                                # Exécuter le script block avec l'élément courant
+                                $output = if ($PSCmdlet_ParameterSetName -eq 'Command') {
+                                    & $ScriptBlock $Item $Command $ArgumentList
+                                } else {
+                                    & $ScriptBlock $Item
+                                }
 
-                    $result
+                                $result.Output = $output
+                                $result.Success = $true
+                            } catch {
+                                $result.Success = $false
+                                $result.Error = $_
+                            } finally {
+                                $result.EndTime = [datetime]::Now
+                                $result.Duration = $result.EndTime - $result.StartTime
+                            }
+
+                            $result
+                        })
+
+                    # Ajouter les paramètres
+                    [void]$powershell.AddParameter('Item', $item)
+                    [void]$powershell.AddParameter('ScriptBlock', $ScriptBlock)
+                    [void]$powershell.AddParameter('Command', $Command)
+                    [void]$powershell.AddParameter('ArgumentList', $ArgumentList)
+                    [void]$powershell.AddParameter('PSCmdlet_ParameterSetName', $PSCmdlet.ParameterSetName)
+
+                    # Démarrer l'exécution asynchrone
+                    $handle = $powershell.BeginInvoke()
+
+                    # Ajouter à la liste des runspaces actifs
+                    $runspaces.Add([PSCustomObject]@{
+                            PowerShell = $powershell
+                            Handle     = $handle
+                            Item       = $item
+                            StartTime  = [datetime]::Now
+                        })
                 }
-
-                # Déterminer la taille optimale du batch en fonction du nombre d'éléments
-                $optimalBatchSize = [Math]::Min(20, [Math]::Max(5, [Math]::Ceiling($inputItems.Count / 10)))
-                Write-Verbose "Utilisation d'une taille de batch optimale de $optimalBatchSize pour $($inputItems.Count) éléments"
-
-                # Créer les runspaces en batch
-                $batchParams = @{
-                    RunspacePool  = $runspacePool
-                    ScriptBlock   = $wrapperScriptBlock
-                    InputObjects  = $inputItems
-                    BatchSize     = $optimalBatchSize
-                    ParameterName = "Item"
-                    ArgumentList  = @{
-                        ScriptBlock               = $ScriptBlock
-                        Command                   = $Command
-                        ArgumentList              = $ArgumentList
-                        PSCmdlet_ParameterSetName = $PSCmdlet.ParameterSetName
-                    }
-                }
-
-                $runspaces = New-RunspaceBatch @batchParams
 
                 # Attendre et récupérer les résultats
                 $activeRunspaces = $runspaces.Count
@@ -2284,37 +2035,16 @@ function Invoke-UnifiedParallel {
                             $activeRunspaces--
                             $processedItems++
 
-                            # Ne pas mettre à jour la barre de progression ici pour éviter trop d'appels à Write-Progress
-                            # La mise à jour sera faite en lot après la boucle
-                        }
-                    }
-
-                    # Mettre à jour la barre de progression par lots pour réduire l'overhead
-                    if (-not $NoProgress -and $totalItems -gt 0) {
-                        # Mettre à jour la barre de progression seulement si des éléments ont été traités
-                        # ou toutes les 10 itérations pour montrer que le traitement est toujours en cours
-                        $updateProgress = $false
-
-                        # Incrémenter le compteur d'itérations
-                        if (-not $script:ProgressIterationCounter) {
-                            $script:ProgressIterationCounter = 0
-                        }
-                        $script:ProgressIterationCounter++
-
-                        # Mettre à jour si des éléments ont été traités ou toutes les 10 itérations
-                        if ($processedItems -gt $script:LastProgressUpdate -or $script:ProgressIterationCounter % 10 -eq 0) {
-                            $updateProgress = $true
-                            $script:LastProgressUpdate = $processedItems
-                        }
-
-                        if ($updateProgress) {
-                            $percentComplete = [Math]::Min(100, [Math]::Floor(($processedItems / $totalItems) * 100))
-                            $progressParams = @{
-                                Activity        = $ActivityName
-                                Status          = "Traitement de l'élément $processedItems sur $totalItems"
-                                PercentComplete = $percentComplete
+                            # Mettre à jour la barre de progression
+                            if (-not $NoProgress -and $totalItems -gt 0) {
+                                $percentComplete = [Math]::Min(100, [Math]::Floor(($processedItems / $totalItems) * 100))
+                                $progressParams = @{
+                                    Activity        = $ActivityName
+                                    Status          = "Traitement de l'élément $processedItems sur $totalItems"
+                                    PercentComplete = $percentComplete
+                                }
+                                Write-Progress @progressParams
                             }
-                            Write-Progress @progressParams
                         }
                     }
 
@@ -2354,29 +2084,17 @@ function Invoke-UnifiedParallel {
                     }
                 }
             } catch {
-                $errorParams = @{
-                    Message        = "Erreur lors de l'exécution parallèle"
-                    Source         = "Invoke-UnifiedParallel"
-                    ErrorRecord    = $_
-                    Category       = [System.Management.Automation.ErrorCategory]::OperationStopped
-                    AdditionalInfo = @{
-                        "InputObjectCount" = $totalItems
-                        "ProcessedItems"   = $processedItems
-                        "Method"           = "RunspacePool"
-                    }
-                }
-
+                Write-Error "Erreur lors de l'exécution parallèle: $_"
                 if (-not $IgnoreErrors) {
-                    New-UnifiedError @errorParams -WriteError -ThrowError
-                } else {
-                    New-UnifiedError @errorParams -WriteError
+                    throw
                 }
             } finally {
                 # Nettoyer les ressources
-                # Ne pas fermer ou disposer le pool de runspaces car il est géré par le cache
-                # Le pool sera réutilisé pour les prochaines exécutions
+                if ($runspacePool) {
+                    $runspacePool.Close()
+                    $runspacePool.Dispose()
+                }
 
-                # Nettoyer les runspaces individuels
                 foreach ($runspace in $runspaces) {
                     if ($runspace.PowerShell) {
                         $runspace.PowerShell.Dispose()
@@ -2667,8 +2385,17 @@ function Wait-ForCompletedRunspace {
                     $processedRunspaces++
                     $completedInThisIteration++
 
-                    # Ne pas mettre à jour la barre de progression ici pour éviter trop d'appels à Write-Progress
-                    # La mise à jour sera faite en lot après la boucle
+                    # Mettre à jour la barre de progression seulement tous les X runspaces ou à la fin
+                    if ((-not $NoProgress) -and $totalRunspaces -gt 0 -and
+                        ($completedInThisIteration % 5 -eq 0 -or $activeRunspaces -eq 0)) {
+                        $percentComplete = [Math]::Min(100, [Math]::Floor(($processedRunspaces / $totalRunspaces) * 100))
+                        $progressParams = @{
+                            Activity        = $ActivityName
+                            Status          = "Runspace $processedRunspaces sur $totalRunspaces complété"
+                            PercentComplete = $percentComplete
+                        }
+                        Write-Progress @progressParams
+                    }
 
                     # Si on n'attend pas tous les runspaces, retourner immédiatement
                     if (-not $WaitForAll) {
@@ -2708,17 +2435,6 @@ function Wait-ForCompletedRunspace {
                 $batchSize = [Math]::Max(1, [Math]::Min(20, [Math]::Ceiling($activeRunspaces / 5)))
             }
 
-            # Mettre à jour la barre de progression par lots pour réduire l'overhead
-            if (-not $NoProgress -and $totalRunspaces -gt 0 -and $completedInThisIteration -gt 0) {
-                $percentComplete = [Math]::Min(100, [Math]::Floor(($processedRunspaces / $totalRunspaces) * 100))
-                $progressParams = @{
-                    Activity        = $ActivityName
-                    Status          = "Runspace $processedRunspaces sur $totalRunspaces complété"
-                    PercentComplete = $percentComplete
-                }
-                Write-Progress @progressParams
-            }
-
             # Pause adaptative pour éviter de surcharger le CPU
             Start-Sleep -Milliseconds $currentSleepMilliseconds
 
@@ -2726,102 +2442,27 @@ function Wait-ForCompletedRunspace {
             if ([datetime]::Now -ge $timeout -and $activeRunspaces -gt 0) {
                 Write-Warning "Timeout atteint. $activeRunspaces runspaces toujours actifs."
 
-                # Nettoyer les runspaces non complétés (toujours effectué après timeout pour éviter les fuites de mémoire)
-                # Le paramètre CleanupOnTimeout est maintenant obsolète mais conservé pour la compatibilité
-                Write-Verbose "Nettoyage des runspaces non complétés après timeout..."
-
-                # Compteurs pour les statistiques
-                $stoppedCount = 0
-                $disposedCount = 0
-                $errorCount = 0
-
-                for ($i = 0; $i -lt $runspacesToProcess.Count; $i++) {
-                    $runspace = $runspacesToProcess[$i]
-
-                    # Vérification robuste pour les objets null ou incomplets
-                    if ($null -eq $runspace) {
-                        Write-Verbose "Runspace à l'index $i est null, ignoré"
-                        continue
-                    }
-
-                    try {
-                        # Vérification robuste pour PowerShell null
-                        if ($null -eq $runspace.PowerShell) {
-                            Write-Verbose "PowerShell est null pour le runspace à l'index $i, ignoré"
-                            continue
-                        }
-
-                        # Arrêter le runspace s'il est toujours en cours d'exécution
-                        # Vérification complète pour Handle null ou incomplet
-                        if ($null -ne $runspace.Handle) {
+                # Nettoyer les runspaces non complétés si demandé
+                if ($CleanupOnTimeout) {
+                    Write-Verbose "Nettoyage des runspaces non complétés après timeout..."
+                    for ($i = 0; $i -lt $runspacesToProcess.Count; $i++) {
+                        $runspace = $runspacesToProcess[$i]
+                        if ($runspace -and $runspace.PowerShell) {
                             try {
-                                if (-not $runspace.Handle.IsCompleted) {
+                                # Arrêter le runspace s'il est toujours en cours d'exécution
+                                if ($null -ne $runspace.Handle -and -not $runspace.Handle.IsCompleted) {
                                     $runspace.PowerShell.Stop()
-                                    $stoppedCount++
-                                    Write-Verbose "Runspace à l'index $i arrêté avec succès"
                                 }
+                                $runspace.PowerShell.Dispose()
                             } catch {
-                                # Utiliser New-UnifiedError pour une gestion standardisée des erreurs
-                                $errorParams = @{
-                                    Message        = "Erreur lors de l'arrêt du runspace"
-                                    Source         = "Wait-ForCompletedRunspace"
-                                    ErrorRecord    = $_
-                                    Category       = [System.Management.Automation.ErrorCategory]::OperationStopped
-                                    AdditionalInfo = @{
-                                        "RunspaceIndex" = $i
-                                        "Action"        = "Stop"
-                                    }
-                                }
-                                New-UnifiedError @errorParams
-                                $errorCount++
-                            }
-                        } else {
-                            Write-Verbose "Handle est null pour le runspace à l'index $i"
-                        }
-
-                        # Toujours essayer de disposer le PowerShell, même si Handle est null
-                        try {
-                            $runspace.PowerShell.Dispose()
-                            $disposedCount++
-                            Write-Verbose "PowerShell à l'index $i disposé avec succès"
-                        } catch {
-                            # Utiliser New-UnifiedError pour une gestion standardisée des erreurs
-                            $errorParams = @{
-                                Message        = "Erreur lors de la libération des ressources du runspace"
-                                Source         = "Wait-ForCompletedRunspace"
-                                ErrorRecord    = $_
-                                Category       = [System.Management.Automation.ErrorCategory]::ResourceUnavailable
-                                AdditionalInfo = @{
-                                    "RunspaceIndex" = $i
-                                    "Action"        = "Dispose"
-                                }
-                            }
-                            New-UnifiedError @errorParams
-                            $errorCount++
-                        }
-                    } catch {
-                        # Capture des erreurs inattendues
-                        $errorParams = @{
-                            Message        = "Erreur inattendue lors du nettoyage du runspace"
-                            Source         = "Wait-ForCompletedRunspace"
-                            ErrorRecord    = $_
-                            Category       = [System.Management.Automation.ErrorCategory]::NotSpecified
-                            AdditionalInfo = @{
-                                "RunspaceIndex" = $i
-                                "Action"        = "Cleanup"
+                                Write-Warning "Erreur lors du nettoyage du runspace: $_"
                             }
                         }
-                        New-UnifiedError @errorParams
-                        $errorCount++
                     }
+                    $runspacesToProcess.Clear()
+                    $activeRunspaces = 0
+                    Write-Verbose "Nettoyage des runspaces terminé."
                 }
-
-                # Statistiques de nettoyage
-                Write-Verbose "Nettoyage des runspaces terminé: $stoppedCount arrêtés, $disposedCount libérés, $errorCount erreurs"
-
-                # Vider la liste des runspaces à traiter
-                $runspacesToProcess.Clear()
-                $activeRunspaces = 0
 
                 break
             }
@@ -3200,22 +2841,8 @@ function Invoke-RunspaceProcessor {
                     $errors.Add($resultObject.Error)
                 }
             } catch {
-                $errorParams = @{
-                    Message        = "Erreur lors du traitement du runspace"
-                    Source         = "Invoke-RunspaceProcessor"
-                    ErrorRecord    = $_
-                    Category       = [System.Management.Automation.ErrorCategory]::OperationStopped
-                    AdditionalInfo = @{
-                        "RunspaceType"   = if ($runspace) { $runspace.GetType().FullName } else { "Unknown" }
-                        "ProcessedItems" = $processedRunspaces
-                        "TotalItems"     = $totalRunspaces
-                    }
-                }
-
                 if (-not $IgnoreErrors) {
-                    New-UnifiedError @errorParams -WriteError
-                } else {
-                    New-UnifiedError @errorParams
+                    Write-Error "Erreur lors du traitement du runspace: $_"
                 }
 
                 # Créer un résultat d'erreur
@@ -3476,1496 +3103,6 @@ function Get-OptimalThreadCount {
     }
 }
 
-# Fonction pour créer des runspaces en batch
-function New-RunspaceBatch {
-    <#
-    .SYNOPSIS
-        Crée un lot de runspaces pour l'exécution parallèle.
-
-    .DESCRIPTION
-        Cette fonction crée un lot de runspaces pour l'exécution parallèle, ce qui réduit
-        l'overhead lié à la création individuelle des runspaces. Elle prend en charge
-        différentes configurations et options pour personnaliser les runspaces créés.
-
-    .PARAMETER RunspacePool
-        Pool de runspaces à utiliser pour les runspaces créés.
-        Ce paramètre est obligatoire.
-
-    .PARAMETER ScriptBlock
-        Script block à exécuter dans chaque runspace.
-        Ce paramètre est obligatoire si Command n'est pas spécifié.
-
-    .PARAMETER Command
-        Commande à exécuter dans chaque runspace.
-        Ce paramètre est obligatoire si ScriptBlock n'est pas spécifié.
-
-    .PARAMETER InputObjects
-        Collection d'objets à traiter en parallèle. Chaque objet sera passé à un runspace.
-        Ce paramètre est obligatoire.
-
-    .PARAMETER ArgumentList
-        Table de hachage des arguments supplémentaires à passer à chaque runspace.
-        Clé = nom du paramètre, Valeur = valeur du paramètre.
-
-    .PARAMETER BatchSize
-        Nombre de runspaces à créer par lot. Une valeur plus élevée peut améliorer les performances
-        mais augmente l'utilisation de la mémoire.
-
-        Par défaut : 10
-
-    .PARAMETER ParameterName
-        Nom du paramètre à utiliser pour passer l'objet d'entrée au script block ou à la commande.
-
-        Par défaut : "Item"
-
-    .PARAMETER ThrottleLimit
-        Limite de throttling pour contrôler le nombre maximum de runspaces à créer.
-        Si 0, aucune limite n'est appliquée.
-
-        Par défaut : 0 (pas de limite)
-
-    .EXAMPLE
-        $runspacePool = [runspacefactory]::CreateRunspacePool(1, 4)
-        $runspacePool.Open()
-        $scriptBlock = { param($item) "Traitement de $item" }
-        $inputObjects = 1..100
-        $runspaces = New-RunspaceBatch -RunspacePool $runspacePool -ScriptBlock $scriptBlock -InputObjects $inputObjects -BatchSize 20
-
-        Crée 100 runspaces en lots de 20 pour traiter les nombres de 1 à 100.
-
-    .EXAMPLE
-        $runspacePool = [runspacefactory]::CreateRunspacePool(1, 4)
-        $runspacePool.Open()
-        $runspaces = New-RunspaceBatch -RunspacePool $runspacePool -Command "Get-Process" -InputObjects @("powershell", "explorer") -ParameterName "Name" -ArgumentList @{ "ErrorAction" = "SilentlyContinue" }
-
-        Crée 2 runspaces pour exécuter Get-Process sur les processus "powershell" et "explorer".
-
-    .OUTPUTS
-        System.Collections.Generic.List[PSObject]
-
-        Une liste d'objets représentant les runspaces créés. Chaque objet a les propriétés suivantes :
-        - PowerShell : Instance PowerShell du runspace
-        - Handle : Handle d'exécution asynchrone
-        - Item : Objet d'entrée associé au runspace
-        - StartTime : Heure de début de l'exécution
-        - BatchIndex : Index du lot auquel appartient le runspace
-    #>
-    [CmdletBinding(DefaultParameterSetName = "ScriptBlock")]
-    [OutputType([System.Collections.Generic.List[PSObject]])]
-    param(
-        [Parameter(Mandatory = $true, Position = 0, HelpMessage = "Pool de runspaces à utiliser")]
-        [ValidateNotNull()]
-        [System.Management.Automation.Runspaces.RunspacePool]$RunspacePool,
-
-        [Parameter(Mandatory = $true, ParameterSetName = "ScriptBlock", Position = 1, HelpMessage = "Script block à exécuter")]
-        [ValidateNotNull()]
-        [scriptblock]$ScriptBlock,
-
-        [Parameter(Mandatory = $true, ParameterSetName = "Command", Position = 1, HelpMessage = "Commande à exécuter")]
-        [ValidateNotNullOrEmpty()]
-        [string]$Command,
-
-        [Parameter(Mandatory = $true, Position = 2, HelpMessage = "Collection d'objets à traiter")]
-        [ValidateNotNull()]
-        [object[]]$InputObjects,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Arguments supplémentaires à passer")]
-        [hashtable]$ArgumentList = @{},
-
-        [Parameter(Mandatory = $false, HelpMessage = "Nombre de runspaces à créer par lot")]
-        [ValidateRange(1, 1000)]
-        [int]$BatchSize = 10,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Nom du paramètre pour l'objet d'entrée")]
-        [ValidateNotNullOrEmpty()]
-        [string]$ParameterName = "Item",
-
-        [Parameter(Mandatory = $false, HelpMessage = "Limite de throttling")]
-        [ValidateRange(0, [int]::MaxValue)]
-        [int]$ThrottleLimit = 0
-    )
-
-    begin {
-        # Vérifier que le pool de runspaces est ouvert
-        if ($RunspacePool.RunspacePoolStateInfo.State -ne [System.Management.Automation.Runspaces.RunspacePoolState]::Opened) {
-            throw "Le pool de runspaces n'est pas ouvert. État actuel : $($RunspacePool.RunspacePoolStateInfo.State)"
-        }
-
-        # Créer une liste pour stocker les runspaces
-        $runspaces = [System.Collections.Generic.List[PSObject]]::new()
-
-        # Calculer le nombre total d'objets à traiter
-        $totalObjects = $InputObjects.Count
-        Write-Verbose "Création de runspaces pour $totalObjects objets en lots de $BatchSize"
-
-        # Appliquer la limite de throttling si spécifiée
-        $effectiveTotal = if ($ThrottleLimit -gt 0 -and $ThrottleLimit -lt $totalObjects) {
-            Write-Verbose "Limite de throttling appliquée : $ThrottleLimit sur $totalObjects objets"
-            $ThrottleLimit
-        } else {
-            $totalObjects
-        }
-
-        # Calculer le nombre de lots
-        $batchCount = [Math]::Ceiling($effectiveTotal / $BatchSize)
-        Write-Verbose "Nombre de lots à créer : $batchCount"
-    }
-
-    process {
-        # Créer les runspaces par lots
-        for ($batchIndex = 0; $batchIndex -lt $batchCount; $batchIndex++) {
-            $startIndex = $batchIndex * $BatchSize
-            $endIndex = [Math]::Min($startIndex + $BatchSize - 1, $effectiveTotal - 1)
-            $batchSize = $endIndex - $startIndex + 1
-
-            Write-Verbose "Création du lot $($batchIndex + 1)/$batchCount : objets $startIndex à $endIndex"
-
-            # Créer les runspaces pour ce lot
-            for ($i = $startIndex; $i -le $endIndex; $i++) {
-                $item = $InputObjects[$i]
-
-                # Créer une nouvelle instance PowerShell
-                $powershell = [powershell]::Create()
-                $powershell.RunspacePool = $RunspacePool
-
-                # Configurer le script ou la commande
-                if ($PSCmdlet.ParameterSetName -eq "ScriptBlock") {
-                    [void]$powershell.AddScript($ScriptBlock.ToString())
-                    # Ajouter le paramètre principal (l'objet d'entrée) pour le script block
-                    [void]$powershell.AddParameter($ParameterName, $item)
-                } else {
-                    # Pour les commandes, utiliser AddArgument au lieu de AddParameter pour éviter les problèmes de formatage
-                    [void]$powershell.AddCommand($Command)
-                    [void]$powershell.AddArgument($item)
-                }
-
-                # Ajouter les arguments supplémentaires
-                foreach ($key in $ArgumentList.Keys) {
-                    [void]$powershell.AddParameter($key, $ArgumentList[$key])
-                }
-
-                # Démarrer l'exécution asynchrone
-                $handle = $powershell.BeginInvoke()
-
-                # Ajouter à la liste des runspaces
-                $runspaces.Add([PSCustomObject]@{
-                        PowerShell = $powershell
-                        Handle     = $handle
-                        Item       = $item
-                        StartTime  = [datetime]::Now
-                        BatchIndex = $batchIndex
-                    })
-            }
-        }
-    }
-
-    end {
-        Write-Verbose "$($runspaces.Count) runspaces créés en $batchCount lots"
-        return $runspaces
-    }
-}
-
-# Fonction pour gérer le cache des pools de runspaces
-function Get-RunspacePoolFromCache {
-    <#
-    .SYNOPSIS
-        Récupère un pool de runspaces du cache ou en crée un nouveau si nécessaire.
-
-    .DESCRIPTION
-        Cette fonction recherche un pool de runspaces dans le cache en fonction des paramètres
-        spécifiés. Si un pool correspondant est trouvé et est disponible, il est retourné.
-        Sinon, un nouveau pool est créé, ajouté au cache et retourné.
-
-    .PARAMETER MinRunspaces
-        Nombre minimum de runspaces dans le pool.
-        Par défaut : 1
-
-    .PARAMETER MaxRunspaces
-        Nombre maximum de runspaces dans le pool.
-        Par défaut : Nombre de processeurs logiques
-
-    .PARAMETER ApartmentState
-        État d'appartement des runspaces (STA ou MTA).
-        Par défaut : MTA
-
-    .PARAMETER ThreadOptions
-        Options de thread pour les runspaces.
-        Par défaut : ReuseThread
-
-    .PARAMETER SessionState
-        État de session initial pour les runspaces.
-        Par défaut : État de session par défaut
-
-    .PARAMETER HostObject
-        Objet hôte à utiliser pour les runspaces.
-        Par défaut : Hôte PowerShell actuel
-
-    .PARAMETER CreateNew
-        Crée un nouveau pool de runspaces même si un pool correspondant existe dans le cache.
-        Par défaut : $false
-
-    .PARAMETER MaxCacheSize
-        Nombre maximum de pools de runspaces à conserver dans le cache.
-        Par défaut : 10
-
-    .PARAMETER MaxIdleTimeMinutes
-        Temps maximum en minutes pendant lequel un pool peut rester inactif avant d'être supprimé du cache.
-        Par défaut : 30 minutes
-
-    .EXAMPLE
-        $pool = Get-RunspacePoolFromCache -MinRunspaces 1 -MaxRunspaces 4
-
-        Récupère un pool de runspaces avec 1 à 4 runspaces du cache ou en crée un nouveau.
-
-    .EXAMPLE
-        $pool = Get-RunspacePoolFromCache -MinRunspaces 1 -MaxRunspaces 8 -CreateNew $true
-
-        Crée un nouveau pool de runspaces avec 1 à 8 runspaces, ignorant le cache.
-
-    .OUTPUTS
-        System.Management.Automation.Runspaces.RunspacePool
-
-        Le pool de runspaces récupéré ou créé.
-    #>
-    [CmdletBinding()]
-    [OutputType([System.Management.Automation.Runspaces.RunspacePool])]
-    param(
-        [Parameter(Mandatory = $false, HelpMessage = "Nombre minimum de runspaces")]
-        [ValidateRange(1, 1000)]
-        [int]$MinRunspaces = 1,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Nombre maximum de runspaces")]
-        [ValidateRange(1, 5000)]
-        [int]$MaxRunspaces = (Get-OptimalThreadCount),
-
-        [Parameter(Mandatory = $false, HelpMessage = "État d'appartement des runspaces")]
-        [ValidateSet("STA", "MTA")]
-        [string]$ApartmentState = "MTA",
-
-        [Parameter(Mandatory = $false, HelpMessage = "Options de thread pour les runspaces")]
-        [ValidateSet("Default", "ReuseThread", "UseNewThread")]
-        [string]$ThreadOptions = "ReuseThread",
-
-        [Parameter(Mandatory = $false, HelpMessage = "État de session initial pour les runspaces")]
-        [System.Management.Automation.Runspaces.InitialSessionState]$SessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault(),
-
-        [Parameter(Mandatory = $false, HelpMessage = "Objet hôte à utiliser pour les runspaces")]
-        [System.Management.Automation.Host.PSHost]$HostObject = $Host,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Crée un nouveau pool même si un pool correspondant existe dans le cache")]
-        [bool]$CreateNew = $false,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Nombre maximum de pools dans le cache")]
-        [ValidateRange(1, 100)]
-        [int]$MaxCacheSize = 10,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Temps maximum en minutes pendant lequel un pool peut rester inactif")]
-        [ValidateRange(1, 1440)]
-        [int]$MaxIdleTimeMinutes = 30
-    )
-
-    begin {
-        # Nettoyer le cache des pools inactifs
-        Clear-RunspacePoolCache -MaxIdleTimeMinutes $MaxIdleTimeMinutes -MaxCacheSize $MaxCacheSize
-    }
-
-    process {
-        # Générer une clé de cache unique basée sur les paramètres du pool
-        $cacheKey = "Min=$MinRunspaces;Max=$MaxRunspaces;Apt=$ApartmentState;Opt=$ThreadOptions"
-
-        # Si on demande explicitement un nouveau pool, on le crée sans consulter le cache
-        if ($CreateNew) {
-            Write-Verbose "Création d'un nouveau pool de runspaces (création forcée) avec la configuration : $cacheKey"
-            return New-CachedRunspacePool -MinRunspaces $MinRunspaces -MaxRunspaces $MaxRunspaces -ApartmentState $ApartmentState -ThreadOptions $ThreadOptions -SessionState $SessionState -HostObject $HostObject -CacheKey $cacheKey
-        }
-
-        # Vérifier si un pool correspondant existe dans le cache
-        if ($script:RunspacePoolCache.ContainsKey($cacheKey)) {
-            $cachedPool = $script:RunspacePoolCache[$cacheKey]
-
-            # Vérifier si le pool est toujours valide et disponible
-            if ($cachedPool.Pool.RunspacePoolStateInfo.State -eq [System.Management.Automation.Runspaces.RunspacePoolState]::Opened) {
-                Write-Verbose "Pool de runspaces trouvé dans le cache avec la configuration : $cacheKey"
-
-                # Mettre à jour les métadonnées du pool
-                $cachedPool.LastUsed = [datetime]::Now
-                $cachedPool.UseCount++
-
-                return $cachedPool.Pool
-            } else {
-                # Le pool n'est plus valide, le supprimer du cache
-                Write-Verbose "Pool de runspaces trouvé dans le cache mais non valide (état : $($cachedPool.Pool.RunspacePoolStateInfo.State)). Suppression et création d'un nouveau."
-                $script:RunspacePoolCache.Remove($cacheKey)
-
-                # Essayer de nettoyer le pool
-                try {
-                    if ($cachedPool.Pool.RunspacePoolStateInfo.State -ne [System.Management.Automation.Runspaces.RunspacePoolState]::Closed) {
-                        $cachedPool.Pool.Close()
-                    }
-                    $cachedPool.Pool.Dispose()
-                } catch {
-                    Write-Verbose "Erreur lors du nettoyage du pool : $_"
-                }
-            }
-        }
-
-        # Aucun pool valide trouvé dans le cache, en créer un nouveau
-        Write-Verbose "Aucun pool de runspaces valide trouvé dans le cache. Création d'un nouveau avec la configuration : $cacheKey"
-        return New-CachedRunspacePool -MinRunspaces $MinRunspaces -MaxRunspaces $MaxRunspaces -ApartmentState $ApartmentState -ThreadOptions $ThreadOptions -SessionState $SessionState -HostObject $HostObject -CacheKey $cacheKey
-    }
-}
-
-function New-CachedRunspacePool {
-    <#
-    .SYNOPSIS
-        Crée un nouveau pool de runspaces et l'ajoute au cache.
-
-    .DESCRIPTION
-        Fonction interne utilisée par Get-RunspacePoolFromCache pour créer un nouveau pool
-        de runspaces et l'ajouter au cache.
-    #>
-    [CmdletBinding()]
-    [OutputType([System.Management.Automation.Runspaces.RunspacePool])]
-    param(
-        [Parameter(Mandatory = $true)]
-        [int]$MinRunspaces,
-
-        [Parameter(Mandatory = $true)]
-        [int]$MaxRunspaces,
-
-        [Parameter(Mandatory = $true)]
-        [string]$ApartmentState,
-
-        [Parameter(Mandatory = $true)]
-        [string]$ThreadOptions,
-
-        [Parameter(Mandatory = $true)]
-        [System.Management.Automation.Runspaces.InitialSessionState]$SessionState,
-
-        [Parameter(Mandatory = $true)]
-        [System.Management.Automation.Host.PSHost]$HostObject,
-
-        [Parameter(Mandatory = $true)]
-        [string]$CacheKey
-    )
-
-    # Créer le pool de runspaces
-    $pool = [runspacefactory]::CreateRunspacePool($MinRunspaces, $MaxRunspaces, $SessionState, $HostObject)
-
-    # Définir l'état d'appartement
-    if ($ApartmentState -eq "STA") {
-        $pool.ApartmentState = "STA"
-    } else {
-        $pool.ApartmentState = "MTA"
-    }
-
-    # Définir les options de thread
-    switch ($ThreadOptions) {
-        "Default" { $pool.ThreadOptions = "Default" }
-        "ReuseThread" { $pool.ThreadOptions = "ReuseThread" }
-        "UseNewThread" { $pool.ThreadOptions = "UseNewThread" }
-        default { $pool.ThreadOptions = "ReuseThread" }
-    }
-
-    # Ouvrir le pool
-    $pool.Open()
-
-    # Ajouter le pool au cache
-    $script:RunspacePoolCache[$CacheKey] = [PSCustomObject]@{
-        Pool         = $pool
-        Created      = [datetime]::Now
-        LastUsed     = [datetime]::Now
-        UseCount     = 1
-        Key          = $CacheKey
-        MinRunspaces = $MinRunspaces
-        MaxRunspaces = $MaxRunspaces
-    }
-
-    return $pool
-}
-
-function Clear-RunspacePoolCache {
-    <#
-    .SYNOPSIS
-        Nettoie le cache des pools de runspaces.
-
-    .DESCRIPTION
-        Cette fonction supprime les pools de runspaces inactifs du cache en fonction
-        du temps d'inactivité et de la taille maximale du cache.
-
-    .PARAMETER MaxIdleTimeMinutes
-        Temps maximum en minutes pendant lequel un pool peut rester inactif avant d'être supprimé du cache.
-        Par défaut : 30 minutes
-
-    .PARAMETER MaxCacheSize
-        Nombre maximum de pools de runspaces à conserver dans le cache.
-        Par défaut : 10
-
-    .PARAMETER Force
-        Force la suppression de tous les pools du cache, même s'ils sont actifs.
-        Par défaut : $false
-
-    .EXAMPLE
-        Clear-RunspacePoolCache -MaxIdleTimeMinutes 15 -MaxCacheSize 5
-
-        Nettoie le cache en supprimant les pools inactifs depuis plus de 15 minutes
-        et en limitant la taille du cache à 5 pools.
-
-    .EXAMPLE
-        Clear-RunspacePoolCache -Force
-
-        Supprime tous les pools du cache, même s'ils sont actifs.
-    #>
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $false, HelpMessage = "Temps maximum en minutes pendant lequel un pool peut rester inactif")]
-        [ValidateRange(1, 1440)]
-        [int]$MaxIdleTimeMinutes = 30,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Nombre maximum de pools dans le cache")]
-        [ValidateRange(1, 100)]
-        [int]$MaxCacheSize = 10,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Force la suppression de tous les pools du cache")]
-        [switch]$Force
-    )
-
-    # Si le cache est vide, rien à faire
-    if ($script:RunspacePoolCache.Count -eq 0) {
-        Write-Verbose "Le cache des pools de runspaces est vide."
-        return
-    }
-
-    # Si on force la suppression, vider complètement le cache
-    if ($Force) {
-        Write-Verbose "Suppression forcée de tous les pools du cache ($($script:RunspacePoolCache.Count) pools)."
-
-        # Fermer et disposer tous les pools
-        foreach ($key in @($script:RunspacePoolCache.Keys)) {
-            $pool = $script:RunspacePoolCache[$key].Pool
-            try {
-                if ($pool.RunspacePoolStateInfo.State -ne [System.Management.Automation.Runspaces.RunspacePoolState]::Closed) {
-                    $pool.Close()
-                }
-                $pool.Dispose()
-            } catch {
-                Write-Verbose "Erreur lors de la fermeture du pool '$key' : $_"
-            }
-        }
-
-        # Vider le cache
-        $script:RunspacePoolCache.Clear()
-        return
-    }
-
-    # Calculer le seuil d'inactivité
-    $idleThreshold = [datetime]::Now.AddMinutes(-$MaxIdleTimeMinutes)
-
-    # Identifier les pools inactifs
-    $inactivePools = @($script:RunspacePoolCache.Keys | Where-Object {
-            $cachedPool = $script:RunspacePoolCache[$_]
-            $cachedPool.LastUsed -lt $idleThreshold
-        })
-
-    if ($inactivePools.Count -gt 0) {
-        Write-Verbose "Suppression de $($inactivePools.Count) pools inactifs du cache."
-
-        # Supprimer les pools inactifs
-        foreach ($key in $inactivePools) {
-            $pool = $script:RunspacePoolCache[$key].Pool
-            try {
-                if ($pool.RunspacePoolStateInfo.State -ne [System.Management.Automation.Runspaces.RunspacePoolState]::Closed) {
-                    $pool.Close()
-                }
-                $pool.Dispose()
-            } catch {
-                Write-Verbose "Erreur lors de la fermeture du pool inactif '$key' : $_"
-            }
-            $script:RunspacePoolCache.Remove($key)
-        }
-    }
-
-    # Si le cache dépasse toujours la taille maximale, supprimer les pools les moins utilisés
-    if ($script:RunspacePoolCache.Count -gt $MaxCacheSize) {
-        Write-Verbose "Le cache contient $($script:RunspacePoolCache.Count) pools, ce qui dépasse la limite de $MaxCacheSize. Suppression des pools les moins utilisés."
-
-        # Trier les pools par nombre d'utilisations (du moins utilisé au plus utilisé)
-        $poolsToRemove = @($script:RunspacePoolCache.Keys |
-                Sort-Object { $script:RunspacePoolCache[$_].UseCount } |
-                Select-Object -First ($script:RunspacePoolCache.Count - $MaxCacheSize))
-
-        foreach ($key in $poolsToRemove) {
-            $pool = $script:RunspacePoolCache[$key].Pool
-            try {
-                if ($pool.RunspacePoolStateInfo.State -ne [System.Management.Automation.Runspaces.RunspacePoolState]::Closed) {
-                    $pool.Close()
-                }
-                $pool.Dispose()
-            } catch {
-                Write-Verbose "Erreur lors de la fermeture du pool peu utilisé '$key' : $_"
-            }
-            $script:RunspacePoolCache.Remove($key)
-        }
-    }
-
-    Write-Verbose "Le cache contient maintenant $($script:RunspacePoolCache.Count) pools de runspaces."
-}
-
-function Get-RunspacePoolCacheInfo {
-    <#
-    .SYNOPSIS
-        Affiche des informations sur le cache des pools de runspaces.
-
-    .DESCRIPTION
-        Cette fonction retourne des informations détaillées sur les pools de runspaces
-        actuellement stockés dans le cache. Elle permet de surveiller l'utilisation
-        du cache, d'identifier les pools inactifs ou surchargés, et de diagnostiquer
-        les problèmes de performance liés aux pools de runspaces.
-
-        Les informations retournées incluent le nombre total de pools, le nombre total
-        de runspaces, l'âge du pool le plus ancien, la date de dernière utilisation
-        du pool le plus récemment utilisé, et le nombre d'utilisations du pool le plus
-        utilisé. Si le paramètre Detailed est spécifié, des informations détaillées
-        sur chaque pool sont également retournées.
-
-    .PARAMETER Detailed
-        Affiche des informations détaillées sur chaque pool dans le cache, notamment
-        la clé du pool, sa date de création, sa date de dernière utilisation, son nombre
-        d'utilisations, le nombre minimum et maximum de runspaces, son état, le nombre
-        de runspaces disponibles et le nombre de runspaces en cours d'utilisation.
-
-        Par défaut : $false
-
-    .EXAMPLE
-        Get-RunspacePoolCacheInfo
-
-        Affiche un résumé du cache des pools de runspaces, incluant le nombre total de pools,
-        le nombre total de runspaces, et d'autres statistiques globales.
-
-    .EXAMPLE
-        Get-RunspacePoolCacheInfo -Detailed
-
-        Affiche des informations détaillées sur chaque pool dans le cache, y compris
-        leur état, leur utilisation, et leurs caractéristiques.
-
-    .EXAMPLE
-        $cacheInfo = Get-RunspacePoolCacheInfo -Detailed
-        $cacheInfo.Pools | Where-Object { $_.State -eq 'Opened' -and $_.InUseRunspaces -eq 0 }
-
-        Récupère des informations détaillées sur le cache et filtre les pools ouverts
-        mais non utilisés, ce qui peut être utile pour identifier les pools inactifs
-        qui pourraient être fermés pour libérer des ressources.
-
-    .OUTPUTS
-        PSCustomObject
-
-        Un objet contenant des informations sur le cache des pools de runspaces avec les propriétés suivantes:
-        - TotalPools: Nombre total de pools dans le cache
-        - TotalRunspaces: Nombre total de runspaces dans tous les pools
-        - OldestPool: Date de création du pool le plus ancien
-        - MostRecentlyUsed: Date de dernière utilisation du pool le plus récemment utilisé
-        - MostUsedPool: Nombre d'utilisations du pool le plus utilisé
-        - Pools: Liste détaillée des pools (uniquement si Detailed est spécifié)
-    #>
-    [CmdletBinding()]
-    [OutputType([PSCustomObject])]
-    param(
-        [Parameter(Mandatory = $false, HelpMessage = "Affiche des informations détaillées sur chaque pool")]
-        [switch]$Detailed
-    )
-
-    # Créer un résumé du cache
-    $summary = [PSCustomObject]@{
-        TotalPools       = $script:RunspacePoolCache.Count
-        TotalRunspaces   = ($script:RunspacePoolCache.Values | Measure-Object -Property MaxRunspaces -Sum).Sum
-        OldestPool       = if ($script:RunspacePoolCache.Count -gt 0) {
-            ($script:RunspacePoolCache.Values | Sort-Object -Property Created | Select-Object -First 1).Created
-        } else {
-            $null
-        }
-        MostRecentlyUsed = if ($script:RunspacePoolCache.Count -gt 0) {
-            ($script:RunspacePoolCache.Values | Sort-Object -Property LastUsed -Descending | Select-Object -First 1).LastUsed
-        } else {
-            $null
-        }
-        MostUsedPool     = if ($script:RunspacePoolCache.Count -gt 0) {
-            ($script:RunspacePoolCache.Values | Sort-Object -Property UseCount -Descending | Select-Object -First 1).UseCount
-        } else {
-            0
-        }
-        Pools            = if ($Detailed) {
-            $script:RunspacePoolCache.Values | ForEach-Object {
-                [PSCustomObject]@{
-                    Key                = $_.Key
-                    Created            = $_.Created
-                    LastUsed           = $_.LastUsed
-                    UseCount           = $_.UseCount
-                    MinRunspaces       = $_.MinRunspaces
-                    MaxRunspaces       = $_.MaxRunspaces
-                    State              = $_.Pool.RunspacePoolStateInfo.State
-                    AvailableRunspaces = $_.Pool.GetAvailableRunspaces()
-                    InUseRunspaces     = $_.MaxRunspaces - $_.Pool.GetAvailableRunspaces()
-                }
-            }
-        } else {
-            $null
-        }
-    }
-
-    return $summary
-}
-
-# Fonction pour initialiser les paramètres d'encodage
-function Initialize-EncodingSettings {
-    <#
-    .SYNOPSIS
-        Configure l'encodage UTF-8 pour la console PowerShell et les fichiers.
-
-    .DESCRIPTION
-        Cette fonction configure l'encodage UTF-8 pour la console PowerShell,
-        en tenant compte des différences entre PowerShell 5.1 et PowerShell 7.x.
-        Elle permet d'assurer un affichage correct des caractères accentués
-        dans la console et dans les fichiers générés.
-
-        La fonction configure également les paramètres par défaut pour les cmdlets
-        qui utilisent l'encodage, comme Out-File, Set-Content et Add-Content.
-
-    .PARAMETER UseBOM
-        Indique si l'encodage UTF-8 doit inclure un BOM (Byte Order Mark).
-        Par défaut, la valeur est $true pour assurer une compatibilité maximale.
-
-    .PARAMETER ConfigureConsole
-        Indique si l'encodage de la console doit être configuré.
-        Par défaut, la valeur est $true.
-
-    .PARAMETER ConfigureDefaultParameters
-        Indique si les paramètres par défaut des cmdlets doivent être configurés.
-        Par défaut, la valeur est $true.
-
-    .PARAMETER Force
-        Force la configuration de l'encodage même si elle est déjà configurée.
-        Par défaut, la valeur est $false.
-
-    .EXAMPLE
-        Initialize-EncodingSettings
-        Configure l'encodage UTF-8 avec BOM pour la console PowerShell et les fichiers.
-
-    .EXAMPLE
-        Initialize-EncodingSettings -UseBOM $false
-        Configure l'encodage UTF-8 sans BOM pour la console PowerShell et les fichiers.
-
-    .EXAMPLE
-        Initialize-EncodingSettings -ConfigureConsole $true -ConfigureDefaultParameters $false
-        Configure uniquement l'encodage de la console, sans modifier les paramètres par défaut des cmdlets.
-
-    .NOTES
-        Cette fonction doit être appelée au début de chaque script ou module
-        qui manipule des caractères accentués ou des caractères spéciaux.
-
-        Différences entre PowerShell 5.1 et 7.x :
-        - PowerShell 5.1 : Nécessite de configurer $OutputEncoding et [Console]::OutputEncoding
-        - PowerShell 7.x : Utilise UTF-8 par défaut, mais il est recommandé de configurer explicitement
-
-        PowerShell 5.1 utilise des noms d'encodage différents de PowerShell 7.x :
-        - PowerShell 5.1 : 'utf8' pour UTF-8 avec BOM
-        - PowerShell 7.x : 'utf8BOM' pour UTF-8 avec BOM, 'utf8NoBOM' pour UTF-8 sans BOM
-    #>
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $false, HelpMessage = "Indique si l'encodage UTF-8 doit inclure un BOM")]
-        [bool]$UseBOM = $true,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Indique si l'encodage de la console doit être configuré")]
-        [bool]$ConfigureConsole = $true,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Indique si les paramètres par défaut des cmdlets doivent être configurés")]
-        [bool]$ConfigureDefaultParameters = $true,
-
-        [Parameter(Mandatory = $false, HelpMessage = "Force la configuration de l'encodage même si elle est déjà configurée")]
-        [switch]$Force
-    )
-
-    # Créer un objet pour stocker les informations d'encodage
-    $encodingInfo = [PSCustomObject]@{
-        PSVersion               = $PSVersionTable.PSVersion
-        PreviousOutputEncoding  = $OutputEncoding
-        PreviousConsoleEncoding = [Console]::OutputEncoding
-        CurrentOutputEncoding   = $null
-        CurrentConsoleEncoding  = $null
-        DefaultParametersSet    = $false
-        Success                 = $false
-        UsedBOM                 = $UseBOM
-        ConfiguredConsole       = $false
-        ConfiguredParameters    = $false
-        Errors                  = @()
-    }
-
-    try {
-        # Déterminer si nous sommes sur PowerShell 7.x ou 5.1
-        $isPowerShell7 = $PSVersionTable.PSVersion.Major -ge 7
-
-        # Configurer l'encodage de sortie pour la console
-        if ($ConfigureConsole) {
-            try {
-                $OutputEncoding = [System.Text.Encoding]::UTF8
-                [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-
-                # Configurer l'encodage d'entrée de la console si possible
-                try {
-                    [Console]::InputEncoding = [System.Text.Encoding]::UTF8
-                } catch {
-                    $encodingInfo.Errors += "Impossible de configurer l'encodage d'entrée de la console: $_"
-                    Write-Verbose "Impossible de configurer l'encodage d'entrée de la console: $_"
-                }
-
-                $encodingInfo.ConfiguredConsole = $true
-                Write-Verbose "Encodage de la console configuré avec succès pour UTF-8"
-            } catch {
-                $encodingInfo.Errors += "Erreur lors de la configuration de l'encodage de la console: $_"
-                Write-Warning "Erreur lors de la configuration de l'encodage de la console: $_"
-            }
-        }
-
-        # Configurer les paramètres par défaut pour les cmdlets qui utilisent l'encodage
-        if ($ConfigureDefaultParameters) {
-            try {
-                if ($isPowerShell7) {
-                    # PowerShell 7.x utilise utf8NoBOM par défaut
-                    if ($UseBOM) {
-                        $encodingValue = 'utf8BOM'
-                    } else {
-                        $encodingValue = 'utf8NoBOM'
-                    }
-                } else {
-                    # PowerShell 5.1 utilise des noms d'encodage différents
-                    # Note: Dans PowerShell 5.1, 'utf8' signifie UTF-8 avec BOM
-                    $encodingValue = 'utf8'
-                }
-
-                # Configurer les paramètres par défaut pour les cmdlets qui utilisent l'encodage
-                $PSDefaultParameterValues['Out-File:Encoding'] = $encodingValue
-                $PSDefaultParameterValues['Set-Content:Encoding'] = $encodingValue
-                $PSDefaultParameterValues['Add-Content:Encoding'] = $encodingValue
-                $PSDefaultParameterValues['Export-Csv:Encoding'] = $encodingValue
-                $PSDefaultParameterValues['Export-Clixml:Encoding'] = $encodingValue
-                $PSDefaultParameterValues['Export-PSSession:Encoding'] = $encodingValue
-
-                $encodingInfo.ConfiguredParameters = $true
-                Write-Verbose "Paramètres par défaut configurés avec succès pour l'encodage $encodingValue"
-            } catch {
-                $encodingInfo.Errors += "Erreur lors de la configuration des paramètres par défaut: $_"
-                Write-Warning "Erreur lors de la configuration des paramètres par défaut: $_"
-            }
-        }
-
-        # Mettre à jour les informations d'encodage
-        $encodingInfo.CurrentOutputEncoding = $OutputEncoding
-        $encodingInfo.CurrentConsoleEncoding = [Console]::OutputEncoding
-        $encodingInfo.Success = $encodingInfo.ConfiguredConsole -or $encodingInfo.ConfiguredParameters
-
-        # Afficher un message de succès
-        if ($encodingInfo.Success) {
-            Write-Verbose "Encodage configuré avec succès pour UTF-8 $(if ($UseBOM) { 'avec BOM' } else { 'sans BOM' })"
-        } else {
-            Write-Warning "La configuration de l'encodage a échoué. Consultez les erreurs pour plus de détails."
-        }
-    } catch {
-        $encodingInfo.Errors += "Erreur générale lors de la configuration de l'encodage: $_"
-        Write-Error "Erreur lors de la configuration de l'encodage: $_"
-        $encodingInfo.Success = $false
-    }
-
-    return $encodingInfo
-}
-
-# Fonction pour créer des objets d'erreur standardisés
-function New-UnifiedError {
-    <#
-    .SYNOPSIS
-        Crée un objet d'erreur standardisé pour le module UnifiedParallel.
-
-    .DESCRIPTION
-        Cette fonction crée un objet d'erreur standardisé pour le module UnifiedParallel.
-        Elle permet de générer des erreurs cohérentes dans tout le module, avec des
-        informations détaillées et des options pour écrire l'erreur dans le flux d'erreur
-        ou la lancer comme exception.
-
-        L'objet d'erreur contient des informations comme le message, la source, l'exception,
-        la catégorie, etc. Il peut être utilisé pour générer des rapports d'erreur détaillés
-        et faciliter le débogage.
-
-    .PARAMETER Message
-        Le message d'erreur principal.
-
-    .PARAMETER Source
-        La source de l'erreur (généralement le nom de la fonction qui a généré l'erreur).
-        Par défaut, "UnifiedParallel".
-
-    .PARAMETER Exception
-        L'exception qui a causé l'erreur. Si non spécifiée, une nouvelle exception sera créée
-        avec le message fourni.
-
-    .PARAMETER Category
-        La catégorie d'erreur PowerShell. Par défaut, NotSpecified.
-        Valeurs possibles : NotSpecified, OpenError, CloseError, DeviceError, DeadlockDetected,
-        InvalidArgument, InvalidData, InvalidOperation, InvalidResult, InvalidType, MetadataError,
-        NotImplemented, NotInstalled, ObjectNotFound, OperationStopped, OperationTimeout,
-        SyntaxError, ParserError, PermissionDenied, ResourceBusy, ResourceExists, ResourceUnavailable,
-        ReadError, WriteError, FromStdErr, SecurityError, ProtocolError, ConnectionError,
-        AuthenticationError, LimitsExceeded, QuotaExceeded, NotEnabled.
-
-    .PARAMETER ErrorId
-        L'identifiant de l'erreur. Si non spécifié, un GUID sera généré.
-
-    .PARAMETER TargetObject
-        L'objet cible de l'erreur.
-
-    .PARAMETER WriteError
-        Indique si l'erreur doit être écrite dans le flux d'erreur avec Write-Error.
-
-    .PARAMETER ThrowError
-        Indique si l'erreur doit être lancée comme exception avec throw.
-
-    .PARAMETER ErrorAction
-        L'action à effectuer en cas d'erreur lors de l'appel à Write-Error.
-        Par défaut, Continue.
-
-    .PARAMETER ErrorRecord
-        Un enregistrement d'erreur existant à utiliser comme base pour le nouvel objet d'erreur.
-        Si spécifié, les autres paramètres (Message, Exception, Category, etc.) seront ignorés.
-
-    .PARAMETER AdditionalInfo
-        Informations supplémentaires à inclure dans l'objet d'erreur.
-        Doit être un hashtable avec des paires clé-valeur.
-
-    .EXAMPLE
-        New-UnifiedError -Message "Le fichier n'existe pas" -Source "Get-ConfigFile" -Category ObjectNotFound -WriteError
-
-        Crée un objet d'erreur avec le message "Le fichier n'existe pas", la source "Get-ConfigFile",
-        la catégorie ObjectNotFound, et écrit l'erreur dans le flux d'erreur.
-
-    .EXAMPLE
-        try {
-            # Code qui peut générer une erreur
-        } catch {
-            New-UnifiedError -ErrorRecord $_ -Source "Initialize-UnifiedParallel" -WriteError
-        }
-
-        Capture une erreur et crée un objet d'erreur standardisé à partir de l'enregistrement d'erreur,
-        avec la source "Initialize-UnifiedParallel", et écrit l'erreur dans le flux d'erreur.
-
-    .EXAMPLE
-        $error = New-UnifiedError -Message "Opération non autorisée" -Category PermissionDenied -ThrowError
-
-        Crée un objet d'erreur avec le message "Opération non autorisée", la catégorie PermissionDenied,
-        et lance l'erreur comme exception.
-
-    .NOTES
-        Cette fonction est conçue pour être utilisée dans tout le module UnifiedParallel afin
-        de standardiser la gestion des erreurs et faciliter le débogage.
-
-        Elle est compatible avec PowerShell 5.1 et PowerShell 7.x.
-    #>
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory = $true, Position = 0, ParameterSetName = "Message")]
-        [string]$Message,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Message")]
-        [Parameter(Mandatory = $false, ParameterSetName = "ErrorRecord")]
-        [string]$Source = "UnifiedParallel",
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Message")]
-        [System.Exception]$Exception = $null,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Message")]
-        [System.Management.Automation.ErrorCategory]$Category = [System.Management.Automation.ErrorCategory]::NotSpecified,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Message")]
-        [string]$ErrorId = [System.Guid]::NewGuid().ToString(),
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Message")]
-        [object]$TargetObject = $null,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Message")]
-        [Parameter(Mandatory = $false, ParameterSetName = "ErrorRecord")]
-        [switch]$WriteError,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Message")]
-        [Parameter(Mandatory = $false, ParameterSetName = "ErrorRecord")]
-        [switch]$ThrowError,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Message")]
-        [Parameter(Mandatory = $false, ParameterSetName = "ErrorRecord")]
-        [System.Management.Automation.ActionPreference]$ErrorActionPreference = [System.Management.Automation.ActionPreference]::Continue,
-
-        [Parameter(Mandatory = $true, Position = 0, ParameterSetName = "ErrorRecord")]
-        [System.Management.Automation.ErrorRecord]$ErrorRecord,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "Message")]
-        [Parameter(Mandatory = $false, ParameterSetName = "ErrorRecord")]
-        [hashtable]$AdditionalInfo = @{}
-    )
-
-    begin {
-        # Créer l'objet d'erreur standardisé
-        $errorObject = [PSCustomObject]@{
-            Id             = $ErrorId
-            Message        = $Message
-            Source         = $Source
-            Timestamp      = [datetime]::Now
-            PSVersion      = $PSVersionTable.PSVersion
-            Category       = $Category
-            Exception      = $Exception
-            ErrorRecord    = $null
-            TargetObject   = $TargetObject
-            AdditionalInfo = $AdditionalInfo
-            CallStack      = (Get-PSCallStack | Select-Object -Skip 1)
-            CorrelationId  = [System.Guid]::NewGuid().ToString()
-        }
-
-        # Si un ErrorRecord est fourni, l'utiliser comme base
-        if ($PSCmdlet.ParameterSetName -eq "ErrorRecord") {
-            $errorObject.Message = $ErrorRecord.Exception.Message
-            $errorObject.Exception = $ErrorRecord.Exception
-            $errorObject.Category = $ErrorRecord.CategoryInfo.Category
-            $errorObject.ErrorRecord = $ErrorRecord
-            $errorObject.TargetObject = $ErrorRecord.TargetObject
-            $errorObject.Id = $ErrorRecord.FullyQualifiedErrorId
-        } else {
-            # Créer une exception si aucune n'est fournie
-            if ($null -eq $Exception) {
-                $errorObject.Exception = [System.Exception]::new($Message)
-            }
-
-            # Créer un ErrorRecord
-            $errorObject.ErrorRecord = [System.Management.Automation.ErrorRecord]::new(
-                $errorObject.Exception,
-                $errorObject.Id,
-                $errorObject.Category,
-                $errorObject.TargetObject
-            )
-        }
-    }
-
-    process {
-        # Écrire l'erreur dans le flux d'erreur si demandé
-        if ($WriteError) {
-            $writeErrorParams = @{
-                Message      = "[$Source] $($errorObject.Message)"
-                ErrorRecord  = $errorObject.ErrorRecord
-                ErrorAction  = $ErrorActionPreference
-                Category     = $errorObject.Category
-                ErrorId      = $errorObject.Id
-                TargetObject = $errorObject.TargetObject
-            }
-
-            # Ajouter des informations supplémentaires au message si disponibles
-            if ($AdditionalInfo.Count -gt 0) {
-                $additionalInfoString = "`nInformations supplémentaires:"
-                foreach ($key in $AdditionalInfo.Keys) {
-                    $additionalInfoString += "`n- $key : $($AdditionalInfo[$key])"
-                }
-                $writeErrorParams.Message += $additionalInfoString
-            }
-
-            Write-Error @writeErrorParams
-        }
-
-        # Lancer l'erreur comme exception si demandé
-        if ($ThrowError) {
-            throw $errorObject.ErrorRecord
-        }
-    }
-
-    end {
-        # Retourner l'objet d'erreur
-        return $errorObject
-    }
-}
-
-# Fonction pour récupérer la version du module
-function Get-UnifiedParallelVersion {
-    <#
-    .SYNOPSIS
-        Récupère la version du module UnifiedParallel.
-
-    .DESCRIPTION
-        Cette fonction retourne la version actuelle du module UnifiedParallel.
-        Elle peut également fournir des informations détaillées sur le module,
-        comme la date de compilation, les fonctionnalités disponibles et les
-        dépendances.
-
-    .PARAMETER Detailed
-        Indique si des informations détaillées doivent être retournées.
-        Par défaut : $false
-
-    .EXAMPLE
-        Get-UnifiedParallelVersion
-        # Retourne la version du module (ex: "1.1.0")
-
-    .EXAMPLE
-        Get-UnifiedParallelVersion -Detailed
-        # Retourne un objet avec des informations détaillées sur le module
-
-    .OUTPUTS
-        System.String ou System.Management.Automation.PSObject
-
-        Si le paramètre Detailed n'est pas spécifié, retourne une chaîne de caractères
-        contenant la version du module.
-
-        Si le paramètre Detailed est spécifié, retourne un objet PSCustomObject avec
-        les propriétés suivantes:
-        - Version: Version du module
-        - PSVersion: Version de PowerShell
-        - IsInitialized: État d'initialisation du module
-        - Features: Fonctionnalités disponibles
-        - BuildDate: Date de compilation (si disponible)
-        - Path: Chemin du module
-    #>
-    [CmdletBinding()]
-    [OutputType([string], [PSCustomObject])]
-    param(
-        [Parameter(Mandatory = $false)]
-        [switch]$Detailed
-    )
-
-    begin {
-        Write-Verbose "Récupération de la version du module UnifiedParallel"
-    }
-
-    process {
-        if ($Detailed) {
-            # Récupérer des informations détaillées sur le module
-            $moduleInfo = [PSCustomObject]@{
-                Version       = $script:MODULE_VERSION
-                PSVersion     = $PSVersionTable.PSVersion
-                IsInitialized = Get-ModuleInitialized
-                Features      = [PSCustomObject]@{
-                    BackpressureEnabled = $false
-                    ThrottlingEnabled   = $false
-                    ResourceMonitoring  = $false
-                    ErrorHandling       = $true
-                    RunspacePoolCache   = $true
-                }
-                BuildDate     = $null
-                Path          = $PSScriptRoot
-            }
-
-            # Vérifier si le module est initialisé pour obtenir plus d'informations
-            if (Get-ModuleInitialized) {
-                $config = Get-ModuleConfig
-                if ($config) {
-                    $moduleInfo.Features.BackpressureEnabled = $config.BackpressureSettings.Enabled
-                    $moduleInfo.Features.ThrottlingEnabled = $true
-                    $moduleInfo.Features.ResourceMonitoring = $true
-                }
-            }
-
-            # Essayer de récupérer la date de compilation à partir des métadonnées du fichier
-            try {
-                $moduleFile = Get-Item -Path (Join-Path -Path $PSScriptRoot -ChildPath "UnifiedParallel.psm1")
-                $moduleInfo.BuildDate = $moduleFile.LastWriteTime
-            } catch {
-                Write-Verbose "Impossible de récupérer la date de compilation: $_"
-            }
-
-            return $moduleInfo
-        } else {
-            # Retourner simplement la version
-            return $script:MODULE_VERSION
-        }
-    }
-
-    end {
-        Write-Verbose "Récupération de la version du module UnifiedParallel terminée"
-    }
-}
-
-# Fonctions pour la conversion de types d'énumération
-
-# Cache des types d'énumération pour optimiser les performances
-$script:EnumTypeCache = @{}
-
-# Fonction pour obtenir les informations sur un type d'énumération
-function Get-EnumTypeInfo {
-    <#
-    .SYNOPSIS
-        Récupère les informations sur un type d'énumération.
-
-    .DESCRIPTION
-        Cette fonction récupère les informations sur un type d'énumération, comme ses noms, ses valeurs,
-        et son type sous-jacent. Elle utilise un cache pour optimiser les performances.
-
-    .PARAMETER EnumType
-        Le type d'énumération pour lequel récupérer les informations.
-
-    .PARAMETER NoCache
-        Indique si le cache doit être ignoré. Si $true, les informations sont toujours récupérées
-        directement depuis le type d'énumération, sans utiliser le cache.
-
-    .EXAMPLE
-        Get-EnumTypeInfo -EnumType ([System.IO.FileAccess])
-        Récupère les informations sur le type d'énumération System.IO.FileAccess.
-
-    .OUTPUTS
-        [PSCustomObject] Un objet contenant les informations sur le type d'énumération.
-    #>
-    [CmdletBinding()]
-    [OutputType([PSCustomObject])]
-    param(
-        [Parameter(Mandatory = $true, Position = 0)]
-        [type]$EnumType,
-
-        [Parameter(Mandatory = $false)]
-        [switch]$NoCache
-    )
-
-    # Vérifier que le type est bien une énumération
-    if (-not $EnumType.IsEnum) {
-        throw [System.ArgumentException]::new("Le type spécifié n'est pas une énumération.", "EnumType")
-    }
-
-    # Clé de cache pour ce type d'énumération
-    $cacheKey = $EnumType.FullName
-
-    # Vérifier si les informations sont déjà dans le cache
-    if (-not $NoCache -and $script:EnumTypeCache.ContainsKey($cacheKey)) {
-        Write-Verbose "Utilisation des informations en cache pour le type d'énumération '$cacheKey'"
-        return $script:EnumTypeCache[$cacheKey]
-    }
-
-    # Récupérer les informations sur le type d'énumération
-    $enumNames = [Enum]::GetNames($EnumType)
-    $enumValues = [Enum]::GetValues($EnumType)
-    $underlyingType = [Enum]::GetUnderlyingType($EnumType)
-    $isFlagsEnum = $EnumType.GetCustomAttributes([System.FlagsAttribute], $false).Length -gt 0
-
-    # Créer un dictionnaire des noms et valeurs
-    $nameValueMap = @{}
-    $valueNameMap = @{}
-    for ($i = 0; $i -lt $enumNames.Length; $i++) {
-        $name = $enumNames[$i]
-        $value = $enumValues[$i]
-        $nameValueMap[$name] = $value
-        $valueNameMap[$value] = $name
-    }
-
-    # Créer l'objet d'informations
-    $enumInfo = [PSCustomObject]@{
-        Type           = $EnumType
-        FullName       = $EnumType.FullName
-        UnderlyingType = $underlyingType
-        IsFlags        = $isFlagsEnum
-        Names          = $enumNames
-        Values         = $enumValues
-        NameValueMap   = $nameValueMap
-        ValueNameMap   = $valueNameMap
-    }
-
-    # Ajouter les informations au cache si le cache n'est pas désactivé
-    if (-not $NoCache) {
-        $script:EnumTypeCache[$cacheKey] = $enumInfo
-        Write-Verbose "Informations sur le type d'énumération '$cacheKey' ajoutées au cache"
-    }
-
-    return $enumInfo
-}
-
-# Fonction pour convertir une valeur en type d'énumération
-function ConvertTo-Enum {
-    <#
-    .SYNOPSIS
-        Convertit une chaîne en valeur d'énumération.
-
-    .DESCRIPTION
-        Cette fonction convertit une chaîne en valeur d'énumération du type spécifié.
-        Elle vérifie que le type est bien une énumération et lance une exception si la conversion échoue.
-        Elle utilise un cache pour optimiser les performances.
-
-    .PARAMETER Value
-        La chaîne à convertir en valeur d'énumération.
-
-    .PARAMETER EnumType
-        Le type d'énumération cible.
-
-    .PARAMETER DefaultValue
-        La valeur par défaut à retourner en cas d'échec de la conversion.
-        Si ce paramètre est spécifié, aucune exception ne sera lancée en cas d'échec.
-
-    .PARAMETER NoCache
-        Indique si le cache doit être ignoré. Si $true, les informations sont toujours récupérées
-        directement depuis le type d'énumération, sans utiliser le cache.
-
-    .EXAMPLE
-        ConvertTo-Enum -Value "ReadWrite" -EnumType ([System.IO.FileAccess])
-        Convertit la chaîne "ReadWrite" en valeur d'énumération System.IO.FileAccess.ReadWrite.
-
-    .EXAMPLE
-        ConvertTo-Enum -Value "InvalidValue" -EnumType ([System.IO.FileAccess]) -DefaultValue ([System.IO.FileAccess]::Read)
-        Tente de convertir la chaîne "InvalidValue" en valeur d'énumération System.IO.FileAccess.
-        Comme la conversion échoue, retourne la valeur par défaut System.IO.FileAccess.Read.
-
-    .OUTPUTS
-        La valeur d'énumération convertie ou la valeur par défaut en cas d'échec.
-    #>
-    [CmdletBinding()]
-    [OutputType([object])]
-    param(
-        [Parameter(Mandatory = $true, Position = 0)]
-        [AllowEmptyString()]
-        [string]$Value,
-
-        [Parameter(Mandatory = $true, Position = 1)]
-        [type]$EnumType,
-
-        [Parameter(Mandatory = $false)]
-        [object]$DefaultValue,
-
-        [Parameter(Mandatory = $false)]
-        [switch]$NoCache
-    )
-
-    # Vérifier si la valeur par défaut est spécifiée
-    $hasDefaultValue = $PSBoundParameters.ContainsKey('DefaultValue')
-
-    # Vérifier que le type est bien une énumération
-    if (-not $EnumType.IsEnum) {
-        if ($hasDefaultValue) {
-            return $DefaultValue
-        } else {
-            throw [System.ArgumentException]::new("Le type spécifié n'est pas une énumération.", "EnumType")
-        }
-    }
-
-    # Utiliser le cache pour optimiser les performances
-    try {
-        # Récupérer les informations sur le type d'énumération
-        $enumInfo = Get-EnumTypeInfo -EnumType $EnumType -NoCache:$NoCache
-
-        # Vérifier si la valeur est un nom valide pour l'énumération (insensible à la casse)
-        $valueLower = $Value.ToLower()
-        foreach ($name in $enumInfo.Names) {
-            if ($name -eq $Value -or $name.ToLower() -eq $valueLower) {
-                return $enumInfo.NameValueMap[$name]
-            }
-        }
-
-        # La valeur n'est pas un nom valide pour l'énumération
-        if ($hasDefaultValue) {
-            return $DefaultValue
-        } else {
-            throw [System.ArgumentException]::new("Impossible de convertir la valeur '$Value' en énumération de type '$($EnumType.FullName)'.", "Value")
-        }
-    } catch {
-        # En cas d'erreur, utiliser la méthode standard
-        if (-not $hasDefaultValue) {
-            try {
-                return [Enum]::Parse($EnumType, $Value, $true)
-            } catch {
-                throw [System.ArgumentException]::new("Impossible de convertir la valeur '$Value' en énumération de type '$($EnumType.FullName)'.", "Value")
-            }
-        } else {
-            try {
-                return [Enum]::Parse($EnumType, $Value, $true)
-            } catch {
-                return $DefaultValue
-            }
-        }
-    }
-}
-
-# Fonction pour convertir une valeur d'énumération en chaîne
-function ConvertFrom-Enum {
-    <#
-    .SYNOPSIS
-        Convertit une valeur d'énumération en chaîne.
-
-    .DESCRIPTION
-        Cette fonction convertit une valeur d'énumération en chaîne.
-        Elle vérifie que la valeur est bien une énumération et lance une exception si la conversion échoue.
-        Elle utilise un cache pour optimiser les performances.
-
-    .PARAMETER EnumValue
-        La valeur d'énumération à convertir en chaîne.
-
-    .PARAMETER NoCache
-        Indique si le cache doit être ignoré. Si $true, les informations sont toujours récupérées
-        directement depuis le type d'énumération, sans utiliser le cache.
-
-    .EXAMPLE
-        ConvertFrom-Enum -EnumValue ([System.IO.FileAccess]::ReadWrite)
-        Convertit la valeur d'énumération System.IO.FileAccess.ReadWrite en chaîne "ReadWrite".
-
-    .OUTPUTS
-        La chaîne représentant la valeur d'énumération.
-    #>
-    [CmdletBinding()]
-    [OutputType([string])]
-    param(
-        [Parameter(Mandatory = $true, Position = 0)]
-        [object]$EnumValue,
-
-        [Parameter(Mandatory = $false)]
-        [switch]$NoCache
-    )
-
-    if ($null -eq $EnumValue) {
-        throw [System.ArgumentNullException]::new("EnumValue", "La valeur d'énumération ne peut pas être null.")
-    }
-
-    $enumType = $EnumValue.GetType()
-    if (-not $enumType.IsEnum) {
-        throw [System.ArgumentException]::new("La valeur spécifiée n'est pas une énumération.", "EnumValue")
-    }
-
-    # Utiliser le cache pour optimiser les performances
-    try {
-        # Récupérer les informations sur le type d'énumération
-        $enumInfo = Get-EnumTypeInfo -EnumType $enumType -NoCache:$NoCache
-
-        # Vérifier si la valeur est dans le dictionnaire des valeurs
-        if ($enumInfo.ValueNameMap.ContainsKey($EnumValue)) {
-            return $enumInfo.ValueNameMap[$EnumValue]
-        }
-    } catch {
-        # En cas d'erreur, utiliser la méthode standard
-        Write-Verbose "Erreur lors de l'utilisation du cache pour la conversion d'énumération : $_"
-    }
-
-    # Utiliser la méthode standard si le cache n'a pas fonctionné
-    return $EnumValue.ToString()
-}
-
-# Fonction pour valider une valeur d'énumération
-function Test-EnumValue {
-    <#
-    .SYNOPSIS
-        Vérifie si une valeur est une valeur valide pour un type d'énumération.
-
-    .DESCRIPTION
-        Cette fonction vérifie si une valeur est une valeur valide pour un type d'énumération.
-        Elle peut vérifier une chaîne ou une valeur numérique.
-        Elle utilise un cache pour optimiser les performances.
-
-    .PARAMETER Value
-        La valeur à vérifier.
-
-    .PARAMETER EnumType
-        Le type d'énumération cible.
-
-    .PARAMETER IgnoreCase
-        Indique si la comparaison des chaînes doit être insensible à la casse.
-        Par défaut, la valeur est $true.
-
-    .PARAMETER NoCache
-        Indique si le cache doit être ignoré. Si $true, les informations sont toujours récupérées
-        directement depuis le type d'énumération, sans utiliser le cache.
-
-    .EXAMPLE
-        Test-EnumValue -Value "ReadWrite" -EnumType ([System.IO.FileAccess])
-        Vérifie si "ReadWrite" est une valeur valide pour l'énumération System.IO.FileAccess.
-
-    .EXAMPLE
-        Test-EnumValue -Value 2 -EnumType ([System.IO.FileAccess])
-        Vérifie si 2 est une valeur valide pour l'énumération System.IO.FileAccess.
-
-    .OUTPUTS
-        [bool] $true si la valeur est valide, $false sinon.
-    #>
-    [CmdletBinding()]
-    [OutputType([bool])]
-    param(
-        [Parameter(Mandatory = $true, Position = 0)]
-        [AllowNull()]
-        [object]$Value,
-
-        [Parameter(Mandatory = $true, Position = 1)]
-        [type]$EnumType,
-
-        [Parameter(Mandatory = $false)]
-        [bool]$IgnoreCase = $true,
-
-        [Parameter(Mandatory = $false)]
-        [switch]$NoCache
-    )
-
-    # Vérifier que le type est bien une énumération
-    if (-not $EnumType.IsEnum) {
-        throw [System.ArgumentException]::new("Le type spécifié n'est pas une énumération.", "EnumType")
-    }
-
-    # Vérifier si la valeur est null
-    if ($null -eq $Value) {
-        return $false
-    }
-
-    # Vérifier si la valeur est déjà du type d'énumération
-    if ($Value.GetType() -eq $EnumType) {
-        return $true
-    }
-
-    # Utiliser le cache pour optimiser les performances
-    try {
-        # Récupérer les informations sur le type d'énumération
-        $enumInfo = Get-EnumTypeInfo -EnumType $EnumType -NoCache:$NoCache
-
-        # Vérifier si la valeur est une chaîne
-        if ($Value -is [string]) {
-            # Vérifier si la chaîne est un nom valide pour l'énumération
-            if ($IgnoreCase) {
-                $valueLower = $Value.ToLower()
-                foreach ($name in $enumInfo.Names) {
-                    if ($name -eq $Value -or $name.ToLower() -eq $valueLower) {
-                        return $true
-                    }
-                }
-            } else {
-                return $enumInfo.NameValueMap.ContainsKey($Value)
-            }
-            return $false
-        }
-
-        # Vérifier si la valeur est un nombre
-        if ($Value -is [int] -or $Value -is [long] -or $Value -is [byte] -or $Value -is [short]) {
-            # Vérifier si le nombre est une valeur valide pour l'énumération
-            foreach ($enumValue in $enumInfo.Values) {
-                if ([int]$enumValue -eq $Value) {
-                    return $true
-                }
-            }
-            return $false
-        }
-
-        # La valeur n'est pas valide
-        return $false
-    } catch {
-        # En cas d'erreur, utiliser la méthode standard
-        Write-Verbose "Erreur lors de l'utilisation du cache pour la validation d'énumération : $_"
-
-        # Vérifier si la valeur est une chaîne
-        if ($Value -is [string]) {
-            # Vérifier si la chaîne est un nom valide pour l'énumération
-            return [Enum]::GetNames($EnumType) | Where-Object {
-                if ($IgnoreCase) {
-                    $_ -eq $Value -or $_.ToLower() -eq $Value.ToLower()
-                } else {
-                    $_ -eq $Value
-                }
-            } | Select-Object -First 1 | ForEach-Object { $true } | Select-Object -First 1 -ErrorAction SilentlyContinue
-        }
-
-        # Vérifier si la valeur est un nombre
-        if ($Value -is [int] -or $Value -is [long] -or $Value -is [byte] -or $Value -is [short]) {
-            # Vérifier si le nombre est une valeur valide pour l'énumération
-            return [Enum]::GetValues($EnumType) | ForEach-Object { [int]$_ } | Where-Object { $_ -eq $Value } | Select-Object -First 1 | ForEach-Object { $true } | Select-Object -First 1 -ErrorAction SilentlyContinue
-        }
-
-        # La valeur n'est pas valide
-        return $false
-    }
-}
-
 # Fonction pour convertir une chaîne en valeur d'énumération ApartmentState
 function ConvertTo-ApartmentState {
     <#
@@ -5019,9 +3156,20 @@ function ConvertTo-ApartmentState {
     # Vérifier si la valeur par défaut est spécifiée
     $hasDefaultValue = $PSBoundParameters.ContainsKey('DefaultValue')
 
-    # Utiliser la fonction générique ConvertTo-Enum
+    # Conversion directe pour PS 5.1 (sans utiliser ConvertTo-Enum)
     try {
-        return ConvertTo-Enum -Value $Value -EnumType ([System.Threading.ApartmentState]) -DefaultValue $DefaultValue -NoCache:$NoCache
+        # Vérifier si la valeur est valide
+        if ($Value -eq "STA" -or $Value -eq "sta" -or $Value -eq "0") {
+            return [System.Threading.ApartmentState]::STA
+        } elseif ($Value -eq "MTA" -or $Value -eq "mta" -or $Value -eq "1") {
+            return [System.Threading.ApartmentState]::MTA
+        } else {
+            if ($hasDefaultValue) {
+                return $DefaultValue
+            } else {
+                throw [System.ArgumentException]::new("Impossible de convertir la valeur '$Value' en énumération ApartmentState. Valeurs valides : STA, MTA.", "Value")
+            }
+        }
     } catch {
         if ($hasDefaultValue) {
             return $DefaultValue
@@ -5067,9 +3215,19 @@ function ConvertFrom-ApartmentState {
         [switch]$NoCache
     )
 
-    # Utiliser la fonction générique ConvertFrom-Enum
+    # Conversion directe pour PS 5.1 (sans utiliser ConvertFrom-Enum)
     try {
-        return ConvertFrom-Enum -EnumValue $EnumValue -NoCache:$NoCache
+        if ($null -eq $EnumValue) {
+            throw [System.ArgumentNullException]::new("EnumValue", "La valeur d'énumération ne peut pas être null.")
+        }
+
+        # Vérifier si la valeur est une énumération ApartmentState
+        if ($EnumValue -isnot [System.Threading.ApartmentState]) {
+            throw [System.ArgumentException]::new("La valeur spécifiée n'est pas une énumération ApartmentState.", "EnumValue")
+        }
+
+        # Convertir la valeur en chaîne
+        return $EnumValue.ToString()
     } catch {
         throw [System.ArgumentException]::new("Impossible de convertir la valeur d'énumération ApartmentState en chaîne.", "EnumValue")
     }
@@ -5123,8 +3281,32 @@ function Test-ApartmentState {
         [switch]$NoCache
     )
 
-    # Utiliser la fonction générique Test-EnumValue
-    return Test-EnumValue -Value $Value -EnumType ([System.Threading.ApartmentState]) -IgnoreCase $IgnoreCase -NoCache:$NoCache
+    # Validation directe pour PS 5.1 (sans utiliser Test-EnumValue)
+    if ($null -eq $Value) {
+        return $false
+    }
+
+    # Vérifier si la valeur est déjà du type d'énumération
+    if ($Value -is [System.Threading.ApartmentState]) {
+        return $true
+    }
+
+    # Vérifier si la valeur est une chaîne
+    if ($Value -is [string]) {
+        if ($IgnoreCase) {
+            return $Value -eq "STA" -or $Value -eq "MTA" -or $Value -eq "sta" -or $Value -eq "mta"
+        } else {
+            return $Value -eq "STA" -or $Value -eq "MTA"
+        }
+    }
+
+    # Vérifier si la valeur est un nombre
+    if ($Value -is [int] -or $Value -is [long] -or $Value -is [byte] -or $Value -is [short]) {
+        return $Value -eq 0 -or $Value -eq 1
+    }
+
+    # La valeur n'est pas valide
+    return $false
 }
 
 # Fonction pour convertir une chaîne en valeur d'énumération PSThreadOptions
@@ -5180,9 +3362,22 @@ function ConvertTo-PSThreadOptions {
     # Vérifier si la valeur par défaut est spécifiée
     $hasDefaultValue = $PSBoundParameters.ContainsKey('DefaultValue')
 
-    # Utiliser la fonction générique ConvertTo-Enum
+    # Conversion directe pour PS 5.1
     try {
-        return ConvertTo-Enum -Value $Value -EnumType ([System.Management.Automation.Runspaces.PSThreadOptions]) -DefaultValue $DefaultValue -NoCache:$NoCache
+        # Vérifier si la valeur est valide
+        if ($Value -eq "Default" -or $Value -eq "default" -or $Value -eq "0") {
+            return [System.Management.Automation.Runspaces.PSThreadOptions]::Default
+        } elseif ($Value -eq "UseNewThread" -or $Value -eq "usenewthread" -or $Value -eq "1") {
+            return [System.Management.Automation.Runspaces.PSThreadOptions]::UseNewThread
+        } elseif ($Value -eq "ReuseThread" -or $Value -eq "reusethread" -or $Value -eq "2") {
+            return [System.Management.Automation.Runspaces.PSThreadOptions]::ReuseThread
+        } else {
+            if ($hasDefaultValue) {
+                return $DefaultValue
+            } else {
+                throw [System.ArgumentException]::new("Impossible de convertir la valeur '$Value' en énumération PSThreadOptions. Valeurs valides : Default, UseNewThread, ReuseThread.", "Value")
+            }
+        }
     } catch {
         if ($hasDefaultValue) {
             return $DefaultValue
@@ -5228,9 +3423,19 @@ function ConvertFrom-PSThreadOptions {
         [switch]$NoCache
     )
 
-    # Utiliser la fonction générique ConvertFrom-Enum
+    # Conversion directe pour PS 5.1
     try {
-        return ConvertFrom-Enum -EnumValue $EnumValue -NoCache:$NoCache
+        if ($null -eq $EnumValue) {
+            throw [System.ArgumentNullException]::new("EnumValue", "La valeur d'énumération ne peut pas être null.")
+        }
+
+        # Vérifier si la valeur est une énumération PSThreadOptions
+        if ($EnumValue -isnot [System.Management.Automation.Runspaces.PSThreadOptions]) {
+            throw [System.ArgumentException]::new("La valeur spécifiée n'est pas une énumération PSThreadOptions.", "EnumValue")
+        }
+
+        # Convertir la valeur en chaîne
+        return $EnumValue.ToString()
     } catch {
         throw [System.ArgumentException]::new("Impossible de convertir la valeur d'énumération PSThreadOptions en chaîne.", "EnumValue")
     }
@@ -5284,8 +3489,33 @@ function Test-PSThreadOptions {
         [switch]$NoCache
     )
 
-    # Utiliser la fonction générique Test-EnumValue
-    return Test-EnumValue -Value $Value -EnumType ([System.Management.Automation.Runspaces.PSThreadOptions]) -IgnoreCase $IgnoreCase -NoCache:$NoCache
+    # Validation directe pour PS 5.1
+    if ($null -eq $Value) {
+        return $false
+    }
+
+    # Vérifier si la valeur est déjà du type d'énumération
+    if ($Value -is [System.Management.Automation.Runspaces.PSThreadOptions]) {
+        return $true
+    }
+
+    # Vérifier si la valeur est une chaîne
+    if ($Value -is [string]) {
+        if ($IgnoreCase) {
+            return $Value -eq "Default" -or $Value -eq "UseNewThread" -or $Value -eq "ReuseThread" -or
+            $Value -eq "default" -or $Value -eq "usenewthread" -or $Value -eq "reusethread"
+        } else {
+            return $Value -eq "Default" -or $Value -eq "UseNewThread" -or $Value -eq "ReuseThread"
+        }
+    }
+
+    # Vérifier si la valeur est un nombre
+    if ($Value -is [int] -or $Value -is [long] -or $Value -is [byte] -or $Value -is [short]) {
+        return $Value -eq 0 -or $Value -eq 1 -or $Value -eq 2
+    }
+
+    # La valeur n'est pas valide
+    return $false
 }
 
 # Fonction pour obtenir les informations sur la version de PowerShell
@@ -5335,9 +3565,11 @@ function Get-PowerShellVersionInfo {
     $psVersion = $PSVersionTable.PSVersion
     $currentEdition = if ($PSVersionTable.ContainsKey('PSEdition')) { $PSVersionTable.PSEdition } else { 'Desktop' }
     $isCorePowerShell = $currentEdition -eq 'Core'
-    $isWindowsOS = if ($isCorePowerShell) { $IsWindows } else { $true }
-    $isLinuxOS = if ($isCorePowerShell) { $IsLinux } else { $false }
-    $isMacOSPlatform = if ($isCorePowerShell) { $IsMacOS } else { $false }
+
+    # Dans PowerShell 5.1, ces variables automatiques n'existent pas, donc on les définit manuellement
+    $isWindowsOS = $true
+    $isLinuxOS = $false
+    $isMacOSPlatform = $false
 
     # Créer l'objet d'informations
     $script:PowerShellVersionInfo = [PSCustomObject]@{
@@ -5354,11 +3586,11 @@ function Get-PowerShellVersionInfo {
         IsMacOS                      = $isMacOSPlatform
         Is64Bit                      = [System.Environment]::Is64BitProcess
         CLRVersion                   = [System.Environment]::Version
-        HasForEachParallel           = $isCorePowerShell -and $psVersion.Major -ge 7
+        HasForEachParallel           = $false # PowerShell 5.1 n'a pas ForEach-Object -Parallel
         HasRunspaces                 = $true # Toutes les versions de PowerShell supportent les Runspaces
-        HasThreadJobs                = $isCorePowerShell -or ($psVersion.Major -ge 5 -and $psVersion.Minor -ge 1)
-        SupportsUTF8NoBOM            = $isCorePowerShell -or ($psVersion.Major -ge 5 -and $psVersion.Minor -ge 1)
-        OptimalParallelizationMethod = if ($isCorePowerShell -and $psVersion.Major -ge 7) { 'ForEachParallel' } else { 'RunspacePool' }
+        HasThreadJobs                = $psVersion.Major -ge 5 -and $psVersion.Minor -ge 1
+        SupportsUTF8NoBOM            = $psVersion.Major -ge 5 -and $psVersion.Minor -ge 1
+        OptimalParallelizationMethod = 'RunspacePool' # PowerShell 5.1 utilise toujours RunspacePool
     }
 
     return $script:PowerShellVersionInfo
@@ -5507,4 +3739,5 @@ function Write-ConversionLog {
 }
 
 # Exporter les fonctions publiques
-Export-ModuleMember -Function Initialize-UnifiedParallel, Clear-UnifiedParallel, Invoke-UnifiedParallel, Get-OptimalThreadCount, Wait-ForCompletedRunspace, Invoke-RunspaceProcessor, Get-ModuleInitialized, Set-ModuleInitialized, Get-ModuleConfig, Set-ModuleConfig, New-RunspaceBatch, Get-RunspacePoolFromCache, Clear-RunspacePoolCache, Get-RunspacePoolCacheInfo, Initialize-EncodingSettings, New-UnifiedError, Get-UnifiedParallelVersion, ConvertTo-Enum, ConvertFrom-Enum, Test-EnumValue, Get-EnumTypeInfo, ConvertTo-ApartmentState, ConvertFrom-ApartmentState, Test-ApartmentState, ConvertTo-PSThreadOptions, ConvertFrom-PSThreadOptions, Test-PSThreadOptions, Get-PowerShellVersionInfo, Write-ConversionLog
+Export-ModuleMember -Function Initialize-UnifiedParallel, Clear-UnifiedParallel, Invoke-UnifiedParallel, Get-OptimalThreadCount, Wait-ForCompletedRunspace, Invoke-RunspaceProcessor, Get-ModuleInitialized, Set-ModuleInitialized, Get-ModuleConfig, Set-ModuleConfig, ConvertTo-ApartmentState, ConvertFrom-ApartmentState, Test-ApartmentState, ConvertTo-PSThreadOptions, ConvertFrom-PSThreadOptions, Test-PSThreadOptions, Get-PowerShellVersionInfo, Write-ConversionLog
+
