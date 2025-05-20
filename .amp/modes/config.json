@@ -1,0 +1,47 @@
+{
+  "modes": [
+    {
+      "id": "default",
+      "name": "Mode standard",
+      "description": "Mode gu00e9nu00e9ral d'assistance pour Email-Sender-1",
+      "contextFiles": [
+        ".augment/context/*.md",
+        ".cline/*.md",
+        "AGENT.md"
+      ],
+      "defaultPrompt": "Comment puis-je vous aider avec le projet Email-Sender-1 aujourd'hui?"
+    },
+    {
+      "id": "gran",
+      "name": "Mode Granularisation",
+      "description": "Du00e9composition des tu00e2ches complexes en sous-tu00e2ches gu00e9rables",
+      "contextFiles": [
+        ".augment/context/development_standards.md",
+        ".augment/guidelines/implementation_steps.md",
+        "AGENT.md"
+      ],
+      "defaultPrompt": "Quelle tu00e2che souhaitez-vous du00e9composer aujourd'hui?"
+    },
+    {
+      "id": "dev-r",
+      "name": "Mode Implu00e9mentation",
+      "description": "Du00e9veloppement de fonctionnalitu00e9s planifiu00e9es",
+      "contextFiles": [
+        ".augment/context/tech_stack.md",
+        ".augment/context/development_standards.md",
+        "AGENT.md"
+      ],
+      "defaultPrompt": "Quelle fonctionnalitu00e9 devons-nous implu00e9menter?"
+    },
+    {
+      "id": "test",
+      "name": "Mode Test",
+      "description": "Conception et implu00e9mentation de tests",
+      "contextFiles": [
+        ".augment/testing-methodology.md",
+        "AGENT.md"
+      ],
+      "defaultPrompt": "Quels tests souhaitez-vous cru00e9er ou exu00e9cuter?"
+    }
+  ]
+}

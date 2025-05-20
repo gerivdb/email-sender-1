@@ -1,117 +1,123 @@
-"""WebSocket transport implementation for MCP."""
+"""WebSocket transport implementation using modern websockets API."""
 
 import asyncio
 import json
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Set
 import websockets
-from websockets.server import WebSocketServerProtocol
+from websockets.legacy.server import WebSocketServerProtocol, serve
 
-from ..mcp_protocol import MCPRegistry, MCPContext, MCPResponse
+from pymcpfy.core.transport.base import BaseTransport
+from pymcpfy.core.context import MCPContext
+from pymcpfy.core.response import MCPResponse
+from pymcpfy.config import TransportConfig
 
-class WebSocketTransport:
-    """WebSocket transport for MCP communication."""
-    def __init__(
-        self,
-        registry: MCPRegistry,
-        host: str = "localhost",
-        port: int = 8765,
-        ping_interval: int = 20,
-        ping_timeout: int = 20
-    ):
-        self.registry = registry
-        self.host = host
-        self.port = port
-        self.ping_interval = ping_interval
-        self.ping_timeout = ping_timeout
-        self._server: Optional[websockets.WebSocketServer] = None
+class WebSocketTransport(BaseTransport):
+    """WebSocket transport implementation."""
+
+    def __init__(self, config: TransportConfig):
+        super().__init__(config)
+        self._server = None
+        self._connections: Set[WebSocketServerProtocol] = set()
+        self.registry = None  # Will be set by the MCP core
 
     async def start(self):
-        """Start the WebSocket server."""
-        self._server = await websockets.serve(
+        """Start WebSocket server."""
+        self._server = await serve(
             self._handle_connection,
-            self.host,
-            self.port,
-            ping_interval=self.ping_interval,
-            ping_timeout=self.ping_timeout
+            self.config.host,
+            self.config.port,
+            ping_interval=self.config.ping_interval,
+            ping_timeout=self.config.ping_timeout
         )
-        print(f"MCP WebSocket server running at ws://{self.host}:{self.port}")
+        await asyncio.Future()  # run forever
 
     async def stop(self):
-        """Stop the WebSocket server."""
+        """Stop WebSocket server."""
         if self._server:
             self._server.close()
             await self._server.wait_closed()
+            self._server = None
 
-    async def _handle_connection(self, websocket: WebSocketServerProtocol, path: str):
-        """Handle incoming WebSocket connections."""
+    def _create_error_response(self, request_id: Optional[str], code: int, message: str) -> Dict[str, Any]:
+        """Create a standardized error response."""
+        return {
+            "jsonrpc": "2.0",
+            "id": request_id or "unknown",
+            "error": {
+                "code": code,
+                "message": message
+            }
+        }
+
+    async def _handle_connection(self, websocket: WebSocketServerProtocol):
+        """Handle WebSocket connection."""
+        self._connections.add(websocket)
         try:
             async for message in websocket:
                 try:
                     request = json.loads(message)
-                    response = await self._handle_request(request, websocket)
-                    await websocket.send(json.dumps(response))
                 except json.JSONDecodeError:
-                    await websocket.send(json.dumps({
-                        "error": "Invalid JSON",
-                        "status": 400
-                    }))
+                    await websocket.send(json.dumps(
+                        self._create_error_response(None, -32700, "Invalid JSON")
+                    ))
+                    continue
+
+                request_id = request.get("id")
+
+                # Vérifier que le registry est initialisé
+                if not self.registry:
+                    await websocket.send(json.dumps(
+                        self._create_error_response(request_id, -32603, "Registry not initialized")
+                    ))
+                    continue
+
+                # Créer le contexte
+                context = MCPContext(
+                    transport=self,
+                    connection=websocket,
+                    metadata={"client_info": websocket.remote_address}
+                )
+
+                try:
+                    # Appel synchrone au registry
+                    response = self.registry.handle_request(request, context)
+
+                    # Formater et envoyer la réponse
+                    if isinstance(response, MCPResponse):
+                        response_data = response.to_dict()
+                    elif isinstance(response, dict):
+                        response_data = response
+                    else:
+                        response_data = {
+                            "jsonrpc": "2.0",
+                            "result": response,
+                            "id": request_id
+                        }
+
+                    await websocket.send(json.dumps(response_data))
+
                 except Exception as e:
-                    await websocket.send(json.dumps({
-                        "error": str(e),
-                        "status": 500
-                    }))
+                    await websocket.send(json.dumps(
+                        self._create_error_response(request_id, -32603, str(e))
+                    ))
+
         except websockets.exceptions.ConnectionClosed:
             pass
+        finally:
+            self._connections.remove(websocket)
 
-    async def _handle_request(
-        self,
-        request: Dict[str, Any],
-        websocket: WebSocketServerProtocol
-    ) -> Dict[str, Any]:
-        """Handle incoming MCP requests."""
-        request_id = request.get("id")
-        function_name = request.get("function")
-        parameters = request.get("parameters", {})
+    async def broadcast(self, message: Dict[str, Any]):
+        """Broadcast message to all connected clients."""
+        if not self._connections:
+            return
 
-        if not function_name:
-            return {
-                "id": request_id,
-                "error": "Missing function name",
-                "status": 400
-            }
+        message_json = json.dumps({
+            "jsonrpc": "2.0",
+            "method": "broadcast",
+            "params": message
+        })
 
-        function = self.registry.get_function(function_name)
-        if not function:
-            return {
-                "id": request_id,
-                "error": f"Function {function_name} not found",
-                "status": 404
-            }
-
-        context = MCPContext(
-            request_id=request_id,
-            metadata=request.get("metadata", {}),
-            transport="websocket",
-            raw_request=request
-        )
-
-        try:
-            if function.is_async:
-                result = await function.func(context, **parameters)
-            else:
-                result = await asyncio.to_thread(function.func, context, **parameters)
-
-            if isinstance(result, MCPResponse):
-                response = result.to_dict()
-            else:
-                response = MCPResponse(result).to_dict()
-
-            response["id"] = request_id
-            return response
-
-        except Exception as e:
-            return {
-                "id": request_id,
-                "error": str(e),
-                "status": 500
-            }
+        await asyncio.gather(*[
+            ws.send(message_json)
+            for ws in self._connections
+        ])

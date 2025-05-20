@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "name": "email-sender-amp-config",
+  "description": "Configuration pour l'agent AMP dans le projet Email-Sender-1",
+  "activeMode": "default",
+  "hygenIntegration": true,
+  "contextPriority": [
+    "architecture",
+    "workflows",
+    "standards",
+    "tests"
+  ],
+  "memoryRetention": {
+    "shortTerm": "7d",
+    "longTerm": "30d"
+  },
+  "autoSaveInterval": "10m"
+}

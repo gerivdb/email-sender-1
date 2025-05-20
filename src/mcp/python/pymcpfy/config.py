@@ -1,8 +1,8 @@
 """Configuration management for PyMCPfy."""
 
 import os
-from dataclasses import dataclass
-from typing import Optional, Union
+from dataclasses import dataclass, field
+from typing import Optional, Union, List
 import yaml
 
 @dataclass
@@ -17,10 +17,10 @@ class TransportConfig:
 @dataclass
 class MCPConfig:
     """Configuration for PyMCPfy."""
-    transport: TransportConfig = TransportConfig()
+    transport: TransportConfig = field(default_factory=TransportConfig)
     backend_url: Optional[str] = None
     debug: bool = False
-    cors_origins: list[str] = []
+    cors_origins: List[str] = field(default_factory=list)
 
     def __post_init__(self):
         if self.cors_origins is None:

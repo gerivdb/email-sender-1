@@ -58,7 +58,7 @@ class MCPFunction:
         parameters = {}
         for name, type_ in self.parameter_types.items():
             parameters[name] = {
-                "type": self._get_type_schema(type_),
+                "type": MCPFunction._get_type_schema(type_),
                 "description": f"Parameter {name}"  # Could be enhanced with docstring parsing
             }
 
@@ -66,13 +66,25 @@ class MCPFunction:
             name=self.name,
             description=self.description,
             parameters=parameters,
-            return_type=self._get_type_schema(self.return_type or Any),
+            return_type=MCPFunction._get_type_schema(self.return_type or Any),
             is_async=self.is_async
-        )
-
+        )    @staticmethod
     @staticmethod
-    def _get_type_schema(type_: Type) -> Dict[str, Any]:
+    def _get_type_schema(type_: Union[Type, Any]) -> Dict[str, Any]:
         """Convert Python type to MCP type schema."""
+        origin = getattr(type_, "__origin__", None)
+        if origin:
+            if origin in (list, List):
+                args = getattr(type_, "__args__", [Any])
+                return {"type": "array", "items": MCPFunction._get_type_schema(args[0])}
+            elif origin in (dict, Dict):
+                return {"type": "object"}
+            elif origin == Union:
+                args = getattr(type_, "__args__", [])
+                types = [MCPFunction._get_type_schema(arg) for arg in args if arg != type(None)]
+                return {"anyOf": types} if len(types) > 1 else types[0]
+            return {"type": "any"}
+
         if type_ == str:
             return {"type": "string"}
         elif type_ == int:
