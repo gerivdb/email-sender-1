@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="3" errors="0" failures="3" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-20" time="01:38:28">
+  <environment clr-version="4.0.30319.42000" user-domain="DESKTOP-ORG3GN0" cwd="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1" platform="Microsoft Windows 10 Famille|C:\Windows|\Device\Harddisk0\Partition2" machine-name="DESKTOP-ORG3GN0" nunit-version="2.5.8.0" os-version="10.0.19045" user="user" />
+  <culture-info current-culture="fr-FR" current-uiculture="fr-FR" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="3.717" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Wait-ForCompletedRunspace.Deadlock.Tests.ps1" executed="True" result="Failure" success="False" time="3.717" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Wait-ForCompletedRunspace.Deadlock.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Wait-ForCompletedRunspace - DÃ©tection de deadlock" executed="True" result="Failure" success="False" time="1.7673" asserts="0" description="Wait-ForCompletedRunspace - DÃ©tection de deadlock">
+            <results>
+              <test-suite type="TestFixture" name="Wait-ForCompletedRunspace - DÃ©tection de deadlock.Avec dÃ©tection de deadlock activÃ©e" executed="True" result="Failure" success="False" time="1.2941" asserts="0" description="Wait-ForCompletedRunspace - DÃ©tection de deadlock.Avec dÃ©tection de deadlock activÃ©e">
+                <results>
+                  <test-case description="DÃ©tecte correctement les deadlocks" name="Wait-ForCompletedRunspace - DÃ©tection de deadlock.Avec dÃ©tection de deadlock activÃ©e.DÃ©tecte correctement les deadlocks" time="0.7819" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>MethodException: Surcharge introuvable pour « new » et le nombre d'arguments « 1 ».</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Wait-ForCompletedRunspace.Deadlock.Tests.ps1 : ligne 106
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Run-DeadlockTests.ps1 : ligne 35</stack-trace>
+                    </failure>
+                  </test-case>
+                  <test-case description="Fournit une analyse dÃ©taillÃ©e des deadlocks" name="Wait-ForCompletedRunspace - DÃ©tection de deadlock.Avec dÃ©tection de deadlock activÃ©e.Fournit une analyse dÃ©taillÃ©e des deadlocks" time="0.3325" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>MethodException: Surcharge introuvable pour « new » et le nombre d'arguments « 1 ».</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Wait-ForCompletedRunspace.Deadlock.Tests.ps1 : ligne 123
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Run-DeadlockTests.ps1 : ligne 35</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Wait-ForCompletedRunspace - DÃ©tection de deadlock.Avec libÃ©ration automatique des ressources" executed="True" result="Failure" success="False" time="1.6464" asserts="0" description="Wait-ForCompletedRunspace - DÃ©tection de deadlock.Avec libÃ©ration automatique des ressources">
+                <results>
+                  <test-case description="LibÃ¨re correctement les ressources des runspaces en deadlock" name="Wait-ForCompletedRunspace - DÃ©tection de deadlock.Avec libÃ©ration automatique des ressources.LibÃ¨re correctement les ressources des runspaces en deadlock" time="0.2783" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>MethodException: Surcharge introuvable pour « new » et le nombre d'arguments « 1 ».</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Wait-ForCompletedRunspace.Deadlock.Tests.ps1 : ligne 166
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Run-DeadlockTests.ps1 : ligne 35</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

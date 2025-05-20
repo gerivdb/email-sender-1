@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="2" errors="0" failures="1" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-05-20" time="01:30:51">
+  <environment clr-version="4.0.30319.42000" user-domain="DESKTOP-ORG3GN0" cwd="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1" platform="Microsoft Windows 10 Famille|C:\Windows|\Device\Harddisk0\Partition2" machine-name="DESKTOP-ORG3GN0" nunit-version="2.5.8.0" os-version="10.0.19045" user="user" />
+  <culture-info current-culture="fr-FR" current-uiculture="fr-FR" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="7.0113" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Wait-ForCompletedRunspace.Timeout.Advanced.Tests.ps1" executed="True" result="Failure" success="False" time="7.0113" asserts="0" description="D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Wait-ForCompletedRunspace.Timeout.Advanced.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Wait-ForCompletedRunspace - Timeout interne" executed="True" result="Failure" success="False" time="5.3999" asserts="0" description="Wait-ForCompletedRunspace - Timeout interne">
+            <results>
+              <test-suite type="TestFixture" name="Wait-ForCompletedRunspace - Timeout interne.Avec un runspace bloquÃ©" executed="True" result="Failure" success="False" time="0.9407" asserts="0" description="Wait-ForCompletedRunspace - Timeout interne.Avec un runspace bloquÃ©">
+                <results>
+                  <test-case description="DÃ©tecte et arrÃªte un runspace bloquÃ© avec RunspaceTimeoutSeconds" name="Wait-ForCompletedRunspace - Timeout interne.Avec un runspace bloquÃ©.DÃ©tecte et arrÃªte un runspace bloquÃ© avec RunspaceTimeoutSeconds" time="0.7891" asserts="0" success="False" result="Failure" executed="True">
+                    <failure>
+                      <message>MethodException: Surcharge introuvable pour « new » et le nombre d'arguments « 1 ».</message>
+                      <stack-trace>à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Wait-ForCompletedRunspace.Timeout.Advanced.Tests.ps1 : ligne 113
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2157
+à Invoke-TestItem, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1199
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 835
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 893
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2024
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1985
+à Invoke-ScriptBlock, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2160
+à Invoke-Block, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 940
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1688
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.ps1 : ligne 3
+à &lt;ScriptBlock&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3260
+à Invoke-InNewScriptScope, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 3267
+à Run-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 1691
+à Invoke-Test, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 2512
+à Invoke-Pester&lt;End&gt;, C:\Users\user\Documents\WindowsPowerShell\Modules\Pester\5.7.1\Pester.psm1 : ligne 4960
+à &lt;ScriptBlock&gt;, D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\tools\parallelization\tests\Pester\Run-AdvancedTests.ps1 : ligne 35</stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Wait-ForCompletedRunspace - Timeout interne.Avec un mÃ©lange de runspaces normaux et bloquÃ©s" executed="True" result="Success" success="True" time="5.2691" asserts="0" description="Wait-ForCompletedRunspace - Timeout interne.Avec un mÃ©lange de runspaces normaux et bloquÃ©s">
+                <results>
+                  <test-case description="ComplÃ¨te les runspaces normaux et arrÃªte les runspaces bloquÃ©s" name="Wait-ForCompletedRunspace - Timeout interne.Avec un mÃ©lange de runspaces normaux et bloquÃ©s.ComplÃ¨te les runspaces normaux et arrÃªte les runspaces bloquÃ©s" time="4.2609" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

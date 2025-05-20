@@ -2448,6 +2448,10 @@ function Wait-ForCompletedRunspace {
         La fonction retourne une liste des runspaces complétés et modifie la liste
         d'entrée en supprimant les runspaces complétés.
 
+        Elle inclut un mécanisme de timeout interne pour détecter et arrêter les runspaces
+        individuels qui sont bloqués, ainsi qu'une détection de deadlock pour libérer
+        automatiquement les ressources.
+
     .PARAMETER Runspaces
         Liste des runspaces à attendre. Chaque élément doit être un objet avec les propriétés
         PowerShell (instance PowerShell) et Handle (IAsyncResult).
@@ -2464,9 +2468,15 @@ function Wait-ForCompletedRunspace {
         La fonction effectue automatiquement la conversion appropriée en fonction du type d'entrée.
 
     .PARAMETER TimeoutSeconds
-        Nombre de secondes à attendre avant d'abandonner. Si 0, attend indéfiniment.
+        Nombre de secondes à attendre avant d'abandonner l'opération complète. Si 0, attend indéfiniment.
 
-        Par défaut : 0 (pas de timeout)
+        Par défaut : 0 (pas de timeout global)
+
+    .PARAMETER RunspaceTimeoutSeconds
+        Nombre de secondes à attendre avant de considérer qu'un runspace individuel est bloqué.
+        Si 0, utilise la valeur de TimeoutSeconds. Si les deux sont à 0, aucun timeout n'est appliqué.
+
+        Par défaut : 0 (utilise TimeoutSeconds)
 
     .PARAMETER WaitForAll
         Si spécifié, attend que tous les runspaces soient complétés.
@@ -2496,6 +2506,12 @@ function Wait-ForCompletedRunspace {
 
         Par défaut : 50 ms
 
+    .PARAMETER DeadlockDetectionSeconds
+        Nombre de secondes sans progression avant de considérer qu'un deadlock s'est produit.
+        Si 0, la détection de deadlock est désactivée.
+
+        Par défaut : 30 secondes
+
     .EXAMPLE
         $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll
 
@@ -2504,7 +2520,12 @@ function Wait-ForCompletedRunspace {
     .EXAMPLE
         $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -TimeoutSeconds 30
 
-        Attend qu'un runspace soit complété, avec un timeout de 30 secondes.
+        Attend qu'un runspace soit complété, avec un timeout global de 30 secondes.
+
+    .EXAMPLE
+        $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -RunspaceTimeoutSeconds 10 -TimeoutSeconds 60
+
+        Attend les runspaces avec un timeout individuel de 10 secondes par runspace et un timeout global de 60 secondes.
 
     .EXAMPLE
         $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -NoProgress -CleanupOnTimeout -TimeoutSeconds 10
@@ -2512,17 +2533,26 @@ function Wait-ForCompletedRunspace {
         Attend qu'un runspace soit complété, sans afficher de barre de progression,
         avec un timeout de 10 secondes et en nettoyant les runspaces non complétés.
 
+    .EXAMPLE
+        $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -DeadlockDetectionSeconds 15
+
+        Attend les runspaces avec détection de deadlock après 15 secondes sans progression.
+
     .OUTPUTS
         PSCustomObject
 
         Un objet personnalisé avec les propriétés et méthodes suivantes :
-        - Results : System.Collections.ArrayList contenant les runspaces complétés
+        - Results : System.Collections.Generic.List<object> contenant les runspaces complétés
         - Count : Nombre de runspaces complétés
-        - GetArrayList() : Méthode pour obtenir l'ArrayList des runspaces complétés
+        - GetList() : Méthode pour obtenir la List<object> des runspaces complétés
+        - GetArrayList() : Méthode obsolète pour la compatibilité, utiliser GetList() à la place
         - GetFirst() : Méthode pour obtenir le premier runspace complété
         - [index] : Indexeur pour accéder aux runspaces par leur index
+        - TimeoutOccurred : Indique si un timeout s'est produit
+        - DeadlockDetected : Indique si un deadlock a été détecté
+        - StoppedRunspaces : Liste des runspaces arrêtés en raison d'un timeout ou d'un deadlock
 
-        Cet objet encapsule un ArrayList pour éviter les problèmes de conversion de type
+        Cet objet encapsule une List<object> pour éviter les problèmes de conversion de type
         lors du retour de la fonction.
     #>
     [CmdletBinding()]
@@ -2532,9 +2562,13 @@ function Wait-ForCompletedRunspace {
         [ValidateNotNull()]
         [object]$Runspaces,
 
-        [Parameter(Mandatory = $false, HelpMessage = "Nombre de secondes à attendre avant d'abandonner (0 = pas de timeout)")]
+        [Parameter(Mandatory = $false, HelpMessage = "Nombre de secondes à attendre avant d'abandonner l'opération complète (0 = pas de timeout global)")]
         [ValidateRange(0, [int]::MaxValue)]
         [int]$TimeoutSeconds = 0,
+
+        [Parameter(Mandatory = $false, HelpMessage = "Nombre de secondes à attendre avant de considérer qu'un runspace individuel est bloqué")]
+        [ValidateRange(0, [int]::MaxValue)]
+        [int]$RunspaceTimeoutSeconds = 0,
 
         [Parameter(Mandatory = $false, HelpMessage = "Attendre que tous les runspaces soient complétés")]
         [switch]$WaitForAll,
@@ -2550,17 +2584,39 @@ function Wait-ForCompletedRunspace {
 
         [Parameter(Mandatory = $false, HelpMessage = "Millisecondes à attendre entre chaque vérification")]
         [ValidateRange(1, 1000)]
-        [int]$SleepMilliseconds = 50
+        [int]$SleepMilliseconds = 50,
+
+        [Parameter(Mandatory = $false, HelpMessage = "Nombre de secondes sans progression avant de considérer qu'un deadlock s'est produit")]
+        [ValidateRange(0, [int]::MaxValue)]
+        [int]$DeadlockDetectionSeconds = 30
     )
 
     begin {
         $startTime = [datetime]::Now
         $completedRunspaces = [System.Collections.Generic.List[object]]::new()
+        $stoppedRunspaces = [System.Collections.Generic.List[object]]::new()
+
+        # Déterminer le timeout global
         $timeout = if ($TimeoutSeconds -gt 0) {
             $startTime.AddSeconds($TimeoutSeconds)
         } else {
             [datetime]::MaxValue
         }
+
+        # Déterminer le timeout individuel des runspaces
+        $runspaceTimeout = if ($RunspaceTimeoutSeconds -gt 0) {
+            $RunspaceTimeoutSeconds
+        } elseif ($TimeoutSeconds -gt 0) {
+            $TimeoutSeconds
+        } else {
+            0 # Pas de timeout individuel
+        }
+
+        # Variables pour la détection de deadlock
+        $lastProgressTime = [datetime]::Now
+        $lastCompletedCount = 0
+        $deadlockDetected = $false
+        $timeoutOccurred = $false
 
         # Convertir Runspaces en List<PSObject> si ce n'est pas déjà le cas
         $runspacesToProcess = $null
@@ -2602,10 +2658,29 @@ function Wait-ForCompletedRunspace {
             }
         }
 
+        # Ajouter des propriétés de suivi à chaque runspace
+        for ($i = 0; $i -lt $runspacesToProcess.Count; $i++) {
+            $runspace = $runspacesToProcess[$i]
+            if ($null -ne $runspace) {
+                # Ajouter un timestamp de début pour le suivi du timeout individuel
+                Add-Member -InputObject $runspace -MemberType NoteProperty -Name "StartTime" -Value ([datetime]::Now) -Force
+                # Ajouter un ID unique pour le suivi
+                Add-Member -InputObject $runspace -MemberType NoteProperty -Name "RunspaceId" -Value $i -Force
+                # Ajouter un statut pour le suivi
+                Add-Member -InputObject $runspace -MemberType NoteProperty -Name "Status" -Value "Running" -Force
+            }
+        }
+
         $totalRunspaces = $runspacesToProcess.Count
         $processedRunspaces = 0
 
         Write-Verbose "Nombre total de runspaces à traiter après conversion : $totalRunspaces"
+        if ($runspaceTimeout -gt 0) {
+            Write-Verbose "Timeout individuel des runspaces configuré à $runspaceTimeout secondes"
+        }
+        if ($DeadlockDetectionSeconds -gt 0) {
+            Write-Verbose "Détection de deadlock activée avec un seuil de $DeadlockDetectionSeconds secondes sans progression"
+        }
     }
 
     process {
@@ -2645,9 +2720,16 @@ function Wait-ForCompletedRunspace {
 
         Write-Verbose "Délai initial: $currentSleepMilliseconds ms, taille de lot: $batchSize"
 
+        # Variables pour la détection de deadlock
+        $lastProgressTime = [datetime]::Now
+        $lastCompletedCount = 0
+        $deadlockDetected = $false
+        $timeoutOccurred = $false
+
         while ($activeRunspaces -gt 0 -and [datetime]::Now -lt $timeout) {
             $completedInThisIteration = 0
             $batchProcessed = 0
+            $currentTime = [datetime]::Now
 
             # Vérifier les runspaces terminés par lots pour réduire les itérations
             for ($i = 0; $i -lt $runspacesToProcess.Count; $i++) {
@@ -2655,6 +2737,51 @@ function Wait-ForCompletedRunspace {
 
                 # Vérification optimisée avec court-circuit pour éviter les vérifications inutiles
                 $isCompleted = $null -ne $runspace -and $null -ne $runspace.Handle -and $runspace.Handle.IsCompleted
+
+                # Vérifier le timeout individuel du runspace si configuré
+                if ($runspaceTimeout -gt 0 -and -not $isCompleted -and $null -ne $runspace -and $null -ne $runspace.StartTime) {
+                    $runningTime = $currentTime - $runspace.StartTime
+                    if ($runningTime.TotalSeconds -gt $runspaceTimeout) {
+                        Write-Warning "Timeout individuel atteint pour le runspace $($runspace.RunspaceId) après $($runningTime.TotalSeconds) secondes."
+
+                        try {
+                            # Marquer le runspace comme ayant expiré
+                            $runspace.Status = "TimedOut"
+
+                            # Arrêter le runspace s'il est toujours en cours d'exécution
+                            if ($null -ne $runspace.PowerShell -and $null -ne $runspace.Handle -and -not $runspace.Handle.IsCompleted) {
+                                $runspace.PowerShell.Stop()
+                                Write-Verbose "Runspace $($runspace.RunspaceId) arrêté en raison du timeout individuel"
+
+                                # Ajouter à la liste des runspaces arrêtés
+                                $stoppedRunspaces.Add($runspace)
+
+                                # Supprimer de la liste des runspaces actifs
+                                $runspacesToProcess.RemoveAt($i)
+                                $i--
+                                $activeRunspaces--
+                                $timeoutOccurred = $true
+
+                                # Continuer à la prochaine itération
+                                continue
+                            }
+                        } catch {
+                            # Utiliser New-UnifiedError pour une gestion standardisée des erreurs
+                            $errorParams = @{
+                                Message        = "Erreur lors de l'arrêt du runspace après timeout individuel"
+                                Source         = "Wait-ForCompletedRunspace"
+                                ErrorRecord    = $_
+                                Category       = [System.Management.Automation.ErrorCategory]::OperationStopped
+                                AdditionalInfo = @{
+                                    "RunspaceId"  = $runspace.RunspaceId
+                                    "RunningTime" = $runningTime.TotalSeconds
+                                    "Action"      = "StopOnTimeout"
+                                }
+                            }
+                            New-UnifiedError @errorParams
+                        }
+                    }
+                }
 
                 if ($isCompleted) {
                     # Ajouter à la liste des runspaces complétés
@@ -2685,6 +2812,123 @@ function Wait-ForCompletedRunspace {
                 $batchProcessed++
                 if ($batchProcessed -ge $batchSize) {
                     break
+                }
+            }
+
+            # Détection de deadlock
+            if ($DeadlockDetectionSeconds -gt 0 -and $activeRunspaces -gt 0) {
+                if ($completedInThisIteration -gt 0) {
+                    # Réinitialiser le compteur de deadlock si des runspaces ont été complétés
+                    $lastProgressTime = $currentTime
+                    $lastCompletedCount = $processedRunspaces
+                } else {
+                    # Vérifier si aucun progrès n'a été fait pendant la période de détection de deadlock
+                    $timeSinceLastProgress = $currentTime - $lastProgressTime
+                    if ($timeSinceLastProgress.TotalSeconds -gt $DeadlockDetectionSeconds -and $lastCompletedCount -eq $processedRunspaces) {
+                        Write-Warning "Deadlock détecté: Aucun runspace complété depuis $($timeSinceLastProgress.TotalSeconds) secondes."
+                        $deadlockDetected = $true
+
+                        # Libérer les ressources des runspaces bloqués
+                        Write-Verbose "Libération des ressources des runspaces bloqués..."
+
+                        # Créer un tableau pour suivre les runspaces qui ont été traités
+                        $processedIndices = [System.Collections.Generic.HashSet[int]]::new()
+
+                        for ($i = 0; $i -lt $runspacesToProcess.Count; $i++) {
+                            $runspace = $runspacesToProcess[$i]
+
+                            # Vérification robuste pour les objets null ou incomplets
+                            if ($null -eq $runspace) {
+                                $processedIndices.Add($i)
+                                continue
+                            }
+
+                            try {
+                                # Marquer le runspace comme étant en deadlock
+                                $runspace.Status = "Deadlocked"
+
+                                # Essayer de récupérer des résultats partiels si possible
+                                $hasPartialResults = $false
+                                if ($null -ne $runspace.PowerShell -and $null -ne $runspace.Handle) {
+                                    try {
+                                        # Vérifier si des résultats partiels sont disponibles dans le pipeline de sortie
+                                        if ($runspace.PowerShell.HadErrors) {
+                                            Write-Verbose "Le runspace $($runspace.RunspaceId) a généré des erreurs avant le deadlock"
+                                            $runspace.Errors = $runspace.PowerShell.Streams.Error
+                                        }
+
+                                        # Ajouter des informations de diagnostic
+                                        Add-Member -InputObject $runspace -MemberType NoteProperty -Name "DeadlockTime" -Value ([datetime]::Now) -Force
+                                        Add-Member -InputObject $runspace -MemberType NoteProperty -Name "RunningTime" -Value (([datetime]::Now) - $runspace.StartTime) -Force
+                                        Add-Member -InputObject $runspace -MemberType NoteProperty -Name "DeadlockReason" -Value "Aucune progression pendant $($timeSinceLastProgress.TotalSeconds) secondes" -Force
+
+                                        # Marquer que nous avons récupéré des informations partielles
+                                        $hasPartialResults = $true
+                                    } catch {
+                                        Write-Verbose "Impossible de récupérer des résultats partiels pour le runspace $($runspace.RunspaceId): $_"
+                                    }
+                                }
+
+                                # Arrêter le runspace s'il est toujours en cours d'exécution
+                                if ($null -ne $runspace.PowerShell -and $null -ne $runspace.Handle -and -not $runspace.Handle.IsCompleted) {
+                                    $runspace.PowerShell.Stop()
+                                    Write-Verbose "Runspace $($runspace.RunspaceId) arrêté en raison d'un deadlock"
+
+                                    # Ajouter à la liste des runspaces arrêtés
+                                    $stoppedRunspaces.Add($runspace)
+                                    $processedIndices.Add($i)
+
+                                    # Essayer de libérer les ressources du runspace
+                                    try {
+                                        # Vider les flux de sortie pour libérer la mémoire
+                                        if ($null -ne $runspace.PowerShell.Streams) {
+                                            $runspace.PowerShell.Streams.ClearStreams()
+                                        }
+
+                                        # Si nous avons des résultats partiels, ne pas disposer le PowerShell tout de suite
+                                        if (-not $hasPartialResults) {
+                                            $runspace.PowerShell.Dispose()
+                                            Write-Verbose "Ressources du runspace $($runspace.RunspaceId) libérées avec succès"
+                                        }
+                                    } catch {
+                                        Write-Verbose "Erreur lors de la libération des ressources du runspace $($runspace.RunspaceId): $_"
+                                    }
+                                }
+                            } catch {
+                                # Utiliser New-UnifiedError pour une gestion standardisée des erreurs
+                                $errorParams = @{
+                                    Message        = "Erreur lors de l'arrêt du runspace en deadlock"
+                                    Source         = "Wait-ForCompletedRunspace"
+                                    ErrorRecord    = $_
+                                    Category       = [System.Management.Automation.ErrorCategory]::OperationStopped
+                                    AdditionalInfo = @{
+                                        "RunspaceId" = if ($null -ne $runspace -and $null -ne $runspace.RunspaceId) { $runspace.RunspaceId } else { "Inconnu" }
+                                        "Action"     = "StopOnDeadlock"
+                                    }
+                                }
+                                New-UnifiedError @errorParams
+                            }
+                        }
+
+                        # Supprimer les runspaces traités de la liste (en commençant par la fin pour éviter les problèmes d'index)
+                        for ($i = $runspacesToProcess.Count - 1; $i -ge 0; $i--) {
+                            if ($processedIndices.Contains($i)) {
+                                $runspacesToProcess.RemoveAt($i)
+                            }
+                        }
+
+                        # Mettre à jour le nombre de runspaces actifs
+                        $activeRunspaces = $runspacesToProcess.Count
+
+                        # Si tous les runspaces ont été traités, sortir de la boucle
+                        if ($activeRunspaces -eq 0) {
+                            break
+                        }
+
+                        # Réinitialiser le compteur de deadlock pour éviter de détecter continuellement le même deadlock
+                        $lastProgressTime = [datetime]::Now
+                        $lastCompletedCount = $processedRunspaces
+                    }
                 }
             }
 
@@ -2722,13 +2966,14 @@ function Wait-ForCompletedRunspace {
             # Pause adaptative pour éviter de surcharger le CPU
             Start-Sleep -Milliseconds $currentSleepMilliseconds
 
-            # Vérifier si on a atteint le timeout
+            # Vérifier si on a atteint le timeout global
             if ([datetime]::Now -ge $timeout -and $activeRunspaces -gt 0) {
-                Write-Warning "Timeout atteint. $activeRunspaces runspaces toujours actifs."
+                Write-Warning "Timeout global atteint. $activeRunspaces runspaces toujours actifs."
+                $timeoutOccurred = $true
 
                 # Nettoyer les runspaces non complétés (toujours effectué après timeout pour éviter les fuites de mémoire)
                 # Le paramètre CleanupOnTimeout est maintenant obsolète mais conservé pour la compatibilité
-                Write-Verbose "Nettoyage des runspaces non complétés après timeout..."
+                Write-Verbose "Nettoyage des runspaces non complétés après timeout global..."
 
                 # Compteurs pour les statistiques
                 $stoppedCount = 0
@@ -2745,6 +2990,9 @@ function Wait-ForCompletedRunspace {
                     }
 
                     try {
+                        # Marquer le runspace comme ayant expiré
+                        $runspace.Status = "TimedOut"
+
                         # Vérification robuste pour PowerShell null
                         if ($null -eq $runspace.PowerShell) {
                             Write-Verbose "PowerShell est null pour le runspace à l'index $i, ignoré"
@@ -2759,6 +3007,9 @@ function Wait-ForCompletedRunspace {
                                     $runspace.PowerShell.Stop()
                                     $stoppedCount++
                                     Write-Verbose "Runspace à l'index $i arrêté avec succès"
+
+                                    # Ajouter à la liste des runspaces arrêtés
+                                    $stoppedRunspaces.Add($runspace)
                                 }
                             } catch {
                                 # Utiliser New-UnifiedError pour une gestion standardisée des erreurs
@@ -2835,6 +3086,42 @@ function Wait-ForCompletedRunspace {
 
     end {
         Write-Verbose "$($completedRunspaces.Count) runspaces complétés sur $totalRunspaces."
+        if ($stoppedRunspaces.Count -gt 0) {
+            Write-Verbose "$($stoppedRunspaces.Count) runspaces arrêtés en raison de timeout ou deadlock."
+        }
+
+        # Analyser les deadlocks si détectés
+        $deadlockAnalysis = $null
+        if ($deadlockDetected) {
+            $deadlockAnalysis = [PSCustomObject]@{
+                DetectionTime         = [datetime]::Now
+                DetectionThreshold    = $DeadlockDetectionSeconds
+                TimeSinceLastProgress = if ($null -ne $lastProgressTime) { ([datetime]::Now - $lastProgressTime).TotalSeconds } else { 0 }
+                CompletedCount        = $processedRunspaces
+                TotalCount            = $totalRunspaces
+                StoppedCount          = $stoppedRunspaces.Count
+                RemainingCount        = $runspacesToProcess.Count
+                DeadlockedRunspaces   = @()
+            }
+
+            # Ajouter des informations détaillées sur chaque runspace en deadlock
+            foreach ($runspace in $stoppedRunspaces) {
+                if ($runspace.Status -eq "Deadlocked") {
+                    $runspaceInfo = [PSCustomObject]@{
+                        RunspaceId     = $runspace.RunspaceId
+                        StartTime      = $runspace.StartTime
+                        RunningTime    = if ($null -ne $runspace.RunningTime) { $runspace.RunningTime } else { ([datetime]::Now - $runspace.StartTime) }
+                        DeadlockTime   = if ($null -ne $runspace.DeadlockTime) { $runspace.DeadlockTime } else { [datetime]::Now }
+                        DeadlockReason = if ($null -ne $runspace.DeadlockReason) { $runspace.DeadlockReason } else { "Détection de deadlock standard" }
+                        HasErrors      = if ($null -ne $runspace.PowerShell) { $runspace.PowerShell.HadErrors } else { $false }
+                        ErrorCount     = if ($null -ne $runspace.Errors) { $runspace.Errors.Count } else { 0 }
+                    }
+                    $deadlockAnalysis.DeadlockedRunspaces += $runspaceInfo
+                }
+            }
+
+            Write-Verbose "Analyse de deadlock: $($deadlockAnalysis.StoppedCount) runspaces en deadlock après $($deadlockAnalysis.TimeSinceLastProgress) secondes sans progression."
+        }
 
         # Créer une nouvelle List<object> avec les résultats
         $finalResult = [System.Collections.Generic.List[object]]::new()
@@ -2857,7 +3144,11 @@ function Wait-ForCompletedRunspace {
 
             # Retourner explicitement la List<object> en l'encapsulant dans un PSCustomObject
             $resultObject = [PSCustomObject]@{
-                Results = $singleResult
+                Results          = $singleResult
+                TimeoutOccurred  = $timeoutOccurred
+                DeadlockDetected = $deadlockDetected
+                StoppedRunspaces = $stoppedRunspaces
+                DeadlockAnalysis = $deadlockAnalysis
             }
         } else {
             # Vérifier explicitement que nous avons une List<object>
@@ -2865,7 +3156,11 @@ function Wait-ForCompletedRunspace {
 
             # Retourner explicitement la List<object> en l'encapsulant dans un PSCustomObject
             $resultObject = [PSCustomObject]@{
-                Results = $finalResult
+                Results          = $finalResult
+                TimeoutOccurred  = $timeoutOccurred
+                DeadlockDetected = $deadlockDetected
+                StoppedRunspaces = $stoppedRunspaces
+                DeadlockAnalysis = $deadlockAnalysis
             }
         }
 
@@ -2897,6 +3192,56 @@ function Wait-ForCompletedRunspace {
         $resultObject | Add-Member -MemberType ScriptMethod -Name "get_Item" -Value {
             param($index)
             return $this.Results[$index]
+        }
+
+        # Ajouter une méthode pour vérifier si un timeout s'est produit
+        $resultObject | Add-Member -MemberType ScriptMethod -Name "HasTimeout" -Value {
+            return $this.TimeoutOccurred
+        }
+
+        # Ajouter une méthode pour vérifier si un deadlock a été détecté
+        $resultObject | Add-Member -MemberType ScriptMethod -Name "HasDeadlock" -Value {
+            return $this.DeadlockDetected
+        }
+
+        # Ajouter une méthode pour obtenir les runspaces arrêtés
+        $resultObject | Add-Member -MemberType ScriptMethod -Name "GetStoppedRunspaces" -Value {
+            return $this.StoppedRunspaces
+        }
+
+        # Ajouter une méthode pour obtenir l'analyse des deadlocks
+        $resultObject | Add-Member -MemberType ScriptMethod -Name "GetDeadlockAnalysis" -Value {
+            return $this.DeadlockAnalysis
+        }
+
+        # Ajouter une méthode pour obtenir un rapport détaillé sur les deadlocks
+        $resultObject | Add-Member -MemberType ScriptMethod -Name "GetDeadlockReport" -Value {
+            if (-not $this.DeadlockDetected -or $null -eq $this.DeadlockAnalysis) {
+                return "Aucun deadlock détecté."
+            }
+
+            $report = "=== Rapport de deadlock ===`n"
+            $report += "Détecté à: $($this.DeadlockAnalysis.DetectionTime)`n"
+            $report += "Seuil de détection: $($this.DeadlockAnalysis.DetectionThreshold) secondes`n"
+            $report += "Temps sans progression: $($this.DeadlockAnalysis.TimeSinceLastProgress) secondes`n"
+            $report += "Runspaces complétés: $($this.DeadlockAnalysis.CompletedCount) sur $($this.DeadlockAnalysis.TotalCount)`n"
+            $report += "Runspaces en deadlock: $($this.DeadlockAnalysis.StoppedCount)`n"
+            $report += "Runspaces restants: $($this.DeadlockAnalysis.RemainingCount)`n"
+            $report += "`nDétails des runspaces en deadlock:`n"
+
+            foreach ($runspace in $this.DeadlockAnalysis.DeadlockedRunspaces) {
+                $report += "  - Runspace ID: $($runspace.RunspaceId)`n"
+                $report += "    Démarré à: $($runspace.StartTime)`n"
+                $report += "    Temps d'exécution: $($runspace.RunningTime.TotalSeconds) secondes`n"
+                $report += "    Deadlock détecté à: $($runspace.DeadlockTime)`n"
+                $report += "    Raison: $($runspace.DeadlockReason)`n"
+                if ($runspace.HasErrors) {
+                    $report += "    Erreurs: $($runspace.ErrorCount)`n"
+                }
+                $report += "`n"
+            }
+
+            return $report
         }
 
         # Si on n'attend pas tous les runspaces, on doit s'assurer que Runspaces ne contient que les runspaces restants

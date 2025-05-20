@@ -665,8 +665,8 @@ Ce plan de développement organise les tâches selon les 5 phases de correction 
 - **Impact** : Élimination des blocages et timeouts dans les fonctions critiques
 - **Tâches** :
   - [ ] Corriger les problèmes de blocage dans Wait-ForCompletedRunspace
-    - [ ] Implémenter un mécanisme de timeout interne pour éviter les blocages indéfinis
-    - [ ] Ajouter une détection de deadlock avec libération automatique des ressources
+    - [x] Implémenter un mécanisme de timeout interne pour éviter les blocages indéfinis (Tests: 1/2 réussis, couverture: 6,93%)
+    - [x] Ajouter une détection de deadlock avec libération automatique des ressources (Tests: 2/2 réussis, couverture: 5,67%)
     - [ ] Corriger la gestion des collections pour assurer la modification correcte des runspaces
     - [ ] Standardiser le format de retour pour garantir la cohérence avec les autres fonctions
   - [ ] Résoudre les problèmes de synchronisation dans Invoke-RunspaceProcessor
