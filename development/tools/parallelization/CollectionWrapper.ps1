@@ -381,57 +381,99 @@ namespace UnifiedParallel.Collections
         }
 
         /// <summary>
-        /// Convertit la collection en ArrayList
+        /// Convertit la collection en ArrayList avec préservation des types
         /// </summary>
+        /// <returns>ArrayList contenant les éléments de la collection avec leurs types préservés</returns>
         public ArrayList ToArrayList()
         {
-            ArrayList result = new ArrayList();
+            // Optimisation pour les grandes collections
+            int capacity = Count > 0 ? Count : 16;
+            ArrayList result = new ArrayList(capacity);
 
             switch (_type)
             {
                 case CollectionType.ArrayList:
+                    // Retourner directement l'ArrayList si c'est déjà une ArrayList
                     return (ArrayList)_collection;
                 case CollectionType.List:
-                    result.AddRange(((List<T>)_collection).ToArray());
+                    // Optimisation pour les grandes collections
+                    if (Count > 1000)
+                    {
+                        // Utiliser AddRange avec ToArray pour les grandes collections
+                        result.AddRange(((List<T>)_collection).ToArray());
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in ((List<T>)_collection))
+                            result.Add(item);
+                    }
                     break;
                 case CollectionType.Array:
-                    result.AddRange((Array)_collection);
+                    // Optimisation pour les grandes collections
+                    if (((Array)_collection).Length > 1000)
+                    {
+                        // Utiliser AddRange pour les grandes collections
+                        result.AddRange((Array)_collection);
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in ((Array)_collection))
+                            result.Add(item);
+                    }
                     break;
                 case CollectionType.ConcurrentBag:
+                    // Ajouter les éléments un par un pour préserver les types
                     foreach (var item in ((ConcurrentBag<T>)_collection))
                         result.Add(item);
                     break;
                 case CollectionType.ConcurrentQueue:
+                    // Ajouter les éléments un par un pour préserver les types
                     foreach (var item in ((ConcurrentQueue<T>)_collection))
                         result.Add(item);
                     break;
                 case CollectionType.ConcurrentStack:
+                    // Ajouter les éléments un par un pour préserver les types
                     foreach (var item in ((ConcurrentStack<T>)_collection))
                         result.Add(item);
                     break;
                 case CollectionType.ConcurrentDictionary:
+                    // Ajouter les éléments un par un pour préserver les types
                     foreach (var item in ((ConcurrentDictionary<string, T>)_collection))
                         result.Add(item.Value);
                     break;
                 case CollectionType.Queue:
+                    // Ajouter les éléments un par un pour préserver les types
                     foreach (var item in ((Queue<T>)_collection))
                         result.Add(item);
                     break;
                 case CollectionType.Stack:
+                    // Ajouter les éléments un par un pour préserver les types
                     foreach (var item in ((Stack<T>)_collection))
                         result.Add(item);
                     break;
                 case CollectionType.HashSet:
+                    // Ajouter les éléments un par un pour préserver les types
                     foreach (var item in ((HashSet<T>)_collection))
                         result.Add(item);
                     break;
                 case CollectionType.Dictionary:
+                    // Ajouter les éléments un par un pour préserver les types
                     foreach (var item in ((Dictionary<string, T>)_collection))
                         result.Add(item.Value);
                     break;
                 case CollectionType.Custom:
+                    if (_collection is IEnumerable<T> genericEnumerable)
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in genericEnumerable)
+                            result.Add(item);
+                        break;
+                    }
                     if (_collection is IEnumerable enumerable)
                     {
+                        // Ajouter les éléments un par un pour préserver les types
                         foreach (var item in enumerable)
                             result.Add(item);
                         break;
@@ -445,39 +487,215 @@ namespace UnifiedParallel.Collections
         }
 
         /// <summary>
-        /// Convertit la collection en tableau
+        /// Convertit la collection en tableau avec préservation des types
         /// </summary>
+        /// <returns>Tableau contenant les éléments de la collection avec leurs types préservés</returns>
         public Array ToArray()
         {
             switch (_type)
             {
                 case CollectionType.ArrayList:
-                    return ((ArrayList)_collection).ToArray(typeof(T));
+                    // Optimisation pour les grandes collections
+                    ArrayList arrayList = (ArrayList)_collection;
+                    if (arrayList.Count > 1000)
+                    {
+                        // Utiliser ToArray(Type) pour les grandes collections
+                        return arrayList.ToArray(typeof(T));
+                    }
+                    else
+                    {
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[arrayList.Count];
+                        for (int i = 0; i < arrayList.Count; i++)
+                        {
+                            result[i] = (T)arrayList[i];
+                        }
+                        return result;
+                    }
                 case CollectionType.List:
+                    // Utiliser ToArray() directement pour les List<T>
                     return ((List<T>)_collection).ToArray();
                 case CollectionType.Array:
-                    return (Array)_collection;
+                    // Si c'est déjà un tableau, retourner une copie pour éviter les modifications accidentelles
+                    Array originalArray = (Array)_collection;
+                    Array copy = Array.CreateInstance(typeof(T), originalArray.Length);
+                    Array.Copy(originalArray, copy, originalArray.Length);
+                    return copy;
                 case CollectionType.ConcurrentBag:
-                    return ((ConcurrentBag<T>)_collection).ToArray();
+                    // Optimisation pour les grandes collections
+                    ConcurrentBag<T> bag = (ConcurrentBag<T>)_collection;
+                    if (bag.Count > 1000)
+                    {
+                        // Utiliser ToArray() directement pour les grandes collections
+                        return bag.ToArray();
+                    }
+                    else
+                    {
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[bag.Count];
+                        int index = 0;
+                        foreach (var item in bag)
+                        {
+                            result[index++] = item;
+                        }
+                        return result;
+                    }
                 case CollectionType.ConcurrentQueue:
-                    return ((ConcurrentQueue<T>)_collection).ToArray();
+                    // Optimisation pour les grandes collections
+                    ConcurrentQueue<T> queue = (ConcurrentQueue<T>)_collection;
+                    if (queue.Count > 1000)
+                    {
+                        // Utiliser ToArray() directement pour les grandes collections
+                        return queue.ToArray();
+                    }
+                    else
+                    {
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[queue.Count];
+                        int index = 0;
+                        foreach (var item in queue)
+                        {
+                            result[index++] = item;
+                        }
+                        return result;
+                    }
                 case CollectionType.ConcurrentStack:
-                    return ((ConcurrentStack<T>)_collection).ToArray();
+                    // Optimisation pour les grandes collections
+                    ConcurrentStack<T> stack = (ConcurrentStack<T>)_collection;
+                    if (stack.Count > 1000)
+                    {
+                        // Utiliser ToArray() directement pour les grandes collections
+                        return stack.ToArray();
+                    }
+                    else
+                    {
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[stack.Count];
+                        int index = 0;
+                        foreach (var item in stack)
+                        {
+                            result[index++] = item;
+                        }
+                        return result;
+                    }
                 case CollectionType.ConcurrentDictionary:
-                    return ((ConcurrentDictionary<string, T>)_collection).Values.ToArray();
+                    // Optimisation pour les grandes collections
+                    ConcurrentDictionary<string, T> concurrentDict = (ConcurrentDictionary<string, T>)_collection;
+                    if (concurrentDict.Count > 1000)
+                    {
+                        // Utiliser Values.ToArray() directement pour les grandes collections
+                        return concurrentDict.Values.ToArray();
+                    }
+                    else
+                    {
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[concurrentDict.Count];
+                        int index = 0;
+                        foreach (var item in concurrentDict.Values)
+                        {
+                            result[index++] = item;
+                        }
+                        return result;
+                    }
                 case CollectionType.Queue:
-                    return ((Queue<T>)_collection).ToArray();
+                    // Optimisation pour les grandes collections
+                    Queue<T> genericQueue = (Queue<T>)_collection;
+                    if (genericQueue.Count > 1000)
+                    {
+                        // Utiliser ToArray() directement pour les grandes collections
+                        return genericQueue.ToArray();
+                    }
+                    else
+                    {
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[genericQueue.Count];
+                        int index = 0;
+                        foreach (var item in genericQueue)
+                        {
+                            result[index++] = item;
+                        }
+                        return result;
+                    }
                 case CollectionType.Stack:
-                    return ((Stack<T>)_collection).ToArray();
+                    // Optimisation pour les grandes collections
+                    Stack<T> genericStack = (Stack<T>)_collection;
+                    if (genericStack.Count > 1000)
+                    {
+                        // Utiliser ToArray() directement pour les grandes collections
+                        return genericStack.ToArray();
+                    }
+                    else
+                    {
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[genericStack.Count];
+                        int index = 0;
+                        foreach (var item in genericStack)
+                        {
+                            result[index++] = item;
+                        }
+                        return result;
+                    }
                 case CollectionType.HashSet:
-                    return ((HashSet<T>)_collection).ToArray();
+                    // Optimisation pour les grandes collections
+                    HashSet<T> hashSet = (HashSet<T>)_collection;
+                    if (hashSet.Count > 1000)
+                    {
+                        // Utiliser ToArray() directement pour les grandes collections
+                        return hashSet.ToArray();
+                    }
+                    else
+                    {
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[hashSet.Count];
+                        int index = 0;
+                        foreach (var item in hashSet)
+                        {
+                            result[index++] = item;
+                        }
+                        return result;
+                    }
                 case CollectionType.Dictionary:
-                    return ((Dictionary<string, T>)_collection).Values.ToArray();
+                    // Optimisation pour les grandes collections
+                    Dictionary<string, T> dict = (Dictionary<string, T>)_collection;
+                    if (dict.Count > 1000)
+                    {
+                        // Utiliser Values.ToArray() directement pour les grandes collections
+                        return dict.Values.ToArray();
+                    }
+                    else
+                    {
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[dict.Count];
+                        int index = 0;
+                        foreach (var item in dict.Values)
+                        {
+                            result[index++] = item;
+                        }
+                        return result;
+                    }
                 case CollectionType.Custom:
                     if (_collection is IEnumerable<T> genericEnumerable)
-                        return genericEnumerable.ToArray();
+                    {
+                        // Convertir en List<T> d'abord pour obtenir le nombre d'éléments
+                        List<T> list = new List<T>();
+                        foreach (var item in genericEnumerable)
+                        {
+                            list.Add(item);
+                        }
+
+                        // Créer un tableau fortement typé et ajouter les éléments un par un pour préserver les types
+                        T[] result = new T[list.Count];
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            result[i] = list[i];
+                        }
+                        return result;
+                    }
                     if (_collection is IEnumerable enumerable)
+                    {
+                        // Utiliser Cast<T>() pour convertir les éléments au type T
                         return enumerable.Cast<T>().ToArray();
+                    }
                     throw new InvalidOperationException("La collection personnalisée ne peut pas être convertie en tableau.");
                 default:
                     throw new NotSupportedException($"Type de collection non supporté: {_type}");
@@ -485,39 +703,183 @@ namespace UnifiedParallel.Collections
         }
 
         /// <summary>
-        /// Convertit la collection en List<T>
+        /// Convertit la collection en List<T> avec préservation des types
         /// </summary>
+        /// <returns>List<T> contenant les éléments de la collection avec leurs types préservés</returns>
         public List<T> ToList()
         {
+            // Optimisation pour les grandes collections
+            int capacity = Count > 0 ? Count : 16;
+            List<T> result = new List<T>(capacity);
+
             switch (_type)
             {
                 case CollectionType.ArrayList:
-                    return ((ArrayList)_collection).Cast<T>().ToList();
+                    // Optimisation pour les grandes collections
+                    ArrayList arrayList = (ArrayList)_collection;
+                    if (arrayList.Count > 1000)
+                    {
+                        // Utiliser Cast<T>().ToList() pour les grandes collections
+                        return arrayList.Cast<T>().ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in arrayList)
+                            result.Add((T)item);
+                        return result;
+                    }
                 case CollectionType.List:
+                    // Si c'est déjà une List<T>, retourner une copie pour éviter les modifications accidentelles
                     return new List<T>((List<T>)_collection);
                 case CollectionType.Array:
-                    return ((Array)_collection).Cast<T>().ToList();
+                    // Optimisation pour les grandes collections
+                    Array array = (Array)_collection;
+                    if (array.Length > 1000)
+                    {
+                        // Utiliser Cast<T>().ToList() pour les grandes collections
+                        return array.Cast<T>().ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in array)
+                            result.Add((T)item);
+                        return result;
+                    }
                 case CollectionType.ConcurrentBag:
-                    return ((ConcurrentBag<T>)_collection).ToList();
+                    // Optimisation pour les grandes collections
+                    ConcurrentBag<T> bag = (ConcurrentBag<T>)_collection;
+                    if (bag.Count > 1000)
+                    {
+                        // Utiliser ToList() directement pour les grandes collections
+                        return bag.ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in bag)
+                            result.Add(item);
+                        return result;
+                    }
                 case CollectionType.ConcurrentQueue:
-                    return ((ConcurrentQueue<T>)_collection).ToList();
+                    // Optimisation pour les grandes collections
+                    ConcurrentQueue<T> queue = (ConcurrentQueue<T>)_collection;
+                    if (queue.Count > 1000)
+                    {
+                        // Utiliser ToList() directement pour les grandes collections
+                        return queue.ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in queue)
+                            result.Add(item);
+                        return result;
+                    }
                 case CollectionType.ConcurrentStack:
-                    return ((ConcurrentStack<T>)_collection).ToList();
+                    // Optimisation pour les grandes collections
+                    ConcurrentStack<T> stack = (ConcurrentStack<T>)_collection;
+                    if (stack.Count > 1000)
+                    {
+                        // Utiliser ToList() directement pour les grandes collections
+                        return stack.ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in stack)
+                            result.Add(item);
+                        return result;
+                    }
                 case CollectionType.ConcurrentDictionary:
-                    return ((ConcurrentDictionary<string, T>)_collection).Values.ToList();
+                    // Optimisation pour les grandes collections
+                    ConcurrentDictionary<string, T> concurrentDict = (ConcurrentDictionary<string, T>)_collection;
+                    if (concurrentDict.Count > 1000)
+                    {
+                        // Utiliser Values.ToList() directement pour les grandes collections
+                        return concurrentDict.Values.ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in concurrentDict.Values)
+                            result.Add(item);
+                        return result;
+                    }
                 case CollectionType.Queue:
-                    return ((Queue<T>)_collection).ToList();
+                    // Optimisation pour les grandes collections
+                    Queue<T> genericQueue = (Queue<T>)_collection;
+                    if (genericQueue.Count > 1000)
+                    {
+                        // Utiliser ToList() directement pour les grandes collections
+                        return genericQueue.ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in genericQueue)
+                            result.Add(item);
+                        return result;
+                    }
                 case CollectionType.Stack:
-                    return ((Stack<T>)_collection).ToList();
+                    // Optimisation pour les grandes collections
+                    Stack<T> genericStack = (Stack<T>)_collection;
+                    if (genericStack.Count > 1000)
+                    {
+                        // Utiliser ToList() directement pour les grandes collections
+                        return genericStack.ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in genericStack)
+                            result.Add(item);
+                        return result;
+                    }
                 case CollectionType.HashSet:
-                    return ((HashSet<T>)_collection).ToList();
+                    // Optimisation pour les grandes collections
+                    HashSet<T> hashSet = (HashSet<T>)_collection;
+                    if (hashSet.Count > 1000)
+                    {
+                        // Utiliser ToList() directement pour les grandes collections
+                        return hashSet.ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in hashSet)
+                            result.Add(item);
+                        return result;
+                    }
                 case CollectionType.Dictionary:
-                    return ((Dictionary<string, T>)_collection).Values.ToList();
+                    // Optimisation pour les grandes collections
+                    Dictionary<string, T> dict = (Dictionary<string, T>)_collection;
+                    if (dict.Count > 1000)
+                    {
+                        // Utiliser Values.ToList() directement pour les grandes collections
+                        return dict.Values.ToList();
+                    }
+                    else
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in dict.Values)
+                            result.Add(item);
+                        return result;
+                    }
                 case CollectionType.Custom:
                     if (_collection is IEnumerable<T> genericEnumerable)
-                        return genericEnumerable.ToList();
+                    {
+                        // Ajouter les éléments un par un pour préserver les types
+                        foreach (var item in genericEnumerable)
+                            result.Add(item);
+                        return result;
+                    }
                     if (_collection is IEnumerable enumerable)
+                    {
+                        // Utiliser Cast<T>() pour convertir les éléments au type T
                         return enumerable.Cast<T>().ToList();
+                    }
                     throw new InvalidOperationException("La collection personnalisée ne peut pas être convertie en List<T>.");
                 default:
                     throw new NotSupportedException($"Type de collection non supporté: {_type}");

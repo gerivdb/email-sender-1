@@ -133,5 +133,8 @@
   "augment.browser.userProfile": "gerivonderbitsh@gmail.com",
   "augment.browser.forceSingle": true,
   "augment.browser.allowFallback": false,
-  "cline.preferredLanguage": "French - Français"
+  "cline.preferredLanguage": "French - Français",
+  "amp.commands.allowlist": [
+    "git add ."
+  ]
 }

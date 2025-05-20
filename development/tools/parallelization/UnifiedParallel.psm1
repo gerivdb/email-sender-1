@@ -82,6 +82,10 @@ $script:TaskCounter = 0
 # Clé = hash de la configuration du pool, Valeur = objet contenant le pool et ses métadonnées
 $script:RunspacePoolCache = @{}
 
+# Cache des résultats pour les tableaux vides
+# Clé = identifiant unique basé sur les paramètres, Valeur = objet résultat précalculé
+$script:EmptyResultsCache = @{}
+
 # Structures de données internes
 class ParallelResult {
     [string]$Id
@@ -2538,22 +2542,67 @@ function Wait-ForCompletedRunspace {
 
         Attend les runspaces avec détection de deadlock après 15 secondes sans progression.
 
+    .EXAMPLE
+        $emptyRunspaces = @()
+        $result = Wait-ForCompletedRunspace -Runspaces $emptyRunspaces -WaitForAll
+
+        Gère correctement un tableau vide. Par défaut (ReturnFormat="Object"), la fonction retourne un objet
+        personnalisé avec une propriété Results contenant une liste vide.
+
+    .EXAMPLE
+        $emptyRunspaces = @()
+        $result = Wait-ForCompletedRunspace -Runspaces $emptyRunspaces -WaitForAll -ReturnFormat "Array"
+
+        Gère un tableau vide avec le format de retour "Array". Dans ce cas, la fonction retourne un tableau vide (@()).
+        Ce format est utile pour la compatibilité avec du code existant qui attend un tableau.
+
+    .EXAMPLE
+        $runspaces = @(...)  # Tableau de runspaces
+        $result = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -ReturnFormat "Object"
+
+        # Accès aux résultats via les propriétés et méthodes de l'objet
+        $count = $result.Count
+        $firstResult = $result.GetFirst()
+        $allResults = $result.GetList()
+        $hasTimeout = $result.HasTimeout()
+
+    .EXAMPLE
+        $runspaces = @(...)  # Tableau de runspaces
+        $results = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -ReturnFormat "Array"
+
+        # Accès direct aux résultats comme un tableau
+        $count = $results.Count
+        $firstResult = $results[0]
+        foreach ($item in $results) {
+            # Traitement de chaque résultat
+        }
+
     .OUTPUTS
-        PSCustomObject
+        PSCustomObject ou System.Object[]
 
-        Un objet personnalisé avec les propriétés et méthodes suivantes :
-        - Results : System.Collections.Generic.List<object> contenant les runspaces complétés
-        - Count : Nombre de runspaces complétés
-        - GetList() : Méthode pour obtenir la List<object> des runspaces complétés
-        - GetArrayList() : Méthode obsolète pour la compatibilité, utiliser GetList() à la place
-        - GetFirst() : Méthode pour obtenir le premier runspace complété
-        - [index] : Indexeur pour accéder aux runspaces par leur index
-        - TimeoutOccurred : Indique si un timeout s'est produit
-        - DeadlockDetected : Indique si un deadlock a été détecté
-        - StoppedRunspaces : Liste des runspaces arrêtés en raison d'un timeout ou d'un deadlock
+        Le type de retour dépend du paramètre ReturnFormat :
 
-        Cet objet encapsule une List<object> pour éviter les problèmes de conversion de type
-        lors du retour de la fonction.
+        Avec ReturnFormat="Object" (par défaut) :
+        - La fonction retourne un objet personnalisé (PSCustomObject) avec les propriétés et méthodes suivantes :
+          - Results : System.Collections.Generic.List<object> contenant les runspaces complétés
+          - Count : Nombre de runspaces complétés
+          - GetList() : Méthode pour obtenir la List<object> des runspaces complétés
+          - GetArrayList() : Méthode obsolète pour la compatibilité, utiliser GetList() à la place
+          - GetFirst() : Méthode pour obtenir le premier runspace complété
+          - [index] : Indexeur pour accéder aux runspaces par leur index
+          - TimeoutOccurred : Indique si un timeout s'est produit
+          - DeadlockDetected : Indique si un deadlock a été détecté
+          - StoppedRunspaces : Liste des runspaces arrêtés en raison d'un timeout ou d'un deadlock
+          - HasTimeout() : Méthode pour vérifier si un timeout s'est produit
+          - HasDeadlock() : Méthode pour vérifier si un deadlock a été détecté
+
+        Avec ReturnFormat="Array" :
+        - La fonction retourne un tableau (System.Object[]) contenant directement les runspaces complétés
+        - Pour les tableaux vides, elle retourne un tableau vide (@())
+
+        L'objet personnalisé encapsule une List<object> pour éviter les problèmes de conversion de type
+        lors du retour de la fonction. Le format Array est utile pour la compatibilité avec du code existant
+        qui attend un tableau standard.
     #>
     [CmdletBinding()]
     [OutputType([PSCustomObject])]
@@ -2588,7 +2637,11 @@ function Wait-ForCompletedRunspace {
 
         [Parameter(Mandatory = $false, HelpMessage = "Nombre de secondes sans progression avant de considérer qu'un deadlock s'est produit")]
         [ValidateRange(0, [int]::MaxValue)]
-        [int]$DeadlockDetectionSeconds = 30
+        [int]$DeadlockDetectionSeconds = 30,
+
+        [Parameter(Mandatory = $false, HelpMessage = "Format de retour souhaité: Object (objet standardisé) ou Array (tableau)")]
+        [ValidateSet("Object", "Array")]
+        [string]$ReturnFormat = "Object"
     )
 
     begin {
@@ -2621,8 +2674,21 @@ function Wait-ForCompletedRunspace {
         # Convertir Runspaces en List<PSObject> si ce n'est pas déjà le cas
         $runspacesToProcess = $null
 
+        # Détection rapide des tableaux vides ou null en une seule étape
+        if ($null -eq $Runspaces -or
+            (($Runspaces -is [array] -or $Runspaces -is [System.Array]) -and $Runspaces.Count -eq 0) -or
+            ($Runspaces.PSObject.Properties.Match('Count').Count -gt 0 -and $Runspaces.Count -eq 0)) {
+
+            Write-Verbose "Détection rapide: Runspaces est null ou vide. Aucun runspace à traiter."
+
+            # Utiliser une liste vide préallouée pour optimiser les performances
+            $runspacesToProcess = [System.Collections.Generic.List[PSObject]]::new(0)
+
+            # Marquer que nous avons détecté un tableau vide pour optimiser le traitement ultérieur
+            $isEmptyInput = $true
+        }
         # Vérifier le type de Runspaces et effectuer la conversion appropriée
-        if ($Runspaces -is [System.Collections.Generic.List[PSObject]]) {
+        elseif ($Runspaces -is [System.Collections.Generic.List[PSObject]]) {
             Write-Verbose "Runspaces est déjà une List<PSObject>. Aucune conversion nécessaire."
             $runspacesToProcess = $Runspaces
         } elseif ($Runspaces -is [System.Collections.ArrayList]) {
@@ -2684,9 +2750,115 @@ function Wait-ForCompletedRunspace {
     }
 
     process {
-        if ($null -eq $runspacesToProcess -or $runspacesToProcess.Count -eq 0) {
-            Write-Verbose "Aucun runspace à attendre."
-            return $completedRunspaces
+        # Optimisation: Utiliser la détection rapide des tableaux vides
+        if ($isEmptyInput -or $null -eq $runspacesToProcess -or $runspacesToProcess.Count -eq 0) {
+            Write-Verbose "Optimisation: Traitement rapide d'un tableau vide ou null."
+
+            # Utiliser des listes vides préallouées pour optimiser les performances
+            $completedRunspaces = [System.Collections.Generic.List[object]]::new(0)
+            $stoppedRunspaces = [System.Collections.Generic.List[object]]::new(0)
+
+            # Vérifier si nous avons un résultat en cache pour les tableaux vides
+            $cacheKey = "EmptyArray_${ReturnFormat}"
+            if ($script:EmptyResultsCache -and $script:EmptyResultsCache.ContainsKey($cacheKey)) {
+                Write-Verbose "Utilisation du cache pour les tableaux vides avec ReturnFormat=$ReturnFormat"
+                $resultObject = $script:EmptyResultsCache[$cacheKey]
+                return $resultObject
+            }
+
+            Write-Verbose "Création d'un objet de résultat optimisé pour tableau vide."
+            # Créer un objet de résultat vide mais correctement formaté
+            $resultObject = [PSCustomObject]@{
+                Results          = $completedRunspaces
+                TimeoutOccurred  = $false
+                DeadlockDetected = $false
+                StoppedRunspaces = $stoppedRunspaces
+                DeadlockAnalysis = $null
+                # Ajouter la propriété Count directement dans l'objet pour éviter les problèmes avec ScriptProperty
+                Count            = 0
+            }
+
+            Write-Verbose "Propriétés de l'objet résultat pour tableau vide:"
+            $resultObject.PSObject.Properties | ForEach-Object {
+                Write-Verbose "  $($_.Name): $($_.Value)"
+            }
+            Write-Verbose "Type de l'objet résultat: $($resultObject.GetType().FullName)"
+            Write-Verbose "Count: $($resultObject.Count)"
+            Write-Verbose "Results.Count: $($resultObject.Results.Count)"
+
+            # Ajouter les méthodes standard
+            $resultObject | Add-Member -MemberType ScriptMethod -Name "GetList" -Value {
+                return $this.Results
+            } -Force
+
+            $resultObject | Add-Member -MemberType ScriptMethod -Name "GetArrayList" -Value {
+                Write-Warning "La méthode GetArrayList est obsolète. Utilisez GetList à la place."
+                return $this.Results
+            } -Force
+
+            $resultObject | Add-Member -MemberType ScriptMethod -Name "GetFirst" -Value {
+                if ($this.Results.Count -gt 0) {
+                    return $this.Results[0]
+                }
+                return $null
+            } -Force
+
+            # Ajouter la propriété Count qui retourne le nombre d'éléments dans Results
+            # Pour un tableau vide, cela retournera 0
+            # Vérifier si la propriété Count existe déjà
+            if (-not $resultObject.PSObject.Properties.Match('Count').Count) {
+                $resultObject | Add-Member -MemberType ScriptProperty -Name "Count" -Value {
+                    return $this.Results.Count
+                } -Force
+            }
+
+            $resultObject | Add-Member -MemberType ScriptMethod -Name "get_Item" -Value {
+                param($index)
+                return $this.Results[$index]
+            } -Force
+
+            $resultObject | Add-Member -MemberType ScriptMethod -Name "HasTimeout" -Value {
+                return $this.TimeoutOccurred
+            } -Force
+
+            $resultObject | Add-Member -MemberType ScriptMethod -Name "HasDeadlock" -Value {
+                return $this.DeadlockDetected
+            } -Force
+
+            # Ajouter une méthode pour obtenir un rapport de deadlock
+            $resultObject | Add-Member -MemberType ScriptMethod -Name "GetDeadlockReport" -Value {
+                if (-not $this.DeadlockDetected) {
+                    return "Aucun deadlock détecté."
+                }
+
+                $report = "Rapport de deadlock:`n"
+                if ($null -ne $this.DeadlockAnalysis) {
+                    $report += "- Seuil de détection: $($this.DeadlockAnalysis.DetectionThreshold) secondes`n"
+                    $report += "- Temps écoulé depuis le dernier progrès: $($this.DeadlockAnalysis.TimeSinceLastProgress) secondes`n"
+                    $report += "- Runspaces complétés: $($this.DeadlockAnalysis.CompletedCount) / $($this.DeadlockAnalysis.TotalCount)`n"
+                    $report += "- Runspaces arrêtés: $($this.DeadlockAnalysis.StoppedCount)`n"
+
+                    if ($this.DeadlockAnalysis.DeadlockedRunspaces.Count -gt 0) {
+                        $report += "- Runspaces en deadlock:`n"
+                        foreach ($runspace in $this.DeadlockAnalysis.DeadlockedRunspaces) {
+                            $report += "  - ID: $($runspace.RunspaceId), Temps d'exécution: $($runspace.RunningTime.TotalSeconds) secondes`n"
+                        }
+                    }
+                } else {
+                    $report += "- Aucune analyse de deadlock disponible.`n"
+                }
+
+                return $report
+            } -Force
+
+            # Convertir le résultat au format demandé si nécessaire
+            if ($ReturnFormat -eq "Array") {
+                Write-Verbose "Conversion du résultat en tableau selon le paramètre ReturnFormat=Array"
+                # Pour un tableau vide, retourner un tableau vide
+                return @()
+            }
+
+            return $resultObject
         }
 
         Write-Verbose "Attente de $($runspacesToProcess.Count) runspaces..."
@@ -3090,6 +3262,12 @@ function Wait-ForCompletedRunspace {
             Write-Verbose "$($stoppedRunspaces.Count) runspaces arrêtés en raison de timeout ou deadlock."
         }
 
+        # Vérifier si nous avons déjà créé un objet de résultat pour un tableau vide
+        if ($null -ne $resultObject) {
+            Write-Verbose "Objet de résultat déjà créé pour un tableau vide. Utilisation de cet objet."
+            return $resultObject
+        }
+
         # Analyser les deadlocks si détectés
         $deadlockAnalysis = $null
         if ($deadlockDetected) {
@@ -3167,13 +3345,13 @@ function Wait-ForCompletedRunspace {
         # Ajouter une méthode pour accéder à la List<object>
         $resultObject | Add-Member -MemberType ScriptMethod -Name "GetList" -Value {
             return $this.Results
-        }
+        } -Force
 
         # Maintenir la compatibilité avec l'ancienne méthode GetArrayList
         $resultObject | Add-Member -MemberType ScriptMethod -Name "GetArrayList" -Value {
             Write-Warning "La méthode GetArrayList est obsolète. Utilisez GetList à la place."
             return $this.Results
-        }
+        } -Force
 
         # Ajouter une méthode pour accéder au premier élément
         $resultObject | Add-Member -MemberType ScriptMethod -Name "GetFirst" -Value {
@@ -3181,81 +3359,142 @@ function Wait-ForCompletedRunspace {
                 return $this.Results[0]
             }
             return $null
-        }
-
-        # Ajouter une propriété Count
-        $resultObject | Add-Member -MemberType ScriptProperty -Name "Count" -Value {
-            return $this.Results.Count
         } -Force
+
+        # Ajouter une propriété Count seulement si elle n'existe pas déjà
+        # ou si elle n'est pas définie correctement pour les tableaux vides
+        if (-not $resultObject.PSObject.Properties.Match('Count').Count -or
+            ($resultObject.Results.Count -eq 0 -and $resultObject.Count -ne 0)) {
+
+            # Pour les tableaux vides, définir Count à 0 explicitement
+            if ($resultObject.Results.Count -eq 0) {
+                Write-Verbose "Définition de Count=0 pour un tableau vide"
+                $resultObject.PSObject.Properties.Remove('Count')
+                $resultObject | Add-Member -MemberType NoteProperty -Name "Count" -Value 0 -Force
+            } else {
+                # Pour les autres cas, utiliser une ScriptProperty qui retourne le nombre d'éléments dans Results
+                Write-Verbose "Définition de Count comme ScriptProperty pour un tableau non-vide"
+                $resultObject | Add-Member -MemberType ScriptProperty -Name "Count" -Value {
+                    return $this.Results.Count
+                } -Force
+            }
+        } else {
+            Write-Verbose "La propriété Count existe déjà avec la valeur: $($resultObject.Count)"
+        }
 
         # Ajouter un indexeur
         $resultObject | Add-Member -MemberType ScriptMethod -Name "get_Item" -Value {
             param($index)
             return $this.Results[$index]
-        }
+        } -Force
 
         # Ajouter une méthode pour vérifier si un timeout s'est produit
         $resultObject | Add-Member -MemberType ScriptMethod -Name "HasTimeout" -Value {
             return $this.TimeoutOccurred
-        }
+        } -Force
 
         # Ajouter une méthode pour vérifier si un deadlock a été détecté
         $resultObject | Add-Member -MemberType ScriptMethod -Name "HasDeadlock" -Value {
             return $this.DeadlockDetected
-        }
+        } -Force
+
+        # Ajouter une méthode pour obtenir un rapport de deadlock
+        $resultObject | Add-Member -MemberType ScriptMethod -Name "GetDeadlockReport" -Value {
+            if (-not $this.DeadlockDetected) {
+                return "Aucun deadlock détecté."
+            }
+
+            $report = "Rapport de deadlock:`n"
+            if ($null -ne $this.DeadlockAnalysis) {
+                $report += "- Seuil de détection: $($this.DeadlockAnalysis.DetectionThreshold) secondes`n"
+                $report += "- Temps écoulé depuis le dernier progrès: $($this.DeadlockAnalysis.TimeSinceLastProgress) secondes`n"
+                $report += "- Runspaces complétés: $($this.DeadlockAnalysis.CompletedCount) / $($this.DeadlockAnalysis.TotalCount)`n"
+                $report += "- Runspaces arrêtés: $($this.DeadlockAnalysis.StoppedCount)`n"
+
+                if ($this.DeadlockAnalysis.DeadlockedRunspaces.Count -gt 0) {
+                    $report += "- Runspaces en deadlock:`n"
+                    foreach ($runspace in $this.DeadlockAnalysis.DeadlockedRunspaces) {
+                        $report += "  - ID: $($runspace.RunspaceId), Temps d'exécution: $($runspace.RunningTime.TotalSeconds) secondes`n"
+                    }
+                }
+            } else {
+                $report += "- Aucune analyse de deadlock disponible.`n"
+            }
+
+            return $report
+        } -Force
 
         # Ajouter une méthode pour obtenir les runspaces arrêtés
         $resultObject | Add-Member -MemberType ScriptMethod -Name "GetStoppedRunspaces" -Value {
             return $this.StoppedRunspaces
-        }
+        } -Force
 
         # Ajouter une méthode pour obtenir l'analyse des deadlocks
         $resultObject | Add-Member -MemberType ScriptMethod -Name "GetDeadlockAnalysis" -Value {
             return $this.DeadlockAnalysis
-        }
-
-        # Ajouter une méthode pour obtenir un rapport détaillé sur les deadlocks
-        $resultObject | Add-Member -MemberType ScriptMethod -Name "GetDeadlockReport" -Value {
-            if (-not $this.DeadlockDetected -or $null -eq $this.DeadlockAnalysis) {
-                return "Aucun deadlock détecté."
-            }
-
-            $report = "=== Rapport de deadlock ===`n"
-            $report += "Détecté à: $($this.DeadlockAnalysis.DetectionTime)`n"
-            $report += "Seuil de détection: $($this.DeadlockAnalysis.DetectionThreshold) secondes`n"
-            $report += "Temps sans progression: $($this.DeadlockAnalysis.TimeSinceLastProgress) secondes`n"
-            $report += "Runspaces complétés: $($this.DeadlockAnalysis.CompletedCount) sur $($this.DeadlockAnalysis.TotalCount)`n"
-            $report += "Runspaces en deadlock: $($this.DeadlockAnalysis.StoppedCount)`n"
-            $report += "Runspaces restants: $($this.DeadlockAnalysis.RemainingCount)`n"
-            $report += "`nDétails des runspaces en deadlock:`n"
-
-            foreach ($runspace in $this.DeadlockAnalysis.DeadlockedRunspaces) {
-                $report += "  - Runspace ID: $($runspace.RunspaceId)`n"
-                $report += "    Démarré à: $($runspace.StartTime)`n"
-                $report += "    Temps d'exécution: $($runspace.RunningTime.TotalSeconds) secondes`n"
-                $report += "    Deadlock détecté à: $($runspace.DeadlockTime)`n"
-                $report += "    Raison: $($runspace.DeadlockReason)`n"
-                if ($runspace.HasErrors) {
-                    $report += "    Erreurs: $($runspace.ErrorCount)`n"
-                }
-                $report += "`n"
-            }
-
-            return $report
-        }
+        } -Force
 
         # Si on n'attend pas tous les runspaces, on doit s'assurer que Runspaces ne contient que les runspaces restants
-        if (-not $WaitForAll -and $Runspaces -is [System.Collections.Generic.List[PSObject]]) {
+        if (-not $WaitForAll) {
             # Supprimer tous les runspaces complétés de la liste originale
-            for ($i = $Runspaces.Count - 1; $i -ge 0; $i--) {
-                $runspace = $Runspaces[$i]
-                if ($null -ne $runspace -and $null -ne $runspace.Handle -and $runspace.Handle.IsCompleted) {
-                    $Runspaces.RemoveAt($i)
+            # Vérifier le type de collection pour utiliser la méthode appropriée
+            if ($Runspaces -is [System.Collections.Generic.List[PSObject]] -or
+                $Runspaces -is [System.Collections.Generic.List[object]]) {
+                # Pour List<T>, utiliser RemoveAt
+                for ($i = $Runspaces.Count - 1; $i -ge 0; $i--) {
+                    $runspace = $Runspaces[$i]
+                    if ($null -ne $runspace -and $null -ne $runspace.Handle -and $runspace.Handle.IsCompleted) {
+                        $Runspaces.RemoveAt($i)
+                    }
+                }
+            } elseif ($Runspaces -is [System.Collections.ArrayList]) {
+                # Pour ArrayList, utiliser RemoveAt
+                for ($i = $Runspaces.Count - 1; $i -ge 0; $i--) {
+                    $runspace = $Runspaces[$i]
+                    if ($null -ne $runspace -and $null -ne $runspace.Handle -and $runspace.Handle.IsCompleted) {
+                        $Runspaces.RemoveAt($i)
+                    }
+                }
+            } elseif ($Runspaces -is [array] -or $Runspaces -is [System.Array]) {
+                # Pour les tableaux, créer un nouveau tableau filtré
+                # Note: Les tableaux sont immuables, donc on ne peut pas les modifier directement
+                Write-Verbose "Runspaces est un tableau immuable. Création d'un nouveau tableau filtré."
+                $filteredRunspaces = $Runspaces | Where-Object {
+                    $null -eq $_ -or $null -eq $_.Handle -or -not $_.Handle.IsCompleted
+                }
+                # Remplacer la référence au tableau original (ne fonctionne que si $Runspaces est une variable)
+                # Cette opération n'est pas idéale car elle dépend du contexte d'appel
+                # Mais c'est la meilleure solution pour les tableaux immuables
+                try {
+                    $Runspaces = $filteredRunspaces
+                } catch {
+                    Write-Warning "Impossible de mettre à jour la référence au tableau Runspaces: $_"
                 }
             }
         }
 
-        return $resultObject
+        # Mettre en cache le résultat pour les futures utilisations si c'est un tableau vide
+        if ($finalResult.Count -eq 0) {
+            $cacheKey = "EmptyArray_$ReturnFormat"
+            if (-not $script:EmptyResultsCache.ContainsKey($cacheKey)) {
+                Write-Verbose "Mise en cache du résultat pour les tableaux vides avec ReturnFormat=$ReturnFormat"
+                $script:EmptyResultsCache[$cacheKey] = $resultObject
+            }
+        }
+
+        # Convertir le résultat au format demandé
+        if ($ReturnFormat -eq "Array" -and $resultObject.GetType().Name -eq "PSCustomObject") {
+            Write-Verbose "Conversion du résultat en tableau selon le paramètre ReturnFormat=Array"
+            # Convertir l'objet en tableau
+            $arrayResult = @()
+            foreach ($item in $resultObject.Results) {
+                $arrayResult += $item
+            }
+            return $arrayResult
+        } else {
+            # Retourner l'objet tel quel
+            return $resultObject
+        }
     }
 }
 
@@ -3335,12 +3574,19 @@ function Invoke-RunspaceProcessor {
     .OUTPUTS
         System.Management.Automation.PSObject
 
-        Un objet avec les propriétés suivantes :
-        - Results : Liste des résultats de chaque runspace
+        Un objet avec les propriétés et méthodes suivantes :
+        - Results : Liste des résultats de chaque runspace (System.Collections.Generic.List<object>)
         - Errors : Liste des erreurs survenues
         - TotalProcessed : Nombre total de runspaces traités
         - SuccessCount : Nombre de runspaces traités avec succès
         - ErrorCount : Nombre de runspaces ayant généré une erreur
+        - Count : Nombre de résultats (propriété)
+        - GetList() : Méthode pour obtenir la List<object> des résultats
+        - GetFirst() : Méthode pour obtenir le premier résultat
+        - [index] : Indexeur pour accéder aux résultats par leur index
+
+        Ce format est standardisé pour être cohérent avec le format de retour de Wait-ForCompletedRunspace,
+        ce qui facilite l'utilisation des deux fonctions ensemble.
     #>
     [CmdletBinding()]
     param(
@@ -3373,7 +3619,44 @@ function Invoke-RunspaceProcessor {
         if ($null -eq $CompletedRunspaces) {
             Write-Verbose "CompletedRunspaces est null. Aucun runspace à traiter."
             return
-        } elseif ($CompletedRunspaces -is [System.Collections.Generic.List[object]]) {
+        }
+
+        # Vérifier si CompletedRunspaces est un objet retourné par Wait-ForCompletedRunspace
+        elseif ($CompletedRunspaces.PSObject.Properties.Match('Results').Count -gt 0 -and
+            $CompletedRunspaces.PSObject.Properties.Match('GetList').Count -gt 0) {
+            Write-Verbose "CompletedRunspaces est un objet retourné par Wait-ForCompletedRunspace. Utilisation de la propriété Results."
+
+            # Utiliser la méthode GetList() pour obtenir la List<object>
+            try {
+                $runspacesCollection = $CompletedRunspaces.GetList()
+                Write-Verbose "Méthode GetList() utilisée avec succès. Type: $($runspacesCollection.GetType().FullName)"
+
+                # Filtrer les éléments null
+                $filteredList = [System.Collections.Generic.List[object]]::new()
+                foreach ($item in $runspacesCollection) {
+                    if ($null -ne $item) {
+                        $filteredList.Add($item)
+                    }
+                }
+                $runspacesToProcess = $filteredList
+            }
+            # Si GetList() échoue, essayer d'utiliser la propriété Results directement
+            catch {
+                Write-Verbose "Méthode GetList() a échoué: $_. Utilisation de la propriété Results directement."
+                $runspacesCollection = $CompletedRunspaces.Results
+
+                # Filtrer les éléments null
+                $filteredList = [System.Collections.Generic.List[object]]::new()
+                foreach ($item in $runspacesCollection) {
+                    if ($null -ne $item) {
+                        $filteredList.Add($item)
+                    }
+                }
+                $runspacesToProcess = $filteredList
+            }
+        }
+
+        elseif ($CompletedRunspaces -is [System.Collections.Generic.List[object]]) {
             Write-Verbose "CompletedRunspaces est déjà une List<object>. Aucune conversion nécessaire."
             # Filtrer les éléments null
             $filteredList = [System.Collections.Generic.List[object]]::new()
@@ -3383,21 +3666,27 @@ function Invoke-RunspaceProcessor {
                 }
             }
             $runspacesToProcess = $filteredList
-        } elseif ($CompletedRunspaces -is [System.Collections.ArrayList]) {
+        }
+
+        elseif ($CompletedRunspaces -is [System.Collections.ArrayList]) {
             Write-Verbose "CompletedRunspaces est un ArrayList. Conversion en List<object>."
             foreach ($runspace in $CompletedRunspaces) {
                 if ($null -ne $runspace) {
                     $runspacesToProcess.Add($runspace)
                 }
             }
-        } elseif ($CompletedRunspaces -is [System.Collections.Concurrent.ConcurrentBag[object]]) {
+        }
+
+        elseif ($CompletedRunspaces -is [System.Collections.Concurrent.ConcurrentBag[object]]) {
             Write-Verbose "CompletedRunspaces est un ConcurrentBag. Conversion en List<object>."
             foreach ($runspace in $CompletedRunspaces) {
                 if ($null -ne $runspace) {
                     $runspacesToProcess.Add($runspace)
                 }
             }
-        } elseif ($CompletedRunspaces -is [array] -or $CompletedRunspaces -is [System.Array]) {
+        }
+
+        elseif ($CompletedRunspaces -is [array] -or $CompletedRunspaces -is [System.Array]) {
             Write-Verbose "CompletedRunspaces est un tableau. Conversion en List<object>."
             # Optimisation: préallouer la capacité si possible
             if ($CompletedRunspaces.Length -gt 0) {
@@ -3408,7 +3697,9 @@ function Invoke-RunspaceProcessor {
                     $runspacesToProcess.Add($runspace)
                 }
             }
-        } elseif ($CompletedRunspaces.GetType().Name -eq 'Object[]') {
+        }
+
+        elseif ($CompletedRunspaces.GetType().Name -eq 'Object[]') {
             Write-Verbose "CompletedRunspaces est un tableau d'objets. Conversion en List<object>."
             # Optimisation: préallouer la capacité si possible
             if ($CompletedRunspaces.Length -gt 0) {
@@ -3419,14 +3710,18 @@ function Invoke-RunspaceProcessor {
                     $runspacesToProcess.Add($runspace)
                 }
             }
-        } elseif ($CompletedRunspaces.GetType().GetInterfaces().Name -contains 'IEnumerable') {
+        }
+
+        elseif ($CompletedRunspaces.GetType().GetInterfaces().Name -contains 'IEnumerable') {
             Write-Verbose "CompletedRunspaces implémente IEnumerable. Conversion en List<object>."
             foreach ($runspace in $CompletedRunspaces) {
                 if ($null -ne $runspace) {
                     $runspacesToProcess.Add($runspace)
                 }
             }
-        } elseif ($CompletedRunspaces.PSObject.Properties.Match('Count').Count -gt 0 -and
+        }
+
+        elseif ($CompletedRunspaces.PSObject.Properties.Match('Count').Count -gt 0 -and
             $CompletedRunspaces.PSObject.Properties.Match('Item').Count -gt 0) {
             Write-Verbose "CompletedRunspaces semble être une collection. Conversion en List<object>."
             # Optimisation: préallouer la capacité si possible
@@ -3439,7 +3734,9 @@ function Invoke-RunspaceProcessor {
                     $runspacesToProcess.Add($item)
                 }
             }
-        } else {
+        }
+
+        else {
             # Si c'est un objet unique, l'ajouter directement
             Write-Verbose "CompletedRunspaces est un objet unique. Ajout à la List<object>."
             if ($null -ne $CompletedRunspaces) {
@@ -3620,19 +3917,46 @@ function Invoke-RunspaceProcessor {
 
         Write-Verbose "$($resultsList.Count) résultats traités, $errorCount erreurs."
 
-        # Créer l'objet de résultats détaillés
-        $detailedResults = [PSCustomObject]@{
-            Results        = $resultsList
-            Errors         = $errorsList
-            TotalProcessed = $processedRunspaces
-            SuccessCount   = $successCount
-            ErrorCount     = $errorCount
-        }
-
         # Retourner les résultats selon le paramètre SimpleResults
         if ($SimpleResults) {
             return $resultsList
         } else {
+            # Créer l'objet de résultats détaillés avec un format standardisé
+            $detailedResults = [PSCustomObject]@{
+                Results        = $resultsList
+                Errors         = $errorsList
+                TotalProcessed = $processedRunspaces
+                SuccessCount   = $successCount
+                ErrorCount     = $errorCount
+            }
+
+            # Ajouter des méthodes et propriétés pour standardiser le format de retour
+            # et assurer la compatibilité avec Wait-ForCompletedRunspace
+
+            # Ajouter une méthode pour accéder à la List<object>
+            $detailedResults | Add-Member -MemberType ScriptMethod -Name "GetList" -Value {
+                return $this.Results
+            }
+
+            # Ajouter une propriété Count
+            $detailedResults | Add-Member -MemberType ScriptProperty -Name "Count" -Value {
+                return $this.Results.Count
+            } -Force
+
+            # Ajouter un indexeur
+            $detailedResults | Add-Member -MemberType ScriptMethod -Name "get_Item" -Value {
+                param($index)
+                return $this.Results[$index]
+            }
+
+            # Ajouter une méthode pour obtenir le premier élément
+            $detailedResults | Add-Member -MemberType ScriptMethod -Name "GetFirst" -Value {
+                if ($this.Results.Count -gt 0) {
+                    return $this.Results[0]
+                }
+                return $null
+            }
+
             return $detailedResults
         }
     }
