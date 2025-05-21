@@ -24,12 +24,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
-      - name: Set up PowerShell
-        uses: peterschindler/setup-powershell@v2
-        with:
-          version: '7.2'
-      
+
+      # PowerShell 7 est déjà installé sur windows-latest
+
       - name: Install Pester
         shell: pwsh
         run: |
@@ -105,14 +102,11 @@ jobs:
       
       - name: Send Notification
         uses: dawidd6/action-send-mail@v3
-        env:
-          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{ env.EMAIL_USERNAME }}
-          password: ${{ env.EMAIL_PASSWORD }}
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "TestOmnibus CI/CD: Déploiement réussi"
           body: |
             Le déploiement de TestOmnibus a été effectué avec succès.
