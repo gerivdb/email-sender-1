@@ -18,7 +18,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18
+        node-version: 20
         cache: 'none'  # Désactive le cache jusqu'à ce que vous ayez un package-lock.json
       
     # Utilisation de PowerShell 5.1 (déjà installé sur les runners Windows)
@@ -75,7 +75,7 @@ jobs:
       
     # Enregistrement des résultats des tests comme artefacts
     - name: Enregistrer les résultats des tests
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: |

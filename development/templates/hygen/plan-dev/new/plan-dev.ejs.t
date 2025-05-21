@@ -1,5 +1,5 @@
 ---
-to: projet/roadmaps/plans/plan-dev-<%= version %>-<%= title.toLowerCase().replace(/ /g, '-').normalize('NFD').replace(/[\u0300-\u036f]/g, '') %>.md
+to: projet/roadmaps/plans/consolidated/plan-dev-v<%= version %>-<%= title.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9\-]/g, '').slice(0,50) %>.md
 encoding: utf8
 ---
 # Plan de développement <%= version %> - <%= title %>

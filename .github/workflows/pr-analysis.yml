@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0  # Récupérer tout l'historique pour comparer les branches
         
       - name: Set up PowerShell
-        uses: actions/setup-powershell@v1
+        uses: PowerShell/setup-powershell@v2
         with:
           powershell-version: '7.2'
       
@@ -140,7 +140,7 @@ jobs:
       
       - name: Upload Analysis Results
         if: steps.changed-files.outputs.any_changed == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pr-analysis-results
           path: |

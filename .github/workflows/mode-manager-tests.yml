@@ -40,7 +40,7 @@ jobs:
         & $testScript -OutputPath $reportsPath -GenerateHTML -FailOnError
     
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results
@@ -85,7 +85,7 @@ jobs:
         & $testScript -OutputPath $reportsPath -GenerateHTML -FailOnError
     
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results-ps5
@@ -123,7 +123,7 @@ jobs:
         & $testScript -TestType "Compatibility" -OutputPath $reportsPath -GenerateHTML
     
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results-linux

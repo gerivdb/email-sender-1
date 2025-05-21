@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0  # Récupérer tout l'historique pour comparer les branches
         
       - name: Set up PowerShell
-        uses: actions/setup-powershell@v1
+        uses: PowerShell/setup-powershell@v2
         with:
           powershell-version: '7.2'
       
@@ -62,7 +62,7 @@ jobs:
           .\git-hooks\Analyze-PullRequest.ps1 -Action Comment -PullRequestNumber $prNumber
       
       - name: Upload Analysis Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pr-analysis-report
           path: git-hooks/reports/pr-*.md
