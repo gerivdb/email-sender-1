@@ -32,16 +32,33 @@ npx hygen script new --name update-config --category maintenance/config --descri
 
 ## Structure des templates
 
-- `script/new/` : Templates pour les scripts PowerShell
-  - `index.js` : Configuration du template
-  - `script.ejs` : Template EJS pour les scripts PowerShell
+Voici la liste des sous-dossiers et types de templates actuellement disponibles dans ce dossier :
+
+- `plan-dev/` : Templates pour la création de plans de développement
+- `doc-structure/` : Templates pour la documentation de structure et la migration
+- `maintenance/` : Scripts et utilitaires de maintenance
+- `mcp-server/` : Templates pour la configuration ou génération de serveurs MCP
+- `mode/` : Génération de modes, commandes, et tests associés
+- `powershell-module/` : Templates pour modules PowerShell
+- `prd/` : Templates pour la documentation PRD
+- `roadmap/` : Génération de roadmaps
+- `roadmap-parser/` : Outils de parsing de roadmap
+- `script/` : Génération de scripts PowerShell
+- `script-analysis/` : Analyse de scripts
+- `script-automation/` : Automatisation de scripts
+- `script-integration/` : Intégration de scripts
+- `script-test/` : Tests de scripts
 
 ## Ajout de nouveaux templates
 
-Pour ajouter un nouveau type de template, utilisez la commande suivante :
+Pour ajouter un nouveau type de template, utilisez la commande suivante :
 
 ```bash
 npx hygen generator new [nom-du-template]
 ```
 
 Puis modifiez les fichiers générés selon vos besoins.
+
+---
+
+Dernière mise à jour : 2025-05-21

@@ -1,0 +1,21 @@
+{
+  "node_id": "f10ca86c-b551-476e-a0ee-7efc22d81007",
+  "name": "COSMOS 2",
+  "level": "COSMOS",
+  "level_value": 1,
+  "description": "Description du COSMOS 2",
+  "metadata": {
+    "version": "1.0",
+    "index": 1,
+    "created_at": "2025-05-14T06:15:20.392274",
+    "updated_at": "2025-05-14T06:15:20.532421",
+    "type": "cosmos"
+  },
+  "status": "PLANNED",
+  "parent_id": null,
+  "children_ids": [
+    "dcbeb345-8b89-47b4-a687-b2c5a8871d1f",
+    "1da5faa2-05b3-452a-88ad-55a69319ef4d",
+    "582d348e-d913-4a92-a592-f9f296cbf095"
+  ]
+}

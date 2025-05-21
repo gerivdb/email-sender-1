@@ -1,0 +1,17 @@
+{
+  "node_id": "121bce7a-7431-43f1-9766-bbea6a69a297",
+  "name": "SYSTEME 1 de la GALAXIE 1da5faa2",
+  "level": "SYSTEMES",
+  "level_value": 3,
+  "description": "Description du SYSTEME 1 de la GALAXIE 1da5faa2",
+  "metadata": {
+    "status": "planned",
+    "index": 0,
+    "created_at": "2025-05-14T06:15:20.860441",
+    "updated_at": "2025-05-14T06:15:20.860441",
+    "type": "stellar_system"
+  },
+  "status": "PLANNED",
+  "parent_id": "1da5faa2-05b3-452a-88ad-55a69319ef4d",
+  "children_ids": []
+}

@@ -1,0 +1,17 @@
+{
+  "node_id": "975cda58-28e7-4175-9c31-8d236bd7425b",
+  "name": "SYSTEME 1 de la GALAXIE f6634ea4",
+  "level": "SYSTEMES",
+  "level_value": 3,
+  "description": "Description du SYSTEME 1 de la GALAXIE f6634ea4",
+  "metadata": {
+    "status": "completed",
+    "index": 0,
+    "created_at": "2025-05-14T06:15:20.546488",
+    "updated_at": "2025-05-14T06:15:20.546488",
+    "type": "stellar_system"
+  },
+  "status": "PLANNED",
+  "parent_id": "f6634ea4-50d0-4778-bcb9-13cc0522059c",
+  "children_ids": []
+}

@@ -94,6 +94,25 @@ Pour initialiser le projet pour le développement, exécutez le script suivant :
 
 Ce script installe les dépendances, configure les hooks Git et organise les fichiers.
 
+## Scripts d'organisation automatique de la racine
+
+Deux scripts PowerShell sont fournis pour maintenir la propreté de la racine du projet :
+
+- **organize-tests.ps1** : Déplace automatiquement tous les dossiers dont le nom commence par "test" (hors "tests") dans le dossier `tests/`.
+- **organize-root-files.ps1** : Déplace automatiquement tous les fichiers non essentiels de la racine dans le dossier `misc/`, à l’exception des fichiers obligatoires à préserver (modifiable dans le script).
+
+**Utilisation :**
+
+```powershell
+# Organiser les dossiers de test
+pwsh -ExecutionPolicy Bypass -File organize-tests.ps1
+
+# Organiser les fichiers non essentiels de la racine
+pwsh -ExecutionPolicy Bypass -File organize-root-files.ps1
+```
+
+Après exécution, la racine du projet ne contient plus que les fichiers essentiels, et tous les tests sont centralisés dans `tests/`.
+
 ## Gestionnaire intégré
 
 Le projet utilise un gestionnaire intégré qui unifie les fonctionnalités du Mode Manager et du Roadmap Manager pour offrir une interface unique pour la gestion des modes opérationnels et des roadmaps.

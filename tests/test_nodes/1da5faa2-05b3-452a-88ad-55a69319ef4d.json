@@ -1,0 +1,22 @@
+{
+  "node_id": "1da5faa2-05b3-452a-88ad-55a69319ef4d",
+  "name": "GALAXIE 1 du COSMOS f10ca86c",
+  "level": "GALAXIES",
+  "level_value": 2,
+  "description": "Description de la GALAXIE 1 du COSMOS f10ca86c",
+  "metadata": {
+    "priority": "high",
+    "index": 0,
+    "created_at": "2025-05-14T06:15:20.484286",
+    "updated_at": "2025-05-14T06:16:28.821451",
+    "type": "galaxy"
+  },
+  "status": "PLANNED",
+  "parent_id": "f10ca86c-b551-476e-a0ee-7efc22d81007",
+  "children_ids": [
+    "91dab2c0-bd38-446e-a637-36473befd355",
+    "705daa74-c6d7-4ffe-93f3-1fb8014f4a64",
+    "121bce7a-7431-43f1-9766-bbea6a69a297",
+    "e3b34026-f472-45bd-824e-ad2863db447e"
+  ]
+}

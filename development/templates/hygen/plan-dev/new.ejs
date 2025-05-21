@@ -1,0 +1,25 @@
+---
+to: "{{ destination || 'plan-dev/{{kebabCase name}}.md' }}"
+---
+# Plan Dev: {{ capitalize name }}
+
+Date de création : {{ now }}
+Auteur : {{ author || 'À compléter' }}
+
+## Objectif
+
+Décrire ici l'objectif du plan de développement.
+
+## Étapes principales
+
+- [ ] Étape 1
+- [ ] Étape 2
+- [ ] Étape 3
+
+## Détails
+
+Ajouter ici les détails, sous-tâches, ou toute information utile pour le plan de développement.
+
+---
+
+> Généré avec Hygen (plan-dev template)
