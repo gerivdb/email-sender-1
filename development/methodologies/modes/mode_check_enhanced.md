@@ -14,12 +14,14 @@ Le mode CHECK amélioré est une version avancée du mode CHECK qui vérifie si 
 - `check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche>` : Vérification simple (mode simulation)
 - `check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -Force` : Mise à jour automatique des cases à cocher
 - `check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -ActiveDocumentPath <chemin_document>` : Spécification manuelle du document actif
+- `check.ps1 -FilePath <chemin_roadmap> -Selection <startLine>-<endLine>` : Applique le mode CHECK uniquement à la ou aux lignes sélectionnées dans l’IDE (via la sélection de lignes à la souris dans la colonne des numéros de lignes).
 
 ## Fonctionnement
 - Analyse la roadmap pour identifier les tâches et leur structure.
 - Vérifie l’implémentation et les tests de chaque tâche.
+- Vérifie que chaque tâche effectivement implémentée a sa case à cocher marquée comme terminée ([x]).
+- Met à jour automatiquement les cases à cocher si toutes les conditions sont remplies (implémentation et tests OK).
 - Détecte automatiquement le document actif (via variable d’environnement ou fichiers récemment modifiés).
-- Met à jour les cases à cocher si toutes les conditions sont remplies.
 - Préserve l’encodage UTF-8 avec BOM et l’indentation.
 
 ## Fonctionnalités avancées et options de configuration
@@ -116,6 +118,14 @@ Exemple de configuration :
       ".\\development\\tools\\scripts\\check.ps1 -FilePath \"projet/documentation/roadmap/roadmap.md\" -TaskIdentifier \"1.2.3\" -Force"
     ],
     "description": "Insère le template du mode CHECK Amélioré."
+  },
+  "Check sélection (mode CHECK)": {
+    "prefix": "check",
+    "body": [
+      "# Vérification des lignes sélectionnées (mode CHECK)",
+      "${1:check.ps1} -FilePath ${2:projet/documentation/roadmap/roadmap.md} -Selection ${TM_SELECTED_TEXT}"
+    ],
+    "description": "Lance la vérification CHECK sur les lignes sélectionnées dans l'éditeur."
   }
 }
 ```
