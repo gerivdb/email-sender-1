@@ -166,5 +166,8 @@
     "npm install -g @playwright/mcp",
     "npx @playwright/mcp@latest",
     "npx -y @playwright/mcp@latest"
-  ]
+  ],
+  "[markdown]": {
+    "diffEditor.ignoreTrimWhitespace": false
+  }
 }

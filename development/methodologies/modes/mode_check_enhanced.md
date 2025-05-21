@@ -1,121 +1,130 @@
-# Mode CHECK AmÃ©liorÃ©
+# Mode CHECK Amélioré
 
 ## Description
 
-Le mode CHECK amÃ©liorÃ© est une version avancÃ©e du [mode CHECK](mode_check.md) qui vÃ©rifie si les tÃ¢ches sÃ©lectionnÃ©es ont Ã©tÃ© implÃ©mentÃ©es Ã  100% et testÃ©es avec succÃ¨s Ã  100%, puis met Ã  jour automatiquement les cases Ã  cocher dans le document actif.
+Le mode CHECK amélioré est une version avancée du mode CHECK qui vérifie si les tâches sélectionnées ont été implémentées à 100% et testées avec succès à 100%, puis met à jour automatiquement les cases à cocher dans le document actif.
 
-## AmÃ©liorations par rapport au mode CHECK standard
+## Objectifs
+- Vérifier l’implémentation complète des tâches sélectionnées.
+- S’assurer que les tests associés sont réussis à 100%.
+- Mettre à jour automatiquement les cases à cocher dans les roadmaps et documents actifs.
+- Préserver l’encodage, l’indentation et le texte des tâches.
 
-- **Encodage UTF-8 avec BOM** : Tous les fichiers sont enregistrÃ©s en UTF-8 avec BOM, ce qui garantit une meilleure compatibilitÃ© avec les caractÃ¨res accentuÃ©s.
-- **PrÃ©servation des indentations** : Les indentations dans les documents sont correctement prÃ©servÃ©es lors de la mise Ã  jour des cases Ã  cocher.
-- **Meilleure dÃ©tection des tÃ¢ches** : L'algorithme de dÃ©tection des tÃ¢ches a Ã©tÃ© amÃ©liorÃ© pour mieux identifier les tÃ¢ches dans le document actif.
-- **PrÃ©servation du texte complet des tÃ¢ches** : Le texte complet des tÃ¢ches est prÃ©servÃ© lors de la mise Ã  jour des cases Ã  cocher.
-- **Script wrapper simplifiÃ©** : Un script wrapper `check.ps1` est fourni pour faciliter l'utilisation du mode CHECK amÃ©liorÃ©.
+## Commandes principales
+- `check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche>` : Vérification simple (mode simulation)
+- `check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -Force` : Mise à jour automatique des cases à cocher
+- `check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -ActiveDocumentPath <chemin_document>` : Spécification manuelle du document actif
 
-## Utilisation
+## Fonctionnement
+- Analyse la roadmap pour identifier les tâches et leur structure.
+- Vérifie l’implémentation et les tests de chaque tâche.
+- Détecte automatiquement le document actif (via variable d’environnement ou fichiers récemment modifiés).
+- Met à jour les cases à cocher si toutes les conditions sont remplies.
+- Préserve l’encodage UTF-8 avec BOM et l’indentation.
 
-Le mode CHECK amÃ©liorÃ© est accessible via un script wrapper simplifiÃ© qui facilite son utilisation.
+## Fonctionnalités avancées et options de configuration
 
-### Installation
+- Génération de rapports de vérification (paramètre `GenerateReport`, chemin configurable via `ReportPath`).
+- Mode simulation avancé avec le paramètre `WhatIf` (simule les actions sans les exécuter).
+- Configuration avancée possible via le fichier `config.json` (exemple : `AutoUpdateRoadmap`, `RequireFullTestCoverage`, `SimulationModeDefault`, etc.).
 
-Le mode CHECK amÃ©liorÃ© est installÃ© automatiquement avec les autres modes opÃ©rationnels. Le script wrapper `check.ps1` est placÃ© dans le rÃ©pertoire `tools\scripts\`.
-
-### Syntaxe de base
-
-```powershell
-.\development\tools\scripts\check.ps1 [-FilePath <chemin_roadmap>] [-TaskIdentifier <id_tÃ¢che>] [-ActiveDocumentPath <chemin_document>] [-Force]
+Exemple de configuration :
+```json
+{
+  "Check": {
+    "DefaultRoadmapFile": "projet/roadmaps/plans/roadmap_complete_2.md",
+    "DefaultActiveDocumentPath": "projet/roadmaps/plans/plan-modes-stepup.md",
+    "AutoUpdateRoadmap": true,
+    "GenerateReport": true,
+    "ReportPath": "reports",
+    "AutoUpdateCheckboxes": true,
+    "RequireFullTestCoverage": true,
+    "SimulationModeDefault": true
+  }
+}
 ```
 
-### VÃ©rification simple (mode simulation)
+### Algorithme de vérification (rappel)
+- Recherche de la tâche à vérifier dans la roadmap
+- Analyse de l’implémentation et des tests associés
+- Mise à jour automatique si tout est validé
+- Génération d’un rapport de vérification
 
-Pour vÃ©rifier si les tÃ¢ches sÃ©lectionnÃ©es ont Ã©tÃ© implÃ©mentÃ©es Ã  100% et testÃ©es avec succÃ¨s Ã  100% sans appliquer les modifications :
+## Bonnes pratiques
+- Exécuter le mode CHECK après chaque étape de développement/test pour garantir la cohérence de la roadmap.
+- Toujours vérifier l’encodage des fichiers si des caractères spéciaux sont présents.
+- Utiliser le paramètre `-Force` uniquement après avoir validé les modifications en mode simulation.
+- Documenter les cas particuliers ou corrections manuelles dans la roadmap.
 
+## Intégration avec les autres modes
+- **[Mode DEV-R](mode_dev_r.md)** : Vérifie automatiquement les tâches implémentées pendant le développement.
+- **[Mode GRAN](mode_gran.md)** : Complémentaire pour la granularisation des tâches.
+- **[Mode TEST](mode_test.md)** : Utilise les résultats de tests pour valider les tâches.
+- **[Mode REVIEW](mode_review.md)** : Peut être utilisé pour valider l’avancement avant la revue qualité.
+- **[Mode OPTI](mode_opti.md)** : S’assure que les optimisations sont bien validées et testées.
+- **[Mode C-BREAK](mode_c-break.md)** : Vérifie que les tâches de résolution de cycles sont bien prises en compte dans la roadmap.
+- **[Mode ARCHI](mode_archi.md)** : Vérifie l’architecture des composants en complément de l’implémentation et des tests.
+
+## Exemples d’utilisation
 ```powershell
+# Vérification simple (simulation)
 .\development\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3"
-```
 
-### Mise Ã  jour automatique des cases Ã  cocher
-
-Pour mettre Ã  jour automatiquement les cases Ã  cocher dans le document actif :
-
-```powershell
+# Mise à jour automatique
 .\development\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -Force
-```
 
-### SpÃ©cification du document actif
-
-Si le document actif ne peut pas Ãªtre dÃ©tectÃ© automatiquement, vous pouvez le spÃ©cifier manuellement :
-
-```powershell
+# Spécification du document actif
 .\development\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -ActiveDocumentPath "projet/documentation/roadmap/roadmap.md" -Force
 ```
 
-### Mode simulation et mode force
-
-Par dÃ©faut, le mode CHECK amÃ©liorÃ© fonctionne en mode simulation (`-Force` non spÃ©cifiÃ©) :
-- Il affiche les modifications qui seraient apportÃ©es sans les appliquer
-- Il indique le nombre de cases Ã  cocher qui seraient mises Ã  jour
-
-Pour appliquer rÃ©ellement les modifications, utilisez le paramÃ¨tre `-Force` :
-```powershell
-.\development\tools\scripts\check.ps1 -FilePath "projet/documentation/roadmap/roadmap.md" -TaskIdentifier "1.2.3" -Force
+## Snippet VS Code (optionnel)
+```json
+{
+  "Mode CHECK Amélioré": {
+    "prefix": "mode-check-ameliore",
+    "body": [
+      "# Mode CHECK Amélioré",
+      "",
+      "## Description",
+      "Le mode CHECK amélioré vérifie l’implémentation et les tests des tâches, puis met à jour les cases à cocher.",
+      "",
+      "## Objectifs",
+      "- Vérifier l’implémentation complète des tâches.",
+      "- S’assurer que les tests sont réussis à 100%.",
+      "- Mettre à jour automatiquement les cases à cocher.",
+      "",
+      "## Commandes principales",
+      "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche>",
+      "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -Force",
+      "- check.ps1 -FilePath <chemin_roadmap> -TaskIdentifier <id_tâche> -ActiveDocumentPath <chemin_document>",
+      "",
+      "## Fonctionnement",
+      "- Analyse la roadmap, vérifie l’implémentation et les tests, met à jour les cases à cocher.",
+      "",
+      "## Bonnes pratiques",
+      "- Exécuter après chaque étape de développement/test.",
+      "- Vérifier l’encodage des fichiers.",
+      "- Utiliser -Force après validation.",
+      "",
+      "## Intégration avec les autres modes",
+      "- DEV-R, GRAN, TEST, REVIEW, OPTI, C-BREAK.",
+      "",
+      "## Exemples d’utilisation",
+      "# Vérification simple",
+      ".\\development\\tools\\scripts\\check.ps1 -FilePath \"projet/documentation/roadmap/roadmap.md\" -TaskIdentifier \"1.2.3\"",
+      "# Mise à jour automatique",
+      ".\\development\\tools\\scripts\\check.ps1 -FilePath \"projet/documentation/roadmap/roadmap.md\" -TaskIdentifier \"1.2.3\" -Force"
+    ],
+    "description": "Insère le template du mode CHECK Amélioré."
+  }
+}
 ```
 
-### ParamÃ¨tres complets
+## Documentation associée et approfondissements
 
-- **FilePath** : Chemin vers le fichier de roadmap Ã  vÃ©rifier (par dÃ©faut : "projet/roadmaps/plans/plan-modes-stepup.md")
-- **TaskIdentifier** : Identifiant de la tÃ¢che Ã  vÃ©rifier (par exemple, "1.2.3")
-- **ActiveDocumentPath** : Chemin vers le document actif Ã  mettre Ã  jour
-- **Force** : Applique les modifications sans confirmation
-
-## Fonctionnement interne
-
-Le mode CHECK amÃ©liorÃ© fonctionne en plusieurs Ã©tapes :
-
-1. **Analyse de la roadmap** : Le script analyse le fichier de roadmap pour identifier les tÃ¢ches et leur structure.
-2. **VÃ©rification de l'implÃ©mentation** : Pour chaque tÃ¢che, le script vÃ©rifie si l'implÃ©mentation est complÃ¨te (100%).
-3. **VÃ©rification des tests** : Pour chaque tÃ¢che, le script vÃ©rifie si les tests sont complets et rÃ©ussis (100%).
-4. **DÃ©tection du document actif** : Le script tente de dÃ©tecter automatiquement le document actif.
-5. **Mise Ã  jour des cases Ã  cocher** : Si les conditions sont remplies, le script met Ã  jour les cases Ã  cocher dans le document actif.
-
-### Composants principaux
-
-Le mode CHECK amÃ©liorÃ© utilise les fonctions suivantes :
-
-1. `Invoke-RoadmapCheck` : VÃ©rifie si les tÃ¢ches sÃ©lectionnÃ©es ont Ã©tÃ© implÃ©mentÃ©es Ã  100% et testÃ©es avec succÃ¨s Ã  100%.
-2. `Update-RoadmapTaskStatus` : Met Ã  jour le statut des tÃ¢ches dans la roadmap.
-3. `Update-ActiveDocumentCheckboxes-Enhanced` : Met Ã  jour les cases Ã  cocher dans le document actif avec support UTF-8 avec BOM.
-
-### DÃ©tection du document actif
-
-Le mode CHECK amÃ©liorÃ© tente de dÃ©tecter automatiquement le document actif en utilisant les mÃ©thodes suivantes :
-
-1. VÃ©rification de la variable d'environnement `VSCODE_ACTIVE_DOCUMENT`.
-2. Recherche des fichiers Markdown rÃ©cemment modifiÃ©s (dans les 30 derniÃ¨res minutes).
-
-Si aucun document actif ne peut Ãªtre dÃ©tectÃ© automatiquement, vous pouvez le spÃ©cifier manuellement avec le paramÃ¨tre `-ActiveDocumentPath`.
-
-## IntÃ©gration avec les autres modes
-
-Le mode CHECK amÃ©liorÃ© s'intÃ¨gre parfaitement avec les autres modes opÃ©rationnels :
-
-- **Mode DEV-R** : Permet de vÃ©rifier automatiquement les tÃ¢ches implÃ©mentÃ©es pendant le dÃ©veloppement.
-- **Mode GRAN** : ComplÃ©mentaire au mode CHECK pour la granularisation des tÃ¢ches.
-- **Mode TEST** : Fournit les rÃ©sultats de tests utilisÃ©s par le mode CHECK.
-
-## RÃ©solution des problÃ¨mes
-
-### ProblÃ¨mes d'encodage
-
-Si vous rencontrez des problÃ¨mes d'encodage (caractÃ¨res accentuÃ©s mal affichÃ©s), assurez-vous que tous les fichiers sont enregistrÃ©s en UTF-8 avec BOM. Le mode CHECK amÃ©liorÃ© tente de corriger automatiquement l'encodage, mais certains cas particuliers peuvent nÃ©cessiter une intervention manuelle.
-
-### ProblÃ¨mes de dÃ©tection du document actif
-
-Si le document actif ne peut pas Ãªtre dÃ©tectÃ© automatiquement, utilisez le paramÃ¨tre `-ActiveDocumentPath` pour le spÃ©cifier manuellement. Cela peut se produire si vous n'utilisez pas VS Code ou si le document n'a pas Ã©tÃ© modifiÃ© rÃ©cemment.
-
-### ProblÃ¨mes de mise Ã  jour des cases Ã  cocher
-
-Si les cases Ã  cocher ne sont pas mises Ã  jour correctement, vÃ©rifiez les points suivants :
-- Les tÃ¢ches ont bien Ã©tÃ© implÃ©mentÃ©es Ã  100% et testÃ©es avec succÃ¨s Ã  100%
-- Le format des tÃ¢ches dans votre roadmap correspond au format attendu
-- Vous avez utilisÃ© le paramÃ¨tre `-Force` pour appliquer les modifications
+Pour la gestion avancée de la validation, des erreurs et de la robustesse, voir :
+- [Propriétés communes de System.Exception](../exception_properties_documentation.md)
+- [Structure de la taxonomie des exceptions PowerShell](../exception_taxonomy_structure.md)
+- [Exceptions du namespace System](../system_exceptions_documentation.md)
+- [Exceptions du namespace System.IO](../system_io_exceptions_documentation.md)
+- [Les 16 bases de la programmation](../programmation_16_bases.md) (document de référence supérieur)

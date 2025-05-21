@@ -1,65 +1,69 @@
 # Mode ARCHI
 
 ## Description
-Le mode ARCHI (Architecture) est un mode opÃ©rationnel qui se concentre sur la conception et l'analyse de l'architecture du systÃ¨me.
+Le mode ARCHI (Architecture) est un mode opérationnel dédié à la conception, la documentation et la validation de l’architecture du système, pour garantir qualité, maintenabilité et évolutivité.
 
-## Objectif
-L'objectif principal du mode ARCHI est de concevoir, documenter et valider l'architecture du systÃ¨me pour assurer sa qualitÃ©, sa maintenabilitÃ© et son Ã©volutivitÃ©.
+## Objectifs
+- Concevoir l’architecture logicielle, système, données et intégration.
+- Documenter et modéliser l’architecture.
+- Analyser les dépendances et détecter les points critiques.
+- Valider l’architecture selon des règles définies.
 
-## FonctionnalitÃ©s
-- Conception d'architecture
-- ModÃ©lisation de systÃ¨mes
-- Analyse de dÃ©pendances
-- Documentation d'architecture
-- Validation d'architecture
+## Commandes principales
+- archi analyze : Analyse l’architecture existante.
+- archi diagram : Génère un diagramme d’architecture.
+- archi validate : Valide l’architecture selon des règles spécifiques.
 
-## Utilisation
-
-```powershell
-# Analyser l'architecture existante
-.\archi-mode.ps1 -SourcePath "src" -OutputPath "projet/architecture"
-
-# GÃ©nÃ©rer un diagramme d'architecture
-.\archi-mode.ps1 -SourcePath "src" -OutputPath "projet/architecture" -GenerateDiagram
-
-# Valider l'architecture par rapport Ã  des rÃ¨gles
-.\archi-mode.ps1 -SourcePath "src" -RulesPath "projet/config/architecture-rules.json" -Validate
-```
-
-## Types d'architecture
-Le mode ARCHI peut travailler avec diffÃ©rents types d'architecture :
-- **Architecture logicielle** : Conception des composants logiciels
-- **Architecture systÃ¨me** : Conception du systÃ¨me dans son ensemble
-- **Architecture de donnÃ©es** : Conception des structures de donnÃ©es
-- **Architecture d'intÃ©gration** : Conception des interfaces entre systÃ¨mes
-
-## IntÃ©gration avec d'autres modes
-Le mode ARCHI peut Ãªtre utilisÃ© en combinaison avec d'autres modes :
-- **DEV-R** : Pour concevoir l'architecture avant de commencer le dÃ©veloppement
-- **REVIEW** : Pour valider l'architecture implÃ©mentÃ©e
-- **C-BREAK** : Pour dÃ©tecter et rÃ©soudre les dÃ©pendances circulaires
-
-## ImplÃ©mentation
-Le mode ARCHI est implÃ©mentÃ© dans le script `archi-mode.ps1` qui se trouve dans le dossier `development/tools/development/roadmap/scripts/modes/archi`.
-
-## Exemple de diagramme d'architecture
-```
-+---------------+      +---------------+
-|    Frontend   |----->|     API       |
-+---------------+      +---------------+
-                              |
-                              v
-+---------------+      +---------------+
-|   Database    |<-----|   Services    |
-+---------------+      +---------------+
-```
+## Fonctionnement
+- Analyse le code source et la configuration pour extraire la structure du système.
+- Génère des diagrammes et rapports d’architecture.
+- Valide la conformité de l’architecture aux standards et règles du projet.
+- Propose des améliorations ou des refontes si nécessaire.
 
 ## Bonnes pratiques
-- Documenter l'architecture avant de commencer l'implÃ©mentation
-- Valider l'architecture par rapport aux exigences
-- Maintenir la documentation d'architecture Ã  jour
-- Utiliser des diagrammes pour visualiser l'architecture
-- Suivre les principes SOLID dans la conception
-- Minimiser les dÃ©pendances entre composants
-- PrÃ©voir l'Ã©volutivitÃ© de l'architecture
+- Toujours documenter les choix d’architecture.
+- Mettre à jour la documentation à chaque évolution majeure.
+- Utiliser des outils de modélisation adaptés.
+- Vérifier la cohérence entre architecture prévue et implémentée.
+
+## Intégration avec les autres modes
+Le mode ARCHI s’intègre naturellement avec :
+- **DEV-R** : Pour concevoir l’architecture avant le développement ([voir mode_dev_r.md](mode_dev_r.md))
+- **REVIEW** : Pour valider l’architecture implémentée ([voir mode_review.md](mode_review.md))
+- **C-BREAK** : Pour détecter et résoudre les dépendances circulaires ([voir mode_c-break.md](mode_c-break.md))
+
+Exemple de workflow typique : ARCHI → DEV-R → REVIEW → C-BREAK
+
+## Exemples d’utilisation
+```powershell
+# Analyser l’architecture existante
+archi analyze -SourcePath "src" -OutputPath "projet/architecture"
+
+# Générer un diagramme d’architecture
+archi diagram -SourcePath "src" -OutputPath "projet/architecture"
+
+# Valider l’architecture
+archi validate -SourcePath "src" -RulesPath "projet/config/architecture-rules.json"
+```
+
+## Snippet VS Code (optionnel)
+```json
+{
+  "Mode ARCHI": {
+    "prefix": "archi",
+    "body": [
+      "# Mode ARCHI",
+      "",
+      "## Description",
+      "Le mode ARCHI (Architecture) est un mode opérationnel dédié à la conception, la documentation et la validation de l’architecture du système.",
+      "",
+      "## Fonctionnement",
+      "- Analyse l’architecture existante",
+      "- Génère des diagrammes",
+      "- Valide la conformité aux règles du projet"
+    ],
+    "description": "Insère le template du mode ARCHI pour la gestion d’architecture."
+  }
+}
+```
 

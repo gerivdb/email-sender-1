@@ -6,6 +6,13 @@ to: "{{ destination || 'plan-dev/{{kebabCase name}}.md' }}"
 Date de création : {{ now }}
 Auteur : {{ author || 'À compléter' }}
 
+## Règle de gestion des cases à cocher (logique parent/enfant)
+
+> **IMPORTANT** : Une case à cocher parente (`- [ ]`) ne doit être cochée (`- [x]`) que si toutes ses sous-tâches (enfants) sont elles-mêmes cochées.
+> - Cette règle s’applique à tous les plans, roadmaps, checklists et documents de suivi utilisant des cases à cocher Markdown, quel que soit le niveau d’imbrication.
+> - Lorsqu’une sous-tâche est ajoutée ou modifiée, il faut systématiquement vérifier l’état de la case parente et l’ajuster si besoin.
+> - La structure imbriquée des cases à cocher doit être strictement respectée pour refléter la hiérarchie des tâches et sous-tâches.
+
 ## Objectif
 
 Décrire ici l'objectif du plan de développement.

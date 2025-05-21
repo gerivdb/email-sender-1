@@ -1,67 +1,81 @@
 # Mode TEST
 
 ## Description
-Le mode TEST est un mode opÃ©rationnel qui se concentre sur la crÃ©ation, l'exÃ©cution et la validation des tests pour assurer la qualitÃ© du code.
+Le mode TEST est un mode opérationnel dédié à la création, l’exécution et la validation des tests pour garantir la qualité, la robustesse et la conformité du code.
 
-## Objectif
-L'objectif principal du mode TEST est de garantir que le code fonctionne correctement, rÃ©pond aux exigences et maintient sa qualitÃ© au fil du temps.
+## Objectifs
+- Garantir le bon fonctionnement du code et la conformité aux exigences.
+- Automatiser la création et l’exécution des tests unitaires, d’intégration et de performance.
+- Analyser la couverture de code et générer des rapports de test.
 
-## FonctionnalitÃ©s
-- CrÃ©ation de tests unitaires
-- CrÃ©ation de tests d'intÃ©gration
-- CrÃ©ation de tests de performance
-- ExÃ©cution automatique des tests
-- Analyse de la couverture de code
-- GÃ©nÃ©ration de rapports de test
+## Commandes principales
+- test generate : Génère les tests pour un script ou une fonctionnalité.
+- test run : Exécute tous les tests associés à un composant ou une tâche.
+- test coverage : Analyse la couverture de code.
 
-## Utilisation
-
-```powershell
-# CrÃ©er des tests pour un script spÃ©cifique
-.\test-mode.ps1 -ScriptPath "development/tools/development/roadmap/scripts/parser.ps1" -GenerateTests
-
-# ExÃ©cuter les tests pour un script spÃ©cifique
-.\test-mode.ps1 -ScriptPath "development/tools/development/roadmap/scripts/parser.ps1" -RunTests
-
-# Analyser la couverture de code
-.\test-mode.ps1 -ScriptPath "development/tools/development/roadmap/scripts/parser.ps1" -AnalyzeCoverage
-```
-
-## Types de tests
-Le mode TEST prend en charge diffÃ©rents types de tests :
-- **Tests unitaires** : Tester des fonctions individuelles
-- **Tests d'intÃ©gration** : Tester l'interaction entre composants
-- **Tests de performance** : Tester les performances du code
-- **Tests de rÃ©gression** : VÃ©rifier que les modifications ne cassent pas le code existant
-
-## IntÃ©gration avec d'autres modes
-Le mode TEST peut Ãªtre utilisÃ© en combinaison avec d'autres modes :
-- **DEV-R** : Pour tester les fonctionnalitÃ©s implÃ©mentÃ©es
-- **DEBUG** : Pour identifier et rÃ©soudre les problÃ¨mes dans les tests
-- **CHECK** : Pour vÃ©rifier que tous les tests passent avant de marquer une tÃ¢che comme complÃ¨te
-
-## ImplÃ©mentation
-Le mode TEST est implÃ©mentÃ© dans le script `test-mode.ps1` qui se trouve dans le dossier `development/tools/development/roadmap/scripts/modes/test`.
-
-## Exemple de rapport de test
-```
-Rapport de test :
-- Tests exÃ©cutÃ©s : 42
-- Tests rÃ©ussis : 40
-- Tests Ã©chouÃ©s : 2
-- Couverture de code : 85%
-
-Tests Ã©chouÃ©s :
-- Test-Parser-InvalidInput : Expected exception not thrown
-- Test-Parser-LargeFile : Timeout exceeded
-```
+## Fonctionnement
+- Génère automatiquement les tests à partir du code ou de la roadmap.
+- Exécute les tests et collecte les résultats.
+- Analyse la couverture et détecte les régressions.
+- Génère des rapports détaillés pour chaque exécution.
 
 ## Bonnes pratiques
-- Ã‰crire les tests avant ou pendant l'implÃ©mentation (TDD)
-- Viser une couverture de code d'au moins 80%
-- Tester les cas limites et les cas d'erreur
-- ExÃ©cuter les tests rÃ©guliÃ¨rement
-- Corriger les tests Ã©chouÃ©s immÃ©diatement
-- Maintenir les tests Ã  jour avec le code
-- Utiliser des mocks pour isoler les composants
+- Écrire des tests pour chaque fonctionnalité nouvelle ou modifiée.
+- Automatiser l’exécution des tests à chaque commit ou livraison.
+- Analyser les rapports pour corriger rapidement les erreurs.
+- Maintenir une couverture de code élevée et pertinente.
+
+## Intégration avec les autres modes
+Le mode TEST s’intègre naturellement avec :
+- **DEV-R** : Pour tester les fonctionnalités implémentées ([voir mode_dev_r.md](mode_dev_r.md))
+- **DEBUG** : Pour identifier et corriger les problèmes détectés par les tests ([voir mode_debug.md](mode_debug.md))
+- **CHECK** : Pour vérifier que tous les tests passent avant de valider une tâche ([voir mode_check_enhanced.md](mode_check_enhanced.md))
+
+Exemple de workflow typique : DEV-R → TEST → DEBUG → CHECK
+
+## Exemples d’utilisation
+```powershell
+# Générer et exécuter les tests pour un script
+Invoke-AugmentMode -Mode "TEST" -FilePath "projet/roadmap.md" -TaskIdentifier "1.2.3" -GenerateTests -RunTests
+
+# Analyser la couverture de code
+Invoke-AugmentMode -Mode "TEST" -FilePath "projet/roadmap.md" -AnalyzeCoverage
+```
+
+## Snippet VS Code (optionnel)
+```json
+{
+  "Mode TEST": {
+    "prefix": "testmode",
+    "body": [
+      "# Mode TEST",
+      "",
+      "## Description",
+      "Le mode TEST est un mode opérationnel dédié à la création, l’exécution et la validation des tests.",
+      "",
+      "## Fonctionnement",
+      "- Génère et exécute les tests automatiquement",
+      "- Analyse la couverture de code",
+      "- Génère des rapports de test"
+    ],
+    "description": "Insère le template du mode TEST pour la gestion des tests."
+  }
+}{
+  "Mode TEST": {
+    "prefix": "testmode",
+    "body": [
+      "# Mode TEST",
+      "",
+      "## Description",
+      "Le mode TEST est un mode opérationnel dédié à la création, l’exécution et la validation des tests.",
+      "",
+      "## Fonctionnement",
+      "- Génère et exécute les tests automatiquement",
+      "- Analyse la couverture de code",
+      "- Génère des rapports de test"
+    ],
+    "description": "Insère le template du mode TEST pour la gestion des tests."
+  }
+}
+```
 
