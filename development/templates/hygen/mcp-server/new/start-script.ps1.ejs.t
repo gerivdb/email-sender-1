@@ -1,5 +1,5 @@
 ---
-to: "projet/mcp/scripts/start-<%= name %>-mcp.ps1"
+to: "projet/mcp/servers/<%= name %>/start-<%= name %>-mcp.ps1"
 ---
 #Requires -Version 5.1
 <#

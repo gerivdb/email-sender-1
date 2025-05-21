@@ -1,5 +1,5 @@
 ---
-to: "<%= createConfig ? `projet/mcp/config/servers/${name}.json` : null %>"
+to: "<%= createConfig ? `projet/mcp/servers/${name}/config.json` : null %>"
 ---
 {
 <% if (port) { %>

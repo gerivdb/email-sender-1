@@ -1,4 +1,5 @@
 // prompt.js - Questions pour générer un nouveau serveur MCP
+// Les réponses sont utilisées pour générer tous les fichiers dans projet/mcp/servers/<%= name %>
 module.exports = [
   {
     type: 'input',

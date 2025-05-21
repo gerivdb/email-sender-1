@@ -1,0 +1,7 @@
+{
+  "port": 3000,
+  "allowedDirectories": [
+    "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/projet/mcp/servers/filesystem"
+  ],
+  "logLevel": "info"
+}

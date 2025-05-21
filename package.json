@@ -21,6 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "@magarcia/gitingest": "^1.1.0",
+    "@modelcontextprotocol/server-filesystem": "^2025.3.28",
     "n8n": "^1.88.0"
   },
   "devDependencies": {

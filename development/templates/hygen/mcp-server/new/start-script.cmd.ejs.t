@@ -1,5 +1,5 @@
 ---
-to: "projet/mcp/scripts/start-<%= name %>-mcp.cmd"
+to: "projet/mcp/servers/<%= name %>/start-<%= name %>-mcp.cmd"
 ---
 @echo off
 <% if (needsEnv) { 

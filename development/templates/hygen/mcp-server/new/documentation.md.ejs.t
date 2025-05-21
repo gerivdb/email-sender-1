@@ -1,5 +1,5 @@
 ---
-to: "<%= createDocs ? `projet/guides/mcp/GUIDE_MCP_${name.toUpperCase().replace(/-/g, '_')}.md` : null %>"
+to: "projet/mcp/servers/<%= name %>/GUIDE_MCP_<%= name.toUpperCase().replace(/-/g, '_') %>.md"
 ---
 # Guide d'utilisation du MCP <%= name.charAt(0).toUpperCase() + name.slice(1) %>
 

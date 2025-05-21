@@ -1,0 +1,10 @@
+{
+  "files.exclude": {
+    "node_modules": true,
+    "dist": true
+  },
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.encoding": "utf8",
+  "terminal.integrated.cwd": "${workspaceFolder}/projet/mcp/servers/filesystem"
+}
