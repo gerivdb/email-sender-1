@@ -25,11 +25,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       
-      - name: Set up PowerShell
-        uses: PowerShell/setup-powershell@v2
-        with:
-          powershell-version: '7.2'
-      
       - name: Install Pester
         shell: pwsh
         run: |
@@ -96,11 +91,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       
-      - name: Set up PowerShell
-        uses: PowerShell/setup-powershell@v2
-        with:
-          powershell-version: '7.2'
-      
       - name: Deploy to Production
         shell: pwsh
         run: |
@@ -113,8 +103,8 @@ jobs:
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "TestOmnibus CI/CD: Déploiement réussi"
           body: |
             Le déploiement de TestOmnibus a été effectué avec succès.
