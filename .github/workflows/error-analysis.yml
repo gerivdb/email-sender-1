@@ -18,10 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         
-      - name: Set up PowerShell
-        uses: PowerShell/setup-powershell@v2
-        with:
-          powershell-version: '7.2'
+      # Suppression de l'étape Set up PowerShell, car PowerShell 7.x est déjà disponible sur windows-latest
       
       - name: Install PSScriptAnalyzer
         shell: pwsh
