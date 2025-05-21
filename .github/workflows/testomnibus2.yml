@@ -24,9 +24,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      # PowerShell 7 est déjà installé sur windows-latest
-
+      
       - name: Install Pester
         shell: pwsh
         run: |
