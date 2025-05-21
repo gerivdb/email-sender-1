@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Script simple pour exécuter les tests et capturer les erreurs.
+Script automatisé pour exécuter tous les tests d'un dossier avec pytest et générer un rapport d'erreurs détaillé au format JSON.
 """
 
 import os

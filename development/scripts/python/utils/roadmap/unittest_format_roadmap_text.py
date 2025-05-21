@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """
-Tests unitaires simplifiés pour le module format_roadmap_text.py
+Tests unitaires pour le module format_roadmap_text.py (unittest)
+Ce fichier contient des tests de validation des fonctions du module format_roadmap_text.py, à exécuter avec unittest.
 """
 
 import unittest
-import format_roadmap_text as frt
+from text_utils import format_roadmap_text as frt
 
 
 class TestFormatRoadmapText(unittest.TestCase):

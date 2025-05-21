@@ -23,6 +23,12 @@ GITHUB_STANDARD_FILES = {
     'CHANGELOG.md', 'CODEOWNERS', '.editorconfig'
 }
 
+# Fichiers à ne jamais déplacer automatiquement (exceptions personnalisées)
+NEVER_MOVE_FILES = {
+    'AGENT.md',  # Exception : ce fichier doit rester accessible à la racine
+    # ...ajoutez d'autres exceptions ici si besoin...
+}
+
 # Extensions de fichiers à organiser par type
 FILE_TYPE_DIRS = {
     '.md': 'docs',
@@ -104,6 +110,10 @@ def organize_repo(repo_dir: Union[str, Path],
             
         # Ignorer les fichiers standards GitHub
         if is_github_standard_file(file_path):
+            continue
+            
+        # Ignorer les exceptions personnalisées
+        if file_path.name in NEVER_MOVE_FILES:
             continue
             
         if file_path.is_file():

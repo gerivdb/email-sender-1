@@ -30,6 +30,13 @@ module.exports = {
     }
   },
 
+  // Fichiers à ne jamais déplacer automatiquement (géré dans organize_repo.py)
+  // Voir development/scripts/python/utils/organize_repo.py pour la logique d'exclusion (NEVER_MOVE_FILES)
+  neverMove: [
+    'AGENT.md', // Exception : ce fichier doit rester accessible à la racine
+    // ...ajoutez d'autres exceptions ici si besoin...
+  ],
+
   // Configuration pour l'encodage des fichiers générés
   createPrompter: () => require('enquirer'),
 
