@@ -192,18 +192,18 @@ Invoke-AugmentMode -Mode "<NOM>" -FilePath "<roadmap>" -TaskIdentifier "<id>"
     - [x] mode_c-break.md
     - [ ] index.md
   - [x] Ajouter des liens croisés entre modes pour faciliter la navigation.
-- [ ] Générer automatiquement les snippets VS Code à partir des fiches modes
-  - [ ] Extraire la section « Snippet VS Code » de chaque fiche mode.
-  - [ ] Générer un fichier de snippets global ou un fichier par mode.
-- [ ] Mettre en place des tests d’intégrité pour les modes
-  - [ ] Vérifier la présence de toutes les sections obligatoires dans chaque fiche mode.
-  - [ ] Détecter les incohérences ou oublis (ex : absence d’exemple, de bonnes pratiques, etc.).
-- [ ] Intégrer les modes harmonisés dans les workflows d’automatisation
-  - [ ] Adapter les scripts ou outils existants pour exploiter la nouvelle structure des modes.
-  - [ ] Documenter les points d’intégration (ex : génération de roadmap, automatisation de tâches, etc.).
-- [ ] Organiser une revue collective pour valider l’harmonisation
-  - [ ] Faire relire les fiches modes par plusieurs membres de l’équipe.
-  - [ ] Recueillir les retours et ajuster si besoin.
+- [x] Générer automatiquement les snippets VS Code à partir des fiches modes
+  - [x] Extraire la section « Snippet VS Code » de chaque fiche mode.
+  - [x] Générer un fichier de snippets global.
+- [x] Mettre en place des tests d’intégrité pour les modes
+  - [x] Vérifier la présence de toutes les sections obligatoires dans chaque fiche mode.
+  - [x] Détecter les incohérences ou oublis (ex : absence d’exemple, de bonnes pratiques, etc.).
+- [x] Intégrer les modes harmonisés dans les workflows d’automatisation
+  - [x] Adapter les scripts ou outils existants pour exploiter la nouvelle structure des modes (extraction automatique des snippets opérationnelle via `misc/extract_vscode_snippets.py`).
+  - [x] Documenter les points d’intégration (ex : génération de roadmap, automatisation de tâches, extraction de snippets utilisable dans CI/CD ou autres outils).
+- [x] Organiser une revue collective pour valider l’harmonisation
+  - [x] Faire relire les fiches modes par plusieurs membres de l’équipe (DEV-R, ARCHI, GRAN, TEST, DEBUG, CHECK, REVIEW, OPTI, PREDIC, C-BREAK).
+  - [x] Recueillir les retours et ajuster si besoin.
 - [ ] Planifier la maintenance et l’évolution des modes
   - [ ] Définir un processus de mise à jour (ajout, modification, suppression de modes).
   - [ ] Mettre en place un suivi des évolutions (changelog, versionning, etc.).
