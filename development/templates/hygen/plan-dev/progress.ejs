@@ -1,0 +1,23 @@
+<% /*
+  Générateur de progression globale pour Hygen
+  Utilisation :
+  - Inclure ce fichier dans plan-dev.ejs avec la syntaxe EJS :
+    <%~ include('progress.ejs', { tasks: tasks }) %>
+  - 'tasks' doit être un tableau d'objets comme pour subtasks.ejs, chaque tâche peut avoir 'done: true/false'
+*/ %>
+<% function countTasks(tasks) {
+  let total = 0, done = 0;
+  tasks.forEach(function(task) {
+    total++;
+    if (task.done) done++;
+    if (task.subtasks) {
+      const sub = countTasks(task.subtasks);
+      total += sub.total;
+      done += sub.done;
+    }
+  });
+  return { total, done };
+}
+const stats = countTasks(typeof tasks !== 'undefined' ? tasks : []);
+%>
+Progression globale : <%= stats.done %> / <%= stats.total %> (<%= Math.round(100 * stats.done / (stats.total || 1)) %>%)

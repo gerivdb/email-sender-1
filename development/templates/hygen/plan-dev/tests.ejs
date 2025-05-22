@@ -1,0 +1,13 @@
+<% /*
+  Générateur de scénarios de test pour Hygen
+  Utilisation :
+  - Inclure ce fichier dans plan-dev.ejs avec la syntaxe EJS :
+    <%~ include('tests.ejs', { tests: tests }) %>
+  - 'tests' doit être un tableau de chaînes de caractères
+*/ %>
+<% if (typeof tests !== 'undefined' && tests.length > 0) { %>
+## Scénarios de test
+<% tests.forEach(function(test, idx) { %>
+- **Test <%= idx+1 %>** : <%= test %>
+<% }) %>
+<% } %>

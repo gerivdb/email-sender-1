@@ -15,5 +15,6 @@ set GOOGLE_APPLICATION_CREDENTIALS=%~dp0\token.json
 :: Variables d'environnement pour N8N
 set N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
 
-:: Démarrage du MCP GCP
+:: Démarrage du MCP GCP dans le bon dossier (src/mcp/servers/gcp-mcp)
+cd /d %~dp0\..\..\servers\gcp-mcp
 npx gcp-mcp

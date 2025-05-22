@@ -7,4 +7,4 @@ echo.
 echo Appuyez sur une touche pour continuer...
 pause > nul
 
-node get-access-token.js
+node ..\..\servers\gcp-mcp\get-access-token.js

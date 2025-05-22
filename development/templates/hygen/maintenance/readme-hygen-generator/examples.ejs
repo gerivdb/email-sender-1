@@ -1,0 +1,11 @@
+<% /* Section exemples de fichiers générés */ %>
+<% if (typeof examples !== 'undefined' && examples.length > 0) { %>
+## Exemples de fichiers générés
+
+<% examples.forEach(function(ex) { %>
+### <%= ex.title %>
+```markdown
+<%= ex.content %>
+```
+<% }) %>
+<% } %>

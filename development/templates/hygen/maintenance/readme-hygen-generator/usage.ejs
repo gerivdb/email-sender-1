@@ -1,0 +1,15 @@
+<% /* Section utilisation du template */ %>
+## Utilisation
+
+<% if (typeof usage !== 'undefined' && usage.length > 0) { %>
+<% usage.forEach(function(cmd) { %>
+### <%= cmd.title %>
+
+```bash
+<%= cmd.command %>
+```
+<%= cmd.description %>
+<% }) %>
+<% } else { %>
+_Ajoutez ici les exemples d'utilisation spécifiques à ce template._
+<% } %>

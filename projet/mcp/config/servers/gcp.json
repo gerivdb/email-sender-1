@@ -1,0 +1,17 @@
+{
+  "projectId": "gen-lang-client-0391388747",
+  "region": "europe-west1",
+  "serviceAccount": "config/credentials/gcp-token.json",
+  "features": {
+    "bigquery": true,
+    "billing": true,
+    "compute": true,
+    "container": true,
+    "functions": true,
+    "logging": true,
+    "resourceManager": true,
+    "run": true,
+    "sql": true,
+    "storage": true
+  }
+}

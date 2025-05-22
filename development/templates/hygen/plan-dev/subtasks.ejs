@@ -1,0 +1,22 @@
+<%~ /*
+  Générateur récursif de sous-tâches Markdown pour Hygen
+  Utilisation :
+  - Inclure ce fichier dans plan-dev.ejs avec la syntaxe EJS :
+    <%~ include('subtasks.ejs', { tasks: tasks, level: 0 }) %>
+  - 'tasks' doit être un tableau d'objets :
+    [
+      { label: 'Tâche 1', subtasks: [ ... ] },
+      { label: 'Tâche 2', subtasks: [ ... ] },
+      ...
+    ]
+  - 'level' est le niveau d'indentation (0 pour la racine)
+*/ %>
+<% function renderTasks(tasks, level) { %>
+<% tasks.forEach(function(task) { %>
+<%= ' '.repeat(level) %>- [ ] <%= task.label %>
+<%   if (task.subtasks && task.subtasks.length > 0) { %>
+<%= renderTasks(task.subtasks, level + 1) %>
+<%   } %>
+<% }) %>
+<% } %>
+<%= renderTasks(typeof tasks !== 'undefined' ? tasks : [], typeof level !== 'undefined' ? level : 0) %>

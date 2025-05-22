@@ -6,5 +6,7 @@
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "files.encoding": "utf8",
-  "terminal.integrated.cwd": "${workspaceFolder}/projet/mcp/servers/filesystem"
+  "terminal.integrated.cwd": "${workspaceFolder}/projet/mcp/servers/filesystem",
+  // Préférence personnalisée : utiliser window.activeTextEditor.selection pour toute opération sur la sélection dans un fichier
+  "custom.selectionBehavior": "window.activeTextEditor.selection"
 }

@@ -18,13 +18,35 @@ const oauth2Client = new google.auth.OAuth2(
   'http://localhost'
 );
 
-// Code d'autorisation fourni par l'utilisateur
-const authCode = '4/0Ab_5qlkQ6GxOCPJPzsLDxB8MNNkHtwQNEdRaCzuAxiXRPcI8u_Yjg8a4LF0b_r2jg4UnBg';
+// Fonction interactive pour obtenir le code d'autorisation
+async function promptForAuthCode() {
+  const readline = require('readline');
+  const authUrl = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: ['https://www.googleapis.com/auth/cloud-platform']
+  });
+  console.log('Ouvrez ce lien dans votre navigateur pour autoriser l\'application :\n');
+  console.log(authUrl + '\n');
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  return new Promise(resolve => {
+    rl.question('Collez ici le code d\'autorisation Google : ', code => {
+      rl.close();
+      resolve(code.trim());
+    });
+  });
+}
 
 // Échanger le code contre des jetons
 async function getToken() {
+  let code = process.env.GCP_AUTH_CODE;
+  if (!code) {
+    code = await promptForAuthCode();
+  }
   try {
-    const { tokens } = await oauth2Client.getToken(authCode);
+    const { tokens } = await oauth2Client.getToken(code);
 
     // Sauvegarder les jetons dans un fichier
     const tokenPath = path.join(__dirname, 'token.json');

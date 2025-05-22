@@ -1,0 +1,13 @@
+<% /*
+  Générateur de liens vers la documentation pour Hygen
+  Utilisation :
+  - Inclure ce fichier dans plan-dev.ejs avec la syntaxe EJS :
+    <%~ include('doclinks.ejs', { docLinks: docLinks }) %>
+  - 'docLinks' doit être un tableau d'objets { label: 'Titre', url: 'lien' }
+*/ %>
+<% if (typeof docLinks !== 'undefined' && docLinks.length > 0) { %>
+## Documentation associée
+<% docLinks.forEach(function(link) { %>
+- [<%= link.label %>](<%= link.url %>)
+<% }) %>
+<% } %>

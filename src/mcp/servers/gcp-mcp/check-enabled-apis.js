@@ -10,13 +10,14 @@ const token = JSON.parse(fs.readFileSync(tokenPath, 'utf8'));
 
 // Créer un client OAuth2
 const auth = new google.auth.OAuth2(
-  token.client_id,
-  token.client_secret
+  require('./credentials.json').installed.client_id,
+  require('./credentials.json').installed.client_secret
 );
 
 // Définir les informations d'authentification
 auth.setCredentials({
-  refresh_token: token.refresh_token
+  refresh_token: token.refresh_token,
+  access_token: token.access_token
 });
 
 // Fonction principale
