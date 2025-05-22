@@ -25,6 +25,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       
+      # Suppression de l'étape Set up PowerShell : PowerShell 7.x est déjà disponible sur windows-latest
       - name: Install Pester
         shell: pwsh
         run: |
