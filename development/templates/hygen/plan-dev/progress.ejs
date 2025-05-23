@@ -1,5 +1,5 @@
 <% /*
-  Générateur de progression globale pour Hygen
+  Générateur de progression globale avec barre visuelle
   Utilisation :
   - Inclure ce fichier dans plan-dev.ejs avec la syntaxe EJS :
     <%~ include('progress.ejs', { tasks: tasks }) %>
@@ -19,5 +19,7 @@
   return { total, done };
 }
 const stats = countTasks(typeof tasks !== 'undefined' ? tasks : []);
+const progressBar = '='.repeat(Math.round((stats.done / stats.total) * 20)) + '-'.repeat(20 - Math.round((stats.done / stats.total) * 20));
 %>
 Progression globale : <%= stats.done %> / <%= stats.total %> (<%= Math.round(100 * stats.done / (stats.total || 1)) %>%)
+[<%= progressBar %>]

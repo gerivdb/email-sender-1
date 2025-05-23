@@ -1,0 +1,16 @@
+# .gitmodules
+# Corrigé le 2025-05-22
+
+[submodule "projet/mcp/servers/gcp-mcp"]
+	path = projet/mcp/servers/gcp-mcp
+	url = https://github.com/eniayomi/gcp-mcp
+
+[submodule "output/mem0-analysis/repo"]
+	path = output/mem0-analysis/repo
+	url = https://github.com/your-org/mem0-analysis-repo.git
+[submodule "projet/mcp/submodules/mcp-gateway"]
+	path = projet/mcp/submodules/mcp-gateway
+	url = https://github.com/mcp-ecosystem/mcp-gateway.git
+[submodule "projet/mcp/servers/gateway"]
+	path = projet/mcp/servers/gateway
+	url = https://github.com/mcp-ecosystem/mcp-gateway.git

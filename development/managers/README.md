@@ -15,12 +15,11 @@ Chaque gestionnaire est organisÃ© selon la structure suivante :
 
 - integrated-manager : Gestionnaire intÃ©grÃ© qui coordonne tous les autres gestionnaires
 - mode-manager : Gestionnaire des modes opÃ©rationnels
-- oadmap-manager : Gestionnaire de la roadmap
+- roadmap-manager : Gestionnaire de la roadmap
 - mcp-manager : Gestionnaire MCP
 - script-manager : Gestionnaire de scripts
 - error-manager : Gestionnaire d'erreurs
-- 
-8n-manager : Gestionnaire n8n
+- n8n-manager : Gestionnaire n8n
 
 ## Configuration
 

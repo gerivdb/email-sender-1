@@ -1,5 +1,5 @@
 <% /*
-  Générateur récursif de table des matières Markdown pour Hygen
+  Générateur récursif de table des matières avec numéros de page
   Utilisation :
   - Inclure ce fichier dans plan-dev.ejs avec la syntaxe EJS :
     <%~ include('toc.ejs', { tasks: tasks, level: 0 }) %>
@@ -7,7 +7,7 @@
 */ %>
 <% function renderTOC(tasks, level) { %>
 <% tasks.forEach(function(task) { %>
-<%= '  '.repeat(level) %>- [<%= task.label %>](#<%= task.label.toLowerCase().replace(/[^a-z0-9]+/g,'-') %>)
+<%= '  '.repeat(level) %>- [<%= task.label %>](#<%= task.label.toLowerCase().replace(/[^a-z0-9]+/g,'-') %>) (Page <%= task.page || '?' %>)
 <%   if (task.subtasks && task.subtasks.length > 0) { %>
 <%= renderTOC(task.subtasks, level + 1) %>
 <%   } %>

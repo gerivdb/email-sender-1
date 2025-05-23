@@ -1,0 +1,13 @@
+<% /*
+  Générateur d'annexes pour Hygen avec descriptions détaillées
+  Utilisation :
+  - Inclure ce fichier dans plan-dev.ejs avec la syntaxe EJS :
+    <%~ include('annexes.ejs', { annexes: annexes }) %>
+  - 'annexes' doit être un tableau d'objets { title: 'Titre', description: 'Description' }
+*/ %>
+<% if (typeof annexes !== 'undefined' && annexes.length > 0) { %>
+## Annexes
+<% annexes.forEach(function(a) { %>
+- **<%= a.title %>** : <%= a.description %>
+<% }) %>
+<% } %>
