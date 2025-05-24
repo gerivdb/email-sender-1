@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     ExÃ©cute une analyse en temps rÃ©el pendant l'Ã©dition des fichiers.
@@ -159,7 +159,7 @@ function Invoke-FileAnalysis {
 }
 
 # Fonction pour traiter les Ã©vÃ©nements de modification de fichier
-function Process-FileChangeEvent {
+function Invoke-FileChangeEvent {
     param(
         [string]$FilePath
     )
@@ -234,17 +234,17 @@ $watcher.EnableRaisingEvents = $true
 # Configurer les gestionnaires d'Ã©vÃ©nements
 $onChange = Register-ObjectEvent -InputObject $watcher -EventName Changed -Action {
     $filePath = $Event.SourceEventArgs.FullPath
-    Process-FileChangeEvent -FilePath $filePath
+    Invoke-FileChangeEvent -FilePath $filePath
 }
 
 $onCreated = Register-ObjectEvent -InputObject $watcher -EventName Created -Action {
     $filePath = $Event.SourceEventArgs.FullPath
-    Process-FileChangeEvent -FilePath $filePath
+    Invoke-FileChangeEvent -FilePath $filePath
 }
 
 $onRenamed = Register-ObjectEvent -InputObject $watcher -EventName Renamed -Action {
     $filePath = $Event.SourceEventArgs.FullPath
-    Process-FileChangeEvent -FilePath $filePath
+    Invoke-FileChangeEvent -FilePath $filePath
 }
 
 # Afficher un message de dÃ©marrage
@@ -275,3 +275,4 @@ try {
     
     Write-Host "Analyse en temps rÃ©el arrÃªtÃ©e" -ForegroundColor Green
 }
+

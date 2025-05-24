@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse les aspects techniques des amÃ©liorations.
 
@@ -60,7 +60,7 @@ try {
 }
 
 # Fonction pour analyser les composants techniques
-function Analyze-TechnicalComponents {
+function Test-TechnicalComponents {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -115,7 +115,7 @@ function Analyze-TechnicalComponents {
 }
 
 # Fonction pour analyser les technologies impliquÃ©es
-function Analyze-Technologies {
+function Test-Technologies {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -170,7 +170,7 @@ function Analyze-Technologies {
 }
 
 # Fonction pour analyser les interfaces
-function Analyze-Interfaces {
+function Test-Interfaces {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -227,7 +227,7 @@ function Analyze-Interfaces {
 }
 
 # Fonction pour analyser les dÃ©pendances techniques
-function Analyze-Dependencies {
+function Test-Dependencies {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -268,7 +268,7 @@ function Analyze-Dependencies {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -370,7 +370,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -394,10 +394,10 @@ foreach ($manager in $improvementsData.Managers) {
     }
     
     foreach ($improvement in $manager.Improvements) {
-        $technicalComponents = Analyze-TechnicalComponents -Improvement $improvement
-        $technologies = Analyze-Technologies -Improvement $improvement -ManagerName $manager.Name
-        $interfaces = Analyze-Interfaces -Improvement $improvement -ManagerName $manager.Name
-        $dependencies = Analyze-Dependencies -Improvement $improvement
+        $technicalComponents = Test-TechnicalComponents -Improvement $improvement
+        $technologies = Test-Technologies -Improvement $improvement -ManagerName $manager.Name
+        $interfaces = Test-Interfaces -Improvement $improvement -ManagerName $manager.Name
+        $dependencies = Test-Dependencies -Improvement $improvement
         
         $improvementAnalysis = [PSCustomObject]@{
             Name = $improvement.Name
@@ -418,10 +418,10 @@ foreach ($manager in $improvementsData.Managers) {
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -AnalysisResults $analysisResults
+        $reportContent = New-MarkdownReport -AnalysisResults $analysisResults
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -AnalysisResults $analysisResults
+        $reportContent = New-JsonReport -AnalysisResults $analysisResults
     }
 }
 
@@ -446,3 +446,4 @@ foreach ($manager in $analysisResults.Managers) {
 }
 
 Write-Host "  Total : $totalImprovements amÃ©liorations"
+

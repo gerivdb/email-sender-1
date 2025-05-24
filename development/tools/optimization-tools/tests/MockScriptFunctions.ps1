@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Mocks pour les fonctions des scripts Ã  tester.
 .DESCRIPTION
@@ -200,7 +200,7 @@ function Get-UsageLogs {
     }
 }
 
-function Detect-ParallelBottlenecks {
+function Find-ParallelBottlenecks {
     [CmdletBinding()]
     param ()
 
@@ -286,3 +286,4 @@ function New-UsageReport {
 
     return $reportFile
 }
+

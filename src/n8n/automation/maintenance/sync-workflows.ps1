@@ -95,7 +95,7 @@ function Test-N8nRunning {
 }
 
 # Fonction pour corriger un workflow
-function Fix-Workflow {
+function Repair-Workflow {
     param (
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Workflow
@@ -192,7 +192,7 @@ function Sync-WorkflowsToN8n {
                 $workflowContent = Get-Content -Path $file.FullName -Raw | ConvertFrom-Json
                 
                 # Corriger le workflow
-                $fixedWorkflow = Fix-Workflow -Workflow $workflowContent
+                $fixedWorkflow = Repair-Workflow -Workflow $workflowContent
                 
                 # Enregistrer le workflow corrigé
                 $fixedWorkflowJson = $fixedWorkflow | ConvertTo-Json -Depth 10
@@ -300,3 +300,4 @@ if ($Direction -eq "from-n8n" -or $Direction -eq "both") {
 }
 
 Write-Host "Synchronisation terminée pour l'environnement: $Environment"
+

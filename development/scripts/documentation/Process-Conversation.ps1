@@ -1,4 +1,4 @@
-﻿# Process-Conversation.ps1
+# Process-Conversation.ps1
 # Script pour analyser les fichiers de conversation et extraire les tÃ¢ches
 
 param (
@@ -23,7 +23,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $taskLogPath = Join-Path -Path $scriptPath -ChildPath "tasks-log.txt"
 
 # Fonction pour extraire les tÃ¢ches du texte
-function Extract-Tasks {
+function Export-Tasks {
     param (
         [string]$Text
     )
@@ -95,7 +95,7 @@ function Add-TaskToRoadmap {
 }
 
 # Fonction pour journaliser une tÃ¢che
-function Log-Task {
+function Write-Task {
     param (
         [hashtable]$Task,
         [string]$Status
@@ -115,7 +115,7 @@ function Log-Task {
 $conversationText = Get-Content -Path $ConversationFile -Raw
 
 # Extraire les tÃ¢ches du texte
-$tasks = Extract-Tasks -Text $conversationText
+$tasks = Export-Tasks -Text $conversationText
 
 # Afficher les rÃ©sultats
 if ($tasks.Count -eq 0) {
@@ -140,15 +140,15 @@ else {
             
             if ($success) {
                 Write-Host "OK" -ForegroundColor Green
-                Log-Task -Task $task -Status "AjoutÃ©e Ã  la roadmap"
+                Write-Task -Task $task -Status "AjoutÃ©e Ã  la roadmap"
             }
             else {
                 Write-Host "Ã‰CHEC" -ForegroundColor Red
-                Log-Task -Task $task -Status "Ã‰chec de l'ajout Ã  la roadmap"
+                Write-Task -Task $task -Status "Ã‰chec de l'ajout Ã  la roadmap"
             }
         }
         else {
-            Log-Task -Task $task -Status "DÃ©tectÃ©e mais non ajoutÃ©e Ã  la roadmap"
+            Write-Task -Task $task -Status "DÃ©tectÃ©e mais non ajoutÃ©e Ã  la roadmap"
         }
         
         Write-Host ""
@@ -157,3 +157,5 @@ else {
 
 # Retourner les tÃ¢ches (utile pour les tests automatisÃ©s)
 return $tasks
+
+

@@ -1,4 +1,4 @@
-# Analyze-NumericIdentifiers.ps1
+# Test-NumericIdentifiers.ps1
 # Script pour analyser et normaliser les identifiants numériques dans les fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -231,7 +231,7 @@ function Get-NumericIdentifiersAnalysis {
 }
 
 # Fonction pour reconstruire la hiérarchie à partir des identifiants
-function Rebuild-HierarchyFromIdentifiers {
+function Update-HierarchyFromIdentifiers {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -393,7 +393,7 @@ function Rebuild-HierarchyFromIdentifiers {
 }
 
 # Fonction principale
-function Analyze-NumericIdentifiers {
+function Test-NumericIdentifiers {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -441,7 +441,7 @@ function Analyze-NumericIdentifiers {
     
     # Reconstruire la hiérarchie si demandé
     if ($FixInconsistencies) {
-        $rebuiltResult = Rebuild-HierarchyFromIdentifiers -Content $Content -Analysis $analysis -PreferredFormat $PreferredFormat
+        $rebuiltResult = Update-HierarchyFromIdentifiers -Content $Content -Analysis $analysis -PreferredFormat $PreferredFormat
         
         # Enregistrer le contenu reconstruit si un chemin de sortie est spécifié
         if (-not [string]::IsNullOrEmpty($OutputPath)) {
@@ -469,5 +469,7 @@ function Analyze-NumericIdentifiers {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Analyze-NumericIdentifiers -FilePath $FilePath -Content $Content -FixInconsistencies:$FixInconsistencies -PreferredFormat $PreferredFormat -OutputPath $OutputPath
+    Test-NumericIdentifiers -FilePath $FilePath -Content $Content -FixInconsistencies:$FixInconsistencies -PreferredFormat $PreferredFormat -OutputPath $OutputPath
 }
+
+

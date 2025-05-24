@@ -216,7 +216,7 @@ function Measure-ScriptPerformance {
 }
 
 # Fonction pour analyser les résultats de performance
-function Analyze-PerformanceResults {
+function Test-PerformanceResults {
     param (
         [Parameter(Mandatory=$true)]
         [PSCustomObject[]]$Results
@@ -280,31 +280,31 @@ function Test-GenerateComponentPerformance {
     Write-Info "`nTest de performance pour le type script..."
     $arguments = "-Type 'script' -Name 'Test-Performance' -Category 'test' -Description 'Script de test de performance' -OutputFolder '$TempFolder' -WhatIf"
     $scriptResults = Measure-ScriptPerformance -ScriptPath $scriptPath -Arguments $arguments -Iterations $Iterations
-    $results["script"] = Analyze-PerformanceResults -Results $scriptResults
+    $results["script"] = Test-PerformanceResults -Results $scriptResults
     
     # Type workflow
     Write-Info "`nTest de performance pour le type workflow..."
     $arguments = "-Type 'workflow' -Name 'test-performance' -Category 'local' -Description 'Workflow de test de performance' -OutputFolder '$TempFolder' -WhatIf"
     $workflowResults = Measure-ScriptPerformance -ScriptPath $scriptPath -Arguments $arguments -Iterations $Iterations
-    $results["workflow"] = Analyze-PerformanceResults -Results $workflowResults
+    $results["workflow"] = Test-PerformanceResults -Results $workflowResults
     
     # Type doc
     Write-Info "`nTest de performance pour le type doc..."
     $arguments = "-Type 'doc' -Name 'test-performance' -Category 'guides' -Description 'Document de test de performance' -OutputFolder '$TempFolder' -WhatIf"
     $docResults = Measure-ScriptPerformance -ScriptPath $scriptPath -Arguments $arguments -Iterations $Iterations
-    $results["doc"] = Analyze-PerformanceResults -Results $docResults
+    $results["doc"] = Test-PerformanceResults -Results $docResults
     
     # Type integration
     Write-Info "`nTest de performance pour le type integration..."
     $arguments = "-Type 'integration' -Name 'Test-Performance' -Category 'mcp' -Description 'Intégration de test de performance' -OutputFolder '$TempFolder' -WhatIf"
     $integrationResults = Measure-ScriptPerformance -ScriptPath $scriptPath -Arguments $arguments -Iterations $Iterations
-    $results["integration"] = Analyze-PerformanceResults -Results $integrationResults
+    $results["integration"] = Test-PerformanceResults -Results $integrationResults
     
     return $results
 }
 
 # Fonction pour générer un rapport de performance
-function Generate-PerformanceReport {
+function New-PerformanceReport {
     param (
         [Parameter(Mandatory=$true)]
         [hashtable]$Results
@@ -390,7 +390,7 @@ function Start-PerformanceTest {
     $results = Test-GenerateComponentPerformance -TempFolder $tempFolder -Iterations $Iterations
     
     # Générer un rapport de performance
-    $reportPath = Generate-PerformanceReport -Results $results
+    $reportPath = New-PerformanceReport -Results $results
     
     # Nettoyer le dossier temporaire
     Remove-TempFolder -TempFolder $tempFolder
@@ -411,3 +411,4 @@ function Start-PerformanceTest {
 
 # Exécuter le test
 Start-PerformanceTest
+

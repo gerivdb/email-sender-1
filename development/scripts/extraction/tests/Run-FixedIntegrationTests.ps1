@@ -55,7 +55,7 @@ function Invoke-TestScript {
 }
 
 # Fonction pour réexécuter les tests d'intégration d'une catégorie
-function Rerun-IntegrationTests {
+function Restart-IntegrationTests {
     param (
         [string]$Category,
         [string[]]$TestScripts
@@ -162,7 +162,7 @@ $totalFailedTests = 0
 $allSuccess = $true
 
 foreach ($category in $integrationTestCategories) {
-    $result = Rerun-IntegrationTests -Category $category.Category -TestScripts $category.Tests
+    $result = Restart-IntegrationTests -Category $category.Category -TestScripts $category.Tests
     $allResults += $result
     
     $totalTests += $result.TotalTests
@@ -205,3 +205,4 @@ if ($allSuccess) {
     Write-Host "Certains tests d'intégration corrigés ont échoué. Consultez les fichiers de résultats pour plus de détails." -ForegroundColor $errorColor
     exit 1
 }
+

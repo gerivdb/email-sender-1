@@ -5,7 +5,7 @@
 .DESCRIPTION
     Ce script exécute tous les tests unitaires pour le projet MCP.
 .EXAMPLE
-    .\Run-Tests.ps1
+    .\Start-Tests.ps1
     Exécute tous les tests unitaires.
 .NOTES
     Version: 1.0.0
@@ -36,7 +36,7 @@ function Write-Log {
 }
 
 # Fonction principale
-function Run-Tests {
+function Start-Tests {
     [CmdletBinding()]
     param ()
 
@@ -89,4 +89,5 @@ function Run-Tests {
 }
 
 # Exécuter la fonction principale
-Run-Tests -Verbose
+Start-Tests -Verbose
+

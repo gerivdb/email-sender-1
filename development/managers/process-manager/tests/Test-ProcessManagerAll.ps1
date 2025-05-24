@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script principal de test pour le Process Manager.
 
@@ -147,7 +147,7 @@ function Invoke-TestScript {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport HTML
-function Generate-HtmlReport {
+function New-HtmlReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -580,8 +580,9 @@ Write-TestLog -Message "  Taux de rÃ©ussite : $($testResults.SuccessRate.ToStr
 # GÃ©nÃ©rer le rapport HTML
 if ($GenerateReport) {
     $reportFilePath = Join-Path -Path $reportsDir -ChildPath "process-manager-test-report-$(Get-Date -Format 'yyyy-MM-dd-HHmmss').html"
-    Generate-HtmlReport -TestResults $testResults -ReportPath $reportFilePath
+    New-HtmlReport -TestResults $testResults -ReportPath $reportFilePath
 }
 
 # Retourner les rÃ©sultats
 return $testResults
+

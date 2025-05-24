@@ -20,7 +20,7 @@ Write-Host "Test des optimisations de collections dans Invoke-RunspaceProcessor"
 Write-Host "`nTest 1: Utilisation de différents types de collections en entrée" -ForegroundColor Yellow
 
 # Créer des runspaces de test
-function Create-TestRunspaces {
+function New-TestRunspaces {
     param(
         [int]$Count = 3
     )
@@ -60,7 +60,7 @@ function Create-TestRunspaces {
 
 # Test avec ArrayList
 Write-Host "Test avec ArrayList" -ForegroundColor White
-$runspaces = Create-TestRunspaces -Count 3
+$runspaces = New-TestRunspaces -Count 3
 $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -NoProgress -TimeoutSeconds 10
 Write-Host "Type de completedRunspaces: $($completedRunspaces.GetType().FullName)"
 $results = Invoke-RunspaceProcessor -CompletedRunspaces $completedRunspaces -NoProgress
@@ -72,7 +72,7 @@ foreach ($result in $results.Results) {
 
 # Test avec List<object>
 Write-Host "`nTest avec List<object>" -ForegroundColor White
-$runspaces = Create-TestRunspaces -Count 3
+$runspaces = New-TestRunspaces -Count 3
 $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -NoProgress -TimeoutSeconds 10
 $listRunspaces = [System.Collections.Generic.List[object]]::new()
 foreach ($runspace in $completedRunspaces) {
@@ -88,7 +88,7 @@ foreach ($result in $results.Results) {
 
 # Test avec ConcurrentBag<object>
 Write-Host "`nTest avec ConcurrentBag<object>" -ForegroundColor White
-$runspaces = Create-TestRunspaces -Count 3
+$runspaces = New-TestRunspaces -Count 3
 $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -NoProgress -TimeoutSeconds 10
 $bagRunspaces = [System.Collections.Concurrent.ConcurrentBag[object]]::new()
 foreach ($runspace in $completedRunspaces) {
@@ -104,7 +104,7 @@ foreach ($result in $results.Results) {
 
 # Test avec tableau
 Write-Host "`nTest avec tableau" -ForegroundColor White
-$runspaces = Create-TestRunspaces -Count 3
+$runspaces = New-TestRunspaces -Count 3
 $completedRunspaces = Wait-ForCompletedRunspace -Runspaces $runspaces -WaitForAll -NoProgress -TimeoutSeconds 10
 $arrayRunspaces = @($completedRunspaces)
 Write-Host "Type de arrayRunspaces: $($arrayRunspaces.GetType().FullName)"
@@ -121,7 +121,7 @@ Write-Host "`nTest 2: Vérification des performances" -ForegroundColor Yellow
 # Créer un grand nombre de runspaces
 $largeCount = 100
 Write-Host "Création de $largeCount runspaces..." -ForegroundColor White
-$runspaces = Create-TestRunspaces -Count $largeCount
+$runspaces = New-TestRunspaces -Count $largeCount
 
 # Attendre tous les runspaces
 Write-Host "Attente des runspaces..." -ForegroundColor White
@@ -143,3 +143,4 @@ $runspacePool.Close()
 $runspacePool.Dispose()
 
 Write-Host "`nTests terminés." -ForegroundColor Green
+

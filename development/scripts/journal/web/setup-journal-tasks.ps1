@@ -1,11 +1,11 @@
-﻿# Script PowerShell pour configurer les tÃ¢ches planifiÃ©es du journal de bord
+# Script PowerShell pour configurer les tÃ¢ches planifiÃ©es du journal de bord
 
 # Chemin absolu vers le rÃ©pertoire du projet
 $ProjectDir = (Get-Location).Path
 $ScriptsDir = Join-Path $ProjectDir "scripts\cmd"
 
 # Fonction pour crÃ©er une tÃ¢che planifiÃ©e
-function Create-ScheduledTask {
+function New-ScheduledTask {
     param (
         [string]$TaskName,
         [string]$ScriptPath,
@@ -44,12 +44,13 @@ function Create-ScheduledTask {
 
 # CrÃ©er la tÃ¢che quotidienne
 $DailyScriptPath = Join-Path $ScriptsDir "journal-daily.ps1"
-Create-ScheduledTask -TaskName "Journal_Quotidien" -ScriptPath $DailyScriptPath -Arguments "" -Schedule "DAILY" -StartTime "09:00"
+New-ScheduledTask -TaskName "Journal_Quotidien" -ScriptPath $DailyScriptPath -Arguments "" -Schedule "DAILY" -StartTime "09:00"
 
 # CrÃ©er la tÃ¢che hebdomadaire
-Create-ScheduledTask -TaskName "Journal_Hebdomadaire" -ScriptPath $DailyScriptPath -Arguments "-Weekly" -Schedule "WEEKLY" -StartTime "08:00"
+New-ScheduledTask -TaskName "Journal_Hebdomadaire" -ScriptPath $DailyScriptPath -Arguments "-Weekly" -Schedule "WEEKLY" -StartTime "08:00"
 
 Write-Host "Configuration des tÃ¢ches planifiÃ©es terminÃ©e."
 Write-Host "TÃ¢ches crÃ©Ã©es:"
 Write-Host "  - Journal_Quotidien: ExÃ©cution quotidienne Ã  09:00"
 Write-Host "  - Journal_Hebdomadaire: ExÃ©cution hebdomadaire le lundi Ã  08:00"
+

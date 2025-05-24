@@ -254,7 +254,7 @@ function New-DirectoryWithMCP {
 }
 
 # Fonction principale pour organiser les fichiers
-function Organize-Files {
+function Set-Files {
     param (
         [Parameter(Mandatory = $false)]
         [switch]$DryRun,
@@ -353,7 +353,7 @@ $mcpProcess = Start-MCPDesktopCommander
 try {
     # Organiser les fichiers
     Write-Host "Organisation des fichiers de maintenance..." -ForegroundColor Cyan
-    Organize-Files -DryRun:$DryRun -Force:$Force
+    Set-Files -DryRun:$DryRun -Force:$Force
 
     Write-Host "Organisation terminée." -ForegroundColor Green
 } finally {
@@ -361,3 +361,4 @@ try {
     Write-Host "Arrêt du MCP Desktop Commander..." -ForegroundColor Cyan
     Stop-MCPDesktopCommander -Process $mcpProcess
 }
+

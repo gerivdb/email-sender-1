@@ -1,4 +1,4 @@
-﻿# normalize-project-paths.ps1
+# normalize-project-paths.ps1
 # Script pour normaliser les chemins dans un projet
 # Ce script recherche et normalise les chemins dans les fichiers du projet
 
@@ -99,7 +99,7 @@ try {
 )
 
 # Fonction pour normaliser un fichier
-function Normalize-FileContent {
+function ConvertTo-FileContent {
     param (
         [string]$FilePath,
         [switch]$FixAccents,
@@ -242,7 +242,7 @@ function Main {
     # Normaliser les fichiers
     $normalizedFiles = @()
     foreach ($file in $files) {
-        if (Normalize-FileContent -FilePath $file.FullName -FixAccents:$FixAccents -FixSpaces:$FixSpaces -FixPaths:$FixPaths -WhatIf:$WhatIf) {
+        if (ConvertTo-FileContent -FilePath $file.FullName -FixAccents:$FixAccents -FixSpaces:$FixSpaces -FixPaths:$FixPaths -WhatIf:$WhatIf) {
             $normalizedFiles += $file.FullName
         }
     }
@@ -274,3 +274,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

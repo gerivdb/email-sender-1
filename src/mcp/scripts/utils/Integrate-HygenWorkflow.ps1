@@ -88,14 +88,14 @@ function New-PowerShellAliases {
     # Ajouter les alias au profil
     $aliases = @"
 # Aliases pour Hygen MCP
-function Generate-MCPServer { & '$projectRoot\mcp\scripts\utils\Generate-MCPComponent.ps1' -Type server @args }
-function Generate-MCPClient { & '$projectRoot\mcp\scripts\utils\Generate-MCPComponent.ps1' -Type client @args }
-function Generate-MCPModule { & '$projectRoot\mcp\scripts\utils\Generate-MCPComponent.ps1' -Type module @args }
-function Generate-MCPDoc { & '$projectRoot\mcp\scripts\utils\Generate-MCPComponent.ps1' -Type doc @args }
-Set-Alias -Name gmcps -Value Generate-MCPServer
-Set-Alias -Name gmcpc -Value Generate-MCPClient
-Set-Alias -Name gmcpm -Value Generate-MCPModule
-Set-Alias -Name gmcpd -Value Generate-MCPDoc
+function New-MCPServer { & '$projectRoot\mcp\scripts\utils\Generate-MCPComponent.ps1' -Type server @args }
+function New-MCPClient { & '$projectRoot\mcp\scripts\utils\Generate-MCPComponent.ps1' -Type client @args }
+function New-MCPModule { & '$projectRoot\mcp\scripts\utils\Generate-MCPComponent.ps1' -Type module @args }
+function New-MCPDoc { & '$projectRoot\mcp\scripts\utils\Generate-MCPComponent.ps1' -Type doc @args }
+Set-Alias -Name gmcps -Value New-MCPServer
+Set-Alias -Name gmcpc -Value New-MCPClient
+Set-Alias -Name gmcpm -Value New-MCPModule
+Set-Alias -Name gmcpd -Value New-MCPDoc
 "@
     
     # Vérifier si les alias existent déjà
@@ -533,3 +533,4 @@ function Start-HygenWorkflowIntegration {
 
 # Exécuter l'intégration du workflow
 Start-HygenWorkflowIntegration
+

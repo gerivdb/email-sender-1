@@ -454,7 +454,7 @@ end {
 }
 
 # Fonction pour traiter un fichier JSON contenant une tâche
-function Process-TaskFile {
+function Invoke-TaskFile {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -538,4 +538,5 @@ function Process-TaskFile {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Process-Task, Process-TaskFile
+Export-ModuleMember -Function Process-Task, Invoke-TaskFile
+

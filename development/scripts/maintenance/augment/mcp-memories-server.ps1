@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Serveur MCP dÃ©diÃ© Ã  la gestion des Memories d'Augment.
 
@@ -86,7 +86,7 @@ if (Test-Path -Path $configPath) {
 }
 
 # Fonction pour traiter les requÃªtes MCP
-function Process-MCPRequest {
+function Invoke-MCPRequest {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -194,7 +194,7 @@ function Start-MCPServer {
             $requestJson = $reader.ReadLine()
 
             # Traiter la requÃªte
-            $responseJson = Process-MCPRequest -RequestJson $requestJson
+            $responseJson = Invoke-MCPRequest -RequestJson $requestJson
 
             # Envoyer la rÃ©ponse
             $writer.WriteLine($responseJson)
@@ -280,3 +280,4 @@ function Get-AugmentMemories {
 
 # DÃ©marrer le serveur MCP
 Start-MCPServer -Port $Port
+

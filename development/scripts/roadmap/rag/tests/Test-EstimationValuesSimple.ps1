@@ -50,7 +50,7 @@ $testCases = @(
 )
 
 # Fonction pour exécuter les tests
-function Run-Tests {
+function Start-Tests {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -96,4 +96,5 @@ function Run-Tests {
 }
 
 # Exécuter les tests
-Run-Tests -TestCases $testCases
+Start-Tests -TestCases $testCases
+

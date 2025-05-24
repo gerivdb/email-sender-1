@@ -25,11 +25,11 @@
     Exécute le script en mode non interactif (sans demander de confirmation).
 
 .EXAMPLE
-    .\rotate-logs.ps1
+    .\Move-Logs.ps1
     Effectue la rotation des logs avec les paramètres par défaut.
 
 .EXAMPLE
-    .\rotate-logs.ps1 -LogFolder "C:\n8n\logs" -MaxLogSizeMB 20 -MaxLogAgeDays 14
+    .\Move-Logs.ps1 -LogFolder "C:\n8n\logs" -MaxLogSizeMB 20 -MaxLogAgeDays 14
     Effectue la rotation des logs dans le dossier spécifié avec une taille maximale de 20 MB et un âge maximal de 14 jours.
 
 .NOTES
@@ -90,7 +90,7 @@ function Write-Log {
 }
 
 # Fonction pour vérifier si un dossier existe et le créer si nécessaire
-function Ensure-FolderExists {
+function Confirm-FolderExists {
     param (
         [Parameter(Mandatory=$true)]
         [string]$FolderPath
@@ -111,7 +111,7 @@ function Ensure-FolderExists {
 }
 
 # Fonction pour archiver un fichier de log
-function Archive-LogFile {
+function Compress-LogFile {
     param (
         [Parameter(Mandatory=$true)]
         [System.IO.FileInfo]$LogFile,
@@ -141,7 +141,7 @@ function Archive-LogFile {
 }
 
 # Fonction pour nettoyer les anciennes archives
-function Clean-OldArchives {
+function Clear-OldArchives {
     param (
         [Parameter(Mandatory=$true)]
         [string]$HistoryFolder,
@@ -176,7 +176,7 @@ function Clean-OldArchives {
 }
 
 # Fonction principale pour effectuer la rotation des logs
-function Rotate-Logs {
+function Move-Logs {
     param (
         [Parameter(Mandatory=$true)]
         [string]$LogFolder,
@@ -195,8 +195,8 @@ function Rotate-Logs {
     )
     
     # Vérifier si les dossiers existent
-    $logFolderExists = Ensure-FolderExists -FolderPath $LogFolder
-    $historyFolderExists = Ensure-FolderExists -FolderPath $HistoryFolder
+    $logFolderExists = Confirm-FolderExists -FolderPath $LogFolder
+    $historyFolderExists = Confirm-FolderExists -FolderPath $HistoryFolder
     
     if (-not $logFolderExists -or -not $historyFolderExists) {
         Write-Log "Impossible de continuer sans les dossiers requis" -Level "ERROR"
@@ -242,7 +242,7 @@ function Rotate-Logs {
         if ($needsRotation) {
             Write-Log "Rotation du fichier $($logFile.Name) en raison de $rotationReason" -Level "INFO"
             
-            $success = Archive-LogFile -LogFile $logFile -HistoryFolder $HistoryFolder
+            $success = Compress-LogFile -LogFile $logFile -HistoryFolder $HistoryFolder
             
             if ($success) {
                 $rotatedCount++
@@ -253,7 +253,7 @@ function Rotate-Logs {
     }
     
     # Nettoyer les anciennes archives
-    Clean-OldArchives -HistoryFolder $HistoryFolder -MaxHistoryCount $MaxHistoryCount
+    Clear-OldArchives -HistoryFolder $HistoryFolder -MaxHistoryCount $MaxHistoryCount
     
     Write-Log "Fin de la rotation des logs ($rotatedCount fichiers rotés)" -Level "SUCCESS"
     
@@ -281,7 +281,7 @@ if ($MyInvocation.InvocationName -ne ".") {
     }
     
     # Effectuer la rotation des logs
-    $success = Rotate-Logs -LogFolder $LogFolder -HistoryFolder $HistoryFolder -MaxLogSizeMB $MaxLogSizeMB -MaxLogAgeDays $MaxLogAgeDays -MaxHistoryCount $MaxHistoryCount
+    $success = Move-Logs -LogFolder $LogFolder -HistoryFolder $HistoryFolder -MaxLogSizeMB $MaxLogSizeMB -MaxLogAgeDays $MaxLogAgeDays -MaxHistoryCount $MaxHistoryCount
     
     if ($success) {
         exit 0
@@ -289,3 +289,5 @@ if ($MyInvocation.InvocationName -ne ".") {
         exit 1
     }
 }
+
+

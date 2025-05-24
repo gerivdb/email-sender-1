@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Version optimisÃ©e du normalisateur de caractÃ¨res utilisant PSCacheManager.
 .DESCRIPTION
@@ -79,7 +79,7 @@ $fileInfo = Get-Item -Path $FilePath
 $cacheKey = "Normalization_$($fileInfo.FullName)_$($fileInfo.LastWriteTime.Ticks)_$NormalizationForm_$RemoveAccents_$ReplaceNonAscii"
 
 # Fonction pour normaliser le contenu
-function Normalize-Content {
+function ConvertTo-Content {
     param (
         [string]$Content,
         [string]$NormForm,
@@ -157,7 +157,7 @@ try {
     if ($DisableCache) {
         Write-Verbose "Cache dÃ©sactivÃ©, traitement direct du fichier..."
         $content = Get-Content -Path $FilePath -Raw -Encoding UTF8
-        $normalizedContent = Normalize-Content -Content $content -NormForm $NormalizationForm -RemoveAccents $RemoveAccents -ReplaceNonAscii $ReplaceNonAscii
+        $normalizedContent = ConvertTo-Content -Content $content -NormForm $NormalizationForm -RemoveAccents $RemoveAccents -ReplaceNonAscii $ReplaceNonAscii
     } else {
         Write-Verbose "Utilisation du cache pour le traitement..."
         
@@ -165,7 +165,7 @@ try {
         $normalizedContent = Get-PSCacheItem -Cache $normalizationCache -Key $cacheKey -GenerateValue {
             Write-Host "Cache miss - Normalisation du fichier $FilePath..." -ForegroundColor Yellow
             $content = Get-Content -Path $FilePath -Raw -Encoding UTF8
-            Normalize-Content -Content $content -NormForm $NormalizationForm -RemoveAccents $RemoveAccents -ReplaceNonAscii $ReplaceNonAscii
+            ConvertTo-Content -Content $content -NormForm $NormalizationForm -RemoveAccents $RemoveAccents -ReplaceNonAscii $ReplaceNonAscii
         }
     }
     
@@ -194,3 +194,4 @@ try {
     Write-Error "Erreur lors de la normalisation du fichier: $_"
     exit 1
 }
+

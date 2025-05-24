@@ -136,7 +136,7 @@ class DimensionsNotFoundException : KernelDensityEstimationValidationException {
 }
 
 # Helper function to throw the appropriate exception based on the error code
-function Throw-KernelDensityEstimationException {
+function Write-KernelDensityEstimationException {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -219,11 +219,12 @@ try {
 
 # Test the helper function
 try {
-    Throw-KernelDensityEstimationException -ErrorCode "V002" -Args @(1)
+    Write-KernelDensityEstimationException -ErrorCode "V002" -Args @(1)
 } catch {
-    Write-Host "`n  PASSED: Throw-KernelDensityEstimationException (V002)" -ForegroundColor Green
+    Write-Host "`n  PASSED: Write-KernelDensityEstimationException (V002)" -ForegroundColor Green
     Write-Host "    Error code: $($_.Exception.ErrorCode)" -ForegroundColor Green
     Write-Host "    Message: $($_.Exception.Message)" -ForegroundColor Green
 }
 
 Write-Host "`nAll tests completed." -ForegroundColor Cyan
+

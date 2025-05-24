@@ -1,4 +1,4 @@
-﻿# Script pour surveiller et organiser automatiquement les nouveaux fichiers
+# Script pour surveiller et organiser automatiquement les nouveaux fichiers
 # Ce script surveille le dÃ©pÃ´t et organise automatiquement les nouveaux fichiers
 
 # Importation des modules nÃ©cessaires
@@ -186,7 +186,7 @@ try {
 }
 
 # Fonction pour organiser un fichier
-function Organize-File {
+function Set-File {
     param (
         [string]$FilePath
     )
@@ -211,7 +211,7 @@ function Organize-File {
 }
 
 # Fonction pour gÃ©rer les Ã©vÃ©nements de crÃ©ation de fichier
-function Handle-FileCreated {
+function Invoke-FileCreated {
     param (
         [System.IO.FileSystemEventArgs]$Event
     )
@@ -221,7 +221,7 @@ function Handle-FileCreated {
     # VÃ©rifier si le fichier existe toujours (peut avoir Ã©tÃ© supprimÃ© entre-temps)
     if (Test-Path -Path $filePath -PathType Leaf) {
         Write-Host "Nouveau fichier dÃ©tectÃ©: $filePath" -ForegroundColor Yellow
-        Organize-File -FilePath $filePath
+        Set-File -FilePath $filePath
     }
 }
 
@@ -249,7 +249,7 @@ function Start-FileWatcher {
         
         if ($changeType -eq "Created") {
             Write-Host "[$timestamp] CREATED: $name" -ForegroundColor Green
-            Handle-FileCreated -Event $event
+            Invoke-FileCreated -Event $event
         }
     }
     
@@ -295,3 +295,5 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+
+

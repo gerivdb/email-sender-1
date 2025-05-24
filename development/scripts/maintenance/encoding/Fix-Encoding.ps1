@@ -1,4 +1,4 @@
-﻿# Fix-Encoding.ps1
+# Fix-Encoding.ps1
 # Script pour corriger l'encodage des fichiers de test
 
 param (
@@ -64,7 +64,7 @@ function Repair-FileEncoding {
 }
 
 # Fonction pour traiter un dossier
-function Process-Folder {
+function Invoke-Folder {
     param (
         [string]$FolderPath,
         [switch]$Recursive,
@@ -103,4 +103,5 @@ function Process-Folder {
 }
 
 # Traiter le dossier spÃƒÂ©cifiÃƒÂ©
-Process-Folder -FolderPath $FolderPath -Recursive:$Recursive -WhatIf:$WhatIf
+Invoke-Folder -FolderPath $FolderPath -Recursive:$Recursive -WhatIf:$WhatIf
+

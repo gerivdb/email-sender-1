@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Optimise les performances des fonctions d'extraction AST pour les grands scripts.
@@ -95,7 +95,7 @@ function Optimize-AstExtraction {
     }
 
     # Fonction pour traiter l'AST par lots
-    function Process-AstInBatches {
+    function Invoke-AstInBatches {
         param(
             [System.Management.Automation.Language.Ast]$Ast,
             [string]$NodeType,
@@ -107,7 +107,7 @@ function Optimize-AstExtraction {
         $allNodes = @()
 
         # Fonction rÃ©cursive pour collecter les nÅ“uds
-        function Collect-Nodes {
+        function Get-Nodes {
             param(
                 [System.Management.Automation.Language.Ast]$CurrentAst,
                 [int]$CurrentDepth = 0
@@ -120,11 +120,11 @@ function Optimize-AstExtraction {
             $allNodes += $CurrentAst
 
             foreach ($childAst in $CurrentAst.FindAll({ $true }, $false)) {
-                Collect-Nodes -CurrentAst $childAst -CurrentDepth ($CurrentDepth + 1)
+                Get-Nodes -CurrentAst $childAst -CurrentDepth ($CurrentDepth + 1)
             }
         }
 
-        Collect-Nodes -CurrentAst $Ast
+        Get-Nodes -CurrentAst $Ast
 
         # Traiter les nÅ“uds par lots
         $results = @()
@@ -136,7 +136,7 @@ function Optimize-AstExtraction {
 
             if ($currentBatch.Count -ge $BatchSize -or $i -eq ($nodeCount - 1)) {
                 # Traiter le lot actuel
-                $batchResults = Process-NodeBatch -Nodes $currentBatch -NodeType $NodeType
+                $batchResults = Invoke-NodeBatch -Nodes $currentBatch -NodeType $NodeType
                 $results += $batchResults
 
                 # RÃ©initialiser le lot
@@ -151,7 +151,7 @@ function Optimize-AstExtraction {
     }
 
     # Fonction pour traiter un lot de nÅ“uds
-    function Process-NodeBatch {
+    function Invoke-NodeBatch {
         param(
             [System.Management.Automation.Language.Ast[]]$Nodes,
             [string]$NodeType
@@ -192,7 +192,7 @@ function Optimize-AstExtraction {
     }
 
     # Fonction pour extraire les nÅ“uds avec limitation de profondeur
-    function Extract-NodesWithDepthLimit {
+    function Export-NodesWithDepthLimit {
         param(
             [System.Management.Automation.Language.Ast]$Ast,
             [string]$NodeType,
@@ -256,10 +256,10 @@ function Optimize-AstExtraction {
         # Choisir la mÃ©thode d'extraction en fonction des paramÃ¨tres
         if ($BatchSize -gt 0) {
             Write-Verbose "Utilisation du traitement par lots (taille: $BatchSize)"
-            $result = Process-AstInBatches -Ast $Ast -NodeType $NodeType -MaxDepth $MaxDepth -BatchSize $BatchSize
+            $result = Invoke-AstInBatches -Ast $Ast -NodeType $NodeType -MaxDepth $MaxDepth -BatchSize $BatchSize
         } else {
             Write-Verbose "Utilisation de l'extraction avec limite de profondeur (max: $MaxDepth)"
-            $result = Extract-NodesWithDepthLimit -Ast $Ast -NodeType $NodeType -MaxDepth $MaxDepth
+            $result = Export-NodesWithDepthLimit -Ast $Ast -NodeType $NodeType -MaxDepth $MaxDepth
         }
 
         $stopwatch.Stop()
@@ -344,3 +344,4 @@ function Get-AstExtractionCacheStatistics {
 }
 
 # Les fonctions sont exportÃ©es par le module
+

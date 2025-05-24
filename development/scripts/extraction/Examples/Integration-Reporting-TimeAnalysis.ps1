@@ -15,12 +15,12 @@ Le nombre de mois de données à générer pour l'analyse.
 Par défaut, 12 mois.
 
 .EXAMPLE
-Example-TimeAnalysisReport -OutputFolder "C:\Temp\Reports" -MonthsOfData 6
+Show-TimeAnalysisReport -OutputFolder "C:\Temp\Reports" -MonthsOfData 6
 
 .NOTES
 Cette fonction est fournie à titre d'exemple et peut être adaptée selon vos besoins.
 #>
-function Example-TimeAnalysisReport {
+function Show-TimeAnalysisReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -536,4 +536,5 @@ Sur la base de cette analyse temporelle, voici quelques recommandations :
 }
 
 # Exemple d'utilisation
-# Example-TimeAnalysisReport -OutputFolder "C:\Temp\Reports" -MonthsOfData 6
+# Show-TimeAnalysisReport -OutputFolder "C:\Temp\Reports" -MonthsOfData 6
+

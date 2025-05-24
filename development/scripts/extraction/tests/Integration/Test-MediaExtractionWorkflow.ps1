@@ -37,7 +37,7 @@ $rng.GetBytes($audioData)
 [System.IO.File]::WriteAllBytes($audioFile, $audioData)
 
 # Fonction simulant un extracteur de médias
-function Extract-MediaFromFile {
+function Export-MediaFromFile {
     param (
         [string]$FilePath,
         [string]$ExtractorName = "MediaFileExtractor"
@@ -119,10 +119,10 @@ $collection = New-ExtractedInfoCollection -Name "MediaExtractionCollection"
 
 # Étape 2: Extraire les médias des fichiers
 Write-Host "Étape 2: Extraire les médias des fichiers" -ForegroundColor Cyan
-$mediaInfo1 = Extract-MediaFromFile -FilePath $imageFile1
-$mediaInfo2 = Extract-MediaFromFile -FilePath $imageFile2
-$mediaInfo3 = Extract-MediaFromFile -FilePath $videoFile
-$mediaInfo4 = Extract-MediaFromFile -FilePath $audioFile
+$mediaInfo1 = Export-MediaFromFile -FilePath $imageFile1
+$mediaInfo2 = Export-MediaFromFile -FilePath $imageFile2
+$mediaInfo3 = Export-MediaFromFile -FilePath $videoFile
+$mediaInfo4 = Export-MediaFromFile -FilePath $audioFile
 
 # Étape 3: Ajouter les informations extraites à la collection
 Write-Host "Étape 3: Ajouter les informations extraites à la collection" -ForegroundColor Cyan
@@ -191,3 +191,4 @@ if ($success) {
     Write-Host "Certains tests ont échoué!" -ForegroundColor Red
     exit 1
 }
+

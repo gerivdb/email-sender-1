@@ -1,4 +1,4 @@
-﻿# Script d'installation des outils Git
+# Script d'installation des outils Git
 # Ce script configure tous les outils Git dÃ©veloppÃ©s pour le projet
 
 param (
@@ -190,7 +190,7 @@ $aliasContent = @"
 function git-smart-commit { & "$projectRoot\..\..\D" @args }
 function git-atomic-commit { & "$projectRoot\..\..\D" @args }
 function git-pre-push-check { & "$projectRoot\..\..\D" @args }
-function auto-organize { & "$projectRoot\..\..\D" @args }
+function Start-organize { & "$projectRoot\..\..\D" @args }
 
 "@
 
@@ -218,7 +218,7 @@ Write-ColorMessage "2. Utilisez les commandes suivantes:" -ForegroundColor "Whit
 Write-ColorMessage "   - git-smart-commit : Pour un commit complet avec organisation automatique" -ForegroundColor "White"
 Write-ColorMessage "   - git-atomic-commit : Pour un commit ciblÃ© par catÃ©gorie de fichiers" -ForegroundColor "White"
 Write-ColorMessage "   - git-pre-push-check : Pour vÃ©rifier les changements avant push" -ForegroundColor "White"
-Write-ColorMessage "   - auto-organize : Pour organiser les fichiers manuellement" -ForegroundColor "White"
+Write-ColorMessage "   - Start-organize : Pour organiser les fichiers manuellement" -ForegroundColor "White"
 Write-ColorMessage "3. Consultez le guide des bonnes pratiques Git: docs/guides/GUIDE_BONNES_PRATIQUES_GIT.md" -ForegroundColor "White"
 
 # Afficher l'aide si demandÃ©
@@ -232,4 +232,5 @@ if ($args -contains "-help" -or $args -contains "--help" -or $args -contains "/?
     Write-ColorMessage "  .\setup-git-tools.ps1 -ConfigureGit -SetupHooks" -ForegroundColor "Cyan"
     Write-ColorMessage "  .\setup-git-tools.ps1 -SetupHooks" -ForegroundColor "Cyan"
 }
+
 

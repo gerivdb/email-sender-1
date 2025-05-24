@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Script de test complexe.
@@ -15,7 +15,7 @@ $maxItems = 10
 $processingEnabled = $true
 
 # Fonction avec gestion d'erreurs
-function Process-Items {
+function Invoke-Items {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -73,6 +73,7 @@ function Get-ItemsReport {
 
 # Appel des fonctions
 if ($processingEnabled) {
-    Process-Items -Count $maxItems
+    Invoke-Items -Count $maxItems
     Get-ItemsReport -Items @("Apple", "Banana", "Cherry")
 }
+

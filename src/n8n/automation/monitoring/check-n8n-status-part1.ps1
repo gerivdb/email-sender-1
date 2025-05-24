@@ -160,7 +160,7 @@ function Get-ApiKeyFromConfig {
 }
 
 # Fonction pour vérifier si un dossier existe et le créer si nécessaire
-function Ensure-FolderExists {
+function Confirm-FolderExists {
     param (
         [Parameter(Mandatory=$true)]
         [string]$FolderPath
@@ -181,4 +181,5 @@ function Ensure-FolderExists {
 }
 
 # Exporter les fonctions et variables pour les autres parties du script
-Export-ModuleMember -Function Write-Log, Send-StatusNotification, Get-ApiKeyFromConfig, Ensure-FolderExists -Variable CommonParams
+Export-ModuleMember -Function Write-Log, Send-StatusNotification, Get-ApiKeyFromConfig, Confirm-FolderExists -Variable CommonParams
+

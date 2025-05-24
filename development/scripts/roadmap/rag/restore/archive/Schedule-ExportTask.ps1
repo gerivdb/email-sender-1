@@ -1,4 +1,4 @@
-# Schedule-ExportTask.ps1
+# Register-ExportTask.ps1
 # Script pour planifier des tâches d'exportation d'archives vers un stockage externe
 # Version: 1.0
 # Date: 2025-05-15
@@ -202,7 +202,7 @@ function New-WindowsScheduledTask {
     }
     
     # Construire le chemin du script PowerShell à exécuter
-    $scriptToRun = Join-Path -Path $scriptPath -ChildPath "Schedule-ExportTask.ps1"
+    $scriptToRun = Join-Path -Path $scriptPath -ChildPath "Register-ExportTask.ps1"
     
     # Construire la commande PowerShell
     $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$scriptToRun`" -Action Run -TaskName `"$TaskName`" -LogLevel Info"
@@ -504,7 +504,7 @@ function Invoke-ExportTask {
 }
 
 # Fonction principale pour gérer les tâches d'exportation planifiées
-function Schedule-ExportTask {
+function Register-ExportTask {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -733,5 +733,6 @@ function Schedule-ExportTask {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Schedule-ExportTask -Action $Action -TaskName $TaskName -Schedule $Schedule -Time $Time -DayOfWeek $DayOfWeek -DayOfMonth $DayOfMonth -StorageType $StorageType -DestinationPath $DestinationPath -ConfigName $ConfigName -ConnectionParams $ConnectionParams -RemoveOriginals:$RemoveOriginals -WhatIf:$WhatIf
+    Register-ExportTask -Action $Action -TaskName $TaskName -Schedule $Schedule -Time $Time -DayOfWeek $DayOfWeek -DayOfMonth $DayOfMonth -StorageType $StorageType -DestinationPath $DestinationPath -ConfigName $ConfigName -ConnectionParams $ConnectionParams -RemoveOriginals:$RemoveOriginals -WhatIf:$WhatIf
 }
+

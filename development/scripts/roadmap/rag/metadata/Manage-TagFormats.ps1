@@ -353,7 +353,7 @@ function Remove-TagFormat {
 }
 
 # Fonction pour lister tous les formats de tags
-function List-TagFormats {
+function Get-TagFormats {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -491,7 +491,7 @@ function Invoke-TagFormatsManager {
             }
         }
         "List" {
-            $result = List-TagFormats -Config $config -TagType $TagType
+            $result = Get-TagFormats -Config $config -TagType $TagType
         }
         "Export" {
             if (-not $OutputPath) {
@@ -542,3 +542,4 @@ function Invoke-TagFormatsManager {
 
 # Exécuter la fonction principale
 Invoke-TagFormatsManager -Action $Action -TagType $TagType -FormatName $FormatName -Pattern $Pattern -Description $Description -Example $Example -Unit $Unit -ValueGroup $ValueGroup -ConfigPath $ConfigPath -OutputPath $OutputPath -ImportPath $ImportPath -Force:$Force
+

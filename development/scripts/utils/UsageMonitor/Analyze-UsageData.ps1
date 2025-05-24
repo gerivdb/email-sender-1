@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse les donnÃ©es d'utilisation collectÃ©es par le module UsageMonitor.
 .DESCRIPTION
@@ -59,7 +59,7 @@ function Write-Log {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport HTML
-function Generate-HtmlReport {
+function New-HtmlReport {
     param (
         [PSCustomObject]$UsageData,
         [PSCustomObject[]]$Bottlenecks,
@@ -307,7 +307,7 @@ function Generate-HtmlReport {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport CSV
-function Generate-CsvReport {
+function New-CsvReport {
     param (
         [PSCustomObject]$UsageData,
         [PSCustomObject[]]$Bottlenecks,
@@ -374,7 +374,7 @@ function Generate-CsvReport {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport JSON
-function Generate-JsonReport {
+function New-JsonReport {
     param (
         [PSCustomObject]$UsageData,
         [PSCustomObject[]]$Bottlenecks,
@@ -428,19 +428,19 @@ Write-Log "Analyse des goulots d'Ã©tranglement terminÃ©e. $($bottlenecks.Cou
 $generatedReports = @()
 
 if ($ReportFormat -eq "HTML" -or $ReportFormat -eq "All") {
-    $htmlReport = Generate-HtmlReport -UsageData $usageStats -Bottlenecks $bottlenecks -OutputPath $OutputPath
+    $htmlReport = New-HtmlReport -UsageData $usageStats -Bottlenecks $bottlenecks -OutputPath $OutputPath
     $generatedReports += $htmlReport
     Write-Log "Rapport HTML gÃ©nÃ©rÃ©: $htmlReport" -Level "SUCCESS"
 }
 
 if ($ReportFormat -eq "CSV" -or $ReportFormat -eq "All") {
-    $csvReports = Generate-CsvReport -UsageData $usageStats -Bottlenecks $bottlenecks -OutputPath $OutputPath
+    $csvReports = New-CsvReport -UsageData $usageStats -Bottlenecks $bottlenecks -OutputPath $OutputPath
     $generatedReports += $csvReports.Values
     Write-Log "Rapports CSV gÃ©nÃ©rÃ©s dans: $OutputPath" -Level "SUCCESS"
 }
 
 if ($ReportFormat -eq "JSON" -or $ReportFormat -eq "All") {
-    $jsonReport = Generate-JsonReport -UsageData $usageStats -Bottlenecks $bottlenecks -OutputPath $OutputPath
+    $jsonReport = New-JsonReport -UsageData $usageStats -Bottlenecks $bottlenecks -OutputPath $OutputPath
     $generatedReports += $jsonReport
     Write-Log "Rapport JSON gÃ©nÃ©rÃ©: $jsonReport" -Level "SUCCESS"
 }
@@ -453,3 +453,4 @@ if ($generatedReports.Count -gt 0 -and $ReportFormat -eq "HTML") {
     Write-Log "Ouverture du rapport: $reportToOpen" -Level "INFO"
     Start-Process $reportToOpen
 }
+

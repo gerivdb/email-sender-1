@@ -125,7 +125,7 @@ end {
 }
 
 # Fonction pour normaliser un fichier JSON contenant une tâche
-function Normalize-TaskFile {
+function ConvertTo-TaskFile {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -185,7 +185,7 @@ function Normalize-TaskFile {
 }
 
 # Fonction pour normaliser un tableau de tâches
-function Normalize-TaskArray {
+function ConvertTo-TaskArray {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -212,4 +212,5 @@ function Normalize-TaskArray {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Normalize-Task, Normalize-TaskFile, Normalize-TaskArray
+Export-ModuleMember -Function Normalize-Task, ConvertTo-TaskFile, ConvertTo-TaskArray
+

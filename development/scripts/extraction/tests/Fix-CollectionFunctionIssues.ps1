@@ -52,7 +52,7 @@ function Test-Script {
 }
 
 # Fonction pour corriger les problèmes dans une fonction de collection
-function Fix-CollectionFunction {
+function Repair-CollectionFunction {
     param (
         [string]$FunctionName,
         [string]$TestScript,
@@ -254,7 +254,7 @@ foreach ($function in $collectionFunctions) {
     $testPath = Join-Path -Path $testDir -ChildPath $function.Test
     
     if (Test-Path -Path $testPath) {
-        $fixed = Fix-CollectionFunction -FunctionName $function.Name -TestScript $testPath -FixReportFile $fixReportFile
+        $fixed = Repair-CollectionFunction -FunctionName $function.Name -TestScript $testPath -FixReportFile $fixReportFile
         
         if ($fixed) {
             $fixedFunctions++
@@ -286,3 +286,4 @@ if ($fixedFunctions -eq $totalFunctions) {
     Write-Host "Certains problèmes dans les fonctions de collection n'ont pas pu être corrigés. Consultez le fichier de rapport pour plus de détails : $fixReportFile" -ForegroundColor $errorColor
     exit 1
 }
+

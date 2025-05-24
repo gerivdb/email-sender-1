@@ -213,7 +213,7 @@ function Start-MCPInteractiveSession {
             }
             "^check-api-status (.+)$" {
                 $apiName = $matches[1]
-                Check-MCPApiStatus -ApiName $apiName
+                Test-MCPApiStatus -ApiName $apiName
             }
             "^proxy-request (.+) (.+)$" {
                 $apiName = $matches[1]
@@ -285,7 +285,7 @@ function Get-MCPApiInfo {
 }
 
 # Fonction pour vérifier l'état d'une API
-function Check-MCPApiStatus {
+function Test-MCPApiStatus {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory=$true)]
@@ -344,3 +344,4 @@ function Invoke-MCPProxyRequest {
 
 # Démarrer le client
 Start-Client
+

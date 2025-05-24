@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script d'extraction et de prÃ©paration des donnÃ©es historiques de performance.
 
@@ -240,7 +240,7 @@ function Get-ApplicationLogs {
 }
 
 # Fonction pour nettoyer les donnÃ©es
-function Clean-Data {
+function Clear-Data {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -306,7 +306,7 @@ function Clean-Data {
 }
 
 # Fonction pour normaliser les donnÃ©es
-function Normalize-Data {
+function ConvertTo-Data {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -467,13 +467,13 @@ function Start-DataPreparation {
 
     # 2. Nettoyage des donnÃ©es
     Write-Log -Message "Ã‰tape 2: Nettoyage des donnÃ©es" -Level "Info"
-    $CleanedPerformanceData = if ($null -ne $PerformanceData -and $PerformanceData.Count -gt 0) { Clean-Data -Data $PerformanceData -DataType "Performance" } else { @() }
-    $CleanedSystemLogs = if ($null -ne $SystemLogs -and $SystemLogs.Count -gt 0) { Clean-Data -Data $SystemLogs -DataType "Logs" } else { @() }
-    $CleanedApplicationLogs = if ($null -ne $ApplicationLogs -and $ApplicationLogs.Count -gt 0) { Clean-Data -Data $ApplicationLogs -DataType "Logs" } else { @() }
+    $CleanedPerformanceData = if ($null -ne $PerformanceData -and $PerformanceData.Count -gt 0) { Clear-Data -Data $PerformanceData -DataType "Performance" } else { @() }
+    $CleanedSystemLogs = if ($null -ne $SystemLogs -and $SystemLogs.Count -gt 0) { Clear-Data -Data $SystemLogs -DataType "Logs" } else { @() }
+    $CleanedApplicationLogs = if ($null -ne $ApplicationLogs -and $ApplicationLogs.Count -gt 0) { Clear-Data -Data $ApplicationLogs -DataType "Logs" } else { @() }
 
     # 3. Normalisation des donnÃ©es
     Write-Log -Message "Ã‰tape 3: Normalisation des donnÃ©es" -Level "Info"
-    $NormalizedPerformanceData = if ($null -ne $CleanedPerformanceData -and $CleanedPerformanceData.Count -gt 0) { Normalize-Data -Data $CleanedPerformanceData -Method "MinMax" } else { @() }
+    $NormalizedPerformanceData = if ($null -ne $CleanedPerformanceData -and $CleanedPerformanceData.Count -gt 0) { ConvertTo-Data -Data $CleanedPerformanceData -Method "MinMax" } else { @() }
 
     # 4. Exportation des donnÃ©es prÃ©parÃ©es
     Write-Log -Message "Ã‰tape 4: Exportation des donnÃ©es prÃ©parÃ©es" -Level "Info"
@@ -538,3 +538,4 @@ if ($PSCmdlet.ShouldProcess("PrÃ©paration des donnÃ©es", "ExÃ©cuter")) {
         return 1
     }
 }
+

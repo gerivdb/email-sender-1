@@ -58,7 +58,7 @@ Set-Content -Path $jsonFile2 -Value $jsonData2
 Set-Content -Path $jsonFile3 -Value $jsonData3
 
 # Fonction simulant un extracteur de données structurées
-function Extract-StructuredDataFromFile {
+function Export-StructuredDataFromFile {
     param (
         [string]$FilePath,
         [string]$ExtractorName = "JsonFileExtractor"
@@ -124,9 +124,9 @@ $collection = New-ExtractedInfoCollection -Name "StructuredDataExtractionCollect
 
 # Étape 2: Extraire les données structurées des fichiers
 Write-Host "Étape 2: Extraire les données structurées des fichiers" -ForegroundColor Cyan
-$dataInfo1 = Extract-StructuredDataFromFile -FilePath $jsonFile1
-$dataInfo2 = Extract-StructuredDataFromFile -FilePath $jsonFile2
-$dataInfo3 = Extract-StructuredDataFromFile -FilePath $jsonFile3
+$dataInfo1 = Export-StructuredDataFromFile -FilePath $jsonFile1
+$dataInfo2 = Export-StructuredDataFromFile -FilePath $jsonFile2
+$dataInfo3 = Export-StructuredDataFromFile -FilePath $jsonFile3
 
 # Étape 3: Ajouter les informations extraites à la collection
 Write-Host "Étape 3: Ajouter les informations extraites à la collection" -ForegroundColor Cyan
@@ -189,3 +189,4 @@ if ($success) {
     Write-Host "Certains tests ont échoué!" -ForegroundColor Red
     exit 1
 }
+

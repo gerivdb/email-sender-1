@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests d'extraction AST avec des scripts PowerShell simples.
 
@@ -427,7 +427,7 @@ function Backup-File {
 }
 
 # Fonction pour traiter un fichier
-function Process-File {
+function Invoke-File {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Path
@@ -477,7 +477,7 @@ try {
     
     if ($backupSuccess) {
         # Traiter le fichier
-        $result = Process-File -Path $FilePath
+        $result = Invoke-File -Path $FilePath
         
         if ($result.Success) {
             Write-Output "Traitement rÃ©ussi!"
@@ -509,3 +509,4 @@ Write-Host "`n"
 Test-SimpleScript -ScriptName "Script avec gestion d'erreurs" -ScriptContent $simpleScript3
 
 Write-Host "`n=== Tous les tests sur les scripts simples sont terminÃ©s ===" -ForegroundColor Green
+

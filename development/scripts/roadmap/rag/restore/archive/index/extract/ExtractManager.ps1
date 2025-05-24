@@ -15,7 +15,7 @@ if (Test-Path -Path $pathResolverPath) {
 }
 
 # Fonction pour extraire un element d'archive
-function Extract-ArchiveItem {
+function Export-ArchiveItem {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ParameterSetName = "ById")]
@@ -404,4 +404,5 @@ function Test-RestoreValidity {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Extract-ArchiveItem, Test-RestoreValidity
+Export-ModuleMember -function Export-ArchiveItem, Test-RestoreValidity
+

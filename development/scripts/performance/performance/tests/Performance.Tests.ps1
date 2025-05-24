@@ -1,4 +1,4 @@
-﻿Describe "Tests de performance" {
+Describe "Tests de performance" {
     Context "Mesure des performances des fonctions" {
         BeforeAll {
             # Fonction pour mesurer le temps d'exÃ©cution d'une fonction
@@ -153,7 +153,7 @@
             }
 
             # Fonction pour traiter des fichiers en sÃ©rie
-            function Process-FilesSerial {
+            function Invoke-FilesSerial {
                 param (
                     [array]$Files
                 )
@@ -176,7 +176,7 @@
             }
 
             # Fonction pour traiter des fichiers en parallÃ¨le
-            function Process-FilesParallel {
+            function Invoke-FilesParallel {
                 param (
                     [array]$Files,
                     [int]$BatchSize = 5
@@ -214,18 +214,18 @@
 
         It "Compare les performances du traitement en sÃ©rie et en parallÃ¨le" -Skip:(-not (Get-Command -Name ForEach-Object).Parameters.ContainsKey('Parallel')) {
             # Mesurer les performances du traitement en sÃ©rie
-            $serialStats = Measure-ExecutionTime -ScriptBlock ${function:Process-FilesSerial} -Arguments @($testFiles) -Iterations 3
+            $serialStats = Measure-ExecutionTime -ScriptBlock ${function:Invoke-FilesSerial} -Arguments @($testFiles) -Iterations 3
 
             # Mesurer les performances du traitement en parallÃ¨le
-            $parallelStats = Measure-ExecutionTime -ScriptBlock ${function:Process-FilesParallel} -Arguments @($testFiles) -Iterations 3
+            $parallelStats = Measure-ExecutionTime -ScriptBlock ${function:Invoke-FilesParallel} -Arguments @($testFiles) -Iterations 3
 
             # Afficher les statistiques
             Write-Host "Traitement en sÃ©rie: Moyenne = $($serialStats.AvgTimeMs) ms, MÃ©diane = $($serialStats.MedianTimeMs) ms"
             Write-Host "Traitement en parallÃ¨le: Moyenne = $($parallelStats.AvgTimeMs) ms, MÃ©diane = $($parallelStats.MedianTimeMs) ms"
 
             # VÃ©rifier que les deux fonctions produisent des rÃ©sultats similaires
-            $serialResults = Process-FilesSerial -Files $testFiles
-            $parallelResults = Process-FilesParallel -Files $testFiles
+            $serialResults = Invoke-FilesSerial -Files $testFiles
+            $parallelResults = Invoke-FilesParallel -Files $testFiles
 
             $serialResults.Count | Should -Be $parallelResults.Count
         }
@@ -311,3 +311,4 @@
         }
     }
 }
+

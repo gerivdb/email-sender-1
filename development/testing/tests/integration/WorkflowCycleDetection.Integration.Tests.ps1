@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests d'intÃ©gration pour la dÃ©tection de cycles dans les workflows n8n.
@@ -352,7 +352,7 @@ function Start-WorkflowCycleValidation {
         
         if (`$result.HasCycles -and `$FixCycles) {
             # Corriger les cycles
-            `$fixedWorkflow = Fix-WorkflowCycles -WorkflowPath `$file.FullName -Cycles `$result.Cycles
+            `$fixedWorkflow = Repair-WorkflowCycles -WorkflowPath `$file.FullName -Cycles `$result.Cycles
             
             if (`$fixedWorkflow) {
                 # Sauvegarder le workflow corrigÃ©
@@ -390,7 +390,7 @@ function Start-WorkflowCycleValidation {
 }
 
 # Fonction pour corriger les cycles dans un workflow
-function Fix-WorkflowCycles {
+function Repair-WorkflowCycles {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = `$true)]
@@ -608,7 +608,7 @@ function Start-WorkflowValidation {
         if (`$issues.Count -gt 0 -and `$FixIssues) {
             # Corriger les cycles
             if (`$cycleResult.HasCycles) {
-                `$fixedWorkflow = Fix-WorkflowCycles -WorkflowPath `$workflow.FullName -Cycles `$cycleResult.Cycles
+                `$fixedWorkflow = Repair-WorkflowCycles -WorkflowPath `$workflow.FullName -Cycles `$cycleResult.Cycles
                 
                 if (`$fixedWorkflow) {
                     # Sauvegarder le workflow corrigÃ©
@@ -666,7 +666,7 @@ function Start-WorkflowValidation {
 }
 
 # Fonction pour corriger les cycles dans un workflow
-function Fix-WorkflowCycles {
+function Repair-WorkflowCycles {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = `$true)]
@@ -745,3 +745,4 @@ Start-WorkflowValidation -WorkflowsPath `$WorkflowsPath -ReportsPath `$ReportsPa
         }
     }
 }
+

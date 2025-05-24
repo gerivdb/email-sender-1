@@ -1,4 +1,4 @@
-# Extract-TemporalAttributes.ps1
+# Export-TemporalAttributes.ps1
 # Script pour extraire les attributs temporels des tâches dans les fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -249,7 +249,7 @@ function Format-TemporalAttributesOutput {
 }
 
 # Fonction principale
-function Extract-TemporalAttributes {
+function Export-TemporalAttributes {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -296,4 +296,5 @@ function Extract-TemporalAttributes {
 }
 
 # Exécuter la fonction principale avec les paramètres fournis
-Extract-TemporalAttributes -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat
+Export-TemporalAttributes -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat
+

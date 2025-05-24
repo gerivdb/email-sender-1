@@ -382,7 +382,7 @@ function Test-FullValidation {
 }
 
 # Fonction pour appliquer les suggestions de correction
-function Apply-Suggestions {
+function Set-Suggestions {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -546,7 +546,7 @@ function Test-MarkdownTemplate {
         $suggestions += $validationResult.Warnings
         $suggestions += $validationResult.Errors
         
-        $correctedTemplate = Apply-Suggestions -Template $template -Suggestions $suggestions
+        $correctedTemplate = Set-Suggestions -Template $template -Suggestions $suggestions
         
         # Sauvegarder le template corrigé si un chemin est spécifié
         if (-not [string]::IsNullOrEmpty($TemplatePath)) {
@@ -578,3 +578,4 @@ if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
         return $result
     }
 }
+

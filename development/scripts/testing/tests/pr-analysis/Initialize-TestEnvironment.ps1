@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Initialise un environnement de test pour l'analyse des pull requests.
 .DESCRIPTION
@@ -178,7 +178,7 @@ function $functionName {
 
 function $functionName {
     # Erreur: Appel de fonction avec des paramÃƒÂ¨tres manquants
-    function Inner-Test {
+    function Get-Test {
         param (
             [Parameter(Mandatory = `$true)]
             [string]`$Name
@@ -186,7 +186,7 @@ function $functionName {
         return "Hello, `$Name!"
     }
     
-    `$result = Inner-Test  # Erreur potentielle: paramÃƒÂ¨tre obligatoire manquant
+    `$result = Get-Test  # Erreur potentielle: paramÃƒÂ¨tre obligatoire manquant
     return `$result
 }
 "@
@@ -607,3 +607,4 @@ Write-Host "1. AccÃƒÂ©dez au rÃƒÂ©pertoire: cd $TestRepoPath" -Foregroun
 Write-Host "2. CrÃƒÂ©ez une branche pour les tests: git checkout -b test-branch" -ForegroundColor Yellow
 Write-Host "3. Modifiez les fichiers et crÃƒÂ©ez des commits" -ForegroundColor Yellow
 Write-Host "4. Poussez la branche et crÃƒÂ©ez une pull request" -ForegroundColor Yellow
+

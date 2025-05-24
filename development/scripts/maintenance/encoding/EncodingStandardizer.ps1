@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Standardise l'encodage des fichiers en UTF-8 avec BOM pour les scripts PowerShell et UTF-8 sans BOM pour les autres fichiers.
 
@@ -180,7 +180,7 @@ function Convert-FileEncoding {
     }
 }
 
-function Standardize-FileEncodings {
+function ConvertTo-FileEncodings {
     param (
         [string]$Path,
         [string]$Filter,
@@ -264,7 +264,8 @@ function Standardize-FileEncodings {
 }
 
 # ExÃ©cution principale
-$result = Standardize-FileEncodings -Path $Path -Filter $Filter -Recurse $Recurse.IsPresent -Force $Force.IsPresent -CreateBackup $CreateBackup.IsPresent -BackupExtension $BackupExtension
+$result = ConvertTo-FileEncodings -Path $Path -Filter $Filter -Recurse $Recurse.IsPresent -Force $Force.IsPresent -CreateBackup $CreateBackup.IsPresent -BackupExtension $BackupExtension
 
 # Retourner le rÃ©sultat
 return $result
+

@@ -1,4 +1,4 @@
-﻿# DÃ©finir l'encodage UTF-8 pour les caractÃ¨res accentuÃ©s
+# DÃ©finir l'encodage UTF-8 pour les caractÃ¨res accentuÃ©s
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 <#
@@ -378,7 +378,7 @@ function Get-SkillsList {
 }
 
 # Fonction pour Ã©valuer une compÃ©tence selon les critÃ¨res dÃ©finis
-function Evaluate-Skill {
+function Test-Skill {
     param(
         [EvaluatedSkill]$Skill,
         [array]$Criteria,
@@ -717,7 +717,7 @@ try {
         $skill = $skills[$i]
         Write-Host "Ã‰valuation de la compÃ©tence $($i+1)/$($skills.Count): $($skill.Name)"
 
-        $evaluatedSkill = Evaluate-Skill -Skill $skill -Criteria $criteria -WeightingMethod $WeightingMethod -DetailLevel $DetailLevel
+        $evaluatedSkill = Test-Skill -Skill $skill -Criteria $criteria -WeightingMethod $WeightingMethod -DetailLevel $DetailLevel
         $evaluatedSkills += $evaluatedSkill
     }
 
@@ -761,3 +761,4 @@ try {
     # Retourner un code d'erreur
     exit 1
 }
+

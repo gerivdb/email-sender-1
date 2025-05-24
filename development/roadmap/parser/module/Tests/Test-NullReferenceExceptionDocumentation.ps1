@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests pour valider la documentation de NullReferenceException et ses causes.
 
@@ -264,7 +264,7 @@ Describe "Tests de la documentation de NullReferenceException et ses causes" {
                 )
                 
                 # Ceci gÃ©nÃ¨re une ArgumentNullException (validation explicite)
-                function Process-Data {
+                function Invoke-Data {
                     param (
                         [object]$Data
                     )
@@ -277,7 +277,7 @@ Describe "Tests de la documentation de NullReferenceException et ses causes" {
                 }
                 
                 # Ceci gÃ©nÃ¨re une NullReferenceException (erreur de runtime)
-                function Process-DataUnsafe {
+                function Invoke-DataUnsafe {
                     param (
                         [object]$Data
                     )
@@ -289,14 +289,14 @@ Describe "Tests de la documentation de NullReferenceException et ses causes" {
                 switch ($TestCase) {
                     "ArgumentNull" {
                         try {
-                            Process-Data -Data $null
+                            Invoke-Data -Data $null
                         } catch {
                             return $_.Exception.GetType().FullName
                         }
                     }
                     "NullReference" {
                         try {
-                            Process-DataUnsafe -Data $null
+                            Invoke-DataUnsafe -Data $null
                         } catch {
                             return $_.Exception.GetType().FullName
                         }
@@ -312,3 +312,4 @@ Describe "Tests de la documentation de NullReferenceException et ses causes" {
 
 # ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed
+

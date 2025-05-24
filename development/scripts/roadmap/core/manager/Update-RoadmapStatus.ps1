@@ -1,4 +1,4 @@
-﻿# Update-RoadmapStatus.ps1
+# Update-RoadmapStatus.ps1
 # Script pour mettre Ã  jour les statuts des tÃ¢ches dans la roadmap active
 # et archiver automatiquement les tÃ¢ches terminÃ©es
 
@@ -243,7 +243,7 @@ function Move-CompletedTasks {
     }
 }
 
-function Generate-StatusReport {
+function New-StatusReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -341,9 +341,10 @@ if (-not [string]::IsNullOrEmpty($TaskId) -and -not [string]::IsNullOrEmpty($Sta
 
 if ($GenerateReport) {
     Write-Log "GÃ©nÃ©ration du rapport d'avancement..." -Level Info
-    $reportPath = Generate-StatusReport -ActivePath $ActiveRoadmapPath -CompletedPath $CompletedRoadmapPath
+    $reportPath = New-StatusReport -ActivePath $ActiveRoadmapPath -CompletedPath $CompletedRoadmapPath
 
     if ($reportPath) {
         Write-Log "Rapport gÃ©nÃ©rÃ© avec succÃ¨s: $reportPath" -Level Info
     }
 }
+

@@ -94,7 +94,7 @@ function Get-ProjectPath {
 }
 
 # Fonction pour extraire les informations du rapport de bénéfices
-function Extract-BenefitsInfo {
+function Export-BenefitsInfo {
     param (
         [Parameter(Mandatory=$true)]
         [string]$ReportPath
@@ -148,7 +148,7 @@ function Extract-BenefitsInfo {
 }
 
 # Fonction pour extraire les informations du rapport de satisfaction
-function Extract-FeedbackInfo {
+function Export-FeedbackInfo {
     param (
         [Parameter(Mandatory=$true)]
         [string]$ReportPath
@@ -224,7 +224,7 @@ function Extract-FeedbackInfo {
 }
 
 # Fonction pour générer un rapport global de validation
-function Generate-ValidationReport {
+function New-ValidationReport {
     param (
         [Parameter(Mandatory=$true)]
         [hashtable]$BenefitsInfo,
@@ -523,8 +523,8 @@ function Start-ValidationReportGeneration {
     }
     
     # Extraire les informations des rapports
-    $benefitsInfo = Extract-BenefitsInfo -ReportPath $BenefitsReportPath
-    $feedbackInfo = Extract-FeedbackInfo -ReportPath $FeedbackReportPath
+    $benefitsInfo = Export-BenefitsInfo -ReportPath $BenefitsReportPath
+    $feedbackInfo = Export-FeedbackInfo -ReportPath $FeedbackReportPath
     
     if (-not $benefitsInfo) {
         Write-Error "Impossible d'extraire les informations du rapport de bénéfices"
@@ -537,7 +537,7 @@ function Start-ValidationReportGeneration {
     }
     
     # Générer le rapport global de validation
-    $reportPath = Generate-ValidationReport -BenefitsInfo $benefitsInfo -FeedbackInfo $feedbackInfo -OutputPath $OutputPath
+    $reportPath = New-ValidationReport -BenefitsInfo $benefitsInfo -FeedbackInfo $feedbackInfo -OutputPath $OutputPath
     
     # Afficher le résultat
     if ($reportPath) {
@@ -551,3 +551,4 @@ function Start-ValidationReportGeneration {
 
 # Exécuter la génération du rapport
 Start-ValidationReportGeneration
+

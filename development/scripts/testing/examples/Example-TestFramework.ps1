@@ -64,7 +64,7 @@ function Get-ExampleData {
     }
 }
 
-function Process-ExampleData {
+function Invoke-ExampleData {
     <#
     .SYNOPSIS
         Traite des données d'exemple.
@@ -73,7 +73,7 @@ function Process-ExampleData {
     .PARAMETER Data
         Données à traiter.
     .EXAMPLE
-        Process-ExampleData -Data $data
+        Invoke-ExampleData -Data $data
     #>
     [CmdletBinding()]
     param(
@@ -122,7 +122,7 @@ function Save-ExampleResult {
     return $OutputPath
 }
 
-Export-ModuleMember -Function Get-ExampleData, Process-ExampleData, Save-ExampleResult
+Export-ModuleMember -Function Get-ExampleData, Invoke-ExampleData, Save-ExampleResult
 "@
 
 # Créer un environnement de test
@@ -136,7 +136,7 @@ $modulePath = Join-Path -Path $env.Path -ChildPath "ExampleModule.psm1"
 $testSetup = Invoke-TestSetup -ModuleName "ExampleModule" -ModulePath $modulePath -Force
 
 # Vérifier que les fonctions sont disponibles
-$functionCheck = Test-FunctionAvailability -FunctionName "Get-ExampleData", "Process-ExampleData", "Save-ExampleResult"
+$functionCheck = Test-FunctionAvailability -FunctionName "Get-ExampleData", "Invoke-ExampleData", "Save-ExampleResult"
 foreach ($function in $functionCheck.Keys) {
     if ($functionCheck[$function].Available) {
         Write-Host "Fonction '$function' disponible." -ForegroundColor Green
@@ -165,11 +165,11 @@ Write-Host "Données du fichier : $($fileData.items.Count) éléments" -Foregrou
 $apiData = Get-ExampleData -ApiUrl "https://api.example.com/data"
 Write-Host "Données de l'API : $($apiData.items.Count) éléments" -ForegroundColor Cyan
 
-# Tester la fonction Process-ExampleData
-$processedFileData = Process-ExampleData -Data $fileData
+# Tester la fonction Invoke-ExampleData
+$processedFileData = Invoke-ExampleData -Data $fileData
 Write-Host "Résultat du traitement des données du fichier : $($processedFileData.Summary)" -ForegroundColor Cyan
 
-$processedApiData = Process-ExampleData -Data $apiData
+$processedApiData = Invoke-ExampleData -Data $apiData
 Write-Host "Résultat du traitement des données de l'API : $($processedApiData.Summary)" -ForegroundColor Cyan
 
 # Tester la fonction Save-ExampleResult
@@ -182,3 +182,4 @@ Invoke-TestCleanup -ModuleName "ExampleModule"
 $env.Cleanup()
 
 Write-Host "Test terminé avec succès." -ForegroundColor Green
+

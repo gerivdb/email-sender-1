@@ -24,7 +24,7 @@ Set-Content -Path $analysisFile -Value "# Analyse des résultats des tests unita
 Add-Content -Path $analysisFile -Value "Date d'analyse : $(Get-Date)`r`n"
 
 # Fonction pour analyser un fichier de résultats
-function Analyze-ResultsFile {
+function Test-ResultsFile {
     param (
         [string]$ResultsFile,
         [string]$AnalysisFile
@@ -165,7 +165,7 @@ $allSuccess = $true
 
 foreach ($resultsFile in $unitTestResultsFiles) {
     $resultsFilePath = Join-Path -Path $resultsDir -ChildPath $resultsFile
-    $analysisResult = Analyze-ResultsFile -ResultsFile $resultsFilePath -AnalysisFile $analysisFile
+    $analysisResult = Test-ResultsFile -ResultsFile $resultsFilePath -AnalysisFile $analysisFile
     
     $totalTests += $analysisResult.TotalTests
     $totalPassedTests += $analysisResult.PassedTests
@@ -205,3 +205,4 @@ if ($allSuccess) {
 } else {
     exit 1
 }
+

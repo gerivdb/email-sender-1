@@ -1,7 +1,7 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
-    Adaptateur pour intÃ©grer Handle-AmbiguousFormats.Tests.Simplified.ps1 avec les tests rÃ©els.
+    Adaptateur pour intÃ©grer Invoke-AmbiguousFormats.Tests.Simplified.ps1 avec les tests rÃ©els.
 
 .DESCRIPTION
     Cet adaptateur permet d'exÃ©cuter les tests simplifiÃ©s dans l'environnement des tests rÃ©els
@@ -24,8 +24,8 @@ else {
     exit 1
 }
 
-# CrÃ©er un adaptateur pour la fonction Handle-AmbiguousFormats
-function Handle-AmbiguousFormats {
+# CrÃ©er un adaptateur pour la fonction Invoke-AmbiguousFormats
+function Invoke-AmbiguousFormats {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
@@ -38,25 +38,25 @@ function Handle-AmbiguousFormats {
     
     process {
         # VÃ©rifier si la fonction rÃ©elle existe
-        if (Get-Command -Name "Handle-AmbiguousFormats" -ErrorAction SilentlyContinue) {
+        if (Get-Command -Name "Invoke-AmbiguousFormats" -ErrorAction SilentlyContinue) {
             # Appeler la fonction rÃ©elle avec les paramÃ¨tres adaptÃ©s
-            $result = & "Handle-AmbiguousFormats" @PSBoundParameters
+            $result = & "Invoke-AmbiguousFormats" @PSBoundParameters
             
             # Retourner le rÃ©sultat
             return $result
         }
         else {
-            Write-Error "La fonction Handle-AmbiguousFormats n'existe pas dans le module."
+            Write-Error "La fonction Invoke-AmbiguousFormats n'existe pas dans le module."
             return $null
         }
     }
 }
 
 # Exporter la fonction adaptÃ©e
-Export-ModuleMember -Function Handle-AmbiguousFormats
+Export-ModuleMember -function Invoke-AmbiguousFormats
 
 # ExÃ©cuter les tests simplifiÃ©s avec l'adaptateur
-$simplifiedTestPath = Join-Path -Path $PSScriptRoot -ChildPath "..\\Handle-AmbiguousFormats.Tests.Simplified.ps1"
+$simplifiedTestPath = Join-Path -Path $PSScriptRoot -ChildPath "..\\Invoke-AmbiguousFormats.Tests.Simplified.ps1"
 
 if (Test-Path -Path $simplifiedTestPath) {
     Write-Host "ExÃ©cution des tests simplifiÃ©s avec l'adaptateur..." -ForegroundColor Cyan
@@ -90,3 +90,4 @@ else {
     Write-Error "Le fichier de test simplifiÃ© n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement : $simplifiedTestPath"
     exit 1
 }
+

@@ -1,4 +1,4 @@
-﻿﻿# Analyze-RoadmapStructure.ps1
+﻿# Test-RoadmapStructure.ps1
 # Script pour analyser la structure des fichiers de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -298,7 +298,7 @@ function Export-Results {
 }
 
 # Fonction principale
-function Analyze-RoadmapStructure {
+function Test-RoadmapStructure {
     [CmdletBinding()]
     param (
         [string[]]$Files,
@@ -332,7 +332,7 @@ function Analyze-RoadmapStructure {
 try {
     Write-Log "Démarrage de l'analyse de la structure des fichiers de roadmap..." -Level Info
 
-    $analysisResults = Analyze-RoadmapStructure -Files $RoadmapFiles -InputPath $InputPath
+    $analysisResults = Test-RoadmapStructure -Files $RoadmapFiles -InputPath $InputPath
 
     Write-Log "Analyse terminée. $($analysisResults.Count) fichiers analysés." -Level Success
 
@@ -349,3 +349,4 @@ try {
     Write-Log "Erreur lors de l'analyse des fichiers : $_" -Level Error
     throw $_
 }
+

@@ -84,7 +84,7 @@ function Get-SystemInfo {
     }
 }
 
-function Run-Tests {
+function Start-Tests {
     param (
         [string]$TestsPath
     )
@@ -438,7 +438,7 @@ try {
     
     if ($IncludeTests) {
         Write-Log "Exécution des tests..." -Level "INFO"
-        $testResults = Run-Tests -TestsPath $testsRoot
+        $testResults = Start-Tests -TestsPath $testsRoot
     }
     
     # Générer le rapport
@@ -483,3 +483,4 @@ try {
     Write-Log "Erreur lors de la génération du rapport de santé MCP: $_" -Level "ERROR"
     exit 1
 }
+

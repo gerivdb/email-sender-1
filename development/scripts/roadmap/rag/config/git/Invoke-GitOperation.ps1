@@ -292,7 +292,7 @@ function Push-GitChanges {
 }
 
 # Fonction pour tirer les modifications
-function Pull-GitChanges {
+function Get-GitChanges {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -681,7 +681,7 @@ function Invoke-GitStash {
 }
 
 # Fonction pour cloner un dépôt
-function Clone-GitRepository {
+function Copy-GitRepository {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -799,7 +799,7 @@ function Invoke-GitOperation {
             $result = Push-GitChanges -Path $RepositoryPath -Remote $Remote -BranchName $BranchName -Force:$Force
         }
         "Pull" {
-            $result = Pull-GitChanges -Path $RepositoryPath -Remote $Remote -BranchName $BranchName
+            $result = Get-GitChanges -Path $RepositoryPath -Remote $Remote -BranchName $BranchName
         }
         "Checkout" {
             if ([string]::IsNullOrEmpty($BranchName)) {
@@ -863,7 +863,7 @@ function Invoke-GitOperation {
                 return $null
             }
             
-            $result = Clone-GitRepository -Url $Remote -Path $RepositoryPath -Branch $BranchName
+            $result = Copy-GitRepository -Url $Remote -Path $RepositoryPath -Branch $BranchName
         }
     }
     
@@ -874,3 +874,4 @@ function Invoke-GitOperation {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Invoke-GitOperation -Operation $Operation -RepositoryPath $RepositoryPath -Message $Message -BranchName $BranchName -TagName $TagName -Remote $Remote -FilePath $FilePath -Force:$Force
 }
+

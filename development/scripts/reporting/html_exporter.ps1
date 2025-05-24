@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Module d'export de rapports au format HTML.
 .DESCRIPTION
@@ -153,11 +153,11 @@ function Get-HtmlTemplateSection {
 .PARAMETER Variables
     Dictionnaire de variables ÃƒÂ  remplacer.
 .EXAMPLE
-    $ProcessedTemplate = Replace-HtmlTemplateVariables -TemplateContent $Template -Variables @{ "report_title" = "Rapport de performance" }
+    $ProcessedTemplate = Set-HtmlTemplateVariables -TemplateContent $Template -Variables @{ "report_title" = "Rapport de performance" }
 .OUTPUTS
     System.String - Le contenu du template avec les variables remplacÃƒÂ©es.
 #>
-function Replace-HtmlTemplateVariables {
+function Set-HtmlTemplateVariables {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$true)]
@@ -398,7 +398,7 @@ function New-ReportSection {
         }
         
         # Remplacer les variables dans le template
-        $SectionHtml = Replace-HtmlTemplateVariables -TemplateContent $SectionTemplate -Variables $Variables
+        $SectionHtml = Set-HtmlTemplateVariables -TemplateContent $SectionTemplate -Variables $Variables
         
         return $SectionHtml
     }
@@ -451,7 +451,7 @@ function New-TableOfContents {
                 "section_title" = $Section.title
             }
             
-            $TocItemHtml = Replace-HtmlTemplateVariables -TemplateContent $TocItemTemplate -Variables $Variables
+            $TocItemHtml = Set-HtmlTemplateVariables -TemplateContent $TocItemTemplate -Variables $Variables
             $TocItems += $TocItemHtml
         }
         
@@ -547,7 +547,7 @@ function Export-ReportToHtml {
         }
         
         # Remplacer les variables dans le template de base
-        $ReportHtml = Replace-HtmlTemplateVariables -TemplateContent $BaseTemplate -Variables $Variables
+        $ReportHtml = Set-HtmlTemplateVariables -TemplateContent $BaseTemplate -Variables $Variables
         
         # CrÃƒÂ©er le rÃƒÂ©pertoire de sortie s'il n'existe pas
         $OutputDir = Split-Path -Parent $OutputPath
@@ -569,3 +569,4 @@ function Export-ReportToHtml {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Export-ReportToHtml
+

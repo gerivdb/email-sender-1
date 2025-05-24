@@ -44,6 +44,8 @@ Toutes les fonctions doivent commencer par un verbe approuvé par PowerShell. Vo
 | `Send` | Envoyer quelque chose | `Send-Email` |
 | `Invoke` | Exécuter une opération | `Invoke-EmailWorkflow` |
 
+> **📖 Documentation complète** : Pour la liste exhaustive des verbes approuvés, leurs descriptions détaillées, les correspondances avec les verbes non approuvés, et des exemples pratiques, consultez le **[Guide des Verbes Approuvés PowerShell](./PowerShell-Verbes-Approuves.md)**.
+
 Pour la liste complète des verbes approuvés, utiliser la commande `Get-Verb` dans PowerShell.
 
 #### Format des noms de fonctions

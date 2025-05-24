@@ -238,14 +238,14 @@ function Set-ImportanceBasedRetention {
     
     # Appliquer la politique si demandé
     if ($Apply) {
-        return Apply-ImportanceBasedRetention -ImportanceLevel $ImportanceLevel -RetentionDays $RetentionDays -WhatIf:$WhatIf -Force:$Force
+        return Set-ImportanceBasedRetention -ImportanceLevel $ImportanceLevel -RetentionDays $RetentionDays -WhatIf:$WhatIf -Force:$Force
     }
     
     return $true
 }
 
 # Fonction pour appliquer la rétention basée sur l'importance
-function Apply-ImportanceBasedRetention {
+function Set-ImportanceBasedRetention {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -380,3 +380,4 @@ function Apply-ImportanceBasedRetention {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Set-ImportanceBasedRetention -ImportanceLevel $ImportanceLevel -RetentionDays $RetentionDays -ConfigName $ConfigName -Apply:$Apply -WhatIf:$WhatIf -Force:$Force
 }
+

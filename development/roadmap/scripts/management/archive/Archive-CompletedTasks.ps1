@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Archive les tÃ¢ches complÃ©tÃ©es Ã  100% avec tests unitaires effectuÃ©s.
@@ -33,7 +33,7 @@ param (
     [switch]$Force
 )
 
-function Archive-CompletedTasksWithTests {
+function Compress-CompletedTasksWithTests {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -199,7 +199,7 @@ try {
         $ArchivePath = Join-Path -Path $archiveDir -ChildPath "roadmap_archive.md"
     }
 
-    $result = Archive-CompletedTasksWithTests -RoadmapPath $RoadmapPath -ArchivePath $ArchivePath -Force:$Force
+    $result = Compress-CompletedTasksWithTests -RoadmapPath $RoadmapPath -ArchivePath $ArchivePath -Force:$Force
 
     if ($result) {
         Write-Host "Archivage des tÃ¢ches terminÃ©es rÃ©ussi."
@@ -216,3 +216,4 @@ try {
 } catch {
     Write-Error "Erreur lors de l'archivage des tÃ¢ches terminÃ©es: $_"
 }
+

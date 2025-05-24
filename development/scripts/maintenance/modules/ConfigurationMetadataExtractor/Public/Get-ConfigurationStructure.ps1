@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse la structure d'un fichier de configuration.
 .DESCRIPTION
@@ -78,7 +78,7 @@ function Get-ConfigurationStructure {
         }
         
         # Analyser la structure rÃ©cursivement
-        $structure = Analyze-ConfigStructure -Config $config -Structure $structure -Path ""
+        $structure = Test-ConfigStructure -Config $config -Structure $structure -Path ""
         
         return $structure
     }
@@ -88,7 +88,7 @@ function Get-ConfigurationStructure {
     }
 }
 
-function Analyze-ConfigStructure {
+function Test-ConfigStructure {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -143,7 +143,7 @@ function Analyze-ConfigStructure {
             
             # Si la valeur est un hashtable ou un PSCustomObject, analyser rÃ©cursivement
             if ($value -is [hashtable] -or $value -is [PSCustomObject]) {
-                $Structure = Analyze-ConfigStructure -Config $value -Structure $Structure -Path $fullPath -CurrentDepth ($CurrentDepth + 1)
+                $Structure = Test-ConfigStructure -Config $value -Structure $Structure -Path $fullPath -CurrentDepth ($CurrentDepth + 1)
             }
             # Si la valeur est un tableau, analyser chaque Ã©lÃ©ment
             elseif ($value -is [array]) {
@@ -154,7 +154,7 @@ function Analyze-ConfigStructure {
                     $item = $value[$i]
                     if ($item -is [hashtable] -or $item -is [PSCustomObject]) {
                         $arrayPath = "$fullPath[$i]"
-                        $Structure = Analyze-ConfigStructure -Config $item -Structure $Structure -Path $arrayPath -CurrentDepth ($CurrentDepth + 2)
+                        $Structure = Test-ConfigStructure -Config $item -Structure $Structure -Path $arrayPath -CurrentDepth ($CurrentDepth + 2)
                     }
                 }
             }
@@ -179,10 +179,11 @@ function Analyze-ConfigStructure {
             $arrayPath = if ($Path -eq "") { "[$i]" } else { "$Path[$i]" }
             
             if ($item -is [hashtable] -or $item -is [PSCustomObject]) {
-                $Structure = Analyze-ConfigStructure -Config $item -Structure $Structure -Path $arrayPath -CurrentDepth ($CurrentDepth + 1)
+                $Structure = Test-ConfigStructure -Config $item -Structure $Structure -Path $arrayPath -CurrentDepth ($CurrentDepth + 1)
             }
         }
     }
     
     return $Structure
 }
+

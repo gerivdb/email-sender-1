@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Mocks pour les fonctions d'accÃ¨s aux fichiers.
 .DESCRIPTION
@@ -74,7 +74,7 @@ function Test-Function {
     } elseif ($Path -like "*Test2.ps1") {
         if ($Raw) {
             return @'
-function Process-Data {
+function Invoke-Data {
     param (
         [string]$InputFile,
         [string]$OutputFile
@@ -89,7 +89,7 @@ function Process-Data {
 '@
         } else {
             return @(
-                'function Process-Data {',
+                'function Invoke-Data {',
                 '    param (',
                 '        [string]$InputFile,',
                 '        [string]$OutputFile',
@@ -106,7 +106,7 @@ function Process-Data {
     } elseif ($Path -like "*Test3.ps1") {
         if ($Raw) {
             return @'
-function Process-DataInParallel {
+function Invoke-DataInParallel {
     param (
         [string[]]$InputFiles,
         [string]$OutputFolder
@@ -146,7 +146,7 @@ function Process-DataInParallel {
 '@
         } else {
             return @(
-                'function Process-DataInParallel {',
+                'function Invoke-DataInParallel {',
                 '    param (',
                 '        [string[]]$InputFiles,',
                 '        [string]$OutputFolder',
@@ -224,3 +224,4 @@ function New-MockItem {
 
 # Pas besoin d'exporter les fonctions dans un script .ps1
 # Les fonctions sont automatiquement disponibles dans le scope du script qui l'appelle
+

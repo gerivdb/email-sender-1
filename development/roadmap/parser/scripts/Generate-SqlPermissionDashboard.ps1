@@ -1,4 +1,4 @@
-﻿# Generate-SqlPermissionDashboard.ps1
+# Generate-SqlPermissionDashboard.ps1
 # Script pour gÃ©nÃ©rer un tableau de bord HTML interactif pour suivre l'Ã©volution des anomalies SQL Server
 
 [CmdletBinding()]
@@ -29,7 +29,7 @@ begin {
     }
 
     # Fonction pour extraire les donnÃ©es d'anomalies d'un rapport HTML
-    function Extract-AnomalyData {
+    function Export-AnomalyData {
         param (
             [Parameter(Mandatory = $true)]
             [string]$ReportPath
@@ -135,7 +135,7 @@ process {
         # Extraire les donnÃ©es de chaque rapport
         $reportData = @()
         foreach ($file in $reportFiles) {
-            $data = Extract-AnomalyData -ReportPath $file.FullName
+            $data = Export-AnomalyData -ReportPath $file.FullName
             if ($data) {
                 $reportData += $data
             }
@@ -572,3 +572,4 @@ process {
         Write-Error "Erreur lors de la gÃ©nÃ©ration du tableau de bord: $_"
     }
 }
+

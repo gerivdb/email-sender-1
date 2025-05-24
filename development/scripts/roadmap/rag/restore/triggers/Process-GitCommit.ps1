@@ -1,4 +1,4 @@
-# Process-GitCommit.ps1
+# Invoke-GitCommit.ps1
 # Script pour traiter les commits Git et déclencher les actions appropriées
 # Version: 1.0
 # Date: 2025-05-15
@@ -120,7 +120,7 @@ function Invoke-ScriptBlock {
 }
 
 # Fonction pour traiter un commit Git
-function Process-GitCommit {
+function Invoke-GitCommit {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -211,5 +211,6 @@ function Process-GitCommit {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Process-GitCommit -RepositoryPath $RepositoryPath -CommitHash $CommitHash -CommitMessage $CommitMessage -Branch $Branch -Author $Author -ChangedFiles $ChangedFiles
+    Invoke-GitCommit -RepositoryPath $RepositoryPath -CommitHash $CommitHash -CommitMessage $CommitMessage -Branch $Branch -Author $Author -ChangedFiles $ChangedFiles
 }
+

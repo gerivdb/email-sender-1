@@ -128,7 +128,7 @@ function Get-TasksFromContent {
 }
 
 # Fonction pour détecter les potentiels nouveaux formats de tags
-function Detect-PotentialTagFormats {
+function Find-PotentialTagFormats {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -251,7 +251,7 @@ function Detect-PotentialTagFormats {
 }
 
 # Fonction pour analyser et créer des patterns regex pour les nouveaux formats
-function Create-RegexPatterns {
+function New-RegexPatterns {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -585,7 +585,7 @@ function Invoke-TagFormatLearning {
         }
         
         # Détecter les potentiels nouveaux formats de tags
-        $detectedFormats = Detect-PotentialTagFormats -Tasks $tasks -TagFormats $tagFormats
+        $detectedFormats = Find-PotentialTagFormats -Tasks $tasks -TagFormats $tagFormats
         
         if ($detectedFormats.Count -eq 0) {
             Write-Host "Aucun nouveau format de tag détecté." -ForegroundColor Green
@@ -593,7 +593,7 @@ function Invoke-TagFormatLearning {
         }
         
         # Créer des patterns regex pour les nouveaux formats
-        $newPatterns = Create-RegexPatterns -DetectedFormats $detectedFormats
+        $newPatterns = New-RegexPatterns -DetectedFormats $detectedFormats
         
         if ($newPatterns.Count -eq 0) {
             Write-Host "Aucun nouveau pattern regex créé." -ForegroundColor Green
@@ -652,3 +652,4 @@ function Invoke-TagFormatLearning {
 
 # Exécuter la fonction principale
 Invoke-TagFormatLearning -FilePath $FilePath -Content $Content -ConfigPath $ConfigPath -OutputPath $OutputPath -Mode $Mode -ConfidenceThreshold $ConfidenceThreshold -Force:$Force
+

@@ -17,7 +17,7 @@
 #>
 
 # Fonction pour parser un fichier de roadmap
-function Parse-RoadmapFile {
+function ConvertFrom-RoadmapFile {
     <#
     .SYNOPSIS
         Parse un fichier de roadmap au format markdown.
@@ -33,7 +33,7 @@ function Parse-RoadmapFile {
         Si spécifié, inclut le contenu brut du fichier dans le résultat.
 
     .EXAMPLE
-        Parse-RoadmapFile -FilePath "C:\Roadmaps\plan-dev-v8.md"
+        ConvertFrom-RoadmapFile -FilePath "C:\Roadmaps\plan-dev-v8.md"
         Parse le fichier de roadmap spécifié et retourne sa structure.
 
     .OUTPUTS
@@ -256,7 +256,7 @@ function Get-RoadmapStatistics {
         Le chemin vers le fichier de roadmap.
 
     .PARAMETER ParsedRoadmap
-        Une roadmap déjà parsée par Parse-RoadmapFile.
+        Une roadmap déjà parsée par ConvertFrom-RoadmapFile.
 
     .EXAMPLE
         Get-RoadmapStatistics -FilePath "C:\Roadmaps\plan-dev-v8.md"
@@ -277,7 +277,7 @@ function Get-RoadmapStatistics {
 
     # Parser la roadmap si nécessaire
     if ($PSCmdlet.ParameterSetName -eq "FromFile") {
-        $roadmap = Parse-RoadmapFile -FilePath $FilePath
+        $roadmap = ConvertFrom-RoadmapFile -FilePath $FilePath
         
         if ($null -eq $roadmap) {
             return $null
@@ -324,3 +324,4 @@ function Get-RoadmapStatistics {
     
     return $result
 }
+

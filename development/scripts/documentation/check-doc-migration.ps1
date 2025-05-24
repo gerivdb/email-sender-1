@@ -1,4 +1,4 @@
-﻿# Script pour vÃ©rifier l'Ã©tat de la migration de la documentation
+# Script pour vÃ©rifier l'Ã©tat de la migration de la documentation
 # Ce script vÃ©rifie si tous les fichiers ont Ã©tÃ© migrÃ©s correctement
 
 # DÃ©finition des mappings de chemins
@@ -30,7 +30,7 @@ function Test-DirectoryExists {
 }
 
 # Fonction pour compter les fichiers dans un dossier
-function Count-Files {
+function Measure-Files {
     param (
         [string]$path
     )
@@ -51,8 +51,8 @@ $results = @()
 foreach ($mapping in $pathMappings) {
     $oldExists = Test-DirectoryExists -path $mapping.Old
     $newExists = Test-DirectoryExists -path $mapping.New
-    $oldFileCount = Count-Files -path $mapping.Old
-    $newFileCount = Count-Files -path $mapping.New
+    $oldFileCount = Measure-Files -path $mapping.Old
+    $newFileCount = Measure-Files -path $mapping.New
 
     $status = if ($oldExists -and $newExists -and $newFileCount -gt 0) {
         "MigrÃ©"
@@ -120,3 +120,4 @@ Write-Host "Dossiers migrÃ©s: $migratedCount" -ForegroundColor Green
 Write-Host "Dossiers non migrÃ©s: $notMigratedCount" -ForegroundColor Yellow
 Write-Host "Nouveaux dossiers: $newCount" -ForegroundColor Cyan
 Write-Host "RÃ©fÃ©rences Ã  mettre Ã  jour: $referencesFound" -ForegroundColor Yellow
+

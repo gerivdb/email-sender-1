@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Fonctions pour la tokenization de fichiers markdown.
 
@@ -183,7 +183,7 @@ function ConvertFrom-MarkdownToTokens {
         }
 
         # Construire l'arbre des tokens (gestion des imbrications)
-        $tokenTree = Build-MarkdownTokenTree -Tokens $tokens
+        $tokenTree = New-MarkdownTokenTree -Tokens $tokens
 
         return $tokenTree
     } catch {
@@ -508,12 +508,12 @@ function Get-IndentationLevel {
     Liste des tokens Ã  organiser en arbre.
 
 .EXAMPLE
-    $tokenTree = Build-MarkdownTokenTree -Tokens $tokens
+    $tokenTree = New-MarkdownTokenTree -Tokens $tokens
 
 .OUTPUTS
     MarkdownToken[]
 #>
-function Build-MarkdownTokenTree {
+function New-MarkdownTokenTree {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $false)]
@@ -697,4 +697,5 @@ function Test-MarkdownTokenTree {
 #endregion
 
 # Exporter les fonctions
-Export-ModuleMember -Function ConvertFrom-MarkdownToTokens, ConvertFrom-MarkdownFileToTokens, Get-MarkdownLineTokens, Get-IndentationLevel, Build-MarkdownTokenTree, Test-MarkdownTokenTree
+Export-ModuleMember -Function ConvertFrom-MarkdownToTokens, ConvertFrom-MarkdownFileToTokens, Get-MarkdownLineTokens, Get-IndentationLevel, New-MarkdownTokenTree, Test-MarkdownTokenTree
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Test d'intÃ©gration complÃ¨te entre le mode manager et le roadmap manager.
 
@@ -138,7 +138,7 @@ $testConfigPath = Join-Path -Path $testDir -ChildPath "integration-test-config.j
 } | ConvertTo-Json -Depth 5 | Set-Content -Path $testConfigPath -Encoding UTF8
 
 # CrÃ©er des mocks pour les tests
-function Mock-RoadmapParser {
+function New-RoadmapParser {
     # CrÃ©er un module mock pour RoadmapParser
     $mockModulePath = Join-Path -Path $testDir -ChildPath "MockRoadmapParser.psm1"
     @"
@@ -313,7 +313,7 @@ Export-ModuleMember -Function Invoke-RoadmapCheck, Invoke-RoadmapGranularization
 }
 
 # CrÃ©er les mocks
-$mockRoadmapParserPath = Mock-RoadmapParser
+$mockRoadmapParserPath = New-RoadmapParser
 
 # DÃ©finir les tests
 Describe "IntÃ©gration complÃ¨te Mode Manager et Roadmap Manager" {
@@ -399,4 +399,5 @@ Describe "IntÃ©gration complÃ¨te Mode Manager et Roadmap Manager" {
 
 # ExÃ©cuter les tests
 Invoke-Pester -Script $MyInvocation.MyCommand.Path -Output Detailed
+
 

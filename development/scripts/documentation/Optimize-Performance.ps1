@@ -1,4 +1,4 @@
-﻿# Optimize-Performance.ps1
+# Optimize-Performance.ps1
 # Script pour optimiser les performances du systÃ¨me de dÃ©tection des tÃ¢ches
 
 param (
@@ -30,7 +30,7 @@ if (-not (Test-Path -Path $processConversationPath)) {
 }
 
 # Fonction pour journaliser les performances
-function Log-Performance {
+function Write-Performance {
     param (
         [string]$Operation,
         [int]$FileCount,
@@ -61,7 +61,7 @@ function Log-Performance {
 }
 
 # Fonction pour traiter un lot de fichiers de conversation
-function Process-ConversationBatch {
+function Invoke-ConversationBatch {
     param (
         [array]$Files,
         [switch]$Verbose
@@ -131,7 +131,7 @@ function Optimize-ProcessingPerformance {
     $individualResults = @()
     
     foreach ($file in $conversationFiles) {
-        $result = Process-ConversationBatch -Files @($file) -Verbose:$Verbose
+        $result = Invoke-ConversationBatch -Files @($file) -Verbose:$Verbose
         $individualResults += $result
     }
     
@@ -139,7 +139,7 @@ function Optimize-ProcessingPerformance {
     $individualTotalTasks = ($individualResults | Measure-Object -Property TaskCount -Sum).Sum
     $individualTotalTime = ($individualResults | Measure-Object -Property ElapsedMs -Sum).Sum
     
-    $individualPerformance = Log-Performance -Operation "Traitement individuel" -FileCount $individualTotalFiles -ElapsedMs $individualTotalTime -TaskCount $individualTotalTasks
+    $individualPerformance = Write-Performance -Operation "Traitement individuel" -FileCount $individualTotalFiles -ElapsedMs $individualTotalTime -TaskCount $individualTotalTasks
     
     Write-Host "  Fichiers traitÃ©s : $($individualTotalFiles)"
     Write-Host "  TÃ¢ches dÃ©tectÃ©es : $($individualTotalTasks)"
@@ -154,7 +154,7 @@ function Optimize-ProcessingPerformance {
     
     for ($i = 0; $i -lt $conversationFiles.Count; $i += $BatchSize) {
         $batch = $conversationFiles[$i..([Math]::Min($i + $BatchSize - 1, $conversationFiles.Count - 1))]
-        $result = Process-ConversationBatch -Files $batch -Verbose:$Verbose
+        $result = Invoke-ConversationBatch -Files $batch -Verbose:$Verbose
         $batchResults += $result
     }
     
@@ -162,7 +162,7 @@ function Optimize-ProcessingPerformance {
     $batchTotalTasks = ($batchResults | Measure-Object -Property TaskCount -Sum).Sum
     $batchTotalTime = ($batchResults | Measure-Object -Property ElapsedMs -Sum).Sum
     
-    $batchPerformance = Log-Performance -Operation "Traitement par lots" -FileCount $batchTotalFiles -ElapsedMs $batchTotalTime -TaskCount $batchTotalTasks
+    $batchPerformance = Write-Performance -Operation "Traitement par lots" -FileCount $batchTotalFiles -ElapsedMs $batchTotalTime -TaskCount $batchTotalTasks
     
     Write-Host "  Fichiers traitÃ©s : $($batchTotalFiles)"
     Write-Host "  TÃ¢ches dÃ©tectÃ©es : $($batchTotalTasks)"
@@ -199,3 +199,5 @@ function Optimize-ProcessingPerformance {
 
 # ExÃ©cuter la fonction principale
 Optimize-ProcessingPerformance -FolderPath $ConversationsFolder -BatchSize $BatchSize -Verbose:$Verbose
+
+

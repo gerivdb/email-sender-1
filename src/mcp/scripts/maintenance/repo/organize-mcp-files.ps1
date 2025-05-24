@@ -1,4 +1,4 @@
-﻿# Script pour organiser les fichiers MCP
+# Script pour organiser les fichiers MCP
 
 Write-Host "=== Organisation des fichiers MCP ===" -ForegroundColor Cyan
 
@@ -263,7 +263,7 @@ $scriptContent = @"
 [Environment]::SetEnvironmentVariable('N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE', 'true', 'Process')
 
 # Fonction pour executer un MCP
-function Execute-MCP {
+function Invoke-MCP {
     param (
         [Parameter(Mandatory=`$true)
 
@@ -349,7 +349,7 @@ if (`$args.Count -eq 0) {
 `$mcpName = `$args[0]
 `$mcpArgs = `$args[1..`$args.Count] -join " "
 
-Execute-MCP -MCP `$mcpName -Args `$mcpArgs
+Invoke-MCP -MCP `$mcpName -Args `$mcpArgs
 "@
 
 Set-Content -Path $scriptPath -Value $scriptContent
@@ -370,3 +370,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

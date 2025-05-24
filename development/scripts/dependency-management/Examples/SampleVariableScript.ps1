@@ -1,4 +1,4 @@
-﻿# Configuration
+# Configuration
 $config = @{
     MaxItems = 100
     DefaultColor = "Blue"
@@ -12,7 +12,7 @@ $defaultColor = $config.DefaultColor
 $logFile = $config.LogPath
 
 # Fonction de traitement
-function Process-Items {
+function Invoke-Items {
     param (
         [int]$count = $maxItems,
         [string]$color = $defaultColor
@@ -48,7 +48,7 @@ function Process-Items {
 }
 
 # Utilisation de la fonction
-$result = Process-Items -count 10
+$result = Invoke-Items -count 10
 Write-Output "Nombre d'Ã©lÃ©ments traitÃ©s: $($result.ProcessedCount)"
 
 # Ã‰criture du log
@@ -56,3 +56,4 @@ if ($config.EnableLogging) {
     $logMessage = "Traitement terminÃ© Ã  $(Get-Date) - $($result.ProcessedCount) Ã©lÃ©ments traitÃ©s"
     Add-Content -Path $logFile -Value $logMessage
 }
+

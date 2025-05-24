@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests unitaires pour le serveur MCP des Memories.
 
@@ -90,7 +90,7 @@ Describe "MCP Memories Server Tests" {
         $Global:TestConfigPath = $testConfigPath
         
         # CrÃ©er des fonctions de mock pour les fonctions du script
-        function Process-MCPRequest {
+        function Invoke-MCPRequest {
             param (
                 [string]$RequestJson
             )
@@ -115,7 +115,7 @@ Describe "MCP Memories Server Tests" {
         }
         
         # Exporter les fonctions pour qu'elles soient disponibles dans le scope du test
-        Export-ModuleMember -Function Process-MCPRequest, Start-MCPServer, Get-AugmentMemories
+        Export-ModuleMember -function Invoke-MCPRequest, Start-MCPServer, Get-AugmentMemories
     }
     
     AfterAll {
@@ -139,10 +139,10 @@ Describe "MCP Memories Server Tests" {
         }
     }
     
-    Context "Process-MCPRequest" {
+    Context "Invoke-MCPRequest" {
         It "Should process getMemories request correctly" {
-            # DÃ©finir la fonction Process-MCPRequest pour le test
-            function Process-MCPRequest {
+            # DÃ©finir la fonction Invoke-MCPRequest pour le test
+            function Invoke-MCPRequest {
                 param (
                     [string]$RequestJson
                 )
@@ -170,7 +170,7 @@ Describe "MCP Memories Server Tests" {
             }
             
             # Tester la fonction
-            $result = Process-MCPRequest -RequestJson '{"method":"getMemories","params":{}}'
+            $result = Invoke-MCPRequest -RequestJson '{"method":"getMemories","params":{}}'
             $resultObj = $result | ConvertFrom-Json
             
             $resultObj.result | Should -Not -BeNullOrEmpty
@@ -179,8 +179,8 @@ Describe "MCP Memories Server Tests" {
         }
         
         It "Should process updateMemories request correctly" {
-            # DÃ©finir la fonction Process-MCPRequest pour le test
-            function Process-MCPRequest {
+            # DÃ©finir la fonction Invoke-MCPRequest pour le test
+            function Invoke-MCPRequest {
                 param (
                     [string]$RequestJson
                 )
@@ -204,7 +204,7 @@ Describe "MCP Memories Server Tests" {
             }
             
             # Tester la fonction
-            $result = Process-MCPRequest -RequestJson '{"method":"updateMemories","params":{"content":"test"}}'
+            $result = Invoke-MCPRequest -RequestJson '{"method":"updateMemories","params":{"content":"test"}}'
             $resultObj = $result | ConvertFrom-Json
             
             $resultObj.result | Should -Be $true
@@ -212,8 +212,8 @@ Describe "MCP Memories Server Tests" {
         }
         
         It "Should process splitInput request correctly" {
-            # DÃ©finir la fonction Process-MCPRequest pour le test
-            function Process-MCPRequest {
+            # DÃ©finir la fonction Invoke-MCPRequest pour le test
+            function Invoke-MCPRequest {
                 param (
                     [string]$RequestJson
                 )
@@ -240,7 +240,7 @@ Describe "MCP Memories Server Tests" {
             }
             
             # Tester la fonction
-            $result = Process-MCPRequest -RequestJson '{"method":"splitInput","params":{"input":"test","maxSize":1000}}'
+            $result = Invoke-MCPRequest -RequestJson '{"method":"splitInput","params":{"input":"test","maxSize":1000}}'
             $resultObj = $result | ConvertFrom-Json
             
             $resultObj.result | Should -Not -BeNullOrEmpty
@@ -250,8 +250,8 @@ Describe "MCP Memories Server Tests" {
         }
         
         It "Should process exportToVSCode request correctly" {
-            # DÃ©finir la fonction Process-MCPRequest pour le test
-            function Process-MCPRequest {
+            # DÃ©finir la fonction Invoke-MCPRequest pour le test
+            function Invoke-MCPRequest {
                 param (
                     [string]$RequestJson
                 )
@@ -275,7 +275,7 @@ Describe "MCP Memories Server Tests" {
             }
             
             # Tester la fonction
-            $result = Process-MCPRequest -RequestJson '{"method":"exportToVSCode","params":{"workspaceId":"test-workspace-id"}}'
+            $result = Invoke-MCPRequest -RequestJson '{"method":"exportToVSCode","params":{"workspaceId":"test-workspace-id"}}'
             $resultObj = $result | ConvertFrom-Json
             
             $resultObj.result | Should -Be $true
@@ -283,8 +283,8 @@ Describe "MCP Memories Server Tests" {
         }
         
         It "Should handle unknown methods correctly" {
-            # DÃ©finir la fonction Process-MCPRequest pour le test
-            function Process-MCPRequest {
+            # DÃ©finir la fonction Invoke-MCPRequest pour le test
+            function Invoke-MCPRequest {
                 param (
                     [string]$RequestJson
                 )
@@ -301,7 +301,7 @@ Describe "MCP Memories Server Tests" {
             }
             
             # Tester la fonction
-            $result = Process-MCPRequest -RequestJson '{"method":"unknownMethod","params":{}}'
+            $result = Invoke-MCPRequest -RequestJson '{"method":"unknownMethod","params":{}}'
             $resultObj = $result | ConvertFrom-Json
             
             $resultObj.result | Should -BeNullOrEmpty
@@ -337,3 +337,4 @@ Describe "MCP Memories Server Tests" {
         }
     }
 }
+

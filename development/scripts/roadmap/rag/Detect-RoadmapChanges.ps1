@@ -1,4 +1,4 @@
-# Detect-RoadmapChanges.ps1
+# Find-RoadmapChanges.ps1
 # Script principal pour détecter les changements dans les roadmaps
 # Version: 1.0
 # Date: 2025-05-15
@@ -407,7 +407,7 @@ function ConvertTo-HtmlReport {
 }
 
 # Fonction principale
-function Detect-RoadmapChanges {
+function Find-RoadmapChanges {
     param (
         [Parameter(Mandatory = $true)]
         [string]$OriginalPath,
@@ -510,4 +510,5 @@ function Detect-RoadmapChanges {
 }
 
 # Exécuter la fonction principale
-Detect-RoadmapChanges -OriginalPath $OriginalPath -NewPath $NewPath -OutputPath $OutputPath -OutputFormat $OutputFormat -DetailedOutput:$DetailedOutput -Force:$Force
+Find-RoadmapChanges -OriginalPath $OriginalPath -NewPath $NewPath -OutputPath $OutputPath -OutputFormat $OutputFormat -DetailedOutput:$DetailedOutput -Force:$Force
+

@@ -1,4 +1,4 @@
-﻿# Test-TaskDetection.ps1
+# Test-TaskDetection.ps1
 # Script pour tester la dÃ©tection des balises de tÃ¢ches dans un texte
 
 param (
@@ -26,7 +26,7 @@ if ($InputFile) {
 }
 
 # Fonction pour extraire les tÃ¢ches du texte
-function Extract-Tasks {
+function Export-Tasks {
     param (
         [string]$Text
     )
@@ -66,7 +66,7 @@ function Extract-Tasks {
 }
 
 # Extraire les tÃ¢ches du texte
-$tasks = Extract-Tasks -Text $InputText
+$tasks = Export-Tasks -Text $InputText
 
 # Afficher les rÃ©sultats
 if ($tasks.Count -eq 0) {
@@ -89,3 +89,4 @@ else {
 
 # Retourner les tÃ¢ches (utile pour les tests automatisÃ©s)
 return $tasks
+

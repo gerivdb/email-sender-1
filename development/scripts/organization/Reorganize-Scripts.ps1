@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     RÃ©organisation avancÃ©e des scripts du projet
 .DESCRIPTION
@@ -12,10 +12,10 @@
 .PARAMETER Verbose
     Affiche des informations dÃ©taillÃ©es
 .EXAMPLE
-    .\Reorganize-Scripts.ps1
+    .\Set-Scripts.ps1
     Affiche le plan de rÃ©organisation sans l'appliquer
 .EXAMPLE
-    .\Reorganize-Scripts.ps1 -AutoApply
+    .\Set-Scripts.ps1 -AutoApply
     Applique automatiquement la rÃ©organisation
 #>
 
@@ -188,7 +188,7 @@ $FolderStructure = @{
 }
 
 # CrÃ©er les dossiers s'ils n'existent pas
-function Create-FolderStructure {
+function New-FolderStructure {
     param (
         [string]$BasePath = "scripts"
     )
@@ -436,7 +436,7 @@ function Get-TargetFolder {
 }
 
 # Fonction pour crÃ©er un fichier README pour chaque dossier
-function Create-ReadmeFiles {
+function New-ReadmeFiles {
     param (
         [string]$BasePath = "scripts"
     )
@@ -547,7 +547,7 @@ Ce dossier fait partie de la section [$MainFolder](..) qui contient $($FolderStr
 }
 
 # Fonction pour rÃ©organiser les scripts
-function Reorganize-Scripts {
+function Set-Scripts {
     param (
         [array]$Scripts
     )
@@ -650,9 +650,9 @@ function Reorganize-Scripts {
 }
 
 # ExÃ©cuter la rÃ©organisation
-Create-FolderStructure
-Create-ReadmeFiles
-$Reorganization = Reorganize-Scripts -Scripts $Analysis.Scripts
+New-FolderStructure
+New-ReadmeFiles
+$Reorganization = Set-Scripts -Scripts $Analysis.Scripts
 
 # Afficher un rÃ©sumÃ©
 Write-Log "" -Level "INFO"
@@ -665,6 +665,8 @@ Write-Log "Nombre d'erreurs: $($Reorganization.ErrorCount)" -Level "WARNING"
 if (-not $AutoApply) {
     Write-Log "" -Level "INFO"
     Write-Log "Pour appliquer la rÃ©organisation, exÃ©cutez la commande suivante:" -Level "WARNING"
-    Write-Log ".\Reorganize-Scripts.ps1 -AutoApply" -Level "INFO"
+    Write-Log ".\Set-Scripts.ps1 -AutoApply" -Level "INFO"
 }
+
+
 

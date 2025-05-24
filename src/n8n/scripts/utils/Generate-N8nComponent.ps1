@@ -44,7 +44,7 @@ function Show-Menu {
     Write-Host
 }
 
-function Generate-Component {
+function New-Component {
     param (
         [Parameter(Mandatory=$true)]
         [string]$Type
@@ -81,7 +81,7 @@ function Generate-Component {
 
 # Si un type de composant est spécifié en paramètre, générer directement ce type
 if ($ComponentType) {
-    Generate-Component -Type $ComponentType
+    New-Component -Type $ComponentType
     exit 0
 }
 
@@ -91,10 +91,10 @@ do {
     $choice = Read-Host "Votre choix"
 
     switch ($choice) {
-        "1" { $result = Generate-Component -Type "script" }
-        "2" { $result = Generate-Component -Type "workflow" }
-        "3" { $result = Generate-Component -Type "doc" }
-        "4" { $result = Generate-Component -Type "integration" }
+        "1" { $result = New-Component -Type "script" }
+        "2" { $result = New-Component -Type "workflow" }
+        "3" { $result = New-Component -Type "doc" }
+        "4" { $result = New-Component -Type "integration" }
         "q" { return }
         "Q" { return }
         default { 
@@ -112,3 +112,4 @@ do {
         }
     }
 } while ($true)
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Test de base pour le systÃ¨me de cache prÃ©dictif.
 .DESCRIPTION
@@ -70,7 +70,7 @@ function Clear-Cache {
 # Statistiques d'utilisation
 $accessStats = @{}
 
-function Record-CacheAccess {
+function Write-CacheAccess {
     param([string]$key, [bool]$hit)
     if (-not $accessStats.ContainsKey($key)) {
         $accessStats[$key] = @{
@@ -156,7 +156,7 @@ function Get-PredictiveCacheItem {
     $value = Get-CacheItem -key $key
     $hit = $null -ne $value
     
-    Record-CacheAccess -key $key -hit $hit
+    Write-CacheAccess -key $key -hit $hit
     
     return $value
 }
@@ -176,9 +176,9 @@ Write-Host "  RÃ©sultat: $(if ($test1Success) { "SuccÃ¨s" } else { "Ã‰che
 
 # Test 2: Enregistrement des accÃ¨s
 Write-Host "`nTest 2: Enregistrement des accÃ¨s" -ForegroundColor Green
-Record-CacheAccess -key "Key1" -hit $true
-Record-CacheAccess -key "Key1" -hit $true
-Record-CacheAccess -key "Key2" -hit $false
+Write-CacheAccess -key "Key1" -hit $true
+Write-CacheAccess -key "Key1" -hit $true
+Write-CacheAccess -key "Key2" -hit $false
 $stats = Get-KeyAccessStats -key "Key1"
 Write-Host "  Statistiques pour Key1: Hits=$($stats.Hits), Misses=$($stats.Misses), Total=$($stats.TotalAccesses)" -ForegroundColor White
 $test2Success = $stats.Hits -eq 2 -and $stats.TotalAccesses -eq 2
@@ -234,3 +234,4 @@ if ($passedTests -eq $totalTests) {
     Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }
+

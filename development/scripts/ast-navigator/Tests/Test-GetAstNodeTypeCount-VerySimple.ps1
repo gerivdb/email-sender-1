@@ -1,4 +1,4 @@
-﻿# Script de test trÃ¨s simple pour la fonction Get-AstNodeTypeCount
+# Script de test trÃ¨s simple pour la fonction Get-AstNodeTypeCount
 
 # DÃ©finir la fonction Get-AstNodeTypeCount
 function Get-AstNodeTypeCount {
@@ -16,7 +16,7 @@ function Get-AstNodeTypeCount {
     $count = 0
     
     # Fonction rÃ©cursive pour parcourir l'AST
-    function Process-Node {
+    function Invoke-Node {
         param (
             [Parameter(Mandatory = $true)]
             [System.Management.Automation.Language.Ast]$Node
@@ -36,13 +36,13 @@ function Get-AstNodeTypeCount {
         # Parcourir les noeuds enfants si demandÃ©
         if ($Recurse) {
             foreach ($child in $Node.FindAll({ $true }, $false)) {
-                Process-Node -Node $child
+                Invoke-Node -Node $child
             }
         }
     }
     
     # Compter les noeuds
-    Process-Node -Node $Ast
+    Invoke-Node -Node $Ast
     
     return $count
 }
@@ -67,3 +67,4 @@ $totalCount = Get-AstNodeTypeCount -Ast $ast -Recurse
 Write-Host "Nombre total de noeuds: $totalCount" -ForegroundColor Yellow
 
 Write-Host "Test termine avec succes!" -ForegroundColor Green
+

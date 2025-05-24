@@ -1,4 +1,4 @@
-﻿# Script d'application de la matrice d'Ã©valuation des compÃ©tences
+# Script d'application de la matrice d'Ã©valuation des compÃ©tences
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 # ParamÃ¨tres
@@ -219,7 +219,7 @@ function Get-SkillsList {
 }
 
 # Fonction pour Ã©valuer une compÃ©tence
-function Evaluate-Skill {
+function Test-Skill {
     param(
         [EvaluatedSkill]$Skill,
         [array]$Criteria
@@ -355,7 +355,7 @@ try {
     # Ã‰valuation des compÃ©tences
     $evaluatedSkills = @()
     foreach ($skill in $skills) {
-        $evaluatedSkill = Evaluate-Skill -Skill $skill -Criteria $criteria
+        $evaluatedSkill = Test-Skill -Skill $skill -Criteria $criteria
         $evaluatedSkills += $evaluatedSkill
     }
 
@@ -402,3 +402,4 @@ try {
     # Retourner un code d'erreur
     exit 1
 }
+

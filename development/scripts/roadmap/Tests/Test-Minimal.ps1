@@ -56,7 +56,7 @@ $roadmapContent | Out-File -FilePath $testRoadmapPath -Encoding utf8
 Write-Host "Roadmap de test créée: $testRoadmapPath" -ForegroundColor Cyan
 
 # Créer une fonction simple pour parser la roadmap
-function Parse-SimpleRoadmap {
+function ConvertFrom-SimpleRoadmap {
     param (
         [Parameter(Mandatory = $true)]
         [string]$FilePath
@@ -114,7 +114,7 @@ function Parse-SimpleRoadmap {
 Write-Host "`nTest 1: Parser la roadmap" -ForegroundColor Yellow
 
 try {
-    $result = Parse-SimpleRoadmap -FilePath $testRoadmapPath
+    $result = ConvertFrom-SimpleRoadmap -FilePath $testRoadmapPath
     
     if ($null -ne $result) {
         Write-Host "  Succès: Roadmap parsée correctement." -ForegroundColor Green
@@ -167,7 +167,7 @@ try {
         Write-Host "  Fichier: $simpleRoadmapPath" -ForegroundColor Gray
         
         # Parser la roadmap créée
-        $result = Parse-SimpleRoadmap -FilePath $simpleRoadmapPath
+        $result = ConvertFrom-SimpleRoadmap -FilePath $simpleRoadmapPath
         
         if ($null -ne $result) {
             Write-Host "  Succès: Roadmap simple parsée correctement." -ForegroundColor Green
@@ -191,3 +191,4 @@ if (Test-Path $testDir) {
 }
 
 Write-Host "`nTests terminés." -ForegroundColor Cyan
+

@@ -1,4 +1,4 @@
-﻿using module Pester
+using module Pester
 
 # Définir l'encodage UTF-8 pour les caractères accentués
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -322,7 +322,7 @@ function Get-SkillsList {
 }
 
 # Fonction pour évaluer une compétence selon les critères définis
-function Evaluate-Skill {
+function Test-Skill {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -783,7 +783,7 @@ Describe 'Matrice Evaluation Tests' {
 
             $criteria = @($criterion)
 
-            $evaluatedSkill = Evaluate-Skill -Skill $skill -Criteria $criteria -WeightingMethod "Equal" -DetailLevel "Standard"
+            $evaluatedSkill = Test-Skill -Skill $skill -Criteria $criteria -WeightingMethod "Equal" -DetailLevel "Standard"
             $evaluatedSkill | Should -Not -BeNullOrEmpty
             $evaluatedSkill.Scores["Complexité des tâches"] | Should -Be 3
             $evaluatedSkill.GlobalScore | Should -Be 3
@@ -870,3 +870,4 @@ Describe 'Matrice Evaluation Tests' {
         }
     }
 }
+

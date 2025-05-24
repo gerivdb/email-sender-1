@@ -1,4 +1,4 @@
-# Detect-TaskMovements.ps1
+# Find-TaskMovements.ps1
 # Script pour détecter les déplacements de tâches dans les roadmaps
 # Version: 1.0
 # Date: 2025-05-15
@@ -127,7 +127,7 @@ function Get-TasksWithContext {
 }
 
 # Fonction pour détecter les déplacements de tâches
-function Detect-Movements {
+function Find-Movements {
     param (
         [Parameter(Mandatory = $true)]
         [array]$OriginalTasks,
@@ -232,7 +232,7 @@ function Detect-Movements {
 }
 
 # Fonction principale
-function Detect-TaskMovements {
+function Find-TaskMovements {
     param (
         [Parameter(Mandatory = $true)]
         [string]$OriginalContent,
@@ -249,7 +249,7 @@ function Detect-TaskMovements {
     $newTasks = Get-TasksWithContext -Content $NewContent
     
     # Détecter les mouvements
-    $movements = Detect-Movements -OriginalTasks $originalTasks -NewTasks $newTasks
+    $movements = Find-Movements -OriginalTasks $originalTasks -NewTasks $newTasks
     
     # Déterminer s'il y a des mouvements
     $hasMovements = $movements.ContextChanges.Count -gt 0 -or 
@@ -298,7 +298,7 @@ function Main {
     }
     
     # Détecter les mouvements
-    $result = Detect-TaskMovements -OriginalContent $OriginalContent -NewContent $NewContent -DetailedOutput:$DetailedOutput
+    $result = Find-TaskMovements -OriginalContent $OriginalContent -NewContent $NewContent -DetailedOutput:$DetailedOutput
     
     # Afficher les résultats
     if ($result.HasMovements) {
@@ -322,3 +322,4 @@ function Main {
 
 # Exécuter la fonction principale
 Main
+

@@ -9,7 +9,7 @@ BeforeAll {
     }
     
     # Créer une collection de test avec plusieurs éléments
-    function Create-TestCollection {
+    function New-TestCollection {
         $collection = New-ExtractedInfoCollection -Name "TestCollection" -CreateIndexes
         
         # Basic info items
@@ -44,7 +44,7 @@ Describe "Get-ExtractedInfoFromCollection" {
     Context "When retrieving by ID" {
         It "Should retrieve a specific item by ID" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $targetItem = $testData.Items[3] # textInfo2
             
@@ -61,7 +61,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should return null when ID does not exist" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $nonExistentId = "non-existent-id"
             
@@ -74,7 +74,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should prioritize ID over other filter criteria" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $targetItem = $testData.Items[0] # info1
             
@@ -90,7 +90,7 @@ Describe "Get-ExtractedInfoFromCollection" {
     Context "When filtering by Source" {
         It "Should retrieve all items from a specific source" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $source = "Source2"
             
@@ -106,7 +106,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should return empty array when source does not exist" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $nonExistentSource = "non-existent-source"
             
@@ -120,7 +120,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should use index for source filtering when available" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $source = "Source3"
             
@@ -138,7 +138,7 @@ Describe "Get-ExtractedInfoFromCollection" {
     Context "When filtering by Type" {
         It "Should retrieve all items of a specific type" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $type = "TextExtractedInfo"
             
@@ -154,7 +154,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should return empty array when type does not exist" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $nonExistentType = "non-existent-type"
             
@@ -168,7 +168,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should use index for type filtering when available" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $type = "MediaExtractedInfo"
             
@@ -186,7 +186,7 @@ Describe "Get-ExtractedInfoFromCollection" {
     Context "When filtering by ProcessingState" {
         It "Should retrieve all items with a specific processing state" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $state = "Processed"
             
@@ -203,7 +203,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should return empty array when processing state does not exist" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $nonExistentState = "non-existent-state"
             
@@ -217,7 +217,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should use index for processing state filtering when available" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $state = "Raw"
             
@@ -236,7 +236,7 @@ Describe "Get-ExtractedInfoFromCollection" {
     Context "When filtering by ConfidenceScore" {
         It "Should retrieve all items with confidence score above threshold" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $minScore = 75
             
@@ -251,7 +251,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should return empty array when no items meet the confidence score threshold" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $minScore = 95
             
@@ -267,7 +267,7 @@ Describe "Get-ExtractedInfoFromCollection" {
     Context "When using multiple filter criteria" {
         It "Should retrieve items matching all filter criteria" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $source = "Source1"
             $state = "Processed"
@@ -284,7 +284,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should return empty array when no items match all criteria" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $source = "Source1"
             $state = "Validated"
@@ -299,7 +299,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should use the most selective index first when multiple indexes are available" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $type = "MediaExtractedInfo"
             $state = "Raw"
@@ -318,7 +318,7 @@ Describe "Get-ExtractedInfoFromCollection" {
     Context "When retrieving all items" {
         It "Should retrieve all items when no filter criteria are provided" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $expectedCount = $testData.Items.Count
             
@@ -349,7 +349,7 @@ Describe "Get-ExtractedInfoFromCollection" {
         
         It "Should throw an error when MinConfidenceScore is out of range" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             
             # Act & Assert
@@ -358,3 +358,4 @@ Describe "Get-ExtractedInfoFromCollection" {
         }
     }
 }
+

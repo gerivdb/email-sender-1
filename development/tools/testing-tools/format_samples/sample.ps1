@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Sample PowerShell script.
@@ -15,7 +15,7 @@ param(
     [string]$OutputPath = "output.txt"
 )
 
-function Process-File {
+function Invoke-File {
     param(
         [string]$Path
     )
@@ -36,8 +36,9 @@ function Process-File {
 }
 
 # Main script
-$result = Process-File -Path $InputPath
+$result = Invoke-File -Path $InputPath
 if ($result -ne $false) {
     Set-Content -Path $OutputPath -Value $result
     Write-Host "File processed successfully."
 }
+

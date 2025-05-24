@@ -1,10 +1,10 @@
-﻿# Script pour corriger l'encodage des fichiers
+# Script pour corriger l'encodage des fichiers
 
 # DÃ©finir l'encodage de la console
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Fonction pour corriger l'encodage d'un fichier
-function Fix-FileEncoding {
+function Repair-FileEncoding {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -39,7 +39,7 @@ $psFiles = @(
 
 foreach ($file in $psFiles) {
     if (Test-Path -Path $file) {
-        Fix-FileEncoding -FilePath $file
+        Repair-FileEncoding -FilePath $file
     } else {
         Write-Host "Le fichier $file n'existe pas" -ForegroundColor Yellow
     }
@@ -53,10 +53,11 @@ $mdFiles = @(
 
 foreach ($file in $mdFiles) {
     if (Test-Path -Path $file) {
-        Fix-FileEncoding -FilePath $file
+        Repair-FileEncoding -FilePath $file
     } else {
         Write-Host "Le fichier $file n'existe pas" -ForegroundColor Yellow
     }
 }
 
 Write-Host "Correction de l'encodage terminÃ©e" -ForegroundColor Green
+

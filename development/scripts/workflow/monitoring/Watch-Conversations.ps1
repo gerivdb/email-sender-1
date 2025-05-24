@@ -1,4 +1,4 @@
-﻿# Watch-Conversations.ps1
+# Watch-Conversations.ps1
 # Script pour surveiller un dossier de conversations et traiter automatiquement les nouveaux fichiers
 
 param (
@@ -42,7 +42,7 @@ function Get-ProcessedFiles {
 }
 
 # Fonction pour marquer un fichier comme traitÃ©
-function Mark-FileAsProcessed {
+function Set-FileAsProcessed {
     param (
         [string]$FilePath
     )
@@ -53,7 +53,7 @@ function Mark-FileAsProcessed {
 }
 
 # Fonction pour traiter un fichier de conversation
-function Process-ConversationFile {
+function Invoke-ConversationFile {
     param (
         [string]$FilePath
     )
@@ -69,7 +69,7 @@ function Process-ConversationFile {
     
     try {
         Invoke-Expression $command
-        Mark-FileAsProcessed -FilePath $FilePath
+        Set-FileAsProcessed -FilePath $FilePath
         return $true
     }
     catch {
@@ -98,7 +98,7 @@ function Watch-ConversationsFolder {
         foreach ($file in $conversationFiles) {
             if ($processedFiles -notcontains $file) {
                 Write-Host "Nouveau fichier dÃ©tectÃ© : $file"
-                $success = Process-ConversationFile -FilePath $file
+                $success = Invoke-ConversationFile -FilePath $file
                 
                 if ($success) {
                     Write-Host "Fichier traitÃ© avec succÃ¨s : $file" -ForegroundColor Green
@@ -121,3 +121,5 @@ function Watch-ConversationsFolder {
 
 # DÃ©marrer la surveillance
 Watch-ConversationsFolder
+
+

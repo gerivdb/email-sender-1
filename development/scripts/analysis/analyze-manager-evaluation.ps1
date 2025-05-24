@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse les rÃ©sultats de l'Ã©valuation des gestionnaires par rapport aux piliers.
 
@@ -60,7 +60,7 @@ try {
 }
 
 # Fonction pour compiler les scores d'Ã©valuation par gestionnaire
-function Compile-EvaluationScores {
+function New-EvaluationScores {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -107,7 +107,7 @@ function Compile-EvaluationScores {
 }
 
 # Fonction pour identifier les points forts et points faibles
-function Identify-StrengthsWeaknesses {
+function Find-StrengthsWeaknesses {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -169,7 +169,7 @@ function Identify-StrengthsWeaknesses {
 }
 
 # Fonction pour analyser les Ã©carts par rapport aux piliers
-function Analyze-PillarGaps {
+function Test-PillarGaps {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -227,7 +227,7 @@ function Analyze-PillarGaps {
 }
 
 # Fonction pour Ã©valuer l'impact des lacunes identifiÃ©es
-function Evaluate-GapImpact {
+function Test-GapImpact {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -270,10 +270,10 @@ function Evaluate-GapImpact {
 }
 
 # Analyser les rÃ©sultats de l'Ã©valuation
-$compiledScores = Compile-EvaluationScores -EvaluationData $evaluationData
-$strengthsWeaknesses = Identify-StrengthsWeaknesses -CompiledScores $compiledScores -EvaluationData $evaluationData
-$pillarGaps = Analyze-PillarGaps -CompiledScores $compiledScores -EvaluationData $evaluationData
-$gapImpacts = Evaluate-GapImpact -PillarGaps $pillarGaps -EvaluationData $evaluationData
+$compiledScores = New-EvaluationScores -EvaluationData $evaluationData
+$strengthsWeaknesses = Find-StrengthsWeaknesses -CompiledScores $compiledScores -EvaluationData $evaluationData
+$pillarGaps = Test-PillarGaps -CompiledScores $compiledScores -EvaluationData $evaluationData
+$gapImpacts = Test-GapImpact -PillarGaps $pillarGaps -EvaluationData $evaluationData
 
 # CrÃ©er le rapport d'analyse
 $analysisReport = [PSCustomObject]@{
@@ -285,7 +285,7 @@ $analysisReport = [PSCustomObject]@{
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -381,7 +381,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format HTML
-function Generate-HtmlReport {
+function New-HtmlReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -586,7 +586,7 @@ function Generate-HtmlReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format CSV
-function Generate-CsvReport {
+function New-CsvReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -612,13 +612,13 @@ function Generate-CsvReport {
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -Report $analysisReport
+        $reportContent = New-MarkdownReport -Report $analysisReport
     }
     "HTML" {
-        $reportContent = Generate-HtmlReport -Report $analysisReport
+        $reportContent = New-HtmlReport -Report $analysisReport
     }
     "CSV" {
-        $reportContent = Generate-CsvReport -Report $analysisReport
+        $reportContent = New-CsvReport -Report $analysisReport
     }
     "JSON" {
         $reportContent = $analysisReport | ConvertTo-Json -Depth 10
@@ -646,3 +646,5 @@ $lowImpactCount = ($gapImpacts | Where-Object { $_.ImpactLevel -eq "Faible" }).C
 Write-Host "  Piliers avec impact Ã©levÃ© : $highImpactCount"
 Write-Host "  Piliers avec impact moyen : $mediumImpactCount"
 Write-Host "  Piliers avec impact faible : $lowImpactCount"
+
+

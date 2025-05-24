@@ -106,7 +106,7 @@ class PerformanceMetricsManager {
 }
 
 # Créer des documents de test
-function Create-TestDocuments {
+function New-TestDocuments {
     $documents = @()
     
     # Document 1: Document texte
@@ -185,7 +185,7 @@ function Create-TestDocuments {
 # Fonction pour tester les filtres
 function Test-Filters {
     # Créer des documents de test
-    $documents = Create-TestDocuments()
+    $documents = New-TestDocuments()
     
     Write-Host "Documents de test créés: $($documents.Count)" -ForegroundColor Green
     
@@ -440,3 +440,4 @@ function Test-Filters {
 
 # Exécuter les tests
 Test-Filters
+

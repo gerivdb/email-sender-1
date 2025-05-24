@@ -52,7 +52,7 @@ function Test-Script {
 }
 
 # Fonction pour corriger les problèmes dans une fonction de métadonnées
-function Fix-MetadataFunction {
+function Repair-MetadataFunction {
     param (
         [string]$FunctionName,
         [string]$TestScript,
@@ -236,7 +236,7 @@ foreach ($function in $metadataFunctions) {
     $testPath = Join-Path -Path $testDir -ChildPath $function.Test
     
     if (Test-Path -Path $testPath) {
-        $fixed = Fix-MetadataFunction -FunctionName $function.Name -TestScript $testPath -FixReportFile $fixReportFile
+        $fixed = Repair-MetadataFunction -FunctionName $function.Name -TestScript $testPath -FixReportFile $fixReportFile
         
         if ($fixed) {
             $fixedFunctions++
@@ -268,3 +268,4 @@ if ($fixedFunctions -eq $totalFunctions) {
     Write-Host "Certains problèmes dans les fonctions de métadonnées n'ont pas pu être corrigés. Consultez le fichier de rapport pour plus de détails : $fixReportFile" -ForegroundColor $errorColor
     exit 1
 }
+

@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Exemple d'utilisation du cache distribuÃ© multi-langage.
@@ -293,7 +293,7 @@ function Measure-Performance {
 }
 
 # Exemple 1 : Utilisation du cache distribuÃ© multi-langage
-function Example-DistributedCache {
+function Show-DistributedCache {
     Write-Host "`n=== Exemple 1 : Utilisation du cache distribuÃ© multi-langage ===" -ForegroundColor Yellow
     
     # CrÃ©er un rÃ©pertoire pour le cache
@@ -357,7 +357,7 @@ function Example-DistributedCache {
 }
 
 # Exemple 2 : Utilisation des dÃ©pendances et de l'invalidation sÃ©lective
-function Example-DependenciesAndInvalidation {
+function Show-DependenciesAndInvalidation {
     Write-Host "`n=== Exemple 2 : Utilisation des dÃ©pendances et de l'invalidation sÃ©lective ===" -ForegroundColor Yellow
     
     # CrÃ©er un rÃ©pertoire pour le cache
@@ -423,7 +423,7 @@ function Example-DependenciesAndInvalidation {
 }
 
 # Exemple 3 : Test de performance du cache distribuÃ©
-function Example-CachePerformance {
+function Show-CachePerformance {
     Write-Host "`n=== Exemple 3 : Test de performance du cache distribuÃ© ===" -ForegroundColor Yellow
     
     # CrÃ©er un rÃ©pertoire pour le cache
@@ -545,9 +545,9 @@ try {
     }
     
     # ExÃ©cuter les exemples
-    Example-DistributedCache
-    Example-DependenciesAndInvalidation
-    Example-CachePerformance
+    Show-DistributedCache
+    Show-DependenciesAndInvalidation
+    Show-CachePerformance
 }
 catch {
     Write-Error "Erreur lors de l'exÃ©cution des exemples : $_"
@@ -561,3 +561,4 @@ finally {
     
     Write-Host "Nettoyage terminÃ©" -ForegroundColor Green
 }
+

@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Teste la compatibilitÃƒÂ© des scripts PowerShell avec PowerShell 7.
@@ -341,7 +341,7 @@ function Find-CompatibilityIssues {
 }
 
 # Fonction pour corriger les problÃƒÂ¨mes de compatibilitÃƒÂ©
-function Fix-CompatibilityIssues {
+function Repair-CompatibilityIssues {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -481,7 +481,7 @@ function Start-PSVersionCompatibilityTest {
             }
             
             if ($Fix) {
-                $fixed = Fix-CompatibilityIssues -ScriptPath $file.FullName -Issues $issues
+                $fixed = Repair-CompatibilityIssues -ScriptPath $file.FullName -Issues $issues
                 
                 if ($fixed) {
                     $fixedFiles++
@@ -540,3 +540,4 @@ function Start-PSVersionCompatibilityTest {
 
 # ExÃƒÂ©cuter la fonction principale
 Start-PSVersionCompatibilityTest -Path $Path -Recursive:$Recursive -OutputPath $OutputPath -Fix:$Fix
+

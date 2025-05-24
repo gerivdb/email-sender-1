@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Module Format-Converters pour la dÃ©tection et la conversion de formats de fichiers.
@@ -528,7 +528,7 @@ function Get-FileFormatAnalysis {
 }
 
 # Fonction pour gÃ©rer les formats ambigus
-function Handle-AmbiguousFormats {
+function Invoke-AmbiguousFormats {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -695,6 +695,7 @@ Export-ModuleMember -Function @(
     'Test-FileFormatWithConfirmation',
     'Convert-FileFormat',
     'Get-FileFormatAnalysis',
-    'Handle-AmbiguousFormats',
+    'Invoke-AmbiguousFormats',
     'Show-FormatDetectionResults'
 )
+

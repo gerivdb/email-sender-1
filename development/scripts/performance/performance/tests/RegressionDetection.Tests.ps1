@@ -1,4 +1,4 @@
-﻿Describe "Tests de dÃ©tection de rÃ©gression de performance" {
+Describe "Tests de dÃ©tection de rÃ©gression de performance" {
     Context "Comparaison avec les performances de rÃ©fÃ©rence" {
         BeforeAll {
             # Fonction pour mesurer les performances d'une fonction
@@ -106,7 +106,7 @@
             }
             
             # Fonction pour charger les performances de rÃ©fÃ©rence
-            function Load-BaselinePerformance {
+            function Import-BaselinePerformance {
                 param (
                     [Parameter(Mandatory = $true)]
                     [string]$BaselinePath
@@ -191,7 +191,7 @@
             $currentPerformance = Measure-FunctionPerformance -Name "Tri" -ScriptBlock $sortFunction -Iterations 3
             
             # Charger ou crÃ©er les performances de rÃ©fÃ©rence
-            $baselinePerformance = Load-BaselinePerformance -BaselinePath $sortBaselinePath
+            $baselinePerformance = Import-BaselinePerformance -BaselinePath $sortBaselinePath
             
             if ($null -eq $baselinePerformance) {
                 # Sauvegarder les performances actuelles comme rÃ©fÃ©rence
@@ -231,7 +231,7 @@
             $currentPerformance = Measure-FunctionPerformance -Name "Filtrage" -ScriptBlock $filterFunction -Iterations 3
             
             # Charger ou crÃ©er les performances de rÃ©fÃ©rence
-            $baselinePerformance = Load-BaselinePerformance -BaselinePath $filterBaselinePath
+            $baselinePerformance = Import-BaselinePerformance -BaselinePath $filterBaselinePath
             
             if ($null -eq $baselinePerformance) {
                 # Sauvegarder les performances actuelles comme rÃ©fÃ©rence
@@ -271,7 +271,7 @@
             $currentPerformance = Measure-FunctionPerformance -Name "AgrÃ©gation" -ScriptBlock $aggregateFunction -Iterations 3
             
             # Charger ou crÃ©er les performances de rÃ©fÃ©rence
-            $baselinePerformance = Load-BaselinePerformance -BaselinePath $aggregateBaselinePath
+            $baselinePerformance = Import-BaselinePerformance -BaselinePath $aggregateBaselinePath
             
             if ($null -eq $baselinePerformance) {
                 # Sauvegarder les performances actuelles comme rÃ©fÃ©rence
@@ -350,7 +350,7 @@
             }
             
             # Fonction pour analyser l'historique des performances
-            function Analyze-PerformanceHistory {
+            function Test-PerformanceHistory {
                 param (
                     [Parameter(Mandatory = $true)]
                     [string]$HistoryPath,
@@ -442,7 +442,7 @@
             }
             
             # Analyser l'historique des performances
-            $analysis = Analyze-PerformanceHistory -HistoryPath $sortHistoryPath
+            $analysis = Test-PerformanceHistory -HistoryPath $sortHistoryPath
             
             # Afficher les rÃ©sultats
             Write-Host "Analyse de l'historique des performances pour le tri :"
@@ -460,3 +460,4 @@
         }
     }
 }
+

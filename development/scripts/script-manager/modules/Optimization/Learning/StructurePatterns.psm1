@@ -1,10 +1,10 @@
-﻿# Module d'apprentissage des modÃ¨les de structure pour le Script Manager
+# Module d'apprentissage des modÃ¨les de structure pour le Script Manager
 # Ce module apprend les modÃ¨les de structure utilisÃ©s dans les scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, learning, structure
 
-function Learn-StructurePatterns {
+function Get-StructurePatterns {
     <#
     .SYNOPSIS
         Apprend les modÃ¨les de structure utilisÃ©s dans les scripts
@@ -15,7 +15,7 @@ function Learn-StructurePatterns {
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
-        Learn-StructurePatterns -Scripts $scripts -ScriptType "PowerShell"
+        Get-StructurePatterns -Scripts $scripts -ScriptType "PowerShell"
     #>
     [CmdletBinding()]
     param (
@@ -37,10 +37,10 @@ function Learn-StructurePatterns {
     }
     
     # Analyser les en-tÃªtes
-    $StructurePatterns.HeaderPattern = Analyze-HeaderPattern -Scripts $Scripts -ScriptType $ScriptType
+    $StructurePatterns.HeaderPattern = Test-HeaderPattern -Scripts $Scripts -ScriptType $ScriptType
     
     # Analyser la structure des fonctions
-    $StructurePatterns.FunctionStructure = Analyze-FunctionStructure -Scripts $Scripts -ScriptType $ScriptType
+    $StructurePatterns.FunctionStructure = Test-FunctionStructure -Scripts $Scripts -ScriptType $ScriptType
     
     # Analyser l'emplacement du code principal
     $StructurePatterns.MainCodeLocation = Analyze-MainCodeLocation -Scripts $Scripts -ScriptType $ScriptType
@@ -57,7 +57,7 @@ function Learn-StructurePatterns {
     return $StructurePatterns
 }
 
-function Analyze-HeaderPattern {
+function Test-HeaderPattern {
     <#
     .SYNOPSIS
         Analyse les modÃ¨les d'en-tÃªte des scripts
@@ -68,7 +68,7 @@ function Analyze-HeaderPattern {
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
-        Analyze-HeaderPattern -Scripts $scripts -ScriptType "PowerShell"
+        Test-HeaderPattern -Scripts $scripts -ScriptType "PowerShell"
     #>
     [CmdletBinding()]
     param (
@@ -289,7 +289,7 @@ function Analyze-HeaderPattern {
     return $Results
 }
 
-function Analyze-FunctionStructure {
+function Test-FunctionStructure {
     <#
     .SYNOPSIS
         Analyse la structure des fonctions
@@ -300,7 +300,7 @@ function Analyze-FunctionStructure {
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
-        Analyze-FunctionStructure -Scripts $scripts -ScriptType "PowerShell"
+        Test-FunctionStructure -Scripts $scripts -ScriptType "PowerShell"
     #>
     [CmdletBinding()]
     param (
@@ -488,4 +488,6 @@ function Analyze-FunctionStructure {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Learn-StructurePatterns
+Export-ModuleMember -function Get-StructurePatterns
+
+

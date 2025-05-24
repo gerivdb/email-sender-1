@@ -232,14 +232,14 @@ function Set-UsageBasedRetention {
     
     # Appliquer la politique si demandé
     if ($Apply) {
-        return Apply-UsageBasedRetention -MinimumUsageCount $MinimumUsageCount -RetentionDays $RetentionDays -UnusedRetentionDays $UnusedRetentionDays -WhatIf:$WhatIf -Force:$Force
+        return Set-UsageBasedRetention -MinimumUsageCount $MinimumUsageCount -RetentionDays $RetentionDays -UnusedRetentionDays $UnusedRetentionDays -WhatIf:$WhatIf -Force:$Force
     }
     
     return $true
 }
 
 # Fonction pour appliquer la rétention basée sur l'utilisation
-function Apply-UsageBasedRetention {
+function Set-UsageBasedRetention {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -376,3 +376,4 @@ function Apply-UsageBasedRetention {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Set-UsageBasedRetention -MinimumUsageCount $MinimumUsageCount -RetentionDays $RetentionDays -UnusedRetentionDays $UnusedRetentionDays -ConfigName $ConfigName -Apply:$Apply -WhatIf:$WhatIf -Force:$Force
 }
+

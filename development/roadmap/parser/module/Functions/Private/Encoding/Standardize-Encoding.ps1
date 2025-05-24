@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Standardise l'encodage des fichiers.
 .DESCRIPTION
@@ -14,10 +14,10 @@
 .PARAMETER WhatIf
     Si spÃ©cifiÃ©, simule les actions sans les exÃ©cuter.
 .EXAMPLE
-    Standardize-Encoding -Path "C:\Scripts" -Recurse -Filter "*.ps1" -Encoding "UTF8BOM"
+    ConvertTo-Encoding -Path "C:\Scripts" -Recurse -Filter "*.ps1" -Encoding "UTF8BOM"
     Standardise l'encodage de tous les fichiers .ps1 dans le rÃ©pertoire C:\Scripts et ses sous-rÃ©pertoires.
 #>
-function Standardize-Encoding {
+function ConvertTo-Encoding {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param (
         [Parameter(Mandatory=$true)]
@@ -191,4 +191,5 @@ function Convert-FileEncoding {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Standardize-Encoding, Get-FileEncoding, Convert-FileEncoding
+Export-ModuleMember -function ConvertTo-Encoding, Get-FileEncoding, Convert-FileEncoding
+

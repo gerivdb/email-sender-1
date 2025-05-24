@@ -21,7 +21,7 @@ Import-Module ExtractedInfoModuleV2
 #region Définition des étapes du pipeline
 
 # Étape 1: Extraction des données
-function Extract-DataFromSources {
+function Export-DataFromSources {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -95,7 +95,7 @@ function Extract-DataFromSources {
 }
 
 # Étape 2: Transformation des données
-function Transform-ExtractedData {
+function ConvertTo-ExtractedData {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -217,7 +217,7 @@ function Transform-ExtractedData {
 }
 
 # Étape 3: Chargement des données
-function Load-TransformedData {
+function Import-TransformedData {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -386,17 +386,17 @@ function Invoke-ExtractedInfoPipeline {
     
     # Étape 1: Extraction
     Write-Host "Étape 1: Extraction des données depuis $($Sources.Count) sources..."
-    $extractedCollection = Extract-DataFromSources -Sources $Sources -Parameters $ExtractionParameters
+    $extractedCollection = Export-DataFromSources -Sources $Sources -Parameters $ExtractionParameters
     Write-Host "Extraction terminée. $($extractedCollection.Items.Count) objets extraits."
     
     # Étape 2: Transformation
     Write-Host "Étape 2: Transformation des données avec $($Transformations.Count) transformations..."
-    $transformedCollection = Transform-ExtractedData -Collection $extractedCollection -Transformations $Transformations -Parameters $TransformationParameters
+    $transformedCollection = ConvertTo-ExtractedData -Collection $extractedCollection -Transformations $Transformations -Parameters $TransformationParameters
     Write-Host "Transformation terminée. $($transformedCollection.Items.Count) objets transformés."
     
     # Étape 3: Chargement
     Write-Host "Étape 3: Chargement des données vers $DestinationType : $Destination..."
-    $loadResults = Load-TransformedData -Collection $transformedCollection -DestinationType $DestinationType -Destination $Destination -Parameters $LoadParameters
+    $loadResults = Import-TransformedData -Collection $transformedCollection -DestinationType $DestinationType -Destination $Destination -Parameters $LoadParameters
     Write-Host "Chargement terminé. Succès: $($loadResults.SuccessCount), Échecs: $($loadResults.FailureCount)"
     
     # Génération du rapport
@@ -438,7 +438,7 @@ function Invoke-ExtractedInfoPipeline {
 #endregion
 
 # Exemple d'utilisation
-function Example-PipelineIntegration {
+function Show-PipelineIntegration {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -504,4 +504,6 @@ function Example-PipelineIntegration {
 }
 
 # Exécuter l'exemple
-# Example-PipelineIntegration -InputFolder "C:\Temp\Pipeline\Input" -OutputFolder "C:\Temp\Pipeline\Output" -ReportPath "C:\Temp\Pipeline\report.json"
+# Show-PipelineIntegration -InputFolder "C:\Temp\Pipeline\Input" -OutputFolder "C:\Temp\Pipeline\Output" -ReportPath "C:\Temp\Pipeline\report.json"
+
+

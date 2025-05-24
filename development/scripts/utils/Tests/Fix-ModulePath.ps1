@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Corrige les chemins du module Format-Converters dans les tests.
@@ -147,8 +147,8 @@ function Test-FileFormatWithConfirmation {
 # CrÃ©er un alias pour Detect-FileFormatWithConfirmation
 New-Alias -Name "Detect-FileFormatWithConfirmation" -Value "Test-FileFormatWithConfirmation"
 
-# Fonction Handle-AmbiguousFormats
-function Handle-AmbiguousFormats {
+# Fonction Invoke-AmbiguousFormats
+function Invoke-AmbiguousFormats {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -329,7 +329,7 @@ function Get-FileFormatAnalysis {
 }
 
 # Exporter les fonctions et alias
-Export-ModuleMember -Function Test-FileFormat, Test-FileFormatWithConfirmation, Handle-AmbiguousFormats, Show-FormatDetectionResults, Convert-FileFormat, Confirm-FormatDetection, Get-FileFormatAnalysis
+Export-ModuleMember -Function Test-FileFormat, Test-FileFormatWithConfirmation, Invoke-AmbiguousFormats, Show-FormatDetectionResults, Convert-FileFormat, Confirm-FormatDetection, Get-FileFormatAnalysis
 Export-ModuleMember -Alias Detect-FileFormat, Detect-FileFormatWithConfirmation
 "@
 
@@ -355,3 +355,4 @@ else {
 
 Write-Host "`nLes chemins du module ont Ã©tÃ© corrigÃ©s dans tous les fichiers de test." -ForegroundColor Green
 Write-Host "ExÃ©cutez les tests pour vÃ©rifier si les problÃ¨mes ont Ã©tÃ© rÃ©solus." -ForegroundColor Green
+

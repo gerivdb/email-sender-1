@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour la fonction de dÃ©tection de format amÃ©liorÃ©e.
@@ -182,7 +182,7 @@ param(
     [string]`$OutputPath = "output.txt"
 )
 
-function Process-File {
+function Invoke-File {
     param(
         [string]`$Path
     )
@@ -203,7 +203,7 @@ function Process-File {
 }
 
 # Main script
-`$result = Process-File -Path `$InputPath
+`$result = Invoke-File -Path `$InputPath
 if (`$result -ne `$false) {
     Set-Content -Path `$OutputPath -Value `$result
     Write-Host "File processed successfully."
@@ -432,3 +432,4 @@ Describe "Tests de dÃ©tection de format amÃ©liorÃ©e" {
         Get-ChildItem -Path $testSamplesPath -File | Remove-Item -Force
     }
 }
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Traite les tÃ¢ches en commenÃ§ant par les tÃ¢ches enfants.
 .DESCRIPTION
@@ -39,7 +39,7 @@ function Invoke-TasksProcessing {
     $processedTasks = New-Object System.Collections.ArrayList
     
     # Fonction rÃ©cursive pour traiter les tÃ¢ches
-    function Process-TasksRecursively {
+    function Invoke-TasksRecursively {
         param (
             [Parameter(Mandatory = $true)]
             [array]$TaskList,
@@ -52,7 +52,7 @@ function Invoke-TasksProcessing {
             if ($ChildrenFirst) {
                 # Traiter d'abord les enfants
                 if ($task.Children.Count -gt 0) {
-                    $Result = Process-TasksRecursively -TaskList $task.Children -Result $Result
+                    $Result = Invoke-TasksRecursively -TaskList $task.Children -Result $Result
                 }
                 
                 # Puis traiter la tÃ¢che parente
@@ -78,7 +78,7 @@ function Invoke-TasksProcessing {
                 
                 # Puis traiter les enfants
                 if ($task.Children.Count -gt 0) {
-                    $Result = Process-TasksRecursively -TaskList $task.Children -Result $Result
+                    $Result = Invoke-TasksRecursively -TaskList $task.Children -Result $Result
                 }
             }
         }
@@ -90,7 +90,8 @@ function Invoke-TasksProcessing {
     $rootTasks = $Tasks | Where-Object { $_.Parent -eq $null }
     
     # Traiter les tÃ¢ches rÃ©cursivement
-    $processedTasks = Process-TasksRecursively -TaskList $rootTasks
+    $processedTasks = Invoke-TasksRecursively -TaskList $rootTasks
     
     return $processedTasks
 }
+

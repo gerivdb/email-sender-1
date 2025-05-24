@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     DÃ©tecte les goulots d'Ã©tranglement dans les processus parallÃ¨les.
 .DESCRIPTION
@@ -105,7 +105,7 @@ function Test-ScriptUsesParallelization {
 }
 
 # Fonction pour analyser en dÃ©tail un goulot d'Ã©tranglement parallÃ¨le
-function Analyze-ParallelBottleneck {
+function Test-ParallelBottleneck {
     param (
         [string]$ScriptPath,
         [PSCustomObject]$Bottleneck
@@ -615,3 +615,4 @@ try {
     Write-Log "Erreur lors de l'exÃ©cution du script: $_" -Level "ERROR"
     exit 1
 }
+

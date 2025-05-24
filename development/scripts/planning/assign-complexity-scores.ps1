@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Attribue des scores de complexitÃ© technique aux amÃ©liorations.
 
@@ -93,7 +93,7 @@ try {
 }
 
 # Fonction pour attribuer un score de complexitÃ© technique
-function Assign-ComplexityScore {
+function Set-ComplexityScore {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -205,7 +205,7 @@ function Assign-ComplexityScore {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -406,7 +406,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -461,7 +461,7 @@ foreach ($manager in $improvementsData.Managers) {
         }
         
         # Attribuer un score de complexitÃ© technique
-        $complexityEvaluation = Assign-ComplexityScore -Improvement $improvement -ManagerName $manager.Name -DifficultyLevel $difficultyLevel -RisksCount $risksCount
+        $complexityEvaluation = Set-ComplexityScore -Improvement $improvement -ManagerName $manager.Name -DifficultyLevel $difficultyLevel -RisksCount $risksCount
         
         $improvementComplexity = [PSCustomObject]@{
             Name = $improvement.Name
@@ -482,10 +482,10 @@ foreach ($manager in $improvementsData.Managers) {
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -ComplexityResults $complexityResults
+        $reportContent = New-MarkdownReport -ComplexityResults $complexityResults
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -ComplexityResults $complexityResults
+        $reportContent = New-JsonReport -ComplexityResults $complexityResults
     }
 }
 
@@ -528,3 +528,5 @@ foreach ($level in @("TrÃ¨s Ã©levÃ©e", "Ã‰levÃ©e", "Moyenne", "Faible
     $percentage = if ($totalImprovements -gt 0) { [Math]::Round(($complexityLevels[$level] / $totalImprovements) * 100, 1) } else { 0 }
     Write-Host "  $level : $($complexityLevels[$level]) ($percentage%)"
 }
+
+

@@ -1,4 +1,4 @@
-﻿# Script pour creer de nouveaux fichiers dans les bons dossiers
+# Script pour creer de nouveaux fichiers dans les bons dossiers
 # Usage: .\development\scripts\maintenance\new-file.ps1 -Type workflow -Name mon-workflow
 
 
@@ -56,7 +56,7 @@ try {
     [string]$Name
 )
 
-function Create-File {
+function New-File {
     param (
         [string]$Path,
         [string]$Content
@@ -107,7 +107,7 @@ switch ($Type) {
   "connections": {}
 }
 "@
-        Create-File -Path $path -Content $content
+        New-File -Path $path -Content $content
     }
     "script" {
         $path = ".\development\scripts\$Name.ps1"
@@ -121,7 +121,7 @@ Write-Host "=== $Name ===" -ForegroundColor Cyan
 
 Write-Host "`n=== Termine ===" -ForegroundColor Cyan
 "@
-        Create-File -Path $path -Content $content
+        New-File -Path $path -Content $content
     }
     "doc" {
         $path = ".\docs\$Name.md"
@@ -140,7 +140,7 @@ Write-Host "`n=== Termine ===" -ForegroundColor Cyan
 
 [Ajoutez des instructions d'utilisation ici]
 "@
-        Create-File -Path $path -Content $content
+        New-File -Path $path -Content $content
     }
     "config" {
         $path = ".\projet\config\$Name.json"
@@ -154,7 +154,7 @@ Write-Host "`n=== Termine ===" -ForegroundColor Cyan
   }
 }
 "@
-        Create-File -Path $path -Content $content
+        New-File -Path $path -Content $content
     }
     "mcp" {
         $path = ".\src\mcp\batch\mcp-$Name.cmd"
@@ -163,7 +163,7 @@ Write-Host "`n=== Termine ===" -ForegroundColor Cyan
 set N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
 REM Ajoutez vos commandes ici
 "@
-        Create-File -Path $path -Content $content
+        New-File -Path $path -Content $content
     }
     "test" {
         $path = ".\development\testing\tests\$Name.ps1"
@@ -177,7 +177,7 @@ Write-Host "=== Test $Name ===" -ForegroundColor Cyan
 
 Write-Host "`n=== Test termine ===" -ForegroundColor Cyan
 "@
-        Create-File -Path $path -Content $content
+        New-File -Path $path -Content $content
     }
 }
 
@@ -190,3 +190,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }
+

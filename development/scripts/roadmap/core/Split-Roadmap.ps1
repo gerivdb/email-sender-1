@@ -1,4 +1,4 @@
-﻿# Split-Roadmap.ps1
+# Split-Roadmap.ps1
 # Script pour sÃ©parer une roadmap volumineuse en fichiers distincts : actif et complÃ©tÃ©
 # Tout en prÃ©servant le fichier original
 
@@ -260,7 +260,7 @@ function Split-RoadmapContent {
     }
 }
 
-function Archive-CompletedSections {
+function Compress-CompletedSections {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -386,7 +386,7 @@ function Split-Roadmap {
                 New-Item -Path $SectionsPath -ItemType Directory -Force | Out-Null
             }
 
-            Archive-CompletedSections -Sections $result.Sections -ArchivePath $SectionsPath
+            Compress-CompletedSections -Sections $result.Sections -ArchivePath $SectionsPath
         }
 
         return $true
@@ -411,3 +411,4 @@ if ($success) {
 } else {
     Write-Log "Ã‰chec de la sÃ©paration de la roadmap." -Level Error
 }
+

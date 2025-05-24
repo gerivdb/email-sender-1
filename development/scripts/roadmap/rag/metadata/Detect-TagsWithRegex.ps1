@@ -105,7 +105,7 @@ function Get-TasksFromContent {
 }
 
 # Fonction pour détecter les tags dans les tâches
-function Detect-TagsInTasks {
+function Find-TagsInTasks {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -468,7 +468,7 @@ function Invoke-TagDetection {
         }
         
         # Détecter les tags dans les tâches
-        $tasksWithTags = Detect-TagsInTasks -Tasks $tasks -TagFormats $tagFormats -TagTypes $TagTypes
+        $tasksWithTags = Find-TagsInTasks -Tasks $tasks -TagFormats $tagFormats -TagTypes $TagTypes
         
         # Formater les résultats
         $output = Format-DetectionResults -Tasks $tasksWithTags -Format $OutputFormat -IncludeTaskContent:$IncludeTaskContent
@@ -493,3 +493,4 @@ function Invoke-TagDetection {
 
 # Exécuter la fonction principale
 Invoke-TagDetection -FilePath $FilePath -Content $Content -TagTypes $TagTypes -ConfigPath $ConfigPath -OutputPath $OutputPath -OutputFormat $OutputFormat -IncludeTaskContent:$IncludeTaskContent -Force:$Force
+

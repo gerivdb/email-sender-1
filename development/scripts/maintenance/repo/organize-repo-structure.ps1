@@ -1,4 +1,4 @@
-﻿# Script pour organiser la structure du dÃ©pÃ´t
+# Script pour organiser la structure du dÃ©pÃ´t
 # Ce script organise les fichiers selon leur nature, type et usage
 
 # DÃ©finition des dossiers principaux
@@ -275,7 +275,7 @@ function Move-FilesAccordingToRules {
 }
 
 # Fonction pour dÃ©placer les dossiers MCP
-function Organize-McpFolders {
+function Set-McpFolders {
     # DÃ©placer le contenu de mcp-gdrive vers mcp\gdrive
     if (Test-Path -Path "mcp-gdrive") {
         $files = Get-ChildItem -Path "mcp-gdrive" -File
@@ -318,7 +318,7 @@ function Organize-McpFolders {
 }
 
 # Fonction pour dÃ©placer le contenu du dossier cmd Ã  la racine
-function Organize-CmdFolder {
+function Set-CmdFolder {
     if (Test-Path -Path "cmd") {
         $files = Get-ChildItem -Path "cmd" -File
         foreach ($file in $files) {
@@ -356,10 +356,10 @@ Write-Host "DÃ©but de l'organisation de la structure du dÃ©pÃ´t..." -Foreg
 Move-FilesAccordingToRules
 
 # Organiser les dossiers MCP
-Organize-McpFolders
+Set-McpFolders
 
 # Organiser le dossier cmd
-Organize-CmdFolder
+Set-CmdFolder
 
 Write-Host "`nOrganisation de la structure du dÃ©pÃ´t terminÃ©e avec succÃ¨s!" -ForegroundColor Green
 
@@ -372,3 +372,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

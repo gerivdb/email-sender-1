@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     RÃ©organise le dÃ©pÃ´t selon le standard dÃ©fini
@@ -275,7 +275,7 @@ function Get-FileDestination {
 }
 
 # Fonction pour crÃ©er la structure de dossiers
-function Create-FolderStructure {
+function New-FolderStructure {
     # DÃ©finition des dossiers principaux
     $mainFolders = @(
         "scripts",
@@ -348,7 +348,7 @@ function Create-FolderStructure {
 }
 
 # Fonction pour migrer les fichiers
-function Migrate-Files {
+function Move-Files {
     # Obtenir tous les fichiers Ã  la racine et dans les dossiers non standards
     $excludedDirs = @(
         "scripts",
@@ -455,7 +455,7 @@ function Migrate-Files {
 }
 
 # Fonction pour nettoyer les dossiers vides
-function Clean-EmptyFolders {
+function Clear-EmptyFolders {
     $emptyFolders = @()
     $foldersToExclude = @(".git", "node_modules")
     
@@ -507,15 +507,15 @@ function Main {
     
     # CrÃ©er la structure de dossiers
     Write-Log -Message "CrÃ©ation de la structure de dossiers..." -Level "INFO"
-    Create-FolderStructure
+    New-FolderStructure
     
     # Migrer les fichiers
     Write-Log -Message "Migration des fichiers..." -Level "INFO"
-    Migrate-Files
+    Move-Files
     
     # Nettoyer les dossiers vides
     Write-Log -Message "Nettoyage des dossiers vides..." -Level "INFO"
-    Clean-EmptyFolders
+    Clear-EmptyFolders
     
     # Afficher le rÃ©sumÃ©
     Write-Log -Message "RÃ©organisation du dÃ©pÃ´t terminÃ©e." -Level "SUCCESS"
@@ -529,3 +529,5 @@ try {
     Write-Log -Message "Erreur lors de la rÃ©organisation du dÃ©pÃ´t: $_" -Level "ERROR"
     exit 1
 }
+
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests d'extraction AST avec des scripts PowerShell complexes.
 
@@ -330,7 +330,7 @@ class UserManager {
 }
 
 # Fonction pour dÃ©montrer l'utilisation des classes
-function Demo-UserManagement {
+function Show-UserManagement {
     param (
         [string]$ExportPath = "C:\Temp\users.csv"
     )
@@ -368,7 +368,7 @@ function Demo-UserManagement {
 }
 
 # Appeler la fonction de dÃ©monstration
-Demo-UserManagement
+Show-UserManagement
 '@
 
 # Script complexe 2: Configuration DSC
@@ -721,3 +721,4 @@ Write-Host "`n"
 Test-ComplexScript -ScriptName "Script avec workflow PowerShell" -ScriptContent $workflowScript -ScriptType "Workflow"
 
 Write-Host "`n=== Tous les tests sur les scripts complexes sont terminÃ©s ===" -ForegroundColor Green
+

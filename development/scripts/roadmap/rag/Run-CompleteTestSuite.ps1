@@ -1,4 +1,4 @@
-# Run-CompleteTestSuite.ps1
+# Start-CompleteTestSuite.ps1
 # Script tout-en-un pour exécuter la suite complète de tests du système RAG de roadmaps
 # Version: 1.0
 # Date: 2025-05-15
@@ -303,7 +303,7 @@ if (`$true -eq `$$($GenerateReport.IsPresent)) {
 }
 
 # Fonction principale
-function Run-CompleteTestSuite {
+function Start-CompleteTestSuite {
     param (
         [string]$TestType,
         [string]$VenvPath,
@@ -391,4 +391,5 @@ function Run-CompleteTestSuite {
 }
 
 # Exécuter la fonction principale
-Run-CompleteTestSuite -TestType $TestType -VenvPath $VenvPath -QdrantUrl $QdrantUrl -QdrantContainerName $QdrantContainerName -Force:$Force -SkipQdrantCheck:$SkipQdrantCheck -SkipVenvSetup:$SkipVenvSetup -NoReport:$NoReport
+Start-CompleteTestSuite -TestType $TestType -VenvPath $VenvPath -QdrantUrl $QdrantUrl -QdrantContainerName $QdrantContainerName -Force:$Force -SkipQdrantCheck:$SkipQdrantCheck -SkipVenvSetup:$SkipVenvSetup -NoReport:$NoReport
+

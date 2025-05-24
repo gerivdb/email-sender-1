@@ -1,4 +1,4 @@
-# Infer-TaskMetadata.ps1
+# Get-TaskMetadata.ps1
 # Script pour inférer des métadonnées à partir du contenu des tâches dans les fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -112,7 +112,7 @@ function Get-TasksFromContent {
 }
 
 # Fonction pour inférer la priorité des tâches
-function Infer-TaskPriority {
+function Get-TaskPriority {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -203,7 +203,7 @@ function Infer-TaskPriority {
 }
 
 # Fonction pour inférer la complexité des tâches
-function Infer-TaskComplexity {
+function Get-TaskComplexity {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -294,7 +294,7 @@ function Infer-TaskComplexity {
 }
 
 # Fonction pour inférer la catégorie des tâches
-function Infer-TaskCategory {
+function Get-TaskCategory {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -391,7 +391,7 @@ function Infer-TaskCategory {
 }
 
 # Fonction pour inférer les dépendances entre les tâches
-function Infer-TaskDependencies {
+function Get-TaskDependencies {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -602,7 +602,7 @@ function Format-InferredMetadataOutput {
 }
 
 # Fonction principale
-function Infer-TaskMetadata {
+function Get-TaskMetadata {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -643,22 +643,22 @@ function Infer-TaskMetadata {
     
     # Inférer les métadonnées demandées
     if ($InferPriority) {
-        $tasks = Infer-TaskPriority -Tasks $tasks
+        $tasks = Get-TaskPriority -Tasks $tasks
         Write-Log "Inférence de la priorité terminée." -Level "Info"
     }
     
     if ($InferComplexity) {
-        $tasks = Infer-TaskComplexity -Tasks $tasks
+        $tasks = Get-TaskComplexity -Tasks $tasks
         Write-Log "Inférence de la complexité terminée." -Level "Info"
     }
     
     if ($InferCategory) {
-        $tasks = Infer-TaskCategory -Tasks $tasks
+        $tasks = Get-TaskCategory -Tasks $tasks
         Write-Log "Inférence de la catégorie terminée." -Level "Info"
     }
     
     if ($InferDependencies) {
-        $tasks = Infer-TaskDependencies -Tasks $tasks
+        $tasks = Get-TaskDependencies -Tasks $tasks
         Write-Log "Inférence des dépendances terminée." -Level "Info"
     }
     
@@ -683,5 +683,6 @@ function Infer-TaskMetadata {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Infer-TaskMetadata -FilePath $FilePath -Content $Content -InferPriority:$InferPriority -InferComplexity:$InferComplexity -InferCategory:$InferCategory -InferDependencies:$InferDependencies -OutputPath $OutputPath -OutputFormat $OutputFormat
+    Get-TaskMetadata -FilePath $FilePath -Content $Content -InferPriority:$InferPriority -InferComplexity:$InferComplexity -InferCategory:$InferCategory -InferDependencies:$InferDependencies -OutputPath $OutputPath -OutputFormat $OutputFormat
 }
+

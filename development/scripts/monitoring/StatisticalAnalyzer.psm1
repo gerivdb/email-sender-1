@@ -203,7 +203,7 @@ function Invoke-StatisticalAnalysis {
         param($analyzer, $metrics, $startTime, $endTime)
 
         # Fonction pour analyser les tendances
-        function Analyze-Trend {
+        function Test-Trend {
             param($metricData, $metricName, $unit)
 
             # Convertir les données en séries temporelles
@@ -306,7 +306,7 @@ function Invoke-StatisticalAnalysis {
         }
 
         # Fonction pour détecter les valeurs aberrantes
-        function Detect-Outliers {
+        function Find-Outliers {
             param($metricData, $metricName, $unit, $sensitivity)
 
             # Extraire les valeurs
@@ -376,7 +376,7 @@ function Invoke-StatisticalAnalysis {
         }
 
         # Fonction pour analyser les corrélations
-        function Analyze-Correlation {
+        function Test-Correlation {
             param($metricsData, $units)
 
             $metricNames = $metricsData.Keys
@@ -513,18 +513,18 @@ function Invoke-StatisticalAnalysis {
 
             # Analyser les tendances
             if ($analyzer.AnalysisTypes -contains "Trend") {
-                $results[$metricName]["Trend"] = Analyze-Trend -metricData $metricData -metricName $metricName -unit $unit
+                $results[$metricName]["Trend"] = Test-Trend -metricData $metricData -metricName $metricName -unit $unit
             }
 
             # Détecter les valeurs aberrantes
             if ($analyzer.AnalysisTypes -contains "Outlier") {
-                $results[$metricName]["Outlier"] = Detect-Outliers -metricData $metricData -metricName $metricName -unit $unit -sensitivity $analyzer.Sensitivity
+                $results[$metricName]["Outlier"] = Find-Outliers -metricData $metricData -metricName $metricName -unit $unit -sensitivity $analyzer.Sensitivity
             }
         }
 
         # Analyser les corrélations
         if ($analyzer.AnalysisTypes -contains "Correlation") {
-            $results["Correlation"] = Analyze-Correlation -metricsData $metrics.Metrics -units $metrics.Units
+            $results["Correlation"] = Test-Correlation -metricsData $metrics.Metrics -units $metrics.Units
         }
 
         # Créer l'objet résultat final
@@ -683,3 +683,4 @@ function Get-AnalysisResults {
 # Exporter les fonctions du module
 Export-ModuleMember -Function New-StatisticalAnalyzer, Invoke-StatisticalAnalysis,
 Get-AnalysisResults
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     SystÃ¨me de journalisation centralisÃ©e pour les scripts PowerShell.
 
@@ -135,7 +135,7 @@ function Initialize-Logger {
                 $logFile = Get-Item -Path $LogFilePath
                 if ($logFile.Length -gt ($MaxLogFileSizeMB * 1MB)) {
                     # Effectuer une rotation des fichiers journaux
-                    Rotate-LogFiles -LogFilePath $LogFilePath -MaxLogFileCount $MaxLogFileCount
+                    Move-LogFiles -LogFilePath $LogFilePath -MaxLogFileCount $MaxLogFileCount
                 }
             }
             
@@ -193,7 +193,7 @@ function Initialize-Logger {
 }
 
 # Fonction pour effectuer une rotation des fichiers journaux
-function Rotate-LogFiles {
+function Move-LogFiles {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -527,3 +527,4 @@ Export-ModuleMember -Function Initialize-Logger, Close-Logger, Write-LogDebug, W
 $MyInvocation.MyCommand.ScriptBlock.Module.OnRemove = {
     Close-Logger
 }
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests the performance of different parallel processing approaches.
 .DESCRIPTION
@@ -52,7 +52,7 @@ Write-Host "Processing file `$logPath..."
 Write-Host "Configuration loaded from `$configPath"
 
 # Function with hardcoded paths and missing error handling
-function Process-Data {
+function Invoke-Data {
     param(`$inputFile)
 
     `$outputPath = "E:\Output\processed$i.csv"
@@ -61,8 +61,7 @@ function Process-Data {
     Write-Host "Data processed and saved to `$outputPath"
 }
 
-# Call the function
-Process-Data -inputFile "C:\Data\input$i.txt"
+# Call the function Invoke-Data -inputFile "C:\Data\input$i.txt"
 "@
 
     Set-Content -Path $filePath -Value $scriptContent -Force
@@ -393,3 +392,4 @@ Write-Host "`nCleaning up test files..."
 Remove-Item -Path $testDir -Recurse -Force
 
 Write-Host "Performance test completed."
+

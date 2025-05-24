@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests unitaires pour le module d'optimisation
 .DESCRIPTION
@@ -262,7 +262,7 @@ Write-Host "Final result: $result"
 
 # Dead code
 <#
-function Unused-Function {
+function Get-Function {
     param (
         [string]$Parameter
     )
@@ -271,7 +271,7 @@ function Unused-Function {
 }
 
 $unusedVar = "unused"
-Unused-Function -Parameter $unusedVar
+Get-Function -Parameter $unusedVar
 #>
 '@
 
@@ -428,3 +428,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

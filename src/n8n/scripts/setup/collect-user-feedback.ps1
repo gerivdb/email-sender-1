@@ -93,7 +93,7 @@ function Get-ProjectPath {
 }
 
 # Fonction pour collecter les retours des utilisateurs
-function Collect-UserFeedback {
+function Get-UserFeedback {
     if (-not $Interactive -and [string]::IsNullOrEmpty($FeedbackFile)) {
         Write-Warning "Mode interactif désactivé et aucun fichier de retours spécifié. Utilisation de données de retours simulées."
         
@@ -277,7 +277,7 @@ function Collect-UserFeedback {
 }
 
 # Fonction pour analyser les retours des utilisateurs
-function Analyze-UserFeedback {
+function Test-UserFeedback {
     param (
         [Parameter(Mandatory=$true)]
         [array]$Feedback
@@ -366,7 +366,7 @@ function Analyze-UserFeedback {
 }
 
 # Fonction pour générer un rapport de satisfaction
-function Generate-SatisfactionReport {
+function New-SatisfactionReport {
     param (
         [Parameter(Mandatory=$true)]
         [array]$Feedback,
@@ -598,7 +598,7 @@ function Start-UserFeedbackCollection {
     }
     
     # Collecter les retours des utilisateurs
-    $feedback = Collect-UserFeedback
+    $feedback = Get-UserFeedback
     
     if (-not $feedback -or $feedback.Count -eq 0) {
         Write-Error "Aucun retour utilisateur collecté"
@@ -606,10 +606,10 @@ function Start-UserFeedbackCollection {
     }
     
     # Analyser les retours des utilisateurs
-    $analysis = Analyze-UserFeedback -Feedback $feedback
+    $analysis = Test-UserFeedback -Feedback $feedback
     
     # Générer un rapport de satisfaction
-    $reportPath = Generate-SatisfactionReport -Feedback $feedback -Analysis $analysis -OutputPath $OutputPath
+    $reportPath = New-SatisfactionReport -Feedback $feedback -Analysis $analysis -OutputPath $OutputPath
     
     # Afficher le résultat
     if ($reportPath) {
@@ -623,3 +623,4 @@ function Start-UserFeedbackCollection {
 
 # Exécuter la collecte des retours
 Start-UserFeedbackCollection
+

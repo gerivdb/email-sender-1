@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script de test pour le systÃ¨me d'apprentissage des erreurs PowerShell.
 .DESCRIPTION
@@ -22,7 +22,7 @@ Import-Module $modulePath -Force
 Initialize-ErrorLearningSystem
 
 # Fonction pour gÃ©nÃ©rer une erreur
-function Generate-Error {
+function New-Error {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -130,7 +130,7 @@ Write-Host "GÃ©nÃ©ration de $NumErrors erreurs..." -ForegroundColor Cyan
 for ($i = 1; $i -le $NumErrors; $i++) {
     $errorType = Get-Random -Minimum 1 -Maximum 11
     Write-Host "GÃ©nÃ©ration de l'erreur $i (type $errorType)..." -ForegroundColor Yellow
-    Generate-Error -ErrorType $errorType
+    New-Error -ErrorType $errorType
 }
 
 Write-Host "GÃ©nÃ©ration d'erreurs terminÃ©e." -ForegroundColor Green
@@ -159,3 +159,4 @@ if ($GenerateDashboard) {
 }
 
 Write-Host "`nTest terminÃ©." -ForegroundColor Green
+

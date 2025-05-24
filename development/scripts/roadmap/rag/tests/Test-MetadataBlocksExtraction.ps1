@@ -85,7 +85,7 @@ def extract_metadata(content):
 Et voici un exemple de bloc de code PowerShell :
 
 ```powershell
-function Extract-Metadata {
+function Export-Metadata {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -350,3 +350,4 @@ function Start-MetadataBlocksTest {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Start-MetadataBlocksTest -TestFilePath $TestFilePath -GenerateReport:$GenerateReport
 }
+

@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le script Repair-PSScriptAnalyzerIssues.ps1.
@@ -55,14 +55,14 @@ function Test-NullComparison {
         Set-Content -Path $nullComparisonPath -Value $nullComparisonScript -Force
 
         $unapprovedVerbScript = @'
-function Fix-Problem {
+function Repair-Problem {
     param($issue)
 
     # Corriger le problÃ¨me
     return "Fixed: $issue"
 }
 
-function Analyze-Data {
+function Test-Data {
     param($data)
 
     # Analyser les donnÃ©es
@@ -157,8 +157,8 @@ function Test-AutomaticVariable {
             # VÃ©rifier que les corrections ont Ã©tÃ© appliquÃ©es
             $correctedContent | Should -Match 'function Repair-Problem'
             $correctedContent | Should -Match 'function Test-Data'
-            $correctedContent | Should -Not -Match 'function Fix-Problem'
-            $correctedContent | Should -Not -Match 'function Analyze-Data'
+            $correctedContent | Should -Not -Match 'function Repair-Problem'
+            $correctedContent | Should -Not -Match 'function Test-Data'
         }
     }
 
@@ -266,3 +266,4 @@ function Test-AutomaticVariable {
 
 # ExÃ©cuter les tests
 Invoke-Pester -Path $PSCommandPath -Output Detailed
+

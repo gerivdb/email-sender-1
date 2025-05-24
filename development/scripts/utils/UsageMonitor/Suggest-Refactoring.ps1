@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     SuggÃ¨re des refactorisations intelligentes basÃ©es sur l'analyse d'usage.
 .DESCRIPTION
@@ -49,7 +49,7 @@ function Write-Log {
 }
 
 # Fonction pour analyser la complexitÃ© du code
-function Analyze-CodeComplexity {
+function Test-CodeComplexity {
     param (
         [string]$ScriptPath
     )
@@ -89,7 +89,7 @@ function Analyze-CodeComplexity {
 }
 
 # Fonction pour gÃ©nÃ©rer des suggestions de refactorisation
-function Generate-RefactoringSuggestions {
+function New-RefactoringSuggestions {
     param (
         [PSCustomObject]$UsageStats,
         [hashtable]$ComplexityData
@@ -224,7 +224,7 @@ function Generate-RefactoringSuggestions {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport HTML
-function Generate-HtmlReport {
+function New-HtmlReport {
     param (
         [PSCustomObject[]]$Suggestions,
         [string]$OutputPath
@@ -531,7 +531,7 @@ $complexityData = @{}
 
 foreach ($scriptPath in $scriptsToAnalyze) {
     Write-Log "Analyse de la complexitÃ© du code pour: $(Split-Path -Path $scriptPath -Leaf)" -Level "INFO"
-    $complexity = Analyze-CodeComplexity -ScriptPath $scriptPath
+    $complexity = Test-CodeComplexity -ScriptPath $scriptPath
     
     if ($complexity) {
         $complexityData[$scriptPath] = $complexity
@@ -541,11 +541,11 @@ foreach ($scriptPath in $scriptsToAnalyze) {
 Write-Log "Analyse de la complexitÃ© terminÃ©e pour $($complexityData.Count) scripts" -Level "INFO"
 
 # GÃ©nÃ©rer des suggestions de refactorisation
-$suggestions = Generate-RefactoringSuggestions -UsageStats $usageStats -ComplexityData $complexityData
+$suggestions = New-RefactoringSuggestions -UsageStats $usageStats -ComplexityData $complexityData
 Write-Log "Suggestions de refactorisation gÃ©nÃ©rÃ©es: $($suggestions.Count) suggestions" -Level "INFO"
 
 # GÃ©nÃ©rer un rapport HTML
-$reportPath = Generate-HtmlReport -Suggestions $suggestions -OutputPath $OutputPath
+$reportPath = New-HtmlReport -Suggestions $suggestions -OutputPath $OutputPath
 Write-Log "Rapport de suggestions gÃ©nÃ©rÃ©: $reportPath" -Level "SUCCESS"
 
 # GÃ©nÃ©rer un rapport JSON
@@ -557,3 +557,4 @@ Write-Log "Analyse pour les suggestions de refactorisation terminÃ©e." -Level 
 
 # Ouvrir le rapport HTML
 Start-Process $reportPath
+

@@ -13,11 +13,11 @@
 #>
 
 # Importer les fonctions et variables des parties précédentes
-. "$PSScriptRoot\verify-workflows-part1.ps1"
-. "$PSScriptRoot\verify-workflows-part2.ps1"
+. "$PSScriptRoot\Confirm-Workflows-part1.ps1"
+. "$PSScriptRoot\Confirm-Workflows-part2.ps1"
 
 # Fonction principale pour vérifier la présence des workflows
-function Verify-Workflows {
+function Confirm-Workflows {
     param (
         [Parameter(Mandatory=$false)]
         [string]$WorkflowFolder = $script:CommonParams.WorkflowFolder,
@@ -211,4 +211,5 @@ function Verify-Workflows {
 }
 
 # Exporter les fonctions pour les autres parties du script
-Export-ModuleMember -Function Verify-Workflows
+Export-ModuleMember -function Confirm-Workflows
+

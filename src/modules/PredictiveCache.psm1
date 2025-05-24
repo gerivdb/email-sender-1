@@ -68,13 +68,13 @@ function Initialize-PredictiveCache {
     $script:PredictionThreshold = $PredictionThreshold
     
     # Charger les modèles existants
-    Load-UsagePatterns
+    Import-UsagePatterns
     
     Write-Verbose "Cache prédictif initialisé. Activé: $Enabled, Taille max: $($MaxCacheSize / 1MB) MB"
 }
 
 # Fonction pour charger les modèles de prédiction
-function Load-UsagePatterns {
+function Import-UsagePatterns {
     [CmdletBinding()]
     param ()
     
@@ -541,3 +541,4 @@ function Register-N8nCacheHook {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Initialize-PredictiveCache, Set-PredictiveCache, Get-PredictiveCache, Remove-PredictiveCache, Register-N8nCacheHook
+

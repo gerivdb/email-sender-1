@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     RÃ©organise les dossiers development/tools et development/scripts/utils.
 
@@ -15,7 +15,7 @@
 #>
 
 # Fonction principale
-function Reorganize-ToolsUtils {
+function Set-ToolsUtils {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param()
     
@@ -386,5 +386,6 @@ Les fichiers de ce dossier ont Ã©tÃ© migrÃ©s vers les sous-dossiers suivan
 }
 
 # Appel de la fonction principale
-Reorganize-ToolsUtils
+Set-ToolsUtils
+
 

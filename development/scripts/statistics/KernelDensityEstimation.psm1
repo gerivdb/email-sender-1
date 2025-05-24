@@ -3566,7 +3566,7 @@ function Get-KernelDensityEstimation {
     # Utiliser les options avancées si spécifiées
     if ($null -ne $AdvancedOptions) {
         # Appliquer les options avancées
-        $result = Use-KDEAdvancedOptions -Data $Data -Options $AdvancedOptions -Bandwidth $Bandwidth -KernelFunction $kernelFunction -EvaluationPoints $EvaluationPoints
+        $result = Invoke-KDEAdvancedOptions -Data $Data -Options $AdvancedOptions -Bandwidth $Bandwidth -KernelFunction $kernelFunction -EvaluationPoints $EvaluationPoints
 
         # Normaliser les estimations de densité si demandé
         if ($Normalize -and $AdvancedOptions.OutputFormat -ne "Raw") {
@@ -4076,7 +4076,7 @@ function Get-KDEAdvancedOptions {
 .OUTPUTS
     PSCustomObject
 #>
-function Use-KDEAdvancedOptions {
+function Invoke-KDEAdvancedOptions {
     [CmdletBinding()]
     [OutputType([PSCustomObject])]
     param (
@@ -4307,3 +4307,4 @@ function Use-KDEAdvancedOptions {
 
 # Exporter les fonctions publiques
 Export-ModuleMember -Function Get-GaussianKernel, Get-GaussianKernelDensity, Get-EpanechnikovKernel, Get-EpanechnikovKernelDensity, Get-TriangularKernel, Get-TriangularKernelDensity, Get-OptimalKernel, Get-OptimalKernelDensity, Get-SilvermanBandwidth, Get-ScottBandwidth, Get-LeaveOneOutCVBandwidth, Get-KFoldCVBandwidth, Get-OptimizedCVBandwidth, Get-BandwidthMethodScores, Get-DataCharacteristics, Get-OptimalBandwidthMethod, Get-KernelDensityEstimation, Get-KDEAdvancedOptions
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Optimise dynamiquement la parallÃ©lisation des scripts PowerShell.
 .DESCRIPTION
@@ -78,7 +78,7 @@ function Get-SystemInfo {
 }
 
 # Fonction pour calculer le nombre optimal de threads
-function Calculate-OptimalThreads {
+function Measure-OptimalThreads {
     param (
         [PSCustomObject]$SystemInfo,
         [PSCustomObject]$UsageStats
@@ -100,7 +100,7 @@ function Calculate-OptimalThreads {
 }
 
 # Fonction pour analyser les dÃ©pendances entre les tÃ¢ches
-function Analyze-TaskDependencies {
+function Test-TaskDependencies {
     param (
         [PSCustomObject]$UsageStats
     )
@@ -144,7 +144,7 @@ function Analyze-TaskDependencies {
 }
 
 # Fonction pour gÃ©nÃ©rer une configuration de parallÃ©lisation optimisÃ©e
-function Generate-ParallelizationConfig {
+function New-ParallelizationConfig {
     param (
         [int]$OptimalThreads,
         [hashtable]$TaskDependencies,
@@ -211,7 +211,7 @@ function Generate-ParallelizationConfig {
 }
 
 # Fonction pour appliquer la configuration de parallÃ©lisation
-function Apply-ParallelizationConfig {
+function Set-ParallelizationConfig {
     param (
         [hashtable]$Config,
         [string]$ConfigPath
@@ -323,18 +323,20 @@ Write-Log "  - Charge processeur: $($systemInfo.ProcessorLoadPercent)%" -Level "
 Write-Log "  - MÃ©moire disponible: $($systemInfo.AvailableMemoryPercent)%" -Level "INFO"
 
 # Calculer le nombre optimal de threads
-$optimalThreads = Calculate-OptimalThreads -SystemInfo $systemInfo -UsageStats $usageStats
+$optimalThreads = Measure-OptimalThreads -SystemInfo $systemInfo -UsageStats $usageStats
 Write-Log "Nombre optimal de threads calculÃ©: $optimalThreads" -Level "INFO"
 
 # Analyser les dÃ©pendances entre les tÃ¢ches
-$taskDependencies = Analyze-TaskDependencies -UsageStats $usageStats
+$taskDependencies = Test-TaskDependencies -UsageStats $usageStats
 Write-Log "DÃ©pendances entre les tÃ¢ches analysÃ©es: $($taskDependencies.Count) scripts avec dÃ©pendances" -Level "INFO"
 
 # GÃ©nÃ©rer la configuration de parallÃ©lisation
-$parallelizationConfig = Generate-ParallelizationConfig -OptimalThreads $optimalThreads -TaskDependencies $taskDependencies -UsageStats $usageStats
+$parallelizationConfig = New-ParallelizationConfig -OptimalThreads $optimalThreads -TaskDependencies $taskDependencies -UsageStats $usageStats
 Write-Log "Configuration de parallÃ©lisation gÃ©nÃ©rÃ©e" -Level "INFO"
 
 # Appliquer la configuration
-Apply-ParallelizationConfig -Config $parallelizationConfig -ConfigPath $ConfigPath
+Set-ParallelizationConfig -Config $parallelizationConfig -ConfigPath $ConfigPath
 
 Write-Log "Optimisation de la parallÃ©lisation terminÃ©e." -Level "TITLE"
+
+

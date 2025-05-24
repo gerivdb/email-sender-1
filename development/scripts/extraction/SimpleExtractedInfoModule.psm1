@@ -289,7 +289,7 @@ function Save-ExtractedInfoToFile {
     }
 }
 
-function Load-ExtractedInfoFromFile {
+function Import-ExtractedInfoFromFile {
     [CmdletBinding()]
     [OutputType([hashtable])]
     param (
@@ -389,8 +389,9 @@ Export-ModuleMember -Function @(
     'ConvertTo-ExtractedInfoJson',
     'ConvertFrom-ExtractedInfoJson',
     'Save-ExtractedInfoToFile',
-    'Load-ExtractedInfoFromFile',
+    'Import-ExtractedInfoFromFile',
     
     # Validation functions
     'Test-ExtractedInfo'
 )
+

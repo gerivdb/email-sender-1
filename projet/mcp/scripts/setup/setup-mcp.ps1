@@ -54,7 +54,7 @@ function Write-Log {
     Write-Host "[$timestamp] [$Level] $Message" -ForegroundColor $color
 }
 
-function Create-Directory {
+function New-Directory {
     param (
         [string]$Path
     )
@@ -124,7 +124,7 @@ try {
 
     foreach ($dir in $directories) {
         $path = Join-Path -Path $mcpRoot -ChildPath $dir
-        Create-Directory -Path $path
+        New-Directory -Path $path
     }
 
     # Étape 2: Installer les dépendances
@@ -225,3 +225,4 @@ try {
     Write-Log "Erreur lors de la configuration des serveurs MCP: $_" -Level "ERROR"
     exit 1
 }
+

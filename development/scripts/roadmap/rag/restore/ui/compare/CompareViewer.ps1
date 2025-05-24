@@ -74,7 +74,7 @@ function Show-SideBySideComparison {
     }
     
     # Fonction pour tronquer une chaîne à une largeur donnée
-    function Truncate-String {
+    function Limit-String {
         param (
             [Parameter(Mandatory = $true)]
             [string]$String,
@@ -98,9 +98,9 @@ function Show-SideBySideComparison {
     $name1 = if ($point1.PSObject.Properties.Match("Name").Count) { $point1.Name } else { "Point 1" }
     $name2 = if ($point2.PSObject.Properties.Match("Name").Count) { $point2.Name } else { "Point 2" }
     
-    Write-Host (Truncate-String -String $name1) -NoNewline -ForegroundColor Yellow
+    Write-Host (Limit-String -String $name1) -NoNewline -ForegroundColor Yellow
     Write-Host " | " -NoNewline -ForegroundColor DarkGray
-    Write-Host (Truncate-String -String $name2) -ForegroundColor Yellow
+    Write-Host (Limit-String -String $name2) -ForegroundColor Yellow
     
     # Afficher une ligne de séparation
     Write-Host ("-" * $columnWidth) -NoNewline -ForegroundColor DarkGray
@@ -132,15 +132,15 @@ function Show-SideBySideComparison {
         if ($HighlightDifferences) {
             # Mettre en évidence les différences
             Write-Host "  " -NoNewline
-            Write-Host (Truncate-String -String $value1) -NoNewline -ForegroundColor Red
+            Write-Host (Limit-String -String $value1) -NoNewline -ForegroundColor Red
             Write-Host " | " -NoNewline -ForegroundColor DarkGray
-            Write-Host (Truncate-String -String $value2) -ForegroundColor Red
+            Write-Host (Limit-String -String $value2) -ForegroundColor Red
         } else {
             # Affichage normal
             Write-Host "  " -NoNewline
-            Write-Host (Truncate-String -String $value1) -NoNewline -ForegroundColor DarkGray
+            Write-Host (Limit-String -String $value1) -NoNewline -ForegroundColor DarkGray
             Write-Host " | " -NoNewline -ForegroundColor DarkGray
-            Write-Host (Truncate-String -String $value2) -ForegroundColor DarkGray
+            Write-Host (Limit-String -String $value2) -ForegroundColor DarkGray
         }
     }
     
@@ -324,3 +324,4 @@ function Show-ChangeStatistics {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Show-SideBySideComparison, Show-DifferenceHighlighting, Show-ChangeStatistics
+

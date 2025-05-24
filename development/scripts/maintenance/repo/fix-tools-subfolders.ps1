@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Corrige les noms des sous-dossiers du dossier development/tools.
 
@@ -15,7 +15,7 @@
 #>
 
 # Fonction principale
-function Fix-ToolsSubfolders {
+function Repair-ToolsSubfolders {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param()
     
@@ -127,4 +127,5 @@ function Fix-ToolsSubfolders {
 }
 
 # Appel de la fonction principale
-Fix-ToolsSubfolders
+Repair-ToolsSubfolders
+

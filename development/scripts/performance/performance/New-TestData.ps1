@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     GÃ©nÃ¨re un ensemble de fichiers de test PowerShell de diffÃ©rentes tailles.
@@ -79,7 +79,7 @@ $mediumTemplate = @"
 .SYNOPSIS Script moyen {0}
 #>
 param([string]`$InputParam = "Default")
-function Process-MediumTask{
+function Invoke-MediumTask{
     param([int]`$LoopCount = 5)
     Write-Verbose "Traitement moyen {0} - EntrÃ©e: `$InputParam"
     foreach (`$i in 1..`$LoopCount) {
@@ -88,7 +88,7 @@ function Process-MediumTask{
     }
     return "Medium {0} Done"
 }
-Process-MediumTask
+Invoke-MediumTask
 "@
 
 $largeTemplate = @"
@@ -192,3 +192,4 @@ Write-Host "  Grands fichiers : $LargeFilesCount"
 
 # Retourner le chemin du dossier contenant les fichiers gÃ©nÃ©rÃ©s
 return $testFilesPath
+

@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     GÃ©nÃ¨re des rapports Ã  partir du journal de la roadmap.
@@ -78,7 +78,7 @@ function Get-AllEntries {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     $entries = Get-AllEntries
     
     # Trier les entrÃ©es par ID
@@ -199,8 +199,8 @@ $(
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport HTML
-function Generate-HtmlReport {
-    $markdownPath = Generate-MarkdownReport
+function New-HtmlReport {
+    $markdownPath = New-MarkdownReport
     
     # VÃ©rifier si le module MarkdownPS est installÃ©
     if (-not (Get-Module -ListAvailable -Name MarkdownPS)) {
@@ -378,8 +378,8 @@ function Generate-HtmlReport {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport PDF
-function Generate-PdfReport {
-    $htmlPath = Generate-HtmlReport
+function New-PdfReport {
+    $htmlPath = New-HtmlReport
     
     # VÃ©rifier si wkhtmltopdf est installÃ©
     $wkhtmltopdf = "C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
@@ -408,18 +408,18 @@ $reportPath = $null
 
 switch ($Format) {
     "Markdown" {
-        $reportPath = Generate-MarkdownReport
+        $reportPath = New-MarkdownReport
     }
     "HTML" {
-        $reportPath = Generate-HtmlReport
+        $reportPath = New-HtmlReport
     }
     "PDF" {
-        $reportPath = Generate-PdfReport
+        $reportPath = New-PdfReport
     }
     "All" {
-        $markdownPath = Generate-MarkdownReport
-        $htmlPath = Generate-HtmlReport
-        $pdfPath = Generate-PdfReport
+        $markdownPath = New-MarkdownReport
+        $htmlPath = New-HtmlReport
+        $pdfPath = New-PdfReport
         
         # Utiliser le chemin HTML comme chemin de rapport par dÃ©faut
         $reportPath = $htmlPath
@@ -432,3 +432,4 @@ if ($OpenReport -and $reportPath -and (Test-Path -Path $reportPath)) {
 }
 
 Write-Host "`nGÃ©nÃ©ration des rapports terminÃ©e avec succÃ¨s." -ForegroundColor Green
+

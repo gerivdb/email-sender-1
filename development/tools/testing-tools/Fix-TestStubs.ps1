@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Corrige les stubs dans les tests rÃ©els.
@@ -26,7 +26,7 @@ param(
 )
 
 # Fonction pour corriger les stubs dans un fichier de test
-function Fix-TestStubsInFile {
+function Repair-TestStubsInFile {
     param (
         [Parameter(Mandatory = $true)]
         [string]$FilePath
@@ -189,8 +189,9 @@ else {
 
 # Corriger les stubs dans chaque fichier de test
 foreach ($file in $testFiles) {
-    Fix-TestStubsInFile -FilePath $file
+    Repair-TestStubsInFile -FilePath $file
 }
 
 Write-Host "`nLes stubs ont Ã©tÃ© corrigÃ©s dans tous les fichiers de test." -ForegroundColor Green
 Write-Host "ExÃ©cutez les tests pour vÃ©rifier si les problÃ¨mes ont Ã©tÃ© rÃ©solus." -ForegroundColor Green
+

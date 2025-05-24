@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Process Manager - Gestionnaire central des processus et gestionnaires du systÃ¨me.
 
@@ -313,7 +313,7 @@ function Register-Manager {
 }
 
 # Fonction pour dÃ©couvrir automatiquement les gestionnaires
-function Discover-Managers {
+function Find-Managers {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $false)]
@@ -403,7 +403,7 @@ function Discover-Managers {
 }
 
 # Fonction pour lister les gestionnaires enregistrÃ©s
-function List-Managers {
+function Get-Managers {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -453,7 +453,7 @@ function List-Managers {
 }
 
 # Fonction pour exÃ©cuter une commande sur un gestionnaire
-function Run-ManagerCommand {
+function Start-ManagerCommand {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true)]
@@ -572,7 +572,7 @@ function Get-ManagerStatus {
 }
 
 # Fonction pour configurer un gestionnaire
-function Configure-Manager {
+function Set-Manager {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true)]
@@ -685,11 +685,11 @@ switch ($Command) {
             $discoverParams.SearchPaths = $SearchPaths
         }
 
-        Discover-Managers @discoverParams
+        Find-Managers @discoverParams
     }
 
     "List" {
-        List-Managers -Detailed
+        Get-Managers -Detailed
     }
 
     "Run" {
@@ -706,7 +706,7 @@ switch ($Command) {
             }
         }
 
-        Run-ManagerCommand -ManagerName $ManagerName -Command $ManagerCommand -Parameters $params
+        Start-ManagerCommand -ManagerName $ManagerName -Command $ManagerCommand -Parameters $params
     }
 
     "Status" {
@@ -737,6 +737,8 @@ switch ($Command) {
             $configParams.Path = $ManagerPath
         }
 
-        Configure-Manager @configParams
+        Set-Manager @configParams
     }
 }
+
+

@@ -1,4 +1,4 @@
-﻿# Run-Tests.ps1
+# Run-Tests.ps1
 # Script pour tester automatiquement le systÃƒÂ¨me de dÃƒÂ©tection des tÃƒÂ¢ches
 
 
@@ -76,7 +76,7 @@ if (-not (Test-Path -Path $processConversationPath)) {
 }
 
 # Fonction pour extraire les cas de test du fichier
-function Extract-TestCases {
+function Export-TestCases {
     param (
         [string]$FilePath
     )
@@ -104,7 +104,7 @@ function Extract-TestCases {
 }
 
 # Fonction pour exÃƒÂ©cuter un test
-function Run-Test {
+function Start-Test {
     param (
         [hashtable]$TestCase,
         [switch]$AddToRoadmap,
@@ -158,7 +158,7 @@ function Run-Test {
 }
 
 # Fonction pour gÃƒÂ©nÃƒÂ©rer un rapport de test
-function Generate-TestReport {
+function New-TestReport {
     param (
         [array]$TestResults
     )
@@ -205,7 +205,7 @@ function Main {
     Write-Host ""
     
     # Extraire les cas de test
-    $testCases = Extract-TestCases -FilePath $testCasesPath
+    $testCases = Export-TestCases -FilePath $testCasesPath
     
     if ($testCases.Count -eq 0) {
         Write-Error "Aucun cas de test trouvÃƒÂ© dans le fichier '$testCasesPath'."
@@ -219,13 +219,13 @@ function Main {
     $testResults = @()
     
     foreach ($testCase in $testCases) {
-        $result = Run-Test -TestCase $testCase -AddToRoadmap:$AddToRoadmap -Verbose:$Verbose
+        $result = Start-Test -TestCase $testCase -AddToRoadmap:$AddToRoadmap -Verbose:$Verbose
         $testResults += $result
         Write-Host ""
     }
     
     # GÃƒÂ©nÃƒÂ©rer et sauvegarder le rapport de test
-    $report = Generate-TestReport -TestResults $testResults
+    $report = New-TestReport -TestResults $testResults
     $report | Set-Content -Path $testResultsPath
     
     # Afficher le rÃƒÂ©sumÃƒÂ©
@@ -249,3 +249,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }
+

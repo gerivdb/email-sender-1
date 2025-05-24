@@ -34,7 +34,7 @@ $n8nConfigPath = Join-Path -Path $configPath -ChildPath "n8n-config.json"
 $envPath = Join-Path -Path $n8nPath -ChildPath ".env"
 
 # Fonction pour créer un dossier s'il n'existe pas
-function Ensure-FolderExists {
+function Confirm-FolderExists {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Path
@@ -73,7 +73,7 @@ $n8nFolders = @(
 )
 
 foreach ($folder in $n8nFolders) {
-    Ensure-FolderExists -Path (Join-Path -Path $rootPath -ChildPath $folder)
+    Confirm-FolderExists -Path (Join-Path -Path $rootPath -ChildPath $folder)
 }
 
 # Vérifier si n8n est installé
@@ -180,3 +180,4 @@ Write-Host "Script de démarrage créé: $startScriptPath"
 
 Write-Host "`n=== Installation terminée ===" -ForegroundColor Green
 Write-Host "Pour démarrer n8n, exécutez: $startScriptPath"
+

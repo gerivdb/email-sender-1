@@ -1,4 +1,4 @@
-# Extract-PriorityAttributes.ps1
+# Export-PriorityAttributes.ps1
 # Script pour extraire les attributs de priorité et criticité des tâches dans les fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -380,7 +380,7 @@ function Format-PriorityAttributesOutput {
 }
 
 # Fonction principale
-function Extract-PriorityAttributes {
+function Export-PriorityAttributes {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -427,4 +427,5 @@ function Extract-PriorityAttributes {
 }
 
 # Exécuter la fonction principale avec les paramètres fournis
-Extract-PriorityAttributes -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat
+Export-PriorityAttributes -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat
+

@@ -249,7 +249,7 @@ function Update-Feedback {
 }
 
 # Fonction pour analyser les feedbacks
-function Analyze-Feedbacks {
+function Test-Feedbacks {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -303,7 +303,7 @@ function Analyze-Feedbacks {
 }
 
 # Fonction pour identifier les opportunités d'amélioration
-function Identify-ImprovementOpportunities {
+function Find-ImprovementOpportunities {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -356,4 +356,6 @@ function Identify-ImprovementOpportunities {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Submit-Feedback, Get-Feedbacks, Update-Feedback, Analyze-Feedbacks, Identify-ImprovementOpportunities
+Export-ModuleMember -Function Submit-Feedback, Get-Feedbacks, Update-Feedback, Test-Feedbacks, Find-ImprovementOpportunities
+
+

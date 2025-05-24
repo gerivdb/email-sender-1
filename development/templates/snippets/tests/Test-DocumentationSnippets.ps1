@@ -40,7 +40,7 @@ if (-not (Test-Path -Path $tempDir)) {
 }
 
 # Fonction pour remplacer les placeholders par des valeurs de test
-function Replace-Placeholders {
+function Set-Placeholders {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -76,7 +76,7 @@ function Test-Snippet {
         Write-Host "  Erreur : Le snippet n'a pas de corps" -ForegroundColor Red
         return $false
     }
-    $text = Replace-Placeholders -Lines $Snippet.body
+    $text = Set-Placeholders -Lines $Snippet.body
 
     # Déterminer l'extension de fichier en fonction du type de snippet
     $extension = if ($Name -like "*PowerShell*") {
@@ -131,3 +131,4 @@ if (Test-Path -Path $tempDir) {
     Remove-Item -Path $tempDir -Recurse -Force
     Write-Verbose "Dossier temporaire supprimé : $tempDir"
 }
+

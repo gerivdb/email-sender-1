@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Fonctions pour la rÃ©cupÃ©ration et l'analyse des propriÃ©tÃ©s hÃ©ritÃ©es dans les types .NET.
 .DESCRIPTION
@@ -41,7 +41,7 @@ function Get-TypeInheritanceTree {
     )
 
     # Fonction rÃ©cursive pour construire l'arbre
-    function Build-InheritanceTree {
+    function New-InheritanceTree {
         param (
             [type]$CurrentType,
             [int]$CurrentDepth = 0,
@@ -72,7 +72,7 @@ function Get-TypeInheritanceTree {
 
         # Ajouter le type de base s'il existe
         if ($null -ne $CurrentType.BaseType -and $CurrentType.BaseType -ne [object]) {
-            $baseNode = Build-InheritanceTree -CurrentType $CurrentType.BaseType -CurrentDepth ($CurrentDepth + 1) -VisitedTypes $VisitedTypes
+            $baseNode = New-InheritanceTree -CurrentType $CurrentType.BaseType -CurrentDepth ($CurrentDepth + 1) -VisitedTypes $VisitedTypes
             if ($null -ne $baseNode) {
                 $node.BaseType = $baseNode
                 $node.Children += $baseNode
@@ -94,7 +94,7 @@ function Get-TypeInheritanceTree {
                 }
 
                 if ($isDirectlyImplemented) {
-                    $interfaceNode = Build-InheritanceTree -CurrentType $interface -CurrentDepth ($CurrentDepth + 1) -VisitedTypes $VisitedTypes
+                    $interfaceNode = New-InheritanceTree -CurrentType $interface -CurrentDepth ($CurrentDepth + 1) -VisitedTypes $VisitedTypes
                     if ($null -ne $interfaceNode) {
                         $node.Interfaces += $interfaceNode
                         $node.Children += $interfaceNode
@@ -108,7 +108,7 @@ function Get-TypeInheritanceTree {
 
     # Construire l'arbre d'hÃ©ritage
     $visitedTypes = New-Object System.Collections.Generic.HashSet[type]
-    $tree = Build-InheritanceTree -CurrentType $Type -VisitedTypes $visitedTypes
+    $tree = New-InheritanceTree -CurrentType $Type -VisitedTypes $visitedTypes
 
     return $tree
 }
@@ -1170,3 +1170,4 @@ function Merge-TypePropertiesWithRules {
 }
 
 #endregion
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse les contraintes d'un fichier de configuration.
 .DESCRIPTION
@@ -125,15 +125,15 @@ function Get-ConfigurationConstraints {
             }
 
             # Extraire les contraintes du schÃ©ma
-            $result = Extract-SchemaConstraints -Schema $schema -Result $result
+            $result = Export-SchemaConstraints -Schema $schema -Result $result
         }
 
         # Extraire les contraintes implicites
-        $result = Extract-ImplicitConstraints -Config $config -Result $result
+        $result = Export-ImplicitConstraints -Config $config -Result $result
 
         # Valider les valeurs si demandÃ©
         if ($ValidateValues) {
-            $result = Validate-ConfigurationValues -Config $config -Constraints $result -Result $result
+            $result = Test-ConfigurationValues -Config $config -Constraints $result -Result $result
         }
 
         return $result
@@ -143,7 +143,7 @@ function Get-ConfigurationConstraints {
     }
 }
 
-function Extract-SchemaConstraints {
+function Export-SchemaConstraints {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -159,7 +159,7 @@ function Extract-SchemaConstraints {
     # VÃ©rifier si le schÃ©ma est au format JSON Schema
     if ($Schema.ContainsKey('$schema') -or $Schema.ContainsKey('type') -or $Schema.ContainsKey('properties')) {
         # Traiter le schÃ©ma JSON Schema
-        $Result = Extract-JsonSchemaConstraints -Schema $Schema -Result $Result -Prefix $Prefix
+        $Result = Export-JsonSchemaConstraints -Schema $Schema -Result $Result -Prefix $Prefix
     }
     # Sinon, traiter comme un schÃ©ma personnalisÃ©
     else {
@@ -215,7 +215,7 @@ function Extract-SchemaConstraints {
 
                 # Si la valeur est un hashtable ou un PSCustomObject, analyser rÃ©cursivement
                 if ($value -is [hashtable] -or $value -is [PSCustomObject]) {
-                    $Result = Extract-SchemaConstraints -Schema $value -Result $Result -Prefix $fullKey
+                    $Result = Export-SchemaConstraints -Schema $value -Result $Result -Prefix $fullKey
                 }
                 # Si la valeur est un tableau, analyser chaque Ã©lÃ©ment
                 elseif ($value -is [array]) {
@@ -223,7 +223,7 @@ function Extract-SchemaConstraints {
                         $item = $value[$i]
 
                         if ($item -is [hashtable] -or $item -is [PSCustomObject]) {
-                            $Result = Extract-SchemaConstraints -Schema $item -Result $Result -Prefix "$fullKey[$i]"
+                            $Result = Export-SchemaConstraints -Schema $item -Result $Result -Prefix "$fullKey[$i]"
                         }
                     }
                 }
@@ -234,7 +234,7 @@ function Extract-SchemaConstraints {
     return $Result
 }
 
-function Extract-JsonSchemaConstraints {
+function Export-JsonSchemaConstraints {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -325,12 +325,12 @@ function Extract-JsonSchemaConstraints {
 
             # Traiter les propriÃ©tÃ©s imbriquÃ©es
             if ($property.ContainsKey('properties')) {
-                $Result = Extract-JsonSchemaConstraints -Schema $property -Result $Result -Prefix $fullKey
+                $Result = Export-JsonSchemaConstraints -Schema $property -Result $Result -Prefix $fullKey
             }
 
             # Traiter les Ã©lÃ©ments de tableau
             if ($property.ContainsKey('items')) {
-                $Result = Extract-JsonSchemaConstraints -Schema $property.items -Result $Result -Prefix "$fullKey.items"
+                $Result = Export-JsonSchemaConstraints -Schema $property.items -Result $Result -Prefix "$fullKey.items"
             }
         }
     }
@@ -387,7 +387,7 @@ function Extract-JsonSchemaConstraints {
                 }
                 # Si la dÃ©pendance est un objet, c'est un schÃ©ma de dÃ©pendance
                 elseif ($dependency -is [hashtable] -or $dependency -is [PSCustomObject]) {
-                    $Result = Extract-JsonSchemaConstraints -Schema $dependency -Result $Result -Prefix $fullKey
+                    $Result = Export-JsonSchemaConstraints -Schema $dependency -Result $Result -Prefix $fullKey
                 }
             }
         }
@@ -413,7 +413,7 @@ function Extract-JsonSchemaConstraints {
     return $Result
 }
 
-function Extract-ImplicitConstraints {
+function Export-ImplicitConstraints {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -528,7 +528,7 @@ function Extract-ImplicitConstraints {
     return $Result
 }
 
-function Validate-ConfigurationValues {
+function Test-ConfigurationValues {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -659,3 +659,4 @@ function Validate-ConfigurationValues {
 
     return $Result
 }
+

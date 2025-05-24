@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests d'intÃ©gration entre les diffÃ©rents modes.
 
@@ -107,7 +107,7 @@ function Get-Data {
     return "DonnÃ©es de `$Source"
 }
 
-function Process-Data {
+function Invoke-Data {
     param (
         [object]`$Data
     )
@@ -141,7 +141,7 @@ RÃ©cupÃ¨re des donnÃ©es Ã  partir d'une source.
 Get-Data -Source "Fichier"
 ```
 
-### Process-Data
+### Invoke-Data
 
 Traite un ensemble de donnÃ©es.
 
@@ -152,7 +152,7 @@ Traite un ensemble de donnÃ©es.
 #### Exemple
 
 ```powershell
-Process-Data -Data @("DonnÃ©e1", "DonnÃ©e2")
+Invoke-Data -Data @("DonnÃ©e1", "DonnÃ©e2")
 ```
 "@ | Set-Content -Path (Join-Path -Path $testProjectPath -ChildPath "docs\README.md") -Encoding UTF8
 
@@ -427,3 +427,4 @@ if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
 } else {
     Write-Host "Tests terminÃ©s. Utilisez Invoke-Pester pour exÃ©cuter les tests avec le framework Pester." -ForegroundColor Yellow
 }
+

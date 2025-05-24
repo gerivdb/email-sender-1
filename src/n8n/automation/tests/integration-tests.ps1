@@ -143,7 +143,7 @@ function Send-TestNotification {
 }
 
 # Fonction pour vérifier si un dossier existe et le créer si nécessaire
-function Ensure-FolderExists {
+function Confirm-FolderExists {
     param (
         [Parameter(Mandatory=$true)]
         [string]$FolderPath
@@ -168,7 +168,7 @@ function Ensure-FolderExists {
 #region Fonctions de test
 
 # Fonction pour charger les scénarios de test
-function Load-TestScenarios {
+function Import-TestScenarios {
     param (
         [Parameter(Mandatory=$true)]
         [string]$ScenariosFile,
@@ -207,7 +207,7 @@ function Load-TestScenarios {
 }
 
 # Fonction pour exécuter un scénario de test
-function Execute-TestScenario {
+function Invoke-TestScenario {
     param (
         [Parameter(Mandatory=$true)]
         [PSCustomObject]$Scenario
@@ -231,7 +231,7 @@ function Execute-TestScenario {
     
     # Exécuter chaque étape du scénario
     foreach ($step in $Scenario.steps) {
-        $stepResult = Execute-TestStep -Step $step
+        $stepResult = Invoke-TestStep -Step $step
         $scenarioResult.StepResults += $stepResult
         
         # Si l'étape a échoué et que continueOnFailure est false, arrêter le scénario
@@ -254,7 +254,7 @@ function Execute-TestScenario {
 }
 
 # Fonction pour exécuter une étape de test
-function Execute-TestStep {
+function Invoke-TestStep {
     param (
         [Parameter(Mandatory=$true)]
         [PSCustomObject]$Step
@@ -313,7 +313,7 @@ function Execute-TestStep {
 #region Fonctions de rapport
 
 # Fonction pour générer un rapport JSON
-function Generate-JsonReport {
+function New-JsonReport {
     param (
         [Parameter(Mandatory=$true)]
         [array]$Results,
@@ -325,7 +325,7 @@ function Generate-JsonReport {
     try {
         # Créer le dossier parent s'il n'existe pas
         $reportFolder = Split-Path -Path $ReportFile -Parent
-        Ensure-FolderExists -FolderPath $reportFolder | Out-Null
+        Confirm-FolderExists -FolderPath $reportFolder | Out-Null
         
         # Créer le rapport
         $report = @{
@@ -349,7 +349,7 @@ function Generate-JsonReport {
 }
 
 # Fonction pour générer un rapport HTML
-function Generate-HtmlReport {
+function New-HtmlReport {
     param (
         [Parameter(Mandatory=$true)]
         [array]$Results,
@@ -361,7 +361,7 @@ function Generate-HtmlReport {
     try {
         # Créer le dossier parent s'il n'existe pas
         $reportFolder = Split-Path -Path $HtmlReportFile -Parent
-        Ensure-FolderExists -FolderPath $reportFolder | Out-Null
+        Confirm-FolderExists -FolderPath $reportFolder | Out-Null
         
         # Calculer les statistiques
         $totalScenarios = $Results.Count
@@ -603,7 +603,7 @@ function Generate-HtmlReport {
 function Main {
     # Vérifier si le dossier de log existe
     $logFolder = Split-Path -Path $LogFile -Parent
-    Ensure-FolderExists -FolderPath $logFolder | Out-Null
+    Confirm-FolderExists -FolderPath $logFolder | Out-Null
     
     # Afficher les informations de démarrage
     Write-Log "=== Tests d'intégration n8n ===" -Level "INFO"
@@ -612,7 +612,7 @@ function Main {
     Write-Log "Filtre de priorité: $($PriorityFilter ? $PriorityFilter : "Aucun")" -Level "INFO"
     
     # Charger les scénarios de test
-    $scenarios = Load-TestScenarios -ScenariosFile $ScenariosFile -ScenarioFilter $ScenarioFilter -PriorityFilter $PriorityFilter
+    $scenarios = Import-TestScenarios -ScenariosFile $ScenariosFile -ScenarioFilter $ScenarioFilter -PriorityFilter $PriorityFilter
     
     if ($scenarios.Count -eq 0) {
         Write-Log "Aucun scénario de test trouvé." -Level "WARNING"
@@ -625,13 +625,13 @@ function Main {
     $results = @()
     
     foreach ($scenario in $scenarios) {
-        $result = Execute-TestScenario -Scenario $scenario
+        $result = Invoke-TestScenario -Scenario $scenario
         $results += $result
     }
     
     # Générer les rapports
-    Generate-JsonReport -Results $results -ReportFile $ReportFile
-    Generate-HtmlReport -Results $results -HtmlReportFile $HtmlReportFile
+    New-JsonReport -Results $results -ReportFile $ReportFile
+    New-HtmlReport -Results $results -HtmlReportFile $HtmlReportFile
     
     # Calculer les statistiques
     $totalScenarios = $results.Count
@@ -681,3 +681,4 @@ function Main {
 
 # Exécuter la fonction principale
 Main
+

@@ -1,4 +1,4 @@
-﻿# Module d'apprentissage des modÃ¨les de code pour le Script Manager
+# Module d'apprentissage des modÃ¨les de code pour le Script Manager
 # Ce module apprend les modÃ¨les de code utilisÃ©s dans les scripts
 # Author: Script Manager
 # Version: 1.0
@@ -47,7 +47,7 @@ function Start-CodeLearning {
         Write-Host "  Apprentissage des modÃ¨les pour les scripts $Type..." -ForegroundColor Yellow
         
         # CrÃ©er un modÃ¨le pour ce type de script
-        $Model = Learn-CodePatterns -Scripts $Scripts -ScriptType $Type
+        $Model = Get-CodePatterns -Scripts $Scripts -ScriptType $Type
         $Models[$Type] = $Model
         
         # Enregistrer le modÃ¨le
@@ -73,7 +73,7 @@ function Start-CodeLearning {
     return $GlobalModel
 }
 
-function Learn-CodePatterns {
+function Get-CodePatterns {
     <#
     .SYNOPSIS
         Apprend les modÃ¨les de code pour un type de script
@@ -84,7 +84,7 @@ function Learn-CodePatterns {
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
-        Learn-CodePatterns -Scripts $scripts -ScriptType "PowerShell"
+        Get-CodePatterns -Scripts $scripts -ScriptType "PowerShell"
     #>
     [CmdletBinding()]
     param (
@@ -130,3 +130,4 @@ function Learn-CodePatterns {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Start-CodeLearning
+

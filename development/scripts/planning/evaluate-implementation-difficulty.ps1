@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Ã‰value la difficultÃ© d'implÃ©mentation des amÃ©liorations.
 
@@ -71,7 +71,7 @@ try {
 }
 
 # Fonction pour Ã©valuer la difficultÃ© d'implÃ©mentation
-function Evaluate-ImplementationDifficulty {
+function Test-ImplementationDifficulty {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -239,7 +239,7 @@ function Evaluate-ImplementationDifficulty {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -402,7 +402,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -426,7 +426,7 @@ foreach ($manager in $improvementsData.Managers) {
     }
     
     foreach ($improvement in $manager.Improvements) {
-        $difficultyEvaluation = Evaluate-ImplementationDifficulty -Improvement $improvement -ManagerName $manager.Name
+        $difficultyEvaluation = Test-ImplementationDifficulty -Improvement $improvement -ManagerName $manager.Name
         
         $improvementEvaluation = [PSCustomObject]@{
             Name = $improvement.Name
@@ -445,10 +445,10 @@ foreach ($manager in $improvementsData.Managers) {
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -EvaluationResults $evaluationResults
+        $reportContent = New-MarkdownReport -EvaluationResults $evaluationResults
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -EvaluationResults $evaluationResults
+        $reportContent = New-JsonReport -EvaluationResults $evaluationResults
     }
 }
 
@@ -491,3 +491,5 @@ foreach ($level in @("TrÃ¨s facile", "Facile", "ModÃ©rÃ©", "Difficile", "T
     $percentage = if ($totalImprovements -gt 0) { [Math]::Round(($difficultyLevels[$level] / $totalImprovements) * 100, 1) } else { 0 }
     Write-Host "  $level : $($difficultyLevels[$level]) ($percentage%)"
 }
+
+

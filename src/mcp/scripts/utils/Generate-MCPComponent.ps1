@@ -123,7 +123,7 @@ function Get-ProjectPath {
 }
 
 # Fonction pour générer un composant
-function Generate-Component {
+function New-Component {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Type
@@ -235,7 +235,7 @@ function Start-ComponentGeneration {
     Write-Info "Génération d'un composant MCP de type '$Type'..."
 
     # Générer le composant
-    $result = Generate-Component -Type $Type
+    $result = New-Component -Type $Type
 
     # Afficher le résultat
     if ($result) {
@@ -265,3 +265,4 @@ function Start-ComponentGeneration {
 
 # Exécuter la génération du composant
 Start-ComponentGeneration
+

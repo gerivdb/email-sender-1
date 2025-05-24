@@ -53,7 +53,7 @@ param (
 )
 
 # Fonction pour charger la configuration
-function Load-Configuration {
+function Import-Configuration {
     param (
         [Parameter(Mandatory=$true)]
         [string]$ConfigFile
@@ -82,7 +82,7 @@ function Load-Configuration {
 }
 
 # Fonction pour charger les métriques
-function Load-DashboardMetrics {
+function Import-DashboardMetrics {
     param (
         [Parameter(Mandatory=$true)]
         [object]$Config,
@@ -129,7 +129,7 @@ function Load-DashboardMetrics {
 }
 
 # Fonction pour générer le tableau de bord
-function Generate-Dashboard {
+function New-Dashboard {
     param (
         [Parameter(Mandatory=$true)]
         [object]$Config,
@@ -189,15 +189,15 @@ function Main {
     Write-Host "Génération du tableau de bord n8n..." -ForegroundColor Cyan
     
     # Charger la configuration
-    $config = Load-Configuration -ConfigFile $ConfigFile
+    $config = Import-Configuration -ConfigFile $ConfigFile
     
     # Charger les métriques
     Write-Host "Collecte des métriques..." -ForegroundColor Cyan
-    $metrics = Load-DashboardMetrics -Config $config
+    $metrics = Import-DashboardMetrics -Config $config
     
     # Générer le tableau de bord
     Write-Host "Génération du tableau de bord..." -ForegroundColor Cyan
-    $dashboardFile = Generate-Dashboard -Config $config -Metrics $metrics -OutputFile $OutputFile -AutoRefreshInterval $AutoRefreshInterval
+    $dashboardFile = New-Dashboard -Config $config -Metrics $metrics -OutputFile $OutputFile -AutoRefreshInterval $AutoRefreshInterval
     
     # Afficher le chemin du fichier de tableau de bord
     Write-Host "Tableau de bord généré: $dashboardFile" -ForegroundColor Green
@@ -222,3 +222,4 @@ function Main {
 if ($MyInvocation.InvocationName -ne ".") {
     Main
 }
+

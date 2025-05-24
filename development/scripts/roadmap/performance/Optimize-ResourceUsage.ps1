@@ -115,7 +115,7 @@ function Enable-IntelligentMemoryManagement {
             }
 
             # Fonction pour libérer la mémoire
-            function Release-Memory {
+            function Publish-Memory {
                 param($AmountToReleaseMB)
 
                 # Forcer le garbage collector
@@ -154,7 +154,7 @@ function Enable-IntelligentMemoryManagement {
                     $amountToReleaseMB = [Math]::Round($memoryBefore.WorkingSetMB * ($Config.MemoryReleasePercentage / 100), 2)
 
                     # Libérer la mémoire
-                    $releaseResult = Release-Memory -AmountToReleaseMB $amountToReleaseMB
+                    $releaseResult = Publish-Memory -AmountToReleaseMB $amountToReleaseMB
 
                     # Mettre à jour les statistiques
                     $Config.MemoryReleaseCount++
@@ -413,7 +413,7 @@ function Enable-PerformanceMonitoring {
             }
 
             # Fonction pour vérifier les alertes
-            function Check-Alerts {
+            function Test-Alerts {
                 param($Metrics, $Thresholds)
 
                 $alerts = @()
@@ -448,7 +448,7 @@ function Enable-PerformanceMonitoring {
                 $Config.Metrics = Update-Metrics -Metrics $Config.Metrics -NewValues $systemMetrics
 
                 # Vérifier les alertes
-                $newAlerts = Check-Alerts -Metrics $Config.Metrics -Thresholds $Config.AlertThresholds
+                $newAlerts = Test-Alerts -Metrics $Config.Metrics -Thresholds $Config.AlertThresholds
                 $Config.Alerts += $newAlerts
 
                 # Ajouter à l'historique
@@ -1108,7 +1108,7 @@ function Enable-TaskPrioritization {
         }
 
         # Fonction pour calculer la priorité d'une tâche
-        function Calculate-TaskPriority {
+        function Measure-TaskPriority {
             param(
                 [Parameter(Mandatory = $true)]
                 [string]$TaskId,
@@ -1192,7 +1192,7 @@ function Enable-TaskPrioritization {
         $prioritizedTasks = @()
 
         foreach ($task in $tasks) {
-            $priority = Calculate-TaskPriority -TaskId $task.Id -Config $config
+            $priority = Measure-TaskPriority -TaskId $task.Id -Config $config
 
             $prioritizedTask = $task.PSObject.Copy()
             $prioritizedTask | Add-Member -MemberType NoteProperty -Name "Priority" -Value $priority -Force
@@ -1221,7 +1221,7 @@ function Enable-TaskPrioritization {
                 $updatedTasks = @()
 
                 foreach ($task in $this.Config.Tasks) {
-                    $priority = Calculate-TaskPriority -TaskId $task.Id -Config $this.Config
+                    $priority = Measure-TaskPriority -TaskId $task.Id -Config $this.Config
 
                     $updatedTask = $task.PSObject.Copy()
                     $updatedTask | Add-Member -MemberType NoteProperty -Name "Priority" -Value $priority -Force
@@ -1259,3 +1259,5 @@ function Enable-TaskPrioritization {
         return $null
     }
 }
+
+

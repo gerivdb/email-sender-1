@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Module pour l'exÃ©cution parallÃ¨le optimisÃ©e des tests de performance.
@@ -277,7 +277,7 @@ function Wait-ParallelTask {
             $script:ActiveJobs.Remove($JobId)
             
             # Traiter la file d'attente si des ressources sont disponibles
-            Process-JobQueue
+            Invoke-JobQueue
             
             return $result
         }
@@ -309,14 +309,14 @@ function Wait-ParallelTask {
         Start-Sleep -Milliseconds 100
         
         # Traiter la file d'attente si des ressources sont disponibles
-        Process-JobQueue
+        Invoke-JobQueue
     }
     
     return $null
 }
 
 # Fonction pour traiter la file d'attente des jobs
-function Process-JobQueue {
+function Invoke-JobQueue {
     [CmdletBinding()]
     param()
     
@@ -486,7 +486,7 @@ function Invoke-ParallelTasks {
                 $completedJobs++
                 
                 # Traiter la file d'attente
-                Process-JobQueue
+                Invoke-JobQueue
             }
             elseif ($jobInfo.Timeout -ne $null -and (Get-Date) -gt $jobInfo.Timeout) {
                 Write-Warning "Timeout atteint pour la tÃ¢che $jobId"
@@ -632,3 +632,4 @@ function Invoke-ParallelPerformanceTests {
 
 # Exporter les fonctions du module
 Export-ModuleMember -Function Initialize-ParallelPool, Invoke-ParallelTask, Wait-ParallelTask, Get-ParallelTaskStatus, Clear-ParallelPool, Invoke-ParallelTasks, Invoke-ParallelPerformanceTests
+

@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Analyse les patterns d'erreurs inÃ©dits dans les scripts PowerShell.
@@ -50,7 +50,7 @@ if (-not (Test-Path -Path $modulePath)) {
 Import-Module $modulePath -Force
 
 # Fonction pour analyser les erreurs Ã  partir d'un fichier de log
-function Analyze-ErrorLog {
+function Test-ErrorLog {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -100,7 +100,7 @@ function Analyze-ErrorLog {
 }
 
 # Fonction pour analyser les erreurs Ã  partir de la variable $Error
-function Analyze-ErrorVariable {
+function Test-ErrorVariable {
     [CmdletBinding()]
     param ()
     
@@ -141,7 +141,7 @@ function Show-InteractiveMenu {
             "1" {
                 $logPath = Read-Host "Entrez le chemin du fichier de log"
                 if (Test-Path -Path $logPath) {
-                    Analyze-ErrorLog -LogPath $logPath
+                    Test-ErrorLog -LogPath $logPath
                 }
                 else {
                     Write-Warning "Fichier non trouvÃ©: $logPath"
@@ -150,7 +150,7 @@ function Show-InteractiveMenu {
                 Read-Host "Appuyez sur EntrÃ©e pour continuer"
             }
             "2" {
-                Analyze-ErrorVariable
+                Test-ErrorVariable
                 Read-Host "Appuyez sur EntrÃ©e pour continuer"
             }
             "3" {
@@ -269,11 +269,11 @@ if ($Interactive) {
 else {
     # Analyser le fichier de log si spÃ©cifiÃ©
     if ($LogPath) {
-        Analyze-ErrorLog -LogPath $LogPath
+        Test-ErrorLog -LogPath $LogPath
     }
     else {
         # Sinon, analyser la variable $Error
-        Analyze-ErrorVariable
+        Test-ErrorVariable
     }
     
     # GÃ©nÃ©rer un rapport d'analyse
@@ -281,3 +281,4 @@ else {
     
     Write-Host "Rapport gÃ©nÃ©rÃ©: $reportPath" -ForegroundColor Green
 }
+

@@ -515,7 +515,7 @@ function New-WithNotionTemplate {
 }
 
 # Fonction pour appliquer un template Notion
-function Use-NotionTemplate {
+function Invoke-NotionTemplate {
     Clear-Host
     Write-Host "=== APPLIQUER UN TEMPLATE NOTION ===" -ForegroundColor Cyan
     Write-Host
@@ -1242,7 +1242,7 @@ while (-not $exit) {
         "3" { Export-WithNotion }
         "4" { Import-WithNotion }
         "5" { New-WithNotionTemplate }
-        "6" { Use-NotionTemplate }
+        "6" { Invoke-NotionTemplate }
         "7" { Get-WithNotionTemplates }
         "8" { Sync-WithGitHub }
         "9" { Sync-WithGitHubProject }
@@ -1258,3 +1258,4 @@ while (-not $exit) {
 }
 
 Write-Host "Au revoir!" -ForegroundColor Cyan
+

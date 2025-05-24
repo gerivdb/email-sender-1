@@ -4,7 +4,7 @@
 # Date: 2025-05-15
 
 # Fonction pour filtrer par type
-function Filter-ByType {
+function Select-ByType {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true)]
@@ -47,7 +47,7 @@ function Filter-ByType {
 }
 
 # Fonction pour filtrer par date
-function Filter-ByDate {
+function Select-ByDate {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true)]
@@ -100,7 +100,7 @@ function Filter-ByDate {
 }
 
 # Fonction pour filtrer par metadonnees
-function Filter-ByMetadata {
+function Select-ByMetadata {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true)]
@@ -203,7 +203,7 @@ function Filter-ByMetadata {
 }
 
 # Fonction pour filtrer par texte
-function Filter-ByText {
+function Select-ByText {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true)]
@@ -321,3 +321,4 @@ function Get-LevenshteinDistance {
     # Retourner la distance
     return $d[$n, $m]
 }
+

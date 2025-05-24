@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse les tendances d'utilisation des scripts.
 .DESCRIPTION
@@ -59,7 +59,7 @@ function Write-Log {
 }
 
 # Fonction pour analyser les tendances d'utilisation
-function Analyze-ScriptUsageTrends {
+function Test-ScriptUsageTrends {
     [CmdletBinding()]
     param (
         [int]$PeriodDays = 30
@@ -309,7 +309,7 @@ function Analyze-ScriptUsageTrends {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport HTML
-function Generate-TrendReport {
+function New-TrendReport {
     param (
         [hashtable]$Trends,
         [string]$OutputPath
@@ -775,11 +775,11 @@ try {
     Write-Log "Moniteur d'utilisation initialisÃ© avec la base de donnÃ©es: $DatabasePath" -Level "SUCCESS"
 
     # Analyser les tendances d'utilisation
-    $trends = Analyze-ScriptUsageTrends -PeriodDays $PeriodDays
+    $trends = Test-ScriptUsageTrends -PeriodDays $PeriodDays
 
     # GÃ©nÃ©rer un rapport si demandÃ©
     if ($GenerateReport) {
-        $reportFile = Generate-TrendReport -Trends $trends -OutputPath $ReportPath
+        $reportFile = New-TrendReport -Trends $trends -OutputPath $ReportPath
 
         # Ouvrir le rapport dans le navigateur par dÃ©faut
         if (Test-Path -Path $reportFile) {
@@ -790,3 +790,4 @@ try {
     Write-Log "Erreur lors de l'exÃ©cution du script: $_" -Level "ERROR"
     exit 1
 }
+

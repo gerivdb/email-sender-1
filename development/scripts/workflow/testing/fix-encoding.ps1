@@ -1,8 +1,8 @@
-﻿# Script pour corriger l'encodage des caractÃ¨res accentuÃ©s dans les fichiers JSON
+# Script pour corriger l'encodage des caractÃ¨res accentuÃ©s dans les fichiers JSON
 # Ce script remplace les sÃ©quences d'Ã©chappement Unicode par les caractÃ¨res accentuÃ©s correspondants
 
 # Fonction pour remplacer les sÃ©quences d'Ã©chappement Unicode par les caractÃ¨res accentuÃ©s
-function Replace-UnicodeEscapes {
+function Set-UnicodeEscapes {
     param (
         [string]$jsonContent
     )
@@ -104,7 +104,7 @@ foreach ($file in $workflowFiles) {
         $content = Get-Content -Path $file.FullName -Raw -Encoding UTF8
         
         # Corriger l'encodage des caractÃ¨res
-        $fixedContent = Replace-UnicodeEscapes -jsonContent $content
+        $fixedContent = Set-UnicodeEscapes -jsonContent $content
         
         # Sauvegarder le fichier corrigÃ©
         $outputPath = Join-Path -Path $outputDir -ChildPath $file.Name
@@ -122,3 +122,4 @@ foreach ($file in $workflowFiles) {
 Write-Host "`nTraitement terminÃ©: $successCount/$($workflowFiles.Count) fichiers corrigÃ©s."
 Write-Host "Les fichiers corrigÃ©s se trouvent dans le rÃ©pertoire: $outputDir"
 Write-Host "`nVous pouvez maintenant importer ces fichiers corrigÃ©s dans n8n."
+

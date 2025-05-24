@@ -66,7 +66,7 @@ function Write-Log {
     Write-Host "[$timestamp] [$Level] $Message" -ForegroundColor $color
 }
 
-function Create-UpdateTask {
+function New-UpdateTask {
     param (
         [string]$ScriptPath,
         [string]$Frequency,
@@ -144,7 +144,7 @@ try {
     
     # Créer la tâche planifiée
     if ($PSCmdlet.ShouldProcess("MCP Servers", "Schedule automatic updates")) {
-        $result = Create-UpdateTask -ScriptPath $updateScript -Frequency $Frequency -DayOfWeek $DayOfWeek -Time $Time
+        $result = New-UpdateTask -ScriptPath $updateScript -Frequency $Frequency -DayOfWeek $DayOfWeek -Time $Time
         
         if ($result) {
             Write-Log "Mises à jour automatiques des serveurs MCP planifiées avec succès." -Level "SUCCESS"
@@ -158,3 +158,4 @@ try {
     Write-Log "Erreur lors de la planification des mises à jour automatiques des serveurs MCP: $_" -Level "ERROR"
     exit 1
 }
+

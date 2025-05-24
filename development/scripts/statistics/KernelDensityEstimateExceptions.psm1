@@ -213,7 +213,7 @@ class ParallelizationFailedException : KernelDensityEstimationMemoryException {
 }
 
 # Helper function to throw the appropriate exception based on the error code
-function Throw-KernelDensityEstimationException {
+function Write-KernelDensityEstimationException {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -304,4 +304,5 @@ function Throw-KernelDensityEstimationException {
 # Export the exception classes and helper function
 # Note: Classes are not automatically exported with Export-ModuleMember
 # We need to use the -Variable parameter with * to export all variables, including classes
-Export-ModuleMember -Function Throw-KernelDensityEstimationException -Variable *
+Export-ModuleMember -function Write-KernelDensityEstimationException -Variable *
+

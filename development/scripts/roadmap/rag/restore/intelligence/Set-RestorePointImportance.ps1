@@ -444,7 +444,7 @@ function Set-RestorePointImportance {
 }
 
 # Fonction pour recalculer l'importance de tous les points de restauration
-function Recalculate-AllRestorePointsImportance {
+function Update-AllRestorePointsImportance {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -487,10 +487,11 @@ function Recalculate-AllRestorePointsImportance {
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     if ($RecalculateAll) {
-        Recalculate-AllRestorePointsImportance -Force:$Force
+        Update-AllRestorePointsImportance -Force:$Force
     } elseif ($Recalculate) {
         Set-RestorePointImportance -RestorePointId $RestorePointId -RestorePointPath $RestorePointPath -Importance "Auto" -Force:$Force
     } else {
         Set-RestorePointImportance -RestorePointId $RestorePointId -RestorePointPath $RestorePointPath -Importance $Importance -Reason $Reason -Force:$Force
     }
 }
+

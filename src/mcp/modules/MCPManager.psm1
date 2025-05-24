@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Module de gestion des serveurs MCP (Model Context Protocol).
@@ -472,7 +472,7 @@ function New-MCPConfiguration {
 }
 
 # Fonction pour dÃ©marrer le gestionnaire de serveurs MCP
-function mcp-manager {
+function Invoke-manager {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -911,5 +911,6 @@ function Install-MCPDependencies {
 }
 
 # Exporter les fonctions publiques
-Export-ModuleMember -Function Find-MCPServers, New-MCPConfiguration, mcp-manager, Invoke-MCPCommand, Start-MCPServer, Stop-MCPServer, Install-MCPDependencies
+Export-ModuleMember -Function Find-MCPServers, New-MCPConfiguration, Invoke-manager, Invoke-MCPCommand, Start-MCPServer, Stop-MCPServer, Install-MCPDependencies
+
 

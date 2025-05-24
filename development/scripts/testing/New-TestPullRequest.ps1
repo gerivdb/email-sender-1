@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     GÃ©nÃ¨re des pull requests de test avec diffÃ©rents types de modifications.
@@ -494,7 +494,7 @@ function Remove-ExistingFiles {
 }
 
 # Fonction pour committer les changements
-function Commit-Changes {
+function Submit-Changes {
     param (
         [string]$RepositoryPath,
         [string]$Message
@@ -623,7 +623,7 @@ function New-TestPullRequest {
 
     # Committer les changements
     $commitMessage = "Test PR: $ModificationTypes modifications with $ErrorCount $ErrorTypes errors"
-    $commitResult = Commit-Changes -RepositoryPath $RepositoryPath -Message $commitMessage
+    $commitResult = Submit-Changes -RepositoryPath $RepositoryPath -Message $commitMessage
     if (-not $commitResult) {
         return
     }
@@ -674,3 +674,4 @@ Cette PR ne doit pas Ãªtre fusionnÃ©e en production.
 
 # ExÃ©cuter la fonction principale
 New-TestPullRequest
+

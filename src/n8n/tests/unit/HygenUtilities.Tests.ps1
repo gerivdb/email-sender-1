@@ -60,9 +60,9 @@ Describe "Hygen Utilities Tests" {
             # Modifier le script pour les tests
             $scriptContent = Get-Content -Path $script:testScriptPath -Raw
             
-            # Remplacer la fonction Generate-Component pour les tests
-            $modifiedContent = $scriptContent -replace "function Generate-Component[^}]*}", @"
-function Generate-Component {
+            # Remplacer la fonction New-Component pour les tests
+            $modifiedContent = $scriptContent -replace "function New-Component[^}]*}", @"
+function New-Component {
     param (
         [Parameter(Mandatory=`$true)]
         [string]`$Type
@@ -197,3 +197,4 @@ function Generate-Component {
         }
     }
 }
+

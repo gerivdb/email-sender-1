@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     GÃ©nÃ¨re des fichiers d'Ã©chantillon pour les tests de dÃ©tection de format.
@@ -241,7 +241,7 @@ param(
     [string]`$OutputPath = "output.txt"
 )
 
-function Process-File {
+function Invoke-File {
     param(
         [string]`$Path
     )
@@ -262,7 +262,7 @@ function Process-File {
 }
 
 # Main script
-`$result = Process-File -Path `$InputPath
+`$result = Invoke-File -Path `$InputPath
 if (`$result -ne `$false) {
     Set-Content -Path `$OutputPath -Value `$result
     Write-Host "File processed successfully."
@@ -471,3 +471,4 @@ Write-Host "Fichier d'encodages attendus crÃ©Ã© : $expectedEncodingsPath" -F
 
 Write-Host "`nGÃ©nÃ©ration des fichiers d'Ã©chantillon terminÃ©e." -ForegroundColor Cyan
 Write-Host "Nombre total de fichiers crÃ©Ã©s : $($expectedFormats.Count + $expectedEncodings.Count)" -ForegroundColor Cyan
+

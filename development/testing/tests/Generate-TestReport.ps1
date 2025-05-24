@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     GÃ©nÃ¨re un rapport de tests pour le module MCPClient.
@@ -10,7 +10,7 @@
 .PARAMETER JsonOutputPath
     Chemin du fichier de sortie pour le rapport JSON.
 .EXAMPLE
-    .\Generate-TestReport.ps1 -OutputPath "docs\test_reports\MCP_TestReport.md" -JsonOutputPath "docs\test_reports\MCP_TestReport.json"
+    .\New-TestReport.ps1 -OutputPath "docs\test_reports\MCP_TestReport.md" -JsonOutputPath "docs\test_reports\MCP_TestReport.json"
     GÃ©nÃ¨re un rapport de tests au format Markdown et JSON.
 .NOTES
     Version: 1.0.0
@@ -216,7 +216,7 @@ function Get-CodeCoverageResults {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     param (
         [Parameter(Mandatory = $true)]
         [string]$OutputPath,
@@ -327,7 +327,7 @@ La couverture de code est de $($CodeCoverageResults.CoveragePercentage)%, ce qui
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport JSON
-function Generate-JsonReport {
+function New-JsonReport {
     param (
         [Parameter(Mandatory = $true)]
         [string]$OutputPath,
@@ -397,7 +397,7 @@ function Generate-JsonReport {
 }
 
 # Fonction principale
-function Generate-TestReport {
+function New-TestReport {
     param (
         [Parameter(Mandatory = $true)]
         [string]$OutputPath,
@@ -465,9 +465,10 @@ function Generate-TestReport {
     }
     
     # GÃ©nÃ©rer les rapports
-    Generate-MarkdownReport -OutputPath $OutputPath -UnitTestResults $unitTestResults -IntegrationTestResults $integrationTestResults -PerformanceTestResults $performanceTestResults -CodeCoverageResults $codeCoverageResults
-    Generate-JsonReport -OutputPath $JsonOutputPath -UnitTestResults $unitTestResults -IntegrationTestResults $integrationTestResults -PerformanceTestResults $performanceTestResults -CodeCoverageResults $codeCoverageResults
+    New-MarkdownReport -OutputPath $OutputPath -UnitTestResults $unitTestResults -IntegrationTestResults $integrationTestResults -PerformanceTestResults $performanceTestResults -CodeCoverageResults $codeCoverageResults
+    New-JsonReport -OutputPath $JsonOutputPath -UnitTestResults $unitTestResults -IntegrationTestResults $integrationTestResults -PerformanceTestResults $performanceTestResults -CodeCoverageResults $codeCoverageResults
 }
 
 # ExÃ©cuter la fonction principale
-Generate-TestReport -OutputPath $OutputPath -JsonOutputPath $JsonOutputPath
+New-TestReport -OutputPath $OutputPath -JsonOutputPath $JsonOutputPath
+

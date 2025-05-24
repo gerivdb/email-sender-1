@@ -72,7 +72,7 @@ param (
 )
 
 # Fonction pour générer le HTML des métriques
-function Generate-MetricsHtml {
+function New-MetricsHtml {
     param (
         [Parameter(Mandatory=$true)]
         [object]$Metrics
@@ -98,7 +98,7 @@ function Generate-MetricsHtml {
 }
 
 # Fonction pour générer le script de rafraîchissement automatique
-function Generate-AutoRefreshScript {
+function New-AutoRefreshScript {
     param (
         [Parameter(Mandatory=$true)]
         [int]$Interval
@@ -117,7 +117,7 @@ setTimeout(function() {
 }
 
 # Fonction principale pour générer le HTML du tableau de bord
-function Generate-DashboardHtml {
+function New-DashboardHtml {
     param (
         [Parameter(Mandatory=$true)]
         [string]$TemplateFile,
@@ -156,11 +156,11 @@ function Generate-DashboardHtml {
     $template = Get-Content -Path $TemplateFile -Raw
     
     # Générer le HTML des métriques
-    $serviceMetricsHtml = Generate-MetricsHtml -Metrics $ServiceMetrics.Metrics
-    $performanceMetricsHtml = Generate-MetricsHtml -Metrics $PerformanceMetrics.Metrics
-    $workflowMetricsHtml = Generate-MetricsHtml -Metrics $WorkflowMetrics.Metrics
-    $historyMetricsHtml = Generate-MetricsHtml -Metrics $HistoryMetrics.Metrics
-    $endpointMetricsHtml = Generate-MetricsHtml -Metrics $EndpointMetrics.Metrics
+    $serviceMetricsHtml = New-MetricsHtml -Metrics $ServiceMetrics.Metrics
+    $performanceMetricsHtml = New-MetricsHtml -Metrics $PerformanceMetrics.Metrics
+    $workflowMetricsHtml = New-MetricsHtml -Metrics $WorkflowMetrics.Metrics
+    $historyMetricsHtml = New-MetricsHtml -Metrics $HistoryMetrics.Metrics
+    $endpointMetricsHtml = New-MetricsHtml -Metrics $EndpointMetrics.Metrics
     
     # Générer les données pour les graphiques
     $performanceChartLabels = $PerformanceMetrics.History.Timestamps | ConvertTo-Json
@@ -175,7 +175,7 @@ function Generate-DashboardHtml {
     ) | ConvertTo-Json
     
     # Générer le script de rafraîchissement automatique
-    $autoRefreshScript = Generate-AutoRefreshScript -Interval $AutoRefreshInterval
+    $autoRefreshScript = New-AutoRefreshScript -Interval $AutoRefreshInterval
     
     # Remplacer les variables dans le modèle
     $html = $template
@@ -210,5 +210,6 @@ function Generate-DashboardHtml {
 
 # Si le script est exécuté directement, générer le HTML du tableau de bord
 if ($MyInvocation.InvocationName -ne ".") {
-    Generate-DashboardHtml -TemplateFile $TemplateFile -OutputFile $OutputFile -ServiceMetrics $ServiceMetrics -PerformanceMetrics $PerformanceMetrics -WorkflowMetrics $WorkflowMetrics -HistoryMetrics $HistoryMetrics -EndpointMetrics $EndpointMetrics -EventsMetrics $EventsMetrics -AutoRefreshInterval $AutoRefreshInterval
+    New-DashboardHtml -TemplateFile $TemplateFile -OutputFile $OutputFile -ServiceMetrics $ServiceMetrics -PerformanceMetrics $PerformanceMetrics -WorkflowMetrics $WorkflowMetrics -HistoryMetrics $HistoryMetrics -EndpointMetrics $EndpointMetrics -EventsMetrics $EventsMetrics -AutoRefreshInterval $AutoRefreshInterval
 }
+

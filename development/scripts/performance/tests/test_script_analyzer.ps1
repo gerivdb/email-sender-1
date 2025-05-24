@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour l'analyseur de scripts PowerShell.
@@ -73,7 +73,7 @@ Test-Function -InputString "Hello, World!"
 `$processingEnabled = `$true
 
 # Fonction avec gestion d'erreurs
-function Process-Items {
+function Invoke-Items {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = `$true)]
@@ -131,7 +131,7 @@ function Get-ItemsReport {
 
 # Appel des fonctions
 if (`$processingEnabled) {
-    Process-Items -Count `$maxItems
+    Invoke-Items -Count `$maxItems
     Get-ItemsReport -Items @("Apple", "Banana", "Cherry")
 }
 "@
@@ -283,3 +283,4 @@ Describe "Analyseur de scripts PowerShell" {
         # Nettoyer les fichiers temporaires si nÃ©cessaire
     }
 }
+

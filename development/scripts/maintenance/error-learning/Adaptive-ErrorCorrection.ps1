@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script d'apprentissage adaptatif pour les corrections d'erreurs PowerShell.
 .DESCRIPTION
@@ -48,7 +48,7 @@ if (-not $ModelPath) {
 }
 
 # Fonction pour analyser l'historique des corrections
-function Analyze-CorrectionHistory {
+function Test-CorrectionHistory {
     [CmdletBinding()]
     param ()
     
@@ -128,7 +128,7 @@ function Analyze-CorrectionHistory {
 }
 
 # Fonction pour gÃ©nÃ©rer un modÃ¨le de correction
-function Generate-CorrectionModel {
+function New-CorrectionModel {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -166,7 +166,7 @@ function Generate-CorrectionModel {
 }
 
 # Fonction pour charger un modÃ¨le de correction
-function Load-CorrectionModel {
+function Import-CorrectionModel {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -198,7 +198,7 @@ function Load-CorrectionModel {
 }
 
 # Fonction pour appliquer le modÃ¨le Ã  un script
-function Apply-CorrectionModel {
+function Set-CorrectionModel {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -301,7 +301,7 @@ function Test-CorrectionModel {
     $scriptContent | Out-File -FilePath $tempPath -Encoding utf8
     
     # Appliquer le modÃ¨le Ã  la copie temporaire
-    $result = Apply-CorrectionModel -Model $Model -ScriptPath $tempPath
+    $result = Set-CorrectionModel -Model $Model -ScriptPath $tempPath
     
     # Supprimer la copie temporaire
     Remove-Item -Path $tempPath -Force
@@ -314,10 +314,10 @@ if ($TrainingMode) {
     Write-Host "Mode d'entraÃ®nement activÃ©." -ForegroundColor Cyan
     
     # Analyser l'historique des corrections
-    $correctionPatterns = Analyze-CorrectionHistory
+    $correctionPatterns = Test-CorrectionHistory
     
     # GÃ©nÃ©rer un modÃ¨le
-    $model = Generate-CorrectionModel -CorrectionPatterns $correctionPatterns -ModelPath $ModelPath
+    $model = New-CorrectionModel -CorrectionPatterns $correctionPatterns -ModelPath $ModelPath
     
     Write-Host "EntraÃ®nement terminÃ©." -ForegroundColor Green
 }
@@ -326,10 +326,10 @@ elseif ($GenerateModel) {
     Write-Host "GÃ©nÃ©ration du modÃ¨le de correction..." -ForegroundColor Cyan
     
     # Analyser l'historique des corrections
-    $correctionPatterns = Analyze-CorrectionHistory
+    $correctionPatterns = Test-CorrectionHistory
     
     # GÃ©nÃ©rer un modÃ¨le
-    $model = Generate-CorrectionModel -CorrectionPatterns $correctionPatterns -ModelPath $ModelPath
+    $model = New-CorrectionModel -CorrectionPatterns $correctionPatterns -ModelPath $ModelPath
     
     Write-Host "GÃ©nÃ©ration du modÃ¨le terminÃ©e." -ForegroundColor Green
 }
@@ -338,7 +338,7 @@ elseif ($TestScript) {
     Write-Host "Test du modÃ¨le de correction..." -ForegroundColor Cyan
     
     # Charger le modÃ¨le
-    $model = Load-CorrectionModel -ModelPath $ModelPath
+    $model = Import-CorrectionModel -ModelPath $ModelPath
     
     if ($model) {
         # Tester le modÃ¨le
@@ -360,7 +360,7 @@ else {
     
     # Charger le modÃ¨le s'il existe
     if (Test-Path -Path $ModelPath) {
-        $model = Load-CorrectionModel -ModelPath $ModelPath
+        $model = Import-CorrectionModel -ModelPath $ModelPath
         
         if ($model) {
             Write-Host "ModÃ¨le chargÃ© avec succÃ¨s." -ForegroundColor Green
@@ -369,21 +369,22 @@ else {
             Write-Host "Impossible de charger le modÃ¨le. GÃ©nÃ©ration d'un nouveau modÃ¨le..." -ForegroundColor Yellow
             
             # Analyser l'historique des corrections
-            $correctionPatterns = Analyze-CorrectionHistory
+            $correctionPatterns = Test-CorrectionHistory
             
             # GÃ©nÃ©rer un modÃ¨le
-            $model = Generate-CorrectionModel -CorrectionPatterns $correctionPatterns -ModelPath $ModelPath
+            $model = New-CorrectionModel -CorrectionPatterns $correctionPatterns -ModelPath $ModelPath
         }
     }
     else {
         Write-Host "Aucun modÃ¨le trouvÃ©. GÃ©nÃ©ration d'un nouveau modÃ¨le..." -ForegroundColor Yellow
         
         # Analyser l'historique des corrections
-        $correctionPatterns = Analyze-CorrectionHistory
+        $correctionPatterns = Test-CorrectionHistory
         
         # GÃ©nÃ©rer un modÃ¨le
-        $model = Generate-CorrectionModel -CorrectionPatterns $correctionPatterns -ModelPath $ModelPath
+        $model = New-CorrectionModel -CorrectionPatterns $correctionPatterns -ModelPath $ModelPath
     }
     
     Write-Host "OpÃ©ration terminÃ©e." -ForegroundColor Green
 }
+

@@ -1,4 +1,4 @@
-﻿# Module d'intÃ©gration avec Augment Code
+# Module d'intÃ©gration avec Augment Code
 # Fournit des fonctions pour interagir avec Augment Code
 
 # Importer les dÃ©pendances
@@ -166,7 +166,7 @@ function Initialize-AugmentIntegration {
     & $configurePath @params
 }
 
-function Analyze-AugmentPerformance {
+function Test-AugmentPerformance {
     [CmdletBinding()]
     param (
         [Parameter()]
@@ -189,4 +189,5 @@ Export-ModuleMember -Function Split-AugmentInput
 Export-ModuleMember -Function Measure-AugmentInputSize
 Export-ModuleMember -Function Get-AugmentModeDescription
 Export-ModuleMember -Function Initialize-AugmentIntegration
-Export-ModuleMember -Function Analyze-AugmentPerformance
+Export-ModuleMember -function Test-AugmentPerformance
+

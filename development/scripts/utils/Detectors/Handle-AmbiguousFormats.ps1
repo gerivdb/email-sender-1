@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     GÃ¨re les cas ambigus de dÃ©tection de format.
@@ -28,11 +28,11 @@
     Par dÃ©faut, utilise 'UserFormatChoices.json' dans le mÃªme rÃ©pertoire que ce script.
 
 .EXAMPLE
-    Handle-AmbiguousFormats -FilePath "C:\path\to\file.txt"
+    Invoke-AmbiguousFormats -FilePath "C:\path\to\file.txt"
     DÃ©tecte le format du fichier spÃ©cifiÃ© et gÃ¨re les cas ambigus.
 
 .EXAMPLE
-    Handle-AmbiguousFormats -FilePath "C:\path\to\file.txt" -AutoResolve
+    Invoke-AmbiguousFormats -FilePath "C:\path\to\file.txt" -AutoResolve
     DÃ©tecte le format du fichier spÃ©cifiÃ© et rÃ©sout automatiquement les cas ambigus.
 
 .NOTES
@@ -41,7 +41,7 @@
     Date: 2025-04-11
 #>
 
-function Handle-AmbiguousFormats {
+function Invoke-AmbiguousFormats {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -226,4 +226,5 @@ function Confirm-FormatDetection {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Handle-AmbiguousFormats
+Export-ModuleMember -function Invoke-AmbiguousFormats
+

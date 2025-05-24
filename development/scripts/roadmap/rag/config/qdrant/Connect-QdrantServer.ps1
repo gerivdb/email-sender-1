@@ -197,7 +197,7 @@ function Get-ConnectionFromPool {
 }
 
 # Fonction pour libérer une connexion du pool
-function Release-ConnectionToPool {
+function Publish-ConnectionToPool {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -336,3 +336,4 @@ function Disconnect-QdrantServer {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Connect-QdrantServer -ServerUrl $ServerUrl -ApiKey $ApiKey -Timeout $Timeout -RetryCount $RetryCount -RetryDelay $RetryDelay -UseConnectionPool:$UseConnectionPool -PoolSize $PoolSize -Force:$Force
 }
+

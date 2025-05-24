@@ -72,7 +72,7 @@ $ErrorMessages = @{
 }
 
 # Function to throw a validation error
-function Throw-ValidationError {
+function Write-ValidationError {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -111,18 +111,18 @@ function Test-KDEData {
 
     # Check if data is null or empty
     if ($null -eq $Data -or $Data.Count -eq 0) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.DataNullOrEmpty
+        Write-ValidationError -ErrorCode $ErrorCodes.DataNullOrEmpty
     }
 
     # Check if data has enough points
     if ($Data.Count -lt 2) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.DataTooSmall -Args @($Data.Count)
+        Write-ValidationError -ErrorCode $ErrorCodes.DataTooSmall -Args @($Data.Count)
     }
 
     # Check if data contains NaN or infinity values
     foreach ($value in $Data) {
         if ($value -isnot [ValueType] -and $value -isnot [string]) {
-            Throw-ValidationError -ErrorCode $ErrorCodes.DataNotNumeric
+            Write-ValidationError -ErrorCode $ErrorCodes.DataNotNumeric
         }
 
         if ($value -is [string]) {
@@ -130,24 +130,24 @@ function Test-KDEData {
             try {
                 $doubleValue = [double]$value
             } catch {
-                Throw-ValidationError -ErrorCode $ErrorCodes.DataNotNumeric
+                Write-ValidationError -ErrorCode $ErrorCodes.DataNotNumeric
             }
 
             if ([double]::IsNaN($doubleValue)) {
-                Throw-ValidationError -ErrorCode $ErrorCodes.DataContainsNaN
+                Write-ValidationError -ErrorCode $ErrorCodes.DataContainsNaN
             }
 
             if ([double]::IsInfinity($doubleValue)) {
-                Throw-ValidationError -ErrorCode $ErrorCodes.DataContainsInfinity
+                Write-ValidationError -ErrorCode $ErrorCodes.DataContainsInfinity
             }
         } else {
             # Check if value is NaN or infinity
             if ([double]::IsNaN($value)) {
-                Throw-ValidationError -ErrorCode $ErrorCodes.DataContainsNaN
+                Write-ValidationError -ErrorCode $ErrorCodes.DataContainsNaN
             }
 
             if ([double]::IsInfinity($value)) {
-                Throw-ValidationError -ErrorCode $ErrorCodes.DataContainsInfinity
+                Write-ValidationError -ErrorCode $ErrorCodes.DataContainsInfinity
             }
         }
     }
@@ -169,13 +169,13 @@ function Test-KDEEvaluationPoints {
 
     # Check if evaluation points is null or empty
     if ($null -eq $EvaluationPoints -or $EvaluationPoints.Count -eq 0) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.EvalPointsEmpty
+        Write-ValidationError -ErrorCode $ErrorCodes.EvalPointsEmpty
     }
 
     # Check if evaluation points contain NaN or infinity values
     foreach ($value in $EvaluationPoints) {
         if ($value -isnot [ValueType] -and $value -isnot [string]) {
-            Throw-ValidationError -ErrorCode $ErrorCodes.EvalPointsNotNumeric
+            Write-ValidationError -ErrorCode $ErrorCodes.EvalPointsNotNumeric
         }
 
         if ($value -is [string]) {
@@ -183,24 +183,24 @@ function Test-KDEEvaluationPoints {
             try {
                 $doubleValue = [double]$value
             } catch {
-                Throw-ValidationError -ErrorCode $ErrorCodes.EvalPointsNotNumeric
+                Write-ValidationError -ErrorCode $ErrorCodes.EvalPointsNotNumeric
             }
 
             if ([double]::IsNaN($doubleValue)) {
-                Throw-ValidationError -ErrorCode $ErrorCodes.EvalPointsContainsNaN
+                Write-ValidationError -ErrorCode $ErrorCodes.EvalPointsContainsNaN
             }
 
             if ([double]::IsInfinity($doubleValue)) {
-                Throw-ValidationError -ErrorCode $ErrorCodes.EvalPointsContainsInfinity
+                Write-ValidationError -ErrorCode $ErrorCodes.EvalPointsContainsInfinity
             }
         } else {
             # Check if value is NaN or infinity
             if ([double]::IsNaN($value)) {
-                Throw-ValidationError -ErrorCode $ErrorCodes.EvalPointsContainsNaN
+                Write-ValidationError -ErrorCode $ErrorCodes.EvalPointsContainsNaN
             }
 
             if ([double]::IsInfinity($value)) {
-                Throw-ValidationError -ErrorCode $ErrorCodes.EvalPointsContainsInfinity
+                Write-ValidationError -ErrorCode $ErrorCodes.EvalPointsContainsInfinity
             }
         }
     }
@@ -223,22 +223,22 @@ function Test-KDEBandwidth {
 
     # Check if bandwidth is NaN
     if ([double]::IsNaN($Bandwidth)) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.BandwidthContainsNaN
+        Write-ValidationError -ErrorCode $ErrorCodes.BandwidthContainsNaN
     }
 
     # Check if bandwidth is infinity
     if ([double]::IsInfinity($Bandwidth)) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.BandwidthContainsInfinity
+        Write-ValidationError -ErrorCode $ErrorCodes.BandwidthContainsInfinity
     }
 
     # Check if bandwidth is negative
     if ($Bandwidth -lt 0) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.BandwidthNegative -Args @($Bandwidth)
+        Write-ValidationError -ErrorCode $ErrorCodes.BandwidthNegative -Args @($Bandwidth)
     }
 
     # Check if bandwidth is zero (when not allowed)
     if ($Bandwidth -eq 0 -and -not $AllowZero) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.BandwidthZero
+        Write-ValidationError -ErrorCode $ErrorCodes.BandwidthZero
     }
 
     return $Bandwidth
@@ -255,7 +255,7 @@ function Test-KDEKernelType {
     $validKernelTypes = @("Gaussian", "Epanechnikov", "Triangular", "Uniform")
 
     if ($KernelType -notin $validKernelTypes) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.InvalidKernelType -Args @($KernelType, ($validKernelTypes -join ", "))
+        Write-ValidationError -ErrorCode $ErrorCodes.InvalidKernelType -Args @($KernelType, ($validKernelTypes -join ", "))
     }
 
     return $KernelType
@@ -272,7 +272,7 @@ function Test-KDEMethod {
     $validMethods = @("Silverman", "Scott", "LeaveOneOut", "KFold", "Optimized", "Auto")
 
     if ($Method -notin $validMethods) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.InvalidMethod -Args @($Method, ($validMethods -join ", "))
+        Write-ValidationError -ErrorCode $ErrorCodes.InvalidMethod -Args @($Method, ($validMethods -join ", "))
     }
 
     return $Method
@@ -289,7 +289,7 @@ function Test-KDEObjective {
     $validObjectives = @("Accuracy", "Speed", "Robustness", "Adaptability", "Balanced")
 
     if ($Objective -notin $validObjectives) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.InvalidObjective -Args @($Objective, ($validObjectives -join ", "))
+        Write-ValidationError -ErrorCode $ErrorCodes.InvalidObjective -Args @($Objective, ($validObjectives -join ", "))
     }
 
     return $Objective
@@ -307,11 +307,11 @@ function Test-KDEKFolds {
     )
 
     if ($KFolds -lt 2) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.KFoldsTooSmall -Args @($KFolds)
+        Write-ValidationError -ErrorCode $ErrorCodes.KFoldsTooSmall -Args @($KFolds)
     }
 
     if ($KFolds -gt $DataCount) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.KFoldsTooLarge -Args @($KFolds, $DataCount)
+        Write-ValidationError -ErrorCode $ErrorCodes.KFoldsTooLarge -Args @($KFolds, $DataCount)
     }
 
     return $KFolds
@@ -326,7 +326,7 @@ function Test-KDEMaxIterations {
     )
 
     if ($MaxIterations -lt 1) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.MaxIterationsTooSmall -Args @($MaxIterations)
+        Write-ValidationError -ErrorCode $ErrorCodes.MaxIterationsTooSmall -Args @($MaxIterations)
     }
 
     return $MaxIterations
@@ -345,14 +345,14 @@ function Test-KDEDimensions {
     )
 
     if ($null -eq $Dimensions -or $Dimensions.Count -eq 0) {
-        Throw-ValidationError -ErrorCode $ErrorCodes.DimensionsNotSpecified
+        Write-ValidationError -ErrorCode $ErrorCodes.DimensionsNotSpecified
     }
 
     $availableDimensions = $DataPoint.PSObject.Properties.Name
 
     foreach ($dimension in $Dimensions) {
         if ($dimension -notin $availableDimensions) {
-            Throw-ValidationError -ErrorCode $ErrorCodes.DimensionsNotFound -Args @($dimension, ($availableDimensions -join ", "))
+            Write-ValidationError -ErrorCode $ErrorCodes.DimensionsNotFound -Args @($dimension, ($availableDimensions -join ", "))
         }
     }
 
@@ -360,5 +360,6 @@ function Test-KDEDimensions {
 }
 
 # Export the functions
-Export-ModuleMember -Function Test-KDEData, Test-KDEEvaluationPoints, Test-KDEBandwidth, Test-KDEKernelType, Test-KDEMethod, Test-KDEObjective, Test-KDEKFolds, Test-KDEMaxIterations, Test-KDEDimensions, Throw-ValidationError
+Export-ModuleMember -Function Test-KDEData, Test-KDEEvaluationPoints, Test-KDEBandwidth, Test-KDEKernelType, Test-KDEMethod, Test-KDEObjective, Test-KDEKFolds, Test-KDEMaxIterations, Test-KDEDimensions, Write-ValidationError
 Export-ModuleMember -Variable ErrorCodes, ErrorMessages
+

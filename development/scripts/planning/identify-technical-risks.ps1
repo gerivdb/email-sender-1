@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Identifie les risques techniques des amÃ©liorations.
 
@@ -70,7 +70,7 @@ try {
 }
 
 # Fonction pour identifier les risques techniques
-function Identify-TechnicalRisks {
+function Find-TechnicalRisks {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -251,7 +251,7 @@ function Identify-TechnicalRisks {
 }
 
 # Fonction pour Ã©valuer la criticitÃ© des risques
-function Evaluate-RiskCriticality {
+function Test-RiskCriticality {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -292,7 +292,7 @@ function Evaluate-RiskCriticality {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -403,7 +403,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -441,11 +441,11 @@ foreach ($manager in $improvementsData.Managers) {
         }
         
         # Identifier les risques
-        $risks = Identify-TechnicalRisks -Improvement $improvement -ManagerName $manager.Name -DifficultyLevel $difficultyLevel
+        $risks = Find-TechnicalRisks -Improvement $improvement -ManagerName $manager.Name -DifficultyLevel $difficultyLevel
         
         # Ã‰valuer la criticitÃ© des risques
         foreach ($risk in $risks) {
-            $risk | Add-Member -MemberType NoteProperty -Name "Criticality" -Value (Evaluate-RiskCriticality -Risk $risk)
+            $risk | Add-Member -MemberType NoteProperty -Name "Criticality" -Value (Test-RiskCriticality -Risk $risk)
         }
         
         $improvementRisks = [PSCustomObject]@{
@@ -466,10 +466,10 @@ foreach ($manager in $improvementsData.Managers) {
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -RiskResults $riskResults
+        $reportContent = New-MarkdownReport -RiskResults $riskResults
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -RiskResults $riskResults
+        $reportContent = New-JsonReport -RiskResults $riskResults
     }
 }
 
@@ -519,3 +519,5 @@ foreach ($level in @("Critique", "Ã‰levÃ©e", "Moyenne", "Faible")) {
     $percentage = if ($totalRisks -gt 0) { [Math]::Round(($criticalityLevels[$level] / $totalRisks) * 100, 1) } else { 0 }
     Write-Host "  $level : $($criticalityLevels[$level]) ($percentage%)"
 }
+
+

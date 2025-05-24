@@ -674,7 +674,7 @@ function Get-ExtractedInfoFromMongoDB {
 #endregion
 
 # Exemple d'utilisation
-function Example-StorageIntegration {
+function Show-StorageIntegration {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -748,4 +748,5 @@ function Example-StorageIntegration {
 }
 
 # Exécuter l'exemple
-# Example-StorageIntegration -StorageType "SqlServer"
+# Show-StorageIntegration -StorageType "SqlServer"
+

@@ -56,7 +56,7 @@ function New-DocumentFromMarkdown {
 }
 
 # Fonction pour indexer un repertoire de fichiers markdown
-function Index-MarkdownDirectory {
+function Add-MarkdownDirectory {
     param (
         [string]$DirectoryPath,
         [string]$OutputPath,
@@ -270,7 +270,7 @@ $indexDir = Join-Path -Path $exampleDir -ChildPath "index"
 if (-not (Test-Path -Path $indexDir)) {
     New-Item -Path $indexDir -ItemType Directory | Out-Null
 }
-$documents = Index-MarkdownDirectory -DirectoryPath $exampleDir -OutputPath $indexDir
+$documents = Add-MarkdownDirectory -DirectoryPath $exampleDir -OutputPath $indexDir
 Write-Output ""
 
 # Exemple 3: Rechercher dans l'index
@@ -320,3 +320,4 @@ Write-Output "Nettoyage des fichiers d'exemple..."
 Remove-Item -Path $exampleDir -Recurse -Force
 
 Write-Output "Tous les exemples sont termines."
+

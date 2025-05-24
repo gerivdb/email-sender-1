@@ -1,4 +1,4 @@
-# Normalize-DurationValues.ps1
+# ConvertTo-DurationValues.ps1
 # Script pour normaliser les durées en format standard
 # Version: 1.0
 # Date: 2025-05-15
@@ -63,7 +63,7 @@ function Convert-ToStandardUnit {
 }
 
 # Fonction pour normaliser une liste de durées
-function Normalize-Durations {
+function ConvertTo-Durations {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -100,7 +100,7 @@ function Normalize-Durations {
 }
 
 # Fonction pour normaliser les durées extraites d'un fichier ou d'un contenu
-function Normalize-ExtractedDurations {
+function ConvertTo-ExtractedDurations {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -152,7 +152,7 @@ function Normalize-ExtractedDurations {
     if ($null -ne $estimatedDurations.DayWeekMonthDurations) {
         foreach ($taskId in $estimatedDurations.DayWeekMonthDurations.PSObject.Properties.Name) {
             $durations = $estimatedDurations.DayWeekMonthDurations.$taskId
-            $normalizedDurations = Normalize-Durations -Durations $durations -StandardUnit $StandardUnit
+            $normalizedDurations = ConvertTo-Durations -Durations $durations -StandardUnit $StandardUnit
             $normalizedEstimatedDurations[$taskId] = $normalizedDurations
         }
     }
@@ -160,7 +160,7 @@ function Normalize-ExtractedDurations {
     if ($null -ne $estimatedDurations.HourMinuteDurations) {
         foreach ($taskId in $estimatedDurations.HourMinuteDurations.PSObject.Properties.Name) {
             $durations = $estimatedDurations.HourMinuteDurations.$taskId
-            $normalizedDurations = Normalize-Durations -Durations $durations -StandardUnit $StandardUnit
+            $normalizedDurations = ConvertTo-Durations -Durations $durations -StandardUnit $StandardUnit
             
             if ($normalizedEstimatedDurations.ContainsKey($taskId)) {
                 $normalizedEstimatedDurations[$taskId] += $normalizedDurations
@@ -174,7 +174,7 @@ function Normalize-ExtractedDurations {
     if ($null -ne $estimatedDurations.CompositeDurations) {
         foreach ($taskId in $estimatedDurations.CompositeDurations.PSObject.Properties.Name) {
             $durations = $estimatedDurations.CompositeDurations.$taskId
-            $normalizedDurations = Normalize-Durations -Durations $durations -StandardUnit $StandardUnit
+            $normalizedDurations = ConvertTo-Durations -Durations $durations -StandardUnit $StandardUnit
             
             if ($normalizedEstimatedDurations.ContainsKey($taskId)) {
                 $normalizedEstimatedDurations[$taskId] += $normalizedDurations
@@ -206,7 +206,7 @@ function Normalize-ExtractedDurations {
             }
             
             if ($allDurations.Count -gt 0) {
-                $normalizedDurations = Normalize-Durations -Durations $allDurations -StandardUnit $StandardUnit
+                $normalizedDurations = ConvertTo-Durations -Durations $allDurations -StandardUnit $StandardUnit
                 $normalizedActualDurations[$taskId] = $normalizedDurations
             }
         }
@@ -227,7 +227,7 @@ function Normalize-ExtractedDurations {
 }
 
 # Fonction principale pour normaliser les durées
-function Normalize-DurationValues {
+function ConvertTo-DurationValues {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -249,7 +249,7 @@ function Normalize-DurationValues {
     )
     
     # Normaliser les durées
-    $normalizedDurations = Normalize-ExtractedDurations -FilePath $FilePath -Content $Content -StandardUnit $StandardUnit
+    $normalizedDurations = ConvertTo-ExtractedDurations -FilePath $FilePath -Content $Content -StandardUnit $StandardUnit
     
     # Formater la sortie selon le format demandé
     switch ($OutputFormat) {
@@ -348,4 +348,5 @@ function Normalize-DurationValues {
 }
 
 # Exécuter la fonction principale avec les paramètres fournis
-Normalize-DurationValues -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat -StandardUnit $StandardUnit
+ConvertTo-DurationValues -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat -StandardUnit $StandardUnit
+

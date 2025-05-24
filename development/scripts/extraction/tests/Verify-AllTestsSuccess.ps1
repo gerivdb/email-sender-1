@@ -25,7 +25,7 @@ Set-Content -Path $verificationFile -Value "# Vérification des résultats de to
 Add-Content -Path $verificationFile -Value "Date de vérification : $(Get-Date)`r`n"
 
 # Fonction pour analyser un fichier de résultats
-function Analyze-ResultsFile {
+function Test-ResultsFile {
     param (
         [string]$ResultsFile,
         [string]$Category
@@ -84,7 +84,7 @@ function Analyze-ResultsFile {
 }
 
 # Fonction pour vérifier les résultats des tests
-function Verify-TestResults {
+function Confirm-TestResults {
     param (
         [string]$TestType,
         [string[]]$ResultsFiles
@@ -103,7 +103,7 @@ function Verify-TestResults {
         $category = $fileName -replace "_Fixed_Results", ""
         
         $resultsFilePath = Join-Path -Path $fixedResultsDir -ChildPath $resultsFile
-        $result = Analyze-ResultsFile -ResultsFile $resultsFilePath -Category $category
+        $result = Test-ResultsFile -ResultsFile $resultsFilePath -Category $category
         
         $allResults += $result
         
@@ -157,8 +157,8 @@ $integrationTestResultsFiles = @(
 )
 
 # Vérifier les résultats des tests
-$unitTestsResult = Verify-TestResults -TestType "unitaires" -ResultsFiles $unitTestResultsFiles
-$integrationTestsResult = Verify-TestResults -TestType "d'intégration" -ResultsFiles $integrationTestResultsFiles
+$unitTestsResult = Confirm-TestResults -TestType "unitaires" -ResultsFiles $unitTestResultsFiles
+$integrationTestsResult = Confirm-TestResults -TestType "d'intégration" -ResultsFiles $integrationTestResultsFiles
 
 # Ajouter le résumé global au fichier de vérification
 Add-Content -Path $verificationFile -Value "## Résumé global`r`n"
@@ -221,3 +221,4 @@ if ($allTestsSuccess) {
     Write-Host "`nCertains tests ont échoué. Consultez le fichier de vérification pour plus de détails : $verificationFile" -ForegroundColor $errorColor
     exit 1
 }
+

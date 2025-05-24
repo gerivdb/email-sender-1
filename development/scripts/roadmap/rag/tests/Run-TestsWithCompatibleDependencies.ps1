@@ -1,4 +1,4 @@
-# Run-TestsWithCompatibleDependencies.ps1
+# Start-TestsWithCompatibleDependencies.ps1
 # Script pour exécuter les tests avec des dépendances compatibles
 # Version: 1.0
 # Date: 2025-05-15
@@ -142,7 +142,7 @@ function Invoke-Tests {
 }
 
 # Fonction principale
-function Run-TestsWithCompatibleDependencies {
+function Start-TestsWithCompatibleDependencies {
     param (
         [string]$TestType,
         [switch]$GenerateReport,
@@ -188,4 +188,5 @@ function Run-TestsWithCompatibleDependencies {
 }
 
 # Exécuter la fonction principale
-Run-TestsWithCompatibleDependencies -TestType $TestType -GenerateReport:$GenerateReport -SkipDependencyCheck:$SkipDependencyCheck -Force:$Force
+Start-TestsWithCompatibleDependencies -TestType $TestType -GenerateReport:$GenerateReport -SkipDependencyCheck:$SkipDependencyCheck -Force:$Force
+

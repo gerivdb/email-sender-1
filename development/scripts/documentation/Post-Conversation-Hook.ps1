@@ -1,4 +1,4 @@
-﻿# Post-Conversation-Hook.ps1
+# Post-Conversation-Hook.ps1
 # Script Ã  exÃ©cuter aprÃ¨s chaque conversation pour dÃ©tecter et traiter les tÃ¢ches
 
 param (
@@ -30,7 +30,7 @@ if (-not (Test-Path -Path $processConversationPath)) {
 }
 
 # Fonction pour journaliser une action
-function Log-Action {
+function Write-Action {
     param (
         [string]$Action,
         [string]$Details
@@ -47,7 +47,7 @@ function Log-Action {
 }
 
 # Fonction pour extraire les tÃ¢ches du texte
-function Extract-Tasks {
+function Export-Tasks {
     param (
         [string]$Text
     )
@@ -149,7 +149,7 @@ function Confirm-TaskAddition {
 $conversationText = Get-Content -Path $ConversationFile -Raw
 
 # Extraire les tÃ¢ches du texte
-$tasks = Extract-Tasks -Text $conversationText
+$tasks = Export-Tasks -Text $conversationText
 
 # Traiter les tÃ¢ches
 if ($tasks.Count -eq 0) {
@@ -157,13 +157,13 @@ if ($tasks.Count -eq 0) {
         Write-Host "Aucune tÃ¢che dÃ©tectÃ©e dans la conversation."
     }
     
-    Log-Action -Action "Analyse" -Details "Aucune tÃ¢che dÃ©tectÃ©e dans le fichier $ConversationFile"
+    Write-Action -Action "Analyse" -Details "Aucune tÃ¢che dÃ©tectÃ©e dans le fichier $ConversationFile"
 }
 else {
     Write-Host "TÃ¢ches dÃ©tectÃ©es : $($tasks.Count)"
     Write-Host ""
     
-    Log-Action -Action "Analyse" -Details "$($tasks.Count) tÃ¢ches dÃ©tectÃ©es dans le fichier $ConversationFile"
+    Write-Action -Action "Analyse" -Details "$($tasks.Count) tÃ¢ches dÃ©tectÃ©es dans le fichier $ConversationFile"
     
     foreach ($task in $tasks) {
         $addTask = $AutoConfirm -or (Confirm-TaskAddition -Task $task)
@@ -174,16 +174,16 @@ else {
             
             if ($success) {
                 Write-Host "OK" -ForegroundColor Green
-                Log-Action -Action "Ajout" -Details "TÃ¢che ajoutÃ©e Ã  la roadmap : $($task.Description)"
+                Write-Action -Action "Ajout" -Details "TÃ¢che ajoutÃ©e Ã  la roadmap : $($task.Description)"
             }
             else {
                 Write-Host "Ã‰CHEC" -ForegroundColor Red
-                Log-Action -Action "Erreur" -Details "Ã‰chec de l'ajout de la tÃ¢che Ã  la roadmap : $($task.Description)"
+                Write-Action -Action "Erreur" -Details "Ã‰chec de l'ajout de la tÃ¢che Ã  la roadmap : $($task.Description)"
             }
         }
         else {
             Write-Host "TÃ¢che ignorÃ©e." -ForegroundColor Yellow
-            Log-Action -Action "IgnorÃ©" -Details "TÃ¢che ignorÃ©e par l'utilisateur : $($task.Description)"
+            Write-Action -Action "IgnorÃ©" -Details "TÃ¢che ignorÃ©e par l'utilisateur : $($task.Description)"
         }
         
         Write-Host ""
@@ -192,3 +192,5 @@ else {
 
 # Retourner les tÃ¢ches (utile pour les tests automatisÃ©s)
 return $tasks
+
+

@@ -1,4 +1,4 @@
-# Define-QueryLanguageSyntax.ps1
+# Set-QueryLanguageSyntax.ps1
 # Script pour définir la syntaxe du langage de requête simplifié
 # Version: 1.0
 # Date: 2025-05-15
@@ -41,7 +41,7 @@ if (Test-Path -Path $logModulePath) {
 }
 
 # Fonction pour définir la syntaxe du langage de requête
-function Define-QueryLanguageSyntax {
+function Set-QueryLanguageSyntax {
     [CmdletBinding()]
     param ()
     
@@ -514,7 +514,7 @@ function Export-SyntaxDefinition {
 }
 
 # Fonction principale
-function Define-QueryLanguageSyntax {
+function Set-QueryLanguageSyntax {
     [CmdletBinding()]
     param (
         [string]$OutputPath,
@@ -524,7 +524,7 @@ function Define-QueryLanguageSyntax {
     Write-Log "Démarrage de la définition de la syntaxe du langage de requête..." -Level "Info"
     
     # Définir la syntaxe
-    $syntaxDefinition = Define-QueryLanguageSyntax
+    $syntaxDefinition = Set-QueryLanguageSyntax
     
     # Exporter la définition si demandé
     if (-not [string]::IsNullOrEmpty($OutputPath)) {
@@ -536,5 +536,6 @@ function Define-QueryLanguageSyntax {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Define-QueryLanguageSyntax -OutputPath $OutputPath -OutputFormat $OutputFormat
+    Set-QueryLanguageSyntax -OutputPath $OutputPath -OutputFormat $OutputFormat
 }
+

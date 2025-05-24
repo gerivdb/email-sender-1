@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     IntÃ¨gre le systÃ¨me d'analyse des patterns d'erreurs inÃ©dits avec TestOmnibus.
@@ -225,7 +225,7 @@ function New-TestOmnibusHook {
 Import-Module `$modulePath -Force
 
 # Fonction pour traiter les erreurs de test
-function Process-TestErrors {
+function Invoke-TestErrors {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = `$true)]
@@ -285,7 +285,7 @@ function Process-TestErrors {
 }
 
 # Exporter la fonction pour TestOmnibus
-Export-ModuleMember -Function Process-TestErrors
+Export-ModuleMember -function Invoke-TestErrors
 "@
     
     $hookContent | Out-File -FilePath $hookPath -Encoding utf8
@@ -387,3 +387,4 @@ $reportPath = New-IntegrationReport -PatternIds $patternIds -ReportPath $ReportP
 Write-Host "IntÃ©gration terminÃ©e avec succÃ¨s." -ForegroundColor Green
 Write-Host "Rapport d'intÃ©gration: $ReportPath" -ForegroundColor Green
 Write-Host "Hook d'intÃ©gration: $hookPath" -ForegroundColor Green
+

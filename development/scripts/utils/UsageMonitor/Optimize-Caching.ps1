@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Optimise la mise en cache prÃ©dictive et adaptative pour les scripts PowerShell.
 .DESCRIPTION
@@ -68,7 +68,7 @@ function Write-Log {
 }
 
 # Fonction pour analyser les patterns d'utilisation du cache
-function Analyze-CacheUsagePatterns {
+function Test-CacheUsagePatterns {
     param (
         [PSCustomObject]$UsageStats
     )
@@ -124,7 +124,7 @@ function Analyze-CacheUsagePatterns {
 }
 
 # Fonction pour analyser les sÃ©quences d'exÃ©cution
-function Analyze-ExecutionSequences {
+function Test-ExecutionSequences {
     param (
         [PSCustomObject]$UsageStats
     )
@@ -191,7 +191,7 @@ function Analyze-ExecutionSequences {
 }
 
 # Fonction pour gÃ©nÃ©rer une configuration de cache optimisÃ©e
-function Generate-CacheConfig {
+function New-CacheConfig {
     param (
         [hashtable]$CachePatterns,
         [hashtable]$ExecutionSequences
@@ -268,7 +268,7 @@ function Generate-CacheConfig {
 }
 
 # Fonction pour gÃ©nÃ©rer le code de prÃ©chargement du cache
-function Generate-CachePreloadCode {
+function New-CachePreloadCode {
     param (
         [hashtable]$Config
     )
@@ -479,7 +479,7 @@ Write-Log "PrÃ©chargement du cache terminÃ©." -Level "SUCCESS"
 }
 
 # Fonction pour appliquer la configuration de cache
-function Apply-CacheConfig {
+function Set-CacheConfig {
     param (
         [hashtable]$Config,
         [string]$ConfigPath,
@@ -492,7 +492,7 @@ function Apply-CacheConfig {
     Write-Log "Configuration de cache sauvegardÃ©e: $ConfigPath" -Level "SUCCESS"
     
     # GÃ©nÃ©rer le code de prÃ©chargement du cache
-    $preloadCode = Generate-CachePreloadCode -Config $Config
+    $preloadCode = New-CachePreloadCode -Config $Config
     $preloadPath = Join-Path -Path $PSScriptRoot -ChildPath "Preload-Cache.ps1"
     
     $preloadCode | Out-File -FilePath $preloadPath -Encoding utf8 -Force
@@ -604,18 +604,19 @@ $usageStats = Get-ScriptUsageStatistics
 Write-Log "Statistiques d'utilisation rÃ©cupÃ©rÃ©es" -Level "INFO"
 
 # Analyser les patterns d'utilisation du cache
-$cachePatterns = Analyze-CacheUsagePatterns -UsageStats $usageStats
+$cachePatterns = Test-CacheUsagePatterns -UsageStats $usageStats
 Write-Log "Patterns d'utilisation du cache analysÃ©s: $($cachePatterns.Count) scripts avec patterns" -Level "INFO"
 
 # Analyser les sÃ©quences d'exÃ©cution
-$executionSequences = Analyze-ExecutionSequences -UsageStats $usageStats
+$executionSequences = Test-ExecutionSequences -UsageStats $usageStats
 Write-Log "SÃ©quences d'exÃ©cution analysÃ©es: $($executionSequences.Count) sÃ©quences frÃ©quentes" -Level "INFO"
 
 # GÃ©nÃ©rer la configuration de cache
-$cacheConfig = Generate-CacheConfig -CachePatterns $cachePatterns -ExecutionSequences $executionSequences
+$cacheConfig = New-CacheConfig -CachePatterns $cachePatterns -ExecutionSequences $executionSequences
 Write-Log "Configuration de cache gÃ©nÃ©rÃ©e" -Level "INFO"
 
 # Appliquer la configuration
-Apply-CacheConfig -Config $cacheConfig -ConfigPath $ConfigPath -Apply:$Apply
+Set-CacheConfig -Config $cacheConfig -ConfigPath $ConfigPath -Apply:$Apply
 
 Write-Log "Optimisation du cache terminÃ©e." -Level "TITLE"
+

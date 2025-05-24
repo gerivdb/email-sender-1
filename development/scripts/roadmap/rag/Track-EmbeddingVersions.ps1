@@ -1,4 +1,4 @@
-# Track-EmbeddingVersions.ps1
+# Trace-EmbeddingVersions.ps1
 # Script pour suivre les versions d'embeddings dans Qdrant
 # Version: 1.0
 # Date: 2025-05-15
@@ -365,7 +365,7 @@ if __name__ == "__main__":
 }
 
 # Fonction principale
-function Track-EmbeddingVersions {
+function Trace-EmbeddingVersions {
     param (
         [string]$QdrantUrl,
         [string]$CollectionName,
@@ -412,4 +412,5 @@ function Track-EmbeddingVersions {
 }
 
 # Exécuter la fonction principale
-Track-EmbeddingVersions -QdrantUrl $QdrantUrl -CollectionName $CollectionName -VersionsPath $VersionsPath -ModelName $ModelName -ModelVersion $ModelVersion -Action $Action -SnapshotPath $SnapshotPath -Force:$Force
+Trace-EmbeddingVersions -QdrantUrl $QdrantUrl -CollectionName $CollectionName -VersionsPath $VersionsPath -ModelName $ModelName -ModelVersion $ModelVersion -Action $Action -SnapshotPath $SnapshotPath -Force:$Force
+

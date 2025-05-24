@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script d'analyse des performances d'Augment Code.
 
@@ -84,7 +84,7 @@ if (-not (Test-Path -Path $outputDir -PathType Container)) {
 }
 
 # Fonction pour analyser le fichier de log
-function Analyze-AugmentLog {
+function Test-AugmentLog {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -208,7 +208,7 @@ function Analyze-AugmentLog {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport HTML
-function Generate-HtmlReport {
+function New-HtmlReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -491,11 +491,11 @@ function Generate-HtmlReport {
 
 # Analyser le fichier de log
 Write-Host "Analyse du fichier de log : $logPath" -ForegroundColor Cyan
-$analysisResults = Analyze-AugmentLog -LogPath $logPath
+$analysisResults = Test-AugmentLog -LogPath $logPath
 
 # GÃ©nÃ©rer le rapport HTML
 Write-Host "GÃ©nÃ©ration du rapport HTML : $outputPath" -ForegroundColor Cyan
-Generate-HtmlReport -AnalysisResults $analysisResults -OutputPath $outputPath
+New-HtmlReport -AnalysisResults $analysisResults -OutputPath $outputPath
 
 # Afficher un rÃ©sumÃ©
 Write-Host "`nRÃ©sumÃ© des performances d'Augment Code :" -ForegroundColor Green
@@ -513,3 +513,4 @@ foreach ($mode in $analysisResults.Metrics.RequestsByMode.Keys) {
 
 Write-Host "`nRapport HTML gÃ©nÃ©rÃ© : $outputPath" -ForegroundColor Green
 Write-Host "Pour visualiser le rapport, ouvrez le fichier dans un navigateur web." -ForegroundColor Yellow
+

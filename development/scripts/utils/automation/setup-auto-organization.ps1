@@ -1,4 +1,4 @@
-﻿# Script pour configurer l'organisation automatique des fichiers et dossiers
+# Script pour configurer l'organisation automatique des fichiers et dossiers
 # Ce script configure des tÃ¢ches planifiÃ©es pour organiser automatiquement les fichiers et dossiers
 
 # VÃ©rifier si le script est exÃ©cutÃ© en tant qu'administrateur
@@ -41,7 +41,7 @@ if (-not (Test-Path -Path $organizeDocsPath)) {
 }
 
 # Fonction pour crÃ©er une tÃ¢che planifiÃ©e
-function Create-ScheduledTask {
+function New-ScheduledTask {
     param (
         [string]$TaskName,
         [string]$ScriptPath,
@@ -127,28 +127,28 @@ function Create-ScheduledTask {
 Write-Host "Configuration des tÃ¢ches planifiÃ©es pour l'organisation automatique..." -ForegroundColor Cyan
 
 # 1. TÃ¢che pour organiser les scripts (hebdomadaire)
-Create-ScheduledTask -TaskName "OrganizeScripts" `
+New-ScheduledTask -TaskName "OrganizeScripts" `
                     -ScriptPath $organizeScriptsPath `
                     -Arguments "" `
                     -Trigger "Weekly" `
                     -Description "Organise les scripts en sous-dossiers sÃ©mantiques"
 
 # 2. TÃ¢che pour organiser les dossiers (quotidienne)
-Create-ScheduledTask -TaskName "OrganizeFolders" `
+New-ScheduledTask -TaskName "OrganizeFolders" `
                     -ScriptPath $autoOrganizeFoldersPath `
                     -Arguments "-MaxFilesPerFolder 15" `
                     -Trigger "Daily" `
                     -Description "Organise les dossiers contenant trop de fichiers"
 
 # 3. TÃ¢che pour gÃ©rer les logs (quotidienne)
-Create-ScheduledTask -TaskName "ManageLogs" `
+New-ScheduledTask -TaskName "ManageLogs" `
                     -ScriptPath $manageLogsPath `
                     -Arguments "daily-log scripts" `
                     -Trigger "Daily" `
                     -Description "GÃ¨re les logs par unitÃ© de temps"
 
 # 4. TÃ¢che pour organiser les documents (hebdomadaire)
-Create-ScheduledTask -TaskName "OrganizeDocs" `
+New-ScheduledTask -TaskName "OrganizeDocs" `
                     -ScriptPath $organizeDocsPath `
                     -Arguments "" `
                     -Trigger "Weekly" `
@@ -160,4 +160,5 @@ Write-Host "  - OrganizeScripts: ExÃ©cution hebdomadaire (dimanche Ã  3h00)"
 Write-Host "  - OrganizeFolders: ExÃ©cution quotidienne (3h00)" -ForegroundColor Cyan
 Write-Host "  - ManageLogs: ExÃ©cution quotidienne (3h00)" -ForegroundColor Cyan
 Write-Host "  - OrganizeDocs: ExÃ©cution hebdomadaire (dimanche Ã  3h00)" -ForegroundColor Cyan
+
 

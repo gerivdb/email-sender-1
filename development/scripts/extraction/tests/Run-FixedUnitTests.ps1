@@ -55,7 +55,7 @@ function Invoke-TestScript {
 }
 
 # Fonction pour réexécuter les tests unitaires d'une catégorie
-function Rerun-UnitTests {
+function Restart-UnitTests {
     param (
         [string]$Category,
         [string[]]$TestScripts
@@ -169,7 +169,7 @@ $totalFailedTests = 0
 $allSuccess = $true
 
 foreach ($category in $unitTestCategories) {
-    $result = Rerun-UnitTests -Category $category.Category -TestScripts $category.Tests
+    $result = Restart-UnitTests -Category $category.Category -TestScripts $category.Tests
     $allResults += $result
     
     $totalTests += $result.TotalTests
@@ -212,3 +212,4 @@ if ($allSuccess) {
     Write-Host "Certains tests unitaires corrigés ont échoué. Consultez les fichiers de résultats pour plus de détails." -ForegroundColor $errorColor
     exit 1
 }
+

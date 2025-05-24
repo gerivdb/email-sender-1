@@ -1,4 +1,4 @@
-﻿function Analyze-NetworkShareACL {
+function Test-NetworkShareACL {
     <#
     .SYNOPSIS
         Analyse les ACL (Access Control Lists) des partages rÃ©seau.
@@ -14,7 +14,7 @@
         Chemin oÃ¹ enregistrer le rapport d'analyse.
 
     .EXAMPLE
-        Analyze-NetworkShareACL -SharePath "\\server\share" -OutputPath "C:\Reports\share_acl_report.html"
+        Test-NetworkShareACL -SharePath "\\server\share" -OutputPath "C:\Reports\share_acl_report.html"
 
     .NOTES
         Auteur: RoadmapParser Team
@@ -45,7 +45,7 @@
         $conflicts = Find-PermissionConflicts -SmbPermissions $smbPermissions -NtfsPermissions $ntfsPermissions
 
         # ImplÃ©menter l'analyse des permissions effectives rÃ©sultantes
-        $effectivePermissions = Calculate-EffectivePermissions -SmbPermissions $smbPermissions -NtfsPermissions $ntfsPermissions
+        $effectivePermissions = Measure-EffectivePermissions -SmbPermissions $smbPermissions -NtfsPermissions $ntfsPermissions
 
         # ImplÃ©menter la gÃ©nÃ©ration de rapports de permissions rÃ©seau
         if ($OutputPath) {
@@ -134,7 +134,7 @@ function Find-PermissionConflicts {
     )
 }
 
-function Calculate-EffectivePermissions {
+function Measure-EffectivePermissions {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -242,3 +242,5 @@ function Export-PermissionReport {
 }
 
 # La fonction sera exportÃ©e automatiquement lorsqu'elle sera chargÃ©e dans un module
+
+

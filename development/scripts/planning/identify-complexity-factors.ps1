@@ -1,4 +1,4 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
 param (
     [Parameter(Mandatory = $true)]
     [string]$OutputFile,
@@ -239,7 +239,7 @@ $complexityFactors = @{
 }
 
 # Fonction pour gÃ©nÃ©rer le document au format Markdown
-function Generate-MarkdownDocument {
+function New-MarkdownDocument {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -295,7 +295,7 @@ function Generate-MarkdownDocument {
 }
 
 # Fonction pour gÃ©nÃ©rer le document au format JSON
-function Generate-JsonDocument {
+function New-JsonDocument {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -348,10 +348,10 @@ function Generate-JsonDocument {
 # GÃ©nÃ©rer le document dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $documentContent = Generate-MarkdownDocument -ComplexityFactors $complexityFactors
+        $documentContent = New-MarkdownDocument -ComplexityFactors $complexityFactors
     }
     "JSON" {
-        $documentContent = Generate-JsonDocument -ComplexityFactors $complexityFactors
+        $documentContent = New-JsonDocument -ComplexityFactors $complexityFactors
     }
 }
 
@@ -376,3 +376,4 @@ foreach ($category in $complexityFactors.Keys) {
 }
 
 Write-Host "  Total : $totalFactors facteurs"
+

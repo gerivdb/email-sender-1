@@ -103,7 +103,7 @@ function Get-McpProcesses {
     return $mcpProcesses
 }
 
-function Collect-ServerMetrics {
+function Get-ServerMetrics {
     param (
         [string]$ServerName,
         [PSCustomObject]$ServerConfig
@@ -254,7 +254,7 @@ try {
                 continue
             }
             
-            $metrics = Collect-ServerMetrics -ServerName $serverName -ServerConfig $serverConfig
+            $metrics = Get-ServerMetrics -ServerName $serverName -ServerConfig $serverConfig
             $allMetrics += $metrics
             
             $statusColor = switch ($metrics.Status) {
@@ -292,3 +292,4 @@ try {
     Write-Log "Erreur lors de la collecte des métriques: $_" -Level "ERROR"
     exit 1
 }
+

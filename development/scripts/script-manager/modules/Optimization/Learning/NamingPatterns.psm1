@@ -1,10 +1,10 @@
-﻿# Module d'apprentissage des modÃ¨les de nommage pour le Script Manager
+# Module d'apprentissage des modÃ¨les de nommage pour le Script Manager
 # Ce module apprend les modÃ¨les de nommage utilisÃ©s dans les scripts
 # Author: Script Manager
 # Version: 1.0
 # Tags: optimization, learning, naming
 
-function Learn-NamingPatterns {
+function Get-NamingPatterns {
     <#
     .SYNOPSIS
         Apprend les modÃ¨les de nommage utilisÃ©s dans les scripts
@@ -15,7 +15,7 @@ function Learn-NamingPatterns {
     .PARAMETER ScriptType
         Type de script (PowerShell, Python, Batch, Shell)
     .EXAMPLE
-        Learn-NamingPatterns -Scripts $scripts -ScriptType "PowerShell"
+        Get-NamingPatterns -Scripts $scripts -ScriptType "PowerShell"
     #>
     [CmdletBinding()]
     param (
@@ -79,13 +79,13 @@ function Learn-NamingPatterns {
     }
     
     # Analyser les noms de fonctions
-    $NamingPatterns.FunctionNames = Analyze-NamingConvention -Names $FunctionNames
+    $NamingPatterns.FunctionNames = Test-NamingConvention -Names $FunctionNames
     
     # Analyser les noms de variables
-    $NamingPatterns.VariableNames = Analyze-NamingConvention -Names $VariableNames
+    $NamingPatterns.VariableNames = Test-NamingConvention -Names $VariableNames
     
     # Analyser les noms de paramÃ¨tres
-    $NamingPatterns.ParameterNames = Analyze-NamingConvention -Names $ParameterNames
+    $NamingPatterns.ParameterNames = Test-NamingConvention -Names $ParameterNames
     
     # DÃ©terminer le style de casse prÃ©dominant
     $NamingPatterns.CaseStyle = Get-PredominantCaseStyle -FunctionNames $NamingPatterns.FunctionNames -VariableNames $NamingPatterns.VariableNames -ParameterNames $NamingPatterns.ParameterNames
@@ -97,7 +97,7 @@ function Learn-NamingPatterns {
     return $NamingPatterns
 }
 
-function Analyze-NamingConvention {
+function Test-NamingConvention {
     <#
     .SYNOPSIS
         Analyse la convention de nommage utilisÃ©e
@@ -106,7 +106,7 @@ function Analyze-NamingConvention {
     .PARAMETER Names
         Noms Ã  analyser
     .EXAMPLE
-        Analyze-NamingConvention -Names $names
+        Test-NamingConvention -Names $names
     #>
     [CmdletBinding()]
     param (
@@ -381,4 +381,6 @@ function Get-CommonSuffixes {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Learn-NamingPatterns
+Export-ModuleMember -function Get-NamingPatterns
+
+

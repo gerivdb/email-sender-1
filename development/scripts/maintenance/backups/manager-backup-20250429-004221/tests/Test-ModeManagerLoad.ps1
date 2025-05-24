@@ -1,4 +1,4 @@
-﻿# Tests de charge pour le mode manager
+# Tests de charge pour le mode manager
 
 # DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
@@ -42,7 +42,7 @@ function Measure-MemoryUsage {
 }
 
 # Fonction pour crÃ©er un grand fichier de roadmap
-function Create-LargeRoadmap {
+function New-LargeRoadmap {
     param (
         [string]$FilePath,
         [int]$TaskCount = 1000
@@ -69,7 +69,7 @@ function Create-LargeRoadmap {
 }
 
 # Fonction pour crÃ©er une configuration avec de nombreux modes
-function Create-LargeConfig {
+function New-LargeConfig {
     param (
         [string]$FilePath,
         [int]$ModeCount = 100
@@ -135,7 +135,7 @@ function Create-LargeConfig {
 }
 
 # Fonction pour crÃ©er des scripts de mode simulÃ©s
-function Create-MockScripts {
+function New-MockScripts {
     param (
         [string]$TestDir,
         [int]$ModeCount = 100
@@ -235,14 +235,14 @@ exit 0
 
 # CrÃ©er un grand fichier de roadmap
 $largeRoadmapPath = Join-Path -Path $testDir -ChildPath "large-roadmap.md"
-Create-LargeRoadmap -FilePath $largeRoadmapPath -TaskCount 1000
+New-LargeRoadmap -FilePath $largeRoadmapPath -TaskCount 1000
 
 # CrÃ©er une configuration avec de nombreux modes
 $largeConfigPath = Join-Path -Path $testDir -ChildPath "large-config.json"
-Create-LargeConfig -FilePath $largeConfigPath -ModeCount 100
+New-LargeConfig -FilePath $largeConfigPath -ModeCount 100
 
 # CrÃ©er des scripts de mode simulÃ©s
-$mockScripts = Create-MockScripts -TestDir $testDir -ModeCount 100
+$mockScripts = New-MockScripts -TestDir $testDir -ModeCount 100
 
 # Test 1: Charge - Grand fichier de roadmap
 Write-Host "Test 1: Charge - Grand fichier de roadmap" -ForegroundColor Cyan
@@ -335,7 +335,7 @@ if ($executionTime -lt 10000) {
 # Test 7: Charge - Fichier de roadmap trÃ¨s grand
 Write-Host "Test 7: Charge - Fichier de roadmap trÃ¨s grand" -ForegroundColor Cyan
 $veryLargeRoadmapPath = Join-Path -Path $testDir -ChildPath "very-large-roadmap.md"
-Create-LargeRoadmap -FilePath $veryLargeRoadmapPath -TaskCount 5000
+New-LargeRoadmap -FilePath $veryLargeRoadmapPath -TaskCount 5000
 $executionTime = Measure-ExecutionTime {
     & $scriptPath -Mode "CHECK" -FilePath $veryLargeRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $largeConfigPath
 }
@@ -349,7 +349,7 @@ if ($executionTime -lt 30000) {
 # Test 8: Charge - Configuration trÃ¨s grande
 Write-Host "Test 8: Charge - Configuration trÃ¨s grande" -ForegroundColor Cyan
 $veryLargeConfigPath = Join-Path -Path $testDir -ChildPath "very-large-config.json"
-Create-LargeConfig -FilePath $veryLargeConfigPath -ModeCount 500
+New-LargeConfig -FilePath $veryLargeConfigPath -ModeCount 500
 $executionTime = Measure-ExecutionTime {
     & $scriptPath -ListModes -ConfigPath $veryLargeConfigPath
 }
@@ -373,3 +373,4 @@ foreach ($script in $mockScripts) {
 }
 
 Write-Host "Tests terminÃ©s." -ForegroundColor Cyan
+

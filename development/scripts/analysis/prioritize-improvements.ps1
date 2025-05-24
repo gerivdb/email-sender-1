@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Identifie et priorise les amÃ©liorations nÃ©cessaires pour les gestionnaires.
 
@@ -60,7 +60,7 @@ try {
 }
 
 # Fonction pour dÃ©finir les critÃ¨res de priorisation
-function Define-PrioritizationCriteria {
+function Set-PrioritizationCriteria {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -89,7 +89,7 @@ function Define-PrioritizationCriteria {
 }
 
 # Fonction pour Ã©valuer chaque amÃ©lioration selon les critÃ¨res
-function Evaluate-Improvements {
+function Test-Improvements {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -133,7 +133,7 @@ function Evaluate-Improvements {
 }
 
 # Fonction pour calculer les scores de prioritÃ©
-function Calculate-PriorityScores {
+function Measure-PriorityScores {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -163,7 +163,7 @@ function Calculate-PriorityScores {
 }
 
 # Fonction pour classer les amÃ©liorations par ordre de prioritÃ©
-function Rank-Improvements {
+function Sort-Improvements {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -182,7 +182,7 @@ function Rank-Improvements {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -277,7 +277,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format HTML
-function Generate-HtmlReport {
+function New-HtmlReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -513,7 +513,7 @@ function Generate-HtmlReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format CSV
-function Generate-CsvReport {
+function New-CsvReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -530,10 +530,10 @@ function Generate-CsvReport {
 }
 
 # ExÃ©cuter le processus de priorisation
-$criteria = Define-PrioritizationCriteria -ImprovementsData $improvementsData
-$evaluatedImprovements = Evaluate-Improvements -ImprovementsData $improvementsData -Criteria $criteria
-$scoredImprovements = Calculate-PriorityScores -EvaluatedImprovements $evaluatedImprovements -Criteria $criteria
-$rankedImprovements = Rank-Improvements -ScoredImprovements $scoredImprovements
+$criteria = Set-PrioritizationCriteria -ImprovementsData $improvementsData
+$evaluatedImprovements = Test-Improvements -ImprovementsData $improvementsData -Criteria $criteria
+$scoredImprovements = Measure-PriorityScores -EvaluatedImprovements $evaluatedImprovements -Criteria $criteria
+$rankedImprovements = Sort-Improvements -ScoredImprovements $scoredImprovements
 
 # CrÃ©er le rapport de priorisation
 $prioritizationReport = [PSCustomObject]@{
@@ -546,13 +546,13 @@ $prioritizationReport = [PSCustomObject]@{
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -Report $prioritizationReport
+        $reportContent = New-MarkdownReport -Report $prioritizationReport
     }
     "HTML" {
-        $reportContent = Generate-HtmlReport -Report $prioritizationReport
+        $reportContent = New-HtmlReport -Report $prioritizationReport
     }
     "CSV" {
-        $reportContent = Generate-CsvReport -Report $prioritizationReport
+        $reportContent = New-CsvReport -Report $prioritizationReport
     }
     "JSON" {
         $reportContent = $prioritizationReport | ConvertTo-Json -Depth 10
@@ -580,3 +580,5 @@ $lowPriorityCount = ($rankedImprovements | Where-Object { $_.PriorityScore -lt $
 Write-Host "  AmÃ©liorations Ã  prioritÃ© Ã©levÃ©e : $highPriorityCount"
 Write-Host "  AmÃ©liorations Ã  prioritÃ© moyenne : $mediumPriorityCount"
 Write-Host "  AmÃ©liorations Ã  prioritÃ© basse : $lowPriorityCount"
+
+

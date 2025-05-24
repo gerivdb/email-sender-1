@@ -223,14 +223,14 @@ function Set-TimeBasedRetention {
     
     # Appliquer la politique si demandé
     if ($Apply) {
-        return Apply-TimeBasedRetention -RestorePointType $RestorePointType -RetentionDays $RetentionDays -WhatIf:$WhatIf -Force:$Force
+        return Set-TimeBasedRetention -RestorePointType $RestorePointType -RetentionDays $RetentionDays -WhatIf:$WhatIf -Force:$Force
     }
     
     return $true
 }
 
 # Fonction pour appliquer la rétention basée sur le temps
-function Apply-TimeBasedRetention {
+function Set-TimeBasedRetention {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -341,3 +341,4 @@ function Apply-TimeBasedRetention {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Set-TimeBasedRetention -RestorePointType $RestorePointType -RetentionDays $RetentionDays -ConfigName $ConfigName -Apply:$Apply -WhatIf:$WhatIf -Force:$Force
 }
+

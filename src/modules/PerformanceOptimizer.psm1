@@ -167,7 +167,7 @@ function Get-MemoryOptimizationRules {
             Name = "MemoryLeakDetection"
             Description = "Détecte et corrige les fuites mémoire potentielles"
             Condition = { param($Metrics) $Metrics.Memory.Available.AverageMB -lt 500 }
-            Action = { param($Metrics) Detect-MemoryLeaks -Metrics $Metrics }
+            Action = { param($Metrics) Find-MemoryLeaks -Metrics $Metrics }
             Priority = "High"
             Category = "Memory"
         }
@@ -334,7 +334,7 @@ function Optimize-HighMemoryProcesses {
     return $recommendations
 }
 
-function Detect-MemoryLeaks {
+function Find-MemoryLeaks {
     param (
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Metrics
@@ -687,3 +687,4 @@ function Write-Log {
 
 # Exporter les fonctions publiques
 Export-ModuleMember -Function Initialize-PerformanceOptimizer, Write-Log
+

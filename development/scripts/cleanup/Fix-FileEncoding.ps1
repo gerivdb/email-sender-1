@@ -1,4 +1,4 @@
-﻿# Script pour corriger l'encodage des fichiers PowerShell
+# Script pour corriger l'encodage des fichiers PowerShell
 # Ce script convertit les fichiers en UTF-8 avec BOM
 
 # Fonction pour convertir un fichier en UTF-8 avec BOM
@@ -71,7 +71,7 @@ function Test-FileEncoding {
 }
 
 # Fonction principale pour corriger l'encodage des fichiers PowerShell
-function Fix-PowerShellFileEncoding {
+function Repair-PowerShellFileEncoding {
     param (
         [Parameter(Mandatory = $true)]
         [string]$FolderPath,
@@ -139,5 +139,6 @@ if ($MyInvocation.InvocationName -ne ".") {
     $extractionPath = Split-Path -Parent (Split-Path -Parent $scriptPath)
     
     # Corriger l'encodage des fichiers PowerShell
-    Fix-PowerShellFileEncoding -FolderPath $extractionPath -Recursive -WhatIf:$false
+    Repair-PowerShellFileEncoding -FolderPath $extractionPath -Recursive -WhatIf:$false
 }
+

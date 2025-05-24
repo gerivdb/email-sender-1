@@ -79,7 +79,7 @@ function Write-Log {
 }
 
 # Fonction pour nettoyer les fichiers temporaires
-function Cleanup-TempFiles {
+function Clear-TempFiles {
     param (
         [Parameter(Mandatory=$true)]
         [string]$N8nRootFolder,
@@ -178,7 +178,7 @@ if ($MyInvocation.InvocationName -ne ".") {
     }
     
     # Nettoyer les fichiers temporaires
-    $success = Cleanup-TempFiles -N8nRootFolder $N8nRootFolder -MaxTempAgeDays $MaxTempAgeDays
+    $success = Clear-TempFiles -N8nRootFolder $N8nRootFolder -MaxTempAgeDays $MaxTempAgeDays
     
     if ($success) {
         exit 0
@@ -186,3 +186,4 @@ if ($MyInvocation.InvocationName -ne ".") {
         exit 1
     }
 }
+

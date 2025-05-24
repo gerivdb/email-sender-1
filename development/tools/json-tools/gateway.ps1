@@ -1,4 +1,4 @@
-﻿# Script PowerShell pour simuler le MCP Gateway
+# Script PowerShell pour simuler le MCP Gateway
 
 param (
     [string]$command,
@@ -49,7 +49,7 @@ $databaseTools = @(
 )
 
 # Fonction pour gerer la requete list_tools
-function Handle-ListTools {
+function Invoke-ListTools {
     $tools = @()
     foreach ($dbTool in $databaseTools) {
         $properties = @{}
@@ -82,7 +82,7 @@ function Handle-ListTools {
 }
 
 # Fonction pour gerer la requete tool_call
-function Handle-ToolCall {
+function Invoke-ToolCall {
     param (
         [PSCustomObject]$content
     )
@@ -169,10 +169,10 @@ try {
         $response = $null
         switch ($request.type) {
             "list_tools" {
-                $response = Handle-ListTools
+                $response = Invoke-ListTools
             }
             "tool_call" {
-                $response = Handle-ToolCall -content $request.content
+                $response = Invoke-ToolCall -content $request.content
             }
             default {
                 $response = @{
@@ -190,4 +190,5 @@ try {
     Write-Error "Erreur: $_"
     exit 1
 }
+
 

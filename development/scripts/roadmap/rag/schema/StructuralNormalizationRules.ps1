@@ -262,7 +262,7 @@ $script:StructuralNormalizationRules = @{
 }
 
 # Fonction pour normaliser les dates
-function Normalize-Date {
+function ConvertTo-Date {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -284,7 +284,7 @@ function Normalize-Date {
 }
 
 # Fonction pour normaliser les durées
-function Normalize-Duration {
+function ConvertTo-Duration {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -306,7 +306,7 @@ function Normalize-Duration {
 }
 
 # Fonction pour normaliser les références
-function Normalize-Reference {
+function ConvertTo-Reference {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -348,7 +348,7 @@ function Merge-Tasks {
 }
 
 # Fonction pour normaliser structurellement une tâche complète
-function Normalize-TaskStructure {
+function ConvertTo-TaskStructure {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -358,45 +358,45 @@ function Normalize-TaskStructure {
     process {
         # Normaliser les champs de date
         if ($Task.PSObject.Properties.Name.Contains("createdAt")) {
-            $Task.createdAt = Normalize-Date -Date $Task.createdAt
+            $Task.createdAt = ConvertTo-Date -Date $Task.createdAt
         }
         
         if ($Task.PSObject.Properties.Name.Contains("updatedAt")) {
-            $Task.updatedAt = Normalize-Date -Date $Task.updatedAt
+            $Task.updatedAt = ConvertTo-Date -Date $Task.updatedAt
         }
         
         if ($Task.PSObject.Properties.Name.Contains("dueDate")) {
-            $Task.dueDate = Normalize-Date -Date $Task.dueDate
+            $Task.dueDate = ConvertTo-Date -Date $Task.dueDate
         }
         
         if ($Task.PSObject.Properties.Name.Contains("startDate")) {
-            $Task.startDate = Normalize-Date -Date $Task.startDate
+            $Task.startDate = ConvertTo-Date -Date $Task.startDate
         }
         
         if ($Task.PSObject.Properties.Name.Contains("completionDate")) {
-            $Task.completionDate = Normalize-Date -Date $Task.completionDate
+            $Task.completionDate = ConvertTo-Date -Date $Task.completionDate
         }
         
         # Normaliser les durées
         if ($Task.PSObject.Properties.Name.Contains("estimatedHours")) {
-            $Task.estimatedHours = Normalize-Duration -Duration $Task.estimatedHours
+            $Task.estimatedHours = ConvertTo-Duration -Duration $Task.estimatedHours
         }
         
         # Normaliser les références
         if ($Task.PSObject.Properties.Name.Contains("id")) {
-            $Task.id = Normalize-Reference -Reference $Task.id -Type "TaskId"
+            $Task.id = ConvertTo-Reference -Reference $Task.id -Type "TaskId"
         }
         
         if ($Task.PSObject.Properties.Name.Contains("parentId")) {
-            $Task.parentId = Normalize-Reference -Reference $Task.parentId -Type "TaskId"
+            $Task.parentId = ConvertTo-Reference -Reference $Task.parentId -Type "TaskId"
         }
         
         if ($Task.PSObject.Properties.Name.Contains("dependencies")) {
-            $Task.dependencies = Normalize-Reference -Reference $Task.dependencies -Type "TaskReference"
+            $Task.dependencies = ConvertTo-Reference -Reference $Task.dependencies -Type "TaskReference"
         }
         
         if ($Task.PSObject.Properties.Name.Contains("subTasks")) {
-            $Task.subTasks = Normalize-Reference -Reference $Task.subTasks -Type "TaskReference"
+            $Task.subTasks = ConvertTo-Reference -Reference $Task.subTasks -Type "TaskReference"
         }
         
         return $Task
@@ -404,4 +404,5 @@ function Normalize-TaskStructure {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Normalize-Date, Normalize-Duration, Normalize-Reference, Merge-Tasks, Normalize-TaskStructure
+Export-ModuleMember -function ConvertTo-Date, ConvertTo-Duration, ConvertTo-Reference, Merge-Tasks, ConvertTo-TaskStructure
+

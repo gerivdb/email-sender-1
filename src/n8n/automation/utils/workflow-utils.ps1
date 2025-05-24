@@ -8,7 +8,7 @@
 #>
 
 # Fonction pour corriger un workflow
-function Fix-Workflow {
+function Repair-Workflow {
     param (
         [Parameter(Mandatory = $true)]
         [PSCustomObject]$Workflow
@@ -174,3 +174,4 @@ function Get-WorkflowFileName {
     
     return $fileName
 }
+

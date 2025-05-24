@@ -223,7 +223,7 @@ function Test-KernelDensityEstimateComplete {
     $failedTests = @()
     
     # Function to run a test
-    function Run-Test {
+    function Start-Test {
         param (
             [string]$Name,
             [scriptblock]$Test
@@ -251,7 +251,7 @@ function Test-KernelDensityEstimateComplete {
     # Test parameter validation
     Write-Host "Testing parameter validation..." -ForegroundColor Cyan
     
-    Run-Test -Name "Should throw an error when data is null" -Test {
+    Start-Test -Name "Should throw an error when data is null" -Test {
         try {
             Get-KernelDensityEstimate -Data $null
             throw "Test should have thrown an exception"
@@ -262,7 +262,7 @@ function Test-KernelDensityEstimateComplete {
         }
     }
     
-    Run-Test -Name "Should throw an error when data is empty" -Test {
+    Start-Test -Name "Should throw an error when data is empty" -Test {
         try {
             Get-KernelDensityEstimate -Data @()
             throw "Test should have thrown an exception"
@@ -273,7 +273,7 @@ function Test-KernelDensityEstimateComplete {
         }
     }
     
-    Run-Test -Name "Should throw an error when data has less than 2 points" -Test {
+    Start-Test -Name "Should throw an error when data has less than 2 points" -Test {
         try {
             Get-KernelDensityEstimate -Data @(1)
             throw "Test should have thrown an exception"
@@ -284,7 +284,7 @@ function Test-KernelDensityEstimateComplete {
         }
     }
     
-    Run-Test -Name "Should throw an error when evaluation points are null" -Test {
+    Start-Test -Name "Should throw an error when evaluation points are null" -Test {
         try {
             Get-KernelDensityEstimate -Data $testData -EvaluationPoints $null
             throw "Test should have thrown an exception"
@@ -295,7 +295,7 @@ function Test-KernelDensityEstimateComplete {
         }
     }
     
-    Run-Test -Name "Should throw an error when evaluation points are empty" -Test {
+    Start-Test -Name "Should throw an error when evaluation points are empty" -Test {
         try {
             Get-KernelDensityEstimate -Data $testData -EvaluationPoints @()
             throw "Test should have thrown an exception"
@@ -306,7 +306,7 @@ function Test-KernelDensityEstimateComplete {
         }
     }
     
-    Run-Test -Name "Should throw an error when bandwidth is negative" -Test {
+    Start-Test -Name "Should throw an error when bandwidth is negative" -Test {
         try {
             Get-KernelDensityEstimate -Data $testData -Bandwidth -1
             throw "Test should have thrown an exception"
@@ -320,7 +320,7 @@ function Test-KernelDensityEstimateComplete {
     # Test default parameters
     Write-Host "`nTesting default parameters..." -ForegroundColor Cyan
     
-    Run-Test -Name "Should return a result with default parameters" -Test {
+    Start-Test -Name "Should return a result with default parameters" -Test {
         $result = Get-KernelDensityEstimate -Data $testData
         if ($null -eq $result) {
             throw "Result should not be null"
@@ -345,28 +345,28 @@ function Test-KernelDensityEstimateComplete {
     # Test kernel types
     Write-Host "`nTesting kernel types..." -ForegroundColor Cyan
     
-    Run-Test -Name "Should work with Gaussian kernel" -Test {
+    Start-Test -Name "Should work with Gaussian kernel" -Test {
         $result = Get-KernelDensityEstimate -Data $testData -KernelType Gaussian
         if ($result.KernelType -ne "Gaussian") {
             throw "Expected kernel type 'Gaussian' but got '$($result.KernelType)'"
         }
     }
     
-    Run-Test -Name "Should work with Epanechnikov kernel" -Test {
+    Start-Test -Name "Should work with Epanechnikov kernel" -Test {
         $result = Get-KernelDensityEstimate -Data $testData -KernelType Epanechnikov
         if ($result.KernelType -ne "Epanechnikov") {
             throw "Expected kernel type 'Epanechnikov' but got '$($result.KernelType)'"
         }
     }
     
-    Run-Test -Name "Should work with Triangular kernel" -Test {
+    Start-Test -Name "Should work with Triangular kernel" -Test {
         $result = Get-KernelDensityEstimate -Data $testData -KernelType Triangular
         if ($result.KernelType -ne "Triangular") {
             throw "Expected kernel type 'Triangular' but got '$($result.KernelType)'"
         }
     }
     
-    Run-Test -Name "Should work with Uniform kernel" -Test {
+    Start-Test -Name "Should work with Uniform kernel" -Test {
         $result = Get-KernelDensityEstimate -Data $testData -KernelType Uniform
         if ($result.KernelType -ne "Uniform") {
             throw "Expected kernel type 'Uniform' but got '$($result.KernelType)'"
@@ -376,14 +376,14 @@ function Test-KernelDensityEstimateComplete {
     # Test bandwidth selection
     Write-Host "`nTesting bandwidth selection..." -ForegroundColor Cyan
     
-    Run-Test -Name "Should calculate bandwidth automatically when not provided" -Test {
+    Start-Test -Name "Should calculate bandwidth automatically when not provided" -Test {
         $result = Get-KernelDensityEstimate -Data $testData
         if ($result.Bandwidth -le 0) {
             throw "Expected bandwidth > 0 but got $($result.Bandwidth)"
         }
     }
     
-    Run-Test -Name "Should use the provided bandwidth" -Test {
+    Start-Test -Name "Should use the provided bandwidth" -Test {
         $bandwidth = 5
         $result = Get-KernelDensityEstimate -Data $testData -Bandwidth $bandwidth
         if ($result.Bandwidth -ne $bandwidth) {
@@ -391,7 +391,7 @@ function Test-KernelDensityEstimateComplete {
         }
     }
     
-    Run-Test -Name "Should handle identical data points" -Test {
+    Start-Test -Name "Should handle identical data points" -Test {
         $result = Get-KernelDensityEstimate -Data $identicalData
         if ($result.Bandwidth -le 0) {
             throw "Expected bandwidth > 0 but got $($result.Bandwidth)"
@@ -401,14 +401,14 @@ function Test-KernelDensityEstimateComplete {
     # Test evaluation points
     Write-Host "`nTesting evaluation points..." -ForegroundColor Cyan
     
-    Run-Test -Name "Should generate evaluation points automatically when not provided" -Test {
+    Start-Test -Name "Should generate evaluation points automatically when not provided" -Test {
         $result = Get-KernelDensityEstimate -Data $testData
         if ($result.EvaluationPoints.Count -ne 100) {
             throw "Expected evaluation points count 100 but got $($result.EvaluationPoints.Count)"
         }
     }
     
-    Run-Test -Name "Should use the provided evaluation points" -Test {
+    Start-Test -Name "Should use the provided evaluation points" -Test {
         $evalPoints = 0..10 | ForEach-Object { $_ * 10 }
         $result = Get-KernelDensityEstimate -Data $testData -EvaluationPoints $evalPoints
         if ($result.EvaluationPoints.Count -ne $evalPoints.Count) {
@@ -424,7 +424,7 @@ function Test-KernelDensityEstimateComplete {
     # Test density estimation
     Write-Host "`nTesting density estimation..." -ForegroundColor Cyan
     
-    Run-Test -Name "Should produce non-negative density estimates" -Test {
+    Start-Test -Name "Should produce non-negative density estimates" -Test {
         $result = Get-KernelDensityEstimate -Data $testData
         foreach ($density in $result.DensityEstimates) {
             if ($density -lt 0) {
@@ -433,7 +433,7 @@ function Test-KernelDensityEstimateComplete {
         }
     }
     
-    Run-Test -Name "Should produce density estimates that integrate to approximately 1" -Test {
+    Start-Test -Name "Should produce density estimates that integrate to approximately 1" -Test {
         $result = Get-KernelDensityEstimate -Data $normalData
         
         # Calculate the approximate integral of the density estimates
@@ -474,3 +474,4 @@ function Test-KernelDensityEstimateComplete {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Test-KernelDensityEstimateComplete
 }
+

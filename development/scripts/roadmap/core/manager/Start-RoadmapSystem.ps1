@@ -29,7 +29,7 @@ $createN8nWorkflowsPath = Join-Path -Path $integrationPath -ChildPath "Create-N8
 $analyzeRoadmapPath = Join-Path -Path $analysisPath -ChildPath "Analyze-RoadmapStructure.ps1"
 $generateRealisticRoadmapPath = Join-Path -Path $generationPath -ChildPath "Generate-RealisticRoadmap.ps1"
 $parseRoadmapPath = Join-Path -Path $utilsPath -ChildPath "Parse-Roadmap.ps1"
-$generateRoadmapPath = Join-Path -Path $utilsPath -ChildPath "Generate-Roadmap.ps1"
+$generateRoadmapPath = Join-Path -Path $utilsPath -ChildPath "New-Roadmap.ps1"
 
 Write-Host "Chargement des modules..." -ForegroundColor Cyan
 
@@ -83,9 +83,9 @@ if (Test-Path $parseRoadmapPath) {
 
 if (Test-Path $generateRoadmapPath) {
     . $generateRoadmapPath
-    Write-Host "  Module Generate-Roadmap.ps1 chargé." -ForegroundColor Green
+    Write-Host "  Module New-Roadmap.ps1 chargé." -ForegroundColor Green
 } else {
-    Write-Host "  Module Generate-Roadmap.ps1 introuvable à l'emplacement: $generateRoadmapPath" -ForegroundColor Red
+    Write-Host "  Module New-Roadmap.ps1 introuvable à l'emplacement: $generateRoadmapPath" -ForegroundColor Red
     exit
 }
 
@@ -160,7 +160,7 @@ function Start-Api {
 }
 
 # Fonction pour générer les nodes n8n
-function Generate-Nodes {
+function New-Nodes {
     Clear-Host
     Write-Host "=== GÉNÉRER LES NODES N8N ===" -ForegroundColor Cyan
     Write-Host
@@ -203,7 +203,7 @@ function Generate-Nodes {
 }
 
 # Fonction pour créer les workflows n8n
-function Create-Workflows {
+function New-Workflows {
     Clear-Host
     Write-Host "=== CRÉER LES WORKFLOWS N8N ===" -ForegroundColor Cyan
     Write-Host
@@ -257,7 +257,7 @@ function Create-Workflows {
 }
 
 # Fonction pour générer une roadmap réaliste
-function Generate-Roadmap {
+function New-Roadmap {
     Clear-Host
     Write-Host "=== GÉNÉRER UNE ROADMAP RÉALISTE ===" -ForegroundColor Cyan
     Write-Host
@@ -308,7 +308,7 @@ function Generate-Roadmap {
 }
 
 # Fonction pour analyser une roadmap
-function Analyze-Roadmap {
+function Test-Roadmap {
     Clear-Host
     Write-Host "=== ANALYSER UNE ROADMAP ===" -ForegroundColor Cyan
     Write-Host
@@ -355,7 +355,7 @@ function Analyze-Roadmap {
 }
 
 # Fonction pour créer un modèle statistique
-function Create-Model {
+function New-Model {
     Clear-Host
     Write-Host "=== CRÉER UN MODÈLE STATISTIQUE ===" -ForegroundColor Cyan
     Write-Host
@@ -427,11 +427,11 @@ while (-not $exit) {
     
     switch ($choice) {
         "1" { Start-Api }
-        "2" { Generate-Nodes }
-        "3" { Create-Workflows }
-        "4" { Generate-Roadmap }
-        "5" { Analyze-Roadmap }
-        "6" { Create-Model }
+        "2" { New-Nodes }
+        "3" { New-Workflows }
+        "4" { New-Roadmap }
+        "5" { Test-Roadmap }
+        "6" { New-Model }
         "7" { $exit = $true }
         default { 
             Write-Host "Choix invalide. Appuyez sur une touche pour continuer..." -ForegroundColor Red
@@ -441,3 +441,4 @@ while (-not $exit) {
 }
 
 Write-Host "Au revoir!" -ForegroundColor Cyan
+

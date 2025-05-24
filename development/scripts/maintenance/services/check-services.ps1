@@ -1,4 +1,4 @@
-﻿function Check-ServiceStatus {
+function Test-ServiceStatus {
     param (
         [string]$serviceName,
         [int]$port
@@ -25,6 +25,7 @@
 }
 
 # VÃ©rifier chaque service
-Check-ServiceStatus -serviceName "N8N" -port 5678
-Check-ServiceStatus -serviceName "MCP Proxy" -port 4000
-Check-ServiceStatus -serviceName "Augment Service" -port 3000
+Test-ServiceStatus -serviceName "N8N" -port 5678
+Test-ServiceStatus -serviceName "MCP Proxy" -port 4000
+Test-ServiceStatus -serviceName "Augment Service" -port 3000
+

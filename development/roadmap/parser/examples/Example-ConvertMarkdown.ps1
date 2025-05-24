@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Exemple d'utilisation de la fonction ConvertFrom-MarkdownToObject.
 
@@ -187,7 +187,7 @@ function Get-RoadmapStatistics {
     }
     
     # Fonction rÃ©cursive pour compter les tÃ¢ches
-    function Count-Tasks {
+    function Measure-Tasks {
         param (
             [Parameter(Mandatory = $true)]
             [PSCustomObject]$Item
@@ -206,12 +206,12 @@ function Get-RoadmapStatistics {
         
         if ($Item.PSObject.Properties.Name -contains "Items" -and $Item.Items.Count -gt 0) {
             foreach ($subItem in $Item.Items) {
-                Count-Tasks -Item $subItem
+                Measure-Tasks -Item $subItem
             }
         }
     }
     
-    Count-Tasks -Item $Roadmap
+    Measure-Tasks -Item $Roadmap
     
     # Calculer les pourcentages
     if ($stats.TotalTasks -gt 0) {
@@ -239,3 +239,4 @@ Write-Host "- TÃ¢ches bloquÃ©es: $($stats.BlockedTasks) ($($stats.BlockedPer
 Write-Host "- TÃ¢ches incomplÃ¨tes: $($stats.IncompleteTasks) ($($stats.IncompletePercentage)%)" -ForegroundColor Gray
 
 Write-Host "`nExemples terminÃ©s. Vous pouvez explorer le fichier markdown et les rÃ©sultats." -ForegroundColor Green
+

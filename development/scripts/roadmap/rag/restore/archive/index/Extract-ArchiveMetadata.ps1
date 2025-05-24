@@ -1,4 +1,4 @@
-# Extract-ArchiveMetadata.ps1
+# Export-ArchiveMetadata.ps1
 # Script pour extraire les métadonnées des archives de points de restauration
 # Version: 1.0
 # Date: 2025-05-15
@@ -194,7 +194,7 @@ function Get-ArchiveContent {
 }
 
 # Fonction pour extraire un fichier spécifique d'une archive
-function Extract-FileFromArchive {
+function Export-FileFromArchive {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -265,7 +265,7 @@ function Extract-FileFromArchive {
 }
 
 # Fonction pour extraire les métadonnées d'un point de restauration
-function Extract-RestorePointMetadata {
+function Export-RestorePointMetadata {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -357,7 +357,7 @@ function Extract-RestorePointMetadata {
 }
 
 # Fonction pour normaliser les métadonnées
-function Normalize-Metadata {
+function ConvertTo-Metadata {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -454,7 +454,7 @@ function Normalize-Metadata {
 }
 
 # Fonction principale pour extraire les métadonnées des archives
-function Extract-ArchiveMetadata {
+function Export-ArchiveMetadata {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -571,7 +571,7 @@ function Extract-ArchiveMetadata {
                         
                         # Normaliser les métadonnées si demandé
                         if ($Normalize) {
-                            $pointMetadata = Normalize-Metadata -Metadata $pointMetadata
+                            $pointMetadata = ConvertTo-Metadata -Metadata $pointMetadata
                         }
                         
                         $metadata.restore_points += $pointMetadata
@@ -616,7 +616,7 @@ function Extract-ArchiveMetadata {
         
         foreach ($file in $archiveContent) {
             # Extraire le fichier de l'archive
-            $extractedFilePath = Extract-FileFromArchive -ArchivePath $path -FileName $file.path -OutputPath $tempPath
+            $extractedFilePath = Export-FileFromArchive -ArchivePath $path -FileName $file.path -OutputPath $tempPath
             
             if ($extractedFilePath -eq $false) {
                 Write-Log "Failed to extract file: $($file.path)" -Level "Warning"
@@ -625,7 +625,7 @@ function Extract-ArchiveMetadata {
             }
             
             # Extraire les métadonnées du point de restauration
-            $pointMetadata = Extract-RestorePointMetadata -RestorePointPath $extractedFilePath -IncludeContent:$IncludeContent
+            $pointMetadata = Export-RestorePointMetadata -RestorePointPath $extractedFilePath -IncludeContent:$IncludeContent
             
             if ($null -eq $pointMetadata) {
                 Write-Log "Failed to extract metadata from: $($file.name)" -Level "Warning"
@@ -635,7 +635,7 @@ function Extract-ArchiveMetadata {
             
             # Normaliser les métadonnées si demandé
             if ($Normalize) {
-                $pointMetadata = Normalize-Metadata -Metadata $pointMetadata
+                $pointMetadata = ConvertTo-Metadata -Metadata $pointMetadata
             }
             
             $metadata.restore_points += $pointMetadata
@@ -670,5 +670,7 @@ function Extract-ArchiveMetadata {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Extract-ArchiveMetadata -ArchivePath $ArchivePath -ArchivePaths $ArchivePaths -OutputPath $OutputPath -Force:$Force -IncludeContent:$IncludeContent -Normalize:$Normalize -WhatIf:$WhatIf
+    Export-ArchiveMetadata -ArchivePath $ArchivePath -ArchivePaths $ArchivePaths -OutputPath $OutputPath -Force:$Force -IncludeContent:$IncludeContent -Normalize:$Normalize -WhatIf:$WhatIf
 }
+
+

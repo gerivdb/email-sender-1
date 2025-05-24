@@ -1,4 +1,4 @@
-﻿# Run-AllSqlPermissionRules.ps1
+# Run-AllSqlPermissionRules.ps1
 # Script pour exÃ©cuter toutes les rÃ¨gles de dÃ©tection d'anomalies SQL Server et gÃ©nÃ©rer un rapport complet
 
 [CmdletBinding()]
@@ -56,7 +56,7 @@ begin {
     }
 
     # Fonction pour gÃ©nÃ©rer un rapport HTML
-    function Generate-HtmlReport {
+    function New-HtmlReport {
         param (
             [Parameter(Mandatory = $true)]
             [PSCustomObject]$AnalysisResult,
@@ -377,7 +377,7 @@ process {
         Write-Verbose "  - Anomalies au niveau objet: $($result.ObjectAnomalies.Count)"
 
         # GÃ©nÃ©rer le rapport HTML
-        $reportPath = Generate-HtmlReport -AnalysisResult $result -OutputPath $OutputPath
+        $reportPath = New-HtmlReport -AnalysisResult $result -OutputPath $OutputPath
         Write-Verbose "Rapport HTML gÃ©nÃ©rÃ©: $reportPath"
 
         # Envoyer le rapport par email si demandÃ©
@@ -416,3 +416,4 @@ process {
         Write-Error "Erreur lors de l'exÃ©cution des rÃ¨gles de dÃ©tection d'anomalies: $_"
     }
 }
+

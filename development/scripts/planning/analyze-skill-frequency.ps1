@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse la frÃ©quence d'utilisation de chaque compÃ©tence.
 
@@ -51,7 +51,7 @@ if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputD
 }
 
 # Fonction pour extraire les compÃ©tences de la liste Markdown
-function Extract-SkillsFromList {
+function Export-SkillsFromList {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -127,7 +127,7 @@ function Extract-SkillsFromList {
 }
 
 # Fonction pour analyser la frÃ©quence d'utilisation des compÃ©tences
-function Analyze-SkillFrequency {
+function Test-SkillFrequency {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -261,7 +261,7 @@ function Analyze-SkillFrequency {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -406,7 +406,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format CSV
-function Generate-CsvReport {
+function New-CsvReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -435,7 +435,7 @@ function Generate-CsvReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -464,22 +464,22 @@ function Generate-JsonReport {
 $listContent = Get-Content -Path $SkillsListPath -Raw
 
 # Extraire les compÃ©tences de la liste
-$extractionResult = Extract-SkillsFromList -MarkdownContent $listContent
+$extractionResult = Export-SkillsFromList -MarkdownContent $listContent
 $skills = $extractionResult.Skills
 
 # Analyser la frÃ©quence d'utilisation des compÃ©tences
-$frequencyAnalysis = Analyze-SkillFrequency -Skills $skills
+$frequencyAnalysis = Test-SkillFrequency -Skills $skills
 
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -FrequencyAnalysis $frequencyAnalysis
+        $reportContent = New-MarkdownReport -FrequencyAnalysis $frequencyAnalysis
     }
     "CSV" {
-        $reportContent = Generate-CsvReport -FrequencyAnalysis $frequencyAnalysis
+        $reportContent = New-CsvReport -FrequencyAnalysis $frequencyAnalysis
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -FrequencyAnalysis $frequencyAnalysis
+        $reportContent = New-JsonReport -FrequencyAnalysis $frequencyAnalysis
     }
 }
 
@@ -509,3 +509,4 @@ Write-Host "`nRÃ©partition par niveau d'expertise :"
 foreach ($level in $frequencyAnalysis.LevelFrequency) {
     Write-Host "  $($level.Level) : $($level.Occurrences) occurrences ($($level.Percentage)%)"
 }
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Effectue un parcours en profondeur (DFS) amÃ©liorÃ© de l'arbre syntaxique PowerShell.
 
@@ -152,7 +152,7 @@ function Invoke-AstTraversalDFS-Enhanced {
         }
         
         # Fonction rÃ©cursive pour parcourir l'arbre
-        function Traverse-AstRecursively {
+        function Search-AstRecursively {
             param (
                 [Parameter(Mandatory = $true)]
                 [System.Management.Automation.Language.Ast]$Node,
@@ -194,7 +194,7 @@ function Invoke-AstTraversalDFS-Enhanced {
             foreach ($child in $children) {
                 # Ã‰viter la rÃ©cursion infinie en vÃ©rifiant que l'enfant n'est pas null et n'est pas le parent
                 if ($null -ne $child -and $child -ne $Node) {
-                    Traverse-AstRecursively -Node $child -Depth ($Depth + 1)
+                    Search-AstRecursively -Node $child -Depth ($Depth + 1)
                 }
             }
         }
@@ -203,7 +203,7 @@ function Invoke-AstTraversalDFS-Enhanced {
     process {
         try {
             # Parcourir l'arbre rÃ©cursivement
-            Traverse-AstRecursively -Node $Ast -Depth 0
+            Search-AstRecursively -Node $Ast -Depth 0
             
             # Retourner les rÃ©sultats
             return $results
@@ -214,3 +214,4 @@ function Invoke-AstTraversalDFS-Enhanced {
         }
     }
 }
+

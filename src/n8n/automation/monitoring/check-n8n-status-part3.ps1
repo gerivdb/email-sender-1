@@ -43,7 +43,7 @@ function Save-ResultsToJson {
 }
 
 # Fonction pour générer un rapport HTML
-function Generate-HtmlReport {
+function New-HtmlReport {
     param (
         [Parameter(Mandatory=$true)]
         [hashtable]$Results,
@@ -369,4 +369,5 @@ function Get-ResultsHistory {
 }
 
 # Exporter les fonctions pour les autres parties du script
-Export-ModuleMember -Function Save-ResultsToJson, Generate-HtmlReport, Save-ResultsToHistory, Get-ResultsHistory
+Export-ModuleMember -Function Save-ResultsToJson, New-HtmlReport, Save-ResultsToHistory, Get-ResultsHistory
+

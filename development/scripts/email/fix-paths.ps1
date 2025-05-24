@@ -1,4 +1,4 @@
-﻿# Script pour corriger les chemins dans les fichiers de configuration
+# Script pour corriger les chemins dans les fichiers de configuration
 # Ce script remplace les anciens chemins par les nouveaux chemins dans les fichiers de configuration
 
 Write-Host "=== Correction des chemins dans les fichiers de configuration ===" -ForegroundColor Cyan
@@ -37,7 +37,7 @@ $newPath = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 $fileTypes = @("*.json", "*.cmd", "*.ps1", "*.yaml", "*.md")
 
 # Fonction pour corriger un fichier
-function Fix-File {
+function Repair-File {
     param (
         [string]$filePath
     )
@@ -111,7 +111,7 @@ $correctedFiles = @()
 foreach ($fileType in $fileTypes) {
     $files = Get-ChildItem -Path . -Recurse -File -Filter $fileType
     foreach ($file in $files) {
-        if (Fix-File -filePath $file.FullName) {
+        if (Repair-File -filePath $file.FullName) {
             $correctedFiles += $file.FullName
         }
     }
@@ -140,3 +140,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃƒÂ©cution du script terminÃƒÂ©e."
 }
+

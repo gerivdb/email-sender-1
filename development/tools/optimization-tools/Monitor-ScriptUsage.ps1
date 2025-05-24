@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     SystÃ¨me de monitoring et d'analyse comportementale des scripts.
 .DESCRIPTION
@@ -65,7 +65,7 @@ function Write-Log {
 }
 
 # Fonction pour analyser les logs d'utilisation
-function Analyze-UsageLogs {
+function Test-UsageLogs {
     [CmdletBinding()]
     param (
         [int]$PeriodDays = 30,
@@ -105,7 +105,7 @@ function Analyze-UsageLogs {
 }
 
 # Fonction pour dÃ©tecter les goulots d'Ã©tranglement dans les processus parallÃ¨les
-function Detect-ParallelBottlenecks {
+function Find-ParallelBottlenecks {
     [CmdletBinding()]
     param ()
     
@@ -124,7 +124,7 @@ function Detect-ParallelBottlenecks {
             
             # Analyser les exÃ©cutions lentes pour dÃ©tecter des patterns
             if ($bottleneck.SlowExecutions.Count -gt 0) {
-                $patterns = Analyze-SlowExecutionPatterns -SlowExecutions $bottleneck.SlowExecutions
+                $patterns = Test-SlowExecutionPatterns -SlowExecutions $bottleneck.SlowExecutions
                 if ($patterns.Count -gt 0) {
                     Write-Log "    * Patterns dÃ©tectÃ©s:" -Level "INFO"
                     foreach ($pattern in $patterns.GetEnumerator()) {
@@ -142,7 +142,7 @@ function Detect-ParallelBottlenecks {
 }
 
 # Fonction pour analyser les patterns dans les exÃ©cutions lentes
-function Analyze-SlowExecutionPatterns {
+function Test-SlowExecutionPatterns {
     param (
         [array]$SlowExecutions
     )
@@ -233,7 +233,7 @@ function Analyze-SlowExecutionPatterns {
 }
 
 # Fonction pour gÃ©nÃ©rer un rapport HTML
-function Generate-UsageReport {
+function New-UsageReport {
     param (
         [PSCustomObject]$UsageStats,
         [array]$Bottlenecks,
@@ -621,14 +621,14 @@ try {
     Write-Log "Moniteur d'utilisation initialisÃ© avec la base de donnÃ©es: $DatabasePath" -Level "SUCCESS"
     
     # Analyser les logs d'utilisation
-    $usageStats = Analyze-UsageLogs -PeriodDays $AnalysisPeriodDays
+    $usageStats = Test-UsageLogs -PeriodDays $AnalysisPeriodDays
     
     # DÃ©tecter les goulots d'Ã©tranglement
-    $bottlenecks = Detect-ParallelBottlenecks
+    $bottlenecks = Find-ParallelBottlenecks
     
     # GÃ©nÃ©rer un rapport si demandÃ©
     if ($GenerateReport) {
-        $reportFile = Generate-UsageReport -UsageStats $usageStats -Bottlenecks $bottlenecks -OutputPath $ReportPath
+        $reportFile = New-UsageReport -UsageStats $usageStats -Bottlenecks $bottlenecks -OutputPath $ReportPath
         
         # Ouvrir le rapport dans le navigateur par dÃ©faut
         if (Test-Path -Path $reportFile) {
@@ -645,3 +645,4 @@ catch {
     Write-Log "Erreur lors de l'exÃ©cution du script: $_" -Level "ERROR"
     exit 1
 }
+

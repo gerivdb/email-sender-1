@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Module de rÃ©solution de dÃ©pendances pour le Process Manager.
 
@@ -182,9 +182,9 @@ function Compare-SemanticVersion {
     Le graphe de dÃ©pendances sous forme de hashtable.
 
 .EXAMPLE
-    $cycles = Detect-DependencyCycles -DependencyGraph $dependencyGraph
+    $cycles = Find-DependencyCycles -DependencyGraph $dependencyGraph
 #>
-function Detect-DependencyCycles {
+function Find-DependencyCycles {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -278,7 +278,7 @@ function Sort-ManagersByDependencies {
     )
 
     # VÃ©rifier s'il y a des cycles
-    $cycles = Detect-DependencyCycles -DependencyGraph $DependencyGraph
+    $cycles = Find-DependencyCycles -DependencyGraph $DependencyGraph
     if ($cycles.Count -gt 0) {
         Write-DependencyLog -Message "Des cycles de dÃ©pendances ont Ã©tÃ© dÃ©tectÃ©s : $($cycles | ForEach-Object { $_ -join ' -> ' } | Join-String -Separator ', ')" -Level Error
         return $null
@@ -770,3 +770,4 @@ function Get-ManagerLoadOrder {
 
 # Exporter les fonctions publiques
 Export-ModuleMember -Function Get-ManagerDependencies, Test-DependenciesAvailability, Resolve-DependencyConflicts, Get-ManagerLoadOrder
+

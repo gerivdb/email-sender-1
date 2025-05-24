@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Normalise les caractÃ¨res spÃ©ciaux dans un fichier texte.
 
@@ -164,7 +164,7 @@ function Remove-Diacritics {
     return $stringBuilder.ToString()
 }
 
-function Replace-NonAsciiChars {
+function Set-NonAsciiChars {
     param (
         [string]$Text
     )
@@ -224,7 +224,7 @@ function Replace-NonAsciiChars {
     return $result
 }
 
-function Normalize-Text {
+function ConvertTo-Text {
     param (
         [string]$Text,
         [string]$NormForm,
@@ -250,14 +250,14 @@ function Normalize-Text {
     
     # Remplacer les caractÃ¨res non-ASCII si demandÃ©
     if ($ReplaceNonAscii) {
-        $normalizedText = Replace-NonAsciiChars -Text $normalizedText
+        $normalizedText = Set-NonAsciiChars -Text $normalizedText
     }
     
     return $normalizedText
 }
 
 # Fonction principale
-function Normalize-File {
+function ConvertTo-File {
     param (
         [string]$InputPath,
         [string]$OutputPath,
@@ -279,7 +279,7 @@ function Normalize-File {
         $content = [System.IO.File]::ReadAllText($InputPath, $encoding)
         
         # Normaliser le texte
-        $normalizedContent = Normalize-Text -Text $content -NormForm $NormForm -RemoveDiacritics $RemoveDiacritics -ReplaceNonAscii $ReplaceNonAscii
+        $normalizedContent = ConvertTo-Text -Text $content -NormForm $NormForm -RemoveDiacritics $RemoveDiacritics -ReplaceNonAscii $ReplaceNonAscii
         
         # DÃ©terminer le chemin de sortie
         $finalOutputPath = if ($OutputPath -eq "") { $InputPath } else { $OutputPath }
@@ -300,7 +300,8 @@ function Normalize-File {
 }
 
 # ExÃ©cution principale
-$result = Normalize-File -InputPath $FilePath -OutputPath $OutputPath -NormForm $NormalizationForm -RemoveDiacritics $RemoveAccents.IsPresent -ReplaceNonAscii $ReplaceNonAscii.IsPresent
+$result = ConvertTo-File -InputPath $FilePath -OutputPath $OutputPath -NormForm $NormalizationForm -RemoveDiacritics $RemoveAccents.IsPresent -ReplaceNonAscii $ReplaceNonAscii.IsPresent
 
 # Retourner le rÃ©sultat
 return $result
+

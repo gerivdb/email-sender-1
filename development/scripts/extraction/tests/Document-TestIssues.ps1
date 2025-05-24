@@ -30,7 +30,7 @@ Add-Content -Path $issuesFile -Value "Date de documentation : $(Get-Date)`r`n"
 Add-Content -Path $issuesFile -Value "Ce document recense les problèmes identifiés lors de l'exécution des tests unitaires et d'intégration du module ExtractedInfoModuleV2.`r`n"
 
 # Fonction pour extraire les détails des problèmes d'un fichier de résultats
-function Extract-TestIssueDetails {
+function Export-TestIssueDetails {
     param (
         [string]$ResultsFile
     )
@@ -82,7 +82,7 @@ function Extract-TestIssueDetails {
 }
 
 # Fonction pour analyser les problèmes et suggérer des solutions
-function Analyze-TestIssue {
+function Test-TestIssue {
     param (
         [hashtable]$Issue
     )
@@ -135,7 +135,7 @@ $allIssueDetails = @()
 
 foreach ($resultsFile in $allResultsFiles) {
     $resultsFilePath = Join-Path -Path $resultsDir -ChildPath $resultsFile
-    $issueDetails = Extract-TestIssueDetails -ResultsFile $resultsFilePath
+    $issueDetails = Export-TestIssueDetails -ResultsFile $resultsFilePath
     $allIssueDetails += $issueDetails
 }
 
@@ -166,7 +166,7 @@ if ($allIssueDetails.Count -eq 0) {
                 Add-Content -Path $issuesFile -Value "```"
                 
                 # Analyser le problème et suggérer une solution
-                $suggestion = Analyze-TestIssue -Issue $issue
+                $suggestion = Test-TestIssue -Issue $issue
                 
                 if (-not [string]::IsNullOrEmpty($suggestion)) {
                     Add-Content -Path $issuesFile -Value "`r`n**Suggestion :**`r`n"
@@ -220,3 +220,4 @@ if ($allIssueDetails.Count -eq 0) {
     Write-Host "`nDes problèmes ont été identifiés. Consultez le fichier de documentation pour plus de détails : $issuesFile" -ForegroundColor $warningColor
     exit 1
 }
+

@@ -1,4 +1,4 @@
-﻿# Script d'archivage des tÃ¢ches terminÃ©es
+# Script d'archivage des tÃ¢ches terminÃ©es
 # Usage: .\archive_task.ps1 -TaskId "5.1.2" -TaskName "ImplÃ©mentation des modÃ¨les prÃ©dictifs"
 
 param (
@@ -21,7 +21,7 @@ function Get-CurrentDate {
 }
 
 # Fonction pour extraire le contenu d'une tÃ¢che du fichier roadmap
-function Extract-TaskContent {
+function Export-TaskContent {
     param (
         [string]$RoadmapContent,
         [string]$TaskId
@@ -104,7 +104,7 @@ $($TaskContent.Replace($TaskName, "$TaskName (ARCHIVÃ‰)"))
 }
 
 # Fonction pour crÃ©er un fichier d'archive individuel pour la tÃ¢che
-function Create-TaskArchiveFile {
+function New-TaskArchiveFile {
     param (
         [string]$TaskContent,
         [string]$TaskId,
@@ -124,10 +124,10 @@ $roadmapContent = Get-Content -Path $RoadmapFile -Raw -Encoding utf8
 $archiveContent = Get-Content -Path $ArchiveFile -Raw -Encoding utf8
 
 # Extraction du contenu de la tÃ¢che
-$taskContent = Extract-TaskContent -RoadmapContent $roadmapContent -TaskId $TaskId
+$taskContent = Export-TaskContent -RoadmapContent $roadmapContent -TaskId $TaskId
 
 # CrÃ©ation du fichier d'archive individuel
-Create-TaskArchiveFile -TaskContent $taskContent -TaskId $TaskId -TaskName $TaskName
+New-TaskArchiveFile -TaskContent $taskContent -TaskId $TaskId -TaskName $TaskName
 
 # Mise Ã  jour du fichier roadmap
 $updatedRoadmapContent = Update-RoadmapFile -RoadmapContent $roadmapContent -TaskId $TaskId -TaskName $TaskName
@@ -138,3 +138,4 @@ $updatedArchiveContent = Update-ArchiveFile -ArchiveContent $archiveContent -Tas
 $updatedArchiveContent | Out-File -FilePath $ArchiveFile -Encoding utf8
 
 Write-Host "TÃ¢che $TaskId $TaskName archivÃ©e avec succÃ¨s."
+

@@ -1,4 +1,4 @@
-﻿# Export-SqlPermissionsToPowerBI.ps1
+# Export-SqlPermissionsToPowerBI.ps1
 # Script pour exporter les donnÃ©es d'anomalies de permissions SQL Server vers Power BI
 
 [CmdletBinding()]
@@ -44,7 +44,7 @@ begin {
     }
 
     # Fonction pour gÃ©nÃ©rer un modÃ¨le Power BI
-    function Generate-PowerBITemplate {
+    function New-PowerBITemplate {
         param (
             [Parameter(Mandatory = $true)]
             [string]$OutputPath
@@ -292,7 +292,7 @@ process {
         # GÃ©nÃ©rer un modÃ¨le Power BI si demandÃ©
         if ($GenerateTemplate) {
             $templatePath = Join-Path -Path $OutputFolder -ChildPath "SqlPermissionAnomalies.pbit"
-            Generate-PowerBITemplate -OutputPath $templatePath
+            New-PowerBITemplate -OutputPath $templatePath
         }
 
         # Retourner un objet avec les informations d'exportation
@@ -309,3 +309,4 @@ process {
         Write-Error "Erreur lors de l'exportation des donnÃ©es d'anomalies: $_"
     }
 }
+

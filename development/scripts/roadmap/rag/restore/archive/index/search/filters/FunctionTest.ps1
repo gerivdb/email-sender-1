@@ -29,7 +29,7 @@ $documents = @(
 )
 
 # Fonction pour filtrer par type
-function Filter-ByType {
+function Select-ByType {
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [hashtable]$Document,
@@ -46,7 +46,7 @@ function Filter-ByType {
 }
 
 # Fonction pour filtrer par date
-function Filter-ByDate {
+function Select-ByDate {
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [hashtable]$Document,
@@ -75,7 +75,7 @@ function Filter-ByDate {
 }
 
 # Fonction pour filtrer par métadonnées
-function Filter-ByMetadata {
+function Select-ByMetadata {
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [hashtable]$Document,
@@ -102,7 +102,7 @@ foreach ($doc in $documents) {
 
 # Tester le filtre par type
 Write-Host "`nTest du filtre par type:" -ForegroundColor Yellow
-$filteredDocuments = $documents | Filter-ByType -IncludeTypes @("document", "video")
+$filteredDocuments = $documents | Select-ByType -IncludeTypes @("document", "video")
 Write-Host "Documents filtrés par type (document, video): $($filteredDocuments.Count)" -ForegroundColor Cyan
 foreach ($doc in $filteredDocuments) {
     Write-Host "  - $($doc.id): $($doc.title) (Type: $($doc.type))"
@@ -112,7 +112,7 @@ foreach ($doc in $filteredDocuments) {
 Write-Host "`nTest du filtre par date:" -ForegroundColor Yellow
 $startDate = [DateTime]::Parse("2024-01-01T00:00:00Z")
 $endDate = [DateTime]::Parse("2024-12-31T23:59:59Z")
-$filteredDocuments = $documents | Filter-ByDate -Field "created_at" -StartDate $startDate -EndDate $endDate
+$filteredDocuments = $documents | Select-ByDate -Field "created_at" -StartDate $startDate -EndDate $endDate
 Write-Host "Documents filtrés par date (créés en 2024): $($filteredDocuments.Count)" -ForegroundColor Cyan
 foreach ($doc in $filteredDocuments) {
     Write-Host "  - $($doc.id): $($doc.title) (Créé le: $($doc.created_at))"
@@ -120,7 +120,7 @@ foreach ($doc in $filteredDocuments) {
 
 # Tester le filtre par métadonnées
 Write-Host "`nTest du filtre par métadonnées:" -ForegroundColor Yellow
-$filteredDocuments = $documents | Filter-ByMetadata -Field "language" -Value "fr"
+$filteredDocuments = $documents | Select-ByMetadata -Field "language" -Value "fr"
 Write-Host "Documents filtrés par métadonnées (langue = fr): $($filteredDocuments.Count)" -ForegroundColor Cyan
 foreach ($doc in $filteredDocuments) {
     Write-Host "  - $($doc.id): $($doc.title) (Langue: $($doc.language))"
@@ -129,10 +129,11 @@ foreach ($doc in $filteredDocuments) {
 # Tester la combinaison de filtres
 Write-Host "`nTest de la combinaison de filtres:" -ForegroundColor Yellow
 $filteredDocuments = $documents | 
-    Filter-ByType -IncludeTypes @("document", "video") | 
-    Filter-ByDate -Field "created_at" -StartDate $startDate -EndDate $endDate | 
-    Filter-ByMetadata -Field "language" -Value "fr"
+    Select-ByType -IncludeTypes @("document", "video") | 
+    Select-ByDate -Field "created_at" -StartDate $startDate -EndDate $endDate | 
+    Select-ByMetadata -Field "language" -Value "fr"
 Write-Host "Documents filtrés par combinaison de filtres: $($filteredDocuments.Count)" -ForegroundColor Cyan
 foreach ($doc in $filteredDocuments) {
     Write-Host "  - $($doc.id): $($doc.title) (Type: $($doc.type), Créé le: $($doc.created_at), Langue: $($doc.language))"
 }
+

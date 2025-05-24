@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires pour le systÃ¨me d'inventaire et de classification des scripts
@@ -66,7 +66,7 @@ function Initialize-TestEnvironment {
     Test, Gestion, Admin
 #>
 
-function Manage-TestProject {
+function Set-TestProject {
     # Fonction de test
 }
 "@
@@ -185,3 +185,4 @@ Remove-Item -Path $testDir -Recurse -Force
 
 # Afficher un rÃ©sumÃ©
 Write-Host "`nTests terminÃ©s. VÃ©rifiez les rÃ©sultats ci-dessus." -ForegroundColor Green
+

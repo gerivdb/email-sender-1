@@ -1,4 +1,4 @@
-﻿# Script de test pour les fonctions d'extraction d'elements specifiques
+# Script de test pour les fonctions d'extraction d'elements specifiques
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
@@ -39,7 +39,7 @@ function Get-Data {
     return $data
 }
 
-function Process-Data {
+function Invoke-Data {
     param (
         [Parameter(Mandatory = $true)]
         [object[]]$Data,
@@ -64,7 +64,7 @@ function Process-Data {
 # Traitement principal
 try {
     $rawData = Get-Data -Path $InputPath -Limit $MaxItems
-    $processedData = Process-Data -Data $rawData -Filter "Item-*"
+    $processedData = Invoke-Data -Data $rawData -Filter "Item-*"
     
     $global:results = $processedData
     
@@ -121,7 +121,7 @@ foreach ($param in $scriptParams) {
 
 # Test 4: Extraire les parametres d'une fonction specifique
 Write-Host "`nTest 4: Extraire les parametres d'une fonction specifique" -ForegroundColor Cyan
-$functionParams = Get-AstParameters -Ast $ast -FunctionName "Process-Data" -Detailed
+$functionParams = Get-AstParameters -Ast $ast -FunctionName "Invoke-Data" -Detailed
 Write-Host "  Nombre de parametres trouves: $($functionParams.Count)" -ForegroundColor Yellow
 foreach ($param in $functionParams) {
     $mandatory = if ($param.Mandatory) { "Obligatoire" } else { "Optionnel" }
@@ -157,3 +157,4 @@ foreach ($var in $variablesWithAssignments) {
 }
 
 Write-Host "`nTests termines avec succes!" -ForegroundColor Green
+

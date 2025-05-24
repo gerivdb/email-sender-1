@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     GÃ¨re les erreurs et les exceptions dans le module RoadmapParser.
 
@@ -52,13 +52,13 @@
     try {
         # Code qui peut gÃ©nÃ©rer une erreur
     } catch {
-        Handle-Error -ErrorRecord $_ -ErrorMessage "Erreur lors du traitement du fichier" -Context "Traitement de donnÃ©es" -LogFile ".\logs\app.log"
+        Invoke-Error -ErrorRecord $_ -ErrorMessage "Erreur lors du traitement du fichier" -Context "Traitement de donnÃ©es" -LogFile ".\logs\app.log"
     }
 
 .NOTES
     Cette fonction est conÃ§ue pour standardiser la gestion des erreurs dans le module.
 #>
-function Handle-Error {
+function Invoke-Error {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -555,3 +555,4 @@ function Get-ExceptionSeverity {
     # Si tout Ã©choue, retourner la sÃ©vÃ©ritÃ© par dÃ©faut
     return $DefaultSeverity
 }
+

@@ -1,4 +1,4 @@
-﻿# Script pour gÃ©rer automatiquement les logs par unitÃ© de temps
+# Script pour gÃ©rer automatiquement les logs par unitÃ© de temps
 # Ce script organise les logs dans des dossiers quotidiens, hebdomadaires et mensuels
 
 # CrÃ©ation des dossiers de logs s'ils n'existent pas
@@ -147,7 +147,7 @@ try {
 }
 
 # Fonction pour archiver les anciens logs
-function Archive-OldLogs {
+function Compress-OldLogs {
     param (
         [int]$DaysToKeepDaily = 7,
         [int]$DaysToKeepWeekly = 30,
@@ -232,7 +232,7 @@ if ($args.Count -gt 0) {
     Write-Host "Nouveau fichier log crÃ©Ã©: $logPath" -ForegroundColor Green
     
     # Archivage des anciens logs
-    Archive-OldLogs
+    Compress-OldLogs
 } else {
     Write-Host "Usage: manage-logs.ps1 <LogName> [Category]" -ForegroundColor Cyan
     Write-Host "  LogName: Nom du fichier log (sans extension)" -ForegroundColor Cyan
@@ -248,3 +248,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

@@ -24,7 +24,7 @@ Set-Content -Path $failedTestsFile -Value "# Tests en échec`r`n"
 Add-Content -Path $failedTestsFile -Value "Date d'analyse : $(Get-Date)`r`n"
 
 # Fonction pour extraire les tests en échec d'un fichier de résultats
-function Extract-FailedTests {
+function Export-FailedTests {
     param (
         [string]$ResultsFile,
         [string]$FailedTestsFile,
@@ -110,13 +110,13 @@ $allProblematicTests = @()
 
 foreach ($resultsFile in $unitTestResultsFiles) {
     $resultsFilePath = Join-Path -Path $resultsDir -ChildPath $resultsFile
-    $problematicTests = Extract-FailedTests -ResultsFile $resultsFilePath -FailedTestsFile $failedTestsFile -Category "Tests unitaires"
+    $problematicTests = Export-FailedTests -ResultsFile $resultsFilePath -FailedTestsFile $failedTestsFile -Category "Tests unitaires"
     $allProblematicTests += $problematicTests
 }
 
 foreach ($resultsFile in $integrationTestResultsFiles) {
     $resultsFilePath = Join-Path -Path $resultsDir -ChildPath $resultsFile
-    $problematicTests = Extract-FailedTests -ResultsFile $resultsFilePath -FailedTestsFile $failedTestsFile -Category "Tests d'intégration"
+    $problematicTests = Export-FailedTests -ResultsFile $resultsFilePath -FailedTestsFile $failedTestsFile -Category "Tests d'intégration"
     $allProblematicTests += $problematicTests
 }
 
@@ -185,3 +185,4 @@ if ($allProblematicTests.Count -eq 0) {
     Write-Host "`nCertains tests ont échoué ou sont en erreur. Consultez le fichier d'identification pour plus de détails : $failedTestsFile" -ForegroundColor $errorColor
     exit 1
 }
+

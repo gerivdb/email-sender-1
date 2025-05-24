@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests pour le script review-mode.ps1.
 
@@ -79,7 +79,7 @@ New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
 
 # CrÃ©er des fichiers de code avec des problÃ¨mes de qualitÃ© pour les tests
 @"
-function Process-Data {
+function Invoke-Data {
     # ProblÃ¨me : Pas de documentation
     param (
         [Parameter(Mandatory = `$true)]
@@ -117,17 +117,17 @@ function Process-Data {
         return `$Data
     }
 }
-"@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Public\Process-Data.ps1") -Encoding UTF8
+"@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Public\Invoke-Data.ps1") -Encoding UTF8
 
 @"
-function Helper-Function {
+function Get-Function {
     # ProblÃ¨me : Nom de fonction non conforme aux standards PowerShell
     # ProblÃ¨me : Documentation insuffisante
     param (
         [string]`$input # ProblÃ¨me : Nom de paramÃ¨tre rÃ©servÃ©
     )
     
-    # ProblÃ¨me : Duplication de code (similaire Ã  Process-Data)
+    # ProblÃ¨me : Duplication de code (similaire Ã  Invoke-Data)
     if (`$input -is [string]) {
         if (`$input.Length -gt 10) {
             if (`$input.StartsWith("A")) {
@@ -144,7 +144,7 @@ function Helper-Function {
         return `$input
     }
 }
-"@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Private\Helper-Function.ps1") -Encoding UTF8
+"@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Private\Get-Function.ps1") -Encoding UTF8
 
 Write-Host "Module de test crÃ©Ã© : $testModulePath" -ForegroundColor Green
 Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $testOutputPath" -ForegroundColor Green
@@ -216,7 +216,7 @@ Describe "Invoke-RoadmapReview" {
             $result.StandardsViolations.Count | Should -BeGreaterThan 0
             
             # VÃ©rifier que les problÃ¨mes spÃ©cifiques sont identifiÃ©s
-            $result.StandardsViolations | Should -Contain "Helper-Function"
+            $result.StandardsViolations | Should -Contain "Get-Function"
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapReview n'est pas disponible"
         }
@@ -248,7 +248,7 @@ Describe "Invoke-RoadmapReview" {
             $result.ComplexityIssues.Count | Should -BeGreaterThan 0
             
             # VÃ©rifier que les fonctions complexes sont identifiÃ©es
-            $result.ComplexityIssues | Should -Contain "Process-Data"
+            $result.ComplexityIssues | Should -Contain "Invoke-Data"
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapReview n'est pas disponible"
         }
@@ -315,3 +315,5 @@ if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
 } else {
     Write-Host "Tests terminÃ©s. Utilisez Invoke-Pester pour exÃ©cuter les tests avec le framework Pester." -ForegroundColor Yellow
 }
+
+

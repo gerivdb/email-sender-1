@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests simplifiÃ©s pour le systÃ¨me d'inventaire et de classification des scripts
@@ -59,7 +59,7 @@ function Initialize-TestEnvironment {
     Test, Gestion, Admin
 #>
 
-function Manage-TestProject {
+function Set-TestProject {
     # Fonction de test
 }
 "@
@@ -184,3 +184,4 @@ Write-Host "Repertoire de test supprime: $testDir" -ForegroundColor Green
 
 # Afficher un rÃ©sumÃ©
 Write-Host "`nTests termines." -ForegroundColor Green
+

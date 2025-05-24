@@ -1,4 +1,4 @@
-﻿# Module de dÃ©tection des Ã©lÃ©ments XML
+# Module de dÃ©tection des Ã©lÃ©ments XML
 # Ce script implÃ©mente les fonctionnalitÃ©s pour dÃ©tecter et analyser les Ã©lÃ©ments XML
 
 # Configuration
@@ -118,7 +118,7 @@ function Get-XmlElements {
         [void]$elements.Add($rootInfo)
         
         # Fonction rÃ©cursive pour analyser les nÅ“uds enfants
-        function Process-XmlNode {
+        function Invoke-XmlNode {
             param (
                 [System.Xml.XmlNode]$Node,
                 [XmlElementInfo]$ParentInfo,
@@ -179,13 +179,13 @@ function Get-XmlElements {
                     [void]$elements.Add($childInfo)
                     
                     # Traiter les nÅ“uds enfants de maniÃ¨re rÃ©cursive
-                    Process-XmlNode -Node $childNode -ParentInfo $childInfo -CurrentDepth ($CurrentDepth + 1)
+                    Invoke-XmlNode -Node $childNode -ParentInfo $childInfo -CurrentDepth ($CurrentDepth + 1)
                 }
             }
         }
         
         # DÃ©marrer l'analyse rÃ©cursive
-        Process-XmlNode -Node $rootElement -ParentInfo $rootInfo -CurrentDepth 0
+        Invoke-XmlNode -Node $rootElement -ParentInfo $rootInfo -CurrentDepth 0
         
         return $elements
     }
@@ -541,3 +541,4 @@ function ConvertTo-RoadmapMapping {
 Export-ModuleMember -Function Get-XmlElements, Get-XmlElementsFromFile
 Export-ModuleMember -Function Get-XmlStructureReport, Get-XmlStructureReportFromFile
 Export-ModuleMember -Function ConvertTo-RoadmapMapping
+

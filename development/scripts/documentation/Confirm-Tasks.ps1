@@ -1,4 +1,4 @@
-﻿# Confirm-Tasks.ps1
+# Confirm-Tasks.ps1
 # Script pour confirmer ou rejeter les tÃ¢ches dÃ©tectÃ©es avant de les ajouter Ã  la roadmap
 
 param (
@@ -14,7 +14,7 @@ $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
 $taskLogPath = Join-Path -Path $scriptPath -ChildPath "tasks-log.txt"
 
 # Fonction pour journaliser une action
-function Log-Action {
+function Write-Action {
     param (
         [string]$Action,
         [string]$Details
@@ -70,7 +70,7 @@ function Add-TaskToRoadmap {
 }
 
 # Fonction pour charger les tÃ¢ches en attente
-function Load-PendingTasks {
+function Import-PendingTasks {
     if (-not (Test-Path -Path $PendingTasksFile)) {
         return @()
     }
@@ -135,27 +135,27 @@ function Confirm-Task {
             
             if ($success) {
                 Write-Host "OK" -ForegroundColor Green
-                Log-Action -Action "Ajout" -Details "TÃ¢che ajoutÃ©e Ã  la roadmap : $($Task.Description)"
+                Write-Action -Action "Ajout" -Details "TÃ¢che ajoutÃ©e Ã  la roadmap : $($Task.Description)"
                 return "added"
             }
             else {
                 Write-Host "Ã‰CHEC" -ForegroundColor Red
-                Log-Action -Action "Erreur" -Details "Ã‰chec de l'ajout de la tÃ¢che Ã  la roadmap : $($Task.Description)"
+                Write-Action -Action "Erreur" -Details "Ã‰chec de l'ajout de la tÃ¢che Ã  la roadmap : $($Task.Description)"
                 return "pending"
             }
         }
         "m" {
-            $Task = Modify-Task -Task $Task
+            $Task = Set-Task -Task $Task
             return "modified"
         }
         "i" {
             Write-Host "TÃ¢che ignorÃ©e." -ForegroundColor Yellow
-            Log-Action -Action "IgnorÃ©" -Details "TÃ¢che ignorÃ©e par l'utilisateur : $($Task.Description)"
+            Write-Action -Action "IgnorÃ©" -Details "TÃ¢che ignorÃ©e par l'utilisateur : $($Task.Description)"
             return "pending"
         }
         "s" {
             Write-Host "TÃ¢che supprimÃ©e." -ForegroundColor Yellow
-            Log-Action -Action "SupprimÃ©" -Details "TÃ¢che supprimÃ©e par l'utilisateur : $($Task.Description)"
+            Write-Action -Action "SupprimÃ©" -Details "TÃ¢che supprimÃ©e par l'utilisateur : $($Task.Description)"
             return "deleted"
         }
         default {
@@ -166,7 +166,7 @@ function Confirm-Task {
 }
 
 # Fonction pour modifier une tÃ¢che
-function Modify-Task {
+function Set-Task {
     param (
         [hashtable]$Task
     )
@@ -241,7 +241,7 @@ function Main {
     Write-Host ""
     
     # Charger les tÃ¢ches en attente
-    $pendingTasks = Load-PendingTasks
+    $pendingTasks = Import-PendingTasks
     
     if ($pendingTasks.Count -eq 0) {
         Write-Host "Aucune tÃ¢che en attente."
@@ -273,3 +273,5 @@ function Main {
 
 # ExÃ©cuter la fonction principale
 Main
+
+

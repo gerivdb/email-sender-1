@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Diagnostique et rÃ©pare les problÃ¨mes dans les tests rÃ©els.
@@ -30,7 +30,7 @@ param(
 )
 
 # Fonction pour analyser un fichier de test
-function Analyze-TestFile {
+function Test-TestFile {
     param (
         [Parameter(Mandatory = $true)]
         [string]$FilePath
@@ -274,7 +274,7 @@ function Show-Issues {
 }
 
 # Fonction pour appliquer les corrections
-function Apply-Fixes {
+function Set-Fixes {
     param (
         [Parameter(Mandatory = $true)]
         [object]$Issues
@@ -304,14 +304,14 @@ $realTestFiles = Get-ChildItem -Path $PSScriptRoot -Filter "*.Tests.ps1" |
 $allIssues = @()
 
 foreach ($file in $realTestFiles) {
-    $issues = Analyze-TestFile -FilePath $file
+    $issues = Test-TestFile -FilePath $file
 
     if ($issues) {
         $allIssues += $issues
         Show-Issues -Issues $issues
 
         if ($Fix) {
-            Apply-Fixes -Issues $issues
+            Set-Fixes -Issues $issues
         }
     }
 }
@@ -331,3 +331,4 @@ if ($Fix) {
 else {
     Write-Host "`nPour appliquer les corrections, exÃ©cutez ce script avec le paramÃ¨tre -Fix." -ForegroundColor Yellow
 }
+

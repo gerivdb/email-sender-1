@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Exemple d'optimisation du traitement parallÃ¨le.
@@ -63,7 +63,7 @@ function New-TestData {
 }
 
 # Fonction de traitement Ã  optimiser
-function Process-Item {
+function Invoke-Item {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -101,7 +101,7 @@ function Invoke-SequentialProcessing {
 
     # Utiliser for au lieu de foreach pour de meilleures performances
     for ($i = 0; $i -lt $Data.Count; $i++) {
-        $result = Process-Item -Item $Data[$i]
+        $result = Invoke-Item -Item $Data[$i]
         $results.Add($result)
     }
 
@@ -591,13 +591,13 @@ if ($largeDataReport.FastestMethod -eq "BatchParallel") {
     Write-Log "- Nombre de threads: $($largeDataReport.MaxThreads)" -Level "INFO"
 
     Write-Log "Exemple de code:" -Level "INFO"
-    Write-Log '$results = $data | ForEach-Object -ThrottleLimit $([Environment]::ProcessorCount) -Parallel { Process-Item -Item $_ }' -Level "INFO"
+    Write-Log '$results = $data | ForEach-Object -ThrottleLimit $([Environment]::ProcessorCount) -Parallel { Invoke-Item -Item $_ }' -Level "INFO"
 } else {
     Write-Log "Pour ce type de traitement, l'exÃ©cution sÃ©quentielle est la plus efficace." -Level "INFO"
     Write-Log "Cela peut Ãªtre dÃ» Ã  la nature du traitement ou aux frais gÃ©nÃ©raux de parallÃ©lisation." -Level "INFO"
 
     Write-Log "Exemple de code:" -Level "INFO"
-    Write-Log 'foreach ($item in $data) { Process-Item -Item $item }' -Level "INFO"
+    Write-Log 'foreach ($item in $data) { Invoke-Item -Item $item }' -Level "INFO"
 }
 
 # Enregistrer les rapports
@@ -613,3 +613,4 @@ $mediumDataReport | ConvertTo-Json -Depth 10 | Out-File -FilePath "$reportsPath\
 $largeDataReport | ConvertTo-Json -Depth 10 | Out-File -FilePath "$reportsPath\large_data_report_$timestamp.json" -Encoding utf8
 
 Write-Log "Rapports enregistrÃ©s dans $reportsPath" -Level "SUCCESS"
+

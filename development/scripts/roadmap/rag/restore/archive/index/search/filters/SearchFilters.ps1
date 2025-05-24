@@ -4,7 +4,7 @@
 # Date: 2025-05-15
 
 # Fonction pour filtrer par type
-function Filter-ByType {
+function Select-ByType {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true)]
@@ -47,7 +47,7 @@ function Filter-ByType {
 }
 
 # Fonction pour filtrer par date
-function Filter-ByDate {
+function Select-ByDate {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true)]
@@ -100,7 +100,7 @@ function Filter-ByDate {
 }
 
 # Fonction pour filtrer par metadonnees
-function Filter-ByMetadata {
+function Select-ByMetadata {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true)]
@@ -202,7 +202,7 @@ function Filter-ByMetadata {
 }
 
 # Fonction pour filtrer par texte
-function Filter-ByText {
+function Select-ByText {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $true)]
@@ -358,4 +358,5 @@ function Merge-Filters {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Filter-ByType, Filter-ByDate, Filter-ByMetadata, Filter-ByText, Get-LevenshteinDistance, Merge-Filters
+Export-ModuleMember -function Select-ByType, Select-ByDate, Select-ByMetadata, Select-ByText, Get-LevenshteinDistance, Merge-Filters
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests pour valider la documentation d'IOException et ses caractÃ©ristiques.
 
@@ -102,7 +102,7 @@ Describe "Tests de la documentation d'IOException et ses caractÃ©ristiques" {
         }
         
         It "Exemple 4: Devrait simuler une erreur de disque plein" {
-            function Simulate-DiskFullIOException {
+            function Test-DiskFullIOException {
                 param (
                     [string]$Message = "There is not enough space on the disk."
                 )
@@ -118,7 +118,7 @@ Describe "Tests de la documentation d'IOException et ses caractÃ©ristiques" {
                 }
             }
             
-            $result = Simulate-DiskFullIOException
+            $result = Test-DiskFullIOException
             $result.Message | Should -Be "There is not enough space on the disk."
             $result.HResult | Should -Be -2147024784
             $result.IsDiskFull | Should -Be $true
@@ -162,7 +162,7 @@ Describe "Tests de la documentation d'IOException et ses caractÃ©ristiques" {
     
     Context "PrÃ©vention des IOException" {
         It "Technique 1: Devrait utiliser des blocs try-catch-finally" {
-            function Process-FileWithProperCleanup {
+            function Invoke-FileWithProperCleanup {
                 param (
                     [string]$FilePath
                 )
@@ -190,10 +190,10 @@ Describe "Tests de la documentation d'IOException et ses caractÃ©ristiques" {
             $tempFile = [System.IO.Path]::GetTempFileName()
             
             # Test avec un fichier valide
-            Process-FileWithProperCleanup -FilePath $tempFile | Should -Be $true
+            Invoke-FileWithProperCleanup -FilePath $tempFile | Should -Be $true
             
             # Test avec un fichier inexistant
-            Process-FileWithProperCleanup -FilePath "fichier_inexistant.txt" | Should -Be $false
+            Invoke-FileWithProperCleanup -FilePath "fichier_inexistant.txt" | Should -Be $false
             
             # Nettoyer
             Remove-Item -Path $tempFile -Force -ErrorAction SilentlyContinue
@@ -336,3 +336,5 @@ Describe "Tests de la documentation d'IOException et ses caractÃ©ristiques" {
 
 # ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed
+
+

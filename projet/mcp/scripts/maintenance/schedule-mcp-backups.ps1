@@ -76,7 +76,7 @@ function Write-Log {
     Write-Host "[$timestamp] [$Level] $Message" -ForegroundColor $color
 }
 
-function Create-BackupTask {
+function New-BackupTask {
     param (
         [string]$ScriptPath,
         [string]$Frequency,
@@ -170,7 +170,7 @@ try {
     
     # Créer la tâche planifiée
     if ($PSCmdlet.ShouldProcess("MCP Configuration", "Schedule automatic backups")) {
-        $result = Create-BackupTask -ScriptPath $backupScript -Frequency $Frequency -DayOfWeek $DayOfWeek -Time $Time -CreateZip $CreateZip -IncludeData $IncludeData
+        $result = New-BackupTask -ScriptPath $backupScript -Frequency $Frequency -DayOfWeek $DayOfWeek -Time $Time -CreateZip $CreateZip -IncludeData $IncludeData
         
         if ($result) {
             Write-Log "Sauvegardes automatiques de la configuration MCP planifiées avec succès." -Level "SUCCESS"
@@ -184,3 +184,4 @@ try {
     Write-Log "Erreur lors de la planification des sauvegardes automatiques de la configuration MCP: $_" -Level "ERROR"
     exit 1
 }
+

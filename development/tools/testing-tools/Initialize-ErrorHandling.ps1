@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Initialise la gestion des erreurs pour TestOmnibus.
 .DESCRIPTION
@@ -21,7 +21,7 @@ if (Test-Path -Path $errorHandlerPath) {
     Write-Warning "Le module de gestion des erreurs n'a pas Ã©tÃ© trouvÃ©: $errorHandlerPath"
     
     # DÃ©finir des fonctions de base pour la gestion des erreurs si le module n'est pas disponible
-    function Handle-Error {
+    function Invoke-Error {
         [CmdletBinding()]
         param (
             [Parameter(Mandatory = $true)]
@@ -69,7 +69,7 @@ $logPath = Join-Path -Path $env:TEMP -ChildPath "TestOmnibus\ErrorLogs\$(Get-Dat
 Set-GlobalErrorHandler -LogPath $logPath
 
 # Fonction pour gÃ©rer les erreurs spÃ©cifiques Ã  TestOmnibus
-function Handle-TestOmnibusError {
+function Invoke-TestOmnibusError {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -89,7 +89,7 @@ function Handle-TestOmnibusError {
     $context = "TestOmnibus - $TestName"
     
     # Journaliser l'erreur
-    Handle-Error -ErrorRecord $ErrorRecord -Context $context
+    Invoke-Error -ErrorRecord $ErrorRecord -Context $context
     
     # Ajouter l'erreur au rapport si demandÃ©
     if ($AddToReport) {
@@ -136,3 +136,4 @@ function Handle-TestOmnibusError {
 }
 
 Write-Host "Gestion des erreurs initialisÃ©e pour TestOmnibus" -ForegroundColor Green
+

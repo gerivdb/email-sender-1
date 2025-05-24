@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Version optimisÃ©e du dÃ©tecteur de rÃ©fÃ©rences brisÃ©es utilisant PSCacheManager.
 .DESCRIPTION
@@ -15,10 +15,10 @@
 .PARAMETER DisableCache
     Si spÃ©cifiÃ©, dÃ©sactive l'utilisation du cache pour cette analyse.
 .EXAMPLE
-    .\Detect-BrokenReferences-Cached.ps1
+    .\Find-BrokenReferences-Cached.ps1
     Analyse tous les scripts dans le dossier scripts et gÃ©nÃ¨re un rapport.
 .EXAMPLE
-    .\Detect-BrokenReferences-Cached.ps1 -Path "D:\scripts" -OutputPath "D:\rapport.json" -DisableCache
+    .\Find-BrokenReferences-Cached.ps1 -Path "D:\scripts" -OutputPath "D:\rapport.json" -DisableCache
     Analyse tous les scripts dans le dossier D:\scripts sans utiliser le cache et gÃ©nÃ¨re un rapport dans D:\rapport.json.
 .NOTES
     Auteur: SystÃ¨me d'analyse d'erreurs
@@ -103,16 +103,16 @@ function Get-FilePathsFromScript {
     $cacheKey = "Paths_$($scriptInfo.FullName)_$($scriptInfo.LastWriteTime.Ticks)"
     
     if ($DisableCache) {
-        return Extract-Paths -ScriptPath $ScriptPath
+        return Export-Paths -ScriptPath $ScriptPath
     }
     
     return Get-PSCacheItem -Cache $pathAnalysisCache -Key $cacheKey -GenerateValue {
-        Extract-Paths -ScriptPath $ScriptPath
+        Export-Paths -ScriptPath $ScriptPath
     }
 }
 
 # Fonction pour extraire les chemins de fichiers d'un script (implÃ©mentation)
-function Extract-Paths {
+function Export-Paths {
     param (
         [string]$ScriptPath
     )
@@ -175,7 +175,7 @@ function Extract-Paths {
 }
 
 # Fonction principale pour dÃ©tecter les rÃ©fÃ©rences brisÃ©es
-function Detect-BrokenReferences {
+function Find-BrokenReferences {
     param (
         [string]$RootPath,
         [string]$OutputFile
@@ -292,4 +292,5 @@ function Detect-BrokenReferences {
 }
 
 # ExÃ©cuter la dÃ©tection
-Detect-BrokenReferences -RootPath $Path -OutputFile $OutputPath
+Find-BrokenReferences -RootPath $Path -OutputFile $OutputPath
+

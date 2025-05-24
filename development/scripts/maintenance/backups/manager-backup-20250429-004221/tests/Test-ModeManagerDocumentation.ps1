@@ -1,4 +1,4 @@
-﻿# Tests de documentation pour le mode manager
+# Tests de documentation pour le mode manager
 
 # DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
@@ -16,7 +16,7 @@ if (-not (Test-Path -Path $testDir)) {
 }
 
 # Fonction pour capturer la sortie d'une commande
-function Capture-Output {
+function Get-Output {
     param (
         [ScriptBlock]$ScriptBlock
     )
@@ -30,7 +30,7 @@ function Capture-Output {
 Write-Host "Test 1: VÃ©rification de l'aide intÃ©grÃ©e" -ForegroundColor Cyan
 try {
     # Capturer la sortie de la commande d'aide
-    $helpOutput = Capture-Output {
+    $helpOutput = Get-Output {
         & $scriptPath -Help
     }
     
@@ -79,7 +79,7 @@ try {
 Write-Host "Test 2: VÃ©rification des exemples d'utilisation" -ForegroundColor Cyan
 try {
     # Capturer la sortie de la commande d'aide
-    $helpOutput = Capture-Output {
+    $helpOutput = Get-Output {
         & $scriptPath -Help
     }
     
@@ -111,7 +111,7 @@ try {
 Write-Host "Test 3: VÃ©rification de la documentation des modes" -ForegroundColor Cyan
 try {
     # Capturer la sortie de la commande de liste des modes
-    $modesOutput = Capture-Output {
+    $modesOutput = Get-Output {
         & $scriptPath -ListModes
     }
     
@@ -209,7 +209,7 @@ try {
 Write-Host "Test 6: VÃ©rification des exemples fonctionnels" -ForegroundColor Cyan
 try {
     # Capturer la sortie de la commande d'aide
-    $helpOutput = Capture-Output {
+    $helpOutput = Get-Output {
         & $scriptPath -Help
     }
     
@@ -261,3 +261,4 @@ if (Test-Path -Path $testDir) {
 }
 
 Write-Host "Tests terminÃ©s." -ForegroundColor Cyan
+

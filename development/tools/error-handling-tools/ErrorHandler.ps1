@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Module de gestion des erreurs pour les scripts PowerShell.
 .DESCRIPTION
@@ -11,7 +11,7 @@
 #>
 
 # Fonction pour gÃ©rer les erreurs de maniÃ¨re cohÃ©rente
-function Handle-Error {
+function Invoke-Error {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -101,7 +101,7 @@ function Set-GlobalErrorHandler {
             $null
         )
         
-        Handle-Error -ErrorRecord $errorRecord -Context "Erreur non gÃ©rÃ©e" -LogPath $LogPath
+        Invoke-Error -ErrorRecord $errorRecord -Context "Erreur non gÃ©rÃ©e" -LogPath $LogPath
     }
     
     # Attacher le gestionnaire d'erreurs Ã  l'Ã©vÃ©nement d'erreur
@@ -320,4 +320,5 @@ function Get-ErrorReport {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Handle-Error, Set-GlobalErrorHandler, Get-ErrorReport
+Export-ModuleMember -function Invoke-Error, Set-GlobalErrorHandler, Get-ErrorReport
+

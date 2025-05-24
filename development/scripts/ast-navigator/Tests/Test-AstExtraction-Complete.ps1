@@ -1,4 +1,4 @@
-﻿# Script de test pour les fonctions d'extraction d'Ã©lÃ©ments spÃ©cifiques
+# Script de test pour les fonctions d'extraction d'Ã©lÃ©ments spÃ©cifiques
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
@@ -39,7 +39,7 @@ function Get-Data {
     return $data
 }
 
-function Process-Data {
+function Invoke-Data {
     param (
         [Parameter(Mandatory = $true)]
         [object[]]$Data,
@@ -64,7 +64,7 @@ function Process-Data {
 # Traitement principal
 try {
     $rawData = Get-Data -Path $InputPath -Limit $MaxItems
-    $processedData = Process-Data -Data $rawData -Filter "Item-*"
+    $processedData = Invoke-Data -Data $rawData -Filter "Item-*"
     
     $global:results = $processedData
     
@@ -235,3 +235,4 @@ foreach ($structure in $complexStructures) {
 }
 
 Write-Host "`nTests terminÃ©s avec succÃ¨s!" -ForegroundColor Green
+

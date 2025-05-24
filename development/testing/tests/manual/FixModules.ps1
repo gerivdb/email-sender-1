@@ -1,4 +1,4 @@
-﻿# Script pour corriger les modules
+# Script pour corriger les modules
 Write-Host "Correction des modules" -ForegroundColor Green
 
 # Importer les modules
@@ -11,7 +11,7 @@ $modulesPath = Join-Path -Path $projectRoot -ChildPath "modules"
 Write-Host "Chemin du projet : $projectRoot" -ForegroundColor Cyan
 
 # Fonction pour corriger un module
-function Fix-Module {
+function Repair-Module {
     param (
         [string]$ModuleName,
         [string]$ModulePath
@@ -56,7 +56,7 @@ $modules = @{
 $results = @{}
 foreach ($moduleName in $modules.Keys) {
     $modulePath = $modules[$moduleName]
-    $results[$moduleName] = Fix-Module -ModuleName $moduleName -ModulePath $modulePath
+    $results[$moduleName] = Repair-Module -ModuleName $moduleName -ModulePath $modulePath
 }
 
 # Afficher les rÃ©sultats
@@ -83,3 +83,4 @@ if ($allSuccess) {
 }
 
 Write-Host "Corrections terminÃ©es." -ForegroundColor Green
+

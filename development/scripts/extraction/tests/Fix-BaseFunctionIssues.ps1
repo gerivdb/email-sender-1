@@ -52,7 +52,7 @@ function Test-Script {
 }
 
 # Fonction pour corriger les problèmes dans une fonction de base
-function Fix-BaseFunction {
+function Repair-BaseFunction {
     param (
         [string]$FunctionName,
         [string]$TestScript,
@@ -226,7 +226,7 @@ foreach ($function in $baseFunctions) {
     $testPath = Join-Path -Path $testDir -ChildPath $function.Test
     
     if (Test-Path -Path $testPath) {
-        $fixed = Fix-BaseFunction -FunctionName $function.Name -TestScript $testPath -FixReportFile $fixReportFile
+        $fixed = Repair-BaseFunction -FunctionName $function.Name -TestScript $testPath -FixReportFile $fixReportFile
         
         if ($fixed) {
             $fixedFunctions++
@@ -258,3 +258,4 @@ if ($fixedFunctions -eq $totalFunctions) {
     Write-Host "Certains problèmes dans les fonctions de base n'ont pas pu être corrigés. Consultez le fichier de rapport pour plus de détails : $fixReportFile" -ForegroundColor $errorColor
     exit 1
 }
+

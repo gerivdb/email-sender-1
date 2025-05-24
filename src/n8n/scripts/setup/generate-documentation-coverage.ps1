@@ -82,7 +82,7 @@ function Get-ProjectPath {
 }
 
 # Fonction pour analyser les fichiers de documentation
-function Analyze-Documentation {
+function Test-Documentation {
     $projectRoot = Get-ProjectPath
     $n8nRoot = Join-Path -Path $projectRoot -ChildPath "n8n"
     $docsFolder = Join-Path -Path $n8nRoot -ChildPath "docs"
@@ -163,7 +163,7 @@ function Analyze-Documentation {
 }
 
 # Fonction pour analyser les scripts d'utilitaires
-function Analyze-UtilityScripts {
+function Test-UtilityScripts {
     $projectRoot = Get-ProjectPath
     $n8nRoot = Join-Path -Path $projectRoot -ChildPath "n8n"
     $scriptsFolder = Join-Path -Path $n8nRoot -ChildPath "scripts"
@@ -275,7 +275,7 @@ function Analyze-UtilityScripts {
 }
 
 # Fonction pour analyser les templates
-function Analyze-Templates {
+function Test-Templates {
     $projectRoot = Get-ProjectPath
     $templatesFolder = Join-Path -Path $projectRoot -ChildPath "n8n/_templates"
 
@@ -342,7 +342,7 @@ function Analyze-Templates {
 }
 
 # Fonction pour générer un rapport de couverture
-function Generate-CoverageReport {
+function New-CoverageReport {
     param (
         [Parameter(Mandatory = $true)]
         [PSCustomObject[]]$DocumentationResults,
@@ -522,19 +522,19 @@ function Start-DocumentationCoverageAnalysis {
 
     # Analyser la documentation
     Write-Info "Analyse des fichiers de documentation..."
-    $documentationResults = Analyze-Documentation
+    $documentationResults = Test-Documentation
 
     # Analyser les scripts d'utilitaires
     Write-Info "Analyse des scripts d'utilitaires..."
-    $utilityScriptResults = Analyze-UtilityScripts
+    $utilityScriptResults = Test-UtilityScripts
 
     # Analyser les templates
     Write-Info "Analyse des templates..."
-    $templateResults = Analyze-Templates
+    $templateResults = Test-Templates
 
     # Générer le rapport de couverture
     Write-Info "Génération du rapport de couverture..."
-    $reportPath = Generate-CoverageReport -DocumentationResults $documentationResults -UtilityScriptResults $utilityScriptResults -TemplateResults $templateResults -OutputPath $OutputPath
+    $reportPath = New-CoverageReport -DocumentationResults $documentationResults -UtilityScriptResults $utilityScriptResults -TemplateResults $templateResults -OutputPath $OutputPath
 
     # Afficher le résultat
     if ($reportPath) {
@@ -548,3 +548,4 @@ function Start-DocumentationCoverageAnalysis {
 
 # Exécuter l'analyse
 Start-DocumentationCoverageAnalysis
+

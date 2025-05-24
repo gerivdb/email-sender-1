@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests pour valider la documentation de DirectoryNotFoundException et ses contextes.
 
@@ -32,7 +32,7 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
         }
         
         It "Exemple 1: Devrait gÃ©rer l'accÃ¨s Ã  un fichier dans un rÃ©pertoire inexistant" {
-            function Access-FileInNonExistentDirectory {
+            function Get-FileInNonExistentDirectory {
                 param (
                     [string]$FilePath
                 )
@@ -53,11 +53,11 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
             $nonExistentDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "dossier_inexistant_" + [Guid]::NewGuid().ToString())
             $fileInNonExistentDir = [System.IO.Path]::Combine($nonExistentDir, "fichier.txt")
             
-            Access-FileInNonExistentDirectory -FilePath $fileInNonExistentDir | Should -Be "DirectoryNotFound"
+            Get-FileInNonExistentDirectory -FilePath $fileInNonExistentDir | Should -Be "DirectoryNotFound"
         }
         
         It "Exemple 2: Devrait crÃ©er un rÃ©pertoire s'il n'existe pas" {
-            function Create-DirectoryIfNotExists {
+            function New-DirectoryIfNotExists {
                 param (
                     [string]$DirectoryPath
                 )
@@ -81,17 +81,17 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
             
             # Test avec un rÃ©pertoire inexistant
             $tempDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "test_dir_" + [Guid]::NewGuid().ToString())
-            Create-DirectoryIfNotExists -DirectoryPath $tempDir | Should -Be "DirectoryCreated"
+            New-DirectoryIfNotExists -DirectoryPath $tempDir | Should -Be "DirectoryCreated"
             
             # Test avec un rÃ©pertoire existant
-            Create-DirectoryIfNotExists -DirectoryPath $tempDir | Should -Be "DirectoryExists"
+            New-DirectoryIfNotExists -DirectoryPath $tempDir | Should -Be "DirectoryExists"
             
             # Nettoyer
             Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
         }
         
         It "Exemple 3: Devrait gÃ©rer l'accÃ¨s Ã  un lecteur ou partage rÃ©seau inexistant" {
-            function Access-NonExistentDrive {
+            function Get-NonExistentDrive {
                 param (
                     [string]$DrivePath
                 )
@@ -108,11 +108,11 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
             
             # Test avec un lecteur inexistant (ajustez la lettre de lecteur selon votre systÃ¨me)
             # Nous utilisons Z: car c'est rarement utilisÃ©, mais cela pourrait Ã©chouer si Z: existe
-            Access-NonExistentDrive -DrivePath "Z:\Documents" | Should -BeIn @("DirectoryNotFound", "OtherError")
+            Get-NonExistentDrive -DrivePath "Z:\Documents" | Should -BeIn @("DirectoryNotFound", "OtherError")
         }
         
         It "Exemple 4: Devrait vÃ©rifier rÃ©cursivement l'existence des rÃ©pertoires parents" {
-            function Verify-DirectoryPath {
+            function Confirm-DirectoryPath {
                 param (
                     [string]$Path
                 )
@@ -165,14 +165,14 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
             
             # Test avec un chemin Ã  plusieurs niveaux
             $deepPath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "level1", "level2", "level3")
-            $verificationResult = Verify-DirectoryPath -Path $deepPath
+            $verificationResult = Confirm-DirectoryPath -Path $deepPath
             
             $verificationResult.Exists | Should -Be $false
             $verificationResult.MissingParts.Count | Should -BeGreaterThan 0
         }
         
         It "Exemple 5: Devrait crÃ©er rÃ©cursivement des rÃ©pertoires" {
-            function Create-DirectoryRecursively {
+            function New-DirectoryRecursively {
                 param (
                     [string]$Path
                 )
@@ -196,7 +196,7 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
             }
             
             # CrÃ©er les rÃ©pertoires
-            Create-DirectoryRecursively -Path $deepPath | Should -Be $true
+            New-DirectoryRecursively -Path $deepPath | Should -Be $true
             
             # VÃ©rifier que tous les rÃ©pertoires ont Ã©tÃ© crÃ©Ã©s
             $level2 = [System.IO.Path]::Combine($level1, "level2")
@@ -250,7 +250,7 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
     
     Context "PrÃ©vention des DirectoryNotFoundException" {
         It "Technique 1: Devrait vÃ©rifier l'existence du rÃ©pertoire" {
-            function Ensure-DirectoryExists {
+            function Confirm-DirectoryExists {
                 param (
                     [string]$DirectoryPath
                 )
@@ -267,18 +267,18 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
             [System.IO.Directory]::CreateDirectory($tempDir) | Out-Null
             
             # Test avec un rÃ©pertoire existant
-            Ensure-DirectoryExists -DirectoryPath $tempDir | Should -Be "DirectoryExists"
+            Confirm-DirectoryExists -DirectoryPath $tempDir | Should -Be "DirectoryExists"
             
             # Test avec un rÃ©pertoire inexistant
             $nonExistentDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "dossier_inexistant")
-            Ensure-DirectoryExists -DirectoryPath $nonExistentDir | Should -Be "DirectoryNotFound"
+            Confirm-DirectoryExists -DirectoryPath $nonExistentDir | Should -Be "DirectoryNotFound"
             
             # Nettoyer
             Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
         }
         
         It "Technique 2: Devrait crÃ©er le rÃ©pertoire s'il n'existe pas" {
-            function Create-DirectoryIfNotExists {
+            function New-DirectoryIfNotExists {
                 param (
                     [string]$DirectoryPath
                 )
@@ -309,12 +309,12 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
                 Remove-Item -Path $tempDir -Recurse -Force
             }
             
-            $result1 = Create-DirectoryIfNotExists -DirectoryPath $tempDir
+            $result1 = New-DirectoryIfNotExists -DirectoryPath $tempDir
             $result1.Created | Should -Be $true
             $result1.Exists | Should -Be $true
             
             # Test avec un rÃ©pertoire existant
-            $result2 = Create-DirectoryIfNotExists -DirectoryPath $tempDir
+            $result2 = New-DirectoryIfNotExists -DirectoryPath $tempDir
             $result2.Created | Should -Be $false
             $result2.Exists | Should -Be $true
             
@@ -340,7 +340,7 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
         }
         
         It "Technique 4: Devrait vÃ©rifier la disponibilitÃ© des lecteurs et partages rÃ©seau" {
-            function Check-DriveAvailability {
+            function Test-DriveAvailability {
                 param (
                     [string]$DrivePath
                 )
@@ -361,14 +361,14 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
             }
             
             # Test avec un lecteur existant (C: devrait exister sur la plupart des systÃ¨mes Windows)
-            Check-DriveAvailability -DrivePath "C:\Windows" | Should -Be "DriveAvailable"
+            Test-DriveAvailability -DrivePath "C:\Windows" | Should -Be "DriveAvailable"
             
             # Test avec un lecteur inexistant (Z: est rarement utilisÃ©)
             # Cela pourrait Ã©chouer si Z: existe sur le systÃ¨me de test
-            Check-DriveAvailability -DrivePath "Z:\Documents" | Should -BeIn @("DriveNotFound", "DriveAvailable")
+            Test-DriveAvailability -DrivePath "Z:\Documents" | Should -BeIn @("DriveNotFound", "DriveAvailable")
             
             # Test avec un chemin invalide
-            Check-DriveAvailability -DrivePath "InvalidPath" | Should -Be "InvalidPath"
+            Test-DriveAvailability -DrivePath "InvalidPath" | Should -Be "InvalidPath"
         }
         
         It "Technique 5: Devrait utiliser des mÃ©thodes qui crÃ©ent automatiquement les rÃ©pertoires parents" {
@@ -500,3 +500,5 @@ Describe "Tests de la documentation de DirectoryNotFoundException et ses context
 
 # ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed
+
+

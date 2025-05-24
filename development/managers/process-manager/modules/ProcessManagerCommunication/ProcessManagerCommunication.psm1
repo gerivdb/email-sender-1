@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Module de communication avec le Process Manager.
 
@@ -471,10 +471,10 @@ function Send-ProcessManagerNotification {
     La fonction de rappel Ã  appeler lors de la rÃ©ception d'une notification.
 
 .EXAMPLE
-    Subscribe-ProcessManagerNotifications -EventTypes @("ManagerStarted", "ManagerStopped") -Callback { param($notification) Write-Host $notification.EventType }
+    Register-ProcessManagerNotifications -EventTypes @("ManagerStarted", "ManagerStopped") -Callback { param($notification) Write-Host $notification.EventType }
     S'abonne aux notifications de dÃ©marrage et d'arrÃªt des gestionnaires.
 #>
-function Subscribe-ProcessManagerNotifications {
+function Register-ProcessManagerNotifications {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -579,11 +579,11 @@ function Subscribe-ProcessManagerNotifications {
     L'abonnement Ã  annuler.
 
 .EXAMPLE
-    $subscription = Subscribe-ProcessManagerNotifications -EventTypes @("ManagerStarted") -Callback { ... }
-    Unsubscribe-ProcessManagerNotifications -Subscription $subscription
+    $subscription = Register-ProcessManagerNotifications -EventTypes @("ManagerStarted") -Callback { ... }
+    Unregister-ProcessManagerNotifications -Subscription $subscription
     Se dÃ©sabonne des notifications du Process Manager.
 #>
-function Unsubscribe-ProcessManagerNotifications {
+function Unregister-ProcessManagerNotifications {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -616,4 +616,5 @@ function Unsubscribe-ProcessManagerNotifications {
 
 # Exporter les fonctions publiques
 Export-ModuleMember -Function Initialize-ProcessManagerCommunication, Send-ProcessManagerCommand, Close-ProcessManagerCommunication
-Export-ModuleMember -Function Send-ProcessManagerNotification, Subscribe-ProcessManagerNotifications, Unsubscribe-ProcessManagerNotifications
+Export-ModuleMember -Function Send-ProcessManagerNotification, Register-ProcessManagerNotifications, Unregister-ProcessManagerNotifications
+

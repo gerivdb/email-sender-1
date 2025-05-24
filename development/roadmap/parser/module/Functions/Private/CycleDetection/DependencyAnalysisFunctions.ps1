@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Fonctions pour l'analyse des dÃ©pendances entre fichiers.
 
@@ -420,7 +420,7 @@ function Get-FileDependencies {
 }
 
 # Fonction pour construire le graphe de dÃ©pendances
-function Build-DependencyGraph {
+function New-DependencyGraph {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -504,4 +504,5 @@ function Build-DependencyGraph {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Get-FileDependencies, Build-DependencyGraph
+Export-ModuleMember -Function Get-FileDependencies, New-DependencyGraph
+

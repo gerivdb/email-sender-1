@@ -1,4 +1,4 @@
-﻿# Test pour la fonction Get-FunctionUsageAnalysis
+# Test pour la fonction Get-FunctionUsageAnalysis
 # Ce test vÃ©rifie que la fonction Get-FunctionUsageAnalysis fonctionne correctement
 
 # Importer le module
@@ -75,7 +75,7 @@ function Export-TestFunction2 {
     Write-Output "This function is also exported"
 }
 
-function Internal-TestFunction {
+function Get-TestFunction {
     Write-Output "This function is not exported"
 }
 
@@ -144,3 +144,4 @@ Export-ModuleMember -Function Export-TestFunction1, Export-TestFunction2
     Write-Host "Erreur : $_" -ForegroundColor Red
     exit 1
 }
+

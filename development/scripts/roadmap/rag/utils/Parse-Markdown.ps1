@@ -1,4 +1,4 @@
-﻿﻿# Parse-Markdown.ps1
+﻿# Parse-Markdown.ps1
 # Module pour analyser et extraire des informations des fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -24,7 +24,7 @@ if (Test-Path -Path $logModulePath) {
 }
 
 # Fonction pour extraire les tâches d'un contenu markdown
-function Parse-MarkdownTasks {
+function ConvertFrom-MarkdownTasks {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -110,7 +110,7 @@ function Parse-MarkdownTasks {
 }
 
 # Fonction pour extraire la structure hiérarchique d'un contenu markdown
-function Parse-MarkdownStructure {
+function ConvertFrom-MarkdownStructure {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -201,7 +201,7 @@ function Parse-MarkdownStructure {
 }
 
 # Fonction pour extraire les métadonnées d'un contenu markdown
-function Parse-MarkdownMetadata {
+function ConvertFrom-MarkdownMetadata {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -268,8 +268,8 @@ function Get-MarkdownStats {
         [string]$Content
     )
 
-    $structure = Parse-MarkdownStructure -Content $Content
-    $tasks = Parse-MarkdownTasks -Content $Content
+    $structure = ConvertFrom-MarkdownStructure -Content $Content
+    $tasks = ConvertFrom-MarkdownTasks -Content $Content
 
     $completedTasks = $tasks | Where-Object { $_.Status -eq "Completed" }
     $incompleteTasks = $tasks | Where-Object { $_.Status -eq "Incomplete" }
@@ -301,4 +301,5 @@ function Get-MarkdownStats {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Parse-MarkdownTasks, Parse-MarkdownStructure, Parse-MarkdownMetadata, Get-MarkdownStats
+Export-ModuleMember -function ConvertFrom-MarkdownTasks, ConvertFrom-MarkdownStructure, ConvertFrom-MarkdownMetadata, Get-MarkdownStats
+

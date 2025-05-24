@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests d'intÃ©gration simplifiÃ©s pour les modules DependencyCycleResolver et CycleDetector.
@@ -65,7 +65,7 @@ function Find-CycleWrapper {
     $recursionStack = @{}
     
     # Fonction rÃ©cursive pour dÃ©tecter un cycle
-    function Detect-Cycle {
+    function Find-Cycle {
         param (
             [string]$Node,
             [hashtable]$Visited,
@@ -96,7 +96,7 @@ function Find-CycleWrapper {
                 
                 # Si le voisin n'a pas Ã©tÃ© visitÃ©, le visiter rÃ©cursivement
                 if (-not $Visited.ContainsKey($neighbor) -or -not $Visited[$neighbor]) {
-                    if (Detect-Cycle -Node $neighbor -Visited $Visited -RecursionStack $RecursionStack -Graph $Graph -CyclePath $CyclePath) {
+                    if (Find-Cycle -Node $neighbor -Visited $Visited -RecursionStack $RecursionStack -Graph $Graph -CyclePath $CyclePath) {
                         return $true
                     }
                 }
@@ -114,7 +114,7 @@ function Find-CycleWrapper {
         # Si le nÅ“ud n'a pas Ã©tÃ© visitÃ©, le visiter
         if (-not $visited.ContainsKey($node) -or -not $visited[$node]) {
             $cyclePathRef = [ref]$cyclePath
-            if (Detect-Cycle -Node $node -Visited $visited -RecursionStack $recursionStack -Graph $Graph -CyclePath $cyclePathRef) {
+            if (Find-Cycle -Node $node -Visited $visited -RecursionStack $recursionStack -Graph $Graph -CyclePath $cyclePathRef) {
                 $hasCycle = $true
                 $cyclePath = $cyclePathRef.Value
                 break
@@ -235,3 +235,4 @@ if ($testsFailed -eq 0) {
     Write-Host "`nCertains tests ont Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }
+

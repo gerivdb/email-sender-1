@@ -411,7 +411,7 @@ function ConvertTo-ShareableView {
 }
 
 # Fonction pour partager une vue
-function Share-RAGView {
+function Publish-RAGView {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -460,7 +460,7 @@ function Import-SharedView {
 }
 
 # Fonction pour intégrer une vue importée au système RAG
-function Integrate-ImportedView {
+function Add-ImportedView {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -482,4 +482,5 @@ function Integrate-ImportedView {
 }
 
 # Exporter les fonctions
-# Export-ModuleMember -Function New-SharingIntegration, ConvertTo-ShareableView, Share-RAGView, Import-SharedView, Integrate-ImportedView
+# Export-ModuleMember -Function New-SharingIntegration, ConvertTo-ShareableView, Publish-RAGView, Import-SharedView, Add-ImportedView
+

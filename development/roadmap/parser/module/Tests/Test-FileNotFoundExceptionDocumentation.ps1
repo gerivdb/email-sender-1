@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests pour valider la documentation de FileNotFoundException et ses dÃ©tails.
 
@@ -182,7 +182,7 @@ Describe "Tests de la documentation de FileNotFoundException et ses dÃ©tails" 
         }
         
         It "Technique 2: Devrait crÃ©er le fichier s'il n'existe pas" {
-            function Ensure-FileExists {
+            function Confirm-FileExists {
                 param (
                     [string]$FilePath,
                     [string]$DefaultContent = ""
@@ -220,12 +220,12 @@ Describe "Tests de la documentation de FileNotFoundException et ses dÃ©tails" 
             }
             
             # Premier appel - le fichier n'existe pas
-            $result1 = Ensure-FileExists -FilePath $tempPath -DefaultContent "Contenu par dÃ©faut"
+            $result1 = Confirm-FileExists -FilePath $tempPath -DefaultContent "Contenu par dÃ©faut"
             $result1.Created | Should -Be $true
             $result1.Content | Should -Be "Contenu par dÃ©faut"
             
             # DeuxiÃ¨me appel - le fichier existe maintenant
-            $result2 = Ensure-FileExists -FilePath $tempPath -DefaultContent "Nouveau contenu"
+            $result2 = Confirm-FileExists -FilePath $tempPath -DefaultContent "Nouveau contenu"
             $result2.Created | Should -Be $false
             $result2.Content | Should -Be "Contenu par dÃ©faut"  # Le contenu ne change pas
             
@@ -346,3 +346,4 @@ Describe "Tests de la documentation de FileNotFoundException et ses dÃ©tails" 
 
 # ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed
+

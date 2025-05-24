@@ -76,7 +76,7 @@ Le développement est évalué à plus ou moins 10 jours-homme.
 )
 
 # Fonction pour exécuter les tests
-function Run-Tests {
+function Start-Tests {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -134,4 +134,5 @@ function Run-Tests {
 }
 
 # Exécuter les tests
-Run-Tests -TestCases $testCases -OutputFormat $OutputFormat
+Start-Tests -TestCases $testCases -OutputFormat $OutputFormat
+

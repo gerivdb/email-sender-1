@@ -1,4 +1,4 @@
-﻿# Script pour organiser les fichiers de documentation
+# Script pour organiser les fichiers de documentation
 # Ce script organise les fichiers de documentation dans des sous-dossiers appropries
 
 # Definition des regles de deplacement pour le dossier docs
@@ -193,7 +193,7 @@ try {
 }
 
 # Fonction pour organiser les fichiers dans les sous-dossiers de plans
-function Organize-PlansSubfolders {
+function Set-PlansSubfolders {
     # Deplacer les fichiers des anciens dossiers vers les nouveaux
     $oldFolders = @(
         @{ Old = "docs\plans\plan de depart"; New = "docs\plans\implementation" },
@@ -276,7 +276,7 @@ Move-FilesAccordingToRules -SourceFolder "docs" -Rules $docsRules
 Move-FilesAccordingToRules -SourceFolder "docs\plans" -Rules $plansRules
 
 # Organiser les fichiers dans les sous-dossiers de plans
-Organize-PlansSubfolders
+Set-PlansSubfolders
 
 # Supprimer les dossiers vides
 Remove-EmptyFolders -RootFolder "docs"
@@ -292,3 +292,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

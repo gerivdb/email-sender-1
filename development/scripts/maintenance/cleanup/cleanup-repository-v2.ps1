@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Nettoie les fichiers originaux aprÃƒÂ¨s la rÃƒÂ©organisation du dÃƒÂ©pÃƒÂ´t.
 
@@ -103,7 +103,7 @@ $keepRootFolders = @(
 )
 
 # Fonction pour vÃƒÂ©rifier si un dossier doit ÃƒÂªtre conservÃƒÂ©
-function Should-KeepFolder {
+function Test-KeepFolder {
     param (
         [string]$FolderName
     )
@@ -127,7 +127,7 @@ function Remove-FolderIfExists {
         $folderName = Split-Path -Path $FolderPath -Leaf
         
         # VÃƒÂ©rifier si le dossier doit ÃƒÂªtre conservÃƒÂ©
-        if (Should-KeepFolder -FolderName $folderName) {
+        if (Test-KeepFolder -FolderName $folderName) {
             Write-Log "Dossier ÃƒÂ  conserver : $FolderPath" -Color Gray
             return
         }
@@ -297,7 +297,7 @@ Write-Log "Nettoyage des dossiers racine..." -Color Cyan
 $rootFolders = Get-ChildItem -Path $repoRoot -Directory
 
 foreach ($folder in $rootFolders) {
-    if (-not (Should-KeepFolder -FolderName $folder.Name)) {
+    if (-not (Test-KeepFolder -FolderName $folder.Name)) {
         Remove-FolderIfExists -FolderPath $folder.FullName
     }
 }
@@ -385,6 +385,7 @@ if ($LogFile) {
     
     Write-Host "Log de nettoyage enregistrÃƒÂ© dans : $LogFile" -ForegroundColor Cyan
 }
+
 
 
 

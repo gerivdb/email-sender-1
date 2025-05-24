@@ -9,7 +9,7 @@ BeforeAll {
     }
     
     # Créer une collection de test avec plusieurs éléments
-    function Create-TestCollection {
+    function New-TestCollection {
         $collection = New-ExtractedInfoCollection -Name "TestCollection" -CreateIndexes
         
         # Basic info items
@@ -44,7 +44,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
     Context "When getting basic statistics" {
         It "Should return correct total count" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $expectedCount = $testData.Items.Count
             
@@ -58,7 +58,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return correct type distribution" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             
             # Act
@@ -74,7 +74,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return correct source distribution" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             
             # Act
@@ -90,7 +90,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return correct processing state distribution" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             
             # Act
@@ -106,7 +106,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return correct confidence score statistics" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             
             # Act
@@ -122,7 +122,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return correct extractor distribution" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             
             # Act
@@ -140,7 +140,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
     Context "When getting statistics with filters" {
         It "Should return statistics for items of a specific type" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $type = "TextExtractedInfo"
             
@@ -156,7 +156,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return statistics for items from a specific source" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $source = "Source3"
             
@@ -173,7 +173,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return statistics for items with a specific processing state" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $state = "Processed"
             
@@ -189,7 +189,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return statistics for items with confidence score above threshold" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $minScore = 75
             
@@ -204,7 +204,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return statistics for items matching multiple filter criteria" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $source = "Source4"
             $state = "Processed"
@@ -244,7 +244,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should return zero counts when no items match filter criteria" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             $nonExistentSource = "non-existent-source"
             
@@ -267,7 +267,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
     Context "When using optimized indexes" {
         It "Should use indexes for faster statistics calculation when available" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             
             # Act
@@ -313,7 +313,7 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         
         It "Should throw an error when MinConfidenceScore is out of range" {
             # Arrange
-            $testData = Create-TestCollection
+            $testData = New-TestCollection
             $collection = $testData.Collection
             
             # Act & Assert
@@ -322,3 +322,4 @@ Describe "Get-ExtractedInfoCollectionStatistics" {
         }
     }
 }
+

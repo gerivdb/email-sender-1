@@ -94,7 +94,7 @@ function Backup-Directory {
     }
 }
 
-function Create-ZipFile {
+function New-ZipFile {
     param (
         [string]$SourceDir,
         [string]$ZipFile
@@ -183,7 +183,7 @@ try {
         
         if ($PSCmdlet.ShouldProcess($backupPath, "Create ZIP file")) {
             Write-Log "Création du fichier ZIP..." -Level "INFO"
-            $zipResult = Create-ZipFile -SourceDir $backupPath -ZipFile $zipFile
+            $zipResult = New-ZipFile -SourceDir $backupPath -ZipFile $zipFile
             
             if ($zipResult) {
                 Write-Log "Fichier ZIP créé: $zipFile" -Level "SUCCESS"
@@ -206,3 +206,4 @@ try {
     Write-Log "Erreur lors de la sauvegarde de la configuration MCP: $_" -Level "ERROR"
     exit 1
 }
+

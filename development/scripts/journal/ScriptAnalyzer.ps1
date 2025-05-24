@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse les scripts PowerShell pour identifier les problÃ¨mes de gestion d'erreurs.
 .DESCRIPTION
@@ -6,10 +6,10 @@
     de gestion d'erreurs et suggÃ©rer des amÃ©liorations.
 .EXAMPLE
     . .\ScriptAnalyzer.ps1
-    Analyze-ScriptErrorHandling -Path "C:\path\to\script.ps1"
+    Test-ScriptErrorHandling -Path "C:\path\to\script.ps1"
 #>
 
-function Analyze-ScriptErrorHandling {
+function Test-ScriptErrorHandling {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -336,7 +336,7 @@ function Add-ErrorHandlingToScript {
     $content = Get-Content -Path $Path -Raw
     
     # Analyser le script
-    $analysis = Analyze-ScriptErrorHandling -Path $Path
+    $analysis = Test-ScriptErrorHandling -Path $Path
     
     if ($analysis.TotalIssues -eq 0) {
         Write-Verbose "Aucun problÃ¨me de gestion d'erreurs dÃ©tectÃ© dans le script."
@@ -564,4 +564,5 @@ ${indentation}}
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Analyze-ScriptErrorHandling, Add-ErrorHandlingToScript
+Export-ModuleMember -function Test-ScriptErrorHandling, Add-ErrorHandlingToScript
+

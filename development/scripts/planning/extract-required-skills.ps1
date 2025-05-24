@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Extrait la liste des compÃ©tences du rapport des compÃ©tences requises.
 
@@ -51,7 +51,7 @@ if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputD
 }
 
 # Fonction pour extraire les compÃ©tences du rapport Markdown
-function Extract-SkillsFromMarkdown {
+function Export-SkillsFromMarkdown {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -127,7 +127,7 @@ function Extract-SkillsFromMarkdown {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -214,7 +214,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format CSV
-function Generate-CsvReport {
+function New-CsvReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -231,7 +231,7 @@ function Generate-CsvReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -300,20 +300,20 @@ function Generate-JsonReport {
 $reportContent = Get-Content -Path $SkillsReportPath -Raw
 
 # Extraire les compÃ©tences du rapport
-$extractionResult = Extract-SkillsFromMarkdown -MarkdownContent $reportContent
+$extractionResult = Export-SkillsFromMarkdown -MarkdownContent $reportContent
 $skills = $extractionResult.Skills
 $managers = $extractionResult.Managers
 
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -Skills $skills -Managers $managers
+        $reportContent = New-MarkdownReport -Skills $skills -Managers $managers
     }
     "CSV" {
-        $reportContent = Generate-CsvReport -Skills $skills
+        $reportContent = New-CsvReport -Skills $skills
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -Skills $skills -Managers $managers
+        $reportContent = New-JsonReport -Skills $skills -Managers $managers
     }
 }
 
@@ -351,3 +351,4 @@ foreach ($skillOccurrence in $skillOccurrences) {
     $percentage = [Math]::Round(($skillOccurrence.Count / $totalOccurrences) * 100, 1)
     Write-Host "  $($skillOccurrence.Name) : $($skillOccurrence.Count) occurrences ($percentage%)"
 }
+

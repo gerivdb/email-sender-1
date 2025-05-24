@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script pour amÃ©liorer la compatibilitÃ© des scripts PowerShell entre environnements.
 
@@ -126,7 +126,7 @@ function Test-ScriptCompatibility {
 }
 
 # Fonction pour amÃ©liorer la compatibilitÃ© d'un script
-function Improve-Script {
+function Update-Script {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true)]
@@ -293,7 +293,7 @@ function Start-ScriptCompatibilityImprovement {
             
             # AmÃ©liorer le script si demandÃ©
             if (-not $ReportOnly) {
-                $improved = Improve-Script -ScriptPath $script.FullName -BackupFile:$BackupFiles
+                $improved = Update-Script -ScriptPath $script.FullName -BackupFile:$BackupFiles
                 if ($improved) {
                     $improvedScripts++
                     Write-Host "  AmÃ©liorÃ©: Oui" -ForegroundColor Green
@@ -324,3 +324,4 @@ function Start-ScriptCompatibilityImprovement {
 
 # ExÃ©cuter la fonction principale
 Start-ScriptCompatibilityImprovement -ScriptPath $ScriptPath -Recurse:$Recurse -BackupFiles:$BackupFiles -ReportOnly:$ReportOnly
+

@@ -1,10 +1,10 @@
-﻿Describe "Analyze-NetworkShareACL" {
+Describe "Test-NetworkShareACL" {
     BeforeAll {
         # Charger la fonction Ã  tester
-        $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Public\Analyze-NetworkShareACL.ps1"
+        $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\Functions\Public\Test-NetworkShareACL.ps1"
 
         # CrÃ©er un mock de la fonction pour les tests
-        function Analyze-NetworkShareACL {
+        function Test-NetworkShareACL {
             [CmdletBinding()]
             param (
                 [Parameter(Mandatory = $true)]
@@ -81,7 +81,7 @@
             $sharePath = "\\server\share"
 
             # Agir
-            $result = Analyze-NetworkShareACL -SharePath $sharePath
+            $result = Test-NetworkShareACL -SharePath $sharePath
 
             # Affirmer
             $result | Should -BeOfType System.Collections.Hashtable
@@ -101,7 +101,7 @@
             }
 
             # Agir
-            $result = Analyze-NetworkShareACL -SharePath $sharePath -OutputPath $testOutputPath
+            $result = Test-NetworkShareACL -SharePath $sharePath -OutputPath $testOutputPath
 
             # Affirmer
             Test-Path -Path $testOutputPath | Should -BeTrue
@@ -115,7 +115,7 @@
             $sharePath = "\\server\share"
 
             # Agir
-            $result = Analyze-NetworkShareACL -SharePath $sharePath
+            $result = Test-NetworkShareACL -SharePath $sharePath
 
             # Affirmer
             $result.SmbPermissions | Should -Not -BeNullOrEmpty
@@ -131,7 +131,7 @@
             $sharePath = "\\server\share"
 
             # Agir
-            $result = Analyze-NetworkShareACL -SharePath $sharePath
+            $result = Test-NetworkShareACL -SharePath $sharePath
 
             # Affirmer
             $result.NtfsPermissions | Should -Not -BeNullOrEmpty
@@ -147,7 +147,7 @@
             $sharePath = "\\server\share"
 
             # Agir
-            $result = Analyze-NetworkShareACL -SharePath $sharePath
+            $result = Test-NetworkShareACL -SharePath $sharePath
 
             # Affirmer
             $result.Conflicts | Should -Not -BeNullOrEmpty
@@ -163,7 +163,7 @@
             $sharePath = "\\server\share"
 
             # Agir
-            $result = Analyze-NetworkShareACL -SharePath $sharePath
+            $result = Test-NetworkShareACL -SharePath $sharePath
 
             # Affirmer
             $result.EffectivePermissions | Should -Not -BeNullOrEmpty
@@ -184,7 +184,7 @@
             }
 
             # Agir
-            $result = Analyze-NetworkShareACL -SharePath $sharePath -OutputPath $testOutputPath
+            $result = Test-NetworkShareACL -SharePath $sharePath -OutputPath $testOutputPath
 
             # Affirmer
             Test-Path -Path $testOutputPath | Should -BeTrue
@@ -201,3 +201,4 @@
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Standardise les chemins dans les scripts PowerShell.
 .DESCRIPTION
@@ -6,10 +6,10 @@
     la compatibilitÃ© entre diffÃ©rents environnements.
 .EXAMPLE
     . .\PathStandardizer.ps1
-    Standardize-PathsInScript -Path "C:\path\to\script.ps1" -CreateBackup
+    ConvertTo-PathsInScript -Path "C:\path\to\script.ps1" -CreateBackup
 #>
 
-function Standardize-PathsInScript {
+function ConvertTo-PathsInScript {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -295,7 +295,7 @@ function Get-NormalizedPath {
     }
 }
 
-function Standardize-PathsInDirectory {
+function ConvertTo-PathsInDirectory {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -336,7 +336,7 @@ function Standardize-PathsInDirectory {
         
         try {
             # Standardiser les chemins
-            $success = Standardize-PathsInScript -Path $file.FullName -CreateBackup:$CreateBackup -WhatIf:$WhatIf
+            $success = ConvertTo-PathsInScript -Path $file.FullName -CreateBackup:$CreateBackup -WhatIf:$WhatIf
             
             if ($success -and -not $WhatIf) {
                 $results.ModifiedFiles++
@@ -384,4 +384,5 @@ function Standardize-PathsInDirectory {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Standardize-PathsInScript, Standardize-PathsInDirectory
+Export-ModuleMember -function ConvertTo-PathsInScript, ConvertTo-PathsInDirectory
+

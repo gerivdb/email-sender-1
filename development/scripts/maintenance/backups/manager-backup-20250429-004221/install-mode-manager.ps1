@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script d'installation du mode MANAGER.
 
@@ -85,7 +85,7 @@ function Backup-File {
 }
 
 # Fonction pour crÃ©er un rÃ©pertoire s'il n'existe pas
-function Ensure-Directory {
+function Confirm-Directory {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -121,7 +121,7 @@ function Copy-FileWithBackup {
 
     # CrÃ©er le rÃ©pertoire de destination s'il n'existe pas
     $destinationDir = Split-Path -Path $DestinationPath -Parent
-    Ensure-Directory -DirectoryPath $destinationDir
+    Confirm-Directory -DirectoryPath $destinationDir
 
     # CrÃ©er une sauvegarde si le fichier de destination existe et que la sauvegarde est activÃ©e
     if ((Test-Path -Path $DestinationPath) -and $CreateBackup) {
@@ -189,7 +189,7 @@ function Update-Configuration {
 }
 
 # Fonction pour crÃ©er un lien symbolique
-function Create-SymbolicLink {
+function New-SymbolicLink {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -214,7 +214,7 @@ function Create-SymbolicLink {
 
     # CrÃ©er le rÃ©pertoire parent s'il n'existe pas
     $linkDir = Split-Path -Path $LinkPath -Parent
-    Ensure-Directory -DirectoryPath $linkDir
+    Confirm-Directory -DirectoryPath $linkDir
 
     if ($PSCmdlet.ShouldProcess($LinkPath, "CrÃ©er un lien symbolique")) {
         try {
@@ -268,7 +268,7 @@ foreach ($configPath in $configPaths) {
 # CrÃ©er des liens symboliques
 foreach ($linkPath in $linkPaths.Keys) {
     $fullLinkPath = Join-Path -Path $basePath -ChildPath $linkPath
-    Create-SymbolicLink -SourcePath $linkPaths[$linkPath] -LinkPath $fullLinkPath
+    New-SymbolicLink -SourcePath $linkPaths[$linkPath] -LinkPath $fullLinkPath
 }
 
 # Copier le fichier de configuration des modes s'il existe
@@ -291,3 +291,4 @@ Write-Host "`nExemples d'utilisation du mode MANAGER :" -ForegroundColor Cyan
 Write-Host ".\scripts\mode-manager.ps1 -ListModes" -ForegroundColor Gray
 Write-Host ".\scripts\mode-manager.ps1 -Mode CHECK -FilePath `"docs\plans\plan-modes-stepup.md`" -TaskIdentifier `"1.2.3`" -Force" -ForegroundColor Gray
 Write-Host ".\scripts\mode-manager.ps1 -Chain `"GRAN,DEV-R,TEST,CHECK`" -FilePath `"docs\plans\plan-modes-stepup.md`" -TaskIdentifier `"1.2.3`"" -ForegroundColor Gray
+

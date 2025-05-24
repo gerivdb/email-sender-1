@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests d'intÃ©gration pour le mode C-BREAK.
 
@@ -86,7 +86,7 @@ function Test-Function3 {
 }
 
 # Nettoyer l'environnement de test
-function Cleanup-TestEnvironment {
+function Clear-TestEnvironment {
     if (Test-Path -Path $testProjectPath) {
         Remove-Item -Path $testProjectPath -Recurse -Force
     }
@@ -105,7 +105,7 @@ Describe "Tests d'intÃ©gration du mode C-BREAK" {
     
     AfterAll {
         # Nettoyer l'environnement de test
-        Cleanup-TestEnvironment
+        Clear-TestEnvironment
     }
     
     Context "DÃ©tection de cycles" {
@@ -179,3 +179,4 @@ Describe "Tests d'intÃ©gration du mode C-BREAK" {
         }
     }
 }
+

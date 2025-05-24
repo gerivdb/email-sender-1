@@ -233,7 +233,7 @@ function Get-EnhancedErrorMessage {
 }
 
 # Function to throw an enhanced error
-function Throw-EnhancedError {
+function Write-EnhancedError {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -309,5 +309,6 @@ function Format-ErrorMessage {
 }
 
 # Export the functions
-Export-ModuleMember -Function Get-EnhancedErrorMessage, Throw-EnhancedError, Format-ErrorMessage
+Export-ModuleMember -Function Get-EnhancedErrorMessage, Write-EnhancedError, Format-ErrorMessage
 Export-ModuleMember -Variable EnhancedErrorMessages
+

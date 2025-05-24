@@ -1,4 +1,4 @@
-# Extract-StatusAttributes.ps1
+# Export-StatusAttributes.ps1
 # Script pour extraire les attributs de statut et progression des tâches dans les fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -317,7 +317,7 @@ function Format-StatusAttributesOutput {
 }
 
 # Fonction principale
-function Extract-StatusAttributes {
+function Export-StatusAttributes {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -364,4 +364,5 @@ function Extract-StatusAttributes {
 }
 
 # Exécuter la fonction principale avec les paramètres fournis
-Extract-StatusAttributes -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat
+Export-StatusAttributes -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat
+

@@ -254,14 +254,14 @@ function Set-VersionBasedRetention {
     
     # Appliquer la politique si demandé
     if ($Apply) {
-        return Apply-VersionBasedRetention -RestorePointType $RestorePointType -ConfigType $ConfigType -ConfigId $ConfigId -MaxVersions $MaxVersions -WhatIf:$WhatIf -Force:$Force
+        return Set-VersionBasedRetention -RestorePointType $RestorePointType -ConfigType $ConfigType -ConfigId $ConfigId -MaxVersions $MaxVersions -WhatIf:$WhatIf -Force:$Force
     }
     
     return $true
 }
 
 # Fonction pour appliquer la rétention basée sur le nombre de versions
-function Apply-VersionBasedRetention {
+function Set-VersionBasedRetention {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -425,3 +425,4 @@ function Apply-VersionBasedRetention {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Set-VersionBasedRetention -RestorePointType $RestorePointType -ConfigType $ConfigType -ConfigId $ConfigId -MaxVersions $MaxVersions -ConfigName $ConfigName -Apply:$Apply -WhatIf:$WhatIf -Force:$Force
 }
+

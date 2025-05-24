@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script Manager - Gestion proactive des scripts du projet
 .DESCRIPTION
@@ -148,7 +148,7 @@ function Write-Log {
 }
 
 # Fonction pour crÃ©er le module d'inventaire
-function Create-InventoryModule {
+function New-InventoryModule {
     $ModulePath = Join-Path -Path $ModulesPath -ChildPath "Inventory.psm1"
     
     if (-not (Test-Path -Path $ModulePath)) {
@@ -376,7 +376,7 @@ Export-ModuleMember -Function Invoke-ScriptInventory, Get-ScriptMetadata
 }
 
 # Fonction pour crÃ©er le module de base de donnÃ©es
-function Create-DatabaseModule {
+function New-DatabaseModule {
     $ModulePath = Join-Path -Path $ModulesPath -ChildPath "Database.psm1"
     
     if (-not (Test-Path -Path $ModulePath)) {
@@ -461,7 +461,7 @@ function Save-Data {
     Write-Host "DonnÃ©es enregistrÃ©es dans: $FilePath" -ForegroundColor Green
 }
 
-function Load-Data {
+function Import-Data {
     param (
         [Parameter(Mandatory=$true)]
         [string]$FilePath
@@ -481,7 +481,7 @@ function Load-Data {
     return $Data
 }
 
-Export-ModuleMember -Function Initialize-Database, Save-Data, Load-Data
+Export-ModuleMember -Function Initialize-Database, Save-Data, Import-Data
 '@
         
         Set-Content -Path $ModulePath -Value $ModuleContent
@@ -490,7 +490,7 @@ Export-ModuleMember -Function Initialize-Database, Save-Data, Load-Data
 }
 
 # Fonction pour crÃ©er le module d'interface en ligne de commande
-function Create-CLIModule {
+function New-CLIModule {
     $ModulePath = Join-Path -Path $ModulesPath -ChildPath "CLI.psm1"
     
     if (-not (Test-Path -Path $ModulePath)) {
@@ -601,9 +601,9 @@ Export-ModuleMember -Function Show-Help, Show-Banner, Show-ActionStart, Show-Act
 }
 
 # CrÃ©er les modules
-Create-InventoryModule
-Create-DatabaseModule
-Create-CLIModule
+New-InventoryModule
+New-DatabaseModule
+New-CLIModule
 
 # Importer les modules
 Import-Module (Join-Path -Path $ModulesPath -ChildPath "Inventory.psm1") -Force
@@ -663,3 +663,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

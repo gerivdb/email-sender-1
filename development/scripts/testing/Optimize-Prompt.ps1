@@ -1,4 +1,4 @@
-﻿# Optimize-Prompt.ps1
+# Optimize-Prompt.ps1
 # Script pour affiner le prompt systÃ¨me en fonction des rÃ©sultats des tests
 
 
@@ -76,7 +76,7 @@ if (-not (Test-Path -Path $testResultsPath)) {
 }
 
 # Fonction pour analyser les rÃ©sultats des tests
-function Analyze-TestResults {
+function Test-TestResults {
     param (
         [string]$FilePath
     )
@@ -182,7 +182,7 @@ function Main {
     $promptContent = Get-Content -Path $promptPath -Raw
     
     # Analyser les rÃ©sultats des tests
-    $testResults = Analyze-TestResults -FilePath $testResultsPath
+    $testResults = Test-TestResults -FilePath $testResultsPath
     
     if ($testResults.Count -eq 0) {
         Write-Error "Aucun rÃ©sultat de test trouvÃ© dans le fichier '$testResultsPath'."
@@ -223,3 +223,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

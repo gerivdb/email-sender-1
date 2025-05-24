@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     CrÃ©e une matrice de compÃ©tences par gestionnaire.
 
@@ -52,7 +52,7 @@ if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputD
 }
 
 # Fonction pour extraire les compÃ©tences de la liste Markdown
-function Extract-SkillsFromList {
+function Export-SkillsFromList {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -128,7 +128,7 @@ function Extract-SkillsFromList {
 }
 
 # Fonction pour crÃ©er une matrice de compÃ©tences par gestionnaire
-function Create-SkillsMatrix {
+function New-SkillsMatrix {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -261,7 +261,7 @@ function Create-SkillsMatrix {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -494,7 +494,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format CSV
-function Generate-CsvReport {
+function New-CsvReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -580,7 +580,7 @@ function Generate-CsvReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -594,23 +594,23 @@ function Generate-JsonReport {
 $listContent = Get-Content -Path $SkillsListPath -Raw
 
 # Extraire les compÃ©tences de la liste
-$extractionResult = Extract-SkillsFromList -MarkdownContent $listContent
+$extractionResult = Export-SkillsFromList -MarkdownContent $listContent
 $skills = $extractionResult.Skills
 $managers = $extractionResult.Managers
 
 # CrÃ©er une matrice de compÃ©tences par gestionnaire
-$matrix = Create-SkillsMatrix -Skills $skills -Managers $managers
+$matrix = New-SkillsMatrix -Skills $skills -Managers $managers
 
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -Matrix $matrix -Managers $managers
+        $reportContent = New-MarkdownReport -Matrix $matrix -Managers $managers
     }
     "CSV" {
-        $reportContent = Generate-CsvReport -Matrix $matrix -Managers $managers
+        $reportContent = New-CsvReport -Matrix $matrix -Managers $managers
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -Matrix $matrix
+        $reportContent = New-JsonReport -Matrix $matrix
     }
 }
 
@@ -655,3 +655,4 @@ foreach ($manager1 in $managers) {
         }
     }
 }
+

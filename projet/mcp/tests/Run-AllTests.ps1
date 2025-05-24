@@ -51,7 +51,7 @@ function Write-SectionHeader {
     Write-Host "$separator" -ForegroundColor Cyan
 }
 
-function Run-Tests {
+function Start-Tests {
     param (
         [string]$Path,
         [string]$Type
@@ -108,7 +108,7 @@ $totalResults = @{
 if (-not $SkipUnitTests) {
     Write-SectionHeader "Tests unitaires"
     
-    $unitResults = Run-Tests -Path $unitTestsPath -Type "unitaires"
+    $unitResults = Start-Tests -Path $unitTestsPath -Type "unitaires"
     
     $totalResults.Total += $unitResults.Total
     $totalResults.Passed += $unitResults.Passed
@@ -119,7 +119,7 @@ if (-not $SkipUnitTests) {
 if (-not $SkipIntegrationTests) {
     Write-SectionHeader "Tests d'intégration"
     
-    $integrationResults = Run-Tests -Path $integrationTestsPath -Type "d'intégration"
+    $integrationResults = Start-Tests -Path $integrationTestsPath -Type "d'intégration"
     
     $totalResults.Total += $integrationResults.Total
     $totalResults.Passed += $integrationResults.Passed
@@ -130,7 +130,7 @@ if (-not $SkipIntegrationTests) {
 if (-not $SkipPerformanceTests) {
     Write-SectionHeader "Tests de performance"
     
-    $performanceResults = Run-Tests -Path $performanceTestsPath -Type "de performance"
+    $performanceResults = Start-Tests -Path $performanceTestsPath -Type "de performance"
     
     $totalResults.Total += $performanceResults.Total
     $totalResults.Passed += $performanceResults.Passed
@@ -153,3 +153,4 @@ else {
     Write-Host "`nCertains tests ont échoué." -ForegroundColor Red
     exit 1
 }
+

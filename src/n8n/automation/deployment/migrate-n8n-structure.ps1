@@ -16,7 +16,7 @@ $rootPath = "D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
 $n8nPath = Join-Path -Path $rootPath -ChildPath "n8n"
 
 # Fonction pour créer un dossier s'il n'existe pas
-function Ensure-FolderExists {
+function Confirm-FolderExists {
     param (
         [Parameter(Mandatory = $true)]
         [string]$Path
@@ -54,7 +54,7 @@ function Copy-FilesWithStructure {
     }
     
     # Créer le dossier de destination s'il n'existe pas
-    Ensure-FolderExists -Path $DestinationPath
+    Confirm-FolderExists -Path $DestinationPath
     
     # Obtenir les fichiers à copier
     $getParams = @{
@@ -80,7 +80,7 @@ function Copy-FilesWithStructure {
             
             # Créer le dossier parent si nécessaire
             $destinationFolder = Split-Path -Path $destinationFile -Parent
-            Ensure-FolderExists -Path $destinationFolder
+            Confirm-FolderExists -Path $destinationFolder
         } else {
             $destinationFile = Join-Path -Path $DestinationPath -ChildPath $file.Name
         }
@@ -94,7 +94,7 @@ function Copy-FilesWithStructure {
 # Migrer les workflows
 Write-Host "`n=== Migration des workflows ===" -ForegroundColor Cyan
 $workflowsDestination = Join-Path -Path $n8nPath -ChildPath "core\workflows"
-Ensure-FolderExists -Path $workflowsDestination
+Confirm-FolderExists -Path $workflowsDestination
 
 # Workflows locaux
 $localWorkflowsSource = Join-Path -Path $n8nPath -ChildPath "workflows\local"
@@ -209,3 +209,4 @@ foreach ($file in $rootN8nFiles) {
 }
 
 Write-Host "`n=== Migration terminée ===" -ForegroundColor Green
+

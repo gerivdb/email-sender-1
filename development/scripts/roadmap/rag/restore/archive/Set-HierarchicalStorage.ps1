@@ -320,7 +320,7 @@ function Set-HierarchicalStorageConfig {
 }
 
 # Fonction pour appliquer le stockage hiérarchique
-function Apply-HierarchicalStorage {
+function Set-HierarchicalStorage {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -594,7 +594,7 @@ function Set-HierarchicalStorage {
             return Set-HierarchicalStorageConfig -ConfigName $ConfigName -HotStorageDays $HotStorageDays -WarmStorageDays $WarmStorageDays -HotStoragePath $HotStoragePath -WarmStoragePath $WarmStoragePath -ColdStoragePath $ColdStoragePath -ArchiveFormat $ArchiveFormat -CompressionLevel $CompressionLevel -RemoveOriginals:$RemoveOriginals
         }
         "Apply" {
-            return Apply-HierarchicalStorage -ConfigName $ConfigName -WhatIf:$WhatIf
+            return Set-HierarchicalStorage -ConfigName $ConfigName -WhatIf:$WhatIf
         }
         "Status" {
             return Get-HierarchicalStorageStatus -ConfigName $ConfigName
@@ -610,3 +610,4 @@ function Set-HierarchicalStorage {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Set-HierarchicalStorage -Action $Action -ConfigName $ConfigName -HotStorageDays $HotStorageDays -WarmStorageDays $WarmStorageDays -HotStoragePath $HotStoragePath -WarmStoragePath $WarmStoragePath -ColdStoragePath $ColdStoragePath -ArchiveFormat $ArchiveFormat -CompressionLevel $CompressionLevel -RemoveOriginals:$RemoveOriginals -WhatIf:$WhatIf
 }
+

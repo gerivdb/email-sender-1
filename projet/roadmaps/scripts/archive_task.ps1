@@ -21,7 +21,7 @@ function Get-CurrentDate {
 }
 
 # Fonction pour extraire le contenu d'une tâche du fichier roadmap
-function Extract-TaskContent {
+function Export-TaskContent {
     param (
         [string]$RoadmapContent,
         [string]$TaskId
@@ -104,7 +104,7 @@ $($TaskContent.Replace($TaskName, "$TaskName (ARCHIVÉ)"))
 }
 
 # Fonction pour créer un fichier d'archive individuel pour la tâche
-function Create-TaskArchiveFile {
+function New-TaskArchiveFile {
     param (
         [string]$TaskContent,
         [string]$TaskId,
@@ -124,10 +124,10 @@ $roadmapContent = Get-Content -Path $RoadmapFile -Raw -Encoding utf8
 $archiveContent = Get-Content -Path $ArchiveFile -Raw -Encoding utf8
 
 # Extraction du contenu de la tâche
-$taskContent = Extract-TaskContent -RoadmapContent $roadmapContent -TaskId $TaskId
+$taskContent = Export-TaskContent -RoadmapContent $roadmapContent -TaskId $TaskId
 
 # Création du fichier d'archive individuel
-Create-TaskArchiveFile -TaskContent $taskContent -TaskId $TaskId -TaskName $TaskName
+New-TaskArchiveFile -TaskContent $taskContent -TaskId $TaskId -TaskName $TaskName
 
 # Mise à jour du fichier roadmap
 $updatedRoadmapContent = Update-RoadmapFile -RoadmapContent $roadmapContent -TaskId $TaskId -TaskName $TaskName
@@ -138,3 +138,4 @@ $updatedArchiveContent = Update-ArchiveFile -ArchiveContent $archiveContent -Tas
 $updatedArchiveContent | Out-File -FilePath $ArchiveFile -Encoding utf8
 
 Write-Host "Tâche $TaskId $TaskName archivée avec succès."
+

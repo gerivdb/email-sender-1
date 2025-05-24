@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Test d'intÃ©gration pour le script check-mode.ps1.
 
@@ -57,7 +57,7 @@ New-Item -Path $testTestsPath -ItemType Directory -Force | Out-Null
 
 # CrÃ©er des fichiers d'implÃ©mentation fictifs
 @"
-function Inspect-Variable {
+function Test-Variable {
     param (
         [Parameter(Mandatory = `$true)]
         [object]`$InputObject,
@@ -69,12 +69,12 @@ function Inspect-Variable {
     # ImplÃ©mentation fictive pour les tests
     return "Inspection de variable"
 }
-"@ | Set-Content -Path (Join-Path -Path $testImplPath -ChildPath "Inspect-Variable.ps1") -Encoding UTF8
+"@ | Set-Content -Path (Join-Path -Path $testImplPath -ChildPath "Test-Variable.ps1") -Encoding UTF8
 
 # CrÃ©er des fichiers de test fictifs
 @"
-# Test fictif pour Inspect-Variable
-Write-Host "Test de la fonction Inspect-Variable"
+# Test fictif pour Test-Variable
+Write-Host "Test de la fonction Test-Variable"
 Write-Host "Tous les tests ont rÃ©ussi !"
 exit 0
 "@ | Set-Content -Path (Join-Path -Path $testTestsPath -ChildPath "Test-InspectVariable.ps1") -Encoding UTF8
@@ -139,3 +139,4 @@ if ($testSuccess) {
     Write-Host "`nTest d'intÃ©gration Ã©chouÃ©." -ForegroundColor Red
     exit 1
 }
+

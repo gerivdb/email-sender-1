@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Module de gestion d'erreurs pour les scripts PowerShell.
 
@@ -355,7 +355,7 @@ function New-CentralizedLoggingSystem {
 `$config = Get-Content -Path `$configPath -Raw | ConvertFrom-Json
 
 # Fonction pour effectuer la rotation d'un fichier journal
-function Rotate-LogFile {
+function Move-LogFile {
     param (
         [Parameter(Mandatory = `$true)]
         [string]`$LogFile,
@@ -424,10 +424,10 @@ function Rotate-LogFile {
 }
 
 # Effectuer la rotation des journaux
-Rotate-LogFile -LogFile `$config.ErrorLogFile -MaxLogAge `$config.MaxLogAge -MaxLogSize `$config.MaxLogSize
-Rotate-LogFile -LogFile `$config.WarningLogFile -MaxLogAge `$config.MaxLogAge -MaxLogSize `$config.MaxLogSize
-Rotate-LogFile -LogFile `$config.InfoLogFile -MaxLogAge `$config.MaxLogAge -MaxLogSize `$config.MaxLogSize
-Rotate-LogFile -LogFile `$config.DebugLogFile -MaxLogAge `$config.MaxLogAge -MaxLogSize `$config.MaxLogSize
+Move-LogFile -LogFile `$config.ErrorLogFile -MaxLogAge `$config.MaxLogAge -MaxLogSize `$config.MaxLogSize
+Move-LogFile -LogFile `$config.WarningLogFile -MaxLogAge `$config.MaxLogAge -MaxLogSize `$config.MaxLogSize
+Move-LogFile -LogFile `$config.InfoLogFile -MaxLogAge `$config.MaxLogAge -MaxLogSize `$config.MaxLogSize
+Move-LogFile -LogFile `$config.DebugLogFile -MaxLogAge `$config.MaxLogAge -MaxLogSize `$config.MaxLogSize
 "@
         
         Set-Content -Path $rotationScriptPath -Value $rotationScript -Force
@@ -611,3 +611,4 @@ function Add-ErrorSolution {
 
 # Exporter les fonctions du module
 Export-ModuleMember -Function Initialize-ErrorHandling, Add-TryCatchBlock, Write-Log-Error, New-CentralizedLoggingSystem, Add-ErrorSolution
+

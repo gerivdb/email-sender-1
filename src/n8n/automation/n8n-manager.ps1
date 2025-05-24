@@ -53,7 +53,7 @@ $scriptPaths = @{
     Status = "monitoring/check-n8n-status-main.ps1"
     Import = "deployment/import-workflows-auto-main.ps1"
     ImportBulk = "deployment/import-workflows-bulk.ps1"
-    Verify = "monitoring/verify-workflows.ps1"
+    Verify = "monitoring/Confirm-Workflows.ps1"
     Test = "diagnostics/test-structure.ps1"
     Dashboard = "dashboard/n8n-dashboard.ps1"
     Maintenance = "maintenance/maintenance.ps1"
@@ -74,7 +74,7 @@ function Get-ScriptPath {
 }
 
 # Fonction pour charger la configuration
-function Load-Configuration {
+function Import-Configuration {
     param (
         [Parameter(Mandatory=$true)]
         [string]$ConfigFile
@@ -117,7 +117,7 @@ function Load-Configuration {
 }
 
 # Charger la configuration
-$config = Load-Configuration -ConfigFile $ConfigFile
+$config = Import-Configuration -ConfigFile $ConfigFile
 
 #endregion
 
@@ -320,7 +320,7 @@ function Restart-N8n {
 }
 
 # Fonction pour vérifier l'état de n8n
-function Check-N8nStatus {
+function Test-N8nStatus {
     $parameters = @{
         Hostname = $config.DefaultHostname
         Port = $config.DefaultPort
@@ -354,7 +354,7 @@ function Import-WorkflowsBulk {
 }
 
 # Fonction pour vérifier la présence des workflows
-function Verify-Workflows {
+function Confirm-Workflows {
     $parameters = @{
         WorkflowFolder = $config.WorkflowFolder
         ReferenceFolder = $config.ReferenceFolder
@@ -416,9 +416,9 @@ if (-not [string]::IsNullOrEmpty($Action)) {
         "start" { Start-N8n }
         "stop" { Stop-N8n }
         "restart" { Restart-N8n }
-        "status" { Check-N8nStatus }
+        "status" { Test-N8nStatus }
         "import" { Import-Workflows }
-        "verify" { Verify-Workflows }
+        "verify" { Confirm-Workflows }
         "test" { Test-Structure }
         "dashboard" { Show-Dashboard }
         "maintenance" { Invoke-Maintenance }
@@ -503,7 +503,7 @@ while ($continue) {
                 Save-Configuration -ConfigFile $ConfigFile -Config $config
             }
             "r" {
-                $config = Load-Configuration -ConfigFile $ConfigFile
+                $config = Import-Configuration -ConfigFile $ConfigFile
                 Write-Host "Configuration réinitialisée." -ForegroundColor Green
                 Start-Sleep -Seconds 2
             }
@@ -523,12 +523,12 @@ while ($continue) {
             "1" { Start-N8n }
             "2" { Stop-N8n }
             "3" { Restart-N8n }
-            "4" { Check-N8nStatus }
+            "4" { Test-N8nStatus }
             "5" { Show-Dashboard }
             "6" { Test-Structure }
             "7" { Import-Workflows }
             "8" { Import-WorkflowsBulk }
-            "9" { Verify-Workflows }
+            "9" { Confirm-Workflows }
             "m" { Invoke-Maintenance }
             "c" { $inConfigMenu = $true }
             "0" { $continue = $false }
@@ -541,3 +541,4 @@ while ($continue) {
 }
 
 #endregion
+

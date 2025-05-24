@@ -1,4 +1,4 @@
-﻿# Script PowerShell pour le systÃƒÂ¨me RAG du journal de bord
+# Script PowerShell pour le systÃƒÂ¨me RAG du journal de bord
 
 param (
     [Parameter(Position=0)]
@@ -29,7 +29,7 @@ function Show-Help {
     Write-Host "  .\development\scripts\cmd\journal-rag.ps1 rebuild"
 }
 
-function Setup-System {
+function Initialize-System {
     Write-Host "Configuration du systÃƒÂ¨me RAG..."
     python "$ScriptsDir\setup.py" $Arguments
 }
@@ -44,7 +44,7 @@ function Search-Journal {
     python "$ScriptsDir\journal_vscode.py" search
 }
 
-function Query-RAG {
+function Get-RAG {
     if ($Arguments.Count -eq 0) {
         Write-Host "Erreur: RequÃƒÂªte manquante"
         Write-Host "Exemple: .\development\scripts\cmd\journal-rag.ps1 query 'problÃƒÂ¨mes d''encodage'"
@@ -56,7 +56,7 @@ function Query-RAG {
     python "$ScriptsDir\journal_rag_simple.py" --query $Query
 }
 
-function Rebuild-Indexes {
+function Update-Indexes {
     Write-Host "Reconstruction des index..."
     python "$ScriptsDir\journal_search_simple.py" --rebuild
     python "$ScriptsDir\journal_rag_simple.py" --rebuild --export
@@ -64,11 +64,13 @@ function Rebuild-Indexes {
 
 # ExÃƒÂ©cution de la commande
 switch ($Command) {
-    "setup" { Setup-System }
+    "setup" { Initialize-System }
     "new" { New-Entry }
     "search" { Search-Journal }
-    "query" { Query-RAG }
-    "rebuild" { Rebuild-Indexes }
+    "query" { Get-RAG }
+    "rebuild" { Update-Indexes }
     "help" { Show-Help }
     default { Show-Help }
 }
+
+

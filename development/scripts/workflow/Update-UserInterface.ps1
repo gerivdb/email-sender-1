@@ -1,4 +1,4 @@
-﻿# Script de mise Ã  jour de l'interface utilisateur
+# Script de mise Ã  jour de l'interface utilisateur
 # Ce script met Ã  jour l'interface utilisateur pour inclure les formats XML et HTML
 
 # Chemins des modules
@@ -137,7 +137,7 @@ $xmlIconPath = Join-Path -Path $xmlHtmlUiPath -ChildPath "xml-icon.png"
 $htmlIconPath = Join-Path -Path $xmlHtmlUiPath -ChildPath "html-icon.png"
 
 # Fonction pour crÃ©er une icÃ´ne simple (en base64)
-function Create-SimpleIcon {
+function New-SimpleIcon {
     param (
         [string]$IconPath,
         [string]$Base64Icon
@@ -149,11 +149,11 @@ function Create-SimpleIcon {
 
 # IcÃ´ne XML en base64 (exemple simple)
 $xmlIconBase64 = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHtSURBVDjLjZM9T9tQFIYpQ5eOMBKlW6eWIQPK0q1bF0bQqSNDSnFiR+7H5kNeCNFYcvwRKdRbUxMJhaQkJHaIQ8wSipqyZMnSXzB2iENs6P3AUZQQpJ7p6viec85z3/fqaAAc/OPzUKfT8TQaDQfRtFqtMx5rGo2GXa/XC7Vara/X6z/8fn/M6/W+Fwofu8jRaDSSyKFQKCuqVCpwOp0oFossEAi8yGQyH0Qwjxg0JxIJ9Pt9OBwOVKtVFolEEA6H4fP5Uq+9BmeSyaQNiEQi1xqNBqxWK0qlEgvZbDasVqtgAGbXwYkktVwuY7lcIhaLwWw2o1gsMgYUCgUGYDwZKJfLByqVCgxpauVyGQxZLBbVAMwmjQBKpRJLJ5NJZDIZdeK9zzxAPp9nAIlEQh3A/JwB2WyWpSeTCdbrdZjNZtUAzCaNAFgqnU6zQCAAm82GbrfLAJiDDWA+aVzTND2bzTIAZrfbVQPMJ40A6IY5T8vl8oNqtQoGwODxZKAerDvRtNvtL7VajTVbr9dhtVrZ/csAjB535pMmAXSrXq+/y+VySOg0m80MgMGZ3y+Ax5PBEc9NJtM7l8uFTCbDGGCz2dhd5TUweeZMJpNZwWP8/9PpAMZH7+8+6V8E14/EXzq5dAAAAABJRU5ErkJggg=="
-Create-SimpleIcon -IconPath $xmlIconPath -Base64Icon $xmlIconBase64
+New-SimpleIcon -IconPath $xmlIconPath -Base64Icon $xmlIconBase64
 
 # IcÃ´ne HTML en base64 (exemple simple)
 $htmlIconBase64 = "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHtSURBVDjLjZM9T9tQFIYpQ5eOMBKlW6eWIQPK0q1bF0bQqSNDSnFiR+7H5kNeCNFYcvwRKdRbUxMJhaQkJHaIQ8wSipqyZMnSXzB2iENs6P3AUZQQpJ7p6viec85z3/fqaAAc/OPzUKfT8TQaDQfRtFqtMx5rGo2GXa/XC7Vara/X6z/8fn/M6/W+Fwofu8jRaDSSyKFQKCuqVCpwOp0oFossEAi8yGQyH0Qwjxg0JxIJ9Pt9OBwOVKtVFolEEA6H4fP5Uq+9BmeSyaQNiEQi1xqNBqxWK0qlEgvZbDasVqtgAGbXwYkktVwuY7lcIhaLwWw2o1gsMgYUCgUGYDwZKJfLByqVCgxpauVyGQxZLBbVAMwmjQBKpRJLJ5NJZDIZdeK9zzxAPp9nAIlEQh3A/JwB2WyWpSeTCdbrdZjNZtUAzCaNAFgqnU6zQCAAm82GbrfLAJiDDWA+aVzTND2bzTIAZrfbVQPMJ40A6IY5T8vl8oNqtQoGwODxZKAerDvRtNvtL7VajTVbr9dhtVrZ/csAjB535pMmAXSrXq+/y+VySOg0m80MgMGZ3y+Ax5PBEc9NJtM7l8uFTCbDGGCz2dhd5TUweeZMJpNZwWP8/9PpAMZH7+8+6V8E14/EXzq5dAAAAABJRU5ErkJggg=="
-Create-SimpleIcon -IconPath $htmlIconPath -Base64Icon $htmlIconBase64
+New-SimpleIcon -IconPath $htmlIconPath -Base64Icon $htmlIconBase64
 
 # CrÃ©er le script d'intÃ©gration UI
 $uiIntegrationScript = @"
@@ -449,3 +449,4 @@ Set-Content -Path $viewFunctionsScriptPath -Value $viewFunctionsScript -Encoding
 Write-Host "Mise Ã  jour de l'interface utilisateur terminÃ©e avec succÃ¨s!" -ForegroundColor Green
 Write-Host "Les formats XML et HTML sont maintenant disponibles dans l'interface utilisateur." -ForegroundColor Green
 Write-Host "Chemin d'intÃ©gration UI: $xmlHtmlUiPath" -ForegroundColor Cyan
+

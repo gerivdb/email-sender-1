@@ -181,7 +181,7 @@ function Show-ViewDetails {
 }
 
 # Fonction pour partager une vue
-function Share-ViewUI {
+function Publish-ViewUI {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -437,7 +437,7 @@ function Start-SharingUI {
                     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
                 }
                 else {
-                    Share-ViewUI -View $currentView
+                    Publish-ViewUI -View $currentView
                 }
             }
             3 {
@@ -457,3 +457,4 @@ function Start-SharingUI {
 
 # Exécuter l'interface utilisateur
 Start-SharingUI
+

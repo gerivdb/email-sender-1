@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Identifie les compÃ©tences communes Ã  plusieurs amÃ©liorations.
 
@@ -59,7 +59,7 @@ if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputD
 }
 
 # Fonction pour extraire les compÃ©tences de la liste Markdown
-function Extract-SkillsFromList {
+function Export-SkillsFromList {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -135,7 +135,7 @@ function Extract-SkillsFromList {
 }
 
 # Fonction pour identifier les compÃ©tences communes
-function Identify-CommonSkills {
+function Find-CommonSkills {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -206,7 +206,7 @@ function Identify-CommonSkills {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -301,7 +301,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format CSV
-function Generate-CsvReport {
+function New-CsvReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -326,7 +326,7 @@ function Generate-CsvReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -366,22 +366,22 @@ function Generate-JsonReport {
 $listContent = Get-Content -Path $SkillsListPath -Raw
 
 # Extraire les compÃ©tences de la liste
-$extractionResult = Extract-SkillsFromList -MarkdownContent $listContent
+$extractionResult = Export-SkillsFromList -MarkdownContent $listContent
 $skills = $extractionResult.Skills
 
 # Identifier les compÃ©tences communes
-$commonSkills = Identify-CommonSkills -Skills $skills -MinimumOccurrences $MinimumOccurrences
+$commonSkills = Find-CommonSkills -Skills $skills -MinimumOccurrences $MinimumOccurrences
 
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -CommonSkills $commonSkills -MinimumOccurrences $MinimumOccurrences
+        $reportContent = New-MarkdownReport -CommonSkills $commonSkills -MinimumOccurrences $MinimumOccurrences
     }
     "CSV" {
-        $reportContent = Generate-CsvReport -CommonSkills $commonSkills
+        $reportContent = New-CsvReport -CommonSkills $commonSkills
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -CommonSkills $commonSkills -MinimumOccurrences $MinimumOccurrences
+        $reportContent = New-JsonReport -CommonSkills $commonSkills -MinimumOccurrences $MinimumOccurrences
     }
 }
 
@@ -409,3 +409,5 @@ foreach ($skill in $commonSkills | Sort-Object -Property Occurrences -Descending
     $percentage = [Math]::Round(($skill.Occurrences / $totalOccurrences) * 100, 1)
     Write-Host "  $($skill.Skill) : $($skill.Occurrences) occurrences ($percentage%)"
 }
+
+

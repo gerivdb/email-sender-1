@@ -17,9 +17,9 @@ if (Test-Path -Path $modulePath) {
 .PARAMETER FilePath
     Chemin du fichier PowerShell à analyser.
 .EXAMPLE
-    Analyze-ErrorPatterns -FilePath "C:\Scripts\MyScript.ps1"
+    Test-ErrorPatterns -FilePath "C:\Scripts\MyScript.ps1"
 #>
-function Analyze-ErrorPatterns {
+function Test-ErrorPatterns {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -161,4 +161,5 @@ function Analyze-ErrorPatterns {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Analyze-ErrorPatterns
+Export-ModuleMember -function Test-ErrorPatterns
+

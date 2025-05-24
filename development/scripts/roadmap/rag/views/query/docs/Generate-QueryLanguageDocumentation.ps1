@@ -1,4 +1,4 @@
-# Generate-QueryLanguageDocumentation.ps1
+# New-QueryLanguageDocumentation.ps1
 # Script pour générer la documentation du langage de requête
 # Version: 1.0
 # Date: 2025-05-15
@@ -595,7 +595,7 @@ function New-OperatorsIndexDocumentation {
 }
 
 # Fonction principale
-function Generate-QueryLanguageDocumentation {
+function New-QueryLanguageDocumentation {
     [CmdletBinding()]
     param (
         [string]$SyntaxDefinitionPath,
@@ -654,5 +654,6 @@ if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
         $GenerateFullDocumentation = $true
     }
     
-    Generate-QueryLanguageDocumentation -SyntaxDefinitionPath $SyntaxDefinitionPath -OutputDir $OutputDir -OutputFormat $OutputFormat -GenerateFullDocumentation:$GenerateFullDocumentation -GenerateOperatorsDoc:$GenerateOperatorsDoc -GenerateExamplesDoc:$GenerateExamplesDoc -GenerateBestPracticesDoc:$GenerateBestPracticesDoc
+    New-QueryLanguageDocumentation -SyntaxDefinitionPath $SyntaxDefinitionPath -OutputDir $OutputDir -OutputFormat $OutputFormat -GenerateFullDocumentation:$GenerateFullDocumentation -GenerateOperatorsDoc:$GenerateOperatorsDoc -GenerateExamplesDoc:$GenerateExamplesDoc -GenerateBestPracticesDoc:$GenerateBestPracticesDoc
 }
+

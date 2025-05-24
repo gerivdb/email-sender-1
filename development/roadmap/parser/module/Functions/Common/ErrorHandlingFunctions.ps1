@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Fonctions de gestion des erreurs pour les modes RoadmapParser.
 
@@ -34,12 +34,12 @@
     Indique si le script doit se terminer en cas d'erreur.
 
 .EXAMPLE
-    Handle-Exception -Exception $_ -ErrorMessage "Une erreur s'est produite lors du traitement du fichier." -LogFile "logs\error.log" -ExitCode 1 -ExitOnError $true
+    Invoke-Exception -Exception $_ -ErrorMessage "Une erreur s'est produite lors du traitement du fichier." -LogFile "logs\error.log" -ExitCode 1 -ExitOnError $true
 
 .OUTPUTS
     None
 #>
-function Handle-Exception {
+function Invoke-Exception {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -103,12 +103,12 @@ function Handle-Exception {
     Indique si le script doit se terminer en cas d'erreur.
 
 .EXAMPLE
-    Handle-Error -ErrorRecord $_ -ErrorMessage "Une erreur s'est produite lors du traitement du fichier." -LogFile "logs\error.log" -ExitCode 1 -ExitOnError $true
+    Invoke-Error -ErrorRecord $_ -ErrorMessage "Une erreur s'est produite lors du traitement du fichier." -LogFile "logs\error.log" -ExitCode 1 -ExitOnError $true
 
 .OUTPUTS
     None
 #>
-function Handle-Error {
+function Invoke-Error {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -202,7 +202,7 @@ function Invoke-WithErrorHandling {
         return $result
     } catch {
         # GÃ©rer l'erreur
-        Handle-Error -ErrorRecord $_ -ErrorMessage $ErrorMessage -LogFile $LogFile -ExitCode $ExitCode -ExitOnError $ExitOnError
+        Invoke-Error -ErrorRecord $_ -ErrorMessage $ErrorMessage -LogFile $LogFile -ExitCode $ExitCode -ExitOnError $ExitOnError
     }
 }
 
@@ -279,7 +279,7 @@ function Invoke-WithRetry {
 
             if ($retryCount -ge $MaxRetries) {
                 # GÃ©rer l'erreur aprÃ¨s le nombre maximal de tentatives
-                Handle-Error -ErrorRecord $_ -ErrorMessage "$ErrorMessage (Tentative $retryCount/$MaxRetries)" -LogFile $LogFile -ExitCode $ExitCode -ExitOnError $ExitOnError
+                Invoke-Error -ErrorRecord $_ -ErrorMessage "$ErrorMessage (Tentative $retryCount/$MaxRetries)" -LogFile $LogFile -ExitCode $ExitCode -ExitOnError $ExitOnError
             } else {
                 # Journaliser l'erreur et rÃ©essayer
                 Write-LogWarning "Erreur lors de l'exÃ©cution de l'action : $($_.Exception.Message). Nouvelle tentative dans $RetryDelaySeconds secondes (Tentative $retryCount/$MaxRetries)."
@@ -409,7 +409,7 @@ function Invoke-WithTimeout {
 
     # GÃ©rer l'erreur si elle s'est produite
     if ($sync.Error) {
-        Handle-Error -ErrorRecord $sync.Error -ErrorMessage $ErrorMessage -LogFile $LogFile -ExitCode $ExitCode -ExitOnError $ExitOnError
+        Invoke-Error -ErrorRecord $sync.Error -ErrorMessage $ErrorMessage -LogFile $LogFile -ExitCode $ExitCode -ExitOnError $ExitOnError
     }
 
     return $sync.Result
@@ -418,5 +418,6 @@ function Invoke-WithTimeout {
 # Exporter les fonctions
 if ($MyInvocation.ScriptName -ne '') {
     # Nous sommes dans un module
-    Export-ModuleMember -Function Handle-Exception, Handle-Error, Invoke-WithErrorHandling, Invoke-WithRetry, Invoke-WithTimeout
+    Export-ModuleMember -function Invoke-Exception, Invoke-Error, Invoke-WithErrorHandling, Invoke-WithRetry, Invoke-WithTimeout
 }
+

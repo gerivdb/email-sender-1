@@ -1,4 +1,4 @@
-﻿# Tests de performance avancÃ©s pour le mode manager
+# Tests de performance avancÃ©s pour le mode manager
 
 # DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
@@ -42,7 +42,7 @@ function Measure-MemoryUsage {
 }
 
 # Fonction pour crÃ©er un grand fichier de roadmap
-function Create-LargeRoadmap {
+function New-LargeRoadmap {
     param (
         [string]$FilePath,
         [int]$TaskCount = 1000
@@ -69,7 +69,7 @@ function Create-LargeRoadmap {
 }
 
 # Fonction pour crÃ©er une configuration avec de nombreux modes
-function Create-ComplexConfig {
+function New-ComplexConfig {
     param (
         [string]$FilePath,
         [int]$ModeCount = 20
@@ -137,7 +137,7 @@ function Create-ComplexConfig {
 }
 
 # CrÃ©er des scripts de mode simulÃ©s
-function Create-MockScripts {
+function New-MockScripts {
     param (
         [string]$TestDir,
         [int]$ModeCount = 20
@@ -260,14 +260,14 @@ exit 0
 
 # CrÃ©er un grand fichier de roadmap
 $largeRoadmapPath = Join-Path -Path $testDir -ChildPath "large-roadmap.md"
-Create-LargeRoadmap -FilePath $largeRoadmapPath -TaskCount 100
+New-LargeRoadmap -FilePath $largeRoadmapPath -TaskCount 100
 
 # CrÃ©er une configuration complexe
 $complexConfigPath = Join-Path -Path $testDir -ChildPath "complex-config.json"
-Create-ComplexConfig -FilePath $complexConfigPath -ModeCount 20
+New-ComplexConfig -FilePath $complexConfigPath -ModeCount 20
 
 # CrÃ©er des scripts de mode simulÃ©s
-$mockScripts = Create-MockScripts -TestDir $testDir -ModeCount 20
+$mockScripts = New-MockScripts -TestDir $testDir -ModeCount 20
 
 # Test 1: Performance avec un grand fichier de roadmap
 Write-Host "Test 1: Performance avec un grand fichier de roadmap" -ForegroundColor Cyan
@@ -357,3 +357,4 @@ foreach ($script in $mockScripts) {
 }
 
 Write-Host "Tests terminÃ©s." -ForegroundColor Cyan
+

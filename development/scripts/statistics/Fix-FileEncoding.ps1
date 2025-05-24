@@ -18,7 +18,7 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Fonction pour corriger l'encodage d'un fichier
-function Fix-FileEncoding {
+function Repair-FileEncoding {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -57,7 +57,7 @@ $filesToFix = @(
 # Corriger l'encodage de chaque fichier
 $success = $true
 foreach ($file in $filesToFix) {
-    $result = Fix-FileEncoding -FilePath $file
+    $result = Repair-FileEncoding -FilePath $file
     if (-not $result) {
         $success = $false
     }
@@ -69,3 +69,4 @@ if ($success) {
 } else {
     Write-Host "Des erreurs se sont produites lors de la correction de certains fichiers." -ForegroundColor Red
 }
+

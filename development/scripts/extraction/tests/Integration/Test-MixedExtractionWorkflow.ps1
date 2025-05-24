@@ -40,7 +40,7 @@ Set-Content -Path $customFile -Value "Custom data format for testing extraction 
 
 # Fonctions d'extraction pour différents types de fichiers
 # Fonction pour extraire du texte
-function Extract-TextFromFile {
+function Export-TextFromFile {
     param (
         [string]$FilePath,
         [string]$ExtractorName = "TextFileExtractor"
@@ -74,7 +74,7 @@ function Extract-TextFromFile {
 }
 
 # Fonction pour extraire des données structurées
-function Extract-StructuredDataFromFile {
+function Export-StructuredDataFromFile {
     param (
         [string]$FilePath,
         [string]$ExtractorName = "JsonFileExtractor"
@@ -123,7 +123,7 @@ function Extract-StructuredDataFromFile {
 }
 
 # Fonction pour extraire des médias
-function Extract-MediaFromFile {
+function Export-MediaFromFile {
     param (
         [string]$FilePath,
         [string]$ExtractorName = "MediaFileExtractor"
@@ -171,7 +171,7 @@ function Extract-MediaFromFile {
 }
 
 # Fonction pour extraire des informations personnalisées
-function Extract-CustomInfo {
+function Export-CustomInfo {
     param (
         [string]$FilePath,
         [string]$ExtractorName = "CustomExtractor"
@@ -213,10 +213,10 @@ $collection = New-ExtractedInfoCollection -Name "MixedExtractionCollection"
 
 # Étape 2: Extraire les informations des fichiers
 Write-Host "Étape 2: Extraire les informations des fichiers" -ForegroundColor Cyan
-$textInfo = Extract-TextFromFile -FilePath $textFile
-$dataInfo = Extract-StructuredDataFromFile -FilePath $jsonFile
-$mediaInfo = Extract-MediaFromFile -FilePath $imageFile
-$customInfo = Extract-CustomInfo -FilePath $customFile
+$textInfo = Export-TextFromFile -FilePath $textFile
+$dataInfo = Export-StructuredDataFromFile -FilePath $jsonFile
+$mediaInfo = Export-MediaFromFile -FilePath $imageFile
+$customInfo = Export-CustomInfo -FilePath $customFile
 
 # Étape 3: Ajouter les informations extraites à la collection
 Write-Host "Étape 3: Ajouter les informations extraites à la collection" -ForegroundColor Cyan
@@ -286,3 +286,4 @@ if ($success) {
     Write-Host "Certains tests ont échoué!" -ForegroundColor Red
     exit 1
 }
+

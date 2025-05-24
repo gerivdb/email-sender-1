@@ -115,7 +115,7 @@ function Get-MultipleWebPagesInfo {
 }
 
 # Fonction pour analyser une collection d'informations extraites
-function Analyze-WebPagesCollection {
+function Test-WebPagesCollection {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -139,7 +139,7 @@ function Analyze-WebPagesCollection {
 }
 
 # Exemple d'utilisation
-function Example-WebScrapingIntegration {
+function Show-WebScrapingIntegration {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -162,7 +162,7 @@ function Example-WebScrapingIntegration {
     $collection = Get-MultipleWebPagesInfo -Urls $urls -IncludeMetadata -OutputFolder $OutputFolder
     
     # Analyser la collection
-    $statistics = Analyze-WebPagesCollection -Collection $collection -OutputPath (Join-Path -Path $OutputFolder -ChildPath "statistics.json")
+    $statistics = Test-WebPagesCollection -Collection $collection -OutputPath (Join-Path -Path $OutputFolder -ChildPath "statistics.json")
     
     # Afficher un résumé
     Write-Host "Résumé de l'extraction :"
@@ -174,4 +174,6 @@ function Example-WebScrapingIntegration {
 }
 
 # Exécuter l'exemple
-# Example-WebScrapingIntegration -OutputFolder "C:\Temp\WebExtraction"
+# Show-WebScrapingIntegration -OutputFolder "C:\Temp\WebExtraction"
+
+

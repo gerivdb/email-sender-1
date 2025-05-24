@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Exporte un graphique de flamme (flamegraph) Ã  partir des donnÃ©es de traÃ§age.
@@ -42,7 +42,7 @@ function ConvertTo-FlameGraphData {
     )
 
     # Fonction rÃ©cursive pour construire l'arbre
-    function Build-FlameNode {
+    function New-FlameNode {
         param(
             [Parameter(Mandatory = $true)]
             [object]$Operation,
@@ -60,7 +60,7 @@ function ConvertTo-FlameGraphData {
 
         # Ajouter les enfants
         foreach ($child in $Operation.Children) {
-            $childNode = Build-FlameNode -Operation $child -ParentName $Operation.Name
+            $childNode = New-FlameNode -Operation $child -ParentName $Operation.Name
             $node.children += $childNode
         }
 
@@ -77,7 +77,7 @@ function ConvertTo-FlameGraphData {
     # Ajouter les opÃ©rations de premier niveau
     foreach ($operation in $TracingData.Operations) {
         if ($null -eq $operation.Parent) {
-            $node = Build-FlameNode -Operation $operation
+            $node = New-FlameNode -Operation $operation
             $root.children += $node
         }
     }
@@ -235,3 +235,4 @@ try {
     Write-Error "Erreur lors de la gÃ©nÃ©ration du graphique de flamme: $_"
     return $null
 }
+

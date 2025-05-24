@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script de gÃƒÂ©nÃƒÂ©ration de scripts ÃƒÂ  l'aide de Hygen.
 
@@ -147,7 +147,7 @@ function Get-ProjectPath {
 }
 
 # Fonction pour gÃƒÂ©nÃƒÂ©rer un script
-function Generate-ScriptFile {
+function New-ScriptFile {
     param (
         [Parameter(Mandatory=$true)]
         [string]$Type
@@ -280,7 +280,7 @@ function Start-ScriptGeneration {
     Write-Info "GÃƒÂ©nÃƒÂ©ration d'un script de type '$Type'..."
     
     # GÃƒÂ©nÃƒÂ©rer le script
-    $result = Generate-ScriptFile -Type $Type
+    $result = New-ScriptFile -Type $Type
     
     # Afficher le rÃƒÂ©sultat
     if ($result) {
@@ -316,3 +316,4 @@ function Start-ScriptGeneration {
 
 # ExÃƒÂ©cuter la gÃƒÂ©nÃƒÂ©ration du script
 Start-ScriptGeneration
+

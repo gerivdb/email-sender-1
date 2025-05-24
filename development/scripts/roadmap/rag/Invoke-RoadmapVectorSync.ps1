@@ -233,7 +233,7 @@ function Register-EmbeddingVersion {
 }
 
 # Fonction pour créer un snapshot d'une version d'embedding
-function Create-EmbeddingSnapshot {
+function New-EmbeddingSnapshot {
     param (
         [string]$QdrantUrl,
         [string]$CollectionName,
@@ -260,7 +260,7 @@ function Create-EmbeddingSnapshot {
 }
 
 # Fonction pour migrer vers un nouveau modèle d'embedding
-function Migrate-ToNewModel {
+function Move-ToNewModel {
     param (
         [string]$QdrantUrl,
         [string]$SourceCollectionName,
@@ -455,7 +455,7 @@ function Invoke-RoadmapVectorSync {
             
             if ($SnapshotPath) {
                 # Créer un snapshot
-                $result = Create-EmbeddingSnapshot -QdrantUrl $QdrantUrl -CollectionName $CollectionName -VersionsPath $VersionsPath -SnapshotPath $SnapshotPath
+                $result = New-EmbeddingSnapshot -QdrantUrl $QdrantUrl -CollectionName $CollectionName -VersionsPath $VersionsPath -SnapshotPath $SnapshotPath
             } else {
                 # Enregistrer une version
                 $result = Register-EmbeddingVersion -QdrantUrl $QdrantUrl -CollectionName $CollectionName -VersionsPath $VersionsPath -ModelName $ModelName -ModelVersion $ModelVersion
@@ -467,7 +467,7 @@ function Invoke-RoadmapVectorSync {
             # Migration vers un nouveau modèle
             Write-Log "Exécution de la migration vers un nouveau modèle..." -Level "Info"
             
-            $result = Migrate-ToNewModel -QdrantUrl $QdrantUrl -SourceCollectionName $CollectionName -TargetCollectionName $TargetCollectionName -SourceVersionId $SourceVersionId -SnapshotPath $SnapshotPath -NewModelName $ModelName -NewModelVersion $ModelVersion -VersionsPath $VersionsPath -BatchSize $BatchSize -KeepSource:$KeepSource
+            $result = Move-ToNewModel -QdrantUrl $QdrantUrl -SourceCollectionName $CollectionName -TargetCollectionName $TargetCollectionName -SourceVersionId $SourceVersionId -SnapshotPath $SnapshotPath -NewModelName $ModelName -NewModelVersion $ModelVersion -VersionsPath $VersionsPath -BatchSize $BatchSize -KeepSource:$KeepSource
             
             return $result
         }
@@ -484,3 +484,5 @@ function Invoke-RoadmapVectorSync {
 
 # Exécuter la fonction principale
 Invoke-RoadmapVectorSync -RoadmapPath $RoadmapPath -QdrantUrl $QdrantUrl -CollectionName $CollectionName -ModelName $ModelName -ModelVersion $ModelVersion -OutputDirectory $OutputDirectory -SyncMode $SyncMode -VersionsPath $VersionsPath -SnapshotPath $SnapshotPath -TargetCollectionName $TargetCollectionName -SourceVersionId $SourceVersionId -BatchSize $BatchSize -KeepSource:$KeepSource -Force:$Force
+
+

@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tableau de bord unifiÃ© pour la gestion des scripts
@@ -177,7 +177,7 @@ $btnOpenStatsReport = $window.FindName("btnOpenStatsReport")
 $statsPanel = $window.FindName("statsPanel")
 
 # Fonction pour charger les scripts
-function Load-Scripts {
+function Import-Scripts {
     param (
         [string]$nameFilter = "",
         [string]$languageFilter = ""
@@ -200,7 +200,7 @@ function Load-Scripts {
 }
 
 # Fonction pour analyser la similaritÃ©
-function Analyze-Similarity {
+function Test-Similarity {
     param (
         [string]$algorithm,
         [int]$threshold
@@ -260,7 +260,7 @@ function Analyze-Similarity {
 }
 
 # Fonction pour gÃ©nÃ©rer des statistiques simples
-function Generate-Statistics {
+function New-Statistics {
     # RÃ©cupÃ©rer les scripts
     $scripts = Get-ScriptInventory
     
@@ -344,12 +344,12 @@ $sliderThreshold.Add_ValueChanged({
 # Ã‰vÃ©nement: Mise Ã  jour de l'inventaire
 $btnUpdateInventory.Add_Click({
     Update-ScriptInventory -Path $Path
-    Load-Scripts
+    Import-Scripts
 })
 
 # Ã‰vÃ©nement: Appliquer les filtres
 $btnApplyFilters.Add_Click({
-    Load-Scripts -nameFilter $txtFilterName.Text -languageFilter $cmbFilterLanguage.SelectedItem
+    Import-Scripts -nameFilter $txtFilterName.Text -languageFilter $cmbFilterLanguage.SelectedItem
 })
 
 # Ã‰vÃ©nement: Export CSV
@@ -397,7 +397,7 @@ $btnAnalyze.Add_Click({
     $algorithm = $cmbAlgorithm.SelectedItem.Content
     $threshold = [Math]::Round($sliderThreshold.Value)
     
-    Analyze-Similarity -algorithm $algorithm -threshold $threshold
+    Test-Similarity -algorithm $algorithm -threshold $threshold
 })
 
 # Ã‰vÃ©nement: Exporter le rapport de similaritÃ©
@@ -423,7 +423,7 @@ $btnExportSimilarity.Add_Click({
 
 # Ã‰vÃ©nement: GÃ©nÃ©rer les statistiques
 $btnGenerateStats.Add_Click({
-    Generate-Statistics
+    New-Statistics
 })
 
 # Ã‰vÃ©nement: Ouvrir le rapport de statistiques complet
@@ -449,7 +449,8 @@ foreach ($language in $languages) {
 }
 
 # Charger les scripts
-Load-Scripts
+Import-Scripts
 
 # Afficher la fenÃªtre
 $window.ShowDialog() | Out-Null
+

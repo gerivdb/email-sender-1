@@ -142,7 +142,7 @@ function Test-ModuleValid {
     return $result
 }
 
-function Fix-MissingFile {
+function Repair-MissingFile {
     param (
         [string]$Path,
         [string]$Description
@@ -229,7 +229,7 @@ function Fix-MissingFile {
     return $result
 }
 
-function Fix-InvalidConfig {
+function Repair-InvalidConfig {
     param (
         [string]$Path,
         [string]$Description
@@ -525,7 +525,7 @@ try {
         # Tenter de corriger les problèmes si demandé
         if ($Fix -and $result.Status -eq "Missing") {
             Write-Log "Tentative de correction..." -Level "INFO"
-            $fixResult = Fix-MissingFile -Path $result.Path -Description $result.Description
+            $fixResult = Repair-MissingFile -Path $result.Path -Description $result.Description
             
             $fixStatusColor = switch ($fixResult.Status) {
                 "Fixed" { "SUCCESS" }
@@ -571,7 +571,7 @@ try {
             # Tenter de corriger les problèmes si demandé
             if ($Fix -and $result.Status -eq "Invalid") {
                 Write-Log "Tentative de correction..." -Level "INFO"
-                $fixResult = Fix-InvalidConfig -Path $result.Path -Description $result.Description
+                $fixResult = Repair-InvalidConfig -Path $result.Path -Description $result.Description
                 
                 $fixStatusColor = switch ($fixResult.Status) {
                     "Fixed" { "SUCCESS" }
@@ -689,3 +689,4 @@ try {
     Write-Log "Erreur lors de la vérification de l'intégrité de l'installation MCP: $_" -Level "ERROR"
     exit 1
 }
+

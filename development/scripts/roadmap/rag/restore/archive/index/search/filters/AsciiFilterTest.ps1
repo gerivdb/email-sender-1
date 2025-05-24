@@ -38,7 +38,7 @@ foreach ($doc in $documents) {
 }
 
 # Fonction pour filtrer par type
-function Filter-ByType {
+function Select-ByType {
     param (
         [Parameter(ValueFromPipeline = $true)]
         [hashtable]$Document,
@@ -54,7 +54,7 @@ function Filter-ByType {
 }
 
 # Fonction pour filtrer par date
-function Filter-ByDate {
+function Select-ByDate {
     param (
         [Parameter(ValueFromPipeline = $true)]
         [hashtable]$Document,
@@ -80,7 +80,7 @@ function Filter-ByDate {
 }
 
 # Fonction pour filtrer par metadonnees
-function Filter-ByMetadata {
+function Select-ByMetadata {
     param (
         [Parameter(ValueFromPipeline = $true)]
         [hashtable]$Document,
@@ -99,7 +99,7 @@ function Filter-ByMetadata {
 
 # Tester le filtre par type
 Write-Output "`nTest du filtre par type:"
-$filteredDocuments = $documents | Filter-ByType -IncludeTypes @("document", "video")
+$filteredDocuments = $documents | Select-ByType -IncludeTypes @("document", "video")
 Write-Output "Documents filtres par type (document, video): $($filteredDocuments.Count)"
 foreach ($doc in $filteredDocuments) {
     Write-Output "  - $($doc.id): $($doc.title) (Type: $($doc.type))"
@@ -109,7 +109,7 @@ foreach ($doc in $filteredDocuments) {
 Write-Output "`nTest du filtre par date:"
 $startDate = [DateTime]::Parse("2024-01-01T00:00:00Z")
 $endDate = [DateTime]::Parse("2024-12-31T23:59:59Z")
-$filteredDocuments = $documents | Filter-ByDate -Field "created_at" -StartDate $startDate -EndDate $endDate
+$filteredDocuments = $documents | Select-ByDate -Field "created_at" -StartDate $startDate -EndDate $endDate
 Write-Output "Documents filtres par date (crees en 2024): $($filteredDocuments.Count)"
 foreach ($doc in $filteredDocuments) {
     Write-Output "  - $($doc.id): $($doc.title) (Cree le: $($doc.created_at))"
@@ -117,7 +117,7 @@ foreach ($doc in $filteredDocuments) {
 
 # Tester le filtre par metadonnees
 Write-Output "`nTest du filtre par metadonnees:"
-$filteredDocuments = $documents | Filter-ByMetadata -Field "language" -Value "fr"
+$filteredDocuments = $documents | Select-ByMetadata -Field "language" -Value "fr"
 Write-Output "Documents filtres par metadonnees (langue = fr): $($filteredDocuments.Count)"
 foreach ($doc in $filteredDocuments) {
     Write-Output "  - $($doc.id): $($doc.title) (Langue: $($doc.language))"
@@ -126,10 +126,11 @@ foreach ($doc in $filteredDocuments) {
 # Tester la combinaison de filtres
 Write-Output "`nTest de la combinaison de filtres:"
 $filteredDocuments = $documents | 
-    Filter-ByType -IncludeTypes @("document", "video") | 
-    Filter-ByDate -Field "created_at" -StartDate $startDate -EndDate $endDate | 
-    Filter-ByMetadata -Field "language" -Value "fr"
+    Select-ByType -IncludeTypes @("document", "video") | 
+    Select-ByDate -Field "created_at" -StartDate $startDate -EndDate $endDate | 
+    Select-ByMetadata -Field "language" -Value "fr"
 Write-Output "Documents filtres par combinaison de filtres: $($filteredDocuments.Count)"
 foreach ($doc in $filteredDocuments) {
     Write-Output "  - $($doc.id): $($doc.title) (Type: $($doc.type), Cree le: $($doc.created_at), Langue: $($doc.language))"
 }
+

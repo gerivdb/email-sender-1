@@ -1,9 +1,9 @@
-﻿<#
+<#
 .SYNOPSIS
     Remplace un motif dans un texte.
 
 .DESCRIPTION
-    La fonction Replace-RoadmapText remplace un motif dans un texte.
+    La fonction Set-RoadmapText remplace un motif dans un texte.
     Elle prend en charge diffÃ©rents types de remplacement et peut Ãªtre utilisÃ©e pour
     remplacer des motifs dans les textes du module RoadmapParser.
 
@@ -48,11 +48,11 @@
     Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec du remplacement.
 
 .EXAMPLE
-    Replace-RoadmapText -Text "Hello World" -Pattern "world" -Replacement "Universe" -ReplaceType CaseInsensitive
+    Set-RoadmapText -Text "Hello World" -Pattern "world" -Replacement "Universe" -ReplaceType CaseInsensitive
     Remplace "world" par "Universe" dans "Hello World" de maniÃ¨re insensible Ã  la casse.
 
 .EXAMPLE
-    Replace-RoadmapText -Text "Hello World" -Pattern "^Hello" -Replacement "Hi" -ReplaceType Regex
+    Set-RoadmapText -Text "Hello World" -Pattern "^Hello" -Replacement "Hi" -ReplaceType Regex
     Remplace le motif regex "^Hello" par "Hi" dans "Hello World".
 
 .OUTPUTS
@@ -63,7 +63,7 @@
     Version: 1.0
     Date de crÃ©ation: 2023-07-21
 #>
-function Replace-RoadmapText {
+function Set-RoadmapText {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -278,3 +278,4 @@ function Replace-RoadmapText {
 
     return $result
 }
+

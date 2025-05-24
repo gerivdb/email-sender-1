@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     RÃ©solveur de conflits pour les dÃ©pendances.
 .DESCRIPTION
@@ -157,7 +157,7 @@ function Resolve-DependencyConflicts {
 }
 
 # Appliquer les rÃ©solutions
-function Apply-ConflictResolutions {
+function Set-ConflictResolutions {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -206,7 +206,7 @@ function Get-ConflictHistory {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Initialize-ConflictResolver, Find-DependencyConflicts, Resolve-DependencyConflicts, Apply-ConflictResolutions, Get-ConflictHistory
+Export-ModuleMember -Function Initialize-ConflictResolver, Find-DependencyConflicts, Resolve-DependencyConflicts, Set-ConflictResolutions, Get-ConflictHistory
 
 }
 catch {
@@ -217,3 +217,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

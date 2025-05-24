@@ -135,7 +135,7 @@ function Measure-FunctionPerformance {
 }
 
 # Fonction pour documenter les résultats de performance
-function Document-PerformanceResults {
+function Write-PerformanceResults {
     param (
         [hashtable]$Results,
         [string]$PerformanceFile
@@ -383,7 +383,7 @@ $allResults = @()
 foreach ($function in $criticalFunctions) {
     $results = Measure-FunctionPerformance -FunctionName $function.Name -TestScript $function.Script -Iterations $function.Iterations -Description $function.Description -Parameters $function.Parameters
     $allResults += $results
-    Document-PerformanceResults -Results $results -PerformanceFile $performanceFile
+    Write-PerformanceResults -Results $results -PerformanceFile $performanceFile
 }
 
 # Ajouter un résumé des résultats
@@ -428,3 +428,4 @@ Write-Host "`nLes résultats des mesures de performance ont été enregistrés d
 
 # Retourner le code de sortie
 exit 0
+

@@ -5,7 +5,7 @@ $env:N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE = "true"
 [Environment]::SetEnvironmentVariable('N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE', 'true', 'Process')
 
 # Fonction pour executer un MCP
-function Execute-MCP {
+function Invoke-MCP {
     param (
         [Parameter(Mandatory=$true)]
         [string]$MCP,
@@ -53,7 +53,8 @@ if ($args.Count -eq 0) {
 $mcpName = $args[0]
 $mcpArgs = $args[1..$args.Count] -join " "
 
-Execute-MCP -MCP $mcpName -Args $mcpArgs
+Invoke-MCP -MCP $mcpName -Args $mcpArgs
+
 
 
 

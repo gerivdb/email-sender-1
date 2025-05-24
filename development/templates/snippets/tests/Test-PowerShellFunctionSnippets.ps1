@@ -40,7 +40,7 @@ if (-not (Test-Path -Path $tempDir)) {
 }
 
 # Fonction pour remplacer les placeholders par des valeurs de test
-function Replace-Placeholders {
+function Set-Placeholders {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -76,7 +76,7 @@ function Test-Snippet {
         Write-Host "  Erreur : Le snippet n'a pas de corps" -ForegroundColor Red
         return $false
     }
-    $code = Replace-Placeholders -Lines $Snippet.body
+    $code = Set-Placeholders -Lines $Snippet.body
 
     # Écrire le code dans un fichier temporaire
     $tempFile = Join-Path -Path $tempDir -ChildPath "$Name.ps1"
@@ -121,3 +121,4 @@ if (Test-Path -Path $tempDir) {
     Remove-Item -Path $tempDir -Recurse -Force
     Write-Verbose "Dossier temporaire supprimé : $tempDir"
 }
+

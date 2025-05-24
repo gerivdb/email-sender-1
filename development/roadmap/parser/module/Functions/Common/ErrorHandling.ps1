@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Fonctions de gestion des erreurs pour le module RoadmapParser.
 
@@ -57,13 +57,13 @@ if (-not (Get-Command -Name "Write-LogError" -ErrorAction SilentlyContinue)) {
     try {
         # Code qui peut gÃ©nÃ©rer une erreur
     } catch {
-        Handle-Error -ErrorRecord $_ -ErrorMessage "Une erreur s'est produite lors du traitement" -ExitOnError $true
+        Invoke-Error -ErrorRecord $_ -ErrorMessage "Une erreur s'est produite lors du traitement" -ExitOnError $true
     }
 
 .NOTES
     Cette fonction utilise Write-LogError si disponible, sinon elle utilise Write-Error.
 #>
-function Handle-Error {
+function Invoke-Error {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -599,4 +599,5 @@ function Get-ExceptionSeverity {
 }
 
 # Note: Les fonctions sont exportÃ©es lors de l'importation du module
-# Handle-Error, Invoke-WithRetry, Get-ExceptionInfo, Get-ExceptionCategory, Get-ExceptionSeverity
+# Invoke-Error, Invoke-WithRetry, Get-ExceptionInfo, Get-ExceptionCategory, Get-ExceptionSeverity
+

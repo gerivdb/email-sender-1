@@ -148,7 +148,7 @@ function Send-TestNotification {
 }
 
 # Fonction pour créer un dossier s'il n'existe pas
-function Ensure-FolderExists {
+function Confirm-FolderExists {
     param (
         [Parameter(Mandatory=$true)]
         [string]$FolderPath,
@@ -194,7 +194,7 @@ function Test-FileExists {
             try {
                 # Créer le dossier parent s'il n'existe pas
                 $parentFolder = Split-Path -Path $FilePath -Parent
-                Ensure-FolderExists -FolderPath $parentFolder -CreateIfMissing $true | Out-Null
+                Confirm-FolderExists -FolderPath $parentFolder -CreateIfMissing $true | Out-Null
                 
                 # Créer le fichier avec le contenu par défaut
                 Set-Content -Path $FilePath -Value $DefaultContent -Encoding UTF8
@@ -214,4 +214,5 @@ function Test-FileExists {
 }
 
 # Exporter les fonctions et variables pour les autres parties du script
-Export-ModuleMember -Function Write-Log, Send-TestNotification, Ensure-FolderExists, Test-FileExists -Variable CommonParams, ExpectedStructure
+Export-ModuleMember -Function Write-Log, Send-TestNotification, Confirm-FolderExists, Test-FileExists -Variable CommonParams, ExpectedStructure
+

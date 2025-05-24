@@ -1,4 +1,4 @@
-﻿# Script pour remplacer les caractÃ¨res accentuÃ©s par des caractÃ¨res non accentuÃ©s dans les fichiers JSON
+# Script pour remplacer les caractÃ¨res accentuÃ©s par des caractÃ¨res non accentuÃ©s dans les fichiers JSON
 # tout en prÃ©servant la structure JSON
 
 # Fonction pour remplacer les caractÃ¨res accentuÃ©s par des caractÃ¨res non accentuÃ©s
@@ -34,7 +34,7 @@ function Remove-Accents {
 }
 
 # Fonction rÃ©cursive pour traiter tous les champs d'un objet JSON
-function Process-JsonObject {
+function Invoke-JsonObject {
     param (
         $jsonObject
     )
@@ -50,7 +50,7 @@ function Process-JsonObject {
     if ($jsonObject -is [array]) {
         $result = @()
         foreach ($item in $jsonObject) {
-            $result += Process-JsonObject -jsonObject $item
+            $result += Invoke-JsonObject -jsonObject $item
         }
         return $result
     }
@@ -58,7 +58,7 @@ function Process-JsonObject {
     if ($jsonObject -is [System.Management.Automation.PSCustomObject]) {
         $properties = $jsonObject.PSObject.Properties
         foreach ($property in $properties) {
-            $property.Value = Process-JsonObject -jsonObject $property.Value
+            $property.Value = Invoke-JsonObject -jsonObject $property.Value
         }
     }
     
@@ -92,7 +92,7 @@ foreach ($file in $workflowFiles) {
         $jsonObject = $content | ConvertFrom-Json
         
         # Traiter tous les champs de l'objet JSON
-        $processedObject = Process-JsonObject -jsonObject $jsonObject
+        $processedObject = Invoke-JsonObject -jsonObject $jsonObject
         
         # Convertir l'objet PowerShell en JSON
         $fixedContent = $processedObject | ConvertTo-Json -Depth 100
@@ -113,3 +113,4 @@ foreach ($file in $workflowFiles) {
 Write-Host "`nTraitement terminÃ©: $successCount/$($workflowFiles.Count) fichiers traitÃ©s."
 Write-Host "Les fichiers sans accents se trouvent dans le rÃ©pertoire: $outputDir"
 Write-Host "`nVous pouvez maintenant importer ces fichiers dans n8n."
+

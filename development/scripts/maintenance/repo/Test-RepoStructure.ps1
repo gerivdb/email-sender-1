@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Valide la structure du dÃ©pÃ´t selon le standard dÃ©fini
@@ -89,7 +89,7 @@ function Test-FolderExists {
 }
 
 # Fonction pour crÃ©er un dossier s'il n'existe pas
-function Create-FolderIfNotExists {
+function New-FolderIfNotExists {
     param (
         [string]$FolderPath
     )
@@ -160,7 +160,7 @@ foreach ($folder in $mainFolders) {
         $results.MissingMainFolders += $folder
         
         if ($Fix) {
-            $created = Create-FolderIfNotExists -FolderPath $folder
+            $created = New-FolderIfNotExists -FolderPath $folder
             if ($created) {
                 $results.CreatedFolders += $folder
             }
@@ -175,7 +175,7 @@ foreach ($mainFolder in $subFolders.Keys) {
             $results.MissingSubFolders += $subFolder
             
             if ($Fix) {
-                $created = Create-FolderIfNotExists -FolderPath $subFolder
+                $created = New-FolderIfNotExists -FolderPath $subFolder
                 if ($created) {
                     $results.CreatedFolders += $subFolder
                 }
@@ -297,3 +297,4 @@ Write-Host "Rapport gÃ©nÃ©rÃ©: $reportFullPath" -ForegroundColor Cyan
 
 # Retourner les rÃ©sultats
 return $results
+

@@ -22,7 +22,7 @@ Set-Content -Path $textFile2 -Value "Lorem ipsum dolor sit amet, consectetur adi
 Set-Content -Path $textFile3 -Value "The quick brown fox jumps over the lazy dog. This sentence contains all letters of the English alphabet."
 
 # Fonction simulant un extracteur de texte
-function Extract-TextFromFile {
+function Export-TextFromFile {
     param (
         [string]$FilePath,
         [string]$ExtractorName = "TextFileExtractor"
@@ -65,9 +65,9 @@ $collection = New-ExtractedInfoCollection -Name "TextExtractionCollection"
 
 # Étape 2: Extraire le texte des fichiers
 Write-Host "Étape 2: Extraire le texte des fichiers" -ForegroundColor Cyan
-$textInfo1 = Extract-TextFromFile -FilePath $textFile1
-$textInfo2 = Extract-TextFromFile -FilePath $textFile2
-$textInfo3 = Extract-TextFromFile -FilePath $textFile3
+$textInfo1 = Export-TextFromFile -FilePath $textFile1
+$textInfo2 = Export-TextFromFile -FilePath $textFile2
+$textInfo3 = Export-TextFromFile -FilePath $textFile3
 
 # Étape 3: Ajouter les informations extraites à la collection
 Write-Host "Étape 3: Ajouter les informations extraites à la collection" -ForegroundColor Cyan
@@ -128,3 +128,4 @@ if ($success) {
     Write-Host "Certains tests ont échoué!" -ForegroundColor Red
     exit 1
 }
+

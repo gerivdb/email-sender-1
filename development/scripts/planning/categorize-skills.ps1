@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     CatÃ©gorise les compÃ©tences par domaine.
 
@@ -51,7 +51,7 @@ if (-not [string]::IsNullOrEmpty($outputDir) -and -not (Test-Path -Path $outputD
 }
 
 # Fonction pour extraire les compÃ©tences de la liste Markdown
-function Extract-SkillsFromList {
+function Export-SkillsFromList {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -85,7 +85,7 @@ function Extract-SkillsFromList {
 }
 
 # Fonction pour catÃ©goriser les compÃ©tences par domaine
-function Categorize-SkillsByDomain {
+function Group-SkillsByDomain {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -196,7 +196,7 @@ function Categorize-SkillsByDomain {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -285,7 +285,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format CSV
-function Generate-CsvReport {
+function New-CsvReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -302,7 +302,7 @@ function Generate-CsvReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -381,21 +381,21 @@ function Generate-JsonReport {
 $listContent = Get-Content -Path $SkillsListPath -Raw
 
 # Extraire les compÃ©tences de la liste
-$skills = Extract-SkillsFromList -MarkdownContent $listContent
+$skills = Export-SkillsFromList -MarkdownContent $listContent
 
 # CatÃ©goriser les compÃ©tences par domaine
-$categorizedSkills = Categorize-SkillsByDomain -Skills $skills
+$categorizedSkills = Group-SkillsByDomain -Skills $skills
 
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -CategorizedSkills $categorizedSkills
+        $reportContent = New-MarkdownReport -CategorizedSkills $categorizedSkills
     }
     "CSV" {
-        $reportContent = Generate-CsvReport -CategorizedSkills $categorizedSkills
+        $reportContent = New-CsvReport -CategorizedSkills $categorizedSkills
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -CategorizedSkills $categorizedSkills
+        $reportContent = New-JsonReport -CategorizedSkills $categorizedSkills
     }
 }
 
@@ -433,3 +433,5 @@ foreach ($level in $levels) {
     $percentage = [Math]::Round(($level.Count / $totalSkills) * 100, 1)
     Write-Host "  $($level.Name) : $($level.Count) compÃ©tences ($percentage%)"
 }
+
+

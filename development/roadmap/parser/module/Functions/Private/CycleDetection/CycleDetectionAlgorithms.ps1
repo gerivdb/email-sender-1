@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Algorithmes de dÃ©tection de cycles de dÃ©pendances.
 
@@ -27,7 +27,7 @@ function Find-CyclesDFS {
         $cycles = @()
         
         # Fonction rÃ©cursive pour la recherche en profondeur
-        function DFS-Visit {
+        function Find-Visit {
             param(
                 [Parameter(Mandatory = $true)]
                 [string]$Node,
@@ -48,7 +48,7 @@ function Find-CyclesDFS {
                 foreach ($neighbor in $Graph[$Node]) {
                     # Si le voisin n'a pas Ã©tÃ© visitÃ©, le visiter
                     if (-not $visited.ContainsKey($neighbor) -or -not $visited[$neighbor]) {
-                        DFS-Visit -Node $neighbor -Path $Path
+                        Find-Visit -Node $neighbor -Path $Path
                     }
                     # Si le voisin est dans la pile de rÃ©cursion, un cycle a Ã©tÃ© trouvÃ©
                     elseif ($recursionStack.ContainsKey($neighbor) -and $recursionStack[$neighbor]) {
@@ -79,7 +79,7 @@ function Find-CyclesDFS {
         # Parcourir tous les nÅ“uds du graphe
         foreach ($node in $Graph.Keys) {
             if (-not $visited.ContainsKey($node) -or -not $visited[$node]) {
-                DFS-Visit -Node $node -Path (New-Object System.Collections.ArrayList)
+                Find-Visit -Node $node -Path (New-Object System.Collections.ArrayList)
             }
         }
         
@@ -109,7 +109,7 @@ function Find-CyclesTarjan {
         $cycles = @()
         
         # Fonction rÃ©cursive pour l'algorithme de Tarjan
-        function Tarjan-Visit {
+        function Find-Visit {
             param(
                 [Parameter(Mandatory = $true)]
                 [string]$Node
@@ -127,7 +127,7 @@ function Find-CyclesTarjan {
                 foreach ($neighbor in $Graph[$Node]) {
                     # Si le voisin n'a pas Ã©tÃ© visitÃ©, le visiter
                     if (-not $indices.ContainsKey($neighbor)) {
-                        Tarjan-Visit -Node $neighbor
+                        Find-Visit -Node $neighbor
                         $lowLinks[$Node] = [Math]::Min($lowLinks[$Node], $lowLinks[$neighbor])
                     }
                     # Si le voisin est sur la pile, mettre Ã  jour le lowLink
@@ -164,7 +164,7 @@ function Find-CyclesTarjan {
         # Parcourir tous les nÅ“uds du graphe
         foreach ($node in $Graph.Keys) {
             if (-not $indices.ContainsKey($node)) {
-                Tarjan-Visit -Node $node
+                Find-Visit -Node $node
             }
         }
         
@@ -362,3 +362,4 @@ function Find-DependencyCycles {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Find-DependencyCycles
+

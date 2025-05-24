@@ -1,4 +1,4 @@
-# Extract-InlineMetadata.ps1
+# Export-InlineMetadata.ps1
 # Script pour extraire les métadonnées inline des tâches dans les fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -471,7 +471,7 @@ function Format-MetadataOutput {
 }
 
 # Fonction principale
-function Extract-InlineMetadata {
+function Export-InlineMetadata {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -537,5 +537,6 @@ function Extract-InlineMetadata {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Extract-InlineMetadata -FilePath $FilePath -Content $Content -DetectTags:$DetectTags -DetectAttributes:$DetectAttributes -DetectDates:$DetectDates -OutputPath $OutputPath -OutputFormat $OutputFormat
+    Export-InlineMetadata -FilePath $FilePath -Content $Content -DetectTags:$DetectTags -DetectAttributes:$DetectAttributes -DetectDates:$DetectDates -OutputPath $OutputPath -OutputFormat $OutputFormat
 }
+

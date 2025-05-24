@@ -1,4 +1,4 @@
-# Extract-ResponsibilityAttributes.ps1
+# Export-ResponsibilityAttributes.ps1
 # Script pour extraire les attributs de responsabilité des tâches dans les fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -293,7 +293,7 @@ function Format-ResponsibilityAttributesOutput {
 }
 
 # Fonction principale
-function Extract-ResponsibilityAttributes {
+function Export-ResponsibilityAttributes {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -340,4 +340,5 @@ function Extract-ResponsibilityAttributes {
 }
 
 # Exécuter la fonction principale avec les paramètres fournis
-Extract-ResponsibilityAttributes -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat
+Export-ResponsibilityAttributes -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat
+

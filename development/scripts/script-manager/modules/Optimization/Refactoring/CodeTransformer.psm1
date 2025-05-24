@@ -1,4 +1,4 @@
-﻿# Module de transformation de code pour le Script Manager
+# Module de transformation de code pour le Script Manager
 # Ce module transforme le code selon les opÃ©rations de refactoring
 # Author: Script Manager
 # Version: 1.0
@@ -68,7 +68,7 @@ function Get-RefactoringSuggestions {
         # GÃ©nÃ©rer le code transformÃ©
         if ($Operation.AutoFixable) {
             try {
-                $Suggestion.AfterCode = Generate-TransformedCode -Script $Script -Operation $Operation -Content $Content
+                $Suggestion.AfterCode = New-TransformedCode -Script $Script -Operation $Operation -Content $Content
             } catch {
                 $Suggestion.AfterCode = "# Erreur lors de la gÃ©nÃ©ration du code transformÃ©: $_"
             }
@@ -148,7 +148,7 @@ function Invoke-InteractiveRefactoring {
 
         # GÃ©nÃ©rer le code transformÃ©
         try {
-            $TransformedCode = Generate-TransformedCode -Script $Script -Operation $Operation -Content $Content
+            $TransformedCode = New-TransformedCode -Script $Script -Operation $Operation -Content $Content
             $OperationResult.AfterCode = $TransformedCode
 
             # Demander confirmation Ã  l'utilisateur
@@ -165,7 +165,7 @@ function Invoke-InteractiveRefactoring {
 
             if ($Confirmation -eq "O" -or $Confirmation -eq "o") {
                 # Appliquer la transformation
-                $Content = Apply-Transformation -Script $Script -Operation $Operation -Content $Content -TransformedCode $TransformedCode
+                $Content = Set-Transformation -Script $Script -Operation $Operation -Content $Content -TransformedCode $TransformedCode
                 Set-Content -Path $RefactoredScriptPath -Value $Content
                 $OperationResult.Success = $true
             } else {
@@ -252,11 +252,11 @@ function Invoke-AutomaticRefactoring {
 
         # GÃ©nÃ©rer le code transformÃ©
         try {
-            $TransformedCode = Generate-TransformedCode -Script $Script -Operation $Operation -Content $Content
+            $TransformedCode = New-TransformedCode -Script $Script -Operation $Operation -Content $Content
             $OperationResult.AfterCode = $TransformedCode
 
             # Appliquer la transformation
-            $Content = Apply-Transformation -Script $Script -Operation $Operation -Content $Content -TransformedCode $TransformedCode
+            $Content = Set-Transformation -Script $Script -Operation $Operation -Content $Content -TransformedCode $TransformedCode
             Set-Content -Path $RefactoredScriptPath -Value $Content
             $OperationResult.Success = $true
         } catch {
@@ -273,7 +273,7 @@ function Invoke-AutomaticRefactoring {
     return $Result
 }
 
-function Generate-TransformedCode {
+function New-TransformedCode {
     <#
     .SYNOPSIS
         GÃ©nÃ¨re le code transformÃ©
@@ -286,7 +286,7 @@ function Generate-TransformedCode {
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
-        Generate-TransformedCode -Script $script -Operation $operation -Content $content
+        New-TransformedCode -Script $script -Operation $operation -Content $content
     #>
     [CmdletBinding()]
     param (
@@ -307,32 +307,32 @@ function Generate-TransformedCode {
             return "# Code supprimÃ©"
         }
         "ExtractConstant" {
-            return Transform-ExtractConstant -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-ExtractConstant -Script $Script -Operation $Operation -Content $Content
         }
         "ExtractPath" {
-            return Transform-ExtractPath -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-ExtractPath -Script $Script -Operation $Operation -Content $Content
         }
 
         # Transformations PowerShell
         "FixNullComparison" {
-            return Transform-FixNullComparison -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-FixNullComparison -Script $Script -Operation $Operation -Content $Content
         }
         "AddForegroundColor" {
-            return Transform-AddForegroundColor -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-AddForegroundColor -Script $Script -Operation $Operation -Content $Content
         }
         "FixSwitchParameter" {
-            return Transform-FixSwitchParameter -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-FixSwitchParameter -Script $Script -Operation $Operation -Content $Content
         }
 
         # Transformations Python
         "ReplaceWithLogging" {
-            return Transform-ReplaceWithLogging -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-ReplaceWithLogging -Script $Script -Operation $Operation -Content $Content
         }
         "SpecifyException" {
-            return Transform-SpecifyException -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-SpecifyException -Script $Script -Operation $Operation -Content $Content
         }
         "AddMainGuard" {
-            return Transform-AddMainGuard -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-AddMainGuard -Script $Script -Operation $Operation -Content $Content
         }
 
         # Transformations Batch
@@ -343,7 +343,7 @@ function Generate-TransformedCode {
             return "SETLOCAL`n" + $Operation.Transformation.BeforeCode
         }
         "AddErrorCheck" {
-            return Transform-AddErrorCheck -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-AddErrorCheck -Script $Script -Operation $Operation -Content $Content
         }
 
         # Transformations Shell
@@ -354,10 +354,10 @@ function Generate-TransformedCode {
             return "set -e`n" + $Operation.Transformation.BeforeCode
         }
         "ReplaceTestOperator" {
-            return Transform-ReplaceTestOperator -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-ReplaceTestOperator -Script $Script -Operation $Operation -Content $Content
         }
         "QuoteVariables" {
-            return Transform-QuoteVariables -Script $Script -Operation $Operation -Content $Content
+            return ConvertTo-QuoteVariables -Script $Script -Operation $Operation -Content $Content
         }
 
         # Transformation par dÃ©faut
@@ -367,7 +367,7 @@ function Generate-TransformedCode {
     }
 }
 
-function Apply-Transformation {
+function Set-Transformation {
     <#
     .SYNOPSIS
         Applique une transformation au contenu du script
@@ -382,7 +382,7 @@ function Apply-Transformation {
     .PARAMETER TransformedCode
         Code transformÃ©
     .EXAMPLE
-        Apply-Transformation -Script $script -Operation $operation -Content $content -TransformedCode $transformedCode
+        Set-Transformation -Script $script -Operation $operation -Content $content -TransformedCode $transformedCode
     #>
     [CmdletBinding()]
     param (
@@ -431,7 +431,7 @@ function Apply-Transformation {
 
 # Fonctions de transformation spÃ©cifiques
 
-function Transform-ExtractConstant {
+function ConvertTo-ExtractConstant {
     param ($Script, $Operation, $Content)
 
     # Extraire le nombre magique
@@ -450,7 +450,7 @@ function Transform-ExtractConstant {
     return $TransformedCode
 }
 
-function Transform-ExtractPath {
+function ConvertTo-ExtractPath {
     param ($Script, $Operation, $Content)
 
     # Extraire le chemin
@@ -477,7 +477,7 @@ function Transform-ExtractPath {
     return $TransformedCode
 }
 
-function Transform-FixNullComparison {
+function ConvertTo-FixNullComparison {
     param ($Script, $Operation, $Content)
 
     # Remplacer les comparaisons avec $null
@@ -487,7 +487,7 @@ function Transform-FixNullComparison {
     return $TransformedCode
 }
 
-function Transform-AddForegroundColor {
+function ConvertTo-AddForegroundColor {
     param ($Script, $Operation, $Content)
 
     # Ajouter le paramÃ¨tre -ForegroundColor
@@ -496,7 +496,7 @@ function Transform-AddForegroundColor {
     return $TransformedCode
 }
 
-function Transform-FixSwitchParameter {
+function ConvertTo-FixSwitchParameter {
     param ($Script, $Operation, $Content)
 
     # Supprimer la valeur par dÃ©faut des paramÃ¨tres switch
@@ -505,7 +505,7 @@ function Transform-FixSwitchParameter {
     return $TransformedCode
 }
 
-function Transform-ReplaceWithLogging {
+function ConvertTo-ReplaceWithLogging {
     param ($Script, $Operation, $Content)
 
     # Remplacer print() par logging.info()
@@ -519,7 +519,7 @@ function Transform-ReplaceWithLogging {
     return $TransformedCode
 }
 
-function Transform-SpecifyException {
+function ConvertTo-SpecifyException {
     param ($Script, $Operation, $Content)
 
     # Remplacer except: par except Exception:
@@ -532,7 +532,7 @@ function Transform-SpecifyException {
     return $TransformedCode
 }
 
-function Transform-AddMainGuard {
+function ConvertTo-AddMainGuard {
     param ($Script, $Operation, $Content)
 
     # Ajouter le bloc if __name__ == "__main__":
@@ -541,7 +541,7 @@ function Transform-AddMainGuard {
     return $TransformedCode
 }
 
-function Transform-AddErrorCheck {
+function ConvertTo-AddErrorCheck {
     param ($Script, $Operation, $Content)
 
     # Ajouter des vÃ©rifications d'erreur
@@ -563,7 +563,7 @@ function Transform-AddErrorCheck {
     return $TransformedLines -join "`n"
 }
 
-function Transform-ReplaceTestOperator {
+function ConvertTo-ReplaceTestOperator {
     param ($Script, $Operation, $Content)
 
     # Remplacer [ ] par [[ ]]
@@ -572,7 +572,7 @@ function Transform-ReplaceTestOperator {
     return $TransformedCode
 }
 
-function Transform-QuoteVariables {
+function ConvertTo-QuoteVariables {
     param ($Script, $Operation, $Content)
 
     # Entourer les variables de guillemets
@@ -583,3 +583,5 @@ function Transform-QuoteVariables {
 
 # Exporter les fonctions
 Export-ModuleMember -Function Get-RefactoringSuggestions, Invoke-InteractiveRefactoring, Invoke-AutomaticRefactoring
+
+

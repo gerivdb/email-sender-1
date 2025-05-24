@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Effectue des substitutions automatiques pour les caractÃ¨res problÃ©matiques dans les fichiers.
 
@@ -193,7 +193,7 @@ function Get-FileEncodingInfo {
     }
 }
 
-function Substitute-CharactersInContent {
+function Set-CharactersInContent {
     param (
         [string]$FilePath,
         [hashtable]$Replacements,
@@ -342,7 +342,7 @@ function Rename-FileWithSubstitution {
     }
 }
 
-function Process-Files {
+function Invoke-Files {
     param (
         [string]$Path,
         [string]$Filter,
@@ -416,7 +416,7 @@ function Process-Files {
         
         # Substituer les caractÃ¨res dans le contenu si nÃ©cessaire
         if ($SubstituteInContent) {
-            $substituteResult = Substitute-CharactersInContent -FilePath $file.FullName -Replacements $Replacements -CreateBackup $CreateBackup -BackupExtension $BackupExtension
+            $substituteResult = Set-CharactersInContent -FilePath $file.FullName -Replacements $Replacements -CreateBackup $CreateBackup -BackupExtension $BackupExtension
             
             if (-not $substituteResult.Success) {
                 $fileResult.Success = $false
@@ -458,7 +458,9 @@ function Process-Files {
 }
 
 # ExÃ©cution principale
-$result = Process-Files -Path $Path -Filter $Filter -Recurse $Recurse.IsPresent -RenameFiles $RenameFiles.IsPresent -SubstituteInContent $SubstituteInContent.IsPresent -CreateBackup $CreateBackup.IsPresent -BackupExtension $BackupExtension -Replacements $replacements
+$result = Invoke-Files -Path $Path -Filter $Filter -Recurse $Recurse.IsPresent -RenameFiles $RenameFiles.IsPresent -SubstituteInContent $SubstituteInContent.IsPresent -CreateBackup $CreateBackup.IsPresent -BackupExtension $BackupExtension -Replacements $replacements
 
 # Retourner le rÃ©sultat
 return $result
+
+

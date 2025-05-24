@@ -1,4 +1,4 @@
-# Manage-QdrantPoints.ps1
+# Set-QdrantPoints.ps1
 # Script pour gérer les points dans Qdrant
 # Version: 1.0
 # Date: 2025-05-15
@@ -421,7 +421,7 @@ function Search-QdrantPoints {
 }
 
 # Fonction principale
-function Manage-QdrantPoints {
+function Set-QdrantPoints {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -532,9 +532,10 @@ function Manage-QdrantPoints {
 }
 
 # Exporter les fonctions pour qu'elles soient disponibles pour d'autres scripts
-Export-ModuleMember -Function Manage-QdrantPoints, Add-QdrantPoint, Get-QdrantPoint, Update-QdrantPoint, Remove-QdrantPoint, Search-QdrantPoints
+Export-ModuleMember -function Set-QdrantPoints, Add-QdrantPoint, Get-QdrantPoint, Update-QdrantPoint, Remove-QdrantPoint, Search-QdrantPoints
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Manage-QdrantPoints -Action $Action -QdrantUrl $QdrantUrl -ApiKey $ApiKey -CollectionName $CollectionName -PointId $PointId -Vector $Vector -Payload $Payload -QueryVector $QueryVector -Limit $Limit -Threshold $Threshold
+    Set-QdrantPoints -Action $Action -QdrantUrl $QdrantUrl -ApiKey $ApiKey -CollectionName $CollectionName -PointId $PointId -Vector $Vector -Payload $Payload -QueryVector $QueryVector -Limit $Limit -Threshold $Threshold
 }
+

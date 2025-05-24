@@ -171,7 +171,7 @@ $script:TextNormalizationRules = @{
 }
 
 # Fonction pour normaliser un texte selon les règles spécifiées
-function Normalize-Text {
+function ConvertTo-Text {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -224,7 +224,7 @@ function Normalize-Text {
 }
 
 # Fonction pour normaliser un tableau de textes
-function Normalize-TextArray {
+function ConvertTo-TextArray {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -242,7 +242,7 @@ function Normalize-TextArray {
     $normalizedArray = @()
     
     foreach ($text in $TextArray) {
-        $normalizedText = Normalize-Text -Text $text -FieldType $FieldType -Rules $Rules
+        $normalizedText = ConvertTo-Text -Text $text -FieldType $FieldType -Rules $Rules
         $normalizedArray += $normalizedText
     }
     
@@ -256,7 +256,7 @@ function Normalize-TextArray {
 }
 
 # Fonction pour normaliser une tâche complète
-function Normalize-TaskText {
+function ConvertTo-TaskText {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -266,27 +266,27 @@ function Normalize-TaskText {
     process {
         # Normaliser les champs textuels de la tâche
         if ($Task.PSObject.Properties.Name.Contains("title")) {
-            $Task.title = Normalize-Text -Text $Task.title -FieldType "Title"
+            $Task.title = ConvertTo-Text -Text $Task.title -FieldType "Title"
         }
         
         if ($Task.PSObject.Properties.Name.Contains("description")) {
-            $Task.description = Normalize-Text -Text $Task.description -FieldType "Description"
+            $Task.description = ConvertTo-Text -Text $Task.description -FieldType "Description"
         }
         
         if ($Task.PSObject.Properties.Name.Contains("id")) {
-            $Task.id = Normalize-Text -Text $Task.id -FieldType "Id"
+            $Task.id = ConvertTo-Text -Text $Task.id -FieldType "Id"
         }
         
         if ($Task.PSObject.Properties.Name.Contains("status")) {
-            $Task.status = Normalize-Text -Text $Task.status -FieldType "Status"
+            $Task.status = ConvertTo-Text -Text $Task.status -FieldType "Status"
         }
         
         if ($Task.PSObject.Properties.Name.Contains("category")) {
-            $Task.category = Normalize-Text -Text $Task.category -FieldType "Category"
+            $Task.category = ConvertTo-Text -Text $Task.category -FieldType "Category"
         }
         
         if ($Task.PSObject.Properties.Name.Contains("tags") -and $Task.tags -is [array]) {
-            $Task.tags = Normalize-TextArray -TextArray $Task.tags -FieldType "Tag"
+            $Task.tags = ConvertTo-TextArray -TextArray $Task.tags -FieldType "Tag"
         }
         
         return $Task
@@ -294,4 +294,5 @@ function Normalize-TaskText {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Normalize-Text, Normalize-TextArray, Normalize-TaskText
+Export-ModuleMember -function ConvertTo-Text, ConvertTo-TextArray, ConvertTo-TaskText
+

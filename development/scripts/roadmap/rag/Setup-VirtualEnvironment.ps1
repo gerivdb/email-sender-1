@@ -1,4 +1,4 @@
-# Setup-VirtualEnvironment.ps1
+# Initialize-VirtualEnvironment.ps1
 # Script pour configurer un environnement virtuel Python pour le système RAG de roadmaps
 # Version: 1.0
 # Date: 2025-05-15
@@ -84,7 +84,7 @@ function New-VirtualEnvironment {
 }
 
 # Fonction pour activer l'environnement virtuel
-function Activate-VirtualEnvironment {
+function Enable-VirtualEnvironment {
     param (
         [string]$VenvPath
     )
@@ -183,7 +183,7 @@ function New-ActivationScript {
 
 if (-not (Test-Path -Path `$activateScript)) {
     Write-Host "[ERROR] Script d'activation non trouvé: `$activateScript" -ForegroundColor Red
-    Write-Host "[INFO] Exécutez d'abord Setup-VirtualEnvironment.ps1 pour créer l'environnement virtuel." -ForegroundColor Yellow
+    Write-Host "[INFO] Exécutez d'abord Initialize-VirtualEnvironment.ps1 pour créer l'environnement virtuel." -ForegroundColor Yellow
     exit 1
 }
 
@@ -296,7 +296,7 @@ if (`$LASTEXITCODE -eq 0) {
 }
 
 # Fonction principale
-function Setup-VirtualEnvironment {
+function Initialize-VirtualEnvironment {
     param (
         [string]$VenvPath,
         [switch]$Force,
@@ -332,7 +332,7 @@ function Setup-VirtualEnvironment {
     New-RequirementsFile -OutputPath $requirementsPath
     
     # Activer l'environnement virtuel
-    $venvActivated = Activate-VirtualEnvironment -VenvPath $VenvPath
+    $venvActivated = Enable-VirtualEnvironment -VenvPath $VenvPath
     
     if (-not $venvActivated) {
         return $false
@@ -361,4 +361,6 @@ function Setup-VirtualEnvironment {
 }
 
 # Exécuter la fonction principale
-Setup-VirtualEnvironment -VenvPath $VenvPath -Force:$Force -NoPrompt:$NoPrompt
+Initialize-VirtualEnvironment -VenvPath $VenvPath -Force:$Force -NoPrompt:$NoPrompt
+
+

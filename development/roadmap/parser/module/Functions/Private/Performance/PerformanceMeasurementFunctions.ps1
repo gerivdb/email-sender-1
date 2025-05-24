@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     DÃ©finit les fonctions de mesure de performance pour le module RoadmapParser.
 
@@ -1268,7 +1268,7 @@ function Initialize-OperationCounter {
     IncrÃ©mente un compteur d'opÃ©rations.
 
 .DESCRIPTION
-    La fonction Increment-OperationCounter incrÃ©mente un compteur d'opÃ©rations.
+    La fonction Add-OperationCounter incrÃ©mente un compteur d'opÃ©rations.
     Elle crÃ©e le compteur s'il n'existe pas.
 
 .PARAMETER Name
@@ -1283,13 +1283,13 @@ function Initialize-OperationCounter {
     Par dÃ©faut, c'est $false.
 
 .EXAMPLE
-    Increment-OperationCounter -Name "MaFonction"
+    Add-OperationCounter -Name "MaFonction"
     IncrÃ©mente le compteur d'opÃ©rations nommÃ© "MaFonction" de 1.
 
 .OUTPUTS
     [int] La nouvelle valeur du compteur.
 #>
-function Increment-OperationCounter {
+function Add-OperationCounter {
     [CmdletBinding()]
     [OutputType([int])]
     param (
@@ -1612,7 +1612,7 @@ function Set-OperationThreshold {
 .EXAMPLE
     Measure-Operations -Name "MaFonction" -ScriptBlock {
         for ($i = 0; $i -lt 1000; $i++) {
-            Increment-OperationCounter -Name "MaFonction"
+            Add-OperationCounter -Name "MaFonction"
         }
     }
     Mesure le nombre d'opÃ©rations effectuÃ©es par le bloc de code.
@@ -1704,5 +1704,6 @@ Start-PerformanceTimer, Stop-PerformanceTimer, Reset-PerformanceTimer,
 Get-PerformanceStatistics, Set-PerformanceThreshold, Measure-ExecutionTime,
 Start-MemorySnapshot, Stop-MemorySnapshot, Reset-MemorySnapshot,
 Get-MemoryStatistics, Set-MemoryThreshold, Measure-MemoryUsage,
-Initialize-OperationCounter, Increment-OperationCounter, Reset-OperationCounter,
+Initialize-OperationCounter, Add-OperationCounter, Reset-OperationCounter,
 Get-OperationCounter, Get-OperationStatistics, Set-OperationThreshold, Measure-Operations
+

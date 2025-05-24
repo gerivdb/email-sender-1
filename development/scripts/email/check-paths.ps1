@@ -1,4 +1,4 @@
-﻿# Script pour verifier les chemins dans les fichiers de configuration
+# Script pour verifier les chemins dans les fichiers de configuration
 # Ce script recherche les anciens chemins dans les fichiers de configuration et les signale
 
 Write-Host "=== Verification des chemins dans les fichiers de configuration ===" -ForegroundColor Cyan
@@ -18,7 +18,7 @@ $newPath = "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1"
 $fileTypes = @("*.json", "*.cmd", "*.ps1", "*.yaml", "*.md")
 
 # Fonction pour vÃƒÂ©rifier un fichier
-function Check-File {
+function Test-File {
     param (
         [string]$filePath
     )
@@ -45,7 +45,7 @@ $filesWithOldPaths = @()
 foreach ($fileType in $fileTypes) {
     $files = Get-ChildItem -Path . -Recurse -File -Filter $fileType
     foreach ($file in $files) {
-        if (Check-File -filePath $file.FullName) {
+        if (Test-File -filePath $file.FullName) {
             $filesWithOldPaths += $file.FullName
         }
     }
@@ -67,3 +67,4 @@ if ($filesWithOldPaths.Count -eq 0) {
 }
 
 Write-Host "`n=== Verification terminee ===" -ForegroundColor Cyan
+

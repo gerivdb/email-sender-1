@@ -1,4 +1,4 @@
-﻿# Script pour corriger les references de variables dans les chaines accentuees
+# Script pour corriger les references de variables dans les chaines accentuees
 # Version ASCII uniquement pour eviter les problemes d'encodage
 
 [CmdletBinding()]
@@ -21,7 +21,7 @@ if (-not (Test-Path -Path $detectionScriptPath -PathType Leaf)) {
 }
 
 # Fonction pour corriger les references de variables dans les chaines accentuees
-function Fix-VariableReferences {
+function Repair-VariableReferences {
     param (
         [Parameter(Mandatory = $true)]
         [string]$FilePath,
@@ -146,7 +146,7 @@ function Start-Correction {
 
         foreach ($file in $files) {
             Write-Verbose "Analyse du fichier '$($file.FullName)'..."
-            $corrected = Fix-VariableReferences -FilePath $file.FullName -WhatIf:$WhatIf
+            $corrected = Repair-VariableReferences -FilePath $file.FullName -WhatIf:$WhatIf
 
             if ($corrected) {
                 $correctedCount++
@@ -166,3 +166,4 @@ function Start-Correction {
 
 # Executer la correction
 Start-Correction -Path $Path -Recurse:$Recurse -WhatIf:$WhatIf
+

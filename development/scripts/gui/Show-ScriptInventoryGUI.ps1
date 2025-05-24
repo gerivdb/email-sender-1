@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Interface graphique pour visualiser l'inventaire des scripts
@@ -194,7 +194,7 @@ $txtDetailDescription = $window.FindName("txtDetailDescription")
 $txtStatus = $window.FindName("txtStatus")
 
 # Fonction pour charger les scripts
-function Load-Scripts {
+function Import-Scripts {
     param (
         [string]$nameFilter = "",
         [string]$authorFilter = "",
@@ -295,7 +295,7 @@ function Export-Scripts {
 $btnUpdate.Add_Click({
     $txtStatus.Text = "Mise Ã  jour de l'inventaire..."
     Update-ScriptInventory -Path $Path
-    Load-Scripts
+    Import-Scripts
     $txtStatus.Text = "Inventaire mis Ã  jour."
 })
 
@@ -340,7 +340,7 @@ $btnShowStatistics.Add_Click({
 
 # Ã‰vÃ©nement: Appliquer les filtres
 $btnApplyFilters.Add_Click({
-    Load-Scripts -nameFilter $txtFilterName.Text -authorFilter $txtFilterAuthor.Text -languageFilter $cmbFilterLanguage.SelectedItem
+    Import-Scripts -nameFilter $txtFilterName.Text -authorFilter $txtFilterAuthor.Text -languageFilter $cmbFilterLanguage.SelectedItem
 })
 
 # Ã‰vÃ©nement: SÃ©lection d'un script
@@ -362,7 +362,8 @@ foreach ($language in $languages) {
 }
 
 # Charger les scripts
-Load-Scripts
+Import-Scripts
 
 # Afficher la fenÃªtre
 $window.ShowDialog() | Out-Null
+

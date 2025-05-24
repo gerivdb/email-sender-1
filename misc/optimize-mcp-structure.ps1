@@ -57,7 +57,7 @@ function Write-Log {
     Write-Host "[$timestamp] [$Level] $Message" -ForegroundColor $color
 }
 
-function Analyze-CurrentStructure {
+function Test-CurrentStructure {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -116,7 +116,7 @@ function Analyze-CurrentStructure {
     return $mcpFiles
 }
 
-function Create-TargetStructure {
+function New-TargetStructure {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true)]
@@ -180,7 +180,7 @@ function Create-TargetStructure {
     }
 }
 
-function Plan-FileMovements {
+function New-FileMovements {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -197,7 +197,7 @@ function Plan-FileMovements {
 
     # Planifier les déplacements pour les scripts
     foreach ($script in $McpFiles.Scripts) {
-        $targetPath = Determine-TargetPath -File $script -Category "scripts" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+        $targetPath = Find-TargetPath -File $script -Category "scripts" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
         $movements += @{
             SourcePath = $script.FullName
             TargetPath = $targetPath
@@ -207,7 +207,7 @@ function Plan-FileMovements {
 
     # Planifier les déplacements pour les configurations
     foreach ($config in $McpFiles.Configurations) {
-        $targetPath = Determine-TargetPath -File $config -Category "config" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+        $targetPath = Find-TargetPath -File $config -Category "config" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
         $movements += @{
             SourcePath = $config.FullName
             TargetPath = $targetPath
@@ -217,7 +217,7 @@ function Plan-FileMovements {
 
     # Planifier les déplacements pour la documentation
     foreach ($doc in $McpFiles.Documentation) {
-        $targetPath = Determine-TargetPath -File $doc -Category "docs" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+        $targetPath = Find-TargetPath -File $doc -Category "docs" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
         $movements += @{
             SourcePath = $doc.FullName
             TargetPath = $targetPath
@@ -227,7 +227,7 @@ function Plan-FileMovements {
 
     # Planifier les déplacements pour les modules
     foreach ($module in $McpFiles.Modules) {
-        $targetPath = Determine-TargetPath -File $module -Category "modules" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+        $targetPath = Find-TargetPath -File $module -Category "modules" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
         $movements += @{
             SourcePath = $module.FullName
             TargetPath = $targetPath
@@ -237,7 +237,7 @@ function Plan-FileMovements {
 
     # Planifier les déplacements pour les fichiers Python
     foreach ($pyFile in $McpFiles.Python) {
-        $targetPath = Determine-TargetPath -File $pyFile -Category "python" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+        $targetPath = Find-TargetPath -File $pyFile -Category "python" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
         $movements += @{
             SourcePath = $pyFile.FullName
             TargetPath = $targetPath
@@ -247,7 +247,7 @@ function Plan-FileMovements {
 
     # Planifier les déplacements pour les tests
     foreach ($test in $McpFiles.Tests) {
-        $targetPath = Determine-TargetPath -File $test -Category "tests" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+        $targetPath = Find-TargetPath -File $test -Category "tests" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
         $movements += @{
             SourcePath = $test.FullName
             TargetPath = $targetPath
@@ -257,7 +257,7 @@ function Plan-FileMovements {
 
     # Planifier les déplacements pour les serveurs
     foreach ($server in $McpFiles.Servers) {
-        $targetPath = Determine-TargetPath -File $server -Category "servers" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+        $targetPath = Find-TargetPath -File $server -Category "servers" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
         $movements += @{
             SourcePath = $server.FullName
             TargetPath = $targetPath
@@ -267,7 +267,7 @@ function Plan-FileMovements {
 
     # Planifier les déplacements pour les intégrations
     foreach ($integration in $McpFiles.Integrations) {
-        $targetPath = Determine-TargetPath -File $integration -Category "integrations" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+        $targetPath = Find-TargetPath -File $integration -Category "integrations" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
         $movements += @{
             SourcePath = $integration.FullName
             TargetPath = $targetPath
@@ -277,7 +277,7 @@ function Plan-FileMovements {
 
     # Planifier les déplacements pour les utilitaires
     foreach ($util in $McpFiles.Utils) {
-        $targetPath = Determine-TargetPath -File $util -Category "utils" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+        $targetPath = Find-TargetPath -File $util -Category "utils" -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
         $movements += @{
             SourcePath = $util.FullName
             TargetPath = $targetPath
@@ -288,7 +288,7 @@ function Plan-FileMovements {
     return $movements
 }
 
-function Determine-TargetPath {
+function Find-TargetPath {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -402,7 +402,7 @@ function Determine-TargetPath {
     }
 }
 
-function Execute-FileMovements {
+function Invoke-FileMovements {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true)]
@@ -514,7 +514,7 @@ function Update-References {
     return $results
 }
 
-function Generate-Report {
+function New-Report {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true)]
@@ -574,16 +574,16 @@ try {
 
     # Étape 1: Analyser la structure actuelle
     Write-Log "Analyse de la structure actuelle..." -Level "TITLE"
-    $mcpFiles = Analyze-CurrentStructure -ProjectRoot $ProjectRoot
+    $mcpFiles = Test-CurrentStructure -ProjectRoot $ProjectRoot
     Write-Log "Analyse terminée. Trouvé $($mcpFiles.Scripts.Count) scripts, $($mcpFiles.Configurations.Count) fichiers de configuration, $($mcpFiles.Documentation.Count) fichiers de documentation." -Level "SUCCESS"
 
     # Étape 2: Créer la structure cible
     Write-Log "Création de la structure cible..." -Level "TITLE"
-    Create-TargetStructure -TargetRoot $TargetRoot -DryRun:$DryRun
+    New-TargetStructure -TargetRoot $TargetRoot -DryRun:$DryRun
 
     # Étape 3: Planifier les déplacements
     Write-Log "Planification des déplacements de fichiers..." -Level "TITLE"
-    $movements = Plan-FileMovements -McpFiles $mcpFiles -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
+    $movements = New-FileMovements -McpFiles $mcpFiles -ProjectRoot $ProjectRoot -TargetRoot $TargetRoot
     Write-Log "Planification terminée. $($movements.Count) fichiers à déplacer." -Level "SUCCESS"
 
     # Demander confirmation si nécessaire
@@ -597,7 +597,7 @@ try {
 
     # Étape 4: Exécuter les déplacements
     Write-Log "Exécution des déplacements de fichiers..." -Level "TITLE"
-    $moveResults = Execute-FileMovements -Movements $movements -DryRun:$DryRun
+    $moveResults = Invoke-FileMovements -Movements $movements -DryRun:$DryRun
     Write-Log "Déplacements terminés. $($moveResults.Succeeded.Count) réussis, $($moveResults.Failed.Count) échoués." -Level "SUCCESS"
 
     # Étape 5: Mettre à jour les références
@@ -607,7 +607,7 @@ try {
 
     # Étape 6: Générer un rapport
     Write-Log "Génération du rapport..." -Level "TITLE"
-    Generate-Report -McpFiles $mcpFiles -MoveResults $moveResults -RefResults $refResults -ProjectRoot $ProjectRoot -DryRun:$DryRun
+    New-Report -McpFiles $mcpFiles -MoveResults $moveResults -RefResults $refResults -ProjectRoot $ProjectRoot -DryRun:$DryRun
 
     Write-Log "Optimisation de la structure MCP terminée avec succès." -Level "SUCCESS"
 
@@ -619,3 +619,5 @@ try {
     Write-Log "Erreur lors de l'optimisation: $_" -Level "ERROR"
     exit 1
 }
+
+

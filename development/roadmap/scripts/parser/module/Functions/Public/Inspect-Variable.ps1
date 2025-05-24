@@ -1,9 +1,9 @@
-﻿<#
+<#
 .SYNOPSIS
     Inspecte une variable PowerShell et affiche des informations dÃ©taillÃ©es sur son contenu et sa structure.
 
 .DESCRIPTION
-    La fonction Inspect-Variable analyse une variable PowerShell et affiche des informations dÃ©taillÃ©es
+    La fonction Test-Variable analyse une variable PowerShell et affiche des informations dÃ©taillÃ©es
     sur son type, sa taille, sa structure et son contenu. Elle prend en charge diffÃ©rents niveaux de dÃ©tail
     et peut Ãªtre utilisÃ©e pour dÃ©boguer des scripts ou comprendre la structure de donnÃ©es complexes.
 
@@ -50,7 +50,7 @@
 
 .EXAMPLE
     $myString = "Hello, World!"
-    Inspect-Variable -InputObject $myString
+    Test-Variable -InputObject $myString
     Inspecte la variable $myString et affiche des informations de base.
 
 .EXAMPLE
@@ -61,11 +61,11 @@
             Property = "Value"
         }
     }
-    $complexObject | Inspect-Variable -DetailLevel Detailed
+    $complexObject | Test-Variable -DetailLevel Detailed
     Inspecte l'objet complexe avec un niveau de dÃ©tail Ã©levÃ©.
 
 .EXAMPLE
-    Get-Process | Select-Object -First 5 | Inspect-Variable -Format JSON
+    Get-Process | Select-Object -First 5 | Test-Variable -Format JSON
     Inspecte les 5 premiers processus et retourne le rÃ©sultat au format JSON.
 
 .OUTPUTS
@@ -76,7 +76,7 @@
     Version: 1.0
     Date de crÃ©ation: 2023-08-15
 #>
-function Inspect-Variable {
+function Test-Variable {
     [CmdletBinding()]
     [OutputType([PSCustomObject], [string])]
     param (
@@ -234,7 +234,7 @@ function Inspect-Variable {
         }
 
         # Fonction pour inspecter un objet de maniÃ¨re rÃ©cursive
-        function Inspect-ObjectRecursive {
+        function Test-ObjectRecursive {
             param (
                 [Parameter(Mandatory = $false)]
                 [AllowNull()]
@@ -321,7 +321,7 @@ function Inspect-Variable {
 
                 foreach ($item in $Object) {
                     if ($count -lt $MaxArrayItems) {
-                        $items += Inspect-ObjectRecursive -Object $item -CurrentDepth ($CurrentDepth + 1) -Path "$Path[$count]"
+                        $items += Test-ObjectRecursive -Object $item -CurrentDepth ($CurrentDepth + 1) -Path "$Path[$count]"
                     }
                     $count++
                 }
@@ -338,7 +338,7 @@ function Inspect-Variable {
                 # Dictionnaires
                 $properties = @{}
                 foreach ($key in $Object.Keys) {
-                    $properties[$key] = Inspect-ObjectRecursive -Object $Object[$key] -CurrentDepth ($CurrentDepth + 1) -Path "$Path.$key"
+                    $properties[$key] = Test-ObjectRecursive -Object $Object[$key] -CurrentDepth ($CurrentDepth + 1) -Path "$Path.$key"
                 }
 
                 return @{
@@ -355,7 +355,7 @@ function Inspect-Variable {
                 foreach ($property in $propertyList) {
                     $propertyType = if ($null -eq $property.Value) { "null" } else { Get-ObjectType -Object $property.Value }
                     if (Test-PropertyFilter -PropertyName $property.Name -PropertyType $propertyType) {
-                        $properties[$property.Name] = Inspect-ObjectRecursive -Object $property.Value -CurrentDepth ($CurrentDepth + 1) -Path "$Path.$($property.Name)"
+                        $properties[$property.Name] = Test-ObjectRecursive -Object $property.Value -CurrentDepth ($CurrentDepth + 1) -Path "$Path.$($property.Name)"
                     }
                 }
 
@@ -466,7 +466,7 @@ function Inspect-Variable {
         $script:visitedObjects = @{}
 
         # Inspecter l'objet
-        $result = Inspect-ObjectRecursive -Object $InputObject -CurrentDepth 1 -Path "InputObject"
+        $result = Test-ObjectRecursive -Object $InputObject -CurrentDepth 1 -Path "InputObject"
 
         # Filtrer les rÃ©sultats selon le niveau de dÃ©tail
         if ($DetailLevel -eq "Basic") {
@@ -505,3 +505,4 @@ function Inspect-Variable {
         }
     }
 }
+

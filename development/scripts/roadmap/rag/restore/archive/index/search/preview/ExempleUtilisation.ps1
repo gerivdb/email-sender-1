@@ -15,7 +15,7 @@ if (Test-Path -Path $modulePath) {
 }
 
 # Fonction pour simuler une recherche dans une base de documents
-function Rechercher-Documents {
+function Search-Documents {
     param (
         [string]$TermeRecherche,
         [string[]]$Types = @(),
@@ -108,7 +108,7 @@ function Rechercher-Documents {
 }
 
 # Fonction pour afficher les résultats de recherche
-function Afficher-ResultatsRecherche {
+function Show-ResultatsRecherche {
     param (
         [PSObject[]]$Documents,
         [string]$TermeRecherche,
@@ -152,10 +152,10 @@ function Afficher-ResultatsRecherche {
 Write-Output "Exemple 1: Recherche simple"
 Write-Output "------------------------"
 $termeRecherche = "produit"
-$resultats = Rechercher-Documents -TermeRecherche $termeRecherche
+$resultats = Search-Documents -TermeRecherche $termeRecherche
 Write-Output "Recherche du terme '$termeRecherche'"
 Write-Output "Nombre de resultats: $($resultats.Count)"
-Afficher-ResultatsRecherche -Documents $resultats -TermeRecherche $termeRecherche
+Show-ResultatsRecherche -Documents $resultats -TermeRecherche $termeRecherche
 Write-Output ""
 
 # Exemple 2: Recherche avec filtres
@@ -166,30 +166,31 @@ $types = @("document", "pdf")
 $dateDebut = [DateTime]::Parse("2023-01-01")
 $dateFin = [DateTime]::Parse("2024-12-31")
 $langue = "fr"
-$resultats = Rechercher-Documents -TermeRecherche $termeRecherche -Types $types -DateDebut $dateDebut -DateFin $dateFin -Langue $langue
+$resultats = Search-Documents -TermeRecherche $termeRecherche -Types $types -DateDebut $dateDebut -DateFin $dateFin -Langue $langue
 Write-Output "Recherche du terme '$termeRecherche' avec filtres:"
 Write-Output "- Types: $($types -join ', ')"
 Write-Output "- Periode: $($dateDebut.ToString('yyyy-MM-dd')) a $($dateFin.ToString('yyyy-MM-dd'))"
 Write-Output "- Langue: $langue"
 Write-Output "Nombre de resultats: $($resultats.Count)"
-Afficher-ResultatsRecherche -Documents $resultats -TermeRecherche $termeRecherche -IncluireMetadonnees
+Show-ResultatsRecherche -Documents $resultats -TermeRecherche $termeRecherche -IncluireMetadonnees
 Write-Output ""
 
 # Exemple 3: Sortie HTML
 Write-Output "Exemple 3: Sortie HTML"
 Write-Output "-------------------"
 $termeRecherche = "reunion"
-$resultats = Rechercher-Documents -TermeRecherche $termeRecherche
+$resultats = Search-Documents -TermeRecherche $termeRecherche
 Write-Output "Recherche du terme '$termeRecherche'"
 Write-Output "Nombre de resultats: $($resultats.Count)"
-Afficher-ResultatsRecherche -Documents $resultats -TermeRecherche $termeRecherche -FormatSortie "html" -IncluireMetadonnees
+Show-ResultatsRecherche -Documents $resultats -TermeRecherche $termeRecherche -FormatSortie "html" -IncluireMetadonnees
 Write-Output ""
 
 # Exemple 4: Sortie JSON
 Write-Output "Exemple 4: Sortie JSON"
 Write-Output "-------------------"
 $termeRecherche = "manuel"
-$resultats = Rechercher-Documents -TermeRecherche $termeRecherche
+$resultats = Search-Documents -TermeRecherche $termeRecherche
 Write-Output "Recherche du terme '$termeRecherche'"
 Write-Output "Nombre de resultats: $($resultats.Count)"
-Afficher-ResultatsRecherche -Documents $resultats -TermeRecherche $termeRecherche -FormatSortie "json" -IncluireMetadonnees
+Show-ResultatsRecherche -Documents $resultats -TermeRecherche $termeRecherche -FormatSortie "json" -IncluireMetadonnees
+

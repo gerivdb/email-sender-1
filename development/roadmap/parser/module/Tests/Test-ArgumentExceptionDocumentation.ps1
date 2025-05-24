@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests pour valider la documentation d'ArgumentException et ses dÃ©rivÃ©es.
 
@@ -113,7 +113,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dÃ©rivÃ©es" {
         }
         
         It "Exemple 1: Devrait vÃ©rifier un paramÃ¨tre null" {
-            function Process-Data {
+            function Invoke-Data {
                 param (
                     [object]$Data
                 )
@@ -125,21 +125,21 @@ Describe "Tests de la documentation d'ArgumentException et ses dÃ©rivÃ©es" {
                 return "Traitement de $($Data.GetType().Name) rÃ©ussi"
             }
             
-            { Process-Data -Data $null } | Should -Throw -ExceptionType [System.ArgumentNullException]
+            { Invoke-Data -Data $null } | Should -Throw -ExceptionType [System.ArgumentNullException]
             
             try {
-                Process-Data -Data $null
+                Invoke-Data -Data $null
             }
             catch {
                 $_.Exception.Message | Should -Match "Les donnÃ©es ne peuvent pas Ãªtre nulles"
                 $_.Exception.ParamName | Should -Be "Data"
             }
             
-            Process-Data -Data "Test" | Should -Be "Traitement de String rÃ©ussi"
+            Invoke-Data -Data "Test" | Should -Be "Traitement de String rÃ©ussi"
         }
         
         It "Exemple 2: Devrait vÃ©rifier une propriÃ©tÃ© null" {
-            function Process-User {
+            function Invoke-User {
                 param (
                     [PSCustomObject]$User
                 )
@@ -161,10 +161,10 @@ Describe "Tests de la documentation d'ArgumentException et ses dÃ©rivÃ©es" {
                 Email = "user@example.com"
             }
             
-            { Process-User -User $userWithNullName } | Should -Throw -ExceptionType [System.ArgumentNullException]
+            { Invoke-User -User $userWithNullName } | Should -Throw -ExceptionType [System.ArgumentNullException]
             
             try {
-                Process-User -User $userWithNullName
+                Invoke-User -User $userWithNullName
             }
             catch {
                 $_.Exception.Message | Should -Match "Le nom de l'utilisateur ne peut pas Ãªtre null"
@@ -177,7 +177,7 @@ Describe "Tests de la documentation d'ArgumentException et ses dÃ©rivÃ©es" {
                 Email = "user@example.com"
             }
             
-            Process-User -User $validUser | Should -Be "Utilisateur traitÃ©: John Doe"
+            Invoke-User -User $validUser | Should -Be "Utilisateur traitÃ©: John Doe"
         }
     }
     
@@ -329,3 +329,4 @@ Describe "Tests de la documentation d'ArgumentException et ses dÃ©rivÃ©es" {
 
 # ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed
+

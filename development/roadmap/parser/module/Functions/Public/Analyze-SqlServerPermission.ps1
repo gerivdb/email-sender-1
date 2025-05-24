@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Analyse les permissions SQL Server au niveau serveur et base de donnÃ©es.
 
@@ -27,25 +27,25 @@
     Le format du rapport de permissions (HTML, CSV, JSON, XML). Par dÃ©faut: HTML.
 
 .EXAMPLE
-    Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
+    Test-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
 
 .EXAMPLE
-    Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -Database "AdventureWorks"
+    Test-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -Database "AdventureWorks"
 
 .EXAMPLE
-    Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $false
+    Test-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -IncludeDatabaseLevel $false
 
 .EXAMPLE
-    Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath "C:\Reports\SqlPermissions.html"
+    Test-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath "C:\Reports\SqlPermissions.html"
 
 .EXAMPLE
     $cred = Get-Credential
-    Analyze-SqlServerPermission -ServerInstance "SqlServer01" -Credential $cred -OutputFormat "JSON" -OutputPath "C:\Reports\SqlPermissions.json"
+    Test-SqlServerPermission -ServerInstance "SqlServer01" -Credential $cred -OutputFormat "JSON" -OutputPath "C:\Reports\SqlPermissions.json"
 
 .OUTPUTS
     [PSCustomObject] avec des dÃ©tails sur les permissions au niveau serveur et base de donnÃ©es
 #>
-function Analyze-SqlServerPermission {
+function Test-SqlServerPermission {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
@@ -2103,3 +2103,4 @@ function Export-PermissionReport {
 }
 
 # Pas besoin d'exporter la fonction ici, elle sera exportÃ©e par le module
+

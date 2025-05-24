@@ -1,4 +1,4 @@
-﻿﻿# Common-Utils.ps1
+﻿# Common-Utils.ps1
 # Fonctions utilitaires communes pour les scripts de roadmap
 
 # Fonction pour écrire des messages de log
@@ -78,7 +78,7 @@ function Get-AbsolutePath {
 }
 
 # Fonction pour créer un répertoire s'il n'existe pas
-function Ensure-Directory {
+function Confirm-Directory {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -276,3 +276,4 @@ function Get-FileEncoding {
 
 # Exporter les fonctions
 Export-ModuleMember -Function *
+

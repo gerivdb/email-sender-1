@@ -1,9 +1,9 @@
-﻿<#
+<#
 .SYNOPSIS
     Normalise un chemin de fichier ou de rÃ©pertoire.
 
 .DESCRIPTION
-    La fonction Normalize-RoadmapPath normalise un chemin de fichier ou de rÃ©pertoire.
+    La fonction ConvertTo-RoadmapPath normalise un chemin de fichier ou de rÃ©pertoire.
     Elle prend en charge diffÃ©rentes options de normalisation et peut Ãªtre utilisÃ©e pour
     normaliser les chemins du module RoadmapParser.
 
@@ -52,11 +52,11 @@
     Indique si une exception doit Ãªtre levÃ©e en cas d'Ã©chec de la normalisation.
 
 .EXAMPLE
-    Normalize-RoadmapPath -Path ".\folder\file.txt" -NormalizationType FullPath
+    ConvertTo-RoadmapPath -Path ".\folder\file.txt" -NormalizationType FullPath
     Normalise le chemin relatif ".\folder\file.txt" en chemin absolu complet.
 
 .EXAMPLE
-    Normalize-RoadmapPath -Path "C:\folder\file.txt" -NormalizationType UnixPath
+    ConvertTo-RoadmapPath -Path "C:\folder\file.txt" -NormalizationType UnixPath
     Convertit le chemin Windows "C:\folder\file.txt" en format Unix "/c/folder/file.txt".
 
 .OUTPUTS
@@ -67,7 +67,7 @@
     Version: 1.0
     Date de crÃ©ation: 2023-07-21
 #>
-function Normalize-RoadmapPath {
+function ConvertTo-RoadmapPath {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true)]
@@ -316,3 +316,4 @@ function Normalize-RoadmapPath {
 
     return $result
 }
+

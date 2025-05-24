@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Extrait les dÃ©pendances d'un fichier de configuration.
 .DESCRIPTION
@@ -89,21 +89,21 @@ function Get-ConfigurationDependencies {
         
         # Extraire les dÃ©pendances explicites si demandÃ©
         if ($DetectionMode -eq "Explicit" -or $DetectionMode -eq "All") {
-            $result = Extract-ExplicitDependencies -Config $config -Result $result
+            $result = Export-ExplicitDependencies -Config $config -Result $result
         }
         
         # Extraire les dÃ©pendances implicites si demandÃ©
         if ($DetectionMode -eq "Implicit" -or $DetectionMode -eq "All") {
-            $result = Extract-ImplicitDependencies -Config $config -Result $result
+            $result = Export-ImplicitDependencies -Config $config -Result $result
         }
         
         # Analyser les dÃ©pendances externes si spÃ©cifiÃ©es
         if ($ExternalPaths.Count -gt 0) {
-            $result = Extract-ExternalDependencies -Config $config -ExternalPaths $ExternalPaths -Result $result
+            $result = Export-ExternalDependencies -Config $config -ExternalPaths $ExternalPaths -Result $result
         }
         
         # DÃ©tecter les dÃ©pendances circulaires
-        $result = Detect-CircularDependencies -Dependencies $result.InternalDependencies -Result $result
+        $result = Find-CircularDependencies -Dependencies $result.InternalDependencies -Result $result
         
         return $result
     }
@@ -113,7 +113,7 @@ function Get-ConfigurationDependencies {
     }
 }
 
-function Extract-ExplicitDependencies {
+function Export-ExplicitDependencies {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -172,7 +172,7 @@ function Extract-ExplicitDependencies {
             
             # Si la valeur est un hashtable ou un PSCustomObject, analyser rÃ©cursivement
             if ($value -is [hashtable] -or $value -is [PSCustomObject]) {
-                $Result = Extract-ExplicitDependencies -Config $value -Result $Result -Prefix $fullKey
+                $Result = Export-ExplicitDependencies -Config $value -Result $Result -Prefix $fullKey
             }
             # Si la valeur est un tableau, analyser chaque Ã©lÃ©ment
             elseif ($value -is [array]) {
@@ -180,7 +180,7 @@ function Extract-ExplicitDependencies {
                     $item = $value[$i]
                     
                     if ($item -is [hashtable] -or $item -is [PSCustomObject]) {
-                        $Result = Extract-ExplicitDependencies -Config $item -Result $Result -Prefix "$fullKey[$i]"
+                        $Result = Export-ExplicitDependencies -Config $item -Result $Result -Prefix "$fullKey[$i]"
                     }
                 }
             }
@@ -192,7 +192,7 @@ function Extract-ExplicitDependencies {
             $item = $Config[$i]
             
             if ($item -is [hashtable] -or $item -is [PSCustomObject]) {
-                $Result = Extract-ExplicitDependencies -Config $item -Result $Result -Prefix "$Prefix[$i]"
+                $Result = Export-ExplicitDependencies -Config $item -Result $Result -Prefix "$Prefix[$i]"
             }
         }
     }
@@ -200,7 +200,7 @@ function Extract-ExplicitDependencies {
     return $Result
 }
 
-function Extract-ImplicitDependencies {
+function Export-ImplicitDependencies {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -246,7 +246,7 @@ function Extract-ImplicitDependencies {
     return $Result
 }
 
-function Extract-ExternalDependencies {
+function Export-ExternalDependencies {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -325,7 +325,7 @@ function Extract-ExternalDependencies {
     return $Result
 }
 
-function Detect-CircularDependencies {
+function Find-CircularDependencies {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -413,3 +413,4 @@ function Find-Cycle {
     # Aucun cycle trouvÃ©
     return @()
 }
+

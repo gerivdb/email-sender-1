@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests pour valider la documentation d'IndexOutOfRangeException et ses contextes.
 
@@ -32,7 +32,7 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
         }
         
         It "Exemple 1: Devrait simuler l'accÃ¨s Ã  un index nÃ©gatif (style C#)" {
-            function Access-NegativeIndexCSharpStyle {
+            function Get-NegativeIndexCSharpStyle {
                 param (
                     [array]$Array,
                     [int]$Index
@@ -45,11 +45,11 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             }
             
             $array = @(1, 2, 3, 4, 5)
-            { Access-NegativeIndexCSharpStyle -Array $array -Index -1 } | Should -Throw -ExceptionType [System.IndexOutOfRangeException]
+            { Get-NegativeIndexCSharpStyle -Array $array -Index -1 } | Should -Throw -ExceptionType [System.IndexOutOfRangeException]
         }
         
         It "Exemple 2: Devrait gÃ©rer l'accÃ¨s Ã  un index trop grand" {
-            function Access-TooLargeIndex {
+            function Get-TooLargeIndex {
                 param (
                     [array]$Array,
                     [int]$Index
@@ -63,11 +63,11 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             }
             
             $array = @(1, 2, 3, 4, 5)
-            Access-TooLargeIndex -Array $array -Index 10 | Should -Be "Erreur: System.IndexOutOfRangeException"
+            Get-TooLargeIndex -Array $array -Index 10 | Should -Be "Erreur: System.IndexOutOfRangeException"
         }
         
         It "Exemple 3: Devrait gÃ©rer une erreur de calcul d'index" {
-            function Calculate-InvalidIndex {
+            function Measure-InvalidIndex {
                 param (
                     [array]$Array,
                     [int]$Position
@@ -82,12 +82,12 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             }
             
             $array = @(1, 2, 3, 4, 5)
-            Calculate-InvalidIndex -Array $array -Index 4 | Should -Be 4  # Position 4 donne index 3
-            Calculate-InvalidIndex -Array $array -Position 5 | Should -Match "Erreur d'index: L'index calculÃ© \(5\) est en dehors des limites du tableau \(0..4\)"
+            Measure-InvalidIndex -Array $array -Index 4 | Should -Be 4  # Position 4 donne index 3
+            Measure-InvalidIndex -Array $array -Position 5 | Should -Match "Erreur d'index: L'index calculÃ© \(5\) est en dehors des limites du tableau \(0..4\)"
         }
         
         It "Exemple 4: Devrait gÃ©rer une boucle mal bornÃ©e" {
-            function Iterate-WithInvalidBounds {
+            function Invoke-WithInvalidBounds {
                 param (
                     [array]$Array
                 )
@@ -106,14 +106,14 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             }
             
             $array = @(1, 2, 3, 4, 5)
-            $result = Iterate-WithInvalidBounds -Array $array
+            $result = Invoke-WithInvalidBounds -Array $array
             
             $result.Count | Should -Be 6  # 5 Ã©lÃ©ments + 1 message d'erreur
             $result[5] | Should -Match "Erreur Ã  l'itÃ©ration 5 : System.IndexOutOfRangeException"
         }
         
         It "Exemple 5: Devrait dÃ©montrer la confusion entre longueur et index maximal" {
-            function Demonstrate-LengthVsMaxIndex {
+            function Show-LengthVsMaxIndex {
                 param (
                     [array]$Array
                 )
@@ -141,7 +141,7 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             }
             
             $array = @(1, 2, 3, 4, 5)
-            $result = Demonstrate-LengthVsMaxIndex -Array $array
+            $result = Show-LengthVsMaxIndex -Array $array
             
             $result[0] | Should -Be "Longueur du tableau: 5"
             $result[1] | Should -Be "Index maximal valide: 4"
@@ -152,7 +152,7 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
     
     Context "PrÃ©vention des IndexOutOfRangeException" {
         It "Technique 1: Devrait vÃ©rifier les limites avant l'accÃ¨s" {
-            function Access-ArraySafely {
+            function Get-ArraySafely {
                 param (
                     [array]$Array,
                     [int]$Index
@@ -166,9 +166,9 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             }
             
             $array = @(1, 2, 3, 4, 5)
-            Access-ArraySafely -Array $array -Index 2 | Should -Be 3
-            Access-ArraySafely -Array $array -Index 10 | Should -Be "Index 10 hors limites (0..4)"
-            Access-ArraySafely -Array $array -Index -1 | Should -Be "Index -1 hors limites (0..4)"
+            Get-ArraySafely -Array $array -Index 2 | Should -Be 3
+            Get-ArraySafely -Array $array -Index 10 | Should -Be "Index 10 hors limites (0..4)"
+            Get-ArraySafely -Array $array -Index -1 | Should -Be "Index -1 hors limites (0..4)"
         }
         
         It "Technique 2: Devrait utiliser des mÃ©thodes sÃ©curisÃ©es pour les collections" {
@@ -193,7 +193,7 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
         }
         
         It "Technique 4: Devrait utiliser des boucles foreach au lieu de for" {
-            function Iterate-Safely {
+            function Invoke-Safely {
                 param (
                     [array]$Array
                 )
@@ -209,7 +209,7 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
             }
             
             $array = @(1, 2, 3, 4, 5)
-            $result = Iterate-Safely -Array $array
+            $result = Invoke-Safely -Array $array
             
             $result.Count | Should -Be 5
             $result[0] | Should -Be 1
@@ -318,3 +318,4 @@ Describe "Tests de la documentation d'IndexOutOfRangeException et ses contextes"
 
 # ExÃ©cuter les tests
 Invoke-Pester -Script $PSCommandPath -Output Detailed
+

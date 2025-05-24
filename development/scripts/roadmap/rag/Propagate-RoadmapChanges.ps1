@@ -1,4 +1,4 @@
-# Propagate-RoadmapChanges.ps1
+# Copy-RoadmapChanges.ps1
 # Script pour propager les changements dans la hiérarchie des tâches
 # Version: 1.0
 # Date: 2025-05-15
@@ -100,7 +100,7 @@ function Get-TaskHierarchy {
 }
 
 # Fonction pour propager les changements de statut
-function Propagate-StatusChanges {
+function Copy-StatusChanges {
     param (
         [Parameter(Mandatory = $true)]
         [hashtable]$Tasks,
@@ -196,7 +196,7 @@ function Propagate-StatusChanges {
 }
 
 # Fonction pour propager les changements de contexte
-function Propagate-ContextChanges {
+function Copy-ContextChanges {
     param (
         [Parameter(Mandatory = $true)]
         [hashtable]$Tasks,
@@ -238,7 +238,7 @@ function Propagate-ContextChanges {
 }
 
 # Fonction pour propager les changements de parent
-function Propagate-ParentChanges {
+function Copy-ParentChanges {
     param (
         [Parameter(Mandatory = $true)]
         [hashtable]$Tasks,
@@ -368,7 +368,7 @@ function New-PropagatedChangesFile {
 }
 
 # Fonction principale
-function Propagate-RoadmapChanges {
+function Copy-RoadmapChanges {
     param (
         [Parameter(Mandatory = $true)]
         [string]$RoadmapPath,
@@ -422,7 +422,7 @@ function Propagate-RoadmapChanges {
     if ($changes.ContentChanges.Changes.StatusChanged) {
         $statusChanges = $changes.ContentChanges.Changes.StatusChanged
     }
-    $propagatedStatusChanges = Propagate-StatusChanges -Tasks $tasks -StatusChanges $statusChanges
+    $propagatedStatusChanges = Copy-StatusChanges -Tasks $tasks -StatusChanges $statusChanges
     
     # Propager les changements de contexte
     Write-Log "Propagation des changements de contexte..." -Level "Info"
@@ -430,7 +430,7 @@ function Propagate-RoadmapChanges {
     if ($changes.TaskMovements.Movements.ContextChanges) {
         $contextChanges = $changes.TaskMovements.Movements.ContextChanges
     }
-    $propagatedContextChanges = Propagate-ContextChanges -Tasks $tasks -ContextChanges $contextChanges
+    $propagatedContextChanges = Copy-ContextChanges -Tasks $tasks -ContextChanges $contextChanges
     
     # Propager les changements de parent
     Write-Log "Propagation des changements de parent..." -Level "Info"
@@ -438,7 +438,7 @@ function Propagate-RoadmapChanges {
     if ($changes.TaskMovements.Movements.ParentChanges) {
         $parentChanges = $changes.TaskMovements.Movements.ParentChanges
     }
-    $propagatedParentChanges = Propagate-ParentChanges -Tasks $tasks -ParentChanges $parentChanges
+    $propagatedParentChanges = Copy-ParentChanges -Tasks $tasks -ParentChanges $parentChanges
     
     # Combiner tous les changements propagés
     $allPropagatedChanges = $propagatedStatusChanges + $propagatedContextChanges + $propagatedParentChanges
@@ -484,4 +484,5 @@ function Propagate-RoadmapChanges {
 }
 
 # Exécuter la fonction principale
-Propagate-RoadmapChanges -RoadmapPath $RoadmapPath -ChangesPath $ChangesPath -QdrantUrl $QdrantUrl -CollectionName $CollectionName -UpdateVectors:$UpdateVectors -Force:$Force
+Copy-RoadmapChanges -RoadmapPath $RoadmapPath -ChangesPath $ChangesPath -QdrantUrl $QdrantUrl -CollectionName $CollectionName -UpdateVectors:$UpdateVectors -Force:$Force
+

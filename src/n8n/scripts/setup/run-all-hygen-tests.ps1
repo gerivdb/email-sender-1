@@ -222,7 +222,7 @@ function Start-AllTests {
 }
 
 # Fonction pour générer un rapport global
-function Generate-GlobalReport {
+function New-GlobalReport {
     param (
         [Parameter(Mandatory=$true)]
         [PSCustomObject[]]$Results
@@ -335,7 +335,7 @@ function Start-AllHygenTests {
     $results = Start-AllTests
     
     # Générer un rapport global
-    $reportPath = Generate-GlobalReport -Results $results
+    $reportPath = New-GlobalReport -Results $results
     
     # Afficher le résultat global
     Write-Host "`nRésultat global des tests:" -ForegroundColor $infoColor
@@ -360,3 +360,4 @@ function Start-AllHygenTests {
 
 # Exécuter tous les tests
 Start-AllHygenTests
+

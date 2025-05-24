@@ -22,7 +22,7 @@ if (-not (Test-Path -Path $modulePath)) {
 Import-Module $modulePath -Force
 
 # Fonction pour dessiner une barre de progression
-function Draw-ProgressBar {
+function Show-ProgressBar {
     param (
         [Parameter(Mandatory = $true)]
         [double]$Percent,
@@ -93,13 +93,13 @@ function Show-CpuMetrics {
     
     # Afficher l'utilisation CPU totale
     Write-Host "Total CPU: " -NoNewline
-    Draw-ProgressBar -Percent $CpuMetrics.TotalUsage -Width 50
+    Show-ProgressBar -Percent $CpuMetrics.TotalUsage -Width 50
     
     # Afficher l'utilisation par cœur
     Write-Host "Par cœur:"
     foreach ($core in $CpuMetrics.CoreUsage) {
         Write-Host "  Cœur $($core.CoreId): " -NoNewline
-        Draw-ProgressBar -Percent $core.Usage -Width 40
+        Show-ProgressBar -Percent $core.Usage -Width 40
     }
     
     Write-Host ""
@@ -117,15 +117,15 @@ function Show-MemoryMetrics {
     
     # Afficher l'utilisation de la mémoire physique
     Write-Host "Mémoire physique: $($MemoryMetrics.PhysicalMemory.UsedGB) GB / $($MemoryMetrics.PhysicalMemory.TotalGB) GB"
-    Draw-ProgressBar -Percent $MemoryMetrics.PhysicalMemory.UsagePercent -Width 50
+    Show-ProgressBar -Percent $MemoryMetrics.PhysicalMemory.UsagePercent -Width 50
     
     # Afficher l'utilisation de la mémoire virtuelle
     Write-Host "Mémoire virtuelle: $($MemoryMetrics.VirtualMemory.UsedGB) GB / $($MemoryMetrics.VirtualMemory.TotalGB) GB"
-    Draw-ProgressBar -Percent $MemoryMetrics.VirtualMemory.UsagePercent -Width 50
+    Show-ProgressBar -Percent $MemoryMetrics.VirtualMemory.UsagePercent -Width 50
     
     # Afficher l'utilisation du fichier d'échange
     Write-Host "Fichier d'échange: $($MemoryMetrics.PageFile.UsedGB) GB / $($MemoryMetrics.PageFile.TotalGB) GB"
-    Draw-ProgressBar -Percent $MemoryMetrics.PageFile.UsagePercent -Width 50
+    Show-ProgressBar -Percent $MemoryMetrics.PageFile.UsagePercent -Width 50
     
     Write-Host ""
 }
@@ -304,3 +304,4 @@ function Show-Dashboard {
 
 # Démarrer le tableau de bord
 Show-Dashboard -RefreshInterval 2
+

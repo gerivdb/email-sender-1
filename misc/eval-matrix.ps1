@@ -1,4 +1,4 @@
-﻿# development\scripts\planning\apply-evaluation-matrix.ps1
+# development\scripts\planning\apply-evaluation-matrix.ps1
 # Script to apply evaluation matrix to skills and generate a report
 
 # Parameters
@@ -25,7 +25,7 @@ $ExpertiseLevels = @{
 }
 
 # Function to parse Markdown file
-function Parse-MarkdownFile {
+function ConvertFrom-MarkdownFile {
     param ([string]$FilePath)
 
     $content = Get-Content -Path $FilePath -Raw
@@ -96,7 +96,7 @@ function Parse-MarkdownFile {
 }
 
 # Function to generate Markdown report
-function Generate-Report {
+function New-Report {
     param (
         [array]$Evaluations,
         [string]$OutputPath
@@ -157,7 +157,7 @@ try {
     if (-not (Test-Path $SkillsFile)) { throw "Skills file not found" }
 
     # Parse input files
-    $skills = Parse-MarkdownFile -FilePath $SkillsFile
+    $skills = ConvertFrom-MarkdownFile -FilePath $SkillsFile
 
     # Evaluate skills
     $evaluations = @()
@@ -173,10 +173,12 @@ try {
     }
 
     # Generate report
-    Generate-Report -Evaluations $evaluations -OutputPath $OutputFile
+    New-Report -Evaluations $evaluations -OutputPath $OutputFile
 
     Write-Host "Evaluation completed. Report generated at: $OutputFile"
 } catch {
     Write-Error "Error: $_"
     exit 1
 }
+
+

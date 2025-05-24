@@ -1,4 +1,4 @@
-﻿# Tests d'interface utilisateur et de journalisation pour le mode manager
+# Tests d'interface utilisateur et de journalisation pour le mode manager
 
 # DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
@@ -184,7 +184,7 @@ $testRoadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
 "# Test Roadmap" | Set-Content -Path $testRoadmapPath -Encoding UTF8
 
 # Fonction pour capturer la sortie d'une commande
-function Capture-Output {
+function Get-Output {
     param (
         [ScriptBlock]$ScriptBlock
     )
@@ -198,7 +198,7 @@ function Capture-Output {
 Write-Host "Test 1: VÃ©rification de la sortie console" -ForegroundColor Cyan
 try {
     # Capturer la sortie de la commande
-    $output = Capture-Output {
+    $output = Get-Output {
         & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath
     }
     
@@ -291,12 +291,12 @@ try {
     $verboseConfig | ConvertTo-Json -Depth 5 | Set-Content -Path $verboseConfigPath -Encoding UTF8
     
     # ExÃ©cuter le script avec un niveau de verbositÃ© Ã©levÃ©
-    $verboseOutput = Capture-Output {
+    $verboseOutput = Get-Output {
         & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $verboseConfigPath -Verbose
     }
     
     # ExÃ©cuter le script avec un niveau de verbositÃ© normal
-    $normalOutput = Capture-Output {
+    $normalOutput = Get-Output {
         & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath
     }
     
@@ -337,12 +337,12 @@ try {
     $noProgressConfig | ConvertTo-Json -Depth 5 | Set-Content -Path $noProgressConfigPath -Encoding UTF8
     
     # ExÃ©cuter le script avec l'affichage de la progression dÃ©sactivÃ©
-    $noProgressOutput = Capture-Output {
+    $noProgressOutput = Get-Output {
         & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $noProgressConfigPath
     }
     
     # ExÃ©cuter le script avec l'affichage de la progression activÃ©
-    $progressOutput = Capture-Output {
+    $progressOutput = Get-Output {
         & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath
     }
     
@@ -383,12 +383,12 @@ try {
     $noSummaryConfig | ConvertTo-Json -Depth 5 | Set-Content -Path $noSummaryConfigPath -Encoding UTF8
     
     # ExÃ©cuter le script avec l'affichage du rÃ©sumÃ© dÃ©sactivÃ©
-    $noSummaryOutput = Capture-Output {
+    $noSummaryOutput = Get-Output {
         & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $noSummaryConfigPath
     }
     
     # ExÃ©cuter le script avec l'affichage du rÃ©sumÃ© activÃ©
-    $summaryOutput = Capture-Output {
+    $summaryOutput = Get-Output {
         & $scriptPath -Mode "CHECK" -FilePath $testRoadmapPath -TaskIdentifier "1.2.3" -ConfigPath $tempConfigPath
     }
     
@@ -422,3 +422,4 @@ foreach ($file in $mockFiles) {
 }
 
 Write-Host "Tests terminÃ©s." -ForegroundColor Cyan
+

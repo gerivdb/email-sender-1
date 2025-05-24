@@ -195,7 +195,7 @@ function New-NotionTemplate {
 }
 
 # Fonction pour appliquer un template Notion
-function Apply-NotionTemplate {
+function Set-NotionTemplate {
     <#
     .SYNOPSIS
         Applique un template Notion.
@@ -223,7 +223,7 @@ function Apply-NotionTemplate {
         Par défaut, seules les propriétés des pages sont incluses.
 
     .EXAMPLE
-        Apply-NotionTemplate -Connection $connection -TemplatePath "C:\Templates\roadmap-template.json" -ParentPageId "abcdef123456"
+        Set-NotionTemplate -Connection $connection -TemplatePath "C:\Templates\roadmap-template.json" -ParentPageId "abcdef123456"
         Applique le template Notion spécifié en créant une nouvelle base de données.
 
     .OUTPUTS
@@ -429,3 +429,4 @@ function Get-NotionTemplates {
         return @()
     }
 }
+

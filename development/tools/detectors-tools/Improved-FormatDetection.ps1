@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     DÃ©tecte le format d'un fichier en utilisant des critÃ¨res avancÃ©s.
@@ -24,11 +24,11 @@
     Par dÃ©faut, la valeur est 50.
 
 .EXAMPLE
-    Detect-FileFormat -FilePath "C:\path\to\file.txt"
+    Find-FileFormat -FilePath "C:\path\to\file.txt"
     DÃ©tecte le format du fichier spÃ©cifiÃ©.
 
 .EXAMPLE
-    Detect-FileFormat -FilePath "C:\path\to\file.txt" -IncludeAllFormats
+    Find-FileFormat -FilePath "C:\path\to\file.txt" -IncludeAllFormats
     DÃ©tecte le format du fichier spÃ©cifiÃ© et inclut tous les formats dÃ©tectÃ©s dans le rÃ©sultat.
 
 .NOTES
@@ -37,7 +37,7 @@
     Date: 2025-04-11
 #>
 
-function Detect-FileFormat {
+function Find-FileFormat {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -322,4 +322,5 @@ function Get-BinaryContent {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Detect-FileFormat
+Export-ModuleMember -function Find-FileFormat
+

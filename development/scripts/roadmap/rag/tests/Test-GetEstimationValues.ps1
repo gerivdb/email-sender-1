@@ -87,7 +87,7 @@ Le développement est évalué à 2a.
 )
 
 # Fonction pour exécuter les tests
-function Run-Tests {
+function Start-Tests {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -141,4 +141,5 @@ function Run-Tests {
 }
 
 # Exécuter les tests
-Run-Tests -TestCases $testCases -OutputFormat $OutputFormat
+Start-Tests -TestCases $testCases -OutputFormat $OutputFormat
+

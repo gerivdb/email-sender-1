@@ -1,4 +1,4 @@
-﻿# Format-Converters.psm1
+# Format-Converters.psm1
 # Module pour convertir differents formats de texte en format roadmap et vice versa
 
 # Fonction pour convertir du Markdown en format roadmap
@@ -185,7 +185,7 @@ function ConvertFrom-Json {
     )
     
     # Fonction recursive pour traiter les taches
-    function Process-Tasks {
+    function Invoke-Tasks {
         param (
             [Parameter(Mandatory = $true)]
             [PSCustomObject]$Tasks,
@@ -199,19 +199,19 @@ function ConvertFrom-Json {
         # Si Tasks est un tableau, traiter chaque element
         if ($Tasks -is [array]) {
             foreach ($task in $Tasks) {
-                $result += Process-Task -Task $task -Level $Level
+                $result += Invoke-Task -Task $task -Level $Level
             }
         }
         # Si Tasks est un objet unique, le traiter directement
         elseif ($Tasks -is [PSCustomObject]) {
-            $result += Process-Task -Task $Tasks -Level $Level
+            $result += Invoke-Task -Task $Tasks -Level $Level
         }
         
         return $result
     }
     
     # Fonction pour traiter une tache individuelle
-    function Process-Task {
+    function Invoke-Task {
         param (
             [Parameter(Mandatory = $true)]
             [PSCustomObject]$Task,
@@ -263,7 +263,7 @@ function ConvertFrom-Json {
         # Traiter les sous-taches si elles existent
         if ((Get-Member -InputObject $Task -Name $SubtasksProperty -MemberType NoteProperty) -and 
             $Task.$SubtasksProperty) {
-            $result += Process-Tasks -Tasks $Task.$SubtasksProperty -Level ($Level + 1)
+            $result += Invoke-Tasks -Tasks $Task.$SubtasksProperty -Level ($Level + 1)
         }
         
         return $result
@@ -277,7 +277,7 @@ function ConvertFrom-Json {
         $jsonData = Microsoft.PowerShell.Utility\ConvertFrom-Json -InputObject $JsonText
         
         # Traiter les taches
-        $result = Process-Tasks -Tasks $jsonData
+        $result = Invoke-Tasks -Tasks $jsonData
     }
     catch {
         Write-Error "Erreur lors de la conversion du JSON: $_"
@@ -821,3 +821,4 @@ function ConvertTo-TextFormat {
 
 # Exporter les fonctions
 Export-ModuleMember -Function ConvertFrom-TextFormat, ConvertTo-TextFormat
+

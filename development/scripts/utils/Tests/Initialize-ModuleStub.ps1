@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Initialise le module Format-Converters avec des stubs fonctionnels.
@@ -555,7 +555,7 @@ function Get-FileFormatAnalysis {
 }
 
 # Fonction pour gÃ©rer les formats ambigus
-function Handle-AmbiguousFormats {
+function Invoke-AmbiguousFormats {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -722,7 +722,7 @@ Export-ModuleMember -Function @(
     'Test-FileFormatWithConfirmation',
     'Convert-FileFormat',
     'Get-FileFormatAnalysis',
-    'Handle-AmbiguousFormats',
+    'Invoke-AmbiguousFormats',
     'Show-FormatDetectionResults'
 )
 '@
@@ -732,3 +732,4 @@ $moduleStubContent | Set-Content -Path $modulePath -Encoding UTF8
 
 Write-Host "Le module Format-Converters a Ã©tÃ© initialisÃ© avec des stubs fonctionnels." -ForegroundColor Green
 Write-Host "Chemin du module : $modulePath" -ForegroundColor Green
+

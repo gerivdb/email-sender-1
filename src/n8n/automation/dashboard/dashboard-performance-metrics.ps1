@@ -163,7 +163,7 @@ function Get-ProcessResourceUsage {
 }
 
 # Fonction pour charger l'historique des métriques de performance
-function Load-PerformanceHistory {
+function Import-PerformanceHistory {
     param (
         [Parameter(Mandatory=$true)]
         [string]$HistoryFile,
@@ -258,7 +258,7 @@ function Get-PerformanceMetrics {
     $resourceUsage = Get-ProcessResourceUsage -N8nRootFolder $N8nRootFolder
     
     # Charger l'historique des métriques
-    $history = Load-PerformanceHistory -HistoryFile $HistoryFile -MaxPoints $MaxHistoryPoints
+    $history = Import-PerformanceHistory -HistoryFile $HistoryFile -MaxPoints $MaxHistoryPoints
     
     # Ajouter les nouvelles métriques à l'historique
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -323,3 +323,4 @@ function Get-PerformanceMetrics {
 if ($MyInvocation.InvocationName -ne ".") {
     Get-PerformanceMetrics -N8nRootFolder $N8nRootFolder -Protocol $DefaultProtocol -Hostname $DefaultHostname -Port $DefaultPort -MetricsConfig $MetricsConfig -HistoryFile $HistoryFile
 }
+

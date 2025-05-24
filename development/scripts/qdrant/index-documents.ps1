@@ -59,7 +59,7 @@ if ($OpenAIApiKey) {
 }
 
 # Fonction pour indexer un PRD
-function Index-PRD {
+function Add-PRD {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -126,7 +126,7 @@ function Index-PRD {
 }
 
 # Fonction pour indexer une tâche
-function Index-Task {
+function Add-Task {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -221,7 +221,7 @@ function Index-Task {
 }
 
 # Fonction pour indexer une roadmap
-function Index-Roadmap {
+function Add-Roadmap {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -311,7 +311,7 @@ switch ($DocumentType) {
         Write-Host "Indexation des PRD dans $Path..." -ForegroundColor Cyan
         
         Get-ChildItem -Path $Path -Filter "*.md" -Recurse | ForEach-Object {
-            Index-PRD -FilePath $_.FullName -Force:$ForceReindex
+            Add-PRD -FilePath $_.FullName -Force:$ForceReindex
         }
     }
     "Task" {
@@ -322,7 +322,7 @@ switch ($DocumentType) {
         Write-Host "Indexation des tâches dans $Path..." -ForegroundColor Cyan
         
         Get-ChildItem -Path $Path -Filter "*.md" -Recurse | ForEach-Object {
-            Index-Task -FilePath $_.FullName -Force:$ForceReindex
+            Add-Task -FilePath $_.FullName -Force:$ForceReindex
         }
     }
     "Roadmap" {
@@ -333,7 +333,7 @@ switch ($DocumentType) {
         Write-Host "Indexation des roadmaps dans $Path..." -ForegroundColor Cyan
         
         Get-ChildItem -Path $Path -Filter "*.md" -Recurse | ForEach-Object {
-            Index-Roadmap -FilePath $_.FullName -Force:$ForceReindex
+            Add-Roadmap -FilePath $_.FullName -Force:$ForceReindex
         }
     }
     "All" {
@@ -343,23 +343,24 @@ switch ($DocumentType) {
         $prdPath = "projet\guides\prd"
         Write-Host "Indexation des PRD dans $prdPath..." -ForegroundColor Cyan
         Get-ChildItem -Path $prdPath -Filter "*.md" -Recurse | ForEach-Object {
-            Index-PRD -FilePath $_.FullName -Force:$ForceReindex
+            Add-PRD -FilePath $_.FullName -Force:$ForceReindex
         }
         
         # Indexer les tâches
         $taskPath = "projet\tasks"
         Write-Host "Indexation des tâches dans $taskPath..." -ForegroundColor Cyan
         Get-ChildItem -Path $taskPath -Filter "*.md" -Recurse | ForEach-Object {
-            Index-Task -FilePath $_.FullName -Force:$ForceReindex
+            Add-Task -FilePath $_.FullName -Force:$ForceReindex
         }
         
         # Indexer les roadmaps
         $roadmapPath = "projet\roadmaps\plans"
         Write-Host "Indexation des roadmaps dans $roadmapPath..." -ForegroundColor Cyan
         Get-ChildItem -Path $roadmapPath -Filter "*.md" -Recurse | ForEach-Object {
-            Index-Roadmap -FilePath $_.FullName -Force:$ForceReindex
+            Add-Roadmap -FilePath $_.FullName -Force:$ForceReindex
         }
     }
 }
 
 Write-Host "Indexation terminée." -ForegroundColor Green
+

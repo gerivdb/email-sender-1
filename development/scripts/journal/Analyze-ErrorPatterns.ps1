@@ -1,4 +1,4 @@
-﻿# Analyze-ErrorPatterns.ps1
+# Analyze-ErrorPatterns.ps1
 # Script pour analyser les erreurs recurrentes et patterns problematiques
 
 # Parametres
@@ -67,7 +67,7 @@ if (-not [string]::IsNullOrEmpty($OutputDir) -and -not (Test-Path -Path $OutputD
 }
 
 # Fonction pour analyser les fichiers de log
-function Analyze-LogFiles {
+function Test-LogFiles {
     param (
         [string]$Directory
     )
@@ -150,7 +150,7 @@ function Analyze-LogFiles {
 }
 
 # Fonction pour analyser les scripts
-function Analyze-Scripts {
+function Test-Scripts {
     param (
         [string]$RootDirectory = "."
     )
@@ -203,13 +203,13 @@ function Analyze-Scripts {
 
 # Analyser les logs
 Write-Host "Analyse des fichiers de log..." -ForegroundColor Cyan
-$errorPatterns = Analyze-LogFiles -Directory $LogDirectory
+$errorPatterns = Test-LogFiles -Directory $LogDirectory
 
 # Analyser les scripts si demande
 $scriptPatterns = $null
 if ($IncludeScripts) {
     Write-Host "Analyse des scripts..." -ForegroundColor Cyan
-    $scriptPatterns = Analyze-Scripts
+    $scriptPatterns = Test-Scripts
 }
 
 # Generer le rapport
@@ -287,3 +287,4 @@ finally {
     # Nettoyage final
     Write-Log -Level INFO -Message "ExÃ©cution du script terminÃ©e."
 }
+

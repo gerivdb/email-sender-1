@@ -164,7 +164,7 @@ function Get-RoundedNumbers {
                 $originalPrecision = ($numberValue -split '\.')[1].Length
                 
                 # Appliquer la règle d'arrondi
-                $roundedValue = Apply-RoundingRule -Value $numberValue -Rule $roundingRule -Precision $precision
+                $roundedValue = Set-RoundingRule -Value $numberValue -Rule $roundingRule -Precision $precision
                 
                 $roundedNumber = @{
                     Value = $roundedValue
@@ -198,7 +198,7 @@ function Get-RoundedNumbers {
                 $originalPrecision = ($normalizedValue -split '\.')[1].Length
                 
                 # Appliquer la règle d'arrondi
-                $roundedValue = Apply-RoundingRule -Value $normalizedValue -Rule $roundingRule -Precision $precision
+                $roundedValue = Set-RoundingRule -Value $normalizedValue -Rule $roundingRule -Precision $precision
                 
                 $roundedNumber = @{
                     Value = $roundedValue
@@ -233,7 +233,7 @@ function Get-RoundedNumbers {
 }
 
 # Fonction pour appliquer une règle d'arrondi à un nombre
-function Apply-RoundingRule {
+function Set-RoundingRule {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -456,3 +456,4 @@ function Format-RoundedValuesOutput {
 
 # Exécuter la fonction principale avec les paramètres fournis
 Get-RoundedValues -FilePath $FilePath -Content $Content -OutputPath $OutputPath -OutputFormat $OutputFormat -DefaultRoundingRule $DefaultRoundingRule -DefaultPrecision $DefaultPrecision
+

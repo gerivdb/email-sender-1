@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Module dÃ©finissant un format unifiÃ© pour les rÃ©sultats d'analyse de diffÃ©rents outils.
@@ -291,7 +291,7 @@ function Merge-AnalysisResults {
 }
 
 # Fonction pour filtrer les rÃ©sultats d'analyse par sÃ©vÃ©ritÃ©
-function Filter-AnalysisResultsBySeverity {
+function Select-AnalysisResultsBySeverity {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -320,7 +320,7 @@ function Filter-AnalysisResultsBySeverity {
 }
 
 # Fonction pour filtrer les rÃ©sultats d'analyse par outil
-function Filter-AnalysisResultsByTool {
+function Select-AnalysisResultsByTool {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -348,7 +348,7 @@ function Filter-AnalysisResultsByTool {
 }
 
 # Fonction pour filtrer les rÃ©sultats d'analyse par catÃ©gorie
-function Filter-AnalysisResultsByCategory {
+function Select-AnalysisResultsByCategory {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -382,6 +382,7 @@ Export-ModuleMember -Function ConvertFrom-ESLintResult
 Export-ModuleMember -Function ConvertFrom-PylintResult
 Export-ModuleMember -Function ConvertFrom-SonarQubeResult
 Export-ModuleMember -Function Merge-AnalysisResults
-Export-ModuleMember -Function Filter-AnalysisResultsBySeverity
-Export-ModuleMember -Function Filter-AnalysisResultsByTool
-Export-ModuleMember -Function Filter-AnalysisResultsByCategory
+Export-ModuleMember -function Select-AnalysisResultsBySeverity
+Export-ModuleMember -function Select-AnalysisResultsByTool
+Export-ModuleMember -function Select-AnalysisResultsByCategory
+

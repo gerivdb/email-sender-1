@@ -1,4 +1,4 @@
-﻿BeforeAll {
+BeforeAll {
     # Importer le module Ã  tester
     $global:modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\development\scripts\maintenance\error-learning\ErrorPatternAnalyzer.psm1"
 
@@ -243,7 +243,7 @@ Exception : System.NullReferenceException: Object reference not set to an instan
 Import-Module "$global:modulePath" -Force
 
 # Analyser le fichier de log
-function Analyze-ErrorLog {
+function Test-ErrorLog {
     param (
         [string]`$LogPath
     )
@@ -280,7 +280,7 @@ function Analyze-ErrorLog {
 }
 
 # Analyser le fichier de log
-Analyze-ErrorLog -LogPath "$logPath"
+Test-ErrorLog -LogPath "$logPath"
 
 # GÃ©nÃ©rer un rapport
 New-ErrorPatternReport -OutputPath "$global:testFolder\integration_report.md"
@@ -303,3 +303,4 @@ New-ErrorPatternReport -OutputPath "$global:testFolder\integration_report.md"
         Test-Path -Path $reportPath | Should -Be $true
     }
 }
+

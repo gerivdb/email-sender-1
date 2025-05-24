@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     DÃ©tecte les options de configuration dans un fichier de configuration.
 .DESCRIPTION
@@ -82,9 +82,9 @@ function Get-ConfigurationOptions {
         $options = @{}
 
         if ($Flatten) {
-            $options = Extract-FlatOptions -Config $config -IncludeValues:$IncludeValues
+            $options = Export-FlatOptions -Config $config -IncludeValues:$IncludeValues
         } else {
-            $options = Extract-HierarchicalOptions -Config $config -IncludeValues:$IncludeValues
+            $options = Export-HierarchicalOptions -Config $config -IncludeValues:$IncludeValues
         }
 
         return $options
@@ -94,7 +94,7 @@ function Get-ConfigurationOptions {
     }
 }
 
-function Extract-FlatOptions {
+function Export-FlatOptions {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -125,7 +125,7 @@ function Extract-FlatOptions {
 
             # Si la valeur est un hashtable ou un PSCustomObject, extraire rÃ©cursivement
             if ($value -is [hashtable] -or $value -is [PSCustomObject]) {
-                $nestedOptions = Extract-FlatOptions -Config $value -IncludeValues:$IncludeValues -Prefix $fullKey
+                $nestedOptions = Export-FlatOptions -Config $value -IncludeValues:$IncludeValues -Prefix $fullKey
                 foreach ($nestedKey in $nestedOptions.Keys) {
                     $options[$nestedKey] = $nestedOptions[$nestedKey]
                 }
@@ -143,7 +143,7 @@ function Extract-FlatOptions {
                     $option.ElementType = "Object"
 
                     # Extraire les options pour le premier Ã©lÃ©ment du tableau comme exemple
-                    $elementOptions = Extract-FlatOptions -Config $value[0] -IncludeValues:$IncludeValues -Prefix "$fullKey[0]"
+                    $elementOptions = Export-FlatOptions -Config $value[0] -IncludeValues:$IncludeValues -Prefix "$fullKey[0]"
                     foreach ($elementKey in $elementOptions.Keys) {
                         $options[$elementKey] = $elementOptions[$elementKey]
                     }
@@ -182,7 +182,7 @@ function Extract-FlatOptions {
             $option.ElementType = "Object"
 
             # Extraire les options pour le premier Ã©lÃ©ment du tableau comme exemple
-            $elementOptions = Extract-FlatOptions -Config $Config[0] -IncludeValues:$IncludeValues -Prefix "$Prefix[0]"
+            $elementOptions = Export-FlatOptions -Config $Config[0] -IncludeValues:$IncludeValues -Prefix "$Prefix[0]"
             foreach ($elementKey in $elementOptions.Keys) {
                 $options[$elementKey] = $elementOptions[$elementKey]
             }
@@ -210,7 +210,7 @@ function Extract-FlatOptions {
     return $options
 }
 
-function Extract-HierarchicalOptions {
+function Export-HierarchicalOptions {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -238,7 +238,7 @@ function Extract-HierarchicalOptions {
             if ($value -is [hashtable] -or $value -is [PSCustomObject]) {
                 $options[$key] = @{
                     Type       = "Object"
-                    Properties = Extract-HierarchicalOptions -Config $value -IncludeValues:$IncludeValues
+                    Properties = Export-HierarchicalOptions -Config $value -IncludeValues:$IncludeValues
                 }
 
                 if ($IncludeValues) {
@@ -256,7 +256,7 @@ function Extract-HierarchicalOptions {
                 if ($value.Count -gt 0 -and ($value[0] -is [hashtable] -or $value[0] -is [PSCustomObject])) {
                     $options[$key].IsComplex = $true
                     $options[$key].ElementType = "Object"
-                    $options[$key].ElementProperties = Extract-HierarchicalOptions -Config $value[0] -IncludeValues:$IncludeValues
+                    $options[$key].ElementProperties = Export-HierarchicalOptions -Config $value[0] -IncludeValues:$IncludeValues
                 }
 
                 if ($IncludeValues) {
@@ -288,7 +288,7 @@ function Extract-HierarchicalOptions {
         if ($Config.Count -gt 0 -and ($Config[0] -is [hashtable] -or $Config[0] -is [PSCustomObject])) {
             $options.IsComplex = $true
             $options.ElementType = "Object"
-            $options.ElementProperties = Extract-HierarchicalOptions -Config $Config[0] -IncludeValues:$IncludeValues
+            $options.ElementProperties = Export-HierarchicalOptions -Config $Config[0] -IncludeValues:$IncludeValues
         }
 
         if ($IncludeValues) {
@@ -310,3 +310,4 @@ function Extract-HierarchicalOptions {
         return $options
     }
 }
+

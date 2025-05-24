@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     ImplÃ©mente un systÃ¨me de journalisation centralisÃ© pour les scripts.
 .DESCRIPTION
@@ -130,7 +130,7 @@ if (Test-Path -Path `$loggerPath) {
 }
 
 # Fonction principale
-function Implement-CentralizedLogging {
+function Install-CentralizedLogging {
     param ([string]$ScriptsDirectory, [string]$LoggerModulePath, [switch]$CreateBackup)
     
     Write-Log "DÃ©marrage de l'implÃ©mentation du systÃ¨me de journalisation centralisÃ©"
@@ -177,7 +177,7 @@ function Implement-CentralizedLogging {
 }
 
 # ExÃ©cuter la fonction principale
-$result = Implement-CentralizedLogging -ScriptsDirectory $ScriptsDirectory -LoggerModulePath $LoggerModulePath -CreateBackup:$CreateBackup
+$result = Install-CentralizedLogging -ScriptsDirectory $ScriptsDirectory -LoggerModulePath $LoggerModulePath -CreateBackup:$CreateBackup
 
 # Afficher un rÃ©sumÃ©
 Write-Host "`nRÃ©sumÃ© de l'implÃ©mentation:" -ForegroundColor Cyan
@@ -189,3 +189,4 @@ Write-Host "Ã‰checs: $($result.Failed)" -ForegroundColor Red
 Write-Host "Taux de rÃ©ussite: $(if ($result.Total -gt 0) { [math]::Round((($result.Succeeded + $result.Skipped) / $result.Total) * 100, 2) } else { 0 })%" -ForegroundColor $(if ($result.Total -gt 0 -and (($result.Succeeded + $result.Skipped) / $result.Total) -ge 0.8) { "Green" } else { "Yellow" })
 Write-Host "Journal: $LogFilePath" -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Cyan
+

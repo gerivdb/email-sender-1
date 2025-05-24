@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Ajoute le suivi d'utilisation aux scripts PowerShell existants.
 .DESCRIPTION
@@ -188,7 +188,7 @@ catch {
 }
 
 # Traiter un script
-function Process-Script {
+function Invoke-Script {
     param (
         [string]$ScriptPath
     )
@@ -242,7 +242,7 @@ if (-not (Test-Path -Path $Path)) {
 if (Test-Path -Path $Path -PathType Leaf) {
     # Traiter un seul fichier
     if ($Path -match "\.(ps1|psm1)$") {
-        Process-Script -ScriptPath $Path
+        Invoke-Script -ScriptPath $Path
     }
     else {
         Write-Log "Le fichier spÃ©cifiÃ© n'est pas un script PowerShell (.ps1 ou .psm1): $Path" -Level "ERROR"
@@ -265,7 +265,7 @@ else {
     Write-Log "Nombre de scripts trouvÃ©s: $($scripts.Count)" -Level "INFO"
     
     foreach ($script in $scripts) {
-        Process-Script -ScriptPath $script.FullName
+        Invoke-Script -ScriptPath $script.FullName
     }
     
     # Traiter Ã©galement les fichiers .psm1
@@ -275,8 +275,9 @@ else {
     Write-Log "Nombre de modules trouvÃ©s: $($modules.Count)" -Level "INFO"
     
     foreach ($module in $modules) {
-        Process-Script -ScriptPath $module.FullName
+        Invoke-Script -ScriptPath $module.FullName
     }
 }
 
 Write-Log "Traitement terminÃ©." -Level "TITLE"
+

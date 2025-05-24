@@ -27,7 +27,7 @@ Add-Content -Path $finalResultsFile -Value "Date de documentation : $(Get-Date)`
 Add-Content -Path $finalResultsFile -Value "Ce document présente les résultats finaux des tests du module ExtractedInfoModuleV2 après correction des problèmes identifiés.`r`n"
 
 # Fonction pour extraire les résultats d'un fichier de vérification
-function Extract-VerificationResults {
+function Export-VerificationResults {
     param (
         [string]$VerificationFile
     )
@@ -107,7 +107,7 @@ function Extract-VerificationResults {
 
 # Extraire les résultats de la vérification
 $verificationFile = Join-Path -Path $verificationDir -ChildPath "AllTests_Verification.md"
-$verificationResults = Extract-VerificationResults -VerificationFile $verificationFile
+$verificationResults = Export-VerificationResults -VerificationFile $verificationFile
 
 if ($null -eq $verificationResults) {
     Write-Host "Impossible d'extraire les résultats de la vérification." -ForegroundColor $errorColor
@@ -211,3 +211,4 @@ Write-Host "`nLa documentation des résultats finaux a été créée avec succè
 
 # Retourner le code de sortie
 exit 0
+

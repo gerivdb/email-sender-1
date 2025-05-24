@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Fonctions pour la rÃ©solution des cycles de dÃ©pendances.
 
@@ -43,17 +43,17 @@ function Resolve-DependencyCycle {
             }
             "EXTRACT_INTERFACE" {
                 # Extraire une interface pour briser le cycle
-                $result = Extract-Interface -Cycle $Cycle -Graph $Graph
+                $result = Export-Interface -Cycle $Cycle -Graph $Graph
                 return $result
             }
             "DEPENDENCY_INVERSION" {
                 # Appliquer le principe d'inversion de dÃ©pendance
-                $result = Apply-DependencyInversion -Cycle $Cycle -Graph $Graph
+                $result = Set-DependencyInversion -Cycle $Cycle -Graph $Graph
                 return $result
             }
             "MEDIATOR" {
                 # Introduire un mÃ©diateur pour briser le cycle
-                $result = Introduce-Mediator -Cycle $Cycle -Graph $Graph
+                $result = Add-Mediator -Cycle $Cycle -Graph $Graph
                 return $result
             }
             default {
@@ -131,7 +131,7 @@ function Remove-CycleEdge {
 }
 
 # Fonction pour extraire une interface
-function Extract-Interface {
+function Export-Interface {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -190,7 +190,7 @@ function Extract-Interface {
 }
 
 # Fonction pour appliquer le principe d'inversion de dÃ©pendance
-function Apply-DependencyInversion {
+function Set-DependencyInversion {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -251,7 +251,7 @@ function Apply-DependencyInversion {
 }
 
 # Fonction pour introduire un mÃ©diateur
-function Introduce-Mediator {
+function Add-Mediator {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -369,4 +369,6 @@ function Resolve-AllDependencyCycles {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Resolve-DependencyCycle, Remove-CycleEdge, Extract-Interface, Apply-DependencyInversion, Introduce-Mediator, Resolve-AllDependencyCycles
+Export-ModuleMember -Function Resolve-DependencyCycle, Remove-CycleEdge, Export-Interface, Set-DependencyInversion, Add-Mediator, Resolve-AllDependencyCycles
+
+

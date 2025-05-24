@@ -342,7 +342,7 @@ function Measure-ManualCreationTime {
 }
 
 # Fonction pour analyser la standardisation du code
-function Analyze-CodeStandardization {
+function Test-CodeStandardization {
     param (
         [Parameter(Mandatory=$true)]
         [string]$TempFolder
@@ -402,7 +402,7 @@ function Analyze-CodeStandardization {
 }
 
 # Fonction pour analyser l'organisation des fichiers
-function Analyze-FileOrganization {
+function Test-FileOrganization {
     param (
         [Parameter(Mandatory=$true)]
         [string]$TempFolder
@@ -480,7 +480,7 @@ function Analyze-FileOrganization {
 }
 
 # Fonction pour générer un rapport de bénéfices
-function Generate-BenefitsReport {
+function New-BenefitsReport {
     param (
         [Parameter(Mandatory=$true)]
         [hashtable]$HygenTimes,
@@ -688,15 +688,15 @@ function Start-BenefitsMeasurement {
     
     # Analyser la standardisation du code
     Write-Info "Analyse de la standardisation du code..."
-    $standardizationRates = Analyze-CodeStandardization -TempFolder $tempFolder
+    $standardizationRates = Test-CodeStandardization -TempFolder $tempFolder
     
     # Analyser l'organisation des fichiers
     Write-Info "Analyse de l'organisation des fichiers..."
-    $organizationRates = Analyze-FileOrganization -TempFolder $tempFolder
+    $organizationRates = Test-FileOrganization -TempFolder $tempFolder
     
     # Générer un rapport de bénéfices
     Write-Info "Génération du rapport de bénéfices..."
-    $reportPath = Generate-BenefitsReport -HygenTimes $hygenTimes -ManualTimes $manualTimes -StandardizationRates $standardizationRates -OrganizationRates $organizationRates -OutputPath $OutputPath
+    $reportPath = New-BenefitsReport -HygenTimes $hygenTimes -ManualTimes $manualTimes -StandardizationRates $standardizationRates -OrganizationRates $organizationRates -OutputPath $OutputPath
     
     # Nettoyer le dossier temporaire
     Remove-TempFolder -TempFolder $tempFolder
@@ -713,3 +713,4 @@ function Start-BenefitsMeasurement {
 
 # Exécuter la mesure des bénéfices
 Start-BenefitsMeasurement
+

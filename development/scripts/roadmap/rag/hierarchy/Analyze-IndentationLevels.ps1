@@ -1,4 +1,4 @@
-# Analyze-IndentationLevels.ps1
+# Test-IndentationLevels.ps1
 # Script pour analyser et normaliser les niveaux d'indentation dans les fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -197,7 +197,7 @@ function Get-IndentationAnalysis {
 }
 
 # Fonction pour normaliser l'indentation
-function Normalize-Indentation {
+function ConvertTo-Indentation {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -301,7 +301,7 @@ function Normalize-Indentation {
 }
 
 # Fonction principale
-function Analyze-IndentationLevels {
+function Test-IndentationLevels {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -348,7 +348,7 @@ function Analyze-IndentationLevels {
     
     # Normaliser l'indentation si demandé
     if ($FixInconsistencies) {
-        $normalizedContent = Normalize-Indentation -Content $Content -Analysis $analysis -SpacesPerLevel $PreferredSpacesPerLevel -ConvertTabsToSpaces:$ConvertTabsToSpaces
+        $normalizedContent = ConvertTo-Indentation -Content $Content -Analysis $analysis -SpacesPerLevel $PreferredSpacesPerLevel -ConvertTabsToSpaces:$ConvertTabsToSpaces
         
         # Enregistrer le contenu normalisé si un chemin de sortie est spécifié
         if (-not [string]::IsNullOrEmpty($OutputPath)) {
@@ -374,5 +374,7 @@ function Analyze-IndentationLevels {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Analyze-IndentationLevels -FilePath $FilePath -Content $Content -FixInconsistencies:$FixInconsistencies -PreferredSpacesPerLevel $PreferredSpacesPerLevel -ConvertTabsToSpaces:$ConvertTabsToSpaces -OutputPath $OutputPath
+    Test-IndentationLevels -FilePath $FilePath -Content $Content -FixInconsistencies:$FixInconsistencies -PreferredSpacesPerLevel $PreferredSpacesPerLevel -ConvertTabsToSpaces:$ConvertTabsToSpaces -OutputPath $OutputPath
 }
+
+

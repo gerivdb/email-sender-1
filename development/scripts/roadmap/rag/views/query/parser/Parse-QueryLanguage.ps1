@@ -326,15 +326,15 @@ function Get-QueryAST {
     $position = 0
     
     # Fonction récursive pour analyser une expression
-    function Parse-Expression {
-        $left = Parse-Term
+    function ConvertFrom-Expression {
+        $left = ConvertFrom-Term
         
         while ($position -lt $Tokens.Count -and 
                $Tokens[$position].Type -eq [TokenType]::LogicalOperator -and 
                $Tokens[$position].OperatorType -eq "Or") {
             $operator = $Tokens[$position]
             $position++
-            $right = Parse-Term
+            $right = ConvertFrom-Term
             
             $node = [ASTNode]::new("LogicalExpression", $operator.OperatorType)
             $node.AddChild($left)
@@ -346,15 +346,15 @@ function Get-QueryAST {
     }
     
     # Fonction pour analyser un terme
-    function Parse-Term {
-        $left = Parse-Factor
+    function ConvertFrom-Term {
+        $left = ConvertFrom-Factor
         
         while ($position -lt $Tokens.Count -and 
                $Tokens[$position].Type -eq [TokenType]::LogicalOperator -and 
                $Tokens[$position].OperatorType -eq "And") {
             $operator = $Tokens[$position]
             $position++
-            $right = Parse-Factor
+            $right = ConvertFrom-Factor
             
             $node = [ASTNode]::new("LogicalExpression", $operator.OperatorType)
             $node.AddChild($left)
@@ -366,31 +366,31 @@ function Get-QueryAST {
     }
     
     # Fonction pour analyser un facteur
-    function Parse-Factor {
+    function ConvertFrom-Factor {
         if ($position -lt $Tokens.Count -and 
             $Tokens[$position].Type -eq [TokenType]::LogicalOperator -and 
             $Tokens[$position].OperatorType -eq "Not") {
             $operator = $Tokens[$position]
             $position++
-            $operand = Parse-Factor
+            $operand = ConvertFrom-Factor
             
             $node = [ASTNode]::new("UnaryExpression", $operator.OperatorType)
             $node.AddChild($operand)
             return $node
         }
         
-        return Parse-Primary
+        return ConvertFrom-Primary
     }
     
     # Fonction pour analyser une expression primaire
-    function Parse-Primary {
+    function ConvertFrom-Primary {
         if ($position -lt $Tokens.Count) {
             $token = $Tokens[$position]
             
             # Parenthèses
             if ($token.Type -eq [TokenType]::LeftParenthesis) {
                 $position++
-                $node = Parse-Expression
+                $node = ConvertFrom-Expression
                 
                 if ($position -lt $Tokens.Count -and $Tokens[$position].Type -eq [TokenType]::RightParenthesis) {
                     $position++
@@ -437,7 +437,7 @@ function Get-QueryAST {
     }
     
     # Commencer l'analyse
-    $ast = Parse-Expression
+    $ast = ConvertFrom-Expression
     
     if ($position -lt $Tokens.Count) {
         Write-Log "Unexpected tokens after parsing: $($Tokens[$position].ToString())" -Level "Warning"
@@ -459,7 +459,7 @@ function Get-FilterFunction {
     Write-Log "Generating filter function from AST" -Level "Debug"
     
     # Fonction récursive pour générer le code de la fonction de filtre
-    function Generate-FilterCode {
+    function New-FilterCode {
         param (
             [Parameter(Mandatory = $true)]
             [ASTNode]$Node
@@ -467,8 +467,8 @@ function Get-FilterFunction {
         
         switch ($Node.Type) {
             "LogicalExpression" {
-                $left = Generate-FilterCode -Node $Node.Children[0]
-                $right = Generate-FilterCode -Node $Node.Children[1]
+                $left = New-FilterCode -Node $Node.Children[0]
+                $right = New-FilterCode -Node $Node.Children[1]
                 
                 switch ($Node.Value) {
                     "And" { return "($left -and $right)" }
@@ -477,7 +477,7 @@ function Get-FilterFunction {
                 }
             }
             "UnaryExpression" {
-                $operand = Generate-FilterCode -Node $Node.Children[0]
+                $operand = New-FilterCode -Node $Node.Children[0]
                 
                 switch ($Node.Value) {
                     "Not" { return "(-not $operand)" }
@@ -510,7 +510,7 @@ function Get-FilterFunction {
         }
     }
     
-    $filterCode = Generate-FilterCode -Node $AST
+    $filterCode = New-FilterCode -Node $AST
     $scriptBlock = [ScriptBlock]::Create("param(`$_) $filterCode")
     
     Write-Log "Filter function generation complete" -Level "Debug"
@@ -519,7 +519,7 @@ function Get-FilterFunction {
 }
 
 # Fonction principale pour analyser la requête
-function Parse-Query {
+function ConvertFrom-Query {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -585,5 +585,7 @@ function Parse-Query {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Parse-Query -QueryString $QueryString -ReturnTokens:$ReturnTokens -ReturnAST:$ReturnAST -ReturnFilterFunction:$ReturnFilterFunction -OutputFormat $OutputFormat
+    ConvertFrom-Query -QueryString $QueryString -ReturnTokens:$ReturnTokens -ReturnAST:$ReturnAST -ReturnFilterFunction:$ReturnFilterFunction -OutputFormat $OutputFormat
 }
+
+

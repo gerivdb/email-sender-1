@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Traite les erreurs en parallÃ¨le pour amÃ©liorer les performances.
 .DESCRIPTION
@@ -47,7 +47,7 @@ if (-not (Test-Path -Path $ErrorLogPath)) {
 $errorEntries = Get-Content -Path $ErrorLogPath | ConvertFrom-Json
 
 # Fonction pour analyser une erreur
-function Analyze-Error {
+function Test-Error {
     param (
         [Parameter(Mandatory = $true)]
         [object]$ErrorEntry
@@ -145,7 +145,7 @@ function Analyze-Error {
 Write-Host "Traitement de $($errorEntries.Count) erreurs en parallÃ¨le..."
 $startTime = Get-Date
 
-$results = $errorEntries | Invoke-OptimizedParallel -ScriptBlock ${function:Analyze-Error} -MaxThreads $MaxThreads
+$results = $errorEntries | Invoke-OptimizedParallel -ScriptBlock ${function:Test-Error} -MaxThreads $MaxThreads
 
 $endTime = Get-Date
 $duration = $endTime - $startTime
@@ -205,3 +205,4 @@ $analysisResults = $results | Where-Object { $_.Success } | ForEach-Object { $_.
 $analysisResults | ConvertTo-Json -Depth 4 | Out-File -FilePath $reportPath -Encoding UTF8
 
 Write-Host "`nRapport dÃ©taillÃ© gÃ©nÃ©rÃ©: $reportPath"
+

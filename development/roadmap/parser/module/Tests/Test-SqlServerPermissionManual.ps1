@@ -1,7 +1,7 @@
-﻿# Test manuel pour la fonction Analyze-SqlServerPermission
+# Test manuel pour la fonction Test-SqlServerPermission
 
 # DÃ©finir la fonction Ã  tester
-function Analyze-SqlServerPermission {
+function Test-SqlServerPermission {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true, Position = 0)]
@@ -267,10 +267,10 @@ $TempFolder = Join-Path -Path $env:TEMP -ChildPath "SqlPermissionReports"
 New-Item -Path $TempFolder -ItemType Directory -Force | Out-Null
 
 # Tester la fonction
-Write-Host "Test de la fonction Analyze-SqlServerPermission..." -ForegroundColor Cyan
+Write-Host "Test de la fonction Test-SqlServerPermission..." -ForegroundColor Cyan
 
 # Test de base
-$result = Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
+$result = Test-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS"
 
 # VÃ©rifier les rÃ©sultats
 Write-Host "`nVÃ©rification des rÃ©sultats..." -ForegroundColor Cyan
@@ -312,7 +312,7 @@ if ($result.PermissionAnomalies -and $result.PermissionAnomalies.Count -gt 0) {
 
 # Test de gÃ©nÃ©ration de rapport
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.html"
-Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "HTML"
+Test-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "HTML"
 
 if (Test-Path -Path $outputPath) {
     Write-Host "- GÃ©nÃ©ration de rapport HTML: OK" -ForegroundColor Green
@@ -322,7 +322,7 @@ if (Test-Path -Path $outputPath) {
 
 # Test de gÃ©nÃ©ration de rapport CSV
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.csv"
-Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "CSV"
+Test-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "CSV"
 
 $anomaliesPath = [System.IO.Path]::ChangeExtension($outputPath, "anomalies.csv")
 if (Test-Path -Path $anomaliesPath) {
@@ -333,7 +333,7 @@ if (Test-Path -Path $anomaliesPath) {
 
 # Test de gÃ©nÃ©ration de rapport JSON
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.json"
-Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "JSON"
+Test-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "JSON"
 
 if (Test-Path -Path $outputPath) {
     Write-Host "- GÃ©nÃ©ration de rapport JSON: OK" -ForegroundColor Green
@@ -343,7 +343,7 @@ if (Test-Path -Path $outputPath) {
 
 # Test de gÃ©nÃ©ration de rapport XML
 $outputPath = Join-Path -Path $TempFolder -ChildPath "SqlPermissions.xml"
-Analyze-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "XML"
+Test-SqlServerPermission -ServerInstance "localhost\SQLEXPRESS" -OutputPath $outputPath -OutputFormat "XML"
 
 if (Test-Path -Path $outputPath) {
     Write-Host "- GÃ©nÃ©ration de rapport XML: OK" -ForegroundColor Green
@@ -357,3 +357,4 @@ if (Test-Path -Path $TempFolder) {
 }
 
 Write-Host "`nTests terminÃ©s." -ForegroundColor Cyan
+

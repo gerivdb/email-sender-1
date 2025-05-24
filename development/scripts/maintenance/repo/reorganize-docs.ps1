@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     RÃ©organise les fichiers dans le dossier development/docs.
 
@@ -6,7 +6,7 @@
     Ce script dÃ©place les fichiers du dossier development/docs vers des sous-dossiers thÃ©matiques.
 
 .EXAMPLE
-    .\reorganize-docs.ps1
+    .\Set-Docs.ps1
     
 .NOTES
     Auteur: Augment Agent
@@ -14,7 +14,7 @@
 #>
 
 # Fonction principale
-function Reorganize-Docs {
+function Set-Docs {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param()
     
@@ -174,4 +174,5 @@ Cette section contient la documentation technique du projet.
 }
 
 # Appel de la fonction principale
-Reorganize-Docs
+Set-Docs
+

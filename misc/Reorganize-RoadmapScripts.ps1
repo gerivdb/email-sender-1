@@ -14,7 +14,7 @@ param (
 )
 
 # Fonction pour créer un dossier s'il n'existe pas
-function Ensure-Directory {
+function Confirm-Directory {
     param (
         [string]$Path
     )
@@ -40,7 +40,7 @@ function Move-FileToNewLocation {
     
     if (Test-Path -Path $SourcePath) {
         $destinationFolder = Split-Path -Path $DestinationPath -Parent
-        Ensure-Directory -Path $destinationFolder | Out-Null
+        Confirm-Directory -Path $destinationFolder | Out-Null
         
         if ($WhatIf) {
             Write-Host "WhatIf: Déplacement du fichier: $SourcePath -> $DestinationPath" -ForegroundColor Yellow
@@ -93,7 +93,7 @@ $folders = @(
 Write-Host "Création de la structure de dossiers..." -ForegroundColor Cyan
 foreach ($folder in $folders) {
     $folderPath = Join-Path -Path $BasePath -ChildPath $folder
-    Ensure-Directory -Path $folderPath | Out-Null
+    Confirm-Directory -Path $folderPath | Out-Null
 }
 
 # Définir les mappages de fichiers
@@ -177,3 +177,4 @@ foreach ($readmePath in $readmeMappings.Keys) {
 }
 
 Write-Host "Réorganisation terminée!" -ForegroundColor Green
+

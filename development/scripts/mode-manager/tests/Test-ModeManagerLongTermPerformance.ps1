@@ -1,4 +1,4 @@
-﻿# Tests de performance Ã  long terme pour le mode manager
+# Tests de performance Ã  long terme pour le mode manager
 
 # DÃ©finir le chemin du script Ã  tester
 $scriptPath = Join-Path -Path $PSScriptRoot -ChildPath "..\mode-manager.ps1"
@@ -42,7 +42,7 @@ function Measure-MemoryUsage {
 }
 
 # Fonction pour crÃ©er un fichier de roadmap
-function Create-Roadmap {
+function New-Roadmap {
     param (
         [string]$FilePath,
         [int]$TaskCount = 100
@@ -69,7 +69,7 @@ function Create-Roadmap {
 }
 
 # Fonction pour crÃ©er une configuration
-function Create-Config {
+function New-Config {
     param (
         [string]$FilePath,
         [int]$ModeCount = 10
@@ -113,7 +113,7 @@ function Create-Config {
 }
 
 # Fonction pour crÃ©er des scripts de mode simulÃ©s
-function Create-MockScripts {
+function New-MockScripts {
     param (
         [string]$TestDir,
         [int]$ModeCount = 10
@@ -213,14 +213,14 @@ exit 0
 
 # CrÃ©er un fichier de roadmap
 $roadmapPath = Join-Path -Path $testDir -ChildPath "test-roadmap.md"
-Create-Roadmap -FilePath $roadmapPath -TaskCount 100
+New-Roadmap -FilePath $roadmapPath -TaskCount 100
 
 # CrÃ©er une configuration
 $configPath = Join-Path -Path $testDir -ChildPath "test-config.json"
-Create-Config -FilePath $configPath -ModeCount 10
+New-Config -FilePath $configPath -ModeCount 10
 
 # CrÃ©er des scripts de mode simulÃ©s
-$mockScripts = Create-MockScripts -TestDir $testDir -ModeCount 10
+$mockScripts = New-MockScripts -TestDir $testDir -ModeCount 10
 
 # CrÃ©er un fichier de rÃ©sultats
 $resultsPath = Join-Path -Path $testDir -ChildPath "long-term-performance-results.csv"
@@ -318,7 +318,7 @@ for ($i = 1; $i -le $iterations; $i++) {
 
     # Modifier le fichier de roadmap
     $modifiedRoadmapPath = Join-Path -Path $testDir -ChildPath "modified-roadmap-$i.md"
-    Create-Roadmap -FilePath $modifiedRoadmapPath -TaskCount (100 + $i * 10)
+    New-Roadmap -FilePath $modifiedRoadmapPath -TaskCount (100 + $i * 10)
 
     # Mesurer le temps d'exÃ©cution
         $executionTime = Measure-ExecutionTime {
@@ -446,3 +446,4 @@ for ($i = 1; $i -le $iterations; $i++) {
     }
 
     Write-Host "Tests terminÃ©s." -ForegroundColor Cyan
+

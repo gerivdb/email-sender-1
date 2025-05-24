@@ -1,4 +1,4 @@
-﻿# Test-RoadmapParser.ps1
+# Test-RoadmapParser.ps1
 # Script pour tester le parser de roadmap
 
 # Importer le module RoadmapParser
@@ -54,7 +54,7 @@ Write-Host "  Titre: $($taskStructure.Title)"
 Write-Host "  Nombre de tÃ¢ches de premier niveau: $($taskStructure.Tasks.Count)"
 
 # Fonction rÃ©cursive pour compter les tÃ¢ches
-function Count-Tasks {
+function Measure-Tasks {
     param (
         [Parameter(Mandatory = $true)]
         [array]$Tasks
@@ -63,13 +63,13 @@ function Count-Tasks {
     $count = $Tasks.Count
 
     foreach ($task in $Tasks) {
-        $count += Count-Tasks -Tasks $task.Children
+        $count += Measure-Tasks -Tasks $task.Children
     }
 
     return $count
 }
 
-$totalTasks = Count-Tasks -Tasks $taskStructure.Tasks
+$totalTasks = Measure-Tasks -Tasks $taskStructure.Tasks
 Write-Host "  Nombre total de tÃ¢ches: $totalTasks"
 
 # Convertir la structure de tÃ¢ches en markdown
@@ -101,3 +101,4 @@ $removed = Remove-Task -FilePath $testFilePath -TaskId $newTaskId -SaveChanges
 Write-Host "TÃ¢che $newTaskId supprimÃ©e: $removed" -ForegroundColor $(if ($removed) { "Green" } else { "Red" })
 
 Write-Host "`nTests terminÃ©s." -ForegroundColor Cyan
+

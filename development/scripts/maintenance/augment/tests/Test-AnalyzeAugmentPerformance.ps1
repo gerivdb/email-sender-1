@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests unitaires pour le script d'analyse des performances.
 
@@ -61,7 +61,7 @@ Describe "Analyze Augment Performance Tests" {
         $Global:TestOutputPath = $testOutputPath
         
         # CrÃ©er des fonctions de mock pour les fonctions du script
-        function Analyze-AugmentLog {
+        function Test-AugmentLog {
             param (
                 [string]$LogPath
             )
@@ -131,7 +131,7 @@ Describe "Analyze Augment Performance Tests" {
             }
         }
         
-        function Generate-HtmlReport {
+        function New-HtmlReport {
             param (
                 [hashtable]$AnalysisResults,
                 [string]$OutputPath
@@ -155,7 +155,7 @@ Describe "Analyze Augment Performance Tests" {
         }
         
         # Exporter les fonctions pour qu'elles soient disponibles dans le scope du test
-        Export-ModuleMember -Function Analyze-AugmentLog, Generate-HtmlReport
+        Export-ModuleMember -function Test-AugmentLog, New-HtmlReport
     }
     
     AfterAll {
@@ -182,10 +182,10 @@ Describe "Analyze Augment Performance Tests" {
         }
     }
     
-    Context "Analyze-AugmentLog" {
+    Context "Test-AugmentLog" {
         It "Should analyze log file correctly" {
             # Tester la fonction
-            $result = Analyze-AugmentLog -LogPath $Global:TestLogPath
+            $result = Test-AugmentLog -LogPath $Global:TestLogPath
             
             $result | Should -Not -BeNullOrEmpty
             $result.Requests | Should -Not -BeNullOrEmpty
@@ -200,13 +200,13 @@ Describe "Analyze Augment Performance Tests" {
         }
     }
     
-    Context "Generate-HtmlReport" {
+    Context "New-HtmlReport" {
         It "Should generate HTML report correctly" {
             # CrÃ©er des donnÃ©es d'analyse
-            $analysisResults = Analyze-AugmentLog -LogPath $Global:TestLogPath
+            $analysisResults = Test-AugmentLog -LogPath $Global:TestLogPath
             
             # Tester la fonction
-            Generate-HtmlReport -AnalysisResults $analysisResults -OutputPath $Global:TestOutputPath
+            New-HtmlReport -AnalysisResults $analysisResults -OutputPath $Global:TestOutputPath
             
             # VÃ©rifier que le fichier a Ã©tÃ© crÃ©Ã©
             Test-Path -Path $Global:TestOutputPath | Should -Be $true
@@ -221,7 +221,7 @@ Describe "Analyze Augment Performance Tests" {
     Context "Script Execution" {
         It "Should analyze performance and generate report" {
             # Mock les fonctions nÃ©cessaires
-            Mock -CommandName Analyze-AugmentLog -MockWith {
+            Mock -CommandName Test-AugmentLog -MockWith {
                 param (
                     [string]$LogPath
                 )
@@ -263,7 +263,7 @@ Describe "Analyze Augment Performance Tests" {
                 }
             }
             
-            Mock -CommandName Generate-HtmlReport -MockWith {
+            Mock -CommandName New-HtmlReport -MockWith {
                 param (
                     [hashtable]$AnalysisResults,
                     [string]$OutputPath
@@ -300,3 +300,4 @@ Describe "Analyze Augment Performance Tests" {
         }
     }
 }
+

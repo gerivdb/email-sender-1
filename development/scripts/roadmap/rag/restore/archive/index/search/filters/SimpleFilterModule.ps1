@@ -4,7 +4,7 @@
 # Date: 2025-05-15
 
 # Fonction pour filtrer par type
-function Filter-ByType {
+function Select-ByType {
     param (
         [Parameter(ValueFromPipeline = $true)]
         [PSObject]$Document,
@@ -20,7 +20,7 @@ function Filter-ByType {
 }
 
 # Fonction pour filtrer par date
-function Filter-ByDate {
+function Select-ByDate {
     param (
         [Parameter(ValueFromPipeline = $true)]
         [PSObject]$Document,
@@ -44,7 +44,7 @@ function Filter-ByDate {
 }
 
 # Fonction pour filtrer par metadonnees
-function Filter-ByMetadata {
+function Select-ByMetadata {
     param (
         [Parameter(ValueFromPipeline = $true)]
         [PSObject]$Document,
@@ -62,4 +62,5 @@ function Filter-ByMetadata {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Filter-ByType, Filter-ByDate, Filter-ByMetadata
+Export-ModuleMember -function Select-ByType, Select-ByDate, Select-ByMetadata
+

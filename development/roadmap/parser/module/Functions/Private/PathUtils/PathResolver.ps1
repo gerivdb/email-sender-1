@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Fonctions utilitaires pour rÃ©soudre les chemins d'accÃ¨s.
 
@@ -95,7 +95,7 @@ function Resolve-AbsolutePath {
 }
 
 # Fonction pour normaliser un chemin
-function Normalize-Path {
+function ConvertTo-Path {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -419,3 +419,4 @@ function Resolve-WildcardPath {
 }
 
 # Les fonctions seront exportÃ©es par le module principal
+

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Priorise les dÃ©veloppements nÃ©cessaires pour couvrir les piliers manquants.
 
@@ -79,7 +79,7 @@ $criteria = @{
 }
 
 # Fonction pour calculer le score de prioritÃ©
-function Calculate-PriorityScore {
+function Measure-PriorityScore {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -112,7 +112,7 @@ $prioritizedPillars = @()
 
 foreach ($pillar in $pillarsData.MissingPillars) {
     # Calculer le score de prioritÃ©
-    $priorityScore = Calculate-PriorityScore -Pillar $pillar -Criteria $criteria
+    $priorityScore = Measure-PriorityScore -Pillar $pillar -Criteria $criteria
     
     # CrÃ©er un objet avec les informations de prioritÃ©
     $prioritizedPillar = [PSCustomObject]@{
@@ -142,7 +142,7 @@ $report = [PSCustomObject]@{
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -193,7 +193,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format HTML
-function Generate-HtmlReport {
+function New-HtmlReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -322,7 +322,7 @@ function Generate-HtmlReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format CSV
-function Generate-CsvReport {
+function New-CsvReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -343,13 +343,13 @@ function Generate-CsvReport {
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -Report $report
+        $reportContent = New-MarkdownReport -Report $report
     }
     "HTML" {
-        $reportContent = Generate-HtmlReport -Report $report
+        $reportContent = New-HtmlReport -Report $report
     }
     "CSV" {
-        $reportContent = Generate-CsvReport -Report $report
+        $reportContent = New-CsvReport -Report $report
     }
     "JSON" {
         $reportContent = $report | ConvertTo-Json -Depth 10
@@ -374,3 +374,5 @@ foreach ($pillar in $prioritizedPillars) {
     Write-Host "$rank. $($pillar.Name) - Score: $($pillar.PriorityScore)"
     $rank++
 }
+
+

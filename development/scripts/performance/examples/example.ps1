@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Exemple d'utilisation de l'architecture hybride PowerShell-Python pour le traitement parallÃ¨le.
@@ -169,7 +169,7 @@ function Measure-Performance {
 }
 
 # Exemple 1 : Traitement parallÃ¨le simple
-function Example-SimpleParallel {
+function Show-SimpleParallel {
     Write-Host "`n=== Exemple 1 : Traitement parallÃ¨le simple ===" -ForegroundColor Yellow
     
     # GÃ©nÃ©rer des donnÃ©es de test
@@ -194,7 +194,7 @@ function Example-SimpleParallel {
 }
 
 # Exemple 2 : Traitement parallÃ¨le avec surveillance des ressources
-function Example-ParallelWithMonitoring {
+function Show-ParallelWithMonitoring {
     Write-Host "`n=== Exemple 2 : Traitement parallÃ¨le avec surveillance des ressources ===" -ForegroundColor Yellow
     
     # GÃ©nÃ©rer des donnÃ©es de test
@@ -234,7 +234,7 @@ function Example-ParallelWithMonitoring {
 }
 
 # Exemple 3 : Traitement parallÃ¨le avec cache
-function Example-ParallelWithCache {
+function Show-ParallelWithCache {
     Write-Host "`n=== Exemple 3 : Traitement parallÃ¨le avec cache ===" -ForegroundColor Yellow
     
     # GÃ©nÃ©rer des donnÃ©es de test
@@ -270,9 +270,9 @@ function Example-ParallelWithCache {
 
 # ExÃ©cuter les exemples
 try {
-    Example-SimpleParallel
-    Example-ParallelWithMonitoring
-    Example-ParallelWithCache
+    Show-SimpleParallel
+    Show-ParallelWithMonitoring
+    Show-ParallelWithCache
 }
 catch {
     Write-Error "Erreur lors de l'exÃ©cution des exemples : $_"
@@ -286,3 +286,4 @@ finally {
     
     Write-Host "Nettoyage terminÃ©" -ForegroundColor Green
 }
+

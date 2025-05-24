@@ -1,4 +1,4 @@
-# Migrate-EmbeddingModel.ps1
+# Move-EmbeddingModel.ps1
 # Script pour migrer les embeddings d'un modèle à un autre
 # Version: 1.0
 # Date: 2025-05-15
@@ -484,7 +484,7 @@ if __name__ == "__main__":
 }
 
 # Fonction principale
-function Migrate-EmbeddingModel {
+function Move-EmbeddingModel {
     param (
         [string]$QdrantUrl,
         [string]$SourceCollectionName,
@@ -545,4 +545,5 @@ function Migrate-EmbeddingModel {
 }
 
 # Exécuter la fonction principale
-Migrate-EmbeddingModel -QdrantUrl $QdrantUrl -SourceCollectionName $SourceCollectionName -TargetCollectionName $TargetCollectionName -SourceVersionId $SourceVersionId -SnapshotPath $SnapshotPath -NewModelName $NewModelName -NewModelVersion $NewModelVersion -VersionsPath $VersionsPath -BatchSize $BatchSize -KeepSource:$KeepSource -Force:$Force
+Move-EmbeddingModel -QdrantUrl $QdrantUrl -SourceCollectionName $SourceCollectionName -TargetCollectionName $TargetCollectionName -SourceVersionId $SourceVersionId -SnapshotPath $SnapshotPath -NewModelName $NewModelName -NewModelVersion $NewModelVersion -VersionsPath $VersionsPath -BatchSize $BatchSize -KeepSource:$KeepSource -Force:$Force
+

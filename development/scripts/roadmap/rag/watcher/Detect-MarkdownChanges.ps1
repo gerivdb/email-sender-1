@@ -394,7 +394,7 @@ Résumé des modifications:
 }
 
 # Fonction principale
-function Detect-Changes {
+function Find-Changes {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -477,4 +477,5 @@ function Detect-Changes {
 }
 
 # Exécuter la fonction principale avec les paramètres fournis
-Detect-Changes -FilePath $FilePath -PreviousVersion $PreviousVersion -OutputPath $OutputPath -OutputFormat $OutputFormat -IncludeMetadata $IncludeMetadata
+Find-Changes -FilePath $FilePath -PreviousVersion $PreviousVersion -OutputPath $OutputPath -OutputFormat $OutputFormat -IncludeMetadata $IncludeMetadata
+

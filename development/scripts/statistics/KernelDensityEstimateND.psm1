@@ -385,7 +385,7 @@ function Get-KernelDensityEstimateND {
             Write-Verbose "Using full grid approach for $numDimensions dimensions"
             
             # Create a recursive function to calculate density on the grid
-            function Calculate-DensityOnGrid {
+            function Measure-DensityOnGrid {
                 param (
                     [int[]]$indices,
                     [int]$currentDim,
@@ -432,7 +432,7 @@ function Get-KernelDensityEstimateND {
                     for ($i = 0; $i -lt $gridSize; $i++) {
                         $newIndices = $indices.Clone()
                         $newIndices[$currentDim] = $i
-                        $result[$i] = Calculate-DensityOnGrid -indices $newIndices -currentDim ($currentDim + 1) -grid $grid -dimensions $dimensions -dimData $dimData -bandwidth $bandwidth -kernel $kernel -dataCount $dataCount
+                        $result[$i] = Measure-DensityOnGrid -indices $newIndices -currentDim ($currentDim + 1) -grid $grid -dimensions $dimensions -dimData $dimData -bandwidth $bandwidth -kernel $kernel -dataCount $dataCount
                     }
                     
                     return $result
@@ -443,7 +443,7 @@ function Get-KernelDensityEstimateND {
             $indices = New-Object 'int[]' $numDimensions
             
             # Calculate density estimates using the recursive function
-            $densityEstimates = Calculate-DensityOnGrid -indices $indices -currentDim 0 -grid $EvaluationGrid -dimensions $Dimensions -dimData $dimensionData -bandwidth $Bandwidth -kernel $kernelFunction -dataCount $Data.Count
+            $densityEstimates = Measure-DensityOnGrid -indices $indices -currentDim 0 -grid $EvaluationGrid -dimensions $Dimensions -dimData $dimensionData -bandwidth $Bandwidth -kernel $kernelFunction -dataCount $Data.Count
         } else {
             # For higher dimensions, use a sampling approach
             Write-Verbose "Using sampling approach for $numDimensions dimensions (exceeds MaxDimensions = $MaxDimensions)"
@@ -554,3 +554,4 @@ function Get-KernelDensityEstimateND {
 
 # Export public functions
 Export-ModuleMember -Function Get-KernelDensityEstimateND
+

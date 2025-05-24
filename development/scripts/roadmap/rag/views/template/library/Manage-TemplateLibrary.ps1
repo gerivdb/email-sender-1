@@ -1,4 +1,4 @@
-# Manage-TemplateLibrary.ps1
+# Set-TemplateLibrary.ps1
 # Script pour gérer la bibliothèque de templates prédéfinis
 # Version: 1.0
 # Date: 2025-05-15
@@ -505,7 +505,7 @@ function Show-Templates {
 }
 
 # Fonction principale
-function Manage-TemplateLibrary {
+function Set-TemplateLibrary {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -640,5 +640,6 @@ function Manage-TemplateLibrary {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Manage-TemplateLibrary -Action $Action -TemplateName $TemplateName -TemplateContent $TemplateContent -TemplatePath $TemplatePath -Category $Category -Description $Description -Author $Author -Tags $Tags -OutputPath $OutputPath -LibraryPath $LibraryPath
+    Set-TemplateLibrary -Action $Action -TemplateName $TemplateName -TemplateContent $TemplateContent -TemplatePath $TemplatePath -Category $Category -Description $Description -Author $Author -Tags $Tags -OutputPath $OutputPath -LibraryPath $LibraryPath
 }
+

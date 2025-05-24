@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Identifie les compÃ©tences requises pour chaque amÃ©lioration.
 
@@ -81,7 +81,7 @@ try {
 }
 
 # Fonction pour identifier les compÃ©tences techniques requises
-function Identify-TechnicalSkills {
+function Find-TechnicalSkills {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -392,7 +392,7 @@ function Identify-TechnicalSkills {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -534,7 +534,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -572,7 +572,7 @@ foreach ($manager in $improvementsData.Managers) {
         }
         
         # Identifier les compÃ©tences requises
-        $skills = Identify-TechnicalSkills -Improvement $improvement -ManagerName $manager.Name -ComplexityLevel $complexityLevel
+        $skills = Find-TechnicalSkills -Improvement $improvement -ManagerName $manager.Name -ComplexityLevel $complexityLevel
         
         $improvementSkills = [PSCustomObject]@{
             Name = $improvement.Name
@@ -592,10 +592,10 @@ foreach ($manager in $improvementsData.Managers) {
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -SkillsResults $skillsResults
+        $reportContent = New-MarkdownReport -SkillsResults $skillsResults
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -SkillsResults $skillsResults
+        $reportContent = New-JsonReport -SkillsResults $skillsResults
     }
 }
 
@@ -656,3 +656,5 @@ foreach ($level in @("DÃ©butant", "IntermÃ©diaire", "AvancÃ©", "Expert")) 
     $percentage = if ($totalSkills -gt 0) { [Math]::Round(($skillsByLevel[$level] / $totalSkills) * 100, 1) } else { 0 }
     Write-Host "  $level : $($skillsByLevel[$level]) ($percentage%)"
 }
+
+

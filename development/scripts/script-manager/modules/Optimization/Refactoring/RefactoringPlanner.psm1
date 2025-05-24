@@ -1,4 +1,4 @@
-﻿# Module de planification de refactoring pour le Script Manager
+# Module de planification de refactoring pour le Script Manager
 # Ce module planifie les opÃ©rations de refactoring
 # Author: Script Manager
 # Version: 1.0
@@ -56,7 +56,7 @@ function New-RefactoringPlan {
 
     # CrÃ©er les opÃ©rations de refactoring
     foreach ($Suggestion in $SortedSuggestions) {
-        $Operation = Create-RefactoringOperation -Script $Script -Suggestion $Suggestion -Content $Content
+        $Operation = New-RefactoringOperation -Script $Script -Suggestion $Suggestion -Content $Content
 
         if ($Operation) {
             $Plan.Operations += $Operation
@@ -67,15 +67,15 @@ function New-RefactoringPlan {
     $Plan.Dependencies = Find-OperationDependencies -Operations $Plan.Operations
 
     # Estimer la complexitÃ© du refactoring
-    $Plan.EstimatedComplexity = Estimate-RefactoringComplexity -Operations $Plan.Operations
+    $Plan.EstimatedComplexity = Measure-RefactoringComplexity -Operations $Plan.Operations
 
     # DÃ©terminer la prioritÃ© du refactoring
-    $Plan.Priority = Determine-RefactoringPriority -Script $Script -Suggestions $Suggestions
+    $Plan.Priority = Find-RefactoringPriority -Script $Script -Suggestions $Suggestions
 
     return $Plan
 }
 
-function Create-RefactoringOperation {
+function New-RefactoringOperation {
     <#
     .SYNOPSIS
         CrÃ©e une opÃ©ration de refactoring
@@ -88,7 +88,7 @@ function Create-RefactoringOperation {
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
-        Create-RefactoringOperation -Script $script -Suggestion $suggestion -Content $content
+        New-RefactoringOperation -Script $script -Suggestion $suggestion -Content $content
     #>
     [CmdletBinding()]
     param (
@@ -120,13 +120,13 @@ function Create-RefactoringOperation {
     # DÃ©finir la transformation selon le type de suggestion
     switch ($Suggestion.Type) {
         "Quality" {
-            $Operation.Transformation = Create-QualityTransformation -Script $Script -Suggestion $Suggestion -Content $Content
+            $Operation.Transformation = New-QualityTransformation -Script $Script -Suggestion $Suggestion -Content $Content
         }
         "AntiPattern" {
-            $Operation.Transformation = Create-AntiPatternTransformation -Script $Script -Suggestion $Suggestion -Content $Content
+            $Operation.Transformation = New-AntiPatternTransformation -Script $Script -Suggestion $Suggestion -Content $Content
         }
         "TypeSpecific" {
-            $Operation.Transformation = Create-TypeSpecificTransformation -Script $Script -Suggestion $Suggestion -Content $Content
+            $Operation.Transformation = New-TypeSpecificTransformation -Script $Script -Suggestion $Suggestion -Content $Content
         }
         default {
             $Operation.Transformation = [PSCustomObject]@{
@@ -140,7 +140,7 @@ function Create-RefactoringOperation {
     }
 
     # Estimer l'impact du refactoring
-    $Operation.EstimatedImpact = Estimate-OperationImpact -Operation $Operation
+    $Operation.EstimatedImpact = Measure-OperationImpact -Operation $Operation
 
     return $Operation
 }
@@ -219,7 +219,7 @@ function Find-OperationDependencies {
     return $Dependencies
 }
 
-function Estimate-RefactoringComplexity {
+function Measure-RefactoringComplexity {
     <#
     .SYNOPSIS
         Estime la complexitÃ© du refactoring
@@ -228,7 +228,7 @@ function Estimate-RefactoringComplexity {
     .PARAMETER Operations
         OpÃ©rations de refactoring
     .EXAMPLE
-        Estimate-RefactoringComplexity -Operations $operations
+        Measure-RefactoringComplexity -Operations $operations
     #>
     [CmdletBinding()]
     param (
@@ -254,7 +254,7 @@ function Estimate-RefactoringComplexity {
     }
 }
 
-function Determine-RefactoringPriority {
+function Find-RefactoringPriority {
     <#
     .SYNOPSIS
         DÃ©termine la prioritÃ© du refactoring
@@ -265,7 +265,7 @@ function Determine-RefactoringPriority {
     .PARAMETER Suggestions
         Suggestions d'amÃ©lioration
     .EXAMPLE
-        Determine-RefactoringPriority -Script $script -Suggestions $suggestions
+        Find-RefactoringPriority -Script $script -Suggestions $suggestions
     #>
     [CmdletBinding()]
     param (
@@ -296,7 +296,7 @@ function Determine-RefactoringPriority {
     }
 }
 
-function Create-QualityTransformation {
+function New-QualityTransformation {
     <#
     .SYNOPSIS
         CrÃ©e une transformation pour une suggestion de qualitÃ©
@@ -309,7 +309,7 @@ function Create-QualityTransformation {
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
-        Create-QualityTransformation -Script $script -Suggestion $suggestion -Content $content
+        New-QualityTransformation -Script $script -Suggestion $suggestion -Content $content
     #>
     [CmdletBinding()]
     param (
@@ -367,7 +367,7 @@ function Create-QualityTransformation {
     return $Transformation
 }
 
-function Create-AntiPatternTransformation {
+function New-AntiPatternTransformation {
     <#
     .SYNOPSIS
         CrÃ©e une transformation pour une suggestion d'anti-pattern
@@ -380,7 +380,7 @@ function Create-AntiPatternTransformation {
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
-        Create-AntiPatternTransformation -Script $script -Suggestion $suggestion -Content $content
+        New-AntiPatternTransformation -Script $script -Suggestion $suggestion -Content $content
     #>
     [CmdletBinding()]
     param (
@@ -450,7 +450,7 @@ function Create-AntiPatternTransformation {
     return $Transformation
 }
 
-function Create-TypeSpecificTransformation {
+function New-TypeSpecificTransformation {
     <#
     .SYNOPSIS
         CrÃ©e une transformation pour une suggestion spÃ©cifique au type
@@ -463,7 +463,7 @@ function Create-TypeSpecificTransformation {
     .PARAMETER Content
         Contenu du script
     .EXAMPLE
-        Create-TypeSpecificTransformation -Script $script -Suggestion $suggestion -Content $content
+        New-TypeSpecificTransformation -Script $script -Suggestion $suggestion -Content $content
     #>
     [CmdletBinding()]
     param (
@@ -589,7 +589,7 @@ function Create-TypeSpecificTransformation {
     return $Transformation
 }
 
-function Estimate-OperationImpact {
+function Measure-OperationImpact {
     <#
     .SYNOPSIS
         Estime l'impact d'une opÃ©ration de refactoring
@@ -598,7 +598,7 @@ function Estimate-OperationImpact {
     .PARAMETER Operation
         OpÃ©ration de refactoring
     .EXAMPLE
-        Estimate-OperationImpact -Operation $operation
+        Measure-OperationImpact -Operation $operation
     #>
     [CmdletBinding()]
     param (
@@ -625,3 +625,5 @@ function Estimate-OperationImpact {
 
 # Exporter les fonctions
 Export-ModuleMember -Function New-RefactoringPlan
+
+

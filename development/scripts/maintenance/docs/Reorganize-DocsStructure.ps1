@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     RÃ©organise la structure du dossier docs pour Ã©liminer les redondances et amÃ©liorer l'arborescence
@@ -123,7 +123,7 @@ function Move-FileToDestination {
 }
 
 # Fonction pour crÃ©er la structure de dossiers
-function Create-FolderStructure {
+function New-FolderStructure {
     # DÃ©finition des dossiers principaux
     $mainFolders = @(
         "api",
@@ -207,7 +207,7 @@ function Create-FolderStructure {
 }
 
 # Fonction pour migrer les fichiers de documentation
-function Migrate-DocumentationFiles {
+function Move-DocumentationFiles {
     # RÃ¨gles de migration pour les dossiers redondants
     $migrationRules = @{
         "documentation"           = "guides"
@@ -284,7 +284,7 @@ function Migrate-DocumentationFiles {
 }
 
 # Fonction pour nettoyer les dossiers vides
-function Clean-EmptyFolders {
+function Clear-EmptyFolders {
     $emptyFolders = @()
     $foldersToExclude = @("_build", ".git", "node_modules")
 
@@ -311,7 +311,7 @@ function Clean-EmptyFolders {
 }
 
 # Fonction pour crÃ©er des fichiers index.md dans chaque dossier
-function Create-IndexFiles {
+function New-IndexFiles {
     # Obtenir tous les dossiers
     $allFolders = Get-ChildItem -Path $Path -Directory -Recurse | Where-Object {
         $_.Name -ne "_build" -and $_.Name -ne ".git" -and $_.Name -ne "node_modules"
@@ -399,19 +399,19 @@ function Main {
 
     # CrÃ©er la structure de dossiers
     Write-Log -Message "CrÃ©ation de la structure de dossiers..." -Level "INFO"
-    Create-FolderStructure
+    New-FolderStructure
 
     # Migrer les fichiers
     Write-Log -Message "Migration des fichiers..." -Level "INFO"
-    Migrate-DocumentationFiles
+    Move-DocumentationFiles
 
     # Nettoyer les dossiers vides
     Write-Log -Message "Nettoyage des dossiers vides..." -Level "INFO"
-    Clean-EmptyFolders
+    Clear-EmptyFolders
 
     # CrÃ©er les fichiers index.md
     Write-Log -Message "CrÃ©ation des fichiers index.md..." -Level "INFO"
-    Create-IndexFiles
+    New-IndexFiles
 
     # Afficher le rÃ©sumÃ©
     Write-Log -Message "RÃ©organisation de la documentation terminÃ©e." -Level "SUCCESS"
@@ -425,3 +425,5 @@ try {
     Write-Log -Message "Erreur lors de la rÃ©organisation de la documentation: $_" -Level "ERROR"
     exit 1
 }
+
+

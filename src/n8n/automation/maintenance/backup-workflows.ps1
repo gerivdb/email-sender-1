@@ -92,7 +92,7 @@ function Write-Log {
 }
 
 # Fonction pour vérifier si un dossier existe et le créer si nécessaire
-function Ensure-FolderExists {
+function Confirm-FolderExists {
     param (
         [Parameter(Mandatory=$true)]
         [string]$FolderPath
@@ -113,7 +113,7 @@ function Ensure-FolderExists {
 }
 
 # Fonction pour nettoyer les anciennes sauvegardes
-function Clean-OldBackups {
+function Clear-OldBackups {
     param (
         [Parameter(Mandatory=$true)]
         [string]$BackupFolder,
@@ -165,7 +165,7 @@ function Backup-Workflows {
     
     # Vérifier si les dossiers existent
     $workflowFolderExists = Test-Path -Path $WorkflowFolder
-    $backupFolderExists = Ensure-FolderExists -FolderPath $BackupFolder
+    $backupFolderExists = Confirm-FolderExists -FolderPath $BackupFolder
     
     if (-not $workflowFolderExists) {
         Write-Log "Dossier de workflows non trouvé: $WorkflowFolder" -Level "ERROR"
@@ -204,7 +204,7 @@ function Backup-Workflows {
         Write-Log "Sauvegarde créée: $backupFileName ($($workflowFiles.Count) fichiers)" -Level "SUCCESS"
         
         # Nettoyer les anciennes sauvegardes
-        Clean-OldBackups -BackupFolder $BackupFolder -MaxBackupCount $MaxBackupCount
+        Clear-OldBackups -BackupFolder $BackupFolder -MaxBackupCount $MaxBackupCount
         
         return $true
     } catch {
@@ -241,3 +241,5 @@ if ($MyInvocation.InvocationName -ne ".") {
         exit 1
     }
 }
+
+

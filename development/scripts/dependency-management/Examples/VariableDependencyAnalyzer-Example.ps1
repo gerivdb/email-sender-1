@@ -1,4 +1,4 @@
-﻿# Exemple d'utilisation du module VariableDependencyAnalyzer
+# Exemple d'utilisation du module VariableDependencyAnalyzer
 
 # Importer le module
 $moduleRoot = Split-Path -Parent $PSScriptRoot
@@ -26,7 +26,7 @@ $defaultColor = $config.DefaultColor
 $logFile = $config.LogPath
 
 # Fonction de traitement
-function Process-Items {
+function Invoke-Items {
     param (
         [int]$count = $maxItems,
         [string]$color = $defaultColor
@@ -62,7 +62,7 @@ function Process-Items {
 }
 
 # Utilisation de la fonction
-$result = Process-Items -count 10
+$result = Invoke-Items -count 10
 Write-Output "Nombre d'Ã©lÃ©ments traitÃ©s: $($result.ProcessedCount)"
 
 # Ã‰criture du log
@@ -130,3 +130,4 @@ Write-Host "`nGraphe de dÃ©pendances:" -ForegroundColor Yellow
 foreach ($variable in $graph.Graph.Keys | Sort-Object) {
     Write-Host "$variable dÃ©pend de: $($graph.Graph[$variable] -join ', ')"
 }
+

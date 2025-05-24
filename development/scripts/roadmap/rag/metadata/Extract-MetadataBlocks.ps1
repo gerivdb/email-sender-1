@@ -1,4 +1,4 @@
-# Extract-MetadataBlocks.ps1
+# Export-MetadataBlocks.ps1
 # Script pour extraire les blocs de métadonnées des fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -456,7 +456,7 @@ function Format-MetadataBlocksOutput {
 }
 
 # Fonction principale
-function Extract-MetadataBlocks {
+function Export-MetadataBlocks {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -519,5 +519,6 @@ function Extract-MetadataBlocks {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Extract-MetadataBlocks -FilePath $FilePath -Content $Content -DetectFrontMatter:$DetectFrontMatter -DetectCodeBlocks:$DetectCodeBlocks -DetectCommentBlocks:$DetectCommentBlocks -OutputPath $OutputPath -OutputFormat $OutputFormat
+    Export-MetadataBlocks -FilePath $FilePath -Content $Content -DetectFrontMatter:$DetectFrontMatter -DetectCodeBlocks:$DetectCodeBlocks -DetectCommentBlocks:$DetectCommentBlocks -OutputPath $OutputPath -OutputFormat $OutputFormat
 }
+

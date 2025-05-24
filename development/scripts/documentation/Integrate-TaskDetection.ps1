@@ -1,4 +1,4 @@
-﻿# Integrate-TaskDetection.ps1
+# Integrate-TaskDetection.ps1
 # Script pour intÃ©grer le systÃ¨me de dÃ©tection de tÃ¢ches avec les scripts existants de gestion de roadmap
 
 param (
@@ -42,7 +42,7 @@ if (-not (Test-Path -Path $ConversationsFolder)) {
 }
 
 # Fonction pour traiter les fichiers de conversation existants
-function Process-ExistingConversations {
+function Invoke-ExistingConversations {
     $conversationFiles = Get-ChildItem -Path $ConversationsFolder -Filter "*.txt" | Select-Object -ExpandProperty FullName
     
     if ($conversationFiles.Count -eq 0) {
@@ -98,7 +98,7 @@ function Start-ConversationWatcher {
 }
 
 # Fonction pour vÃ©rifier l'Ã©tat de la roadmap
-function Check-Roadmap {
+function Test-Roadmap {
     if (-not (Test-Path -Path $roadmapPath)) {
         Write-Error "Le fichier roadmap n'a pas Ã©tÃ© trouvÃ© Ã  l'emplacement : $roadmapPath"
         return $false
@@ -125,12 +125,12 @@ function Main {
     Write-Host ""
     
     # VÃ©rifier l'Ã©tat de la roadmap
-    $roadmapOk = Check-Roadmap
+    $roadmapOk = Test-Roadmap
     Write-Host ""
     
     # Traiter les fichiers de conversation existants si demandÃ©
     if ($ProcessExisting) {
-        Process-ExistingConversations
+        Invoke-ExistingConversations
     }
     
     # DÃ©marrer le watcher si demandÃ©
@@ -147,3 +147,4 @@ function Main {
 
 # ExÃ©cuter la fonction principale
 Main
+

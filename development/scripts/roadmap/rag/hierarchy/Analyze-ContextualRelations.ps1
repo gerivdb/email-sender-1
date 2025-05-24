@@ -1,4 +1,4 @@
-# Analyze-ContextualRelations.ps1
+# Test-ContextualRelations.ps1
 # Script pour analyser les relations contextuelles entre les tâches dans les fichiers markdown de roadmap
 # Version: 1.0
 # Date: 2025-05-15
@@ -576,7 +576,7 @@ function Format-AnalysisOutput {
 }
 
 # Fonction principale
-function Analyze-ContextualRelations {
+function Test-ContextualRelations {
     [CmdletBinding()]
     param (
         [string]$FilePath,
@@ -642,5 +642,6 @@ function Analyze-ContextualRelations {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Analyze-ContextualRelations -FilePath $FilePath -Content $Content -DetectImplicitRelations:$DetectImplicitRelations -AnalyzeSectionTitles:$AnalyzeSectionTitles -DetectThematicGroups:$DetectThematicGroups -OutputPath $OutputPath -OutputFormat $OutputFormat
+    Test-ContextualRelations -FilePath $FilePath -Content $Content -DetectImplicitRelations:$DetectImplicitRelations -AnalyzeSectionTitles:$AnalyzeSectionTitles -DetectThematicGroups:$DetectThematicGroups -OutputPath $OutputPath -OutputFormat $OutputFormat
 }
+

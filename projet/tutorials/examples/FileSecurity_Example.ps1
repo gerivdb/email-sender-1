@@ -149,7 +149,7 @@ $facadePath = Join-Path -Path $modulesPath -ChildPath "FileProcessingFacade.ps1"
 Initialize-FileProcessingFacade | Out-Null
 
 # Créer une fonction pour traiter un fichier de manière sécurisée
-function Process-FileSecurely {
+function Invoke-FileSecurely {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -186,12 +186,12 @@ function Process-FileSecurely {
 
 # Traiter un fichier valide
 $outputJsonPath = Join-Path -Path $tempDir -ChildPath "output.json"
-$processResult = Process-FileSecurely -InputFile $validCsvPath -OutputFile $outputJsonPath -InputFormat "CSV" -OutputFormat "JSON"
+$processResult = Invoke-FileSecurely -InputFile $validCsvPath -OutputFile $outputJsonPath -InputFormat "CSV" -OutputFormat "JSON"
 Write-Host "Traitement sécurisé du fichier valide : $processResult"
 
 # Traiter un fichier avec contenu suspect
 $outputSuspiciousPath = Join-Path -Path $tempDir -ChildPath "output_suspicious.json"
-$processSuspiciousResult = Process-FileSecurely -InputFile $suspiciousFilePath -OutputFile $outputSuspiciousPath -InputFormat "JSON" -OutputFormat "YAML" -CheckForExecutableContent
+$processSuspiciousResult = Invoke-FileSecurely -InputFile $suspiciousFilePath -OutputFile $outputSuspiciousPath -InputFormat "JSON" -OutputFormat "YAML" -CheckForExecutableContent
 Write-Host "Traitement sécurisé du fichier suspect : $processSuspiciousResult"
 
 # Nettoyer
@@ -199,3 +199,4 @@ Write-Host "`nNettoyage des fichiers d'exemple..."
 Remove-Item -Path $tempDir -Recurse -Force
 
 Write-Host "`nExemples terminés."
+

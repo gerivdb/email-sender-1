@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Fonctions communes pour les modes RoadmapParser.
 
@@ -521,12 +521,12 @@ function Update-RoadmapTask {
     Indique si les sous-tÃ¢ches doivent Ãªtre incluses dans le rapport.
 
 .EXAMPLE
-    Generate-RoadmapReport -FilePath "roadmap.md" -OutputPath "reports" -Format "HTML" -IncludeSubtasks $true
+    New-RoadmapReport -FilePath "roadmap.md" -OutputPath "reports" -Format "HTML" -IncludeSubtasks $true
 
 .OUTPUTS
     System.String
 #>
-function Generate-RoadmapReport {
+function New-RoadmapReport {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -712,4 +712,5 @@ function Generate-RoadmapReport {
 }
 
 # Exporter les fonctions
-Export-ModuleMember -Function Assert-FileExists, Assert-DirectoryExists, Backup-File, Restore-File, Convert-MarkdownToHtml, Get-RoadmapTasks, Update-RoadmapTask, Generate-RoadmapReport
+Export-ModuleMember -Function Assert-FileExists, Assert-DirectoryExists, Backup-File, Restore-File, Convert-MarkdownToHtml, Get-RoadmapTasks, Update-RoadmapTask, New-RoadmapReport
+

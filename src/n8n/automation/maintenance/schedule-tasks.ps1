@@ -252,7 +252,7 @@ function Uninstall-ScheduledTasks {
 }
 
 # Fonction pour vérifier les tâches planifiées
-function Check-ScheduledTasks {
+function Test-ScheduledTasks {
     param (
         [Parameter(Mandatory=$true)]
         [array]$Tasks
@@ -355,7 +355,7 @@ function Main {
     $success = switch ($Action) {
         "Install" { Install-ScheduledTasks -Tasks $tasks -ProjectRoot $ProjectRoot }
         "Uninstall" { Uninstall-ScheduledTasks -Tasks $tasks }
-        "Check" { Check-ScheduledTasks -Tasks $tasks }
+        "Check" { Test-ScheduledTasks -Tasks $tasks }
         default { 
             Write-Log "Action non reconnue: $Action" -Level "ERROR"
             $false
@@ -375,3 +375,4 @@ if ($MyInvocation.InvocationName -ne ".") {
         exit 1
     }
 }
+

@@ -1,4 +1,4 @@
-# Monitor-ExportOperations.ps1
+# Watch-ExportOperations.ps1
 # Script pour surveiller et gérer les opérations d'exportation d'archives
 # Version: 1.0
 # Date: 2025-05-15
@@ -190,7 +190,7 @@ function Get-ExportErrors {
 }
 
 # Fonction pour réessayer une exportation échouée
-function Retry-FailedExport {
+function Restart-FailedExport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -526,7 +526,7 @@ function Send-ExportAlert {
 }
 
 # Fonction pour vérifier les erreurs récentes et envoyer des alertes
-function Check-RecentExportErrors {
+function Test-RecentExportErrors {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -592,7 +592,7 @@ $(
 }
 
 # Fonction principale pour surveiller les opérations d'exportation
-function Monitor-ExportOperations {
+function Watch-ExportOperations {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -684,11 +684,11 @@ function Monitor-ExportOperations {
                 return $false
             }
             
-            return Retry-FailedExport -ExportId $ExportId
+            return Restart-FailedExport -ExportId $ExportId
         }
         "Alert" {
             # Vérifier les erreurs récentes et envoyer des alertes
-            return Check-RecentExportErrors -HoursToCheck 24 -AlertChannels $AlertChannels
+            return Test-RecentExportErrors -HoursToCheck 24 -AlertChannels $AlertChannels
         }
         "Report" {
             # Générer un rapport d'exportation
@@ -703,5 +703,7 @@ function Monitor-ExportOperations {
 
 # Exécuter la fonction principale si le script est exécuté directement
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
-    Monitor-ExportOperations -Action $Action -ExportId $ExportId -StartDate $StartDate -EndDate $EndDate -OutputPath $OutputPath -AlertChannels $AlertChannels
+    Watch-ExportOperations -Action $Action -ExportId $ExportId -StartDate $StartDate -EndDate $EndDate -OutputPath $OutputPath -AlertChannels $AlertChannels
 }
+
+

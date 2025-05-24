@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Fonctions utilitaires pour gÃ©rer les permissions des chemins d'accÃ¨s.
 
@@ -447,7 +447,7 @@ function New-DirectoryWithPermissions {
 }
 
 # Fonction pour vÃ©rifier et corriger les permissions d'un chemin
-function Ensure-PathPermissions {
+function Confirm-PathPermissions {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true)]
@@ -559,3 +559,4 @@ function Ensure-PathPermissions {
 }
 
 # Les fonctions seront exportÃ©es par le module principal
+

@@ -352,14 +352,14 @@ function Set-CompositeRetention {
     
     # Appliquer la règle si demandé
     if ($Apply) {
-        return Apply-CompositeRetention -RuleName $RuleName -ConfigName $ConfigName -WhatIf:$WhatIf -Force:$Force
+        return Set-CompositeRetention -RuleName $RuleName -ConfigName $ConfigName -WhatIf:$WhatIf -Force:$Force
     }
     
     return $true
 }
 
 # Fonction pour appliquer une règle de rétention composite
-function Apply-CompositeRetention {
+function Set-CompositeRetention {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -618,3 +618,4 @@ function Apply-CompositeRetention {
 if ($MyInvocation.InvocationName -eq $MyInvocation.MyCommand.Name) {
     Set-CompositeRetention -RuleName $RuleName -Description $Description -RestorePointType $RestorePointType -ConfigType $ConfigType -ConfigId $ConfigId -ImportanceLevel $ImportanceLevel -MinimumUsageCount $MinimumUsageCount -RetentionDays $RetentionDays -MaxVersions $MaxVersions -ConditionOperator $ConditionOperator -Priority $Priority -ConfigName $ConfigName -Apply:$Apply -WhatIf:$WhatIf -Force:$Force
 }
+

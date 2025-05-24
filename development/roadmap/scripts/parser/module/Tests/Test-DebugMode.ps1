@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests pour le script debug-mode.ps1.
 
@@ -77,7 +77,7 @@ New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
 
 # CrÃ©er un fichier de code avec un bug pour les tests
 @"
-function Process-Data {
+function Invoke-Data {
     param (
         [Parameter(Mandatory = `$true)]
         [object]`$Data
@@ -92,11 +92,11 @@ function Process-Data {
 
 # CrÃ©er un fichier de log d'erreur
 @"
-[ERROR] 2023-08-15T10:15:30 - NullReferenceException in Process-Data: Object reference not set to an instance of an object.
-   at Process-Data, D:\Path\To\BuggyFunction.ps1: line 8
+[ERROR] 2023-08-15T10:15:30 - NullReferenceException in Invoke-Data: Object reference not set to an instance of an object.
+   at Invoke-Data, D:\Path\To\BuggyFunction.ps1: line 8
    at CallSite.Target(Closure , CallSite , Object )
 Stack trace:
-   at Process-Data(`$Data = null)
+   at Invoke-Data(`$Data = null)
    at Invoke-ProcessData(`$InputData = null)
    at Main()
 "@ | Set-Content -Path $testErrorLogPath -Encoding UTF8
@@ -140,7 +140,7 @@ Describe "Invoke-RoadmapDebug" {
             $result = Invoke-RoadmapDebug -ErrorLog $testErrorLogPath -ModulePath $testModulePath -OutputPath $testOutputPath
             
             # VÃ©rifier que l'origine de l'erreur est correctement identifiÃ©e
-            $result.ErrorOrigin | Should -Be "Process-Data"
+            $result.ErrorOrigin | Should -Be "Invoke-Data"
             $result.ErrorType | Should -Be "NullReferenceException"
             $result.ErrorLine | Should -Be 8
         } else {
@@ -160,7 +160,7 @@ Describe "Invoke-RoadmapDebug" {
             # VÃ©rifier que le contenu du rapport contient les informations attendues
             $reportContent = Get-Content -Path $debugReportPath -Raw
             $reportContent | Should -Match "NullReferenceException"
-            $reportContent | Should -Match "Process-Data"
+            $reportContent | Should -Match "Invoke-Data"
             $reportContent | Should -Match "BuggyFunction.ps1"
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapDebug n'est pas disponible"
@@ -234,3 +234,4 @@ if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
 } else {
     Write-Host "Tests terminÃ©s. Utilisez Invoke-Pester pour exÃ©cuter les tests avec le framework Pester." -ForegroundColor Yellow
 }
+

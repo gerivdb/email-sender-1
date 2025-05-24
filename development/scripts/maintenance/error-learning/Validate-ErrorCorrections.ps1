@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Script de validation des corrections d'erreurs PowerShell.
 .DESCRIPTION
@@ -138,7 +138,7 @@ function Invoke-UnitTests {
 }
 
 # Fonction pour gÃ©nÃ©rer un script de test unitaire
-function Generate-UnitTestScript {
+function New-UnitTestScript {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -223,7 +223,7 @@ Describe "$scriptName" {
 }
 
 # Fonction pour valider les corrections
-function Validate-Corrections {
+function Test-Corrections {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -331,7 +331,7 @@ function Validate-Corrections {
 if ($GenerateTestScript) {
     Write-Host "GÃ©nÃ©ration d'un script de test unitaire..." -ForegroundColor Cyan
     
-    $result = Generate-UnitTestScript -ScriptPath $ScriptPath -TestPath $TestPath
+    $result = New-UnitTestScript -ScriptPath $ScriptPath -TestPath $TestPath
     
     if ($result) {
         Write-Host "Script de test gÃ©nÃ©rÃ© avec succÃ¨s." -ForegroundColor Green
@@ -346,7 +346,7 @@ if ($GenerateTestScript) {
 # Valider les corrections
 Write-Host "Validation des corrections..." -ForegroundColor Cyan
 
-$result = Validate-Corrections -ScriptPath $ScriptPath -TestPath $TestPath -Interactive:$Interactive
+$result = Test-Corrections -ScriptPath $ScriptPath -TestPath $TestPath -Interactive:$Interactive
 
 if ($result) {
     Write-Host "Validation rÃ©ussie." -ForegroundColor Green
@@ -356,3 +356,4 @@ else {
 }
 
 Write-Host "Validation terminÃ©e." -ForegroundColor Cyan
+

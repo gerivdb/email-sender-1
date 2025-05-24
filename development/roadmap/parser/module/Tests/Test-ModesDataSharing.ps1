@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests de partage de donnÃ©es entre les diffÃ©rents modes.
 
@@ -108,7 +108,7 @@ function Get-Data {
     return "DonnÃ©es de `$Source"
 }
 
-function Process-Data {
+function Invoke-Data {
     param (
         [object]`$Data
     )
@@ -349,3 +349,4 @@ if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
 } else {
     Write-Host "Tests terminÃ©s. Utilisez Invoke-Pester pour exÃ©cuter les tests avec le framework Pester." -ForegroundColor Yellow
 }
+

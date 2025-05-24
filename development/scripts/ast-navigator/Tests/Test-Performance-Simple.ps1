@@ -1,4 +1,4 @@
-﻿# Script de test de performance simplifiÃ©
+# Script de test de performance simplifiÃ©
 
 # Importer le module AST Navigator
 $modulePath = Join-Path -Path $PSScriptRoot -ChildPath "..\AstNavigator.psm1"
@@ -57,7 +57,7 @@ function Test-Example {
     }
 }
 
-function Process-Data {
+function Invoke-Data {
     param (
         [object[]]$Data
     )
@@ -78,8 +78,8 @@ function Process-Data {
 # Appeler les fonctions
 $data1 = Get-Example1 -Name "Item" -Count 5
 $data2 = Get-Example2 -Name "Test" -Count 10
-$processedData1 = Process-Data -Data $data1
-$processedData2 = Process-Data -Data $data2
+$processedData1 = Invoke-Data -Data $data1
+$processedData2 = Invoke-Data -Data $data2
 
 # Afficher les rÃ©sultats
 foreach ($item in $processedData1) {
@@ -212,3 +212,4 @@ $results | Where-Object { $_.FunctionName -ne "Invoke-AstTraversalDFS" } | Group
     
     Write-Host ("{0,-30} {1,10:N2}%" -f $functionName, $improvement) -ForegroundColor $(if ($improvement -gt 0) { "Green" } else { "Red" })
 }
+

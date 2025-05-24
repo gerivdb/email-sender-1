@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     Tests unitaires simplifiÃ©s pour les scripts de test de pull requests.
@@ -322,7 +322,7 @@ function Test-StartPRTestSuite {
 }
 
 # ExÃ©cuter tous les tests
-function Run-AllTests {
+function Start-AllTests {
     Write-Host "`n=== ExÃ©cution de tous les tests ===" -ForegroundColor Cyan
     
     # ExÃ©cuter les tests pour chaque script
@@ -353,4 +353,5 @@ function Run-AllTests {
 }
 
 # ExÃ©cuter tous les tests
-Run-AllTests
+Start-AllTests
+

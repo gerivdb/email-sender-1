@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 <#
 .SYNOPSIS
     PrÃ©dit les erreurs en cascade Ã  partir des patterns d'erreurs connus.
@@ -121,7 +121,7 @@ function Import-ErrorModel {
 }
 
 # Fonction pour construire un graphe de dÃ©pendances d'erreurs
-function Build-ErrorDependencyGraph {
+function New-ErrorDependencyGraph {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -475,7 +475,7 @@ if (-not $database.Correlations -or $database.Correlations.Count -eq 0) {
 $model = Import-ErrorModel -ModelPath $ModelPath
 
 # Construire le graphe de dÃ©pendances
-$graph = Build-ErrorDependencyGraph -Patterns $database.Patterns -Correlations $database.Correlations -CorrelationThreshold $CorrelationThreshold
+$graph = New-ErrorDependencyGraph -Patterns $database.Patterns -Correlations $database.Correlations -CorrelationThreshold $CorrelationThreshold
 
 Write-Host "Graphe de dÃ©pendances construit avec $($graph.Count) patterns" -ForegroundColor Yellow
 
@@ -499,3 +499,4 @@ $reportPath = New-CascadePredictionReport -Graph $graph -CascadePaths $cascadePa
 
 Write-Host "PrÃ©diction des erreurs en cascade terminÃ©e avec succÃ¨s." -ForegroundColor Green
 Write-Host "Rapport de prÃ©diction: $ReportPath" -ForegroundColor Green
+

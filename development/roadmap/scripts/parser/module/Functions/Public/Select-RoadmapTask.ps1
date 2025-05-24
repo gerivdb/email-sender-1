@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     SÃ©lectionne des tÃ¢ches dans une roadmap selon diffÃ©rents critÃ¨res.
 
@@ -138,7 +138,7 @@ function Select-RoadmapTask {
     }
 
     # Fonction rÃ©cursive pour filtrer les tÃ¢ches
-    function Filter-Tasks {
+    function Select-Tasks {
         param (
             [PSCustomObject[]]$Tasks,
             [bool]$ProcessSubTasks = $true
@@ -243,7 +243,7 @@ function Select-RoadmapTask {
 
                 # Sinon, on filtre les sous-tÃ¢ches normalement
                 if ($subTasksToProcess) {
-                    $subTaskResults = Filter-Tasks -Tasks $task.SubTasks -ProcessSubTasks $true
+                    $subTaskResults = Select-Tasks -Tasks $task.SubTasks -ProcessSubTasks $true
                     if ($null -ne $subTaskResults -and $subTaskResults.Count -gt 0) {
                         foreach ($subTask in $subTaskResults) {
                             $filteredTasks.Add($subTask) | Out-Null
@@ -271,7 +271,7 @@ function Select-RoadmapTask {
     }
 
     # Filtrer les tÃ¢ches selon les critÃ¨res
-    $filteredTasks = Filter-Tasks -Tasks $tasksToProcess
+    $filteredTasks = Select-Tasks -Tasks $tasksToProcess
 
     # Convertir en tableau pour pouvoir utiliser Select-Object
     $filteredTasksArray = @($filteredTasks)
@@ -354,3 +354,4 @@ function Select-RoadmapTask {
         return $result
     }
 }
+

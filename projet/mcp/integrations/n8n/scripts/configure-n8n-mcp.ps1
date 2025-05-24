@@ -61,18 +61,18 @@ function Write-Log {
     Write-Host "[$timestamp] [$Level] $Message" -ForegroundColor $color
 }
 
-function Generate-CredentialId {
+function New-CredentialId {
     return [guid]::NewGuid().ToString("N")
 }
 
-function Create-McpCredential {
+function New-McpCredential {
     param (
         [string]$ServerName,
         [PSCustomObject]$ServerConfig,
         [string]$CredentialsDir
     )
     
-    $credentialId = Generate-CredentialId
+    $credentialId = New-CredentialId
     $credentialPath = Join-Path -Path $CredentialsDir -ChildPath "$credentialId.json"
     
     $credential = @{
@@ -120,7 +120,7 @@ function Create-McpCredential {
     return $credentialPath
 }
 
-function Configure-N8nEnvironment {
+function Set-N8nEnvironment {
     param (
         [string]$N8nRoot
     )
@@ -181,7 +181,7 @@ try {
     }
     
     # Configurer les variables d'environnement n8n
-    Configure-N8nEnvironment -N8nRoot $N8nRoot
+    Set-N8nEnvironment -N8nRoot $N8nRoot
     
     # Créer les credentials
     $createdCredentials = @()
@@ -212,7 +212,7 @@ try {
         }
         
         # Créer le credential
-        $credentialPath = Create-McpCredential -ServerName $serverName -ServerConfig $serverConfig -CredentialsDir $n8nCredentialsDir
+        $credentialPath = New-McpCredential -ServerName $serverName -ServerConfig $serverConfig -CredentialsDir $n8nCredentialsDir
         
         if ($credentialPath) {
             $createdCredentials += @{
@@ -238,3 +238,4 @@ try {
     Write-Log "Erreur lors de la configuration de n8n pour MCP: $_" -Level "ERROR"
     exit 1
 }
+

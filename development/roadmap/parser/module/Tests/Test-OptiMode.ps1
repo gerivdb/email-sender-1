@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Tests pour le script opti-mode.ps1.
 
@@ -79,7 +79,7 @@ New-Item -Path $testOutputPath -ItemType Directory -Force | Out-Null
 
 # CrÃ©er des fichiers de code avec des problÃ¨mes de performance pour les tests
 @"
-function Process-LargeData {
+function Invoke-LargeData {
     param (
         [Parameter(Mandatory = `$true)]
         [string[]]`$Data
@@ -102,10 +102,10 @@ function Process-LargeData {
     
     return `$result
 }
-"@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Public\Process-LargeData.ps1") -Encoding UTF8
+"@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Public\Invoke-LargeData.ps1") -Encoding UTF8
 
 @"
-function Calculate-Statistics {
+function Measure-Statistics {
     param (
         [Parameter(Mandatory = `$true)]
         [int[]]`$Numbers
@@ -140,7 +140,7 @@ function Calculate-Statistics {
         StdDev = `$stdDev
     }
 }
-"@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Private\Calculate-Statistics.ps1") -Encoding UTF8
+"@ | Set-Content -Path (Join-Path -Path $testModulePath -ChildPath "Functions\Private\Measure-Statistics.ps1") -Encoding UTF8
 
 Write-Host "Module de test crÃ©Ã© : $testModulePath" -ForegroundColor Green
 Write-Host "RÃ©pertoire de sortie crÃ©Ã© : $testOutputPath" -ForegroundColor Green
@@ -181,7 +181,7 @@ Describe "Invoke-RoadmapOptimization" {
             
             # VÃ©rifier que les points chauds sont identifiÃ©s
             $result.Hotspots | Should -Not -BeNullOrEmpty
-            $result.Hotspots | Should -Contain "Process-LargeData"
+            $result.Hotspots | Should -Contain "Invoke-LargeData"
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapOptimization n'est pas disponible"
         }
@@ -223,7 +223,7 @@ Describe "Invoke-RoadmapOptimization" {
             Test-Path -Path $optimizedCodePath | Should -Be $true
             
             # VÃ©rifier que les fichiers optimisÃ©s existent
-            $optimizedProcessLargeDataPath = Join-Path -Path $optimizedCodePath -ChildPath "Process-LargeData.ps1"
+            $optimizedProcessLargeDataPath = Join-Path -Path $optimizedCodePath -ChildPath "Invoke-LargeData.ps1"
             Test-Path -Path $optimizedProcessLargeDataPath | Should -Be $true
         } else {
             Set-ItResult -Skipped -Because "La fonction Invoke-RoadmapOptimization n'est pas disponible"
@@ -272,3 +272,5 @@ if (Get-Command -Name Invoke-Pester -ErrorAction SilentlyContinue) {
 } else {
     Write-Host "Tests terminÃ©s. Utilisez Invoke-Pester pour exÃ©cuter les tests avec le framework Pester." -ForegroundColor Yellow
 }
+
+

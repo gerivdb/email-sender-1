@@ -175,7 +175,7 @@ function Write-Log {
                 
                 if ($logFile.Length -ge $script:MaxLogSize) {
                     # Effectuer une rotation des logs
-                    Rotate-Logs
+                    Move-Logs
                 }
             }
             
@@ -196,7 +196,7 @@ function Write-Log {
 }
 
 # Fonction pour effectuer une rotation des logs
-function Rotate-Logs {
+function Move-Logs {
     <#
     .SYNOPSIS
         Effectue une rotation des fichiers de log.
@@ -204,7 +204,7 @@ function Rotate-Logs {
         Cette fonction effectue une rotation des fichiers de log en renommant
         les fichiers existants et en créant un nouveau fichier de log.
     .EXAMPLE
-        Rotate-Logs
+        Move-Logs
         Effectue une rotation des fichiers de log.
     #>
     [CmdletBinding()]
@@ -320,4 +320,5 @@ function Get-RecentLogs {
 Initialize-Logging
 
 # Exporter les fonctions
-Export-ModuleMember -Function Initialize-Logging, Write-Log, Rotate-Logs, Get-RecentLogs
+Export-ModuleMember -Function Initialize-Logging, Write-Log, Move-Logs, Get-RecentLogs
+

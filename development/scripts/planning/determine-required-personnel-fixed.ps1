@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     DÃ©termine le nombre de personnes nÃ©cessaires pour chaque amÃ©lioration.
 
@@ -81,7 +81,7 @@ try {
 }
 
 # Fonction pour dÃ©terminer le nombre de personnes nÃ©cessaires
-function Determine-RequiredPersonnel {
+function Find-RequiredPersonnel {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -305,7 +305,7 @@ function Determine-RequiredPersonnel {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format Markdown
-function Generate-MarkdownReport {
+function New-MarkdownReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -512,7 +512,7 @@ function Generate-MarkdownReport {
 }
 
 # Fonction pour gÃ©nÃ©rer le rapport au format JSON
-function Generate-JsonReport {
+function New-JsonReport {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -567,7 +567,7 @@ foreach ($manager in $improvementsData.Managers) {
         }
         
         # DÃ©terminer le nombre de personnes nÃ©cessaires
-        $personnelEvaluation = Determine-RequiredPersonnel -Improvement $improvement -ManagerName $manager.Name -ComplexityLevel $complexityLevel -SkillsCount $skillsCount
+        $personnelEvaluation = Find-RequiredPersonnel -Improvement $improvement -ManagerName $manager.Name -ComplexityLevel $complexityLevel -SkillsCount $skillsCount
         
         $improvementPersonnel = [PSCustomObject]@{
             Name = $improvement.Name
@@ -588,10 +588,10 @@ foreach ($manager in $improvementsData.Managers) {
 # GÃ©nÃ©rer le rapport dans le format spÃ©cifiÃ©
 switch ($Format) {
     "Markdown" {
-        $reportContent = Generate-MarkdownReport -PersonnelResults $personnelResults
+        $reportContent = New-MarkdownReport -PersonnelResults $personnelResults
     }
     "JSON" {
-        $reportContent = Generate-JsonReport -PersonnelResults $personnelResults
+        $reportContent = New-JsonReport -PersonnelResults $personnelResults
     }
 }
 
@@ -640,3 +640,5 @@ foreach ($role in $personnelByRole.Keys | Sort-Object) {
     $percentage = if ($totalPersonnel -gt 0) { [Math]::Round(($personnelByRole[$role] / $totalPersonnel) * 100, 1) } else { 0 }
     Write-Host "  $role : $($personnelByRole[$role]) ($percentage%)"
 }
+
+
