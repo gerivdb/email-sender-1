@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
+    "@types/jest": "^29.5.14",
     "husky": "^8.0.3",
     "hygen": "^6.2.0"
   },
