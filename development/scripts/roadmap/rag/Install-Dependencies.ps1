@@ -1,3 +1,4 @@
+# MIGRATED TO QDRANT STANDALONE - 2025-05-25
 # Install-Dependencies.ps1
 # Script pour installer les dépendances nécessaires au système RAG de roadmaps
 # Version: 1.0
@@ -224,27 +225,27 @@ function Start-Qdrant {
     Write-Log "Démarrage de Qdrant..." -Level "Info"
 
     # Vérifier si le conteneur Qdrant existe déjà
-    $qdrantContainer = docker ps -a --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
+    $qdrantContainer = # MIGRATED: docker ps -a --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
 
     if ($qdrantContainer -eq "roadmap-qdrant") {
         # Vérifier si le conteneur est en cours d'exécution
-        $qdrantRunning = docker ps --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
+        $qdrantRunning = # MIGRATED: docker ps --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
 
         if ($qdrantRunning -eq "roadmap-qdrant") {
             Write-Log "Qdrant est déjà en cours d'exécution." -Level "Info"
         } else {
             # Démarrer le conteneur existant
             Write-Log "Démarrage du conteneur Qdrant existant..." -Level "Info"
-            docker start roadmap-qdrant
+            # MIGRATED: docker start roadmap-qdrant
         }
     } else {
         # Créer et démarrer un nouveau conteneur
         Write-Log "Création d'un nouveau conteneur Qdrant..." -Level "Info"
-        docker run -d --name roadmap-qdrant -p 6333:6333 -p 6334:6334 -v qdrant_storage:/qdrant/storage qdrant/qdrant:latest
+        # MIGRATED: docker run -d --name roadmap-qdrant -p 6333:6333 -p 6334:6334 -v qdrant_storage:/qdrant/storage qdrant/qdrant:latest
     }
 
     # Vérifier si Qdrant est en cours d'exécution
-    $qdrantRunning = docker ps --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
+    $qdrantRunning = # MIGRATED: docker ps --filter "name=roadmap-qdrant" --format "{{.Names}}" 2>&1
 
     if ($qdrantRunning -eq "roadmap-qdrant") {
         Write-Log "Qdrant démarré avec succès." -Level "Success"
@@ -339,3 +340,4 @@ try {
     Write-Log "Erreur lors de l'installation des dépendances : $_" -Level "Error"
     throw $_
 }
+

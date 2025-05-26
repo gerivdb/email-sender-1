@@ -1,3 +1,4 @@
+# MIGRATED TO QDRANT STANDALONE - 2025-05-25
 # Index-TagsInQdrant.ps1
 # Script pour indexer les tags dans Qdrant
 # Version: 1.0
@@ -42,7 +43,7 @@ function Start-QdrantContainerIfNeeded {
         [string]$QdrantUrl = "http://localhost:6333",
 
         [Parameter(Mandatory = $false)]
-        [string]$DataPath = "projet\roadmaps\vectors\qdrant_data",
+        [string]$DataPath = "..\..\data\qdrant",
 
         [Parameter(Mandatory = $false)]
         [switch]$Force
@@ -62,7 +63,7 @@ function Start-QdrantContainerIfNeeded {
     }
 
     # Vérifier si le script Start-QdrantContainer.ps1 existe
-    $startScriptPath = Join-Path -Path (Split-Path -Parent (Split-Path -Parent $scriptDir)) -ChildPath "Start-QdrantContainer.ps1"
+    $startScriptPath = Join-Path $PSScriptRoot "..\..\tools\qdrant\Start-QdrantStandalone.ps1"
     if (-not (Test-Path -Path $startScriptPath)) {
         Write-Log "Le script Start-QdrantContainer.ps1 n'existe pas à l'emplacement: $startScriptPath" -Level Error
         return $false
@@ -423,3 +424,4 @@ function Main {
 
 # Exécuter la fonction principale
 Main
+

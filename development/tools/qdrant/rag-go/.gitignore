@@ -1,0 +1,20 @@
+# Go binaries
+*.exe
+rag-go
+
+# Temporary files
+*.tmp
+*.temp
+
+# Logs
+*.log
+logs/
+
+# Vendor dependencies
+vendor/
+
+# Environment files
+.env
+
+# Test coverage
+coverage.out

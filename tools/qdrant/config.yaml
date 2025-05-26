@@ -1,0 +1,48 @@
+debug: false
+log_level: INFO
+
+storage:
+  storage_path: "../../data/qdrant"
+  snapshots_path: "../../data/qdrant/snapshots"
+  on_disk_payload: true
+  wal:
+    wal_capacity_mb: 32
+    wal_segments_ahead: 2
+
+service:
+  http_port: 6333
+  grpc_port: 6334
+  host: 0.0.0.0
+  max_request_size_mb: 32
+  max_workers: 0
+
+cluster:
+  enabled: false
+
+telemetry_disabled: true
+
+optimizer:
+  deleted_threshold: 0.2
+  vacuum_min_vector_number: 1000
+  default_segment_number: 2
+  max_segment_size: 100000
+  memmap_threshold: 50000
+  indexing_threshold: 20000
+  flush_interval_sec: 5
+  max_optimization_threads: 1
+
+hnsw:
+  m: 16
+  ef_construct: 100
+  full_scan_threshold: 10000
+  max_indexing_threads: 0
+
+quantization:
+  rescore: true
+
+# Optimisations Windows spécifiques
+windows_optimizations:
+  # Utiliser le stockage sur disque pour les performances
+  use_mmap: true
+  # Réduire l'utilisation mémoire
+  memory_efficient: true

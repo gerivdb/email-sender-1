@@ -1,3 +1,4 @@
+# MIGRATED TO QDRANT STANDALONE - 2025-05-25
 # Index-PlanDevQdrant.ps1
 # Script pour indexer les plans de développement dans Qdrant
 
@@ -423,7 +424,7 @@ function Start-QdrantContainerIfNeeded {
         [string]$QdrantUrl = "http://localhost:6333",
 
         [Parameter(Mandatory = $false)]
-        [string]$DataPath = "projet\roadmaps\vectors\qdrant_data",
+        [string]$DataPath = "..\..\data\qdrant",
 
         [Parameter(Mandatory = $false)]
         [switch]$Force
@@ -445,7 +446,7 @@ function Start-QdrantContainerIfNeeded {
     # Tenter de démarrer le conteneur Docker
     Write-Log "Tentative de démarrage du conteneur Docker pour Qdrant..." -Level Info
 
-    $qdrantContainerScript = Join-Path -Path $PSScriptRoot -ChildPath "Start-QdrantContainer.ps1"
+    $qdrantContainerScript = Join-Path $PSScriptRoot "..\..\tools\qdrant\Start-QdrantStandalone.ps1"
     if (Test-Path -Path $qdrantContainerScript) {
         & $qdrantContainerScript -Action Start -DataPath $DataPath -Force:$Force
 
@@ -489,7 +490,7 @@ function Start-QdrantContainerIfNeeded {
     } else {
         Write-Log "Script de gestion du conteneur Docker pour Qdrant non trouvé: $qdrantContainerScript" -Level Error
         Write-Log "Veuillez démarrer le conteneur manuellement avec Docker:" -Level Error
-        Write-Log "docker run -d -p 6333:6333 -p 6334:6334 -v `"$(Resolve-Path $DataPath):/qdrant/storage`" qdrant/qdrant" -Level Error
+        Write-Log "# MIGRATED: docker run -d -p 6333:6333 -p 6334:6334 -v `"$(Resolve-Path $DataPath):/qdrant/storage`" qdrant/qdrant" -Level Error
         return $false
     }
 }
@@ -509,7 +510,7 @@ function Main {
     }
 
     # Vérifier et démarrer le conteneur Docker de Qdrant si nécessaire
-    $qdrantDataPath = "projet\roadmaps\vectors\qdrant_data"
+    $qdrantDataPath = "..\..\data\qdrant"
     if (-not (Start-QdrantContainerIfNeeded -QdrantUrl $QdrantUrl -DataPath $qdrantDataPath -Force:$Force)) {
         Write-Log "Impossible d'assurer que le conteneur Docker de Qdrant est en cours d'exécution. Le script ne peut pas continuer." -Level Error
         return
@@ -531,3 +532,4 @@ function Main {
 
 # Exécuter la fonction principale
 Main
+

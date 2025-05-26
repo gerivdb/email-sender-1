@@ -1,3 +1,4 @@
+# MIGRATED TO QDRANT STANDALONE - 2025-05-25
 # Start-CompleteTestSuite.ps1
 # Script tout-en-un pour exécuter la suite complète de tests du système RAG de roadmaps
 # Version: 1.0
@@ -108,7 +109,7 @@ function Start-QdrantContainer {
     } else {
         # Créer et démarrer un nouveau conteneur
         Write-Log "Création et démarrage d'un nouveau conteneur Qdrant '$ContainerName'..." -Level "Info"
-        docker run -d --name $ContainerName -p 6333:6333 -p 6334:6334 qdrant/qdrant:latest
+        # MIGRATED: docker run -d --name $ContainerName -p 6333:6333 -p 6334:6334 qdrant/qdrant:latest
     }
     
     # Attendre que Qdrant soit prêt
@@ -392,4 +393,5 @@ function Start-CompleteTestSuite {
 
 # Exécuter la fonction principale
 Start-CompleteTestSuite -TestType $TestType -VenvPath $VenvPath -QdrantUrl $QdrantUrl -QdrantContainerName $QdrantContainerName -Force:$Force -SkipQdrantCheck:$SkipQdrantCheck -SkipVenvSetup:$SkipVenvSetup -NoReport:$NoReport
+
 

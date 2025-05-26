@@ -1,4 +1,5 @@
-﻿# Index-TaskVectorsQdrant.ps1
+# MIGRATED TO QDRANT STANDALONE - 2025-05-25
+# Index-TaskVectorsQdrant.ps1
 # Script pour indexer les vecteurs de tÃ¢ches par identifiant, statut, date, etc. dans Qdrant
 
 [CmdletBinding()]
@@ -270,7 +271,7 @@ function Start-QdrantContainerIfNeeded {
         [string]$QdrantUrl = "http://localhost:6333",
 
         [Parameter(Mandatory = $false)]
-        [string]$DataPath = "projet\roadmaps\vectors\qdrant_data",
+        [string]$DataPath = "..\..\data\qdrant",
 
         [Parameter(Mandatory = $false)]
         [switch]$Force
@@ -292,7 +293,7 @@ function Start-QdrantContainerIfNeeded {
     # Tenter de dÃ©marrer le conteneur Docker
     Write-Log "Tentative de dÃ©marrage du conteneur Docker pour Qdrant..." -Level Info
 
-    $qdrantContainerScript = Join-Path -Path $PSScriptRoot -ChildPath "Start-QdrantContainer.ps1"
+    $qdrantContainerScript = Join-Path $PSScriptRoot "..\..\tools\qdrant\Start-QdrantStandalone.ps1"
     if (Test-Path -Path $qdrantContainerScript) {
         & $qdrantContainerScript -Action Start -DataPath $DataPath -Force:$Force
 
@@ -336,7 +337,7 @@ function Start-QdrantContainerIfNeeded {
     } else {
         Write-Log "Script de gestion du conteneur Docker pour Qdrant non trouvÃ©: $qdrantContainerScript" -Level Error
         Write-Log "Veuillez dÃ©marrer le conteneur manuellement avec Docker:" -Level Error
-        Write-Log "docker run -d -p 6333:6333 -p 6334:6334 -v `"$(Resolve-Path $DataPath):/qdrant/storage`" qdrant/qdrant" -Level Error
+        Write-Log "# MIGRATED: docker run -d -p 6333:6333 -p 6334:6334 -v `"$(Resolve-Path $DataPath):/qdrant/storage`" qdrant/qdrant" -Level Error
         return $false
     }
 }
@@ -384,3 +385,4 @@ function Main {
 
 # ExÃ©cuter la fonction principale
 Main
+

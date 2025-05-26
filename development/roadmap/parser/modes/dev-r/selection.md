@@ -1,0 +1,156 @@
+## PHASE 5 : Tests et Validation
+
+### 5.1 Tests unitaires
+- [ ] **5.1** Tests unitaires
+  - [ ] **5.1.1** Coverage complète
+    - [ ] **5.1.1.1** Tests pour chaque module
+      - [ ] **5.1.1.1.1** Tests du client QDrant
+        - [ ] **5.1.1.1.1.1** Tester les connexions
+          - [ ] **5.1.1.1.1.1.1** Test de connexion réussie
+          - [ ] **5.1.1.1.1.1.2** Test de timeout de connexion
+          - [ ] **5.1.1.1.1.1.3** Test d'erreur serveur
+        - [ ] **5.1.1.1.1.2** Tester les opérations CRUD
+          - [ ] **5.1.1.1.1.2.1** Create collection
+          - [ ] **5.1.1.1.1.2.2** Read collection info
+          - [ ] **5.1.1.1.1.2.3** Update collection params
+          - [ ] **5.1.1.1.1.2.4** Delete collection
+      - [ ] **5.1.1.1.2** Tests des providers d'embeddings
+        - [ ] **5.1.1.1.2.1** Tests du provider simulé
+          - [ ] **5.1.1.1.2.1.1** Vérifier la consistance des embeddings
+          - [ ] **5.1.1.1.2.1.2** Vérifier la normalisation des vecteurs
+          - [ ] **5.1.1.1.2.1.3** Tester le cache interne
+        - [ ] **5.1.1.1.2.2** Tests des dimensions
+          - [ ] **5.1.1.1.2.2.1** Vérifier les dimensions correctes
+          - [ ] **5.1.1.1.2.2.2** Tester les erreurs de dimension
+        - [ ] **5.1.1.1.2.3** Tests du traitement par lots
+          - [ ] **5.1.1.1.2.3.1** Vérifier la gestion des lots vides
+          - [ ] **5.1.1.1.2.3.2** Tester les grands lots (>100 items)
+      - [ ] **5.1.1.1.3** Tests du module d'indexation
+        - [ ] **5.1.1.1.3.1** Tests de lecture de fichiers
+          - [ ] **5.1.1.1.3.1.1** Tests des fichiers TXT
+          - [ ] **5.1.1.1.3.1.2** Tests des fichiers Markdown
+          - [ ] **5.1.1.1.3.1.3** Tests des fichiers PDF
+        - [ ] **5.1.1.1.3.2** Tests de chunking
+          - [ ] **5.1.1.1.3.2.1** Vérifier l'overlap correct
+          - [ ] **5.1.1.1.3.2.2** Tester le respect des limites de phrase
+          - [ ] **5.1.1.1.3.2.3** Tester les cas extrêmes (très court/long)
+        - [ ] **5.1.1.1.3.3** Tests d'insertion batch
+          - [ ] **5.1.1.1.3.3.1** Vérifier la gestion des erreurs partielles
+          - [ ] **5.1.1.1.3.3.2** Tester la récupération après échec
+      - [ ] **5.1.1.1.4** Tests du moteur de recherche
+        - [ ] **5.1.1.1.4.1** Tests de recherche vectorielle
+          - [ ] **5.1.1.1.4.1.1** Tester la recherche simple
+          - [ ] **5.1.1.1.4.1.2** Tester les filtres de metadata
+          - [ ] **5.1.1.1.4.1.3** Tester les limites et pagination
+        - [ ] **5.1.1.1.4.2** Tests de re-ranking
+          - [ ] **5.1.1.1.4.2.1** Vérifier l'ordre des résultats
+          - [ ] **5.1.1.1.4.2.2** Tester la pertinence des snippets
+    - [ ] **5.1.1.2** Mocks pour QDrant
+      - [ ] **5.1.1.2.1** Créer un mock serveur QDrant
+        - [ ] **5.1.1.2.1.1** Implémenter les endpoints principaux
+          - [ ] **5.1.1.2.1.1.1** `/collections` endpoint
+          - [ ] **5.1.1.2.1.1.2** `/points` endpoint
+          - [ ] **5.1.1.2.1.1.3** `/search` endpoint
+        - [ ] **5.1.1.2.1.2** Simuler les réponses typiques
+          - [ ] **5.1.1.2.1.2.1** Réponses de succès
+          - [ ] **5.1.1.2.1.2.2** Réponses d'erreur communes
+        - [ ] **5.1.1.2.1.3** Intercepter les requêtes HTTP
+          - [ ] **5.1.1.2.1.3.1** Valider le format des requêtes
+          - [ ] **5.1.1.2.1.3.2** Enregistrer les requêtes pour analyse
+      - [ ] **5.1.1.2.2** Tests avec le mock
+        - [ ] **5.1.1.2.2.1** Tester les scénarios d'erreur
+          - [ ] **5.1.1.2.2.1.1** Erreurs serveur (5xx)
+          - [ ] **5.1.1.2.2.1.2** Erreurs client (4xx)
+          - [ ] **5.1.1.2.2.1.3** Timeouts et erreurs réseau
+        - [ ] **5.1.1.2.2.2** Tester les limites du système
+          - [ ] **5.1.1.2.2.2.1** Grand nombre de collections
+          - [ ] **5.1.1.2.2.2.2** Grand nombre de points (>10k)
+    - [ ] **5.1.1.3** Tests de performance
+      - [ ] **5.1.1.3.1** Benchmarks d'indexation
+        - [ ] **5.1.1.3.1.1** Mesurer le débit d'indexation
+          - [ ] **5.1.1.3.1.1.1** Documents par seconde
+          - [ ] **5.1.1.3.1.1.2** Temps total d'indexation
+        - [ ] **5.1.1.3.1.2** Profiler l'utilisation mémoire
+          - [ ] **5.1.1.3.1.2.1** Utilisation mémoire par document
+          - [ ] **5.1.1.3.1.2.2** Pics mémoire pendant l'indexation
+        - [ ] **5.1.1.3.1.3** Mesurer l'impact des optimisations
+          - [ ] **5.1.1.3.1.3.1** Impact du chunking parallèle
+          - [ ] **5.1.1.3.1.3.2** Impact de la taille des batches
+      - [ ] **5.1.1.3.2** Benchmarks de recherche
+        - [ ] **5.1.1.3.2.1** Latence des requêtes
+          - [ ] **5.1.1.3.2.1.1** Latence moyenne (p50)
+          - [ ] **5.1.1.3.2.1.2** Latence percentile 95 (p95)
+          - [ ] **5.1.1.3.2.1.3** Latence percentile 99 (p99)
+        - [ ] **5.1.1.3.2.2** Throughput maximal
+          - [ ] **5.1.1.3.2.2.1** Requêtes par seconde
+          - [ ] **5.1.1.3.2.2.2** Dégradation sous charge
+        - [ ] **5.1.1.3.2.3** Temps de réponse par composant
+          - [ ] **5.1.1.3.2.3.1** Temps d'embedding de requête
+          - [ ] **5.1.1.3.2.3.2** Temps de recherche QDrant
+          - [ ] **5.1.1.3.2.3.3** Temps de re-ranking local
+
+### 5.2 Tests d'intégration
+- [ ] **5.2** Tests d'intégration
+  - [ ] **5.2.1** Tests bout-en-bout
+    - [ ] **5.2.1.1** Tests avec QDrant réel
+      - [ ] **5.2.1.1.1** Setup de l'environnement de test
+        - [ ] **5.2.1.1.1.1** Déployer QDrant via Docker
+          - [ ] **5.2.1.1.1.1.1** Créer un docker-compose.yml
+          - [ ] **5.2.1.1.1.1.2** Configurer le volume de persistance
+          - [ ] **5.2.1.1.1.1.3** Exposer les ports nécessaires
+        - [ ] **5.2.1.1.1.2** Configuration de test
+          - [ ] **5.2.1.1.1.2.1** Collection pour tests
+          - [ ] **5.2.1.1.1.2.2** Données de test initiales
+        - [ ] **5.2.1.1.1.3** Scripts d'initialisation
+          - [ ] **5.2.1.1.1.3.1** Script de reset
+          - [ ] **5.2.1.1.1.3.2** Script de seeding
+      - [ ] **5.2.1.1.2** Scénarios d'intégration
+        - [ ] **5.2.1.1.2.1** Index puis recherche
+          - [ ] **5.2.1.1.2.1.1** Vérifier les documents indexés
+          - [ ] **5.2.1.1.2.1.2** Rechercher des termes spécifiques
+        - [ ] **5.2.1.1.2.2** Mise à jour et réindexation
+          - [ ] **5.2.1.1.2.2.1** Modifier des documents
+          - [ ] **5.2.1.1.2.2.2** Vérifier la mise à jour des embeddings
+        - [ ] **5.2.1.1.2.3** Interaction API complète
+          - [ ] **5.2.1.1.2.3.1** Création de collections
+          - [ ] **5.2.1.1.2.3.2** Indexation via l'API
+          - [ ] **5.2.1.1.2.3.3** Recherche via l'API
+    - [ ] **5.2.1.2** Tests de charge
+      - [ ] **5.2.1.2.1** Tests de montée en charge
+        - [ ] **5.2.1.2.1.1** Préparer les jeux de données
+          - [ ] **5.2.1.2.1.1.1** Petit jeu (100 documents)
+          - [ ] **5.2.1.2.1.1.2** Jeu moyen (10,000 documents)
+          - [ ] **5.2.1.2.1.1.3** Grand jeu (100,000+ documents)
+        - [ ] **5.2.1.2.1.2** Tests de scalabilité
+          - [ ] **5.2.1.2.1.2.1** Mesurer le temps d'indexation
+          - [ ] **5.2.1.2.1.2.2** Mesurer le temps de recherche
+          - [ ] **5.2.1.2.1.2.3** Analyser la courbe de scalabilité
+      - [ ] **5.2.1.2.2** Tests de concurrence
+        - [ ] **5.2.1.2.2.1** Requêtes de recherche simultanées
+          - [ ] **5.2.1.2.2.1.1** 10 requêtes simultanées
+          - [ ] **5.2.1.2.2.1.2** 100 requêtes simultanées
+          - [ ] **5.2.1.2.2.1.3** 1000 requêtes simultanées
+        - [ ] **5.2.1.2.2.2** Opérations mixtes
+          - [ ] **5.2.1.2.2.2.1** Indexation et recherche simultanées
+          - [ ] **5.2.1.2.2.2.2** CRUD collections simultané
+        - [ ] **5.2.1.2.2.3** Stress tests extrêmes
+          - [ ] **5.2.1.2.2.3.1** Test de durée (24h)
+          - [ ] **5.2.1.2.2.3.2** Test de charge maximale
+    - [ ] **5.2.1.3** Validation des résultats
+      - [ ] **5.2.1.3.1** Précision des recherches
+        - [ ] **5.2.1.3.1.1** Évaluation manuelle
+          - [ ] **5.2.1.3.1.1.1** Vérifier la pertinence top-5
+          - [ ] **5.2.1.3.1.1.2** Évaluer la diversité des résultats
+        - [ ] **5.2.1.3.1.2** Métriques de qualité
+          - [ ] **5.2.1.3.1.2.1** Précision@k (P@5, P@10)
+          - [ ] **5.2.1.3.1.2.2** Mean Average Precision (MAP)
+          - [ ] **5.2.1.3.1.2.3** Normalized Discounted Cumulative Gain (nDCG)
+      - [ ] **5.2.1.3.2** Robustesse du système
+        - [ ] **5.2.1.3.2.1** Tests de récupération
+          - [ ] **5.2.1.3.2.1.1** Reprise après crash
+          - [ ] **5.2.1.3.2.1.2** Tolérance aux fautes réseau
+          - [ ] **5.2.1.3.2.1.3** Redémarrage propre
+        - [ ] **5.2.1.3.2.2** Tests de limites
+          - [ ] **5.2.1.3.2.2.1** Documents très volumineux
+          - [ ] **5.2.1.3.2.2.2** Requêtes très complexes
+          - [ ] **5.2.1.3.2.2.3** Encodages et caractères spéciaux

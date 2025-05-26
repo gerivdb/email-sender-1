@@ -1,0 +1,29 @@
+Guide QDrant RAG
+
+QDrant est une base de données vectorielle open-source conçue pour la recherche sémantique à haute performance.
+
+Qu'est-ce que RAG?
+RAG (Retrieval Augmented Generation) est une approche qui combine la recherche d'informations pertinentes avec la génération de texte. Cette méthode permet d'améliorer considérablement la qualité et la précision des réponses générées par les modèles de langage.
+
+Avantages de QDrant:
+- Performance élevée pour la recherche vectorielle
+- Support des métadonnées riches
+- API REST simple à utiliser
+- Filtrage avancé des résultats
+- Clustering et sharding automatiques
+
+Comment utiliser le système RAG:
+1. Indexer vos documents avec le script de vectorisation
+2. Effectuer des recherches sémantiques 
+3. Générer des réponses contextualisées
+
+Configuration recommandée:
+- Taille de vecteur: 384 ou 768 dimensions selon le modèle d'embedding
+- Distance: Cosine pour la plupart des cas d'usage
+- Stockage: Sur disque pour la persistance
+
+Exemples d'utilisation:
+- Support client automatisé
+- Recherche dans la documentation
+- Analyse de documents
+- Recommandations personnalisées
