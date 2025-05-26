@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"email_sender/src/indexing"
+
 	"github.com/schollz/progressbar/v3"
 )
 
@@ -97,9 +99,8 @@ func runIndex(cmd *indexCommand) error {
 	if cmd.source == "" {
 		return fmt.Errorf("source directory or file required")
 	}
-
 	// Load configuration
-	config, err := LoadConfig(cmd.config)
+	config, err := indexing.LoadConfig(cmd.config)
 	if err != nil {
 		return fmt.Errorf("failed to load config: %v", err)
 	}
@@ -113,7 +114,7 @@ func runIndex(cmd *indexCommand) error {
 	}
 
 	// Create batch indexer
-	indexer, err := NewBatchIndexer(BatchIndexerConfig{
+	indexer, err := indexing.NewBatchIndexer(indexing.BatchIndexerConfig{
 		QdrantHost:   config.Qdrant.Host,
 		QdrantPort:   config.Qdrant.Port,
 		Collection:   config.Qdrant.Collection,
@@ -158,9 +159,8 @@ func runIndex(cmd *indexCommand) error {
 		}
 		return nil
 	}
-
 	// Create progress bar
-	bar := progressbar.Default(int64(len(files)))
+	_ = progressbar.Default(int64(len(files)))
 
 	// Create context with timeout
 	ctx, cancel := context.WithTimeout(context.Background(), cmd.timeout)
@@ -181,7 +181,7 @@ func runIndex(cmd *indexCommand) error {
 }
 
 func runStatus(cmd *statusCommand) error {
-	config, err := LoadConfig(cmd.config)
+	config, err := indexing.LoadConfig(cmd.config)
 	if err != nil {
 		return fmt.Errorf("failed to load config: %v", err)
 	}
@@ -213,7 +213,7 @@ func runPurge(cmd *purgeCommand) error {
 		}
 	}
 
-	config, err := LoadConfig(cmd.config)
+	config, err := indexing.LoadConfig(cmd.config)
 	if err != nil {
 		return fmt.Errorf("failed to load config: %v", err)
 	}

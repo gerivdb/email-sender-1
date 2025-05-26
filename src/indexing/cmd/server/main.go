@@ -269,3 +269,8 @@ func (s *IndexingServer) getStats() map[string]interface{} {
 func (s *IndexingServer) runIndexingJob(jobID string, req IndexRequest) {
 	// Implementation
 }
+
+func main() {
+	// TODO: Implement main function for indexing server
+	fmt.Println("Indexing server main function - TODO: implement")
+}

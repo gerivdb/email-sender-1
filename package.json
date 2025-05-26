@@ -30,9 +30,6 @@
     "eslint": "^8.0.0"
   },
   "displayName": "Error Pattern Analyzer",
-  "activationEvents": [
-    "onCommand:errorPatternAnalyzer.runAnalysis"
-  ],
   "contributes": {
     "commands": [
       {

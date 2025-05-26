@@ -10,23 +10,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/qdrant/go-client/qdrant"
-	"google.golang.org/grpc"
+	qdrantclient "email_sender/src/qdrant"
 )
-
-// Document represents a document to be indexed
-type Document struct {
-	ID       string
-	Content  string
-	Metadata map[string]interface{}
-}
 
 // BatchIndexer handles batch indexing of documents
 type BatchIndexer struct {
 	config   BatchIndexerConfig
 	metrics  *Metrics
 	indexDir string
-	client   *qdrant.Points
+	client   *qdrantclient.QdrantClient
 }
 
 // BatchIndexerConfig holds configuration for BatchIndexer
@@ -57,21 +49,14 @@ func NewBatchIndexer(config BatchIndexerConfig) (*BatchIndexer, error) {
 	}
 
 	// Connect to Qdrant
-	addr := fmt.Sprintf("%s:%d", config.QdrantHost, config.QdrantPort)
-	conn, err := grpc.Dial(addr, grpc.WithInsecure())
-	if err != nil {
-		return nil, fmt.Errorf("failed to connect to Qdrant: %v", err)
-	}
-
-	// Create Qdrant API client
-	qc := qdrant.NewQdrantClient(conn)
-	pointsAPI := qc.GetPointsClient()
+	qdrantURL := fmt.Sprintf("http://%s:%d", config.QdrantHost, config.QdrantPort)
+	client := qdrantclient.NewQdrantClient(qdrantURL)
 
 	return &BatchIndexer{
 		config:   config,
 		metrics:  config.Metrics,
 		indexDir: config.IndexDir,
-		client:   pointsAPI,
+		client:   client,
 	}, nil
 }
 
@@ -140,84 +125,45 @@ func (bi *BatchIndexer) indexFile(ctx context.Context, filePath string) error {
 		return fmt.Errorf("failed to read file: %v", err)
 	}
 
-	// Generate file ID
+	// Generate a unique ID for the document (hash of file path)
 	h := sha256.New()
-	h.Write(content)
+	h.Write([]byte(filePath))
 	id := hex.EncodeToString(h.Sum(nil))
 
 	// Create document
 	doc := Document{
-		ID:      id,
+		Path:    filePath,
 		Content: string(content),
 		Metadata: map[string]interface{}{
 			"source": filePath,
 			"size":   len(content),
 			"type":   filepath.Ext(filePath),
 		},
+		Encoding: "utf-8",
 	}
 
 	// Write the document to the index directory
-	indexPath := filepath.Join(bi.indexDir, doc.ID)
+	indexPath := filepath.Join(bi.indexDir, id)
 	if err := os.WriteFile(indexPath, []byte(doc.Content), 0644); err != nil {
 		return fmt.Errorf("failed to write indexed file: %v", err)
 	}
 
-	// Generate vector embedding (mock for now)
-	vector := &qdrant.Vector{
-		Data: make([]float32, 384), // Mock 384-dim vector
-	}
-	for i := range vector.Data {
-		vector.Data[i] = float32(i) / 384.0
+	// Generate a mock vector
+	vector := make([]float32, 384)
+	for i := range vector {
+		vector[i] = float32(i) / 384.0
 	}
 
 	// Create Qdrant point
-	point := &qdrant.Point{
-		Id: &qdrant.PointId{
-			PointIdOptions: &qdrant.PointId_String_{
-				String_: doc.ID,
-			},
-		},
-		Vectors: &qdrant.Vectors{
-			VectorsOptions: &qdrant.Vectors_Vector{
-				Vector: vector,
-			},
-		},
-		Payload: make(map[string]*qdrant.Value),
-	}
-
-	// Convert metadata to Qdrant values
-	for k, v := range doc.Metadata {
-		switch val := v.(type) {
-		case string:
-			point.Payload[k] = &qdrant.Value{
-				Kind: &qdrant.Value_StringValue{
-					StringValue: val,
-				},
-			}
-		case int:
-			point.Payload[k] = &qdrant.Value{
-				Kind: &qdrant.Value_IntegerValue{
-					IntegerValue: int64(val),
-				},
-			}
-		}
-	}
-
-	// Add content to payload
-	point.Payload["content"] = &qdrant.Value{
-		Kind: &qdrant.Value_StringValue{
-			StringValue: doc.Content,
-		},
+	point := qdrantclient.Point{
+		ID:      id,
+		Vector:  vector,
+		Payload: doc.Metadata,
 	}
 
 	// Upsert point to Qdrant
-	upsertReq := &qdrant.UpsertPoints{
-		CollectionName: bi.config.Collection,
-		Points:         []*qdrant.Point{point},
-	}
-
-	if _, err := bi.client.Upsert(ctx, upsertReq); err != nil {
-		return fmt.Errorf("failed to index in Qdrant: %v", err)
+	if err := bi.client.UpsertPoints(bi.config.Collection, []qdrantclient.Point{point}); err != nil {
+		return fmt.Errorf("failed to upsert point in Qdrant: %v", err)
 	}
 
 	return nil

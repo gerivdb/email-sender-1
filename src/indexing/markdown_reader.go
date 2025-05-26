@@ -52,14 +52,11 @@ func (r *MarkdownReader) Read(path string) (*Document, error) {
 // extractFrontMatter extracts YAML frontmatter from markdown document
 func extractFrontMatter(node ast.Node) map[string]interface{} {
 	metadata := make(map[string]interface{})
-
 	ast.WalkFunc(node, func(n ast.Node, entering bool) ast.WalkStatus {
 		if entering {
-			if yaml, ok := n.(*ast.YamlMetadata); ok {
-				// Parse YAML content here
-				// For simplicity, we're just storing the raw string
-				metadata["frontmatter"] = string(yaml.Content)
-			}
+			// Note: YamlMetadata is not available in gomarkdown/markdown
+			// We'll skip YAML frontmatter parsing for now
+			// TODO: Implement proper frontmatter parsing if needed
 		}
 		return ast.GoToNext
 	})
