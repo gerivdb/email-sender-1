@@ -18,6 +18,8 @@ type MockEmbeddingProvider struct {
 	baseLatency  time.Duration // Latence de base par requête
 	batchLatency time.Duration // Latence additionnelle par élément dans un batch
 	cacheHitRate float32       // Taux de succès du cache (0-1)
+	maxCacheSize int64         // Taille maximale du cache en octets (0 = illimité)
+	evictQueue   []string      // Queue FIFO pour l'éviction du cache
 
 	// Statistiques accumulées
 	totalRequests int64
@@ -36,6 +38,8 @@ func NewMockEmbeddingProvider(opts ...MockOption) *MockEmbeddingProvider {
 		baseLatency:  100 * time.Millisecond, // Latence par défaut
 		batchLatency: 10 * time.Millisecond,  // Latence additionnelle par élément
 		cacheHitRate: 0.8,                    // 80% de succès du cache par défaut
+		maxCacheSize: 100 * 1024 * 1024,      // 100MB par défaut
+		evictQueue:   make([]string, 0),      // Queue d'éviction vide
 	}
 
 	// Appliquer les options de configuration
@@ -70,15 +74,26 @@ func WithCacheHitRate(rate float32) MockOption {
 	}
 }
 
+// WithMaxCacheSize configure la taille maximale du cache en octets
+func WithMaxCacheSize(size int64) MockOption {
+	return func(p *MockEmbeddingProvider) {
+		p.maxCacheSize = size
+	}
+}
+
 // Embed génère un embedding simulé pour un texte donné
 func (p *MockEmbeddingProvider) Embed(text string) ([]float32, error) {
 	// Vérifier d'abord le cache
 	if embedding := p.checkCache(text); embedding != nil {
+		// Pour les cache hits, simuler une latence réduite (10% de la latence de base)
+		time.Sleep(p.baseLatency / 10)
+		p.updateStats(p.baseLatency/10, 1, int64(len(text)))
 		return embedding, nil
 	}
 
-	// Simuler la latence de base
-	time.Sleep(p.baseLatency)
+	// Simuler la latence de base plus une latence variable basée sur la taille du texte
+	latency := p.baseLatency + time.Duration(len(text))*time.Microsecond
+	time.Sleep(latency)
 
 	// Générer un embedding simulé
 	embedding := generateMockEmbedding(text, 1536)
@@ -86,8 +101,8 @@ func (p *MockEmbeddingProvider) Embed(text string) ([]float32, error) {
 	// Mettre en cache le résultat
 	p.cacheResult(text, embedding)
 
-	// Mettre à jour les statistiques
-	p.updateStats(p.baseLatency, 1, int64(len(text)))
+	// Mettre à jour les statistiques avec la latence simulée
+	p.updateStats(latency, 1, int64(len(text)))
 
 	return embedding, nil
 }
@@ -96,35 +111,48 @@ func (p *MockEmbeddingProvider) Embed(text string) ([]float32, error) {
 func (p *MockEmbeddingProvider) EmbedBatch(texts []string) ([][]float32, error) {
 	embeddings := make([][]float32, len(texts))
 	var totalTokens int64
-
-	// Latence de base pour le batch
-	latency := p.baseLatency
+	var totalLatency time.Duration
 
 	// Traitement séquentiel pour la simulation
 	for i, text := range texts {
-		// Vérifier le cache
+		// Vérifier le cache avec réduction de latence pour les cache hits (10%)
 		if embedding := p.checkCache(text); embedding != nil {
 			embeddings[i] = embedding
+			// Pour les hits, on n'ajoute que 10% de la latence par élément
+			elementLatency := p.batchLatency / 10
+			totalLatency += elementLatency
+			totalTokens += int64(len(text))
+			time.Sleep(elementLatency)
 			continue
 		}
 
-		// Ajouter la latence par élément
-		latency += p.batchLatency
+		// Calculer la latence pour cet élément
+		elementLatency := p.batchLatency // Latence de base par élément
+
+		// Ajouter la latence de base pour le premier élément non-caché seulement
+		if i == 0 {
+			elementLatency += p.baseLatency
+		}
+
+		// Ajouter une latence variable basée sur la taille du texte
+		elementLatency += time.Duration(len(text)) * time.Microsecond
+
+		// Accumuler la latence totale pour les statistiques
+		totalLatency += elementLatency
+		totalTokens += int64(len(text))
 
 		// Générer l'embedding
 		embeddings[i] = generateMockEmbedding(text, 1536)
 
-		// Mettre en cache
+		// Mettre en cache le résultat
 		p.cacheResult(text, embeddings[i])
 
-		totalTokens += int64(len(text))
+		// Simuler la latence pour cet élément
+		time.Sleep(elementLatency)
 	}
 
-	// Simuler la latence totale du batch
-	time.Sleep(latency)
-
-	// Mettre à jour les statistiques
-	p.updateStats(latency, int64(len(texts)), totalTokens)
+	// Mettre à jour les statistiques avec la latence totale accumulée
+	p.updateStats(totalLatency, int64(len(texts)), totalTokens)
 
 	return embeddings, nil
 }
@@ -152,12 +180,39 @@ func (p *MockEmbeddingProvider) cacheResult(text string, embedding []float32) {
 	p.cacheLock.Lock()
 	defer p.cacheLock.Unlock()
 
+	// Calculer la taille du nouvel embedding
+	newSize := int64(len(embedding) * 4) // 4 bytes par float32
+
+	// Si le cache a une limite de taille et qu'elle serait dépassée
+	if p.maxCacheSize > 0 && p.cacheSize+newSize > p.maxCacheSize {
+		p.evictCache()
+	}
+
 	p.cache[text] = embedding
+	p.evictQueue = append(p.evictQueue, text)
 
 	// Mettre à jour la taille approximative du cache
 	p.statsLock.Lock()
-	p.cacheSize = int64(len(p.cache)) * int64(len(embedding)*4) // 4 bytes par float32
+	p.cacheSize += newSize
 	p.statsLock.Unlock()
+}
+
+func (p *MockEmbeddingProvider) evictCache() {
+	// Éviction simple en FIFO (premier entré, premier sorti)
+	for len(p.evictQueue) > 0 {
+		// Obtenir la clé du plus ancien élément dans le cache
+		oldest := p.evictQueue[0]
+		p.evictQueue = p.evictQueue[1:] // Mettre à jour la queue d'éviction
+
+		// Si l'élément existe encore, le supprimer et mettre à jour la taille
+		if oldEmbed, exists := p.cache[oldest]; exists {
+			p.statsLock.Lock()
+			p.cacheSize -= int64(len(oldEmbed) * 4) // 4 bytes par float32
+			p.statsLock.Unlock()
+			delete(p.cache, oldest)
+			return
+		}
+	}
 }
 
 func (p *MockEmbeddingProvider) updateStats(latency time.Duration, batchSize, tokens int64) {

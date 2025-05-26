@@ -1,7 +1,3 @@
-git add . && git commit -m "commit all changes" --no-verify && git push --no-verify
-
-remplace "commit all changes" par un descriptif adéquat reflétant la ou les implémentations, modifs, etc# Plan de Développement v34 - Système RAG en Go avec QDrant
-
 ## Projet : Système RAG Ultra-Rapide en Go
 **Date de création :** 25 Mai 2025  
 **Version :** v34  
@@ -10,67 +6,28 @@ remplace "commit all changes" par un descriptif adéquat reflétant la ou les im
 
 **État d'avancement :**
 - Phase 1 (Setup & Architecture) : ✅ 100% 
-- Phase 2 (Core RAG Engine) : 🟨 45%
+- Phase 2 (Core RAG Engine) : 🟨 75%
   - Structures de données : ✅ 100%
-  - Service Vectorisation : 🟨 80%
-  - Implémentation Mock : 🟨 20%
-  - Indexation : ⬜️ 0%
+  - Service Vectorisation : ✅ 100%
+  - Implémentation Mock : 🟨 60%
+  - Indexation : 🟨 50%
+    - BatchIndexer : ✅ 100%
+    - Intégration Qdrant : 🟨 40%
 - Phase 3 (API & Search) : ⬜️ 0%
 - Phase 4 (Performance) : ⬜️ 0%
+- Phase 5 (Tests & Validation) : 🟨 40%
+  - Tests unitaires basiques ✅
+  - Tests BatchIndexer ✅
+  - Tests d'intégration ⬜️
+  - Tests de performance ⬜️
+- Phase 6 (Documentation & Déploiement) : 🟨 5%
+  - Documentation de base ✅
+  - Documentation complète ⬜️
+  - Scripts de déploiement ⬜️
 
 ---
 
-## PHASE 1 : Setup et Architecture Initiale
 
-### 1.1 Création du projet Go
-- [x] **1.1** Création du projet Go
-  - [x] **1.1.1** Créer le dossier `tools/qdrant/rag-go`  
-    - [x] **1.1.1.1** Créer le répertoire principal
-      - [x] **1.1.1.1.1** Vérifier l'emplacement de destination
-        - [ ] **1.1.1.1.1.1** Naviguer vers `tools/qdrant/`
-          - [x] **1.1.1.1.1.1.1** Ouvrir le terminal PowerShell
-          - [x] **1.1.1.1.1.1.2** Exécuter `cd tools/qdrant/`
-        - [x] **1.1.1.1.1.2** Vérifier les permissions d'écriture
-        - [x] **1.1.1.1.1.2.1** Tester avec `Test-Path -PathType Container`
-        - [x] **1.1.1.1.1.2.2** Vérifier les droits administrateur si nécessaire
-        - [x] **1.1.1.1.1.2.3** Tester l'écriture avec `New-Item -ItemType File -Path .\_test_write.tmp -Force; Remove-Item .\_test_write.tmp -Force`
-      - [x] **1.1.1.1.2** Créer le dossier rag-go
-        - [x] **1.1.1.1.2.1** Exécuter `mkdir rag-go`
-        - [x] **1.1.1.1.2.2** Vérifier la création avec `ls`
-    - [x] **1.1.1.2** Initialiser le module Go
-      - [x] **1.1.1.2.1** Naviguer dans le dossier      
-      - [x] **1.1.1.2.1.1** Exécuter `cd rag-go`
-      - [x] **1.1.1.2.1.2** Vérifier le répertoire courant avec `pwd`
-      - [x] **1.1.1.2.2** Initialiser le module      
-      - [x] **1.1.1.2.2.1** Exécuter `go mod init rag-go-system`
-      - [x] **1.1.1.2.2.2** Vérifier la création du fichier `go.mod`
-      - [x] **1.1.1.2.2.3** Inspecter le contenu du fichier go.mod
-    - [x] **1.1.1.3** Créer la structure de dossiers
-      - [x] **1.1.1.3.1** Créer le dossier `cmd/`
-        - [x] **1.1.1.3.1.1** Exécuter `mkdir cmd`
-        - [x] **1.1.1.3.1.2** Créer le sous-dossier `cmd/rag-go/`
-          - [x] **1.1.1.3.1.2.1** Exécuter `mkdir cmd/rag-go`
-          - [x] **1.1.1.3.1.2.2** Vérifier la structure avec `tree cmd`
-      - [x] **1.1.1.3.2** Créer le dossier `pkg/`
-        - [x] **1.1.1.3.2.1** Exécuter `mkdir pkg`
-        - [x] **1.1.1.3.2.2** Créer les sous-dossiers pkg
-          - [x] **1.1.1.3.2.2.1** `mkdir pkg/client`
-          - [x] **1.1.1.3.2.2.2** `mkdir pkg/embeddings`
-          - [x] **1.1.1.3.2.2.3** `mkdir pkg/indexer`
-          - [x] **1.1.1.3.2.2.4** `mkdir pkg/search`
-      - [x] **1.1.1.3.3** Créer le dossier `internal/`
-        - [x] **1.1.1.3.3.1** Exécuter `mkdir internal`
-        - [x] **1.1.1.3.3.2** Créer les sous-dossiers internal
-          - [x] **1.1.1.3.3.2.1** `mkdir internal/config`
-          - [x] **1.1.1.3.3.2.2** `mkdir internal/server`
-    - [x] **1.1.1.4** Setup du `.gitignore` pour Go
-      - [x] **1.1.1.4.1** Créer le fichier .gitignore
-        - [x] **1.1.1.4.1.1** Ajouter les binaires Go (`*.exe`, `rag-go`)
-        - [x] **1.1.1.4.1.2** Ajouter les fichiers temporaires (`*.tmp`, `*.temp`)
-        - [x] **1.1.1.4.1.3** Ajouter les logs (`*.log`, `logs/`)
-      - [x] **1.1.1.4.2** Ajouter les exclusions spécifiques
-        - [x] **1.1.1.4.2.1** Ajouter `vendor/` pour les dépendances
-        - [x] **1.1.1.4.2.2** Ajouter `.env` pour les configurations
         - [x] **1.1.1.4.2.3** Ajouter les fichiers de test (`coverage.out`)
 
 ### 1.2 Configuration de base
@@ -311,123 +268,134 @@ remplace "commit all changes" par un descriptif adéquat reflétant la ou les im
           - [x] **2.2.1.2.2.1.1** Hash du texte pour consistance
           - [x] **2.2.1.2.2.1.2** Génération pseudo-aléatoire basée sur le hash
           - [x] **2.2.1.2.2.1.3** Normalisation du vecteur
-          - [ ] **2.2.1.2.2.1.4** Simulation de latence
-        - [ ] **2.2.1.2.2.2** EmbedBatch(texts []string) ([][]float32, error)
-          - [ ] **2.2.1.2.2.2.1** Traitement séquentiel pour simulation
-          - [ ] **2.2.1.2.2.2.2** Accumulation des latences
-        - [*] **2.2.1.2.2.3** Cache management
+          - [x] **2.2.1.2.2.1.4** Simulation de latence
+        - [x] **2.2.1.2.2.2** EmbedBatch(texts []string) ([][]float32, error)
+          - [x] **2.2.1.2.2.2.1** Traitement séquentiel pour simulation
+          - [x] **2.2.1.2.2.2.2** Accumulation des latences
+        - [x] **2.2.1.2.2.3** Cache management
           - [x] **2.2.1.2.2.3.1** Vérification du cache avant calcul
-          - [ ] **2.2.1.2.2.3.2** Limitation de la taille du cache
-    - [ ] **2.2.1.3** Chunking intelligent des documents
-      - [ ] **2.2.1.3.1** Stratégies de chunking
-        - [ ] **2.2.1.3.1.1** Chunking par taille fixe
-          - [ ] **2.2.1.3.1.1.1** Taille par défaut (500 caractères)
-          - [ ] **2.2.1.3.1.1.2** Overlap entre chunks (50 caractères)
-          - [ ] **2.2.1.3.1.1.3** Respect des limites de phrases
-        - [ ] **2.2.1.3.1.2** Chunking sémantique
-          - [ ] **2.2.1.3.1.2.1** Détection des paragraphes
-          - [ ] **2.2.1.3.1.2.2** Analyse des titres et sections
-          - [ ] **2.2.1.3.1.2.3** Préservation du contexte
-        - [ ] **2.2.1.3.1.3** Chunking adaptatif
-          - [ ] **2.2.1.3.1.3.1** Ajustement selon le type de contenu
-          - [ ] **2.2.1.3.1.3.2** Optimisation pour la recherche
-      - [ ] **2.2.1.3.2** Struct DocumentChunk
-        - [ ] **2.2.1.3.2.1** Métadonnées du chunk
-          - [ ] **2.2.1.3.2.1.1** ParentDocumentID string
-          - [ ] **2.2.1.3.2.1.2** ChunkIndex int - position dans le document
-          - [ ] **2.2.1.3.2.1.3** StartOffset int - position de début
-          - [ ] **2.2.1.3.2.1.4** EndOffset int - position de fin
-        - [ ] **2.2.1.3.2.2** Contenu du chunk
-          - [ ] **2.2.1.3.2.2.1** Text string - texte du chunk
-          - [ ] **2.2.1.3.2.2.2** Context string - contexte précédent/suivant
-          - [ ] **2.2.1.3.2.2.3** Vector []float32 - embedding du chunk
+          - [x] **2.2.1.2.2.3.2** Limitation de la taille du cache
+    - [x] **2.2.1.3** Chunking intelligent des documents
+      - [x] **2.2.1.3.1** Stratégies de chunking
+        - [x] **2.2.1.3.1.1** Chunking par taille fixe
+          - [x] **2.2.1.3.1.1.1** Taille par défaut (500 caractères)
+          - [x] **2.2.1.3.1.1.2** Overlap entre chunks (50 caractères)
+          - [x] **2.2.1.3.1.1.3** Respect des limites de phrases
+        - [x] **2.2.1.3.1.2** Chunking sémantique
+          - [x] **2.2.1.3.1.2.1** Détection des paragraphes
+          - [x] **2.2.1.3.1.2.2** Analyse des titres et sections
+          - [x] **2.2.1.3.1.2.3** Préservation du contexte
+        - [x] **2.2.1.3.1.3** Chunking adaptatif
+          - [x] **2.2.1.3.1.3.1** Ajustement selon le type de contenu
+          - [x] **2.2.1.3.1.3.2** Optimisation pour la recherche
+      - [x] **2.2.1.3.2** Struct DocumentChunk
+        - [x] **2.2.1.3.2.1** Métadonnées du chunk
+          - [x] **2.2.1.3.2.1.1** ParentDocumentID string
+          - [x] **2.2.1.3.2.1.2** ChunkIndex int - position dans le document
+          - [x] **2.2.1.3.2.1.3** StartOffset int - position de début
+          - [x] **2.2.1.3.2.1.4** EndOffset int - position de fin
+        - [x] **2.2.1.3.2.2** Contenu du chunk
+          - [x] **2.2.1.3.2.2.1** Text string - texte du chunk
+          - [x] **2.2.1.3.2.2.2** Context string - contexte précédent/suivant
+          - [x] **2.2.1.3.2.2.3** Vector []float32 - embedding du chunk
 
 ### 2.3 Indexation
-- [ ] **2.3** Indexation
-  - [ ] **2.3.1** Système d'indexation
-    - [ ] **2.3.1.1** Lecture de fichiers
-      - [ ] **2.3.1.1.1** Support TXT
-        - [ ] **2.3.1.1.1.1** Détection de l'encodage
-          - [ ] **2.3.1.1.1.1.1** UTF-8 par défaut
-          - [ ] **2.3.1.1.1.1.2** Fallback vers ISO-8859-1
-          - [ ] **2.3.1.1.1.1.3** Détection automatique avec chardet
-        - [ ] **2.3.1.1.1.2** Lecture optimisée
-          - [ ] **2.3.1.1.1.2.1** Lecture par chunks pour gros fichiers
-          - [ ] **2.3.1.1.1.2.2** Gestion de la mémoire
-          - [ ] **2.3.1.1.1.2.3** Validation de la taille max
-        - [ ] **2.3.1.1.1.3** Extraction des métadonnées
-          - [ ] **2.3.1.1.1.3.1** Taille du fichier
-          - [ ] **2.3.1.1.1.3.2** Date de modification
-          - [ ] **2.3.1.1.1.3.3** Chemin complet
-      - [ ] **2.3.1.1.2** Support MD (Markdown)
-        - [ ] **2.3.1.1.2.1** Parsing de la structure
-          - [ ] **2.3.1.1.2.1.1** Extraction des titres (H1-H6)
-          - [ ] **2.3.1.1.2.1.2** Préservation de la hiérarchie
-          - [ ] **2.3.1.1.2.1.3** Gestion des métadonnées YAML
-        - [ ] **2.3.1.1.2.2** Traitement du contenu
-          - [ ] **2.3.1.1.2.2.1** Suppression des balises Markdown
-          - [ ] **2.3.1.1.2.2.2** Extraction du texte pur
-          - [ ] **2.3.1.1.2.2.3** Préservation des liens et images
-        - [ ] **2.3.1.1.2.3** Chunking spécialisé
-          - [ ] **2.3.1.1.2.3.1** Respect de la structure des sections
-          - [ ] **2.3.1.1.2.3.2** Gestion des listes et tableaux
-      - [ ] **2.3.1.1.3** Support PDF
-        - [ ] **2.3.1.1.3.1** Extraction de texte basique
-          - [ ] **2.3.1.1.3.1.1** Utilisation d'une bibliothèque PDF
-          - [ ] **2.3.1.1.3.1.2** Gestion des erreurs de parsing
-          - [ ] **2.3.1.1.3.1.3** Limitation à du texte sélectionnable
-        - [ ] **2.3.1.1.3.2** Métadonnées PDF
-          - [ ] **2.3.1.1.3.2.1** Titre et auteur du document
-          - [ ] **2.3.1.1.3.2.2** Nombre de pages
-          - [ ] **2.3.1.1.3.2.3** Date de création
-        - [ ] **2.3.1.1.3.3** Optimisations futures
-          - [ ] **2.3.1.1.3.3.1** OCR pour les PDFs scannés
-          - [ ] **2.3.1.1.3.3.2** Extraction des images et diagrammes
-    - [ ] **2.3.1.2** Chunking avec overlap
-      - [ ] **2.3.1.2.1** Configuration du chunking
-        - [ ] **2.3.1.2.1.1** Taille des chunks
-          - [ ] **2.3.1.2.1.1.1** Par caractères (défaut: 500)
-          - [ ] **2.3.1.2.1.1.2** Par mots (défaut: 100)
-          - [ ] **2.3.1.2.1.1.3** Par phrases (défaut: 5)
-        - [ ] **2.3.1.2.1.2** Overlap entre chunks
-          - [ ] **2.3.1.2.1.2.1** Pourcentage d'overlap (défaut: 10%)
-          - [ ] **2.3.1.2.1.2.2** Minimum et maximum en caractères
-          - [ ] **2.3.1.2.1.2.3** Respect des limites de phrases
-        - [ ] **2.3.1.2.1.3** Stratégies adaptatives
-          - [ ] **2.3.1.2.1.3.1** Ajustement selon le type de contenu
-          - [ ] **2.3.1.2.1.3.2** Optimisation pour la cohérence
-      - [ ] **2.3.1.2.2** Algorithme de chunking
-        - [ ] **2.3.1.2.2.1** Préparation du texte
-          - [ ] **2.3.1.2.2.1.1** Nettoyage des caractères spéciaux
-          - [ ] **2.3.1.2.2.1.2** Normalisation des espaces
-          - [ ] **2.3.1.2.2.1.3** Détection des limites de phrases
-        - [ ] **2.3.1.2.2.2** Génération des chunks
-          - [ ] **2.3.1.2.2.2.1** Itération avec fenêtre glissante
-          - [ ] **2.3.1.2.2.2.2** Respect des limites naturelles
-          - [ ] **2.3.1.2.2.2.3** Ajustement dynamique de la taille
-        - [ ] **2.3.1.2.2.3** Post-traitement
-          - [ ] **2.3.1.2.2.3.1** Validation de la qualité des chunks
-          - [ ] **2.3.1.2.2.3.2** Fusion des chunks trop petits
-          - [ ] **2.3.1.2.2.3.3** Division des chunks trop grands
-    - [ ] **2.3.1.3** Insertion batch dans QDrant
-      - [ ] **2.3.1.3.1** Configuration des batches
-        - [ ] **2.3.1.3.1.1** Taille des batches
-          - [ ] **2.3.1.3.1.1.1** Nombre de documents par batch (défaut: 100)
-          - [ ] **2.3.1.3.1.1.2** Taille mémoire max par batch
-          - [ ] **2.3.1.3.1.1.3** Ajustement dynamique selon les performances
-        - [ ] **2.3.1.3.1.2** Gestion des erreurs
-          - [ ] **2.3.1.3.1.2.1** Retry des batches échoués
-          - [ ] **2.3.1.3.1.2.2** Isolation des documents problématiques
-          - [ ] **2.3.1.3.1.2.3** Logging détaillé des erreurs
-      - [ ] **2.3.1.3.2** Optimisations de performance
-        - [ ] **2.3.1.3.2.1** Parallélisation
-          - [ ] **2.3.1.3.2.1.1** Workers concurrents pour l'embedding
-          - [ ] **2.3.1.3.2.1.2** Queue des batches à traiter
-          - [ ] **2.3.1.3.2.1.3** Limitation du nombre de goroutines
-        - [ ] **2.3.1.3.2.2** Monitoring des performances
-          - [ ] **2.3.1.3.2.2.1** Métriques de débit (docs/sec)
-          - [ ] **2.3.1.3.2.2.2** Temps moyen par document
-          - [ ] **2.3.1.3.2.2.3** Utilisation mémoire et CPU
+- [*] **2.3** Indexation *(75% complété)*
+  - [*] **2.3.1** Système d'indexation
+    - [*] **2.3.1.1** BatchIndexer *(100% complété)*
+      - [x] **2.3.1.1.1** Struct BatchIndexerConfig
+        - [x] **2.3.1.1.1.1** VectorDimension obligatoire (384)
+          - [x] **2.3.1.1.1.1.1** Validation à la création
+          - [x] **2.3.1.1.1.1.2** Incompatible avec dimension 0
+        - [x] **2.3.1.1.1.2** BatchSize avec défaut à 100
+          - [x] **2.3.1.1.1.2.1** Valeur par défaut si 0
+          - [x] **2.3.1.1.1.2.2** Test valeur positive uniquement
+        - [x] **2.3.1.1.1.3** CollectionName obligatoire
+          - [x] **2.3.1.1.1.3.1** Validation non vide
+          - [x] **2.3.1.1.1.3.2** Test collection existante
+      - [x] **2.3.1.1.2** Struct BatchIndexer 
+        - [x] **2.3.1.1.2.1** Configuration privée
+          - [x] **2.3.1.1.2.1.1** Config BatchIndexerConfig
+          - [x] **2.3.1.1.2.1.2** Mutex sync.RWMutex
+          - [x] **2.3.1.1.2.1.3** Points []Point privé
+        - [x] **2.3.1.1.2.2** Méthodes publiques
+          - [x] **2.3.1.1.2.2.1** Add() - Ajout point par point
+          - [x] **2.3.1.1.2.2.2** AddBatch() - Ajout multiple
+          - [x] **2.3.1.1.2.2.3** Flush() - Forcer l'envoi
+      - [x] **2.3.1.1.3** Tests unitaires
+        - [x] **2.3.1.1.3.1** Test configuration
+          - [x] **2.3.1.1.3.1.1** Test valeurs valides
+          - [x] **2.3.1.1.3.1.2** Test erreurs config
+        - [x] **2.3.1.1.3.2** Test ajout de points
+          - [x] **2.3.1.1.3.2.1** Test validation dimension
+          - [x] **2.3.1.1.3.2.2** Test taille batch
+          - [x] **2.3.1.1.3.2.3** Test flush auto
+        - [x] **2.3.1.1.3.3** Test concurrence
+          - [x] **2.3.1.1.3.3.1** Test mutex RWMutex
+          - [x] **2.3.1.1.3.3.2** Test goroutines parallèles
+    - [*] **2.3.1.2** Lecture de fichiers *(50% complété)*
+      - [*] **2.3.1.2.1** Support TXT
+        - [x] **2.3.1.2.1.1** Détection de l'encodage
+          - [x] **2.3.1.2.1.1.1** UTF-8 par défaut
+          - [x] **2.3.1.2.1.1.2** Fallback vers ISO-8859-1
+        - [*] **2.3.1.2.1.2** Chunking fichiers
+          - [x] **2.3.1.2.1.2.1** Lecture en chunks
+          - [*] **2.3.1.2.1.2.2** Taille chunks configurable
+      - [*] **2.3.1.2.2** Support Markdown
+        - [*] **2.3.1.2.2.1** Parser Markdown basique
+          - [x] **2.3.1.2.2.1.1** Extraction texte
+          - [*] **2.3.1.2.2.1.2** Préservation structure
+      - [ ] **2.3.1.2.3** Support PDF (à implémenter)
+    - [*] **2.3.1.3** Insertion Qdrant *(40% complété)*
+      - [x] **2.3.1.3.1** BatchIndexer prêt
+        - [x] **2.3.1.3.1.1** Config validation
+          - [x] **2.3.1.3.1.1.1** Dimension vecteurs
+          - [x] **2.3.1.3.1.1.2** Taille batch
+        - [x] **2.3.1.3.1.2** Tests unitaires
+          - [x] **2.3.1.3.1.2.1** Test config
+          - [x] **2.3.1.3.1.2.2** Test opérations
+      - [*] **2.3.1.3.2** Client Qdrant
+        - [*] **2.3.1.3.2.1** Implémentation
+          - [*] **2.3.1.3.2.1.1** Connexion HTTP
+          - [*] **2.3.1.3.2.1.2** UpsertPoints
+          - [x] **2.3.1.3.2.1.3** Test P1 UpsertPoints (test minimal d'insertion batch)
+            - [x] **2.3.1.3.2.1.3.1** Préparer un jeu de données minimal (1-2 points) avec des vecteurs simples et des métadonnées basiques.
+            - [x] **2.3.1.3.2.1.3.2** Exécuter la méthode `UpsertPoints` avec ces données en utilisant le client QDrant.
+            - [x] **2.3.1.3.2.1.3.3** Vérifier la réponse de l'API pour s'assurer qu'elle retourne un statut de succès et les identifiants des points insérés.
+            - [x] **2.3.1.3.2.1.3.4** Valider que les points sont insérés dans QDrant en effectuant une requête de récupération et en comparant les résultats avec les données initiales.
+
+          - [ ] **2.3.1.3.2.1.4** Correction/Debug UpsertPoints (corriger toute erreur bloquante détectée par le test P1)
+            - [ ] **2.3.1.3.2.1.4.1** Identifier les erreurs dans les logs ou réponses API
+            - [ ] **2.3.1.3.2.1.4.2** Corriger les erreurs dans le code (gestion des erreurs, validation des données)
+            - [ ] **2.3.1.3.2.1.4.3** Réexécuter les tests pour valider les corrections
+
+          - [ ] **2.3.1.3.2.1.5** Test P2 UpsertPoints (test insertion avec payloads complexes)
+            - [ ] **2.3.1.3.2.1.5.1** Préparer un jeu de données avec des payloads complexes (métadonnées, vecteurs de grande dimension)
+            - [ ] **2.3.1.3.2.1.5.2** Exécuter la méthode UpsertPoints avec ces données
+            - [ ] **2.3.1.3.2.1.5.3** Vérifier la réponse de l'API (statut, contenu)
+            - [ ] **2.3.1.3.2.1.5.4** Valider que les points sont insérés correctement avec leurs payloads
+
+          - [ ] **2.3.1.3.2.1.6** Correction/Debug UpsertPoints (corriger les erreurs détectées par le test P2)
+            - [ ] **2.3.1.3.2.1.6.1** Identifier les erreurs dans les logs ou réponses API
+            - [ ] **2.3.1.3.2.1.6.2** Corriger les erreurs dans le code (gestion des payloads, validation des données complexes)
+            - [ ] **2.3.1.3.2.1.6.3** Réexécuter les tests pour valider les corrections
+
+      - [ ] **2.3.1.3.2.2** Gestion des erreurs QDrant
+        - [ ] **2.3.1.3.2.2.1** Implémenter la gestion des erreurs réseau
+          - [ ] **2.3.1.3.2.2.1.1** Ajouter des timeouts pour les requêtes HTTP
+          - [ ] **2.3.1.3.2.2.1.2** Gérer les erreurs de connexion (retries, logs)
+        - [ ] **2.3.1.3.2.2.2** Test P1 Gestion des erreurs réseau
+          - [ ] **2.3.1.3.2.2.2.1** Simuler une déconnexion réseau
+          - [ ] **2.3.1.3.2.2.2.2** Vérifier que le système gère correctement l'erreur (logs, retries)
+        - [ ] **2.3.1.3.2.2.3** Correction/Debug Gestion des erreurs réseau (corriger les erreurs détectées par le test P1)
+          - [ ] **2.3.1.3.2.2.3.1** Identifier les points de défaillance dans le code
+          - [ ] **2.3.1.3.2.2.3.2** Corriger les erreurs et améliorer la gestion des exceptions
+        - [ ] **2.3.1.3.2.2.4** Test P2 Gestion des erreurs réseau (tests de charge et de timeout)
+          - [ ] **2.3.1.3.2.2.4.1** Simuler une charge élevée sur le réseau
+          - [ ] **2.3.1.3.2.2.4.2** Vérifier que le système reste stable et gère les timeouts
+        - [ ] **2.3.1.3.2.2.5** Correction/Debug Gestion des erreurs réseau (corriger les erreurs détectées par le test P2)
+          - [ ] **2.3.1.3.2.2.5.1** Identifier les points de défaillance sous charge
+          - [ ] **2.3.1.3.2.2.5.2** Optimiser le code pour améliorer la résilience
 
 ---
 
@@ -750,7 +718,7 @@ remplace "commit all changes" par un descriptif adéquat reflétant la ou les im
           - [ ] **6.1.1.1.1.1.3** Intégration avec QDrant
         - [ ] **6.1.1.1.1.2** Prérequis système
           - [ ] **6.1.1.1.1.2.1** Version Go requise
-          - [ ] **6.1.1.1.1.2.2** Dépendances externes
+          - [ ] **6.1.1.1.1.1.2.2** Dépendances externes
           - [ ] **6.1.1.1.1.2.3** Configuration système recommandée
       - [ ] **6.1.1.1.2** Guide de démarrage rapide
         - [ ] **6.1.1.1.2.1** Installation
@@ -904,3 +872,5 @@ go build -o rag-go cmd/rag-go/main.go
 ---
 
 **PRIORITÉ :** Commencer par la Phase 1 pour avoir un prototype fonctionnel rapidement
+
+---

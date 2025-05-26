@@ -1,0 +1,162 @@
+groups:
+- name: indexing_alerts
+  rules:
+  # Document Processing Alerts
+  - alert: HighDocumentErrorRate
+    expr: rate(indexing_document_errors_total[5m]) / rate(indexing_documents_processed_total[5m]) > 0.1
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: High document processing error rate
+      description: Document processing error rate is above 10% over the last 5 minutes
+
+  - alert: SlowDocumentProcessing
+    expr: histogram_quantile(0.95, rate(indexing_document_processing_duration_seconds_bucket[5m])) > 30
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Slow document processing
+      description: 95th percentile of document processing time is above 30 seconds
+
+  # Embedding Generation Alerts
+  - alert: HighEmbeddingErrorRate
+    expr: rate(indexing_embedding_errors_total[5m]) / rate(indexing_embeddings_generated_total[5m]) > 0.05
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: High embedding generation error rate
+      description: Embedding generation error rate is above 5% over the last 5 minutes
+
+  - alert: LowEmbeddingCacheHitRate
+    expr: rate(indexing_embedding_cache_hits_total[5m]) / (rate(indexing_embedding_cache_hits_total[5m]) + rate(indexing_embedding_cache_misses_total[5m])) < 0.3
+    for: 15m
+    labels:
+      severity: info
+    annotations:
+      summary: Low embedding cache hit rate
+      description: Embedding cache hit rate is below 30% over the last 15 minutes
+
+  # Qdrant Operation Alerts
+  - alert: HighQdrantErrorRate
+    expr: rate(indexing_qdrant_errors_total[5m]) / rate(indexing_qdrant_upserts_total[5m]) > 0.05
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: High Qdrant operation error rate
+      description: Qdrant operation error rate is above 5% over the last 5 minutes
+
+  - alert: SlowQdrantOperations
+    expr: histogram_quantile(0.95, rate(indexing_qdrant_operation_duration_seconds_bucket[5m])) > 5
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Slow Qdrant operations
+      description: 95th percentile of Qdrant operation time is above 5 seconds
+
+  # System Resource Alerts
+  - alert: HighProcessingBacklog
+    expr: indexing_documents_processed_total - indexing_qdrant_upserts_total > 1000
+    for: 15m
+    labels:
+      severity: warning
+    annotations:
+      summary: High processing backlog
+      description: More than 1000 documents are waiting to be indexed
+
+  - alert: LowProcessingThroughput
+    expr: rate(indexing_documents_processed_total[5m]) < 1
+    for: 15m
+    labels:
+      severity: warning
+    annotations:
+      summary: Low processing throughput
+      description: Processing less than 1 document per second over the last 15 minutes
+
+  # Embedding Quality Alerts
+  - alert: HighVectorSparsity
+    expr: histogram_quantile(0.95, rate(embedding_vector_sparsity_bucket[5m])) > 0.8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: High vector sparsity detected
+      description: 95th percentile of vector sparsity is above 80%
+
+  - alert: LowVectorNorm
+    expr: histogram_quantile(0.05, rate(embedding_vector_norm_bucket[5m])) < 0.1
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Low vector norm detected
+      description: 5th percentile of vector norm is below threshold
+
+  - alert: HighOutlierScore
+    expr: histogram_quantile(0.95, rate(embedding_outlier_score_bucket[5m])) > 0.8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: High outlier scores detected
+      description: High number of potential outlier vectors detected
+
+  # System Health Alerts
+  - alert: HighCPUUsage
+    expr: avg_over_time(cpu_usage_percent[5m]) > 80
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: High CPU usage
+      description: Average CPU usage above 80%
+
+  - alert: HighMemoryUsage
+    expr: memory_usage_bytes / (1024 * 1024 * 1024) > 0.9
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: High memory usage
+      description: Memory usage above 90% of total available memory
+
+  - alert: HighLatency
+    expr: histogram_quantile(0.95, rate(latency_p95_seconds_bucket[5m])) > 1
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: High latency
+      description: 95th percentile latency is above 1 second
+
+  # Cache and Performance Alerts
+  - alert: LowCacheHitRatio
+    expr: cache_hit_ratio < 0.5
+    for: 15m
+    labels:
+      severity: info
+    annotations:
+      summary: Low cache hit ratio
+      description: Cache hit ratio is below 50% over 15 minutes
+
+  - alert: HighQueryLatency
+    expr: histogram_quantile(0.95, rate(query_latency_seconds_bucket[5m])) > 0.5
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: High query latency
+      description: 95th percentile query latency is above 500ms
+
+  - alert: HighSystemLoad
+    expr: goroutine_count > 1000
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: High system load
+      description: Number of goroutines is above 1000
