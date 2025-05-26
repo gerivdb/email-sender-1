@@ -3,10 +3,8 @@ package indexing
 import (
 	"fmt"
 	"path/filepath"
-	"time"
 
 	"github.com/pdfcpu/pdfcpu/pkg/api"
-	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu"
 )
 
 // PDFReader implements DocumentReader for PDF files
@@ -22,67 +20,59 @@ func (r *PDFReader) GetSupportedExtensions() []string {
 	return []string{".pdf"}
 }
 
+// Fonction utilitaire pour extraire une chaîne depuis un dictionnaire PDF
+func getPDFString(infoDict interface{}, key string) string {
+	type finder interface {
+		Find(string) (interface{}, bool)
+	}
+	dict, ok := infoDict.(finder)
+	if !ok {
+		return ""
+	}
+	if obj, found := dict.Find(key); found {
+		if s, ok := obj.(string); ok {
+			return s
+		}
+		return fmt.Sprintf("%v", obj)
+	}
+	return ""
+}
+
 // Read implements DocumentReader interface
 func (r *PDFReader) Read(path string) (*Document, error) {
-	// Extract text content
-	content, err := api.ExtractText(path, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to extract text from PDF: %v", err)
-	}
-
-	// Get PDF metadata
 	ctx, err := api.ReadContextFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read PDF context: %v", err)
+		return nil, fmt.Errorf("failed to read PDF info: %v", err)
 	}
 
-	// Extract PDF properties
-	info := ctx.XRefTable.Info
+	infoDict := ctx.XRefTable.Info
+	var title, author, subject, keywords, creator, producer, creationDate, modDate string
+	if infoDict != nil {
+		title = getPDFString(infoDict, "Title")
+		author = getPDFString(infoDict, "Author")
+		subject = getPDFString(infoDict, "Subject")
+		keywords = getPDFString(infoDict, "Keywords")
+		creator = getPDFString(infoDict, "Creator")
+		producer = getPDFString(infoDict, "Producer")
+		creationDate = getPDFString(infoDict, "CreationDate")
+		modDate = getPDFString(infoDict, "ModDate")
+	}
+
 	metadata := map[string]interface{}{
-		"filename": filepath.Base(path),
-		"type":     "pdf",
-		"pages":    ctx.PageCount,
-		"version":  ctx.Version(),
+		"filename":          filepath.Base(path),
+		"type":              "pdf",
+		"title":             title,
+		"author":            author,
+		"subject":           subject,
+		"keywords":          keywords,
+		"creator":           creator,
+		"producer":          producer,
+		"creation_date":     creationDate,
+		"modification_date": modDate,
 	}
 
-	// Add optional metadata if available
-	if info != nil {
-		if info.Title != nil {
-			metadata["title"] = *info.Title
-		}
-		if info.Author != nil {
-			metadata["author"] = *info.Author
-		}
-		if info.Subject != nil {
-			metadata["subject"] = *info.Subject
-		}
-		if info.Keywords != nil {
-			metadata["keywords"] = *info.Keywords
-		}
-		if info.Creator != nil {
-			metadata["creator"] = *info.Creator
-		}
-		if info.Producer != nil {
-			metadata["producer"] = *info.Producer
-		}
-		if info.CreationDate != nil {
-			if t, err := pdfcpu.DateTime(*info.CreationDate, nil); err == nil {
-				metadata["creation_date"] = t.Format(time.RFC3339)
-			}
-		}
-		if info.ModDate != nil {
-			if t, err := pdfcpu.DateTime(*info.ModDate, nil); err == nil {
-				metadata["modification_date"] = t.Format(time.RFC3339)
-			}
-		}
-	}
-
-	// Create document
 	doc := &Document{
-		Path:     path,
-		Content:  content,
 		Metadata: metadata,
-		Encoding: "UTF-8", // PDFs are always decoded to UTF-8
 	}
 
 	return doc, nil

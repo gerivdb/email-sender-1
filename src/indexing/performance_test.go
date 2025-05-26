@@ -111,7 +111,6 @@ func TestLoadIndexing(t *testing.T) {
 	require.NoError(t, err)
 
 	// Run load test with metrics
-	metrics := NewMetrics("load_test")
 	startTime := time.Now()
 
 	ctx := context.Background()
@@ -161,9 +160,6 @@ func TestResourceUsage(t *testing.T) {
 
 	t.Logf("Resource Usage Statistics:")
 	t.Logf("- Peak Memory Usage: %d MB", stats.PeakMemoryMB)
-	t.Logf("- Average CPU Usage: %.2f%%", stats.AverageCPUPercent)
-	t.Logf("- Peak CPU Usage: %.2f%%", stats.PeakCPUPercent)
-	t.Logf("- Total Processing Time: %v", stats.ProcessingTime)
 }
 
 // Helper to generate test text of specified size
@@ -178,40 +174,4 @@ func generateTestText(size int) string {
 		text += lorem
 	}
 	return text[:size]
-}
-
-// ResourceMonitor tracks system resource usage
-type ResourceMonitor struct {
-	startTime time.Time
-	stopChan  chan struct{}
-	statsChan chan ResourceStats
-}
-
-type ResourceStats struct {
-	PeakMemoryMB      int64
-	AverageCPUPercent float64
-	PeakCPUPercent    float64
-	ProcessingTime    time.Duration
-}
-
-func NewResourceMonitor() *ResourceMonitor {
-	return &ResourceMonitor{
-		stopChan:  make(chan struct{}),
-		statsChan: make(chan ResourceStats, 1),
-	}
-}
-
-func (m *ResourceMonitor) Start() {
-	m.startTime = time.Now()
-	// Start monitoring goroutine
-	// Implementation would use runtime.ReadMemStats and os specific CPU monitoring
-}
-
-func (m *ResourceMonitor) Stop() {
-	close(m.stopChan)
-	// Cleanup and final statistics calculation
-}
-
-func (m *ResourceMonitor) GetStats() ResourceStats {
-	return <-m.statsChan
 }

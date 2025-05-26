@@ -75,31 +75,3 @@ func (m *ResourceMonitor) updateStats() {
 	// For now, we'll just use a placeholder
 	m.stats.CPUUsagePercent = 0
 }
-
-// EmbeddingQualityMetrics holds metrics for monitoring embedding quality
-type EmbeddingQualityMetrics struct {
-	VectorNorm     float64
-	VectorSparsity float64
-}
-
-// NewEmbeddingQualityMetrics creates new embedding quality metrics
-func NewEmbeddingQualityMetrics(name string) *EmbeddingQualityMetrics {
-	return &EmbeddingQualityMetrics{}
-}
-
-// RecordEmbeddingQuality records metrics for a single vector
-func (m *EmbeddingQualityMetrics) RecordEmbeddingQuality(vector []float32) {
-	// Calculate vector norm
-	var norm float64
-	var nonZero int
-	for _, v := range vector {
-		norm += float64(v * v)
-		if v != 0 {
-			nonZero++
-		}
-	}
-	m.VectorNorm = norm
-
-	// Calculate sparsity
-	m.VectorSparsity = 1.0 - float64(nonZero)/float64(len(vector))
-}

@@ -1,38 +1,48 @@
 {
-  "name": "email-sender-1",
-  "version": "0.1.0",
-  "description": "Email Sender Project with PowerShell and Node.js integration",
-  "main": "index.js",
+  "name": "error-pattern-analyzer",
+  "version": "0.0.1",
+  "description": "Analyseur hybride Go/TypeScript pour la détection de patterns d’erreur.",
+  "main": "./out/extension.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "echo \"No start script defined yet\" && exit 1"
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "test": "npm run compile && node ./out/test/runTest.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/email-sender-1.git"
+    "url": "git+https://github.com/yourusername/error-pattern-analyzer.git"
   },
   "keywords": [
-    "email",
-    "sender",
-    "powershell",
-    "nodejs"
+    "error",
+    "pattern",
+    "analyzer",
+    "go",
+    "typescript"
   ],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@magarcia/gitingest": "^1.1.0",
-    "@modelcontextprotocol/server-filesystem": "^2025.3.28",
-    "n8n": "^1.88.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@playwright/test": "^1.52.0",
-    "@types/jest": "^29.5.14",
-    "husky": "^8.0.3",
-    "hygen": "^6.2.0"
+    "@types/vscode": "^1.70.0",
+    "typescript": "^4.8.0",
+    "eslint": "^8.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "powershell.exe -ExecutionPolicy Bypass -File \"./development/scripts/maintenance/repo/organize-scripts.ps1\""
-    }
-  }
+  "displayName": "Error Pattern Analyzer",
+  "activationEvents": [
+    "onCommand:errorPatternAnalyzer.runAnalysis"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "errorPatternAnalyzer.runAnalysis",
+        "title": "Analyser les patterns d’erreur"
+      }
+    ]
+  },
+  "engines": {
+    "vscode": ">=1.70.0"
+  },
+  "categories": ["Other"]
 }

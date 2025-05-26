@@ -40,16 +40,28 @@ suite('Extension Test Suite', () => {
         // Show the document in the editor
         await vscode.window.showTextDocument(document);
         
-        // Execute the analyze command
-        await vscode.commands.executeCommand('error-pattern-analyzer.analyzeCurrentFile');
-        
-        // Wait for diagnostics to be published
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Get the diagnostics for the test document
-        const diagnostics = vscode.languages.getDiagnostics(document.uri);
-        
-        // Assert that diagnostics were created
-        assert.ok(diagnostics.length > 0, 'No diagnostics were created');
+        // Prepare to listen for diagnostic changes
+        const diagnosticsPromise = new Promise<vscode.Diagnostic[]>(resolve => {
+            const disposable = vscode.languages.onDidChangeDiagnostics(e => {
+                if (e.uris.some(uri => uri.toString() === document.uri.toString())) {
+                    const diagnostics = vscode.languages.getDiagnostics(document.uri);
+                    disposable.dispose();
+                    resolve(diagnostics);
+                }
+            });
+            // Execute the analyze command after setting up the listener
+            vscode.commands.executeCommand('error-pattern-analyzer.analyzeCurrentFile');
+        });
+
+        // Wait for diagnostics with a reasonable timeout
+        const diagnostics = await Promise.race([
+            diagnosticsPromise,
+            new Promise<vscode.Diagnostic[]>((_, reject) => 
+                setTimeout(() => reject(new Error('Timeout waiting for diagnostics')), 500)
+            )
+        ]);
+
+        // Check the diagnostics
+        assert.ok(diagnostics.length > 0, 'No diagnostics were found');
     });
 });
