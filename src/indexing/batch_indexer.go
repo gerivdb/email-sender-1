@@ -118,7 +118,7 @@ func (bi *BatchIndexer) IndexFiles(ctx context.Context, files []string) error {
 }
 
 // indexFile processes and indexes a single file
-func (bi *BatchIndexer) indexFile(ctx context.Context, filePath string) error {
+func (bi *BatchIndexer) indexFile(_ context.Context, filePath string) error {
 	// Read file content
 	content, err := os.ReadFile(filePath)
 	if err != nil {

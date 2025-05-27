@@ -1,40 +1,34 @@
 ---
-mode: 'agent'
-tools: ['augment']
-description: 'Intégration avec l'extension Augment'
+title: "Mode augment"
+description: "Mode opérationnel augment pour le projet EMAIL_SENDER_1"
+behavior:
+  temperature: 0.2
+  maxTokens: 2048
+tags: ["mode", "augment", "operation"]
 ---
 
-# Mode AUGMENT - Intégration IA Avancée
+# Mode augment
 
-## 🎯 OBJECTIF
-Optimiser l'interaction avec l'extension Augment pour une meilleure assistance IA
+## 🎯 Objectif
+[Description de l'objectif du mode]
 
-## 📋 PARAMÈTRES
-- **ConfigPath** : Chemin du fichier de configuration
-- **Mode** : Mode d'interaction ("Interactive", "Autonomous")
-- **Context** : Contexte d'utilisation
+## 📋 Paramètres
+[Liste des paramètres]
 
-## 🔄 WORKFLOW
-1. Chargement de la configuration
-2. Analyse du contexte
-3. Génération assistée
-4. Validation intelligente
-5. Optimisation continue
+## 🔄 Workflow
+[Description du workflow]
 
-## 🛠️ COMMANDES PRINCIPALES
-```powershell
-# Configuration de l'intégration
-.\augment-setup.ps1 -ConfigPath "./config/augment.json"
+## 🛠️ Commandes Principales
+`powershell
+# Exemple de commande
+.\augment-mode.ps1 -Parameter "value"
+`
 
-# Mode interactif avancé
-.\augment-mode.ps1 -Mode "Interactive" -Context "Development"
+## 📊 Métriques
+[Métriques et indicateurs]
 
-# Génération assistée
-.\augment-generate.ps1 -Template "feature" -Context "./src"
-```
+## 🔗 Intégration
+[Intégration avec autres modes]
 
-## 📊 MÉTRIQUES
-- Qualité des suggestions
-- Temps de réponse
-- Précision contextuelle
-- Taux d'adoption
+## ⚠️ Points d'Attention
+[Points importants à noter]

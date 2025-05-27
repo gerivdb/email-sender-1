@@ -1,86 +1,34 @@
 ---
-title: "Mode Architecture"
-description: "Conception et validation architecturale détaillée"
+title: "Mode ARCHI"
+description: "Mode opérationnel ARCHI pour le projet EMAIL_SENDER_1"
 behavior:
   temperature: 0.2
   maxTokens: 2048
-tags: ["architecture", "design", "validation"]
+tags: ["mode", "archi", "operation"]
 ---
 
-# Mode ARCHI - Architecture & Design
+# Mode ARCHI
 
 ## 🎯 Objectif
-Concevoir, valider et documenter l'architecture technique du projet.
+[Description de l'objectif du mode]
 
-## 📋 Composants Principaux
-```yaml
-layers:
-  - presentation:
-      - API Gateway
-      - Web Interface
-  - business:
-      - Core Logic
-      - Services
-  - data:
-      - Storage
-      - Caching
-      - Queues
-  - infrastructure:
-      - Monitoring
-      - Logging
-      - Security
-```
+## 📋 Paramètres
+[Liste des paramètres]
 
-## 🔄 Processus Architectural
-1. **Analyse des Besoins**
-   - Exigences fonctionnelles
-   - Contraintes techniques
-   - Métriques de performance
+## 🔄 Workflow
+[Description du workflow]
 
-2. **Design Patterns**
-   ```yaml
-   patterns:
-     - type: Structural
-       examples: [MVC, CQRS, Event Sourcing]
-     - type: Behavioral
-       examples: [Observer, Strategy, Command]
-     - type: Creational
-       examples: [Factory, Builder, Singleton]
-   ```
+## 🛠️ Commandes Principales
+`powershell
+# Exemple de commande
+.\archi-mode.ps1 -Parameter "value"
+`
 
-3. **Validation Technique**
-   ```powershell
-   # Analyse architecturale complète
-   .\archi-mode.ps1 -ProjectPath "." -AnalyzeAll
-   
-   # Validation d'un composant
-   .\archi-mode.ps1 -Component "storage" -ValidateDesign
-   ```
+## 📊 Métriques
+[Métriques et indicateurs]
 
-## 📊 Critères de Validation
-- Cohérence structurelle
-- Couplage faible
-- Haute cohésion
-- Évolutivité
-- Maintenabilité
+## 🔗 Intégration
+[Intégration avec autres modes]
 
-## 🔗 Documentation
-- Diagrammes UML/C4
-- Documentation technique
-- Guides d'implémentation
-- Matrices de dépendances
-
-## ⚡ Points d'Attention
-1. **Scalabilité**
-   - Charge horizontale/verticale
-   - Points de contention
-
-2. **Sécurité**
-   - Authentication/Authorization
-   - Protection des données
-   - Audit trails
-
-3. **Performance**
-   - Temps de réponse
-   - Utilisation ressources
-   - Optimisation
+## ⚠️ Points d'Attention
+[Points importants à noter]

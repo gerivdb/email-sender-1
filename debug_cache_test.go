@@ -17,7 +17,7 @@ func main() {
 
 	texts := []string{"text1", "text2", "text3"}
 
-	for i, text := range texts {
+	for _, text := range texts {
 		fmt.Printf("\n--- Avant ajout de %s ---\n", text)
 		fmt.Printf("Cache size: %d\n", provider.GetCacheSize())
 		fmt.Printf("Cache contents: %v\n", provider.GetCacheContents())

@@ -50,7 +50,7 @@ func (r *MarkdownReader) Read(path string) (*Document, error) {
 }
 
 // extractFrontMatter extrait le frontmatter YAML du contenu markdown brut
-func extractFrontMatter(node ast.Node) map[string]interface{} {
+func extractFrontMatter(_ ast.Node) map[string]interface{} {
 	metadata := make(map[string]interface{})
 
 	// On ne peut pas utiliser ast.YamlMetadata, donc on ne fait rien ici

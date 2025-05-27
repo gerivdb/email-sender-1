@@ -1,0 +1,40 @@
+{
+    "Timestamp":  "2025-05-27T08:19:57",
+    "Alerts":  {
+                   "Message":  "CPU usage warning: 83%",
+                   "Metric":  "CPU",
+                   "Value":  83,
+                   "Type":  "Warning",
+                   "Threshold":  80
+               },
+    "System":  {
+                   "CPU":  {
+                               "Cores":  "8",
+                               "Usage":  83
+                           },
+                   "Memory":  {
+                                  "Used":  13.82,
+                                  "Usage":  57.62,
+                                  "Free":  10.16,
+                                  "Total":  23.98
+                              },
+                   "Disk":  {
+                                "Usage":  96.09,
+                                "Free":  18.19,
+                                "Total":  465.18
+                            }
+               },
+    "Application":  {
+                        "Qdrant":  {
+                                       "Status":  "Unknown",
+                                       "Collections":  0,
+                                       "VectorCount":  0,
+                                       "DataSize":  864.91
+                                   },
+                        "EmailSender":  {
+                                            "Status":  "Running",
+                                            "LastRun":  "2025-05-27T08:19:59",
+                                            "ProcessCount":  0
+                                        }
+                    }
+}

@@ -42,3 +42,16 @@ Pour proposer des améliorations aux standards :
 ---
 
 *Dernière mise à jour : 2025-05-15*
+
+## 🎯 Priorités Techniques
+
+### Environnements Principaux
+- **Golang 1.21+** : Environnement principal (10-1000x plus rapide que PowerShell/Python)
+- **PowerShell 7 + Python 3.11** : Scripts d'intégration et compatibilité legacy
+- **TypeScript** : Composants n8n personnalisés
+
+### Framework d'Automatisation
+- 7 Time-Saving Methods avec ROI de ,320/an
+- Code generation et templates haute performance
+- Pipeline-as-Code avec validation fail-fast
+

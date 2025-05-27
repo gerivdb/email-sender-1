@@ -1,0 +1,21 @@
+# 📊 Grafana Provisioning - Dashboards
+# Automatically load RAG system dashboards
+
+apiVersion: 1
+
+providers:
+  - name: 'RAG System Dashboards'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+
+  - name: 'Performance Dashboards'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 60
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards/performance

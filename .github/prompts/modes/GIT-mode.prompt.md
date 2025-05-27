@@ -1,75 +1,34 @@
 ---
-title: "Mode Gestion Git"
-description: "Gestion des commits et des push avec descriptions standardisées"
+title: "Mode GIT"
+description: "Mode opérationnel GIT pour le projet EMAIL_SENDER_1"
 behavior:
   temperature: 0.2
-  maxTokens: 1024
-tags: ["git", "versioning", "documentation"]
+  maxTokens: 2048
+tags: ["mode", "git", "operation"]
 ---
 
-# Mode GIT - Gestion de Version
+# Mode GIT
 
 ## 🎯 Objectif
-Standardiser et automatiser la gestion des commits Git avec des descriptions précises et structurées.
+[Description de l'objectif du mode]
 
-## 📋 Format des Messages
-```yaml
-commit_types:
-  feat: "Nouvelle fonctionnalité"
-  fix: "Correction de bug"
-  refactor: "Refactoring du code"
-  test: "Ajout ou modification de tests"
-  docs: "Documentation uniquement"
-  chore: "Tâches de maintenance"
-  style: "Formatage, espaces, etc."
-  perf: "Amélioration des performances"
-```
+## 📋 Paramètres
+[Liste des paramètres]
 
-## 🔄 Structure du Message
-```
-<type>(<scope>): <description>
+## 🔄 Workflow
+[Description du workflow]
 
-[corps du message]
+## 🛠️ Commandes Principales
+`powershell
+# Exemple de commande
+.\git-mode.ps1 -Parameter "value"
+`
 
-[footer]
-```
-
-## 📝 Exemples de Commits
-```powershell
-# Nouvelle fonctionnalité
-git commit -m "feat(analyzer): implémentation du pattern matcher v2"
-
-# Correction de bug
-git commit -m "fix(parser): correction du parsing des caractères spéciaux"
-
-# Refactoring
-git commit -m "refactor(test): restructuration des tests unitaires"
-```
-
-## 🔍 Validation des Changements
-```powershell
-# Script de vérification avant commit
-.\check_git_status.ps1
-.\check_git_sync.ps1
-
-# Commit avec description détaillée
-$description = "feat(n8n): intégration du workflow d'analyse
-- Ajout du nouveau composant d'analyse
-- Optimisation du traitement des données
-- Mise à jour des tests d'intégration"
-
-git add .
-git commit -m $description --no-verify
-git push --no-verify
-```
+## 📊 Métriques
+[Métriques et indicateurs]
 
 ## 🔗 Intégration
-- **CHECK**: Validation avant commit
-- **TEST**: Exécution des tests
-- **METRICS**: Analyse d'impact
+[Intégration avec autres modes]
 
 ## ⚠️ Points d'Attention
-1. Toujours inclure le type de changement
-2. Décrire précisément les modifications
-3. Mentionner les dépendances impactées
-4. Référencer les tickets/issues liés
+[Points importants à noter]

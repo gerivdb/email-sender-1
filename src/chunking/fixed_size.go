@@ -35,11 +35,12 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 		options.ChunkOverlap = options.MaxChunkSize / 10 // 10% par défaut
 	}
 
-	var chunks []*DocumentChunk
+	// Pré-allouer la slice pour éviter les réallocations
+	estimatedChunks := (len(text) / (options.MaxChunkSize - options.ChunkOverlap)) + 1
+	chunks := make([]*DocumentChunk, 0, estimatedChunks)
+
 	textRunes := []rune(text)
 	textLen := len(textRunes)
-
-	// Position actuelle dans le texte
 	pos := 0
 	chunkIndex := 0
 
@@ -50,57 +51,28 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 			end = textLen
 		}
 
-		// Si on doit respecter les limites de phrases
+		// Optimisation : ne chercher la fin de phrase que si nécessaire
 		if options.PreserveStructure && end < textLen {
-			// Chercher la fin de phrase la plus proche
-			newEnd := end
-			for i := end; i > pos; i-- {
+			// Recherche de la fin de phrase la plus proche, limité à 50 caractères en arrière
+			searchLimit := end
+			for i := end; i > pos && i > end-50; i-- {
 				if isPunctuationMark(textRunes[i-1]) &&
 					(i == textLen || unicode.IsSpace(textRunes[i])) {
-					newEnd = i
+					end = i
 					break
 				}
 			}
-			// Si on a trouvé une fin de phrase pas trop éloignée
-			if newEnd > pos+options.MaxChunkSize/2 {
-				end = newEnd
+			if end > searchLimit { // Si aucune fin de phrase trouvée
+				end = searchLimit
 			}
 		}
 
 		// Créer le chunk
 		chunkText := string(textRunes[pos:end])
 
-		// Ajouter du contexte si ce n'est pas le premier/dernier chunk
-		var context string
-		if pos > 0 || end < textLen {
-			var contextParts []string
-
-			// Contexte avant
-			if pos > 0 {
-				contextStart := pos - 50
-				if contextStart < 0 {
-					contextStart = 0
-				}
-				beforeCtx := string(textRunes[contextStart:pos])
-				contextParts = append(contextParts, "Before: "+beforeCtx)
-			}
-
-			// Contexte après
-			if end < textLen {
-				contextEnd := end + 50
-				if contextEnd > textLen {
-					contextEnd = textLen
-				}
-				afterCtx := string(textRunes[end:contextEnd])
-				contextParts = append(contextParts, "After: "+afterCtx)
-			}
-
-			context = strings.Join(contextParts, " | ")
-		}
-
-		// Générer un ID unique pour le chunk
-		chunkHash := sha256.Sum256([]byte(fmt.Sprintf("%s-%d-%d", options.ParentDocumentID, pos, end)))
-		chunkID := fmt.Sprintf("chunk-%x", chunkHash[:8])
+		// Générer un ID unique pour le chunk (optimisé)
+		hashBytes := sha256.Sum256([]byte(fmt.Sprintf("%s-%d", options.ParentDocumentID, chunkIndex)))
+		chunkID := fmt.Sprintf("chunk-%x", hashBytes[:8])
 
 		chunk := &DocumentChunk{
 			ID:               chunkID,
@@ -109,13 +81,42 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 			StartOffset:      pos,
 			EndOffset:        end,
 			Text:             chunkText,
-			Context:          context,
 			Metadata:         options.Metadata,
 			CreatedAt:        time.Now(),
 		}
+
+		// Ajouter du contexte seulement si nécessaire et de manière optimisée
+		if pos > 0 || end < textLen {
+			var contextBuilder strings.Builder
+			contextBuilder.Grow(200) // Pré-allouer pour la taille attendue
+
+			if pos > 0 {
+				contextStart := pos - 25 // Réduit à 25 caractères
+				if contextStart < 0 {
+					contextStart = 0
+				}
+				contextBuilder.WriteString("Before: ")
+				contextBuilder.WriteString(string(textRunes[contextStart:pos]))
+			}
+
+			if end < textLen {
+				if pos > 0 {
+					contextBuilder.WriteString(" | ")
+				}
+				contextEnd := end + 25 // Réduit à 25 caractères
+				if contextEnd > textLen {
+					contextEnd = textLen
+				}
+				contextBuilder.WriteString("After: ")
+				contextBuilder.WriteString(string(textRunes[end:contextEnd]))
+			}
+
+			chunk.Context = contextBuilder.String()
+		}
+
 		chunks = append(chunks, chunk)
 
-		// Avancer au prochain chunk avec chevauchement
+		// Avancer au prochain chunk
 		pos = end - options.ChunkOverlap
 		if pos >= textLen {
 			break

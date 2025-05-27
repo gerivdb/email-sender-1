@@ -1,58 +1,34 @@
 ---
-mode: 'agent'
-tools: ['debugging']
-description: 'Analyse et résolution de problèmes complexes'
+title: "Mode DEBUG"
+description: "Mode opérationnel DEBUG pour le projet EMAIL_SENDER_1"
+behavior:
+  temperature: 0.2
+  maxTokens: 2048
+tags: ["mode", "debug", "operation"]
 ---
 
-# Mode DEBUG - Débogage Avancé
+# Mode DEBUG
 
-## 🎯 OBJECTIF
-Analyser et résoudre les problèmes complexes de manière systématique
+## 🎯 Objectif
+[Description de l'objectif du mode]
 
-## 📋 PARAMÈTRES
-- **LogPath** : Chemin des logs d'analyse
-- **AnalysisLevel** : Profondeur d'analyse ("Quick", "Deep", "Comprehensive")
-- **AutoFix** : Activation des corrections automatiques
+## 📋 Paramètres
+[Liste des paramètres]
 
-## 🔄 WORKFLOW
-1. Collecte des informations
-2. Analyse des logs et traces
-3. Reproduction du problème
-4. Identification de la cause
-5. Application de la solution
+## 🔄 Workflow
+[Description du workflow]
 
-## 🛠️ COMMANDES PRINCIPALES
-```powershell
-# Analyse profonde avec auto-correction
-.\debug-mode.ps1 -LogPath "logs/" -AnalysisLevel "Deep" -AutoFix
+## 🛠️ Commandes Principales
+`powershell
+# Exemple de commande
+.\debug-mode.ps1 -Parameter "value"
+`
 
-# Analyse rapide sans correction
-.\debug-mode.ps1 -LogPath "logs/" -AnalysisLevel "Quick"
+## 📊 Métriques
+[Métriques et indicateurs]
 
-# Debug d'un composant spécifique
-.\debug-mode.ps1 -ComponentPath "./src/component" -Verbose
-```
+## 🔗 Intégration
+[Intégration avec autres modes]
 
-## 📝 FORMAT DE RAPPORT
-```markdown
-# Rapport de Débogage [Date]
-
-## Problème Analysé
-- [Description du problème]
-
-## Cause Racine
-- [Analyse de la cause]
-
-## Solution Appliquée
-1. [Étape 1]
-2. [Étape 2]
-
-## Validation
-- [Tests effectués]
-- [Résultats obtenus]
-```
-
-## 🔗 INTÉGRATION
-- **CHECK** : Validation post-correction
-- **DEV-R** : Application itérative des corrections
-- **ARCHI** : Impact sur l'architecture
+## ⚠️ Points d'Attention
+[Points importants à noter]

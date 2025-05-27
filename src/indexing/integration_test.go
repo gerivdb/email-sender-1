@@ -218,6 +218,14 @@ func (s *IntegrationTestSuite) getCollectionCount() (int64, error) {
 	return int64(info.PointsCount), nil
 }
 
+//nolint:unused // These helper functions are kept for future test implementations
+// NOTE TO DEVELOPERS:
+// The following functions are helper utilities for vector manipulation and text embedding.
+// They are currently unused but provided for future test cases that may require:
+// - Generating normalized vectors for embedding tests (generateNormalizedVector)
+// - Creating mock embeddings from text (generateEmbeddingForText)
+// Remove this comment and the nolint directive if you start using these functions.
+
 func generateNormalizedVector(dim int) []float32 {
 	vector := make([]float32, dim)
 	var sum float32
@@ -234,7 +242,7 @@ func generateNormalizedVector(dim int) []float32 {
 	return vector
 }
 
-func generateEmbeddingForText(text string) []float32 {
+func generateEmbeddingForText(_ string) []float32 {
 	// Simple mock implementation - in real code this would use an embedding model
 	vector := make([]float32, 384)
 	for i := 0; i < 384; i++ {

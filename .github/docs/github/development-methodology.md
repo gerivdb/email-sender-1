@@ -29,7 +29,8 @@ stratégies:
 ### 3. Standards Techniques
 ```yaml
 languages:
-  go: "1.22+"
+  go: "1.21+" # PRIORITÉ PRINCIPALE (10-1000x plus rapide)
+  powershell: "7.0+" # Compatibilité legacy
   powershell: "7.0+"
   python: "3.11+"
   typescript: "latest"

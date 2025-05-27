@@ -1,0 +1,58 @@
+{
+    "Metrics": {
+        "CPU": {
+            "Enabled": true,
+            "Threshold": 80,
+            "AlertOnExceed": true
+        },
+        "Memory": {
+            "Enabled": true,
+            "Threshold": 85,
+            "AlertOnExceed": true
+        },
+        "Disk": {
+            "Enabled": true,
+            "Threshold": 90,
+            "AlertOnExceed": true
+        },
+        "Network": {
+            "Enabled": true,
+            "Threshold": 100,
+            "AlertOnExceed": false
+        },
+        "Scripts": {
+            "Enabled": true,
+            "Paths": ["development/scripts", "src"],
+            "ExecutionTimeThreshold": 30
+        },
+        "Database": {
+            "Enabled": true,
+            "QueryTimeThreshold": 5,
+            "ConnectionPoolThreshold": 80
+        }
+    },
+    "Alerts": {
+        "Email": {
+            "Enabled": false,
+            "Recipients": []
+        },
+        "Webhook": {
+            "Enabled": false,
+            "Url": ""
+        },
+        "Log": {
+            "Enabled": true,
+            "Level": "Warning"
+        }
+    },
+    "Collection": {
+        "IntervalSeconds": 60,
+        "RetentionDays": 30,
+        "BatchSize": 100
+    },
+    "Dashboard": {
+        "Port": 8080,
+        "RefreshSeconds": 30,
+        "HistoryHours": 24
+    }
+}

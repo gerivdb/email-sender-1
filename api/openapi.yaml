@@ -1,0 +1,746 @@
+# RAG System OpenAPI Specification
+# Time-Saving Method 3: Contract-First Development
+# ROI: +22h immediate + 12h/month (eliminates API versioning issues)
+openapi: 3.0.3
+info:
+  title: RAG Ultra-Rapid System API
+  description: |
+    High-performance Retrieval-Augmented Generation API with QDrant integration.
+    
+    **Time-Saving Features:**
+    - Fail-fast validation with detailed error codes
+    - Advanced caching and performance optimization
+    - Real-time metrics and monitoring
+    - Auto-generated client SDKs
+    
+  version: "1.0.0"
+  contact:
+    name: RAG System Team
+    email: rag-support@company.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Development server
+  - url: https://rag-staging.company.com/api/v1
+    description: Staging server
+  - url: https://rag.company.com/api/v1
+    description: Production server
+
+paths:
+  /search:
+    post:
+      summary: Perform RAG search
+      description: |
+        Execute semantic search with retrieval-augmented generation.
+        Returns ranked results with similarity scores and generated content.
+      operationId: performSearch
+      tags:
+        - Search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              simple_search:
+                summary: Simple text search
+                value:
+                  query: "What is machine learning?"
+                  limit: 10
+                  threshold: 0.7
+              advanced_search:
+                summary: Advanced search with filters
+                value:
+                  query: "deep learning architectures"
+                  limit: 20
+                  threshold: 0.8
+                  filters:
+                    category: "research"
+                    year: "2024"
+                  context: ["neural networks", "transformers"]
+                  temperature: 0.7
+      responses:
+        '200':
+          description: Search completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+              examples:
+                success_response:
+                  $ref: '#/components/examples/SuccessfulSearchResponse'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                validation_error:
+                  $ref: '#/components/examples/ValidationError'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /search/stream:
+    post:
+      summary: Streaming RAG search
+      description: |
+        Execute streaming semantic search for real-time results.
+        Returns server-sent events with progressive results.
+      operationId: performStreamingSearch
+      tags:
+        - Search
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Streaming search results
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-sent events stream
+              examples:
+                stream_response:
+                  summary: Streaming search events
+                  value: |
+                    event: search_start
+                    data: {"request_id": "req_123", "timestamp": "2025-05-27T10:30:00Z"}
+                    
+                    event: result
+                    data: {"id": "doc1", "score": 0.95, "title": "Introduction to ML"}
+                    
+                    event: search_complete
+                    data: {"total_results": 10, "duration_ms": 245}
+
+  /documents:
+    post:
+      summary: Index new documents
+      description: Add documents to the vector database for search
+      operationId: indexDocuments
+      tags:
+        - Documents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexRequest'
+      responses:
+        '201':
+          description: Documents indexed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexResponse'
+        '400':
+          description: Invalid document format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      summary: List indexed documents
+      description: Retrieve paginated list of indexed documents
+      operationId: listDocuments
+      tags:
+        - Documents
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of documents to return
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Number of documents to skip
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: collection
+          in: query
+          description: Filter by collection name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentListResponse'
+
+  /documents/{document_id}:
+    get:
+      summary: Get document by ID
+      description: Retrieve a specific document with its metadata
+      operationId: getDocument
+      tags:
+        - Documents
+      parameters:
+        - name: document_id
+          in: path
+          required: true
+          description: Unique document identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Document details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '404':
+          description: Document not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete document
+      description: Remove document from the vector database
+      operationId: deleteDocument
+      tags:
+        - Documents
+      parameters:
+        - name: document_id
+          in: path
+          required: true
+          description: Unique document identifier
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Document deleted successfully
+        '404':
+          description: Document not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /collections:
+    get:
+      summary: List collections
+      description: Get all available collections in the vector database
+      operationId: listCollections
+      tags:
+        - Collections
+      responses:
+        '200':
+          description: List of collections
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionListResponse'
+
+    post:
+      summary: Create collection
+      description: Create a new collection for organizing documents
+      operationId: createCollection
+      tags:
+        - Collections
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionRequest'
+      responses:
+        '201':
+          description: Collection created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+
+  /health:
+    get:
+      summary: Health check
+      description: Check system health and component status
+      operationId: healthCheck
+      tags:
+        - System
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: System is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /metrics:
+    get:
+      summary: System metrics
+      description: Get performance metrics and statistics
+      operationId: getMetrics
+      tags:
+        - System
+      responses:
+        '200':
+          description: System metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+
+components:
+  schemas:
+    SearchRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: Search query text
+          minLength: 3
+          maxLength: 1000
+          example: "What are the benefits of vector databases?"
+        limit:
+          type: integer
+          description: Maximum number of results to return
+          minimum: 1
+          maximum: 100
+          default: 10
+        threshold:
+          type: number
+          description: Minimum similarity score threshold
+          minimum: 0
+          maximum: 1
+          default: 0.7
+        filters:
+          type: object
+          description: Key-value filters for document metadata
+          additionalProperties:
+            type: string
+          example:
+            category: "technology"
+            language: "en"
+        context:
+          type: array
+          description: Additional context for the search
+          items:
+            type: string
+          maxItems: 5
+          example: ["machine learning", "artificial intelligence"]
+        temperature:
+          type: number
+          description: Generation temperature for RAG responses
+          minimum: 0
+          maximum: 2
+          default: 0.7
+
+    SearchResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: Unique request identifier
+          example: "req_12345"
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResult'
+        total_count:
+          type: integer
+          description: Total number of matching documents
+        duration_ms:
+          type: integer
+          description: Search duration in milliseconds
+        metadata:
+          $ref: '#/components/schemas/SearchMetadata'
+
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Document identifier
+        score:
+          type: number
+          description: Similarity score (0-1)
+          minimum: 0
+          maximum: 1
+        title:
+          type: string
+          description: Document title
+        content:
+          type: string
+          description: Document content or excerpt
+        generated_response:
+          type: string
+          description: RAG-generated response based on this document
+        metadata:
+          type: object
+          description: Document metadata
+          additionalProperties: true
+        embedding:
+          type: array
+          description: Document vector embedding (optional)
+          items:
+            type: number
+
+    SearchMetadata:
+      type: object
+      properties:
+        total_documents:
+          type: integer
+          description: Total documents in collection
+        search_params:
+          type: object
+          description: Applied search parameters
+        performance:
+          type: object
+          properties:
+            query_time_ms:
+              type: integer
+            embedding_time_ms:
+              type: integer
+            generation_time_ms:
+              type: integer
+
+    IndexRequest:
+      type: object
+      required:
+        - documents
+      properties:
+        collection:
+          type: string
+          description: Target collection name
+          default: "default"
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentInput'
+          minItems: 1
+          maxItems: 100
+
+    DocumentInput:
+      type: object
+      required:
+        - content
+      properties:
+        id:
+          type: string
+          description: Document identifier (auto-generated if not provided)
+        title:
+          type: string
+          description: Document title
+        content:
+          type: string
+          description: Document content
+          minLength: 10
+          maxLength: 50000
+        metadata:
+          type: object
+          description: Additional document metadata
+          additionalProperties: true
+
+    IndexResponse:
+      type: object
+      properties:
+        indexed_count:
+          type: integer
+          description: Number of successfully indexed documents
+        failed_count:
+          type: integer
+          description: Number of failed documents
+        duration_ms:
+          type: integer
+          description: Indexing duration in milliseconds
+        document_ids:
+          type: array
+          items:
+            type: string
+          description: List of indexed document IDs
+
+    Document:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        vector_size:
+          type: integer
+          description: Size of the document's vector embedding
+
+    DocumentListResponse:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+        total_count:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+
+    Collection:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        document_count:
+          type: integer
+        vector_size:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+
+    CreateCollectionRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          pattern: '^[a-zA-Z0-9_-]+$'
+          minLength: 3
+          maxLength: 50
+        description:
+          type: string
+          maxLength: 200
+        vector_size:
+          type: integer
+          minimum: 1
+          maximum: 2048
+          default: 768
+
+    CollectionListResponse:
+      type: object
+      properties:
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/Collection'
+        total_count:
+          type: integer
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy, degraded]
+        timestamp:
+          type: string
+          format: date-time
+        components:
+          type: object
+          properties:
+            database:
+              $ref: '#/components/schemas/ComponentHealth'
+            qdrant:
+              $ref: '#/components/schemas/ComponentHealth'
+            embedding_service:
+              $ref: '#/components/schemas/ComponentHealth'
+        uptime_seconds:
+          type: integer
+
+    ComponentHealth:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy, unknown]
+        latency_ms:
+          type: integer
+        last_check:
+          type: string
+          format: date-time
+        error_message:
+          type: string
+
+    MetricsResponse:
+      type: object
+      properties:
+        system:
+          type: object
+          properties:
+            cpu_usage_percent:
+              type: number
+            memory_usage_percent:
+              type: number
+            disk_usage_percent:
+              type: number
+        api:
+          type: object
+          properties:
+            total_requests:
+              type: integer
+            requests_per_second:
+              type: number
+            average_response_time_ms:
+              type: number
+            error_rate_percent:
+              type: number
+        search:
+          type: object
+          properties:
+            total_searches:
+              type: integer
+            average_search_time_ms:
+              type: number
+            cache_hit_rate_percent:
+              type: number
+        database:
+          type: object
+          properties:
+            total_documents:
+              type: integer
+            total_collections:
+              type: integer
+            index_size_gb:
+              type: number
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code for programmatic handling
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: object
+              description: Additional error details
+            request_id:
+              type: string
+              description: Request identifier for debugging
+            timestamp:
+              type: string
+              format: date-time
+
+  examples:
+    SuccessfulSearchResponse:
+      summary: Successful search with multiple results
+      value:
+        request_id: "req_abc123"
+        results:
+          - id: "doc_001"
+            score: 0.95
+            title: "Introduction to Vector Databases"
+            content: "Vector databases are specialized systems designed to store and search high-dimensional vectors..."
+            generated_response: "Based on this document, vector databases are powerful tools for similarity search..."
+            metadata:
+              category: "technology"
+              author: "John Doe"
+              published_date: "2024-03-15"
+          - id: "doc_002"
+            score: 0.87
+            title: "RAG Systems Explained"
+            content: "Retrieval-Augmented Generation combines the power of retrieval and generation..."
+            generated_response: "This document explains that RAG systems enhance language models..."
+            metadata:
+              category: "ai"
+              author: "Jane Smith"
+              published_date: "2024-02-20"
+        total_count: 2
+        duration_ms: 245
+        metadata:
+          total_documents: 10000
+          search_params:
+            applied_threshold: 0.7
+            used_filters: ["category"]
+          performance:
+            query_time_ms: 45
+            embedding_time_ms: 120
+            generation_time_ms: 80
+
+    ValidationError:
+      summary: Request validation error
+      value:
+        error:
+          code: "VALIDATION_ERROR"
+          message: "Request validation failed"
+          details:
+            field_errors:
+              - field: "query"
+                code: "QUERY_TOO_SHORT"
+                message: "Query must be at least 3 characters long"
+              - field: "limit"
+                code: "LIMIT_TOO_HIGH"
+                message: "Limit cannot exceed 100"
+          request_id: "req_xyz789"
+          timestamp: "2025-05-27T10:30:00Z"
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication
+    
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token authentication
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+
+tags:
+  - name: Search
+    description: RAG search operations
+  - name: Documents
+    description: Document management
+  - name: Collections
+    description: Collection management
+  - name: System
+    description: System monitoring and health

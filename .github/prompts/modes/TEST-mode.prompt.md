@@ -1,62 +1,34 @@
 ---
-title: "Mode Tests Unitaires Cycliques"
-description: "Tests unitaires à cycle court pour validation continue"
+title: "Mode TEST"
+description: "Mode opérationnel TEST pour le projet EMAIL_SENDER_1"
 behavior:
   temperature: 0.2
-  maxTokens: 1024
-tags: ["testing", "validation", "quality"]
+  maxTokens: 2048
+tags: ["mode", "test", "operation"]
 ---
 
-# Mode UNIT-TEST - Tests Unitaires Cycliques
+# Mode TEST
 
 ## 🎯 Objectif
-Exécuter et valider des tests unitaires de manière cyclique pour assurer la qualité continue du code.
+[Description de l'objectif du mode]
 
 ## 📋 Paramètres
-```yaml
-testTypes:
-  - unit
-  - integration
-  - plan-validation
-scope:
-  - component
-  - module
-  - plan
-frequency:
-  min: 5   # minutes
-  max: 30  # minutes
-```
+[Liste des paramètres]
 
 ## 🔄 Workflow
-1. **Préparation**
-   - Identification des composants à tester
-   - Validation des dépendances
-   - Configuration de l'environnement
+[Description du workflow]
 
-2. **Exécution**
-   ```powershell
-   # Test d'un composant spécifique
-   .\test_runner.ps1 -Component "analyzer" -Cycle 5
-   
-   # Test d'un plan de développement
-   .\test_runner.ps1 -PlanPath "./plan-dev/v36" -ValidatePlan
-   ```
-
-3. **Validation**
-   ```yaml
-   criteria:
-     coverage: ≥ 80%
-     performance: ≤ 100ms/test
-     reliability: ≥ 95%
-   ```
+## 🛠️ Commandes Principales
+`powershell
+# Exemple de commande
+.\test-mode.ps1 -Parameter "value"
+`
 
 ## 📊 Métriques
-- Taux de couverture
-- Temps d'exécution
-- Taux de réussite
-- Complexité cyclomatique
+[Métriques et indicateurs]
 
 ## 🔗 Intégration
-- **DEV-R**: Validation continue
-- **CHECK**: Rapports de qualité
-- **DEBUG**: Identification des problèmes
+[Intégration avec autres modes]
+
+## ⚠️ Points d'Attention
+[Points importants à noter]

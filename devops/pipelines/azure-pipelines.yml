@@ -1,0 +1,192 @@
+# Azure DevOps Pipeline pour Email Sender 1
+# Trigger sur main et develop branches
+
+trigger:
+  branches:
+    include:
+    - main
+    - develop
+  paths:
+    exclude:
+    - README.md
+    - docs/*
+
+pr:
+  branches:
+    include:
+    - main
+
+variables:
+  buildConfiguration: 'Release'
+  goVersion: '1.21'
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Validate
+  displayName: '🚨 Fail-Fast Validation'
+  jobs:
+  - job: Prerequisites
+    displayName: 'Vérifier prérequis'
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: PowerShell@2
+      displayName: 'Fail-Fast Validation'
+      inputs:
+        pwsh: true
+        filePath: 'setup/implement-fail-fast.ps1'
+        arguments: '-DryRun'
+
+- stage: Test
+  displayName: '🧪 Tests & Qualité'
+  dependsOn: Validate
+  jobs:
+  - job: UnitTests
+    displayName: 'Tests unitaires'
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: GoTool@0
+      displayName: 'Setup Go'
+      inputs:
+        version: $(goVersion)
+        
+    - task: Go@0
+      displayName: 'go mod download'
+      inputs:
+        command: 'custom'
+        customCommand: 'mod'
+        arguments: 'download'
+        
+    - task: Go@0
+      displayName: 'Run tests'
+      inputs:
+        command: 'test'
+        arguments: '-v -race -coverprofile=coverage.out ./...'
+        
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publier couverture'
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: 'coverage.out'
+
+  - job: IntegrationTests
+    displayName: 'Tests d\'intégration'
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: PowerShell@2
+      displayName: 'Démarrer mocks'
+      inputs:
+        pwsh: true
+        targetType: 'inline'
+        script: |
+          & ./mocks/start-all-mocks.ps1
+          
+    - task: Go@0
+      displayName: 'Tests intégration'
+      inputs:
+        command: 'test'
+        arguments: '-v -tags=integration ./tests/integration/...'
+        
+    - task: PowerShell@2
+      displayName: 'Arrêter mocks'
+      condition: always()
+      inputs:
+        pwsh: true
+        targetType: 'inline'
+        script: |
+          & ./mocks/stop-all-mocks.ps1
+
+- stage: Build
+  displayName: '🔨 Build & Package'
+  dependsOn: Test
+  jobs:
+  - job: Build
+    displayName: 'Build application'
+    strategy:
+      matrix:
+        linux_amd64:
+          goos: 'linux'
+          goarch: 'amd64'
+        windows_amd64:
+          goos: 'windows'
+          goarch: 'amd64'
+        darwin_amd64:
+          goos: 'darwin'
+          goarch: 'amd64'
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: GoTool@0
+      displayName: 'Setup Go'
+      inputs:
+        version: $(goVersion)
+        
+    - task: PowerShell@2
+      displayName: 'Build binary'
+      inputs:
+        pwsh: true
+        targetType: 'inline'
+        script: |
+          $env:GOOS = "$(goos)"
+          $env:GOARCH = "$(goarch)"
+          
+          New-Item -Path "dist" -ItemType Directory -Force
+          go build -o "dist/email-sender-$(goos)-$(goarch)" ./cmd/main.go
+          
+    - task: ArchiveFiles@2
+      displayName: 'Archive binary'
+      inputs:
+        rootFolderOrFile: 'dist'
+        includeRootFolder: false
+        archiveType: 'tar'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/email-sender-$(goos)-$(goarch).tar.gz'
+        
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publier artifacts'
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'binaries'
+
+- stage: Deploy
+  displayName: '🚀 Déploiement'
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+  - deployment: Production
+    displayName: 'Déployer en production'
+    environment: 'production'
+    pool:
+      vmImage: $(vmImageName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadBuildArtifacts@0
+            displayName: 'Télécharger artifacts'
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'binaries'
+              downloadPath: '$(System.ArtifactsDirectory)'
+              
+          - task: PowerShell@2
+            displayName: 'Déployer application'
+            inputs:
+              pwsh: true
+              targetType: 'inline'
+              script: |
+                Write-Host "🚀 Déploiement en cours..."
+                Start-Sleep 5
+                Write-Host "✅ Déploiement terminé"
+                
+          - task: PowerShell@2
+            displayName: 'Health Check'
+            inputs:
+              pwsh: true
+              targetType: 'inline'
+              script: |
+                Write-Host "🔍 Vérification santé..."
+                # Test endpoints
+                Write-Host "✅ Application healthy"

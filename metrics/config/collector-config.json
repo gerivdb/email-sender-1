@@ -1,0 +1,26 @@
+{
+    "Retention":  {
+                      "Days":  30,
+                      "MaxFiles":  1000
+                  },
+    "Metrics":  {
+                    "Application":  {
+                                        "Qdrant":  true,
+                                        "MockServices":  true,
+                                        "EmailSender":  true
+                                    },
+                    "Performance":  {
+                                        "CPU":  true,
+                                        "Memory":  true,
+                                        "Disk":  true,
+                                        "Network":  true
+                                    }
+                },
+    "Thresholds":  {
+                       "MemoryCritical":  90,
+                       "MemoryWarning":  80,
+                       "CPUWarning":  80,
+                       "CPUCritical":  90
+                   },
+    "Enabled":  true
+}

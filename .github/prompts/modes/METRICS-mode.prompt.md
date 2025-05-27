@@ -1,53 +1,34 @@
 ---
-title: "Mode Métriques"
-description: "Analyse et reporting des métriques projet"
+title: "Mode METRICS"
+description: "Mode opérationnel METRICS pour le projet EMAIL_SENDER_1"
 behavior:
   temperature: 0.2
-  maxTokens: 1024
-tags: ["metrics", "analysis", "reporting"]
+  maxTokens: 2048
+tags: ["mode", "metrics", "operation"]
 ---
 
-# Mode METRICS - Analyse de Métriques
+# Mode METRICS
 
 ## 🎯 Objectif
-Analyser et générer des rapports de métriques pour le projet EMAIL_SENDER_1
+[Description de l'objectif du mode]
 
-## 📋 Sources de Données
-```yaml
-metrics:
-  - performance:
-      - Temps de réponse
-      - Utilisation CPU/RAM
-  - qualité:
-      - Couverture tests
-      - Complexité code
-  - processus:
-      - Vélocité
-      - Taux de bugs
-```
+## 📋 Paramètres
+[Liste des paramètres]
 
-## 🔄 Workflow d'Analyse
-1. **Collecte des Données**
-   ```powershell
-   # Analyse des métriques
-   .\analyze_markdown_tasks.py
-   .\eval-matrix.ps1
-   ```
+## 🔄 Workflow
+[Description du workflow]
 
-2. **Génération Rapports**
-   ```powershell
-   # Rapports standards
-   .\process_all_files.py
-   .\generate_test_data.py
-   ```
+## 🛠️ Commandes Principales
+`powershell
+# Exemple de commande
+.\metrics-mode.ps1 -Parameter "value"
+`
 
-## 📊 Types de Rapports
-- Rapports journaliers
-- Analyses hebdomadaires
-- Synthèses mensuelles
-- Tendances long terme
+## 📊 Métriques
+[Métriques et indicateurs]
 
-## 🔗 Intégration Modes
-- **CHECK**: Validation métriques
-- **DEV-R**: Amélioration continue
-- **ARCHI**: Impact architectural
+## 🔗 Intégration
+[Intégration avec autres modes]
+
+## ⚠️ Points d'Attention
+[Points importants à noter]

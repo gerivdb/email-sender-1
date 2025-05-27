@@ -1,49 +1,34 @@
 ---
-mode: 'agent'
-tools: ['standards']
-description: 'Application des standards du projet'
+title: "Mode standard"
+description: "Mode opérationnel standard pour le projet EMAIL_SENDER_1"
+behavior:
+  temperature: 0.2
+  maxTokens: 2048
+tags: ["mode", "standard", "operation"]
 ---
 
-# Mode STANDARD - Conformité aux Standards
+# Mode standard
 
-## 🎯 OBJECTIF
-Assurer le respect strict des standards globaux du projet
+## 🎯 Objectif
+[Description de l'objectif du mode]
 
-## 📋 STANDARDS PRINCIPAUX
-- Conventions de nommage
-- Style de codage
-- Organisation des fichiers
-- Documentation
-- Tests
+## 📋 Paramètres
+[Liste des paramètres]
 
-## 🔄 WORKFLOW
-1. Vérification des standards
-2. Identification des écarts
-3. Application des corrections
-4. Validation finale
-5. Documentation des changements
+## 🔄 Workflow
+[Description du workflow]
 
-## 🛠️ COMMANDES PRINCIPALES
-```powershell
-# Vérification complète
-.\standard-check.ps1 -Path "." -Verbose
+## 🛠️ Commandes Principales
+`powershell
+# Exemple de commande
+.\standard-mode.ps1 -Parameter "value"
+`
 
-# Application des standards
-.\standard-apply.ps1 -Path "./src" -Fix
+## 📊 Métriques
+[Métriques et indicateurs]
 
-# Génération de rapport
-.\standard-report.ps1 -Output "reports/standards.md"
-```
+## 🔗 Intégration
+[Intégration avec autres modes]
 
-## 📝 FORMAT DE VALIDATION
-```markdown
-# Rapport de Conformité [Date]
-
-## Standards Vérifiés
-- [Liste des standards]
-
-## Résultats
-- Conformité : [%]
-- Corrections : [Nombre]
-- Actions requises : [Liste]
-```
+## ⚠️ Points d'Attention
+[Points importants à noter]

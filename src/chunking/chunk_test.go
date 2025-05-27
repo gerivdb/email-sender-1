@@ -24,6 +24,7 @@ func TestFixedSizeChunker(t *testing.T) {
 			},
 			want: 0,
 		},
+
 		{
 			name: "Short text",
 			text: "This is a short text.",
@@ -34,6 +35,7 @@ func TestFixedSizeChunker(t *testing.T) {
 			},
 			want: 1,
 		},
+
 		{
 			name: "Text equal to chunk size",
 			text: "This text is exactly 50 characters long.............",
@@ -44,6 +46,7 @@ func TestFixedSizeChunker(t *testing.T) {
 			},
 			want: 1,
 		},
+
 		{
 			name: "Text larger than chunk size",
 			text: "This is a longer text that should be split into multiple chunks. It contains multiple sentences and should generate several chunks.",
@@ -54,6 +57,7 @@ func TestFixedSizeChunker(t *testing.T) {
 			},
 			want: 3,
 		},
+
 		{
 			name: "Text with sentence boundaries",
 			text: "First sentence. Second sentence. Third sentence. Fourth sentence.",
@@ -138,6 +142,7 @@ func TestSemanticChunker(t *testing.T) {
 			},
 			want: 0,
 		},
+
 		{
 			name: "Simple text without sections",
 			text: "This is a simple text without any sections or special formatting.",
@@ -147,6 +152,7 @@ func TestSemanticChunker(t *testing.T) {
 			},
 			want: 1,
 		},
+
 		{
 			name: "Markdown with sections",
 			text: `## Section 1
@@ -163,6 +169,7 @@ This is the content of section 3.`,
 			},
 			want: 3,
 		},
+
 		{
 			name: "Text with paragraphs",
 			text: `First paragraph with multiple sentences.
@@ -246,6 +253,7 @@ More content with ` + "`code`" + ` and **bold** text.`,
 			},
 			wantStrategy: "semantic",
 		},
+
 		{
 			name: "Code text",
 			text: `func main() {
@@ -260,6 +268,7 @@ More content with ` + "`code`" + ` and **bold** text.`,
 			},
 			wantStrategy: "fixed-size",
 		},
+
 		{
 			name: "Simple prose",
 			text: "This is just regular text without any special formatting or structure.",
