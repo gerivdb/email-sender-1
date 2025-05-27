@@ -11,7 +11,7 @@ func TestMockEmbeddingProvider(t *testing.T) {
 	provider := NewMockEmbeddingProvider(
 		WithBaseLatency(10*time.Millisecond),
 		WithBatchLatency(1*time.Millisecond),
-		WithCacheHitRate(0.8),
+		WithCacheHitRate(1.0), // 100% pour les tests déterministes
 	)
 
 	t.Run("Single Embedding", func(t *testing.T) {
@@ -195,7 +195,7 @@ func TestMockEmbeddingProviderAdvancedCache(t *testing.T) {
 		}
 
 		// Réduire la taille du cache à 2 embeddings
-		provider.maxCacheSize = int64(1536 * 4 * 2)
+		provider.SetMaxCacheSize(int64(1536 * 4 * 2))
 
 		// Le prochain embed devrait déclencher plusieurs évictions
 		_, err := provider.Embed("new_text")

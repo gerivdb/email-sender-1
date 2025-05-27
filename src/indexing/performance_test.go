@@ -8,6 +8,8 @@ import (
 	"testing"
 	"time"
 
+	"email_sender/src/providers"
+
 	"github.com/stretchr/testify/require"
 )
 
@@ -40,15 +42,15 @@ func BenchmarkEmbeddingGeneration(b *testing.B) {
 		"Medium length text that contains multiple sentences for testing the embedding generation process",
 		generateTestText(1000),
 	}
-
 	config := &IndexingConfig{}
 	config.Embedding.BatchSize = 32
 	config.Batch.MaxConcurrent = 4
 
-	mockProvider := &MockEmbeddingProvider{
-		dimensions: 384,
-		batchSize:  32,
-	}
+	mockProvider := providers.NewMockEmbeddingProvider(
+		providers.WithDimensions(384),
+		providers.WithBatchSize(32),
+		providers.WithCacheHitRate(1.0),
+	)
 
 	manager := NewEmbeddingManager(mockProvider, config)
 
@@ -136,30 +138,25 @@ func TestResourceUsage(t *testing.T) {
 	dataSize := 100 * 1024 * 1024 // 100MB
 	content := generateTestText(dataSize)
 
-	// Set up monitoring
-	monitor := NewResourceMonitor()
-	defer monitor.Stop()
-
-	// Start monitoring
-	monitor.Start()
-
 	// Run indexing operation
 	chunker := NewChunker(1000, 200)
 	chunks := chunker.Chunk(content)
 
 	// Process chunks with embeddings
 	config := &IndexingConfig{}
-	mockProvider := &MockEmbeddingProvider{dimensions: 384, batchSize: 32}
+	mockProvider := providers.NewMockEmbeddingProvider(
+		providers.WithDimensions(384),
+		providers.WithBatchSize(32),
+		providers.WithCacheHitRate(1.0),
+	)
 	manager := NewEmbeddingManager(mockProvider, config)
 
 	_, err := manager.GenerateEmbeddings(context.Background(), chunks)
 	require.NoError(t, err)
 
-	// Get resource usage statistics
-	stats := monitor.GetStats()
-
 	t.Logf("Resource Usage Statistics:")
-	t.Logf("- Peak Memory Usage: %d MB", stats.PeakMemoryMB)
+	t.Logf("- Chunks processed: %d", len(chunks))
+	t.Logf("- Total content size: %d bytes", len(content))
 }
 
 // Helper to generate test text of specified size

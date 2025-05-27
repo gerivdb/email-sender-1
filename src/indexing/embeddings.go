@@ -68,7 +68,9 @@ func (em *EmbeddingManager) GenerateEmbeddings(ctx context.Context, texts []stri
 		go func(batch []string, startIdx int) {
 			defer wg.Done()
 			semaphore <- struct{}{}        // Acquire semaphore
-			defer func() { <-semaphore }() // Release semaphore			// Try to get embeddings from cache first
+			defer func() { <-semaphore }() // Release semaphore
+
+			// Try to get embeddings from cache first
 			cached, missing, _ := em.getCachedEmbeddings(batch)
 
 			// Generate embeddings for missing texts

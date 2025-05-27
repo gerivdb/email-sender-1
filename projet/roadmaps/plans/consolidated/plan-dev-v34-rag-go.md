@@ -364,7 +364,7 @@
             - [x] **2.3.1.3.2.1.3.3** Vérifier la réponse de l'API pour s'assurer qu'elle retourne un statut de succès et les identifiants des points insérés.
             - [x] **2.3.1.3.2.1.3.4** Valider que les points sont insérés dans QDrant en effectuant une requête de récupération et en comparant les résultats avec les données initiales.
 
-          - [ ] **2.3.1.3.2.1.4** Correction/Debug UpsertPoints (corriger toute erreur bloquante détectée par le test P1)
+          - [ ] **2.3.1.3.2.1.4** Correction/Debug UpsertPoints (migration HTTP, validation payloads, gestion erreurs HTTP)
             - [ ] **2.3.1.3.2.1.4.1** Identifier les erreurs dans les logs ou réponses API
             - [ ] **2.3.1.3.2.1.4.2** Corriger les erreurs dans le code (gestion des erreurs, validation des données)
             - [ ] **2.3.1.3.2.1.4.3** Réexécuter les tests pour valider les corrections
@@ -718,7 +718,7 @@
           - [ ] **6.1.1.1.1.1.3** Intégration avec QDrant
         - [ ] **6.1.1.1.1.2** Prérequis système
           - [ ] **6.1.1.1.1.2.1** Version Go requise
-          - [ ] **6.1.1.1.1.1.2.2** Dépendances externes
+          - [ ] **6.1.1.1.1.2** Dépendances externes
           - [ ] **6.1.1.1.1.2.3** Configuration système recommandée
       - [ ] **6.1.1.1.2** Guide de démarrage rapide
         - [ ] **6.1.1.1.2.1** Installation
@@ -874,3 +874,17 @@ go build -o rag-go cmd/rag-go/main.go
 **PRIORITÉ :** Commencer par la Phase 1 pour avoir un prototype fonctionnel rapidement
 
 ---
+
+<!-- AJOUTS/CORRECTIONS v34 (mai 2025) -->
+
+### Correctifs et tâches à implémenter (v34)
+
+- [ ] Correction syntaxique des littéraux composites dans chunk_test.go
+- [ ] Adapter/désactiver les tests d’intégration Qdrant pour le client HTTP (plus de gRPC)
+- [ ] Nettoyer les paramètres non utilisés dans les handlers et fonctions (préfixer par _ ou supprimer)
+- [ ] Supprimer ou utiliser les fonctions/méthodes non utilisées dans search.go
+- [ ] S’assurer que tous les tests unitaires et d’intégration passent à 100% (aucune erreur de compilation, de syntaxe ou d’API)
+- [ ] Déboguer et valider tous les tests (mock, cache, Qdrant, chunking, etc.)
+- [ ] Ajouter des tests manquants pour garantir la couverture complète
+
+<!-- Fin AJOUTS/CORRECTIONS v34 -->

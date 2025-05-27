@@ -271,6 +271,5 @@ func (s *IndexingServer) runIndexingJob(jobID string, req IndexRequest) {
 }
 
 func main() {
-	// TODO: Implement main function for indexing server
-	fmt.Println("Indexing server main function - TODO: implement")
+	fmt.Println("Indexing server: point d'entrée principal non implémenté.")
 }

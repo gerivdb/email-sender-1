@@ -14,9 +14,23 @@ type QdrantClient struct {
 	HTTPClient *http.Client
 }
 
+// Client is an alias for QdrantClient for compatibility
+type Client = QdrantClient
+
 type Collection struct {
 	Name   string `json:"name"`
 	Status string `json:"status"`
+}
+
+type CollectionConfig struct {
+	VectorSize int    `json:"vector_size"`
+	Distance   string `json:"distance"`
+}
+
+type CollectionInfo struct {
+	Status      string `json:"status"`
+	PointsCount int    `json:"points_count"`
+	VectorSize  int    `json:"vector_size"`
 }
 
 type Point struct {
@@ -46,6 +60,11 @@ func NewQdrantClient(baseURL string) *QdrantClient {
 	}
 }
 
+// NewClient is an alias for NewQdrantClient for compatibility
+func NewClient(baseURL string) *Client {
+	return NewQdrantClient(baseURL)
+}
+
 func (q *QdrantClient) HealthCheck() error {
 	resp, err := q.HTTPClient.Get(q.BaseURL + "/")
 	if err != nil {
@@ -60,11 +79,11 @@ func (q *QdrantClient) HealthCheck() error {
 	return nil
 }
 
-func (q *QdrantClient) CreateCollection(name string, vectorSize int) error {
+func (q *QdrantClient) CreateCollection(name string, config CollectionConfig) error {
 	payload := map[string]interface{}{
 		"vectors": map[string]interface{}{
-			"size":     vectorSize,
-			"distance": "Cosine",
+			"size":     config.VectorSize,
+			"distance": config.Distance,
 		},
 	}
 
@@ -83,6 +102,19 @@ func (q *QdrantClient) Search(collectionName string, req SearchRequest) ([]Searc
 	var results []SearchResult
 	err := q.makeRequest("POST", fmt.Sprintf("/collections/%s/points/search", collectionName), req, &results)
 	return results, err
+}
+
+func (q *QdrantClient) DeleteCollection(name string) error {
+	return q.makeRequest("DELETE", fmt.Sprintf("/collections/%s", name), nil, nil)
+}
+
+func (q *QdrantClient) GetCollectionInfo(name string) (*CollectionInfo, error) {
+	var info CollectionInfo
+	err := q.makeRequest("GET", fmt.Sprintf("/collections/%s", name), nil, &info)
+	if err != nil {
+		return nil, err
+	}
+	return &info, nil
 }
 
 func (q *QdrantClient) makeRequest(method, endpoint string, payload interface{}, result interface{}) error {

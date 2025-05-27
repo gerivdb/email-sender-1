@@ -70,19 +70,19 @@ func TestFixedSizeChunker(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			chunks, err := chunker.Chunk(tt.text, tt.options)
-			
+
 			if tt.text == "" {
 				if err == nil {
 					t.Error("Expected error for empty text, got nil")
 				}
 				return
 			}
-			
+
 			if err != nil {
 				t.Errorf("Unexpected error: %v", err)
 				return
 			}
-			
+
 			if len(chunks) != tt.want {
 				t.Errorf("Got %d chunks, want %d", len(chunks), tt.want)
 			}
@@ -184,19 +184,19 @@ End of text.`,
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			chunks, err := chunker.Chunk(tt.text, tt.options)
-			
+
 			if tt.text == "" {
 				if err == nil {
 					t.Error("Expected error for empty text, got nil")
 				}
 				return
 			}
-			
+
 			if err != nil {
 				t.Errorf("Unexpected error: %v", err)
 				return
 			}
-			
+
 			if len(chunks) != tt.want {
 				t.Errorf("Got %d chunks, want %d", len(chunks), tt.want)
 			}
@@ -239,7 +239,7 @@ func TestAdaptiveChunker(t *testing.T) {
 Content with *formatting* and [links](https://example.com).
 
 ## Section 2
-More content with \`code\` and **bold** text.`,
+More content with ` + "`code`" + ` and **bold** text.`,
 			options: ChunkingOptions{
 				MaxChunkSize:     100,
 				ParentDocumentID: "test-1",
@@ -305,7 +305,7 @@ More content with \`code\` and **bold** text.`,
 
 func TestChunkMetadata(t *testing.T) {
 	chunker := NewAdaptiveChunker()
-	
+
 	metadata := map[string]interface{}{
 		"source": "test-file.txt",
 		"author": "Test Author",

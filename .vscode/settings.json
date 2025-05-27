@@ -1,0 +1,22 @@
+{
+  "chat.promptFiles": true,
+  "chat.instructionsFilesLocations": [
+    ".github/instructions"
+  ],
+  "chat.promptFilesLocations": [
+    ".github/prompts"
+  ],
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "github.copilot.chat.welcomeMessage": "always",
+  "files.associations": {
+    "*.instructions.md": "markdown",
+    "*.prompt.md": "markdown"
+  },
+  "markdown.preview.fontFamily": "Consolas, 'Courier New', monospace",
+  "copilot.enable": {
+    "*": true,
+    "plaintext": true,
+    "markdown": true,
+    "scminput": true
+  }
+}

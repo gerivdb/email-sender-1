@@ -8,17 +8,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/qdrant/go-client/qdrant"
+	qdrantclient "email_sender/src/qdrant"
+
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"google.golang.org/grpc"
 )
 
 // IntegrationTestSuite for testing the indexing system
 type IntegrationTestSuite struct {
 	suite.Suite
-	client      *qdrant.Collections
-	pointsAPI   *qdrant.Points
+	client      *qdrantclient.Client
 	config      *IndexingConfig
 	collection  string
 	testDataDir string
@@ -29,25 +28,18 @@ func (s *IntegrationTestSuite) SetupSuite() {
 	// Initialize metrics
 	s.metrics = NewMetrics("test")
 
-	// Connect to Qdrant
-	addr := fmt.Sprintf("%s:%d", "localhost", 6334)
-	conn, err := grpc.Dial(addr, grpc.WithInsecure())
-	require.NoError(s.T(), err)
-
-	// Create Qdrant API clients
-	qc := qdrant.NewQdrantClient(conn)
-	s.client = qc.GetCollectionsClient()
-	s.pointsAPI = qc.GetPointsClient()
+	// Connect to Qdrant HTTP client
+	s.client = qdrantclient.NewClient("http://localhost:6333")
 
 	// Create test configuration
 	s.config = &IndexingConfig{}
 	s.config.Qdrant.Host = "localhost"
-	s.config.Qdrant.Port = 6334
+	s.config.Qdrant.Port = 6333
 	s.collection = fmt.Sprintf("test_collection_%d", time.Now().Unix())
 	s.config.Qdrant.Collection = s.collection
 
 	// Create test collection
-	err = s.createTestCollection()
+	err := s.createTestCollection()
 	require.NoError(s.T(), err)
 
 	// Create test data directory
@@ -57,27 +49,16 @@ func (s *IntegrationTestSuite) SetupSuite() {
 
 func (s *IntegrationTestSuite) TearDownSuite() {
 	// Delete test collection
-	req := &qdrant.DeleteCollection{
-		CollectionName: s.collection,
-	}
-	_, err := s.client.Delete(context.Background(), req)
+	err := s.client.DeleteCollection(s.collection)
 	s.NoError(err)
 }
 
 func (s *IntegrationTestSuite) createTestCollection() error {
-	req := &qdrant.CreateCollection{
-		CollectionName: s.collection,
-		VectorsConfig: &qdrant.VectorsConfig{
-			Config: &qdrant.VectorsConfig_Params{
-				Params: &qdrant.VectorParams{
-					Size:     384,
-					Distance: qdrant.Distance_Cosine,
-				},
-			},
-		},
+	config := qdrantclient.CollectionConfig{
+		VectorSize: 384,
+		Distance:   "Cosine",
 	}
-	_, err := s.client.Create(context.Background(), req)
-	return err
+	return s.client.CreateCollection(s.collection, config)
 }
 
 func (s *IntegrationTestSuite) createTestFiles() {
@@ -230,14 +211,11 @@ func (s *IntegrationTestSuite) TestSystemLimits() {
 // Helper functions
 
 func (s *IntegrationTestSuite) getCollectionCount() (int64, error) {
-	req := &qdrant.CountPoints{
-		CollectionName: s.collection,
-	}
-	resp, err := s.pointsAPI.Count(context.Background(), req)
+	info, err := s.client.GetCollectionInfo(s.collection)
 	if err != nil {
 		return 0, err
 	}
-	return resp.GetResult().GetCount(), nil
+	return int64(info.PointsCount), nil
 }
 
 func generateNormalizedVector(dim int) []float32 {

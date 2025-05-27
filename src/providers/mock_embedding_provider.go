@@ -1,6 +1,7 @@
 package providers
 
 import (
+	"context"
 	"crypto/md5"
 	"math"
 	"math/rand"
@@ -21,6 +22,10 @@ type MockEmbeddingProvider struct {
 	maxCacheSize int64         // Taille maximale du cache en octets (0 = illimité)
 	evictQueue   []string      // Queue FIFO pour l'éviction du cache
 
+	// Configuration des embeddings
+	dimensions int // Nombre de dimensions des embeddings
+	batchSize  int // Taille maximum des batchs
+
 	// Statistiques accumulées
 	totalRequests int64
 	cacheHits     int64
@@ -40,6 +45,8 @@ func NewMockEmbeddingProvider(opts ...MockOption) *MockEmbeddingProvider {
 		cacheHitRate: 0.8,                    // 80% de succès du cache par défaut
 		maxCacheSize: 100 * 1024 * 1024,      // 100MB par défaut
 		evictQueue:   make([]string, 0),      // Queue d'éviction vide
+		dimensions:   1536,                   // Dimensions par défaut (OpenAI)
+		batchSize:    32,                     // Taille de batch par défaut
 	}
 
 	// Appliquer les options de configuration
@@ -81,13 +88,43 @@ func WithMaxCacheSize(size int64) MockOption {
 	}
 }
 
+// WithDimensions configure le nombre de dimensions des embeddings
+func WithDimensions(dim int) MockOption {
+	return func(p *MockEmbeddingProvider) {
+		p.dimensions = dim
+	}
+}
+
+// WithBatchSize configure la taille maximum des batchs
+func WithBatchSize(size int) MockOption {
+	return func(p *MockEmbeddingProvider) {
+		p.batchSize = size
+	}
+}
+
+// Méthodes de l'interface EmbeddingProvider
+
+// GetEmbeddings génère des embeddings pour un batch de textes (interface EmbeddingProvider)
+func (p *MockEmbeddingProvider) GetEmbeddings(ctx context.Context, texts []string) ([][]float32, error) {
+	return p.EmbedBatch(texts)
+}
+
+// GetDimensions retourne le nombre de dimensions des embeddings
+func (p *MockEmbeddingProvider) GetDimensions() int {
+	return p.dimensions
+}
+
+// GetBatchSize retourne la taille maximum des batchs supportée
+func (p *MockEmbeddingProvider) GetBatchSize() int {
+	return p.batchSize
+}
+
 // Embed génère un embedding simulé pour un texte donné
 func (p *MockEmbeddingProvider) Embed(text string) ([]float32, error) {
 	// Vérifier d'abord le cache
 	if embedding := p.checkCache(text); embedding != nil {
-		// Pour les cache hits, simuler une latence réduite (10% de la latence de base)
-		time.Sleep(p.baseLatency / 10)
-		p.updateStats(p.baseLatency/10, 1, int64(len(text)))
+		// Cache hit - retourner immédiatement sans latence artificielle
+		p.updateStats(0, 1, int64(len(text)))
 		return embedding, nil
 	}
 
@@ -96,12 +133,12 @@ func (p *MockEmbeddingProvider) Embed(text string) ([]float32, error) {
 	time.Sleep(latency)
 
 	// Générer un embedding simulé
-	embedding := generateMockEmbedding(text, 1536)
+	embedding := generateMockEmbedding(text, p.dimensions)
 
 	// Mettre en cache le résultat
 	p.cacheResult(text, embedding)
 
-	// Mettre à jour les statistiques avec la latence simulée
+	// Mettre à jour les statistiques
 	p.updateStats(latency, 1, int64(len(text)))
 
 	return embedding, nil
@@ -115,14 +152,10 @@ func (p *MockEmbeddingProvider) EmbedBatch(texts []string) ([][]float32, error) 
 
 	// Traitement séquentiel pour la simulation
 	for i, text := range texts {
-		// Vérifier le cache avec réduction de latence pour les cache hits (10%)
+		// Vérifier le cache - pas de latence pour les cache hits
 		if embedding := p.checkCache(text); embedding != nil {
 			embeddings[i] = embedding
-			// Pour les hits, on n'ajoute que 10% de la latence par élément
-			elementLatency := p.batchLatency / 10
-			totalLatency += elementLatency
 			totalTokens += int64(len(text))
-			time.Sleep(elementLatency)
 			continue
 		}
 
@@ -142,7 +175,7 @@ func (p *MockEmbeddingProvider) EmbedBatch(texts []string) ([][]float32, error) 
 		totalTokens += int64(len(text))
 
 		// Générer l'embedding
-		embeddings[i] = generateMockEmbedding(text, 1536)
+		embeddings[i] = generateMockEmbedding(text, p.dimensions)
 
 		// Mettre en cache le résultat
 		p.cacheResult(text, embeddings[i])
@@ -163,10 +196,11 @@ func (p *MockEmbeddingProvider) checkCache(text string) []float32 {
 	p.cacheLock.RLock()
 	defer p.cacheLock.RUnlock()
 
-	// Simuler le comportement du cache selon le taux configuré
+	// Vérifier si l'embedding existe dans le cache
 	if embedding, exists := p.cache[text]; exists {
-		// Même si l'embedding existe, on simule un miss selon le taux configuré
-		if rand.Float32() <= p.cacheHitRate {
+		// Si le taux de cache hit est à 1.0, toujours retourner le cache hit
+		// Sinon, simuler des cache misses selon le taux configuré
+		if p.cacheHitRate >= 1.0 || rand.Float32() <= p.cacheHitRate {
 			p.statsLock.Lock()
 			p.cacheHits++
 			p.statsLock.Unlock()
@@ -180,12 +214,20 @@ func (p *MockEmbeddingProvider) cacheResult(text string, embedding []float32) {
 	p.cacheLock.Lock()
 	defer p.cacheLock.Unlock()
 
+	// Si l'élément existe déjà dans le cache, ne pas le ré-ajouter
+	if _, exists := p.cache[text]; exists {
+		return
+	}
+
 	// Calculer la taille du nouvel embedding
 	newSize := int64(len(embedding) * 4) // 4 bytes par float32
 
 	// Si le cache a une limite de taille et qu'elle serait dépassée
-	if p.maxCacheSize > 0 && p.cacheSize+newSize > p.maxCacheSize {
-		p.evictCache()
+	if p.maxCacheSize > 0 {
+		// Évincuer autant d'éléments que nécessaire pour faire de la place
+		for p.cacheSize+newSize > p.maxCacheSize && len(p.evictQueue) > 0 {
+			p.evictOldest()
+		}
 	}
 
 	p.cache[text] = embedding
@@ -197,21 +239,21 @@ func (p *MockEmbeddingProvider) cacheResult(text string, embedding []float32) {
 	p.statsLock.Unlock()
 }
 
-func (p *MockEmbeddingProvider) evictCache() {
-	// Éviction simple en FIFO (premier entré, premier sorti)
-	for len(p.evictQueue) > 0 {
-		// Obtenir la clé du plus ancien élément dans le cache
-		oldest := p.evictQueue[0]
-		p.evictQueue = p.evictQueue[1:] // Mettre à jour la queue d'éviction
+func (p *MockEmbeddingProvider) evictOldest() {
+	if len(p.evictQueue) == 0 {
+		return
+	}
 
-		// Si l'élément existe encore, le supprimer et mettre à jour la taille
-		if oldEmbed, exists := p.cache[oldest]; exists {
-			p.statsLock.Lock()
-			p.cacheSize -= int64(len(oldEmbed) * 4) // 4 bytes par float32
-			p.statsLock.Unlock()
-			delete(p.cache, oldest)
-			return
-		}
+	// Obtenir la clé du plus ancien élément dans le cache
+	oldest := p.evictQueue[0]
+	p.evictQueue = p.evictQueue[1:] // Mettre à jour la queue d'éviction
+
+	// Si l'élément existe encore, le supprimer et mettre à jour la taille
+	if oldEmbed, exists := p.cache[oldest]; exists {
+		p.statsLock.Lock()
+		p.cacheSize -= int64(len(oldEmbed) * 4) // 4 bytes par float32
+		p.statsLock.Unlock()
+		delete(p.cache, oldest)
 	}
 }
 
@@ -301,4 +343,38 @@ func MD5Hash(text string) []float32 {
 		result[i] = float32(hash[i]) / math.MaxUint8 // Normaliser entre 0 et 1
 	}
 	return result
+}
+
+// SetMaxCacheSize met à jour la taille maximale du cache et évince si nécessaire
+func (p *MockEmbeddingProvider) SetMaxCacheSize(size int64) {
+	p.cacheLock.Lock()
+	defer p.cacheLock.Unlock()
+
+	p.maxCacheSize = size
+
+	// Si le cache actuel dépasse la nouvelle limite, évincuer des éléments
+	if size > 0 {
+		for p.cacheSize > size && len(p.evictQueue) > 0 {
+			p.evictOldest()
+		}
+	}
+}
+
+// GetCacheContents retourne le contenu actuel du cache (pour debug)
+func (p *MockEmbeddingProvider) GetCacheContents() []string {
+	p.cacheLock.RLock()
+	defer p.cacheLock.RUnlock()
+
+	keys := make([]string, 0, len(p.cache))
+	for key := range p.cache {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+// GetCacheSize retourne la taille actuelle du cache
+func (p *MockEmbeddingProvider) GetCacheSize() int64 {
+	p.statsLock.RLock()
+	defer p.statsLock.RUnlock()
+	return p.cacheSize
 }
