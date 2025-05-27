@@ -88,3 +88,16 @@ Afficher continuellement :
 
 ---
 *Fichier spécialisé pour l'exécution de plans de développement*
+
+# Instructions Copilot – Exécution de Plans
+
+Ce fichier décrit comment Copilot doit gérer l’exécution des plans de développement.
+
+- Étapes d’analyse et de validation (voir [UnifiedParallel-Guide.md](../../docs/guides/UnifiedParallel-Guide.md))
+- Suivi de progression et sauvegarde automatique (voir [README standards](../../docs/guides/standards/README.md))
+- Références : `.github/instructions/plan-executor.instructions.md`
+
+### Extrait du guide Unified Parallel
+> « Les plans de développement sont structurés pour permettre une exécution séquentielle, avec validation à chaque étape et sauvegarde régulière de l’état. »
+
+Consultez aussi les guides dans `projet/guides/methodologies/`.

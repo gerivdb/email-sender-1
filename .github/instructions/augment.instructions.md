@@ -1,4 +1,15 @@
-# Instructions Copilot - Intégration Augment Code
+# Instructions Copilot – Intégration Augment
+
+Ce fichier centralise les instructions pour l’intégration avec l’extension Augment VS Code.
+
+- Utilisation des guides dans [docs/guides/augment/](../../docs/guides/augment/)
+- Bonnes pratiques d’intégration (voir [integration_guide.md](../../docs/guides/augment/integration_guide.md))
+- Exemples de prompts efficaces ([prompts-efficaces.md](../../docs/guides/augment/prompts-efficaces.md), [PROMPT_REFERENCE.md](../../docs/guides/augment/PROMPT_REFERENCE.md))
+
+### Extrait du guide d’intégration
+> « Augment Code est un assistant IA basé sur Claude 3.7 Sonnet d'Anthropic, qui offre des capacités avancées pour assister les développeurs dans leurs tâches de programmation. »
+
+Pour la configuration, voir le script `development/scripts/maintenance/augment/configure-augment-mcp.ps1`.
 
 ## 🎯 Objectif
 Intégrer efficacement avec l'extension Augment Code pour VS Code selon les guides dans `docs/guides/augment/`.

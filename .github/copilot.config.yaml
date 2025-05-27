@@ -1,0 +1,50 @@
+# Copilot Configuration for EMAIL_SENDER_1
+version: '1.0'
+
+# Comportement global
+behavior:
+  temperature: 0.2
+  maxTokens: 2048
+  style: precise
+
+# Modes prioritaires
+modes:
+  - ARCHI
+  - GRAN
+  - DEV-R
+  - TEST
+  - OPTI
+  - PREDIC
+
+# Standards techniques
+standards:
+  languages:
+    go: "1.22+"
+    powershell: "7.0+"
+    python: "3.11+"
+    typescript: "latest"
+  
+  metrics:
+    documentation: 20%
+    testCoverage: 80%
+    complexity: 10
+
+# Intégrations
+integrations:
+  - n8n
+  - notion
+  - googleCalendar
+  - openRouter
+  - deepSeek
+
+# Workflow structure
+workflow:
+  defaultCycle:
+    - analyze
+    - learn
+    - explore
+    - reason
+    - test
+    - progress
+    - adapt
+    - segment

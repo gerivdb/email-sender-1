@@ -1,5 +1,7 @@
 # Instructions Copilot - Modes Opérationnels
 
+Ce fichier décrit les modes opérationnels personnalisés pour Copilot.
+
 ## 🎯 Objectif
 Utiliser les modes opérationnels spécialisés définis dans `projet/guides/methodologies/` pour optimiser les workflows de développement.
 
@@ -96,3 +98,20 @@ Lance le mode DEV-R pour la tâche [ID] avec [n] itérations d'amélioration.
 
 ---
 *Instructions spécialisées pour les modes opérationnels du projet*
+
+## Modes disponibles
+- **Mode standard** : Respect strict des standards globaux du projet (voir [Standards et Conventions](../../docs/guides/standards/README.md)).
+- **Mode plan** : Exécution guidée par les plans de développement (voir `.github/instructions/plan-executor.instructions.md`).
+- **Mode augment** : Intégration avancée avec l’extension Augment (voir [Guides Augment](../../docs/guides/augment/)).
+- **Mode DEV-R** : Réalisation/exécution de tâches existantes ou planifiées, avec focus sur la robustesse, les tests, le debug, et la livraison incrémentale. Ne pas inclure de refonte ou migration majeure (voir mode GRAN).
+- **Mode GRAN** : Grands travaux de refonte, migration, restructuration ou évolution architecturale. Focus sur la conception, la documentation approfondie, la validation globale, et la planification de rollback.
+
+### Différences entre DEV-R et GRAN
+
+- **DEV-R** : Implémentation et exécution de tâches existantes ou planifiées. Focus sur la robustesse, les tests, le debug, et la livraison incrémentale. Ne pas inclure de refonte ou migration majeure.
+- **GRAN** : Refonte, migration, ou restructuration profonde d’un module ou d’une architecture. Focus sur la conception, la documentation, la validation globale, et la planification de rollback.
+
+### Extrait du guide méthodologique
+> « Les modes opérationnels permettent d’adapter le comportement de Copilot selon le contexte : génération de code, documentation, exécution de plans, ou intégration IA. »
+
+Pour plus de détails, consultez `projet/guides/methodologies/`.
