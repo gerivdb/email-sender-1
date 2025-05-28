@@ -1,5 +1,5 @@
 # Plan de développement v39 - Amélioration des templates plan-dev
-*Version 1.0 - 2025-05-28 - Progression globale : 0%*
+*Version 1.1 - 2025-05-29 - Progression globale : 25%*
 
 Ce plan détaille les améliorations à apporter aux templates de génération de plans de développement, incluant la correction des problèmes liés à `chalk` et l'optimisation de l'ergonomie des templates.
 
@@ -11,7 +11,7 @@ Ce plan détaille les améliorations à apporter aux templates de génération d
 - [5] Phase 5: Documentation et déploiement
 
 ## Phase 1: Audit des templates existants
-*Progression: 45%*
+*Progression: 70%*
 
 ### 1.1 Analyse de l'état actuel
 *Progression: 90%*
@@ -31,7 +31,7 @@ Ce plan détaille les améliorations à apporter aux templates de génération d
 #### 1.1.2 Audit des problèmes d'utilisation de chalk
 - [x] Analyse des problèmes d'utilisation de chalk dans prompt.js
 - [x] Vérification de la structure des templates EJS
-- [ ] Évaluation de la compatibilité cross-platform
+- [x] Évaluation de la compatibilité cross-platform
   - [x] Étape 1 : Examiner les problèmes liés à chalk
     - [x] Sous-étape 1.1 : Identifier les occurrences de `blue()` sans import de chalk
     - [x] Sous-étape 1.2 : Vérifier la syntaxe d'importation (`import` vs `require`)
@@ -40,9 +40,13 @@ Ce plan détaille les améliorations à apporter aux templates de génération d
     - [x] Sous-étape 2.1 : Vérifier la cohérence des variables injectées
     - [x] Sous-étape 2.2 : Contrôler la syntaxe EJS
     - [x] Sous-étape 2.3 : Identifier les incohérences potentielles
-  - [x] Entrées : Fichiers prompt.js pour l'analyse de chalk
-  - [x] Sorties : Liste des fichiers prompt.js nécessitant des corrections chalk et rapport d'analyse des templates EJS
-  - [x] Conditions préalables : Connaissance de l'API chalk et de la syntaxe EJS
+  - [x] Étape 3 : Évaluer les problèmes de compatibilité
+    - [x] Sous-étape 3.1 : Identifier les chemins codés en dur (hardcoded)
+    - [x] Sous-étape 3.2 : Analyser les séparateurs de chemin incompatibles
+    - [x] Sous-étape 3.3 : Cataloguer les dépendances platform-spécifiques
+  - [x] Entrées : Fichiers prompt.js et templates EJS
+  - [x] Sorties : Rapport complet d'audit technique
+  - [x] Conditions préalables : Connaissance de l'API chalk, de la syntaxe EJS et de la gestion cross-platform
 
 #### 1.1.3 Résultats de l'analyse des templates EJS
 - [x] Inventaire des templates EJS dans les trois environnements (`plan-dev`, `plan-dev-v1`, `backup`)
@@ -69,6 +73,32 @@ Ce plan détaille les améliorations à apporter aux templates de génération d
   - Différences dans les helpers et les fonctions de calcul de progression
   - Variations dans la structure et la génération du contenu
 - Redondances observées entre certains templates, suggérant une opportunité de mutualisation
+
+#### 1.1.4 Audit de compatibilité cross-platform
+- [x] Analyse des chemins de fichiers dans les templates
+- [x] Identification des pratiques incompatibles avec certains systèmes
+- [x] Évaluation des risques de déploiement multi-environnement
+  - [x] Étape 1 : Analyse des chemins absolus et relatifs
+    - [x] Sous-étape 1.1 : Recenser les chemins codés en dur (ex: `D:/DO/WEB/...`)
+    - [x] Sous-étape 1.2 : Identifier les séparateurs de chemin incompatibles (`\` vs `/`) 
+    - [x] Sous-étape 1.3 : Évaluer l'impact sur les différents systèmes d'exploitation
+  - [x] Étape 2 : Analyse des mécanismes de logging
+    - [x] Sous-étape 2.1 : Vérifier les appels à `console.log()` dans les prompts
+    - [x] Sous-étape 2.2 : Identifier les problèmes potentiels avec les encodages
+    - [x] Sous-étape 2.3 : Analyser la compatibilité des emojis et caractères spéciaux
+  - [x] Entrées : Templates EJS et fichiers prompt.js
+  - [x] Sorties : Rapport de compatibilité cross-platform
+  - [x] Conditions préalables : Connaissance des spécificités des systèmes d'exploitation
+
+##### Problèmes de compatibilité identifiés
+- **Problèmes majeurs** :
+  - Chemins absolus codés en dur dans plusieurs templates (ex: `D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/...`)
+  - Utilisation incohérente des séparateurs de chemin (`/` vs `\`)
+  - Absence d'utilisation des fonctions de gestion de chemin cross-platform (`path.join()`, `path.resolve()`, etc.)
+- **Problèmes mineurs** :
+  - Utilisation extensive de `console.log()` dans les prompts sans mécanisme standardisé
+  - Absence de gestion des encodages de fichiers pour certains templates
+  - Utilisation d'emojis qui peuvent s'afficher différemment selon les terminaux
 
 ### 1.2 Évaluation de l'ergonomie utilisateur
 *Progression: 0%*
@@ -141,6 +171,22 @@ Ce plan détaille les améliorations à apporter aux templates de génération d
   - [ ] Entrées : Templates EJS existants et rapport d'analyse
   - [ ] Sorties : Templates EJS standardisés et harmonisés
   - [ ] Conditions préalables : Analyse complète des templates
+
+#### 2.2.2 Améliorations de la compatibilité cross-platform
+- [ ] Correction des chemins absolus hardcodés
+- [ ] Standardisation de la gestion des séparateurs de chemin
+- [ ] Implémentation d'un système portable de logging
+  - [ ] Étape 1 : Implémenter une gestion de chemin standardisée
+    - [ ] Sous-étape 1.1 : Créer un module helper pour les chemins (`path-helper.js`)
+    - [ ] Sous-étape 1.2 : Remplacer les chemins absolus par des chemins relatifs
+    - [ ] Sous-étape 1.3 : Utiliser `path.join` et `path.resolve` systématiquement
+  - [ ] Étape 2 : Standardiser les mécanismes de logging
+    - [ ] Sous-étape 2.1 : Créer une classe `Logger` avec niveaux de verbosité
+    - [ ] Sous-étape 2.2 : Remplacer les appels à `console.log` par le logger
+    - [ ] Sous-étape 2.3 : Intégrer des fallbacks pour les emojis incompatibles
+  - [ ] Entrées : Rapport d'audit de compatibilité, templates existants
+  - [ ] Sorties : Templates compatibles avec Windows, macOS et Linux
+  - [ ] Conditions préalables : Modules Node.js `path`, `os` et `chalk`
 
 ### 2.3 Validation des modifications
 *Progression: 0%*
@@ -381,4 +427,19 @@ Ce plan détaille les améliorations à apporter aux templates de génération d
   - [ ] Sorties : Plan de maintenance, roadmap
   - [ ] Conditions préalables : Déploiement réussi
 
-**Voulez-vous commencer par finaliser les corrections de chalk ou préférez-vous travailler sur les améliorations fonctionnelles des templates ?**
+## Prochaines étapes recommandées
+
+Avec l'audit technique désormais complété, voici les prochaines étapes recommandées dans l'ordre de priorité :
+
+1. **Phase 2.2 - Harmonisation des templates EJS**
+   - Développer le module helper pour les chemins (`path-helper.js`) pour résoudre les problèmes de compatibilité cross-platform
+   - Implémenter la standardisation des structures EJS pour simplifier la maintenance future
+
+2. **Phase 2.3 - Validation des modifications**
+   - Tester les templates mis à jour pour s'assurer qu'ils fonctionnent correctement sur différentes plateformes
+
+3. **Phase 3 - Améliorations fonctionnelles**
+   - Améliorer les valeurs par défaut et simplifier le processus de saisie pour une meilleure expérience utilisateur
+   - Ajouter de nouveaux templates spécialisés pour différents types de plans de développement
+
+Ces étapes permettront d'améliorer de façon progressive et ordonnée les templates, en commençant par les aspects techniques fondamentaux avant d'aborder les améliorations ergonomiques et fonctionnelles.
