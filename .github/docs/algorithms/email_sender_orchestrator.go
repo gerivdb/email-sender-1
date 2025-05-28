@@ -12,6 +12,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 )
@@ -138,6 +139,9 @@ func (eso *EmailSenderOrchestrator) RegisterAlgorithms() map[string]Algorithm {
 	algorithms["analysis-pipeline"] = &AnalysisPipelineAlgorithm{}
 	algorithms["config-validator"] = &ConfigValidatorAlgorithm{}
 	algorithms["dependency-resolution"] = &DependencyResolutionAlgorithm{}
+	
+	// Ajouter l'algorithme de parallélisation du pipeline
+	algorithms["parallel-pipeline"] = NewParallelAlgorithm()
 
 	return algorithms
 }
@@ -423,9 +427,10 @@ func (eso *EmailSenderOrchestrator) saveResults(result *OrchestratorResult) erro
 
 // displaySummary displays execution summary
 func (eso *EmailSenderOrchestrator) displaySummary(result *OrchestratorResult) {
-	fmt.Printf("\n" + "="*80 + "\n")
+	separator := strings.Repeat("=", 80)
+	fmt.Printf("\n%s\n", separator)
 	fmt.Printf("🎯 EMAIL_SENDER_1 ALGORITHM ORCHESTRATION SUMMARY\n")
-	fmt.Printf("="*80 + "\n")
+	fmt.Printf("%s\n", separator)
 
 	fmt.Printf("⏱️ Total Duration: %v\n", result.TotalDuration)
 	fmt.Printf("📊 Algorithms Run: %d\n", result.AlgorithmsRun)
@@ -465,7 +470,7 @@ func (eso *EmailSenderOrchestrator) displaySummary(result *OrchestratorResult) {
 		}
 	}
 
-	fmt.Printf("\n" + "="*80 + "\n")
+	fmt.Printf("\n%s\n", separator)
 }
 
 // Cleanup performs cleanup operations

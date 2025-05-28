@@ -272,9 +272,8 @@ func (dg *DependencyGraph) extractDependencies(filePath string) []string {
 		if strings.HasPrefix(line, "#") || strings.HasPrefix(line, "//") || line == "" {
 			continue
 		}
-
 		// Apply dependency patterns
-		for patternName, pattern := range dependencyPatterns {
+		for _, pattern := range dependencyPatterns {
 			matches := pattern.FindAllStringSubmatch(line, -1)
 			for _, match := range matches {
 				if len(match) > 1 {

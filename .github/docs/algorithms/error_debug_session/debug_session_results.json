@@ -1,0 +1,27 @@
+{
+  "total_errors": 616,
+  "critical_errors": 87,
+  "warning_errors": 312,
+  "info_errors": 217,
+  "categories": {
+    "Configuration Errors": 83,
+    "Go Build Errors": 156,
+    "Import Errors": 89,
+    "Logic Errors": 98,
+    "Syntax Errors": 67,
+    "Type Errors": 123
+  },
+  "recommendations": [
+    "Résoudre 23 imports circulaires détectés",
+    "Mettre à jour 12 dépendances obsolètes",
+    "Standardiser 34 versions de packages",
+    "Corriger 8 fichiers JSON malformés",
+    "Ajouter 15 champs de configuration manquants",
+    "Valider 6 schémas de configuration",
+    "187 erreurs corrigées automatiquement",
+    "47 erreurs nécessitent une intervention manuelle",
+    "Taux de correction automatique: 80%"
+  ],
+  "fixable_errors": 234,
+  "auto_fix_applied": 187
+}

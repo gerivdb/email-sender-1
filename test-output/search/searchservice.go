@@ -8,8 +8,8 @@ import (
 	"context"
 	"fmt"
 	"time"
-	"sync"
-	"errors"
+	// "sync" // Auto-fix: unused import
+	// "errors" // Auto-fix: unused import
 )
 
 

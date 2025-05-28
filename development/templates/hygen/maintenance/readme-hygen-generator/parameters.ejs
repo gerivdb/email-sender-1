@@ -1,8 +1,0 @@
-<% /* Section paramètres dynamiques */ %>
-<% if (typeof parameters !== 'undefined' && parameters.length > 0) { %>
-## Paramètres dynamiques
-
-<% parameters.forEach(function(param) { %>
-- `<%= param.name %>` : <%= param.description %>
-<% }) %>
-<% } %>

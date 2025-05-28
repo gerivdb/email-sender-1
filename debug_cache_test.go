@@ -5,7 +5,8 @@ import (
 	"fmt"
 )
 
-func main() {
+// Renamed from main to avoid package conflict
+func RunCacheDebugTest() {
 	// Test simple pour debug du cache
 	maxSize := int64(1536 * 4 * 2) // Pour 2 embeddings exactement
 	provider := providers.NewMockEmbeddingProvider(

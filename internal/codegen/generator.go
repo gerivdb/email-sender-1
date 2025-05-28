@@ -670,22 +670,22 @@ func (g *Generator) createMetricsSpec() ComponentSpec {
 	}
 }
 
-func (g *Generator) generateServiceOrchestrator(components []ComponentSpec) error {
+func (g *Generator) generateServiceOrchestrator(_ []ComponentSpec) error {
 	// Implementation for service orchestrator
 	return nil
 }
 
-func (g *Generator) generateInterfaceFile(spec ComponentSpec, outputDir string) error {
+func (g *Generator) generateInterfaceFile(_ ComponentSpec, _ string) error {
 	// Implementation for interface generation
 	return nil
 }
 
-func (g *Generator) generateTestFile(spec ComponentSpec, outputDir string) error {
+func (g *Generator) generateTestFile(_ ComponentSpec, _ string) error {
 	// Implementation for test generation
 	return nil
 }
 
-func (g *Generator) generateMockFile(spec ComponentSpec, outputDir string) error {
+func (g *Generator) generateMockFile(_ ComponentSpec, _ string) error {
 	// Implementation for mock generation
 	return nil
 }

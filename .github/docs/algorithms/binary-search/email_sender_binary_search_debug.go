@@ -157,7 +157,7 @@ func hasEmailSenderCompilationErrors(packages []string, component EmailSenderCom
 	return hasErrors, errorCount
 }
 
-func isolateFailingEmailSenderPackages(projectRoot string) []IsolationResult {
+func isolateFailingEmailSenderPackages(_ string) []IsolationResult {
 	emailSenderPackages := getEmailSenderPackages()
 	var results []IsolationResult
 

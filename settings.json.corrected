@@ -1,0 +1,201 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/"
+      ]
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github",
+        "--config",
+        "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/mcp-servers/github/config.json"
+      ]
+    },
+    "supergateway": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "start",
+        "--config",
+        "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/src/mcp/projet/config/gateway.yaml",
+        "mcp-stdio"
+      ]
+    }
+  },
+  "notifications.excludeWarnings": [
+    "*MCP server*",
+    "*modelcontextprotocol*",
+    "*supergateway*"
+  ],
+  "notifications.excludeList": [
+    "go.buildOnSave.file",
+    "go.formatTool",
+    "go.lintOnSave",
+    "go.vetOnSave"
+  ],
+  "renderWhitespace": "boundary",
+  "rulers": [80, 120],
+  "wordWrap": "on",
+  "suggestSelection": "first",
+  "tabSize": 4,
+  "insertSpaces": true,
+  "detectIndentation": true,
+  "minimap.enabled": false,
+  "bracketPairColorization.enabled": true,
+  "guides.bracketPairs": true,
+  "linkedEditing": true,
+  "cursorBlinking": "smooth",
+  "cursorSmoothCaretAnimation": "on",
+  "fontLigatures": true,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/dist": true,
+    "**/logs": true,
+    "**/cache": true,
+    "**/temp": true,
+    "**/tmp": true,
+    "**/bower_components": true,
+    "**/*.code-search": true
+  },
+  "files.watcherExclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/dist": true,
+    "**/logs": true,
+    "**/cache": true,
+    "**/temp": true,
+    "**/tmp": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/dist": true,
+    "**/logs": true,
+    "**/cache": true,
+    "**/temp": true,
+    "**/tmp": true,
+    "**/bower_components": true,
+    "**/*.code-search": true
+  },
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 20,
+  "workbench.editor.enablePreview": false,
+  "workbench.list.smoothScrolling": true,
+  "workbench.tree.indent": 16,
+  "powershell.codeFormatting.useCorrectCasing": true,
+  "powershell.codeFormatting.autoCorrectAliases": true,
+  "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+  "powershell.integratedConsole.focusConsoleOnExecute": false,
+  "powershell.pester.useLegacyCodeLens": false,
+  "powershell.promptToUpdatePowerShell": false,
+  "powershell.startAutomatically": true,
+  "python.formatting.provider": "black",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.testing.pytestEnabled": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.copyOnSelection": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.renderSideBySide": true,
+  "explorer.compactFolders": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "augment.guidelines.maxLength": 2000,
+  "augment.input.maxSizeKB": 10,
+  "augment.input.recommendedSizeKB": 8,
+  "augment.segmentation.enabled": true,
+  "augment.segmentation.chunkSizeKB": 5,
+  "augment.context.maxTokens": 200000,
+  "augment.ignore.patterns": [
+    "**/.git/**",
+    "**/.DS_Store",
+    "**/node_modules/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "**/dist/**",
+    "**/logs/**",
+    "**/cache/**",
+    "**/temp/**",
+    "**/tmp/**",
+    "**/bower_components",
+    "**/*.code-search"
+  ],
+  "augment.browser.type": "chrome",
+  "augment.browser.userProfile": "[REDACTED]",
+  "augment.browser.forceSingle": true,
+  "augment.browser.allowFallback": false,
+  "cline.preferredLanguage": "French - Français",
+  "amp.commands.allowlist": [
+    "git add .",
+    "git commit -m \"Ajout des directives pour les agents - mise à jour AGENT.md\" --no-verify",
+    "git push --no-verify",
+    "powershell -ExecutionPolicy Bypass -File ./projet/mcp/scripts/setup-desktop-commander-mcp.ps1",
+    "npm --version",
+    "npm install -g @wonderwhy-er/desktop-commander",
+    "npx @wonderwhy-er/desktop-commander setup",
+    "npx -y @wonderwhy-er/desktop-commander",
+    "copy ./.augment/context/*.md ./.amp/context/",
+    "npm install -g @playwright/mcp",
+    "npx @playwright/mcp@latest",
+    "npx -y @playwright/mcp@latest"
+  ],
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
+  },
+  "workbench.sideBar.location": "right",
+  "editor.tabSize": 3,
+  "editor.fontSize": 12,
+  "workbench.editor.empty.hint": "hidden",
+  "editor.codeActions.triggerOnFocusChange": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
+  "editor.formatOnSave": true,
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always"
+    }
+  },
+  "go.formatTool": "gofmt",
+  "go.useLanguageServer": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  }
+}

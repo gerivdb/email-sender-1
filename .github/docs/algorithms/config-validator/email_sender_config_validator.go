@@ -615,7 +615,7 @@ func validatePowerShellConfig(filePath, content string, pattern ConfigPattern) [
 }
 
 // validateGenericConfig validates generic configuration files
-func validateGenericConfig(filePath, content string, pattern ConfigPattern) []ValidationIssue {
+func validateGenericConfig(filePath, content string, _ ConfigPattern) []ValidationIssue {
 	var issues []ValidationIssue
 
 	// Check for obviously corrupted files
@@ -646,7 +646,7 @@ func validateGenericConfig(filePath, content string, pattern ConfigPattern) []Va
 }
 
 // checkSecurityIssues checks for security-related configuration issues
-func checkSecurityIssues(filePath, content string, pattern ConfigPattern) []ValidationIssue {
+func checkSecurityIssues(filePath, content string, _ ConfigPattern) []ValidationIssue {
 	var issues []ValidationIssue
 
 	// Check for hardcoded credentials
@@ -863,7 +863,7 @@ func mapSeverityToRisk(severity string) string {
 	}
 }
 
-func generateComponentRecommendations(config *ComponentConfig, pattern ConfigPattern) []string {
+func generateComponentRecommendations(config *ComponentConfig, _ ConfigPattern) []string {
 	var recommendations []string
 
 	if len(config.MissingRequired) > 0 {
@@ -1032,9 +1032,9 @@ func outputTextResults(result *ConfigValidationResult, outputFile string) error 
 }
 
 func displaySummary(result *ConfigValidationResult) {
-	fmt.Printf("\n" + "="*60 + "\n")
+	fmt.Printf("\n" + strings.Repeat("=", 60) + "\n")
 	fmt.Printf("📋 EMAIL_SENDER_1 CONFIGURATION VALIDATION SUMMARY\n")
-	fmt.Printf("="*60 + "\n")
+	fmt.Printf(strings.Repeat("=", 60) + "\n")
 
 	fmt.Printf("🎯 Overall Health: %s (%.1f/100)\n", result.OverallHealth, result.HealthScore)
 	fmt.Printf("📊 Valid Configs: %d/%d (%.1f%%)\n",

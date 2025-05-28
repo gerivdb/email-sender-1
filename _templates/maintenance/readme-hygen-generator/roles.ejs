@@ -1,0 +1,9 @@
+<% /* Section rôle de chaque fichier */ %>
+## Rôle de chaque fichier
+
+<% if (typeof files !== 'undefined' && files.length > 0) { %>
+<% files.forEach(function(f) { %>
+- **<%= f.name %>**  
+  <%= f.description || 'À compléter : décrire le rôle de ce fichier.' %>
+<% }) %>
+<% } %>

@@ -505,15 +505,15 @@ func (tg *TestGenerator) isRAGFunction(fn FunctionInfo) bool {
 	return false
 }
 
-func (tg *TestGenerator) generateSetup(fn FunctionInfo) string {
+func (tg *TestGenerator) generateSetup(_ FunctionInfo) string {
 	return "// Setup test environment"
 }
 
-func (tg *TestGenerator) generateTeardown(fn FunctionInfo) string {
+func (tg *TestGenerator) generateTeardown(_ FunctionInfo) string {
 	return "// Cleanup test environment"
 }
 
-func (tg *TestGenerator) generateValidSetup(fn FunctionInfo) string {
+func (tg *TestGenerator) generateValidSetup(_ FunctionInfo) string {
 	return "// Setup for valid test case"
 }
 
@@ -546,6 +546,6 @@ func (tg *TestGenerator) generateBenchmarks(fn FunctionInfo) []BenchmarkCase {
 	}
 }
 
-func (tg *TestGenerator) generateMocks(fn FunctionInfo) []MockDefinition {
+func (tg *TestGenerator) generateMocks(_ FunctionInfo) []MockDefinition {
 	return []MockDefinition{}
 }

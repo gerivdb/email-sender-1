@@ -1,0 +1,70 @@
+{
+  "pipeline": {
+    "name": "error-resolution-pipeline-go-native",
+    "version": "1.0.0",
+    "description": "Pipeline Go natif pour la détection et résolution automatique d'erreurs"
+  },
+  "modules": {
+    "detector": {
+      "enabled": true,
+      "ast_parser": {
+        "max_file_size": "10MB",
+        "timeout": "30s",
+        "parallel_processing": true
+      },
+      "error_patterns": [
+        "unused_variables",
+        "circular_dependencies",
+        "type_mismatches",
+        "unreachable_code",
+        "resource_leaks"
+      ]
+    },
+    "analyzer": {
+      "enabled": true,
+      "complexity_threshold": 10,
+      "depth_limit": 5,
+      "semantic_analysis": true
+    },
+    "resolver": {
+      "enabled": true,
+      "auto_fix": {
+        "safe_fixes_only": true,
+        "backup_before_fix": true,
+        "max_mutations_per_file": 3
+      },
+      "knowledge_base": {
+        "update_interval": "24h",
+        "cache_size": "100MB"
+      }
+    },
+    "monitor": {
+      "enabled": true,
+      "prometheus": {
+        "port": 9090,
+        "metrics_endpoint": "/metrics"
+      },
+      "logging": {
+        "level": "info",
+        "format": "json",
+        "output": "stdout"
+      }
+    }
+  },
+  "sources": {
+    "algorithms_path": "../../.github/docs/algorithms",
+    "error_reports": [
+      "../../2025-05-28-errors.md"
+    ],
+    "target_files": [
+      "algorithms_implementations.go",
+      "email_sender_orchestrator.go",
+      "dependency-analysis/*.ps1"
+    ]
+  },
+  "outputs": {
+    "reports_dir": "./reports",
+    "patches_dir": "./patches",
+    "metrics_dir": "./metrics"
+  }
+}

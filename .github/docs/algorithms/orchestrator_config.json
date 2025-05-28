@@ -1,0 +1,10 @@
+{
+  "project_root": "../../../../",
+  "algorithms_path": "./",
+  "output_path": "./output",
+  "log_level": "INFO",
+  "max_concurrency": 4,
+  "timeout": 1800000000000,
+  "enable_profiling": false,
+  "algorithms": null
+}

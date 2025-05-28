@@ -1,0 +1,90 @@
+{
+  "total_duration": 3380580000,
+  "algorithms_run": 8,
+  "success_count": 8,
+  "failure_count": 0,
+  "results": [
+    {
+      "id": "error-triage",
+      "name": "Error Triage",
+      "status": "SUCCESS",
+      "duration": 214334400,
+      "error_count": 0,
+      "warning_count": 0,
+      "output_path": "",
+      "message": "Completed successfully"
+    },
+    {
+      "id": "dependency-analysis",
+      "name": "Dependency Analysis",
+      "status": "SUCCESS",
+      "duration": 303889700,
+      "error_count": 0,
+      "warning_count": 0,
+      "output_path": "",
+      "message": "Completed successfully"
+    },
+    {
+      "id": "config-validator",
+      "name": "Config Validator",
+      "status": "SUCCESS",
+      "duration": 281120000,
+      "error_count": 0,
+      "warning_count": 0,
+      "output_path": "",
+      "message": "Completed successfully"
+    },
+    {
+      "id": "auto-fix",
+      "name": "Auto Fix",
+      "status": "SUCCESS",
+      "duration": 433454700,
+      "error_count": 0,
+      "warning_count": 0,
+      "output_path": "",
+      "message": "Completed successfully"
+    },
+    {
+      "id": "analysis-pipeline",
+      "name": "Analysis Pipeline",
+      "status": "SUCCESS",
+      "duration": 518467800,
+      "error_count": 0,
+      "warning_count": 0,
+      "output_path": "",
+      "message": "Completed successfully"
+    },
+    {
+      "id": "progressive-build",
+      "name": "Progressive Build",
+      "status": "SUCCESS",
+      "duration": 623417600,
+      "error_count": 0,
+      "warning_count": 0,
+      "output_path": "",
+      "message": "Completed successfully"
+    },
+    {
+      "id": "binary-search",
+      "name": "Binary Search",
+      "status": "SUCCESS",
+      "duration": 309294200,
+      "error_count": 0,
+      "warning_count": 0,
+      "output_path": "",
+      "message": "Completed successfully"
+    },
+    {
+      "id": "dependency-resolution",
+      "name": "Dependency Resolution",
+      "status": "SUCCESS",
+      "duration": 420748200,
+      "error_count": 0,
+      "warning_count": 0,
+      "output_path": "",
+      "message": "Completed successfully"
+    }
+  ],
+  "summary": "Executed 8 algorithms in 3.38058s with 100.0% success rate",
+  "recommendations": []
+}

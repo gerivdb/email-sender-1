@@ -7,7 +7,7 @@ toolchain go1.23.9
 require (
 	github.com/gomarkdown/markdown v0.0.0-20250311123330-531bef5e742b
 	github.com/gorilla/mux v1.8.1
-	github.com/pdfcpu/pdfcpu v0.10.2
+	github.com/pdfcpu/pdfcpu v0.5.0
 	github.com/prometheus/client_golang v1.22.0
 	github.com/qdrant/go-client v1.14.0
 	github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d
@@ -23,7 +23,6 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/hhrutter/lzw v1.0.0 // indirect
-	github.com/hhrutter/pkcs7 v0.2.0 // indirect
 	github.com/hhrutter/tiff v1.0.2 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
@@ -37,7 +36,6 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
-	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/image v0.26.0 // indirect
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect

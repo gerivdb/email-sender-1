@@ -1,0 +1,80 @@
+{
+  "project_root": "D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+  "algorithms_path": ".github/docs/algorithms",
+  "output_path": "output/orchestrator_results",
+  "log_level": "INFO",
+  "max_concurrency": 4,
+  "timeout": "30m",
+  "enable_profiling": true,
+  "algorithms": [
+    {
+      "id": "parallel-pipeline",
+      "name": "Pipeline Orchestrator Parallèle",
+      "enabled": true,
+      "priority": 1,
+      "timeout": "20m",
+      "depends_on": [],
+      "parameters": {
+        "max_workers": "8",
+        "max_concurrent_pipelines": "2",
+        "max_queue_size": "100",
+        "batch_size": "10",
+        "retry_limit": "3",
+        "retry_delay_ms": "1000",
+        "recovery_strategy": "retry-with-backoff",
+        "log_level": "INFO",
+        "parallelism_mode": "balanced",
+        "data_source": "mock",
+        "batch_count": "5",
+        "emails_per_batch": "20",
+        "notion_api_key": "secret_notion_api_key",
+        "gmail_credentials_path": "config/gmail_credentials.json",
+        "n8n_webhook_url": "http://localhost:5678/webhook/email-sender",
+        "rag_endpoint": "http://localhost:8000/api/rag"
+      },
+      "output_path": "output/orchestrator_results/parallel_pipeline"
+    },
+    {
+      "id": "error-triage",
+      "name": "Error Triage Algorithm",
+      "enabled": false,
+      "priority": 2,
+      "timeout": "10m",
+      "depends_on": [],
+      "parameters": {
+        "error_source": "logs",
+        "max_errors": "500",
+        "grouping_threshold": "0.85"
+      },
+      "output_path": "output/orchestrator_results/error_triage"
+    },
+    {
+      "id": "binary-search",
+      "name": "Binary Search Debug",
+      "enabled": false,
+      "priority": 3,
+      "timeout": "15m",
+      "depends_on": ["error-triage"],
+      "parameters": {
+        "test_type": "component",
+        "components": "RAG,N8N,Gmail,Notion",
+        "search_mode": "bisect"
+      },
+      "output_path": "output/orchestrator_results/binary_search"
+    },
+    {
+      "id": "progressive-build",
+      "name": "Progressive Build Algorithm",
+      "enabled": false,
+      "priority": 4,
+      "timeout": "20m",
+      "depends_on": ["binary-search"],
+      "parameters": {
+        "build_mode": "incremental",
+        "test_after_each": "true",
+        "rollback_on_failure": "true"
+      },
+      "output_path": "output/orchestrator_results/progressive_build"
+    }
+  ]
+}
