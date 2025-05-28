@@ -1,0 +1,231 @@
+{
+  "project_path": ".",
+  "algorithms_path": ".github\\docs\\algorithms",
+  "timestamp": "2025-05-28T00:50:01.0623312+02:00",
+  "validation_tests": [
+    {
+      "name": "Project Structure",
+      "category": "structure",
+      "status": "FAIL",
+      "duration": 1998400,
+      "message": "Missing 6 required paths",
+      "details": [
+        "Missing: .github/docs/algorithms",
+        "Missing: .github/docs/algorithms/email_sender_orchestrator.go",
+        "Missing: .github/docs/algorithms/algorithms_implementations.go",
+        "Missing: .github/docs/algorithms/email_sender_orchestrator_config.json",
+        "Missing: .github/docs/algorithms/go.mod",
+        "Missing: .github/docs/algorithms/shared"
+      ],
+      "criticality": "high"
+    },
+    {
+      "name": "PowerShell Elimination",
+      "category": "compliance",
+      "status": "FAIL",
+      "duration": 1998500,
+      "message": "Error scanning for PowerShell files: CreateFile .github\\docs\\algorithms: Le chemin d’accès spécifié est introuvable.",
+      "details": [],
+      "criticality": "high"
+    },
+    {
+      "name": "Go Implementation Coverage",
+      "category": "coverage",
+      "status": "FAIL",
+      "duration": 15396200,
+      "message": "Go implementation coverage: 0/8 algorithms",
+      "details": [
+        "❌ error-triage: Directory not found",
+        "❌ binary-search: Directory not found",
+        "❌ dependency-analysis: Directory not found",
+        "❌ progressive-build: Directory not found",
+        "❌ config-validator: Directory not found",
+        "❌ auto-fix: Directory not found",
+        "❌ analysis-pipeline: Directory not found",
+        "❌ dependency-resolution: Directory not found"
+      ],
+      "criticality": "high"
+    },
+    {
+      "name": "Go Compilation",
+      "category": "compilation",
+      "status": "FAIL",
+      "duration": 1000800,
+      "message": "Some Go files failed to compile",
+      "details": [
+        "❌ Main orchestrator compilation failed",
+        "❌ Algorithm implementations compilation failed"
+      ],
+      "criticality": "high"
+    },
+    {
+      "name": "Native Orchestrator",
+      "category": "orchestrator",
+      "status": "FAIL",
+      "duration": 1001200,
+      "message": "Native orchestrator has missing components",
+      "details": [
+        "❌ Main orchestrator missing: .github\\docs\\algorithms\\email_sender_orchestrator.go",
+        "❌ Orchestrator configuration missing: .github\\docs\\algorithms\\email_sender_orchestrator_config.json",
+        "❌ Algorithm implementations missing: .github\\docs\\algorithms\\algorithms_implementations.go"
+      ],
+      "criticality": "high"
+    },
+    {
+      "name": "Algorithm Dependencies",
+      "category": "dependencies",
+      "status": "FAIL",
+      "duration": 997200,
+      "message": "Algorithm dependencies validation failed",
+      "details": [
+        "❌ Shared directory missing"
+      ],
+      "criticality": "high"
+    },
+    {
+      "name": "Configuration Files",
+      "category": "configuration",
+      "status": "FAIL",
+      "duration": 1002200,
+      "message": "Configuration files validation complete",
+      "details": [
+        "❌ Main orchestrator config missing: email_sender_orchestrator_config.json",
+        "❌ Go module definition missing: go.mod"
+      ],
+      "criticality": "high"
+    },
+    {
+      "name": "Documentation",
+      "category": "documentation",
+      "status": "FAIL",
+      "duration": 1894200,
+      "message": "Documentation coverage: 0.0% (0/8 algorithms)",
+      "details": [
+        "⚠️ error-triage: No README.md found",
+        "⚠️ binary-search: No README.md found",
+        "⚠️ dependency-analysis: No README.md found",
+        "⚠️ progressive-build: No README.md found",
+        "⚠️ config-validator: No README.md found",
+        "⚠️ auto-fix: No README.md found",
+        "⚠️ analysis-pipeline: No README.md found",
+        "⚠️ dependency-resolution: No README.md found"
+      ],
+      "criticality": "high"
+    }
+  ],
+  "algorithm_status": {
+    "analysis-pipeline": {
+      "id": "analysis-pipeline",
+      "name": "analysis-pipeline",
+      "has_go_implementation": false,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": false,
+      "status": "missing"
+    },
+    "auto-fix": {
+      "id": "auto-fix",
+      "name": "auto-fix",
+      "has_go_implementation": false,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": false,
+      "status": "missing"
+    },
+    "binary-search": {
+      "id": "binary-search",
+      "name": "binary-search",
+      "has_go_implementation": false,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": false,
+      "status": "missing"
+    },
+    "config-validator": {
+      "id": "config-validator",
+      "name": "config-validator",
+      "has_go_implementation": false,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": false,
+      "status": "missing"
+    },
+    "dependency-analysis": {
+      "id": "dependency-analysis",
+      "name": "dependency-analysis",
+      "has_go_implementation": false,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": false,
+      "status": "missing"
+    },
+    "dependency-resolution": {
+      "id": "dependency-resolution",
+      "name": "dependency-resolution",
+      "has_go_implementation": false,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": false,
+      "status": "missing"
+    },
+    "error-triage": {
+      "id": "error-triage",
+      "name": "error-triage",
+      "has_go_implementation": false,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": false,
+      "status": "missing"
+    },
+    "progressive-build": {
+      "id": "progressive-build",
+      "name": "progressive-build",
+      "has_go_implementation": false,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": false,
+      "status": "missing"
+    }
+  },
+  "compliance_score": 0,
+  "summary": {
+    "total_tests": 8,
+    "passed_tests": 0,
+    "failed_tests": 8,
+    "skipped_tests": 0,
+    "pass_rate": 0,
+    "go_native_compliance": 0,
+    "powershell_remaining": 0,
+    "algorithms_covered": 0,
+    "total_duration": 349446400
+  },
+  "recommendations": [
+    "Complete migration of remaining algorithms to pure Go implementation",
+    "Address failed validation tests for improved system reliability",
+    "Add documentation (README.md) for 8 algorithms"
+  ]
+}

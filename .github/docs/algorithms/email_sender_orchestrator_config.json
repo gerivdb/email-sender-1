@@ -1,0 +1,144 @@
+{
+  "project_root": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+  "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+  "output_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/orchestrator_results",
+  "log_level": "info",
+  "max_concurrency": 4,
+  "timeout": "30m",
+  "enable_profiling": true,
+  "algorithms": [
+    {
+      "id": "error-triage",
+      "name": "Error Triage & Classification",
+      "enabled": true,
+      "priority": 1,
+      "timeout": "5m",
+      "depends_on": [],
+      "parameters": {
+        "project_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+        "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+        "output_path": "error_triage_results.json",
+        "max_errors": "50",
+        "severity_threshold": "medium"
+      },
+      "output_path": "error_triage_results.json"
+    },    {
+      "id": "binary-search",
+      "name": "Binary Search Debug Localization",
+      "enabled": true,
+      "priority": 2,
+      "timeout": "10m",
+      "depends_on": ["error-triage"],
+      "parameters": {
+        "project_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+        "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+        "output_path": "binary_search_debug_results.json",
+        "component": "All",
+        "max_iterations": "10"
+      },
+      "output_path": "binary_search_debug_results.json"
+    },
+    {
+      "id": "dependency-analysis",
+      "name": "Dependency Analysis & Mapping",
+      "enabled": true,
+      "priority": 3,
+      "timeout": "5m",
+      "depends_on": [],
+      "parameters": {
+        "project_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+        "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+        "output_path": "dependency_analysis_results.json",
+        "include_external": "true",
+        "depth_limit": "5"
+      },
+      "output_path": "dependency_analysis_results.json"
+    },
+    {
+      "id": "progressive-build",
+      "name": "Progressive Build & Validation",
+      "enabled": true,
+      "priority": 4,
+      "timeout": "15m",
+      "depends_on": ["dependency-analysis"],
+      "parameters": {
+        "project_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+        "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+        "output_path": "progressive_build_results.json",
+        "dependency_file": "dependency_analysis_results.json",
+        "parallel_builds": "2"
+      },
+      "output_path": "progressive_build_results.json"
+    },
+    {
+      "id": "config-validator",
+      "name": "Configuration Validation & Repair",
+      "enabled": true,
+      "priority": 5,
+      "timeout": "5m",
+      "depends_on": [],
+      "parameters": {
+        "project_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+        "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+        "output_path": "config_validation_results.json",
+        "auto_repair": "true",
+        "backup_configs": "true"
+      },
+      "output_path": "config_validation_results.json"
+    },
+    {
+      "id": "auto-fix",
+      "name": "Automated Fix & Code Generation",
+      "enabled": true,
+      "priority": 6,
+      "timeout": "20m",
+      "depends_on": ["error-triage", "binary-search-debug", "config-validator"],
+      "parameters": {
+        "project_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+        "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+        "output_path": "auto_fix_results.json",
+        "error_file": "error_triage_results.json",
+        "debug_file": "binary_search_debug_results.json",
+        "config_file": "config_validation_results.json",
+        "max_fixes": "25",
+        "backup_changes": "true"
+      },
+      "output_path": "auto_fix_results.json"
+    },
+    {
+      "id": "analysis-pipeline",
+      "name": "Comprehensive Analysis Pipeline",
+      "enabled": true,
+      "priority": 7,
+      "timeout": "10m",
+      "depends_on": ["progressive-build", "auto-fix"],
+      "parameters": {
+        "project_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+        "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+        "output_path": "analysis_pipeline_results.json",
+        "build_file": "progressive_build_results.json",
+        "fix_file": "auto_fix_results.json",
+        "deep_analysis": "true"
+      },
+      "output_path": "analysis_pipeline_results.json"
+    },
+    {
+      "id": "dependency-resolution",
+      "name": "Dependency Resolution & Optimization",
+      "enabled": true,
+      "priority": 8,
+      "timeout": "10m",
+      "depends_on": ["dependency-analysis", "analysis-pipeline"],
+      "parameters": {
+        "project_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+        "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+        "output_path": "dependency_resolution_results.json",
+        "dependency_file": "dependency_analysis_results.json",
+        "analysis_file": "analysis_pipeline_results.json",
+        "resolve_conflicts": "true",
+        "optimize_graph": "true"
+      },
+      "output_path": "dependency_resolution_results.json"
+    }
+  ]
+}

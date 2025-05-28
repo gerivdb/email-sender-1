@@ -1,0 +1,25 @@
+{
+  "project_root": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+  "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+  "output_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/orchestrator_results",
+  "log_level": "info",
+  "max_concurrency": 1,
+  "timeout": "5m",
+  "enable_profiling": false,
+  "algorithms": [
+    {
+      "id": "dependency-resolution",
+      "name": "Dependency Resolution & Optimization",
+      "enabled": true,
+      "priority": 1,
+      "timeout": "3m",
+      "depends_on": [],
+      "parameters": {
+        "project_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1",
+        "algorithms_path": "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.github/docs/algorithms",
+        "output_path": "dependency_resolution_test.json"
+      },
+      "output_path": "dependency_resolution_test.json"
+    }
+  ]
+}

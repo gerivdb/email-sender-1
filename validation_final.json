@@ -1,0 +1,259 @@
+{
+  "project_path": ".",
+  "algorithms_path": ".github\\docs\\algorithms",
+  "timestamp": "2025-05-28T00:53:30.4170812+02:00",
+  "validation_tests": [
+    {
+      "name": "Project Structure",
+      "category": "structure",
+      "status": "PASS",
+      "duration": 570200,
+      "message": "All required project structure components found",
+      "details": [
+        "Found: .github/docs/algorithms",
+        "Found: .github/docs/algorithms/email_sender_orchestrator.go",
+        "Found: .github/docs/algorithms/algorithms_implementations.go",
+        "Found: .github/docs/algorithms/email_sender_orchestrator_config.json",
+        "Found: .github/docs/algorithms/go.mod",
+        "Found: .github/docs/algorithms/shared"
+      ],
+      "criticality": "medium"
+    },
+    {
+      "name": "PowerShell Elimination",
+      "category": "compliance",
+      "status": "FAIL",
+      "duration": 3434300,
+      "message": "Found 1 PowerShell files (target: 0)",
+      "details": [
+        "PowerShell file found: validate_suite.ps1"
+      ],
+      "criticality": "high"
+    },
+    {
+      "name": "Go Implementation Coverage",
+      "category": "coverage",
+      "status": "PASS",
+      "duration": 2893700,
+      "message": "Go implementation coverage: 8/8 algorithms",
+      "details": [
+        "✅ error-triage: Go native (1 Go files)",
+        "✅ binary-search: Go native (1 Go files)",
+        "✅ dependency-analysis: Go native (1 Go files)",
+        "✅ progressive-build: Go native (1 Go files)",
+        "✅ config-validator: Go native (1 Go files)",
+        "✅ auto-fix: Go native (1 Go files)",
+        "✅ analysis-pipeline: Go native (1 Go files)",
+        "✅ dependency-resolution: Go native (2 Go files)"
+      ],
+      "criticality": "medium"
+    },
+    {
+      "name": "Go Compilation",
+      "category": "compilation",
+      "status": "FAIL",
+      "duration": 29176191800,
+      "message": "Some Go files failed to compile",
+      "details": [
+        "❌ Main orchestrator compilation failed",
+        "❌ Algorithm implementations compilation failed",
+        "❌ error-triage compilation failed",
+        "❌ binary-search compilation failed",
+        "❌ dependency-analysis compilation failed",
+        "❌ progressive-build compilation failed",
+        "❌ config-validator compilation failed",
+        "❌ auto-fix compilation failed",
+        "❌ analysis-pipeline compilation failed",
+        "❌ dependency-resolution compilation failed"
+      ],
+      "criticality": "high"
+    },
+    {
+      "name": "Native Orchestrator",
+      "category": "orchestrator",
+      "status": "FAIL",
+      "duration": 1997400,
+      "message": "Native orchestrator has missing components",
+      "details": [
+        "✅ Main orchestrator found",
+        "✅ Orchestrator configuration found",
+        "✅ Algorithm implementations found",
+        "❌ Orchestrator configuration has issues"
+      ],
+      "criticality": "high"
+    },
+    {
+      "name": "Algorithm Dependencies",
+      "category": "dependencies",
+      "status": "PASS",
+      "duration": 998000,
+      "message": "Algorithm dependencies validation complete",
+      "details": [
+        "✅ Found shared file: types.go",
+        "✅ Found shared file: utils.go",
+        "✅ go.mod found"
+      ],
+      "criticality": "medium"
+    },
+    {
+      "name": "Configuration Files",
+      "category": "configuration",
+      "status": "PASS",
+      "duration": 1000200,
+      "message": "Configuration files validation complete",
+      "details": [
+        "✅ Main orchestrator config found",
+        "✅ Go module definition found"
+      ],
+      "criticality": "medium"
+    },
+    {
+      "name": "Documentation",
+      "category": "documentation",
+      "status": "PASS",
+      "duration": 2003100,
+      "message": "Documentation coverage: 100.0% (8/8 algorithms)",
+      "details": [
+        "✅ error-triage: README.md present",
+        "✅ binary-search: README.md present",
+        "✅ dependency-analysis: README.md present",
+        "✅ progressive-build: README.md present",
+        "✅ config-validator: README.md present",
+        "✅ auto-fix: README.md present",
+        "✅ analysis-pipeline: README.md present",
+        "✅ dependency-resolution: README.md present"
+      ],
+      "criticality": "medium"
+    }
+  ],
+  "algorithm_status": {
+    "analysis-pipeline": {
+      "id": "analysis-pipeline",
+      "name": "analysis-pipeline",
+      "has_go_implementation": true,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [
+        "email_sender_analysis_pipeline.go"
+      ],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": true,
+      "status": "go_native"
+    },
+    "auto-fix": {
+      "id": "auto-fix",
+      "name": "auto-fix",
+      "has_go_implementation": true,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [
+        "email_sender_auto_fixer.go"
+      ],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": true,
+      "status": "go_native"
+    },
+    "binary-search": {
+      "id": "binary-search",
+      "name": "binary-search",
+      "has_go_implementation": true,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [
+        "email_sender_binary_search_debug.go"
+      ],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": true,
+      "status": "go_native"
+    },
+    "config-validator": {
+      "id": "config-validator",
+      "name": "config-validator",
+      "has_go_implementation": true,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [
+        "email_sender_config_validator.go"
+      ],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": true,
+      "status": "go_native"
+    },
+    "dependency-analysis": {
+      "id": "dependency-analysis",
+      "name": "dependency-analysis",
+      "has_go_implementation": true,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [
+        "email_sender_dependency_analyzer.go"
+      ],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": true,
+      "status": "go_native"
+    },
+    "dependency-resolution": {
+      "id": "dependency-resolution",
+      "name": "dependency-resolution",
+      "has_go_implementation": true,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [
+        "email_sender_dependency_resolver.go",
+        "simple_test.go"
+      ],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": true,
+      "status": "go_native"
+    },
+    "error-triage": {
+      "id": "error-triage",
+      "name": "error-triage",
+      "has_go_implementation": true,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [
+        "email_sender_error_classifier.go"
+      ],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": true,
+      "status": "go_native"
+    },
+    "progressive-build": {
+      "id": "progressive-build",
+      "name": "progressive-build",
+      "has_go_implementation": true,
+      "has_powershell_files": false,
+      "powershell_files": [],
+      "go_files": [
+        "email_sender_progressive_builder.go"
+      ],
+      "compilable": false,
+      "tests_present": false,
+      "documentation": true,
+      "status": "go_native"
+    }
+  },
+  "compliance_score": 81.25,
+  "summary": {
+    "total_tests": 8,
+    "passed_tests": 5,
+    "failed_tests": 3,
+    "skipped_tests": 0,
+    "pass_rate": 62.5,
+    "go_native_compliance": 100,
+    "powershell_remaining": 0,
+    "algorithms_covered": 8,
+    "total_duration": 29191325400
+  },
+  "recommendations": [
+    "Address failed validation tests for improved system reliability"
+  ]
+}
