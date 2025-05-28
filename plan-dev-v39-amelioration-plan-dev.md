@@ -11,10 +11,10 @@ Ce plan détaille les améliorations à apporter aux templates de génération d
 - [5] Phase 5: Documentation et déploiement
 
 ## Phase 1: Audit des templates existants
-*Progression: 25%*
+*Progression: 45%*
 
 ### 1.1 Analyse de l'état actuel
-*Progression: 80%*
+*Progression: 90%*
 
 #### 1.1.1 Inventaire des templates plan-dev
 - [x] Recensement des templates dans `_templates/plan-dev`
@@ -28,25 +28,47 @@ Ce plan détaille les améliorations à apporter aux templates de génération d
   - [x] Sorties : Inventaire complet des templates liés aux plans de développement
   - [x] Conditions préalables : Accès au système de fichiers du projet
 
-git add . && git commit -m "commit all changes" --no-verify && git push --no-verify
-
-remplace "commit all changes" par un descriptif adéquat reflétant la ou les implémentations, modifs, etcgit add . && git commit -m "commit all changes" --no-verify && git push --no-verify
-
-remplace "commit all changes" par un descriptif adéquat reflétant la ou les implémentations, modifs, etc#### 1.1.2 Identification des problèmes techniques
+#### 1.1.2 Audit des problèmes d'utilisation de chalk
 - [x] Analyse des problèmes d'utilisation de chalk dans prompt.js
-- [ ] Vérification de la structure des templates EJS
+- [x] Vérification de la structure des templates EJS
 - [ ] Évaluation de la compatibilité cross-platform
   - [x] Étape 1 : Examiner les problèmes liés à chalk
     - [x] Sous-étape 1.1 : Identifier les occurrences de `blue()` sans import de chalk
     - [x] Sous-étape 1.2 : Vérifier la syntaxe d'importation (`import` vs `require`)
     - [x] Sous-étape 1.3 : Cataloguer les fichiers nécessitant des corrections
-  - [ ] Étape 2 : Analyser la structure des templates
-    - [ ] Sous-étape 2.1 : Vérifier la cohérence des variables injectées
-    - [ ] Sous-étape 2.2 : Contrôler la syntaxe EJS
-    - [ ] Sous-étape 2.3 : Identifier les incohérences potentielles
+  - [x] Étape 2 : Analyser la structure des templates
+    - [x] Sous-étape 2.1 : Vérifier la cohérence des variables injectées
+    - [x] Sous-étape 2.2 : Contrôler la syntaxe EJS
+    - [x] Sous-étape 2.3 : Identifier les incohérences potentielles
   - [x] Entrées : Fichiers prompt.js pour l'analyse de chalk
-  - [x] Sorties : Liste des fichiers prompt.js nécessitant des corrections chalk
-  - [x] Conditions préalables : Connaissance de l'API chalk
+  - [x] Sorties : Liste des fichiers prompt.js nécessitant des corrections chalk et rapport d'analyse des templates EJS
+  - [x] Conditions préalables : Connaissance de l'API chalk et de la syntaxe EJS
+
+#### 1.1.3 Résultats de l'analyse des templates EJS
+- [x] Inventaire des templates EJS dans les trois environnements (`plan-dev`, `plan-dev-v1`, `backup`)
+- [x] Analyse des structures de données et des variables injectées
+- [x] Identification des patterns récurrents et des inconsistances
+  - [x] Étape 1 : Cartographie des templates EJS
+    - [x] Sous-étape 1.1 : Identifier les templates principaux (`index.ejs.t`, `new.ejs.t`)
+    - [x] Sous-étape 1.2 : Recenser les templates auxiliaires (`warnings.ejs`, `toc.ejs`, etc.)
+    - [x] Sous-étape 1.3 : Analyser les interactions entre templates
+  - [x] Étape 2 : Analyse des variables et patterns
+    - [x] Sous-étape 2.1 : Vérifier les variables injectées par les prompts
+    - [x] Sous-étape 2.2 : Examiner les helpers et fonctions EJS
+    - [x] Sous-étape 2.3 : Identifier les inconsistances entre versions
+  - [x] Entrées : Templates EJS des différents répertoires
+  - [x] Sorties : Rapport d'analyse structurelle des templates EJS
+  - [x] Conditions préalables : Connaissance de la syntaxe EJS et de Hygen
+
+##### Observations clés sur les templates EJS
+- Structure principale établie avec des templates de base (`index.ejs.t`, `new.ejs.t`)
+- Répartition fonctionnelle avec des templates auxiliaires pour les fonctionnalités spécifiques (avertissements, tâches, etc.)
+- Variables correctement injectées depuis prompt.js, avec bonne séparation entre les fichiers
+- Inconsistances identifiées entre les versions :
+  - Les chemins de destination varient entre versions (hardcoded vs. dynamiques)
+  - Différences dans les helpers et les fonctions de calcul de progression
+  - Variations dans la structure et la génération du contenu
+- Redondances observées entre certains templates, suggérant une opportunité de mutualisation
 
 ### 1.2 Évaluation de l'ergonomie utilisateur
 *Progression: 0%*
@@ -101,10 +123,29 @@ remplace "commit all changes" par un descriptif adéquat reflétant la ou les im
   - [x] Sorties : Expérience utilisateur cohérente pour tous les générateurs
   - [x] Conditions préalables : Correction des templates principaux
 
-### 2.2 Validation des modifications
+### 2.2 Harmonisation des templates EJS
 *Progression: 0%*
 
-#### 2.2.1 Tests des templates mis à jour
+#### 2.2.1 Standardisation des structures EJS
+- [ ] Unification des chemins de destination dans les templates
+- [ ] Standardisation des helpers et fonctions de calcul
+- [ ] Harmonisation de la structure des templates
+  - [ ] Étape 1 : Refactoriser les chemins de destination
+    - [ ] Sous-étape 1.1 : Créer des helpers pour les chemins dynamiques
+    - [ ] Sous-étape 1.2 : Standardiser les patterns de nommage des fichiers générés
+    - [ ] Sous-étape 1.3 : Assurer la cohérence entre les versions des templates
+  - [ ] Étape 2 : Unifier les helpers et fonctions
+    - [ ] Sous-étape 2.1 : Créer une bibliothèque centralisée de helpers
+    - [ ] Sous-étape 2.2 : Standardiser les fonctions de calcul de progression
+    - [ ] Sous-étape 2.3 : Documenter l'utilisation des helpers partagés
+  - [ ] Entrées : Templates EJS existants et rapport d'analyse
+  - [ ] Sorties : Templates EJS standardisés et harmonisés
+  - [ ] Conditions préalables : Analyse complète des templates
+
+### 2.3 Validation des modifications
+*Progression: 0%*
+
+#### 2.3.1 Tests des templates mis à jour
 - [ ] Vérification de la compilation des templates
 - [ ] Tests de génération avec les nouvelles versions
 - [ ] Correction des éventuelles régressions
