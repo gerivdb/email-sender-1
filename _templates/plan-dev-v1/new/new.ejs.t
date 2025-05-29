@@ -3,17 +3,27 @@ to: d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/projet/roadmaps/plans/consolidate
 encoding: utf8
 ---
 <% 
+// Initialize logger
+const { createLogger } = require('../../../helpers/logger-helper.js');
+const logger = createLogger({ verbosity: 'info' });
+
 // Initialize tasks first to avoid 'Cannot access tasks before initialization' error
 var tasks = []; 
 
 function calculateProgress(taskList) {
-  if (!taskList || taskList.length === 0) return 0;
+  if (!taskList || taskList.length === 0) {
+    logger.debug('No tasks found for progress calculation');
+    return 0;
+  }
   const totalTasks = taskList.reduce((sum, task) => sum + (task.subtasks ? task.subtasks.length : 1), 0);
   const completedTasks = taskList.reduce((sum, task) => sum + (task.done ? 1 : 0), 0);
-  return totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+  const progress = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+  logger.debug(`Progress calculation: ${completedTasks}/${totalTasks} = ${progress}%`);
+  return progress;
 }
 
 function generateTOC(phases) {
+  logger.debug('Generating table of contents');
   let toc = '';
   for (let i = 1; i <= phases; i++) {
     toc += `- [${i}] Phase ${i}\n`;
@@ -67,13 +77,15 @@ const predefinedSections = {
  * @returns {string} - Liste hiérarchique des tâches.
  */
 function renderExtendedTasks(prefix, levels, labels, depth = 0) {
-  if (levels.length === 0) return '';
+  logger.debug(`Rendering tasks for prefix ${prefix}`);
   let out = '';
-  for (let i = 1; i <= levels[0]; i++) {
+  for (let i = 1; i <= (levels[0] || 1); i++) {
     const num = prefix + i;
     const label = labels[0] || 'Tâche';
     const indent = '  '.repeat(depth);
     const description = customDescriptions[num] || defaultDescriptions[prefix.split('.')[0]] || '';
+    logger.debug(`Adding task ${num}: ${label} ${i} ${description}`);
+    
     out += `${indent}- [ ] **${num}** ${label} ${i}${description ? ' - ' + description : ''}\n`;
 
     // Ajouter des sous-tâches si des niveaux supplémentaires existent
@@ -111,6 +123,7 @@ const extendedLevelsByPhase = {
 
 // Générer des tâches pour chaque phase avec granularité uniforme
 function renderTasksForPhase(phase) {
+  logger.info(`Generating tasks for phase ${phase}`);
   return renderExtendedTasks(phase + '.', extendedLevelsByPhase[phase], extendedLabels);
 }
 %>

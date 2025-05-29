@@ -1,4 +1,6 @@
 import chalk from 'chalk';
+const { createLogger } = require('../../helpers/logger-helper.js');
+const logger = createLogger({ verbosity: 'info' });
 
 // prompt.js - Questions à poser lors de la génération d'un nouveau plan de développement
 module.exports = [
@@ -7,10 +9,12 @@ module.exports = [
     name: 'version',
     message: chalk.blue("Numéro de version du plan (ex: v24):"),
     when: function (answers) {
-      console.log('===== VERSION PROMPT =====');
-      console.log('this:', JSON.stringify(this));
-      console.log('answers:', JSON.stringify(answers));
-      console.log('process.argv:', JSON.stringify(process.argv));
+      logger.debug('===== VERSION PROMPT =====');
+      logger.debug('Context:', {
+        instance: this,
+        answers: answers,
+        args: process.argv
+      });
       
       // Try multiple sources for version
       const versionArg = process.env.npm_config_name || 
@@ -19,13 +23,13 @@ module.exports = [
                         this.options?.name || 
                         answers?.name;
 
-      console.log('VERSION ARG FOUND:', versionArg);
+      logger.debug('Version argument found:', versionArg);
       
       // If we have a version argument, don't show the prompt
       if (versionArg) {
         // Store it for the template to use
         this.version = versionArg.replace('plan-dev ', '');
-        console.log('USING VERSION:', this.version);
+        logger.info('Using version:', this.version);
         return false;
       }
       return true;
@@ -43,7 +47,7 @@ module.exports = [
     name: 'title',
     message: chalk.blue("Titre du plan de développement:"),
     when: function (answers) {
-      console.log('===== TITLE PROMPT =====');
+      logger.debug('===== TITLE PROMPT =====');
       
       // Try multiple sources for title
       const titleArg = process.env.npm_config_title ||
@@ -52,13 +56,13 @@ module.exports = [
                       this.options?.title ||
                       answers?.title;
 
-      console.log('TITLE ARG FOUND:', titleArg);
+      logger.debug('Title argument found:', titleArg);
       
       // If we have a title argument, don't show the prompt
       if (titleArg) {
         // Store it for the template to use
         this.title = titleArg;
-        console.log('USING TITLE:', this.title);
+        logger.info('Using title:', this.title);
         return false;
       }
       return true;
@@ -76,7 +80,7 @@ module.exports = [
     name: 'description',
     message: chalk.blue("Description du plan (objectif principal):"),
     when: function (answers) {
-      console.log('===== DESCRIPTION PROMPT =====');
+      logger.debug('===== DESCRIPTION PROMPT =====');
       
       // Try multiple sources for description
       const descriptionArg = process.env.npm_config_description ||
@@ -85,13 +89,13 @@ module.exports = [
                             this.options?.description ||
                             answers?.description;
 
-      console.log('DESCRIPTION ARG FOUND:', descriptionArg);
+      logger.debug('Description argument found:', descriptionArg);
       
       // If we have a description argument, don't show the prompt
       if (descriptionArg) {
         // Store it for the template to use
         this.description = descriptionArg;
-        console.log('USING DESCRIPTION:', this.description);
+        logger.info('Using description:', this.description);
         return false;
       }
       return true;
@@ -109,7 +113,7 @@ module.exports = [
     name: 'phases',
     message: chalk.blue("Nombre de phases (1-6):"),
     when: function (answers) {
-      console.log('===== PHASES PROMPT =====');
+      logger.debug('===== PHASES PROMPT =====');
       
       // Try multiple sources for phases
       const phasesArg = process.env.npm_config_phases ||
@@ -118,13 +122,13 @@ module.exports = [
                         this.options?.phases ||
                         answers?.phases;
 
-      console.log('PHASES ARG FOUND:', phasesArg);
+      logger.debug('Phases argument found:', phasesArg);
       
       // If we have a phases argument, don't show the prompt
       if (phasesArg) {
         // Store it for the template to use
         this.phases = parseInt(phasesArg, 10);
-        console.log('USING PHASES:', this.phases);
+        logger.info('Using phases:', this.phases);
         return false;
       }
       return true;

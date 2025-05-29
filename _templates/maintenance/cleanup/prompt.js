@@ -1,11 +1,23 @@
-// see types of prompts:
-// https://github.com/enquirer/enquirer/tree/master/examples
-//
+// prompt.js for cleanup template
+const { createLogger } = require('../../helpers/logger-helper.js');
+const logger = createLogger({ 
+  verbosity: 'info',
+  useEmoji: true
+});
+
 module.exports = [
   {
     type: 'input',
     name: 'targetDir',
-    message: "Répertoire à nettoyer (chemin relatif ou absolu) :"
+    message: "Répertoire à nettoyer (chemin relatif ou absolu) :",
+    validate: input => {
+      if (!input.length) {
+        logger.warn('Le répertoire cible est requis');
+        return 'Le répertoire cible est requis';
+      }
+      logger.debug(`Répertoire cible validé: ${input}`);
+      return true;
+    }
   },
   {
     type: 'input',

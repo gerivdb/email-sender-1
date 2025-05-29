@@ -1,59 +1,44 @@
 ---
-to: roadmaps/plans/consolidated/plan-dev-<%= version %>-<%= title.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9\-]/g, '').slice(0,50) %>.md
+to: <%= h.structure.buildDestinationPath(h.path.config, h.structure.fileNamingPattern(version, title)) %>
 encoding: utf8
 ---
 <%
-const currentDate = new Date();
-const timeFormatted = currentDate.toLocaleString('fr-FR');
-
-// Initialisation des métriques
-const totalTasks = 9;
-const completedTasks = 0;
-const efficiency = 0;
-const testCoverage = 0;
+const structureHelpers = h.structure.getCommonHelpers();
+const metrics = structureHelpers.metrics.getDefaultMetrics();
+const warnings = structureHelpers.metrics.getDefaultWarnings();
+const formattedDate = structureHelpers.metrics.formatDate(new Date());
+%>
+<%
+const metrics = h.metrics.getDefaultMetrics();
+const warnings = h.metrics.getDefaultWarnings();
+const formattedDate = h.metrics.formatDate(new Date());
 %>
 
 # Plan de développement <%= version %> - <%= title %>
-*Version 1.0 - <%= currentDate.toISOString().split('T')[0] %> - Progression globale : <%= completedTasks %> / <%= totalTasks %>*
+*Version 1.0 - <%= formattedDate %> - Progression globale : <%= metrics.completedTasks %> / <%= metrics.totalTasks %>*
 
 <%= description %>
 
 ## Points de vigilance
-- ⚠️ (HAUTE) Points critiques à surveiller
-- ⚠️ (MOYENNE) Points d'attention régulière
-- ⚠️ (BASSE) Points à garder en mémoire
+<% warnings.forEach(function(w) { %>
+- ⚠️ (<%= w.severity %>) <%= w.message %>
+<% }) %>
 
 ## 📊 Dashboard de Suivi
 
 | Métrique | Valeur | Objectif | Statut |
 |----------|--------|----------|--------|
-| Scripts Développés | <%= completedTasks %>/<%= totalTasks %> | <%= totalTasks %> | 🟡 Démarrage |
-| Efficacité | <%= efficiency %>% | 80% | 📊 Baseline |
-| Tests | <%= testCoverage %>% | 85% | 📊 À implémenter |
+| Scripts Développés | <%= metrics.completedTasks %>/<%= metrics.totalTasks %> | <%= metrics.totalTasks %> | 🟡 Démarrage |
+| Efficacité | <%= metrics.efficiency %>% | 80% | 📊 Baseline |
+| Tests | <%= metrics.testCoverage %>% | 85% | 📊 À implémenter |
 
-<% for (let i = 1; i <= phases; i++) { %>
-## 🎯 Phase <%= i %>
-*Progression: <%= completedTasks %>%*
+<%
+const allPhases = h.tasks.generatePhases(phases);
+allPhases.forEach(phase => { %>
+<%= h.tasks.formatPhaseMarkdown(phase) %>
+<% }); %>
 
-### 📦 Scripts et Tâches
-- [ ] Analyse des besoins
-- [ ] Conception technique
-- [ ] Implémentation
-- [ ] Tests et validation
-- [ ] Documentation
-
-<% } %>
-
-## 🚀 Commandes de Suivi
-
-```powershell
-# Mettre à jour une tâche
-hygen plan-dev update task-status --task "1.1.1" --status "done"
-
-# Générer un rapport de progression
-hygen plan-dev report progress --phase 1
-
-# Visualiser les métriques de performance
+<%= h.commands.generateCommandsSection() %>
 hygen plan-dev metrics view
 ```
 

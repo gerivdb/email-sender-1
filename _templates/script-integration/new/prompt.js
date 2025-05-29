@@ -1,11 +1,24 @@
 // prompt.js
-import chalk from 'chalk';
+const { createLogger } = require('../../helpers/logger-helper.js');
+const logger = createLogger({ 
+  verbosity: 'info',
+  useEmoji: true
+});
+const chalk = require('chalk');
 
 module.exports = [
   {
     type: 'input',
     name: 'name',
-    message: chalk.blue("🔄 Nom du script d'intégration (sans extension):")
+    message: chalk.blue("🔄 Nom du script d'intégration (sans extension):"),
+    validate: input => {
+      if (!input.length) {
+        logger.warn('Le nom du script est requis');
+        return 'Le nom du script est requis';
+      }
+      logger.debug(`Nom de script validé: ${input}`);
+      return true;
+    }
   },
   {
     type: 'input',
