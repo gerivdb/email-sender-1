@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\pkg\defaults\models"
+	"email_sender/pkg/defaults/models"
 )
 
 // Repository defines the interface for default value storage operations

@@ -3,9 +3,10 @@ package repository
 import (
 	"context"
 	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
+	"email_sender/pkg/defaults/models"
 	"time"
-	"d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\pkg\defaults\models"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // SQLiteRepository implements Repository interface using SQLite
@@ -69,7 +70,7 @@ func (r *SQLiteRepository) Create(ctx context.Context, value *models.DefaultValu
 // Get implements Repository.Get
 func (r *SQLiteRepository) Get(ctx context.Context, key, context string) (*models.DefaultValue, error) {
 	query := `SELECT * FROM default_values WHERE key = ? AND context = ?`
-	
+
 	value := &models.DefaultValue{}
 	err := r.db.QueryRowContext(ctx, query, key, context).Scan(
 		&value.ID,
@@ -113,7 +114,7 @@ func (r *SQLiteRepository) Delete(ctx context.Context, id int64) error {
 // List implements Repository.List
 func (r *SQLiteRepository) List(ctx context.Context, context string) ([]*models.DefaultValue, error) {
 	query := `SELECT * FROM default_values WHERE context = ?`
-	
+
 	rows, err := r.db.QueryContext(ctx, query, context)
 	if err != nil {
 		return nil, err
@@ -148,7 +149,7 @@ func (r *SQLiteRepository) GetMostConfident(ctx context.Context, key string) (*m
 			WHERE key = ? 
 			ORDER BY confidence DESC 
 			LIMIT 1`
-	
+
 	value := &models.DefaultValue{}
 	err := r.db.QueryRowContext(ctx, query, key).Scan(
 		&value.ID,
