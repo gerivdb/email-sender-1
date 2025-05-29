@@ -1,0 +1,98 @@
+# Configuration pour environnement de développement
+# Email Sender - Development Environment
+
+environment: development
+
+server:
+  host: "127.0.0.1"
+  port: 8080
+  read_timeout: 15s
+  write_timeout: 15s
+  idle_timeout: 60s
+  max_body_size: 10485760  # 10MB
+  tls:
+    enabled: false
+
+redis:
+  host: "localhost"
+  port: 6379
+  password: ""
+  database: 0
+  pool_size: 10
+  min_idle_conns: 5
+  dial_timeout: 5s
+  read_timeout: 3s
+  write_timeout: 3s
+  pool_timeout: 4s
+  idle_timeout: 300s
+  max_retries: 3
+  retry_delay: 1s
+  enable_cluster: false
+
+email:
+  smtp:
+    host: "localhost"
+    port: 1025  # MailHog for development
+    username: ""
+    password: ""
+    use_tls: false
+    use_ssl: false
+  default_from: "dev@emailsender.local"
+  default_from_name: "Email Sender Dev"
+  max_retries: 3
+  retry_delay: 1s
+  rate_limit_per_hour: 10000
+  enable_tracking: true
+  enable_templating: true
+
+monitoring:
+  enabled: true
+  metrics_path: "/metrics"
+  metrics_port: 9090
+  health_check_path: "/health"
+  collection_interval: 30s
+  alerts_enabled: false
+  thresholds:
+    cpu_usage: 90.0
+    memory_usage: 90.0
+    disk_usage: 95.0
+    response_time: 1s
+    error_rate: 10.0
+    cache_hit_rate: 50.0
+
+security:
+  enable_cors: true
+  allowed_origins:
+    - "http://localhost:3000"
+    - "http://localhost:8080"
+    - "http://127.0.0.1:3000"
+    - "http://127.0.0.1:8080"
+  enable_rate_limit: false  # Disabled for development
+  rate_limit_rps: 1000
+  enable_auth: false
+  jwt_expiry: 24h
+
+logging:
+  level: "debug"
+  format: "text"
+  output: "stdout"
+  max_size: 100
+  max_backups: 3
+  max_age: 7
+  compress: false
+
+cache:
+  default_ttl: 300s  # 5 minutes for quick development cycles
+  type_ttls:
+    default_values: 300s
+    statistics: 600s     # 10 minutes
+    ml_models: 300s
+    configuration: 60s   # 1 minute for quick config changes
+    user_sessions: 3600s # 1 hour
+  max_memory: "128mb"
+  eviction_policy: "allkeys-lru"
+  enable_metrics: true
+
+metadata:
+  version: "dev"
+  environment: "development"

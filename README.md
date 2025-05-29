@@ -11,6 +11,14 @@ La structure du projet a été réorganisée pour une meilleure organisation et 
   - **modules/** - Modules fonctionnels
   - **api/** - API et interfaces
 
+- **pkg/** - Packages et bibliothèques réutilisables
+  - **cache/** - Système de gestion de cache avancé
+    - **ttl/** - Gestion intelligente des TTL (Time-To-Live)
+    - **redis/** - Intégration Redis
+  - **api/** - Utilitaires API
+  - **config/** - Gestion de configuration
+  - **patterns/** - Patterns et templates
+
 - **development/** - Tout ce qui concerne le développement
   - **api/** - Documentation API
   - **communications/** - Communications
@@ -53,6 +61,57 @@ La structure du projet a été réorganisée pour une meilleure organisation et 
 - **.build/** - Fichiers de build et CI/CD
 - **logs/** - Logs
 - **node_modules/** - Dépendances Node.js
+
+## 🚀 Fonctionnalités principales
+
+### Système de gestion de cache TTL avancé
+
+Le projet inclut un système complet de gestion de cache TTL (Time-To-Live) optimisé pour Redis, offrant :
+
+#### ✨ Fonctionnalités clés
+- **Gestion automatique des TTL** - Configuration intelligente basée sur les types de données
+- **Analyse en temps réel** - Monitoring continu et optimisation automatique des performances
+- **Stratégies d'invalidation** - Invalidation temporelle, événementielle et basée sur les versions
+- **Monitoring complet** - Métriques détaillées, alertes et insights de performance
+- **Outils CLI** - Utilitaires en ligne de commande pour l'analyse et l'optimisation
+
+#### 📊 Types de données supportés
+| Type | TTL par défaut | Utilisation |
+|------|----------------|-------------|
+| `DefaultValues` | 1 heure | Données générales de cache |
+| `Statistics` | 24 heures | Analyses et rapports |
+| `MLModels` | 1 heure | Modèles d'apprentissage automatique |
+| `Configuration` | 30 minutes | Configuration d'application |
+| `UserSessions` | 2 heures | Données de session utilisateur |
+
+#### 🛠️ Utilisation rapide
+```go
+import "pkg/cache/ttl"
+
+// Initialiser le gestionnaire TTL
+manager := ttl.NewTTLManager(redisClient)
+
+// Définir des données avec TTL automatique
+err := manager.Set("user:123", userData, ttl.UserSessions)
+
+// Récupérer des données
+var user User
+found, err := manager.Get("user:123", &user)
+```
+
+#### 📈 Outils de monitoring
+```bash
+# Construire l'outil d'analyse
+go build -o cache-analyzer tools/cache-analyzer/main.go
+
+# Exécuter l'analyse
+./cache-analyzer -redis-addr="localhost:6379" -analysis-type="comprehensive"
+```
+
+#### 📚 Documentation complète
+Pour plus d'informations détaillées, consultez la [documentation TTL](pkg/cache/ttl/README.md).
+
+---
 
 ## Outils de gestion automatique des scripts
 

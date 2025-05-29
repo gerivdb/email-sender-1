@@ -1,0 +1,103 @@
+# Configuration pour environnement de production
+# Email Sender - Production Environment
+
+environment: production
+
+server:
+  host: "0.0.0.0"
+  port: 8080
+  read_timeout: 30s
+  write_timeout: 30s
+  idle_timeout: 120s
+  max_body_size: 5242880  # 5MB
+  tls:
+    enabled: false  # TLS handled by reverse proxy
+
+redis:
+  host: "${REDIS_HOST}"
+  port: 6379
+  password: "${REDIS_PASSWORD}"
+  database: 0
+  pool_size: 20
+  min_idle_conns: 10
+  dial_timeout: 5s
+  read_timeout: 3s
+  write_timeout: 3s
+  pool_timeout: 4s
+  idle_timeout: 300s
+  max_retries: 3
+  retry_delay: 1s
+  enable_cluster: false
+
+email:
+  smtp:
+    host: "${SMTP_HOST}"
+    port: 587
+    username: "${SMTP_USERNAME}"
+    password: "${SMTP_PASSWORD}"
+    use_tls: true
+    use_ssl: false
+  default_from: "${EMAIL_FROM}"
+  default_from_name: "${EMAIL_FROM_NAME}"
+  max_retries: 5
+  retry_delay: 2s
+  rate_limit_per_hour: 1000
+  enable_tracking: true
+  enable_templating: true
+
+monitoring:
+  enabled: true
+  metrics_path: "/metrics"
+  metrics_port: 9090
+  health_check_path: "/health"
+  collection_interval: 15s
+  alerts_enabled: true
+  alerts_webhook: "${ALERTS_WEBHOOK_URL}"
+  alerts_email:
+    - "${ADMIN_EMAIL}"
+  thresholds:
+    cpu_usage: 80.0
+    memory_usage: 85.0
+    disk_usage: 90.0
+    response_time: 500ms
+    error_rate: 5.0
+    cache_hit_rate: 70.0
+
+security:
+  enable_cors: true
+  allowed_origins:
+    - "${FRONTEND_URL}"
+  enable_rate_limit: true
+  rate_limit_rps: 100
+  enable_auth: true
+  jwt_secret: "${JWT_SECRET}"
+  jwt_expiry: 24h
+  api_keys:
+    - "${API_KEY_1}"
+    - "${API_KEY_2}"
+
+logging:
+  level: "info"
+  format: "json"
+  output: "file"
+  file: "/var/log/emailsender/app.log"
+  max_size: 100
+  max_backups: 5
+  max_age: 30
+  compress: true
+
+cache:
+  default_ttl: 3600s  # 1 hour
+  type_ttls:
+    default_values: 3600s   # 1 hour
+    statistics: 86400s      # 24 hours
+    ml_models: 3600s        # 1 hour
+    configuration: 1800s    # 30 minutes
+    user_sessions: 7200s    # 2 hours
+  max_memory: "512mb"
+  eviction_policy: "allkeys-lru"
+  enable_metrics: true
+
+metadata:
+  version: "${APP_VERSION}"
+  environment: "production"
