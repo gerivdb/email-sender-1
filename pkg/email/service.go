@@ -6,7 +6,7 @@ import (
 	"log"
 	"time"
 
-	"pkg/cache/ttl"
+	"email_sender/pkg/cache/ttl"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -14,7 +14,7 @@ import (
 // EmailService provides email functionality with intelligent caching
 type EmailService struct {
 	cacheManager *ttl.TTLManager
-	analyzer     *ttl.Analyzer
+	analyzer     ttl.Analyzer
 	metrics      *ttl.CacheMetrics
 	invalidator  *ttl.InvalidationManager
 	redisClient  *redis.Client
@@ -66,18 +66,16 @@ type MLModel struct {
 // NewEmailService creates a new email service with TTL cache management
 func NewEmailService(redisClient *redis.Client) *EmailService {
 	ctx := context.Background()
-
 	// Initialize TTL manager with optimized settings
-	manager := ttl.NewTTLManager(redisClient)
+	manager := ttl.NewTTLManager(redisClient, ttl.DefaultTTLConfig())
 
 	// Initialize analyzer for automatic optimization
-	analyzer := ttl.NewAnalyzer(redisClient)
+	analyzer := ttl.NewTTLAnalyzer(manager)
 
 	// Initialize metrics collection
 	metrics := ttl.NewCacheMetrics(redisClient)
-
 	// Initialize invalidation manager
-	invalidator := ttl.NewInvalidationManager(redisClient)
+	invalidator := ttl.NewInvalidationManager(redisClient, nil)
 
 	service := &EmailService{
 		cacheManager: manager,
@@ -112,25 +110,25 @@ func (s *EmailService) startBackgroundServices() {
 func (s *EmailService) setupCacheAlerts() {
 	// Alert if hit rate drops below 80%
 	hitRateAlert := ttl.AlertConfig{
-		MetricType: ttl.HitRateAlert,
+		MetricType: "hit_rate_alert",
 		Threshold:  0.8,
-		Action:     ttl.LogAlert,
+		Action:     "log_alert",
 	}
 	s.metrics.AddAlert(hitRateAlert)
 
 	// Alert if memory usage exceeds 500MB
 	memoryAlert := ttl.AlertConfig{
-		MetricType: ttl.MemoryAlert,
+		MetricType: "memory_alert",
 		Threshold:  500.0, // 500MB
-		Action:     ttl.LogAlert,
+		Action:     "log_alert",
 	}
 	s.metrics.AddAlert(memoryAlert)
 
 	// Alert if latency exceeds 5ms
 	latencyAlert := ttl.AlertConfig{
-		MetricType: ttl.LatencyAlert,
+		MetricType: "latency_alert",
 		Threshold:  5.0, // 5ms
-		Action:     ttl.LogAlert,
+		Action:     "log_alert",
 	}
 	s.metrics.AddAlert(latencyAlert)
 }

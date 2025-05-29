@@ -10,17 +10,6 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// DataType represents different types of cached data
-type DataType string
-
-const (
-	DefaultValues DataType = "default_values"
-	Statistics    DataType = "statistics"
-	MLModels      DataType = "ml_models"
-	Configuration DataType = "configuration"
-	UserSessions  DataType = "user_sessions"
-)
-
 // TTLConfig defines TTL settings for each data type
 type TTLConfig struct {
 	DefaultValues time.Duration `json:"default_values" yaml:"default_values"`
@@ -43,13 +32,20 @@ func DefaultTTLConfig() *TTLConfig {
 
 // TTLManager manages Time-To-Live for cache entries
 type TTLManager struct {
-	config   *TTLConfig
-	redis    *redis.Client
-	metrics  *TTLMetrics
-	mu       sync.RWMutex
-	analyzer *TTLAnalyzer
-	ctx      context.Context
-	cancel   context.CancelFunc
+	config      *TTLConfig
+	redis       *redis.Client
+	metrics     *TTLMetrics
+	mu          sync.RWMutex
+	analyzer    *TTLAnalyzer
+	ctx         context.Context
+	cancel      context.CancelFunc
+	inMemCache  map[string]cachedItem // In-memory cache for fast access
+}
+
+// cachedItem represents an item stored in the in-memory cache
+type cachedItem struct {
+	value      interface{}
+	expiryTime time.Time
 }
 
 // TTLMetrics tracks TTL-related metrics
@@ -68,7 +64,6 @@ func NewTTLManager(redisClient *redis.Client, config *TTLConfig) *TTLManager {
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
-
 	manager := &TTLManager{
 		config: config,
 		redis:  redisClient,
@@ -76,8 +71,9 @@ func NewTTLManager(redisClient *redis.Client, config *TTLConfig) *TTLManager {
 			ExpirationsByType: make(map[DataType]int64),
 			AverageTTLUsage:   make(map[DataType]float64),
 		},
-		ctx:    ctx,
-		cancel: cancel,
+		ctx:         ctx,
+		cancel:      cancel,
+		inMemCache:  make(map[string]cachedItem),
 	}
 
 	manager.analyzer = NewTTLAnalyzer(manager)
@@ -89,23 +85,23 @@ func NewTTLManager(redisClient *redis.Client, config *TTLConfig) *TTLManager {
 }
 
 // GetTTL returns the TTL for a specific data type
-func (tm *TTLManager) GetTTL(dataType DataType) time.Duration {
+func (tm *TTLManager) GetTTL(dataType DataType) (time.Duration, error) {
 	tm.mu.RLock()
 	defer tm.mu.RUnlock()
 
 	switch dataType {
 	case DefaultValues:
-		return tm.config.DefaultValues
+		return tm.config.DefaultValues, nil
 	case Statistics:
-		return tm.config.Statistics
+		return tm.config.Statistics, nil
 	case MLModels:
-		return tm.config.MLModels
+		return tm.config.MLModels, nil
 	case Configuration:
-		return tm.config.Configuration
+		return tm.config.Configuration, nil
 	case UserSessions:
-		return tm.config.UserSessions
+		return tm.config.UserSessions, nil
 	default:
-		return tm.config.DefaultValues // Fallback
+		return tm.config.DefaultValues, nil // Fallback
 	}
 }
 
@@ -138,12 +134,18 @@ func (tm *TTLManager) SetTTL(dataType DataType, ttl time.Duration) error {
 
 // SetWithTTL sets a cache entry with appropriate TTL
 func (tm *TTLManager) SetWithTTL(ctx context.Context, key string, value interface{}, dataType DataType) error {
-	ttl := tm.GetTTL(dataType)
+	ttl, err := tm.GetTTL(dataType)
+	if err != nil {
+		return fmt.Errorf("failed to get TTL for data type %s: %w", dataType, err)
+	}
 
-	err := tm.redis.Set(ctx, key, value, ttl).Err()
+	err = tm.redis.Set(ctx, key, value, ttl).Err()
 	if err != nil {
 		return fmt.Errorf("failed to set cache entry with TTL: %w", err)
 	}
+
+	// Also store in in-memory cache for fast access
+	tm.setInMemory(key, value, ttl)
 
 	// Update metrics
 	tm.metrics.mu.Lock()
@@ -155,9 +157,12 @@ func (tm *TTLManager) SetWithTTL(ctx context.Context, key string, value interfac
 
 // ExpireKey sets TTL for an existing key
 func (tm *TTLManager) ExpireKey(ctx context.Context, key string, dataType DataType) error {
-	ttl := tm.GetTTL(dataType)
+	ttl, err := tm.GetTTL(dataType)
+	if err != nil {
+		return fmt.Errorf("failed to get TTL for data type %s: %w", dataType, err)
+	}
 
-	err := tm.redis.Expire(ctx, key, ttl).Err()
+	err = tm.redis.Expire(ctx, key, ttl).Err()
 	if err != nil {
 		return fmt.Errorf("failed to set TTL for key %s: %w", key, err)
 	}
@@ -207,4 +212,44 @@ func (tm *TTLManager) startMonitoring() {
 func (tm *TTLManager) Close() error {
 	tm.cancel()
 	return nil
+}
+
+// clearInMemory removes an item only from the in-memory cache.
+// This is used by InvalidationManager to keep the local cache consistent.
+func (tm *TTLManager) clearInMemory(key string) {
+	tm.mu.Lock()
+	defer tm.mu.Unlock()
+	if _, exists := tm.inMemCache[key]; exists {
+		delete(tm.inMemCache, key)
+		fmt.Printf("Key '%s' cleared from in-memory cache due to external invalidation.\n", key)
+	}
+}
+
+// setInMemory stores an item in the in-memory cache with expiry time
+func (tm *TTLManager) setInMemory(key string, value interface{}, ttl time.Duration) {
+	tm.mu.Lock()
+	defer tm.mu.Unlock()
+	tm.inMemCache[key] = cachedItem{
+		value:      value,
+		expiryTime: time.Now().Add(ttl),
+	}
+}
+
+// getFromMemory retrieves an item from the in-memory cache if not expired
+func (tm *TTLManager) getFromMemory(key string) (interface{}, bool) {
+	tm.mu.RLock()
+	defer tm.mu.RUnlock()
+	
+	item, exists := tm.inMemCache[key]
+	if !exists {
+		return nil, false
+	}
+	
+	if time.Now().After(item.expiryTime) {
+		// Item expired, remove it
+		delete(tm.inMemCache, key)
+		return nil, false
+	}
+	
+	return item.value, true
 }

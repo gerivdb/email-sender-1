@@ -162,7 +162,7 @@ func runBuild(config *BuildConfig) error {
 	}
 	
 	// Build main application
-	mainPackage := "./cmd/email-server"
+	mainPackage := "email_sender/cmd/email-server"
 	for _, platform := range platformsToBuild {
 		if err := buildBinary(config, platform, platforms[platform], mainPackage, "email-sender"); err != nil {
 			return fmt.Errorf("building main binary for %s: %w", platform, err)

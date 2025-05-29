@@ -35,10 +35,9 @@ func TestFixedSizeChunker(t *testing.T) {
 			},
 			want: 1,
 		},
-
 		{
 			name: "Text equal to chunk size",
-			text: "This text is exactly 50 characters long.............",
+			text: "This text is exactly 50 characters long...........",
 			options: ChunkingOptions{
 				MaxChunkSize:     50,
 				ChunkOverlap:     10,

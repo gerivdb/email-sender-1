@@ -3,6 +3,7 @@ package ttl
 import (
 	"context"
 	"fmt"
+	"log"
 	"math"
 	"sync"
 	"time"
@@ -74,7 +75,7 @@ func DefaultAnalyzerThresholds() *AnalyzerThresholds {
 func NewTTLAnalyzer(manager *TTLManager) *TTLAnalyzer {
 	return &TTLAnalyzer{
 		manager:    manager,
-		redis:      manager.redis,
+		redis:      manager.redis, // Ensure this uses the v9 client type
 		thresholds: DefaultAnalyzerThresholds(),
 		metrics: &AnalyzerMetrics{
 			UsagePatterns:      make(map[DataType]*UsageStats),
@@ -84,7 +85,7 @@ func NewTTLAnalyzer(manager *TTLManager) *TTLAnalyzer {
 }
 
 // AnalyzeUsagePatterns analyzes current cache usage and suggests optimizations
-func (ta *TTLAnalyzer) AnalyzeUsagePatterns() {
+func (ta *TTLAnalyzer) AnalyzeUsagePatterns() (*AnalysisReport, error) {
 	ta.mu.Lock()
 	defer ta.mu.Unlock()
 
@@ -111,6 +112,9 @@ func (ta *TTLAnalyzer) AnalyzeUsagePatterns() {
 
 	// Update performance metrics
 	ta.updatePerformanceMetrics(ctx)
+
+	// Return a placeholder AnalysisReport and nil error
+	return &AnalysisReport{}, nil
 }
 
 // analyzeDataType analyzes usage patterns for a specific data type
@@ -184,7 +188,11 @@ func (ta *TTLAnalyzer) getKeyInfo(ctx context.Context, key string) *KeyInfo {
 
 	// Calculate TTL utilization (rough estimate)
 	if ttl > 0 {
-		totalTTL := ta.manager.GetTTL(DefaultValues) // Use default as baseline
+		totalTTL, err := ta.manager.GetTTL(DefaultValues) // Use default as baseline
+		if err != nil {
+			log.Printf("Error retrieving TTL: %v", err)
+			totalTTL = 0 // Default value in case of error
+		}
 		usedTTL := totalTTL - ttl
 		info.TTLUtilization = float64(usedTTL) / float64(totalTTL)
 	}
@@ -247,7 +255,11 @@ type TTLOptimization struct {
 
 // evaluateOptimization determines if TTL optimization is needed
 func (ta *TTLAnalyzer) evaluateOptimization(dataType DataType, stats *UsageStats) *TTLOptimization {
-	currentTTL := ta.manager.GetTTL(dataType)
+	currentTTL, err := ta.manager.GetTTL(dataType)
+	if err != nil {
+		log.Printf("Error retrieving TTL for %s: %v", dataType, err)
+		currentTTL = 0 // Default value in case of error
+	}
 
 	// Check if hit rate is too low
 	if stats.HitRate < ta.thresholds.MinHitRate {
@@ -388,4 +400,105 @@ func (ta *TTLAnalyzer) SetThresholds(thresholds *AnalyzerThresholds) {
 	ta.mu.Lock()
 	defer ta.mu.Unlock()
 	ta.thresholds = thresholds
+}
+
+// Implement Analyzer interface methods
+
+// AnalyzeUsagePatternsReport analyzes usage patterns and returns a report
+func (ta *TTLAnalyzer) AnalyzeUsagePatternsReport() (*AnalysisReport, error) {
+	ta.AnalyzeUsagePatterns() // Call existing method
+
+	report := &AnalysisReport{
+		Timestamp:        time.Now(),
+		UsagePatterns:    make(map[string]*PatternAnalysis),
+		Recommendations:  ta.GetRecommendations(),
+		PerformanceStats: ta.metrics.PerformanceMetrics,
+		HealthScore:      ta.calculateHealthScore(),
+	}
+
+	return report, nil
+}
+
+// OptimizeTTLSettings optimizes TTL settings based on analysis
+func (ta *TTLAnalyzer) OptimizeTTLSettings() error {
+	ta.AnalyzeUsagePatterns()
+	// TTL optimization is performed automatically in AnalyzeUsagePatterns
+	return nil
+}
+
+// GetRecommendations returns TTL optimization recommendations
+func (ta *TTLAnalyzer) GetRecommendations() []TTLRecommendation {
+	recommendations := make([]TTLRecommendation, 0)
+
+	for dataType, stats := range ta.metrics.UsagePatterns {
+		if stats.TTLUtilization < ta.thresholds.MinTTLUtilization {
+			currentTTL, err := ta.manager.GetTTL(dataType)
+			if err != nil {
+				log.Printf("Error retrieving TTL for %s: %v", dataType, err)
+				currentTTL = 0 // Default value in case of error
+			}
+			recommendations = append(recommendations, TTLRecommendation{
+				KeyPattern:       string(dataType),
+				CurrentTTL:       currentTTL,
+				RecommendedTTL:   currentTTL / 2, // Reduce TTL
+				Reasoning:        "Low TTL utilization suggests shorter TTL needed",
+				Priority:         "medium",
+				EstimatedSavings: 0.2,
+			})
+		} else if stats.TTLUtilization > ta.thresholds.MaxTTLUtilization {
+			currentTTL, err := ta.manager.GetTTL(dataType)
+			if err != nil {
+				log.Printf("Error retrieving TTL for %s: %v", dataType, err)
+				currentTTL = 0 // Default value in case of error
+			}
+			recommendations = append(recommendations, TTLRecommendation{
+				KeyPattern:       string(dataType),
+				CurrentTTL:       currentTTL,
+				RecommendedTTL:   currentTTL * 2, // Increase TTL
+				Reasoning:        "High TTL utilization suggests longer TTL needed",
+				Priority:         "high",
+				EstimatedSavings: 0.15,
+			})
+		}
+	}
+
+	return recommendations
+}
+
+// calculateHealthScore calculates overall cache health score
+func (ta *TTLAnalyzer) calculateHealthScore() float64 {
+	if len(ta.metrics.UsagePatterns) == 0 {
+		return 0.0
+	}
+
+	totalScore := 0.0
+	count := 0
+
+	for _, stats := range ta.metrics.UsagePatterns {
+		score := stats.HitRate*0.4 +
+			(1.0-stats.EvictionRate)*0.3 +
+			stats.TTLUtilization*0.3
+		totalScore += score
+		count++
+	}
+
+	return totalScore / float64(count)
+}
+
+// StartAutoOptimization starts automatic TTL optimization at a specified interval
+func (ta *TTLAnalyzer) StartAutoOptimization(ctx context.Context, interval time.Duration) error {
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-time.After(interval):
+				_, err := ta.AnalyzeUsagePatterns()
+				if err != nil {
+					log.Printf("Error during auto-optimization: %v", err)
+				}
+			}
+		}
+	}()
+	return nil
 }

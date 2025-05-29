@@ -16,7 +16,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/redis/go-redis/v9"
 
-	"pkg/email"
+	"email_sender/pkg/email"
 )
 
 var (

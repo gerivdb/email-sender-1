@@ -60,7 +60,7 @@ type ProcessingSummary struct {
 
 func main() {
 	var (
-		configPath = flag.String("config", "src/config/pipeline_config.json", "Path to configuration file")
+		configPath = flag.String("config", "email_sender/src/config/pipeline_config.json", "Path to configuration file")
 		targetPath = flag.String("target", "", "Target path to analyze (overrides config)")
 		dryRun     = flag.Bool("dry-run", false, "Run in dry-run mode (no changes applied)")
 		verbose    = flag.Bool("verbose", false, "Enable verbose logging")

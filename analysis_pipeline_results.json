@@ -1,0 +1,442 @@
+{
+  "project_path": ".",
+  "analysis_id": "EMAIL_SENDER_1_ANALYSIS_1748504734",
+  "timestamp": "2025-05-29T09:45:34.8737366+02:00",
+  "input_sources": [
+    ".github/docs/algorithms/error-triage",
+    ".github/docs/algorithms/binary-search",
+    ".github/docs/algorithms/dependency-analysis",
+    ".github/docs/algorithms/progressive-build",
+    ".github/docs/algorithms/auto-fix"
+  ],
+  "components": {
+    "ConfigFiles": {
+      "name": "ConfigFiles",
+      "total_files": 10,
+      "processed_files": 10,
+      "errors_found": 0,
+      "errors_fixed": 0,
+      "build_success": false,
+      "test_success": false,
+      "code_quality": 0.45,
+      "technical_debt": 0.575,
+      "dependencies": [],
+      "critical_issues": [
+        "Missing path: config",
+        "Missing path: environments"
+      ],
+      "improvements": [
+        "Implement automated code quality checks",
+        "Add comprehensive unit tests",
+        "Refactor complex functions",
+        "Update deprecated dependencies"
+      ],
+      "performance": {
+        "build_time": 172.5,
+        "test_time": 34.5,
+        "memory_usage": 0.575,
+        "cpu_usage": 0.8624999999999999,
+        "response_time": 575,
+        "throughput": 425.00000000000006,
+        "error_rate": 0.057499999999999996,
+        "availability_score": 0.9
+      },
+      "trends": {
+        "error_trend": "stable",
+        "quality_trend": "stable",
+        "performance_trend": "improving",
+        "historical_data": null,
+        "predictions": {}
+      }
+    },
+    "GmailProcessing": {
+      "name": "GmailProcessing",
+      "total_files": 0,
+      "processed_files": 0,
+      "errors_found": 0,
+      "errors_fixed": 0,
+      "build_success": true,
+      "test_success": false,
+      "code_quality": 0.6499999999999999,
+      "technical_debt": 0.27499999999999997,
+      "dependencies": [],
+      "critical_issues": [
+        "Missing path: src/gmail_processor",
+        "Missing path: src/email_parser",
+        "Missing path: config/gmail",
+        "Missing path: scripts/gmail_sync",
+        "Missing path: internal/integrations/gmail"
+      ],
+      "improvements": [
+        "Implement automated code quality checks",
+        "Add comprehensive unit tests"
+      ],
+      "performance": {
+        "build_time": 82.49999999999999,
+        "test_time": 16.499999999999996,
+        "memory_usage": 0.27499999999999997,
+        "cpu_usage": 0.4125,
+        "response_time": 274.99999999999994,
+        "throughput": 725.0000000000001,
+        "error_rate": 0.027499999999999997,
+        "availability_score": 0.9175
+      },
+      "trends": {
+        "error_trend": "improving",
+        "quality_trend": "stable",
+        "performance_trend": "improving",
+        "historical_data": null,
+        "predictions": {}
+      }
+    },
+    "N8NWorkflow": {
+      "name": "N8NWorkflow",
+      "total_files": 0,
+      "processed_files": 0,
+      "errors_found": 0,
+      "errors_fixed": 0,
+      "build_success": false,
+      "test_success": false,
+      "code_quality": 0.5499999999999999,
+      "technical_debt": 0.17500000000000002,
+      "dependencies": [],
+      "critical_issues": [
+        "Missing path: n8n_workflows",
+        "Missing path: workflows/email_processing",
+        "Missing path: workflows/notion_sync",
+        "Missing path: config/n8n"
+      ],
+      "improvements": [
+        "Implement automated code quality checks",
+        "Add comprehensive unit tests",
+        "Standardize workflow structure",
+        "Add workflow validation"
+      ],
+      "performance": {
+        "build_time": 52.50000000000001,
+        "test_time": 10.500000000000002,
+        "memory_usage": 0.17500000000000002,
+        "cpu_usage": 0.2625,
+        "response_time": 175.00000000000003,
+        "throughput": 825,
+        "error_rate": 0.0175,
+        "availability_score": 0.9475
+      },
+      "trends": {
+        "error_trend": "improving",
+        "quality_trend": "stable",
+        "performance_trend": "improving",
+        "historical_data": null,
+        "predictions": {}
+      }
+    },
+    "NotionAPI": {
+      "name": "NotionAPI",
+      "total_files": 0,
+      "processed_files": 0,
+      "errors_found": 0,
+      "errors_fixed": 0,
+      "build_success": true,
+      "test_success": false,
+      "code_quality": 0.6499999999999999,
+      "technical_debt": 0.27499999999999997,
+      "dependencies": [],
+      "critical_issues": [
+        "Missing path: src/notion_client",
+        "Missing path: src/notion_sync",
+        "Missing path: config/notion",
+        "Missing path: scripts/notion_backup",
+        "Missing path: internal/integrations/notion"
+      ],
+      "improvements": [
+        "Implement automated code quality checks",
+        "Add comprehensive unit tests"
+      ],
+      "performance": {
+        "build_time": 82.49999999999999,
+        "test_time": 16.499999999999996,
+        "memory_usage": 0.27499999999999997,
+        "cpu_usage": 0.4125,
+        "response_time": 274.99999999999994,
+        "throughput": 725.0000000000001,
+        "error_rate": 0.027499999999999997,
+        "availability_score": 0.9175
+      },
+      "trends": {
+        "error_trend": "improving",
+        "quality_trend": "stable",
+        "performance_trend": "improving",
+        "historical_data": null,
+        "predictions": {}
+      }
+    },
+    "PowerShellScript": {
+      "name": "PowerShellScript",
+      "total_files": 4981,
+      "processed_files": 3428,
+      "errors_found": 0,
+      "errors_fixed": 0,
+      "build_success": false,
+      "test_success": false,
+      "code_quality": 0.5499999999999999,
+      "technical_debt": 0.475,
+      "dependencies": [],
+      "critical_issues": [
+        "Missing path: build",
+        "Missing path: deploy"
+      ],
+      "improvements": [
+        "Implement automated code quality checks",
+        "Add comprehensive unit tests",
+        "Refactor complex functions",
+        "Update deprecated dependencies",
+        "Add error handling to all scripts",
+        "Implement logging standardization"
+      ],
+      "performance": {
+        "build_time": 142.5,
+        "test_time": 28.5,
+        "memory_usage": 0.475,
+        "cpu_usage": 0.7124999999999999,
+        "response_time": 475,
+        "throughput": 525,
+        "error_rate": 0.0475,
+        "availability_score": 0.9
+      },
+      "trends": {
+        "error_trend": "stable",
+        "quality_trend": "stable",
+        "performance_trend": "improving",
+        "historical_data": null,
+        "predictions": {}
+      }
+    },
+    "RAGEngine": {
+      "name": "RAGEngine",
+      "total_files": 1,
+      "processed_files": 1,
+      "errors_found": 0,
+      "errors_fixed": 0,
+      "build_success": true,
+      "test_success": true,
+      "code_quality": 0.75,
+      "technical_debt": 0.375,
+      "dependencies": [],
+      "critical_issues": [
+        "Missing path: src/rag_engine",
+        "Missing path: src/vector_search",
+        "Missing path: src/embedding_service",
+        "Missing path: cmd/rag_server",
+        "Missing path: internal/storage/vectors"
+      ],
+      "improvements": [
+        "Optimize vector search algorithms",
+        "Implement caching for embeddings"
+      ],
+      "performance": {
+        "build_time": 112.5,
+        "test_time": 22.5,
+        "memory_usage": 0.375,
+        "cpu_usage": 0.5625,
+        "response_time": 375,
+        "throughput": 625,
+        "error_rate": 0.037500000000000006,
+        "availability_score": 0.9
+      },
+      "trends": {
+        "error_trend": "stable",
+        "quality_trend": "improving",
+        "performance_trend": "improving",
+        "historical_data": null,
+        "predictions": {}
+      }
+    }
+  },
+  "overall_metrics": {
+    "total_errors": 0,
+    "fixed_errors": 0,
+    "remaining_errors": 0,
+    "effectiveness_rate": 0,
+    "component_metrics": null,
+    "language_metrics": null,
+    "rule_effectiveness": null,
+    "time_metrics": null,
+    "error_patterns": null,
+    "quality_score": 0.5999999999999999,
+    "technical_debt": 0.3583333333333332,
+    "recommendations": [
+      {
+        "category": "quality",
+        "priority": 1,
+        "component": "system",
+        "description": "Implement system-wide code quality standards and automated checking",
+        "impact": "high",
+        "effort": "medium",
+        "confidence": 0.9
+      }
+    ]
+  },
+  "algorithm_results": {},
+  "optimization_plan": {
+    "priority1_actions": [
+      {
+        "id": "P1_004",
+        "description": "Critical refactoring of ConfigFiles component",
+        "component": "ConfigFiles",
+        "category": "critical_fix",
+        "estimated_hours": 40,
+        "expected_impact": 0.8,
+        "dependencies": [],
+        "risk_level": "high",
+        "prerequisites": [
+          "backup_component",
+          "create_tests"
+        ]
+      }
+    ],
+    "priority2_actions": [
+      {
+        "id": "P2_001",
+        "description": "Quality improvements for NotionAPI",
+        "component": "NotionAPI",
+        "category": "quality_improvement",
+        "estimated_hours": 20,
+        "expected_impact": 0.6,
+        "dependencies": [],
+        "risk_level": "medium",
+        "prerequisites": [
+          "code_review"
+        ]
+      },
+      {
+        "id": "P2_002",
+        "description": "Quality improvements for GmailProcessing",
+        "component": "GmailProcessing",
+        "category": "quality_improvement",
+        "estimated_hours": 20,
+        "expected_impact": 0.6,
+        "dependencies": [],
+        "risk_level": "medium",
+        "prerequisites": [
+          "code_review"
+        ]
+      },
+      {
+        "id": "P2_003",
+        "description": "Quality improvements for PowerShellScript",
+        "component": "PowerShellScript",
+        "category": "quality_improvement",
+        "estimated_hours": 20,
+        "expected_impact": 0.6,
+        "dependencies": [],
+        "risk_level": "medium",
+        "prerequisites": [
+          "code_review"
+        ]
+      },
+      {
+        "id": "P2_005",
+        "description": "Quality improvements for ConfigFiles",
+        "component": "ConfigFiles",
+        "category": "quality_improvement",
+        "estimated_hours": 20,
+        "expected_impact": 0.6,
+        "dependencies": [],
+        "risk_level": "medium",
+        "prerequisites": [
+          "code_review"
+        ]
+      },
+      {
+        "id": "P2_007",
+        "description": "Quality improvements for RAGEngine",
+        "component": "RAGEngine",
+        "category": "quality_improvement",
+        "estimated_hours": 20,
+        "expected_impact": 0.6,
+        "dependencies": [],
+        "risk_level": "medium",
+        "prerequisites": [
+          "code_review"
+        ]
+      },
+      {
+        "id": "P2_008",
+        "description": "Quality improvements for N8NWorkflow",
+        "component": "N8NWorkflow",
+        "category": "quality_improvement",
+        "estimated_hours": 20,
+        "expected_impact": 0.6,
+        "dependencies": [],
+        "risk_level": "medium",
+        "prerequisites": [
+          "code_review"
+        ]
+      }
+    ],
+    "priority3_actions": [
+      {
+        "id": "P3_006",
+        "description": "Performance optimization for ConfigFiles",
+        "component": "ConfigFiles",
+        "category": "performance",
+        "estimated_hours": 15,
+        "expected_impact": 0.4,
+        "dependencies": [],
+        "risk_level": "low",
+        "prerequisites": [
+          "performance_baseline"
+        ]
+      }
+    ],
+    "longterm_actions": [],
+    "estimated_effort": {
+      "priority1": 40,
+      "priority2": 120,
+      "priority3": 15
+    },
+    "expected_roi": {
+      "priority1": 0.8,
+      "priority2": 0.6,
+      "priority3": 0.4
+    },
+    "timeline": {
+      "priority1": "1-2 weeks",
+      "priority2": "2-4 weeks",
+      "priority3": "1-2 months"
+    }
+  },
+  "report_summary": {
+    "system_health_score": 49.66666666666667,
+    "critical_issues_count": 23,
+    "recommendation_count": 1,
+    "estimated_fix_time": 160,
+    "roi_projection": 72,
+    "next_steps": [
+      "Address critical issues in Priority 1 actions",
+      "Implement automated code quality gates",
+      "Monitor system health metrics continuously",
+      "Schedule regular analysis pipeline runs"
+    ],
+    "executive_summary": "EMAIL_SENDER_1 system health score: 49.7%. System requires immediate attention to address critical issues and technical debt. Analysis identified 0 critical issues and generated 0 optimization recommendations.",
+    "key_findings": [
+      "Code quality below acceptable thresholds",
+      "ConfigFiles component requires immediate attention"
+    ]
+  },
+  "config": {
+    "enable_deep_analysis": true,
+    "include_performance": true,
+    "include_trends": true,
+    "analysis_depth": 3,
+    "component_filters": [],
+    "metric_thresholds": {
+      "build_time": 300,
+      "error_rate": 0.1,
+      "quality_score": 0.8,
+      "test_coverage": 0.7
+    },
+    "output_format": "json",
+    "generate_charts": false
+  }
+}

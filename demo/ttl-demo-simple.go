@@ -74,9 +74,8 @@ func main() {
 	fmt.Println("  ✅ Time-based invalidation strategy created")
 	fmt.Println("  ✅ Event-based invalidation strategy created")
 	fmt.Println("  ✅ Version-based invalidation strategy created")
-
 	// Demo invalidation manager
-	_ = ttl.NewInvalidationManager(rdb)
+	_ = ttl.NewInvalidationManager(rdb, nil)
 	fmt.Println("  ✅ Invalidation manager initialized")
 
 	// Demo 3: Monitoring and analytics

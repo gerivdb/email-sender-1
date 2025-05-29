@@ -26,13 +26,16 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 	if text == "" {
 		return nil, fmt.Errorf("text cannot be empty")
 	}
-
 	// Valider les options
 	if options.MaxChunkSize <= 0 {
 		options.MaxChunkSize = 500 // Taille par défaut
 	}
-	if options.ChunkOverlap < 0 || options.ChunkOverlap >= options.MaxChunkSize {
-		options.ChunkOverlap = options.MaxChunkSize / 10 // 10% par défaut
+	if options.ChunkOverlap < 0 {
+		options.ChunkOverlap = 0
+	}
+	// S'assurer que l'overlap permet toujours un progrès
+	if options.ChunkOverlap >= options.MaxChunkSize {
+		options.ChunkOverlap = options.MaxChunkSize - 1
 	}
 
 	// Pré-allouer la slice pour éviter les réallocations
@@ -43,7 +46,6 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 	textLen := len(textRunes)
 	pos := 0
 	chunkIndex := 0
-
 	for pos < textLen {
 		// Calculer la fin théorique du chunk
 		end := pos + options.MaxChunkSize
@@ -65,6 +67,14 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 			if end > searchLimit { // Si aucune fin de phrase trouvée
 				end = searchLimit
 			}
+		}
+
+		// Vérifier si le chunk restant serait trop petit
+		// Si c'est le cas, étendre le chunk actuel pour inclure le reste
+		remainingText := textLen - end
+		minChunkSize := options.MaxChunkSize / 4 // 25% de la taille max comme minimum
+		if remainingText > 0 && remainingText < minChunkSize {
+			end = textLen // Inclure tout le texte restant dans ce chunk
 		}
 
 		// Créer le chunk
@@ -116,14 +126,13 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 
 		chunks = append(chunks, chunk)
 
-		// Avancer au prochain chunk
-		pos = end - options.ChunkOverlap
-		if pos >= textLen {
+		// Si nous avons traité tout le texte, arrêter
+		if end >= textLen {
 			break
 		}
-		if pos < 0 {
-			pos = 0
-		}
+
+		// Calculer la prochaine position
+		pos = end - options.ChunkOverlap
 		chunkIndex++
 	}
 

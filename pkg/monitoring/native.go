@@ -51,16 +51,6 @@ type SystemMetrics struct {
 	NetworkBytesOut uint64    `json:"network_bytes_out"`
 }
 
-// AlertConfig defines alert thresholds
-type AlertConfig struct {
-	CPUThreshold          float64  `json:"cpu_threshold"`
-	MemoryThreshold       float64  `json:"memory_threshold"`
-	ErrorRateThreshold    float64  `json:"error_rate_threshold"`
-	ResponseTimeThreshold float64  `json:"response_time_threshold"`
-	WebhookURL            string   `json:"webhook_url"`
-	EmailRecipients       []string `json:"email_recipients"`
-}
-
 // NewNativeMonitor creates a new native monitoring instance
 func NewNativeMonitor(port int, collectionInterval time.Duration) *NativeMonitor {
 	ctx, cancel := context.WithCancel(context.Background())
