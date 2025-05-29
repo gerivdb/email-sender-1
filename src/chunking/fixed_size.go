@@ -3,7 +3,6 @@ package chunking
 import (
 	"crypto/sha256"
 	"fmt"
-	"strings"
 	"time"
 	"unicode"
 )
@@ -26,61 +25,72 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 	if text == "" {
 		return nil, fmt.Errorf("text cannot be empty")
 	}
+
 	// Valider les options
 	if options.MaxChunkSize <= 0 {
-		options.MaxChunkSize = 500 // Taille par défaut
+		options.MaxChunkSize = 500
 	}
 	if options.ChunkOverlap < 0 {
 		options.ChunkOverlap = 0
 	}
-	// S'assurer que l'overlap permet toujours un progrès
 	if options.ChunkOverlap >= options.MaxChunkSize {
 		options.ChunkOverlap = options.MaxChunkSize - 1
 	}
 
-	// Pré-allouer la slice pour éviter les réallocations
-	estimatedChunks := (len(text) / (options.MaxChunkSize - options.ChunkOverlap)) + 1
-	chunks := make([]*DocumentChunk, 0, estimatedChunks)
-
 	textRunes := []rune(text)
 	textLen := len(textRunes)
+	chunks := make([]*DocumentChunk, 0)
 	pos := 0
 	chunkIndex := 0
-	for pos < textLen {
-		// Calculer la fin théorique du chunk
+
+	for pos < textLen { // Calculer la fin du chunk
 		end := pos + options.MaxChunkSize
 		if end > textLen {
 			end = textLen
 		}
 
-		// Optimisation : ne chercher la fin de phrase que si nécessaire
+		// Si ce n'est pas le dernier chunk possible, vérifier s'il reste assez de texte
+		// pour justifier un chunk séparé
+		remainingAfterChunk := textLen - end
+		minChunkSize := options.MaxChunkSize / 4 // Taille minimale = 25% de MaxChunkSize
+		if remainingAfterChunk > 0 && remainingAfterChunk < minChunkSize {
+			// Si le reste est trop petit, l'inclure dans ce chunk
+			end = textLen
+		}
+
+		// Si on préserve la structure ET qu'on n'est pas à la fin, chercher une fin de phrase
 		if options.PreserveStructure && end < textLen {
-			// Recherche de la fin de phrase la plus proche, limité à 50 caractères en arrière
-			searchLimit := end
-			for i := end; i > pos && i > end-50; i-- {
+			// Chercher en arrière d'abord (jusqu'à la moitié de MaxChunkSize)
+			minEnd := pos + options.MaxChunkSize/2
+			foundBoundary := false
+
+			for i := end; i > minEnd; i-- {
 				if isPunctuationMark(textRunes[i-1]) &&
 					(i == textLen || unicode.IsSpace(textRunes[i])) {
 					end = i
+					foundBoundary = true
 					break
 				}
 			}
-			if end > searchLimit { // Si aucune fin de phrase trouvée
-				end = searchLimit
-			}
-		}
 
-		// Vérifier si le chunk restant serait trop petit
-		// Si c'est le cas, étendre le chunk actuel pour inclure le reste
-		remainingText := textLen - end
-		minChunkSize := options.MaxChunkSize / 4 // 25% de la taille max comme minimum
-		if remainingText > 0 && remainingText < minChunkSize {
-			end = textLen // Inclure tout le texte restant dans ce chunk
+			// Si pas trouvé en arrière, chercher en avant (permettre de dépasser MaxChunkSize)
+			if !foundBoundary {
+				maxSearch := pos + options.MaxChunkSize + 10 // Permettre 10 caractères de plus
+				if maxSearch > textLen {
+					maxSearch = textLen
+				}
+				for i := end; i < maxSearch; i++ {
+					if isPunctuationMark(textRunes[i]) &&
+						(i+1 == textLen || unicode.IsSpace(textRunes[i+1])) {
+						end = i + 1
+						break
+					}
+				}
+			}
 		}
 
 		// Créer le chunk
 		chunkText := string(textRunes[pos:end])
-
-		// Générer un ID unique pour le chunk (optimisé)
 		hashBytes := sha256.Sum256([]byte(fmt.Sprintf("%s-%d", options.ParentDocumentID, chunkIndex)))
 		chunkID := fmt.Sprintf("chunk-%x", hashBytes[:8])
 
@@ -95,45 +105,25 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 			CreatedAt:        time.Now(),
 		}
 
-		// Ajouter du contexte seulement si nécessaire et de manière optimisée
-		if pos > 0 || end < textLen {
-			var contextBuilder strings.Builder
-			contextBuilder.Grow(200) // Pré-allouer pour la taille attendue
-
-			if pos > 0 {
-				contextStart := pos - 25 // Réduit à 25 caractères
-				if contextStart < 0 {
-					contextStart = 0
-				}
-				contextBuilder.WriteString("Before: ")
-				contextBuilder.WriteString(string(textRunes[contextStart:pos]))
-			}
-
-			if end < textLen {
-				if pos > 0 {
-					contextBuilder.WriteString(" | ")
-				}
-				contextEnd := end + 25 // Réduit à 25 caractères
-				if contextEnd > textLen {
-					contextEnd = textLen
-				}
-				contextBuilder.WriteString("After: ")
-				contextBuilder.WriteString(string(textRunes[end:contextEnd]))
-			}
-
-			chunk.Context = contextBuilder.String()
-		}
-
 		chunks = append(chunks, chunk)
 
-		// Si nous avons traité tout le texte, arrêter
+		// Si on a traité tout le texte, arrêter
 		if end >= textLen {
 			break
 		}
 
-		// Calculer la prochaine position
-		pos = end - options.ChunkOverlap
+		// Calculer la prochaine position avec overlap
+		nextPos := end - options.ChunkOverlap
+		if nextPos <= pos {
+			nextPos = pos + 1 // S'assurer qu'on progresse
+		}
+		pos = nextPos
 		chunkIndex++
+
+		// Protection contre les boucles infinies
+		if chunkIndex > textLen {
+			break
+		}
 	}
 
 	return chunks, nil
