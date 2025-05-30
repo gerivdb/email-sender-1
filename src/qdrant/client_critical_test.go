@@ -2,17 +2,33 @@ package qdrant_test
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
 	"email_sender/src/qdrant"
 )
 
+// Helper function to check if Qdrant is available
+func isQdrantAvailable() bool {
+	client := &http.Client{Timeout: 2 * time.Second}
+	resp, err := client.Get("http://localhost:6333/")
+	if err != nil {
+		return false
+	}
+	resp.Body.Close()
+	return resp.StatusCode < 500
+}
+
 // 🎯 TDD Inversé - Tests critiques AVANT implémentation
 // ROI: +24h (test guide l'implémentation + bugs détectés tôt)
 
 // Test critique #1: Migration gRPC→HTTP DOIT fonctionner
 func TestQdrantHTTPClient_MustWork(t *testing.T) {
+	if !isQdrantAvailable() {
+		t.Skip("⏭️  Qdrant server not available - skipping integration test")
+	}
+
 	t.Log("🎯 Test critique: Migration HTTP doit fonctionner")
 
 	// Ce test guide l'implémentation
@@ -32,6 +48,10 @@ func TestQdrantHTTPClient_MustWork(t *testing.T) {
 
 // Test critique #2: Performance batch DOIT être acceptable
 func TestQdrantHTTPClient_BatchPerformance(t *testing.T) {
+	if !isQdrantAvailable() {
+		t.Skip("⏭️  Qdrant server not available - skipping integration test")
+	}
+
 	t.Log("🎯 Test critique: Performance batch")
 
 	client := qdrant.NewQdrantClient("http://localhost:6333")
@@ -60,6 +80,10 @@ func TestQdrantHTTPClient_BatchPerformance(t *testing.T) {
 
 // Test critique #3: Recherche vectorielle DOIT retourner résultats pertinents
 func TestQdrantHTTPClient_VectorSearch(t *testing.T) {
+	if !isQdrantAvailable() {
+		t.Skip("⏭️  Qdrant server not available - skipping integration test")
+	}
+
 	t.Log("🎯 Test critique: Recherche vectorielle")
 
 	client := qdrant.NewQdrantClient("http://localhost:6333")
