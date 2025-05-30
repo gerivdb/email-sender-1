@@ -146,14 +146,14 @@ func (d *Document) GetSource() string {
 
 // SetCreatedAt sets the creation timestamp
 func (d *Document) SetCreatedAt(t time.Time) {
-	d.SetMetadata("created_at", t.Format(time.RFC3339))
+	d.SetMetadata("created_at", t.Format(time.RFC3339Nano))
 }
 
 // GetCreatedAt gets the creation timestamp
 func (d *Document) GetCreatedAt() *time.Time {
 	if createdAt, exists := d.GetMetadata("created_at"); exists {
 		if createdAtStr, ok := createdAt.(string); ok {
-			if t, err := time.Parse(time.RFC3339, createdAtStr); err == nil {
+			if t, err := time.Parse(time.RFC3339Nano, createdAtStr); err == nil {
 				return &t
 			}
 		}
@@ -163,14 +163,14 @@ func (d *Document) GetCreatedAt() *time.Time {
 
 // SetModifiedAt sets the modification timestamp
 func (d *Document) SetModifiedAt(t time.Time) {
-	d.SetMetadata("modified_at", t.Format(time.RFC3339))
+	d.SetMetadata("modified_at", t.Format(time.RFC3339Nano))
 }
 
 // GetModifiedAt gets the modification timestamp
 func (d *Document) GetModifiedAt() *time.Time {
 	if modifiedAt, exists := d.GetMetadata("modified_at"); exists {
 		if modifiedAtStr, ok := modifiedAt.(string); ok {
-			if t, err := time.Parse(time.RFC3339, modifiedAtStr); err == nil {
+			if t, err := time.Parse(time.RFC3339Nano, modifiedAtStr); err == nil {
 				return &t
 			}
 		}
