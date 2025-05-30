@@ -3,6 +3,7 @@ package ttl
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"sync"
 	"time"
@@ -32,14 +33,14 @@ func DefaultTTLConfig() *TTLConfig {
 
 // TTLManager manages Time-To-Live for cache entries
 type TTLManager struct {
-	config      *TTLConfig
-	redis       *redis.Client
-	metrics     *TTLMetrics
-	mu          sync.RWMutex
-	analyzer    *TTLAnalyzer
-	ctx         context.Context
-	cancel      context.CancelFunc
-	inMemCache  map[string]cachedItem // In-memory cache for fast access
+	config     *TTLConfig
+	redis      *redis.Client
+	metrics    *TTLMetrics
+	mu         sync.RWMutex
+	analyzer   *TTLAnalyzer
+	ctx        context.Context
+	cancel     context.CancelFunc
+	inMemCache map[string]cachedItem // In-memory cache for fast access
 }
 
 // cachedItem represents an item stored in the in-memory cache
@@ -71,9 +72,9 @@ func NewTTLManager(redisClient *redis.Client, config *TTLConfig) *TTLManager {
 			ExpirationsByType: make(map[DataType]int64),
 			AverageTTLUsage:   make(map[DataType]float64),
 		},
-		ctx:         ctx,
-		cancel:      cancel,
-		inMemCache:  make(map[string]cachedItem),
+		ctx:        ctx,
+		cancel:     cancel,
+		inMemCache: make(map[string]cachedItem),
 	}
 
 	manager.analyzer = NewTTLAnalyzer(manager)
@@ -170,6 +171,57 @@ func (tm *TTLManager) ExpireKey(ctx context.Context, key string, dataType DataTy
 	return nil
 }
 
+// Get retrieves a value from cache (for email service compatibility)
+func (tm *TTLManager) Get(key string, dest interface{}) (bool, error) {
+	value, found := tm.getFromMemory(key)
+	if !found {
+		// Try Redis as fallback
+		ctx := context.Background()
+		result, err := tm.redis.Get(ctx, key).Result()
+		if err != nil {
+			if err == redis.Nil {
+				return false, nil // Key not found
+			}
+			return false, fmt.Errorf("redis get error: %w", err)
+		}
+
+		// Try to unmarshal into dest
+		if err := json.Unmarshal([]byte(result), dest); err != nil {
+			return false, fmt.Errorf("unmarshal error: %w", err)
+		}
+		return true, nil
+	}
+
+	// Convert value to dest
+	data, err := json.Marshal(value)
+	if err != nil {
+		return false, fmt.Errorf("marshal error: %w", err)
+	}
+
+	if err := json.Unmarshal(data, dest); err != nil {
+		return false, fmt.Errorf("unmarshal error: %w", err)
+	}
+
+	return true, nil
+}
+
+// Set stores a value in cache with automatic TTL based on data type
+func (tm *TTLManager) Set(key string, value interface{}, dataType DataType) error {
+	ctx := context.Background()
+	return tm.SetWithTTL(ctx, key, value, dataType)
+}
+
+// Delete removes a value from cache
+func (tm *TTLManager) Delete(key string) error {
+	tm.mu.Lock()
+	delete(tm.inMemCache, key)
+	tm.mu.Unlock()
+
+	// Also delete from Redis
+	ctx := context.Background()
+	return tm.redis.Del(ctx, key).Err()
+}
+
 // GetMetrics returns current TTL metrics
 func (tm *TTLManager) GetMetrics() *TTLMetrics {
 	tm.metrics.mu.RLock()
@@ -239,17 +291,17 @@ func (tm *TTLManager) setInMemory(key string, value interface{}, ttl time.Durati
 func (tm *TTLManager) getFromMemory(key string) (interface{}, bool) {
 	tm.mu.RLock()
 	defer tm.mu.RUnlock()
-	
+
 	item, exists := tm.inMemCache[key]
 	if !exists {
 		return nil, false
 	}
-	
+
 	if time.Now().After(item.expiryTime) {
 		// Item expired, remove it
 		delete(tm.inMemCache, key)
 		return nil, false
 	}
-	
+
 	return item.value, true
 }

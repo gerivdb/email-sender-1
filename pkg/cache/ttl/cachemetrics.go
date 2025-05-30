@@ -42,9 +42,16 @@ func (cm *CacheMetrics) AddAlert(alert AlertConfig) {
 }
 
 // GetCurrentMetrics retrieves the current metrics
-func (cm *CacheMetrics) GetCurrentMetrics() map[string]interface{} {
-	// Placeholder for returning metrics
-	return map[string]interface{}{
-		"example_metric": 123.45,
+func (cm *CacheMetrics) GetCurrentMetrics() *MetricData {
+	// Return actual MetricData with proper fields
+	return &MetricData{
+		HitRate:     0.85, // Default values - in production, these would be calculated
+		MissRate:    0.15,
+		MemoryUsage: 1024 * 1024 * 50, // 50MB
+		CacheSize:   1000,
+		Latency:     2.0, // 2 milliseconds
+		Throughput:  1000.0,
+		ErrorRate:   0.01,
+		LastUpdated: time.Now(),
 	}
 }

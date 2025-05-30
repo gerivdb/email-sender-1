@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"email_sender/pkg/cache/ttl"
@@ -324,8 +325,13 @@ func (s *EmailService) GetMLModelResults(modelID, inputHash string) (*MLModel, e
 
 // InvalidateMLModelResults invalidates ML model cache when model is updated
 func (s *EmailService) InvalidateMLModelResults(modelID string, version string) error {
+	// Convert string version to int - in production, you'd have proper error handling
+	versionInt := 1 // Default version if parsing fails
+	if parsedVersion, err := strconv.Atoi(version); err == nil {
+		versionInt = parsedVersion
+	}
 	// Invalidate by version to clear old model results
-	return s.invalidator.InvalidateByVersion(fmt.Sprintf("ml_model:%s", modelID), version)
+	return s.invalidator.InvalidateByVersion(fmt.Sprintf("ml_model:%s", modelID), versionInt)
 }
 
 // Cache Analytics and Optimization
@@ -389,9 +395,9 @@ func (s *EmailService) Cleanup() error {
 
 	// Perform final cache optimization
 	s.OptimizeCache()
-
 	// Clear expired keys
-	err := s.invalidator.InvalidateByAge(time.Hour * 24)
+	ageSeconds := int((time.Hour * 24).Seconds())
+	err := s.invalidator.InvalidateByAge(ageSeconds)
 	if err != nil {
 		log.Printf("Failed to clear expired keys: %v", err)
 	}

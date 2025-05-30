@@ -12,6 +12,9 @@ type Analyzer interface {
 	OptimizeTTLSettings() error
 	GetRecommendations() []TTLRecommendation
 	StartAutoOptimization(ctx context.Context, interval time.Duration) error
+	AnalyzePattern(pattern string) *PatternAnalysis
+	OptimizeTTL(pattern string) error
+	GetOptimizationRecommendations() []OptimizationRecommendation
 }
 
 // AlertConfig represents alert configuration for TTL monitoring
@@ -64,11 +67,11 @@ type TTLRecommendation struct {
 type DataType string
 
 const (
-	DefaultValues   DataType = "default_values"
-	Statistics      DataType = "statistics"
-	MLModels        DataType = "ml_models"
-	Configuration   DataType = "configuration"
-	UserSessions    DataType = "user_sessions"
+	DefaultValues DataType = "default_values"
+	Statistics    DataType = "statistics"
+	MLModels      DataType = "ml_models"
+	Configuration DataType = "configuration"
+	UserSessions  DataType = "user_sessions"
 )
 
 // Define constants for alert types
@@ -78,3 +81,28 @@ const (
 	LatencyAlert = "latency_alert"
 	LogAlert     = "log_alert"
 )
+
+// MetricData represents current cache performance metrics
+type MetricData struct {
+	HitRate     float64   `json:"hit_rate"`
+	MissRate    float64   `json:"miss_rate"`
+	MemoryUsage float64   `json:"memory_usage"`
+	CacheSize   int64     `json:"cache_size"`
+	Latency     float64   `json:"latency_ms"`
+	Throughput  float64   `json:"throughput_per_sec"`
+	ErrorRate   float64   `json:"error_rate"`
+	LastUpdated time.Time `json:"last_updated"`
+}
+
+// OptimizationRecommendation represents a cache optimization recommendation
+type OptimizationRecommendation struct {
+	Type         string        `json:"type"`
+	KeyPattern   string        `json:"key_pattern"`
+	Description  string        `json:"description"`
+	CurrentTTL   time.Duration `json:"current_ttl"`
+	SuggestedTTL time.Duration `json:"suggested_ttl"`
+	Impact       string        `json:"impact"`
+	Priority     int           `json:"priority"`
+	Reasoning    string        `json:"reasoning"`
+	Confidence   float64       `json:"confidence"`
+}

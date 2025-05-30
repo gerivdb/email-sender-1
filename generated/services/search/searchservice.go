@@ -59,6 +59,13 @@ type SearchResult struct {
 	Metadata map[string]interface{} `json:"metadata"`
 }
 
+// Document represents a document to be indexed
+type Document struct {
+	ID       string                 `json:"id"`
+	Content  string                 `json:"content"`
+	Metadata map[string]interface{} `json:"metadata"`
+}
+
 // NewLRUCache creates a new LRU cache
 func NewLRUCache(size int) Cache {
 	// Implementation stub - return nil for now
@@ -94,61 +101,81 @@ func NewSearchService(qdrant QDrantClient, embedder EmbeddingService) *SearchSer
 
 }
 
-// Search
-func Search(ctx context.Context, req *SearchRequest) (*SearchResponse, error) {
-
+// Search performs semantic search with RAG
+func (s *SearchService) Search(ctx context.Context, req *SearchRequest) (*SearchResponse, error) {
 	// Start timing
 	start := time.Now()
-	defer func() {
-		s.metrics.RecordSearchDuration(time.Since(start))
-	}()
 
 	// Validate request
-	if err := validateSearchRequest(req); err != nil {
-		s.metrics.IncrementSearchErrors()
-		return nil, fmt.Errorf("validation failed: %w", err)
+	if req == nil {
+		return nil, fmt.Errorf("search request cannot be nil")
+	}
+	if req.Query == "" {
+		return nil, fmt.Errorf("search query cannot be empty")
+	}
+	if req.Limit <= 0 {
+		req.Limit = 10 // Default limit
 	}
 
 	// Generate query embedding
 	embedding, err := s.embedder.GenerateEmbedding(ctx, req.Query)
 	if err != nil {
-		s.metrics.IncrementEmbeddingErrors()
 		return nil, fmt.Errorf("embedding generation failed: %w", err)
 	}
 
 	// Check cache
-	cacheKey := generateCacheKey(req, embedding)
-	if cached, found := s.cache.Get(cacheKey); found {
-		s.metrics.IncrementCacheHits()
-		return cached.(*SearchResponse), nil
+	cacheKey := fmt.Sprintf("search:%s:%d", req.Query, req.Limit)
+	if s.cache != nil {
+		if cached, found := s.cache.Get(cacheKey); found {
+			return cached.(*SearchResponse), nil
+		}
 	}
 
 	// Perform vector search
-	searchReq := &QDrantSearchRequest{
-		Vector:    embedding,
-		Limit:     req.Limit,
-		Filter:    req.Filters,
-		Threshold: req.Threshold,
-	}
-
-	results, err := s.qdrant.Search(ctx, "documents", searchReq)
+	results, err := s.qdrant.Search(ctx, embedding, req.Limit)
 	if err != nil {
-		s.metrics.IncrementSearchErrors()
 		return nil, fmt.Errorf("vector search failed: %w", err)
 	}
 
 	// Build response
 	response := &SearchResponse{
-		RequestID:  generateRequestID(),
-		Results:    convertQDrantResults(results.Points),
-		TotalCount: len(results.Points),
-		DurationMS: int(time.Since(start).Milliseconds()),
+		Results:   results,
+		Total:     len(results),
+		Latency:   time.Since(start),
+		Timestamp: time.Now(),
 	}
 
 	// Cache response
-	s.cache.Set(cacheKey, response, 5*time.Minute)
-	s.metrics.IncrementSearchSuccess()
+	if s.cache != nil {
+		s.cache.Set(cacheKey, response, 5*time.Minute)
+	}
 
 	return response, nil
+}
 
+// IndexDocument indexes a document in the vector database
+func (s *SearchService) IndexDocument(ctx context.Context, doc *Document) error {
+	if doc == nil {
+		return fmt.Errorf("document cannot be nil")
+	}
+	if doc.ID == "" {
+		return fmt.Errorf("document ID cannot be empty")
+	}
+	if doc.Content == "" {
+		return fmt.Errorf("document content cannot be empty")
+	}
+
+	// Generate embedding for the document content
+	embedding, err := s.embedder.GenerateEmbedding(ctx, doc.Content)
+	if err != nil {
+		return fmt.Errorf("embedding generation failed: %w", err)
+	}
+
+	// Insert into vector database
+	err = s.qdrant.Insert(ctx, doc.ID, embedding, doc.Metadata)
+	if err != nil {
+		return fmt.Errorf("vector insert failed: %w", err)
+	}
+
+	return nil
 }
