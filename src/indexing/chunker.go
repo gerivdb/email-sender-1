@@ -69,21 +69,28 @@ func (c *Chunker) Chunk(text string) []string {
 		chunk := text[start:end]
 		chunks = append(chunks, strings.TrimSpace(chunk))
 
+		// If this chunk reaches the end of text, we're done
+		if end >= textLen {
+			break
+		}
+
 		// Calculate next start position with overlap
-		start = end - overlap
-		if start < 0 {
-			start = 0
+		nextStart := end - overlap
+		if nextStart < 0 {
+			nextStart = 0
 		}
 
 		// Find a good starting point (beginning of sentence or word)
-		if start > 0 && start < textLen {
-			start = findNextStartingPoint(text, start)
+		if nextStart > 0 && nextStart < textLen {
+			nextStart = findNextStartingPoint(text, nextStart)
 		}
 
-		// Break if we can't make progress
-		if start >= end {
+		// Break if we can't make progress or if we're going backwards
+		if nextStart >= end || nextStart <= start {
 			break
 		}
+
+		start = nextStart
 	}
 
 	return chunks
@@ -115,26 +122,38 @@ func (c *Chunker) ChunkWithMetadata(text string) ([]string, []ChunkMetadata) {
 
 // adjustChunkBoundary finds a suitable boundary near the given position
 func adjustChunkBoundary(text string, pos int) int {
-	// Look for sentence endings within a reasonable range
-	maxLookahead := 100
-	minLookbehind := 50
+	// If pos is at or beyond text end, return text length
+	if pos >= len(text) {
+		return len(text)
+	}
 
-	// First try to find sentence ending
+	// Look for sentence endings within a small range FORWARD first
+	maxLookahead := 20 // Small lookahead to avoid chunks that are too long
+
+	// First try to find sentence ending forward (preferred)
 	for i := 0; i < maxLookahead && pos+i < len(text); i++ {
 		if isSentenceEnding(text, pos+i) {
 			return pos + i + 1 // Include the punctuation
 		}
 	}
 
-	// If no sentence ending found, look for previous one
-	for i := 0; i < minLookbehind && pos-i > 0; i++ {
-		if isSentenceEnding(text, pos-i) {
-			return pos - i + 1 // Include the punctuation
+	// If no sentence ending found forward, look for word boundary forward
+	for i := 0; i < maxLookahead && pos+i < len(text); i++ {
+		if unicode.IsSpace(rune(text[pos+i])) {
+			return pos + i
 		}
 	}
 
-	// If no good boundary found, at least break at a word boundary
-	return findWordBoundary(text, pos)
+	// If no good boundary found forward, look for word boundary backward (small range)
+	maxLookback := 10 // Very small lookback to avoid very short chunks
+	for i := 1; i <= maxLookback && pos-i > 0; i++ {
+		if unicode.IsSpace(rune(text[pos-i])) {
+			return pos - i
+		}
+	}
+
+	// If nothing found, return original position
+	return pos
 }
 
 // findNextStartingPoint finds the next suitable starting point for a chunk
@@ -186,21 +205,40 @@ func isSentenceEnding(text string, pos int) bool {
 
 // findWordBoundary finds the nearest word boundary
 func findWordBoundary(text string, pos int) int {
-	// Look forward for word boundary
-	for i := 0; pos+i < len(text) && !unicode.IsSpace(rune(text[pos+i])); i++ {
-		if pos+i == len(text)-1 {
-			return len(text)
+	// Ensure pos is within bounds
+	if pos <= 0 {
+		return 0
+	}
+	if pos >= len(text) {
+		return len(text)
+	}
+
+	// If we're already at a space (word boundary), return this position
+	if unicode.IsSpace(rune(text[pos])) {
+		return pos
+	}
+
+	// Look forward for word boundary (space)
+	for i := 1; pos+i < len(text); i++ {
+		if unicode.IsSpace(rune(text[pos+i])) {
+			return pos + i
 		}
 	}
 
-	// Look backward for word boundary
-	for i := 0; pos-i >= 0 && !unicode.IsSpace(rune(text[pos-i])); i++ {
-		if pos-i == 0 {
-			return 0
+	// If no space found forward, we're at the end of text
+	if pos < len(text) {
+		return len(text)
+	}
+
+	// Look backward for word boundary (space)
+	for i := 1; pos-i >= 0; i++ {
+		if unicode.IsSpace(rune(text[pos-i])) {
+			return pos - i + 1 // Return position after the space
 		}
 	}
 
-	return pos
+	// If no space found backward, we're at the beginning
+	return 0
 }
 
 // normalizeText removes excessive whitespace and normalizes line endings
