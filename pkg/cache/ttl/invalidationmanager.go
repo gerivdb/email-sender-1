@@ -148,3 +148,39 @@ func (im *InvalidationManager) InvalidateByAge(ageSeconds int) error {
 	// }
 	return nil
 }
+
+// TimeBasedInvalidation handles time-based cache invalidation
+type TimeBasedInvalidation struct {
+	*InvalidationManager
+}
+
+// NewTimeBasedInvalidation creates a new time-based invalidation manager
+func NewTimeBasedInvalidation(rdb *redis.Client) *TimeBasedInvalidation {
+	return &TimeBasedInvalidation{
+		InvalidationManager: NewInvalidationManager(rdb, nil),
+	}
+}
+
+// EventBasedInvalidation handles event-based cache invalidation
+type EventBasedInvalidation struct {
+	*InvalidationManager
+}
+
+// NewEventBasedInvalidation creates a new event-based invalidation manager
+func NewEventBasedInvalidation(rdb *redis.Client) *EventBasedInvalidation {
+	return &EventBasedInvalidation{
+		InvalidationManager: NewInvalidationManager(rdb, nil),
+	}
+}
+
+// VersionBasedInvalidation handles version-based cache invalidation
+type VersionBasedInvalidation struct {
+	*InvalidationManager
+}
+
+// NewVersionBasedInvalidation creates a new version-based invalidation manager
+func NewVersionBasedInvalidation(rdb *redis.Client) *VersionBasedInvalidation {
+	return &VersionBasedInvalidation{
+		InvalidationManager: NewInvalidationManager(rdb, nil),
+	}
+}

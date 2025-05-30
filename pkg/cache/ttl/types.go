@@ -35,6 +35,19 @@ type AlertChannel struct {
 	Config  map[string]string `json:"config"`
 }
 
+// Alert represents a cache-related alert
+type Alert struct {
+	ID          string    `json:"id"`
+	Type        string    `json:"type"`
+	Message     string    `json:"message"`
+	Severity    string    `json:"severity"`
+	Timestamp   time.Time `json:"timestamp"`
+	Resolved    bool      `json:"resolved"`
+	MetricType  string    `json:"metric_type"`
+	Threshold   float64   `json:"threshold"`
+	ActualValue float64   `json:"actual_value"`
+}
+
 // AnalysisReport contains the results of TTL analysis
 type AnalysisReport struct {
 	Timestamp        time.Time                   `json:"timestamp"`
@@ -92,6 +105,20 @@ type MetricData struct {
 	Throughput  float64   `json:"throughput_per_sec"`
 	ErrorRate   float64   `json:"error_rate"`
 	LastUpdated time.Time `json:"last_updated"`
+	// Additional fields for cache-analyzer tool
+	AvgLatency       time.Duration              `json:"avg_latency"`
+	ThroughputPerSec float64                    `json:"throughput_per_second"`
+	TypeMetrics      map[string]*TypeMetricData `json:"type_metrics"`
+	ErrorCount       int64                      `json:"error_count"`
+	TotalRequests    int64                      `json:"total_requests"`
+}
+
+// TypeMetricData represents metrics for a specific data type
+type TypeMetricData struct {
+	HitRate       float64       `json:"hit_rate"`
+	AvgTTL        time.Duration `json:"avg_ttl"`
+	AccessPattern string        `json:"access_pattern"`
+	KeyCount      int64         `json:"key_count"`
 }
 
 // OptimizationRecommendation represents a cache optimization recommendation

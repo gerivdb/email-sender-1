@@ -2,7 +2,6 @@
 package report
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -57,8 +56,8 @@ func NewReportGenerator() (*ReportGenerator, error) {
 
 	// Load default templates
 	defaultTemplates := map[Format]string{
-		FormatHTML: defaultHTMLTemplate,
-		FormatText: defaultTextTemplate,
+		FormatHTML:     defaultHTMLTemplate,
+		FormatText:     defaultTextTemplate,
 		FormatMarkdown: defaultMarkdownTemplate,
 	}
 
