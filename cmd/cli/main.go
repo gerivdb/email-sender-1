@@ -110,11 +110,11 @@ func createIndexCommand() *cobra.Command {
 			RunE: func(cmd *cobra.Command, args []string) error {
 				path := args[0]
 				logger.Info("Adding documents to index", zap.String("path", path))
-				
+
 				fmt.Printf("📄 Indexing documents from: %s\n", path)
 				fmt.Printf("🔄 Processing...\n")
 				fmt.Printf("✅ Indexed 15 documents\n")
-				
+
 				return nil
 			},
 		},
@@ -123,11 +123,10 @@ func createIndexCommand() *cobra.Command {
 			Short: "Rebuild the entire index",
 			RunE: func(cmd *cobra.Command, args []string) error {
 				logger.Info("Rebuilding index")
-				
 				fmt.Printf("🔄 Rebuilding index...\n")
-				fmt.Printf("📊 Progress: 100%\n")
+				fmt.Printf("📊 Progress: 100%%\n")
 				fmt.Printf("✅ Index rebuilt successfully\n")
-				
+
 				return nil
 			},
 		},
@@ -136,13 +135,13 @@ func createIndexCommand() *cobra.Command {
 			Short: "Show index status",
 			RunE: func(cmd *cobra.Command, args []string) error {
 				logger.Info("Showing index status")
-				
+
 				fmt.Printf("📊 Index Status:\n")
 				fmt.Printf("  Total documents: 1,234\n")
 				fmt.Printf("  Collections: 5\n")
 				fmt.Printf("  Last updated: 2025-05-27 07:43:00\n")
 				fmt.Printf("  Status: ✅ Healthy\n")
-				
+
 				return nil
 			},
 		},
@@ -205,17 +204,17 @@ func createMetricsCommand() *cobra.Command {
 			fmt.Printf("  Total searches: 1,234\n")
 			fmt.Printf("  Avg response time: 45ms\n")
 			fmt.Printf("  Success rate: 99.8%%\n")
-			
+
 			fmt.Printf("\n💾 Vector Database:\n")
 			fmt.Printf("  Operations/sec: 150\n")
 			fmt.Printf("  Active connections: 5\n")
 			fmt.Printf("  Cache hit rate: 85%%\n")
-			
+
 			fmt.Printf("\n🖥️ System Resources:\n")
 			fmt.Printf("  CPU usage: 12%%\n")
 			fmt.Printf("  Memory usage: 456MB\n")
 			fmt.Printf("  Goroutines: 23\n")
-			
+
 			fmt.Printf("\n🌐 HTTP API:\n")
 			fmt.Printf("  Requests/min: 45\n")
 			fmt.Printf("  Avg latency: 12ms\n")
@@ -242,7 +241,7 @@ func createHealthCommand() *cobra.Command {
 			fmt.Printf("✅ Cache System: Operational\n")
 			fmt.Printf("✅ Metrics Collection: Active\n")
 			fmt.Printf("✅ Search Index: Ready\n")
-			
+
 			fmt.Printf("\n🎯 Overall Status: ✅ HEALTHY\n")
 			fmt.Printf("📊 Uptime: 2d 4h 23m\n")
 			fmt.Printf("🔄 Last check: %s\n", "2025-05-27 07:43:00 UTC")

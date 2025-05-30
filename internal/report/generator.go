@@ -88,6 +88,34 @@ func (rg *ReportGenerator) Generate(report *Report, format Format, w io.Writer) 
 	}
 }
 
+// Generator provides a simplified interface for template-based report generation
+type Generator struct {
+	format Format
+}
+
+// NewGenerator creates a new Generator instance for the specified format
+func NewGenerator(format Format) *Generator {
+	return &Generator{
+		format: format,
+	}
+}
+
+// Generate generates output using the provided template and data
+func (g *Generator) Generate(w io.Writer, templateStr string, data interface{}) error {
+	tmpl, err := template.New("generator").Parse(templateStr)
+	if err != nil {
+		return fmt.Errorf("failed to parse template: %w", err)
+	}
+
+	return tmpl.Execute(w, data)
+}
+
+// validateTemplate validates a template string
+func (g *Generator) validateTemplate(templateStr string) error {
+	_, err := template.New("validation").Parse(templateStr)
+	return err
+}
+
 // Default templates
 const (
 	defaultHTMLTemplate = `<!DOCTYPE html>

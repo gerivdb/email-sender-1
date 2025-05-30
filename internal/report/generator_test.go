@@ -8,9 +8,12 @@ import (
 )
 
 func TestNewGenerator(t *testing.T) {
-	generator := NewGenerator(FormatHTML)
+	generator, err := NewReportGenerator()
+	if err != nil {
+		t.Fatalf("NewReportGenerator returned error: %v", err)
+	}
 	if generator == nil {
-		t.Fatal("NewGenerator returned nil")
+		t.Fatal("NewReportGenerator returned nil")
 	}
 }
 
