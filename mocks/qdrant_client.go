@@ -420,10 +420,18 @@ func (m *MockQDrantClient) GetCollectionStats(collection string) map[string]inte
 		return nil
 	}
 
-	return map[string]interface{}{
+	stats := map[string]interface{}{
 		"name":         collection,
 		"point_count":  len(points),
-		"vector_size":  len(points[0].Vector), // Assuming all vectors same size
 		"last_updated": time.Now(),
 	}
+
+	// Only add vector_size if there are points
+	if len(points) > 0 {
+		stats["vector_size"] = len(points[0].Vector)
+	} else {
+		stats["vector_size"] = 0
+	}
+
+	return stats
 }

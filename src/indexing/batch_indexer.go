@@ -18,14 +18,17 @@ type BatchIndexer struct {
 	config   BatchIndexerConfig
 	metrics  *Metrics
 	indexDir string
-	client   *qdrantclient.QdrantClient
+	client   qdrantclient.QdrantInterface
 }
 
 // BatchIndexerConfig holds configuration for BatchIndexer
 type BatchIndexerConfig struct {
-	BatchSize    int
-	IndexDir     string
-	Metrics      *Metrics
+	BatchSize int
+	IndexDir  string
+	Metrics   *Metrics
+	// Client can be provided, otherwise auto client will be created
+	Client qdrantclient.QdrantInterface
+	// Legacy fields - will be ignored in favor of auto client if Client is not provided
 	QdrantHost   string
 	QdrantPort   int
 	Collection   string
@@ -42,15 +45,24 @@ func NewBatchIndexer(config BatchIndexerConfig) (*BatchIndexer, error) {
 	if config.IndexDir == "" {
 		return nil, fmt.Errorf("index directory is required")
 	}
-
 	// Create index directory if it doesn't exist
 	if err := os.MkdirAll(config.IndexDir, 0755); err != nil {
 		return nil, fmt.Errorf("failed to create index directory: %v", err)
 	}
 
-	// Connect to Qdrant
-	qdrantURL := fmt.Sprintf("http://%s:%d", config.QdrantHost, config.QdrantPort)
-	client := qdrantclient.NewQdrantClient(qdrantURL)
+	// Use provided client or create auto client
+	var client qdrantclient.QdrantInterface
+	var err error
+
+	if config.Client != nil {
+		client = config.Client
+	} else {
+		// Use auto client factory instead of direct connection
+		client, err = qdrantclient.NewAutoClient()
+		if err != nil {
+			return nil, fmt.Errorf("failed to create Qdrant client: %v", err)
+		}
+	}
 
 	return &BatchIndexer{
 		config:   config,
@@ -159,9 +171,7 @@ func (bi *BatchIndexer) indexFile(_ context.Context, filePath string) error {
 		ID:      id,
 		Vector:  vector,
 		Payload: doc.Metadata,
-	}
-
-	// Upsert point to Qdrant
+	} // Upsert point to Qdrant
 	if err := bi.client.UpsertPoints(bi.config.Collection, []qdrantclient.Point{point}); err != nil {
 		return fmt.Errorf("failed to upsert point in Qdrant: %v", err)
 	}

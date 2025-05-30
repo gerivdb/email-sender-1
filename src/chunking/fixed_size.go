@@ -43,14 +43,14 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 	pos := 0
 	chunkIndex := 0
 
-	for pos < textLen { // Calculer la fin du chunk
+	for pos < textLen {
+		// Calculer la fin du chunk
 		end := pos + options.MaxChunkSize
 		if end > textLen {
 			end = textLen
 		}
 
 		// Si ce n'est pas le dernier chunk possible, vérifier s'il reste assez de texte
-		// pour justifier un chunk séparé
 		remainingAfterChunk := textLen - end
 		minChunkSize := options.MaxChunkSize / 4 // Taille minimale = 25% de MaxChunkSize
 		if remainingAfterChunk > 0 && remainingAfterChunk < minChunkSize {
@@ -121,7 +121,7 @@ func (fs *FixedSizeChunker) Chunk(text string, options ChunkingOptions) ([]*Docu
 		chunkIndex++
 
 		// Protection contre les boucles infinies
-		if chunkIndex > textLen {
+		if chunkIndex > textLen || pos >= textLen {
 			break
 		}
 	}

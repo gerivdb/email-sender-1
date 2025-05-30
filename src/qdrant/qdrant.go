@@ -117,6 +117,14 @@ func (q *QdrantClient) GetCollectionInfo(name string) (*CollectionInfo, error) {
 	return &info, nil
 }
 
+// Close closes the HTTP client and cleans up resources
+// This method implements the QdrantInterface for compatibility with the factory pattern
+func (q *QdrantClient) Close() error {
+	// HTTP client doesn't need explicit cleanup in Go, but we could implement
+	// connection pooling cleanup here if needed in the future
+	return nil
+}
+
 func (q *QdrantClient) makeRequest(method, endpoint string, payload interface{}, result interface{}) error {
 	var body io.Reader
 	if payload != nil {
