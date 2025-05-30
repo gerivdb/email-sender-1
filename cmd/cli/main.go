@@ -169,7 +169,6 @@ func createServeCommand() *cobra.Command {
 				zap.String("log_level", logLevel),
 				zap.String("environment", environment),
 			)
-
 			fmt.Printf("🚀 Starting RAG System Server...\n")
 			fmt.Printf("🌐 API Server: http://localhost:%d\n", port)
 			fmt.Printf("📊 Metrics: http://localhost:%d/metrics\n", metricsPort)
@@ -178,8 +177,6 @@ func createServeCommand() *cobra.Command {
 
 			// In real implementation, this would start the actual server
 			select {} // Block forever for demo
-
-			return nil
 		},
 	}
 
