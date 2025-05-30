@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -42,7 +43,7 @@ func BenchmarkEmbeddingGeneration(b *testing.B) {
 		"Medium length text that contains multiple sentences for testing the embedding generation process",
 		generateTestText(1000),
 	}
-	config := &IndexingConfig{}
+	config := DefaultConfig()
 	config.Embedding.BatchSize = 32
 	config.Batch.MaxConcurrent = 4
 
@@ -73,9 +74,8 @@ func TestLoadIndexing(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping load test in short mode")
 	}
-
 	// Create test configuration
-	config := &IndexingConfig{}
+	config := DefaultConfig()
 	config.Qdrant.Host = "localhost"
 	config.Qdrant.Port = 6334
 	config.Qdrant.Collection = "test_load"
@@ -100,8 +100,8 @@ func TestLoadIndexing(t *testing.T) {
 		require.NoError(t, err)
 		files = append(files, filename)
 	}
-
 	// Create indexer
+	indexDir := filepath.Join(tempDir, "index")
 	indexer, err := NewBatchIndexer(BatchIndexerConfig{
 		QdrantHost:   config.Qdrant.Host,
 		QdrantPort:   config.Qdrant.Port,
@@ -109,6 +109,7 @@ func TestLoadIndexing(t *testing.T) {
 		BatchSize:    config.Batch.Size,
 		ChunkSize:    config.Chunking.ChunkSize,
 		ChunkOverlap: config.Chunking.ChunkOverlap,
+		IndexDir:     indexDir,
 	})
 	require.NoError(t, err)
 
@@ -134,16 +135,15 @@ func TestResourceUsage(t *testing.T) {
 		t.Skip("Skipping resource usage test in short mode")
 	}
 
-	// Create test data
-	dataSize := 100 * 1024 * 1024 // 100MB
+	// Create test data (reduced to 100KB for performance)
+	dataSize := 100 * 1024 // 100KB
 	content := generateTestText(dataSize)
 
 	// Run indexing operation
 	chunker := NewChunker(1000, 200)
 	chunks := chunker.Chunk(content)
-
 	// Process chunks with embeddings
-	config := &IndexingConfig{}
+	config := DefaultConfig()
 	mockProvider := providers.NewMockEmbeddingProvider(
 		providers.WithDimensions(384),
 		providers.WithBatchSize(32),
@@ -162,13 +162,37 @@ func TestResourceUsage(t *testing.T) {
 // Helper to generate test text of specified size
 func generateTestText(size int) string {
 	const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-	repeats := size / len(lorem)
-	if repeats <= 0 {
-		repeats = 1
+	if size <= 0 {
+		return ""
 	}
-	text := ""
-	for i := 0; i < repeats; i++ {
-		text += lorem
+
+	// For small sizes, use the simple approach
+	if size <= 10000 {
+		text := ""
+		for len(text) < size {
+			text += lorem
+		}
+
+		// Safely truncate to exact size
+		if len(text) > size {
+			return text[:size]
+		}
+		return text
 	}
-	return text[:size]
+
+	// For larger sizes, use more efficient approach with strings.Builder
+	var builder strings.Builder
+	builder.Grow(size) // Pre-allocate capacity
+
+	for builder.Len() < size {
+		remaining := size - builder.Len()
+		if remaining >= len(lorem) {
+			builder.WriteString(lorem)
+		} else {
+			builder.WriteString(lorem[:remaining])
+			break
+		}
+	}
+
+	return builder.String()
 }

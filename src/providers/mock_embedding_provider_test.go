@@ -96,46 +96,35 @@ func TestMockEmbeddingProviderCache(t *testing.T) {
 			}
 		}
 
-		// Vérifier que le premier texte a été évincé
-		_, err := provider.Embed("text1")
-		if err != nil {
-			t.Errorf("Unexpected error: %v", err)
+		// Vérifier que le premier texte a été évincé et que text2/text3 sont encore en cache
+		if provider.IsInCache("text1") {
+			t.Error("text1 should have been evicted")
 		}
 
-		start := time.Now()
-		_, err = provider.Embed("text2")
-		duration := time.Since(start)
-		if err != nil || duration >= 10*time.Millisecond {
+		if !provider.IsInCache("text2") {
 			t.Error("text2 should still be in cache")
 		}
 
-		start = time.Now()
-		_, err = provider.Embed("text3")
-		duration = time.Since(start)
-		if err != nil || duration >= 10*time.Millisecond {
+		if !provider.IsInCache("text3") {
 			t.Error("text3 should still be in cache")
 		}
 
 		// Vérifier les statistiques
-		if provider.cacheSize > maxSize {
-			t.Errorf("Cache size exceeds limit: %d > %d", provider.cacheSize, maxSize)
+		if provider.GetCacheSize() > maxSize {
+			t.Errorf("Cache size exceeds limit: %d > %d", provider.GetCacheSize(), maxSize)
 		}
 
 		// Vérifier que l'éviction est bien FIFO en réinsérant text1
-		_, err = provider.Embed(texts[0])
+		_, err := provider.Embed(texts[0])
 		if err != nil {
 			t.Errorf("Unexpected error: %v", err)
 		}
 
 		// text2 devrait maintenant être évincé
-		start = time.Now()
-		_, err = provider.Embed("text2")
-		duration = time.Since(start)
-		if err != nil && duration < 10*time.Millisecond {
-			t.Error("text2 should have been evicted")
+		if provider.IsInCache("text2") {
+			t.Error("text2 should have been evicted after reinserting text1")
 		}
 	})
-
 	t.Run("Cache Eviction Order", func(t *testing.T) {
 		provider := NewMockEmbeddingProvider(
 			WithMaxCacheSize(maxSize),
@@ -152,25 +141,16 @@ func TestMockEmbeddingProviderCache(t *testing.T) {
 		}
 
 		// Vérifier que "first" a été évincé (FIFO)
-		start := time.Now()
-		_, err := provider.Embed("first")
-		duration := time.Since(start)
-		if err != nil && duration < 10*time.Millisecond {
+		if provider.IsInCache("first") {
 			t.Error("'first' should have been evicted")
 		}
 
 		// Vérifier que "second" et "third" sont toujours en cache
-		start = time.Now()
-		_, err = provider.Embed("second")
-		duration = time.Since(start)
-		if err != nil || duration >= 10*time.Millisecond {
+		if !provider.IsInCache("second") {
 			t.Error("'second' should still be in cache")
 		}
 
-		start = time.Now()
-		_, err = provider.Embed("third")
-		duration = time.Since(start)
-		if err != nil || duration >= 10*time.Millisecond {
+		if !provider.IsInCache("third") {
 			t.Error("'third' should still be in cache")
 		}
 	})

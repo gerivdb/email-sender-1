@@ -225,8 +225,30 @@ func (p *MockEmbeddingProvider) cacheResult(text string, embedding []float32) {
 	// Si le cache a une limite de taille et qu'elle serait dépassée
 	if p.maxCacheSize > 0 {
 		// Évincuer autant d'éléments que nécessaire pour faire de la place
-		for p.cacheSize+newSize > p.maxCacheSize && len(p.evictQueue) > 0 {
-			p.evictOldest()
+		for len(p.evictQueue) > 0 {
+			// Check current size safely
+			p.statsLock.RLock()
+			currentSize := p.cacheSize
+			p.statsLock.RUnlock()
+
+			if currentSize+newSize <= p.maxCacheSize {
+				break
+			}
+
+			// Obtenir la clé du plus ancien élément dans le cache
+			oldest := p.evictQueue[0]
+			p.evictQueue = p.evictQueue[1:] // Mettre à jour la queue d'éviction
+
+			// Si l'élément existe encore, le supprimer et mettre à jour la taille
+			if oldEmbed, exists := p.cache[oldest]; exists {
+				oldSize := int64(len(oldEmbed) * 4)
+				delete(p.cache, oldest)
+
+				// Mettre à jour la taille du cache de manière thread-safe
+				p.statsLock.Lock()
+				p.cacheSize -= oldSize
+				p.statsLock.Unlock()
+			}
 		}
 	}
 
@@ -250,10 +272,13 @@ func (p *MockEmbeddingProvider) evictOldest() {
 
 	// Si l'élément existe encore, le supprimer et mettre à jour la taille
 	if oldEmbed, exists := p.cache[oldest]; exists {
-		p.statsLock.Lock()
-		p.cacheSize -= int64(len(oldEmbed) * 4) // 4 bytes par float32
-		p.statsLock.Unlock()
+		oldSize := int64(len(oldEmbed) * 4)
 		delete(p.cache, oldest)
+
+		// Mettre à jour la taille du cache de manière thread-safe
+		p.statsLock.Lock()
+		p.cacheSize -= oldSize
+		p.statsLock.Unlock()
 	}
 }
 
@@ -354,13 +379,50 @@ func (p *MockEmbeddingProvider) SetMaxCacheSize(size int64) {
 
 	// Si le cache actuel dépasse la nouvelle limite, évincuer des éléments
 	if size > 0 {
-		for p.cacheSize > size && len(p.evictQueue) > 0 {
-			p.evictOldest()
+		for len(p.evictQueue) > 0 {
+			// Check current size safely
+			p.statsLock.RLock()
+			currentSize := p.cacheSize
+			p.statsLock.RUnlock()
+
+			if currentSize <= size {
+				break
+			}
+
+			// Obtenir la clé du plus ancien élément dans le cache
+			oldest := p.evictQueue[0]
+			p.evictQueue = p.evictQueue[1:] // Mettre à jour la queue d'éviction
+
+			// Si l'élément existe encore, le supprimer et mettre à jour la taille
+			if oldEmbed, exists := p.cache[oldest]; exists {
+				oldSize := int64(len(oldEmbed) * 4)
+				delete(p.cache, oldest)
+
+				// Mettre à jour la taille du cache de manière thread-safe
+				p.statsLock.Lock()
+				p.cacheSize -= oldSize
+				p.statsLock.Unlock()
+			}
 		}
 	}
 }
 
-// GetCacheContents retourne le contenu actuel du cache (pour debug)
+// GetCacheSize retourne la taille actuelle du cache
+func (p *MockEmbeddingProvider) GetCacheSize() int64 {
+	p.statsLock.RLock()
+	defer p.statsLock.RUnlock()
+	return p.cacheSize
+}
+
+// IsInCache vérifie si un texte est présent dans le cache (pour les tests)
+func (p *MockEmbeddingProvider) IsInCache(text string) bool {
+	p.cacheLock.RLock()
+	defer p.cacheLock.RUnlock()
+	_, exists := p.cache[text]
+	return exists
+}
+
+// GetCacheContents retourne les clés actuellement dans le cache (pour les tests)
 func (p *MockEmbeddingProvider) GetCacheContents() []string {
 	p.cacheLock.RLock()
 	defer p.cacheLock.RUnlock()
@@ -370,11 +432,4 @@ func (p *MockEmbeddingProvider) GetCacheContents() []string {
 		keys = append(keys, key)
 	}
 	return keys
-}
-
-// GetCacheSize retourne la taille actuelle du cache
-func (p *MockEmbeddingProvider) GetCacheSize() int64 {
-	p.statsLock.RLock()
-	defer p.statsLock.RUnlock()
-	return p.cacheSize
 }
