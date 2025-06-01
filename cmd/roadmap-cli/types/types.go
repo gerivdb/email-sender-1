@@ -2,13 +2,13 @@ package types
 
 import "time"
 
-// ComplexityLevel represents the complexity of a task
-type ComplexityLevel string
+// BasicComplexity represents the basic complexity level of a task
+type BasicComplexity string
 
 const (
-	ComplexityLow    ComplexityLevel = "low"
-	ComplexityMedium ComplexityLevel = "medium"
-	ComplexityHigh   ComplexityLevel = "high"
+	BasicComplexityLow    BasicComplexity = "low"
+	BasicComplexityMedium BasicComplexity = "medium"
+	BasicComplexityHigh   BasicComplexity = "high"
 )
 
 // RiskLevel represents the risk level of a task
@@ -89,7 +89,7 @@ type RoadmapItem struct {
 	Frameworks    []string     `json:"frameworks,omitempty"`
 
 	// Metadata fields
-	Complexity    ComplexityLevel `json:"complexity,omitempty"`
+	Complexity    BasicComplexity `json:"complexity,omitempty"`
 	Effort        int             `json:"effort,omitempty"`         // in hours
 	BusinessValue int             `json:"business_value,omitempty"` // 1-10 scale
 	TechnicalDebt int             `json:"technical_debt,omitempty"` // 1-10 scale
@@ -122,10 +122,22 @@ type EnrichedItemOptions struct {
 	URIs          []string
 	Tools         []string
 	Frameworks    []string
-	Complexity    ComplexityLevel
+	Complexity    BasicComplexity
 	Effort        int
 	BusinessValue int
 	TechnicalDebt int
 	RiskLevel     RiskLevel
 	Tags          []string
+}
+
+// Roadmap represents a complete roadmap with metadata
+type Roadmap struct {
+	ID          string        `json:"id"`
+	Title       string        `json:"title"`
+	Description string        `json:"description"`
+	Version     string        `json:"version"`
+	CreatedAt   time.Time     `json:"created_at"`
+	UpdatedAt   time.Time     `json:"updated_at"`
+	Items       []RoadmapItem `json:"items"`
+	Metadata    map[string]interface{} `json:"metadata,omitempty"`
 }

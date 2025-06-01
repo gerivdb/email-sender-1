@@ -28,6 +28,9 @@ Features include:
 	cmd.AddCommand(newSyncCommand())
 	cmd.AddCommand(intelligenceCmd)
 	cmd.AddCommand(NewIngestCommand())
+	cmd.AddCommand(AdvancedIngestCmd)
+	cmd.AddCommand(HierarchyCmd)
+	cmd.AddCommand(MigrateCmd)
 
 	return cmd
 }

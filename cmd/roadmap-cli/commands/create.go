@@ -227,7 +227,7 @@ func runCreateEnrichedItem(cmd *cobra.Command, args []string) error {
 		Tools:         tools,
 		Frameworks:    frameworks,
 		Tags:          tags,
-		Complexity:    types.ComplexityLevel(complexity),
+		Complexity:    types.BasicComplexity(complexity),
 		Effort:        effortEstimate,
 		BusinessValue: businessValue,
 		TechnicalDebt: technicalDebt,

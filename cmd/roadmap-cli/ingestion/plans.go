@@ -51,7 +51,7 @@ type EnrichedPlanItem struct {
 	Description   string
 	Priority      types.Priority
 	Status        types.Status
-	Complexity    types.ComplexityLevel
+	Complexity    types.BasicComplexity
 	RiskLevel     types.RiskLevel
 	Inputs        []types.TaskInput
 	Outputs       []types.TaskOutput
@@ -97,6 +97,7 @@ func NewPlanIngester(plansDir string, ragClient RAGClient) *PlanIngester {
 
 // IngestAllPlans processes all markdown files in the consolidated plans directory
 func (p *PlanIngester) IngestAllPlans(ctx context.Context) (*IngestionResult, error) {
+	fmt.Printf("DEBUG: Starting IngestAllPlans for directory: %s\n", p.plansDir)
 	startTime := time.Now()
 	result := &IngestionResult{
 		Errors: make([]string, 0),
@@ -104,22 +105,28 @@ func (p *PlanIngester) IngestAllPlans(ctx context.Context) (*IngestionResult, er
 
 	// Check if plans directory exists
 	if _, err := os.Stat(p.plansDir); os.IsNotExist(err) {
+		fmt.Printf("DEBUG: Plans directory does not exist: %s\n", p.plansDir)
 		return nil, fmt.Errorf("plans directory does not exist: %s", p.plansDir)
 	}
+	fmt.Printf("DEBUG: Plans directory exists, starting file walk\n")
 
 	// Walk through all markdown files
 	err := filepath.Walk(p.plansDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
+			fmt.Printf("DEBUG: Error accessing %s: %v\n", path, err)
 			result.Errors = append(result.Errors, fmt.Sprintf("Error accessing %s: %v", path, err))
 			return nil // Continue processing other files
 		}
 
 		// Process only markdown files
 		if !info.IsDir() && strings.HasSuffix(strings.ToLower(info.Name()), ".md") {
+			fmt.Printf("DEBUG: Processing markdown file: %s\n", path)
 			if err := p.processPlanFile(ctx, path); err != nil {
+				fmt.Printf("DEBUG: Error processing %s: %v\n", path, err)
 				result.Errors = append(result.Errors, fmt.Sprintf("Error processing %s: %v", path, err))
 			} else {
 				result.FilesProcessed++
+				fmt.Printf("DEBUG: Successfully processed %s (chunks so far: %d)\n", path, len(p.chunks))
 			}
 		}
 
@@ -127,28 +134,40 @@ func (p *PlanIngester) IngestAllPlans(ctx context.Context) (*IngestionResult, er
 	})
 
 	if err != nil {
+		fmt.Printf("DEBUG: Error during file walk: %v\n", err)
 		return nil, fmt.Errorf("error walking plans directory: %w", err)
 	}
 
+	fmt.Printf("DEBUG: File processing complete. Total chunks: %d\n", len(p.chunks))
+
 	// Process chunks and extract dependencies
 	result.ChunksCreated = len(p.chunks)
+	fmt.Printf("DEBUG: Extracting dependencies...\n")
 	result.DependenciesFound = p.extractDependencies()
+	fmt.Printf("DEBUG: Dependencies extracted: %d\n", result.DependenciesFound)
 	result.ProcessingTime = time.Since(startTime)
 
 	// Index chunks in RAG system if available
 	if p.ragClient != nil {
+		fmt.Printf("DEBUG: Indexing chunks in RAG system...\n")
 		if err := p.indexChunksInRAG(ctx); err != nil {
+			fmt.Printf("DEBUG: RAG indexing error: %v\n", err)
 			result.Errors = append(result.Errors, fmt.Sprintf("RAG indexing error: %v", err))
 		}
+	} else {
+		fmt.Printf("DEBUG: No RAG client available, skipping indexing\n")
 	}
 
+	fmt.Printf("DEBUG: IngestAllPlans completed successfully\n")
 	return result, nil
 }
 
 // processPlanFile processes a single markdown plan file
 func (p *PlanIngester) processPlanFile(_ context.Context, filePath string) error {
+	fmt.Printf("DEBUG: Starting to process file: %s\n", filePath)
 	file, err := os.Open(filePath)
 	if err != nil {
+		fmt.Printf("DEBUG: Failed to open file %s: %v\n", filePath, err)
 		return fmt.Errorf("failed to open file: %w", err)
 	}
 	defer file.Close()
@@ -157,17 +176,25 @@ func (p *PlanIngester) processPlanFile(_ context.Context, filePath string) error
 	lineNumber := 0
 	currentSection := ""
 	currentContent := strings.Builder{}
+	taskCount := 0
+	listCount := 0
 
 	planName := filepath.Base(filePath)
+	fmt.Printf("DEBUG: Processing file %s (planName: %s)\n", filePath, planName)
 
 	for scanner.Scan() {
 		lineNumber++
 		line := scanner.Text()
 
-		// Detect headers
+		// Every 1000 lines, log progress
+		if lineNumber%1000 == 0 {
+			fmt.Printf("DEBUG: Processed %d lines in %s\n", lineNumber, filePath)
+		}
+
+		// Detect headers (these are always important chunks)
 		if match := regexp.MustCompile(`^(#{1,6})\s+(.+)`).FindStringSubmatch(line); match != nil {
-			// Save previous section if exists
-			if currentContent.Len() > 0 {
+			// Save previous section if exists and has substantial content
+			if currentContent.Len() > 100 { // Only create section chunks if they have substantial content
 				p.createChunk(planName, currentSection, currentContent.String(), "section", len(match[1]), lineNumber)
 				currentContent.Reset()
 			}
@@ -175,18 +202,30 @@ func (p *PlanIngester) processPlanFile(_ context.Context, filePath string) error
 			currentSection = match[2]
 			level := len(match[1])
 			p.createChunk(planName, currentSection, line, "header", level, lineNumber)
+
+			// Reset counters for new section
+			taskCount = 0
+			listCount = 0
 			continue
 		}
-
-		// Detect task items (- [ ] or - [x] or * [ ] etc.)
+		// Detect task items (but limit to avoid explosion)
 		if match := regexp.MustCompile(`^[\s]*[-*+]\s*\[[ x]\]\s*(.+)`).FindStringSubmatch(line); match != nil {
-			p.createChunk(planName, match[1], line, "task", 0, lineNumber)
+			taskCount++
+			// Only create task chunks for important tasks (longer descriptions or specific patterns)
+			if len(match[1]) > 30 && (taskCount <= 10 || strings.Contains(strings.ToLower(match[1]), "implement") ||
+				strings.Contains(strings.ToLower(match[1]), "create") || strings.Contains(strings.ToLower(match[1]), "configure")) {
+				p.createChunk(planName, match[1], line, "task", 0, lineNumber)
+			}
 			continue
 		}
 
-		// Detect list items
+		// Detect list items (but be very selective)
 		if match := regexp.MustCompile(`^[\s]*[-*+]\s+(.+)`).FindStringSubmatch(line); match != nil {
-			p.createChunk(planName, match[1], line, "list_item", 0, lineNumber)
+			listCount++
+			// Only create list item chunks for very significant items
+			if listCount <= 2 && len(match[1]) > 50 {
+				p.createChunk(planName, match[1], line, "list_item", 0, lineNumber)
+			}
 			continue
 		}
 
@@ -196,16 +235,28 @@ func (p *PlanIngester) processPlanFile(_ context.Context, filePath string) error
 		}
 	}
 
-	// Save final section if exists
-	if currentContent.Len() > 0 {
+	// Save final section if exists and has substantial content
+	if currentContent.Len() > 100 {
 		p.createChunk(planName, currentSection, currentContent.String(), "section", 0, lineNumber)
 	}
 
-	return scanner.Err()
+	fmt.Printf("DEBUG: Finished processing file %s (total lines: %d, chunks so far: %d)\n", filePath, lineNumber, len(p.chunks))
+
+	if scanErr := scanner.Err(); scanErr != nil {
+		fmt.Printf("DEBUG: Scanner error in %s: %v\n", filePath, scanErr)
+		return scanErr
+	}
+
+	return nil
 }
 
 // createChunk creates a new plan chunk with metadata
 func (p *PlanIngester) createChunk(planFile, title, content, chunkType string, level, lineNumber int) {
+	// Safety limit to prevent memory issues
+	if len(p.chunks) >= 50000 {
+		return // Skip creating more chunks if we already have too many
+	}
+
 	chunk := PlanChunk{
 		ID:       uuid.New().String(),
 		PlanFile: planFile,
@@ -466,15 +517,14 @@ func (p *PlanIngester) extractStatus(content string) types.Status {
 }
 
 // extractComplexity extracts complexity level from content
-func (p *PlanIngester) extractComplexity(content string) types.ComplexityLevel {
-	content = strings.ToLower(content)
+func (p *PlanIngester) extractComplexity(content string) types.BasicComplexity {	content = strings.ToLower(content)
 	if strings.Contains(content, "complexe") || strings.Contains(content, "complex") || strings.Contains(content, "difficile") {
-		return types.ComplexityHigh
+		return types.BasicComplexityHigh
 	}
 	if strings.Contains(content, "simple") || strings.Contains(content, "facile") || strings.Contains(content, "easy") {
-		return types.ComplexityLow
+		return types.BasicComplexityLow
 	}
-	return types.ComplexityMedium
+	return types.BasicComplexityMedium
 }
 
 // extractRiskLevel extracts risk level from content

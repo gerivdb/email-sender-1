@@ -209,6 +209,37 @@ func (js *JSONStorage) UpdateItemStatus(id, status string, progress int) error {
 	return nil // Item not found
 }
 
+// UpdateItem updates an existing roadmap item with provided updates
+func (js *JSONStorage) UpdateItem(id string, updates map[string]interface{}) error {
+	for i := range js.data.Items {
+		if js.data.Items[i].ID == id {
+			// Update fields based on the updates map
+			if title, ok := updates["title"].(string); ok {
+				js.data.Items[i].Title = title
+			}
+			if description, ok := updates["description"].(string); ok {
+				js.data.Items[i].Description = description
+			}
+			if status, ok := updates["status"].(string); ok {
+				js.data.Items[i].Status = types.Status(status)
+			}
+			if priority, ok := updates["priority"].(string); ok {
+				js.data.Items[i].Priority = types.Priority(priority)
+			}
+			if progress, ok := updates["progress"].(int); ok {
+				js.data.Items[i].Progress = progress
+			}
+			if targetDate, ok := updates["target_date"].(time.Time); ok {
+				js.data.Items[i].TargetDate = targetDate
+			}
+
+			js.data.Items[i].UpdatedAt = time.Now()
+			return js.save()
+		}
+	}
+	return nil // Item not found
+}
+
 // DeleteItem removes an item by ID
 func (js *JSONStorage) DeleteItem(id string) error {
 	for i, item := range js.data.Items {
