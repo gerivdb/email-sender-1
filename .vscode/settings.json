@@ -12,5 +12,9 @@
     "plaintext": true,
     "markdown": true,
     "scminput": true
+  },
+  "go.buildFlags": ["-tags=database"],
+  "gopls": {
+    "build.buildFlags": ["-tags=database"]
   }
 }
