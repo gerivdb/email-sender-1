@@ -1,0 +1,82 @@
+Parsing advanced roadmap: .\test-parser-formats.md
+
+=== Advanced Roadmap: .\test-parser-formats ===
+Description: 
+Total Items: 51
+Max Depth: 12
+Progress: 5.9%
+
+--- Analytics ---
+
+--- Items ---
+[L1] Test Document for Advanced Parser
+  [L2] Level 2 Header
+    [L3] Level 3 Header
+      [L4] Level 4 Header
+        [L5] Level 5 Header
+          [L6] Level 6 Header
+            [L7] Level 7 Header
+              [L8] Level 8 Header
+                [L9] Level 9 Header
+                  [L10] Level 10 Header
+                    [L11] Level 11 Header
+                      [L12] Level 12 Header
+  [L2] Numbered Lists
+  [L2] First item
+  [L2] Subitem level 1
+    [L3] Subitem level 2
+      [L4] Subitem level 3
+  [L2] Second item
+    [L3] With dot notation
+    [L3] Another dot notation
+  [L2] Bullet Lists
+[L1] S
+    imple bullet item
+[L1] B
+    old bullet item**
+[L1] B
+    old title** with description
+  [L2] Checkbox Lists
+[L1] U
+    nchecked item
+[L1] C
+    hecked item
+[L1] B
+    old unchecked item**
+[L1] B
+    old checked item**
+  [L2] Complex Formats
+    [L3] Numbered checkbox item
+    [L3] Completed numbered checkbox
+    [L3] Bold numbered item
+[L1] I
+    mportant Task** with parameters
+  [L2] Indented Lists
+[L1] M
+    ain item
+[L1] I
+    ndented item level 1
+[L1] I
+    ndented item level 2
+[L1] I
+    ndented item level 3
+  [L2] Parameters Testing
+[L1] T
+    ask with complexity: 8/10
+[L1] T
+    ask with priority: high
+[L1] T
+    ask with effort: 3.5 hours
+[L1] T
+    ask depends on: previous task completion
+  [L2] Mixed Formats
+  [L2] **Numbered bold item**
+[L1] S
+    ub-bullet under numbered
+[L1] C
+    heckbox under numbered
+  [L2] Regular numbered
+  [L2] **Sub-numbered bold**
+  [L2] Regular sub-numbered
+
+Processed 1 roadmap(s) successfully

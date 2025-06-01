@@ -3,8 +3,9 @@ package commands
 import (
 	"fmt"
 
-	"github.com/spf13/cobra"
 	"email_sender/cmd/roadmap-cli/storage"
+
+	"github.com/spf13/cobra"
 )
 
 // MigrateCmd represents the migrate command
@@ -25,8 +26,8 @@ The original data is backed up before migration.`,
 }
 
 var (
-	forceVersion string
-	dryRunMigrate bool
+	forceVersion   string
+	dryRunMigrate  bool
 	listMigrations bool
 )
 
@@ -40,50 +41,50 @@ func runMigrate(cmd *cobra.Command, args []string) error {
 	// Get storage directory
 	storageManager := storage.NewStorageManager()
 	storageDir := storageManager.GetStorageDir() // Assume this method exists
-	
+
 	migrationManager := storage.NewMigrationManager(storageDir)
-	
+
 	if listMigrations {
 		return listAvailableMigrations(migrationManager)
 	}
-	
+
 	if dryRunMigrate {
 		return showPendingMigrations(migrationManager)
 	}
-	
+
 	fmt.Println("Starting TaskMaster data migration...")
-	
+
 	err := migrationManager.RunMigrations()
 	if err != nil {
 		return fmt.Errorf("migration failed: %v", err)
 	}
-	
+
 	fmt.Println("✅ All migrations completed successfully!")
 	fmt.Println("Your TaskMaster data has been upgraded to support advanced features.")
-	
+
 	return nil
 }
 
 func listAvailableMigrations(migrationManager *storage.MigrationManager) error {
 	migrations := migrationManager.GetAvailableMigrations()
-	
+
 	fmt.Println("Available migrations:")
 	fmt.Println()
-	
+
 	for _, migration := range migrations {
 		fmt.Printf("📦 Version %s\n", migration.Version)
 		fmt.Printf("   %s\n", migration.Description)
 		fmt.Println()
 	}
-	
+
 	return nil
 }
 
-func showPendingMigrations(migrationManager *storage.MigrationManager) error {
+func showPendingMigrations(_ *storage.MigrationManager) error {
 	// This would require exposing more methods from MigrationManager
 	// For now, just show a message
 	fmt.Println("Dry run mode - would show pending migrations")
 	fmt.Println("(Implementation depends on exposing more migration manager methods)")
-	
+
 	return nil
 }

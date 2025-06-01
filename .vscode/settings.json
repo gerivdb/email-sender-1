@@ -12,8 +12,9 @@
     "plaintext": true,
     "markdown": true,
     "scminput": true
-  },
-  "go.buildFlags": ["-tags=database"],
+  },  "go.buildFlags": ["-tags=database"],
+  "go.goroot": "C:\\Users\\user\\sdk\\go1.23.9",
+  "go.gopath": "C:\\Users\\user\\go",
   "gopls": {
     "build.buildFlags": ["-tags=database"]
   }

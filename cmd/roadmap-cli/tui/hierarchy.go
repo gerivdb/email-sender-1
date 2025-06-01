@@ -6,45 +6,46 @@ import (
 	"strings"
 	"time"
 
+	"email_sender/cmd/roadmap-cli/types"
+
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"email_sender/cmd/roadmap-cli/types"
 )
 
 // HierarchyModel represents the TUI model for hierarchical navigation
 type HierarchyModel struct {
-	roadmap           *types.AdvancedRoadmap
-	currentLevel      int
-	currentPath       []string
-	selectedIndex     int
-	viewportContent   string
-	viewport          viewport.Model
-	help              help.Model
-	keyMap            HierarchyKeyMap
-	showDetails       bool
+	roadmap            *types.AdvancedRoadmap
+	currentLevel       int
+	currentPath        []string
+	selectedIndex      int
+	viewportContent    string
+	viewport           viewport.Model
+	help               help.Model
+	keyMap             HierarchyKeyMap
+	showDetails        bool
 	showTechnicalSpecs bool
-	filterComplexity  string
-	width             int
-	height            int
+	filterComplexity   string
+	width              int
+	height             int
 }
 
 // HierarchyKeyMap defines keyboard shortcuts for hierarchy navigation
 type HierarchyKeyMap struct {
-	Up              key.Binding
-	Down            key.Binding
-	Enter           key.Binding
-	Back            key.Binding
-	Home            key.Binding
-	Details         key.Binding
-	TechnicalSpecs  key.Binding
+	Up               key.Binding
+	Down             key.Binding
+	Enter            key.Binding
+	Back             key.Binding
+	Home             key.Binding
+	Details          key.Binding
+	TechnicalSpecs   key.Binding
 	FilterComplexity key.Binding
-	Search          key.Binding
-	Export          key.Binding
-	Help            key.Binding
-	Quit            key.Binding
+	Search           key.Binding
+	Export           key.Binding
+	Help             key.Binding
+	Quit             key.Binding
 }
 
 // DefaultHierarchyKeyMap returns the default key mappings
@@ -118,20 +119,20 @@ func (k HierarchyKeyMap) FullHelp() [][]key.Binding {
 // NewHierarchyModel creates a new hierarchy navigation model
 func NewHierarchyModel(roadmap *types.AdvancedRoadmap) HierarchyModel {
 	vp := viewport.New(80, 20)
-	
+
 	model := HierarchyModel{
-		roadmap:           roadmap,
-		currentLevel:      1,
-		currentPath:       []string{},
-		selectedIndex:     0,
-		viewport:          vp,
-		help:              help.New(),
-		keyMap:            DefaultHierarchyKeyMap(),
-		showDetails:       false,
+		roadmap:            roadmap,
+		currentLevel:       1,
+		currentPath:        []string{},
+		selectedIndex:      0,
+		viewport:           vp,
+		help:               help.New(),
+		keyMap:             DefaultHierarchyKeyMap(),
+		showDetails:        false,
 		showTechnicalSpecs: false,
-		filterComplexity:  "",
+		filterComplexity:   "",
 	}
-	
+
 	model.updateViewportContent()
 	return model
 }
@@ -237,8 +238,8 @@ func (m *HierarchyModel) getCurrentLevelItems() []types.AdvancedRoadmapItem {
 		// Check if item matches current path and level
 		if m.isItemInCurrentContext(item) {
 			// Apply complexity filter if set
-			if m.filterComplexity != "" && 
-			   item.ComplexityMetrics.Overall.Level != m.filterComplexity {
+			if m.filterComplexity != "" &&
+				item.ComplexityMetrics.Overall.Level != m.filterComplexity {
 				continue
 			}
 			items = append(items, item)
@@ -285,10 +286,10 @@ func (m *HierarchyModel) drillDown() {
 	}
 
 	selectedItem := items[m.selectedIndex]
-	
+
 	// Check if there are child items
 	hasChildren := m.hasChildItems(selectedItem)
-	
+
 	if hasChildren && m.currentLevel < m.roadmap.MaxDepth {
 		// Drill down to next level
 		m.currentPath = append(m.currentPath, selectedItem.Title)
@@ -300,13 +301,13 @@ func (m *HierarchyModel) drillDown() {
 
 func (m *HierarchyModel) hasChildItems(item types.AdvancedRoadmapItem) bool {
 	childLevel := item.Hierarchy.Level + 1
-	
+
 	for _, otherItem := range m.roadmap.Items {
 		if otherItem.Hierarchy.Level == childLevel && otherItem.ParentItemID == item.ID {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -330,7 +331,7 @@ func (m *HierarchyModel) goHome() {
 
 func (m *HierarchyModel) cycleComplexityFilter() {
 	filters := []string{"", "trivial", "simple", "moderate", "complex", "expert"}
-	
+
 	currentIndex := 0
 	for i, filter := range filters {
 		if filter == m.filterComplexity {
@@ -338,7 +339,7 @@ func (m *HierarchyModel) cycleComplexityFilter() {
 			break
 		}
 	}
-	
+
 	nextIndex := (currentIndex + 1) % len(filters)
 	m.filterComplexity = filters[nextIndex]
 	m.selectedIndex = 0
@@ -347,9 +348,9 @@ func (m *HierarchyModel) cycleComplexityFilter() {
 
 func (m *HierarchyModel) updateViewportContent() {
 	var content strings.Builder
-	
+
 	items := m.getCurrentLevelItems()
-	
+
 	if len(items) == 0 {
 		content.WriteString("No items found at this level")
 		if m.filterComplexity != "" {
@@ -361,7 +362,7 @@ func (m *HierarchyModel) updateViewportContent() {
 			m.renderItem(&content, item, i == m.selectedIndex)
 		}
 	}
-	
+
 	m.viewportContent = content.String()
 	m.viewport.SetContent(m.viewportContent)
 }
@@ -377,72 +378,72 @@ func (m *HierarchyModel) renderItem(content *strings.Builder, item types.Advance
 	} else {
 		style = lipgloss.NewStyle()
 	}
-	
+
 	// Item indicator
 	indicator := "  "
 	if isSelected {
 		indicator = "▶ "
 	}
-	
+
 	// Check if item has children
 	hasChildren := m.hasChildItems(item)
 	childIndicator := ""
 	if hasChildren {
 		childIndicator = " +"
 	}
-	
+
 	// Main title line
 	titleLine := fmt.Sprintf("%s%s%s", indicator, item.Title, childIndicator)
 	content.WriteString(style.Render(titleLine))
 	content.WriteString("\n")
-	
+
 	if m.showDetails || isSelected {
 		m.renderItemDetails(content, item, isSelected)
 	}
-	
+
 	content.WriteString("\n")
 }
 
-func (m *HierarchyModel) renderItemDetails(content *strings.Builder, item types.AdvancedRoadmapItem, isSelected bool) {
+func (m *HierarchyModel) renderItemDetails(content *strings.Builder, item types.AdvancedRoadmapItem, _ bool) {
 	indent := "    "
-	
+
 	// Status and priority
 	if item.Status != "pending" || item.Priority != "medium" {
-		content.WriteString(fmt.Sprintf("%sStatus: %s | Priority: %s\n", 
+		content.WriteString(fmt.Sprintf("%sStatus: %s | Priority: %s\n",
 			indent, item.Status, item.Priority))
 	}
-	
+
 	// Complexity metrics
 	if item.ComplexityMetrics.Overall.Score > 0 {
-		content.WriteString(fmt.Sprintf("%sComplexity: %s (%d/10)", 
-			indent, 
-			item.ComplexityMetrics.Overall.Level, 
+		content.WriteString(fmt.Sprintf("%sComplexity: %s (%d/10)",
+			indent,
+			item.ComplexityMetrics.Overall.Level,
 			item.ComplexityMetrics.Overall.Score))
-		
+
 		if item.ComplexityMetrics.RiskLevel != "" {
 			content.WriteString(fmt.Sprintf(" | Risk: %s", item.ComplexityMetrics.RiskLevel))
 		}
 		content.WriteString("\n")
 	}
-	
+
 	// Effort estimation
 	if item.EstimatedEffort > 0 {
-		content.WriteString(fmt.Sprintf("%sEstimated Effort: %s\n", 
+		content.WriteString(fmt.Sprintf("%sEstimated Effort: %s\n",
 			indent, formatDuration(item.EstimatedEffort)))
 	}
-	
+
 	// Dependencies
 	if len(item.TechnicalDependencies) > 0 {
-		content.WriteString(fmt.Sprintf("%sDependencies: %d\n", 
+		content.WriteString(fmt.Sprintf("%sDependencies: %d\n",
 			indent, len(item.TechnicalDependencies)))
 	}
-	
+
 	// Implementation steps
 	if len(item.ImplementationSteps) > 0 {
-		content.WriteString(fmt.Sprintf("%sImplementation Steps: %d\n", 
+		content.WriteString(fmt.Sprintf("%sImplementation Steps: %d\n",
 			indent, len(item.ImplementationSteps)))
 	}
-	
+
 	// Description (truncated)
 	if item.Description != "" {
 		desc := item.Description
@@ -453,7 +454,7 @@ func (m *HierarchyModel) renderItemDetails(content *strings.Builder, item types.
 		desc = strings.ReplaceAll(desc, "\n", " ")
 		content.WriteString(fmt.Sprintf("%s%s\n", indent, desc))
 	}
-	
+
 	// Technical specifications (if enabled)
 	if m.showTechnicalSpecs && hasNonEmptyTechnicalSpecs(&item.TechnicalSpec) {
 		m.renderTechnicalSpecs(content, item, indent)
@@ -462,27 +463,27 @@ func (m *HierarchyModel) renderItemDetails(content *strings.Builder, item types.
 
 func (m *HierarchyModel) renderTechnicalSpecs(content *strings.Builder, item types.AdvancedRoadmapItem, indent string) {
 	subIndent := indent + "  "
-	
+
 	if len(item.TechnicalSpec.DatabaseSchemas) > 0 {
 		content.WriteString(fmt.Sprintf("%sDatabase Schemas:\n", indent))
 		for _, schema := range item.TechnicalSpec.DatabaseSchemas {
-			content.WriteString(fmt.Sprintf("%s- %s (%d fields)\n", 
+			content.WriteString(fmt.Sprintf("%s- %s (%d fields)\n",
 				subIndent, schema.TableName, len(schema.Fields)))
 		}
 	}
-	
+
 	if len(item.TechnicalSpec.APIEndpoints) > 0 {
 		content.WriteString(fmt.Sprintf("%sAPI Endpoints:\n", indent))
 		for _, endpoint := range item.TechnicalSpec.APIEndpoints {
-			content.WriteString(fmt.Sprintf("%s- %s %s\n", 
+			content.WriteString(fmt.Sprintf("%s- %s %s\n",
 				subIndent, endpoint.Method, endpoint.Path))
 		}
 	}
-	
+
 	if len(item.TechnicalSpec.CodeReferences) > 0 {
 		content.WriteString(fmt.Sprintf("%sCode References:\n", indent))
 		for _, codeRef := range item.TechnicalSpec.CodeReferences {
-			content.WriteString(fmt.Sprintf("%s- %s (%s)\n", 
+			content.WriteString(fmt.Sprintf("%s- %s (%s)\n",
 				subIndent, codeRef.FilePath, codeRef.Language))
 		}
 	}
@@ -493,18 +494,18 @@ func (m *HierarchyModel) renderHeader() string {
 		Bold(true).
 		Foreground(lipgloss.Color("205")).
 		Render(fmt.Sprintf("TaskMaster Hierarchy Navigator - %s", m.roadmap.Name))
-	
-	stats := fmt.Sprintf("Items: %d | Progress: %.1f%% | Max Depth: %d", 
+
+	stats := fmt.Sprintf("Items: %d | Progress: %.1f%% | Max Depth: %d",
 		m.roadmap.TotalItems, m.roadmap.OverallProgress, m.roadmap.MaxDepth)
-	
+
 	return lipgloss.JoinHorizontal(lipgloss.Left, title, "  ", stats)
 }
 
 func (m *HierarchyModel) renderBreadcrumb() string {
 	var breadcrumb strings.Builder
-	
+
 	breadcrumb.WriteString("📍 ")
-	
+
 	if len(m.currentPath) == 0 {
 		breadcrumb.WriteString("Root")
 	} else {
@@ -514,21 +515,21 @@ func (m *HierarchyModel) renderBreadcrumb() string {
 			breadcrumb.WriteString(pathPart)
 		}
 	}
-	
+
 	breadcrumb.WriteString(fmt.Sprintf(" (Level %d)", m.currentLevel))
-	
+
 	if m.filterComplexity != "" {
 		breadcrumb.WriteString(fmt.Sprintf(" [Filter: %s]", m.filterComplexity))
 	}
-	
+
 	if m.showDetails {
 		breadcrumb.WriteString(" [Details]")
 	}
-	
+
 	if m.showTechnicalSpecs {
 		breadcrumb.WriteString(" [Tech Specs]")
 	}
-	
+
 	return breadcrumb.String()
 }
 
@@ -552,9 +553,9 @@ func formatDuration(d time.Duration) string {
 }
 
 func hasNonEmptyTechnicalSpecs(spec *types.TechnicalSpec) bool {
-	return len(spec.DatabaseSchemas) > 0 || 
-		   len(spec.APIEndpoints) > 0 || 
-		   len(spec.CodeReferences) > 0 ||
-		   len(spec.SystemRequirements) > 0 ||
-		   len(spec.PerformanceTargets) > 0
+	return len(spec.DatabaseSchemas) > 0 ||
+		len(spec.APIEndpoints) > 0 ||
+		len(spec.CodeReferences) > 0 ||
+		len(spec.SystemRequirements) > 0 ||
+		len(spec.PerformanceTargets) > 0
 }

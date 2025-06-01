@@ -55,11 +55,11 @@ type BatchJob struct {
 
 // BatchResult contains the result of processing a batch
 type BatchResult struct {
-	BatchID      int                   `json:"batch_id"`
-	ItemsCreated []types.RoadmapItem   `json:"items_created"`
-	FilesOK      []string              `json:"files_ok"`
-	Errors       []string              `json:"errors"`
-	Duration     time.Duration         `json:"duration"`
+	BatchID      int                 `json:"batch_id"`
+	ItemsCreated []types.RoadmapItem `json:"items_created"`
+	FilesOK      []string            `json:"files_ok"`
+	Errors       []string            `json:"errors"`
+	Duration     time.Duration       `json:"duration"`
 }
 
 // NewPlanProcessor creates a new parallel plan processor
@@ -84,7 +84,7 @@ func (p *PlanProcessor) ProcessPlansParallel(
 	p.metrics.StartTime = time.Now()
 	p.mu.Unlock()
 
-	fmt.Printf("🚀 Starting parallel processing with %d workers, batch size %d\n", 
+	fmt.Printf("🚀 Starting parallel processing with %d workers, batch size %d\n",
 		p.config.Workers, p.config.BatchSize)
 
 	// Create batches
@@ -98,7 +98,7 @@ func (p *PlanProcessor) ProcessPlansParallel(
 	// Create channels for work distribution
 	jobChan := make(chan BatchJob, len(batches))
 	resultChan := make(chan BatchResult, len(batches))
-	
+
 	// Start worker pool
 	var wg sync.WaitGroup
 	for i := 0; i < p.config.Workers; i++ {
@@ -130,7 +130,7 @@ func (p *PlanProcessor) ProcessPlansParallel(
 	for result := range resultChan {
 		allItems = append(allItems, result.ItemsCreated...)
 		allErrors = append(allErrors, result.Errors...)
-		
+
 		p.mu.Lock()
 		p.metrics.FilesProcessed += len(result.FilesOK)
 		p.metrics.ItemsCreated += len(result.ItemsCreated)
@@ -178,7 +178,7 @@ func (p *PlanProcessor) worker(
 
 // processBatch processes a single batch of files
 func (p *PlanProcessor) processBatch(
-	ctx context.Context,
+	_ context.Context,
 	workerID int,
 	job BatchJob,
 	ingester *ingestion.PlanIngester,
