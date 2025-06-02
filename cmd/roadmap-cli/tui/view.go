@@ -17,6 +17,7 @@ func (m *RoadmapModel) View() string {
 
 	header := m.renderHeader()
 	content := m.renderContent()
+	statusBar := m.renderStatusBar()
 	help := m.renderHelp()
 
 	return lipgloss.JoinVertical(
@@ -25,6 +26,7 @@ func (m *RoadmapModel) View() string {
 		"",
 		content,
 		"",
+		statusBar,
 		help,
 	)
 }
@@ -40,9 +42,28 @@ func (m *RoadmapModel) renderHeader() string {
 		viewName = "Timeline View"
 	case ViewModeKanban:
 		viewName = "Kanban View"
+	case ViewModePriority:
+		switch m.priorityMode {
+		case PriorityModeList:
+			viewName = "Priority List"
+		case PriorityModeConfig:
+			viewName = "Priority Config"
+		case PriorityModeVisualization:
+			viewName = "Priority Visualization"
+		}
 	}
 
-	return HeaderStyle.Render(fmt.Sprintf("%s - %s", title, viewName))
+	header := fmt.Sprintf("%s - %s", title, viewName)
+	
+	// Add priority indicator if enabled
+	if m.showPriorityScores && m.selectedIndex < len(m.items) {
+		selectedItem := m.items[m.selectedIndex]
+		if priority, err := m.priorityEngine.Calculate(selectedItem); err == nil {
+			header += fmt.Sprintf(" | Priority: %.2f", priority.Score)
+		}
+	}
+
+	return HeaderStyle.Render(header)
 }
 
 func (m *RoadmapModel) renderContent() string {
@@ -53,6 +74,8 @@ func (m *RoadmapModel) renderContent() string {
 		return m.renderTimelineView()
 	case ViewModeKanban:
 		return m.renderKanbanView()
+	case ViewModePriority:
+		return m.renderPriorityView()
 	default:
 		return m.renderListView()
 	}
@@ -81,7 +104,27 @@ func (m *RoadmapModel) renderListItem(item types.RoadmapItem, selected bool) str
 		style = SelectedStyle
 	}
 
-	line := fmt.Sprintf("%s %s %s (%d%%)",
+	// Priority score prefix if enabled
+	priorityPrefix := ""
+	if m.showPriorityScores {
+		if priority, err := m.priorityEngine.Calculate(item); err == nil {
+			priorityColor := ""
+			switch {
+			case priority.Score >= 8.0:
+				priorityColor = "🔴"
+			case priority.Score >= 6.0:
+				priorityColor = "🟠"
+			case priority.Score >= 4.0:
+				priorityColor = "🟡"
+			default:
+				priorityColor = "🟢"
+			}
+			priorityPrefix = fmt.Sprintf("%s%.1f ", priorityColor, priority.Score)
+		}
+	}
+
+	line := fmt.Sprintf("%s%s %s %s (%d%%)",
+		priorityPrefix,
 		icon,
 		item.Title,
 		progressBar,
@@ -123,7 +166,100 @@ func (m *RoadmapModel) renderListItem(item types.RoadmapItem, selected bool) str
 	return style.Render(line)
 }
 
+// renderPriorityView renders the priority management interface
+func (m *RoadmapModel) renderPriorityView() string {
+	switch m.priorityMode {
+	case PriorityModeList:
+		if m.priorityView != nil {
+			return m.priorityView.View()
+		}
+		return "Priority view not initialized"
+		
+	case PriorityModeConfig:
+		if m.priorityWidget != nil {
+			return m.priorityWidget.View()
+		}
+		return "Priority widget not initialized"
+		
+	case PriorityModeVisualization:
+		if m.priorityViz != nil {
+			return m.priorityViz.View()
+		}
+		return "Priority visualization not initialized"
+		
+	default:
+		return "Unknown priority mode"
+	}
+}
+
+func (m *RoadmapModel) renderStatusBar() string {
+	var parts []string
+	
+	// Current item info
+	if m.selectedIndex < len(m.items) {
+		selectedItem := m.items[m.selectedIndex]
+		parts = append(parts, fmt.Sprintf("Item %d/%d: %s", 
+			m.selectedIndex+1, len(m.items), selectedItem.Title))
+		
+		// Priority score if enabled
+		if m.showPriorityScores {
+			if priority, err := m.priorityEngine.Calculate(selectedItem); err == nil {
+				priorityColor := ""
+				switch {
+				case priority.Score >= 8.0:
+					priorityColor = "🔴"
+				case priority.Score >= 6.0:
+					priorityColor = "🟠"
+				case priority.Score >= 4.0:
+					priorityColor = "🟡"
+				default:
+					priorityColor = "🟢"
+				}
+				parts = append(parts, fmt.Sprintf("%s Priority: %.2f", priorityColor, priority.Score))
+			}
+		}
+	}
+	
+	// Engine info
+	if m.priorityEngine != nil {
+		config := m.priorityEngine.GetWeightingConfig()
+		parts = append(parts, fmt.Sprintf("Engine: U:%.2f I:%.2f E:%.2f", 
+			config.Urgency, config.Impact, config.Effort))
+	}
+	
+	if len(parts) == 0 {
+		return ""
+	}
+	
+	statusStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("241")).
+		Background(lipgloss.Color("235")).
+		Padding(0, 1)
+	
+	return statusStyle.Render(strings.Join(parts, " | "))
+}
+
 func (m *RoadmapModel) renderHelp() string {
-	help := "j/k: navigate • v: switch view • enter/space: toggle details • r: refresh • q: quit"
+	var helpItems []string
+	
+	// Global commands
+	helpItems = append(helpItems, "j/k: navigate", "v: switch view", "q: quit")
+	
+	// Priority-specific commands
+	if m.currentView == ViewModePriority {
+		switch m.priorityMode {
+		case PriorityModeList:
+			helpItems = append(helpItems, "tab: change view", "r: refresh", "enter: details")
+		case PriorityModeConfig:
+			helpItems = append(helpItems, "enter: edit", "s: save", "r: reset", "esc: exit")
+		case PriorityModeVisualization:
+			helpItems = append(helpItems, "1-5: chart types", "a: animation", "r: refresh")
+		}
+	} else {
+		// General commands
+		helpItems = append(helpItems, "p: priority mode", "s: toggle scores", "enter: details", "r: refresh")
+	}
+	
+	help := strings.Join(helpItems, " • ")
 	return HelpStyle.Render(help)
 }

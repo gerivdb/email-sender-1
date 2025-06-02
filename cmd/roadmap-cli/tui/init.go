@@ -3,7 +3,9 @@ package tui
 import (
 	"time"
 
+	"email_sender/cmd/roadmap-cli/priority"
 	"email_sender/cmd/roadmap-cli/storage"
+	"email_sender/cmd/roadmap-cli/tui/models"
 	"email_sender/cmd/roadmap-cli/types"
 )
 
@@ -15,14 +17,30 @@ func NewRoadmapModel(mode string) *RoadmapModel {
 		viewMode = ViewModeTimeline
 	case "kanban":
 		viewMode = ViewModeKanban
+	case "priority":
+		viewMode = ViewModePriority
 	}
 
 	// Load items from database
 	items := loadItemsFromDB()
+	
+	// Initialize priority engine
+	engine := priority.NewEngine()
+	
+	// Create priority components
+	priorityView := models.NewPriorityView(engine, items)
+	priorityWidget := models.NewInteractivePriorityWidget(engine)
+	priorityViz := models.NewPriorityVisualization(engine, items)
 
 	return &RoadmapModel{
-		items:       items,
-		currentView: viewMode,
+		items:              items,
+		currentView:        viewMode,
+		priorityMode:       PriorityModeList,
+		priorityEngine:     engine,
+		priorityView:       priorityView,
+		priorityWidget:     priorityWidget,
+		priorityViz:        priorityViz,
+		showPriorityScores: false,
 	}
 }
 

@@ -194,5 +194,17 @@
     }
   },
   "go.formatTool": "gofmt",
-  "go.useLanguageServer": true
+  "go.useLanguageServer": true,
+  "mcp": {
+    "servers": {
+      "context7": {
+        "type": "stdio",
+        "command": "npx",
+        "args": [
+          "-y",
+          "@upstash/context7-mcp"
+        ]
+      }
+    }
+  }
 }
