@@ -63,31 +63,43 @@ type LayoutConfig struct {
 
 // PanelManager manages multiple panels with layouts
 type PanelManager struct {
-	panels       map[PanelID]*Panel
-	activePanel  PanelID
-	layout       LayoutConfig
-	width        int
-	height       int
-	minPanelSize Size
-	maxPanels    int
-	panelOrder   []PanelID
-	history      []PanelID // Navigation history
-	shortcuts    map[string]PanelID
+	panels            map[PanelID]*Panel
+	activePanel       PanelID
+	layout            LayoutConfig
+	width             int
+	height            int
+	minPanelSize      Size
+	maxPanels         int
+	panelOrder        []PanelID
+	history           []PanelID // Navigation history
+	shortcuts         map[string]PanelID
+	
+	// New contextual and mode-aware managers
+	contextualManager *ContextualShortcutManager
+	modeKeyManager    *ModeSpecificKeyManager
+	currentViewMode   ViewMode
 }
 
 // NewPanelManager creates a new panel manager
 func NewPanelManager(width, height int, layout LayoutConfig) *PanelManager {
-	return &PanelManager{
-		panels:       make(map[PanelID]*Panel),
-		layout:       layout,
-		width:        width,
-		height:       height,
-		minPanelSize: Size{Width: 20, Height: 10},
-		maxPanels:    8,
-		panelOrder:   make([]PanelID, 0),
-		history:      make([]PanelID, 0, 50),
-		shortcuts:    make(map[string]PanelID),
+	pm := &PanelManager{
+		panels:          make(map[PanelID]*Panel),
+		layout:          layout,
+		width:           width,
+		height:          height,
+		minPanelSize:    Size{Width: 20, Height: 10},
+		maxPanels:       8,
+		panelOrder:      make([]PanelID, 0),
+		history:         make([]PanelID, 0, 50),
+		shortcuts:       make(map[string]PanelID),
+		currentViewMode: ViewModeList, // Default view mode
 	}
+	
+	// Initialize contextual and mode managers
+	pm.contextualManager = NewContextualShortcutManager(pm)
+	pm.modeKeyManager = NewModeSpecificKeyManager(pm, pm.contextualManager)
+	
+	return pm
 }
 
 // AddPanel adds a new panel to the manager
@@ -384,4 +396,84 @@ func (pm *PanelManager) prevPanel() {
 		prevIndex := (currentIndex - 1 + len(pm.panelOrder)) % len(pm.panelOrder)
 		pm.SetActivePanel(pm.panelOrder[prevIndex])
 	}
+}
+
+// GetContextualManager returns the contextual shortcut manager
+func (pm *PanelManager) GetContextualManager() *ContextualShortcutManager {
+	return pm.contextualManager
+}
+
+// GetModeKeyManager returns the mode-specific key manager
+func (pm *PanelManager) GetModeKeyManager() *ModeSpecificKeyManager {
+	return pm.modeKeyManager
+}
+
+// SetViewMode changes the current view mode and updates key bindings
+func (pm *PanelManager) SetViewMode(mode ViewMode) error {
+	if pm.modeKeyManager == nil {
+		return ErrManagerNotInitialized
+	}
+	
+	pm.currentViewMode = mode
+	return pm.modeKeyManager.SetMode(mode)
+}
+
+// GetViewMode returns the current view mode
+func (pm *PanelManager) GetViewMode() ViewMode {
+	return pm.currentViewMode
+}
+
+// HandleContextualKey processes a key input through the contextual system
+func (pm *PanelManager) HandleContextualKey(keypress string) tea.Cmd {
+	if pm.contextualManager == nil {
+		return nil
+	}
+	
+	return pm.contextualManager.HandleKey(keypress, pm.activePanel)
+}
+
+// UpdateShortcutContext updates the current context for dynamic shortcuts
+func (pm *PanelManager) UpdateShortcutContext() {
+	if pm.contextualManager == nil {
+		return
+	}
+	
+	activePanel := pm.GetActivePanel()
+	if activePanel == nil {
+		return
+	}
+	
+	context := ShortcutContext{
+		ActivePanel:   pm.activePanel,
+		PanelType:     string(activePanel.ID), // Could be more sophisticated
+		ViewMode:      string(pm.currentViewMode),
+		SelectedItems: []string{}, // Would be populated based on panel content
+		EditMode:      false,      // Would be determined by panel state
+		FilterActive:  false,      // Would be determined by panel state
+	}
+	
+	pm.contextualManager.UpdateContext(context)
+}
+
+// GetAvailableShortcuts returns all available shortcuts for the current context
+func (pm *PanelManager) GetAvailableShortcuts() map[string]string {
+	if pm.contextualManager == nil {
+		return make(map[string]string)
+	}
+	
+	shortcuts := pm.contextualManager.GetAvailableShortcuts(pm.activePanel)
+	modeShortcuts := pm.modeKeyManager.GetActiveBindings()
+	
+	// Merge both sets of shortcuts
+	result := make(map[string]string)
+	for key, desc := range shortcuts {
+		result[key] = desc
+	}
+	for key, binding := range modeShortcuts {
+		if result[key] == "" { // Don't override contextual shortcuts
+			result[key] = binding.Help().Desc
+		}
+	}
+	
+	return result
 }
