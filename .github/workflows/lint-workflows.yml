@@ -1,0 +1,27 @@
+name: Lint Workflows
+
+on:
+  push:
+    paths:
+      - '.github/workflows/**.yml'
+      - '.github/workflows/**.yaml'
+  pull_request:
+    paths:
+      - '.github/workflows/**.yml'
+      - '.github/workflows/**.yaml'
+
+jobs:
+  lint_actions:
+    name: Lint GitHub Actions Workflows
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Run actionlint
+        uses: reviewdog/action-actionlint@v1
+        with:
+          reporter: github-pr-check # Reports errors as annotations
+          level: error # Report only errors
+          fail_on_error: true # Fail the workflow if errors are found
+          actionlint_flags: '-color' # Optional: enable color output

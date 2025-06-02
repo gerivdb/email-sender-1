@@ -59,7 +59,7 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
           
       - name: Cache Go modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
@@ -70,33 +70,41 @@ jobs:
         id: validation
         run: |
           echo "🚨 Running fail-fast validation..."
-          
-          # Check Go syntax
-          if ! go build -o /dev/null ./...; then
+
+          echo "STEP 1: Checking Go build..."
+          go build -o /dev/null ./...
+          if [ $? -ne 0 ]; then
             echo "❌ Go build failed"
             echo "passed=false" >> $GITHUB_OUTPUT
             echo "errors=build-failure" >> $GITHUB_OUTPUT
             exit 1
           fi
-          
-          # Run validation tests
+          echo "✅ Go build successful."
+
+          echo "STEP 2: Running validation tests in internal/validation..."
           cd internal/validation
-          if ! go test -timeout=30s -v ./...; then
-            echo "❌ Validation tests failed"
+          go test -timeout=30s -v ./...
+          if [ $? -ne 0 ]; then
+            echo "❌ Validation tests failed in internal/validation"
             echo "passed=false" >> $GITHUB_OUTPUT
             echo "errors=validation-tests" >> $GITHUB_OUTPUT
+            cd ../.. # Ensure we navigate back even if tests fail
             exit 1
           fi
-          
-          # Check critical dependencies
-          if ! go mod verify; then
+          cd ../..
+          echo "✅ Validation tests successful."
+
+          echo "STEP 3: Verifying Go modules..."
+          go mod verify
+          if [ $? -ne 0 ]; then
             echo "❌ Module verification failed"
             echo "passed=false" >> $GITHUB_OUTPUT
             echo "errors=dependency-verification" >> $GITHUB_OUTPUT
             exit 1
           fi
-          
-          echo "✅ Fail-fast validation passed"
+          echo "✅ Module verification successful."
+
+          echo "✅ All fail-fast validations passed."
           echo "passed=true" >> $GITHUB_OUTPUT
           echo "errors=none" >> $GITHUB_OUTPUT
 
@@ -120,7 +128,7 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
           
       - name: Cache Go modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
@@ -193,7 +201,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           
@@ -222,7 +230,7 @@ jobs:
           redocly build-docs api/openapi.yaml --output=api-docs.html
           
       - name: Upload API Documentation
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: api-documentation
           path: api-docs.html
@@ -265,7 +273,7 @@ jobs:
           fi
           
       - name: Upload Generated Tests
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: generated-tests
           path: tests/generated/
@@ -317,7 +325,7 @@ jobs:
           fi
           
       - name: Upload Generated Code
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: generated-code
           path: generated/
@@ -398,7 +406,7 @@ jobs:
           EOF
           
       - name: Upload Pipeline Metrics
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pipeline-metrics
           path: pipeline-metrics.json
@@ -434,7 +442,7 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
           
       - name: Download Generated Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: generated-code
           path: generated/
@@ -471,7 +479,7 @@ jobs:
           fi
           
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}
           path: rag-system-${{ matrix.target.os }}-${{ matrix.target.arch }}.*
@@ -646,7 +654,7 @@ jobs:
           EOF
           
       - name: Upload Deployment Metrics
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deployment-metrics
           path: deployment-metrics.json
@@ -702,7 +710,7 @@ jobs:
           EOF
           
       - name: Upload Pipeline Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pipeline-report
           path: pipeline-report.md

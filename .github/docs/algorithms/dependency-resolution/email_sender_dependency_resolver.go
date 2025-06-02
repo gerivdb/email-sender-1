@@ -1042,33 +1042,39 @@ func (dr *DependencyResolver) generateRecommendations(stats *ResolutionStatistic
 	
 	if stats.CircularDeps > 0 {
 		recommendations = append(recommendations, 
-			"Break circular dependencies to improve system stability")
+			"Break circular dependencies to improve system stability",
+		)
 	}
 	
 	if stats.MissingDeps > 0 {
 		recommendations = append(recommendations, 
-			"Resolve missing dependencies to prevent runtime errors")
+			"Resolve missing dependencies to prevent runtime errors",
+		)
 	}
 	
 	if stats.ConflictsDetected > stats.ConflictsResolved {
 		recommendations = append(recommendations, 
-			"Review unresolved conflicts for manual intervention")
+			"Review unresolved conflicts for manual intervention",
+		)
 	}
 	
 	// EMAIL_SENDER_1 specific recommendations
 	if stats.ComponentTypes["RAG_Engine"] == 0 {
 		recommendations = append(recommendations, 
-			"Critical: RAG Engine components not detected - EMAIL_SENDER_1 functionality at risk")
+			"Critical: RAG Engine components not detected - EMAIL_SENDER_1 functionality at risk",
+		)
 	}
 	
 	if stats.ComponentTypes["N8N_Workflows"] == 0 {
 		recommendations = append(recommendations, 
-			"Warning: N8N Workflow components not detected - automation may be affected")
+			"Warning: N8N Workflow components not detected - automation may be affected",
+		)
 	}
 	
 	if len(dr.graph.Nodes) > 100 {
 		recommendations = append(recommendations, 
-			"Consider modularizing the project to reduce complexity")
+			"Consider modularizing the project to reduce complexity",
+		)
 	}
 	
 	return recommendations
