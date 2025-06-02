@@ -6,8 +6,11 @@ $misc = Join-Path $root 'misc'
 # Liste des fichiers à préserver (à adapter selon le projet)
 $aPreserver = @(
     'README.md',
-    '.gitignore',
+    '.gitignore',".augmentignore",
+    '.gitattributes',
+    'CHANGELOG.md',"git-hooks",".gitmodules",
     'package.json',
+    '.hygen.js',
     'organize-tests.ps1',
     'organize-root-files.ps1',
     'LICENSE'

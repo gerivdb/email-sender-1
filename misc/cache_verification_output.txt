@@ -1,0 +1,1 @@
+exec: "C:\\Users\\user\\AppData\\Local\\Temp\\go-build4174529970\\b001\\exe\\cache_verification": executable file not found in %PATH%
