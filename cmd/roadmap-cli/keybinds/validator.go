@@ -96,47 +96,110 @@ func (kv *KeyValidator) ResolveConflict(conflict KeyConflict, resolution string)
 	}
 }
 
+// ConflictType représente le type de conflit détecté
+type ConflictType int
+
+const (
+	DuplicateKey ConflictType = iota
+	ContextOverlap
+	ModifierConflict
+	ActionConflict
+)
+
+// KeyConflict représente un conflit entre deux bindings
+type KeyConflict struct {
+	Type        ConflictType
+	Description string
+	Binding1    KeyBinding
+	Binding2    KeyBinding
+	Context     string
+	Severity    int
+	Suggestion  string
+}
+
 // Private methods for conflict detection
 
 func (kv *KeyValidator) findConflicts(profile *KeyProfile) []KeyConflict {
-	var conflicts []KeyConflict
-	allBindings := make(map[string][]KeyBinding)
+	conflicts := make([]KeyConflict, 0)
 
-	// Collect all bindings organized by key+context
 	for _, keyMap := range profile.KeyMaps {
-		for _, binding := range keyMap.Bindings {
-			if !binding.Enabled {
-				continue
+		// Vérifier les conflits dans le même contexte
+		conflicts = append(conflicts, kv.findContextConflicts(keyMap)...)
+
+		// Vérifier les conflits entre contextes différents
+		conflicts = append(conflicts, kv.findCrossContextConflicts(keyMap)...)
+	}
+
+	return conflicts
+}
+
+func (kv *KeyValidator) findContextConflicts(keyMap KeyMap) []KeyConflict {
+	conflicts := make([]KeyConflict, 0)
+
+	for i, b1 := range keyMap.Bindings {
+		for j := i + 1; j < len(keyMap.Bindings); j++ {
+			b2 := keyMap.Bindings[j]
+
+			// Même contexte et même touche
+			if b1.Context == b2.Context && b1.Key == b2.Key {
+				conflicts = append(conflicts, KeyConflict{
+					Type:        DuplicateKey,
+					Description: fmt.Sprintf("Duplicate key '%s' in context '%s'", b1.Key, b1.Context),
+					Binding1:    b1,
+					Binding2:    b2,
+					Context:     b1.Context,
+					Severity:    2,
+					Suggestion:  "Change one of the key bindings to a different key",
+				})
 			}
-			key := fmt.Sprintf("%s|%s", binding.Key, binding.Context)
-			allBindings[key] = append(allBindings[key], binding)
 		}
 	}
 
-	// Find conflicts
-	for key, bindings := range allBindings {
-		if len(bindings) > 1 {
-			// Multiple bindings for the same key+context
-			for i := 0; i < len(bindings); i++ {
-				for j := i + 1; j < len(bindings); j++ {
-					conflict := KeyConflict{
-						Key:        bindings[i].Key,
-						Context:    bindings[i].Context,
-						Binding1:   bindings[i],
-						Binding2:   bindings[j],
-						Severity:   kv.determineSeverity(bindings[i], bindings[j]),
-						Resolution: kv.suggestResolution(bindings[i], bindings[j]),
-					}
-					conflicts = append(conflicts, conflict)
+	return conflicts
+}
+
+func (kv *KeyValidator) findCrossContextConflicts(keyMap KeyMap) []KeyConflict {
+	conflicts := make([]KeyConflict, 0)
+
+	for i, b1 := range keyMap.Bindings {
+		for j := i + 1; j < len(keyMap.Bindings); j++ {
+			b2 := keyMap.Bindings[j]
+
+			// Différent contexte mais même touche
+			if b1.Context != b2.Context && b1.Key == b2.Key {
+				// Vérifier si les contextes peuvent se chevaucher
+				if kv.contextsOverlap(b1.Context, b2.Context) {
+					conflicts = append(conflicts, KeyConflict{
+						Type: ContextOverlap,
+						Description: fmt.Sprintf("Key '%s' used in overlapping contexts '%s' and '%s'",
+							b1.Key, b1.Context, b2.Context),
+						Binding1:   b1,
+						Binding2:   b2,
+						Context:    fmt.Sprintf("%s, %s", b1.Context, b2.Context),
+						Severity:   1,
+						Suggestion: "Consider using different keys for overlapping contexts",
+					})
 				}
 			}
 		}
 	}
 
-	// Check for global vs context-specific conflicts
-	conflicts = append(conflicts, kv.findGlobalContextConflicts(profile)...)
-
 	return conflicts
+}
+
+// contextsOverlap vérifie si deux contextes peuvent se chevaucher
+func (kv *KeyValidator) contextsOverlap(context1, context2 string) bool {
+	// Si l'un des contextes est "global", il chevauche tout
+	if context1 == "global" || context2 == "global" {
+		return true
+	}
+
+	// Vérifier les hiérarchies de contextes
+	parts1 := strings.Split(context1, ".")
+	parts2 := strings.Split(context2, ".")
+
+	// Si un contexte est un parent de l'autre
+	return strings.HasPrefix(context1, context2) || strings.HasPrefix(context2, context1)
 }
 
 func (kv *KeyValidator) findBindingConflicts(binding KeyBinding, profile *KeyProfile) []KeyConflict {
@@ -295,7 +358,7 @@ func (kv *KeyValidator) generateWarnings(profile *KeyProfile, result *Validation
 
 	for _, action := range essentialActions {
 		if !existingActions[string(action)] {
-			result.Warnings = append(result.Warnings, 
+			result.Warnings = append(result.Warnings,
 				fmt.Sprintf("Missing essential key binding for action: %s", action))
 		}
 	}
@@ -305,7 +368,7 @@ func (kv *KeyValidator) generateWarnings(profile *KeyProfile, result *Validation
 		for _, binding := range keyMap.Bindings {
 			if binding.Enabled && kv.isComplexKeyCombination(binding.Key) {
 				result.Warnings = append(result.Warnings,
-					fmt.Sprintf("Complex key combination '%s' for binding '%s' may be difficult to use", 
+					fmt.Sprintf("Complex key combination '%s' for binding '%s' may be difficult to use",
 						binding.Key, binding.ID))
 			}
 		}
@@ -314,13 +377,13 @@ func (kv *KeyValidator) generateWarnings(profile *KeyProfile, result *Validation
 
 func (kv *KeyValidator) generateSuggestions(profile *KeyProfile, result *ValidationResult) {
 	// Suggest common key binding patterns
-	result.Suggestions = append(result.Suggestions, 
+	result.Suggestions = append(result.Suggestions,
 		"Consider using consistent patterns (e.g., Ctrl+ for application actions, Alt+ for view actions)")
-	
+
 	// Suggest grouping related functions
 	result.Suggestions = append(result.Suggestions,
 		"Group related functions with similar key prefixes (e.g., all panel actions with Ctrl+Shift+)")
-	
+
 	// Suggest accessibility considerations
 	result.Suggestions = append(result.Suggestions,
 		"Ensure key bindings are accessible and don't conflict with system shortcuts")
@@ -348,7 +411,7 @@ func (kv *KeyValidator) isComplexKeyCombination(key string) bool {
 	// Count modifiers (ctrl, alt, shift)
 	modifiers := 0
 	lowerKey := strings.ToLower(key)
-	
+
 	if strings.Contains(lowerKey, "ctrl") {
 		modifiers++
 	}
@@ -386,6 +449,6 @@ func (kv *KeyValidator) disableBinding(binding KeyBinding) error {
 func (kv *KeyValidator) suggestAlternativeKey(binding KeyBinding) error {
 	// This would suggest alternative keys based on availability
 	// For now, just return an informational error
-	return fmt.Errorf("suggestion: consider using an alternative key for binding '%s' (current: %s)", 
+	return fmt.Errorf("suggestion: consider using an alternative key for binding '%s' (current: %s)",
 		binding.ID, binding.Key)
 }

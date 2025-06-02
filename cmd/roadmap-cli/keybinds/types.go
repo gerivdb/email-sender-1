@@ -52,42 +52,42 @@ type KeyAction string
 
 const (
 	// Navigation actions
-	ActionNavigateUp     KeyAction = "navigate_up"
-	ActionNavigateDown   KeyAction = "navigate_down"
-	ActionNavigateLeft   KeyAction = "navigate_left"
-	ActionNavigateRight  KeyAction = "navigate_right"
-	ActionNavigateHome   KeyAction = "navigate_home"
-	ActionNavigateEnd    KeyAction = "navigate_end"
-	
+	ActionNavigateUp    KeyAction = "navigate_up"
+	ActionNavigateDown  KeyAction = "navigate_down"
+	ActionNavigateLeft  KeyAction = "navigate_left"
+	ActionNavigateRight KeyAction = "navigate_right"
+	ActionNavigateHome  KeyAction = "navigate_home"
+	ActionNavigateEnd   KeyAction = "navigate_end"
+
 	// Panel actions
-	ActionSwitchPanel    KeyAction = "switch_panel"
-	ActionClosePanel     KeyAction = "close_panel"
-	ActionMinimizePanel  KeyAction = "minimize_panel"
-	ActionMaximizePanel  KeyAction = "maximize_panel"
+	ActionSwitchPanel     KeyAction = "switch_panel"
+	ActionClosePanel      KeyAction = "close_panel"
+	ActionMinimizePanel   KeyAction = "minimize_panel"
+	ActionMaximizePanel   KeyAction = "maximize_panel"
 	ActionSplitHorizontal KeyAction = "split_horizontal"
 	ActionSplitVertical   KeyAction = "split_vertical"
-	
+
 	// View mode actions
 	ActionSwitchToKanban   KeyAction = "switch_to_kanban"
 	ActionSwitchToList     KeyAction = "switch_to_list"
 	ActionSwitchToCalendar KeyAction = "switch_to_calendar"
 	ActionSwitchToMatrix   KeyAction = "switch_to_matrix"
 	ActionSwitchToTimeline KeyAction = "switch_to_timeline"
-	
+
 	// Task actions
-	ActionCreateTask     KeyAction = "create_task"
-	ActionEditTask       KeyAction = "edit_task"
-	ActionDeleteTask     KeyAction = "delete_task"
-	ActionCompleteTask   KeyAction = "complete_task"
-	ActionAssignTask     KeyAction = "assign_task"
-	
+	ActionCreateTask   KeyAction = "create_task"
+	ActionEditTask     KeyAction = "edit_task"
+	ActionDeleteTask   KeyAction = "delete_task"
+	ActionCompleteTask KeyAction = "complete_task"
+	ActionAssignTask   KeyAction = "assign_task"
+
 	// Application actions
-	ActionSave          KeyAction = "save"
-	ActionUndo          KeyAction = "undo"
-	ActionRedo          KeyAction = "redo"
-	ActionSearch        KeyAction = "search"
-	ActionHelp          KeyAction = "help"
-	ActionQuit          KeyAction = "quit"
+	ActionSave   KeyAction = "save"
+	ActionUndo   KeyAction = "undo"
+	ActionRedo   KeyAction = "redo"
+	ActionSearch KeyAction = "search"
+	ActionHelp   KeyAction = "help"
+	ActionQuit   KeyAction = "quit"
 )
 
 // KeyContext represents the context where a key binding is applicable
@@ -109,13 +109,13 @@ const (
 
 // KeyConflict represents a key binding conflict
 type KeyConflict struct {
-	Key         string     `json:"key"`
-	Context     string     `json:"context"`
-	Binding1    KeyBinding `json:"binding1"`
-	Binding2    KeyBinding `json:"binding2"`
-	Severity    string     `json:"severity"` // "error", "warning", "info"
-	Resolution  string     `json:"resolution"`
-	ResolvedAt  *time.Time `json:"resolved_at,omitempty"`
+	Key        string     `json:"key"`
+	Context    string     `json:"context"`
+	Binding1   KeyBinding `json:"binding1"`
+	Binding2   KeyBinding `json:"binding2"`
+	Severity   string     `json:"severity"` // "error", "warning", "info"
+	Resolution string     `json:"resolution"`
+	ResolvedAt *time.Time `json:"resolved_at,omitempty"`
 }
 
 // ValidationResult represents the result of key binding validation
@@ -152,18 +152,18 @@ func DefaultKeyMap() KeyMap {
 			{ID: "nav_down", Key: "j", Action: string(ActionNavigateDown), Context: string(ContextGlobal), Description: "Navigate down", Enabled: true},
 			{ID: "nav_left", Key: "h", Action: string(ActionNavigateLeft), Context: string(ContextGlobal), Description: "Navigate left", Enabled: true},
 			{ID: "nav_right", Key: "l", Action: string(ActionNavigateRight), Context: string(ContextGlobal), Description: "Navigate right", Enabled: true},
-			
+
 			// Panels
 			{ID: "panel_1", Key: "ctrl+1", Action: string(ActionSwitchPanel), Context: string(ContextPanels), Description: "Switch to panel 1", Enabled: true},
 			{ID: "panel_2", Key: "ctrl+2", Action: string(ActionSwitchPanel), Context: string(ContextPanels), Description: "Switch to panel 2", Enabled: true},
 			{ID: "panel_3", Key: "ctrl+3", Action: string(ActionSwitchPanel), Context: string(ContextPanels), Description: "Switch to panel 3", Enabled: true},
 			{ID: "panel_4", Key: "ctrl+4", Action: string(ActionSwitchPanel), Context: string(ContextPanels), Description: "Switch to panel 4", Enabled: true},
-			
+
 			// View modes
 			{ID: "view_kanban", Key: "1", Action: string(ActionSwitchToKanban), Context: string(ContextGlobal), Description: "Switch to Kanban view", Enabled: true},
 			{ID: "view_list", Key: "2", Action: string(ActionSwitchToList), Context: string(ContextGlobal), Description: "Switch to List view", Enabled: true},
 			{ID: "view_calendar", Key: "3", Action: string(ActionSwitchToCalendar), Context: string(ContextGlobal), Description: "Switch to Calendar view", Enabled: true},
-			
+
 			// Application
 			{ID: "save", Key: "ctrl+s", Action: string(ActionSave), Context: string(ContextGlobal), Description: "Save", Enabled: true},
 			{ID: "undo", Key: "ctrl+z", Action: string(ActionUndo), Context: string(ContextGlobal), Description: "Undo", Enabled: true},
@@ -180,32 +180,32 @@ func DefaultKeyMap() KeyMap {
 // GetActionDescription returns a human-readable description for a key action
 func GetActionDescription(action KeyAction) string {
 	descriptions := map[KeyAction]string{
-		ActionNavigateUp:     "Navigate to the previous item",
-		ActionNavigateDown:   "Navigate to the next item",
-		ActionNavigateLeft:   "Navigate to the left",
-		ActionNavigateRight:  "Navigate to the right",
-		ActionNavigateHome:   "Navigate to the beginning",
-		ActionNavigateEnd:    "Navigate to the end",
-		
+		ActionNavigateUp:    "Navigate to the previous item",
+		ActionNavigateDown:  "Navigate to the next item",
+		ActionNavigateLeft:  "Navigate to the left",
+		ActionNavigateRight: "Navigate to the right",
+		ActionNavigateHome:  "Navigate to the beginning",
+		ActionNavigateEnd:   "Navigate to the end",
+
 		ActionSwitchPanel:     "Switch to a specific panel",
 		ActionClosePanel:      "Close the current panel",
 		ActionMinimizePanel:   "Minimize the current panel",
 		ActionMaximizePanel:   "Maximize the current panel",
 		ActionSplitHorizontal: "Split panel horizontally",
 		ActionSplitVertical:   "Split panel vertically",
-		
+
 		ActionSwitchToKanban:   "Switch to Kanban view mode",
 		ActionSwitchToList:     "Switch to List view mode",
 		ActionSwitchToCalendar: "Switch to Calendar view mode",
 		ActionSwitchToMatrix:   "Switch to Matrix view mode",
 		ActionSwitchToTimeline: "Switch to Timeline view mode",
-		
+
 		ActionCreateTask:   "Create a new task",
 		ActionEditTask:     "Edit the selected task",
 		ActionDeleteTask:   "Delete the selected task",
 		ActionCompleteTask: "Mark task as complete",
 		ActionAssignTask:   "Assign task to user",
-		
+
 		ActionSave:   "Save current changes",
 		ActionUndo:   "Undo last action",
 		ActionRedo:   "Redo last undone action",
@@ -213,7 +213,7 @@ func GetActionDescription(action KeyAction) string {
 		ActionHelp:   "Show help information",
 		ActionQuit:   "Quit the application",
 	}
-	
+
 	if desc, exists := descriptions[action]; exists {
 		return desc
 	}
@@ -244,4 +244,67 @@ func (kb KeyBinding) String() string {
 		status = "disabled"
 	}
 	return fmt.Sprintf("%s: %s -> %s (%s) [%s]", kb.ID, kb.Key, kb.Action, kb.Context, status)
+}
+
+// AddBinding ajoute un nouveau binding au KeyMap
+func (km *KeyMap) AddBinding(binding KeyBinding) error {
+	// Vérifier si l'ID existe déjà
+	for _, b := range km.Bindings {
+		if b.ID == binding.ID {
+			return fmt.Errorf("binding with ID '%s' already exists", binding.ID)
+		}
+	}
+
+	km.Bindings = append(km.Bindings, binding)
+	km.UpdatedAt = time.Now()
+	return nil
+}
+
+// RemoveBinding supprime un binding par son ID
+func (km *KeyMap) RemoveBinding(id string) error {
+	for i, b := range km.Bindings {
+		if b.ID == id {
+			km.Bindings = append(km.Bindings[:i], km.Bindings[i+1:]...)
+			km.UpdatedAt = time.Now()
+			return nil
+		}
+	}
+	return fmt.Errorf("binding with ID '%s' not found", id)
+}
+
+// UpdateBinding met à jour un binding existant
+func (km *KeyMap) UpdateBinding(id string, updates map[string]interface{}) error {
+	for i, b := range km.Bindings {
+		if b.ID == id {
+			if key, ok := updates["key"].(string); ok {
+				km.Bindings[i].Key = key
+			}
+			if action, ok := updates["action"].(string); ok {
+				km.Bindings[i].Action = action
+			}
+			if context, ok := updates["context"].(string); ok {
+				km.Bindings[i].Context = context
+			}
+			if description, ok := updates["description"].(string); ok {
+				km.Bindings[i].Description = description
+			}
+			if enabled, ok := updates["enabled"].(bool); ok {
+				km.Bindings[i].Enabled = enabled
+			}
+
+			km.UpdatedAt = time.Now()
+			return nil
+		}
+	}
+	return fmt.Errorf("binding with ID '%s' not found", id)
+}
+
+// GetBinding retourne un binding par son ID
+func (km *KeyMap) GetBinding(id string) (*KeyBinding, error) {
+	for _, b := range km.Bindings {
+		if b.ID == id {
+			return &b, nil
+		}
+	}
+	return nil, fmt.Errorf("binding with ID '%s' not found", id)
 }

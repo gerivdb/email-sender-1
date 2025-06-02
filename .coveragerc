@@ -1,0 +1,20 @@
+[run]
+source = development/scripts/python/testing/examples
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    pass
+    raise Exception
+    if 0:
+    if False:
+    # DEBUG
+    print
+    self.fail
+    ...
+
+[html]
+directory = coverage_html_report

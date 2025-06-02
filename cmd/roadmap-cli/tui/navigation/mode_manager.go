@@ -136,16 +136,7 @@ type LayoutState struct {
 	CustomLayouts  map[string]interface{} `json:"custom_layouts"`
 }
 
-// TransitionTrigger represents what triggered a mode transition
-type TransitionTrigger int
-
-const (
-	TransitionTriggerManual TransitionTrigger = iota
-	TransitionTriggerKeyboard
-	TransitionTriggerAutomatic
-	TransitionTriggerContext
-	TransitionTriggerEvent
-)
+// Utilisation du TransitionTrigger depuis types.go
 
 // ModeEventType represents the type of mode event
 type ModeEventType int

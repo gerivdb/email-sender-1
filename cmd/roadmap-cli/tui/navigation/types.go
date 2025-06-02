@@ -131,6 +131,15 @@ func (tt TransitionTrigger) String() string {
 	}
 }
 
+// TransitionOptions contient les options pour les transitions entre modes
+type TransitionOptions struct {
+	Duration     time.Duration
+	Easing       string
+	AnimationType string
+	Trigger      TransitionTrigger
+	Params       map[string]interface{}
+}
+
 // NavigationState represents the current navigation state
 type NavigationState struct {
 	CurrentMode         NavigationMode           `json:"current_mode"`
@@ -172,6 +181,13 @@ type NavigationHistoryItem struct {
 	Duration    time.Duration `json:"duration"`
 }
 
+// NavigationHistoryEntry représente une entrée dans l'historique de navigation
+type NavigationHistoryEntry struct {
+	Position Position
+	View     ViewMode
+	Time     time.Time
+}
+
 // Bookmark represents a navigation bookmark
 type Bookmark struct {
 	ID          string    `json:"id"`
@@ -198,7 +214,7 @@ type TransitionState struct {
 	PreservedState    interface{}   `json:"preserved_state"`
 }
 
-// NavigationPreferences represents user navigation preferences
+// NavigationPreferences contient les préférences de navigation
 type NavigationPreferences struct {
 	PreferredMode         NavigationMode    `json:"preferred_mode"`
 	DefaultView           ViewMode          `json:"default_view"`

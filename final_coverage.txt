@@ -1,0 +1,54 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.6, pytest-8.3.5, pluggy-1.5.0 -- C:\Python312\python.exe
+cachedir: .pytest_cache
+hypothesis profile 'default' -> database=DirectoryBasedExampleDatabase(WindowsPath('D:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/.hypothesis/examples'))
+metadata: {'Python': '3.12.6', 'Platform': 'Windows-10-10.0.19045-SP0', 'Packages': {'pytest': '8.3.5', 'pluggy': '1.5.0'}, 'Plugins': {'allure-pytest': '2.14.0', 'anyio': '4.8.0', 'hypothesis': '6.127.4', 'langsmith': '0.3.18', 'asyncio': '0.25.3', 'cov': '4.1.0', 'html': '4.1.1', 'metadata': '3.1.1', 'mock': '3.14.0', 'testmon': '2.1.3', 'xdist': '3.6.1', 'requests-mock': '1.11.0', 'typeguard': '4.4.2'}}
+rootdir: D:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1
+configfile: pytest.ini
+plugins: allure-pytest-2.14.0, anyio-4.8.0, hypothesis-6.127.4, langsmith-0.3.18, asyncio-0.25.3, cov-4.1.0, html-4.1.1, metadata-3.1.1, mock-3.14.0, testmon-2.1.3, xdist-3.6.1, requests-mock-1.11.0, typeguard-4.4.2
+asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=function
+collecting ... collected 33 items
+
+development/scripts/python/testing/examples/test_example.py::TestExampleSuccess::test_addition PASSED [  3%]
+development/scripts/python/testing/examples/test_example.py::TestExampleSuccess::test_division PASSED [  6%]
+development/scripts/python/testing/examples/test_example.py::TestExampleSuccess::test_multiplication PASSED [  9%]
+development/scripts/python/testing/examples/test_example.py::TestExampleSuccess::test_subtraction PASSED [ 12%]
+development/scripts/python/testing/examples/test_example.py::TestExampleAssertions::test_container_assertions PASSED [ 15%]
+development/scripts/python/testing/examples/test_example.py::TestExampleAssertions::test_different_assertions PASSED [ 18%]
+development/scripts/python/testing/examples/test_example.py::TestExampleAssertions::test_exception_handling PASSED [ 21%]
+development/scripts/python/testing/examples/test_example.py::TestExampleAssertions::test_string_assertions PASSED [ 24%]
+development/scripts/python/testing/examples/test_example.py::TestExampleError::test_exception_details PASSED [ 27%]
+development/scripts/python/testing/examples/test_example.py::TestExampleError::test_type_error_details PASSED [ 30%]
+development/scripts/python/testing/examples/test_example.py::TestExampleError::test_value_error_details PASSED [ 33%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_multiplication_by_two PASSED [ 36%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_multiplication_by_two_0 PASSED [ 39%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_multiplication_by_two_2 PASSED [ 42%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_multiplication_by_two_3 PASSED [ 45%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_multiplication_by_two_float PASSED [ 48%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_multiplication_by_two_large PASSED [ 51%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_multiplication_by_two_neg1 PASSED [ 54%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_string_length PASSED [ 57%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_string_length_digits PASSED [ 60%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_string_length_empty PASSED [ 63%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_string_length_hello PASSED [ 66%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_string_length_python PASSED [ 69%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_string_length_spaces PASSED [ 72%]
+development/scripts/python/testing/examples/test_example.py::TestParametrized::test_with_context PASSED [ 75%]
+development/scripts/python/testing/examples/test_example.py::TestAsyncExample::test_async_exception PASSED [ 78%]
+development/scripts/python/testing/examples/test_example.py::TestAsyncExample::test_async_operation PASSED [ 81%]
+development/scripts/python/testing/examples/test_example.py::TestCoverage::test_async_wrapper PASSED [ 84%]
+development/scripts/python/testing/examples/test_example.py::TestCoverage::test_exception_handling_deep PASSED [ 87%]
+development/scripts/python/testing/examples/test_example.py::TestCoverage::test_main_patching PASSED [ 90%]
+development/scripts/python/testing/examples/test_example.py::TestCoverage::test_pytest_configure PASSED [ 93%]
+development/scripts/python/testing/examples/test_example.py::TestMainExecution::test_main_execution PASSED [ 96%]
+development/scripts/python/testing/examples/test_example.py::TestExhaustiveCoverage::test_parametrized_methods_directly PASSED [100%]
+
+---------- coverage: platform win32, python 3.12.6-final-0 -----------
+Name                                                          Stmts   Miss  Cover   Missing
+-------------------------------------------------------------------------------------------
+development\scripts\python\testing\examples\test_example.py     197     11    94%   65, 96, 114, 211-215, 219-223
+-------------------------------------------------------------------------------------------
+TOTAL                                                           197     11    94%
+
+
+============================= 33 passed in 2.64s ==============================

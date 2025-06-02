@@ -16,6 +16,7 @@ import (
 // NavigationManager manages navigation state and operations
 type NavigationManager struct {
 	state           *NavigationState
+	history         []NavigationHistoryEntry
 	configDir       string
 	eventListeners  []func(NavigationEvent)
 	commands        chan NavigationCommand
@@ -311,8 +312,12 @@ func (nm *NavigationManager) JumpToBookmark(bookmarkID string) tea.Cmd {
 
 	for i, bookmark := range nm.state.Bookmarks {
 		if bookmark.ID == bookmarkID {
-			oldPosition := nm.state.Position
-			oldView := nm.state.CurrentView
+			// Sauvegarder l'historique de navigation
+			nm.history = append(nm.history, NavigationHistoryEntry{
+				Position: nm.state.Position,
+				View:     nm.state.CurrentView,
+				Time:     time.Now(),
+			})
 
 			// Update position and view
 			nm.state.Position = bookmark.Position

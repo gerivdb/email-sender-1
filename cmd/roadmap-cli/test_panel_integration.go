@@ -9,7 +9,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func runPanelDemo() {
+func runPanelIntegrationTest() {
 	fmt.Println("🧪 Test d'intégration des panels TaskMaster...")
 
 	// Configuration de base
