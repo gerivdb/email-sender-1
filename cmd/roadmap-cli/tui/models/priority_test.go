@@ -12,13 +12,13 @@ func TestPriorityVisualization_ActiveView_Unique(t *testing.T) {
 	engine := priority.NewEngine()
 	items := []types.RoadmapItem{
 		{
-			ID:           "test-1",
-			Title:        "Test Item",
-			Priority:     types.PriorityHigh,
-			RiskLevel:    types.RiskMedium,
+			ID:            "test-1",
+			Title:         "Test Item",
+			Priority:      types.PriorityHigh,
+			RiskLevel:     types.RiskMedium,
 			BusinessValue: 7,
-			Complexity:   types.BasicComplexityMedium,
-			Effort:       5,
+			Complexity:    types.BasicComplexityMedium,
+			Effort:        5,
 			TechnicalDebt: 2,
 		},
 	}
@@ -62,13 +62,13 @@ func TestPriorityView_NewPriorityView_Unique(t *testing.T) {
 	engine := priority.NewEngine()
 	items := []types.RoadmapItem{
 		{
-			ID:           "test-1",
-			Title:        "Test Item",
-			Priority:     types.PriorityHigh,
-			RiskLevel:    types.RiskMedium,
+			ID:            "test-1",
+			Title:         "Test Item",
+			Priority:      types.PriorityHigh,
+			RiskLevel:     types.RiskMedium,
 			BusinessValue: 7,
-			Complexity:   types.BasicComplexityMedium,
-			Effort:       3,
+			Complexity:    types.BasicComplexityMedium,
+			Effort:        3,
 			TechnicalDebt: 2,
 		},
 	}
@@ -92,16 +92,16 @@ func TestPriorityEngine_Calculate_Unique(t *testing.T) {
 	engine := priority.NewEngine()
 
 	item := types.RoadmapItem{
-		ID:           "test-1",
-		Title:        "High Value Task",
-		Priority:     types.PriorityHigh,
-		RiskLevel:    types.RiskMedium,
+		ID:            "test-1",
+		Title:         "High Value Task",
+		Priority:      types.PriorityHigh,
+		RiskLevel:     types.RiskMedium,
 		BusinessValue: 8,
-		Complexity:   types.BasicComplexityMedium,
-		Effort:       3,
+		Complexity:    types.BasicComplexityMedium,
+		Effort:        3,
 		TechnicalDebt: 2,
-		CreatedAt:    time.Now().Add(-time.Hour),
-		TargetDate:   time.Now().Add(4 * time.Hour), // Due soon
+		CreatedAt:     time.Now().Add(-time.Hour),
+		TargetDate:    time.Now().Add(4 * time.Hour), // Due soon
 	}
 
 	taskPriority, err := engine.Calculate(item)
@@ -123,33 +123,33 @@ func TestPriorityEngine_Rank_Unique(t *testing.T) {
 
 	items := []types.RoadmapItem{
 		{
-			ID:           "low-priority",
-			Title:        "Low Priority Task",
-			Priority:     types.PriorityLow,
-			RiskLevel:    types.RiskLow,
+			ID:            "low-priority",
+			Title:         "Low Priority Task",
+			Priority:      types.PriorityLow,
+			RiskLevel:     types.RiskLow,
 			BusinessValue: 2,
-			Complexity:   types.BasicComplexityHigh,
-			Effort:       8,
+			Complexity:    types.BasicComplexityHigh,
+			Effort:        8,
 			TechnicalDebt: 2,
 		},
 		{
-			ID:           "high-priority",
-			Title:        "High Priority Task",
-			Priority:     types.PriorityHigh,
-			RiskLevel:    types.RiskHigh,
+			ID:            "high-priority",
+			Title:         "High Priority Task",
+			Priority:      types.PriorityHigh,
+			RiskLevel:     types.RiskHigh,
 			BusinessValue: 9,
-			Complexity:   types.BasicComplexityLow,
-			Effort:       3,
+			Complexity:    types.BasicComplexityLow,
+			Effort:        3,
 			TechnicalDebt: 5,
 		},
 		{
-			ID:           "medium-priority",
-			Title:        "Medium Priority Task",
-			Priority:     types.PriorityMedium,
-			RiskLevel:    types.RiskMedium,
+			ID:            "medium-priority",
+			Title:         "Medium Priority Task",
+			Priority:      types.PriorityMedium,
+			RiskLevel:     types.RiskMedium,
 			BusinessValue: 5,
-			Complexity:   types.BasicComplexityMedium,
-			Effort:       5,
+			Complexity:    types.BasicComplexityMedium,
+			Effort:        5,
 			TechnicalDebt: 2,
 		},
 	}
@@ -204,13 +204,13 @@ func TestIntegration_PriorityViewAndVisualization_Unique(t *testing.T) {
 	engine := priority.NewEngine()
 	items := []types.RoadmapItem{
 		{
-			ID:           "integration-test-1",
-			Title:        "Integration Test Task",
-			Priority:     types.PriorityHigh,
-			RiskLevel:    types.RiskMedium,
+			ID:            "integration-test-1",
+			Title:         "Integration Test Task",
+			Priority:      types.PriorityHigh,
+			RiskLevel:     types.RiskMedium,
 			BusinessValue: 8,
-			Complexity:   types.BasicComplexityMedium,
-			Effort:       3,
+			Complexity:    types.BasicComplexityMedium,
+			Effort:        3,
 			TechnicalDebt: 2,
 		},
 	}
@@ -244,14 +244,14 @@ func TestPriorityEngine_ExtremeValues(t *testing.T) {
 
 	// Test avec des valeurs extrêmes
 	item := types.RoadmapItem{
-		ID:           "extreme-test",
-		Title:        "Extreme Value Task",
-		Priority:     types.PriorityHigh,
-		RiskLevel:    types.RiskHigh,
+		ID:            "extreme-test",
+		Title:         "Extreme Value Task",
+		Priority:      types.PriorityHigh,
+		RiskLevel:     types.RiskHigh,
 		BusinessValue: 1000, // Valeur extrême
-		Complexity:   types.BasicComplexityLow,
-		Effort:       0,     // Effort nul
-		TechnicalDebt: -1,   // Dette technique négative (invalide)
+		Complexity:    types.BasicComplexityLow,
+		Effort:        0,  // Effort nul
+		TechnicalDebt: -1, // Dette technique négative (invalide)
 	}
 
 	_, err := e.Calculate(item)
@@ -261,13 +261,13 @@ func TestPriorityEngine_ExtremeValues(t *testing.T) {
 
 	// Test avec des valeurs minimales
 	item = types.RoadmapItem{
-		ID:           "minimal-test",
-		Title:        "Minimal Value Task",
-		Priority:     types.PriorityLow,
-		RiskLevel:    types.RiskLow,
+		ID:            "minimal-test",
+		Title:         "Minimal Value Task",
+		Priority:      types.PriorityLow,
+		RiskLevel:     types.RiskLow,
 		BusinessValue: 0,
-		Complexity:   types.BasicComplexityHigh,
-		Effort:       1,
+		Complexity:    types.BasicComplexityHigh,
+		Effort:        1,
 		TechnicalDebt: 0,
 	}
 

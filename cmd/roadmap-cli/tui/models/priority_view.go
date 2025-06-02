@@ -43,10 +43,10 @@ func NewPriorityView(engine *priority.Engine, items []types.RoadmapItem) *Priori
 		selected:   0,
 		active:     false,
 	}
-	
+
 	// Calculate priorities for all items
 	pv.calculatePriorities()
-	
+
 	return pv
 }
 
@@ -62,7 +62,7 @@ func (pv *PriorityView) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if !pv.active {
 			return pv, nil
 		}
-		
+
 		switch msg.String() {
 		case "up", "k":
 			if pv.selected > 0 {
@@ -82,15 +82,15 @@ func (pv *PriorityView) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return PriorityDetailMsg{ItemID: pv.items[pv.selected].ID}
 			})
 		}
-		
+
 	case tea.WindowSizeMsg:
 		pv.width = msg.Width
 		pv.height = msg.Height
-		
+
 	case PriorityRefreshMsg:
 		pv.calculatePriorities()
 	}
-	
+
 	return pv, nil
 }
 
@@ -99,7 +99,7 @@ func (pv *PriorityView) View() string {
 	if !pv.active {
 		return ""
 	}
-	
+
 	switch pv.viewMode {
 	case PriorityViewList:
 		return pv.renderListView()
@@ -148,93 +148,93 @@ func (pv *PriorityView) cycleViewMode() {
 // renderListView renders the priority list view
 func (pv *PriorityView) renderListView() string {
 	var lines []string
-	
+
 	// Header
 	headerStyle := lipgloss.NewStyle().
 		Bold(true).
 		Foreground(lipgloss.Color("39")).
 		Border(lipgloss.NormalBorder(), false, false, true, false).
 		Padding(0, 1)
-	
+
 	lines = append(lines, headerStyle.Render("Priority Rankings"))
 	lines = append(lines, "")
-	
+
 	// Sort items by priority
 	sortedItems := pv.getSortedItemsByPriority()
-	
+
 	for i, item := range sortedItems {
 		priority := pv.priorities[item.ID]
-		
+
 		// Style based on selection
 		style := lipgloss.NewStyle()
 		if i == pv.selected {
 			style = style.Background(lipgloss.Color("240"))
 		}
-		
+
 		// Priority score color
 		scoreColor := pv.getScoreColor(priority.Score)
 		scoreStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(scoreColor))
-		
+
 		line := fmt.Sprintf("%s %s %s",
 			scoreStyle.Render(fmt.Sprintf("%.2f", priority.Score)),
 			pv.getPriorityBar(priority.Score),
 			item.Title)
-		
+
 		lines = append(lines, style.Render(line))
 	}
-	
+
 	// Instructions
 	lines = append(lines, "")
 	instructionsStyle := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("241")).
 		Italic(true)
-	
+
 	lines = append(lines, instructionsStyle.Render("↑/↓: Navigate • Tab: Change view • R: Refresh • Enter: Details"))
-	
+
 	return strings.Join(lines, "\n")
 }
 
 // renderGraphView renders ASCII bar chart of priorities
 func (pv *PriorityView) renderGraphView() string {
 	var lines []string
-	
+
 	headerStyle := lipgloss.NewStyle().
 		Bold(true).
 		Foreground(lipgloss.Color("39")).
 		Border(lipgloss.NormalBorder(), false, false, true, false).
 		Padding(0, 1)
-	
+
 	lines = append(lines, headerStyle.Render("Priority Graph"))
 	lines = append(lines, "")
-	
+
 	sortedItems := pv.getSortedItemsByPriority()
 	maxWidth := pv.width - 20 // Reserve space for labels and scores
-	
+
 	for i, item := range sortedItems {
 		if i >= 10 { // Show top 10 only
 			break
 		}
-		
+
 		priority := pv.priorities[item.ID]
 		barWidth := int(priority.Score * float64(maxWidth) / 10.0) // Assuming max score is 10
-		
+
 		style := lipgloss.NewStyle()
 		if i == pv.selected {
 			style = style.Background(lipgloss.Color("240"))
 		}
-		
+
 		scoreColor := pv.getScoreColor(priority.Score)
 		bar := strings.Repeat("█", barWidth)
 		coloredBar := lipgloss.NewStyle().Foreground(lipgloss.Color(scoreColor)).Render(bar)
-		
+
 		line := fmt.Sprintf("%-25s %s %.2f",
 			pv.truncateTitle(item.Title, 25),
 			coloredBar,
 			priority.Score)
-		
+
 		lines = append(lines, style.Render(line))
 	}
-	
+
 	return strings.Join(lines, "\n")
 }
 
@@ -245,27 +245,27 @@ func (pv *PriorityView) renderMatrixView() string {
 		Foreground(lipgloss.Color("39")).
 		Border(lipgloss.NormalBorder(), false, false, true, false).
 		Padding(0, 1)
-	
+
 	lines := []string{headerStyle.Render("Eisenhower Matrix")}
 	lines = append(lines, "")
-	
+
 	// Create 2x2 matrix
 	quadrants := pv.categorizeByUrgencyImportance()
-	
+
 	// High Importance
 	lines = append(lines, "                High Importance")
 	lines = append(lines, "    ┌─────────────────┬─────────────────┐")
 	lines = append(lines, fmt.Sprintf("H   │ DO (Urgent)     │ DECIDE (Plan)   │"))
-	lines = append(lines, fmt.Sprintf("i   │ %d items        │ %d items        │", 
+	lines = append(lines, fmt.Sprintf("i   │ %d items        │ %d items        │",
 		len(quadrants["urgent-important"]), len(quadrants["not-urgent-important"])))
 	lines = append(lines, "g   ├─────────────────┼─────────────────┤")
 	lines = append(lines, fmt.Sprintf("h   │ DELEGATE        │ DELETE          │"))
-	lines = append(lines, fmt.Sprintf("    │ %d items        │ %d items        │", 
+	lines = append(lines, fmt.Sprintf("    │ %d items        │ %d items        │",
 		len(quadrants["urgent-not-important"]), len(quadrants["not-urgent-not-important"])))
 	lines = append(lines, "    └─────────────────┴─────────────────┘")
 	lines = append(lines, "    Low               High")
 	lines = append(lines, "          Urgency")
-	
+
 	return strings.Join(lines, "\n")
 }
 
@@ -274,31 +274,31 @@ func (pv *PriorityView) renderFactorsView() string {
 	if pv.selected >= len(pv.items) {
 		return "No item selected"
 	}
-	
+
 	item := pv.items[pv.selected]
 	priority := pv.priorities[item.ID]
-	
+
 	headerStyle := lipgloss.NewStyle().
 		Bold(true).
 		Foreground(lipgloss.Color("39")).
 		Border(lipgloss.NormalBorder(), false, false, true, false).
 		Padding(0, 1)
-	
+
 	lines := []string{headerStyle.Render(fmt.Sprintf("Priority Factors: %s", item.Title))}
 	lines = append(lines, "")
-	
+
 	// Display factors
 	for factor, value := range priority.Factors {
 		bar := pv.getFactorBar(value)
 		line := fmt.Sprintf("%-15s %s %.2f", string(factor), bar, value)
 		lines = append(lines, line)
 	}
-	
+
 	lines = append(lines, "")
 	lines = append(lines, fmt.Sprintf("Overall Score: %.2f", priority.Score))
 	lines = append(lines, fmt.Sprintf("Algorithm: %s", priority.Algorithm))
 	lines = append(lines, fmt.Sprintf("Last Calculated: %s", priority.LastCalculated.Format("15:04:05")))
-	
+
 	return strings.Join(lines, "\n")
 }
 
@@ -308,7 +308,7 @@ func (pv *PriorityView) getSortedItemsByPriority() []types.RoadmapItem {
 	// Sort items by priority score (descending)
 	sortedItems := make([]types.RoadmapItem, len(pv.items))
 	copy(sortedItems, pv.items)
-	
+
 	// Simple bubble sort for now
 	for i := 0; i < len(sortedItems)-1; i++ {
 		for j := 0; j < len(sortedItems)-i-1; j++ {
@@ -319,7 +319,7 @@ func (pv *PriorityView) getSortedItemsByPriority() []types.RoadmapItem {
 			}
 		}
 	}
-	
+
 	return sortedItems
 }
 
@@ -341,7 +341,7 @@ func (pv *PriorityView) getPriorityBar(score float64) string {
 	if barLength > 10 {
 		barLength = 10
 	}
-	return fmt.Sprintf("[%s%s]", 
+	return fmt.Sprintf("[%s%s]",
 		strings.Repeat("█", barLength),
 		strings.Repeat("░", 10-barLength))
 }
@@ -351,7 +351,7 @@ func (pv *PriorityView) getFactorBar(value float64) string {
 	if barLength > 20 {
 		barLength = 20
 	}
-	return fmt.Sprintf("[%s%s]", 
+	return fmt.Sprintf("[%s%s]",
 		strings.Repeat("█", barLength),
 		strings.Repeat("░", 20-barLength))
 }
@@ -370,11 +370,11 @@ func (pv *PriorityView) categorizeByUrgencyImportance() map[string][]types.Roadm
 		"not-urgent-important":     {},
 		"not-urgent-not-important": {},
 	}
-		for _, item := range pv.items {
+	for _, item := range pv.items {
 		priority := pv.priorities[item.ID]
 		urgency := priority.Factors["urgency"]
 		importance := priority.Factors["impact"]
-		
+
 		key := ""
 		if urgency > 0.5 && importance > 0.5 {
 			key = "urgent-important"
@@ -385,10 +385,10 @@ func (pv *PriorityView) categorizeByUrgencyImportance() map[string][]types.Roadm
 		} else {
 			key = "not-urgent-not-important"
 		}
-		
+
 		quadrants[key] = append(quadrants[key], item)
 	}
-	
+
 	return quadrants
 }
 

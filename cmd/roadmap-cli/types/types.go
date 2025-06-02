@@ -132,12 +132,12 @@ type EnrichedItemOptions struct {
 
 // Roadmap represents a complete roadmap with metadata
 type Roadmap struct {
-	ID          string        `json:"id"`
-	Title       string        `json:"title"`
-	Description string        `json:"description"`
-	Version     string        `json:"version"`
-	CreatedAt   time.Time     `json:"created_at"`
-	UpdatedAt   time.Time     `json:"updated_at"`
-	Items       []RoadmapItem `json:"items"`
+	ID          string                 `json:"id"`
+	Title       string                 `json:"title"`
+	Description string                 `json:"description"`
+	Version     string                 `json:"version"`
+	CreatedAt   time.Time              `json:"created_at"`
+	UpdatedAt   time.Time              `json:"updated_at"`
+	Items       []RoadmapItem          `json:"items"`
 	Metadata    map[string]interface{} `json:"metadata,omitempty"`
 }

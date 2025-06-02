@@ -27,15 +27,15 @@ const (
 
 // RoadmapModel is the main bubbletea model
 type RoadmapModel struct {
-	items              []types.RoadmapItem
-	selectedIndex      int
-	currentView        ViewMode
-	priorityMode       PriorityMode
-	width              int
-	height             int
-	quitting           bool
-	showDetails        bool // Toggle for showing detailed information
-	
+	items         []types.RoadmapItem
+	selectedIndex int
+	currentView   ViewMode
+	priorityMode  PriorityMode
+	width         int
+	height        int
+	quitting      bool
+	showDetails   bool // Toggle for showing detailed information
+
 	// Priority engine and components
 	priorityEngine     *priority.Engine
 	priorityView       *models.PriorityView

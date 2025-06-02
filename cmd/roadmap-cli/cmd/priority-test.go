@@ -26,7 +26,7 @@ func main() {
 
 	// Create test data
 	testItems := createTestData()
-	
+
 	// Test all algorithms
 	algorithms := []priority.PriorityCalculator{
 		priority.NewEisenhowerCalculator(),
@@ -46,7 +46,7 @@ func main() {
 		for _, item := range testItems {
 			result := testAlgorithm(algorithm, item)
 			allResults = append(allResults, result)
-			
+
 			if result.Success {
 				fmt.Printf("✅ %s: Score %.2f\n", result.TaskTitle, result.Score)
 				displayFactors(result.Factors)
@@ -59,13 +59,13 @@ func main() {
 
 	// Display summary
 	displaySummary(allResults)
-	
+
 	// Test priority engine integration
 	testPriorityEngine(testItems)
-	
+
 	// Test weighting configuration
 	testWeightingConfig()
-	
+
 	// Performance benchmarks
 	runPerformanceBenchmarks(testItems)
 }
@@ -73,7 +73,7 @@ func main() {
 // createTestData creates sample roadmap items for testing
 func createTestData() []types.RoadmapItem {
 	now := time.Now()
-	
+
 	return []types.RoadmapItem{
 		{
 			ID:            "urgent-bug",
@@ -150,28 +150,28 @@ func createTestData() []types.RoadmapItem {
 // testAlgorithm tests a single algorithm with a single item
 func testAlgorithm(algorithm priority.PriorityCalculator, item types.RoadmapItem) TestResult {
 	config := priority.DefaultWeightingConfig()
-	
+
 	result := TestResult{
 		AlgorithmName: algorithm.GetName(),
 		TaskTitle:     item.Title,
 	}
-	
+
 	priority, err := algorithm.Calculate(item, config)
 	if err != nil {
 		result.Success = false
 		result.Error = err
 		return result
 	}
-	
+
 	result.Success = true
 	result.Score = priority.Score
 	result.Factors = make(map[string]float64)
-	
+
 	// Convert PriorityFactor keys to strings for display
 	for factor, value := range priority.Factors {
 		result.Factors[string(factor)] = value
 	}
-	
+
 	return result
 }
 
@@ -189,14 +189,14 @@ func displayFactors(factors map[string]float64) {
 func displaySummary(results []TestResult) {
 	fmt.Println("📊 Test Summary")
 	fmt.Println("=" + string(make([]byte, 30)))
-	
+
 	algorithmStats := make(map[string]struct {
-		Total   int
-		Success int
-		Failed  int
+		Total    int
+		Success  int
+		Failed   int
 		AvgScore float64
 	})
-	
+
 	for _, result := range results {
 		stats := algorithmStats[result.AlgorithmName]
 		stats.Total++
@@ -208,12 +208,12 @@ func displaySummary(results []TestResult) {
 		}
 		algorithmStats[result.AlgorithmName] = stats
 	}
-	
+
 	for algorithm, stats := range algorithmStats {
 		if stats.Success > 0 {
 			stats.AvgScore /= float64(stats.Success)
 		}
-		
+
 		fmt.Printf("Algorithm: %s\n", algorithm)
 		fmt.Printf("  ✅ Success: %d/%d\n", stats.Success, stats.Total)
 		if stats.Failed > 0 {
@@ -230,9 +230,9 @@ func displaySummary(results []TestResult) {
 func testPriorityEngine(items []types.RoadmapItem) {
 	fmt.Println("🔧 Priority Engine Integration Test")
 	fmt.Println("-" + string(make([]byte, 35)))
-	
+
 	engine := priority.NewEngine()
-	
+
 	// Test basic functionality
 	fmt.Println("Testing basic calculate function...")
 	for _, item := range items {
@@ -242,7 +242,7 @@ func testPriorityEngine(items []types.RoadmapItem) {
 			fmt.Printf("❌ %s: %v\n", item.Title, err)
 		}
 	}
-	
+
 	// Test ranking
 	fmt.Println("\nTesting ranking function...")
 	ranked, err := engine.Rank(items)
@@ -256,7 +256,7 @@ func testPriorityEngine(items []types.RoadmapItem) {
 			}
 		}
 	}
-	
+
 	// Test algorithm switching
 	fmt.Println("\nTesting algorithm switching...")
 	algorithms := []priority.PriorityCalculator{
@@ -264,7 +264,7 @@ func testPriorityEngine(items []types.RoadmapItem) {
 		priority.NewWSJFCalculator(),
 		priority.NewHybridCalculator(),
 	}
-	
+
 	testItem := items[0] // Use first item
 	for _, algorithm := range algorithms {
 		engine.SetCalculator(algorithm)
@@ -274,7 +274,7 @@ func testPriorityEngine(items []types.RoadmapItem) {
 			fmt.Printf("❌ %s: %v\n", algorithm.GetName(), err)
 		}
 	}
-	
+
 	fmt.Println()
 }
 
@@ -282,7 +282,7 @@ func testPriorityEngine(items []types.RoadmapItem) {
 func testWeightingConfig() {
 	fmt.Println("⚖️  Weighting Configuration Test")
 	fmt.Println("-" + string(make([]byte, 32)))
-	
+
 	engine := priority.NewEngine()
 	testItem := types.RoadmapItem{
 		ID:            "test-config",
@@ -293,7 +293,7 @@ func testWeightingConfig() {
 		BusinessValue: 6,
 		RiskLevel:     types.RiskMedium,
 	}
-	
+
 	// Test different weighting configurations
 	configs := []struct {
 		Name   string
@@ -333,7 +333,7 @@ func testWeightingConfig() {
 			},
 		},
 	}
-	
+
 	for _, config := range configs {
 		engine.SetWeightingConfig(config.Config)
 		if priority, err := engine.Calculate(testItem); err == nil {
@@ -342,7 +342,7 @@ func testWeightingConfig() {
 			fmt.Printf("❌ %s: %v\n", config.Name, err)
 		}
 	}
-	
+
 	fmt.Println()
 }
 
@@ -350,9 +350,9 @@ func testWeightingConfig() {
 func runPerformanceBenchmarks(items []types.RoadmapItem) {
 	fmt.Println("🚀 Performance Benchmarks")
 	fmt.Println("-" + string(make([]byte, 25)))
-	
+
 	engine := priority.NewEngine()
-	
+
 	// Benchmark single calculations
 	start := time.Now()
 	for i := 0; i < 1000; i++ {
@@ -361,23 +361,23 @@ func runPerformanceBenchmarks(items []types.RoadmapItem) {
 		}
 	}
 	duration := time.Since(start)
-	
+
 	totalCalculations := 1000 * len(items)
 	avgPerCalc := duration / time.Duration(totalCalculations)
-	
+
 	fmt.Printf("✅ Calculated %d priorities in %v\n", totalCalculations, duration)
 	fmt.Printf("✅ Average per calculation: %v\n", avgPerCalc)
-	
+
 	// Benchmark ranking
 	start = time.Now()
 	for i := 0; i < 100; i++ {
 		engine.Rank(items)
 	}
 	rankDuration := time.Since(start)
-	
+
 	fmt.Printf("✅ Ranked %d item lists in %v\n", 100, rankDuration)
 	fmt.Printf("✅ Average per ranking: %v\n", rankDuration/100)
-	
+
 	if avgPerCalc < time.Millisecond {
 		fmt.Println("🎉 Performance: Excellent!")
 	} else if avgPerCalc < 10*time.Millisecond {
@@ -385,7 +385,7 @@ func runPerformanceBenchmarks(items []types.RoadmapItem) {
 	} else {
 		fmt.Println("⚠️  Performance: Could be improved")
 	}
-	
+
 	fmt.Println()
 }
 
@@ -397,7 +397,7 @@ func joinStrings(strs []string, sep string) string {
 	if len(strs) == 1 {
 		return strs[0]
 	}
-	
+
 	result := strs[0]
 	for i := 1; i < len(strs); i++ {
 		result += sep + strs[i]

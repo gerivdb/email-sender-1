@@ -38,7 +38,7 @@ func (c *CustomWeightedCalculator) Calculate(item types.RoadmapItem, config Weig
 	urgency := c.calculateUrgency(item)
 	factors[FactorUrgency] = urgency
 
-	impact := c.calculateImpact(item) 
+	impact := c.calculateImpact(item)
 	factors[FactorImpact] = impact
 
 	effort := c.calculateEffort(item)
@@ -62,9 +62,9 @@ func (c *CustomWeightedCalculator) Calculate(item types.RoadmapItem, config Weig
 		(risk * config.Risk)
 
 	// Normalize the score (weights might not sum to 1.0)
-	weightSum := config.Urgency + config.Impact + config.Effort + 
+	weightSum := config.Urgency + config.Impact + config.Effort +
 		config.Dependencies + config.BusinessValue + config.Risk
-	
+
 	if weightSum > 0 {
 		score = score / weightSum
 	}
@@ -81,7 +81,7 @@ func (c *CustomWeightedCalculator) Calculate(item types.RoadmapItem, config Weig
 // calculateUrgency determines urgency based on target date and priority
 func (c *CustomWeightedCalculator) calculateUrgency(item types.RoadmapItem) float64 {
 	now := time.Now()
-	
+
 	// Base urgency on explicit priority
 	var priorityScore float64
 	switch item.Priority {
@@ -100,7 +100,7 @@ func (c *CustomWeightedCalculator) calculateUrgency(item types.RoadmapItem) floa
 	// Adjust based on target date if available
 	if !item.TargetDate.IsZero() {
 		daysUntilTarget := item.TargetDate.Sub(now).Hours() / 24
-		
+
 		var timeScore float64
 		if daysUntilTarget < 0 {
 			timeScore = 1.2 // Overdue gets penalty boost
@@ -115,7 +115,7 @@ func (c *CustomWeightedCalculator) calculateUrgency(item types.RoadmapItem) floa
 		} else {
 			timeScore = 0.2 // Due later
 		}
-		
+
 		// Combine priority and time factors
 		combined := (priorityScore * 0.6) + (timeScore * 0.4)
 		if combined > 1.0 {
@@ -164,7 +164,7 @@ func (c *CustomWeightedCalculator) calculateImpact(item types.RoadmapItem) float
 	}
 
 	// Items with many tools/frameworks might be foundational
-	if len(item.Tools) + len(item.Frameworks) > 2 {
+	if len(item.Tools)+len(item.Frameworks) > 2 {
 		impact += 0.05
 	}
 
@@ -195,7 +195,7 @@ func (c *CustomWeightedCalculator) calculateEffort(item types.RoadmapItem) float
 	// Convert effort hours to score (inversely proportional)
 	// Using a logarithmic scale for better distribution
 	effortHours := float64(item.Effort)
-	
+
 	if effortHours <= 1 {
 		return 1.0
 	} else if effortHours <= 8 {
@@ -216,7 +216,7 @@ func (c *CustomWeightedCalculator) calculateEffort(item types.RoadmapItem) float
 // calculateDependencies calculates score based on dependencies
 func (c *CustomWeightedCalculator) calculateDependencies(item types.RoadmapItem) float64 {
 	numDeps := len(item.Prerequisites)
-	
+
 	if numDeps == 0 {
 		return 1.0 // No dependencies = higher score
 	}
@@ -243,7 +243,7 @@ func (c *CustomWeightedCalculator) calculateBusinessValue(item types.RoadmapItem
 	if item.BusinessValue <= 0 {
 		// Infer business value from other attributes
 		var inferredValue float64
-		
+
 		switch item.Priority {
 		case types.PriorityCritical:
 			inferredValue = 0.8

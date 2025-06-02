@@ -14,15 +14,15 @@ import (
 
 // InteractivePriorityWidget provides real-time priority adjustment
 type InteractivePriorityWidget struct {
-	engine       *priority.Engine
-	item         *types.RoadmapItem
-	config       priority.WeightingConfig
+	engine        *priority.Engine
+	item          *types.RoadmapItem
+	config        priority.WeightingConfig
 	selectedField int
-	editing      bool
-	editValue    string
-	width        int
-	height       int
-	active       bool
+	editing       bool
+	editValue     string
+	width         int
+	height        int
+	active        bool
 }
 
 // WeightField represents a configurable weight field
@@ -250,7 +250,7 @@ func (ipw *InteractivePriorityWidget) getWeightFields() []WeightField {
 // renderWeightField renders a single weight configuration field
 func (ipw *InteractivePriorityWidget) renderWeightField(field WeightField, selected bool) string {
 	style := lipgloss.NewStyle().Padding(0, 1)
-	
+
 	if selected {
 		style = style.Background(lipgloss.Color("240"))
 	}

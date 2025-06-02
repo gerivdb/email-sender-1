@@ -20,7 +20,7 @@ func (m *RoadmapModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
 		m.height = msg.Height
-		
+
 		// Update priority components
 		if m.priorityView != nil {
 			m.priorityView.Update(msg)
@@ -31,7 +31,7 @@ func (m *RoadmapModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.priorityViz != nil {
 			m.priorityViz.Update(msg)
 		}
-		
+
 		return m, nil
 	}
 
@@ -47,18 +47,18 @@ func (m *RoadmapModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			_, cmd := m.priorityViz.Update(msg)
 			cmds = append(cmds, cmd)
 		}
-		
+
 	case models.PriorityDetailMsg:
 		// Handle priority detail view
 		return m, nil
-		
+
 	case models.PriorityItemSelectedMsg:
 		// Update priority widget with selected item
 		if m.priorityWidget != nil {
 			_, cmd := m.priorityWidget.Update(msg)
 			cmds = append(cmds, cmd)
 		}
-		
+
 	case models.PriorityConfigUpdatedMsg:
 		// Priority configuration was updated
 		return m, tea.Cmd(func() tea.Msg {
@@ -73,7 +73,7 @@ func (m *RoadmapModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.currentView == ViewModePriority {
 			return m.handlePriorityModeKeys(msg)
 		}
-		
+
 		// Global key bindings
 		switch msg.String() {
 		case "ctrl+c", "q":
@@ -143,13 +143,13 @@ func (m *RoadmapModel) handlePriorityModeKeys(msg tea.KeyMsg) (*RoadmapModel, te
 			_, cmd := m.priorityView.Update(msg)
 			cmds = append(cmds, cmd)
 		}
-		
+
 	case PriorityModeConfig:
 		if m.priorityWidget != nil {
 			_, cmd := m.priorityWidget.Update(msg)
 			cmds = append(cmds, cmd)
 		}
-		
+
 	case PriorityModeVisualization:
 		if m.priorityViz != nil {
 			_, cmd := m.priorityViz.Update(msg)
@@ -161,7 +161,7 @@ func (m *RoadmapModel) handlePriorityModeKeys(msg tea.KeyMsg) (*RoadmapModel, te
 	switch msg.String() {
 	case "tab":
 		m.cyclePriorityMode()
-		
+
 	case "esc":
 		// Exit priority mode
 		m.currentView = ViewModeList
@@ -214,12 +214,12 @@ func (m *RoadmapModel) switchView() *RoadmapModel {
 	case ViewModePriority:
 		m.currentView = ViewModeList
 	}
-	
+
 	// Update component states when switching views
 	if m.currentView == ViewModePriority {
 		m.updatePriorityComponentStates()
 	}
-	
+
 	return m
 }
 

@@ -11,39 +11,39 @@ import (
 
 // PerformanceMonitor tracks system performance during parallel processing
 type PerformanceMonitor struct {
-	startTime         time.Time
-	samples           []PerformanceSample
-	mu                sync.RWMutex
-	stopChan          chan struct{}
-	sampleInterval    time.Duration
-	maxSamples        int
-	activeGoroutines  int
-	peakMemoryUsage   uint64
-	totalGCPauses     time.Duration
-	lastGCStats       runtime.MemStats
+	startTime        time.Time
+	samples          []PerformanceSample
+	mu               sync.RWMutex
+	stopChan         chan struct{}
+	sampleInterval   time.Duration
+	maxSamples       int
+	activeGoroutines int
+	peakMemoryUsage  uint64
+	totalGCPauses    time.Duration
+	lastGCStats      runtime.MemStats
 }
 
 // PerformanceSample represents a point-in-time performance measurement
 type PerformanceSample struct {
-	Timestamp    time.Time `json:"timestamp"`
-	Goroutines   int       `json:"goroutines"`
-	MemoryMB     uint64    `json:"memory_mb"`
-	GCPauseMS    float64   `json:"gc_pause_ms"`
-	CPUUsage     float64   `json:"cpu_usage"`
-	AllocRate    uint64    `json:"alloc_rate_mb_per_sec"`
+	Timestamp  time.Time `json:"timestamp"`
+	Goroutines int       `json:"goroutines"`
+	MemoryMB   uint64    `json:"memory_mb"`
+	GCPauseMS  float64   `json:"gc_pause_ms"`
+	CPUUsage   float64   `json:"cpu_usage"`
+	AllocRate  uint64    `json:"alloc_rate_mb_per_sec"`
 }
 
 // PerformanceReport provides a comprehensive performance summary
 type PerformanceReport struct {
-	Duration            time.Duration         `json:"duration"`
-	Samples             []PerformanceSample   `json:"samples"`
-	PeakMemoryMB        uint64                `json:"peak_memory_mb"`
-	AverageMemoryMB     uint64                `json:"average_memory_mb"`
-	PeakGoroutines      int                   `json:"peak_goroutines"`
-	TotalGCPauses       time.Duration         `json:"total_gc_pauses"`
-	AverageGCPauseMS    float64               `json:"average_gc_pause_ms"`
-	MemoryGrowthRate    float64               `json:"memory_growth_rate_mb_per_sec"`
-	Recommendations     []string              `json:"recommendations"`
+	Duration         time.Duration       `json:"duration"`
+	Samples          []PerformanceSample `json:"samples"`
+	PeakMemoryMB     uint64              `json:"peak_memory_mb"`
+	AverageMemoryMB  uint64              `json:"average_memory_mb"`
+	PeakGoroutines   int                 `json:"peak_goroutines"`
+	TotalGCPauses    time.Duration       `json:"total_gc_pauses"`
+	AverageGCPauseMS float64             `json:"average_gc_pause_ms"`
+	MemoryGrowthRate float64             `json:"memory_growth_rate_mb_per_sec"`
+	Recommendations  []string            `json:"recommendations"`
 }
 
 // NewPerformanceMonitor creates a new performance monitor
@@ -77,11 +77,11 @@ func (pm *PerformanceMonitor) Stop() PerformanceReport {
 func (pm *PerformanceMonitor) GetCurrentSample() PerformanceSample {
 	pm.mu.RLock()
 	defer pm.mu.RUnlock()
-	
+
 	if len(pm.samples) == 0 {
 		return PerformanceSample{}
 	}
-	
+
 	return pm.samples[len(pm.samples)-1]
 }
 
@@ -169,7 +169,7 @@ func (pm *PerformanceMonitor) generateReport() PerformanceReport {
 	defer pm.mu.RUnlock()
 
 	duration := time.Since(pm.startTime)
-	
+
 	report := PerformanceReport{
 		Duration:       duration,
 		Samples:        make([]PerformanceSample, len(pm.samples)),
@@ -217,24 +217,24 @@ func (pm *PerformanceMonitor) generateRecommendations(report PerformanceReport) 
 
 	// Memory recommendations
 	if report.PeakMemoryMB > 1000 { // 1GB
-		recommendations = append(recommendations, 
+		recommendations = append(recommendations,
 			"High memory usage detected. Consider reducing batch sizes or worker count.")
 	}
 
 	if report.MemoryGrowthRate > 50 { // 50MB/sec growth
-		recommendations = append(recommendations, 
+		recommendations = append(recommendations,
 			"Rapid memory growth detected. Check for memory leaks or increase GC frequency.")
 	}
 
 	// GC recommendations
 	if report.AverageGCPauseMS > 10 {
-		recommendations = append(recommendations, 
+		recommendations = append(recommendations,
 			"High GC pause times. Consider tuning GOGC environment variable or reducing allocation rate.")
 	}
 
 	// Goroutine recommendations
 	if report.PeakGoroutines > runtime.NumCPU()*10 {
-		recommendations = append(recommendations, 
+		recommendations = append(recommendations,
 			"High goroutine count. Consider reducing worker pool size to prevent resource contention.")
 	}
 
@@ -242,7 +242,7 @@ func (pm *PerformanceMonitor) generateRecommendations(report PerformanceReport) 
 	if len(report.Samples) > 0 {
 		lastSample := report.Samples[len(report.Samples)-1]
 		if lastSample.AllocRate > 100 { // 100MB/sec allocation
-			recommendations = append(recommendations, 
+			recommendations = append(recommendations,
 				"High allocation rate. Consider object pooling or reducing temporary object creation.")
 		}
 	}
@@ -283,7 +283,7 @@ func (rm *ResourceManager) ShouldReduceWorkers() bool {
 	}
 
 	sample := rm.monitor.GetCurrentSample()
-	
+
 	// Reduce workers if memory usage is too high
 	if sample.MemoryMB > rm.maxMemoryMB {
 		return true
@@ -314,7 +314,7 @@ func (rm *ResourceManager) GetOptimalWorkerCount() int {
 func (rm *ResourceManager) SetWorkerCount(count int) {
 	rm.mu.Lock()
 	defer rm.mu.Unlock()
-	
+
 	if count > 0 && count <= rm.maxWorkers {
 		rm.currentWorkers = count
 	}

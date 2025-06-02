@@ -54,7 +54,7 @@ func (m *RoadmapModel) renderHeader() string {
 	}
 
 	header := fmt.Sprintf("%s - %s", title, viewName)
-	
+
 	// Add priority indicator if enabled
 	if m.showPriorityScores && m.selectedIndex < len(m.items) {
 		selectedItem := m.items[m.selectedIndex]
@@ -174,19 +174,19 @@ func (m *RoadmapModel) renderPriorityView() string {
 			return m.priorityView.View()
 		}
 		return "Priority view not initialized"
-		
+
 	case PriorityModeConfig:
 		if m.priorityWidget != nil {
 			return m.priorityWidget.View()
 		}
 		return "Priority widget not initialized"
-		
+
 	case PriorityModeVisualization:
 		if m.priorityViz != nil {
 			return m.priorityViz.View()
 		}
 		return "Priority visualization not initialized"
-		
+
 	default:
 		return "Unknown priority mode"
 	}
@@ -194,13 +194,13 @@ func (m *RoadmapModel) renderPriorityView() string {
 
 func (m *RoadmapModel) renderStatusBar() string {
 	var parts []string
-	
+
 	// Current item info
 	if m.selectedIndex < len(m.items) {
 		selectedItem := m.items[m.selectedIndex]
-		parts = append(parts, fmt.Sprintf("Item %d/%d: %s", 
+		parts = append(parts, fmt.Sprintf("Item %d/%d: %s",
 			m.selectedIndex+1, len(m.items), selectedItem.Title))
-		
+
 		// Priority score if enabled
 		if m.showPriorityScores {
 			if priority, err := m.priorityEngine.Calculate(selectedItem); err == nil {
@@ -219,32 +219,32 @@ func (m *RoadmapModel) renderStatusBar() string {
 			}
 		}
 	}
-	
+
 	// Engine info
 	if m.priorityEngine != nil {
 		config := m.priorityEngine.GetWeightingConfig()
-		parts = append(parts, fmt.Sprintf("Engine: U:%.2f I:%.2f E:%.2f", 
+		parts = append(parts, fmt.Sprintf("Engine: U:%.2f I:%.2f E:%.2f",
 			config.Urgency, config.Impact, config.Effort))
 	}
-	
+
 	if len(parts) == 0 {
 		return ""
 	}
-	
+
 	statusStyle := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("241")).
 		Background(lipgloss.Color("235")).
 		Padding(0, 1)
-	
+
 	return statusStyle.Render(strings.Join(parts, " | "))
 }
 
 func (m *RoadmapModel) renderHelp() string {
 	var helpItems []string
-	
+
 	// Global commands
 	helpItems = append(helpItems, "j/k: navigate", "v: switch view", "q: quit")
-	
+
 	// Priority-specific commands
 	if m.currentView == ViewModePriority {
 		switch m.priorityMode {
@@ -259,7 +259,7 @@ func (m *RoadmapModel) renderHelp() string {
 		// General commands
 		helpItems = append(helpItems, "p: priority mode", "s: toggle scores", "enter: details", "r: refresh")
 	}
-	
+
 	help := strings.Join(helpItems, " • ")
 	return HelpStyle.Render(help)
 }

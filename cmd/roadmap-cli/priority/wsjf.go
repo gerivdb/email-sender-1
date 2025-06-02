@@ -56,7 +56,7 @@ func (c *WSJFCalculator) Calculate(item types.RoadmapItem, config WeightingConfi
 
 	// WSJF Calculation
 	costOfDelay := (userBusinessValue * 0.4) + (timeCriticality * 0.4) + (riskReduction * 0.2)
-	
+
 	// Prevent division by zero
 	if jobSize == 0 {
 		jobSize = 0.1
@@ -103,7 +103,7 @@ func (c *WSJFCalculator) calculateUserBusinessValue(item types.RoadmapItem) floa
 	}
 
 	// Boost value for items with many tools/frameworks (likely infrastructure)
-	if len(item.Tools) + len(item.Frameworks) > 3 {
+	if len(item.Tools)+len(item.Frameworks) > 3 {
 		baseValue += 0.1
 	}
 
@@ -122,7 +122,7 @@ func (c *WSJFCalculator) calculateUserBusinessValue(item types.RoadmapItem) floa
 // calculateTimeCriticality assesses how time-sensitive the item is
 func (c *WSJFCalculator) calculateTimeCriticality(item types.RoadmapItem) float64 {
 	now := time.Now()
-	
+
 	// Base criticality from priority
 	var baseCriticality float64
 	switch item.Priority {
@@ -141,7 +141,7 @@ func (c *WSJFCalculator) calculateTimeCriticality(item types.RoadmapItem) float6
 	// Adjust based on target date
 	if !item.TargetDate.IsZero() {
 		daysUntilTarget := item.TargetDate.Sub(now).Hours() / 24
-		
+
 		var timeMultiplier float64
 		if daysUntilTarget < 0 {
 			timeMultiplier = 1.5 // Overdue items get boost
@@ -154,7 +154,7 @@ func (c *WSJFCalculator) calculateTimeCriticality(item types.RoadmapItem) float6
 		} else {
 			timeMultiplier = 0.8
 		}
-		
+
 		baseCriticality *= timeMultiplier
 	}
 
@@ -261,7 +261,7 @@ func (c *WSJFCalculator) calculateJobSize(item types.RoadmapItem) float64 {
 // calculateDependencies assesses dependency impact on priority
 func (c *WSJFCalculator) calculateDependencies(item types.RoadmapItem) float64 {
 	numDeps := len(item.Prerequisites)
-	
+
 	if numDeps == 0 {
 		return 1.0 // No dependencies = no penalty
 	}
@@ -279,7 +279,7 @@ func (c *WSJFCalculator) calculateDependencies(item types.RoadmapItem) float64 {
 func (c *WSJFCalculator) normalizeScore(wsjfScore float64) float64 {
 	// WSJF scores typically range from 0 to 10+
 	// We'll use a sigmoid-like function to normalize
-	
+
 	if wsjfScore <= 0 {
 		return 0
 	}
@@ -287,6 +287,6 @@ func (c *WSJFCalculator) normalizeScore(wsjfScore float64) float64 {
 	// Simple normalization: score / (score + 1)
 	// This gives us a nice curve that approaches 1 as score increases
 	normalized := wsjfScore / (wsjfScore + 1)
-	
+
 	return normalized
 }

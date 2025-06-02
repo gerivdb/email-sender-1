@@ -59,7 +59,7 @@ func (c *HybridCalculator) GetDescription() string {
 // Calculate computes priority using a hybrid approach
 func (c *HybridCalculator) Calculate(item types.RoadmapItem, config WeightingConfig) (TaskPriority, error) {
 	hybridConfig := DefaultHybridConfig()
-	
+
 	// Calculate priority using each algorithm
 	eisenhowerResult, err := c.eisenhower.Calculate(item, config)
 	if err != nil {
@@ -89,7 +89,7 @@ func (c *HybridCalculator) Calculate(item types.RoadmapItem, config WeightingCon
 
 	// Combine factors by averaging across algorithms
 	factors := make(map[PriorityFactor]float64)
-	
+
 	factors[FactorUrgency] = c.averageFactor(
 		eisenhowerResult.Factors[FactorUrgency],
 		moscowResult.Factors[FactorUrgency],
@@ -133,8 +133,8 @@ func (c *HybridCalculator) Calculate(item types.RoadmapItem, config WeightingCon
 	)
 
 	// Apply consensus adjustments
-	hybridScore = c.applyConsensusAdjustments(hybridScore, 
-		eisenhowerResult.Score, moscowResult.Score, 
+	hybridScore = c.applyConsensusAdjustments(hybridScore,
+		eisenhowerResult.Score, moscowResult.Score,
 		wsjfResult.Score, customResult.Score)
 
 	return TaskPriority{
@@ -224,7 +224,7 @@ func (c *HybridCalculator) calculateVariance(scores []float64) float64 {
 	}
 
 	variance := varianceSum / float64(len(scores))
-	
+
 	// Normalize variance to 0-1 range (assuming max variance is 0.25 for scores in 0-1 range)
 	normalizedVariance := variance / 0.25
 	if normalizedVariance > 1.0 {
@@ -269,9 +269,9 @@ func (c *HybridCalculator) GetAlgorithmScores(item types.RoadmapItem, config Wei
 func (c *HybridCalculator) SetHybridConfig(config HybridConfig) {
 	// Store config for future use (in a real implementation, this would be persisted)
 	// For now, we'll just validate that weights sum to approximately 1.0
-	total := config.EisenhowerWeight + config.MoSCoWWeight + 
+	total := config.EisenhowerWeight + config.MoSCoWWeight +
 		config.WSJFWeight + config.CustomWeightWeight
-	
+
 	if total < 0.9 || total > 1.1 {
 		// Auto-normalize if weights don't sum to 1
 		config.EisenhowerWeight /= total

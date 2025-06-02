@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/spf13/cobra"
-	tea "github.com/charmbracelet/bubbletea"
 	"email_sender/cmd/roadmap-cli/storage"
 	"email_sender/cmd/roadmap-cli/tui"
 	"email_sender/cmd/roadmap-cli/types"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/spf13/cobra"
 )
 
 // HierarchyCmd represents the hierarchy navigation command
@@ -54,33 +54,33 @@ func runHierarchyNavigator(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load roadmap: %v", err)
 	}
-	
+
 	// Convert to advanced roadmap (simplified conversion for now)
 	advancedRoadmap := convertToAdvancedRoadmap(basicRoadmap)
-	
+
 	if advancedRoadmap.TotalItems == 0 {
 		return fmt.Errorf("no items found in roadmap. Use 'ingest-advanced' to import roadmap data first")
 	}
-	
+
 	// Create and run the TUI
 	model := tui.NewHierarchyModel(advancedRoadmap)
-	
+
 	// Apply command line options
 	if startAtLevel > 1 && startAtLevel <= advancedRoadmap.MaxDepth {
 		// TODO: Set starting level and path
 	}
-	
+
 	program := tea.NewProgram(model, tea.WithAltScreen())
-	
+
 	fmt.Printf("Launching hierarchy navigator for roadmap: %s\n", advancedRoadmap.Name)
 	fmt.Printf("Total items: %d | Max depth: %d\n", advancedRoadmap.TotalItems, advancedRoadmap.MaxDepth)
 	fmt.Printf("Press '?' for help once the interface loads.\n\n")
-	
+
 	_, err = program.Run()
 	if err != nil {
 		return fmt.Errorf("error running TUI: %v", err)
 	}
-	
+
 	return nil
 }
 
@@ -98,9 +98,10 @@ func convertToAdvancedRoadmap(basic *types.Roadmap) *types.AdvancedRoadmap {
 		Hierarchy:   make(map[string][]string),
 		MaxDepth:    5, // Default max depth
 	}
-	
+
 	// Convert basic items to advanced items
-	for _, basicItem := range basic.Items {		advancedItem := types.AdvancedRoadmapItem{
+	for _, basicItem := range basic.Items {
+		advancedItem := types.AdvancedRoadmapItem{
 			ID:          basicItem.ID,
 			Title:       basicItem.Title,
 			Description: basicItem.Description,
@@ -108,7 +109,7 @@ func convertToAdvancedRoadmap(basic *types.Roadmap) *types.AdvancedRoadmap {
 			Priority:    string(basicItem.Priority),
 			CreatedAt:   basicItem.CreatedAt,
 			UpdatedAt:   basicItem.UpdatedAt,
-			
+
 			// Set default hierarchy (all items at level 1 for basic conversion)
 			Hierarchy: types.HierarchyLevel{
 				Level:    1,
@@ -117,25 +118,25 @@ func convertToAdvancedRoadmap(basic *types.Roadmap) *types.AdvancedRoadmap {
 				MaxDepth: 5,
 			},
 			HierarchyPath: []string{basicItem.Title},
-			
+
 			// Initialize empty technical specs
 			TechnicalSpec:         types.TechnicalSpec{},
 			ImplementationSteps:   []types.ImplementationStep{},
 			ComplexityMetrics:     types.ComplexityMetrics{},
 			TechnicalDependencies: []types.TechnicalDependency{},
 		}
-		
+
 		// Try to extract complexity from description
 		extractComplexityFromDescription(&advancedItem)
-		
+
 		advanced.Items = append(advanced.Items, advancedItem)
 	}
-	
+
 	advanced.TotalItems = len(advanced.Items)
-	
+
 	// Build hierarchy map
 	buildHierarchyMap(advanced)
-	
+
 	return advanced
 }
 
@@ -143,10 +144,10 @@ func convertToAdvancedRoadmap(basic *types.Roadmap) *types.AdvancedRoadmap {
 func extractComplexityFromDescription(item *types.AdvancedRoadmapItem) {
 	// Look for complexity indicators in description
 	description := item.Description
-	
+
 	// Simple heuristics for complexity
 	complexityScore := 3 // default
-	
+
 	if containsAny(description, []string{"simple", "basic", "trivial", "easy"}) {
 		complexityScore = 2
 	} else if containsAny(description, []string{"complex", "advanced", "difficult", "challenging"}) {
@@ -154,12 +155,12 @@ func extractComplexityFromDescription(item *types.AdvancedRoadmapItem) {
 	} else if containsAny(description, []string{"expert", "critical", "intricate", "sophisticated"}) {
 		complexityScore = 9
 	}
-	
+
 	item.ComplexityMetrics.Overall = types.ComplexityLevel{
 		Score: complexityScore,
 		Level: scoreToLevel(complexityScore),
 	}
-	
+
 	// Set technical complexity as well
 	item.ComplexityMetrics.Technical = item.ComplexityMetrics.Overall
 }

@@ -11,31 +11,31 @@ import (
 type PriorityFactor string
 
 const (
-	FactorUrgency      PriorityFactor = "urgency"
-	FactorImpact       PriorityFactor = "impact"
-	FactorEffort       PriorityFactor = "effort"
-	FactorDependencies PriorityFactor = "dependencies"
+	FactorUrgency       PriorityFactor = "urgency"
+	FactorImpact        PriorityFactor = "impact"
+	FactorEffort        PriorityFactor = "effort"
+	FactorDependencies  PriorityFactor = "dependencies"
 	FactorBusinessValue PriorityFactor = "business_value"
-	FactorRisk         PriorityFactor = "risk"
+	FactorRisk          PriorityFactor = "risk"
 )
 
 // TaskPriority represents the calculated priority for a task
 type TaskPriority struct {
-	TaskID        string                     `json:"task_id"`
-	Score         float64                    `json:"score"`
-	Factors       map[PriorityFactor]float64 `json:"factors"`
-	LastCalculated time.Time                 `json:"last_calculated"`
-	Algorithm     string                     `json:"algorithm"`
+	TaskID         string                     `json:"task_id"`
+	Score          float64                    `json:"score"`
+	Factors        map[PriorityFactor]float64 `json:"factors"`
+	LastCalculated time.Time                  `json:"last_calculated"`
+	Algorithm      string                     `json:"algorithm"`
 }
 
 // WeightingConfig represents user-customizable weights for priority factors
 type WeightingConfig struct {
-	Urgency      float64 `json:"urgency"`      // Weight for urgency (0.0-1.0)
-	Impact       float64 `json:"impact"`       // Weight for impact (0.0-1.0)
-	Effort       float64 `json:"effort"`       // Weight for effort (0.0-1.0)
-	Dependencies float64 `json:"dependencies"` // Weight for dependencies (0.0-1.0)
+	Urgency       float64 `json:"urgency"`        // Weight for urgency (0.0-1.0)
+	Impact        float64 `json:"impact"`         // Weight for impact (0.0-1.0)
+	Effort        float64 `json:"effort"`         // Weight for effort (0.0-1.0)
+	Dependencies  float64 `json:"dependencies"`   // Weight for dependencies (0.0-1.0)
 	BusinessValue float64 `json:"business_value"` // Weight for business value (0.0-1.0)
-	Risk         float64 `json:"risk"`         // Weight for risk (0.0-1.0)
+	Risk          float64 `json:"risk"`           // Weight for risk (0.0-1.0)
 }
 
 // DefaultWeightingConfig returns the default weighting configuration

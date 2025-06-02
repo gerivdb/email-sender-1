@@ -23,10 +23,10 @@ func NewRoadmapModel(mode string) *RoadmapModel {
 
 	// Load items from database
 	items := loadItemsFromDB()
-	
+
 	// Initialize priority engine
 	engine := priority.NewEngine()
-	
+
 	// Create priority components
 	priorityView := models.NewPriorityView(engine, items)
 	priorityWidget := models.NewInteractivePriorityWidget(engine)

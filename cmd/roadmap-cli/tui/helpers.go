@@ -149,7 +149,7 @@ func (m *RoadmapModel) renderKanbanView() string {
 			}
 
 			// Enhanced kanban item display
-			itemText := fmt.Sprintf("• %s", item.Title)			// Add metadata indicators
+			itemText := fmt.Sprintf("• %s", item.Title) // Add metadata indicators
 			metaIndicators := []string{}
 			if item.Priority == types.PriorityHigh || item.Priority == types.PriorityCritical {
 				metaIndicators = append(metaIndicators, "🔥")

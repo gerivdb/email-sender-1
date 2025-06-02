@@ -11,7 +11,7 @@ import (
 
 // StorageManager manages roadmap data persistence
 type StorageManager struct {
-	storageDir string
+	storageDir  string
 	jsonStorage *JSONStorage
 }
 
@@ -19,14 +19,14 @@ type StorageManager struct {
 func NewStorageManager() *StorageManager {
 	homeDir, _ := os.UserHomeDir()
 	storageDir := filepath.Join(homeDir, ".roadmap-cli")
-	
+
 	// Ensure storage directory exists
 	os.MkdirAll(storageDir, 0755)
-	
+
 	// Initialize JSON storage
 	jsonPath := filepath.Join(storageDir, "roadmap.json")
 	jsonStorage, _ := NewJSONStorage(jsonPath)
-	
+
 	return &StorageManager{
 		storageDir:  storageDir,
 		jsonStorage: jsonStorage,
@@ -41,19 +41,19 @@ func (sm *StorageManager) GetStorageDir() string {
 // SaveRoadmap saves a roadmap to storage
 func (sm *StorageManager) SaveRoadmap(roadmap *types.Roadmap) error {
 	roadmapFile := filepath.Join(sm.storageDir, "roadmap.json")
-	
+
 	data, err := json.MarshalIndent(roadmap, "", "  ")
 	if err != nil {
 		return err
 	}
-	
+
 	return os.WriteFile(roadmapFile, data, 0644)
 }
 
 // LoadRoadmap loads a roadmap from storage
 func (sm *StorageManager) LoadRoadmap() (*types.Roadmap, error) {
 	roadmapFile := filepath.Join(sm.storageDir, "roadmap.json")
-	
+
 	if _, err := os.Stat(roadmapFile); os.IsNotExist(err) {
 		// Return empty roadmap if file doesn't exist
 		return &types.Roadmap{
@@ -63,37 +63,37 @@ func (sm *StorageManager) LoadRoadmap() (*types.Roadmap, error) {
 			Items:     []types.RoadmapItem{},
 		}, nil
 	}
-	
+
 	data, err := os.ReadFile(roadmapFile)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var roadmap types.Roadmap
 	err = json.Unmarshal(data, &roadmap)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &roadmap, nil
 }
 
 // SaveAdvancedRoadmap saves an advanced roadmap to storage
 func (sm *StorageManager) SaveAdvancedRoadmap(roadmap *types.AdvancedRoadmap) error {
 	roadmapFile := filepath.Join(sm.storageDir, "advanced_roadmap.json")
-	
+
 	data, err := json.MarshalIndent(roadmap, "", "  ")
 	if err != nil {
 		return err
 	}
-	
+
 	return os.WriteFile(roadmapFile, data, 0644)
 }
 
 // LoadAdvancedRoadmap loads an advanced roadmap from storage
 func (sm *StorageManager) LoadAdvancedRoadmap() (*types.AdvancedRoadmap, error) {
 	roadmapFile := filepath.Join(sm.storageDir, "advanced_roadmap.json")
-	
+
 	if _, err := os.Stat(roadmapFile); os.IsNotExist(err) {
 		// Return empty advanced roadmap if file doesn't exist
 		return &types.AdvancedRoadmap{
@@ -107,18 +107,18 @@ func (sm *StorageManager) LoadAdvancedRoadmap() (*types.AdvancedRoadmap, error) 
 			MaxDepth:    5,
 		}, nil
 	}
-	
+
 	data, err := os.ReadFile(roadmapFile)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var roadmap types.AdvancedRoadmap
 	err = json.Unmarshal(data, &roadmap)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &roadmap, nil
 }
 
@@ -130,7 +130,7 @@ func (sm *StorageManager) CreateItem(title, description, status, priority string
 	if err != nil {
 		return nil, err
 	}
-	
+
 	// Update status if provided and different from default
 	if status != "" && status != string(types.StatusPlanned) {
 		err = sm.jsonStorage.UpdateItemStatus(item.ID, status, 0)
@@ -139,7 +139,7 @@ func (sm *StorageManager) CreateItem(title, description, status, priority string
 		}
 		item.Status = types.Status(status)
 	}
-	
+
 	return item, nil
 }
 

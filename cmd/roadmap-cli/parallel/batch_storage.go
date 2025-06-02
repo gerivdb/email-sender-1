@@ -28,14 +28,14 @@ func DefaultBatchStorageConfig() BatchStorageConfig {
 
 // BatchStorage provides optimized batch storage operations
 type BatchStorage struct {
-	storage       *storage.JSONStorage
-	config        BatchStorageConfig
-	buffer        []types.RoadmapItem
-	mu            sync.Mutex
-	flushTimer    *time.Timer
-	closed        bool
-	flushChan     chan struct{}
-	closeChan     chan struct{}
+	storage        *storage.JSONStorage
+	config         BatchStorageConfig
+	buffer         []types.RoadmapItem
+	mu             sync.Mutex
+	flushTimer     *time.Timer
+	closed         bool
+	flushChan      chan struct{}
+	closeChan      chan struct{}
 	storageMetrics BatchStorageMetrics
 }
 
@@ -140,10 +140,10 @@ func (bs *BatchStorage) Flush() error {
 func (bs *BatchStorage) Close() error {
 	bs.mu.Lock()
 	bs.closed = true
-	
+
 	// Flush any remaining items
 	err := bs.doFlush()
-	
+
 	bs.mu.Unlock()
 
 	// Signal close to flush worker
@@ -156,12 +156,12 @@ func (bs *BatchStorage) Close() error {
 func (bs *BatchStorage) GetMetrics() BatchStorageMetrics {
 	bs.mu.Lock()
 	defer bs.mu.Unlock()
-	
+
 	metrics := bs.storageMetrics
 	if metrics.BatchesWritten > 0 {
 		metrics.AvgBatchTime = metrics.TotalDuration / time.Duration(metrics.BatchesWritten)
 	}
-	
+
 	return metrics
 }
 
@@ -179,7 +179,7 @@ func (bs *BatchStorage) resetFlushTimer() {
 	if bs.flushTimer != nil {
 		bs.flushTimer.Stop()
 	}
-	
+
 	bs.flushTimer = time.AfterFunc(bs.config.FlushInterval, func() {
 		bs.mu.Lock()
 		bs.storageMetrics.TimerFlushes++
@@ -258,7 +258,7 @@ func (bs *BatchStorage) flushWorker() {
 			bs.mu.Lock()
 			err := bs.doFlush()
 			bs.mu.Unlock()
-			
+
 			if err != nil {
 				fmt.Printf("⚠️  Batch flush error: %v\n", err)
 			}

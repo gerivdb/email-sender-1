@@ -517,7 +517,8 @@ func (p *PlanIngester) extractStatus(content string) types.Status {
 }
 
 // extractComplexity extracts complexity level from content
-func (p *PlanIngester) extractComplexity(content string) types.BasicComplexity {	content = strings.ToLower(content)
+func (p *PlanIngester) extractComplexity(content string) types.BasicComplexity {
+	content = strings.ToLower(content)
 	if strings.Contains(content, "complexe") || strings.Contains(content, "complex") || strings.Contains(content, "difficile") {
 		return types.BasicComplexityHigh
 	}

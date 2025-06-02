@@ -290,6 +290,14 @@ Consultez le guide du développeur dans `projet/guides/developer/`.
 
 Les tests sont disponibles dans le dossier `development/testing/`.
 
+## Standards de validation et correction Go
+
+Ce projet applique systématiquement les méthodes décrites dans [`.github/docs/guides/méthodes-validation-correction-go.md`](.github/docs/guides/méthodes-validation-correction-go.md) pour garantir la qualité du code Go.
+
+- Un workflow GitHub Actions ([.github/workflows/go-quality.yml](.github/workflows/go-quality.yml)) applique ces méthodes à chaque push ou pull request.
+- Le Makefile et la configuration VS Code sont alignés sur ces standards.
+- Toute contribution doit respecter ce guide et passer les vérifications automatiques.
+
 ## Licence
 
 Ce projet est sous licence MIT.

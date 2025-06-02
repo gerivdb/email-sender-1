@@ -36,7 +36,7 @@ func (c *MoSCoWCalculator) GetName() string {
 	return c.name
 }
 
-// GetDescription returns the calculator description  
+// GetDescription returns the calculator description
 func (c *MoSCoWCalculator) GetDescription() string {
 	return c.description
 }
@@ -47,7 +47,7 @@ func (c *MoSCoWCalculator) Calculate(item types.RoadmapItem, config WeightingCon
 
 	// Determine MoSCoW category from item data
 	moscowCategory := c.determineMoSCoWCategory(item)
-	
+
 	// Base score from MoSCoW category
 	baseScore := c.getMoSCoWScore(moscowCategory)
 	factors[FactorImpact] = baseScore
@@ -70,11 +70,11 @@ func (c *MoSCoWCalculator) Calculate(item types.RoadmapItem, config WeightingCon
 
 	// Weighted final score with MoSCoW as primary factor
 	score := (baseScore * 0.5) + // MoSCoW category gets 50% weight
-		(urgency*config.Urgency*0.2) +
-		(effort*config.Effort*0.15) +
-		(dependencies*config.Dependencies*0.05) +
-		(businessValue*config.BusinessValue*0.08) +
-		(risk*config.Risk*0.02)
+		(urgency * config.Urgency * 0.2) +
+		(effort * config.Effort * 0.15) +
+		(dependencies * config.Dependencies * 0.05) +
+		(businessValue * config.BusinessValue * 0.08) +
+		(risk * config.Risk * 0.02)
 
 	return TaskPriority{
 		TaskID:         item.ID,
@@ -165,7 +165,7 @@ func (c *MoSCoWCalculator) getMoSCoWScore(category MoSCoWCategory) float64 {
 // Helper methods (reused from Eisenhower calculator)
 func (c *MoSCoWCalculator) calculateUrgency(item types.RoadmapItem) float64 {
 	now := time.Now()
-	
+
 	var priorityScore float64
 	switch item.Priority {
 	case types.PriorityCritical:
@@ -182,7 +182,7 @@ func (c *MoSCoWCalculator) calculateUrgency(item types.RoadmapItem) float64 {
 
 	if !item.TargetDate.IsZero() {
 		daysUntilTarget := item.TargetDate.Sub(now).Hours() / 24
-		
+
 		var timeScore float64
 		if daysUntilTarget < 1 {
 			timeScore = 1.0
@@ -195,7 +195,7 @@ func (c *MoSCoWCalculator) calculateUrgency(item types.RoadmapItem) float64 {
 		} else {
 			timeScore = 0.2
 		}
-		
+
 		return (priorityScore * 0.6) + (timeScore * 0.4)
 	}
 
@@ -226,7 +226,7 @@ func (c *MoSCoWCalculator) calculateEffort(item types.RoadmapItem) float64 {
 
 func (c *MoSCoWCalculator) calculateDependencies(item types.RoadmapItem) float64 {
 	numDeps := len(item.Prerequisites)
-	
+
 	if numDeps == 0 {
 		return 1.0
 	}

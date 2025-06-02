@@ -53,9 +53,9 @@ func TestPlanIngester_Creation(t *testing.T) {
 
 func TestPlanChunk_Creation(t *testing.T) {
 	ingester := NewPlanIngester("", nil)
-	
+
 	ingester.createChunk("test-plan.md", "Test Header", "# Test Header", "header", 1, 1)
-	
+
 	if len(ingester.chunks) != 1 {
 		t.Fatalf("Expected 1 chunk, got %d", len(ingester.chunks))
 	}
@@ -78,7 +78,7 @@ func TestPlanIngester_ProcessMarkdown(t *testing.T) {
 	// Create a temporary markdown file for testing
 	tempDir := t.TempDir()
 	testFile := filepath.Join(tempDir, "test-plan.md")
-	
+
 	testContent := `# Main Header
 
 This is a section with some content.
@@ -102,7 +102,7 @@ This depends on completion of other tasks.`
 
 	ingester := NewPlanIngester("", nil)
 	ctx := context.Background()
-	
+
 	err = ingester.processPlanFile(ctx, testFile)
 	if err != nil {
 		t.Fatalf("Failed to process plan file: %v", err)
@@ -148,14 +148,14 @@ This depends on completion of other tasks.`
 
 func TestDependencyExtraction(t *testing.T) {
 	ingester := NewPlanIngester("", nil)
-	
+
 	// Add chunks with dependency patterns
 	ingester.createChunk("test.md", "Task 1", "This task depends on plan-dev-v15", "task", 0, 1)
 	ingester.createChunk("test.md", "Task 2", "Requires completion of \"Database Setup\"", "task", 0, 2)
 	ingester.createChunk("test.md", "Task 3", "Normal task without dependencies", "task", 0, 3)
 
 	dependenciesFound := ingester.extractDependencies()
-	
+
 	if dependenciesFound == 0 {
 		t.Error("No dependencies found, expected at least some")
 	}
@@ -177,7 +177,7 @@ func TestDependencyExtraction(t *testing.T) {
 func TestRAGIndexing(t *testing.T) {
 	mockRAG := &MockRAGClient{healthy: true}
 	ingester := NewPlanIngester("", mockRAG)
-	
+
 	// Add some test chunks
 	ingester.createChunk("test.md", "Header 1", "# Test Header", "header", 1, 1)
 	ingester.createChunk("test.md", "Task 1", "- [ ] Do something", "task", 0, 2)
@@ -197,7 +197,7 @@ func TestRAGIndexing(t *testing.T) {
 		if !strings.Contains(item.Title, "test.md") {
 			t.Error("Indexed title should contain plan file name")
 		}
-		
+
 		if item.Metadata["source"] != "plan_ingestion" {
 			t.Error("Indexed item should have source metadata")
 		}
@@ -207,7 +207,7 @@ func TestRAGIndexing(t *testing.T) {
 func TestRAGUnavailable(t *testing.T) {
 	mockRAG := &MockRAGClient{healthy: false}
 	ingester := NewPlanIngester("", mockRAG)
-	
+
 	// Add a test chunk
 	ingester.createChunk("test.md", "Header 1", "# Test Header", "header", 1, 1)
 
@@ -220,7 +220,7 @@ func TestRAGUnavailable(t *testing.T) {
 
 func TestSearchChunks(t *testing.T) {
 	ingester := NewPlanIngester("", nil)
-	
+
 	// Add test chunks
 	ingester.createChunk("test.md", "API Development", "Build REST API", "task", 0, 1)
 	ingester.createChunk("test.md", "Database Setup", "Configure database", "task", 0, 2)
@@ -228,7 +228,7 @@ func TestSearchChunks(t *testing.T) {
 
 	// Search for API-related chunks
 	results := ingester.SearchChunks("API")
-	
+
 	if len(results) != 1 {
 		t.Errorf("Expected 1 result for 'API', got %d", len(results))
 	}
@@ -246,7 +246,7 @@ func TestSearchChunks(t *testing.T) {
 
 func TestIngestionSummary(t *testing.T) {
 	ingester := NewPlanIngester("", nil)
-	
+
 	// Add varied test chunks
 	ingester.createChunk("plan1.md", "Header 1", "# Header", "header", 1, 1)
 	ingester.createChunk("plan1.md", "Task 1", "- [ ] Task", "task", 0, 2)
@@ -254,7 +254,7 @@ func TestIngestionSummary(t *testing.T) {
 	ingester.createChunk("plan2.md", "List Item", "- Item", "list_item", 0, 2)
 
 	summary := ingester.GetIngestionSummary()
-	
+
 	totalChunks, ok := summary["total_chunks"].(int)
 	if !ok || totalChunks != 4 {
 		t.Errorf("Expected 4 total chunks, got %v", summary["total_chunks"])

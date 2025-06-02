@@ -16,10 +16,10 @@ import (
 
 // RAGClient provides intelligent roadmap analysis using EMAIL_SENDER_1 RAG ecosystem
 type RAGClient struct {
-	qdrantURL    string
-	openaiURL    string
-	apiKey       string
-	client       *http.Client
+	qdrantURL      string
+	openaiURL      string
+	apiKey         string
+	client         *http.Client
 	collectionName string
 }
 
@@ -84,7 +84,7 @@ func (r *RAGClient) InitializeCollection(ctx context.Context) error {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	
+
 	resp, err := r.client.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to create collection: %w", err)
@@ -168,11 +168,11 @@ func (r *RAGClient) GetSimilarItems(ctx context.Context, query string, limit int
 			Context:     point.Payload,
 			GeneratedAt: time.Now(),
 		}
-		
+
 		if itemID, ok := point.Payload["item_id"].(string); ok {
 			insight.ItemID = itemID
 		}
-		
+
 		insights = append(insights, insight)
 	}
 
@@ -237,13 +237,13 @@ func (r *RAGClient) generateEmbedding(_ context.Context, text string) ([]float32
 	// For now, generate a mock embedding based on text content
 	// In production, this would call OpenAI's embedding API
 	vector := make([]float32, 384)
-	
+
 	// Simple hash-based vector generation for testing
 	hash := r.simpleHash(text)
 	for i := 0; i < 384; i++ {
 		vector[i] = float32((hash+i)%1000) / 1000.0
 	}
-	
+
 	return vector, nil
 }
 
@@ -265,7 +265,7 @@ func (r *RAGClient) upsertPoints(ctx context.Context, points []QDrantPoint) erro
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	
+
 	resp, err := r.client.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to upsert points: %w", err)
@@ -293,7 +293,7 @@ func (r *RAGClient) searchPoints(ctx context.Context, searchReq SearchRequest) (
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	
+
 	resp, err := r.client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to perform search: %w", err)
@@ -362,19 +362,19 @@ type MilestoneContext struct {
 // generateContext creates a textual context from roadmap items and milestones
 func generateContext(items []RoadmapItemContext, milestones []MilestoneContext) string {
 	var context strings.Builder
-	
+
 	// Add items context
 	for _, item := range items {
-		context.WriteString(fmt.Sprintf("Item: %s - %s [%s, %s]\n", 
+		context.WriteString(fmt.Sprintf("Item: %s - %s [%s, %s]\n",
 			item.Title, item.Description, item.Priority, item.Status))
 	}
-	
+
 	// Add milestones context
 	for _, milestone := range milestones {
-		context.WriteString(fmt.Sprintf("Milestone: %s - %s [%s]\n", 
+		context.WriteString(fmt.Sprintf("Milestone: %s - %s [%s]\n",
 			milestone.Title, milestone.Description, milestone.TargetDate.Format("2006-01-02")))
 	}
-	
+
 	return context.String()
 }
 
@@ -386,7 +386,7 @@ func (r *RAGClient) AnalyzeRoadmapSimilarities(ctx context.Context, items []Road
 
 	// Analyze similarities between roadmap items
 	insights := make([]RoadmapInsight, 0)
-	
+
 	for i, item := range items {
 		// Find similar items using vector search
 		query := fmt.Sprintf("%s %s", item.Title, item.Description)
@@ -422,14 +422,14 @@ func (r *RAGClient) DetectDependencies(ctx context.Context, items []RoadmapItemC
 	}
 
 	insights := make([]RoadmapInsight, 0)
-	
+
 	// Analyze each item for potential dependencies
 	for _, item := range items {
 		deps, err := r.AnalyzeDependencies(ctx, item.Title, item.Description)
 		if err != nil {
 			continue // Skip on error, don't fail entire analysis
 		}
-		
+
 		// Add item-specific context to dependency insights
 		for _, dep := range deps {
 			dep.ItemID = item.ID
