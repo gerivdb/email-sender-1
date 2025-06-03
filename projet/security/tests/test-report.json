@@ -1,0 +1,80 @@
+{
+  "TotalDuration": 569.8304,
+  "EndTime": "2025-06-03T11:46:08.324244+02:00",
+  "Summary": {
+    "PassedTests": 10,
+    "SkippedTests": 0,
+    "FailedTests": 4,
+    "TotalTests": 5
+  },
+  "TestSuites": {
+    "ScriptAnalyzer": {
+      "EndTime": "2025-06-03T11:46:07.9394304+02:00",
+      "TotalDuration": 30.2373,
+      "Status": "Passed",
+      "Tests": [
+        {
+          "Message": "Script analyzer trouvé à D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\tools\\security\\script-analyzer-v2.ps1",
+          "Status": "Passed",
+          "Duration": 13.0644,
+          "Name": "Script Analyzer Existence"
+        },
+        {
+          "Message": "Analyse du script sécurisé réussie",
+          "Status": "Passed",
+          "Duration": 1.5153,
+          "Name": "Script Analysis Execution"
+        }
+      ],
+      "Name": "ScriptAnalyzer",
+      "StartTime": "2025-06-03T11:46:07.9091931+02:00"
+    },
+    "Validation": {
+      "EndTime": "2025-06-03T11:46:08.2468+02:00",
+      "TotalDuration": 137.09,
+      "Status": "Failed",
+      "Tests": [
+        {
+          "Message": "Sections manquantes: WatchedFiles, Rules",
+          "Status": "Failed",
+          "Duration": 136.4862,
+          "Name": "Protection Configuration"
+        }
+      ],
+      "Name": "Validation",
+      "StartTime": "2025-06-03T11:46:08.10971+02:00"
+    },
+    "Integration": {
+      "EndTime": "2025-06-03T11:46:08.2888135+02:00",
+      "TotalDuration": 14.2345,
+      "Status": "Passed",
+      "Tests": [
+        {
+          "Message": "Tous les composants sont présents et intégrés",
+          "Status": "Passed",
+          "Duration": 13.5936,
+          "Name": "Complete Integration"
+        }
+      ],
+      "Name": "Integration",
+      "StartTime": "2025-06-03T11:46:08.274579+02:00"
+    },
+    "SecureScript": {
+      "EndTime": "2025-06-03T11:46:08.0709932+02:00",
+      "TotalDuration": 47.6837,
+      "Status": "Passed",
+      "Tests": [
+        {
+          "Message": "Tous les éléments de sécurité sont présents",
+          "Status": "Passed",
+          "Duration": 46.913,
+          "Name": "Secure Script Structure"
+        }
+      ],
+      "Name": "SecureScript",
+      "StartTime": "2025-06-03T11:46:08.0233095+02:00"
+    }
+  },
+  "SessionId": "9d9e3589-0d38-4239-80a9-296ce4bfd697",
+  "StartTime": "2025-06-03T11:46:07.7544136+02:00"
+}

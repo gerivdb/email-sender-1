@@ -1,0 +1,48 @@
+{
+  "Files": [
+    {
+      "BackupPath": ".\\projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df\\critical\\go.mod",
+      "Size": 2040,
+      "SourcePath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\go.mod"
+    },
+    {
+      "BackupPath": ".\\projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df\\critical\\go.sum",
+      "Size": 11469,
+      "SourcePath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\go.sum"
+    },
+    {
+      "BackupPath": ".\\projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df\\critical\\package.json",
+      "Size": 1129,
+      "SourcePath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\package.json"
+    },
+    {
+      "BackupPath": ".\\projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df\\critical\\.gitmodules",
+      "Size": 0,
+      "SourcePath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\.gitmodules"
+    },
+    {
+      "BackupPath": ".\\projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df\\critical\\Dockerfile",
+      "Size": 1518,
+      "SourcePath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Dockerfile"
+    },
+    {
+      "BackupPath": ".\\projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df\\critical\\docker-compose.yml",
+      "Size": 4095,
+      "SourcePath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\docker-compose.yml"
+    },
+    {
+      "BackupPath": ".\\projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df\\critical\\Makefile",
+      "Size": 378,
+      "SourcePath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Makefile"
+    },
+    {
+      "BackupPath": ".\\projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df\\critical\\README.md",
+      "Size": 12137,
+      "SourcePath": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\README.md"
+    }
+  ],
+  "ProjectRoot": "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1",
+  "SessionId": "4b17a7b1-b99b-4358-a47a-bc5b8168b8df",
+  "BackupPath": ".\\projet\\security\\backups\\sessions\\20250603-114531-4b17a7b1-b99b-4358-a47a-bc5b8168b8df",
+  "Timestamp": "2025-06-03T11:45:31.8388951+02:00"
+}

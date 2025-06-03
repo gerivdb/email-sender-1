@@ -1,0 +1,52 @@
+﻿{
+    "BackupPath":  ".\\projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1",
+    "SessionId":  "0474c679-7b01-4b48-8859-d7628ad37ba1",
+    "ProjectRoot":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1",
+    "Timestamp":  {
+                      "value":  "\/Date(1748943466101)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "mardi 3 juin 2025 11:37:46"
+                  },
+    "Files":  [
+                  {
+                      "BackupPath":  ".\\projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1\\critical\\go.mod",
+                      "Size":  2040,
+                      "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\go.mod"
+                  },
+                  {
+                      "BackupPath":  ".\\projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1\\critical\\go.sum",
+                      "Size":  11469,
+                      "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\go.sum"
+                  },
+                  {
+                      "BackupPath":  ".\\projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1\\critical\\package.json",
+                      "Size":  1129,
+                      "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\package.json"
+                  },
+                  {
+                      "BackupPath":  ".\\projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1\\critical\\.gitmodules",
+                      "Size":  0,
+                      "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\.gitmodules"
+                  },
+                  {
+                      "BackupPath":  ".\\projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1\\critical\\Dockerfile",
+                      "Size":  1518,
+                      "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Dockerfile"
+                  },
+                  {
+                      "BackupPath":  ".\\projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1\\critical\\docker-compose.yml",
+                      "Size":  4095,
+                      "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\docker-compose.yml"
+                  },
+                  {
+                      "BackupPath":  ".\\projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1\\critical\\Makefile",
+                      "Size":  378,
+                      "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\Makefile"
+                  },
+                  {
+                      "BackupPath":  ".\\projet\\security\\backups\\sessions\\20250603-113746-0474c679-7b01-4b48-8859-d7628ad37ba1\\critical\\README.md",
+                      "Size":  12137,
+                      "SourcePath":  "D:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\README.md"
+                  }
+              ]
+}

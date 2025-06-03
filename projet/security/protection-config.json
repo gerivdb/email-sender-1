@@ -1,0 +1,201 @@
+{
+  "description": "Configuration de protection pour organize-root-files-secure.ps1 - Plan Dev v41",
+  "version": "1.0",
+  "lastUpdated": "2025-06-03",
+  "auditReference": "security-audit-report-v1.json",
+  
+  "CriticalFiles": {
+    "System": [
+      ".gitmodules",
+      ".gitignore", 
+      ".git",
+      ".github",
+      ".vscode",
+      ".env",
+      ".env.*",
+      ".env.local",
+      ".env.production",
+      ".env.development"
+    ],
+    "Config": [
+      "package.json",
+      "package-lock.json",
+      "go.mod",
+      "go.sum",
+      "Makefile",
+      "docker-compose.yml",
+      "docker-compose.yaml",
+      "Dockerfile",
+      "tsconfig.json",
+      "webpack.config.js",
+      "vite.config.js",
+      "next.config.js"
+    ],
+    "Security": [
+      "*.key",
+      "*.pem",
+      "*.cert",
+      "*.crt",
+      "*.p12",
+      "*.pfx",
+      "secrets.*",
+      "credentials.*",
+      "*.secret",
+      "auth.*",
+      "token.*"
+    ],
+    "Build": [
+      "*.sln",
+      "*.csproj",
+      "*.vcxproj",
+      "*.vcxproj.filters",
+      "CMakeLists.txt",
+      "build.gradle",
+      "build.gradle.kts",
+      "pom.xml",
+      "Cargo.toml",
+      "Cargo.lock",
+      "yarn.lock"
+    ],
+    "Scripts": [
+      "organize-*.ps1",
+      "*.sh",
+      "*.bat",
+      "*.cmd",
+      "build.*",
+      "deploy.*",
+      "start.*",
+      "setup.*",
+      "install.*"
+    ],
+    "Docs": [
+      "README.*",
+      "readme.*",
+      "LICENSE*",
+      "CHANGELOG.*",
+      "SECURITY.*",
+      "CONTRIBUTING.*",
+      "CODE_OF_CONDUCT.*",
+      "NOTICE.*"
+    ]
+  },
+  
+  "WatchedExtensions": [
+    ".ps1",
+    ".sh", 
+    ".bat",
+    ".cmd",
+    ".json",
+    ".yml",
+    ".yaml",
+    ".xml",
+    ".md",
+    ".txt",
+    ".config",
+    ".ini",
+    ".conf"
+  ],
+  
+  "ForbiddenDirectories": [
+    ".git",
+    "node_modules",
+    ".vscode",
+    ".github",
+    "tools",
+    "projet",
+    "bin",
+    "obj",
+    "target",
+    "dist",
+    "build",
+    ".next",
+    ".nuxt",
+    "vendor"
+  ],
+  
+  "SecurityThresholds": {
+    "MaxFilesToMove": 50,
+    "MaxTotalSizeMB": 200,
+    "RequireConfirmationAbove": 10,
+    "MaxFileSize": 25,
+    "MinFreeDiskSpaceGB": 1
+  },
+  
+  "CustomRules": {
+    "AlwaysProtect": [
+      "plan-dev-*.md",
+      "audit-*.json",
+      "security-*.json",
+      "config.*",
+      "settings.*"
+    ],
+    "AlwaysMove": [
+      "*.tmp",
+      "*.log",
+      "*.backup",
+      "*.bak",
+      "temp.*",
+      "test-*"
+    ],
+    "RequireManualReview": [
+      "*.exe",
+      "*.dll",
+      "*.so",
+      "*.dylib",
+      "*.jar",
+      "*.war"
+    ]
+  },
+  
+  "LoggingConfig": {
+    "EnableDetailedLogging": true,
+    "LogRetentionDays": 30,
+    "LogDirectory": "projet/security/logs",
+    "AuditDirectory": "projet/security/audits",
+    "BackupDirectory": "projet/security/backups"
+  },
+  
+  "NotificationSettings": {
+    "AlertOnCriticalFiles": true,
+    "AlertOnLargeOperations": true,
+    "AlertOnSecurityThresholds": true,
+    "EmailNotifications": false,
+    "SlackNotifications": false
+  },
+  
+  "AdvancedSecurity": {
+    "EnableFileIntegrityCheck": true,
+    "EnableBackupBeforeMove": false,
+    "EnableRollbackCapability": true,
+    "RequireDigitalSignature": false,
+    "VerifyChecksums": false,
+    "ScanForMalware": false
+  },
+  
+  "ProjectSpecificSettings": {
+    "ProjectName": "EMAIL_SENDER_1",
+    "ProjectType": "Mixed",
+    "PrimaryLanguages": ["PowerShell", "Go", "JavaScript"],
+    "SpecialProtections": {
+      "EmailTemplates": "templates/*",
+      "ConfigFiles": "config/*",
+      "TestData": "test-data/*",
+      "Documentation": "docs/*"
+    }
+  },
+  
+  "ComplianceSettings": {
+    "GDPR": {
+      "enabled": false,
+      "requireDataProcessingLog": false
+    },
+    "SOX": {
+      "enabled": false,
+      "requireApprovalWorkflow": false
+    },
+    "ISO27001": {
+      "enabled": true,
+      "requireSecurityDocumentation": true
+    }
+  }
+}

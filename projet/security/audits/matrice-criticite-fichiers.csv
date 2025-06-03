@@ -1,0 +1,29 @@
+Fichier,Catégorie,Niveau de Criticité,Risque,Action Recommandée,Statut Protection
+.gitmodules,System,CRITIQUE,Corruption des sous-modules Git,Ajouter à la liste de protection,NON PROTÉGÉ
+.gitignore,System,MAJEUR,Perte de configuration Git,Ajouter à la liste de protection,NON PROTÉGÉ
+.git/,System,CRITIQUE,Corruption complète du dépôt Git,Ajouter à la liste de protection,NON PROTÉGÉ
+.github/,System,MAJEUR,Perte des workflows CI/CD,Ajouter à la liste de protection,NON PROTÉGÉ
+.vscode/,System,MINEUR,Perte des paramètres VS Code,Ajouter à la liste de protection,NON PROTÉGÉ
+.env*,System,CRITIQUE,Exposition de secrets/credentials,Ajouter à la liste de protection,NON PROTÉGÉ
+package.json,Config,CRITIQUE,Corruption des dépendances Node.js,Ajouter à la liste de protection,PROTÉGÉ
+go.mod,Config,CRITIQUE,Corruption des dépendances Go,Ajouter à la liste de protection,NON PROTÉGÉ
+go.sum,Config,CRITIQUE,Corruption des checksums Go,Ajouter à la liste de protection,NON PROTÉGÉ
+Makefile,Config,MAJEUR,Perte des scripts de build,Ajouter à la liste de protection,NON PROTÉGÉ
+docker-compose.yml,Config,MAJEUR,Perte de la configuration Docker,Ajouter à la liste de protection,NON PROTÉGÉ
+Dockerfile,Config,MAJEUR,Perte de la configuration conteneur,Ajouter à la liste de protection,NON PROTÉGÉ
+*.key,Security,CRITIQUE,Exposition de clés privées,Ajouter à la liste de protection,NON PROTÉGÉ
+*.pem,Security,CRITIQUE,Exposition de certificats,Ajouter à la liste de protection,NON PROTÉGÉ
+*.cert,Security,CRITIQUE,Exposition de certificats,Ajouter à la liste de protection,NON PROTÉGÉ
+*.p12,Security,CRITIQUE,Exposition de keystore,Ajouter à la liste de protection,NON PROTÉGÉ
+secrets.*,Security,CRITIQUE,Exposition de secrets,Ajouter à la liste de protection,NON PROTÉGÉ
+credentials.*,Security,CRITIQUE,Exposition de credentials,Ajouter à la liste de protection,NON PROTÉGÉ
+*.sln,Build,MAJEUR,Perte de la solution Visual Studio,Ajouter à la liste de protection,NON PROTÉGÉ
+*.csproj,Build,MAJEUR,Perte des projets C#,Ajouter à la liste de protection,NON PROTÉGÉ
+*.vcxproj,Build,MAJEUR,Perte des projets C++,Ajouter à la liste de protection,NON PROTÉGÉ
+CMakeLists.txt,Build,MAJEUR,Perte de la configuration CMake,Ajouter à la liste de protection,NON PROTÉGÉ
+build.gradle,Build,MAJEUR,Perte de la configuration Gradle,Ajouter à la liste de protection,NON PROTÉGÉ
+pom.xml,Build,MAJEUR,Perte de la configuration Maven,Ajouter à la liste de protection,NON PROTÉGÉ
+README.md,Documentation,MINEUR,Perte de la documentation,Ajouter à la liste de protection,PROTÉGÉ
+LICENSE,Legal,MINEUR,Perte de la licence,Ajouter à la liste de protection,PROTÉGÉ
+organize-root-files.ps1,Scripts,CRITIQUE,Auto-suppression du script,Ajouter à la liste de protection,PROTÉGÉ
+organize-tests.ps1,Scripts,MAJEUR,Perte des tests,Ajouter à la liste de protection,PROTÉGÉ

@@ -1,0 +1,274 @@
+{
+  "NextSteps": [
+    "1. URGENT: Corriger les vulnérabilités critiques identifiées",
+    "2. Mettre à jour la liste de protection avec les fichiers critiques manquants",
+    "3. Implémenter les corrections pour les vulnérabilités majeures",
+    "4. Développer le script sécurisé organize-root-files-secure.ps1",
+    "5. Implémenter le système de simulation et confirmation",
+    "6. Ajouter logging détaillé et gestion d'erreur"
+  ],
+  "AuditInfo": {
+    "Timestamp": "2025-06-03 11:07:45",
+    "ScriptPath": ".\\organize-root-files.ps1",
+    "Analyzer": "script-analyzer.ps1 v1.1",
+    "PlanDevVersion": "v41"
+  },
+  "SecurityAnalysis": {
+    "Vulnerabilities": [
+      {
+        "Impact": "Risque de déplacement de fichiers critiques système, corruption du projet",
+        "Severity": "CRITIQUE",
+        "Lines": [
+          {
+            "Content": "Move-Item $_.FullName $misc",
+            "Number": 23
+          }
+        ],
+        "Mitigation": "Ajouter Test-Path, validation de destination, simulation préalable",
+        "Category": "Critical",
+        "Type": "Move-Item sans validation",
+        "Matches": 1
+      },
+      {
+        "Impact": "Impact non documenté",
+        "Severity": "MAJEUR",
+        "Lines": [
+          {
+            "Content": "$root = Split-Path -Parent $MyInvocation.MyCommand.Definition",
+            "Number": 3
+          },
+          {
+            "Content": "$misc = Join-Path $root 'misc'",
+            "Number": 4
+          },
+          {
+            "Content": "$aPreserver = @(",
+            "Number": 7
+          }
+        ],
+        "Mitigation": "Stratégie à définir",
+        "Category": "Major",
+        "Type": "Variables non initialisées",
+        "Matches": 3
+      },
+      {
+        "Impact": "Échec silencieux, corruption partielle de données",
+        "Severity": "MAJEUR",
+        "Lines": [
+          {
+            "Content": "Move-Item $_.FullName $misc",
+            "Number": 23
+          }
+        ],
+        "Mitigation": "Implémenter try-catch, logging des erreurs",
+        "Category": "Major",
+        "Type": "Pas de gestion d'erreur",
+        "Matches": 1
+      },
+      {
+        "Impact": "Impact non documenté",
+        "Severity": "MINEUR",
+        "Lines": [
+          {
+            "Content": "} | ForEach-Object {",
+            "Number": 22
+          }
+        ],
+        "Mitigation": "Stratégie à définir",
+        "Category": "Minor",
+        "Type": "Pas de progress indicator",
+        "Matches": 1
+      },
+      {
+        "Impact": "Impact non documenté",
+        "Severity": "MINEUR",
+        "Lines": [
+          {
+            "Content": "Move-Item $_.FullName $misc",
+            "Number": 23
+          }
+        ],
+        "Mitigation": "Stratégie à définir",
+        "Category": "Minor",
+        "Type": "Pas de logging",
+        "Matches": 1
+      },
+      {
+        "Impact": "Impact non documenté",
+        "Severity": "MINEUR",
+        "Lines": [
+          {
+            "Content": "Move-Item $_.FullName $misc",
+            "Number": 23
+          }
+        ],
+        "Mitigation": "Stratégie à définir",
+        "Category": "Minor",
+        "Type": "Commentaires insuffisants",
+        "Matches": 1
+      }
+    ],
+    "SecurityScore": 25,
+    "Summary": {
+      "MinorCount": 3,
+      "Score": 25,
+      "MajorCount": 2,
+      "CriticalCount": 7,
+      "TotalVulnerabilities": 6,
+      "Recommendation": "REFACTORISATION IMMEDIATE REQUISE",
+      "SecurityStatus": "CRITIQUE"
+    }
+  },
+  "FileProtection": {
+    "Recommendations": [
+      "Ajouter '.gitmodules' à la liste de protection (System)",
+      "Ajouter '.git/' à la liste de protection (System)",
+      "Ajouter '.github/' à la liste de protection (System)",
+      "Ajouter '.vscode/' à la liste de protection (System)",
+      "Ajouter '.env*' à la liste de protection (System)",
+      "Ajouter '*.sln' à la liste de protection (Build)",
+      "Ajouter '*.csproj' à la liste de protection (Build)",
+      "Ajouter '*.vcxproj' à la liste de protection (Build)",
+      "Ajouter 'CMakeLists.txt' à la liste de protection (Build)",
+      "Ajouter 'build.gradle' à la liste de protection (Build)",
+      "Ajouter 'pom.xml' à la liste de protection (Build)",
+      "Ajouter 'go.mod' à la liste de protection (Config)",
+      "Ajouter 'go.sum' à la liste de protection (Config)",
+      "Ajouter 'Makefile' à la liste de protection (Config)",
+      "Ajouter 'docker-compose.yml' à la liste de protection (Config)",
+      "Ajouter 'Dockerfile' à la liste de protection (Config)",
+      "Ajouter '*.key' à la liste de protection (Security)",
+      "Ajouter '*.pem' à la liste de protection (Security)",
+      "Ajouter '*.cert' à la liste de protection (Security)",
+      "Ajouter '*.p12' à la liste de protection (Security)",
+      "Ajouter 'secrets.*' à la liste de protection (Security)",
+      "Ajouter 'credentials.*' à la liste de protection (Security)",
+      "Implémenter une whitelist basée sur les extensions critiques",
+      "Ajouter validation contextuelle pour les fichiers métier",
+      "Créer une configuration externe pour la liste de protection"
+    ],
+    "PreserveList": [
+      "README.md",
+      ".gitignore",
+      "package.json",
+      "organize-tests.ps1",
+      "organize-root-files.ps1",
+      "LICENSE"
+    ],
+    "Missing": [
+      {
+        "Risk": "CRITIQUE - Corruption des sous-modules Git",
+        "Category": "System",
+        "Pattern": ".gitmodules"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "System",
+        "Pattern": ".git/"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "System",
+        "Pattern": ".github/"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "System",
+        "Pattern": ".vscode/"
+      },
+      {
+        "Risk": "CRITIQUE - Exposition de secrets/credentials",
+        "Category": "System",
+        "Pattern": ".env*"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Build",
+        "Pattern": "*.sln"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Build",
+        "Pattern": "*.csproj"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Build",
+        "Pattern": "*.vcxproj"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Build",
+        "Pattern": "CMakeLists.txt"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Build",
+        "Pattern": "build.gradle"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Build",
+        "Pattern": "pom.xml"
+      },
+      {
+        "Risk": "CRITIQUE - Corruption des dépendances Go",
+        "Category": "Config",
+        "Pattern": "go.mod"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Config",
+        "Pattern": "go.sum"
+      },
+      {
+        "Risk": "MAJEUR - Perte des scripts de build",
+        "Category": "Config",
+        "Pattern": "Makefile"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Config",
+        "Pattern": "docker-compose.yml"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Config",
+        "Pattern": "Dockerfile"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Security",
+        "Pattern": "*.key"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Security",
+        "Pattern": "*.pem"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Security",
+        "Pattern": "*.cert"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Security",
+        "Pattern": "*.p12"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Security",
+        "Pattern": "secrets.*"
+      },
+      {
+        "Risk": "MINEUR - Impact fonctionnel limité",
+        "Category": "Security",
+        "Pattern": "credentials.*"
+      }
+    ],
+    "Status": "CRITIQUE",
+    "Coverage": 8.33
+  },
+  "OverallRisk": "CRITIQUE - Risque immédiat de corruption du projet"
+}

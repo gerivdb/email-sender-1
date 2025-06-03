@@ -1,0 +1,62 @@
+{
+  "intouchable_directories": {
+    "git_system": {
+      "paths": [".git", ".github"],
+      "description": "Dossiers système Git - corruption critique si déplacés",
+      "risk_level": "CRITIQUE",
+      "protection_required": true
+    },
+    "configuration": {
+      "paths": [".vscode", ".vs", "node_modules", "vendor", "target", "build", "dist"],
+      "description": "Dossiers de configuration et build - perte de l'environnement de développement",
+      "risk_level": "MAJEUR",
+      "protection_required": true
+    },
+    "cache_dirs": {
+      "paths": [".cache", ".tmp", "temp", "logs", ".logs"],
+      "description": "Dossiers de cache et temporaires - peuvent contenir des données importantes",
+      "risk_level": "MINEUR",
+      "protection_required": false
+    },
+    "language_specific": {
+      "paths": ["__pycache__", ".pytest_cache", "bin", "obj", "pkg"],
+      "description": "Dossiers spécifiques aux langages - artefacts de compilation",
+      "risk_level": "MINEUR",
+      "protection_required": false
+    }
+  },
+  "protection_rules": {
+    "always_preserve": [
+      ".git",
+      ".github", 
+      ".gitmodules",
+      ".vscode"
+    ],
+    "conditionally_preserve": [
+      "node_modules",
+      "vendor",
+      "target",
+      "build",
+      "dist"
+    ],
+    "can_reorganize": [
+      ".cache",
+      ".tmp",
+      "temp",
+      "logs",
+      "__pycache__"
+    ]
+  },
+  "validation_patterns": {
+    "hidden_directories": "^\\.",
+    "system_directories": "^(System Volume Information|\\$RECYCLE\\.BIN|Windows|Program Files)",
+    "build_outputs": "(bin|obj|target|build|dist)$",
+    "version_control": "^\\.(git|svn|hg|bzr)"
+  },
+  "metadata": {
+    "created": "2025-06-03",
+    "version": "1.0",
+    "plan_dev": "v41",
+    "last_updated": "2025-06-03"
+  }
+}

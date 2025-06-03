@@ -1,0 +1,38 @@
+{
+  "Timestamp": "2025-06-03T11:47:25.0210593+02:00",
+  "Issues": [
+    "Taille du projet excessive: 1644.16 MB"
+  ],
+  "Optimizations": [],
+  "PerformanceScore": 95,
+  "Metrics": {
+    "Timestamp": "2025-06-03T11:47:24.8335599+02:00",
+    "Logs": {
+      "TotalSize": 3300.0,
+      "LargestFile": 929,
+      "FileCount": 5,
+      "TotalSizeMB": 0.0
+    },
+    "System": {
+      "Memory": {
+        "Total": 25752215552,
+        "Free": 8404627456,
+        "Usage": 67.36
+      },
+      "Disk": {
+        "Total": 499481722880,
+        "Free": 13156347904,
+        "Usage": 97.37
+      },
+      "CPU": {
+        "Usage": 26.0
+      }
+    },
+    "Project": {
+      "DirectoryCount": 2863,
+      "Size": 1724024913.0,
+      "FileCount": 17849,
+      "SizeMB": 1644.16
+    }
+  }
+}

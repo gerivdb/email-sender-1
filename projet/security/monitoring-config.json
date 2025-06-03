@@ -1,0 +1,29 @@
+﻿{
+    "Version":  "1.0",
+    "ExcludePatterns":  [
+                            "*.exe",
+                            "*.log",
+                            ".git\\*",
+                            "node_modules\\*"
+                        ],
+    "CriticalFiles":  [
+                          "go.mod",
+                          "go.sum",
+                          "package.json",
+                          ".gitmodules",
+                          "organize-root-files-secure.ps1"
+                      ],
+    "Thresholds":  {
+                       "DirectorySize":  524288000,
+                       "Memory":  80,
+                       "FileCount":  1000,
+                       "DiskUsage":  85
+                   },
+    "WatchedDirectories":  [
+                               ".",
+                               ".\\tools",
+                               ".\\projet"
+                           ],
+    "Interval":  30,
+    "Enabled":  true
+}
