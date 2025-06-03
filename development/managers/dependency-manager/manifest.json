@@ -1,0 +1,171 @@
+{
+  "name": "DependencyManager",
+  "version": "1.0.0",
+  "description": "Advanced Go dependency manager with enhanced features",
+  "type": "Go-Binary",
+  "category": "Development-Tools",
+  "author": "PROJECT_EMAIL_SENDER_1",
+  "created": "2025-01-03",
+  "lastModified": "2025-01-03",
+  "mainScript": "scripts/dependency-manager.ps1",
+  "binaryPath": "dependency-manager.exe",
+  "configurationPath": "projet/config/managers/dependency-manager/dependency-manager.config.json",
+  "dependencies": [
+    {
+      "name": "Go",
+      "minimumVersion": "1.19",
+      "type": "runtime",
+      "description": "Go runtime for executing the dependency manager binary"
+    },
+    {
+      "name": "PowerShell",
+      "minimumVersion": "5.1",
+      "type": "runtime",
+      "description": "PowerShell for script execution and integration"
+    }
+  ],
+  "capabilities": [
+    "list-dependencies",
+    "add-dependencies", 
+    "remove-dependencies",
+    "update-dependencies",
+    "audit-vulnerabilities",
+    "cleanup-unused",
+    "backup-gomod",
+    "json-output",
+    "logging"
+  ],
+  "interfaces": {
+    "commands": [
+      {
+        "name": "list",
+        "description": "Lists all project dependencies",
+        "parameters": [
+          {
+            "name": "json",
+            "type": "switch",
+            "required": false,
+            "description": "Output in JSON format"
+          }
+        ]
+      },
+      {
+        "name": "add",
+        "description": "Adds a new dependency",
+        "parameters": [
+          {
+            "name": "module",
+            "type": "string",
+            "required": true,
+            "description": "Module name to add"
+          },
+          {
+            "name": "version",
+            "type": "string", 
+            "required": false,
+            "description": "Specific version to add (defaults to latest)"
+          }
+        ]
+      },
+      {
+        "name": "remove",
+        "description": "Removes a dependency",
+        "parameters": [
+          {
+            "name": "module",
+            "type": "string",
+            "required": true,
+            "description": "Module name to remove"
+          }
+        ]
+      },
+      {
+        "name": "update",
+        "description": "Updates a dependency",
+        "parameters": [
+          {
+            "name": "module",
+            "type": "string",
+            "required": true,
+            "description": "Module name to update"
+          }
+        ]
+      },
+      {
+        "name": "audit",
+        "description": "Checks for security vulnerabilities"
+      },
+      {
+        "name": "cleanup",
+        "description": "Removes unused dependencies"
+      }
+    ]
+  },
+  "files": {
+    "scripts": [
+      "scripts/dependency-manager.ps1",
+      "scripts/install-dependency-manager.ps1"
+    ],
+    "modules": [
+      "modules/dependency_manager.go"
+    ],
+    "tests": [
+      "tests/dependency_manager_test.go"
+    ],
+    "documentation": [
+      "README.md",
+      "GUIDE_UTILISATEUR.md", 
+      "API_DOCUMENTATION.md"
+    ],
+    "binaries": [
+      "dependency-manager.exe"
+    ]
+  },
+  "logging": {
+    "enabled": true,
+    "defaultLevel": "INFO",
+    "outputFile": "logs/dependency-manager.log",
+    "consoleOutput": true,
+    "coloredOutput": true
+  },
+  "backup": {
+    "enabled": true,
+    "autoBackup": true,
+    "backupLocation": "backups/go-mod/",
+    "retentionDays": 30
+  },
+  "security": {
+    "vulnerabilityCheck": true,
+    "auditOnAdd": false,
+    "auditOnUpdate": true
+  },
+  "integration": {
+    "processManager": {
+      "compatible": true,
+      "adapterRequired": true
+    },
+    "integratedManager": {
+      "compatible": true,
+      "workflowCapable": true
+    },
+    "cicd": {
+      "compatible": true,
+      "supportedPipelines": ["GitHub Actions", "Azure DevOps", "Jenkins"]
+    }
+  },
+  "performance": {
+    "benchmarks": {
+      "list": "0.94ns/op",
+      "add": "72.46ns/op"
+    },
+    "caching": true,
+    "parallelExecution": false
+  },
+  "tags": ["go", "dependencies", "modules", "audit", "security", "development"],
+  "license": "PROJECT_INTERNAL",
+  "support": {
+    "documentation": "README.md, GUIDE_UTILISATEUR.md, API_DOCUMENTATION.md",
+    "examples": true,
+    "troubleshooting": true
+  }
+}
