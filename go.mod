@@ -6,9 +6,11 @@ toolchain go1.23.9
 
 require (
 	github.com/gomarkdown/markdown v0.0.0-20250311123330-531bef5e742b
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
 	github.com/mattn/go-sqlite3 v1.14.28
 	github.com/pdfcpu/pdfcpu v0.5.0
+	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.22.0
 	github.com/qdrant/go-client v1.14.0
 	github.com/redis/go-redis/v9 v9.9.0
@@ -33,7 +35,6 @@ require (
 	github.com/mattn/go-runewidth v0.0.16 // indirect
 	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.62.0 // indirect
