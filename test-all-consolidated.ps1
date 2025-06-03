@@ -10,7 +10,7 @@ Get-ChildItem -Path $consolidatedPath -Filter "*.md" | ForEach-Object {
    Write-Host "Testing: $fileName" -ForegroundColor Yellow
     
    try {
-      $result = & ".\cmd\roadmap-cli\roadmap-cli.exe" ingest-advanced $_.FullName --dry-run 2>&1
+      $result = & ".\development\managers\roadmap-manager\roadmap-cli\roadmap-cli.exe" ingest-advanced $_.FullName --dry-run 2>&1
         
       if ($LASTEXITCODE -eq 0) {
          $successFiles += $fileName

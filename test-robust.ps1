@@ -10,7 +10,7 @@ Get-ChildItem -Path $consolidatedPath -Filter "*.md" | ForEach-Object {
    $fileName = $_.Name
    Write-Host "Testing: $fileName" -ForegroundColor Yellow
     
-   $output = & ".\cmd\roadmap-cli\roadmap-cli.exe" ingest-advanced $_.FullName --dry-run 2>&1
+   $output = & ".\development\managers\roadmap-manager\roadmap-cli\roadmap-cli.exe" ingest-advanced $_.FullName --dry-run 2>&1
    if ($LASTEXITCODE -eq 0) {
       $successFiles += $fileName
       # Extract item count from output (convert array to string first)

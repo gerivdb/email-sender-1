@@ -1,27 +1,35 @@
 ﻿# Gestionnaires
 
-Ce rÃ©pertoire contient tous les gestionnaires du projet.
+Ce répertoire contient tous les gestionnaires du projet dans une architecture unifiée.
 
 ## Structure
 
-Chaque gestionnaire est organisÃ© selon la structure suivante :
+Chaque gestionnaire est organisé selon la structure suivante :
 
-- <gestionnaire>/config : Fichiers de configuration spÃ©cifiques au gestionnaire
-- <gestionnaire>/scripts : Scripts PowerShell du gestionnaire
-- <gestionnaire>/modules : Modules PowerShell du gestionnaire
-- <gestionnaire>/tests : Tests unitaires et d'intÃ©gration du gestionnaire
+- `<gestionnaire>/config` : Fichiers de configuration spécifiques au gestionnaire
+- `<gestionnaire>/scripts` : Scripts PowerShell du gestionnaire  
+- `<gestionnaire>/modules` : Modules PowerShell/Go du gestionnaire
+- `<gestionnaire>/tests` : Tests unitaires et d'intégration du gestionnaire
+- `<gestionnaire>/README.md` : Documentation spécifique du gestionnaire
 
 ## Gestionnaires disponibles
 
-- integrated-manager : Gestionnaire intÃ©grÃ© qui coordonne tous les autres gestionnaires
-- mode-manager : Gestionnaire des modes opÃ©rationnels
-- roadmap-manager : Gestionnaire de la roadmap
-- mcp-manager : Gestionnaire MCP
-- script-manager : Gestionnaire de scripts
-- dependency-manager : Gestionnaire de dépendances Go
-- error-manager : Gestionnaire d'erreurs
-- n8n-manager : Gestionnaire n8n
+- **integrated-manager** : Gestionnaire intégré qui coordonne tous les autres gestionnaires
+- **mode-manager** : Gestionnaire des modes opérationnels
+- **roadmap-manager** : Gestionnaire de la roadmap (anciennement `cmd/roadmap-cli`)
+- **mcp-manager** : Gestionnaire MCP
+- **script-manager** : Gestionnaire de scripts
+- **dependency-manager** : Gestionnaire de dépendances Go
+- **n8n-manager** : Gestionnaire n8n
+- **process-manager** : Gestionnaire de processus avec adaptateurs
+
+## Scripts utilitaires
+
+Des scripts utilitaires sont disponibles dans le dossier `scripts/` à la racine :
+
+- `.\scripts\dep.ps1` : Interface simplifiée pour le gestionnaire de dépendances
+- `.\scripts\roadmap.ps1` : Interface simplifiée pour le gestionnaire de roadmap
 
 ## Configuration
 
-Les fichiers de configuration des gestionnaires sont centralisÃ©s dans le rÃ©pertoire projet/config/managers.
+Les fichiers de configuration des gestionnaires sont centralisés dans le répertoire `projet/config/managers/`.
