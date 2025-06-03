@@ -1,10 +1,71 @@
 ﻿{
-    "settings":  {
-                     "logPath":  "logs/integrated-manager.log",
-                     "logLevel":  "Info"
-                 },
-    "description":  "Configuration du gestionnaire integrated-manager",
-    "name":  "integrated-manager",
-    "version":  "1.0.0",
-    "enabled":  true
+    "settings": {
+        "logPath": "logs/integrated-manager.log",
+        "logLevel": "Info"
+    },
+    "description": "Configuration du gestionnaire integrated-manager",
+    "name": "integrated-manager",
+    "version": "1.0.0",
+    "enabled": true,
+    "managers": {
+        "ModeManager": {
+            "path": "development/managers/mode-manager/scripts/mode-manager.ps1",
+            "enabled": true,
+            "adapter": "development/managers/process-manager/adapters/mode-manager-adapter.ps1"
+        },
+        "RoadmapManager": {
+            "path": "development/managers/roadmap-manager/scripts/roadmap-manager.ps1",
+            "enabled": true,
+            "adapter": "development/managers/process-manager/adapters/roadmap-manager-adapter.ps1"
+        },
+        "ScriptManager": {
+            "path": "development/managers/script-manager/scripts/script-manager.ps1",
+            "enabled": true,
+            "adapter": "development/managers/process-manager/adapters/script-manager-adapter.ps1"
+        },
+        "ErrorManager": {
+            "path": "development/managers/error-manager/scripts/error-manager.ps1",
+            "enabled": true,
+            "adapter": "development/managers/process-manager/adapters/error-manager-adapter.ps1"
+        },
+        "DependencyManager": {
+            "path": "development/managers/dependency-manager/scripts/dependency-manager.ps1",
+            "enabled": true,
+            "adapter": "development/managers/process-manager/adapters/dependency-manager-adapter.ps1",
+            "binary": "development/managers/dependency-manager/dependency-manager.exe",
+            "type": "Go-Binary",
+            "capabilities": ["list", "add", "remove", "update", "audit", "cleanup"],
+            "description": "Advanced Go dependency manager with enhanced features"
+        }
+    },
+    "workflows": {
+        "Development": {
+            "description": "Workflow de développement complet",
+            "modes": ["GRAN", "DEV-R", "TEST", "CHECK"],
+            "autoContinue": true,
+            "stopOnError": true
+        },
+        "DependencyManagement": {
+            "description": "Workflow de gestion des dépendances",
+            "steps": [
+                {
+                    "manager": "DependencyManager",
+                    "command": "List",
+                    "description": "Liste des dépendances actuelles"
+                },
+                {
+                    "manager": "DependencyManager", 
+                    "command": "Audit",
+                    "description": "Audit de sécurité des dépendances"
+                },
+                {
+                    "manager": "DependencyManager",
+                    "command": "Cleanup",
+                    "description": "Nettoyage des dépendances inutilisées"
+                }
+            ],
+            "autoContinue": true,
+            "stopOnError": false
+        }
+    }
 }

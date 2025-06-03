@@ -1,0 +1,47 @@
+{
+    "name": "dependency-manager",
+    "version": "1.0.0",
+    "description": "Configuration du gestionnaire dependency-manager",
+    "enabled": true,
+    "settings": {
+        "logPath": "logs/dependency-manager.log",
+        "logLevel": "Info",
+        "goModPath": "go.mod",
+        "goSumPath": "go.sum",
+        "autoTidy": true,
+        "vulnerabilityCheck": true,
+        "backupOnChange": true
+    },
+    "commands": {
+        "list": {
+            "description": "Liste toutes les dépendances",
+            "enabled": true
+        },
+        "add": {
+            "description": "Ajoute une dépendance",
+            "enabled": true,
+            "requiresModule": true,
+            "defaultVersion": "latest"
+        },
+        "remove": {
+            "description": "Supprime une dépendance",
+            "enabled": true,
+            "requiresModule": true,
+            "confirmation": true
+        },
+        "update": {
+            "description": "Met à jour une dépendance",
+            "enabled": true,
+            "requiresModule": true
+        },
+        "audit": {
+            "description": "Vérifie les vulnérabilités",
+            "enabled": true
+        },
+        "cleanup": {
+            "description": "Nettoie les dépendances inutilisées",
+            "enabled": true,
+            "confirmation": true
+        }
+    }
+}

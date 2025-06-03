@@ -18,6 +18,7 @@ Chaque gestionnaire est organisÃ© selon la structure suivante :
 - roadmap-manager : Gestionnaire de la roadmap
 - mcp-manager : Gestionnaire MCP
 - script-manager : Gestionnaire de scripts
+- dependency-manager : Gestionnaire de dépendances Go
 - error-manager : Gestionnaire d'erreurs
 - n8n-manager : Gestionnaire n8n
 
