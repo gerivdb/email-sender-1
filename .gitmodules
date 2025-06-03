@@ -1,0 +1,7 @@
+[submodule "projet/mcp/servers/gcp-mcp"]
+    path = projet/mcp/servers/gcp-mcp
+    url = https://github.com/eniayomi/gcp-mcp.git
+
+[submodule "projet/mcp/servers/gateway"]
+    path = projet/mcp/servers/gateway
+    url = https://github.com/mcp-ecosystem/mcp-gateway.git
