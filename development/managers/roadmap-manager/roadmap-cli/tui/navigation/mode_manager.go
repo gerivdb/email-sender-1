@@ -10,7 +10,7 @@ import (
 
 // ModeManager handles navigation mode switching and state preservation
 type ModeManager struct {
-	currentMode      NavigationMode
+	currentMode     NavigationMode
 	modes           map[NavigationMode]*ModeConfig
 	stateHistory    map[NavigationMode]*ModeState
 	transitionQueue []ModeTransition
@@ -21,32 +21,32 @@ type ModeManager struct {
 
 // ModeConfig represents configuration for a navigation mode
 type ModeConfig struct {
-	Mode            NavigationMode            `json:"mode"`
-	Name            string                    `json:"name"`
-	Description     string                    `json:"description"`
-	KeyMappings     map[string]string         `json:"key_mappings"`
-	LayoutConfig    LayoutConfig              `json:"layout_config"`
-	Behaviors       map[string]interface{}    `json:"behaviors"`
-	Transitions     map[NavigationMode]string `json:"transitions"`
-	Enabled         bool                      `json:"enabled"`
-	AutoActivate    bool                      `json:"auto_activate"`
-	Priority        int                       `json:"priority"`
+	Mode         NavigationMode            `json:"mode"`
+	Name         string                    `json:"name"`
+	Description  string                    `json:"description"`
+	KeyMappings  map[string]string         `json:"key_mappings"`
+	LayoutConfig LayoutConfig              `json:"layout_config"`
+	Behaviors    map[string]interface{}    `json:"behaviors"`
+	Transitions  map[NavigationMode]string `json:"transitions"`
+	Enabled      bool                      `json:"enabled"`
+	AutoActivate bool                      `json:"auto_activate"`
+	Priority     int                       `json:"priority"`
 }
 
 // ModeState represents the preserved state for a navigation mode
 type ModeState struct {
-	Mode              NavigationMode         `json:"mode"`
-	Position          Position               `json:"position"`
-	ViewMode          ViewMode               `json:"view_mode"`
-	FocusedElements   []string               `json:"focused_elements"`
-	SelectionState    SelectionState         `json:"selection_state"`
-	FilterState       FilterState            `json:"filter_state"`
-	ScrollPosition    ScrollPosition         `json:"scroll_position"`
-	LayoutState       LayoutState            `json:"layout_state"`
-	CustomData        map[string]interface{} `json:"custom_data"`
-	LastActivated     time.Time              `json:"last_activated"`
-	ActivationCount   int                    `json:"activation_count"`
-	SessionDuration   time.Duration          `json:"session_duration"`
+	Mode            NavigationMode         `json:"mode"`
+	Position        Position               `json:"position"`
+	ViewMode        ViewMode               `json:"view_mode"`
+	FocusedElements []string               `json:"focused_elements"`
+	SelectionState  SelectionState         `json:"selection_state"`
+	FilterState     FilterState            `json:"filter_state"`
+	ScrollPosition  ScrollPosition         `json:"scroll_position"`
+	LayoutState     LayoutState            `json:"layout_state"`
+	CustomData      map[string]interface{} `json:"custom_data"`
+	LastActivated   time.Time              `json:"last_activated"`
+	ActivationCount int                    `json:"activation_count"`
+	SessionDuration time.Duration          `json:"session_duration"`
 }
 
 // ModeTransition represents a mode transition
@@ -67,73 +67,73 @@ type ModeEventHandler func(event ModeEvent) tea.Cmd
 
 // ModeEvent represents an event in a navigation mode
 type ModeEvent struct {
-	Type       ModeEventType              `json:"type"`
-	Mode       NavigationMode             `json:"mode"`
-	Data       map[string]interface{}     `json:"data"`
-	Timestamp  time.Time                  `json:"timestamp"`
-	Source     string                     `json:"source"`
+	Type      ModeEventType          `json:"type"`
+	Mode      NavigationMode         `json:"mode"`
+	Data      map[string]interface{} `json:"data"`
+	Timestamp time.Time              `json:"timestamp"`
+	Source    string                 `json:"source"`
 }
 
 // ModePreferences represents user preferences for navigation modes
 type ModePreferences struct {
-	DefaultMode         NavigationMode                `json:"default_mode"`
-	AutoSwitchModes     bool                          `json:"auto_switch_modes"`
-	PreserveStateAcrossModes bool                     `json:"preserve_state_across_modes"`
-	ModeTransitionSpeed time.Duration                 `json:"mode_transition_speed"`
-	EnabledModes        map[NavigationMode]bool       `json:"enabled_modes"`
-	CustomModeSettings  map[NavigationMode]ModeConfig `json:"custom_mode_settings"`
-	KeyboardShortcuts   map[string]NavigationMode     `json:"keyboard_shortcuts"`
+	DefaultMode              NavigationMode                `json:"default_mode"`
+	AutoSwitchModes          bool                          `json:"auto_switch_modes"`
+	PreserveStateAcrossModes bool                          `json:"preserve_state_across_modes"`
+	ModeTransitionSpeed      time.Duration                 `json:"mode_transition_speed"`
+	EnabledModes             map[NavigationMode]bool       `json:"enabled_modes"`
+	CustomModeSettings       map[NavigationMode]ModeConfig `json:"custom_mode_settings"`
+	KeyboardShortcuts        map[string]NavigationMode     `json:"keyboard_shortcuts"`
 }
 
 // LayoutConfig represents layout configuration for a mode
 type LayoutConfig struct {
-	PanelLayout     string                 `json:"panel_layout"`
-	ShowSidebar     bool                   `json:"show_sidebar"`
-	ShowStatusBar   bool                   `json:"show_status_bar"`
-	ShowToolbar     bool                   `json:"show_toolbar"`
-	GridColumns     int                    `json:"grid_columns"`
-	GridRows        int                    `json:"grid_rows"`
-	PanelSizes      map[string]float64     `json:"panel_sizes"`
-	CustomLayout    map[string]interface{} `json:"custom_layout"`
+	PanelLayout   string                 `json:"panel_layout"`
+	ShowSidebar   bool                   `json:"show_sidebar"`
+	ShowStatusBar bool                   `json:"show_status_bar"`
+	ShowToolbar   bool                   `json:"show_toolbar"`
+	GridColumns   int                    `json:"grid_columns"`
+	GridRows      int                    `json:"grid_rows"`
+	PanelSizes    map[string]float64     `json:"panel_sizes"`
+	CustomLayout  map[string]interface{} `json:"custom_layout"`
 }
 
 // SelectionState represents current selection state
 type SelectionState struct {
-	SelectedItems    []string               `json:"selected_items"`
-	MultiSelection   bool                   `json:"multi_selection"`
-	SelectionMode    string                 `json:"selection_mode"`
-	LastSelected     string                 `json:"last_selected"`
-	SelectionData    map[string]interface{} `json:"selection_data"`
+	SelectedItems  []string               `json:"selected_items"`
+	MultiSelection bool                   `json:"multi_selection"`
+	SelectionMode  string                 `json:"selection_mode"`
+	LastSelected   string                 `json:"last_selected"`
+	SelectionData  map[string]interface{} `json:"selection_data"`
 }
 
 // FilterState represents current filter state
 type FilterState struct {
-	ActiveFilters   map[string]interface{} `json:"active_filters"`
-	SearchTerm      string                 `json:"search_term"`
-	SortOrder       string                 `json:"sort_order"`
-	SortField       string                 `json:"sort_field"`
-	GroupBy         string                 `json:"group_by"`
-	ShowHidden      bool                   `json:"show_hidden"`
+	ActiveFilters map[string]interface{} `json:"active_filters"`
+	SearchTerm    string                 `json:"search_term"`
+	SortOrder     string                 `json:"sort_order"`
+	SortField     string                 `json:"sort_field"`
+	GroupBy       string                 `json:"group_by"`
+	ShowHidden    bool                   `json:"show_hidden"`
 }
 
 // ScrollPosition represents scroll position
 type ScrollPosition struct {
-	X           int `json:"x"`
-	Y           int `json:"y"`
-	ViewportX   int `json:"viewport_x"`
-	ViewportY   int `json:"viewport_y"`
-	MaxX        int `json:"max_x"`
-	MaxY        int `json:"max_y"`
+	X         int `json:"x"`
+	Y         int `json:"y"`
+	ViewportX int `json:"viewport_x"`
+	ViewportY int `json:"viewport_y"`
+	MaxX      int `json:"max_x"`
+	MaxY      int `json:"max_y"`
 }
 
 // LayoutState represents layout state
 type LayoutState struct {
-	PanelSizes     map[string]float64     `json:"panel_sizes"`
-	PanelStates    map[string]string      `json:"panel_states"`
-	WindowSize     Position               `json:"window_size"`
-	SplitRatios    []float64              `json:"split_ratios"`
-	HiddenPanels   []string               `json:"hidden_panels"`
-	CustomLayouts  map[string]interface{} `json:"custom_layouts"`
+	PanelSizes    map[string]float64     `json:"panel_sizes"`
+	PanelStates   map[string]string      `json:"panel_states"`
+	WindowSize    Position               `json:"window_size"`
+	SplitRatios   []float64              `json:"split_ratios"`
+	HiddenPanels  []string               `json:"hidden_panels"`
+	CustomLayouts map[string]interface{} `json:"custom_layouts"`
 }
 
 // Utilisation du TransitionTrigger depuis types.go
@@ -151,14 +151,14 @@ const (
 
 // Bubble Tea Messages for mode management
 type ModeActivatedMsg struct {
-	Mode        NavigationMode
-	PreviousMode NavigationMode
+	Mode           NavigationMode
+	PreviousMode   NavigationMode
 	PreservedState *ModeState
 }
 
 type ModeDeactivatedMsg struct {
-	Mode NavigationMode
-	NextMode NavigationMode
+	Mode       NavigationMode
+	NextMode   NavigationMode
 	SavedState *ModeState
 }
 
@@ -185,11 +185,11 @@ type ModeErrorMsg struct {
 func NewModeManager() *ModeManager {
 	mm := &ModeManager{
 		currentMode:     NavigationModeNormal,
-		modes:          make(map[NavigationMode]*ModeConfig),
-		stateHistory:   make(map[NavigationMode]*ModeState),
+		modes:           make(map[NavigationMode]*ModeConfig),
+		stateHistory:    make(map[NavigationMode]*ModeState),
 		transitionQueue: make([]ModeTransition, 0),
-		eventHandlers:  make(map[NavigationMode][]ModeEventHandler),
-		preferences:    DefaultModePreferences(),
+		eventHandlers:   make(map[NavigationMode][]ModeEventHandler),
+		preferences:     DefaultModePreferences(),
 	}
 
 	mm.initializeDefaultModes()
@@ -205,7 +205,7 @@ func (mm *ModeManager) SwitchMode(targetMode NavigationMode) tea.Cmd {
 		return nil
 	}
 
-	currentConfig, exists := mm.modes[mm.currentMode]
+	_, exists := mm.modes[mm.currentMode]
 	if !exists {
 		return func() tea.Msg {
 			return ModeErrorMsg{
@@ -233,7 +233,7 @@ func (mm *ModeManager) SwitchMode(targetMode NavigationMode) tea.Cmd {
 	transition := ModeTransition{
 		FromMode:      mm.currentMode,
 		ToMode:        targetMode,
-		TriggerType:   TransitionTriggerManual,
+		TriggerType:   TransitionTriggerUser,
 		PreserveState: mm.preferences.PreserveStateAcrossModes,
 		AnimationType: mm.getTransitionAnimation(mm.currentMode, targetMode),
 		Duration:      mm.preferences.ModeTransitionSpeed,
@@ -535,29 +535,29 @@ func (mm *ModeManager) initializeDefaultModes() {
 		Name:        "Vim",
 		Description: "Vim-style navigation with modal editing",
 		KeyMappings: map[string]string{
-			"j":       "navigate_down",
-			"k":       "navigate_up",
-			"h":       "navigate_left",
-			"l":       "navigate_right",
-			"gg":      "go_to_top",
-			"G":       "go_to_bottom",
-			"ctrl+d":  "page_down",
-			"ctrl+u":  "page_up",
-			"w":       "next_word",
-			"b":       "previous_word",
-			"0":       "line_start",
-			"$":       "line_end",
-			"/":       "search",
-			"n":       "next_search",
-			"N":       "previous_search",
-			"i":       "insert_mode",
-			"a":       "append_mode",
-			"v":       "visual_mode",
-			"dd":      "delete_line",
-			"yy":      "yank_line",
-			"p":       "paste",
-			"u":       "undo",
-			"ctrl+r":  "redo",
+			"j":      "navigate_down",
+			"k":      "navigate_up",
+			"h":      "navigate_left",
+			"l":      "navigate_right",
+			"gg":     "go_to_top",
+			"G":      "go_to_bottom",
+			"ctrl+d": "page_down",
+			"ctrl+u": "page_up",
+			"w":      "next_word",
+			"b":      "previous_word",
+			"0":      "line_start",
+			"$":      "line_end",
+			"/":      "search",
+			"n":      "next_search",
+			"N":      "previous_search",
+			"i":      "insert_mode",
+			"a":      "append_mode",
+			"v":      "visual_mode",
+			"dd":     "delete_line",
+			"yy":     "yank_line",
+			"p":      "paste",
+			"u":      "undo",
+			"ctrl+r": "redo",
 		},
 		LayoutConfig: LayoutConfig{
 			PanelLayout:   "minimal",
@@ -598,12 +598,12 @@ func (mm *ModeManager) initializeDefaultModes() {
 			GridRows:      1,
 		},
 		Behaviors: map[string]interface{}{
-			"high_contrast":     true,
-			"screen_reader":     true,
-			"keyboard_only":     true,
-			"reduced_motion":    true,
-			"focus_indicators":  true,
-			"audio_feedback":    true,
+			"high_contrast":    true,
+			"screen_reader":    true,
+			"keyboard_only":    true,
+			"reduced_motion":   true,
+			"focus_indicators": true,
+			"audio_feedback":   true,
 		},
 		Enabled:      true,
 		AutoActivate: false,
@@ -631,7 +631,7 @@ func (mm *ModeManager) initializeDefaultModes() {
 func (mm *ModeManager) captureCurrentState() *ModeState {
 	return &ModeState{
 		Mode:            mm.currentMode,
-		Position:        Position{}, // Will be filled by actual position
+		Position:        Position{},   // Will be filled by actual position
 		ViewMode:        ViewModeList, // Will be filled by actual view
 		FocusedElements: make([]string, 0),
 		SelectionState: SelectionState{
@@ -677,17 +677,17 @@ func (mm *ModeManager) getTransitionAnimation(from, to NavigationMode) string {
 // DefaultModePreferences returns default mode preferences
 func DefaultModePreferences() *ModePreferences {
 	return &ModePreferences{
-		DefaultMode:                  NavigationModeNormal,
-		AutoSwitchModes:             false,
-		PreserveStateAcrossModes:    true,
-		ModeTransitionSpeed:         300 * time.Millisecond,
+		DefaultMode:              NavigationModeNormal,
+		AutoSwitchModes:          false,
+		PreserveStateAcrossModes: true,
+		ModeTransitionSpeed:      300 * time.Millisecond,
 		EnabledModes: map[NavigationMode]bool{
 			NavigationModeNormal:        true,
 			NavigationModeVim:           true,
 			NavigationModeAccessibility: true,
 			NavigationModeCustom:        false,
 		},
-		CustomModeSettings:  make(map[NavigationMode]ModeConfig),
+		CustomModeSettings: make(map[NavigationMode]ModeConfig),
 		KeyboardShortcuts: map[string]NavigationMode{
 			"F1": NavigationModeNormal,
 			"F2": NavigationModeVim,
@@ -697,103 +697,26 @@ func DefaultModePreferences() *ModePreferences {
 	}
 }
 
-// SwitchModeAdvanced provides enhanced mode switching with advanced state preservation
-func (mm *ModeManager) SwitchModeAdvanced(targetMode NavigationMode, options *TransitionOptions) tea.Cmd {
-	mm.mutex.Lock()
-	defer mm.mutex.Unlock()
-
-	if mm.currentMode == targetMode {
-		return nil
-	}
-
-	// Validate target mode
-	if _, exists := mm.modes[targetMode]; !exists {
-		return func() tea.Msg {
-			return ModeErrorMsg{
-				Mode:  targetMode,
-				Error: fmt.Errorf("target mode not configured: %s", targetMode.String()),
-			}
-		}
-	}
-
-	// Capture current state with enhanced preservation
-	currentState := mm.captureAdvancedModeState(mm.currentMode)
-	if currentState != nil {
-		mm.stateHistory[mm.currentMode] = currentState
-	}
-
-	// Create enhanced transition
-	transition := ModeTransition{
-		FromMode:       mm.currentMode,
-		ToMode:         targetMode,
-		TriggerType:    options.Trigger,
-		PreserveState:  options.PreserveState,
-		AnimationType:  options.AnimationType,
-		Duration:       options.Duration,
-		BeforeCallback: options.BeforeCallback,
-		AfterCallback:  options.AfterCallback,
-		Timestamp:      time.Now(),
-	}
-
-	// Add to queue
-	mm.transitionQueue = append(mm.transitionQueue, transition)
-
-	previousMode := mm.currentMode
-	mm.currentMode = targetMode
-
-	// Get preserved state with advanced restoration
-	var preservedState *ModeState
-	if savedState, exists := mm.stateHistory[targetMode]; exists && transition.PreserveState {
-		preservedState = mm.enhanceStateRestoration(savedState, targetMode)
-	}
-
-	return tea.Batch(
-		func() tea.Msg {
-			return ModeTransitionStartedMsg{Transition: transition}
-		},
-		func() tea.Msg {
-			return ModeDeactivatedMsg{
-				Mode:       previousMode,
-				NextMode:   targetMode,
-				SavedState: currentState,
-			}
-		},
-		func() tea.Msg {
-			return ModeActivatedMsg{
-				Mode:           targetMode,
-				PreviousMode:   previousMode,
-				PreservedState: preservedState,
-			}
-		},
-		func() tea.Msg {
-			return ModeTransitionCompletedMsg{
-				Transition: transition,
-				Duration:   time.Since(transition.Timestamp),
-			}
-		},
-	)
-}
-
 // captureAdvancedModeState captures detailed state information for advanced preservation
 func (mm *ModeManager) captureAdvancedModeState(mode NavigationMode) *ModeState {
-	config, exists := mm.modes[mode]
+	_, exists := mm.modes[mode]
 	if !exists {
 		return nil
 	}
 
 	state := &ModeState{
-		Mode:              mode,
-		Position:          Position{}, // Will be populated by caller
-		ViewMode:          ViewModeList, // Will be populated by caller
-		FocusedElements:   make([]string, 0),
-		SelectionState:    SelectionState{},
-		FilterState:       FilterState{},
-		ScrollPosition:    ScrollPosition{},
-		LayoutState:       LayoutState{},
-		CustomData:        make(map[string]interface{}),
-		LastActivated:     time.Now(),
-		ActivationCount:   1,
-		SessionDuration:   time.Duration(0),
+		Mode:            mode,
+		Position:        Position{},   // Will be populated by caller
+		ViewMode:        ViewModeList, // Will be populated by caller
+		FocusedElements: make([]string, 0),
+		SelectionState:  SelectionState{},
+		FilterState:     FilterState{},
+		ScrollPosition:  ScrollPosition{},
+		LayoutState:     LayoutState{},
+		CustomData:      make(map[string]interface{}),
+		LastActivated:   time.Now(),
+		ActivationCount: 1,
+		SessionDuration: time.Duration(0),
 	}
 
 	// Enhanced state capture based on mode type
@@ -910,25 +833,25 @@ func (mm *ModeManager) enhanceFocusRestoration(state *ModeState) {
 }
 
 // Placeholder methods for state capture/restoration (to be implemented by specific view components)
-func (mm *ModeManager) getKanbanColumns() interface{} { return nil }
-func (mm *ModeManager) getKanbanCardPositions() interface{} { return nil }
-func (mm *ModeManager) getKanbanColumnWidths() interface{} { return nil }
-func (mm *ModeManager) getMatrixDimensions() interface{} { return nil }
-func (mm *ModeManager) getMatrixFocusedCell() interface{} { return nil }
-func (mm *ModeManager) getMatrixZoomLevel() interface{} { return nil }
-func (mm *ModeManager) getExpandedNodes() interface{} { return nil }
-func (mm *ModeManager) getCurrentTreeDepth() interface{} { return nil }
-func (mm *ModeManager) getCollapsedBranches() interface{} { return nil }
-func (mm *ModeManager) getCurrentSearchQuery() interface{} { return nil }
-func (mm *ModeManager) getActiveSearchFilters() interface{} { return nil }
+func (mm *ModeManager) getKanbanColumns() interface{}         { return nil }
+func (mm *ModeManager) getKanbanCardPositions() interface{}   { return nil }
+func (mm *ModeManager) getKanbanColumnWidths() interface{}    { return nil }
+func (mm *ModeManager) getMatrixDimensions() interface{}      { return nil }
+func (mm *ModeManager) getMatrixFocusedCell() interface{}     { return nil }
+func (mm *ModeManager) getMatrixZoomLevel() interface{}       { return nil }
+func (mm *ModeManager) getExpandedNodes() interface{}         { return nil }
+func (mm *ModeManager) getCurrentTreeDepth() interface{}      { return nil }
+func (mm *ModeManager) getCollapsedBranches() interface{}     { return nil }
+func (mm *ModeManager) getCurrentSearchQuery() interface{}    { return nil }
+func (mm *ModeManager) getActiveSearchFilters() interface{}   { return nil }
 func (mm *ModeManager) getSearchResultsMetadata() interface{} { return nil }
-func (mm *ModeManager) getFocusTarget() interface{} { return nil }
-func (mm *ModeManager) getFocusZoomLevel() interface{} { return nil }
-func (mm *ModeManager) getFocusContextItems() interface{} { return nil }
-func (mm *ModeManager) getGenericLayoutState() interface{} { return nil }
+func (mm *ModeManager) getFocusTarget() interface{}           { return nil }
+func (mm *ModeManager) getFocusZoomLevel() interface{}        { return nil }
+func (mm *ModeManager) getFocusContextItems() interface{}     { return nil }
+func (mm *ModeManager) getGenericLayoutState() interface{}    { return nil }
 
-func (mm *ModeManager) validateAndRestoreKanbanColumns(columns interface{}) {}
+func (mm *ModeManager) validateAndRestoreKanbanColumns(columns interface{})       {}
 func (mm *ModeManager) validateAndRestoreMatrixDimensions(dimensions interface{}) {}
-func (mm *ModeManager) validateAndRestoreExpandedNodes(nodes interface{}) {}
-func (mm *ModeManager) validateAndRestoreSearchQuery(query interface{}) {}
-func (mm *ModeManager) validateAndRestoreFocusTarget(target interface{}) {}
+func (mm *ModeManager) validateAndRestoreExpandedNodes(nodes interface{})         {}
+func (mm *ModeManager) validateAndRestoreSearchQuery(query interface{})           {}
+func (mm *ModeManager) validateAndRestoreFocusTarget(target interface{})          {}

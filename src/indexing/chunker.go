@@ -60,9 +60,13 @@ func (c *Chunker) Chunk(text string) []string {
 			end = textLen
 		}
 
-		// Adjust chunk boundary to respect sentence endings
+		// Adjust chunk boundary to respect sentence endings only if not at text end
 		if end < textLen {
-			end = adjustChunkBoundary(text, end)
+			adjustedEnd := adjustChunkBoundary(text, end)
+			// Only use adjusted end if it doesn't make the chunk too long
+			if adjustedEnd > start && adjustedEnd <= start+actualChunkSize+20 {
+				end = adjustedEnd
+			}
 		}
 
 		// Extract chunk
@@ -75,18 +79,31 @@ func (c *Chunker) Chunk(text string) []string {
 		}
 
 		// Calculate next start position with overlap
-		nextStart := end - overlap
-		if nextStart < 0 {
-			nextStart = 0
+		// Use the actual chunk size, not the adjusted end for overlap calculation
+		nextStart := start + actualChunkSize - overlap
+
+		// Ensure we don't go backwards
+		if nextStart <= start {
+			nextStart = start + (actualChunkSize / 2) // Move forward by half chunk size
+		}
+
+		// Ensure we're making progress and not exceeding text length
+		if nextStart >= textLen {
+			break
 		}
 
 		// Find a good starting point (beginning of sentence or word)
 		if nextStart > 0 && nextStart < textLen {
+			originalNext := nextStart
 			nextStart = findNextStartingPoint(text, nextStart)
+			// If finding starting point pushes us too far forward, use original
+			if nextStart > originalNext+20 {
+				nextStart = originalNext
+			}
 		}
 
-		// Break if we can't make progress or if we're going backwards
-		if nextStart >= end || nextStart <= start {
+		// Final safety check - ensure we're making meaningful progress
+		if nextStart <= start {
 			break
 		}
 

@@ -96,26 +96,7 @@ func (kv *KeyValidator) ResolveConflict(conflict KeyConflict, resolution string)
 	}
 }
 
-// ConflictType représente le type de conflit détecté
-type ConflictType int
-
-const (
-	DuplicateKey ConflictType = iota
-	ContextOverlap
-	ModifierConflict
-	ActionConflict
-)
-
-// KeyConflict représente un conflit entre deux bindings
-type KeyConflict struct {
-	Type        ConflictType
-	Description string
-	Binding1    KeyBinding
-	Binding2    KeyBinding
-	Context     string
-	Severity    int
-	Suggestion  string
-}
+// Note: ConflictType and KeyConflict are defined in types.go to avoid duplication
 
 // Private methods for conflict detection
 
@@ -135,11 +116,9 @@ func (kv *KeyValidator) findConflicts(profile *KeyProfile) []KeyConflict {
 
 func (kv *KeyValidator) findContextConflicts(keyMap KeyMap) []KeyConflict {
 	conflicts := make([]KeyConflict, 0)
-
 	for i, b1 := range keyMap.Bindings {
 		for j := i + 1; j < len(keyMap.Bindings); j++ {
 			b2 := keyMap.Bindings[j]
-
 			// Même contexte et même touche
 			if b1.Context == b2.Context && b1.Key == b2.Key {
 				conflicts = append(conflicts, KeyConflict{
@@ -148,7 +127,7 @@ func (kv *KeyValidator) findContextConflicts(keyMap KeyMap) []KeyConflict {
 					Binding1:    b1,
 					Binding2:    b2,
 					Context:     b1.Context,
-					Severity:    2,
+					Severity:    "error",
 					Suggestion:  "Change one of the key bindings to a different key",
 				})
 			}
@@ -164,7 +143,6 @@ func (kv *KeyValidator) findCrossContextConflicts(keyMap KeyMap) []KeyConflict {
 	for i, b1 := range keyMap.Bindings {
 		for j := i + 1; j < len(keyMap.Bindings); j++ {
 			b2 := keyMap.Bindings[j]
-
 			// Différent contexte mais même touche
 			if b1.Context != b2.Context && b1.Key == b2.Key {
 				// Vérifier si les contextes peuvent se chevaucher
@@ -176,7 +154,7 @@ func (kv *KeyValidator) findCrossContextConflicts(keyMap KeyMap) []KeyConflict {
 						Binding1:   b1,
 						Binding2:   b2,
 						Context:    fmt.Sprintf("%s, %s", b1.Context, b2.Context),
-						Severity:   1,
+						Severity:   "warning",
 						Suggestion: "Consider using different keys for overlapping contexts",
 					})
 				}
@@ -188,16 +166,12 @@ func (kv *KeyValidator) findCrossContextConflicts(keyMap KeyMap) []KeyConflict {
 }
 
 // contextsOverlap vérifie si deux contextes peuvent se chevaucher
-func (kv *KeyValidator) contextsOverlap(context1, context2 string) bool {
-	// Si l'un des contextes est "global", il chevauche tout
+func (kv *KeyValidator) contextsOverlap(context1, context2 string) bool { // Si l'un des contextes est "global", il chevauche tout
 	if context1 == "global" || context2 == "global" {
 		return true
 	}
 
-	// Vérifier les hiérarchies de contextes
-	parts1 := strings.Split(context1, ".")
-	parts2 := strings.Split(context2, ".")
-
+	// Vérifier les hiérarchies de contextes en utilisant la notation par points
 	// Si un contexte est un parent de l'autre
 	return strings.HasPrefix(context1, context2) || strings.HasPrefix(context2, context1)
 }

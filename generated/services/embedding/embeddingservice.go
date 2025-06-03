@@ -5,7 +5,9 @@ package embedding
 
 import (
 	"context"
+	"crypto/md5"
 	"fmt"
+	"math"
 	"math/rand"
 	"strings"
 )
@@ -13,7 +15,7 @@ import (
 type EmbeddingService struct {
 }
 
-// GenerateEmbedding
+// GenerateEmbedding creates a deterministic embedding vector based on the input text
 func GenerateEmbedding(ctx context.Context, text string) ([]float64, error) {
 
 	// Validate input
@@ -21,17 +23,35 @@ func GenerateEmbedding(ctx context.Context, text string) ([]float64, error) {
 		return nil, fmt.Errorf("empty text provided")
 	}
 
-	// TODO: Implement actual embedding generation
-	// This is a placeholder that should be replaced with real embedding logic
+	// Create a deterministic embedding based on the text content
+	// This is still a mock implementation but will be consistent for the same input
 
-	// For now, return a mock embedding vector
+	// Use MD5 hash of the text to create a deterministic seed
+	hasher := md5.New()
+	hasher.Write([]byte(strings.TrimSpace(text)))
+	hash := hasher.Sum(nil)
+
+	// Convert hash bytes to a seed
+	var seed int64
+	for i, b := range hash {
+		if i >= 8 { // Use first 8 bytes for int64
+			break
+		}
+		seed = (seed << 8) | int64(b)
+	}
+
+	// Create a deterministic random generator with this seed
+	rng := rand.New(rand.NewSource(seed))
+
+	// Generate deterministic embedding vector
 	vector := make([]float64, 768)
 	for i := range vector {
-		vector[i] = rand.Float64()
+		// Use a more realistic distribution (normal-ish)
+		val := rng.NormFloat64() * 0.1 // Scale to reasonable range
+		vector[i] = math.Tanh(val)     // Constrain to [-1, 1] range
 	}
 
 	return vector, nil
-
 }
 
 // BatchGenerateEmbeddings

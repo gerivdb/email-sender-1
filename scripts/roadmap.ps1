@@ -36,7 +36,7 @@ function Build-RoadmapManager {
    Write-Host "Compilation du gestionnaire de roadmap..." -ForegroundColor Yellow
    Set-Location "development\managers\roadmap-manager\roadmap-cli"
    try {
-      go build -o "roadmap-cli.exe" main.go
+      go build -o "C:\GoBuilds\roadmap-cli.exe" main.go
       if ($LASTEXITCODE -eq 0) {
          Write-Host "✅ Compilation réussie!" -ForegroundColor Green
       }
@@ -69,17 +69,16 @@ function Test-RoadmapManager {
 }
 
 function Invoke-RoadmapManager {
-   param($Args)
+   param($Parameters)
     
    # Vérifier si le binaire existe, sinon le compiler
    if (-not (Test-Path $BinaryPath)) {
       Write-Host "Binaire non trouvé, compilation en cours..." -ForegroundColor Yellow
       Build-RoadmapManager
    }
-    
    Set-Location "development\managers\roadmap-manager\roadmap-cli"
    try {
-      & ".\roadmap-cli.exe" @Args
+      & ".\roadmap-cli.exe" @Parameters
    }
    finally {
       Set-Location "..\..\..\.."

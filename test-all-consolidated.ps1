@@ -8,9 +8,8 @@ Write-Host "🚀 Test d'assimilation de tous les fichiers consolidated..." -Fore
 Get-ChildItem -Path $consolidatedPath -Filter "*.md" | ForEach-Object {
    $fileName = $_.Name
    Write-Host "Testing: $fileName" -ForegroundColor Yellow
-    
-   try {
-      $result = & ".\development\managers\roadmap-manager\roadmap-cli\roadmap-cli.exe" ingest-advanced $_.FullName --dry-run 2>&1
+      try {
+      & ".\development\managers\roadmap-manager\roadmap-cli\roadmap-cli.exe" ingest-advanced $_.FullName --dry-run 2>&1 | Out-Null
         
       if ($LASTEXITCODE -eq 0) {
          $successFiles += $fileName

@@ -81,13 +81,42 @@ const (
 	ActionCompleteTask KeyAction = "complete_task"
 	ActionAssignTask   KeyAction = "assign_task"
 
+	// Movement actions
+	ActionMoveUp    KeyAction = "move_up"
+	ActionMoveDown  KeyAction = "move_down"
+	ActionMoveLeft  KeyAction = "move_left"
+	ActionMoveRight KeyAction = "move_right"
+
+	// Item actions
+	ActionSelectItem     KeyAction = "select_item"
+	ActionDeselectItem   KeyAction = "deselect_item"
+	ActionToggleExpand   KeyAction = "toggle_expand"
+	ActionToggleCollapse KeyAction = "toggle_collapse"
+
+	// View switching actions
+	ActionSwitchToGantt KeyAction = "switch_to_gantt"
+
+	// Task management actions
+	ActionMoveTask    KeyAction = "move_task"
+	ActionCopyTask    KeyAction = "copy_task"
+	ActionSetPriority KeyAction = "set_priority"
+	ActionSetDeadline KeyAction = "set_deadline"
+	ActionAddTag      KeyAction = "add_tag"
+	ActionRemoveTag   KeyAction = "remove_tag"
+
 	// Application actions
-	ActionSave   KeyAction = "save"
-	ActionUndo   KeyAction = "undo"
-	ActionRedo   KeyAction = "redo"
-	ActionSearch KeyAction = "search"
-	ActionHelp   KeyAction = "help"
-	ActionQuit   KeyAction = "quit"
+	ActionSave    KeyAction = "save"
+	ActionUndo    KeyAction = "undo"
+	ActionRedo    KeyAction = "redo"
+	ActionCut     KeyAction = "cut"
+	ActionCopy    KeyAction = "copy"
+	ActionPaste   KeyAction = "paste"
+	ActionFilter  KeyAction = "filter"
+	ActionSort    KeyAction = "sort"
+	ActionRefresh KeyAction = "refresh"
+	ActionSearch  KeyAction = "search"
+	ActionHelp    KeyAction = "help"
+	ActionQuit    KeyAction = "quit"
 )
 
 // KeyContext represents the context where a key binding is applicable
@@ -107,15 +136,33 @@ const (
 	ContextEdit       KeyContext = "edit"
 )
 
-// KeyConflict represents a key binding conflict
+// ConflictType represents the type of a key binding conflict
+type ConflictType int
+
+const (
+	ConflictTypeExact ConflictType = iota
+	ConflictTypePartial
+	ConflictTypeContext
+	ConflictTypeSequence
+	// Legacy compatibility constants
+	DuplicateKey     = ConflictTypeExact
+	ContextOverlap   = ConflictTypeContext
+	ModifierConflict = ConflictTypePartial
+	ActionConflict   = ConflictTypeSequence
+)
+
+// KeyConflict represents a key binding conflict with comprehensive information
 type KeyConflict struct {
-	Key        string     `json:"key"`
-	Context    string     `json:"context"`
-	Binding1   KeyBinding `json:"binding1"`
-	Binding2   KeyBinding `json:"binding2"`
-	Severity   string     `json:"severity"` // "error", "warning", "info"
-	Resolution string     `json:"resolution"`
-	ResolvedAt *time.Time `json:"resolved_at,omitempty"`
+	Key         string       `json:"key"`
+	Context     string       `json:"context"`
+	Binding1    KeyBinding   `json:"binding1"`
+	Binding2    KeyBinding   `json:"binding2"`
+	Severity    string       `json:"severity"` // "error", "warning", "info"
+	Type        ConflictType `json:"type"`
+	Description string       `json:"description"`
+	Suggestion  string       `json:"suggestion"`
+	Resolution  string       `json:"resolution"`
+	ResolvedAt  *time.Time   `json:"resolved_at,omitempty"`
 }
 
 // ValidationResult represents the result of key binding validation
