@@ -1,0 +1,7 @@
+{
+  "dryRun": false,
+  "verbose": true,
+  "syncStrategy": "auto-ff",
+  "maxConcurrency": 2,
+  "timeoutSeconds": 30
+}

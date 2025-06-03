@@ -3,5 +3,5 @@
     url = https://github.com/eniayomi/gcp-mcp.git
 
 [submodule "projet/mcp/servers/gateway"]
-    path = projet/mcp/servers/gateway
-    url = https://github.com/mcp-ecosystem/mcp-gateway.git
+	path = projet/mcp/servers/gateway
+	url = https://github.com/mcp-ecosystem/mcp-gateway.git
