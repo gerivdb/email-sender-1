@@ -11,12 +11,17 @@ import (
 	"path/filepath"
 	"time"
 
-	"bridges"
+	"email_sender/development/managers/bridges"
 )
 
 func main() {
 	fmt.Println("=== Section 8.2 Real-time Bridge Demonstration ===")
 	fmt.Println("Optimisation Surveillance Temps Réel - plan-dev-v42")
+
+	// Vérifier si on doit exécuter le bridge persistent	if len(os.Args) > 1 && os.Args[1] == "--persistent" {
+		RunPersistentBridge()
+		return
+	}
 
 	// Create demo configuration
 	config := bridges.DefaultRealtimeBridgeConfig()

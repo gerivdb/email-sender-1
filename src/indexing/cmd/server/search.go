@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/qdrant/go-client/qdrant"
+	go_client "github.com/qdrant/go-client/qdrant"
 )
 
 // SearchRequest represents a document search request
@@ -157,12 +157,12 @@ func (s *IndexingServer) handleVectorQuality(w http.ResponseWriter, r *http.Requ
 }
 
 // Fix Qdrant usage in buildQdrantFilter (remove unsupported fields)
-func (s *IndexingServer) buildQdrantFilter(filter *Filter) *qdrant.Filter {
+func (s *IndexingServer) buildQdrantFilter(filter *Filter) *go_client.Filter {
 	if filter == nil {
 		return nil
 	}
 	// Only support file type filter for now, using FieldCondition
-	return &qdrant.Filter{}
+	return &go_client.Filter{}
 }
 
 // Fix generateEmbedding to not use s.embedder
@@ -236,11 +236,11 @@ func (s *IndexingServer) generateSuggestions(query string, results []SearchResul
 
 // Helper utility functions
 
-func stringSliceToValues(strings []string) []*qdrant.Value {
-	values := make([]*qdrant.Value, len(strings))
+func stringSliceToValues(strings []string) []*go_client.Value {
+	values := make([]*go_client.Value, len(strings))
 	for i, s := range strings {
-		values[i] = &qdrant.Value{
-			Kind: &qdrant.Value_StringValue{
+		values[i] = &go_client.Value{
+			Kind: &go_client.Value_StringValue{
 				StringValue: s,
 			},
 		}

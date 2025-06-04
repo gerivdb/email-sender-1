@@ -3,12 +3,12 @@
 package main
 
 import (
-	"bridges"
+	"email_sender/development/managers/bridges"
 	"fmt"
 	"log"
 )
 
-func main() {
+func RunPersistentBridge() {
 	fmt.Println("🚀 Persistent Real-time Bridge for PowerShell Integration")
 	fmt.Println("Section 8.2 - Optimisation Surveillance Temps Réel")
 	// Create a simple configuration for testing

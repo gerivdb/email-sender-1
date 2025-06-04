@@ -136,9 +136,12 @@ func saveToFile(filePath string, fileType string, config map[string]interface{})
 	case "json":
 		data, err = json.MarshalIndent(config, "", "  ")
 	case "yaml", "yml":
-		data, err = yaml.Marshal(config)
-	case "toml":
-		data, err = toml.Marshal(config)
+		data, err = yaml.Marshal(config)	case "toml":
+		var buf strings.Builder
+		err = toml.NewEncoder(&buf).Encode(config)
+		if err == nil {
+			data = []byte(buf.String())
+		}
 	default:
 		return fmt.Errorf("unsupported file type: %s", fileType)
 	}

@@ -42,7 +42,7 @@ $testEvent = @{
 
 try {
    $response = Invoke-RestMethod -Uri "$bridgeUrl/events" -Method POST -Body $testEvent -ContentType "application/json"
-   Write-Host "✅ Événement envoyé avec succès" -ForegroundColor Green
+   Write-Host "✅ Événement envoyé avec succès. Status: $($response.status)" -ForegroundColor Green
 }
 catch {
    Write-Host "❌ Erreur envoi événement: $($_.Exception.Message)" -ForegroundColor Red

@@ -40,7 +40,7 @@ func NewUnifiedDiff(contextLines int) *UnifiedDiff {
 func (ud *UnifiedDiff) Generate(oldText, newText string) (string, error) {
 	oldLines := strings.Split(oldText, "\n")
 	newLines := strings.Split(newText, "\n")
-	
+
 	diffLines := ud.computeDiff(oldLines, newLines)
 	return ud.formatDiff(diffLines), nil
 }
@@ -52,20 +52,20 @@ func (ud *UnifiedDiff) computeDiff(oldLines, newLines []string) []DiffLine {
 	diffLines := make([]DiffLine, 0)
 
 	oldIndex, newIndex := 0, 0
-	
+
 	for _, line := range lcs {
 		// Add removed lines
 		for oldIndex < len(oldLines) && oldLines[oldIndex] != line {
 			diffLines = append(diffLines, DiffLine{Content: oldLines[oldIndex], Type: LineRemoved})
 			oldIndex++
 		}
-		
+
 		// Add added lines
 		for newIndex < len(newLines) && newLines[newIndex] != line {
 			diffLines = append(diffLines, DiffLine{Content: newLines[newIndex], Type: LineAdded})
 			newIndex++
 		}
-		
+
 		// Add unchanged line
 		if oldIndex < len(oldLines) && newIndex < len(newLines) {
 			diffLines = append(diffLines, DiffLine{Content: line, Type: LineUnchanged})
@@ -141,13 +141,15 @@ func (ud *UnifiedDiff) addContext(diffLines []DiffLine) []DiffLine {
 			changeStart = max(0, i-ud.ContextLines)
 			// Add context before
 			result = append(result, diffLines[changeStart:i]...)
-		} else if line.Type == LineUnchanged && inChange {
-			// End of a change block
+		} else if line.Type == LineUnchanged && inChange { // End of a change block
 			inChange = false
 			// Add context after
-			end := min(i+ud.ContextLines, len(diffLines))
-			result = append(result, diffLines[i:end]...)
-			i = end - 1 // Skip added context
+			endIndex := min(i+ud.ContextLines, len(diffLines))
+			result = append(result, diffLines[i:endIndex]...)
+			i = endIndex - 1 // Skip added context
+			if i >= len(diffLines) {
+				break
+			}
 			continue
 		}
 
