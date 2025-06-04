@@ -8,69 +8,7 @@ import (
 	"time"
 )
 
-// MockErrorManager implémente ErrorManager pour les tests
-type MockErrorManager struct {
-	loggedErrors     []LoggedError
-	catalogedErrors  []ErrorEntry
-	validationErrors []ErrorEntry
-	mu              sync.Mutex
-}
-
-type LoggedError struct {
-	Err    error
-	Module string
-	Code   string
-}
-
-func NewMockErrorManager() *MockErrorManager {
-	return &MockErrorManager{
-		loggedErrors:     make([]LoggedError, 0),
-		catalogedErrors:  make([]ErrorEntry, 0),
-		validationErrors: make([]ErrorEntry, 0),
-	}
-}
-
-func (m *MockErrorManager) LogError(err error, module string, code string) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.loggedErrors = append(m.loggedErrors, LoggedError{
-		Err:    err,
-		Module: module,
-		Code:   code,
-	})
-}
-
-func (m *MockErrorManager) CatalogError(entry ErrorEntry) error {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.catalogedErrors = append(m.catalogedErrors, entry)
-	return nil
-}
-
-func (m *MockErrorManager) ValidateError(entry ErrorEntry) error {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.validationErrors = append(m.validationErrors, entry)
-	return nil
-}
-
-func (m *MockErrorManager) GetLoggedErrors() []LoggedError {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	return append([]LoggedError{}, m.loggedErrors...)
-}
-
-func (m *MockErrorManager) GetCatalogedErrors() []ErrorEntry {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	return append([]ErrorEntry{}, m.catalogedErrors...)
-}
-
-func (m *MockErrorManager) GetValidationErrors() []ErrorEntry {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	return append([]ErrorEntry{}, m.validationErrors...)
-}
+// MockErrorManager is defined in integration_demo.go
 
 func TestPropagateError(t *testing.T) {
 	// Reset singleton pour le test
@@ -285,7 +223,7 @@ func TestErrorQueueOverflow(t *testing.T) {
 func TestNilErrorHandling(t *testing.T) {
 	// Test que les erreurs nil ne sont pas traitées
 	PropagateError("test-module", nil)
-	
+
 	centralizedErr := CentralizeError("test-module", nil)
 	if centralizedErr != nil {
 		t.Errorf("Expected nil for nil error, got %v", centralizedErr)

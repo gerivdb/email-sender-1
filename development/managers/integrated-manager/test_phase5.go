@@ -1,4 +1,4 @@
-package main
+package integratedmanager
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func main() {
+func runTestPhase5() {
 	fmt.Println("🧪 Test Phase 5.1 - Intégration avec integrated-manager")
 	fmt.Println("=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=" + "=")
 
@@ -31,11 +31,11 @@ func main() {
 
 func testCriticalPointsIntegration() {
 	// Obtenir l'instance du gestionnaire intégré
-	iem := integratedmanager.GetIntegratedErrorManager()
+	iem := GetIntegratedErrorManager()
 	defer iem.Shutdown()
 
 	// Configurer un mock error manager
-	mockEM := integratedmanager.NewMockErrorManager()
+	mockEM := NewMockErrorManager()
 	iem.SetErrorManager(mockEM)
 
 	// Simuler des erreurs dans les points critiques de différents managers
@@ -60,9 +60,8 @@ func testCriticalPointsIntegration() {
 			map[string]interface{}{"workflow_count": 15, "active_executions": 42},
 		},
 	}
-
 	for _, critErr := range criticalErrors {
-		integratedmanager.PropagateErrorWithContext(critErr.module, critErr.err, critErr.context)
+		PropagateErrorWithContext(critErr.module, critErr.err, critErr.context)
 		fmt.Printf("  ✓ Erreur critique propagée depuis %s\n", critErr.module)
 	}
 
@@ -85,14 +84,14 @@ func testCriticalPointsIntegration() {
 
 func testManagerErrorPropagation() {
 	// Tester la propagation en chaîne entre managers
-	iem := integratedmanager.GetIntegratedErrorManager()
+	iem := GetIntegratedErrorManager()
 	defer iem.Shutdown()
 
-	mockEM := integratedmanager.NewMockErrorManager()
+	mockEM := NewMockErrorManager()
 	iem.SetErrorManager(mockEM)
 
 	// Initialiser les hooks de managers
-	integratedmanager.RegisterManagerIntegrations()
+	RegisterManagerIntegrations()
 
 	// Simuler une cascade d'erreurs
 	cascadeScenarios := []struct {
@@ -102,7 +101,7 @@ func testManagerErrorPropagation() {
 		context map[string]interface{}
 	}{
 		{
-			1, "dependency-manager", 
+			1, "dependency-manager",
 			errors.New("package resolution timeout"),
 			map[string]interface{}{"package": "critical-lib", "timeout": "30s"},
 		},
@@ -121,22 +120,22 @@ func testManagerErrorPropagation() {
 	fmt.Println("  🔄 Simulation d'une cascade d'erreurs:")
 	for _, scenario := range cascadeScenarios {
 		fmt.Printf("    Étape %d: %s\n", scenario.step, scenario.module)
-		integratedmanager.PropagateErrorWithContext(scenario.module, scenario.err, scenario.context)
+		PropagateErrorWithContext(scenario.module, scenario.err, scenario.context)
 		time.Sleep(50 * time.Millisecond) // Laisser le temps pour le traitement
 	}
 
 	time.Sleep(100 * time.Millisecond)
-	
+
 	catalogedErrors := mockEM.GetCatalogedErrors()
 	fmt.Printf("  📈 %d erreurs dans la cascade propagées\n", len(catalogedErrors))
 }
 
 func testErrorCentralization() {
 	// Tester la fonction CentralizeError
-	iem := integratedmanager.GetIntegratedErrorManager()
+	iem := GetIntegratedErrorManager()
 	defer iem.Shutdown()
 
-	mockEM := integratedmanager.NewMockErrorManager()
+	mockEM := NewMockErrorManager()
 	iem.SetErrorManager(mockEM)
 
 	// Tester la centralisation avec différents types d'erreurs
@@ -152,20 +151,20 @@ func testErrorCentralization() {
 
 	fmt.Println("  🎯 Test de centralisation d'erreurs:")
 	for _, errInfo := range errorsTocentralize {
-		centralizedErr := integratedmanager.CentralizeError(errInfo.module, errInfo.err)
+		centralizedErr := CentralizeError(errInfo.module, errInfo.err)
 		if centralizedErr != nil {
 			fmt.Printf("    ✓ Erreur de %s centralisée\n", errInfo.module)
 		}
 	}
 
 	// Tester avec erreur nil
-	nilErr := integratedmanager.CentralizeError("test-manager", nil)
+	nilErr := CentralizeError("test-manager", nil)
 	if nilErr == nil {
 		fmt.Println("    ✓ Gestion correcte des erreurs nil")
 	}
 
 	time.Sleep(100 * time.Millisecond)
-	
+
 	catalogedErrors := mockEM.GetCatalogedErrors()
 	fmt.Printf("  📊 %d erreurs centralisées cataloguées\n", len(catalogedErrors))
 }
@@ -173,7 +172,7 @@ func testErrorCentralization() {
 func testSimulatedErrorScenarios() {
 	// Exécuter la démonstration complète
 	fmt.Println("  🎭 Exécution des scénarios simulés:")
-	
+
 	// Scénario 1: Erreurs de démarrage du système
 	fmt.Println("    Scénario 1: Erreurs de démarrage")
 	simulateSystemStartupErrors()
@@ -190,10 +189,10 @@ func testSimulatedErrorScenarios() {
 }
 
 func simulateSystemStartupErrors() {
-	iem := integratedmanager.GetIntegratedErrorManager()
+	iem := GetIntegratedErrorManager()
 	defer iem.Shutdown()
 
-	mockEM := integratedmanager.NewMockErrorManager()
+	mockEM := NewMockErrorManager()
 	iem.SetErrorManager(mockEM)
 
 	// Erreurs typiques de démarrage
@@ -220,17 +219,17 @@ func simulateSystemStartupErrors() {
 	}
 
 	for _, startupErr := range startupErrors {
-		integratedmanager.PropagateErrorWithContext(startupErr.module, startupErr.err, startupErr.context)
+		PropagateErrorWithContext(startupErr.module, startupErr.err, startupErr.context)
 	}
 
 	time.Sleep(100 * time.Millisecond)
 }
 
 func simulateRuntimeErrors() {
-	iem := integratedmanager.GetIntegratedErrorManager()
+	iem := GetIntegratedErrorManager()
 	defer iem.Shutdown()
 
-	mockEM := integratedmanager.NewMockErrorManager()
+	mockEM := NewMockErrorManager()
 	iem.SetErrorManager(mockEM)
 
 	// Erreurs typiques de runtime
@@ -257,17 +256,17 @@ func simulateRuntimeErrors() {
 	}
 
 	for _, runtimeErr := range runtimeErrors {
-		integratedmanager.PropagateErrorWithContext(runtimeErr.module, runtimeErr.err, runtimeErr.context)
+		PropagateErrorWithContext(runtimeErr.module, runtimeErr.err, runtimeErr.context)
 	}
 
 	time.Sleep(100 * time.Millisecond)
 }
 
 func simulateShutdownErrors() {
-	iem := integratedmanager.GetIntegratedErrorManager()
+	iem := GetIntegratedErrorManager()
 	defer iem.Shutdown()
 
-	mockEM := integratedmanager.NewMockErrorManager()
+	mockEM := NewMockErrorManager()
 	iem.SetErrorManager(mockEM)
 
 	// Erreurs typiques de shutdown
@@ -289,7 +288,7 @@ func simulateShutdownErrors() {
 	}
 
 	for _, shutdownErr := range shutdownErrors {
-		integratedmanager.PropagateErrorWithContext(shutdownErr.module, shutdownErr.err, shutdownErr.context)
+		PropagateErrorWithContext(shutdownErr.module, shutdownErr.err, shutdownErr.context)
 	}
 
 	time.Sleep(100 * time.Millisecond)

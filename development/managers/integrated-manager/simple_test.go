@@ -1,83 +1,15 @@
-package main
+package integratedmanager
 
 import (
 	"errors"
 	"fmt"
-	"log"
 	"sync"
 	"time"
 )
 
-// Structures simplifiées pour le test
-type ErrorEntry struct {
-	ID             string                 `json:"id"`
-	Timestamp      time.Time              `json:"timestamp"`
-	Message        string                 `json:"message"`
-	StackTrace     string                 `json:"stack_trace"`
-	Module         string                 `json:"module"`
-	ErrorCode      string                 `json:"error_code"`
-	ManagerContext map[string]interface{} `json:"manager_context"`
-	Severity       string                 `json:"severity"`
-}
+// Types are defined in error_integration.go
 
-// Interface pour le gestionnaire d'erreurs
-type ErrorManager interface {
-	LogError(err error, module string, code string)
-	CatalogError(entry ErrorEntry) error
-	ValidateError(entry ErrorEntry) error
-}
-
-// Mock du gestionnaire d'erreurs
-type MockErrorManager struct {
-	loggedErrors    []LoggedError
-	catalogedErrors []ErrorEntry
-	mu              sync.Mutex
-}
-
-type LoggedError struct {
-	Err    error
-	Module string
-	Code   string
-}
-
-func NewMockErrorManager() *MockErrorManager {
-	return &MockErrorManager{
-		loggedErrors:    make([]LoggedError, 0),
-		catalogedErrors: make([]ErrorEntry, 0),
-	}
-}
-
-func (m *MockErrorManager) LogError(err error, module string, code string) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.loggedErrors = append(m.loggedErrors, LoggedError{
-		Err:    err,
-		Module: module,
-		Code:   code,
-	})
-	log.Printf("📝 Logged error from %s: %s", module, err.Error())
-}
-
-func (m *MockErrorManager) CatalogError(entry ErrorEntry) error {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	m.catalogedErrors = append(m.catalogedErrors, entry)
-	log.Printf("📚 Cataloged error: %s from %s (Severity: %s)", entry.Message, entry.Module, entry.Severity)
-	return nil
-}
-
-func (m *MockErrorManager) ValidateError(entry ErrorEntry) error {
-	if entry.Message == "" || entry.Module == "" {
-		return errors.New("invalid error entry")
-	}
-	return nil
-}
-
-func (m *MockErrorManager) GetCatalogedErrors() []ErrorEntry {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	return append([]ErrorEntry{}, m.catalogedErrors...)
-}
+// MockErrorManager is defined in integration_demo.go
 
 // Gestionnaire d'erreurs intégré simplifié
 type SimpleIntegratedManager struct {
@@ -178,20 +110,9 @@ func (sim *SimpleIntegratedManager) determineSeverity(err error) string {
 	}
 }
 
-func contains(text string, keywords ...string) bool {
-	for _, keyword := range keywords {
-		if len(text) >= len(keyword) {
-			for i := 0; i <= len(text)-len(keyword); i++ {
-				if text[i:i+len(keyword)] == keyword {
-					return true
-				}
-			}
-		}
-	}
-	return false
-}
+// contains function is defined in error_integration.go
 
-func main() {
+func mainSimpleTest() {
 	fmt.Println("🧪 Test Phase 5.1 - Intégration avec integrated-manager")
 	fmt.Println(fmt.Sprintf("%s", "================================================================"))
 
@@ -202,47 +123,47 @@ func main() {
 
 	// Test 1: Micro-étape 5.1.1 - Propagation d'erreurs dans les points critiques
 	fmt.Println("\n📤 Test 1: Micro-étape 5.1.1 - Propagation d'erreurs dans les points critiques")
-	testCriticalPointsIntegration(integratedManager, mockEM)
+	testCriticalPointsIntegrationSimple(integratedManager, mockEM)
 
 	// Test 2: Micro-étape 5.1.2 - Propagation entre managers
 	fmt.Println("\n🔄 Test 2: Micro-étape 5.1.2 - Propagation entre managers")
-	testManagerErrorPropagation(integratedManager, mockEM)
+	testManagerErrorPropagationSimple(integratedManager, mockEM)
 
 	// Test 3: Micro-étape 5.2.1 - Centralisation des erreurs
 	fmt.Println("\n🎯 Test 3: Micro-étape 5.2.1 - Centralisation des erreurs")
-	testErrorCentralization(integratedManager, mockEM)
+	testErrorCentralizationSimple(integratedManager, mockEM)
 
 	// Test 4: Micro-étape 5.2.2 - Scénarios simulés
 	fmt.Println("\n🎭 Test 4: Micro-étape 5.2.2 - Scénarios d'erreurs simulés")
-	testSimulatedErrorScenarios(integratedManager, mockEM)
+	testSimulatedErrorScenariosSimple(integratedManager, mockEM)
 
 	fmt.Println("\n✅ Tests Phase 5.1 terminés avec succès!")
-	
+
 	// Afficher les statistiques finales
 	catalogedErrors := mockEM.GetCatalogedErrors()
 	fmt.Printf("\n📊 Statistiques finales: %d erreurs cataloguées\n", len(catalogedErrors))
-	
+
 	// Grouper par module et sévérité
 	moduleStats := make(map[string]int)
 	severityStats := make(map[string]int)
-	
+
 	for _, err := range catalogedErrors {
 		moduleStats[err.Module]++
 		severityStats[err.Severity]++
 	}
-	
+
 	fmt.Println("\n📋 Répartition par module:")
 	for module, count := range moduleStats {
 		fmt.Printf("  - %s: %d erreurs\n", module, count)
 	}
-	
+
 	fmt.Println("\n🎯 Répartition par sévérité:")
 	for severity, count := range severityStats {
 		fmt.Printf("  - %s: %d erreurs\n", severity, count)
 	}
 }
 
-func testCriticalPointsIntegration(manager *SimpleIntegratedManager, mockEM *MockErrorManager) {
+func testCriticalPointsIntegrationSimple(manager *SimpleIntegratedManager, mockEM *MockErrorManager) {
 	criticalErrors := []struct {
 		module  string
 		err     error
@@ -275,7 +196,7 @@ func testCriticalPointsIntegration(manager *SimpleIntegratedManager, mockEM *Moc
 	fmt.Printf("  📊 %d erreurs critiques cataloguées\n", len(catalogedErrors))
 }
 
-func testManagerErrorPropagation(manager *SimpleIntegratedManager, mockEM *MockErrorManager) {
+func testManagerErrorPropagationSimple(manager *SimpleIntegratedManager, mockEM *MockErrorManager) {
 	// Ajouter des hooks pour simuler la propagation
 	manager.AddHook("dependency-manager", func(module string, err error, context map[string]interface{}) {
 		fmt.Printf("  🎣 Hook exécuté pour %s: %s\n", module, err.Error())
@@ -304,7 +225,7 @@ func testManagerErrorPropagation(manager *SimpleIntegratedManager, mockEM *MockE
 	}
 }
 
-func testErrorCentralization(manager *SimpleIntegratedManager, mockEM *MockErrorManager) {
+func testErrorCentralizationSimple(manager *SimpleIntegratedManager, mockEM *MockErrorManager) {
 	errorsToCentralize := []struct {
 		module string
 		err    error
@@ -328,7 +249,7 @@ func testErrorCentralization(manager *SimpleIntegratedManager, mockEM *MockError
 	}
 }
 
-func testSimulatedErrorScenarios(manager *SimpleIntegratedManager, mockEM *MockErrorManager) {
+func testSimulatedErrorScenariosSimple(manager *SimpleIntegratedManager, mockEM *MockErrorManager) {
 	scenarios := []struct {
 		name    string
 		module  string

@@ -2,9 +2,10 @@ package errormanager
 
 import (
 	"database/sql"
+	errormanager "error-manager"
 	"fmt"
+
 	_ "github.com/lib/pq"
-	"email_sender/development/managers/error-manager"
 )
 
 var db *sql.DB
