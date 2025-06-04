@@ -5,15 +5,34 @@ import (
 	"time"
 )
 
+// ErrorPattern représente un pattern d'erreur détecté
+type ErrorPattern struct {
+	Pattern   string `json:"pattern"`
+	Frequency int    `json:"frequency"`
+	Module    string `json:"module"`
+}
+
+// ErrorCorrelation représente la corrélation entre différentes erreurs
+type ErrorCorrelation struct {
+	ModuleA     string  `json:"module_a"`
+	ModuleB     string  `json:"module_b"`
+	Correlation float64 `json:"correlation"`
+	TimeGap     string  `json:"time_gap"`
+}
+
 // PatternMetrics représente les métriques d'un pattern d'erreur
 type PatternMetrics struct {
-	ErrorCode     string                 `json:"error_code"`
-	Module        string                 `json:"module"`
-	Frequency     int                    `json:"frequency"`
-	LastOccurred  time.Time              `json:"last_occurred"`
-	FirstOccurred time.Time              `json:"first_occurred"`
-	Severity      string                 `json:"severity"`
-	Context       map[string]interface{} `json:"context"`
+	TotalErrors      int                    `json:"total_errors"`
+	UniquePatterns   int                    `json:"unique_patterns"`
+	MostFrequentCode string                 `json:"most_frequent_code"`
+	TimeWindow       string                 `json:"time_window"`
+	ErrorCode        string                 `json:"error_code"`
+	Module           string                 `json:"module"`
+	Frequency        int                    `json:"frequency"`
+	LastOccurred     time.Time              `json:"last_occurred"`
+	FirstOccurred    time.Time              `json:"first_occurred"`
+	Severity         string                 `json:"severity"`
+	Context          map[string]interface{} `json:"context"`
 }
 
 // TemporalCorrelation représente les corrélations temporelles entre erreurs
@@ -57,4 +76,14 @@ type ReportGenerator struct {
 // NewReportGenerator crée une nouvelle instance de ReportGenerator
 func NewReportGenerator(analyzer *PatternAnalyzer) *ReportGenerator {
 	return &ReportGenerator{analyzer: analyzer}
+}
+
+// PatternAnalysisReport représente un rapport d'analyse de pattern complet
+type PatternAnalysisReport struct {
+	Timestamp       time.Time          `json:"timestamp"`
+	TotalErrors     int                `json:"total_errors"`
+	Patterns        []ErrorPattern     `json:"patterns"`
+	Metrics         PatternMetrics     `json:"metrics"`
+	Correlations    []ErrorCorrelation `json:"correlations"`
+	Recommendations []string           `json:"recommendations"`
 }

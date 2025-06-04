@@ -1,10 +1,11 @@
-package errormanager
+package errormanager_test
 
 import (
-	"email_sender/development/managers/error-manager"
 	"os"
 	"testing"
 	"time"
+
+	errormanager "error-manager"
 )
 
 func TestPersistErrorToSQL(t *testing.T) {
@@ -13,7 +14,7 @@ func TestPersistErrorToSQL(t *testing.T) {
 		t.Skip("POSTGRES_CONN_STR environment variable is not set")
 	}
 
-	err := InitializePostgres(connStr)
+	err := errormanager.InitializePostgres(connStr)
 	if err != nil {
 		t.Fatalf("Failed to initialize PostgreSQL: %v", err)
 	}
@@ -26,10 +27,9 @@ func TestPersistErrorToSQL(t *testing.T) {
 		Module:        "test-module",
 		ErrorCode:     "E001",
 		ManagerContext: "{\"key\": \"value\"}",
-		Severity:      "ERROR",
-	}
+		Severity:      "ERROR",	}
 
-	err = PersistErrorToSQL(entry)
+	err = errormanager.PersistErrorToSQL(entry)
 	if err != nil {
 		t.Errorf("Failed to persist error to SQL: %v", err)
 	}

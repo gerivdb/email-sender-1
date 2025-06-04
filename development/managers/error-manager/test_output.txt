@@ -1,0 +1,5 @@
+{"level":"error","ts":1749005025.6754868,"caller":"error-manager/catalog.go:13","msg":"Error cataloged","id":"456e7890-f12a-34b5-c678-901234567890","timestamp":1749005025.674488,"message":"Cataloging test error","stack_trace":"catalog.go:20\nmain.go:45","module":"catalog-test","error_code":"ERR_CAT_001","manager_context":"catalog testing","severity":"low","stacktrace":"error-manager.CatalogError\n\tD:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager/catalog.go:13\nerror-manager_test.TestCatalogError_Functionality\n\tD:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager/error_manager_test.go:126\ntesting.tRunner\n\tC:/Users/user/sdk/go1.23.9/src/testing/testing.go:1690"}
+Error cataloged: {ID:456e7890-f12a-34b5-c678-901234567890 Timestamp:2025-06-04 04:43:45.6744881 +0200 CEST m=+0.019229601 Message:Cataloging test error StackTrace:catalog.go:20
+main.go:45 Module:catalog-test ErrorCode:ERR_CAT_001 ManagerContext:catalog testing Severity:low}
+PASS
+ok  	error-manager	0.310s

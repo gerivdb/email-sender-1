@@ -1,8 +1,10 @@
-package errormanager
+package errormanager_test
 
 import (
 	"os"
 	"testing"
+
+	errormanager "error-manager"
 )
 
 func TestStoreErrorVector(t *testing.T) {
@@ -11,7 +13,7 @@ func TestStoreErrorVector(t *testing.T) {
 		t.Skip("QDRANT_ENDPOINT environment variable is not set")
 	}
 
-	err := InitializeQdrant(endpoint)
+	err := errormanager.InitializeQdrant(endpoint)
 	if err != nil {
 		t.Fatalf("Failed to initialize Qdrant: %v", err)
 	}
@@ -23,7 +25,7 @@ func TestStoreErrorVector(t *testing.T) {
 		"module":  "test-module",
 	}
 
-	err = StoreErrorVector("project_errors_vectors", vector, payload)
+	err = errormanager.StoreErrorVector("project_errors_vectors", vector, payload)
 	if err != nil {
 		t.Errorf("Failed to store error vector: %v", err)
 	}

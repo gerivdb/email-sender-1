@@ -2,7 +2,8 @@ package errormanager
 
 import (
 	"database/sql"
-	"encoding/json"	"fmt"
+	"encoding/json"
+	"fmt"
 	"html/template"
 	"os"
 	"path/filepath"
@@ -435,10 +436,10 @@ func TestReportGenerationWithMockData() {
 	if err != nil {
 		fmt.Printf("Erreur lors de l'export HTML: %v\n", err)
 	}
-
 	fmt.Printf("Rapport simulé généré avec succès:\n")
 	fmt.Printf("- Total des erreurs: %d\n", mockReport.TotalErrors)
 	fmt.Printf("- Patterns uniques: %d\n", mockReport.UniquePatterns)
-	fmt.Printf("- Corrélations: %d\n", len(mockReport.TemporalCorrelations))	fmt.Printf("- Recommandations: %d\n", len(mockReport.Recommendations))
+	fmt.Printf("- Corrélations: %d\n", len(mockReport.TemporalCorrelations))
+	fmt.Printf("- Recommandations: %d\n", len(mockReport.Recommendations))
 	fmt.Printf("- Findings critiques: %d\n", len(mockReport.CriticalFindings))
 }
