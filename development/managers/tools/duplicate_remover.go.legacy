@@ -1,0 +1,85 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"regexp"
+)
+
+func main() {
+	if len(os.Args) != 2 {
+		fmt.Println("Usage: go run duplicate_remover.go <file.go>")
+		os.Exit(1)
+	}
+
+	filename := os.Args[1]
+	
+	// Read the file
+	file, err := os.Open(filename)
+	if err != nil {
+		fmt.Printf("Error opening file: %v\n", err)
+		os.Exit(1)
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	
+	if err := scanner.Err(); err != nil {
+		fmt.Printf("Error reading file: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Find duplicate method definitions
+	methodRegex := regexp.MustCompile(`^func \([^)]+\) ([A-Za-z0-9_]+)\(`)
+	seenMethods := make(map[string]int)
+	duplicateStart := -1
+	
+	for i, line := range lines {
+		if matches := methodRegex.FindStringSubmatch(line); matches != nil {
+			methodName := matches[1]
+			if firstOccurrence, exists := seenMethods[methodName]; exists {
+				fmt.Printf("Found duplicate method '%s' at line %d (first at line %d)\n", 
+					methodName, i+1, firstOccurrence+1)
+				if duplicateStart == -1 {
+					duplicateStart = i
+				}
+			} else {
+				seenMethods[methodName] = i
+			}
+		}
+	}
+	
+	if duplicateStart == -1 {
+		fmt.Println("No duplicate methods found")
+		return
+	}
+	
+	// Remove duplicate content from duplicateStart onwards
+	cleanLines := lines[:duplicateStart]
+	
+	// Add proper file ending
+	cleanLines = append(cleanLines, "}")
+	
+	// Write the cleaned file
+	outputFile, err := os.Create(filename + ".clean")
+	if err != nil {
+		fmt.Printf("Error creating output file: %v\n", err)
+		os.Exit(1)
+	}
+	defer outputFile.Close()
+	
+	writer := bufio.NewWriter(outputFile)
+	for _, line := range cleanLines {
+		fmt.Fprintln(writer, line)
+	}
+	writer.Flush()
+	
+	fmt.Printf("Created cleaned file: %s.clean\n", filename)
+	fmt.Printf("Original file has %d lines, cleaned file has %d lines\n", len(lines), len(cleanLines))
+}

@@ -1,0 +1,511 @@
+package main
+
+import (
+	"fmt"
+	"go/parser"
+	"go/token"
+	"io/ioutil"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
+)
+
+type InterfaceMigrator struct {
+	BaseDir        string
+	FileSet        *token.FileSet
+	InterfacesDir  string
+	FixedFiles     []string
+	CreatedFiles   []string
+	Errors         []string
+}
+
+func main() {
+	baseDir := "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers"
+	
+	migrator := &InterfaceMigrator{
+		BaseDir:       baseDir,
+		FileSet:       token.NewFileSet(),
+		InterfacesDir: filepath.Join(baseDir, "interfaces"),
+	}
+	
+	fmt.Println("🔧 STARTING AUTOMATIC INTERFACE MIGRATION...")
+	
+	// Étape 1: Créer la structure d'interfaces
+	if err := migrator.CreateInterfacesStructure(); err != nil {
+		log.Fatal(err)
+	}
+	
+	// Étape 2: Corriger les erreurs de syntaxe
+	if err := migrator.FixSyntaxErrors(); err != nil {
+		log.Fatal(err)
+	}
+	
+	// Étape 3: Migrer les interfaces
+	if err := migrator.MigrateInterfaces(); err != nil {
+		log.Fatal(err)
+	}
+	
+	migrator.PrintSummary()
+}
+
+func (im *InterfaceMigrator) CreateInterfacesStructure() error {
+	fmt.Println("📁 Creating interfaces/ package structure...")
+	
+	if err := os.MkdirAll(im.InterfacesDir, 0755); err != nil {
+		return fmt.Errorf("failed to create interfaces directory: %v", err)
+	}
+	
+	// Créer go.mod pour le package interfaces
+	goModContent := `module interfaces
+
+go 1.21
+`
+	if err := ioutil.WriteFile(filepath.Join(im.InterfacesDir, "go.mod"), []byte(goModContent), 0644); err != nil {
+		return fmt.Errorf("failed to create go.mod: %v", err)
+	}
+	
+	// Créer interfaces/common.go
+	commonContent := `package interfaces
+
+import (
+	"context"
+	"time"
+)
+
+// BaseManager définit l'interface de base pour tous les managers
+type BaseManager interface {
+	HealthCheck(ctx context.Context) error
+	Initialize(ctx context.Context) error
+	Cleanup() error
+}
+
+// Initializer définit l'interface d'initialisation
+type Initializer interface {
+	Initialize(ctx context.Context) error
+}
+
+// HealthChecker définit l'interface de vérification de santé
+type HealthChecker interface {
+	HealthCheck(ctx context.Context) error
+}
+
+// Cleaner définit l'interface de nettoyage
+type Cleaner interface {
+	Cleanup() error
+}
+`
+	if err := ioutil.WriteFile(filepath.Join(im.InterfacesDir, "common.go"), []byte(commonContent), 0644); err != nil {
+		return fmt.Errorf("failed to create common.go: %v", err)
+	}
+	im.CreatedFiles = append(im.CreatedFiles, "interfaces/common.go")
+	
+	// Créer interfaces/types.go
+	typesContent := `package interfaces
+
+import (
+	"time"
+)
+
+// DependencyMetadata représente les métadonnées d'une dépendance
+type DependencyMetadata struct {
+	Name            string            ` + "`json:\"name\"`" + `
+	Version         string            ` + "`json:\"version\"`" + `
+	Repository      string            ` + "`json:\"repository\"`" + `
+	License         string            ` + "`json:\"license\"`" + `
+	Vulnerabilities []Vulnerability   ` + "`json:\"vulnerabilities\"`" + `
+	LastUpdated     time.Time         ` + "`json:\"last_updated\"`" + `
+	Dependencies    []string          ` + "`json:\"dependencies\"`" + `
+	Tags            map[string]string ` + "`json:\"tags\"`" + `
+	Attributes      map[string]string ` + "`json:\"attributes,omitempty\"`" + `
+	UpdatedAt       time.Time         ` + "`json:\"updated_at\"`" + `
+}
+
+// Vulnerability représente une vulnérabilité de sécurité
+type Vulnerability struct {
+	Severity    string   ` + "`json:\"severity\"`" + `
+	Description string   ` + "`json:\"description\"`" + `
+	CVEIDs      []string ` + "`json:\"cve_ids,omitempty\"`" + `
+}
+
+// SystemMetrics pour le monitoring
+type SystemMetrics struct {
+	Timestamp    time.Time ` + "`json:\"timestamp\"`" + `
+	CPUUsage     float64   ` + "`json:\"cpu_usage\"`" + `
+	MemoryUsage  float64   ` + "`json:\"memory_usage\"`" + `
+	DiskUsage    float64   ` + "`json:\"disk_usage\"`" + `
+	NetworkIn    int64     ` + "`json:\"network_in\"`" + `
+	NetworkOut   int64     ` + "`json:\"network_out\"`" + `
+	ErrorCount   int64     ` + "`json:\"error_count\"`" + `
+	RequestCount int64     ` + "`json:\"request_count\"`" + `
+}
+
+// VulnerabilityReport pour les analyses de sécurité
+type VulnerabilityReport struct {
+	TotalScanned         int                           ` + "`json:\"total_scanned\"`" + `
+	VulnerabilitiesFound int                           ` + "`json:\"vulnerabilities_found\"`" + `
+	Timestamp            time.Time                     ` + "`json:\"timestamp\"`" + `
+	Details              map[string]*VulnerabilityInfo ` + "`json:\"details\"`" + `
+}
+
+// VulnerabilityInfo détails d'une vulnérabilité
+type VulnerabilityInfo struct {
+	Severity    string   ` + "`json:\"severity\"`" + `
+	Description string   ` + "`json:\"description\"`" + `
+	CVEIDs      []string ` + "`json:\"cve_ids,omitempty\"`" + `
+}
+
+// OperationMetrics pour le monitoring des opérations
+type OperationMetrics struct {
+	OperationName string        ` + "`json:\"operation_name\"`" + `
+	StartTime     time.Time     ` + "`json:\"start_time\"`" + `
+	Duration      time.Duration ` + "`json:\"duration\"`" + `
+	Status        string        ` + "`json:\"status\"`" + `
+	ErrorMessage  string        ` + "`json:\"error_message,omitempty\"`" + `
+}
+`
+	if err := ioutil.WriteFile(filepath.Join(im.InterfacesDir, "types.go"), []byte(typesContent), 0644); err != nil {
+		return fmt.Errorf("failed to create types.go: %v", err)
+	}
+	im.CreatedFiles = append(im.CreatedFiles, "interfaces/types.go")
+	
+	// Créer les interfaces spécialisées
+	specializedInterfaces := map[string]string{
+		"security.go": `package interfaces
+
+import "context"
+
+// SecurityManager interface pour la gestion de la sécurité
+type SecurityManager interface {
+	BaseManager
+	ScanDependenciesForVulnerabilities(ctx context.Context, deps []string) (*VulnerabilityReport, error)
+	ValidateAPIKeyAccess(ctx context.Context, key string) (bool, error)
+	LoadSecrets(ctx context.Context) error
+	GetSecret(key string) (string, error)
+	GenerateAPIKey(ctx context.Context, scope string) (string, error)
+	EncryptData(data []byte) ([]byte, error)
+	DecryptData(encryptedData []byte) ([]byte, error)
+}
+`,
+		"storage.go": `package interfaces
+
+import "context"
+
+// StorageManager interface pour la gestion du stockage
+type StorageManager interface {
+	BaseManager
+	SaveDependencyMetadata(ctx context.Context, metadata *DependencyMetadata) error
+	GetDependencyMetadata(ctx context.Context, name string) (*DependencyMetadata, error)
+	QueryDependencies(ctx context.Context, query string) ([]*DependencyMetadata, error)
+	StoreObject(ctx context.Context, key string, obj interface{}) error
+	GetObject(ctx context.Context, key string, obj interface{}) error
+	DeleteObject(ctx context.Context, key string) error
+	ListObjects(ctx context.Context, prefix string) ([]string, error)
+	GetPostgreSQLConnection() (interface{}, error)
+	GetQdrantConnection() (interface{}, error)
+	RunMigrations(ctx context.Context) error
+}
+`,
+		"monitoring.go": `package interfaces
+
+import "context"
+
+// MonitoringManager interface pour la surveillance
+type MonitoringManager interface {
+	BaseManager
+	StartOperationMonitoring(ctx context.Context, operation string) (*OperationMetrics, error)
+	StopOperationMonitoring(ctx context.Context, metrics *OperationMetrics) error
+	CheckSystemHealth(ctx context.Context) error
+	ConfigureAlerts(ctx context.Context, config map[string]interface{}) error
+	CollectMetrics(ctx context.Context) (*SystemMetrics, error)
+	StartMonitoring(ctx context.Context) error
+	StopMonitoring(ctx context.Context) error
+}
+`,
+		"container.go": `package interfaces
+
+import "context"
+
+// ContainerManager interface pour la gestion des conteneurs
+type ContainerManager interface {
+	BaseManager
+	ValidateForContainerization(ctx context.Context, deps []string) error
+	OptimizeForContainer(ctx context.Context, config map[string]interface{}) error
+	BuildImage(ctx context.Context, config map[string]interface{}) error
+	DeployContainer(ctx context.Context, config map[string]interface{}) error
+}
+`,
+		"deployment.go": `package interfaces
+
+import "context"
+
+// DeploymentManager interface pour la gestion des déploiements
+type DeploymentManager interface {
+	BaseManager
+	CheckDeploymentReadiness(ctx context.Context, env string) error
+	GenerateDeploymentPlan(ctx context.Context, config map[string]interface{}) (string, error)
+	ExecuteDeployment(ctx context.Context, plan string) error
+	RollbackDeployment(ctx context.Context, version string) error
+}
+`,
+	}
+	
+	for filename, content := range specializedInterfaces {
+		path := filepath.Join(im.InterfacesDir, filename)
+		if err := ioutil.WriteFile(path, []byte(content), 0644); err != nil {
+			return fmt.Errorf("failed to create %s: %v", filename, err)
+		}
+		im.CreatedFiles = append(im.CreatedFiles, "interfaces/"+filename)
+	}
+	
+	fmt.Printf("✅ Created %d interface files\n", len(im.CreatedFiles))
+	return nil
+}
+
+func (im *InterfaceMigrator) FixSyntaxErrors() error {
+	fmt.Println("🔨 Fixing syntax errors...")
+	
+	problemFiles := []string{
+		"dependency-manager/modules/security_integration.go",
+		"dependency-manager/modules/storage_integration.go",
+		"dependency-manager/modules/deployment_integration.go",
+		"dependency-manager/modules/monitoring_integration.go",
+	}
+	
+	for _, file := range problemFiles {
+		fullPath := filepath.Join(im.BaseDir, file)
+		if err := im.fixFileErrors(fullPath); err != nil {
+			im.Errors = append(im.Errors, fmt.Sprintf("Failed to fix %s: %v", file, err))
+			continue
+		}
+		im.FixedFiles = append(im.FixedFiles, file)
+	}
+	
+	fmt.Printf("✅ Fixed %d files\n", len(im.FixedFiles))
+	return nil
+}
+
+func (im *InterfaceMigrator) fixFileErrors(filePath string) error {
+	src, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+	
+	content := string(src)
+	
+	// Corriger les erreurs spécifiques identifiées
+	if strings.Contains(filePath, "security_integration.go") {
+		content = im.fixSecurityIntegrationFile(content)
+	} else if strings.Contains(filePath, "storage_integration.go") {
+		content = im.fixStorageIntegrationFile(content)
+	} else if strings.Contains(filePath, "deployment_integration.go") {
+		content = im.fixDeploymentIntegrationFile(content)
+	} else if strings.Contains(filePath, "monitoring_integration.go") {
+		content = im.fixMonitoringIntegrationFile(content)
+	}
+	
+	// Essayer de parser pour vérifier la correction
+	_, err = parser.ParseFile(im.FileSet, filePath, content, 0)
+	if err != nil {
+		return fmt.Errorf("file still has errors after fix: %v", err)
+	}
+	
+	// Écrire le fichier corrigé
+	return ioutil.WriteFile(filePath, []byte(content), 0644)
+}
+
+func (im *InterfaceMigrator) fixSecurityIntegrationFile(content string) string {
+	// Ajouter l'import pour le package interfaces
+	if !strings.Contains(content, `"../interfaces"`) {
+		content = strings.Replace(content, 
+			"import (\n", 
+			"import (\n\t\"../interfaces\"\n", 1)
+	}
+	
+	// Supprimer les définitions de types mal placées
+	lines := strings.Split(content, "\n")
+	var fixedLines []string
+	inBadTypeSection := false
+	
+	for i, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		
+		// Détecter le début d'une section de type mal placée
+		if i > 10 && i < 20 && (strings.Contains(trimmed, "Severity") || 
+			strings.Contains(trimmed, "Description") || 
+			strings.Contains(trimmed, "CVEIDs")) {
+			inBadTypeSection = true
+			continue
+		}
+		
+		// Fin de la section mal placée
+		if inBadTypeSection && (trimmed == "}" || trimmed == "") {
+			inBadTypeSection = false
+			continue
+		}
+		
+		// Ignorer les lignes dans la section mal placée
+		if inBadTypeSection {
+			continue
+		}
+		
+		fixedLines = append(fixedLines, line)
+	}
+	
+	return strings.Join(fixedLines, "\n")
+}
+
+func (im *InterfaceMigrator) fixStorageIntegrationFile(content string) string {
+	// Ajouter l'import pour le package interfaces
+	if !strings.Contains(content, `"../interfaces"`) {
+		content = strings.Replace(content, 
+			"import (\n", 
+			"import (\n\t\"../interfaces\"\n", 1)
+	}
+	
+	// Supprimer les définitions de types mal placées et le code en vrac
+	lines := strings.Split(content, "\n")
+	var fixedLines []string
+	inBadSection := false
+	
+	for i, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		
+		// Détecter les sections problématiques
+		if (i > 5 && i < 15 && strings.Contains(trimmed, "Attributes")) ||
+		   (i > 135 && strings.Contains(trimmed, "for _, key := range keys")) {
+			inBadSection = true
+			continue
+		}
+		
+		// Détecter la fin des sections problématiques
+		if inBadSection && (strings.HasPrefix(trimmed, "func") || 
+			strings.HasPrefix(trimmed, "type") || 
+			strings.HasPrefix(trimmed, "var") ||
+			strings.HasPrefix(trimmed, "//")) {
+			inBadSection = false
+		}
+		
+		// Ignorer les lignes dans les sections problématiques
+		if inBadSection {
+			continue
+		}
+		
+		fixedLines = append(fixedLines, line)
+	}
+	
+	return strings.Join(fixedLines, "\n")
+}
+
+func (im *InterfaceMigrator) fixDeploymentIntegrationFile(content string) string {
+	// Ajouter l'import pour le package interfaces
+	if !strings.Contains(content, `"../interfaces"`) {
+		content = strings.Replace(content, 
+			"import (\n", 
+			"import (\n\t\"../interfaces\"\n", 1)
+	}
+	
+	// Supprimer les interfaces dupliquées et utiliser les centralisées
+	content = strings.ReplaceAll(content, "DeploymentManagerInterface", "interfaces.DeploymentManager")
+	content = strings.ReplaceAll(content, "BaseManagerInterface", "interfaces.BaseManager")
+	
+	return content
+}
+
+func (im *InterfaceMigrator) fixMonitoringIntegrationFile(content string) string {
+	// Ajouter l'import pour le package interfaces
+	if !strings.Contains(content, `"../interfaces"`) {
+		content = strings.Replace(content, 
+			"import (\n", 
+			"import (\n\t\"../interfaces\"\n", 1)
+	}
+	
+	// Supprimer les interfaces dupliquées et utiliser les centralisées
+	content = strings.ReplaceAll(content, "MonitoringManagerInterface", "interfaces.MonitoringManager")
+	content = strings.ReplaceAll(content, "BaseManagerInterface", "interfaces.BaseManager")
+	
+	return content
+}
+
+func (im *InterfaceMigrator) MigrateInterfaces() error {
+	fmt.Println("🔄 Migrating remaining interface usages...")
+	
+	// Liste des fichiers à mettre à jour
+	files := []string{
+		"dependency-manager/modules/manager_integration.go",
+		"dependency-manager/modules/dependency_manager.go",
+		"dependency-manager/modules/real_manager_integration.go",
+	}
+	
+	for _, file := range files {
+		fullPath := filepath.Join(im.BaseDir, file)
+		if _, err := os.Stat(fullPath); os.IsNotExist(err) {
+			continue
+		}
+		
+		if err := im.updateFileImports(fullPath); err != nil {
+			im.Errors = append(im.Errors, fmt.Sprintf("Failed to update %s: %v", file, err))
+			continue
+		}
+	}
+	
+	return nil
+}
+
+func (im *InterfaceMigrator) updateFileImports(filePath string) error {
+	src, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+	
+	content := string(src)
+	
+	// Ajouter l'import pour le package interfaces si pas déjà présent
+	if !strings.Contains(content, `"../interfaces"`) {
+		content = strings.Replace(content, 
+			"import (\n", 
+			"import (\n\t\"../interfaces\"\n", 1)
+	}
+	
+	// Remplacer les références aux types
+	replacements := map[string]string{
+		"*DependencyMetadata":  "*interfaces.DependencyMetadata",
+		"DependencyMetadata":   "interfaces.DependencyMetadata",
+		"Vulnerability":        "interfaces.Vulnerability",
+		"VulnerabilityReport":  "interfaces.VulnerabilityReport",
+		"SystemMetrics":        "interfaces.SystemMetrics",
+		"OperationMetrics":     "interfaces.OperationMetrics",
+	}
+	
+	for old, new := range replacements {
+		content = strings.ReplaceAll(content, old, new)
+	}
+	
+	return ioutil.WriteFile(filePath, []byte(content), 0644)
+}
+
+func (im *InterfaceMigrator) PrintSummary() {
+	fmt.Println("\n🎉 MIGRATION SUMMARY:")
+	fmt.Printf("✅ Created files: %d\n", len(im.CreatedFiles))
+	for _, file := range im.CreatedFiles {
+		fmt.Printf("   - %s\n", file)
+	}
+	
+	fmt.Printf("🔧 Fixed files: %d\n", len(im.FixedFiles))
+	for _, file := range im.FixedFiles {
+		fmt.Printf("   - %s\n", file)
+	}
+	
+	if len(im.Errors) > 0 {
+		fmt.Printf("❌ Errors: %d\n", len(im.Errors))
+		for _, err := range im.Errors {
+			fmt.Printf("   - %s\n", err)
+		}
+	}
+	
+	fmt.Println("\n🚀 NEXT STEPS:")
+	fmt.Println("1. Verify compilation: go build ./...")
+	fmt.Println("2. Run tests: go test ./...")
+	fmt.Println("3. Update remaining interface references")
+	fmt.Println("4. Complete Phase 6 testing implementation")
+}

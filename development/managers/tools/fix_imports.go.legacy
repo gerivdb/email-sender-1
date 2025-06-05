@@ -1,0 +1,56 @@
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"path/filepath"
+	"strings"
+)
+
+func main() {
+	// Files with incorrect imports
+	files := []string{
+		"script-manager/script_manager.go",
+		"n8n-manager/n8n_manager.go",
+		"powershell-bridge/bridge_server.go",
+		"process-manager/process_manager.go",
+	}
+
+	baseDir := "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers"
+
+	for _, file := range files {
+		fullPath := filepath.Join(baseDir, file)
+		if err := fixImports(fullPath); err != nil {
+			fmt.Printf("Error fixing %s: %v\n", file, err)
+		} else {
+			fmt.Printf("Fixed imports in %s\n", file)
+		}
+	}
+}
+
+func fixImports(filePath string) error {
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+
+	text := string(content)
+
+	// Replace absolute path imports with module-based imports
+	replacements := map[string]string{
+		`errormanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"`:           `"github.com/email-sender/managers/error-manager"`,
+		`configmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/config-manager"`:         `"github.com/email-sender/managers/config-manager"`,
+		`processmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/process-manager"`:       `"github.com/email-sender/managers/process-manager"`,
+		`storagemanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/storage-manager"`:       `"github.com/email-sender/managers/storage-manager"`,
+		`securitymanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/security-manager"`:     `"github.com/email-sender/managers/security-manager"`,
+		`monitoringmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/monitoring-manager"`: `"github.com/email-sender/managers/monitoring-manager"`,
+		`containermanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/container-manager"`:   `"github.com/email-sender/managers/container-manager"`,
+		`deploymentmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/deployment-manager"`: `"github.com/email-sender/managers/deployment-manager"`,
+	}
+
+	for old, new := range replacements {
+		text = strings.ReplaceAll(text, old, new)
+	}
+
+	return ioutil.WriteFile(filePath, []byte(text), 0644)
+}

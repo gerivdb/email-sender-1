@@ -1,0 +1,420 @@
+package main
+
+import (
+	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/scanner"
+	"go/token"
+	"log"
+	"os"
+	"path/filepath"
+	"sort"
+	"strings"
+)
+
+type Interface struct {
+	Name     string
+	Methods  []string
+	File     string
+	Package  string
+	Position token.Position
+}
+
+type Method struct {
+	Name      string
+	Signature string
+}
+
+type DuplicationReport struct {
+	Interfaces       []Interface
+	Duplications     map[string][]Interface
+	SyntaxErrors     []SyntaxError
+	CommonMethods    map[string]int
+	Recommendations  []string
+}
+
+type SyntaxError struct {
+	File        string
+	Position    token.Position
+	Description string
+	Context     string
+}
+
+func main() {
+	baseDir := "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers"
+	
+	analyzer := &InterfaceAnalyzer{
+		BaseDir: baseDir,
+		FileSet: token.NewFileSet(),
+	}
+	
+	report, err := analyzer.AnalyzeInterfaces()
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	analyzer.PrintReport(report)
+	analyzer.GenerateRecommendations(report)
+}
+
+type InterfaceAnalyzer struct {
+	BaseDir string
+	FileSet *token.FileSet
+}
+
+func (ia *InterfaceAnalyzer) AnalyzeInterfaces() (*DuplicationReport, error) {
+	report := &DuplicationReport{
+		Interfaces:    []Interface{},
+		Duplications:  make(map[string][]Interface),
+		SyntaxErrors:  []SyntaxError{},
+		CommonMethods: make(map[string]int),
+	}
+	
+	// Analyser les fichiers d'intégration
+	integrationFiles := []string{
+		"dependency-manager/modules/manager_interfaces.go",
+		"dependency-manager/modules/container_integration.go",
+		"dependency-manager/modules/deployment_integration.go",
+		"dependency-manager/modules/security_integration.go",
+		"dependency-manager/modules/storage_integration.go",
+		"dependency-manager/modules/monitoring_integration.go",
+		"dependency-manager/modules/real_manager_integration.go",
+	}
+	
+	for _, file := range integrationFiles {
+		fullPath := filepath.Join(ia.BaseDir, file)
+		if _, err := os.Stat(fullPath); os.IsNotExist(err) {
+			fmt.Printf("Warning: File %s does not exist\n", fullPath)
+			continue
+		}
+		
+		interfaces, syntaxErrors, err := ia.analyzeFile(fullPath)
+		if err != nil {
+			fmt.Printf("Error analyzing %s: %v\n", file, err)
+			continue
+		}
+		
+		report.Interfaces = append(report.Interfaces, interfaces...)
+		report.SyntaxErrors = append(report.SyntaxErrors, syntaxErrors...)
+	}
+	
+	// Détecter les duplications
+	ia.detectDuplications(report)
+	
+	// Analyser les méthodes communes
+	ia.analyzeCommonMethods(report)
+	
+	return report, nil
+}
+
+func (ia *InterfaceAnalyzer) analyzeFile(filePath string) ([]Interface, []SyntaxError, error) {
+	var interfaces []Interface
+	var syntaxErrors []SyntaxError
+	
+	// Parser le fichier
+	src, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, nil, err
+	}
+		node, err := parser.ParseFile(ia.FileSet, filePath, src, parser.ParseComments)
+	if err != nil {
+		// Capturer les erreurs de syntaxe
+		if syntaxErr, ok := err.(scanner.ErrorList); ok {
+			for _, e := range syntaxErr {
+				syntaxErrors = append(syntaxErrors, SyntaxError{
+					File:        filePath,
+					Position:    e.Pos,
+					Description: e.Msg,
+					Context:     ia.getContextAroundError(string(src), e.Pos),
+				})
+			}
+		}
+		// Essayer de continuer l'analyse même avec des erreurs
+		node, _ = parser.ParseFile(ia.FileSet, filePath, src, parser.ParseComments|parser.AllErrors)
+		if node == nil {
+			return interfaces, syntaxErrors, nil
+		}
+	}
+	
+	// Extraire les interfaces
+	ast.Inspect(node, func(n ast.Node) bool {
+		switch decl := n.(type) {
+		case *ast.GenDecl:
+			if decl.Tok == token.TYPE {
+				for _, spec := range decl.Specs {
+					if typeSpec, ok := spec.(*ast.TypeSpec); ok {
+						if interfaceType, ok := typeSpec.Type.(*ast.InterfaceType); ok {
+							iface := Interface{
+								Name:     typeSpec.Name.Name,
+								File:     filePath,
+								Package:  node.Name.Name,
+								Position: ia.FileSet.Position(typeSpec.Pos()),
+							}
+							
+							// Extraire les méthodes
+							for _, method := range interfaceType.Methods.List {
+								if len(method.Names) > 0 {
+									iface.Methods = append(iface.Methods, method.Names[0].Name)
+								}
+							}
+							
+							interfaces = append(interfaces, iface)
+						}
+					}
+				}
+			}
+		case *ast.BadDecl:
+			// Erreur de syntaxe détectée
+			syntaxErrors = append(syntaxErrors, SyntaxError{
+				File:        filePath,
+				Position:    ia.FileSet.Position(decl.Pos()),
+				Description: "Bad declaration found",
+				Context:     "Syntax error in declaration",
+			})
+		}
+		return true
+	})
+	
+	return interfaces, syntaxErrors, nil
+}
+
+func (ia *InterfaceAnalyzer) detectDuplications(report *DuplicationReport) {
+	interfaceMap := make(map[string][]Interface)
+	
+	// Grouper par nom d'interface
+	for _, iface := range report.Interfaces {
+		interfaceMap[iface.Name] = append(interfaceMap[iface.Name], iface)
+	}
+	
+	// Identifier les duplications
+	for name, interfaces := range interfaceMap {
+		if len(interfaces) > 1 {
+			report.Duplications[name] = interfaces
+		}
+	}
+}
+
+func (ia *InterfaceAnalyzer) analyzeCommonMethods(report *DuplicationReport) {
+	methodCount := make(map[string]int)
+	
+	// Compter les occurrences de chaque méthode
+	for _, iface := range report.Interfaces {
+		for _, method := range iface.Methods {
+			methodCount[method]++
+		}
+	}
+	
+	// Identifier les méthodes communes (présentes dans au moins 2 interfaces)
+	for method, count := range methodCount {
+		if count >= 2 {
+			report.CommonMethods[method] = count
+		}
+	}
+}
+
+func (ia *InterfaceAnalyzer) getContextAroundError(src string, pos token.Position) string {
+	lines := strings.Split(src, "\n")
+	
+	start := max(0, pos.Line-3)
+	end := min(len(lines), pos.Line+2)
+	
+	var context strings.Builder
+	for i := start; i < end; i++ {
+		prefix := "  "
+		if i == pos.Line-1 {
+			prefix = "→ "
+		}
+		context.WriteString(fmt.Sprintf("%s%d: %s\n", prefix, i+1, lines[i]))
+	}
+	
+	return context.String()
+}
+
+func (ia *InterfaceAnalyzer) PrintReport(report *DuplicationReport) {
+	fmt.Println("=== INTERFACE DUPLICATION ANALYSIS REPORT ===\n")
+	
+	// Résumé
+	fmt.Printf("📊 SUMMARY:\n")
+	fmt.Printf("  - Total interfaces found: %d\n", len(report.Interfaces))
+	fmt.Printf("  - Duplicated interface names: %d\n", len(report.Duplications))
+	fmt.Printf("  - Syntax errors: %d\n", len(report.SyntaxErrors))
+	fmt.Printf("  - Common methods: %d\n\n", len(report.CommonMethods))
+	
+	// Erreurs de syntaxe
+	if len(report.SyntaxErrors) > 0 {
+		fmt.Println("🚨 SYNTAX ERRORS:")
+		for _, err := range report.SyntaxErrors {
+			fmt.Printf("  File: %s\n", err.File)
+			fmt.Printf("  Position: %s\n", err.Position)
+			fmt.Printf("  Error: %s\n", err.Description)
+			fmt.Printf("  Context:\n%s\n", err.Context)
+		}
+	}
+	
+	// Duplications
+	if len(report.Duplications) > 0 {
+		fmt.Println("🔄 INTERFACE DUPLICATIONS:")
+		for name, interfaces := range report.Duplications {
+			fmt.Printf("  Interface '%s' found in %d files:\n", name, len(interfaces))
+			for _, iface := range interfaces {
+				fmt.Printf("    - %s (methods: %s)\n", iface.File, strings.Join(iface.Methods, ", "))
+			}
+			fmt.Println()
+		}
+	}
+	
+	// Méthodes communes
+	if len(report.CommonMethods) > 0 {
+		fmt.Println("🤝 COMMON METHODS (candidates for BaseManager):")
+		
+		// Trier par fréquence
+		type methodFreq struct {
+			method string
+			count  int
+		}
+		var methods []methodFreq
+		for method, count := range report.CommonMethods {
+			methods = append(methods, methodFreq{method, count})
+		}
+		sort.Slice(methods, func(i, j int) bool {
+			return methods[i].count > methods[j].count
+		})
+		
+		for _, mf := range methods {
+			fmt.Printf("  - %s (used in %d interfaces)\n", mf.method, mf.count)
+		}
+		fmt.Println()
+	}
+}
+
+func (ia *InterfaceAnalyzer) GenerateRecommendations(report *DuplicationReport) {
+	fmt.Println("💡 RECOMMENDATIONS FOR MODULAR ARCHITECTURE:\n")
+	
+	// Recommandations pour BaseManager
+	var baseMethods []string
+	for method, count := range report.CommonMethods {
+		if count >= 3 { // Méthodes présentes dans au moins 3 interfaces
+			baseMethods = append(baseMethods, method)
+		}
+	}
+	
+	if len(baseMethods) > 0 {
+		fmt.Println("1. CREATE interfaces/common.go with BaseManager:")
+		fmt.Println("   ```go")
+		fmt.Println("   type BaseManager interface {")
+		for _, method := range baseMethods {
+			fmt.Printf("       %s\n", ia.guessMethodSignature(method))
+		}
+		fmt.Println("   }")
+		fmt.Println("   ```\n")
+	}
+	
+	// Recommandations pour les interfaces spécialisées
+	fmt.Println("2. CREATE SPECIALIZED INTERFACES:")
+	specializedInterfaces := ia.categorizeInterfaces(report.Interfaces)
+	for category, interfaces := range specializedInterfaces {
+		if len(interfaces) > 0 {
+			fmt.Printf("   interfaces/%s.go:\n", strings.ToLower(category))
+			for _, iface := range interfaces {
+				uniqueMethods := ia.getUniqueMethods(iface.Methods, baseMethods)
+				if len(uniqueMethods) > 0 {
+					fmt.Printf("   - %s interface with methods: %s\n", 
+						strings.TrimSuffix(iface.Name, "Interface"), 
+						strings.Join(uniqueMethods, ", "))
+				}
+			}
+			fmt.Println()
+		}
+	}
+	
+	// Plan de migration
+	fmt.Println("3. MIGRATION PLAN:")
+	fmt.Println("   a) Create interfaces/ package structure")
+	fmt.Println("   b) Move interface definitions to centralized files")
+	fmt.Println("   c) Update imports in all managers")
+	fmt.Println("   d) Remove duplicate interface definitions")
+	fmt.Println("   e) Fix syntax errors and validate compilation")
+	fmt.Println()
+	
+	// Priorités
+	fmt.Println("4. PRIORITIES:")
+	if len(report.SyntaxErrors) > 0 {
+		fmt.Println("   🔴 HIGH: Fix syntax errors first")
+	}
+	if len(report.Duplications) > 0 {
+		fmt.Println("   🟡 MEDIUM: Remove interface duplications")
+	}
+	fmt.Println("   🟢 LOW: Optimize interface segregation")
+}
+
+func (ia *InterfaceAnalyzer) guessMethodSignature(methodName string) string {
+	signatures := map[string]string{
+		"Initialize":   "Initialize(ctx context.Context) error",
+		"HealthCheck":  "HealthCheck(ctx context.Context) error",
+		"Cleanup":      "Cleanup() error",
+		"Start":        "Start(ctx context.Context) error",
+		"Stop":         "Stop(ctx context.Context) error",
+		"GetStatus":    "GetStatus() string",
+	}
+	
+	if sig, exists := signatures[methodName]; exists {
+		return sig
+	}
+	return methodName + "() error // TODO: Define signature"
+}
+
+func (ia *InterfaceAnalyzer) categorizeInterfaces(interfaces []Interface) map[string][]Interface {
+	categories := make(map[string][]Interface)
+	
+	for _, iface := range interfaces {
+		category := "Common"
+		name := strings.ToLower(iface.Name)
+		
+		if strings.Contains(name, "security") {
+			category = "Security"
+		} else if strings.Contains(name, "storage") {
+			category = "Storage"
+		} else if strings.Contains(name, "monitor") {
+			category = "Monitoring"
+		} else if strings.Contains(name, "container") {
+			category = "Container"
+		} else if strings.Contains(name, "deploy") {
+			category = "Deployment"
+		}
+		
+		categories[category] = append(categories[category], iface)
+	}
+	
+	return categories
+}
+
+func (ia *InterfaceAnalyzer) getUniqueMethods(methods []string, baseMethods []string) []string {
+	baseSet := make(map[string]bool)
+	for _, method := range baseMethods {
+		baseSet[method] = true
+	}
+	
+	var unique []string
+	for _, method := range methods {
+		if !baseSet[method] {
+			unique = append(unique, method)
+		}
+	}
+	
+	return unique
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
