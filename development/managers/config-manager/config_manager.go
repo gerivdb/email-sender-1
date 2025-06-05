@@ -1,21 +1,49 @@
 package configmanager
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/mitchellh/mapstructure"
+	"go.uber.org/zap"
 )
 
-// ConfigManager specific errors
+// Config Manager specific errors
 var (
 	ErrKeyNotFound   = errors.New("configuration key not found")
 	ErrConfigParse   = errors.New("failed to parse configuration")
 	ErrInvalidType   = errors.New("invalid type conversion")
 	ErrInvalidFormat = errors.New("invalid configuration format")
 )
+
+// ErrorManager interface pour découpler la dépendance
+type ErrorManager interface {
+	ProcessError(ctx context.Context, err error, component, operation string, hooks *ErrorHooks) error
+	CatalogError(entry ErrorEntry) error
+	ValidateErrorEntry(entry ErrorEntry) error
+}
+
+// ErrorEntry représente une erreur cataloguée
+type ErrorEntry struct {
+	ID             string    `json:"id"`
+	Timestamp      time.Time `json:"timestamp"`
+	Message        string    `json:"message"`
+	StackTrace     string    `json:"stack_trace"`
+	Module         string    `json:"module"`
+	ErrorCode      string    `json:"error_code"`
+	ManagerContext string    `json:"manager_context"`
+	Severity       string    `json:"severity"`
+}
+
+// ErrorHooks définit les callbacks d'erreur
+type ErrorHooks struct {
+	OnError func(error)
+}
 
 // ConfigManager defines the interface for managing configurations.
 type ConfigManager interface {
@@ -37,6 +65,9 @@ type ConfigManager interface {
 	SetDefault(key string, value interface{})
 	GetAll() map[string]interface{}
 	SaveToFile(filePath string, fileType string, config map[string]interface{}) error
+	Cleanup() error
+	GetErrorManager() ErrorManager
+	GetLogger() *zap.Logger
 }
 
 // configManagerImpl is the concrete implementation of ConfigManager.
@@ -47,21 +78,176 @@ type configManagerImpl struct {
 	settings     map[string]interface{}
 	defaults     map[string]interface{}
 	requiredKeys []string
+	
+	// ErrorManager integration
+	logger       *zap.Logger
+	errorManager *ErrorManagerImpl
 }
 
-// New creates a new instance of ConfigManager.
+// ErrorManagerImpl implémente l'interface ErrorManager localement
+type ErrorManagerImpl struct {
+	logger *zap.Logger
+}
+
+// ProcessError traite une erreur avec le système de gestion centralisé
+func (em *ErrorManagerImpl) ProcessError(ctx context.Context, err error, component, operation string, hooks *ErrorHooks) error {
+	if err == nil {
+		return nil
+	}
+
+	// Generate unique error ID
+	errorID := uuid.New().String()
+	
+	// Determine error severity
+	severity := determineSeverity(err)
+	
+	// Create error entry for cataloging
+	errorEntry := ErrorEntry{
+		ID:             errorID,
+		Timestamp:      time.Now(),
+		Message:        err.Error(),
+		StackTrace:     fmt.Sprintf("%+v", err),
+		Module:         "config-manager",
+		ErrorCode:      generateErrorCode(component, operation),
+		ManagerContext: fmt.Sprintf("component=%s, operation=%s", component, operation),
+		Severity:       severity,
+	}
+
+	// Validate error entry
+	if validationErr := em.ValidateErrorEntry(errorEntry); validationErr != nil {
+		em.logger.Error("Error entry validation failed",
+			zap.Error(validationErr),
+			zap.String("error_id", errorID))
+		return validationErr
+	}
+
+	// Catalog the error
+	if catalogErr := em.CatalogError(errorEntry); catalogErr != nil {
+		em.logger.Error("Failed to catalog error",
+			zap.Error(catalogErr),
+			zap.String("error_id", errorID))
+	}
+
+	// Execute error hooks if provided
+	if hooks != nil && hooks.OnError != nil {
+		hooks.OnError(err)
+	}
+
+	// Log structured error information
+	em.logger.Error("Config Manager error processed",
+		zap.String("error_id", errorID),
+		zap.String("component", component),
+		zap.String("operation", operation),
+		zap.String("severity", severity),
+		zap.Error(err))
+
+	return err
+}
+
+// CatalogError catalog une erreur avec les détails structurés
+func (em *ErrorManagerImpl) CatalogError(entry ErrorEntry) error {
+	em.logger.Error("Error cataloged",
+		zap.String("id", entry.ID),
+		zap.Time("timestamp", entry.Timestamp),
+		zap.String("message", entry.Message),
+		zap.String("stack_trace", entry.StackTrace),
+		zap.String("module", entry.Module),
+		zap.String("error_code", entry.ErrorCode),
+		zap.String("manager_context", entry.ManagerContext),
+		zap.String("severity", entry.Severity))
+
+	return nil
+}
+
+// ValidateErrorEntry valide une entrée d'erreur
+func (em *ErrorManagerImpl) ValidateErrorEntry(entry ErrorEntry) error {
+	if entry.ID == "" {
+		return errors.New("ID cannot be empty")
+	}
+	if entry.Timestamp.IsZero() {
+		return errors.New("Timestamp cannot be zero")
+	}
+	if entry.Message == "" {
+		return errors.New("Message cannot be empty")
+	}
+	if entry.Module == "" {
+		return errors.New("Module cannot be empty")
+	}
+	if entry.ErrorCode == "" {
+		return errors.New("ErrorCode cannot be empty")
+	}
+	if !isValidSeverity(entry.Severity) {
+		return errors.New("Invalid severity level")
+	}
+	return nil
+}
+
+// Helper functions
+func isValidSeverity(severity string) bool {
+	validSeverities := []string{"low", "medium", "high", "critical"}
+	for _, s := range validSeverities {
+		if severity == s {
+			return true
+		}
+	}
+	return false
+}
+
+func determineSeverity(err error) string {
+	errorMsg := strings.ToLower(err.Error())
+	if strings.Contains(errorMsg, "critical") || strings.Contains(errorMsg, "fatal") {
+		return "critical"
+	}
+	if strings.Contains(errorMsg, "timeout") || strings.Contains(errorMsg, "connection") {
+		return "high"
+	}
+	if strings.Contains(errorMsg, "not found") || strings.Contains(errorMsg, "invalid") {
+		return "medium"
+	}
+	return "low"
+}
+
+func generateErrorCode(component, operation string) string {
+	compCode := strings.ToUpper(strings.ReplaceAll(component, "-", "_"))
+	opCode := strings.ToUpper(strings.ReplaceAll(operation, "-", "_"))
+	return fmt.Sprintf("CFG_%s_%s_001", compCode, opCode)
+}
+
+// New creates a new instance of ConfigManager with ErrorManager integration.
 func New() (ConfigManager, error) {
+	// Initialize logger
+	logger, err := zap.NewProduction()
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize logger: %w", err)
+	}
+
+	// Initialize ErrorManager
+	errorManager := &ErrorManagerImpl{
+		logger: logger,
+	}
+
 	return &configManagerImpl{
 		settings:     make(map[string]interface{}),
 		defaults:     make(map[string]interface{}),
 		requiredKeys: make([]string, 0),
+		logger:       logger,
+		errorManager: errorManager,
 	}, nil
 }
 
-// GetString retrieves a string value from the configuration.
+// GetString retrieves a string value from the configuration with error handling.
 func (cm *configManagerImpl) GetString(key string) (string, error) {
+	ctx := context.Background()
 	value, err := cm.getValue(key)
 	if err != nil {
+		// Process error with ErrorManager
+		if processErr := cm.errorManager.ProcessError(ctx, err, "config-access", "get-string", &ErrorHooks{
+			OnError: func(e error) {
+				cm.logger.Warn("GetString failed", zap.String("key", key), zap.Error(e))
+			},
+		}); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
 		return "", err
 	}
 
@@ -75,10 +261,19 @@ func (cm *configManagerImpl) GetString(key string) (string, error) {
 	}
 }
 
-// GetInt retrieves an integer value from the configuration.
+// GetInt retrieves an integer value from the configuration with error handling.
 func (cm *configManagerImpl) GetInt(key string) (int, error) {
+	ctx := context.Background()
 	value, err := cm.getValue(key)
 	if err != nil {
+		// Process error with ErrorManager
+		if processErr := cm.errorManager.ProcessError(ctx, err, "config-access", "get-int", &ErrorHooks{
+			OnError: func(e error) {
+				cm.logger.Warn("GetInt failed", zap.String("key", key), zap.Error(e))
+			},
+		}); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
 		return 0, err
 	}
 
@@ -96,18 +291,37 @@ func (cm *configManagerImpl) GetInt(key string) (int, error) {
 	case string:
 		parsed, parseErr := strconv.Atoi(v)
 		if parseErr != nil {
-			return 0, fmt.Errorf("%w: cannot convert %q to int: %v", ErrInvalidType, v, parseErr)
+			conversionErr := fmt.Errorf("%w: cannot convert %q to int: %v", ErrInvalidType, v, parseErr)
+			// Process conversion error
+			if processErr := cm.errorManager.ProcessError(ctx, conversionErr, "config-conversion", "string-to-int", nil); processErr != nil {
+				cm.logger.Error("Error processing failed", zap.Error(processErr))
+			}
+			return 0, conversionErr
 		}
 		return parsed, nil
 	default:
-		return 0, fmt.Errorf("%w: cannot convert %T to int", ErrInvalidType, v)
+		typeErr := fmt.Errorf("%w: cannot convert %T to int", ErrInvalidType, v)
+		// Process type error
+		if processErr := cm.errorManager.ProcessError(ctx, typeErr, "config-conversion", "type-to-int", nil); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
+		return 0, typeErr
 	}
 }
 
-// GetBool retrieves a boolean value from the configuration.
+// GetBool retrieves a boolean value from the configuration with error handling.
 func (cm *configManagerImpl) GetBool(key string) (bool, error) {
+	ctx := context.Background()
 	value, err := cm.getValue(key)
 	if err != nil {
+		// Process error with ErrorManager
+		if processErr := cm.errorManager.ProcessError(ctx, err, "config-access", "get-bool", &ErrorHooks{
+			OnError: func(e error) {
+				cm.logger.Warn("GetBool failed", zap.String("key", key), zap.Error(e))
+			},
+		}); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
 		return false, err
 	}
 
@@ -117,7 +331,12 @@ func (cm *configManagerImpl) GetBool(key string) (bool, error) {
 	case string:
 		parsed, parseErr := strconv.ParseBool(v)
 		if parseErr != nil {
-			return false, fmt.Errorf("%w: cannot convert %q to bool: %v", ErrInvalidType, v, parseErr)
+			conversionErr := fmt.Errorf("%w: cannot convert %q to bool: %v", ErrInvalidType, v, parseErr)
+			// Process conversion error
+			if processErr := cm.errorManager.ProcessError(ctx, conversionErr, "config-conversion", "string-to-bool", nil); processErr != nil {
+				cm.logger.Error("Error processing failed", zap.Error(processErr))
+			}
+			return false, conversionErr
 		}
 		return parsed, nil
 	case int:
@@ -125,12 +344,18 @@ func (cm *configManagerImpl) GetBool(key string) (bool, error) {
 	case float64:
 		return v != 0, nil
 	default:
-		return false, fmt.Errorf("%w: cannot convert %T to bool", ErrInvalidType, v)
+		typeErr := fmt.Errorf("%w: cannot convert %T to bool", ErrInvalidType, v)
+		// Process type error
+		if processErr := cm.errorManager.ProcessError(ctx, typeErr, "config-conversion", "type-to-bool", nil); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
+		return false, typeErr
 	}
 }
 
-// UnmarshalKey unmarshals a configuration section into a struct.
+// UnmarshalKey unmarshals a configuration section into a struct with error handling.
 func (cm *configManagerImpl) UnmarshalKey(key string, targetStruct interface{}) error {
+	ctx := context.Background()
 	normalizedKey := normalizeKey(key)
 
 	// Collect all keys that start with the given key prefix
@@ -160,7 +385,12 @@ func (cm *configManagerImpl) UnmarshalKey(key string, targetStruct interface{}) 
 	}
 
 	if len(sectionData) == 0 {
-		return fmt.Errorf("%w: %s", ErrKeyNotFound, key)
+		notFoundErr := fmt.Errorf("%w: %s", ErrKeyNotFound, key)
+		// Process not found error
+		if processErr := cm.errorManager.ProcessError(ctx, notFoundErr, "config-unmarshal", "key-not-found", nil); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
+		return notFoundErr
 	}
 
 	// Convert flat keys back to nested structure for unmarshaling
@@ -173,11 +403,25 @@ func (cm *configManagerImpl) UnmarshalKey(key string, targetStruct interface{}) 
 		TagName:  "mapstructure",
 	})
 	if err != nil {
-		return fmt.Errorf("failed to create decoder: %v", err)
+		decoderErr := fmt.Errorf("failed to create decoder: %v", err)
+		// Process decoder creation error
+		if processErr := cm.errorManager.ProcessError(ctx, decoderErr, "config-unmarshal", "decoder-creation", nil); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
+		return decoderErr
 	}
 
 	if err := decoder.Decode(nestedData); err != nil {
-		return fmt.Errorf("failed to decode configuration: %v", err)
+		decodeErr := fmt.Errorf("failed to decode configuration: %v", err)
+		// Process decoding error
+		if processErr := cm.errorManager.ProcessError(ctx, decodeErr, "config-unmarshal", "decoding", &ErrorHooks{
+			OnError: func(e error) {
+				cm.logger.Warn("UnmarshalKey decoding failed", zap.String("key", key), zap.Error(e))
+			},
+		}); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
+		return decodeErr
 	}
 
 	return nil
@@ -210,13 +454,24 @@ func (cm *configManagerImpl) RegisterDefaults(defaults map[string]interface{}) {
 	}
 }
 
-// LoadConfigFile loads configuration from a file.
+// LoadConfigFile loads configuration from a file with error handling.
 func (cm *configManagerImpl) LoadConfigFile(filePath string, fileType string) error {
+	ctx := context.Background()
+	
 	// Auto-detect file type if not provided
 	if fileType == "" {
 		fileType = detectFileType(filePath)
 		if fileType == "" {
-			return fmt.Errorf("%w: cannot detect file type for %s", ErrInvalidFormat, filePath)
+			formatErr := fmt.Errorf("%w: cannot detect file type for %s", ErrInvalidFormat, filePath)
+			// Process format detection error
+			if processErr := cm.errorManager.ProcessError(ctx, formatErr, "config-loading", "file-type-detection", &ErrorHooks{
+				OnError: func(e error) {
+					cm.logger.Warn("File type detection failed", zap.String("file_path", filePath), zap.Error(e))
+				},
+			}); processErr != nil {
+				cm.logger.Error("Error processing failed", zap.Error(processErr))
+			}
+			return formatErr
 		}
 	}
 
@@ -230,10 +485,26 @@ func (cm *configManagerImpl) LoadConfigFile(filePath string, fileType string) er
 	case "toml":
 		config, err = loadFromTOML(filePath)
 	default:
-		return fmt.Errorf("%w: unsupported file type %s", ErrInvalidFormat, fileType)
+		unsupportedErr := fmt.Errorf("%w: unsupported file type %s", ErrInvalidFormat, fileType)
+		// Process unsupported file type error
+		if processErr := cm.errorManager.ProcessError(ctx, unsupportedErr, "config-loading", "unsupported-file-type", nil); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
+		return unsupportedErr
 	}
 
 	if err != nil {
+		// Process config loading error
+		if processErr := cm.errorManager.ProcessError(ctx, err, "config-loading", "file-parsing", &ErrorHooks{
+			OnError: func(e error) {
+				cm.logger.Warn("Config file parsing failed", 
+					zap.String("file_path", filePath), 
+					zap.String("file_type", fileType), 
+					zap.Error(e))
+			},
+		}); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
 		return err
 	}
 
@@ -247,10 +518,16 @@ func (cm *configManagerImpl) LoadConfigFile(filePath string, fileType string) er
 		cm.settings[normalizedKey] = value
 	}
 
+	// Log successful loading
+	cm.logger.Info("Configuration file loaded successfully", 
+		zap.String("file_path", filePath), 
+		zap.String("file_type", fileType),
+		zap.Int("keys_loaded", len(config)))
+
 	return nil
 }
 
-// LoadFromEnv loads configuration from environment variables.
+// LoadFromEnv loads configuration from environment variables with error handling.
 func (cm *configManagerImpl) LoadFromEnv(prefix string) {
 	envConfig := loadFromEnv(prefix)
 
@@ -259,14 +536,22 @@ func (cm *configManagerImpl) LoadFromEnv(prefix string) {
 		cm.settings = make(map[string]interface{})
 	}
 
+	keysLoaded := 0
 	for key, value := range envConfig {
 		normalizedKey := normalizeKey(key)
 		cm.settings[normalizedKey] = value
+		keysLoaded++
 	}
+
+	// Log environment variables loading
+	cm.logger.Info("Environment variables loaded", 
+		zap.String("prefix", prefix),
+		zap.Int("keys_loaded", keysLoaded))
 }
 
-// Validate validates that all required configuration keys are present.
+// Validate validates that all required configuration keys are present with error handling.
 func (cm *configManagerImpl) Validate() error {
+	ctx := context.Background()
 	var missingKeys []string
 
 	for _, key := range cm.requiredKeys {
@@ -276,8 +561,23 @@ func (cm *configManagerImpl) Validate() error {
 	}
 
 	if len(missingKeys) > 0 {
-		return fmt.Errorf("missing required configuration keys: %v", missingKeys)
+		validationErr := fmt.Errorf("missing required configuration keys: %v", missingKeys)
+		// Process validation error
+		if processErr := cm.errorManager.ProcessError(ctx, validationErr, "config-validation", "missing-required-keys", &ErrorHooks{
+			OnError: func(e error) {
+				cm.logger.Warn("Configuration validation failed", 
+					zap.Strings("missing_keys", missingKeys), 
+					zap.Error(e))
+			},
+		}); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
+		return validationErr
 	}
+
+	// Log successful validation
+	cm.logger.Info("Configuration validation successful", 
+		zap.Strings("required_keys", cm.requiredKeys))
 
 	return nil
 }
@@ -398,12 +698,55 @@ func (cm *configManagerImpl) GetAll() map[string]interface{} {
 	return result
 }
 
-// SaveToFile saves configuration to a file
+// SaveToFile saves configuration to a file with error handling
 func (cm *configManagerImpl) SaveToFile(filePath string, fileType string, config map[string]interface{}) error {
-	return saveToFile(filePath, fileType, config)
+	ctx := context.Background()
+	
+	if err := saveToFile(filePath, fileType, config); err != nil {
+		// Process save error
+		if processErr := cm.errorManager.ProcessError(ctx, err, "config-saving", "file-write", &ErrorHooks{
+			OnError: func(e error) {
+				cm.logger.Warn("Config file save failed", 
+					zap.String("file_path", filePath), 
+					zap.String("file_type", fileType), 
+					zap.Error(e))
+			},
+		}); processErr != nil {
+			cm.logger.Error("Error processing failed", zap.Error(processErr))
+		}
+		return err
+	}
+
+	// Log successful save
+	cm.logger.Info("Configuration file saved successfully", 
+		zap.String("file_path", filePath), 
+		zap.String("file_type", fileType),
+		zap.Int("keys_saved", len(config)))
+
+	return nil
 }
 
 // ensureDirectoryExists creates directory if it doesn't exist
 func (cm *configManagerImpl) ensureDirectoryExists(dirPath string) error {
 	return ensureDirectoryExists(dirPath)
+}
+
+// Cleanup performs cleanup operations for the config manager
+func (cm *configManagerImpl) Cleanup() error {
+	if cm.logger != nil {
+		if err := cm.logger.Sync(); err != nil {
+			return fmt.Errorf("failed to sync logger: %w", err)
+		}
+	}
+	return nil
+}
+
+// GetErrorManager returns the ErrorManager instance for external use
+func (cm *configManagerImpl) GetErrorManager() ErrorManager {
+	return cm.errorManager
+}
+
+// GetLogger returns the logger instance for external use  
+func (cm *configManagerImpl) GetLogger() *zap.Logger {
+	return cm.logger
 }

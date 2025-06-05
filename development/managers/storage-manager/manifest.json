@@ -1,0 +1,36 @@
+{
+  "name": "storage-manager",
+  "version": "1.0.0",
+  "description": "Gestionnaire de stockage pour PostgreSQL et Qdrant",
+  "type": "manager",
+  "dependencies": [
+    "error-manager",
+    "config-manager"
+  ],
+  "capabilities": [
+    "database-connections",
+    "schema-migrations",
+    "crud-operations",
+    "repository-pattern",
+    "transaction-management",
+    "connection-pooling"
+  ],
+  "interfaces": {
+    "postgresql": "PostgreSQL database operations",
+    "qdrant": "Vector database operations",
+    "migrations": "Schema migration management"
+  },
+  "configuration": {
+    "path": "projet/config/managers/storage-manager",
+    "files": [
+      "postgresql.yaml",
+      "qdrant.yaml",
+      "migrations.yaml"
+    ]
+  },
+  "integration": {
+    "error-manager": "enabled",
+    "monitoring": "enabled",
+    "logging": "structured"
+  }
+}

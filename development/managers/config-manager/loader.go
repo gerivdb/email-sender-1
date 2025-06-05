@@ -132,11 +132,11 @@ func saveToFile(filePath string, fileType string, config map[string]interface{})
 	var data []byte
 	var err error
 
-	switch strings.ToLower(fileType) {
-	case "json":
+	switch strings.ToLower(fileType) {	case "json":
 		data, err = json.MarshalIndent(config, "", "  ")
 	case "yaml", "yml":
-		data, err = yaml.Marshal(config)	case "toml":
+		data, err = yaml.Marshal(config)
+	case "toml":
 		var buf strings.Builder
 		err = toml.NewEncoder(&buf).Encode(config)
 		if err == nil {

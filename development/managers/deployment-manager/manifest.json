@@ -1,0 +1,38 @@
+{
+  "name": "deployment-manager",
+  "version": "1.0.0",
+  "description": "Gestionnaire de déploiement et build pour CI/CD",
+  "type": "manager",
+  "dependencies": [
+    "error-manager",
+    "config-manager",
+    "container-manager"
+  ],
+  "capabilities": [
+    "build-management",
+    "packaging",
+    "cicd-integration",
+    "environment-deployment",
+    "docker-image-building",
+    "asset-optimization",
+    "release-management"
+  ],
+  "interfaces": {
+    "build": "Build process management",
+    "deploy": "Deployment orchestration",
+    "cicd": "CI/CD pipeline integration"
+  },
+  "configuration": {
+    "path": "projet/config/managers/deployment-manager",
+    "files": [
+      "build.yaml",
+      "environments.yaml",
+      "cicd.yaml"
+    ]
+  },
+  "integration": {
+    "error-manager": "enabled",
+    "monitoring": "enabled",
+    "logging": "structured"
+  }
+}

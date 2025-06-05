@@ -1,4 +1,5 @@
 # Plan de développement v42 - Gestionnaire d'erreurs avancé
+*Version 1.1 - 2025-06-05 - Progression globale : 58%* de développement v42 - Gestionnaire d'erreurs avancé
 *Version 1.0 - 2025-06-04 - Progression globale : 58%*n de développement v42 - Gestionnaire d'erreurs avancé
 *Version 1.0 - 2025-06-04 - Progression globale : 58%*rsion 1.0 - 2025-06-04 - Progression globale : 58%*lan de développement v42 - Gestionnaire d'erreurs avancé
 *Version 1.0 - 2025-06-04 - Progression globale : 58%*
@@ -249,6 +250,8 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
 ### 8.3 Mise à jour
 - [x] Mettre à jour le fichier Markdown en cochant les tâches terminées
 - [x] Ajuster la progression de la phase
+- [x] Documenter les résultats clés de la phase d'intégration d'infrastructure
+- [x] Mettre à jour la progression globale à 60%
 
 ## Phase 9 : Résolution Avancée Erreurs Statiques
 *Progression : 100%* ✅
@@ -437,5 +440,17 @@ Ce plan de développement détaille l’implémentation d’un gestionnaire d’
 ### 12.3 Mise à jour
 - [ ] Mettre à jour le fichier Markdown en cochant les tâches terminées
 - [ ] Ajuster la progression de la phase
-- [ ] Mettre à jour la progression globale du plan (actuellement 100% → recalculer avec nouvelles phases)
+- [ ] Mettre à jour la progression globale du plan
+
+## Intégration avec d'autres plans
+
+### Gestionnaire de dépendances
+Pour la résolution des problèmes liés aux dépendances Go manquantes (80% des erreurs actuelles), voir le plan dédié:  
+[Plan de développement v43d - Gestionnaire de dépendances](../plan-dev-v43d-dependency-manager.md)
+
+Ce plan complémentaire traite spécifiquement:
+- Installation et gestion des dépendances manquantes comme github.com/redis/go-redis/v9, github.com/stretchr/testify/assert
+- Résolution des conflits de versions
+- Intégration avec le workflow de développement
+- Monitoring de sécurité des dépendances
 

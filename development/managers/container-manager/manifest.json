@@ -1,0 +1,37 @@
+{
+  "name": "container-manager",
+  "version": "1.0.0",
+  "description": "Gestionnaire de conteneurs Docker pour PostgreSQL, Qdrant et application",
+  "type": "manager",
+  "dependencies": [
+    "error-manager",
+    "config-manager"
+  ],
+  "capabilities": [
+    "container-lifecycle",
+    "docker-api-integration",
+    "network-management",
+    "volume-management",
+    "container-logs",
+    "health-checks",
+    "environment-setup"
+  ],
+  "interfaces": {
+    "docker": "Docker API and CLI integration",
+    "compose": "Docker Compose management",
+    "monitoring": "Container health monitoring"
+  },
+  "configuration": {
+    "path": "projet/config/managers/container-manager",
+    "files": [
+      "docker.yaml",
+      "networks.yaml",
+      "volumes.yaml"
+    ]
+  },
+  "integration": {
+    "error-manager": "enabled",
+    "monitoring": "enabled",
+    "logging": "structured"
+  }
+}

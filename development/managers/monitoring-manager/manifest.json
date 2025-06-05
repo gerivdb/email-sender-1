@@ -1,0 +1,37 @@
+{
+  "name": "monitoring-manager",
+  "version": "1.0.0",
+  "description": "Gestionnaire de surveillance et métriques d'application",
+  "type": "manager",
+  "dependencies": [
+    "error-manager",
+    "config-manager"
+  ],
+  "capabilities": [
+    "metrics-collection",
+    "health-checks",
+    "resource-monitoring",
+    "error-metrics",
+    "alerting",
+    "dashboard",
+    "performance-analytics"
+  ],
+  "interfaces": {
+    "metrics": "Metrics collection and exposure",
+    "health": "Health check management",
+    "alerts": "Alert configuration and dispatch"
+  },
+  "configuration": {
+    "path": "projet/config/managers/monitoring-manager",
+    "files": [
+      "metrics.yaml",
+      "health.yaml",
+      "alerts.yaml"
+    ]
+  },
+  "integration": {
+    "error-manager": "enabled",
+    "monitoring": "self-monitored",
+    "logging": "structured"
+  }
+}

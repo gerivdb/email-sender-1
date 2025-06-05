@@ -1,0 +1,37 @@
+{
+  "name": "security-manager",
+  "version": "1.0.0",
+  "description": "Gestionnaire de sécurité pour secrets, clés API et contrôle d'accès",
+  "type": "manager",
+  "dependencies": [
+    "error-manager",
+    "config-manager"
+  ],
+  "capabilities": [
+    "secret-management",
+    "api-key-management",
+    "access-control",
+    "encryption-decryption",
+    "certificate-management",
+    "authentication",
+    "security-auditing"
+  ],
+  "interfaces": {
+    "secrets": "Secret store management",
+    "auth": "Authentication and authorization",
+    "crypto": "Cryptographic operations"
+  },
+  "configuration": {
+    "path": "projet/config/managers/security-manager",
+    "files": [
+      "secrets.yaml",
+      "auth.yaml",
+      "crypto.yaml"
+    ]
+  },
+  "integration": {
+    "error-manager": "enabled",
+    "monitoring": "enabled",
+    "logging": "structured"
+  }
+}
