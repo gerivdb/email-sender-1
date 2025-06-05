@@ -1,0 +1,590 @@
+// Manager Toolkit - Core Implementation Tests
+// Tests for toolkit_core.go functionality
+
+package main
+
+import (
+	"context"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"testing"
+)
+
+// TestNewManagerToolkit tests toolkit creation with various configurations
+func TestNewManagerToolkit(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "core_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	tests := []struct {
+		name      string
+		baseDir   string
+		config    string
+		verbose   bool
+		wantError bool
+	}{
+		{
+			name:      "Default configuration",
+			baseDir:   tempDir,
+			config:    "",
+			verbose:   false,
+			wantError: false,
+		},
+		{
+			name:      "With custom config file",
+			baseDir:   tempDir,
+			config:    filepath.Join(tempDir, "config.json"),
+			verbose:   true,
+			wantError: false,
+		},
+		{
+			name:      "Invalid base directory",
+			baseDir:   "",
+			config:    "",
+			verbose:   false,
+			wantError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if tt.config != "" {
+				// Create a dummy config file
+				configContent := `{"base_dir": "` + tt.baseDir + `"}`
+				err := ioutil.WriteFile(tt.config, []byte(configContent), 0644)
+				if err != nil {
+					t.Fatalf("Failed to create config file: %v", err)
+				}
+			}
+
+			toolkit, err := NewManagerToolkit(tt.baseDir, tt.config, tt.verbose)
+
+			if tt.wantError {
+				if err == nil {
+					t.Error("Expected error but got none")
+				}
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("Unexpected error: %v", err)
+			}
+
+			if toolkit == nil {
+				t.Fatal("Toolkit should not be nil")
+			}
+
+			// Verify initialization
+			if toolkit.BaseDir != tt.baseDir {
+				t.Errorf("Base directory: expected %s, got %s", tt.baseDir, toolkit.BaseDir)
+			}
+
+			if toolkit.Logger == nil {
+				t.Error("Logger should be initialized")
+			}
+
+			if toolkit.FileSet == nil {
+				t.Error("FileSet should be initialized")
+			}
+
+			if toolkit.Stats == nil {
+				t.Error("Stats should be initialized")
+			}
+
+			if toolkit.Config == nil {
+				t.Error("Config should be initialized")
+			}
+
+			toolkit.Close()
+		})
+	}
+}
+
+// TestExecuteOperation tests operation execution
+func TestExecuteOperation(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "execute_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Create test Go file
+	testContent := `package main
+import "fmt"
+func main() {
+	fmt.Println("Hello")
+}`
+	err = ioutil.WriteFile(filepath.Join(tempDir, "main.go"), []byte(testContent), 0644)
+	if err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		t.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+	opts := &OperationOptions{Target: tempDir}
+
+	tests := []struct {
+		name      string
+		operation Operation
+		wantError bool
+	}{
+		{
+			name:      "Health check operation",
+			operation: OpHealthCheck,
+			wantError: false,
+		},
+		{
+			name:      "Analysis operation",
+			operation: OpAnalyze,
+			wantError: false,
+		},
+		{
+			name:      "Invalid operation",
+			operation: Operation("invalid"),
+			wantError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := toolkit.ExecuteOperation(ctx, tt.operation, opts)
+
+			if tt.wantError && err == nil {
+				t.Error("Expected error but got none")
+			}
+			if !tt.wantError && err != nil {
+				t.Errorf("Unexpected error: %v", err)
+			}
+		})
+	}
+}
+
+// TestRunAnalysis tests analysis functionality
+func TestRunAnalysis(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "analysis_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Create test files with interfaces
+	testFiles := map[string]string{
+		"interface1.go": `package main
+type UserManager interface {
+	CreateUser(name string) error
+	GetUser(id int) (*User, error)
+	DeleteUser(id int) error
+}
+
+type User struct {
+	ID   int
+	Name string
+}`,
+		"interface2.go": `package main
+type DataProvider interface {
+	FetchData() ([]byte, error)
+	SaveData(data []byte) error
+}`,
+		"regular.go": `package main
+func helper() string {
+	return "helper"
+}`,
+	}
+
+	for filename, content := range testFiles {
+		err := ioutil.WriteFile(filepath.Join(tempDir, filename), []byte(content), 0644)
+		if err != nil {
+			t.Fatalf("Failed to create test file %s: %v", filename, err)
+		}
+	}
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		t.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+	opts := &OperationOptions{Target: tempDir}
+
+	err = toolkit.RunAnalysis(ctx, opts)
+	if err != nil {
+		t.Errorf("Analysis failed: %v", err)
+	}
+
+	// Verify that interfaces were found
+	if toolkit.Stats.InterfacesFound == 0 {
+		t.Error("Expected to find interfaces, but found none")
+	}
+
+	// Verify that files were processed
+	if toolkit.Stats.FilesProcessed == 0 {
+		t.Error("Expected to process files, but none were processed")
+	}
+}
+
+// TestRunMigration tests migration functionality
+func TestRunMigration(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "migration_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Create interface directory
+	interfaceDir := filepath.Join(tempDir, "interfaces")
+	err = os.MkdirAll(interfaceDir, 0755)
+	if err != nil {
+		t.Fatalf("Failed to create interface directory: %v", err)
+	}
+
+	// Create test interface file
+	interfaceContent := `package interfaces
+type TestInterface interface {
+	Method1() string
+	Method2(int) error
+}`
+	err = ioutil.WriteFile(filepath.Join(interfaceDir, "test.go"), []byte(interfaceContent), 0644)
+	if err != nil {
+		t.Fatalf("Failed to create interface file: %v", err)
+	}
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		t.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+	opts := &OperationOptions{Target: tempDir}
+
+	// Enable dry run for migration test
+	toolkit.Config.EnableDryRun = true
+
+	err = toolkit.RunMigration(ctx, opts)
+	if err != nil {
+		t.Errorf("Migration failed: %v", err)
+	}
+}
+
+// TestFixImports tests import fixing functionality
+func TestFixImports(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "imports_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Create test file with import issues
+	testContent := `package main
+
+import "fmt"
+import "os"
+import "unused"
+
+func main() {
+	fmt.Println("Hello")
+	_ = os.Getenv("HOME")
+}`
+
+	testFile := filepath.Join(tempDir, "main.go")
+	err = ioutil.WriteFile(testFile, []byte(testContent), 0644)
+	if err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		t.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+	opts := &OperationOptions{Target: tempDir}
+
+	// Enable dry run to avoid modifying files during test
+	toolkit.Config.EnableDryRun = true
+
+	err = toolkit.FixImports(ctx, opts)
+	if err != nil {
+		t.Errorf("Fix imports failed: %v", err)
+	}
+}
+
+// TestRemoveDuplicates tests duplicate removal functionality
+func TestRemoveDuplicates(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "duplicates_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Create test files with duplicates
+	duplicateContent := `package main
+
+import "fmt"
+
+func helper() string {
+	return "helper"
+}
+
+func main() {
+	fmt.Println(helper())
+}`
+
+	// Create the same content in multiple files
+	for i := 1; i <= 3; i++ {
+		filename := filepath.Join(tempDir, fmt.Sprintf("file%d.go", i))
+		err := ioutil.WriteFile(filename, []byte(duplicateContent), 0644)
+		if err != nil {
+			t.Fatalf("Failed to create duplicate file %d: %v", i, err)
+		}
+	}
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		t.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+	opts := &OperationOptions{Target: tempDir}
+
+	// Enable dry run
+	toolkit.Config.EnableDryRun = true
+
+	err = toolkit.RemoveDuplicates(ctx, opts)
+	if err != nil {
+		t.Errorf("Remove duplicates failed: %v", err)
+	}
+}
+
+// TestFixSyntax tests syntax fixing functionality
+func TestFixSyntax(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "syntax_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Create test file with minor syntax issues that can be auto-fixed
+	testContent := `package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello")
+	// Missing semicolon in some contexts (though Go doesn't require them)
+}`
+
+	testFile := filepath.Join(tempDir, "main.go")
+	err = ioutil.WriteFile(testFile, []byte(testContent), 0644)
+	if err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		t.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+	opts := &OperationOptions{Target: tempDir}
+
+	// Enable dry run
+	toolkit.Config.EnableDryRun = true
+
+	err = toolkit.FixSyntax(ctx, opts)
+	if err != nil {
+		t.Errorf("Fix syntax failed: %v", err)
+	}
+}
+
+// TestInitConfig tests configuration initialization
+func TestInitConfig(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "init_config_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		t.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+	opts := &OperationOptions{Target: tempDir}
+
+	err = toolkit.InitConfig(ctx, opts)
+	if err != nil {
+		t.Errorf("Init config failed: %v", err)
+	}
+
+	// Verify config file was created (in dry run, it would be simulated)
+	expectedConfigFile := filepath.Join(tempDir, ConfigFile)
+	if _, err := os.Stat(expectedConfigFile); os.IsNotExist(err) {
+		// This is expected in dry run mode or if init config doesn't actually create files in test
+		t.Logf("Config file not created (expected in dry run): %s", expectedConfigFile)
+	}
+}
+
+// TestRunFullSuite tests full suite execution
+func TestRunFullSuite(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "full_suite_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Create comprehensive test structure
+	testContent := `package main
+
+import "fmt"
+import "unused"
+
+type TestInterface interface {
+	Method1() string
+	Method2(int) error
+}
+
+func main() {
+	fmt.Println("Hello")
+}`
+
+	err = ioutil.WriteFile(filepath.Join(tempDir, "main.go"), []byte(testContent), 0644)
+	if err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		t.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+	opts := &OperationOptions{Target: tempDir}
+
+	// Enable dry run for full suite test
+	toolkit.Config.EnableDryRun = true
+
+	err = toolkit.RunFullSuite(ctx, opts)
+	if err != nil {
+		t.Errorf("Full suite failed: %v", err)
+	}
+
+	// Verify that all operations were executed (check stats)
+	if toolkit.Stats.FilesProcessed == 0 {
+		t.Error("Expected files to be processed during full suite")
+	}
+}
+
+// TestOperationOptions tests operation options handling
+func TestOperationOptions(t *testing.T) {
+	tempDir, err := ioutil.TempDir("", "options_test")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	tests := []struct {
+		name    string
+		options *OperationOptions
+		valid   bool
+	}{
+		{
+			name: "Valid options",
+			options: &OperationOptions{
+				Target: tempDir,
+				Output: filepath.Join(tempDir, "output.json"),
+				Force:  false,
+			},
+			valid: true,
+		},
+		{
+			name: "Empty target",
+			options: &OperationOptions{
+				Target: "",
+				Output: "",
+				Force:  false,
+			},
+			valid: false,
+		},
+		{
+			name: "Non-existent target",
+			options: &OperationOptions{
+				Target: "/non/existent/path",
+				Output: "",
+				Force:  false,
+			},
+			valid: false,
+		},
+	}
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		t.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := toolkit.ExecuteOperation(ctx, OpHealthCheck, tt.options)
+
+			if tt.valid && err != nil && !os.IsNotExist(err) {
+				t.Errorf("Expected operation to succeed, got error: %v", err)
+			}
+			if !tt.valid && err == nil {
+				t.Error("Expected operation to fail, but it succeeded")
+			}
+		})
+	}
+}
+
+// BenchmarkExecuteOperation benchmarks operation execution
+func BenchmarkExecuteOperation(b *testing.B) {
+	tempDir, err := ioutil.TempDir("", "benchmark_execute")
+	if err != nil {
+		b.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	// Create test files
+	for i := 0; i < 10; i++ {
+		content := fmt.Sprintf(`package main
+import "fmt"
+func test%d() { fmt.Println("test%d") }`, i, i)
+		filename := filepath.Join(tempDir, fmt.Sprintf("test%d.go", i))
+		err := ioutil.WriteFile(filename, []byte(content), 0644)
+		if err != nil {
+			b.Fatalf("Failed to create test file: %v", err)
+		}
+	}
+
+	toolkit, err := NewManagerToolkit(tempDir, "", false)
+	if err != nil {
+		b.Fatalf("Failed to create toolkit: %v", err)
+	}
+	defer toolkit.Close()
+
+	ctx := context.Background()
+	opts := &OperationOptions{Target: tempDir}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		toolkit.ExecuteOperation(ctx, OpHealthCheck, opts)
+	}
+}

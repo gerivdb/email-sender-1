@@ -1,0 +1,838 @@
+// filepath: d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers\tools\advanced_utilities_test.go
+// Advanced Utilities Test Suite - Comprehensive Testing for ImportFixer, DuplicateRemover, SyntaxFixer, and HealthChecker
+
+package main
+
+import (
+	"go/token"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+// Test data for advanced utilities testing
+var (
+	testFileWithImportIssues = `package main
+
+import (
+	"fmt"
+	errormanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"
+	configmanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/config-manager"
+	"github.com/email-sender/managers/interfaces/common"
+	"github.com/email-sender/managers/interfaces/types"
+	"fmt"  // duplicate import
+)
+
+func main() {
+	fmt.Println("Hello World")
+}`
+
+	testFileWithDuplicates = `package main
+
+import "fmt"
+
+func Hello() string {
+	return "hello"
+}
+
+func Hello() string {
+	return "hello"
+}
+
+func Goodbye() string {
+	return "goodbye"
+}
+
+func Hello() string {
+	return "hello"
+}
+
+func main() {
+	fmt.Println(Hello())
+}`
+
+	testFileWithSyntaxIssues = `package main
+
+import (
+	fmt  // missing quotes
+	"os"
+	// # shell comment
+)
+
+func main(){  // missing space before brace
+	fmt.Println("Hello World") // missing closing quote in original
+}`
+
+	testFileHealthy = `package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	fmt.Println("Hello World")
+	os.Exit(0)
+}`
+)
+
+// Helper function to set up temporary test directories
+func setupTempDir(t *testing.T, testName string) string {
+	tempDir, err := os.MkdirTemp("", testName)
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	return tempDir
+}
+
+// TestImportFixer tests the ImportFixer functionality
+func TestImportFixer(t *testing.T) {
+	tempDir := setupTempDir(t, "import_fixer_test")
+	defer os.RemoveAll(tempDir)
+
+	// Create test file with import issues
+	testFile := filepath.Join(tempDir, "test.go")
+	if err := os.WriteFile(testFile, []byte(testFileWithImportIssues), 0644); err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+
+	t.Run("NewImportFixer", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		fixer := &ImportFixer{
+			BaseDir:    tempDir,
+			ModuleName: "github.com/email-sender",
+			FileSet:    token.NewFileSet(),
+			Logger:     logger,
+			Stats:      stats,
+			DryRun:     false,
+		}
+
+		if fixer.BaseDir != tempDir {
+			t.Errorf("Expected BaseDir %s, got %s", tempDir, fixer.BaseDir)
+		}
+		if fixer.Logger == nil {
+			t.Error("Logger should not be nil")
+		}
+		if fixer.Stats == nil {
+			t.Error("Stats should not be nil")
+		}
+	})
+
+	t.Run("FixAllImports", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		fixer := &ImportFixer{
+			BaseDir:    tempDir,
+			ModuleName: "github.com/email-sender",
+			FileSet:    token.NewFileSet(),
+			Logger:     logger,
+			Stats:      stats,
+			DryRun:     false,
+		}
+
+		err = fixer.FixAllImports()
+		if err != nil {
+			t.Errorf("FixAllImports failed: %v", err)
+		}
+
+		// Check that imports were fixed
+		content, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read test file: %v", err)
+		}
+
+		contentStr := string(content)
+		if strings.Contains(contentStr, `"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"`) {
+			t.Error("Absolute path import should have been fixed")
+		}
+
+		if stats.ImportsFixed == 0 {
+			t.Error("Expected ImportsFixed > 0")
+		}
+	})
+
+	t.Run("FixSingleFile", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		fixer := &ImportFixer{
+			BaseDir:    tempDir,
+			ModuleName: "github.com/email-sender",
+			FileSet:    token.NewFileSet(),
+			Logger:     logger,
+			Stats:      stats,
+			DryRun:     false,
+		}
+
+		// Reset the test file
+		if err := os.WriteFile(testFile, []byte(testFileWithImportIssues), 0644); err != nil {
+			t.Fatalf("Failed to reset test file: %v", err)
+		}
+
+		err = fixer.FixSingleFile(testFile)
+		if err != nil {
+			t.Errorf("FixSingleFile failed: %v", err)
+		}
+
+		// Verify changes were made
+		content, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read test file: %v", err)
+		}
+
+		if strings.Contains(string(content), `"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"`) {
+			t.Error("Absolute path import should have been fixed")
+		}
+	})
+
+	t.Run("DryRunMode", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		fixer := &ImportFixer{
+			BaseDir:    tempDir,
+			ModuleName: "github.com/email-sender",
+			FileSet:    token.NewFileSet(),
+			Logger:     logger,
+			Stats:      stats,
+			DryRun:     true,
+		}
+
+		// Reset the test file
+		if err := os.WriteFile(testFile, []byte(testFileWithImportIssues), 0644); err != nil {
+			t.Fatalf("Failed to reset test file: %v", err)
+		}
+
+		originalContent, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read original content: %v", err)
+		}
+
+		err = fixer.FixAllImports()
+		if err != nil {
+			t.Errorf("DryRun FixAllImports failed: %v", err)
+		}
+
+		// Verify file wasn't changed in dry run mode
+		content, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read test file: %v", err)
+		}
+
+		if string(content) != string(originalContent) {
+			t.Error("File should not be modified in dry run mode")
+		}
+	})
+}
+
+// TestDuplicateRemover tests the DuplicateRemover functionality
+func TestDuplicateRemover(t *testing.T) {
+	tempDir := setupTempDir(t, "duplicate_remover_test")
+	defer os.RemoveAll(tempDir)
+
+	// Create test file with duplicates
+	testFile := filepath.Join(tempDir, "test.go")
+	if err := os.WriteFile(testFile, []byte(testFileWithDuplicates), 0644); err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+
+	t.Run("NewDuplicateRemover", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		remover := &DuplicateRemover{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  false,
+		}
+
+		if remover.BaseDir != tempDir {
+			t.Errorf("Expected BaseDir %s, got %s", tempDir, remover.BaseDir)
+		}
+		if remover.Logger == nil {
+			t.Error("Logger should not be nil")
+		}
+		if remover.Stats == nil {
+			t.Error("Stats should not be nil")
+		}
+	})
+
+	t.Run("RemoveAllDuplicates", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		remover := &DuplicateRemover{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  false,
+		}
+		err = remover.ProcessAllFiles()
+		if err != nil {
+			t.Errorf("ProcessAllFiles failed: %v", err)
+		}
+
+		// Check that duplicates were removed
+		content, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read test file: %v", err)
+		}
+
+		// Count occurrences of "func Hello()"
+		helloCount := strings.Count(string(content), "func Hello()")
+		if helloCount > 1 {
+			t.Errorf("Expected only 1 Hello function, found %d", helloCount)
+		}
+
+		if stats.DuplicatesRemoved == 0 {
+			t.Error("Expected DuplicatesRemoved > 0")
+		}
+	})
+
+	t.Run("RemoveFromSingleFile", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		remover := &DuplicateRemover{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  false,
+		}
+
+		// Reset the test file
+		if err := os.WriteFile(testFile, []byte(testFileWithDuplicates), 0644); err != nil {
+			t.Fatalf("Failed to reset test file: %v", err)
+		}
+		err = remover.ProcessSingleFile(testFile)
+		if err != nil {
+			t.Errorf("ProcessSingleFile failed: %v", err)
+		}
+
+		// Verify duplicates were removed
+		content, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read test file: %v", err)
+		}
+
+		helloCount := strings.Count(string(content), "func Hello()")
+		if helloCount > 1 {
+			t.Errorf("Expected only 1 Hello function, found %d", helloCount)
+		}
+	})
+
+	t.Run("DryRunMode", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		remover := &DuplicateRemover{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  true,
+		}
+
+		// Reset the test file
+		if err := os.WriteFile(testFile, []byte(testFileWithDuplicates), 0644); err != nil {
+			t.Fatalf("Failed to reset test file: %v", err)
+		}
+
+		originalContent, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read original content: %v", err)
+		}
+		err = remover.ProcessAllFiles()
+		if err != nil {
+			t.Errorf("DryRun ProcessAllFiles failed: %v", err)
+		}
+
+		// Verify file wasn't changed in dry run mode
+		content, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read test file: %v", err)
+		}
+
+		if string(content) != string(originalContent) {
+			t.Error("File should not be modified in dry run mode")
+		}
+	})
+}
+
+// TestSyntaxFixer tests the SyntaxFixer functionality
+func TestSyntaxFixer(t *testing.T) {
+	tempDir := setupTempDir(t, "syntax_fixer_test")
+	defer os.RemoveAll(tempDir)
+
+	// Create test file with syntax issues
+	testFile := filepath.Join(tempDir, "test.go")
+	if err := os.WriteFile(testFile, []byte(testFileWithSyntaxIssues), 0644); err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+
+	t.Run("NewSyntaxFixer", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		fixer := &SyntaxFixer{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  false,
+		}
+
+		if fixer.BaseDir != tempDir {
+			t.Errorf("Expected BaseDir %s, got %s", tempDir, fixer.BaseDir)
+		}
+		if fixer.Logger == nil {
+			t.Error("Logger should not be nil")
+		}
+		if fixer.Stats == nil {
+			t.Error("Stats should not be nil")
+		}
+	})
+
+	t.Run("FixAllSyntax", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		fixer := &SyntaxFixer{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  false}
+
+		err = fixer.FixAllFiles()
+		if err != nil {
+			t.Errorf("FixAllFiles failed: %v", err)
+		}
+		// The syntax fixer should attempt to fix issues
+		if stats.ErrorsFixed == 0 {
+			t.Error("Expected ErrorsFixed > 0")
+		}
+	})
+
+	t.Run("FixSingleFile", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		fixer := &SyntaxFixer{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  false,
+		}
+
+		// Reset the test file
+		if err := os.WriteFile(testFile, []byte(testFileWithSyntaxIssues), 0644); err != nil {
+			t.Fatalf("Failed to reset test file: %v", err)
+		}
+
+		err = fixer.FixSingleFile(testFile)
+		if err != nil {
+			t.Errorf("FixSingleFile failed: %v", err)
+		}
+
+		// Verify that syntax fixing was attempted
+		// Note: actual syntax fixing success depends on the implementation
+	})
+
+	t.Run("DryRunMode", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+
+		fixer := &SyntaxFixer{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  true,
+		}
+
+		// Reset the test file
+		if err := os.WriteFile(testFile, []byte(testFileWithSyntaxIssues), 0644); err != nil {
+			t.Fatalf("Failed to reset test file: %v", err)
+		}
+
+		originalContent, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read original content: %v", err)
+		}
+		err = fixer.FixAllFiles()
+		if err != nil {
+			t.Errorf("DryRun FixAllFiles failed: %v", err)
+		}
+
+		// Verify file wasn't changed in dry run mode
+		content, err := os.ReadFile(testFile)
+		if err != nil {
+			t.Fatalf("Failed to read test file: %v", err)
+		}
+
+		if string(content) != string(originalContent) {
+			t.Error("File should not be modified in dry run mode")
+		}
+	})
+}
+
+// TestHealthChecker tests the HealthChecker functionality
+func TestHealthChecker(t *testing.T) {
+	tempDir := setupTempDir(t, "health_checker_test")
+	defer os.RemoveAll(tempDir)
+
+	// Create test files
+	healthyFile := filepath.Join(tempDir, "healthy.go")
+	if err := os.WriteFile(healthyFile, []byte(testFileHealthy), 0644); err != nil {
+		t.Fatalf("Failed to create healthy test file: %v", err)
+	}
+
+	unhealthyFile := filepath.Join(tempDir, "unhealthy.go")
+	if err := os.WriteFile(unhealthyFile, []byte(testFileWithSyntaxIssues), 0644); err != nil {
+		t.Fatalf("Failed to create unhealthy test file: %v", err)
+	}
+
+	t.Run("NewHealthChecker", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+
+		checker := &HealthChecker{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+		}
+		if checker.BaseDir != tempDir {
+			t.Errorf("Expected BaseDir %s, got %s", tempDir, checker.BaseDir)
+		}
+		if checker.Logger == nil {
+			t.Error("Logger should not be nil")
+		}
+	})
+
+	t.Run("CheckHealth", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+
+		checker := &HealthChecker{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+		}
+		report := checker.CheckHealth()
+		if report == nil {
+			t.Error("Expected non-nil health report")
+		}
+
+		// Should have analyzed at least 2 files
+		if report.FileStatistics.TotalFiles < 2 {
+			t.Errorf("Expected at least 2 files analyzed, got %d", report.FileStatistics.TotalFiles)
+		}
+	})
+	t.Run("CheckHealth", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		checker := &HealthChecker{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+		}
+
+		// Check overall health
+		report := checker.CheckHealth()
+		if report == nil {
+			t.Error("Expected non-nil health report")
+		}
+
+		if report.FileStatistics == nil {
+			t.Error("Expected file statistics in health report")
+		}
+
+		if report.Timestamp.IsZero() {
+			t.Error("Expected non-zero timestamp in health report")
+		}
+	})
+	t.Run("CheckHealthReport", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		checker := &HealthChecker{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+		}
+
+		// Check health to gather data
+		report := checker.CheckHealth()
+		if report == nil {
+			t.Error("Expected non-nil health report")
+		}
+
+		// Check report structure
+		if report.FileStatistics == nil {
+			t.Error("Expected file statistics in health report")
+		}
+
+		if report.FileStatistics.TotalFiles == 0 {
+			t.Error("Expected some files to be analyzed")
+		}
+	})
+}
+
+// TestIntegration tests integration between different utilities
+func TestIntegration(t *testing.T) {
+	tempDir := setupTempDir(t, "integration_test")
+	defer os.RemoveAll(tempDir)
+
+	// Create a complex test file with multiple issues
+	complexFile := filepath.Join(tempDir, "complex.go")
+	complexContent := `package main
+
+import (
+	"fmt"
+	errormanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"
+	"fmt"  // duplicate import
+)
+
+func Hello() string {
+	return "hello"
+}
+
+func Hello() string {  // duplicate function
+	return "hello"
+}
+
+func main(){  // syntax issue - missing space
+	fmt.Println("Hello World"
+}  // syntax issue - missing closing quote`
+
+	if err := os.WriteFile(complexFile, []byte(complexContent), 0644); err != nil {
+		t.Fatalf("Failed to create complex test file: %v", err)
+	}
+
+	t.Run("FullToolkitWorkflow", func(t *testing.T) {
+		logger, err := NewLogger(false)
+		if err != nil {
+			t.Fatalf("Failed to create logger: %v", err)
+		}
+		stats := &ToolkitStats{}
+		// Step 1: Check health before fixes
+		checker := &HealthChecker{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+		}
+		initialReport := checker.CheckHealth()
+		if initialReport == nil {
+			t.Error("Initial health check failed - expected non-nil report")
+		}
+
+		// Step 2: Fix imports
+		importFixer := &ImportFixer{
+			BaseDir:    tempDir,
+			ModuleName: "github.com/email-sender",
+			FileSet:    token.NewFileSet(),
+			Logger:     logger,
+			Stats:      stats,
+			DryRun:     false,
+		}
+
+		err = importFixer.FixSingleFile(complexFile)
+		if err != nil {
+			t.Errorf("Import fixing failed: %v", err)
+		}
+
+		// Step 3: Remove duplicates
+		duplicateRemover := &DuplicateRemover{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  false,
+		}
+
+		err = duplicateRemover.ProcessSingleFile(complexFile)
+		if err != nil {
+			t.Errorf("Duplicate removal failed: %v", err)
+		}
+
+		// Step 4: Fix syntax
+		syntaxFixer := &SyntaxFixer{
+			BaseDir: tempDir,
+			FileSet: token.NewFileSet(),
+			Logger:  logger,
+			Stats:   stats,
+			DryRun:  false,
+		}
+
+		err = syntaxFixer.FixSingleFile(complexFile)
+		if err != nil {
+			t.Errorf("Syntax fixing failed: %v", err)
+		}
+		// Step 5: Check health after fixes
+		finalReport := checker.CheckHealth()
+		if finalReport == nil {
+			t.Error("Final health check failed - expected non-nil report")
+		}
+		// Verify improvements were made
+		if stats.ImportsFixed == 0 && stats.DuplicatesRemoved == 0 && stats.ErrorsFixed == 0 {
+			t.Error("Expected some fixes to be applied")
+		}
+
+		// Reports should exist
+		if initialReport == nil || finalReport == nil {
+			t.Error("Expected non-nil health reports")
+		}
+		t.Logf("Toolkit Stats: Imports Fixed: %d, Duplicates Removed: %d, Errors Fixed: %d, Files Modified: %d",
+			stats.ImportsFixed, stats.DuplicatesRemoved, stats.ErrorsFixed, stats.FilesModified)
+	})
+}
+
+// Benchmark tests for performance evaluation
+func BenchmarkImportFixer(b *testing.B) {
+	tempDir, _ := os.MkdirTemp("", "bench_import_fixer")
+	defer os.RemoveAll(tempDir)
+
+	// Create test file
+	testFile := filepath.Join(tempDir, "test.go")
+	os.WriteFile(testFile, []byte(testFileWithImportIssues), 0644)
+
+	logger, _ := NewLogger(false)
+	stats := &ToolkitStats{}
+
+	fixer := &ImportFixer{
+		BaseDir:    tempDir,
+		ModuleName: "github.com/email-sender",
+		FileSet:    token.NewFileSet(),
+		Logger:     logger,
+		Stats:      stats,
+		DryRun:     true, // Use dry run for benchmarking
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		fixer.FixSingleFile(testFile)
+	}
+}
+
+func BenchmarkDuplicateRemover(b *testing.B) {
+	tempDir, _ := os.MkdirTemp("", "bench_duplicate_remover")
+	defer os.RemoveAll(tempDir)
+
+	// Create test file
+	testFile := filepath.Join(tempDir, "test.go")
+	os.WriteFile(testFile, []byte(testFileWithDuplicates), 0644)
+
+	logger, _ := NewLogger(false)
+	stats := &ToolkitStats{}
+
+	remover := &DuplicateRemover{
+		BaseDir: tempDir,
+		FileSet: token.NewFileSet(),
+		Logger:  logger,
+		Stats:   stats,
+		DryRun:  true, // Use dry run for benchmarking
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		remover.ProcessSingleFile(testFile)
+	}
+}
+
+func BenchmarkSyntaxFixer(b *testing.B) {
+	tempDir, _ := os.MkdirTemp("", "bench_syntax_fixer")
+	defer os.RemoveAll(tempDir)
+
+	// Create test file
+	testFile := filepath.Join(tempDir, "test.go")
+	os.WriteFile(testFile, []byte(testFileWithSyntaxIssues), 0644)
+
+	logger, _ := NewLogger(false)
+	stats := &ToolkitStats{}
+
+	fixer := &SyntaxFixer{
+		BaseDir: tempDir,
+		FileSet: token.NewFileSet(),
+		Logger:  logger,
+		Stats:   stats,
+		DryRun:  true, // Use dry run for benchmarking
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		fixer.FixSingleFile(testFile)
+	}
+}
+
+func BenchmarkHealthChecker(b *testing.B) {
+	tempDir, _ := os.MkdirTemp("", "bench_health_checker")
+	defer os.RemoveAll(tempDir)
+
+	// Create test file
+	testFile := filepath.Join(tempDir, "test.go")
+	os.WriteFile(testFile, []byte(testFileHealthy), 0644)
+	logger, _ := NewLogger(false)
+
+	checker := &HealthChecker{
+		BaseDir: tempDir,
+		FileSet: token.NewFileSet(),
+		Logger:  logger,
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		checker.CheckHealth()
+	}
+}

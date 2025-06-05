@@ -23,6 +23,31 @@ type InterfaceAnalyzer struct {
 	Stats   *ToolkitStats
 }
 
+// NewInterfaceAnalyzerPro creates a new InterfaceAnalyzer instance
+func NewInterfaceAnalyzerPro(baseDir string, fileSet *token.FileSet, debugMode bool) (*InterfaceAnalyzer, error) {
+	if baseDir == "" {
+		return nil, fmt.Errorf("base directory cannot be empty")
+	}
+
+	logger, err := NewLogger(debugMode)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create logger: %w", err)
+	}
+
+	if fileSet == nil {
+		fileSet = token.NewFileSet()
+	}
+
+	stats := &ToolkitStats{}
+
+	return &InterfaceAnalyzer{
+		BaseDir: baseDir,
+		FileSet: fileSet,
+		Logger:  logger,
+		Stats:   stats,
+	}, nil
+}
+
 // Interface represents a Go interface with metadata
 type Interface struct {
 	Name        string            `json:"name"`
@@ -34,6 +59,9 @@ type Interface struct {
 	Annotations map[string]string `json:"annotations"`
 }
 
+// InterfaceInfo is an alias for Interface for compatibility with tests
+type InterfaceInfo = Interface
+
 // Method represents a method within an interface
 type Method struct {
 	Name       string         `json:"name"`
@@ -43,6 +71,9 @@ type Method struct {
 	Comments   []string       `json:"comments"`
 	Position   token.Position `json:"position"`
 }
+
+// MethodInfo is an alias for Method for compatibility with tests
+type MethodInfo = Method
 
 // Parameter represents a method parameter
 type Parameter struct {
@@ -73,6 +104,7 @@ type AnalysisReport struct {
 	Dependencies      map[string][]string    `json:"dependencies"`
 	ComplexityMetrics *ComplexityMetrics     `json:"complexity_metrics"`
 	QualityScore      QualityScore           `json:"quality_score"`
+	Stats             *ToolkitStats          `json:"stats"`
 }
 
 // QualityScore represents the overall quality score with details
@@ -131,6 +163,7 @@ func (ia *InterfaceAnalyzer) AnalyzeInterfaces() (*AnalysisReport, error) {
 			PackageComplexity:   make(map[string]int),
 			CouplingMetrics:     make(map[string]float64),
 		},
+		Stats: ia.Stats,
 	}
 
 	// Walk through all Go files
@@ -144,6 +177,7 @@ func (ia *InterfaceAnalyzer) AnalyzeInterfaces() (*AnalysisReport, error) {
 		}
 
 		report.TotalFiles++
+		ia.Stats.TotalFiles++
 
 		if err := ia.analyzeFile(path, report); err != nil {
 			ia.Logger.Warn("Failed to analyze file %s: %v", path, err)
@@ -151,6 +185,18 @@ func (ia *InterfaceAnalyzer) AnalyzeInterfaces() (*AnalysisReport, error) {
 		} else {
 			report.FilesAnalyzed++
 			ia.Stats.FilesAnalyzed++
+
+			// Check if file contains interfaces
+			hasInterfaces := false
+			for _, iface := range report.Interfaces {
+				if iface.File == path {
+					hasInterfaces = true
+					break
+				}
+			}
+			if hasInterfaces {
+				ia.Stats.InterfaceFiles++
+			}
 		}
 
 		return nil
@@ -165,6 +211,9 @@ func (ia *InterfaceAnalyzer) AnalyzeInterfaces() (*AnalysisReport, error) {
 	ia.generateRecommendations(report)
 	ia.calculateComplexityMetrics(report)
 	ia.calculateQualityScore(report)
+
+	// Update total interfaces count
+	ia.Stats.TotalInterfaces = len(report.Interfaces)
 
 	ia.Logger.Info("Analysis completed: %d files, %d interfaces, %d errors",
 		report.FilesAnalyzed, len(report.Interfaces), len(report.SyntaxErrors))
@@ -493,6 +542,33 @@ func (ia *InterfaceAnalyzer) calculateQualityScore(report *AnalysisReport) {
 		CodeQuality:     score * 0.9,
 		Maintainability: score * 0.8,
 		Testability:     score * 0.7,
+	}
+}
+
+// GenerateAnalysisReport generates a formatted analysis report
+func (ia *InterfaceAnalyzer) GenerateAnalysisReport(format string) ([]byte, error) {
+	// First perform the analysis
+	report, err := ia.AnalyzeInterfaces()
+	if err != nil {
+		return nil, fmt.Errorf("failed to analyze interfaces: %w", err)
+	}
+
+	switch format {
+	case "json":
+		return []byte(fmt.Sprintf(`{
+  "timestamp": "%s",
+  "total_interfaces": %d,
+  "total_methods": %d,
+  "files_analyzed": %d
+}`, report.Timestamp.Format(time.RFC3339), len(report.Interfaces), report.TotalMethods, report.FilesAnalyzed)), nil
+	case "yaml":
+		return []byte(fmt.Sprintf(`timestamp: %s
+total_interfaces: %d
+total_methods: %d
+files_analyzed: %d
+`, report.Timestamp.Format(time.RFC3339), len(report.Interfaces), report.TotalMethods, report.FilesAnalyzed)), nil
+	default:
+		return nil, fmt.Errorf("unsupported format: %s", format)
 	}
 }
 

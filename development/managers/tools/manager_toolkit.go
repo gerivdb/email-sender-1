@@ -61,6 +61,10 @@ type ToolkitStats struct {
 	OperationsExecuted int           `json:"operations_executed"`
 	FilesProcessed     int           `json:"files_processed"`
 	ExecutionTime      time.Duration `json:"execution_time"`
+	// Additional fields for test compatibility
+	TotalFiles      int `json:"total_files"`
+	InterfaceFiles  int `json:"interface_files"`
+	TotalInterfaces int `json:"total_interfaces"`
 }
 
 // Logger with levels
