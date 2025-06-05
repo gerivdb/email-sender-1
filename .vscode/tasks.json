@@ -11,17 +11,37 @@
   "tasks": [
     // === 🧼 MAINTENANCE ===
     {
-      "label": "maintenance.organize-scripts",
+      "label": "clean.all",
       "type": "shell",
-      "command": "powershell.exe -ExecutionPolicy Bypass -File \"${env:SCRIPTS_PATH}/maintenance/repo/organize-scripts.ps1\"",
-      "problemMatcher": ["$pester"],
-      "group": "build",
+      "command": "rm -rf ${workspaceFolder}/development/scripts/python/__pycache__ && rm -rf ${workspaceFolder}/development/scripts/cmd/__pycache__",
+      "problemMatcher": [],
+      "group": "none",
       "presentation": {
-        "reveal": "silent",
-        "panel": "shared",
-        "showReuseMessage": false
-      },
-      "runOptions": { "runOn": "folderOpen" }
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "clean.python",
+      "type": "shell",
+      "command": "find ${env:PYTHON_PATH} -name \"__pycache__\" -exec rm -rf {} +",
+      "problemMatcher": [],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "clean.cmd",
+      "type": "shell",
+      "command": "${env:POWERSHELL_PATH}/clean.ps1",
+      "problemMatcher": [],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
     },
 
     // === 📓 JOURNALING ===
@@ -150,16 +170,16 @@
       }
     },
     {
-      "label": "go.test-single",
-      "type": "shell",
-      "command": "go test -v -run ^${input:testFunctionName}$ ${input:testPackagePath}",
-      "group": "test",
-      "problemMatcher": ["$go"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      }
-    },
+  "label": "go.lint",
+  "type": "shell",
+  "command": "golangci-lint run",
+  "group": "build",
+  "problemMatcher": ["$go"],
+  "presentation": {
+    "reveal": "always",
+    "panel": "shared"
+  }
+},
     {
       "label": "go.lint",
       "type": "shell",

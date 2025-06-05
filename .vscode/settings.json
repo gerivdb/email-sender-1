@@ -13,22 +13,34 @@
     "markdown": true,
     "scminput": true
   },
-  "go.buildFlags": ["-tags=database"],
   "go.goroot": "C:\\Users\\user\\sdk\\go1.23.9",
   "go.gopath": "C:\\Users\\user\\go",
-  "gopls": {
-    "build.buildFlags": ["-tags=database"]
-  },
+  "go.buildFlags": ["-tags=database"],
   "go.formatTool": "goimports",
   "go.lintTool": "golangci-lint",
-  "go.lintOnSave": "package",
-  "go.vetOnSave": "package",  "go.useLanguageServer": true,
+  "go.lintFlags": [],
+  "go.lintOnSave": "file",
+  "go.vetOnSave": "off",
+  "go.useLanguageServer": true,
+  "go.toolsManagement.autoUpdate": true,
+  "gopls": {
+    "build.buildFlags": ["-tags=database"],
+    "analyses": {
+      "unusedparams": true,
+      "shadow": true
+    },
+    "staticcheck": true
+  },
   "[go]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+      "source.organizeImports": "always",
+      "source.fixAll": "always"
     }
   },
-  "go.toolsManagement.autoUpdate": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    
+    "source.fixAll": "always"
+  }
 }

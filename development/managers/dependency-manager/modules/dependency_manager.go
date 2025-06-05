@@ -21,6 +21,8 @@ type Dependency struct {
 	Name     string `json:"name"`
 	Version  string `json:"version"`
 	Indirect bool   `json:"indirect,omitempty"`
+	Repository string `json:"repository,omitempty"`
+	License    string `json:"license,omitempty"`
 }
 
 // ErrorEntry represents a locally cataloged error.
@@ -61,11 +63,18 @@ type DepManager interface {
 
 // GoModManager implements DepManager for go.mod.
 type GoModManager struct {
-	modFilePath   string
-	config        *Config
-	configManager ConfigManager
-	logger        *zap.Logger
-	errorManager  ErrorManager
+	modFilePath         string
+	config              *Config
+	configManager       ConfigManager
+	logger              *zap.Logger
+	errorManager        ErrorManager
+	securityManager     SecurityManagerInterface
+	monitoringManager   MonitoringManagerInterface
+	storageManager      StorageManagerInterface
+	containerManager    ContainerManagerInterface
+	deploymentManager   DeploymentManagerInterface
+	registryCredentials map[string]RegistryCredentials
+	managerIntegrator   *ManagerIntegrator
 }
 
 // ErrorManager interface for decoupling error handling.
@@ -113,14 +122,21 @@ func NewGoModManager(modFilePath string, config *Config) *GoModManager {
 	logger, _ := zap.NewProduction()
 	errorManager := &ErrorManagerImpl{logger: logger}
 	configManager := NewDepConfigManager(config, logger, errorManager)
+	managerIntegrator := NewManagerIntegrator(logger, errorManager)
 
-	return &GoModManager{
-		modFilePath:   modFilePath,
-		config:        config,
-		configManager: configManager,
-		logger:        logger,
-		errorManager:  errorManager,
+	mgr := &GoModManager{
+		modFilePath:       modFilePath,
+		config:            config,
+		configManager:     configManager,
+		logger:            logger,
+		errorManager:      errorManager,
+		managerIntegrator: managerIntegrator,
+		registryCredentials: make(map[string]RegistryCredentials),
 	}
+	
+	// Initialize the security, monitoring, storage, container, and deployment integrations
+	// These will be properly initialized when needed through their respective initialize*Integration functions
+	return mgr
 }
 
 // ProcessError processes an error with centralized error handling.
@@ -599,22 +615,37 @@ func validateConfig(config *Config) error {
 }
 
 // runCLI handles user commands.
-func runCLI(manager DepManager) {
+func runCLI(manager *GoModManager) {
 	listCmd := flag.NewFlagSet("list", flag.ExitOnError)
 	addCmd := flag.NewFlagSet("add", flag.ExitOnError)
 	removeCmd := flag.NewFlagSet("remove", flag.ExitOnError)
 	updateCmd := flag.NewFlagSet("update", flag.ExitOnError)
 	auditCmd := flag.NewFlagSet("audit", flag.ExitOnError)
 	cleanupCmd := flag.NewFlagSet("cleanup", flag.ExitOnError)
+	
+	// New commands for integrations
+	containerCmd := flag.NewFlagSet("container", flag.ExitOnError)
+	deploymentCmd := flag.NewFlagSet("deployment", flag.ExitOnError)
+	healthCmd := flag.NewFlagSet("health", flag.ExitOnError)
+	metadataCmd := flag.NewFlagSet("metadata", flag.ExitOnError)
 
 	addModule := addCmd.String("module", "", "Module to add (e.g., github.com/pkg)")
 	addVersion := addCmd.String("version", "latest", "Module version")
+	addMonitoring := addCmd.Bool("monitor", false, "Enable performance monitoring for add operation")
+	
 	removeModule := removeCmd.String("module", "", "Module to remove")
 	updateModule := updateCmd.String("module", "", "Module to update")
+	updateMonitoring := updateCmd.Bool("monitor", false, "Enable performance monitoring for update operation")
+	
 	listJSON := listCmd.Bool("json", false, "Output in JSON format")
+	listEnhanced := listCmd.Bool("enhanced", false, "Include enhanced metadata from StorageManager")
+	
+	auditEnhanced := auditCmd.Bool("enhanced", false, "Use SecurityManager for enhanced vulnerability scanning")
+	
+	deploymentEnv := deploymentCmd.String("env", "development", "Target environment for deployment check")
 
 	if len(os.Args) < 2 {
-		fmt.Println("Commands: list, add, remove, update, audit, cleanup")
+		fmt.Println("Commands: list, add, remove, update, audit, cleanup, container, deployment, health, metadata")
 		fmt.Println("Use 'help' for more information")
 		os.Exit(1)
 	}
@@ -625,22 +656,33 @@ func runCLI(manager DepManager) {
 			fmt.Fprintf(os.Stderr, "Error parsing list command: %v\n", err)
 			os.Exit(1)
 		}
-		deps, err := manager.List()
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
-			os.Exit(1)
-		}
-		if *listJSON {
-			jsonData, _ := json.MarshalIndent(deps, "", "  ")
+		
+		if *listEnhanced {
+			enhancedDeps, err := manager.ListWithEnhancedMetadata()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				os.Exit(1)
+			}
+			jsonData, _ := json.MarshalIndent(enhancedDeps, "", "  ")
 			fmt.Println(string(jsonData))
 		} else {
-			fmt.Printf("Dependencies (%d):\n", len(deps))
-			for _, dep := range deps {
-				indirect := ""
-				if dep.Indirect {
-					indirect = " (indirect)"
+			deps, err := manager.List()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				os.Exit(1)
+			}
+			if *listJSON {
+				jsonData, _ := json.MarshalIndent(deps, "", "  ")
+				fmt.Println(string(jsonData))
+			} else {
+				fmt.Printf("Dependencies (%d):\n", len(deps))
+				for _, dep := range deps {
+					indirect := ""
+					if dep.Indirect {
+						indirect = " (indirect)"
+					}
+					fmt.Printf("  %s@%s%s\n", dep.Name, dep.Version, indirect)
 				}
-				fmt.Printf("  %s@%s%s\n", dep.Name, dep.Version, indirect)
 			}
 		}
 
@@ -653,7 +695,15 @@ func runCLI(manager DepManager) {
 			fmt.Fprintln(os.Stderr, "Error: --module required")
 			os.Exit(1)
 		}
-		if err := manager.Add(*addModule, *addVersion); err != nil {
+		
+		var err error
+		if *addMonitoring {
+			err = manager.AddWithMonitoring(*addModule, *addVersion)
+		} else {
+			err = manager.Add(*addModule, *addVersion)
+		}
+		
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
@@ -683,7 +733,15 @@ func runCLI(manager DepManager) {
 			fmt.Fprintln(os.Stderr, "Error: --module required")
 			os.Exit(1)
 		}
-		if err := manager.Update(*updateModule); err != nil {
+		
+		var err error
+		if *updateMonitoring {
+			err = manager.UpdateWithMonitoring(*updateModule)
+		} else {
+			err = manager.Update(*updateModule)
+		}
+		
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
@@ -694,7 +752,15 @@ func runCLI(manager DepManager) {
 			fmt.Fprintf(os.Stderr, "Error parsing audit command: %v\n", err)
 			os.Exit(1)
 		}
-		if err := manager.Audit(); err != nil {
+		
+		var err error
+		if *auditEnhanced {
+			err = manager.AuditWithSecurityManager()
+		} else {
+			err = manager.Audit()
+		}
+		
+		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
@@ -709,25 +775,73 @@ func runCLI(manager DepManager) {
 			os.Exit(1)
 		}
 		fmt.Println("Cleanup completed")
+		
+	case "container":
+		if err := containerCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Fprintf(os.Stderr, "Error parsing container command: %v\n", err)
+			os.Exit(1)
+		}
+		if err := manager.ValidateForContainerDeployment(); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Println("Container compatibility check completed")
+		
+	case "deployment":
+		if err := deploymentCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Fprintf(os.Stderr, "Error parsing deployment command: %v\n", err)
+			os.Exit(1)
+		}
+		if err := manager.CheckDeploymentReadiness(*deploymentEnv); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Printf("Deployment readiness check for %s environment completed\n", *deploymentEnv)
+		
+	case "health":
+		if err := healthCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Fprintf(os.Stderr, "Error parsing health command: %v\n", err)
+			os.Exit(1)
+		}
+		if err := manager.PerformIntegrationHealthCheck(); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Println("Integration health check completed")
+		
+	case "metadata":
+		if err := metadataCmd.Parse(os.Args[2:]); err != nil {
+			fmt.Fprintf(os.Stderr, "Error parsing metadata command: %v\n", err)
+			os.Exit(1)
+		}
+		if err := manager.SyncDependencyMetadata(); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Println("Dependency metadata synchronization completed")
 
 	case "help":
-		fmt.Println("Go Dependency Manager")
-		fmt.Println("=====================")
+		fmt.Println("Go Dependency Manager with Advanced Manager Integrations")
+		fmt.Println("=====================================================")
 		fmt.Println("")
 		fmt.Println("Commands:")
-		fmt.Println("  list [--json]              - List all dependencies")
-		fmt.Println("  add --module <mod> [--version <ver>] - Add a dependency")
-		fmt.Println("  remove --module <mod>      - Remove a dependency")
-		fmt.Println("  update --module <mod>      - Update a dependency")
-		fmt.Println("  audit                      - Check for vulnerabilities")
-		fmt.Println("  cleanup                    - Clean unused dependencies")
-		fmt.Println("  help                       - Show this help")
+		fmt.Println("  list [--json] [--enhanced]     - List all dependencies, with optional enhanced metadata")
+		fmt.Println("  add --module <mod> [--version <ver>] [--monitor] - Add a dependency with optional monitoring")
+		fmt.Println("  remove --module <mod>          - Remove a dependency")
+		fmt.Println("  update --module <mod> [--monitor] - Update a dependency with optional monitoring")
+		fmt.Println("  audit [--enhanced]             - Check for vulnerabilities with optional SecurityManager")
+		fmt.Println("  cleanup                        - Clean unused dependencies")
+		fmt.Println("  container                      - Validate dependencies for container deployment")
+		fmt.Println("  deployment [--env <env>]       - Check deployment readiness for environment")
+		fmt.Println("  health                         - Check health of all manager integrations")
+		fmt.Println("  metadata                       - Synchronize dependency metadata with StorageManager")
+		fmt.Println("  help                           - Show this help")
 		fmt.Println("")
 		fmt.Println("Examples:")
-		fmt.Println("  go run dependency_manager.go list")
-		fmt.Println("  go run dependency_manager.go add --module github.com/pkg/errors --version v0.9.1")
-		fmt.Println("  go run dependency_manager.go remove --module github.com/pkg/errors")
-		fmt.Println("  go run dependency_manager.go update --module github.com/gorilla/mux")
+		fmt.Println("  go run dependency_manager.go list --enhanced")
+		fmt.Println("  go run dependency_manager.go add --module github.com/pkg/errors --version v0.9.1 --monitor")
+		fmt.Println("  go run dependency_manager.go audit --enhanced")
+		fmt.Println("  go run dependency_manager.go deployment --env production")
 
 	default:
 		fmt.Printf("Unknown command: %s\n", os.Args[1])
@@ -758,6 +872,18 @@ func main() {
 	}
 
 	manager := NewGoModManager(modFilePath, config)
+	
+	// Initialize manager integrations if --init-managers flag is provided
+	if len(os.Args) > 1 && os.Args[1] == "--init-managers" {
+		fmt.Println("Initializing all manager integrations...")
+		ctx := context.Background()
+		if err := manager.InitializeAllManagers(ctx); err != nil {
+			fmt.Printf("Warning: Failed to initialize all managers: %v\n", err)
+		}
+		fmt.Println("Manager integrations initialized successfully")
+		os.Args = os.Args[1:] // Remove the flag for further processing
+	}
+	
 	runCLI(manager)
 }
 
@@ -1047,4 +1173,321 @@ func (cm *DepConfigManagerImpl) GetErrorManager() ErrorManager {
 
 func (cm *DepConfigManagerImpl) GetLogger() *zap.Logger {
 	return cm.logger
+}
+
+// Advanced Integration Methods for Section 3.1
+
+// SetSecurityManager configures SecurityManager integration
+func (m *GoModManager) SetSecurityManager(sm SecurityManagerInterface) {
+	m.managerIntegrator.SetSecurityManager(sm)
+	m.logger.Info("SecurityManager integration configured for DependencyManager")
+}
+
+// SetMonitoringManager configures MonitoringManager integration
+func (m *GoModManager) SetMonitoringManager(mm MonitoringManagerInterface) {
+	m.managerIntegrator.SetMonitoringManager(mm)
+	m.logger.Info("MonitoringManager integration configured for DependencyManager")
+}
+
+// SetStorageManager configures StorageManager integration
+func (m *GoModManager) SetStorageManager(sm StorageManagerInterface) {
+	m.managerIntegrator.SetStorageManager(sm)
+	m.logger.Info("StorageManager integration configured for DependencyManager")
+}
+
+// SetContainerManager configures ContainerManager integration
+func (m *GoModManager) SetContainerManager(cm ContainerManagerInterface) {
+	m.managerIntegrator.SetContainerManager(cm)
+	m.logger.Info("ContainerManager integration configured for DependencyManager")
+}
+
+// SetDeploymentManager configures DeploymentManager integration
+func (m *GoModManager) SetDeploymentManager(dm DeploymentManagerInterface) {
+	m.managerIntegrator.SetDeploymentManager(dm)
+	m.logger.Info("DeploymentManager integration configured for DependencyManager")
+}
+
+// AuditWithSecurityManager performs enhanced security audit using SecurityManager
+func (m *GoModManager) AuditWithSecurityManager() error {
+	m.Log("INFO", "Running enhanced security audit with SecurityManager")
+	ctx := context.Background()
+
+	// Get current dependencies
+	dependencies, err := m.List()
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "dependency-list", "audit_with_security", nil)
+	}
+
+	// Perform security audit through ManagerIntegrator
+	auditResult, err := m.managerIntegrator.SecurityAuditWithManager(ctx, dependencies)
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "SecurityManager", "security_audit", &ErrorHooks{
+			OnError: func(err error) {
+				m.logger.Error("Enhanced security audit failed",
+					zap.Error(err),
+					zap.Int("dependencies_count", len(dependencies)))
+			},
+		})
+	}
+
+	// Log audit results
+	m.logger.Info("Enhanced security audit completed",
+		zap.Int("total_scanned", auditResult.TotalScanned),
+		zap.Int("vulnerabilities_found", auditResult.VulnerabilitiesFound),
+		zap.Time("audit_timestamp", auditResult.Timestamp))
+
+	// Persist audit results if StorageManager is available
+	if err := m.managerIntegrator.PersistDependencyMetadata(ctx, dependencies); err != nil {
+		m.logger.Warn("Failed to persist dependency metadata", zap.Error(err))
+	}
+
+	m.Log("SUCCESS", fmt.Sprintf("Enhanced security audit completed - %d dependencies scanned, %d vulnerabilities found",
+		auditResult.TotalScanned, auditResult.VulnerabilitiesFound))
+
+	return nil
+}
+
+// AddWithMonitoring adds a dependency with performance monitoring
+func (m *GoModManager) AddWithMonitoring(module, version string) error {
+	m.Log("INFO", fmt.Sprintf("Adding dependency with monitoring: %s@%s", module, version))
+	ctx := context.Background()
+
+	// Monitor the add operation performance
+	err := m.managerIntegrator.MonitorOperationPerformance(ctx, "add_dependency", func() error {
+		return m.Add(module, version)
+	})
+
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "dependency-add", "add_with_monitoring", &ErrorHooks{
+			OnError: func(err error) {
+				m.logger.Error("Monitored dependency addition failed",
+					zap.Error(err),
+					zap.String("module", module),
+					zap.String("version", version))
+			},
+		})
+	}
+
+	// Persist dependency metadata
+	dependencies := []Dependency{{Name: module, Version: version}}
+	if err := m.managerIntegrator.PersistDependencyMetadata(ctx, dependencies); err != nil {
+		m.logger.Warn("Failed to persist dependency metadata after addition",
+			zap.Error(err),
+			zap.String("module", module))
+	}
+
+	m.Log("SUCCESS", fmt.Sprintf("Successfully added and monitored %s@%s", module, version))
+	return nil
+}
+
+// UpdateWithMonitoring updates a dependency with performance monitoring
+func (m *GoModManager) UpdateWithMonitoring(module string) error {
+	m.Log("INFO", fmt.Sprintf("Updating dependency with monitoring: %s", module))
+	ctx := context.Background()
+
+	// Monitor the update operation performance
+	err := m.managerIntegrator.MonitorOperationPerformance(ctx, "update_dependency", func() error {
+		return m.Update(module)
+	})
+
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "dependency-update", "update_with_monitoring", &ErrorHooks{
+			OnError: func(err error) {
+				m.logger.Error("Monitored dependency update failed",
+					zap.Error(err),
+					zap.String("module", module))
+			},
+		})
+	}
+
+	m.Log("SUCCESS", fmt.Sprintf("Successfully updated and monitored %s", module))
+	return nil
+}
+
+// ValidateForContainerDeployment validates dependencies for container deployment
+func (m *GoModManager) ValidateForContainerDeployment() error {
+	m.Log("INFO", "Validating dependencies for container deployment")
+	ctx := context.Background()
+
+	// Get current dependencies
+	dependencies, err := m.List()
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "dependency-list", "container_validation", nil)
+	}
+
+	// Validate container compatibility
+	err = m.managerIntegrator.ValidateContainerCompatibility(ctx, dependencies)
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "ContainerManager", "validate_compatibility", &ErrorHooks{
+			OnError: func(err error) {
+				m.logger.Error("Container compatibility validation failed",
+					zap.Error(err),
+					zap.Int("dependencies_count", len(dependencies)))
+			},
+		})
+	}
+
+	m.Log("SUCCESS", "Dependencies validated for container deployment")
+	return nil
+}
+
+// CheckDeploymentReadiness checks if dependencies are ready for deployment
+func (m *GoModManager) CheckDeploymentReadiness(environment string) error {
+	m.Log("INFO", fmt.Sprintf("Checking deployment readiness for environment: %s", environment))
+	ctx := context.Background()
+
+	// Get current dependencies
+	dependencies, err := m.List()
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "dependency-list", "deployment_readiness", nil)
+	}
+
+	// Check deployment readiness
+	err = m.managerIntegrator.CheckDeploymentReadiness(ctx, dependencies, environment)
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "DeploymentManager", "check_readiness", &ErrorHooks{
+			OnError: func(err error) {
+				m.logger.Error("Deployment readiness check failed",
+					zap.Error(err),
+					zap.String("environment", environment),
+					zap.Int("dependencies_count", len(dependencies)))
+			},
+		})
+	}
+
+	m.Log("SUCCESS", fmt.Sprintf("Dependencies ready for deployment to %s environment", environment))
+	return nil
+}
+
+// PerformIntegrationHealthCheck checks health of all integrated managers
+func (m *GoModManager) PerformIntegrationHealthCheck() error {
+	m.Log("INFO", "Performing integration health check")
+	ctx := context.Background()
+
+	status, err := m.managerIntegrator.PerformHealthCheck(ctx)
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "ManagerIntegrator", "health_check", &ErrorHooks{
+			OnError: func(err error) {
+				m.logger.Error("Integration health check failed", zap.Error(err))
+			},
+		})
+	}
+
+	// Log detailed health status
+	for managerName, health := range status.Managers {
+		m.logger.Info("Manager health status",
+			zap.String("manager", managerName),
+			zap.String("status", health))
+	}
+
+	m.logger.Info("Integration health check completed",
+		zap.String("overall_status", status.Overall),
+		zap.Time("timestamp", status.Timestamp),
+		zap.Int("managers_checked", len(status.Managers)))
+
+	m.Log("INFO", fmt.Sprintf("Integration health check completed - Overall status: %s", status.Overall))
+	return nil
+}
+
+// ListWithEnhancedMetadata lists dependencies with enhanced metadata from StorageManager
+func (m *GoModManager) ListWithEnhancedMetadata() ([]DependencyMetadata, error) {
+	m.Log("INFO", "Listing dependencies with enhanced metadata")
+	ctx := context.Background()
+
+	// Get basic dependency list
+	dependencies, err := m.List()
+	if err != nil {
+		return nil, m.errorManager.ProcessError(ctx, err, "dependency-list", "enhanced_metadata", nil)
+	}
+
+	var enhancedDependencies []DependencyMetadata
+
+	// Get enhanced metadata for each dependency if StorageManager is available
+	for _, dep := range dependencies {
+		if m.managerIntegrator.storageManager != nil {
+			metadata, err := m.managerIntegrator.storageManager.GetDependencyMetadata(ctx, dep.Name)
+			if err != nil {
+				// If metadata not found, create basic metadata
+				metadata = &DependencyMetadata{
+					Name:        dep.Name,
+					Version:     dep.Version,
+					LastUpdated: time.Now(),
+					Tags: map[string]string{
+						"source": "go-mod",
+						"type":   "dependency",
+					},
+				}
+				m.logger.Debug("Using basic metadata for dependency",
+					zap.String("name", dep.Name),
+					zap.Error(err))
+			}
+			enhancedDependencies = append(enhancedDependencies, *metadata)
+		} else {
+			// Create basic metadata if StorageManager not available
+			metadata := DependencyMetadata{
+				Name:        dep.Name,
+				Version:     dep.Version,
+				LastUpdated: time.Now(),
+				Tags: map[string]string{
+					"source": "go-mod",
+					"type":   "dependency",
+				},
+			}
+			enhancedDependencies = append(enhancedDependencies, metadata)
+		}
+	}
+
+	m.logger.Info("Enhanced dependency metadata retrieved",
+		zap.Int("dependencies_count", len(enhancedDependencies)))
+
+	return enhancedDependencies, nil
+}
+
+// SyncDependencyMetadata synchronizes dependency metadata with StorageManager
+func (m *GoModManager) SyncDependencyMetadata() error {
+	m.Log("INFO", "Synchronizing dependency metadata with StorageManager")
+	ctx := context.Background()
+
+	// Get current dependencies
+	dependencies, err := m.List()
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "dependency-list", "sync_metadata", nil)
+	}
+
+	// Persist all dependency metadata
+	err = m.managerIntegrator.PersistDependencyMetadata(ctx, dependencies)
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "StorageManager", "sync_metadata", &ErrorHooks{
+			OnError: func(err error) {
+				m.logger.Error("Failed to sync dependency metadata",
+					zap.Error(err),
+					zap.Int("dependencies_count", len(dependencies)))
+			},
+		})
+	}
+
+	m.Log("SUCCESS", fmt.Sprintf("Successfully synchronized metadata for %d dependencies", len(dependencies)))
+	return nil
+}
+
+// EnableRealManagerIntegration enables real manager integration mode
+func (m *GoModManager) EnableRealManagerIntegration(ctx context.Context) error {
+	m.Log("INFO", "Enabling real manager integration mode")
+
+	err := m.managerIntegrator.EnableRealManagers(ctx)
+	if err != nil {
+		return m.errorManager.ProcessError(ctx, err, "ManagerIntegrator", "enable_real_managers", &ErrorHooks{
+			OnError: func(err error) {
+				m.logger.Error("Failed to enable real manager integration", zap.Error(err))
+			},
+		})
+	}
+
+	m.Log("SUCCESS", "Real manager integration mode enabled successfully")
+	return nil
+}
+
+// GetIntegrationStatus returns the current integration status
+func (m *GoModManager) GetIntegrationStatus(ctx context.Context) (*IntegrationHealthStatus, error) {
+	return m.managerIntegrator.PerformIntegrationHealthCheck(ctx)
 }

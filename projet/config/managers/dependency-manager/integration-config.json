@@ -1,0 +1,154 @@
+{
+  "dependency-manager": {
+    "name": "dependency-manager",
+    "version": "1.0.0",
+    "settings": {
+      "logPath": "logs/dependency-manager.log",
+      "logLevel": "info",
+      "goModPath": "go.mod",
+      "autoTidy": true,
+      "vulnerabilityCheck": true,
+      "backupOnChange": true
+    },
+    "integration": {
+      "securityManager": {
+        "enabled": true,
+        "endpoint": "security-manager",
+        "features": {
+          "vulnerabilityScanning": true,
+          "secretManagement": true,
+          "policyEnforcement": true
+        },
+        "config": {
+          "scanTimeout": 300,
+          "maxRetries": 3,
+          "cacheResults": true
+        }
+      },
+      "monitoringManager": {
+        "enabled": true,
+        "endpoint": "monitoring-manager",
+        "features": {
+          "performanceMonitoring": true,
+          "alerting": true,
+          "metricsCollection": true
+        },
+        "config": {
+          "metricsInterval": 30,
+          "alertThresholds": {
+            "cpuUsage": 80.0,
+            "memoryUsage": 85.0,
+            "operationDuration": 60000
+          },
+          "retentionPeriod": "7d"
+        }
+      },
+      "storageManager": {
+        "enabled": true,
+        "endpoint": "storage-manager",
+        "features": {
+          "metadataPersistence": true,
+          "queryCapabilities": true,
+          "backup": true
+        },
+        "config": {
+          "connectionPool": 10,
+          "timeout": 30,
+          "enableCache": true,
+          "cacheTTL": 300
+        }
+      },
+      "containerManager": {
+        "enabled": true,
+        "endpoint": "container-manager",
+        "features": {
+          "compatibilityValidation": true,
+          "imageBuilding": true,
+          "resourceOptimization": true
+        },
+        "config": {
+          "baseImages": {
+            "golang": "golang:1.21-alpine",
+            "ubuntu": "ubuntu:22.04"
+          },
+          "buildTimeout": 600,
+          "maxConcurrentBuilds": 3
+        }
+      },
+      "deploymentManager": {
+        "enabled": true,
+        "endpoint": "deployment-manager",
+        "features": {
+          "readinessChecks": true,
+          "environmentValidation": true,
+          "rollbackSupport": true
+        },
+        "config": {
+          "environments": ["development", "staging", "production"],
+          "deploymentTimeout": 900,
+          "healthCheckInterval": 30,
+          "rollbackTimeout": 300
+        }
+      }
+    },
+    "crossManagerCommunication": {
+      "protocol": "http",
+      "timeout": 30,
+      "retries": 3,
+      "circuitBreaker": {
+        "enabled": true,
+        "failureThreshold": 5,
+        "recoveryTimeout": 60
+      }
+    },
+    "errorHandling": {
+      "errorManager": {
+        "enabled": true,
+        "catalogingEnabled": true,
+        "contexts": [
+          "dependency-resolution",
+          "go-mod-operation",
+          "vulnerability-scan",
+          "manager-integration",
+          "cross-manager-communication"
+        ]
+      }
+    },
+    "security": {
+      "encryption": {
+        "enabled": false,
+        "algorithm": "AES-256-GCM"
+      },
+      "authentication": {
+        "enabled": false,
+        "method": "api-key"
+      },
+      "authorization": {
+        "enabled": false,
+        "rbac": true
+      }
+    },
+    "performance": {
+      "caching": {
+        "enabled": true,
+        "ttl": 300,
+        "maxSize": 1000
+      },
+      "concurrency": {
+        "maxConcurrentOperations": 5,
+        "operationTimeout": 300
+      }
+    },
+    "healthChecks": {
+      "interval": 60,
+      "timeout": 10,
+      "endpoints": [
+        "SecurityManager",
+        "MonitoringManager", 
+        "StorageManager",
+        "ContainerManager",
+        "DeploymentManager"
+      ]
+    }
+  }
+}

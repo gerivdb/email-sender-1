@@ -1,3 +1,4 @@
+// filepath: d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\development\managers\integrated-manager\error_integration.go
 package integratedmanager
 
 import (
@@ -10,6 +11,53 @@ import (
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
+
+// IConformityManager interface for conformity verification
+type IConformityManager interface {
+	VerifyManagerConformity(ctx context.Context, managerName string) (*ConformityReport, error)
+	VerifyEcosystemConformity(ctx context.Context) (*EcosystemConformityReport, error)
+	GenerateConformityReport(ctx context.Context, managerName string, format ReportFormat) ([]byte, error)
+	UpdateConformityStatus(ctx context.Context, managerName string, level ComplianceLevel) error
+	GetConformityConfig() *ConformityConfig
+	SetConformityConfig(config *ConformityConfig)
+}
+
+// ConformityStatus represents the conformity status of a manager
+type ConformityStatus struct {
+	Level           ComplianceLevel   `json:"level"`
+	Score           float64           `json:"score"`
+	LastCheck       time.Time         `json:"last_check"`
+	Issues          []ConformityIssue `json:"issues"`
+	Recommendations []string          `json:"recommendations"`
+	NextCheck       time.Time         `json:"next_check"`
+}
+
+// ConformityTrends tracks conformity improvements over time
+type ConformityTrends struct {
+	ScoreHistory        []HistoricalScore `json:"score_history"`
+	IssueResolutionRate float64           `json:"issue_resolution_rate"`
+	AverageFixTime      time.Duration     `json:"average_fix_time"`
+	TrendDirection      string            `json:"trend_direction"` // "improving", "stable", "declining"
+	ProjectedScore      float64           `json:"projected_score"`
+}
+
+// HistoricalScore represents a score at a point in time
+type HistoricalScore struct {
+	Timestamp time.Time `json:"timestamp"`
+	Score     float64   `json:"score"`
+	Version   string    `json:"version"`
+}
+
+// EcosystemHealth represents the health of the entire ecosystem
+type EcosystemHealth struct {
+	Status             string          `json:"status"` // "healthy", "warning", "critical"
+	ErrorIntegration   float64         `json:"error_integration_score"`
+	DocumentationScore float64         `json:"documentation_score"`
+	TestCoverageScore  float64         `json:"test_coverage_score"`
+	ArchitectureScore  float64         `json:"architecture_score"`
+	Dependencies       map[string]bool `json:"dependencies"`
+	Bottlenecks        []string        `json:"bottlenecks"`
+}
 
 // ErrorManager interface pour découpler la dépendance
 type ErrorManager interface {
@@ -30,15 +78,28 @@ type ErrorEntry struct {
 	Severity       string                 `json:"severity"`
 }
 
-// IntegratedErrorManager gère la centralisation des erreurs
+// IntegratedErrorManager gère la centralisation des erreurs ET la conformité
 type IntegratedErrorManager struct {
 	errorManager ErrorManager
 	errorQueue   chan ErrorEntry
-	wg          sync.WaitGroup
-	ctx         context.Context
-	cancel      context.CancelFunc
-	hooks       map[string][]ErrorHook
-	mu          sync.RWMutex
+	wg           sync.WaitGroup
+	ctx          context.Context
+	cancel       context.CancelFunc
+	hooks        map[string][]ErrorHook
+	mu           sync.RWMutex
+	// Conformity management fields
+	conformityManager   IConformityManager
+	conformityConfig    *ConformityConfig
+	conformityConfigMgr *ConformityConfigManager
+	managerStatuses     map[string]ConformityStatus
+	lastEcosystemCheck  time.Time
+	conformityMu        sync.RWMutex
+
+	// API server fields
+	apiServer        *ConformityAPIServer
+	apiServerEnabled bool
+	apiServerPort    int
+	apiServerMu      sync.RWMutex
 }
 
 // ErrorHook définit un hook d'erreur pour un manager spécifique
@@ -46,7 +107,7 @@ type ErrorHook func(module string, err error, context map[string]interface{})
 
 var (
 	integratedManager *IntegratedErrorManager
-	once             sync.Once
+	once              sync.Once
 )
 
 // GetIntegratedErrorManager retourne l'instance singleton
@@ -54,14 +115,32 @@ func GetIntegratedErrorManager() *IntegratedErrorManager {
 	once.Do(func() {
 		ctx, cancel := context.WithCancel(context.Background())
 		integratedManager = &IntegratedErrorManager{
-			errorQueue: make(chan ErrorEntry, 100),
-			ctx:        ctx,
-			cancel:     cancel,
-			hooks:      make(map[string][]ErrorHook),
+			errorQueue:       make(chan ErrorEntry, 100),
+			ctx:              ctx,
+			cancel:           cancel,
+			hooks:            make(map[string][]ErrorHook),
+			managerStatuses:  make(map[string]ConformityStatus),
+			conformityConfig: getDefaultConformityConfig(),
+			apiServerEnabled: true, // Enable API server by default
+			apiServerPort:    8080, // Default port
 		}
 		integratedManager.startErrorProcessor()
+		integratedManager.initializeConformityManager()
+		integratedManager.initializeAPIServer()
 	})
 	return integratedManager
+}
+
+// getDefaultConformityConfig returns default conformity configuration
+// initializeConformityManager initializes the conformity manager
+func (iem *IntegratedErrorManager) initializeConformityManager() {
+	// This would be set later when the actual ConformityManager is instantiated
+	// For now, we create the structure to hold it
+	iem.conformityManager = nil
+	iem.lastEcosystemCheck = time.Now()
+
+	// Start conformity scheduler if auto-check is enabled
+	iem.startConformityScheduler()
 }
 
 // SetErrorManager configure le gestionnaire d'erreurs
@@ -115,40 +194,111 @@ func (iem *IntegratedErrorManager) CentralizeError(module string, err error, con
 
 	// Wrapper l'erreur avec plus de contexte
 	wrappedErr := errors.Wrapf(err, "Centralized error from module %s", module)
-	
+
 	// Propager l'erreur
 	iem.PropagateError(module, wrappedErr, context)
-	
+
 	return wrappedErr
 }
 
-// executeHooks exécute tous les hooks pour un module donné
-func (iem *IntegratedErrorManager) executeHooks(module string, err error, context map[string]interface{}) {
-	iem.mu.RLock()
-	hooks := iem.hooks[module]
-	iem.mu.RUnlock()
+// ... existing code ...
 
-	for _, hook := range hooks {
-		go func(h ErrorHook) {
-			defer func() {
-				if r := recover(); r != nil {
-					log.Printf("Error hook panic for module %s: %v", module, r)
-				}
-			}()
-			h(module, err, context)
-		}(hook)
+// === CONFORMITY DELEGATION METHODS ===
+// These methods delegate to the conformity manager interface
+
+// VerifyManagerConformity verifies conformity for a specific manager
+func (iem *IntegratedErrorManager) VerifyManagerConformity(ctx context.Context, managerName string) (*ConformityReport, error) {
+	if iem.conformityManager == nil {
+		return nil, fmt.Errorf("conformity manager not initialized")
 	}
+	return iem.conformityManager.VerifyManagerConformity(ctx, managerName)
 }
 
-// startErrorProcessor démarre le processeur d'erreurs asynchrone
-func (iem *IntegratedErrorManager) startErrorProcessor() {
-	iem.wg.Add(1)
+// VerifyEcosystemConformity verifies conformity for the entire ecosystem
+func (iem *IntegratedErrorManager) VerifyEcosystemConformity(ctx context.Context) (*EcosystemConformityReport, error) {
+	if iem.conformityManager == nil {
+		return nil, fmt.Errorf("conformity manager not initialized")
+	}
+	return iem.conformityManager.VerifyEcosystemConformity(ctx)
+}
+
+// GenerateConformityReport generates a conformity report in the specified format
+func (iem *IntegratedErrorManager) GenerateConformityReport(ctx context.Context, managerName string, format ReportFormat) ([]byte, error) {
+	if iem.conformityManager == nil {
+		return nil, fmt.Errorf("conformity manager not initialized")
+	}
+	return iem.conformityManager.GenerateConformityReport(ctx, managerName, format)
+}
+
+// UpdateConformityStatus updates the conformity status of a manager
+func (iem *IntegratedErrorManager) UpdateConformityStatus(ctx context.Context, managerName string, level ComplianceLevel) error {
+	if iem.conformityManager == nil {
+		return fmt.Errorf("conformity manager not initialized")
+	}
+	return iem.conformityManager.UpdateConformityStatus(ctx, managerName, level)
+}
+
+// GetConformityConfig returns the current conformity configuration
+func (iem *IntegratedErrorManager) GetConformityConfig() *ConformityConfig {
+	if iem.conformityManager == nil {
+		return nil
+	}
+	return iem.conformityManager.GetConformityConfig()
+}
+
+// SetConformityConfig sets the conformity configuration
+func (iem *IntegratedErrorManager) SetConformityConfig(config *ConformityConfig) {
+	if iem.conformityManager == nil {
+		return
+	}
+	iem.conformityManager.SetConformityConfig(config)
+}
+
+// GetManagerConformityStatus returns the conformity status for a manager
+func (iem *IntegratedErrorManager) GetManagerConformityStatus(managerName string) (*ConformityStatus, error) {
+	iem.conformityMu.RLock()
+	defer iem.conformityMu.RUnlock()
+
+	if status, exists := iem.managerStatuses[managerName]; exists {
+		return &status, nil
+	}
+	return nil, fmt.Errorf("no conformity status found for manager: %s", managerName)
+}
+
+// GetAllManagerStatuses returns all manager conformity statuses
+func (iem *IntegratedErrorManager) GetAllManagerStatuses() map[string]ConformityStatus {
+	iem.conformityMu.RLock()
+	defer iem.conformityMu.RUnlock()
+
+	// Return a copy to avoid concurrent access
+	statuses := make(map[string]ConformityStatus)
+	for name, status := range iem.managerStatuses {
+		statuses[name] = status
+	}
+	return statuses
+}
+
+// SetConformityManager sets the conformity manager instance
+func (iem *IntegratedErrorManager) SetConformityManager(cm IConformityManager) {
+	iem.conformityMu.Lock()
+	defer iem.conformityMu.Unlock()
+	iem.conformityManager = cm
+}
+
+// startConformityScheduler starts the conformity check scheduler
+func (iem *IntegratedErrorManager) startConformityScheduler() {
+	if iem.conformityConfig == nil || !iem.conformityConfig.AutoCheck {
+		return
+	}
+
 	go func() {
-		defer iem.wg.Done()
+		ticker := time.NewTicker(iem.conformityConfig.CheckInterval)
+		defer ticker.Stop()
+
 		for {
 			select {
-			case entry := <-iem.errorQueue:
-				iem.processError(entry)
+			case <-ticker.C:
+				iem.performScheduledConformityCheck()
 			case <-iem.ctx.Done():
 				return
 			}
@@ -156,71 +306,39 @@ func (iem *IntegratedErrorManager) startErrorProcessor() {
 	}()
 }
 
-// processError traite une erreur individuellement
-func (iem *IntegratedErrorManager) processError(entry ErrorEntry) {
-	if iem.errorManager == nil {
-		log.Printf("Error manager not configured, logging error: %s", entry.Message)
+// performScheduledConformityCheck performs a scheduled conformity check
+func (iem *IntegratedErrorManager) performScheduledConformityCheck() {
+	if iem.conformityManager == nil {
 		return
 	}
 
-	// Valider l'erreur
-	if err := iem.errorManager.ValidateError(entry); err != nil {
-		log.Printf("Error validation failed: %v", err)
-		return
-	}
+	ctx, cancel := context.WithTimeout(iem.ctx, 5*time.Minute)
+	defer cancel()
 
-	// Cataloguer l'erreur
-	if err := iem.errorManager.CatalogError(entry); err != nil {
-		log.Printf("Error cataloging failed: %v", err)
+	// Check ecosystem conformity
+	_, err := iem.conformityManager.VerifyEcosystemConformity(ctx)
+	if err != nil {
+		log.Printf("Scheduled conformity check failed: %v", err)
 	}
 }
 
-// determineErrorCode détermine le code d'erreur basé sur le type d'erreur
-func determineErrorCode(err error) string {
-	switch {
-	case errors.Is(err, context.DeadlineExceeded):
-		return "TIMEOUT_ERROR"
-	case errors.Is(err, context.Canceled):
-		return "CANCELED_ERROR"
-	default:
-		return "GENERAL_ERROR"
-	}
-}
+// Shutdown gracefully shuts down the integrated manager including API server
+func (iem *IntegratedErrorManager) Shutdown() error {
+	log.Println("Shutting down IntegratedErrorManager...")
 
-// determineSeverity détermine la sévérité basée sur le message d'erreur
-func determineSeverity(err error) string {
-	message := err.Error()
-	switch {
-	case contains(message, "critical", "fatal", "panic"):
-		return "CRITICAL"
-	case contains(message, "error", "failed", "failure"):
-		return "ERROR"
-	case contains(message, "warning", "warn"):
-		return "WARNING"
-	default:
-		return "INFO"
+	// Stop API server
+	if err := iem.StopAPIServer(); err != nil {
+		log.Printf("Error stopping API server: %v", err)
 	}
-}
 
-// contains vérifie si une chaîne contient l'un des mots-clés
-func contains(text string, keywords ...string) bool {
-	for _, keyword := range keywords {
-		if len(text) >= len(keyword) {
-			for i := 0; i <= len(text)-len(keyword); i++ {
-				if text[i:i+len(keyword)] == keyword {
-					return true
-				}
-			}
-		}
-	}
-	return false
-}
-
-// Shutdown arrête proprement le gestionnaire intégré
-func (iem *IntegratedErrorManager) Shutdown() {
+	// Cancel context to stop all goroutines
 	iem.cancel()
+
+	// Wait for all goroutines to finish
 	iem.wg.Wait()
-	close(iem.errorQueue)
+
+	log.Println("IntegratedErrorManager shutdown complete")
+	return nil
 }
 
 // Fonctions utilitaires pour l'intégration avec les autres managers
@@ -249,3 +367,30 @@ func CentralizeErrorWithContext(module string, err error, context map[string]int
 func AddErrorHook(module string, hook ErrorHook) {
 	GetIntegratedErrorManager().AddHook(module, hook)
 }
+
+// SetGlobalConformityManager sets the conformity manager globally
+func SetGlobalConformityManager(cm IConformityManager) {
+	GetIntegratedErrorManager().SetConformityManager(cm)
+}
+
+// VerifyManagerConformityGlobal verifies conformity for a manager globally
+func VerifyManagerConformityGlobal(ctx context.Context, managerName string) (*ConformityReport, error) {
+	return GetIntegratedErrorManager().VerifyManagerConformity(ctx, managerName)
+}
+
+// VerifyEcosystemConformityGlobal verifies ecosystem conformity globally
+func VerifyEcosystemConformityGlobal(ctx context.Context) (*EcosystemConformityReport, error) {
+	return GetIntegratedErrorManager().VerifyEcosystemConformity(ctx)
+}
+
+// GenerateConformityReportGlobal generates a conformity report globally
+func GenerateConformityReportGlobal(ctx context.Context, managerName string, format ReportFormat) ([]byte, error) {
+	return GetIntegratedErrorManager().GenerateConformityReport(ctx, managerName, format)
+}
+
+// UpdateConformityStatusGlobal updates conformity status globally
+func UpdateConformityStatusGlobal(ctx context.Context, managerName string, level ComplianceLevel) error {
+	return GetIntegratedErrorManager().UpdateConformityStatus(ctx, managerName, level)
+}
+
+// === END OF EDITED FILE ===
