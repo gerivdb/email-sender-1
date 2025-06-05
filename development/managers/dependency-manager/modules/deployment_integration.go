@@ -4,37 +4,16 @@ import (
 	"context"
 	"fmt"
 	"time"
-	
-	"go.uber.org/zap"
 )
 
-// DeploymentManagerInterface defines the subset of DeploymentManager functions used by DependencyManager
-type DeploymentManagerInterface interface {
-	CheckDependencyCompatibility(ctx context.Context, dependencies []Dependency) (*CompatibilityResult, error)
-	GenerateArtifactMetadata(ctx context.Context, dependencies []Dependency) (*ArtifactMetadata, error)
-}
-
-// CompatibilityResult represents the compatibility check results
-type CompatibilityResult struct {
-	Compatible       bool      `json:"compatible"`
-	TargetPlatforms  []string  `json:"target_platforms"`
-	BlockingIssues   []string  `json:"blocking_issues"`
-	Warnings         []string  `json:"warnings"`
-	Recommendations  []string  `json:"recommendations"`
-	Timestamp        time.Time `json:"timestamp"`
-}
-
-// ArtifactMetadata represents metadata for deployment artifacts
-type ArtifactMetadata struct {
-	DependencyHash    string                 `json:"dependency_hash"`
-	BuildTime         time.Time              `json:"build_time"`
-	TargetEnvironment string                 `json:"target_environment"`
-	Properties        map[string]interface{} `json:"properties"`
-	RequiredPermissions []string             `json:"required_permissions"`
+// DeploymentConfig holds deployment configuration
+type DeploymentConfig struct {
+	Properties          map[string]interface{} `json:"properties"`
+	RequiredPermissions []string               `json:"required_permissions"`
 }
 
 // initializeDeploymentIntegration sets up deployment manager integration
-func (m *DependencyManager) initializeDeploymentIntegration() error {
+func (m *GoModManager) initializeDeploymentIntegration() error {
 	// Check if deployment manager is already initialized
 	if m.deploymentManager != nil {
 		return nil
@@ -43,62 +22,62 @@ func (m *DependencyManager) initializeDeploymentIntegration() error {
 	m.Log("Initializing deployment integration...")
 	// In a real implementation, this would use a factory or service locator
 	// to get an instance of the DeploymentManager
-	
+
 	// For now we'll just log this step
 	m.Log("Deployment integration initialized successfully")
 	return nil
 }
 
 // checkDependencyDeploymentCompatibility verifies if current dependencies are compatible with deployment targets
-func (m *DependencyManager) checkDependencyDeploymentCompatibility(ctx context.Context, dependencies []Dependency) (*CompatibilityResult, error) {
+func (m *GoModManager) checkDependencyDeploymentCompatibility(ctx context.Context, dependencies []Dependency) (*DeploymentReadiness, error) {
 	if m.deploymentManager == nil {
 		return nil, fmt.Errorf("DeploymentManager not initialized")
 	}
 
 	m.Log(fmt.Sprintf("Checking deployment compatibility for %d dependencies", len(dependencies)))
-	
+
 	// Use deployment manager to check compatibility
 	result, err := m.deploymentManager.CheckDependencyCompatibility(ctx, dependencies)
 	if err != nil {
 		m.Log(fmt.Sprintf("Error checking deployment compatibility: %v", err))
 		return nil, err
 	}
-	
+
 	// Log summary of compatibility results
 	m.Log(fmt.Sprintf("Deployment compatibility results - Compatible: %v, Target platforms: %d, Blocking issues: %d",
 		result.Compatible, len(result.TargetPlatforms), len(result.BlockingIssues)))
-	
+
 	return result, nil
 }
 
 // generateDeploymentMetadata generates metadata for deployment artifacts
-func (m *DependencyManager) generateDeploymentMetadata(ctx context.Context, dependencies []Dependency) (*ArtifactMetadata, error) {
+func (m *GoModManager) generateDeploymentMetadata(ctx context.Context, dependencies []Dependency) (*ArtifactMetadata, error) {
 	if m.deploymentManager == nil {
 		return nil, fmt.Errorf("DeploymentManager not initialized")
 	}
 
 	m.Log("Generating deployment artifact metadata")
-	
+
 	// Use deployment manager to generate artifact metadata
 	metadata, err := m.deploymentManager.GenerateArtifactMetadata(ctx, dependencies)
 	if err != nil {
 		m.Log(fmt.Sprintf("Error generating artifact metadata: %v", err))
 		return nil, err
 	}
-	
+
 	m.Log("Successfully generated deployment artifact metadata")
 	return metadata, nil
 }
 
 // verifyDeploymentReadiness checks if the project is ready for deployment with current dependencies
-func (m *DependencyManager) verifyDeploymentReadiness(ctx context.Context, environment string) (string, error) {
+func (m *GoModManager) verifyDeploymentReadiness(ctx context.Context, environment string) (string, error) {
 	// Get current dependencies
 	deps, err := m.List()
 	if err != nil {
 		m.Log(fmt.Sprintf("Error listing dependencies: %v", err))
 		return "", fmt.Errorf("failed to list dependencies: %v", err)
 	}
-	
+
 	// Convert to standard Dependency type
 	var dependencies []Dependency
 	for _, dep := range deps {
@@ -108,13 +87,13 @@ func (m *DependencyManager) verifyDeploymentReadiness(ctx context.Context, envir
 			Path:    dep.Path,
 		})
 	}
-	
+
 	// Check compatibility with deployment targets
 	result, err := m.checkDependencyDeploymentCompatibility(ctx, dependencies)
 	if err != nil {
 		return "", err
 	}
-	
+
 	// Generate a human-readable status report
 	var status string
 	if result.Compatible {
@@ -144,21 +123,21 @@ func (m *DependencyManager) verifyDeploymentReadiness(ctx context.Context, envir
 			}
 		}
 	}
-	
+
 	return status, nil
 }
 
 // exportDependencyLockfileForDeployment generates a deployment-specific lockfile
-func (m *DependencyManager) exportDependencyLockfileForDeployment(ctx context.Context) (string, error) {
+func (m *GoModManager) exportDependencyLockfileForDeployment(ctx context.Context) (string, error) {
 	m.Log("Exporting dependency lockfile for deployment")
-	
+
 	// Get current dependencies
 	deps, err := m.List()
 	if err != nil {
 		m.Log(fmt.Sprintf("Error listing dependencies: %v", err))
 		return "", fmt.Errorf("failed to list dependencies: %v", err)
 	}
-	
+
 	// Convert to standard Dependency type
 	var dependencies []Dependency
 	for _, dep := range deps {
@@ -168,13 +147,13 @@ func (m *DependencyManager) exportDependencyLockfileForDeployment(ctx context.Co
 			Path:    dep.Path,
 		})
 	}
-	
+
 	// Generate artifact metadata which includes a dependency hash
 	metadata, err := m.generateDeploymentMetadata(ctx, dependencies)
 	if err != nil {
 		return "", err
 	}
-	
+
 	// Format the lockfile content
 	lockfile := fmt.Sprintf(`# Dependency lockfile for deployment
 # Generated: %s
@@ -185,10 +164,10 @@ dependencies:
 `, time.Now().Format(time.RFC3339), metadata.DependencyHash, metadata.TargetEnvironment)
 
 	for _, dep := range deps {
-		lockfile += fmt.Sprintf("  - name: %s\n    version: %s\n    path: %s\n", 
+		lockfile += fmt.Sprintf("  - name: %s\n    version: %s\n    path: %s\n",
 			dep.Name, dep.Version, dep.Path)
 	}
-	
+
 	m.Log("Successfully exported dependency lockfile for deployment")
 	return lockfile, nil
 }

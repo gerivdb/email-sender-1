@@ -2,8 +2,9 @@ package errormanager
 
 import (
 	"database/sql"
-	errormanager "error-manager"
 	"fmt"
+
+	errormanager "github.com/email-sender/managers/error-manager"
 
 	_ "github.com/lib/pq"
 )

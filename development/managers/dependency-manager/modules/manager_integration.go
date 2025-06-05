@@ -5,113 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/email-sender/managers/interfaces"
 	"go.uber.org/zap"
 )
-
-// SecurityManagerInterface defines the interface for SecurityManager integration
-type SecurityManagerInterface interface {
-	ScanDependenciesForVulnerabilities(ctx context.Context, deps []Dependency) (*SecurityAuditResult, error)
-	ValidateAPIKeyAccess(ctx context.Context, key string) (bool, error)
-	HealthCheck(ctx context.Context) error
-}
-
-// MonitoringManagerInterface defines the interface for MonitoringManager integration
-type MonitoringManagerInterface interface {
-	StartOperationMonitoring(ctx context.Context, operation string) (*OperationMetrics, error)
-	StopOperationMonitoring(ctx context.Context, metrics *OperationMetrics) error
-	CheckSystemHealth(ctx context.Context) (*HealthStatus, error)
-	ConfigureAlerts(ctx context.Context, config *AlertConfig) error
-	HealthCheck(ctx context.Context) error
-	CollectMetrics(ctx context.Context) (*SystemMetrics, error)
-}
-
-// StorageManagerInterface defines the interface for StorageManager integration
-type StorageManagerInterface interface {
-	SaveDependencyMetadata(ctx context.Context, metadata *DependencyMetadata) error
-	GetDependencyMetadata(ctx context.Context, name string) (*DependencyMetadata, error)
-	QueryDependencies(ctx context.Context, query *DependencyQuery) ([]*DependencyMetadata, error)
-	HealthCheck(ctx context.Context) error
-}
-
-// ContainerManagerInterface defines the interface for ContainerManager integration
-type ContainerManagerInterface interface {
-	ValidateForContainerization(ctx context.Context, deps []Dependency) (*ContainerValidationResult, error)
-	OptimizeForContainer(ctx context.Context, deps []Dependency) (*ContainerOptimization, error)
-	HealthCheck(ctx context.Context) error
-}
-
-// DeploymentManagerInterface defines the interface for DeploymentManager integration
-type DeploymentManagerInterface interface {
-	CheckDeploymentReadiness(ctx context.Context, deps []Dependency, env string) (*DeploymentReadiness, error)
-	GenerateDeploymentPlan(ctx context.Context, deps []Dependency, env string) (*DeploymentPlan, error)
-	HealthCheck(ctx context.Context) error
-}
-
-// DependencyMetadata represents metadata for dependency storage
-type DependencyMetadata struct {
-	Name            string            `json:"name"`
-	Version         string            `json:"version"`
-	Repository      string            `json:"repository"`
-	License         string            `json:"license"`
-	Vulnerabilities []Vulnerability   `json:"vulnerabilities"`
-	LastUpdated     time.Time         `json:"last_updated"`
-	Dependencies    []string          `json:"dependencies"`
-	Tags            map[string]string `json:"tags"`
-}
-
-// Vulnerability represents a security vulnerability
-type Vulnerability struct {
-	ID          string    `json:"id"`
-	Severity    string    `json:"severity"`
-	Description string    `json:"description"`
-	FixedIn     string    `json:"fixed_in,omitempty"`
-	CVSS        float64   `json:"cvss"`
-	PublishedAt time.Time `json:"published_at"`
-}
-
-// DependencyQuery represents a query for dependencies
-type DependencyQuery struct {
-	Name       string   `json:"name,omitempty"`
-	Version    string   `json:"version,omitempty"`
-	Repository string   `json:"repository,omitempty"`
-	License    string   `json:"license,omitempty"`
-	Tags       []string `json:"tags,omitempty"`
-	HasVulns   *bool    `json:"has_vulnerabilities,omitempty"`
-	Limit      int      `json:"limit,omitempty"`
-	Offset     int      `json:"offset,omitempty"`
-}
-
-// SystemMetrics for monitoring integration
-type SystemMetrics struct {
-	Timestamp    time.Time `json:"timestamp"`
-	CPUUsage     float64   `json:"cpu_usage"`
-	MemoryUsage  float64   `json:"memory_usage"`
-	DiskUsage    float64   `json:"disk_usage"`
-	NetworkIn    int64     `json:"network_in"`
-	NetworkOut   int64     `json:"network_out"`
-	ErrorCount   int64     `json:"error_count"`
-	RequestCount int64     `json:"request_count"`
-}
-
-// HealthStatus for monitoring integration
-
-// AlertConfig for monitoring configuration
-type AlertConfig struct {
-	MetricName string   `json:"metric_name"`
-	Threshold  float64  `json:"threshold"`
-	Operator   string   `json:"operator"`
-	Enabled    bool     `json:"enabled"`
-	Recipients []string `json:"recipients"`
-}
-
-// ContainerDependency represents a container dependency
-type ContainerDependency struct {
-	Name       string `json:"name"`
-	Version    string `json:"version"`
-	Type       string `json:"type"`
-	Required   bool   `json:"required"`
-	ConfigPath string `json:"config_path"`
-}
 
 // ImageBuildConfig for container builds
 type ImageBuildConfig struct {
@@ -161,6 +57,22 @@ func NewManagerIntegrator(logger *zap.Logger, errorManager ErrorManager) *Manage
 		errorManager:    errorManager,
 		useRealManagers: false, // Default to mock mode
 	}
+}
+
+// InitializeAllManagers sets up all manager integrations
+func (mi *ManagerIntegrator) InitializeAllManagers(ctx context.Context) error {
+	mi.logger.Info("Initializing all manager integrations")
+
+	// This method can be used to initialize managers when they become available
+	// For now, we'll just log that initialization is starting
+
+	// In a full implementation, this would:
+	// - Check for available manager services
+	// - Initialize connections to each manager
+	// - Verify connectivity and health
+
+	mi.logger.Info("Manager integrations initialization completed")
+	return nil
 }
 
 // EnableRealManagers enables real manager mode instead of mocks
@@ -237,7 +149,7 @@ func (mi *ManagerIntegrator) SecurityAuditWithManager(ctx context.Context, depen
 		secInfo := DependencySecurityInfo{
 			Name:            dep.Name,
 			Version:         dep.Version,
-			Vulnerabilities: []Vulnerability{},
+			Vulnerabilities: []interfaces.Vulnerability{},
 			IsSecure:        true,
 			LastChecked:     time.Now(),
 		}
@@ -330,8 +242,8 @@ func (mi *ManagerIntegrator) MonitorOperationWithManager(ctx context.Context, op
 	return operationErr
 }
 
-// PersistDependencyMetadata saves metadata using real StorageManager
-func (mi *ManagerIntegrator) PersistDependencyMetadata(ctx context.Context, dependencies []Dependency) error {
+// Persistinterfaces.DependencyMetadata saves metadata using real StorageManager
+func (mi *ManagerIntegrator) Persistinterfaces.DependencyMetadata(ctx context.Context, dependencies []Dependency) error {
 	if mi.storageManager == nil {
 		mi.logger.Warn("StorageManager not configured, skipping metadata persistence")
 		return nil
@@ -342,7 +254,7 @@ func (mi *ManagerIntegrator) PersistDependencyMetadata(ctx context.Context, depe
 		zap.Bool("using_real_manager", mi.useRealManagers))
 
 	for _, dep := range dependencies {
-		metadata := &DependencyMetadata{
+		metadata := &interfaces.DependencyMetadata{
 			Name:        dep.Name,
 			Version:     dep.Version,
 			Repository:  dep.Repository,
@@ -354,7 +266,7 @@ func (mi *ManagerIntegrator) PersistDependencyMetadata(ctx context.Context, depe
 			},
 		}
 
-		if err := mi.storageManager.SaveDependencyMetadata(ctx, metadata); err != nil {
+		if err := mi.storageManager.Saveinterfaces.DependencyMetadata(ctx, metadata); err != nil {
 			mi.errorManager.ProcessError(ctx, err, "StorageManager", "save_metadata", nil)
 			continue
 		}
@@ -447,96 +359,4 @@ func (mi *ManagerIntegrator) PerformHealthCheck(ctx context.Context) error {
 
 	mi.logger.Info("All managers passed health checks")
 	return nil
-}
-
-// OperationMetrics represents metrics for a specific operation
-type OperationMetrics struct {
-	Operation   string        `json:"operation"`
-	StartTime   time.Time     `json:"start_time"`
-	Duration    time.Duration `json:"duration"`
-	CPUUsage    float64       `json:"cpu_usage"`
-	MemoryUsage float64       `json:"memory_usage"`
-	Success     bool          `json:"success"`
-}
-
-// SecurityAuditResult represents the complete result of a security audit
-type SecurityAuditResult struct {
-	TotalScanned         int                           `json:"total_scanned"`
-	VulnerabilitiesFound int                           `json:"vulnerabilities_found"`
-	Timestamp            time.Time                     `json:"timestamp"`
-	Details              map[string]*VulnerabilityInfo `json:"details"`
-	Dependencies         []DependencySecurityInfo     `json:"dependencies"`
-}
-
-type DependencySecurityInfo struct {
-	Name            string         `json:"name"`
-	Version         string         `json:"version"`
-	Vulnerabilities []Vulnerability `json:"vulnerabilities"`
-	IsSecure        bool           `json:"is_secure"`
-	LastChecked     time.Time      `json:"last_checked"`
-}
-
-// VulnerabilityInfo contains detailed vulnerability information
-type VulnerabilityInfo struct {
-	Severity    string    `json:"severity"`
-	CVSS        float64   `json:"cvss"`
-	Description string    `json:"description"`
-	FixedIn     string    `json:"fixed_in"`
-	PublishedAt time.Time `json:"published_at"`
-}
-
-// HealthStatus represents the health status of the system
-type HealthStatus struct {
-	Healthy   bool               `json:"healthy"`
-	Timestamp time.Time          `json:"timestamp"`
-	Metrics   map[string]float64 `json:"metrics"`
-	Services  map[string]bool    `json:"services"`
-}
-
-// ContainerValidationResult represents container validation results
-type ContainerValidationResult struct {
-	Compatible      bool      `json:"compatible"`
-	Timestamp       time.Time `json:"timestamp"`
-	Issues          []string  `json:"issues"`
-	Recommendations []string  `json:"recommendations"`
-}
-
-// ContainerOptimization represents container optimization results
-type ContainerOptimization struct {
-	OptimizedDeps []Dependency `json:"optimized_dependencies"`
-	SpaceSaved    int64        `json:"space_saved"`
-	LayerCount    int          `json:"layer_count"`
-	Timestamp     time.Time    `json:"timestamp"`
-}
-
-// DeploymentReadiness represents deployment readiness status
-type DeploymentReadiness struct {
-	Ready        bool      `json:"ready"`
-	Environment  string    `json:"environment"`
-	Timestamp    time.Time `json:"timestamp"`
-	Issues       []string  `json:"issues"`
-	Requirements []string  `json:"requirements"`
-}
-
-// DeploymentPlan represents a deployment plan
-type DeploymentPlan struct {
-	Environment  string           `json:"environment"`
-	Steps        []DeploymentStep `json:"steps"`
-	Dependencies []Dependency     `json:"dependencies"`
-	Timestamp    time.Time        `json:"timestamp"`
-}
-
-// DeploymentStep represents a single deployment step
-type DeploymentStep struct {
-	ID          string `json:"id"`
-	Description string `json:"description"`
-	Command     string `json:"command"`
-	Order       int    `json:"order"`
-}
-
-// IntegrationHealthStatus represents the health status of all integrated managers
-type IntegrationHealthStatus struct {
-	Timestamp time.Time         `json:"timestamp"`
-	Overall   string            `json:"overall"`
-	Managers  map[string]string `json:"managers"`
 }

@@ -1,15 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"context"
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"os/exec"
-	"regexp"
-	"strconv"
 	"strings"
 	"time"
 
@@ -114,7 +109,7 @@ func NewContainerManager(logger *zap.Logger, dockerHost, composeFile string) Con
 		logger:      logger,
 		dockerHost:  dockerHost,
 		composeFile: composeFile,
-		dockerPath:  "docker",      // Default docker command
+		dockerPath:  "docker",         // Default docker command
 		composePath: "docker-compose", // Default docker-compose command
 	}
 }

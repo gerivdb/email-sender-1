@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	errormanager "error-manager"
+	errormanager "github.com/email-sender/managers/error-manager"
 )
 
 func TestStoreErrorVector(t *testing.T) {

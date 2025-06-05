@@ -186,7 +186,7 @@ func (rsmc *RealSecurityManagerConnector) ScanDependenciesForVulnerabilities(ctx
 		TotalScanned:         len(deps),
 		VulnerabilitiesFound: 0,
 		Timestamp:            time.Now(),
-		Details:              make(map[string]*VulnerabilityInfo),
+		Details:              make(map[string]*interfaces.VulnerabilityInfo),
 	}
 
 	// Perform real vulnerability scanning
@@ -209,7 +209,7 @@ func (rsmc *RealSecurityManagerConnector) ScanDependenciesForVulnerabilities(ctx
 }
 
 // scanSingleDependency performs vulnerability scanning for a single dependency
-func (rsmc *RealSecurityManagerConnector) scanSingleDependency(dep Dependency) *VulnerabilityInfo {
+func (rsmc *RealSecurityManagerConnector) scanSingleDependency(dep Dependency) *interfaces.VulnerabilityInfo {
 	// Real implementation would:
 	// 1. Check against CVE databases
 	// 2. Validate dependency signatures
@@ -225,7 +225,7 @@ func (rsmc *RealSecurityManagerConnector) scanSingleDependency(dep Dependency) *
 	}
 
 	if vuln, exists := knownVulnerabilities[dep.Name]; exists {
-		return &VulnerabilityInfo{
+		return &interfaces.VulnerabilityInfo{
 			Severity:    "medium",
 			Description: vuln,
 			FixedIn:     "latest",
@@ -335,7 +335,7 @@ func (rmmc *RealMonitoringManagerConnector) testConnection(ctx context.Context) 
 	return nil
 }
 
-func (rmmc *RealMonitoringManagerConnector) StartOperationMonitoring(ctx context.Context, operation string) (*OperationMetrics, error) {
+func (rmmc *RealMonitoringManagerConnector) StartOperationMonitoring(ctx context.Context, operation string) (*interfaces.OperationMetrics, error) {
 	if !rmmc.initialized {
 		return nil, fmt.Errorf("MonitoringManager not initialized")
 	}
@@ -343,7 +343,7 @@ func (rmmc *RealMonitoringManagerConnector) StartOperationMonitoring(ctx context
 	rmmc.logger.Info("Starting real operation monitoring", zap.String("operation", operation))
 
 	// Real implementation: start actual monitoring
-	metrics := &OperationMetrics{
+	metrics := &interfaces.OperationMetrics{
 		Operation:   operation,
 		StartTime:   time.Now(),
 		CPUUsage:    rmmc.getCurrentCPUUsage(),
@@ -374,7 +374,7 @@ func (rmmc *RealMonitoringManagerConnector) getCurrentMemoryUsage() float64 {
 	return 45.2 // Placeholder value
 }
 
-func (rmmc *RealMonitoringManagerConnector) StopOperationMonitoring(ctx context.Context, metrics *OperationMetrics) error {
+func (rmmc *RealMonitoringManagerConnector) StopOperationMonitoring(ctx context.Context, metrics *interfaces.OperationMetrics) error {
 	if !rmmc.initialized {
 		return fmt.Errorf("MonitoringManager not initialized")
 	}
@@ -395,7 +395,7 @@ func (rmmc *RealMonitoringManagerConnector) CheckSystemHealth(ctx context.Contex
 	}
 
 	rmmc.logger.Info("Checking real system health") // Real implementation: check actual system health
-	metrics := &SystemMetrics{
+	metrics := &interfaces.SystemMetrics{
 		Timestamp:    time.Now(),
 		CPUUsage:     rmmc.getCurrentCPUUsage(),
 		MemoryUsage:  rmmc.getCurrentMemoryUsage(),
@@ -551,7 +551,7 @@ func (rsmc *RealStorageManagerConnector) testConnection(ctx context.Context) err
 	return nil
 }
 
-func (rsmc *RealStorageManagerConnector) SaveDependencyMetadata(ctx context.Context, metadata *DependencyMetadata) error {
+func (rsmc *RealStorageManagerConnector) Saveinterfaces.DependencyMetadata(ctx context.Context, metadata *interfaces.interfaces.DependencyMetadata) error {
 	if !rsmc.initialized {
 		return fmt.Errorf("StorageManager not initialized")
 	}
@@ -572,7 +572,7 @@ func (rsmc *RealStorageManagerConnector) SaveDependencyMetadata(ctx context.Cont
 }
 
 // validateMetadata validates dependency metadata before storage
-func (rsmc *RealStorageManagerConnector) validateMetadata(metadata *DependencyMetadata) error {
+func (rsmc *RealStorageManagerConnector) validateMetadata(metadata *interfaces.interfaces.DependencyMetadata) error {
 	if metadata.Name == "" {
 		return fmt.Errorf("dependency name cannot be empty")
 	}
@@ -582,7 +582,7 @@ func (rsmc *RealStorageManagerConnector) validateMetadata(metadata *DependencyMe
 	return nil
 }
 
-func (rsmc *RealStorageManagerConnector) GetDependencyMetadata(ctx context.Context, name string) (*DependencyMetadata, error) {
+func (rsmc *RealStorageManagerConnector) Getinterfaces.DependencyMetadata(ctx context.Context, name string) (*interfaces.interfaces.DependencyMetadata, error) {
 	if !rsmc.initialized {
 		return nil, fmt.Errorf("StorageManager not initialized")
 	}
@@ -594,12 +594,12 @@ func (rsmc *RealStorageManagerConnector) GetDependencyMetadata(ctx context.Conte
 		return nil, fmt.Errorf("dependency name cannot be empty")
 	}
 	// Simulate retrieval (in real implementation, this would query actual database)
-	metadata := &DependencyMetadata{
+	metadata := &interfaces.DependencyMetadata{
 		Name:            name,
 		Version:         "1.0.0", // Would be retrieved from storage
 		Repository:      "",      // Would be retrieved from storage
 		License:         "MIT",
-		Vulnerabilities: []Vulnerability{}, // Would be retrieved from storage
+		Vulnerabilities: []interfaces.Vulnerability{}, // Would be retrieved from storage
 		LastUpdated:     time.Now(),
 		Dependencies:    []string{},                       // Dependencies as array of strings
 		Tags:            map[string]string{"type": "npm"}, // Store additional metadata in tags
@@ -612,7 +612,7 @@ func (rsmc *RealStorageManagerConnector) GetDependencyMetadata(ctx context.Conte
 	return metadata, nil
 }
 
-func (rsmc *RealStorageManagerConnector) QueryDependencies(ctx context.Context, query *DependencyQuery) ([]*DependencyMetadata, error) {
+func (rsmc *RealStorageManagerConnector) QueryDependencies(ctx context.Context, query *DependencyQuery) ([]*interfaces.interfaces.DependencyMetadata, error) {
 	if !rsmc.initialized {
 		return nil, fmt.Errorf("StorageManager not initialized")
 	}
@@ -625,11 +625,11 @@ func (rsmc *RealStorageManagerConnector) QueryDependencies(ctx context.Context, 
 	}
 
 	// Simulate query execution (in real implementation, this would use actual database)
-	results := []*DependencyMetadata{}
+	results := []*interfaces.interfaces.DependencyMetadata{}
 
 	// Placeholder results for demonstration
 	if query.Name != "" {
-		result, err := rsmc.GetDependencyMetadata(ctx, query.Name)
+		result, err := rsmc.Getinterfaces.DependencyMetadata(ctx, query.Name)
 		if err == nil {
 			results = append(results, result)
 		}

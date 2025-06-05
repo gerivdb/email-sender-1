@@ -1,4 +1,4 @@
-module error-manager
+module github.com/email-sender/managers/error-manager
 
 go 1.23.9
 

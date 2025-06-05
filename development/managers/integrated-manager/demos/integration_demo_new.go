@@ -1,4 +1,4 @@
-package integratedmanager
+package main
 
 import (
 	"context"

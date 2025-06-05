@@ -1,8 +1,8 @@
-# Process Manager with ErrorManager Integration
-# Section 1.4 - Implementation des Recommandations - Phase 1
+// Process Manager with ErrorManager Integration
+// Section 1.4 - Implementation des Recommandations - Phase 1
 
-# This module provides a comprehensive Process Manager with full ErrorManager integration
-# for managing the lifecycle of other managers and external processes
+// This module provides a comprehensive Process Manager with full ErrorManager integration
+// for managing the lifecycle of other managers and external processes
 
 package processmanager
 
@@ -15,19 +15,19 @@ import (
 	"syscall"
 	"time"
 
+	errormanager "github.com/email-sender/managers/error-manager"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	errormanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"
 )
 
 // ProcessManager manages the lifecycle of other managers and external processes
 type ProcessManager struct {
-	processes    map[string]*ManagedProcess
-	manifests    map[string]*ManagerManifest
-	config       *Config
-	logger       *zap.Logger
-	errorManager *ErrorManager
-	mu           sync.RWMutex
+	processes      map[string]*ManagedProcess
+	manifests      map[string]*ManagerManifest
+	config         *Config
+	logger         *zap.Logger
+	errorManager   *ErrorManager
+	mu             sync.RWMutex
 	circuitBreaker *CircuitBreaker
 }
 
@@ -51,24 +51,24 @@ type ManagedProcess struct {
 
 // ManagerManifest describes a manager's capabilities and requirements
 type ManagerManifest struct {
-	Name         string            `json:"name"`
-	Version      string            `json:"version"`
-	Type         string            `json:"type"` // go, powershell, node, etc.
-	Command      string            `json:"command"`
-	Args         []string          `json:"args"`
-	Dependencies []string          `json:"dependencies"`
-	HealthCheck  *HealthCheckConfig `json:"health_check"`
-	Tasks        []TaskDefinition  `json:"tasks"`
+	Name         string                 `json:"name"`
+	Version      string                 `json:"version"`
+	Type         string                 `json:"type"` // go, powershell, node, etc.
+	Command      string                 `json:"command"`
+	Args         []string               `json:"args"`
+	Dependencies []string               `json:"dependencies"`
+	HealthCheck  *HealthCheckConfig     `json:"health_check"`
+	Tasks        []TaskDefinition       `json:"tasks"`
 	Metadata     map[string]interface{} `json:"metadata"`
 }
 
 // TaskDefinition describes a task that can be executed
 type TaskDefinition struct {
-	Name        string            `json:"name"`
-	Description string            `json:"description"`
-	Command     string            `json:"command"`
-	Args        []string          `json:"args"`
-	Timeout     time.Duration     `json:"timeout"`
+	Name        string                 `json:"name"`
+	Description string                 `json:"description"`
+	Command     string                 `json:"command"`
+	Args        []string               `json:"args"`
+	Timeout     time.Duration          `json:"timeout"`
 	Context     map[string]interface{} `json:"context"`
 }
 
@@ -97,12 +97,12 @@ const (
 
 // Config holds the process manager configuration
 type Config struct {
-	MaxProcesses     int           `json:"max_processes"`
-	DefaultTimeout   time.Duration `json:"default_timeout"`
-	HealthCheckInterval time.Duration `json:"health_check_interval"`
-	ManifestDir      string        `json:"manifest_dir"`
-	LogLevel         string        `json:"log_level"`
-	CircuitBreaker   CircuitBreakerConfig `json:"circuit_breaker"`
+	MaxProcesses        int                  `json:"max_processes"`
+	DefaultTimeout      time.Duration        `json:"default_timeout"`
+	HealthCheckInterval time.Duration        `json:"health_check_interval"`
+	ManifestDir         string               `json:"manifest_dir"`
+	LogLevel            string               `json:"log_level"`
+	CircuitBreaker      CircuitBreakerConfig `json:"circuit_breaker"`
 }
 
 // CircuitBreakerConfig holds circuit breaker configuration
@@ -133,7 +133,7 @@ type CircuitBreaker struct {
 // NewProcessManager creates a new ProcessManager with ErrorManager integration
 func NewProcessManager(config *Config) *ProcessManager {
 	logger, _ := zap.NewProduction()
-	
+
 	errorManager := &ErrorManager{
 		logger: logger,
 	}
@@ -145,7 +145,7 @@ func NewProcessManager(config *Config) *ProcessManager {
 		maxRequests:      config.CircuitBreaker.MaxRequests,
 		state:            "CLOSED",
 	}
-	
+
 	return &ProcessManager{
 		processes:      make(map[string]*ManagedProcess),
 		manifests:      make(map[string]*ManagerManifest),
@@ -157,14 +157,12 @@ func NewProcessManager(config *Config) *ProcessManager {
 }
 
 // ProcessError handles and catalogs errors with ErrorManager integration
-func (em *ErrorManager) ProcessError(ctx context.Context, err error, component, operation string) error {
-	// Create error entry
+func (em *ErrorManager) ProcessError(ctx context.Context, err error, component, operation string) error { // Create error entry
 	entry := errormanager.ErrorEntry{
 		ID:             uuid.New().String(),
 		Timestamp:      time.Now(),
 		Message:        err.Error(),
 		Module:         "process-manager",
-		Component:      component,
 		ErrorCode:      determineErrorCode(err, operation),
 		ManagerContext: fmt.Sprintf("Component: %s, Operation: %s", component, operation),
 		Severity:       determineSeverity(err),
@@ -257,7 +255,7 @@ func (pm *ProcessManager) startProcessExecution(process *ManagedProcess) error {
 	process.cancel = cancel
 
 	cmd := exec.CommandContext(ctx, process.Command, process.Args...)
-	
+
 	// Set environment variables
 	cmd.Env = os.Environ()
 	for key, value := range process.Env {
@@ -290,14 +288,14 @@ func (pm *ProcessManager) monitorProcess(process *ManagedProcess) {
 
 	// Wait for process to complete
 	err := process.cmd.Wait()
-	
+
 	pm.mu.Lock()
 	defer pm.mu.Unlock()
 
 	if err != nil {
 		process.Status = StatusFailed
 		pm.errorManager.ProcessError(context.Background(), err, "process-monitoring", "process_wait")
-		
+
 		// Retry logic
 		if process.Retries < process.MaxRetries {
 			process.Retries++
@@ -305,7 +303,7 @@ func (pm *ProcessManager) monitorProcess(process *ManagedProcess) {
 				zap.String("name", process.Name),
 				zap.Int("retry", process.Retries),
 				zap.Int("max_retries", process.MaxRetries))
-			
+
 			// Restart process after delay
 			go func() {
 				time.Sleep(time.Second * 5)
@@ -397,8 +395,6 @@ func (pm *ProcessManager) ListProcesses() map[string]*ManagedProcess {
 
 // LoadManifests loads manager manifests from the manifest directory
 func (pm *ProcessManager) LoadManifests() error {
-	ctx := context.Background()
-
 	pm.logger.Info("Loading manager manifests",
 		zap.String("manifest_dir", pm.config.ManifestDir))
 
@@ -410,7 +406,7 @@ func (pm *ProcessManager) LoadManifests() error {
 }
 
 // ExecuteTask executes a task defined in a manager manifest
-func (pm *ProcessManager) ExecuteTask(managerName, taskName string, context map[string]interface{}) error {
+func (pm *ProcessManager) ExecuteTask(managerName, taskName string, params map[string]interface{}) error {
 	ctx := context.Background()
 
 	manifest, exists := pm.manifests[managerName]

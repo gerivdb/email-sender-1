@@ -12,8 +12,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
-	"path/filepath"
+	"os/exec"	"path/filepath"
 	"runtime"
 	"strings"
 	"sync"
@@ -21,7 +20,7 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	errormanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"
+	"github.com/email-sender/managers/error-manager"
 )
 
 // ScriptManager manages script execution and lifecycle with ErrorManager integration

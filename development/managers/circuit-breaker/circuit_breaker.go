@@ -5,7 +5,6 @@ package circuitbreaker
 import (
 	"context"
 	"fmt"
-	"log"
 	"sync"
 	"time"
 
@@ -66,25 +65,25 @@ func DefaultConfig() *Config {
 
 // CircuitBreaker implements the circuit breaker pattern with ErrorManager integration
 type CircuitBreaker struct {
-	id               string
-	name             string
-	config           *Config
-	state            State
-	failures         int
-	successes        int
-	lastFailureTime  time.Time
-	lastSuccessTime  time.Time
-	lastStateChange  time.Time
-	mutex            sync.RWMutex
-	logger           *zap.Logger
-	errorManager     ErrorManager
-	onStateChange    func(from, to State, reason string)
-	
+	id              string
+	name            string
+	config          *Config
+	state           State
+	failures        int
+	successes       int
+	lastFailureTime time.Time
+	lastSuccessTime time.Time
+	lastStateChange time.Time
+	mutex           sync.RWMutex
+	logger          *zap.Logger
+	errorManager    ErrorManager
+	onStateChange   func(from, to State, reason string)
+
 	// Metrics
-	totalRequests    int64
-	successfulReqs   int64
-	failedReqs       int64
-	rejectedReqs     int64
+	totalRequests  int64
+	successfulReqs int64
+	failedReqs     int64
+	rejectedReqs   int64
 }
 
 // ErrorManager interface for error reporting
@@ -94,16 +93,16 @@ type ErrorManager interface {
 
 // ErrorEntry represents an error entry for the ErrorManager
 type ErrorEntry struct {
-	ID          string                 `json:"id"`
-	Module      string                 `json:"module"`
-	Component   string                 `json:"component"`
-	ErrorCode   string                 `json:"error_code"`
-	Message     string                 `json:"message"`
-	Severity    string                 `json:"severity"`
-	Category    string                 `json:"category"`
-	Context     map[string]interface{} `json:"context"`
-	Timestamp   time.Time              `json:"timestamp"`
-	StackTrace  string                 `json:"stack_trace,omitempty"`
+	ID         string                 `json:"id"`
+	Module     string                 `json:"module"`
+	Component  string                 `json:"component"`
+	ErrorCode  string                 `json:"error_code"`
+	Message    string                 `json:"message"`
+	Severity   string                 `json:"severity"`
+	Category   string                 `json:"category"`
+	Context    map[string]interface{} `json:"context"`
+	Timestamp  time.Time              `json:"timestamp"`
+	StackTrace string                 `json:"stack_trace,omitempty"`
 }
 
 // NewCircuitBreaker creates a new circuit breaker with ErrorManager integration
@@ -160,7 +159,7 @@ func (cb *CircuitBreaker) Execute(ctx context.Context, fn func() error) error {
 // executeWithTimeout executes function with timeout protection
 func (cb *CircuitBreaker) executeWithTimeout(ctx context.Context, fn func() error) error {
 	resultChan := make(chan error, 1)
-	
+
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
@@ -221,7 +220,7 @@ func (cb *CircuitBreaker) recordResult(ctx context.Context, err error) {
 		// Report error to ErrorManager
 		cb.reportError(ctx, "OPERATION_FAILURE", err, map[string]interface{}{
 			"consecutive_failures": cb.failures,
-			"state":               cb.state.String(),
+			"state":                cb.state.String(),
 		})
 
 		// Handle state transitions on failure
@@ -318,7 +317,7 @@ func (cb *CircuitBreaker) transitionTo(newState State, reason string) {
 			},
 			Timestamp: time.Now(),
 		}
-		
+
 		if err := cb.errorManager.CatalogError(ctx, entry); err != nil {
 			cb.logger.Error("Failed to catalog state transition",
 				zap.String("name", cb.name),
@@ -350,7 +349,7 @@ func (cb *CircuitBreaker) reportError(ctx context.Context, errorCode string, err
 	if context == nil {
 		context = make(map[string]interface{})
 	}
-	
+
 	// Add circuit breaker context
 	context["circuit_breaker_id"] = cb.id
 	context["circuit_breaker_name"] = cb.name

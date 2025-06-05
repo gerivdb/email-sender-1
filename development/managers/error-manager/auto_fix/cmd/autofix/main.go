@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	autofix "error-manager/auto_fix"
+	autofix "github.com/email-sender/managers/error-manager/auto_fix"
 )
 
 const (

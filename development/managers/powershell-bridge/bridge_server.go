@@ -12,13 +12,12 @@ import (
 	"os/signal"
 	"strconv"
 	"sync"
-	"syscall"
-	"time"
+	"syscall"	"time"
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	errormanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"
+	"github.com/email-sender/managers/error-manager"
 )
 
 // PowerShellError represents an error received from PowerShell

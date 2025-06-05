@@ -12,7 +12,7 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	errormanager "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/error-manager"
+	"	errormanager "github.com/email-sender/managers/error-manager""
 )
 
 // N8NManager manages n8n workflows and executions with centralized error handling

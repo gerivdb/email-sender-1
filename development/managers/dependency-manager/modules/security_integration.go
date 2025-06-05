@@ -2,38 +2,11 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"time"
 	"encoding/json"
+	"fmt"
 	"strings"
-	"log"
-
-	"go.uber.org/zap"
+	"time"
 )
-
-// SecurityManagerInterface defines the subset of SecurityManager functions used by DependencyManager
-type SecurityManagerInterface interface {
-	GetSecret(key string) (string, error)
-	EncryptData(data []byte) ([]byte, error)
-	DecryptData(encryptedData []byte) ([]byte, error)
-	ScanForVulnerabilities(ctx context.Context, dependencies []Dependency) (*VulnerabilityReport, error)
-}
-
-// VulnerabilityReport represents the vulnerability scan results from SecurityManager
-type VulnerabilityReport struct {
-	TotalScanned         int                           `json:"total_scanned"`
-	VulnerabilitiesFound int                           `json:"vulnerabilities_found"`
-	Timestamp            time.Time                     `json:"timestamp"`
-	Details              map[string]*VulnerabilityInfo `json:"details"`
-}
-
-// VulnerabilityInfo represents information about a specific vulnerability
-type VulnerabilityInfo struct {
-	Severity    string   `json:"severity"`
-	Description string   `json:"description"`
-	CVEIDs      []string `json:"cve_ids,omitempty"`
-	FixVersion  string   `json:"fix_version,omitempty"`
-}
 
 // SecurityConfig holds configuration for registry access
 type SecurityConfig struct {
@@ -48,7 +21,7 @@ type RegistryCredentials struct {
 }
 
 // initializeSecurityIntegration sets up security manager integration
-func (m *DependencyManager) initializeSecurityIntegration() error {
+func (m *GoModManager) initializeSecurityIntegration() error {
 	// Check if security manager is already initialized
 	if m.securityManager != nil {
 		return nil
@@ -64,7 +37,7 @@ func (m *DependencyManager) initializeSecurityIntegration() error {
 }
 
 // loadRegistryCredentials loads and decrypts registry credentials using SecurityManager
-func (m *DependencyManager) loadRegistryCredentials() error {
+func (m *GoModManager) loadRegistryCredentials() error {
 	if m.securityManager == nil {
 		m.Log("SecurityManager not initialized, skipping credential loading")
 		return nil
@@ -94,7 +67,7 @@ func (m *DependencyManager) loadRegistryCredentials() error {
 }
 
 // configureAuthForPrivateModules sets up GOPRIVATE and GOPROXY environment variables
-func (m *DependencyManager) configureAuthForPrivateModules() error {
+func (m *GoModManager) configureAuthForPrivateModules() error {
 	if len(m.registryCredentials) == 0 {
 		return nil // No credentials to configure
 	}
@@ -120,7 +93,7 @@ func (m *DependencyManager) configureAuthForPrivateModules() error {
 }
 
 // scanDependenciesForVulnerabilities scans dependencies using SecurityManager
-func (m *DependencyManager) scanDependenciesForVulnerabilities(ctx context.Context, dependencies []Dependency) (*VulnerabilityReport, error) {
+func (m *GoModManager) scanDependenciesForVulnerabilities(ctx context.Context, dependencies []Dependency) (*SecurityAuditResult, error) {
 	if m.securityManager == nil {
 		return nil, fmt.Errorf("security manager not initialized")
 	}
@@ -131,7 +104,7 @@ func (m *DependencyManager) scanDependenciesForVulnerabilities(ctx context.Conte
 }
 
 // generateVulnerabilityReport creates a formatted vulnerability report
-func (m *DependencyManager) generateVulnerabilityReport(report *VulnerabilityReport) string {
+func (m *GoModManager) generateVulnerabilityReport(report *SecurityAuditResult) string {
 	if report == nil {
 		return "No vulnerability report available"
 	}

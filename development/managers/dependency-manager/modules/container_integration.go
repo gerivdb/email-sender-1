@@ -6,34 +6,8 @@ import (
 	"time"
 )
 
-// ContainerManagerInterface defines the subset of ContainerManager functions used by DependencyManager
-type ContainerManagerInterface interface {
-	ValidateForContainerization(ctx context.Context, dependencies []Dependency) (*ContainerValidationResult, error)
-	OptimizeForContainer(ctx context.Context, dependencies []Dependency) (*ContainerOptimization, error)
-}
-
-// ContainerValidationResult represents container validation results
-type ContainerValidationResult struct {
-	Compatible      bool      `json:"compatible"`
-	Timestamp       time.Time `json:"timestamp"`
-	Issues          []string  `json:"issues"`
-	Recommendations []string  `json:"recommendations"`
-	RequiredImages  []string  `json:"required_images"`
-	EstimatedSize   int64     `json:"estimated_size_mb"`
-}
-
-// ContainerOptimization represents container optimization results
-type ContainerOptimization struct {
-	OptimizedDeps []Dependency `json:"optimized_dependencies"`
-	SpaceSaved    int64        `json:"space_saved_mb"`
-	LayerCount    int          `json:"layer_count"`
-	Timestamp     time.Time    `json:"timestamp"`
-	Dockerfile    string       `json:"dockerfile"`
-	BuildArgs     []string     `json:"build_args"`
-}
-
 // initializeContainerIntegration sets up container manager integration
-func (m *DependencyManager) initializeContainerIntegration() error {
+func (m *GoModManager) initializeContainerIntegration() error {
 	// Check if container manager is already initialized
 	if m.containerManager != nil {
 		return nil
@@ -49,7 +23,7 @@ func (m *DependencyManager) initializeContainerIntegration() error {
 }
 
 // validateDependenciesForContainer checks if the current dependencies are container-compatible
-func (m *DependencyManager) validateDependenciesForContainer(ctx context.Context, dependencies []Dependency) (*ContainerValidationResult, error) {
+func (m *GoModManager) validateDependenciesForContainer(ctx context.Context, dependencies []Dependency) (*ContainerValidationResult, error) {
 	if m.containerManager == nil {
 		return nil, fmt.Errorf("ContainerManager not initialized")
 	}
@@ -65,13 +39,13 @@ func (m *DependencyManager) validateDependenciesForContainer(ctx context.Context
 
 	// Log the validation results
 	m.Log(fmt.Sprintf("Container validation results - Compatible: %v, Issues: %d",
-		result.Compatible, len(result.Issues)))
+		result.IsValid, len(result.ValidationErrors)))
 
 	return result, nil
 }
 
 // optimizeDependenciesForContainer optimizes dependencies for container environments
-func (m *DependencyManager) optimizeDependenciesForContainer(ctx context.Context, dependencies []Dependency) (*ContainerOptimization, error) {
+func (m *GoModManager) optimizeDependenciesForContainer(ctx context.Context, dependencies []Dependency) (*ContainerOptimization, error) {
 	if m.containerManager == nil {
 		return nil, fmt.Errorf("ContainerManager not initialized")
 	}
@@ -86,14 +60,14 @@ func (m *DependencyManager) optimizeDependenciesForContainer(ctx context.Context
 	}
 
 	// Log the optimization results
-	m.Log(fmt.Sprintf("Container optimization results - Space saved: %d MB, Layer count: %d",
-		optimization.SpaceSaved, optimization.LayerCount))
+	m.Log(fmt.Sprintf("Container optimization results - Type: %s, Difficulty: %s",
+		optimization.Type, optimization.Difficulty))
 
 	return optimization, nil
 }
 
 // generateDockerfileFromDependencies creates a Dockerfile based on the project's dependencies
-func (m *DependencyManager) generateDockerfileFromDependencies(ctx context.Context, dependencies []Dependency) (string, error) {
+func (m *GoModManager) generateDockerfileFromDependencies(ctx context.Context, dependencies []Dependency) (string, error) {
 	if m.containerManager == nil {
 		return "", fmt.Errorf("ContainerManager not initialized")
 	}
@@ -107,15 +81,16 @@ func (m *DependencyManager) generateDockerfileFromDependencies(ctx context.Conte
 		return "", err
 	}
 
-	// Use the Dockerfile from optimization
-	dockerfile := optimization.Dockerfile
+	// Generate a basic Dockerfile based on optimization
+	dockerfile := fmt.Sprintf("# Generated Dockerfile based on dependency optimization\n# Optimization type: %s\n# Description: %s\n",
+		optimization.Type, optimization.Description)
 
 	m.Log("Successfully generated Dockerfile from dependencies")
 	return dockerfile, nil
 }
 
 // getDependencyContainerStatus checks container compatibility status for the current project
-func (m *DependencyManager) getDependencyContainerStatus(ctx context.Context) (string, error) {
+func (m *GoModManager) getDependencyContainerStatus(ctx context.Context) (string, error) {
 	// Get current dependencies
 	deps, err := m.List()
 	if err != nil {
@@ -141,13 +116,13 @@ func (m *DependencyManager) getDependencyContainerStatus(ctx context.Context) (s
 
 	// Generate a human-readable status message
 	var status string
-	if result.Compatible {
+	if result.IsValid {
 		status = "COMPATIBLE - All dependencies are container-compatible"
 	} else {
-		status = fmt.Sprintf("ISSUES DETECTED - %d compatibility issues found", len(result.Issues))
-		if len(result.Issues) > 0 {
+		status = fmt.Sprintf("ISSUES DETECTED - %d compatibility issues found", len(result.ValidationErrors))
+		if len(result.ValidationErrors) > 0 {
 			status += "\n\nIssues:\n"
-			for i, issue := range result.Issues {
+			for i, issue := range result.ValidationErrors {
 				status += fmt.Sprintf("%d. %s\n", i+1, issue)
 			}
 		}
