@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"email_sender/development/managers/tools/core/toolkit"
+	"github.com/email-sender/tools/core/toolkit"
 )
 
 // Test d'intégration v49 - Validation complète du plan

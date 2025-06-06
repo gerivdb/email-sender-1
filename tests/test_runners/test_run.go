@@ -19,4 +19,7 @@ func main() {
 	fmt.Printf("✅ Test environment: READY\n")
 
 	fmt.Printf("\n🎯 Basic test completed successfully\n")
+
+	// Call the renamed main function from validation_test_phase1.1.go
+	runValidationPhase1_1()
 }
