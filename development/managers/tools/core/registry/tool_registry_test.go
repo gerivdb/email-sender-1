@@ -9,6 +9,10 @@ import (
 	"testing"
 
 	"github.com/email-sender/tools/core/toolkit"
+	_ "github.com/email-sender/tools/operations/analysis"    // Blank import for init()
+	_ "github.com/email-sender/tools/operations/correction"  // Blank import for init()
+	_ "github.com/email-sender/tools/operations/migration"   // Blank import for init()
+	_ "github.com/email-sender/tools/operations/validation"  // Blank import for init()
 )
 
 // TestGlobalRegistry tests the global registry functionality

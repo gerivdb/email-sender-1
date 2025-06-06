@@ -17,13 +17,13 @@ import (
 func TestNamingNormalizerInterface(t *testing.T) {
 	// Create test environment
 	tempDir := t.TempDir()
-	logger, err := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
 	if err != nil {
 		t.Fatalf("Failed to create logger: %v", err)
 	}
 	defer logger.Close()
 
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 	normalizer := NewNamingNormalizer(tempDir, logger, stats, true)
 
 	// Test interface compliance
@@ -58,15 +58,18 @@ func TestNamingNormalizerInterface(t *testing.T) {
 
 // TestNamingNormalizerValidation tests validation logic
 func TestNamingNormalizerValidation(t *testing.T) {
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for validation test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 
 	tests := []struct {
 		name        string
 		baseDir     string
-		toolkit.Logger      *Logger
-		stats       *ToolkitStats
+		logger      *toolkit.Logger // Corrected field definition
+		stats       *toolkit.ToolkitStats // Corrected field definition
 		expectError bool
 	}{
 		{
@@ -123,9 +126,12 @@ func TestNamingNormalizerValidation(t *testing.T) {
 
 // TestInterfaceNamingConventions tests interface naming validation
 func TestInterfaceNamingConventions(t *testing.T) {
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for interface naming test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 	normalizer := NewNamingNormalizer(t.TempDir(), logger, stats, true)
 
 	tests := []struct {
@@ -202,9 +208,12 @@ func TestInterfaceNamingConventions(t *testing.T) {
 
 // TestStructNamingConventions tests struct naming validation
 func TestStructNamingConventions(t *testing.T) {
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for struct naming test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 	normalizer := NewNamingNormalizer(t.TempDir(), logger, stats, true)
 
 	tests := []struct {
@@ -264,9 +273,12 @@ func TestStructNamingConventions(t *testing.T) {
 
 // TestGoIdentifierValidation tests basic Go identifier validation
 func TestGoIdentifierValidation(t *testing.T) {
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for identifier validation test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 	normalizer := NewNamingNormalizer(t.TempDir(), logger, stats, true)
 
 	tests := []struct {
@@ -336,9 +348,12 @@ func TestGoIdentifierValidation(t *testing.T) {
 
 // TestConstantNamingConventions tests constant naming validation
 func TestConstantNamingConventions(t *testing.T) {
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for constant naming test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 	normalizer := NewNamingNormalizer(t.TempDir(), logger, stats, true)
 
 	tests := []struct {
@@ -391,9 +406,12 @@ func TestConstantNamingConventions(t *testing.T) {
 
 // TestVariableNamingConventions tests variable naming validation
 func TestVariableNamingConventions(t *testing.T) {
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for variable naming test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 	normalizer := NewNamingNormalizer(t.TempDir(), logger, stats, true)
 
 	tests := []struct {
@@ -437,9 +455,12 @@ func TestVariableNamingConventions(t *testing.T) {
 func TestExecuteWithTestFiles(t *testing.T) {
 	// Create test directory structure
 	tempDir := t.TempDir()
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for execute test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 
 	// Create test Go files with naming issues
 	testFiles := map[string]string{
@@ -477,7 +498,7 @@ const maxSize = 100
 
 	// Test execution
 	normalizer := NewNamingNormalizer(tempDir, logger, stats, true)
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{ // Changed to toolkit.OperationOptions
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "naming_report.json"),
 	}
@@ -539,9 +560,12 @@ const maxSize = 100
 // TestReportGeneration tests the report generation functionality
 func TestReportGeneration(t *testing.T) {
 	tempDir := t.TempDir()
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for report generation test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 	normalizer := NewNamingNormalizer(tempDir, logger, stats, true)
 
 	// Create test issues
@@ -608,9 +632,12 @@ func TestReportGeneration(t *testing.T) {
 
 // TestHealthCheck tests the health check functionality
 func TestHealthCheck(t *testing.T) {
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for health check test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 
 	t.Run("Valid directory", func(t *testing.T) {
 		tempDir := t.TempDir()
@@ -633,9 +660,12 @@ func TestHealthCheck(t *testing.T) {
 // BenchmarkNamingAnalysis benchmarks the naming analysis performance
 func BenchmarkNamingAnalysis(b *testing.B) {
 	tempDir := b.TempDir()
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		b.Fatalf("Failed to create logger for benchmark: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 
 	// Create a test file with various naming patterns
 	testContent := `package test
@@ -662,14 +692,14 @@ var userName string
 	}
 
 	normalizer := NewNamingNormalizer(tempDir, logger, stats, true)
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{ // Changed to toolkit.OperationOptions
 		Target: tempDir,
 		Output: "",
 	}
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		stats = &ToolkitStats{} // Reset stats for each iteration
+		stats = &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 		normalizer.Stats = stats
 		if err := normalizer.Execute(context.Background(), options); err != nil {
 			b.Fatalf("Execute() failed: %v", err)
@@ -680,9 +710,12 @@ var userName string
 // TestMetricsCollection tests the metrics collection functionality
 func TestMetricsCollection(t *testing.T) {
 	tempDir := t.TempDir()
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for metrics test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{
+	stats := &toolkit.ToolkitStats{ // Changed to toolkit.ToolkitStats
 		FilesAnalyzed: 5,
 		ErrorsFixed:   3,
 	}
@@ -710,9 +743,12 @@ func TestMetricsCollection(t *testing.T) {
 
 // TestSingleWordInterfaceRecognition tests recognition of valid single-word interfaces
 func TestSingleWordInterfaceRecognition(t *testing.T) {
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for single word interface test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 	normalizer := NewNamingNormalizer(t.TempDir(), logger, stats, true)
 
 	validSingleWords := []string{
@@ -743,9 +779,12 @@ func TestSingleWordInterfaceRecognition(t *testing.T) {
 // TestDryRunMode tests that dry-run mode doesn't make actual changes
 func TestDryRunMode(t *testing.T) {
 	tempDir := t.TempDir()
-	logger, _ := NewLogger(false)
+	logger, err := toolkit.NewLogger(false) // Changed to toolkit.NewLogger
+	if err != nil {
+		t.Fatalf("Failed to create logger for dry run test: %v", err)
+	}
 	defer logger.Close()
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{} // Changed to toolkit.ToolkitStats
 
 	// Create test file with issues
 	testContent := `package test
@@ -763,7 +802,7 @@ type SecurityManagerInterface interface {
 
 	// Run in dry-run mode
 	normalizer := NewNamingNormalizer(tempDir, logger, stats, true)
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{ // Changed to toolkit.OperationOptions
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "report.json"),
 	}

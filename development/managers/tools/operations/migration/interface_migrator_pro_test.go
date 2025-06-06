@@ -381,7 +381,7 @@ type InvalidInterface interface {
 	}
 }
 */
-}
+// Removed extraneous closing brace that was here
 
 // TestGenerateMigrationReport tests migration report generation
 func TestGenerateMigrationReport(t *testing.T) {
@@ -601,7 +601,10 @@ type LoggerTestInterface interface {
 	}
 
 	// Create toolkit.Logger
-	customLogger := &toolkit.Logger{} // Changed from toolkit.Logger := &Logger{}, and used customLogger
+	customLogger, errLog := toolkit.NewLogger(true) // Use toolkit.NewLogger, verbose true
+	if errLog != nil {
+		t.Fatalf("Failed to create logger: %v", errLog)
+	}
 
 	migrator, err := NewInterfaceMigratorPro(tempDir, customLogger, true) // verbose mode, pass customLogger
 	if err != nil {
