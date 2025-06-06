@@ -6,8 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"time"
-
-	"email_sender/development/managers/tools"
 )
 
 // Validation de l'implémentation - Phase 1.1 - Plan v49
@@ -29,7 +27,7 @@ func main() {
 	// Test 1: Validation de StructValidator
 	fmt.Printf("1️⃣ TEST: StructValidator\n")
 	fmt.Printf("------------------------\n")
-	
+
 	// Test 1.1: Création de l'instance
 	validator, err := tools.NewStructValidator(tempDir, nil, false)
 	if err != nil {
@@ -67,7 +65,7 @@ func main() {
 	// Test 2: Validation de l'intégration avec ManagerToolkit
 	fmt.Printf("\n2️⃣ TEST: Intégration avec ManagerToolkit\n")
 	fmt.Printf("--------------------------------------\n")
-	
+
 	// Test 2.1: Création du ManagerToolkit
 	toolkit, err := tools.NewManagerToolkit(tempDir, "", false)
 	if err != nil {
@@ -75,37 +73,37 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Printf("✅ Création de ManagerToolkit réussie\n")
-	
+
 	// Test 2.2: Test d'intégration avec ExecuteOperation
 	ctx := context.Background()
 	opts := &tools.OperationOptions{
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "test_report.json"),
-		Force: false,
+		Force:  false,
 	}
-	
+
 	operations := []tools.Operation{
 		tools.OpValidateStructs,
 		tools.OpResolveImports,
 		tools.OpAnalyzeDeps,
 		tools.OpDetectDuplicates,
 	}
-	
+
 	operationNames := map[tools.Operation]string{
-		tools.OpValidateStructs: "OpValidateStructs",
-		tools.OpResolveImports: "OpResolveImports",
-		tools.OpAnalyzeDeps: "OpAnalyzeDeps",
+		tools.OpValidateStructs:  "OpValidateStructs",
+		tools.OpResolveImports:   "OpResolveImports",
+		tools.OpAnalyzeDeps:      "OpAnalyzeDeps",
 		tools.OpDetectDuplicates: "OpDetectDuplicates",
 	}
-	
+
 	totalOps := len(operations)
 	successOps := 0
-	
+
 	for _, op := range operations {
 		startTime := time.Now()
 		err := toolkit.ExecuteOperation(ctx, op, opts)
 		duration := time.Since(startTime)
-		
+
 		if err != nil {
 			fmt.Printf("❌ ERROR: ExecuteOperation %s a échoué: %v\n", operationNames[op], err)
 		} else {
@@ -113,7 +111,7 @@ func main() {
 			successOps++
 		}
 	}
-	
+
 	// Test 3: Vérification des métriques après exécution
 	fmt.Printf("\n3️⃣ TEST: Vérification des métriques ToolkitStats\n")
 	fmt.Printf("---------------------------------------------\n")
@@ -121,12 +119,12 @@ func main() {
 	fmt.Printf("- Files analyzed: %d\n", toolkit.Stats.FilesAnalyzed)
 	fmt.Printf("- Files processed: %d\n", toolkit.Stats.FilesProcessed)
 	fmt.Printf("- Execution time: %v\n", toolkit.Stats.ExecutionTime)
-	
+
 	// Rapport final
 	fmt.Printf("\n📋 RAPPORT FINAL:\n")
 	fmt.Printf("--------------\n")
 	fmt.Printf("- Tests réussis: %d/%d opérations\n", successOps, totalOps)
-	
+
 	if successOps == totalOps {
 		fmt.Printf("✅ VALIDATION COMPLÈTE: Phase 1.1 - Plan v49 est entièrement conforme\n")
 		fmt.Printf("🚀 PRÊT POUR LA PHASE 2!\n")
