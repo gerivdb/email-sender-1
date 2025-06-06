@@ -187,7 +187,7 @@ func aliasTest() {
 
 	// Test Execute() method
 	t.Run("Execute method", func(t *testing.T) {
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: tempDir,
 			Output: filepath.Join(tempDir, "import_conflicts_report.json"),
 			Force:  false,
@@ -350,7 +350,7 @@ func main() {
 	// Run conflict detection
 	ctx := context.Background()
 	reportPath := filepath.Join(tempDir, "conflicts_report.json")
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: reportPath,
 		Force:  false,
@@ -458,7 +458,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "resolution_report.json"),
 		Force:  true, // Force resolution
@@ -523,7 +523,7 @@ func TestImportConflictResolver_EdgeCases(t *testing.T) {
 		}
 
 		ctx := context.Background()
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: emptyDir,
 			Output: "",
 			Force:  false,
@@ -560,7 +560,7 @@ func main() {
 		}
 
 		ctx := context.Background()
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: noImportsDir,
 			Output: "",
 			Force:  false,
@@ -604,7 +604,7 @@ func main() {
 		}
 
 		ctx := context.Background()
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: invalidDir,
 			Output: "",
 			Force:  false,
@@ -654,7 +654,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "dryrun_report.json"),
 		Force:  false,
@@ -799,7 +799,7 @@ func benchFunc%d() {
 	}
 
 	ctx := context.Background()
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: "",
 		Force:  false,

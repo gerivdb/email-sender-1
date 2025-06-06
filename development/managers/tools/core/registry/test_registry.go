@@ -4,10 +4,17 @@
 package registry
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
 	"context"
 	"fmt"
+
+	// Core packages
+	"github.com/email-sender/tools/core/registry"
+	"github.com/email-sender/tools/core/toolkit"
+
+	// Operations packages
+	"github.com/email-sender/tools/operations/analysis"
+	"github.com/email-sender/tools/operations/correction"
+	"github.com/email-sender/tools/operations/migration"
 )
 
 // TestAllTools verifies that all tools implement the toolkit.ToolkitOperation interface correctly
@@ -15,63 +22,63 @@ func TestAllTools() {
 	fmt.Println("Testing all tools for interface compliance...")
 	
 	// Create instances of all tools for testing
-	validator := &StructValidator{
+	validator := &analysis.StructValidator{
 		BaseDir: ".",
 		FileSet: nil,
 		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  true,
 	}
 	
-	syntaxChecker := &SyntaxChecker{
+	syntaxChecker := &analysis.SyntaxChecker{
 		BaseDir: ".",
 		FileSet: nil,
 		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  true,
 	}
 	
-	importResolver := &ImportConflictResolver{
+	importResolver := &correction.ImportConflictResolver{
 		BaseDir: ".",
 		FileSet: nil,
 		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  true,
 	}
 	
-	duplicateDetector := &DuplicateTypeDetector{
+	duplicateDetector := &analysis.DuplicateTypeDetector{
 		BaseDir: ".",
 		FileSet: nil,
 		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  true,
 	}
 	
-	typeDefGenerator := &TypeDefGenerator{
+	typeDefGenerator := &migration.TypeDefGenerator{
 		BaseDir: ".",
 		FileSet: nil,
 		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  true,
 	}
 	
-	namingNormalizer := &NamingNormalizer{
+	namingNormalizer := &correction.NamingNormalizer{
 		BaseDir: ".",
 		FileSet: nil,
 		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  true,
 	}
 	
-	dependencyAnalyzer := &DependencyAnalyzer{
+	dependencyAnalyzer := &analysis.DependencyAnalyzer{
 		BaseDir: ".",
 		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  true,
 	}
 	
 	// Test all tools
-	tools := []ToolkitOperation{
+	tools := []toolkit.ToolkitOperation{
 		validator,
 		syntaxChecker,
 		importResolver,
@@ -95,8 +102,8 @@ func TestAllTools() {
 	}
 	
 	// Test registry
-	registry := GetGlobalRegistry()
-	if registry == nil {
+	globalReg := registry.GetGlobalRegistry() // Assuming GetGlobalRegistry is from the imported "github.com/email-sender/tools/core/registry"
+	if globalReg == nil {
 		fmt.Println("\nERROR: Global registry is nil")
 		return
 	}

@@ -24,8 +24,8 @@ func TestSyntaxChecker_ImplementsToolkitOperation(t *testing.T) {
 
 func TestSyntaxChecker_NewInstance(t *testing.T) {
 	tmpDir := t.TempDir()
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
@@ -52,14 +52,14 @@ func TestSyntaxChecker_Validate(t *testing.T) {
 			name: "valid_checker",
 			checker: &SyntaxChecker{
 				BaseDir: t.TempDir(),
-				Logger:  &Logger{},
+				Logger:  &toolkit.Logger{},
 			},
 			expectedError: "",
 		},
 		{
 			name: "missing_base_dir",
 			checker: &SyntaxChecker{
-				Logger: &Logger{},
+				Logger: &toolkit.Logger{},
 			},
 			expectedError: "BaseDir is required",
 		},
@@ -74,7 +74,7 @@ func TestSyntaxChecker_Validate(t *testing.T) {
 			name: "non_existent_directory",
 			checker: &SyntaxChecker{
 				BaseDir: "/non/existent/path",
-				Logger:  &Logger{},
+				Logger:  &toolkit.Logger{},
 			},
 			expectedError: "base directory does not exist",
 		},
@@ -100,8 +100,8 @@ func TestSyntaxChecker_HealthCheck(t *testing.T) {
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
-		Logger:  &Logger{},
-		Stats:   &ToolkitStats{},
+		Logger:  &toolkit.Logger{},
+		Stats:   &toolkit.ToolkitStats{},
 	}
 
 	ctx := context.Background()
@@ -119,7 +119,7 @@ func TestSyntaxChecker_HealthCheck_Failures(t *testing.T) {
 			name: "missing_fileset",
 			checker: &SyntaxChecker{
 				BaseDir: t.TempDir(),
-				Logger:  &Logger{},
+				Logger:  &toolkit.Logger{},
 			},
 			expectedError: "FileSet not initialized",
 		},
@@ -128,7 +128,7 @@ func TestSyntaxChecker_HealthCheck_Failures(t *testing.T) {
 			checker: &SyntaxChecker{
 				BaseDir: "/invalid/path",
 				FileSet: token.NewFileSet(),
-				Logger:  &Logger{},
+				Logger:  &toolkit.Logger{},
 			},
 			expectedError: "base directory does not exist",
 		},
@@ -146,7 +146,7 @@ func TestSyntaxChecker_HealthCheck_Failures(t *testing.T) {
 
 func TestSyntaxChecker_CollectMetrics(t *testing.T) {
 	tmpDir := t.TempDir()
-	stats := &ToolkitStats{
+	stats := &toolkit.ToolkitStats{
 		FilesAnalyzed: 5,
 		ErrorsFixed:   3,
 	}
@@ -154,7 +154,7 @@ func TestSyntaxChecker_CollectMetrics(t *testing.T) {
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
-		Logger:  &Logger{},
+		Logger:  &toolkit.Logger{},
 		Stats:   stats,
 		DryRun:  true,
 	}
@@ -189,8 +189,8 @@ func main() {
 	err := os.WriteFile(goFile, []byte(validGoCode), 0644)
 	require.NoError(t, err)
 
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
@@ -200,7 +200,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Output: filepath.Join(tmpDir, "syntax_report.json"),
 		Force:  false,
@@ -236,8 +236,8 @@ func main() {
 	err := os.WriteFile(goFile, []byte(invalidGoCode), 0644)
 	require.NoError(t, err)
 
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
@@ -247,7 +247,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Output: filepath.Join(tmpDir, "syntax_report.json"),
 		Force:  false,
@@ -292,8 +292,8 @@ fmt.Println("Hello, World!")
 	err := os.WriteFile(goFile, []byte(unformattedGoCode), 0644)
 	require.NoError(t, err)
 
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
@@ -303,7 +303,7 @@ fmt.Println("Hello, World!")
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Output: filepath.Join(tmpDir, "syntax_report.json"),
 		Force:  true, // Allow fixing
@@ -344,8 +344,8 @@ fmt.Println("Hello, World!")
 	originalContent, err := os.ReadFile(goFile)
 	require.NoError(t, err)
 
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
@@ -355,7 +355,7 @@ fmt.Println("Hello, World!")
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Output: filepath.Join(tmpDir, "syntax_report.json"),
 		Force:  true,
@@ -382,7 +382,7 @@ fmt.Println("Hello, World!")
 
 func TestSyntaxChecker_AnalyzeSyntaxError(t *testing.T) {
 	checker := &SyntaxChecker{
-		Logger: &Logger{},
+		Logger: &toolkit.Logger{},
 	}
 
 	file := "test.go"
@@ -513,7 +513,7 @@ fmt.Println("Hello, World!")
 	defer toolkit.Close()
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Output: filepath.Join(tmpDir, "syntax_report.json"),
 		Force:  true,
@@ -560,8 +560,8 @@ func main() {
 		require.NoError(b, err)
 	}
 
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
@@ -571,7 +571,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Force:  false,
 	}

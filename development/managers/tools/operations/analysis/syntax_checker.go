@@ -23,8 +23,8 @@ import (
 type SyntaxChecker struct {
 	BaseDir string
 	FileSet *token.FileSet
-	toolkit.Logger  *Logger
-	Stats   *ToolkitStats
+	Logger  *toolkit.Logger
+	Stats   *toolkit.ToolkitStats
 	DryRun  bool
 }
 
@@ -66,7 +66,7 @@ type SyntaxSummary struct {
 }
 
 // NewSyntaxChecker creates a new SyntaxChecker instance
-func NewSyntaxChecker(baseDir string, toolkit.Logger *Logger, stats *ToolkitStats, dryRun bool) *SyntaxChecker {
+func NewSyntaxChecker(baseDir string, logger *toolkit.Logger, stats *toolkit.ToolkitStats, dryRun bool) *SyntaxChecker {
 	return &SyntaxChecker{
 		BaseDir: baseDir,
 		FileSet: token.NewFileSet(),
@@ -77,7 +77,7 @@ func NewSyntaxChecker(baseDir string, toolkit.Logger *Logger, stats *ToolkitStat
 }
 
 // Execute implémente ToolkitOperation.Execute
-func (sc *SyntaxChecker) Execute(ctx context.Context, options *OperationOptions) error {
+func (sc *SyntaxChecker) Execute(ctx context.Context, options *toolkit.OperationOptions) error {
 	if sc.Logger == nil {
 		return fmt.Errorf("logger is required")
 	}
@@ -454,20 +454,22 @@ func (sc *SyntaxChecker) Stop(ctx context.Context) error {
 
 // init registers the SyntaxChecker tool automatically
 func init() {
-	if globalRegistry == nil {
-		globalRegistry = NewToolRegistry()
+	globalReg := registry.GetGlobalRegistry()
+	if globalReg == nil {
+		globalReg = registry.NewToolRegistry()
+		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
 	
 	// Create a default instance for registration
 	defaultTool := &SyntaxChecker{
-		BaseDir: "",
-		FileSet: token.NewFileSet(),
-		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		BaseDir: "", // Default or placeholder
+		FileSet: token.NewFileSet(), // Initialize FileSet
+		Logger:  nil, // Logger should be initialized by the toolkit
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
 	
-	err := globalRegistry.Register(OpSyntaxCheck, defaultTool)
+	err := globalReg.Register(registry.OpSyntaxCheck, defaultTool)
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register SyntaxChecker: %v\n", err)

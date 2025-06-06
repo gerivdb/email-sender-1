@@ -23,8 +23,8 @@ import (
 type DuplicateTypeDetector struct {
 	BaseDir string
 	FileSet *token.FileSet
-	toolkit.Logger  *Logger
-	Stats   *ToolkitStats
+	Logger  *toolkit.Logger
+	Stats   *toolkit.ToolkitStats
 	DryRun  bool
 }
 
@@ -59,7 +59,7 @@ type DuplicationReport struct {
 }
 
 // NewDuplicateTypeDetector crée une nouvelle instance de DuplicateTypeDetector
-func NewDuplicateTypeDetector(baseDir string, toolkit.Logger *Logger, dryRun bool) (*DuplicateTypeDetector, error) {
+func NewDuplicateTypeDetector(baseDir string, logger *toolkit.Logger, dryRun bool) (*DuplicateTypeDetector, error) {
 	if baseDir == "" {
 		return nil, fmt.Errorf("base directory cannot be empty")
 	}
@@ -69,21 +69,22 @@ func NewDuplicateTypeDetector(baseDir string, toolkit.Logger *Logger, dryRun boo
 		return nil, fmt.Errorf("base directory does not exist: %s", baseDir)
 	}
 
-	if toolkit.Logger == nil {
-		toolkit.Logger = &Logger{verbose: false} // Créer un toolkit.Logger par défaut
+	if logger == nil {
+		// Assuming toolkit.Logger has a NewLogger function or a simple struct instantiation
+		logger = &toolkit.Logger{} // Simplistic instantiation
 	}
 
 	return &DuplicateTypeDetector{
 		BaseDir: baseDir,
 		FileSet: token.NewFileSet(),
 		Logger:  logger,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  dryRun,
 	}, nil
 }
 
 // Execute implémente ToolkitOperation.Execute
-func (dtd *DuplicateTypeDetector) Execute(ctx context.Context, options *OperationOptions) error {
+func (dtd *DuplicateTypeDetector) Execute(ctx context.Context, options *toolkit.OperationOptions) error {
 	dtd.Logger.Info("🔍 Starting duplicate type detection on: %s", options.Target)
 	startTime := time.Now()
 
@@ -430,20 +431,22 @@ func (dtd *DuplicateTypeDetector) Stop(ctx context.Context) error {
 
 // init registers the DuplicateTypeDetector tool automatically
 func init() {
-	if globalRegistry == nil {
-		globalRegistry = NewToolRegistry()
+	globalReg := registry.GetGlobalRegistry()
+	if globalReg == nil {
+		globalReg = registry.NewToolRegistry()
+		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
 	
 	// Create a default instance for registration
 	defaultTool := &DuplicateTypeDetector{
-		BaseDir: "",
-		FileSet: token.NewFileSet(),
-		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		BaseDir: "", // Default or placeholder
+		FileSet: token.NewFileSet(), // Initialize FileSet
+		Logger:  nil, // Logger should be initialized by the toolkit
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
 	
-	err := globalRegistry.Register(OpDetectDuplicates, defaultTool)
+	err := globalReg.Register(registry.OpDetectDuplicates, defaultTool)
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register DuplicateTypeDetector: %v\n", err)

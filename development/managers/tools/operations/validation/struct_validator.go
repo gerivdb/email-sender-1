@@ -25,8 +25,8 @@ import (
 type StructValidator struct {
 	BaseDir     string
 	FileSet     *token.FileSet
-	toolkit.Logger      *Logger
-	Stats       *ToolkitStats
+	Logger      *toolkit.Logger
+	Stats       *toolkit.ToolkitStats
 	DryRun      bool
 	TypeChecker *types.Checker
 	Package     *types.Package
@@ -74,7 +74,7 @@ type SemanticAnalysisResult struct {
 }
 
 // NewStructValidator crée une nouvelle instance de StructValidator
-func NewStructValidator(baseDir string, toolkit.Logger *Logger, dryRun bool) (*StructValidator, error) {
+func NewStructValidator(baseDir string, logger *toolkit.Logger, dryRun bool) (*StructValidator, error) {
 	if baseDir == "" {
 		return nil, fmt.Errorf("base directory cannot be empty")
 	}
@@ -83,21 +83,21 @@ func NewStructValidator(baseDir string, toolkit.Logger *Logger, dryRun bool) (*S
 	if _, err := os.Stat(baseDir); os.IsNotExist(err) {
 		return nil, fmt.Errorf("base directory does not exist: %s", baseDir)
 	}
-	if toolkit.Logger == nil {
-		toolkit.Logger = &Logger{verbose: false} // Créer un toolkit.Logger par défaut
+	if logger == nil {
+		logger = &toolkit.Logger{} // Créer un toolkit.Logger par défaut
 	}
 
 	return &StructValidator{
 		BaseDir: baseDir,
 		FileSet: token.NewFileSet(),
 		Logger:  logger,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  dryRun,
 	}, nil
 }
 
 // Execute implémente ToolkitOperation.Execute
-func (sv *StructValidator) Execute(ctx context.Context, options *OperationOptions) error {
+func (sv *StructValidator) Execute(ctx context.Context, options *toolkit.OperationOptions) error {
 	sv.Logger.Info("🔍 Starting comprehensive struct validation on: %s", options.Target)
 	startTime := time.Now()
 
@@ -812,20 +812,22 @@ func (sv *StructValidator) Stop(ctx context.Context) error {
 
 // init registers the StructValidator tool automatically
 func init() {
-	if globalRegistry == nil {
-		globalRegistry = NewToolRegistry()
+	globalReg := registry.GetGlobalRegistry()
+	if globalReg == nil {
+		globalReg = registry.NewToolRegistry()
+		// registry.SetGlobalRegistry(globalReg) // If a setter exists and is necessary
 	}
 	
 	// Create a default instance for registration
 	defaultTool := &StructValidator{
-		BaseDir: "",
-		FileSet: token.NewFileSet(),
-		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		BaseDir: "", // Default or placeholder
+		FileSet: token.NewFileSet(), // Initialize FileSet
+		Logger:  nil, // Logger should be initialized by the toolkit
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
 	
-	err := globalRegistry.Register(OpValidateStructs, defaultTool)
+	err := globalReg.Register(toolkit.ValidateStructs, defaultTool) // Use toolkit.ValidateStructs
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register StructValidator: %v\n", err)

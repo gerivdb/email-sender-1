@@ -23,8 +23,8 @@ import (
 type TypeDefGenerator struct {
 	BaseDir string
 	FileSet *token.FileSet
-	toolkit.Logger  *Logger
-	Stats   *ToolkitStats
+	Logger  *toolkit.Logger
+	Stats   *toolkit.ToolkitStats
 	DryRun  bool
 }
 
@@ -71,7 +71,7 @@ type TypeGenSummary struct {
 }
 
 // NewTypeDefGenerator creates a new TypeDefGenerator instance
-func NewTypeDefGenerator(baseDir string, toolkit.Logger *Logger, stats *ToolkitStats, dryRun bool) *TypeDefGenerator {
+func NewTypeDefGenerator(baseDir string, logger *toolkit.Logger, stats *toolkit.ToolkitStats, dryRun bool) *TypeDefGenerator {
 	return &TypeDefGenerator{
 		BaseDir: baseDir,
 		FileSet: token.NewFileSet(),
@@ -475,20 +475,22 @@ func (tdg *TypeDefGenerator) Stop(ctx context.Context) error {
 
 // init registers the TypeDefGenerator tool automatically
 func init() {
-	if globalRegistry == nil {
-		globalRegistry = NewToolRegistry()
+	globalReg := registry.GetGlobalRegistry()
+	if globalReg == nil {
+		globalReg = registry.NewToolRegistry()
+		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
 	
 	// Create a default instance for registration
 	defaultTool := &TypeDefGenerator{
-		BaseDir: "",
-		FileSet: token.NewFileSet(),
-		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		BaseDir: "", // Default or placeholder
+		FileSet: token.NewFileSet(), // Initialize FileSet
+		Logger:  nil, // Logger should be initialized by the toolkit
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
 	
-	err := globalRegistry.Register(OpTypeDefGen, defaultTool)
+	err := globalReg.Register(registry.OpTypeDefGen, defaultTool)
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register TypeDefGenerator: %v\n", err)

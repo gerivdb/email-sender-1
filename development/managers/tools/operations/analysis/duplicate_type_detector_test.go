@@ -38,11 +38,11 @@ func TestNewDuplicateTypeDetector(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			logger, err := NewLogger(false) // verbose = false
-			if err != nil {
-				t.Fatalf("Failed to create logger: %v", err)
-			}
-			stats := &ToolkitStats{}
+			logger := &toolkit.Logger{} // verbose = false
+			// if err != nil {
+			// 	t.Fatalf("Failed to create logger: %v", err)
+			// }
+			stats := &toolkit.ToolkitStats{}
 
 			detector := &DuplicateTypeDetector{
 				BaseDir: tt.baseDir,
@@ -83,11 +83,11 @@ func TestDuplicateTypeDetector_ToolkitOperationInterface(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger, err := NewLogger(false) // verbose = false
-	if err != nil {
-		t.Fatalf("Failed to create logger: %v", err)
-	}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{} // verbose = false
+	// if err != nil {
+	// 	t.Fatalf("Failed to create logger: %v", err)
+	// }
+	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
 		BaseDir: tempDir,
@@ -134,7 +134,7 @@ type Settings struct {
 			t.Fatalf("Failed to create test file 2: %v", err)
 		}
 
-		options := &OperationOptions{
+		options := &toolkit.OperationOptions{
 			Target: tempDir,
 			Output: filepath.Join(tempDir, "duplicates_report.json"),
 		}
@@ -196,7 +196,7 @@ type Settings struct {
 		}
 
 		// Restore toolkit.Logger for other tests
-		detector.Logger = toolkit.Logger
+		detector.Logger = logger // Restore the original logger instance
 
 		// Test avec répertoire inexistant
 		detector.BaseDir = "/nonexistent/directory"
@@ -267,11 +267,11 @@ func TestDuplicateTypeDetector_DetectDuplicates(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger, err := NewLogger(false) // verbose = false
-	if err != nil {
-		t.Fatalf("Failed to create logger: %v", err)
-	}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{} // verbose = false
+	// if err != nil {
+	// 	t.Fatalf("Failed to create logger: %v", err)
+	// }
+	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
 		BaseDir: tempDir,
@@ -386,11 +386,11 @@ type Product struct {
 			}
 
 			// Réinitialiser les stats
-			detector.Stats = &ToolkitStats{}
+			detector.Stats = &toolkit.ToolkitStats{}
 			detector.FileSet = token.NewFileSet()
 
 			ctx := context.Background()
-			options := &OperationOptions{
+			options := &toolkit.OperationOptions{
 				Target: tempDir,
 				Output: filepath.Join(tempDir, "report.json"),
 			}
@@ -438,11 +438,16 @@ func TestDuplicateTypeDetector_TypeSignatures(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger, err := NewLogger(false) // verbose = false
-	if err != nil {
-		t.Fatalf("Failed to create logger: %v", err)
-	}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{} // verbose = false
+	// if err != nil {
+	// 	t.Fatalf("Failed to create logger: %v", err)
+	// }
+	stats := &toolkit.ToolkitStats{}
+	logger := &toolkit.Logger{} // verbose = false
+	// if err != nil {
+	// 	t.Fatalf("Failed to create logger: %v", err)
+	// }
+	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
 		BaseDir: tempDir,
@@ -560,7 +565,7 @@ type User struct {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "severity_report.json"),
 	}
@@ -604,11 +609,11 @@ func TestDuplicateTypeDetector_DryRunMode(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger, err := NewLogger(false) // verbose = false
-	if err != nil {
-		t.Fatalf("Failed to create logger: %v", err)
-	}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{} // verbose = false
+	// if err != nil {
+	// 	t.Fatalf("Failed to create logger: %v", err)
+	// }
+	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
 		BaseDir: tempDir,
@@ -635,7 +640,7 @@ type User struct {
 
 	ctx := context.Background()
 	outputFile := filepath.Join(tempDir, "dryrun_report.json")
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: outputFile,
 	}
@@ -665,11 +670,11 @@ func TestDuplicateTypeDetector_EdgeCases(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger, err := NewLogger(false) // verbose = false
-	if err != nil {
-		t.Fatalf("Failed to create logger: %v", err)
-	}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{} // verbose = false
+	// if err != nil {
+	// 	t.Fatalf("Failed to create logger: %v", err)
+	// }
+	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
 		BaseDir: tempDir,
@@ -684,7 +689,7 @@ func TestDuplicateTypeDetector_EdgeCases(t *testing.T) {
 		os.MkdirAll(emptyDir, 0755)
 
 		ctx := context.Background()
-		options := &OperationOptions{
+		options := &toolkit.OperationOptions{
 			Target: emptyDir,
 			Output: filepath.Join(emptyDir, "empty_report.json"),
 		}
@@ -713,7 +718,7 @@ func TestDuplicateTypeDetector_EdgeCases(t *testing.T) {
 
 		detector.BaseDir = invalidDir
 		ctx := context.Background()
-		options := &OperationOptions{
+		options := &toolkit.OperationOptions{
 			Target: invalidDir,
 			Output: filepath.Join(invalidDir, "invalid_report.json"),
 		}
@@ -743,7 +748,7 @@ func TestDuplicateTypeDetector_EdgeCases(t *testing.T) {
 
 		detector.BaseDir = testDir
 		ctx := context.Background()
-		options := &OperationOptions{
+		options := &toolkit.OperationOptions{
 			Target: testDir,
 			Output: filepath.Join(testDir, "exclusion_report.json"),
 		}
@@ -790,7 +795,7 @@ func TestDuplicateTypeDetector_EdgeCases(t *testing.T) {
 		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Nanosecond)
 		defer cancel()
 
-		options := &OperationOptions{
+		options := &toolkit.OperationOptions{
 			Target: cancelDir,
 			Output: filepath.Join(cancelDir, "cancel_report.json"),
 		}
@@ -841,11 +846,11 @@ type Handler%d interface {
 		}
 	}
 
-	logger, err := NewLogger(false) // Réduire les logs pour le benchmark
-	if err != nil {
-		b.Fatalf("Failed to create logger: %v", err)
-	}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{} // Réduire les logs pour le benchmark
+	// if err != nil {
+	// 	b.Fatalf("Failed to create logger: %v", err)
+	// }
+	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
 		BaseDir: tempDir,
@@ -856,7 +861,7 @@ type Handler%d interface {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: "", // Pas de sortie en mode dry-run
 	}
@@ -864,7 +869,7 @@ type Handler%d interface {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		detector.Stats = &ToolkitStats{} // Réinitialiser les stats
+		detector.Stats = &toolkit.ToolkitStats{} // Réinitialiser les stats
 		detector.FileSet = token.NewFileSet()
 
 		err := detector.Execute(ctx, options)
@@ -923,11 +928,11 @@ func (s *Service%d) Process%d() error {
 		}
 	}
 
-	logger, err := NewLogger(false)
-	if err != nil {
-		b.Fatalf("Failed to create logger: %v", err)
-	}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	// if err != nil {
+	// 	b.Fatalf("Failed to create logger: %v", err)
+	// }
+	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
 		BaseDir: tempDir,
@@ -938,7 +943,7 @@ func (s *Service%d) Process%d() error {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: "",
 	}
@@ -946,7 +951,7 @@ func (s *Service%d) Process%d() error {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		detector.Stats = &ToolkitStats{}
+		detector.Stats = &toolkit.ToolkitStats{}
 		detector.FileSet = token.NewFileSet()
 
 		err := detector.Execute(ctx, options)

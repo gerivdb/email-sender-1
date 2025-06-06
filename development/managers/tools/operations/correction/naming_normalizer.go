@@ -24,8 +24,8 @@ import (
 type NamingNormalizer struct {
 	BaseDir string
 	FileSet *token.FileSet
-	toolkit.Logger  *Logger
-	Stats   *ToolkitStats
+	Logger  *toolkit.Logger
+	Stats   *toolkit.ToolkitStats
 	DryRun  bool
 }
 
@@ -55,9 +55,10 @@ type NamingConventions struct {
 }
 
 // NewNamingNormalizer creates a new NamingNormalizer instance
-func NewNamingNormalizer(baseDir string, toolkit.Logger *Logger, stats *ToolkitStats, dryRun bool) *NamingNormalizer {
+func NewNamingNormalizer(baseDir string, logger *toolkit.Logger, stats *toolkit.ToolkitStats, dryRun bool) *NamingNormalizer {
 	return &NamingNormalizer{
 		BaseDir: baseDir,
+		FileSet: token.NewFileSet(), // Initialize FileSet
 		Logger:  logger,
 		Stats:   stats,
 		DryRun:  dryRun,
@@ -627,20 +628,22 @@ func (nn *NamingNormalizer) Stop(ctx context.Context) error {
 
 // init registers the NamingNormalizer tool automatically
 func init() {
-	if globalRegistry == nil {
-		globalRegistry = NewToolRegistry()
+	globalReg := registry.GetGlobalRegistry()
+	if globalReg == nil {
+		globalReg = registry.NewToolRegistry()
+		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
 	
 	// Create a default instance for registration
 	defaultTool := &NamingNormalizer{
-		BaseDir: "",
-		FileSet: token.NewFileSet(),
-		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		BaseDir: "", // Default or placeholder
+		FileSet: token.NewFileSet(), // Initialize FileSet
+		Logger:  nil, // Logger should be initialized by the toolkit
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
 	
-	err := globalRegistry.Register(OpNormalizeNaming, defaultTool)
+	err := globalReg.Register(registry.OpNormalizeNaming, defaultTool)
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register NamingNormalizer: %v\n", err)

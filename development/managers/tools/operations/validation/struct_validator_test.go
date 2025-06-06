@@ -158,7 +158,7 @@ type {  // Invalid struct declaration
 
 	// Test Execute() method
 	t.Run("Execute method", func(t *testing.T) {
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: tempDir,
 			Output: filepath.Join(tempDir, "struct_validation_report.json"),
 			Force:  false,
@@ -281,7 +281,7 @@ type BadStruct struct {
 	// Run validation
 	ctx := context.Background()
 	reportPath := filepath.Join(tempDir, "validation_report.json")
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: reportPath,
 		Force:  false,
@@ -364,7 +364,7 @@ func TestStructValidator_EdgeCases(t *testing.T) {
 		}
 
 		ctx := context.Background()
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: emptyDir,
 			Output: "",
 			Force:  false,
@@ -402,7 +402,7 @@ func TestStructValidator_EdgeCases(t *testing.T) {
 		}
 
 		ctx := context.Background()
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: nonGoDir,
 			Output: "",
 			Force:  false,
@@ -441,7 +441,7 @@ func TestStructValidator_EdgeCases(t *testing.T) {
 		}
 
 		ctx := context.Background()
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: invalidDir,
 			Output: "",
 			Force:  false,
@@ -484,7 +484,7 @@ type TestStruct struct {
 	}
 
 	ctx := context.Background()
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "dryrun_report.json"),
 		Force:  false,
@@ -608,7 +608,7 @@ type BenchStruct%dExtra struct {
 	}
 
 	ctx := context.Background()
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: "",
 		Force:  false,

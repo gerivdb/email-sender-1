@@ -227,7 +227,7 @@ func FormatString(s string) string {
 
 	// Test Execute() method
 	t.Run("Execute method", func(t *testing.T) {
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: tempDir,
 			Output: filepath.Join(tempDir, "dependency_analysis_report.json"),
 			Force:  false,
@@ -408,7 +408,7 @@ func (s *Service) Health(c *gin.Context) {
 	// Run dependency analysis
 	ctx := context.Background()
 	reportPath := filepath.Join(tempDir, "dependency_report.json")
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: reportPath,
 		Force:  false,
@@ -646,7 +646,7 @@ func main() {
 		}
 
 		ctx := context.Background()
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: noModDir,
 			Output: "",
 			Force:  false,
@@ -682,7 +682,7 @@ func main() {
 		}
 
 		ctx := context.Background()
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: invalidModDir,
 			Output: "",
 			Force:  false,
@@ -709,7 +709,7 @@ func main() {
 		}
 
 		ctx := context.Background()
-		opts := &OperationOptions{
+		opts := &toolkit.OperationOptions{
 			Target: emptyDir,
 			Output: "",
 			Force:  false,
@@ -749,7 +749,7 @@ require (
 	}
 
 	ctx := context.Background()
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: filepath.Join(tempDir, "dryrun_report.json"),
 		Force:  false,
@@ -912,7 +912,7 @@ func handler%d() {
 	}
 
 	ctx := context.Background()
-	opts := &OperationOptions{
+	opts := &toolkit.OperationOptions{
 		Target: tempDir,
 		Output: "",
 		Force:  false,
