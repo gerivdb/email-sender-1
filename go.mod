@@ -3,6 +3,7 @@ module email_sender
 go 1.23.9
 
 require (
+	github.com/email-sender/tools v0.0.0
 	github.com/gomarkdown/markdown v0.0.0-20250311123330-531bef5e742b
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/mux v1.8.1
@@ -53,3 +54,5 @@ require (
 	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace github.com/email-sender/tools => ./development/managers/tools

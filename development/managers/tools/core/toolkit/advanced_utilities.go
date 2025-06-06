@@ -3,7 +3,7 @@
 package toolkit
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
+	// "github.com/email-sender/tools/core/toolkit"
 	"fmt"
 	"go/format"
 	"go/token"
@@ -20,14 +20,14 @@ type ImportFixer struct {
 	BaseDir    string
 	ModuleName string
 	FileSet    *token.FileSet
-	toolkit.Logger     *Logger
+	// toolkit.Logger     *Logger
 	Stats      *ToolkitStats
 	DryRun     bool
 }
 
 // FixAllImports fixes imports across all Go files
 func (fixer *ImportFixer) FixAllImports() error {
-	fixer.Logger.Info("🔧 Fixing imports across all files...")
+	// fixer.Logger.Info("🔧 Fixing imports across all files...")
 
 	return filepath.WalkDir(fixer.BaseDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil || !strings.HasSuffix(path, ".go") || strings.Contains(path, "vendor/") {
@@ -50,14 +50,14 @@ func (fixer *ImportFixer) FixSingleFile(filePath string) error {
 
 	if original != fixed {
 		if fixer.DryRun {
-			fixer.Logger.Info("DRY RUN: Would fix imports in %s", filePath)
+			// fixer.Logger.Info("DRY RUN: Would fix imports in %s", filePath)
 			return nil
 		}
 
 		// Format the code
 		formatted, err := format.Source([]byte(fixed))
 		if err != nil {
-			fixer.Logger.Warn("Failed to format %s: %v", filePath, err)
+			// fixer.Logger.Warn("Failed to format %s: %v", filePath, err)
 			formatted = []byte(fixed)
 		}
 
@@ -65,8 +65,8 @@ func (fixer *ImportFixer) FixSingleFile(filePath string) error {
 			return err
 		}
 
-		fixer.Logger.Info("Fixed imports in %s", filePath)
-		fixer.Stats.ImportsFixed++
+		// fixer.Logger.Info("Fixed imports in %s", filePath)
+		// fixer.Stats.ImportsFixed++
 	}
 
 	return nil
@@ -117,8 +117,7 @@ func (fixer *ImportFixer) fixCommonImportIssues(content string) string {
 		trimmed := strings.TrimSpace(line)
 
 		// Detect import block
-		if strings.HasPrefix(trimmed, "import (
-	"github.com/email-sender/tools/core/toolkit"") {
+		if strings.HasPrefix(trimmed, "import (") {
 			inImportBlock = true
 			result = append(result, line)
 			continue
@@ -154,14 +153,14 @@ func (fixer *ImportFixer) fixCommonImportIssues(content string) string {
 type DuplicateRemover struct {
 	BaseDir string
 	FileSet *token.FileSet
-	toolkit.Logger  *Logger
+	// toolkit.Logger  *Logger
 	Stats   *ToolkitStats
 	DryRun  bool
 }
 
 // ProcessAllFiles processes all Go files to remove duplicates
 func (dr *DuplicateRemover) ProcessAllFiles() error {
-	dr.Logger.Info("🧹 Processing all files for duplicate removal...")
+	// dr.Logger.Info("🧹 Processing all files for duplicate removal...")
 
 	return filepath.WalkDir(dr.BaseDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil || !strings.HasSuffix(path, ".go") || strings.Contains(path, "vendor/") {
@@ -184,14 +183,14 @@ func (dr *DuplicateRemover) ProcessSingleFile(filePath string) error {
 
 	if original != cleaned {
 		if dr.DryRun {
-			dr.Logger.Info("DRY RUN: Would remove duplicates from %s", filePath)
+			// dr.Logger.Info("DRY RUN: Would remove duplicates from %s", filePath)
 			return nil
 		}
 
 		// Format the code
 		formatted, err := format.Source([]byte(cleaned))
 		if err != nil {
-			dr.Logger.Warn("Failed to format %s: %v", filePath, err)
+			// dr.Logger.Warn("Failed to format %s: %v", filePath, err)
 			formatted = []byte(cleaned)
 		}
 
@@ -199,8 +198,8 @@ func (dr *DuplicateRemover) ProcessSingleFile(filePath string) error {
 			return err
 		}
 
-		dr.Logger.Info("Removed duplicates from %s", filePath)
-		dr.Stats.DuplicatesRemoved++
+		// dr.Logger.Info("Removed duplicates from %s", filePath)
+		// dr.Stats.DuplicatesRemoved++
 	}
 
 	return nil
@@ -229,7 +228,7 @@ func (dr *DuplicateRemover) removeDuplicates(content string) string {
 				if seenMethods[methodRange.Signature] {
 					// Skip this duplicate method
 					skipUntil = methodRange.End
-					dr.Logger.Debug("Removing duplicate method: %s", methodRange.Name)
+					// dr.Logger.Debug("Removing duplicate method: %s", methodRange.Name)
 					break
 				}
 				seenMethods[methodRange.Signature] = true
@@ -334,14 +333,14 @@ func (dr *DuplicateRemover) findMethodEnd(lines []string, start int) int {
 type SyntaxFixer struct {
 	BaseDir string
 	FileSet *token.FileSet
-	toolkit.Logger  *Logger
+	// toolkit.Logger  *Logger
 	Stats   *ToolkitStats
 	DryRun  bool
 }
 
 // FixAllFiles fixes syntax errors in all Go files
 func (sf *SyntaxFixer) FixAllFiles() error {
-	sf.Logger.Info("🔨 Fixing syntax errors in all files...")
+	// sf.Logger.Info("🔨 Fixing syntax errors in all files...")
 
 	return filepath.WalkDir(sf.BaseDir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil || !strings.HasSuffix(path, ".go") || strings.Contains(path, "vendor/") {
@@ -364,14 +363,14 @@ func (sf *SyntaxFixer) FixSingleFile(filePath string) error {
 
 	if original != fixed {
 		if sf.DryRun {
-			sf.Logger.Info("DRY RUN: Would fix syntax in %s", filePath)
+			// sf.Logger.Info("DRY RUN: Would fix syntax in %s", filePath)
 			return nil
 		}
 
 		// Try to format the code
 		formatted, err := format.Source([]byte(fixed))
 		if err != nil {
-			sf.Logger.Warn("Failed to format %s after syntax fix: %v", filePath, err)
+			// sf.Logger.Warn("Failed to format %s after syntax fix: %v", filePath, err)
 			formatted = []byte(fixed)
 		}
 
@@ -379,8 +378,8 @@ func (sf *SyntaxFixer) FixSingleFile(filePath string) error {
 			return err
 		}
 
-		sf.Logger.Info("Fixed syntax errors in %s", filePath)
-		sf.Stats.ErrorsFixed++
+		// sf.Logger.Info("Fixed syntax errors in %s", filePath)
+		// sf.Stats.ErrorsFixed++
 	}
 
 	return nil
@@ -467,7 +466,7 @@ func (sf *SyntaxFixer) fixQuoteIssues(line string) string {
 type HealthChecker struct {
 	BaseDir string
 	FileSet *token.FileSet
-	toolkit.Logger  *Logger
+	// toolkit.Logger  *Logger
 }
 
 // HealthReport contains health check results
@@ -511,7 +510,7 @@ type DependencyHealth struct {
 
 // CheckHealth performs comprehensive health check
 func (hc *HealthChecker) CheckHealth() *HealthReport {
-	hc.Logger.Info("🏥 Performing comprehensive health check...")
+	// hc.Logger.Info("🏥 Performing comprehensive health check...")
 
 	report := &HealthReport{
 		Timestamp:        time.Now(),
@@ -586,7 +585,7 @@ func (hc *HealthChecker) checkFileHealth(report *HealthReport) {
 	})
 
 	if err != nil {
-		hc.Logger.Warn("Error during file health check: %v", err)
+		// hc.Logger.Warn("Error during file health check: %v", err)
 	}
 
 	if report.FileStatistics.TotalFiles > 0 {
@@ -641,4 +640,3 @@ func (hc *HealthChecker) calculateOverallHealth(report *HealthReport) {
 		report.OverallHealth = "poor"
 	}
 }
-
