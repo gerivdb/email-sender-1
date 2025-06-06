@@ -1,5 +1,9 @@
 # Documentation Complète de l'Écosystème Tools - Manager Toolkit v2.0.0
 
+> **IMPORTANT: CE DOCUMENT EST ARCHIVÉ**  
+> Une nouvelle version de cette documentation est disponible pour la version v3.0.0.  
+> Veuillez consulter [TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md](./TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md) pour la documentation la plus récente.
+
 ## Description Générique pour un Écosystème d'Outils de Développement Modulaire
 
 Ce document présente une analyse modulaire, robuste et réutilisable de l'écosystème `development\managers\tools`, respectant strictement les principes DRY (Don't Repeat Yourself), KISS (Keep It Simple, Stupid), et SOLID. L'écosystème est composé d'outils spécialisés pour l'analyse, la migration, et la maintenance du code, coordonnés par un Manager Toolkit unifié pour la centralisation et la gestion des erreurs.

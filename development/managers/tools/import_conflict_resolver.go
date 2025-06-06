@@ -487,3 +487,40 @@ func (icr *ImportConflictResolver) HealthCheck(ctx context.Context) error {
 
 	return nil
 }
+
+// String implémente ToolkitOperation.String - identification de l'outil
+func (icr *ImportConflictResolver) String() string {
+	return "ImportConflictResolver"
+}
+
+// GetDescription implémente ToolkitOperation.GetDescription - description de l'outil
+func (icr *ImportConflictResolver) GetDescription() string {
+	return "Detects and resolves import conflicts in Go packages"
+}
+
+// Stop implémente ToolkitOperation.Stop - gestion des signaux d'arrêt
+func (icr *ImportConflictResolver) Stop(ctx context.Context) error {
+	return nil
+}
+
+// init registers the ImportConflictResolver tool automatically
+func init() {
+	if globalRegistry == nil {
+		globalRegistry = NewToolRegistry()
+	}
+	
+	// Create a default instance for registration
+	defaultTool := &ImportConflictResolver{
+		BaseDir: "",
+		FileSet: token.NewFileSet(),
+		Logger:  nil,
+		Stats:   &ToolkitStats{},
+		DryRun:  false,
+	}
+	
+	err := globalRegistry.Register(OpResolveImports, defaultTool)
+	if err != nil {
+		// Log error but don't panic during package initialization
+		fmt.Printf("Warning: Failed to register ImportConflictResolver: %v\n", err)
+	}
+}

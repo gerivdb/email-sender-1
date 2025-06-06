@@ -1,5 +1,5 @@
 // Manager Toolkit - Unified Professional Development Tool
-// Version: 2.0.0
+// Version: 3.0.0
 // Provides comprehensive analysis, migration, and maintenance utilities
 // for the Email Sender Manager Ecosystem
 
@@ -7,6 +7,7 @@ package tools
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"go/token"
@@ -18,7 +19,7 @@ import (
 
 // Configuration constants
 const (
-	ToolVersion    = "2.0.0"
+	ToolVersion    = "3.0.0"
 	DefaultBaseDir = "d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers"
 	ConfigFile     = "toolkit.config.json"
 	LogFile        = "toolkit.log"
@@ -90,11 +91,17 @@ const (
 	OpResolveImports   Operation = "resolve-imports"
 	OpAnalyzeDeps      Operation = "analyze-dependencies"
 	OpDetectDuplicates Operation = "detect-duplicates"
+	// Phase 2.3 - Syntax Checking
+	OpSyntaxCheck Operation = "syntax-check"
+	// Phase 3.1 - Type Definition Generation
+	OpTypeDefGen Operation = "type-def-gen"
+	// Phase 3.2 - Naming Normalization
+	OpNormalizeNaming Operation = "normalize-naming"
 )
 
 func main() {
 	var (
-		operation  = flag.String("op", "", "Operation to perform: analyze|migrate|fix-imports|remove-duplicates|fix-syntax|health-check|init-config|full-suite|validate-structs|resolve-imports|analyze-dependencies|detect-duplicates")
+		operation  = flag.String("op", "", "Operation to perform: analyze|migrate|fix-imports|remove-duplicates|fix-syntax|health-check|init-config|full-suite|validate-structs|resolve-imports|analyze-dependencies|detect-duplicates|syntax-check|type-def-gen|normalize-naming")
 		baseDir    = flag.String("dir", DefaultBaseDir, "Base directory to work with")
 		configPath = flag.String("config", "", "Path to configuration file")
 		dryRun     = flag.Bool("dry-run", false, "Perform dry run without making changes")
@@ -123,9 +130,15 @@ func main() {
 	// Execute operation
 	ctx := context.Background()
 	if err := toolkit.ExecuteOperation(ctx, Operation(*operation), &OperationOptions{
-		Target: *target,
-		Output: *output,
-		Force:  *force,
+		Target:   *target,
+		Output:   *output,
+		Force:    *force,
+		DryRun:   *dryRun,
+		Verbose:  *verbose,
+		Context:  ctx,
+		LogLevel: "INFO",
+		Workers:  1,
+		Timeout:  30 * time.Minute,
 	}); err != nil {
 		toolkit.Logger.Error("Operation failed: %v", err)
 		os.Exit(1)
@@ -245,6 +258,17 @@ func (mt *ManagerToolkit) ExecuteOperation(ctx context.Context, op Operation, op
 	startTime := time.Now()
 
 	var err error
+
+	// Use the global registry if available
+	registry := GetGlobalRegistry()
+	if registry != nil {
+		if tool, err := registry.GetTool(op); err == nil {
+			mt.Logger.Info("Using registered tool: %s", tool.String())
+			return tool.Execute(ctx, opts)
+		}
+	}
+
+	// Fall back to manual operation handling if no registered tool found
 	switch op {
 	case OpAnalyze:
 		err = mt.RunAnalysis(ctx, opts)
@@ -271,6 +295,15 @@ func (mt *ManagerToolkit) ExecuteOperation(ctx context.Context, op Operation, op
 		err = mt.RunDependencyAnalysis(ctx, opts)
 	case OpDetectDuplicates:
 		err = mt.RunDuplicateTypeDetection(ctx, opts)
+	// Phase 2.3 - Syntax Checking
+	case OpSyntaxCheck:
+		err = mt.RunSyntaxCheck(ctx, opts)
+	// Phase 3.1 - Type Definition Generation
+	case OpTypeDefGen:
+		err = mt.RunTypeDefGen(ctx, opts)
+	// Phase 3.2 - Naming Normalization
+	case OpNormalizeNaming:
+		err = mt.RunNormalizeNaming(ctx, opts)
 	default:
 		return fmt.Errorf("unknown operation: %s", string(op))
 	}
@@ -469,9 +502,155 @@ func (mt *ManagerToolkit) RunFullSuite(ctx context.Context, opts *OperationOptio
 	return nil
 }
 
-// Close closes the toolkit and frees resources
-func (mt *ManagerToolkit) Close() {
-	if mt.Logger != nil && mt.Logger.file != nil {
-		mt.Logger.Close()
+// RunTypeDefGen runs the type definition generator
+func (mt *ManagerToolkit) RunTypeDefGen(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔧 Starting type definition generation...")
+
+	generator := NewTypeDefGenerator(mt.BaseDir, mt.Logger, mt.Stats, mt.Config.EnableDryRun)
+
+	if err := generator.Validate(ctx); err != nil {
+		return fmt.Errorf("type definition generator validation failed: %w", err)
 	}
+
+	if err := generator.Execute(ctx, opts); err != nil {
+		return fmt.Errorf("type definition generation failed: %w", err)
+	}
+
+	mt.Logger.Info("✅ Type definition generation completed successfully")
+	return nil
+}
+
+// RunNormalizeNaming runs the naming normalizer
+func (mt *ManagerToolkit) RunNormalizeNaming(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔧 Starting naming normalization...")
+
+	normalizer := NewNamingNormalizer(mt.BaseDir, mt.Logger, mt.Stats, mt.Config.EnableDryRun)
+
+	if err := normalizer.Validate(ctx); err != nil {
+		return fmt.Errorf("naming normalizer validation failed: %w", err)
+	}
+
+	if err := normalizer.Execute(ctx, opts); err != nil {
+		return fmt.Errorf("naming normalization failed: %w", err)
+	}
+
+	mt.Logger.Info("✅ Naming normalization completed successfully")
+	return nil
+}
+
+// RunSyntaxCheck runs the syntax checker
+func (mt *ManagerToolkit) RunSyntaxCheck(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔧 Starting syntax checking...")
+
+	checker := NewSyntaxChecker(mt.BaseDir, mt.Logger, mt.Stats, mt.Config.EnableDryRun)
+
+	if err := checker.Validate(ctx); err != nil {
+		return fmt.Errorf("syntax checker validation failed: %w", err)
+	}
+
+	if err := checker.Execute(ctx, opts); err != nil {
+		return fmt.Errorf("syntax checking failed: %w", err)
+	}
+
+	mt.Logger.Info("✅ Syntax checking completed successfully")
+	return nil
+}
+
+// NewManagerToolkit creates a new toolkit instance
+func NewManagerToolkit(baseDir, configPath string, verbose bool) (*ManagerToolkit, error) {
+	// Initialize logger
+	logger, err := NewLogger(verbose)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create logger: %w", err)
+	}
+
+	// Load or create config
+	config, err := LoadOrCreateConfig(configPath, baseDir)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load config: %w", err)
+	}
+
+	toolkit := &ManagerToolkit{
+		Config:    config,
+		Logger:    logger,
+		FileSet:   token.NewFileSet(),
+		BaseDir:   baseDir,
+		StartTime: time.Now(),
+		Stats:     &ToolkitStats{},
+	}
+
+	logger.Info("Manager Toolkit v%s initialized", ToolVersion)
+	logger.Info("Base directory: %s", baseDir)
+	logger.Info("Dry run mode: %v", config.EnableDryRun)
+
+	return toolkit, nil
+}
+
+// LoadOrCreateConfig loads an existing config or creates a default one
+func LoadOrCreateConfig(configPath, baseDir string) (*ToolkitConfig, error) {
+	if configPath == "" {
+		// Create default config
+		return CreateDefaultConfigStruct(baseDir), nil
+	}
+
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		// Config file doesn't exist, create default
+		config := CreateDefaultConfigStruct(baseDir)
+		if err := SaveConfig(config, configPath); err != nil {
+			return nil, fmt.Errorf("failed to save default config: %w", err)
+		}
+		return config, nil
+	}
+
+	return LoadConfig(configPath)
+}
+
+// CreateDefaultConfigStruct creates a default configuration
+func CreateDefaultConfigStruct(baseDir string) *ToolkitConfig {
+	return &ToolkitConfig{
+		BaseDir:         baseDir,
+		BaseDirectory:   baseDir,
+		InterfacesDir:   "interfaces",
+		ToolsDir:        "tools",
+		ExcludePatterns: []string{"vendor/", ".git/", "node_modules/"},
+		IncludePatterns: []string{"*.go"},
+		BackupEnabled:   true,
+		VerboseLogging:  false,
+		MaxFileSize:     10 * 1024 * 1024, // 10MB
+		ModuleName:      "github.com/email-sender/managers",
+		EnableDryRun:    false,
+	}
+}
+
+// LoadConfig loads configuration from a JSON file
+func LoadConfig(path string) (*ToolkitConfig, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	var config ToolkitConfig
+	if err := json.Unmarshal(data, &config); err != nil {
+		return nil, err
+	}
+
+	return &config, nil
+}
+
+// SaveConfig saves configuration to a JSON file
+func SaveConfig(config *ToolkitConfig, path string) error {
+	data, err := json.MarshalIndent(config, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(path, data, 0644)
+}
+
+// Close closes the toolkit and releases resources
+func (mt *ManagerToolkit) Close() error {
+	if mt.Logger != nil {
+		return mt.Logger.Close()
+	}
+	return nil
 }

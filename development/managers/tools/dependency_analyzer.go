@@ -488,3 +488,39 @@ func (da *DependencyAnalyzer) HealthCheck(ctx context.Context) error {
 
 	return nil
 }
+
+// String implémente ToolkitOperation.String - identification de l'outil
+func (da *DependencyAnalyzer) String() string {
+	return "DependencyAnalyzer"
+}
+
+// GetDescription implémente ToolkitOperation.GetDescription - description de l'outil
+func (da *DependencyAnalyzer) GetDescription() string {
+	return "Analyzes Go module dependencies for vulnerabilities, updates, and security issues"
+}
+
+// Stop implémente ToolkitOperation.Stop - gestion des signaux d'arrêt
+func (da *DependencyAnalyzer) Stop(ctx context.Context) error {
+	return nil
+}
+
+// init registers the DependencyAnalyzer tool automatically
+func init() {
+	if globalRegistry == nil {
+		globalRegistry = NewToolRegistry()
+	}
+
+	// Create a default instance for registration
+	defaultTool := &DependencyAnalyzer{
+		BaseDir: "",
+		Logger:  nil,
+		Stats:   &ToolkitStats{},
+		DryRun:  false,
+	}
+
+	err := globalRegistry.Register(OpAnalyzeDeps, defaultTool)
+	if err != nil {
+		// Log error but don't panic during package initialization
+		fmt.Printf("Warning: Failed to register DependencyAnalyzer: %v\n", err)
+	}
+}

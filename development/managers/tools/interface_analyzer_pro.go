@@ -98,7 +98,7 @@ type AnalysisReport struct {
 	TotalMethods      int                    `json:"total_methods"`
 	Interfaces        []Interface            `json:"interfaces"`
 	Duplications      map[string][]Interface `json:"duplications"`
-	SyntaxErrors      []SyntaxError          `json:"syntax_errors"`
+	SyntaxErrors      []InterfaceSyntaxError `json:"syntax_errors"`
 	CommonMethods     map[string]int         `json:"common_methods"`
 	Recommendations   []Recommendation       `json:"recommendations"`
 	Dependencies      map[string][]string    `json:"dependencies"`
@@ -115,8 +115,8 @@ type QualityScore struct {
 	Testability     float64 `json:"testability"`
 }
 
-// SyntaxError represents a syntax error with context
-type SyntaxError struct {
+// InterfaceSyntaxError represents a syntax error with context for interface analysis
+type InterfaceSyntaxError struct {
 	File          string         `json:"file"`
 	Line          int            `json:"line"`
 	Message       string         `json:"message"`
@@ -155,7 +155,7 @@ func (ia *InterfaceAnalyzer) AnalyzeInterfaces() (*AnalysisReport, error) {
 		BaseDirectory: ia.BaseDir,
 		Interfaces:    []Interface{},
 		Duplications:  make(map[string][]Interface),
-		SyntaxErrors:  []SyntaxError{},
+		SyntaxErrors:  []InterfaceSyntaxError{},
 		CommonMethods: make(map[string]int),
 		Dependencies:  make(map[string][]string),
 		ComplexityMetrics: &ComplexityMetrics{
@@ -232,7 +232,7 @@ func (ia *InterfaceAnalyzer) analyzeFile(filePath string, report *AnalysisReport
 	if err != nil { // Handle syntax errors
 		if errList, ok := err.(scanner.ErrorList); ok {
 			for _, e := range errList {
-				syntaxErr := SyntaxError{
+				syntaxErr := InterfaceSyntaxError{
 					File:          filePath,
 					Line:          e.Pos.Line,
 					Message:       e.Msg,

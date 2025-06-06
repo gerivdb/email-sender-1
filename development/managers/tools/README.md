@@ -1,4 +1,4 @@
-# Manager Toolkit v2.0.0 - Professional Development Tools
+# Manager Toolkit v3.0.0 - Professional Development Tools
 
 ## 🎯 Aperçu
 
@@ -30,6 +30,54 @@ go build .
 
 ### Migration Tools
 - **Interface Migrator Pro** (`interface_migrator_pro.go`) - Migration professionnelle avec sauvegarde, validation et génération de rapports
+
+## 🆕 Nouvelles Fonctionnalités v3.0.0
+
+### Interface ToolkitOperation Étendue
+
+Toutes les opérations du toolkit implémentent maintenant l'interface `ToolkitOperation` étendue :
+
+```go
+type ToolkitOperation interface {
+    Execute(ctx context.Context, options *OperationOptions) (*OperationResult, error)
+    Validate(options *OperationOptions) error
+    String() string                  // Identification de l'outil
+    GetDescription() string          // Description documentaire
+    Stop(ctx context.Context) error  // Gestion des arrêts propres
+}
+```
+
+### Système d'Auto-enregistrement
+
+Les outils s'enregistrent automatiquement dans le registry global via des fonctions `init()` :
+
+```go
+// Exemple d'auto-enregistrement
+func init() {
+    defaultAnalyzer := &InterfaceAnalyzerPro{
+        // Configuration par défaut
+    }
+    RegisterGlobalTool(OpAnalyze, defaultAnalyzer)
+}
+```
+
+### Options de Contrôle Avancées
+
+La structure `OperationOptions` supporte maintenant des options étendues :
+
+```go
+type OperationOptions struct {
+    Operation  OperationType    `json:"operation"`
+    TargetPath string          `json:"target_path"`
+    DryRun     bool           `json:"dry_run"`
+    Verbose    bool           `json:"verbose"`
+    Timeout    time.Duration  `json:"timeout"`
+    Workers    int            `json:"workers"`
+    LogLevel   string         `json:"log_level"`
+    Context    context.Context `json:"-"`
+    Config     *ToolkitConfig  `json:"config"`
+}
+```
 
 ## 📋 Opérations Disponibles
 
@@ -125,6 +173,52 @@ for _, path := range results.SuccessfulMigrations {
 }
 ```
 
+### Exemples d'Utilisation v3.0.0
+
+```go
+// Exemple 1: Utilisation avec nouvelles options étendues
+options := &OperationOptions{
+    Operation:  OpAnalyze,
+    TargetPath: "./src",
+    DryRun:     false,
+    Verbose:    true,
+    Timeout:    5 * time.Minute,
+    Workers:    4,
+    LogLevel:   "INFO",
+    Context:    context.Background(),
+}
+
+// Récupération d'un outil enregistré
+tool := GetGlobalTool(OpAnalyze)
+if tool != nil {
+    result, err := tool.Execute(options.Context, options)
+    if err != nil {
+        log.Printf("Erreur: %v", err)
+    }
+    fmt.Printf("Description: %s\n", tool.GetDescription())
+}
+
+// Exemple 2: Gestion des arrêts propres
+ctx, cancel := context.WithCancel(context.Background())
+defer cancel()
+
+go func() {
+    // Simulation d'un signal d'arrêt
+    time.Sleep(30 * time.Second)
+    cancel()
+}()
+
+// L'outil respectera l'annulation du contexte
+if err := tool.Stop(ctx); err != nil {
+    log.Printf("Arrêt forcé: %v", err)
+}
+
+// Exemple 3: Validation avant exécution
+if err := tool.Validate(options); err != nil {
+    log.Fatalf("Options invalides: %v", err)
+}
+```
+
 ## 🎮 Options Communes
 
 - `-op=<operation>` : Opération à exécuter (obligatoire)
@@ -136,12 +230,22 @@ for _, path := range results.SuccessfulMigrations {
 - `-output=<path>` : Fichier de sortie pour les rapports
 - `-force` : Forcer l'opération sans confirmation
 
+### Nouvelles Options v3.0.0
+
+- `-timeout=<duration>` : Timeout pour les opérations (ex: `30s`, `5m`)
+- `-workers=<count>` : Nombre de workers parallèles (défaut: 1)
+- `-log-level=<level>` : Niveau de log (`DEBUG`, `INFO`, `WARN`, `ERROR`)
+- `-stop-graceful` : Arrêt propre des opérations en cours
+
 ## 📊 Exemples d'Utilisation
 
 ### Analyse Complète
 ```bash
 # Analyse avec rapport détaillé
 ./manager-toolkit -op=analyze -verbose -output=analysis.json
+
+# Analyse avec nouvelles options v3.0.0
+./manager-toolkit -op=analyze -verbose -timeout=5m -workers=4 -log-level=DEBUG
 
 # Résultat attendu
 [2024-12-05 15:04:05] INFO: 🔍 Starting comprehensive interface analysis...
@@ -154,6 +258,9 @@ for _, path := range results.SuccessfulMigrations {
 # Migration avec sauvegarde automatique
 ./manager-toolkit -op=migrate -force
 
+# Migration avec contrôle avancé v3.0.0
+./manager-toolkit -op=migrate -force -timeout=10m -workers=2 -log-level=INFO
+
 # Résultat attendu
 [2024-12-05 15:05:00] INFO: 🚀 Starting professional interface migration...
 [2024-12-05 15:05:01] INFO: 💾 Creating backup...
@@ -165,6 +272,9 @@ for _, path := range results.SuccessfulMigrations {
 # Suite complète en mode simulation
 ./manager-toolkit -op=full-suite -dry-run -verbose
 
+# Suite complète avec options v3.0.0
+./manager-toolkit -op=full-suite -dry-run -verbose -workers=8 -timeout=30m
+
 # Résultat attendu
 [2024-12-05 15:06:00] INFO: 🔧 Starting full maintenance suite...
 [2024-12-05 15:06:05] INFO: ✅ Full suite simulation completed
@@ -174,20 +284,20 @@ for _, path := range results.SuccessfulMigrations {
 
 ```
 development/managers/tools/
-├── README.md                          # Ce fichier
-├── TOOLS_ECOSYSTEM_DOCUMENTATION.md  # Documentation complète
-├── go.mod                            # Module Go
-├── manager_toolkit.go                # Point d'entrée principal
-├── toolkit_core.go                   # Implémentation centrale
-├── interface_analyzer_pro.go         # Analyse avancée
-├── interface_migrator_pro.go         # Migration professionnelle
-├── advanced_utilities.go             # Utilitaires avancés
-└── *.go.legacy                       # Anciennes versions (sauvegardées)
+├── README.md                             # Ce fichier
+├── TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md  # Documentation complète v3.0.0
+├── go.mod                               # Module Go
+├── manager_toolkit.go                   # Point d'entrée principal
+├── toolkit_core.go                      # Implémentation centrale
+├── interface_analyzer_pro.go            # Analyse avancée
+├── interface_migrator_pro.go            # Migration professionnelle
+├── advanced_utilities.go                # Utilitaires avancés
+└── *.go.legacy                          # Anciennes versions (sauvegardées)
 ```
 
 ## 🔧 Configuration
 
-Le toolkit utilise un fichier de configuration JSON optionnel :
+Le toolkit utilise un fichier de configuration JSON optionnel compatible v3.0.0 :
 
 ```json
 {
@@ -200,21 +310,35 @@ Le toolkit utilise un fichier de configuration JSON optionnel :
   "verbose_logging": false,
   "max_file_size": 10485760,
   "module_name": "github.com/example/project",
-  "enable_dry_run": false
+  "enable_dry_run": false,
+  "default_timeout": "5m",
+  "default_workers": 1,
+  "default_log_level": "INFO",
+  "auto_register_tools": true,
+  "enable_graceful_shutdown": true
+}
 }
 ```
 
 ## 📈 Métriques et Monitoring
 
-Le toolkit collecte automatiquement des métriques d'exécution :
+Le toolkit collecte automatiquement des métriques d'exécution étendues v3.0.0 :
 
+### Métriques de Base
 - Fichiers analysés/modifiés/créés
 - Erreurs corrigées
 - Imports fixés
 - Doublons supprimés
 - Temps d'exécution
 
-Exemple de sortie :
+### Nouvelles Métriques v3.0.0
+- Nombre de workers utilisés
+- Temps d'attente moyen par opération
+- Opérations annulées par timeout
+- Utilisation mémoire pic
+- Métriques par type d'outil
+
+Exemple de sortie v3.0.0 :
 ```
 === FINAL STATISTICS ===
 Files Processed: 42
@@ -224,6 +348,11 @@ Errors Fixed: 12
 Imports Fixed: 5
 Duplicates Removed: 2
 Total Execution Time: 2.34s
+Workers Used: 4
+Average Wait Time: 0.12s
+Timeout Cancellations: 0
+Peak Memory Usage: 45.2MB
+Tool Executions: analyze=15, migrate=8, fix-imports=5
 ```
 
 ## 🧪 Tests
@@ -258,7 +387,7 @@ Le toolkit s'intègre facilement dans des pipelines CI/CD :
 ## 📚 Documentation Complète
 
 Pour une documentation détaillée incluant l'architecture, les exemples avancés, et les guides de développement, consultez :
-- [`TOOLS_ECOSYSTEM_DOCUMENTATION.md`](TOOLS_ECOSYSTEM_DOCUMENTATION.md)
+- [`TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md`](TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md)
 
 ## 🐛 Dépannage
 
@@ -267,6 +396,13 @@ Pour une documentation détaillée incluant l'architecture, les exemples avancé
 1. **Erreur de compilation** : Vérifiez que Go 1.21+ est installé
 2. **Permissions insuffisantes** : Assurez-vous d'avoir les droits de lecture/écriture
 3. **Fichiers non trouvés** : Vérifiez le répertoire de base avec `-dir`
+
+### Dépannage v3.0.0
+
+4. **Outils non enregistrés** : Vérifiez que l'auto-enregistrement est activé dans la config
+5. **Timeouts fréquents** : Augmentez la valeur avec `-timeout` ou dans la configuration
+6. **Workers bloqués** : Réduisez le nombre de workers avec `-workers`
+7. **Mémoire insuffisante** : Configurez un nombre optimal de workers selon votre système
 
 ### Logs de Debug
 
