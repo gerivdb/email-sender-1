@@ -1,7 +1,6 @@
-package main
+package registry
 
 import (
-	"github.com/email-sender/tools/core/registry"
 "fmt"
 "os"
 
@@ -10,7 +9,7 @@ import (
 
 func main() {
 fmt.Println("Testing tool registry...")
-registry := tools.GetGlobalRegistry()
+registry := GetGlobalRegistry()
 if registry == nil {
 fmt.Println("ERROR: Registry is nil")
 os.Exit(1)

@@ -20,7 +20,7 @@ type ImportFixer struct {
 	BaseDir    string
 	ModuleName string
 	FileSet    *token.FileSet
-	// toolkit.Logger     *Logger
+	// Logger     *Logger // Corrected: No toolkit prefix for same-package type
 	Stats      *ToolkitStats
 	DryRun     bool
 }
@@ -153,7 +153,7 @@ func (fixer *ImportFixer) fixCommonImportIssues(content string) string {
 type DuplicateRemover struct {
 	BaseDir string
 	FileSet *token.FileSet
-	// toolkit.Logger  *Logger
+	// Logger  *Logger // Corrected: No toolkit prefix for same-package type
 	Stats   *ToolkitStats
 	DryRun  bool
 }
@@ -333,7 +333,7 @@ func (dr *DuplicateRemover) findMethodEnd(lines []string, start int) int {
 type SyntaxFixer struct {
 	BaseDir string
 	FileSet *token.FileSet
-	// toolkit.Logger  *Logger
+	// Logger  *Logger // Corrected: No toolkit prefix for same-package type
 	Stats   *ToolkitStats
 	DryRun  bool
 }
@@ -639,4 +639,97 @@ func (hc *HealthChecker) calculateOverallHealth(report *HealthReport) {
 	default:
 		report.OverallHealth = "poor"
 	}
+}
+
+// Logger provides logging capabilities.
+type Logger struct {
+	file    *os.File
+	verbose bool
+}
+
+// IsVerbose returns true if verbose logging is enabled.
+func (l *Logger) IsVerbose() bool {
+	return l.verbose
+}
+
+// NewLogger creates a new Logger instance.
+func NewLogger(verbose bool) (*Logger, error) {
+	logger := &Logger{
+		verbose: verbose,
+	}
+
+	logFile := filepath.Join(os.TempDir(), fmt.Sprintf("manager-toolkit-%d.log", time.Now().Unix()))
+	file, err := os.Create(logFile)
+	if err != nil {
+		// Log to stdout if file creation fails, but don't prevent logger creation
+		fmt.Printf("Warning: Failed to create log file %s: %v\n", logFile, err)
+		return logger, nil
+	}
+
+	logger.file = file
+	return logger, nil
+}
+
+// Info logs an informational message.
+func (l *Logger) Info(format string, args ...interface{}) {
+	message := fmt.Sprintf(format, args...)
+	l.log("INFO", message)
+}
+
+// Warn logs a warning message.
+func (l *Logger) Warn(format string, args ...interface{}) {
+	message := fmt.Sprintf(format, args...)
+	l.log("WARN", message)
+}
+
+// Error logs an error message.
+func (l *Logger) Error(format string, args ...interface{}) {
+	message := fmt.Sprintf(format, args...)
+	l.log("ERROR", message)
+}
+
+// Debug logs a debug message if verbose logging is enabled.
+func (l *Logger) Debug(format string, args ...interface{}) {
+	if l.verbose {
+		message := fmt.Sprintf(format, args...)
+		l.log("DEBUG", message)
+	}
+}
+
+func (l *Logger) log(level, message string) {
+	timestamp := time.Now().Format("2006-01-02 15:04:05")
+	logMessage := fmt.Sprintf("[%s] %s: %s\n", timestamp, level, message)
+
+	fmt.Print(logMessage) // Always print to console
+
+	if l.file != nil {
+		if _, err := l.file.WriteString(logMessage); err != nil {
+			fmt.Printf("Warning: Failed to write to log file: %v\n", err)
+		}
+	}
+}
+
+// Close closes the log file if it's open.
+func (l *Logger) Close() error {
+	if l.file != nil {
+		return l.file.Close()
+	}
+	return nil
+}
+
+// ToolkitStats tracks various statistics for toolkit operations.
+type ToolkitStats struct {
+	FilesAnalyzed      int           `json:"files_analyzed"`
+	FilesModified      int           `json:"files_modified"`
+	FilesCreated       int           `json:"files_created"`
+	ErrorsFixed        int           `json:"errors_fixed"`
+	InterfacesMoved    int           `json:"interfaces_moved"`
+	DuplicatesRemoved  int           `json:"duplicates_removed"`
+	ImportsFixed       int           `json:"imports_fixed"`
+	OperationsExecuted int           `json:"operations_executed"`
+	FilesProcessed     int           `json:"files_processed"`
+	ExecutionTime      time.Duration `json:"execution_time"`
+	TotalFiles         int           `json:"total_files"`
+	InterfaceFiles     int           `json:"interface_files"`
+	TotalInterfaces    int           `json:"total_interfaces"`
 }

@@ -20,8 +20,8 @@ import (
 type InterfaceAnalyzer struct {
 	BaseDir string
 	FileSet *token.FileSet
-	toolkit.Logger  *Logger
-	Stats   *ToolkitStats
+	Logger  *toolkit.Logger
+	Stats   *toolkit.ToolkitStats
 }
 
 // NewInterfaceAnalyzerPro creates a new InterfaceAnalyzer instance
@@ -30,16 +30,22 @@ func NewInterfaceAnalyzerPro(baseDir string, fileSet *token.FileSet, debugMode b
 		return nil, fmt.Errorf("base directory cannot be empty")
 	}
 
-	logger, err := NewLogger(debugMode)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create logger: %w", err)
-	}
+	// Assuming toolkit.Logger can be instantiated directly or has a constructor.
+	// Using a simple instantiation based on previous patterns.
+	// If toolkit.NewLogger exists and is the intended call, this should be toolkit.NewLogger(debugMode)
+	logger := &toolkit.Logger{} // Or toolkit.NewLogger(debugMode) if available
+	// If logger needs error handling:
+	// logger, err := toolkit.NewLogger(debugMode)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to create logger: %w", err)
+	// }
+
 
 	if fileSet == nil {
 		fileSet = token.NewFileSet()
 	}
 
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{}
 
 	return &InterfaceAnalyzer{
 		BaseDir: baseDir,

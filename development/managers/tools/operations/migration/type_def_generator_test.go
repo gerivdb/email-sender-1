@@ -24,8 +24,8 @@ func TestTypeDefGenerator_ImplementsToolkitOperation(t *testing.T) {
 
 func TestTypeDefGenerator_NewInstance(t *testing.T) {
 	tmpDir := t.TempDir()
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 
 	generator := &TypeDefGenerator{
 		BaseDir: tmpDir,
@@ -52,14 +52,14 @@ func TestTypeDefGenerator_Validate(t *testing.T) {
 			name: "valid_generator",
 			generator: &TypeDefGenerator{
 				BaseDir: t.TempDir(),
-				Logger:  &Logger{},
+				Logger:  &toolkit.Logger{},
 			},
 			expectedError: "",
 		},
 		{
 			name: "missing_base_dir",
 			generator: &TypeDefGenerator{
-				Logger: &Logger{},
+				Logger: &toolkit.Logger{},
 			},
 			expectedError: "BaseDir is required",
 		},
@@ -74,7 +74,7 @@ func TestTypeDefGenerator_Validate(t *testing.T) {
 			name: "non_existent_directory",
 			generator: &TypeDefGenerator{
 				BaseDir: "/non/existent/path",
-				Logger:  &Logger{},
+				Logger:  &toolkit.Logger{},
 			},
 			expectedError: "base directory does not exist",
 		},
@@ -100,8 +100,8 @@ func TestTypeDefGenerator_HealthCheck(t *testing.T) {
 	generator := &TypeDefGenerator{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
-		Logger:  &Logger{},
-		Stats:   &ToolkitStats{},
+		Logger:  &toolkit.Logger{},
+		Stats:   &toolkit.ToolkitStats{},
 	}
 
 	ctx := context.Background()
@@ -119,7 +119,7 @@ func TestTypeDefGenerator_HealthCheck_Failures(t *testing.T) {
 			name: "missing_fileset",
 			generator: &TypeDefGenerator{
 				BaseDir: t.TempDir(),
-				Logger:  &Logger{},
+				Logger:  &toolkit.Logger{},
 			},
 			expectedError: "FileSet not initialized",
 		},
@@ -128,7 +128,7 @@ func TestTypeDefGenerator_HealthCheck_Failures(t *testing.T) {
 			generator: &TypeDefGenerator{
 				BaseDir: "/invalid/path",
 				FileSet: token.NewFileSet(),
-				Logger:  &Logger{},
+				Logger:  &toolkit.Logger{},
 			},
 			expectedError: "base directory does not exist",
 		},
@@ -146,7 +146,7 @@ func TestTypeDefGenerator_HealthCheck_Failures(t *testing.T) {
 
 func TestTypeDefGenerator_CollectMetrics(t *testing.T) {
 	tmpDir := t.TempDir()
-	stats := &ToolkitStats{
+	stats := &toolkit.ToolkitStats{
 		FilesAnalyzed: 10,
 		ErrorsFixed:   5,
 	}
@@ -154,7 +154,7 @@ func TestTypeDefGenerator_CollectMetrics(t *testing.T) {
 	generator := &TypeDefGenerator{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
-		Logger:  &Logger{},
+		Logger:  &toolkit.Logger{},
 		Stats:   stats,
 		DryRun:  true,
 	}
@@ -195,8 +195,8 @@ func ProcessUser(user UserProfile, config AppConfig) error {
 	err := os.WriteFile(goFile, []byte(goCodeWithUndefined), 0644)
 	require.NoError(t, err)
 
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 	generator := &TypeDefGenerator{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
@@ -206,7 +206,7 @@ func ProcessUser(user UserProfile, config AppConfig) error {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Output: filepath.Join(tmpDir, "typegen_report.json"),
 		Force:  false,
@@ -255,8 +255,8 @@ func main() {
 	err := os.WriteFile(goFile, []byte(validGoCode), 0644)
 	require.NoError(t, err)
 
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 	generator := &TypeDefGenerator{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
@@ -266,7 +266,7 @@ func main() {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Output: filepath.Join(tmpDir, "typegen_report.json"),
 		Force:  false,
@@ -434,8 +434,8 @@ type Config struct {
 	err := os.WriteFile(goFile, []byte(goCodeWithUndefined), 0644)
 	require.NoError(t, err)
 
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 	generator := &TypeDefGenerator{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
@@ -445,7 +445,7 @@ type Config struct {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Output: filepath.Join(tmpDir, "typegen_report.json"),
 		Force:  true, // Force generation
@@ -491,8 +491,8 @@ func Process%d(user User%d) error {
 		require.NoError(b, err)
 	}
 
-	toolkit.Logger := &Logger{}
-	stats := &ToolkitStats{}
+	logger := &toolkit.Logger{}
+	stats := &toolkit.ToolkitStats{}
 	generator := &TypeDefGenerator{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
@@ -502,7 +502,7 @@ func Process%d(user User%d) error {
 	}
 
 	ctx := context.Background()
-	options := &OperationOptions{
+	options := &toolkit.OperationOptions{
 		Target: tmpDir,
 		Force:  false,
 	}

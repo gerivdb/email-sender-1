@@ -4,7 +4,6 @@
 package analysis
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
 	"fmt"
 	"io/ioutil"
 	"os"

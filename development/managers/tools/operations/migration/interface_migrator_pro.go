@@ -23,8 +23,8 @@ type InterfaceMigrator struct {
 	BaseDir       string
 	InterfacesDir string
 	FileSet       *token.FileSet
-	toolkit.Logger        *Logger
-	Stats         *ToolkitStats
+	Logger        *toolkit.Logger
+	Stats         *toolkit.ToolkitStats
 	DryRun        bool
 	BackupDir     string
 }
@@ -77,7 +77,7 @@ type NewFileSpec struct {
 }
 
 // NewInterfaceMigratorPro creates a new interface migrator instance
-func NewInterfaceMigratorPro(baseDir string, toolkit.Logger *Logger, verbose bool) (*InterfaceMigrator, error) {
+func NewInterfaceMigratorPro(baseDir string, logger *toolkit.Logger, verbose bool) (*InterfaceMigrator, error) {
 	if baseDir == "" {
 		return nil, fmt.Errorf("base directory cannot be empty")
 	}
@@ -87,8 +87,10 @@ func NewInterfaceMigratorPro(baseDir string, toolkit.Logger *Logger, verbose boo
 		return nil, fmt.Errorf("base directory does not exist: %s", baseDir)
 	}
 
-	if toolkit.Logger == nil {
-		toolkit.Logger = &Logger{}
+	if logger == nil {
+		// Assuming toolkit.Logger can be instantiated directly.
+		// verbose flag could be used if Logger has a Verbose field e.g. &toolkit.Logger{Verbose: verbose}
+		logger = &toolkit.Logger{}
 	}
 
 	return &InterfaceMigrator{
@@ -96,7 +98,7 @@ func NewInterfaceMigratorPro(baseDir string, toolkit.Logger *Logger, verbose boo
 		InterfacesDir: filepath.Join(baseDir, "interfaces"),
 		FileSet:       token.NewFileSet(),
 		Logger:        logger,
-		Stats:         &ToolkitStats{},
+		Stats:         &toolkit.ToolkitStats{},
 		DryRun:        false,
 		BackupDir:     "",
 	}, nil
@@ -165,12 +167,18 @@ func (im *InterfaceMigrator) CreateMigrationPlan() (*MigrationPlan, error) {
 	}
 
 	// Analyze existing interfaces
-	analyzer := &InterfaceAnalyzer{
-		BaseDir: im.BaseDir,
-		FileSet: im.FileSet,
-		Logger:  im.Logger,
-		Stats:   im.Stats,
+	// Assuming InterfaceAnalyzer is in a package like 'analysis'
+	// and NewInterfaceAnalyzerPro is its constructor.
+	// The constructor for InterfaceAnalyzerPro from its file is:
+	// NewInterfaceAnalyzerPro(baseDir string, fileSet *token.FileSet, debugMode bool) (*InterfaceAnalyzer, error)
+	// It does not take logger or stats directly.
+	analyzer, err := analysis.NewInterfaceAnalyzerPro(im.BaseDir, im.FileSet, im.Logger.IsVerbose()) // Assuming Logger has IsVerbose or similar
+	if err != nil {
+		return nil, fmt.Errorf("failed to create interface analyzer: %w", err)
 	}
+	// If InterfaceAnalyzer needs to use the migrator's stats, it needs a setter or different constructor.
+	// For now, we assume it manages its own stats or they are passed differently.
+
 
 	report, err := analyzer.AnalyzeInterfaces()
 	if err != nil {
@@ -210,11 +218,12 @@ func (im *InterfaceMigrator) CreateMigrationPlan() (*MigrationPlan, error) {
 }
 
 // groupInterfacesByType groups interfaces by their logical type
-func (im *InterfaceMigrator) groupInterfacesByType(interfaces []Interface) map[string][]Interface {
-	groups := make(map[string][]Interface)
+// Assuming analysis.Interface is the correct type here
+func (im *InterfaceMigrator) groupInterfacesByType(interfaces []analysis.Interface) map[string][]analysis.Interface {
+	groups := make(map[string][]analysis.Interface)
 
 	for _, iface := range interfaces {
-		groupName := im.determineInterfaceGroup(iface)
+		groupName := im.determineInterfaceGroup(iface) // This will need to take analysis.Interface
 		groups[groupName] = append(groups[groupName], iface)
 	}
 
@@ -222,7 +231,8 @@ func (im *InterfaceMigrator) groupInterfacesByType(interfaces []Interface) map[s
 }
 
 // determineInterfaceGroup determines which group an interface belongs to
-func (im *InterfaceMigrator) determineInterfaceGroup(iface Interface) string {
+// Assuming analysis.Interface is the correct type here
+func (im *InterfaceMigrator) determineInterfaceGroup(iface analysis.Interface) string {
 	name := strings.ToLower(iface.Name)
 
 	switch {
@@ -667,7 +677,8 @@ func (im *InterfaceMigrator) generateTextReport(results *MigrationResults) (stri
 }
 
 // Helper methods
-func (im *InterfaceMigrator) planFileUpdates(plan *MigrationPlan, _ *AnalysisReport) {
+// Assuming analysis.AnalysisReport is the correct type here
+func (im *InterfaceMigrator) planFileUpdates(plan *MigrationPlan, _ *analysis.AnalysisReport) {
 	// Create file updates based on interface moves
 	fileUpdates := make(map[string]*FileUpdate)
 

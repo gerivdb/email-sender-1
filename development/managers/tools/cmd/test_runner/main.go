@@ -5,16 +5,16 @@ package main
 
 import (
 	"fmt"
-	"os"
-	
-	"d:/DO/WEB/N8N_tests/PROJETS/EMAIL_SENDER_1/development/managers/tools"
+	// "os" // Removed unused import
+
+	"github.com/email-sender/tools/core/registry" // Added for TestRegistryFunction
 )
 
 func main() {
 	fmt.Println("Manager Toolkit v3.0.0 - Testing Tool Registry")
 	fmt.Println("---------------------------------------------")
 	
-	tools.TestRegistryFunction()
+	registry.TestRegistryFunction() // Changed from tools.TestRegistryFunction
 	
 	fmt.Println("\nTest complete.")
 }

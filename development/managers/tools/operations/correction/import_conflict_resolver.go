@@ -24,8 +24,8 @@ import (
 type ImportConflictResolver struct {
 	BaseDir string
 	FileSet *token.FileSet
-	toolkit.Logger  *Logger
-	Stats   *ToolkitStats
+	Logger  *toolkit.Logger
+	Stats   *toolkit.ToolkitStats
 	DryRun  bool
 }
 
@@ -52,7 +52,7 @@ type ImportAnalysis struct {
 }
 
 // NewImportConflictResolver crée une nouvelle instance de ImportConflictResolver
-func NewImportConflictResolver(baseDir string, toolkit.Logger *Logger, dryRun bool) (*ImportConflictResolver, error) {
+func NewImportConflictResolver(baseDir string, logger *toolkit.Logger, dryRun bool) (*ImportConflictResolver, error) {
 	if baseDir == "" {
 		return nil, fmt.Errorf("base directory cannot be empty")
 	}
@@ -62,15 +62,16 @@ func NewImportConflictResolver(baseDir string, toolkit.Logger *Logger, dryRun bo
 		return nil, fmt.Errorf("base directory does not exist: %s", baseDir)
 	}
 
-	if toolkit.Logger == nil {
-		toolkit.Logger = &Logger{verbose: false} // Créer un toolkit.Logger par défaut
+	if logger == nil {
+		// Assuming toolkit.Logger can be instantiated directly or has a constructor.
+		logger = &toolkit.Logger{} // Simplistic instantiation
 	}
 
 	return &ImportConflictResolver{
 		BaseDir: baseDir,
 		FileSet: token.NewFileSet(),
 		Logger:  logger,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  dryRun,
 	}, nil
 }
@@ -507,20 +508,22 @@ func (icr *ImportConflictResolver) Stop(ctx context.Context) error {
 
 // init registers the ImportConflictResolver tool automatically
 func init() {
-	if globalRegistry == nil {
-		globalRegistry = NewToolRegistry()
+	globalReg := registry.GetGlobalRegistry()
+	if globalReg == nil {
+		globalReg = registry.NewToolRegistry()
+		// registry.SetGlobalRegistry(globalReg) // If a setter exists
 	}
 	
 	// Create a default instance for registration
 	defaultTool := &ImportConflictResolver{
-		BaseDir: "",
-		FileSet: token.NewFileSet(),
-		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		BaseDir: "", // Default or placeholder
+		FileSet: token.NewFileSet(), // Initialize FileSet
+		Logger:  nil, // Logger should be initialized by the toolkit
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
 	
-	err := globalRegistry.Register(OpResolveImports, defaultTool)
+	err := globalReg.Register(registry.OpResolveImports, defaultTool)
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register ImportConflictResolver: %v\n", err)

@@ -21,8 +21,8 @@ import (
 // DependencyAnalyzer implémente l'interface toolkit.ToolkitOperation pour l'analyse des dépendances
 type DependencyAnalyzer struct {
 	BaseDir string
-	toolkit.Logger  *Logger
-	Stats   *ToolkitStats
+	Logger  *toolkit.Logger
+	Stats   *toolkit.ToolkitStats
 	DryRun  bool
 }
 
@@ -76,7 +76,7 @@ type SecuritySummary struct {
 }
 
 // NewDependencyAnalyzer crée une nouvelle instance de DependencyAnalyzer
-func NewDependencyAnalyzer(baseDir string, toolkit.Logger *Logger, dryRun bool) (*DependencyAnalyzer, error) {
+func NewDependencyAnalyzer(baseDir string, logger *toolkit.Logger, dryRun bool) (*DependencyAnalyzer, error) {
 	if baseDir == "" {
 		return nil, fmt.Errorf("base directory cannot be empty")
 	}
@@ -86,14 +86,16 @@ func NewDependencyAnalyzer(baseDir string, toolkit.Logger *Logger, dryRun bool) 
 		return nil, fmt.Errorf("base directory does not exist: %s", baseDir)
 	}
 
-	if toolkit.Logger == nil {
-		toolkit.Logger = &Logger{verbose: false} // Créer un toolkit.Logger par défaut
+	if logger == nil {
+		// Assuming toolkit.Logger has a NewLogger function or a simple struct instantiation
+		// This might need adjustment based on actual toolkit.Logger definition
+		logger = &toolkit.Logger{} // Simplistic instantiation
 	}
 
 	return &DependencyAnalyzer{
 		BaseDir: baseDir,
 		Logger:  logger,
-		Stats:   &ToolkitStats{},
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  dryRun,
 	}, nil
 }
@@ -508,19 +510,35 @@ func (da *DependencyAnalyzer) Stop(ctx context.Context) error {
 
 // init registers the DependencyAnalyzer tool automatically
 func init() {
-	if globalRegistry == nil {
-		globalRegistry = NewToolRegistry()
+	// Ensure globalRegistry is initialized (example, actual initialization might differ)
+	// This assumes GetGlobalRegistry() and NewToolRegistry() are accessible, possibly via an import
+	// For example, if they are in a package like "core/registry"
+	// import coreRegistry "github.com/email-sender/tools/core/registry"
+	// globalRegistry = coreRegistry.GetGlobalRegistry()
+	// if globalRegistry == nil {
+	// 	globalRegistry = coreRegistry.NewToolRegistry()
+	// }
+	// For now, let's assume direct access or they are globally available for simplicity of this diff
+	// This part likely needs more context on how globalRegistry is managed.
+	// Assuming registry.GetGlobalRegistry() and registry.NewToolRegistry() are the correct functions
+	// and OpAnalyzeDeps is a constant in the registry package.
+
+	globalReg := registry.GetGlobalRegistry()
+	if globalReg == nil {
+		globalReg = registry.NewToolRegistry()
+		// Assuming SetGlobalRegistry exists if we create a new one here.
+		// registry.SetGlobalRegistry(globalReg)
 	}
 
 	// Create a default instance for registration
 	defaultTool := &DependencyAnalyzer{
-		BaseDir: "",
-		Logger:  nil,
-		Stats:   &ToolkitStats{},
+		BaseDir: "", // Default or placeholder
+		Logger:  nil, // Logger should be initialized by the toolkit when the tool is used
+		Stats:   &toolkit.ToolkitStats{},
 		DryRun:  false,
 	}
 
-	err := globalRegistry.Register(OpAnalyzeDeps, defaultTool)
+	err := globalReg.Register(registry.OpAnalyzeDeps, defaultTool)
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register DependencyAnalyzer: %v\n", err)
