@@ -4,8 +4,7 @@
 package analysis
 
 import (
-	"github.com/email-sender/tools/core/registry"
-	"github.com/email-sender/tools/core/toolkit"
+	// "github.com/email-sender/tools/core/registry" // Removed unused import
 	"context"
 	"encoding/json"
 	"fmt"
@@ -16,6 +15,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/email-sender/tools/core/toolkit"
+	managerToolkit "github.com/email-sender/tools/cmd/manager-toolkit" // Added import
 )
 
 func TestSyntaxChecker_ImplementsToolkitOperation(t *testing.T) {
@@ -24,7 +26,10 @@ func TestSyntaxChecker_ImplementsToolkitOperation(t *testing.T) {
 
 func TestSyntaxChecker_NewInstance(t *testing.T) {
 	tmpDir := t.TempDir()
-	logger := &toolkit.Logger{}
+	logger, errLogger := toolkit.NewLogger(false)
+	if errLogger != nil {
+		t.Fatalf("Failed to create logger: %v", errLogger)
+	}
 	stats := &toolkit.ToolkitStats{}
 
 	checker := &SyntaxChecker{
@@ -50,9 +55,9 @@ func TestSyntaxChecker_Validate(t *testing.T) {
 	}{
 		{
 			name: "valid_checker",
-			checker: &SyntaxChecker{
+			checker: &SyntaxChecker{ // Assuming this is for testing Validate, so direct init is fine if fields are set.
 				BaseDir: t.TempDir(),
-				Logger:  &toolkit.Logger{},
+				Logger:  &toolkit.Logger{}, // Ok for test setup if not calling methods that need full init
 			},
 			expectedError: "",
 		},
@@ -97,10 +102,14 @@ func TestSyntaxChecker_Validate(t *testing.T) {
 
 func TestSyntaxChecker_HealthCheck(t *testing.T) {
 	tmpDir := t.TempDir()
+	loggerH, errLoggerH := toolkit.NewLogger(false)
+	if errLoggerH != nil {
+		t.Fatalf("Failed to create logger for HealthCheck: %v", errLoggerH)
+	}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
-		Logger:  &toolkit.Logger{},
+		Logger:  loggerH,
 		Stats:   &toolkit.ToolkitStats{},
 	}
 
@@ -117,7 +126,7 @@ func TestSyntaxChecker_HealthCheck_Failures(t *testing.T) {
 	}{
 		{
 			name: "missing_fileset",
-			checker: &SyntaxChecker{
+			checker: &SyntaxChecker{ // Test setup for Validate/HealthCheck, direct init is ok
 				BaseDir: t.TempDir(),
 				Logger:  &toolkit.Logger{},
 			},
@@ -151,10 +160,14 @@ func TestSyntaxChecker_CollectMetrics(t *testing.T) {
 		ErrorsFixed:   3,
 	}
 
+	loggerC, errLoggerC := toolkit.NewLogger(false)
+	if errLoggerC != nil {
+		t.Fatalf("Failed to create logger for CollectMetrics: %v", errLoggerC)
+	}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
-		Logger:  &toolkit.Logger{},
+		Logger:  loggerC,
 		Stats:   stats,
 		DryRun:  true,
 	}
@@ -189,7 +202,10 @@ func main() {
 	err := os.WriteFile(goFile, []byte(validGoCode), 0644)
 	require.NoError(t, err)
 
-	logger := &toolkit.Logger{}
+	logger, errLoggerV := toolkit.NewLogger(false)
+	if errLoggerV != nil {
+		t.Fatalf("Failed to create logger: %v", errLoggerV)
+	}
 	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
@@ -236,7 +252,10 @@ func main() {
 	err := os.WriteFile(goFile, []byte(invalidGoCode), 0644)
 	require.NoError(t, err)
 
-	logger := &toolkit.Logger{}
+	logger, errLoggerS := toolkit.NewLogger(false)
+	if errLoggerS != nil {
+		t.Fatalf("Failed to create logger: %v", errLoggerS)
+	}
 	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
@@ -292,7 +311,10 @@ fmt.Println("Hello, World!")
 	err := os.WriteFile(goFile, []byte(unformattedGoCode), 0644)
 	require.NoError(t, err)
 
-	logger := &toolkit.Logger{}
+	logger, errLoggerF := toolkit.NewLogger(false)
+	if errLoggerF != nil {
+		t.Fatalf("Failed to create logger: %v", errLoggerF)
+	}
 	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
@@ -344,7 +366,10 @@ fmt.Println("Hello, World!")
 	originalContent, err := os.ReadFile(goFile)
 	require.NoError(t, err)
 
-	logger := &toolkit.Logger{}
+	logger, errLoggerD := toolkit.NewLogger(false)
+	if errLoggerD != nil {
+		t.Fatalf("Failed to create logger: %v", errLoggerD)
+	}
 	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
@@ -381,8 +406,12 @@ fmt.Println("Hello, World!")
 }
 
 func TestSyntaxChecker_AnalyzeSyntaxError(t *testing.T) {
+	loggerSA, errLoggerSA := toolkit.NewLogger(false)
+	if errLoggerSA != nil {
+		t.Fatalf("Failed to create logger for AnalyzeSyntaxError: %v", errLoggerSA)
+	}
 	checker := &SyntaxChecker{
-		Logger: &toolkit.Logger{},
+		Logger: loggerSA,
 	}
 
 	file := "test.go"
@@ -508,9 +537,10 @@ fmt.Println("Hello, World!")
 	require.NoError(t, err)
 
 	// Create ManagerToolkit instance
-	toolkit, err := NewManagerToolkit(tmpDir, "", false)
+	// Add import: managerToolkit "github.com/email-sender/tools/cmd/manager-toolkit"
+	mtk, err := managerToolkit.NewManagerToolkit(tmpDir, "", false)
 	require.NoError(t, err)
-	defer toolkit.Close()
+	defer mtk.Close()
 
 	ctx := context.Background()
 	options := &toolkit.OperationOptions{
@@ -523,14 +553,14 @@ fmt.Println("Hello, World!")
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,
 		FileSet: token.NewFileSet(),
-		Logger:  toolkit.Logger,
-		Stats:   toolkit.Stats,
+		Logger:  mtk.Logger, // Use logger from manager toolkit instance
+		Stats:   mtk.Stats,  // Use stats from manager toolkit instance
 		DryRun:  false,
 	}
 
 	err = checker.Execute(ctx, options)
 	assert.NoError(t, err)
-	assert.Greater(t, toolkit.Stats.FilesAnalyzed, 0)
+	assert.Greater(t, mtk.Stats.FilesAnalyzed, 0) // Check stats from manager toolkit instance
 
 	// Verify report exists
 	_, err = os.Stat(options.Output)
@@ -560,7 +590,10 @@ func main() {
 		require.NoError(b, err)
 	}
 
-	logger := &toolkit.Logger{}
+	loggerB, errLoggerB := toolkit.NewLogger(false)
+	if errLoggerB != nil {
+		b.Fatalf("Failed to create logger: %v", errLoggerB)
+	}
 	stats := &toolkit.ToolkitStats{}
 	checker := &SyntaxChecker{
 		BaseDir: tmpDir,

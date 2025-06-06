@@ -60,6 +60,7 @@ type ToolkitConfig struct {
 	LogPath    string
 	MaxWorkers int
 	Plugins    []string
+	EnableDryRun bool `json:"enable_dry_run"`
 }
 
 // Constantes d'opération partagées
