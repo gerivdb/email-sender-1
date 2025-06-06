@@ -98,7 +98,7 @@ type ImportReport struct {
 }
 
 // Execute implémente ToolkitOperation.Execute
-func (icr *ImportConflictResolver) Execute(ctx context.Context, options *OperationOptions) error {
+func (icr *ImportConflictResolver) Execute(ctx context.Context, options *toolkit.OperationOptions) error {
 	icr.Logger.Info("🔍 Starting import conflict resolution on: %s", options.Target)
 	startTime := time.Now()
 
@@ -469,11 +469,13 @@ func (icr *ImportConflictResolver) Validate(ctx context.Context) error {
 // CollectMetrics implémente ToolkitOperation.CollectMetrics
 func (icr *ImportConflictResolver) CollectMetrics() map[string]interface{} {
 	return map[string]interface{}{
-		"tool":            "ImportConflictResolver",
-		"files_analyzed":  icr.Stats.FilesAnalyzed,
-		"conflicts_fixed": icr.Stats.ErrorsFixed,
-		"dry_run_mode":    icr.DryRun,
-		"base_directory":  icr.BaseDir,
+		"tool":             "ImportConflictResolver",
+		"files_analyzed":   icr.Stats.FilesAnalyzed,    // Number of files checked
+		"conflicts_fixed":  icr.Stats.ErrorsFixed,      // Number of conflicts actually fixed
+		"dry_run":          icr.DryRun,                 // Changed key from dry_run_mode
+		"base_dir":         icr.BaseDir,                // Changed key from base_directory
+		// "conflicts_found": placeholder_value, // Test expects this, but it's not explicitly tracked in stats. Could be len(conflicts) from Execute.
+		// "duplicates_removed": not applicable to this tool
 	}
 }
 
@@ -523,7 +525,7 @@ func init() {
 		DryRun:  false,
 	}
 	
-	err := globalReg.Register(registry.OpResolveImports, defaultTool)
+	err := globalReg.Register(toolkit.ResolveImports, defaultTool) // Changed to toolkit.ResolveImports
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register ImportConflictResolver: %v\n", err)

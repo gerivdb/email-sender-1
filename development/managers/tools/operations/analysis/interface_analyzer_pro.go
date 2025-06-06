@@ -16,6 +16,9 @@ import (
 	"time"
 )
 
+// ToolVersion defines the current version of this specific tool or the toolkit.
+const ToolVersion = "3.0.0"
+
 // InterfaceAnalyzer provides comprehensive interface analysis capabilities
 type InterfaceAnalyzer struct {
 	BaseDir string
@@ -111,7 +114,7 @@ type AnalysisReport struct {
 	Dependencies      map[string][]string    `json:"dependencies"`
 	ComplexityMetrics *ComplexityMetrics     `json:"complexity_metrics"`
 	QualityScore      QualityScore           `json:"quality_score"`
-	Stats             *ToolkitStats          `json:"stats"`
+	Stats             *toolkit.ToolkitStats  `json:"stats"` // Changed to toolkit.ToolkitStats
 }
 
 // QualityScore represents the overall quality score with details

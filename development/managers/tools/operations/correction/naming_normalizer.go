@@ -66,7 +66,7 @@ func NewNamingNormalizer(baseDir string, logger *toolkit.Logger, stats *toolkit.
 }
 
 // Execute implements ToolkitOperation.Execute
-func (nn *NamingNormalizer) Execute(ctx context.Context, options *OperationOptions) error {
+func (nn *NamingNormalizer) Execute(ctx context.Context, options *toolkit.OperationOptions) error {
 	nn.Logger.Info("🔧 Starting naming convention normalization on: %s", options.Target)
 	
 	if nn.DryRun {
@@ -230,6 +230,20 @@ func (nn *NamingNormalizer) checkTypeNaming(typeSpec *ast.TypeSpec, filePath str
 
 // checkInterfaceNaming validates interface naming conventions
 func (nn *NamingNormalizer) checkInterfaceNaming(name string, line int) *NamingIssue {
+	// Avoid redundant suffixes like "ManagerInterface" - This check should come first
+	if strings.HasSuffix(name, "ManagerInterface") {
+		suggested := strings.Replace(name, "ManagerInterface", "Manager", 1)
+		return &NamingIssue{
+			Type:        "interface",
+			Current:     name,
+			Suggested:   suggested,
+			Line:        line,
+			Reason:      "Redundant 'ManagerInterface' suffix", // This reason should now be reported
+			Severity:    "error",
+			AutoFixable: true, // This autoFixable should now be reported
+		}
+	}
+
 	// Interfaces should end with "Manager" or be single-word descriptive names
 	if !strings.HasSuffix(name, "Manager") && !nn.isSingleWordInterface(name) {
 		return &NamingIssue{
@@ -240,20 +254,6 @@ func (nn *NamingNormalizer) checkInterfaceNaming(name string, line int) *NamingI
 			Reason:      "Interface should end with 'Manager' or be a single descriptive word",
 			Severity:    "warning",
 			AutoFixable: false, // Requires manual review due to semantic implications
-		}
-	}
-	
-	// Avoid redundant suffixes like "ManagerInterface"
-	if strings.HasSuffix(name, "ManagerInterface") {
-		suggested := strings.Replace(name, "ManagerInterface", "Manager", 1)
-		return &NamingIssue{
-			Type:        "interface",
-			Current:     name,
-			Suggested:   suggested,
-			Line:        line,
-			Reason:      "Redundant 'ManagerInterface' suffix",
-			Severity:    "error",
-			AutoFixable: true,
 		}
 	}
 	
@@ -643,7 +643,7 @@ func init() {
 		DryRun:  false,
 	}
 	
-	err := globalReg.Register(registry.OpNormalizeNaming, defaultTool)
+	err := globalReg.Register(toolkit.NormalizeNaming, defaultTool) // Changed to toolkit.NormalizeNaming
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register NamingNormalizer: %v\n", err)
