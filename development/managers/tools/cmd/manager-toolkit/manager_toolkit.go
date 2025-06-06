@@ -14,10 +14,14 @@ import (
 	"go/token"
 	"log"
 	"os"
-	"path/filepath"
+	// "path/filepath" // Removed as it's likely unused after local NewLogger removal
 	"time"
 
 	"github.com/email-sender/tools/core/toolkit"
+	"github.com/email-sender/tools/operations/analysis"    // Added for analysis tools
+	"github.com/email-sender/tools/operations/correction"  // Added for correction tools
+	"github.com/email-sender/tools/operations/migration"   // Added for migration tools
+	"github.com/email-sender/tools/operations/validation"  // Added for validation tools
 )
 
 // Configuration constants
@@ -262,7 +266,7 @@ func (mt *ManagerToolkit) RunStructValidation(ctx context.Context, opts *toolkit
 
 	// Create a new struct validator
 	// Assuming NewStructValidator takes *toolkit.Logger
-	validator, err := NewStructValidator(mt.BaseDir, mt.Logger, mt.Config.EnableDryRun)
+	validator, err := validation.NewStructValidator(mt.BaseDir, mt.Logger, mt.Config.EnableDryRun) // Qualified
 	if err != nil {
 		return fmt.Errorf("failed to create struct validator: %w", err)
 	}
@@ -287,7 +291,7 @@ func (mt *ManagerToolkit) RunImportConflictResolution(ctx context.Context, opts 
 
 	// Create a new import conflict resolver
 	// Assuming ImportConflictResolver uses *toolkit.Logger and *toolkit.ToolkitStats
-	resolver := &ImportConflictResolver{
+	resolver := &correction.ImportConflictResolver{ // Qualified
 		BaseDir: mt.BaseDir,
 		FileSet: token.NewFileSet(),
 		Logger:  mt.Logger,
@@ -317,7 +321,7 @@ func (mt *ManagerToolkit) RunDependencyAnalysis(ctx context.Context, opts *toolk
 
 	// Create a new dependency analyzer
 	// Assuming DependencyAnalyzer uses *toolkit.Logger and *toolkit.ToolkitStats
-	analyzer := &DependencyAnalyzer{
+	analyzer := &analysis.DependencyAnalyzer{ // Qualified
 		BaseDir: mt.BaseDir,
 		Logger:  mt.Logger,
 		Stats:   mt.Stats, // This is now *toolkit.ToolkitStats
@@ -344,7 +348,7 @@ func (mt *ManagerToolkit) RunDuplicateTypeDetection(ctx context.Context, opts *t
 
 	// Create a new duplicate type detector
 	// Assuming DuplicateTypeDetector uses *toolkit.Logger and *toolkit.ToolkitStats
-	detector := &DuplicateTypeDetector{
+	detector := &analysis.DuplicateTypeDetector{ // Qualified
 		BaseDir: mt.BaseDir,
 		FileSet: token.NewFileSet(),
 		Logger:  mt.Logger,
@@ -447,7 +451,7 @@ func (mt *ManagerToolkit) RunTypeDefGen(ctx context.Context, opts *toolkit.Opera
 	mt.Logger.Info("🔧 Starting type definition generation...")
 
 	// Assuming NewTypeDefGenerator uses *toolkit.Logger and *toolkit.ToolkitStats
-	generator := NewTypeDefGenerator(mt.BaseDir, mt.Logger, mt.Stats, mt.Config.EnableDryRun)
+	generator := migration.NewTypeDefGenerator(mt.BaseDir, mt.Logger, mt.Stats, mt.Config.EnableDryRun) // Qualified
 
 	if err := generator.Validate(ctx); err != nil {
 		return fmt.Errorf("type definition generator validation failed: %w", err)
@@ -466,7 +470,7 @@ func (mt *ManagerToolkit) RunNormalizeNaming(ctx context.Context, opts *toolkit.
 	mt.Logger.Info("🔧 Starting naming normalization...")
 
 	// Assuming NewNamingNormalizer uses *toolkit.Logger and *toolkit.ToolkitStats
-	normalizer := NewNamingNormalizer(mt.BaseDir, mt.Logger, mt.Stats, mt.Config.EnableDryRun)
+	normalizer := correction.NewNamingNormalizer(mt.BaseDir, mt.Logger, mt.Stats, mt.Config.EnableDryRun) // Qualified
 
 	if err := normalizer.Validate(ctx); err != nil {
 		return fmt.Errorf("naming normalizer validation failed: %w", err)
@@ -485,7 +489,7 @@ func (mt *ManagerToolkit) RunSyntaxCheck(ctx context.Context, opts *toolkit.Oper
 	mt.Logger.Info("🔧 Starting syntax checking...")
 
 	// Assuming NewSyntaxChecker uses *toolkit.Logger and *toolkit.ToolkitStats
-	checker := NewSyntaxChecker(mt.BaseDir, mt.Logger, mt.Stats, mt.Config.EnableDryRun)
+	checker := analysis.NewSyntaxChecker(mt.BaseDir, mt.Logger, mt.Stats, mt.Config.EnableDryRun) // Qualified
 
 	if err := checker.Validate(ctx); err != nil {
 		return fmt.Errorf("syntax checker validation failed: %w", err)

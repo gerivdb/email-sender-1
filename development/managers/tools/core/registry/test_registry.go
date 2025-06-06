@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	// Core packages
-	"github.com/email-sender/tools/core/registry"
+	// "github.com/email-sender/tools/core/registry" // Removed self-import
 	"github.com/email-sender/tools/core/toolkit"
 
 	// Operations packages
@@ -102,17 +102,17 @@ func TestAllTools() {
 	}
 	
 	// Test registry
-	globalReg := registry.GetGlobalRegistry() // Assuming GetGlobalRegistry is from the imported "github.com/email-sender/tools/core/registry"
+	globalReg := GetGlobalRegistry() // Changed from registry.GetGlobalRegistry()
 	if globalReg == nil {
 		fmt.Println("\nERROR: Global registry is nil")
 		return
 	}
 	
-	operations := registry.ListOperations()
+	operations := globalReg.ListOperations() // Changed from registry.ListOperations()
 	fmt.Printf("\nRegistered operations: %d\n", len(operations))
 	
 	for i, op := range operations {
-		tool, err := registry.GetTool(op)
+		tool, err := globalReg.GetTool(op) // Changed from registry.GetTool(op)
 		if err != nil {
 			fmt.Printf("%d. %s - ERROR: %v\n", i+1, op, err)
 		} else {

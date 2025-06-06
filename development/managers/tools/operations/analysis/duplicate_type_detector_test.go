@@ -38,10 +38,10 @@ func TestNewDuplicateTypeDetector(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			logger := &toolkit.Logger{} // verbose = false
-			// if err != nil {
-			// 	t.Fatalf("Failed to create logger: %v", err)
-			// }
+			logger, errLog := toolkit.NewLogger(false) // Use toolkit.NewLogger
+			if errLog != nil {
+				t.Fatalf("Failed to create logger for test: %v", errLog)
+			}
 			stats := &toolkit.ToolkitStats{}
 
 			detector := &DuplicateTypeDetector{
@@ -83,10 +83,11 @@ func TestDuplicateTypeDetector_ToolkitOperationInterface(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger := &toolkit.Logger{} // verbose = false
-	// if err != nil {
-	// 	t.Fatalf("Failed to create logger: %v", err)
-	// }
+	logger, errLog := toolkit.NewLogger(false) // Use toolkit.NewLogger
+	if errLog != nil {
+		t.Fatalf("Failed to create logger for test: %v", errLog)
+	}
+	// Removed duplicate logger initialization
 	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
@@ -267,10 +268,10 @@ func TestDuplicateTypeDetector_DetectDuplicates(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger := &toolkit.Logger{} // verbose = false
-	// if err != nil {
-	// 	t.Fatalf("Failed to create logger: %v", err)
-	// }
+	logger, errLog := toolkit.NewLogger(false)
+	if errLog != nil {
+		t.Fatalf("Failed to create logger: %v", errLog)
+	}
 	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
@@ -438,15 +439,13 @@ func TestDuplicateTypeDetector_TypeSignatures(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger := &toolkit.Logger{} // verbose = false
-	// if err != nil {
-	// 	t.Fatalf("Failed to create logger: %v", err)
-	// }
-	stats := &toolkit.ToolkitStats{}
-	logger := &toolkit.Logger{} // verbose = false
-	// if err != nil {
-	// 	t.Fatalf("Failed to create logger: %v", err)
-	// }
+	// logger, errLog := toolkit.NewLogger(false) // This logger is for the detector instance below
+	// if errLog != nil {
+	// Use a single, correct initialization for logger, stats, and detector.
+	logger, errLog := toolkit.NewLogger(false)
+	if errLog != nil {
+		t.Fatalf("Failed to create logger for TypeSignatures test: %v", errLog)
+	}
 	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
@@ -456,6 +455,7 @@ func TestDuplicateTypeDetector_TypeSignatures(t *testing.T) {
 		Stats:   stats,
 		DryRun:  false,
 	}
+	// Removed the duplicated/messy detector instantiation based on the context of the test function.
 
 	// Test avec différents types pour vérifier les signatures
 	testFile := filepath.Join(tempDir, "types.go")
@@ -524,11 +524,11 @@ func TestDuplicateTypeDetector_SeverityCalculation(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger, err := NewLogger(false) // verbose = false
-	if err != nil {
-		t.Fatalf("Failed to create logger: %v", err)
+	logger, errLog := toolkit.NewLogger(false) // Use toolkit.NewLogger
+	if errLog != nil {
+		t.Fatalf("Failed to create logger for test: %v", errLog)
 	}
-	stats := &ToolkitStats{}
+	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
 		BaseDir: tempDir,
@@ -609,10 +609,11 @@ func TestDuplicateTypeDetector_DryRunMode(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger := &toolkit.Logger{} // verbose = false
-	// if err != nil {
-	// 	t.Fatalf("Failed to create logger: %v", err)
-	// }
+	logger, errLog := toolkit.NewLogger(false) // Use toolkit.NewLogger
+	if errLog != nil {
+		t.Fatalf("Failed to create logger for test: %v", errLog)
+	}
+	// Removed duplicate logger initialization
 	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
@@ -670,10 +671,10 @@ func TestDuplicateTypeDetector_EdgeCases(t *testing.T) {
 	}
 	defer os.RemoveAll(tempDir)
 
-	logger := &toolkit.Logger{} // verbose = false
-	// if err != nil {
-	// 	t.Fatalf("Failed to create logger: %v", err)
-	// }
+	logger, errLog := toolkit.NewLogger(false)
+	if errLog != nil {
+		t.Fatalf("Failed to create logger: %v", errLog)
+	}
 	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
@@ -846,10 +847,10 @@ type Handler%d interface {
 		}
 	}
 
-	logger := &toolkit.Logger{} // Réduire les logs pour le benchmark
-	// if err != nil {
-	// 	b.Fatalf("Failed to create logger: %v", err)
-	// }
+	logger, errLog := toolkit.NewLogger(false) // Réduire les logs pour le benchmark, Use toolkit.NewLogger
+	if errLog != nil {
+		b.Fatalf("Failed to create logger for benchmark: %v", errLog)
+	}
 	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{
@@ -928,10 +929,10 @@ func (s *Service%d) Process%d() error {
 		}
 	}
 
-	logger := &toolkit.Logger{}
-	// if err != nil {
-	// 	b.Fatalf("Failed to create logger: %v", err)
-	// }
+	logger, errLog := toolkit.NewLogger(false) // Use toolkit.NewLogger
+	if errLog != nil {
+		b.Fatalf("Failed to create logger for benchmark: %v", errLog)
+	}
 	stats := &toolkit.ToolkitStats{}
 
 	detector := &DuplicateTypeDetector{

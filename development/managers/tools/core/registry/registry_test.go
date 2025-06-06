@@ -4,7 +4,7 @@
 package registry
 
 import (
-	"github.com/email-sender/tools/core/registry"
+	// "github.com/email-sender/tools/core/registry" // Removed self-import
 	"context"
 	"fmt"
 	"testing"
