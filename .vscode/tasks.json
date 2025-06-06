@@ -13,7 +13,7 @@
     {
       "label": "clean.all",
       "type": "shell",
-      "command": "rm -rf ${workspaceFolder}/development/scripts/python/__pycache__ && rm -rf ${workspaceFolder}/development/scripts/cmd/__pycache__",
+      "command": "rm -rf ${env:PYTHON_PATH}/__pycache__",
       "problemMatcher": [],
       "group": "none",
       "presentation": {
@@ -25,17 +25,6 @@
       "label": "clean.python",
       "type": "shell",
       "command": "find ${env:PYTHON_PATH} -name \"__pycache__\" -exec rm -rf {} +",
-      "problemMatcher": [],
-      "group": "none",
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      }
-    },
-    {
-      "label": "clean.cmd",
-      "type": "shell",
-      "command": "${env:POWERSHELL_PATH}/clean.ps1",
       "problemMatcher": [],
       "group": "none",
       "presentation": {
@@ -127,7 +116,7 @@
         "kind": "build",
         "isDefault": true
       },
-      "dependsOn": ["go.lint", "go.test-all", "go.build"],
+      "dependsOn": ["go.lint.build", "go.test-all", "go.build"],
       "dependsOrder": "sequence",
       "problemMatcher": [],
       "presentation": {
@@ -162,7 +151,10 @@
       "label": "go.test-all",
       "type": "shell",
       "command": "go test ./... -v -short",
-      "group": "test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
       "problemMatcher": ["$go"],
       "presentation": {
         "reveal": "always",
@@ -170,18 +162,30 @@
       }
     },
     {
-  "label": "go.lint",
+  "label": "go.lint.build",
   "type": "shell",
   "command": "golangci-lint run",
   "group": "build",
-  "problemMatcher": ["$go"],
+  "problemMatcher": [
+    {
+      "owner": "go",
+      "fileLocation": ["relative", "${workspaceFolder}"],
+      "pattern": {
+        "regexp": "^(.+):(\\d+):(\\d+):\\s*(.+)$",
+        "file": 1,
+        "line": 2,
+        "column": 3,
+        "message": 4
+      }
+    }
+  ],
   "presentation": {
     "reveal": "always",
     "panel": "shared"
   }
 },
     {
-      "label": "go.lint",
+      "label": "go.lint.test",
       "type": "shell",
       "command": "golangci-lint run --fast",
       "group": "test",
@@ -208,7 +212,7 @@
     {
       "label": "env.setup",
       "type": "shell",
-      "command": "python -m venv .venv && .venv/Scripts/activate && pip install -r requirements.txt",
+      "command": "python -m venv .venv && .venv/Scripts/activate && pip install -r projet/config/requirements.txt",
       "problemMatcher": [],
       "group": "none",
       "presentation": {
@@ -230,7 +234,7 @@
     {
       "label": "git.commit",
       "type": "shell",
-      "command": "git add . && git commit -m \"${input:commitMessage}\" && git push",
+      "command": "git commit -m \"${input:commitMessage}\"",
       "problemMatcher": [],
       "group": "none",
       "presentation": {

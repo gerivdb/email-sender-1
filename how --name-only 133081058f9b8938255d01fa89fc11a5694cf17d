@@ -1,0 +1,15 @@
+[33mcommit 133081058f9b8938255d01fa89fc11a5694cf17d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Merge: 2ec76c33 9d2766f7
+Author: gerivdb <gerivonderbitsh+dev@gmail.com>
+Date:   Fri Jun 6 12:23:00 2025 +0200
+
+    Merge pull request #2 from gerivdb/fix/resolve-16-ide-errors
+    
+    Fix: Resolve 16 IDE-reported Go compilation errors
+
+ .../tools/core/toolkit/advanced_utilities.go       | 50 [32m+++++++++++[m[31m-----------[m
+ go.mod                                             |  3 [32m++[m
+ tests/integration_v49/integration_test_v49.go      |  2 [32m+[m[31m-[m
+ tests/test_runners/test_run.go                     |  3 [32m++[m
+ tests/test_runners/validation_test_phase1.1.go     |  4 [32m+[m[31m-[m
+ 5 files changed, 34 insertions(+), 28 deletions(-)
