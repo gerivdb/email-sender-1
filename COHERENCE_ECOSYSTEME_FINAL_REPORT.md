@@ -6,7 +6,7 @@
 
 ## 🎯 Objectif Initial
 
-Adapter le plan de développement v49 (`projet\roadmaps\plans\consolidated\plan-dev-v49-integration-new-tools-Toolkit.md`) pour qu'il soit cohérent avec la nouvelle documentation v3.0.0 (`development\managers\tools\TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md`).
+Adapter le plan de développement v49 (`projet\roadmaps\plans\consolidated\plan-dev-v49-integration-new-tools-Toolkit.md`) pour qu'il soit cohérent avec la nouvelle documentation v3.0.0 (`development\managers\tools\docs\TOOLS_ECOSYSTEM_DOCUMENTATION_V3.md`).
 
 ## ✅ Réalisations Complètes
 
@@ -40,7 +40,7 @@ Adapter le plan de développement v49 (`projet\roadmaps\plans\consolidated\plan-
 
 ### 2. Mise à Jour du README.md ✅
 
-**Fichier** : `development\managers\tools\README.md`
+**Fichier** : `development\managers\tools\docs\README.md`
 
 **Ajouts v3.0.0** :
 - **Section nouvelles fonctionnalités v3.0.0** complète
