@@ -3,9 +3,10 @@
 package migration
 
 import (
-	"github.com/email-sender/tools/core/toolkit"
 	"context"
 	"fmt"
+	"github.com/email-sender/tools/core/toolkit"
+	"github.com/email-sender/tools/operations/analysis" // Added import
 	"go/ast"
 	"go/format"
 	"go/parser"
@@ -17,6 +18,9 @@ import (
 	"strings"
 	"time"
 )
+
+// ToolVersion defines the current version of this specific tool or the toolkit.
+const ToolVersion = "3.0.0"
 
 // InterfaceMigrator handles professional interface migration with backup and validation
 type InterfaceMigrator struct {
@@ -334,14 +338,42 @@ func (im *InterfaceMigrator) generateSingleInterfaceFile(spec NewFileSpec, plan 
 	content.WriteString(fmt.Sprintf("package %s\n\n", spec.PackageName))
 
 	// Imports
-	if len(spec.Imports) > 0 {
-		content.WriteString("import (
-	"github.com/email-sender/tools/core/toolkit"\n")
-		for _, imp := range spec.Imports {
-			content.WriteString(fmt.Sprintf("\t%s\n", imp))
+	// Consolidate all imports, always include toolkit if any other spec.Imports exist or if spec.Imports itself is non-empty.
+	// The original logic would only add the toolkit import if spec.Imports was non-empty.
+	// A more robust way is to decide if toolkit is always needed, or conditionally.
+	// For now, let's ensure an import block is written if there are any imports at all.
+
+	effectiveImports := []string{}
+	if len(spec.Imports) > 0 { // If there are specific imports, assume toolkit is also needed as per original structure
+		effectiveImports = append(effectiveImports, `"github.com/email-sender/tools/core/toolkit"`)
+		effectiveImports = append(effectiveImports, spec.Imports...)
+	} else {
+		// If spec.Imports is empty, decide if "github.com/email-sender/tools/core/toolkit" should still be imported.
+		// The original code would not import anything if spec.Imports was empty.
+		// To maintain that, we can keep this 'else' block empty or add specific logic if toolkit is mandatory.
+		// For this fix, I will ensure that if spec.Imports are present, toolkit is also there.
+		// If spec.Imports is empty, no import block is generated, matching original behavior.
+	}
+
+
+	if len(effectiveImports) > 0 {
+		content.WriteString("import (\n")
+		for _, impPath := range effectiveImports {
+			cleanImpPath := strings.TrimSpace(impPath)
+			if !strings.HasPrefix(cleanImpPath, `"`) {
+				// Ensure paths like `fmt` become `"fmt"`
+				// and paths like `alias "path/to/pkg"` remain as is if spec.Imports can contain aliases.
+				// Assuming spec.Imports contains already quoted paths or simple unquoted standard paths.
+				// For simplicity and to match original Sprintf behavior for spec.Imports:
+				if !strings.Contains(cleanImpPath, " ") && !strings.HasPrefix(cleanImpPath, `"`) {
+					cleanImpPath = `"` + cleanImpPath + `"`
+				}
+			}
+			content.WriteString("\t" + cleanImpPath + "\n")
 		}
 		content.WriteString(")\n\n")
 	}
+
 
 	// Interfaces
 	for _, interfaceName := range spec.Interfaces {

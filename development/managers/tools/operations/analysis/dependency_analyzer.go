@@ -101,7 +101,7 @@ func NewDependencyAnalyzer(baseDir string, logger *toolkit.Logger, dryRun bool) 
 }
 
 // Execute implémente ToolkitOperation.Execute
-func (da *DependencyAnalyzer) Execute(ctx context.Context, options *OperationOptions) error {
+func (da *DependencyAnalyzer) Execute(ctx context.Context, options *toolkit.OperationOptions) error {
 	da.Logger.Info("🔍 Starting dependency analysis on: %s", options.Target)
 	startTime := time.Now()
 
@@ -538,7 +538,7 @@ func init() {
 		DryRun:  false,
 	}
 
-	err := globalReg.Register(registry.OpAnalyzeDeps, defaultTool)
+	err := globalReg.Register(toolkit.AnalyzeDeps, defaultTool) // Changed to toolkit.AnalyzeDeps
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register DependencyAnalyzer: %v\n", err)

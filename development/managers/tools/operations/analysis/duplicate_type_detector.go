@@ -446,7 +446,7 @@ func init() {
 		DryRun:  false,
 	}
 	
-	err := globalReg.Register(registry.OpDetectDuplicates, defaultTool)
+	err := globalReg.Register(toolkit.DetectDuplicates, defaultTool) // Changed to toolkit.DetectDuplicates
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register DuplicateTypeDetector: %v\n", err)

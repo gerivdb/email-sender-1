@@ -469,7 +469,7 @@ func init() {
 		DryRun:  false,
 	}
 	
-	err := globalReg.Register(registry.OpSyntaxCheck, defaultTool)
+	err := globalReg.Register(toolkit.SyntaxCheck, defaultTool) // Changed to toolkit.SyntaxCheck
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register SyntaxChecker: %v\n", err)

@@ -390,8 +390,8 @@ func (sv *StructValidator) CollectMetrics() map[string]interface{} {
 		"files_analyzed":    sv.Stats.FilesAnalyzed,
 		"structs_analyzed":  sv.Stats.FilesModified, // Réutilisation de cette métrique
 		"errors_found":      sv.Stats.ErrorsFixed,
-		"dry_run_mode":      sv.DryRun,
-		"base_directory":    sv.BaseDir,
+		"dry_run":           sv.DryRun,                // Changed key
+		"base_dir":          sv.BaseDir,               // Changed key
 		"semantic_analysis": true,
 		"type_checking":     sv.Package != nil,
 		"validation_rules":  []string{"naming", "json_tags", "type_safety", "best_practices"},
@@ -543,19 +543,20 @@ func (sv *StructValidator) validateStructEnhanced(filePath, structName string, s
 			}
 
 			// Validation des autres balises courantes
-			if warnings := sv.validateOtherTags(tagValue); len(warnings) > 0 {
-				for _, warning := range warnings {
+			if tagSpecificWarnings := sv.validateOtherTags(tagValue); len(tagSpecificWarnings) > 0 { // Renamed to avoid shadowing
+				for _, warningMsg := range tagSpecificWarnings { // Iterate over string warnings
 					fieldName := "anonymous"
 					if len(field.Names) > 0 {
 						fieldName = field.Names[0].Name
 					}
 
+					// Append to the outer 'warnings' slice which is of type []ValidationError
 					warnings = append(warnings, ValidationError{
 						File:         filePath,
 						StructName:   structName,
 						FieldName:    fieldName,
 						ErrorType:    "tag_warning",
-						Description:  warning,
+						Description:  warningMsg, // Use the string message here
 						Line:         sv.FileSet.Position(field.Tag.Pos()).Line,
 						Column:       sv.FileSet.Position(field.Tag.Pos()).Column,
 						Severity:     "warning",

@@ -82,7 +82,7 @@ func NewTypeDefGenerator(baseDir string, logger *toolkit.Logger, stats *toolkit.
 }
 
 // Execute implémente ToolkitOperation.Execute
-func (tdg *TypeDefGenerator) Execute(ctx context.Context, options *OperationOptions) error {
+func (tdg *TypeDefGenerator) Execute(ctx context.Context, options *toolkit.OperationOptions) error {
 	if tdg.Logger == nil {
 		return fmt.Errorf("logger is required")
 	}
@@ -490,7 +490,7 @@ func init() {
 		DryRun:  false,
 	}
 	
-	err := globalReg.Register(registry.OpTypeDefGen, defaultTool)
+	err := globalReg.Register(toolkit.TypeDefGen, defaultTool) // Changed to toolkit.TypeDefGen
 	if err != nil {
 		// Log error but don't panic during package initialization
 		fmt.Printf("Warning: Failed to register TypeDefGenerator: %v\n", err)
