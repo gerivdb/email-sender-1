@@ -1,7 +1,7 @@
 // Manager Toolkit - Interface Migrator Professional Tests
 // Tests for interface_migrator_pro.go functionality
 
-package main
+package tools
 
 import (
 	"context"

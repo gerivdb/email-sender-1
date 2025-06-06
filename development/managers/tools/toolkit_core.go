@@ -1,6 +1,6 @@
 // Manager Toolkit - Core Implementation (Part 2)
 
-package main
+package tools
 
 import (
 	"context"
@@ -11,6 +11,14 @@ import (
 	"path/filepath"
 	"time"
 )
+
+// ToolkitOperation represents the common interface for all toolkit operations
+type ToolkitOperation interface {
+	Execute(ctx context.Context, options *OperationOptions) error
+	Validate(ctx context.Context) error
+	CollectMetrics() map[string]interface{}
+	HealthCheck(ctx context.Context) error
+}
 
 // OperationOptions holds options for operations
 type OperationOptions struct {
@@ -72,6 +80,15 @@ func (mt *ManagerToolkit) ExecuteOperation(ctx context.Context, op Operation, op
 		err = mt.InitializeConfig(ctx, opts)
 	case OpFullSuite:
 		err = mt.RunFullSuite(ctx, opts)
+	// Phase 1.1.1 & 1.1.2 - New Analysis Operations
+	case OpValidateStructs:
+		err = mt.RunStructValidation(ctx, opts)
+	case OpResolveImports:
+		err = mt.RunImportConflictResolution(ctx, opts)
+	case OpAnalyzeDeps:
+		err = mt.RunDependencyAnalysis(ctx, opts)
+	case OpDetectDuplicates:
+		err = mt.RunDuplicateTypeDetection(ctx, opts)
 	default:
 		return fmt.Errorf("unknown operation: %s", string(op))
 	}
@@ -390,4 +407,101 @@ func (mt *ManagerToolkit) SaveHealthReport(report *HealthReport, outputPath stri
 
 	mt.Logger.Info("Health report saved to: %s", outputPath)
 	return nil
+}
+
+// Phase 1.1.1 & 1.1.2 - New Analysis Operations Implementation
+
+// RunStructValidation performs Go struct validation using StructValidator
+func (mt *ManagerToolkit) RunStructValidation(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔍 Starting struct validation analysis...")
+
+	validator := &StructValidator{
+		BaseDir: mt.BaseDir,
+		FileSet: mt.FileSet,
+		Logger:  mt.Logger,
+		Stats:   mt.Stats,
+		DryRun:  mt.Config.EnableDryRun,
+	}
+
+	target := opts.Target
+	if target == "" {
+		target = mt.BaseDir
+	}
+
+	return validator.Execute(ctx, &OperationOptions{
+		Target: target,
+		Output: opts.Output,
+		Force:  opts.Force,
+	})
+}
+
+// RunImportConflictResolution performs import conflict resolution using ImportConflictResolver
+func (mt *ManagerToolkit) RunImportConflictResolution(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔧 Starting import conflict resolution...")
+
+	resolver := &ImportConflictResolver{
+		BaseDir: mt.BaseDir,
+		FileSet: mt.FileSet,
+		Logger:  mt.Logger,
+		Stats:   mt.Stats,
+		DryRun:  mt.Config.EnableDryRun,
+	}
+
+	target := opts.Target
+	if target == "" {
+		target = mt.BaseDir
+	}
+
+	return resolver.Execute(ctx, &OperationOptions{
+		Target: target,
+		Output: opts.Output,
+		Force:  opts.Force,
+	})
+}
+
+// RunDependencyAnalysis performs dependency analysis using DependencyAnalyzer
+func (mt *ManagerToolkit) RunDependencyAnalysis(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("📦 Starting dependency analysis...")
+
+	analyzer := &DependencyAnalyzer{
+		BaseDir: mt.BaseDir,
+		Logger:  mt.Logger,
+		Stats:   mt.Stats,
+		DryRun:  mt.Config.EnableDryRun,
+	}
+
+	target := opts.Target
+	if target == "" {
+		target = mt.BaseDir
+	}
+
+	return analyzer.Execute(ctx, &OperationOptions{
+		Target: target,
+		Output: opts.Output,
+		Force:  opts.Force,
+	})
+}
+
+// RunDuplicateTypeDetection performs duplicate type detection using DuplicateTypeDetector
+func (mt *ManagerToolkit) RunDuplicateTypeDetection(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔍 Starting duplicate type detection...")
+
+	detector := &DuplicateTypeDetector{
+		BaseDir: mt.BaseDir,
+		FileSet: mt.FileSet,
+		Logger:  mt.Logger,
+		Stats:   mt.Stats,
+		DryRun:  mt.Config.EnableDryRun,
+	}
+
+	target := opts.Target
+	if target == "" {
+		target = mt.BaseDir
+	}
+
+	return detector.Execute(ctx, &OperationOptions{
+		Target: target,
+		Output: opts.Output,
+		Force:  opts.Force,
+	})
 }

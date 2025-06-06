@@ -1,6 +1,6 @@
 // Manager Toolkit - Advanced Utilities (Professional Implementation)
 
-package main
+package tools
 
 import (
 	"fmt"

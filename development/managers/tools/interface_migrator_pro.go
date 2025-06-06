@@ -1,6 +1,6 @@
 // Manager Toolkit - Interface Migration (Professional Implementation)
 
-package main
+package tools
 
 import (
 	"context"
@@ -39,11 +39,11 @@ type MigrationPlan struct {
 
 // MigrationResults contains the results of a migration operation
 type MigrationResults struct {
-	TotalFiles           int      `json:"total_files"`
-	InterfacesMigrated   int      `json:"interfaces_migrated"`
-	SuccessfulMigrations []string `json:"successful_migrations"`
-	FailedMigrations     []string `json:"failed_migrations"`
-	BackupFiles          []string `json:"backup_files"`
+	TotalFiles           int           `json:"total_files"`
+	InterfacesMigrated   int           `json:"interfaces_migrated"`
+	SuccessfulMigrations []string      `json:"successful_migrations"`
+	FailedMigrations     []string      `json:"failed_migrations"`
+	BackupFiles          []string      `json:"backup_files"`
 	Duration             time.Duration `json:"duration"`
 }
 
@@ -473,7 +473,7 @@ func (im *InterfaceMigrator) ValidateMigration() error {
 // MigrateInterfaces performs interface migration with the given parameters
 func (im *InterfaceMigrator) MigrateInterfaces(ctx context.Context, sourceDir, targetDir, newPackage string) (*MigrationResults, error) {
 	startTime := time.Now()
-	
+
 	results := &MigrationResults{
 		TotalFiles:           0,
 		InterfacesMigrated:   0,
@@ -517,11 +517,11 @@ func (im *InterfaceMigrator) MigrateInterfaces(ctx context.Context, sourceDir, t
 		}
 
 		content := string(data)
-		
+
 		// Check if file contains interfaces
 		if strings.Contains(content, "interface {") {
 			results.InterfacesMigrated++
-			
+
 			if !im.DryRun {
 				// Extract original package name
 				originalPackage := ""
@@ -538,23 +538,23 @@ func (im *InterfaceMigrator) MigrateInterfaces(ctx context.Context, sourceDir, t
 					// For now, we'll assume the filepath.Base logic as a last resort
 					content = strings.ReplaceAll(content, "package "+filepath.Base(sourceDir), "package "+newPackage)
 				}
-				
+
 				// Write to target directory
 				relPath, _ := filepath.Rel(sourceDir, path)
 				targetPath := filepath.Join(targetDir, relPath)
-				
+
 				// Create target subdirectory if needed
 				if err := os.MkdirAll(filepath.Dir(targetPath), 0755); err != nil {
 					results.FailedMigrations = append(results.FailedMigrations, path)
 					return nil
 				}
-				
+
 				if err := os.WriteFile(targetPath, []byte(content), 0644); err != nil {
 					results.FailedMigrations = append(results.FailedMigrations, path)
 					return nil
 				}
 			}
-			
+
 			results.SuccessfulMigrations = append(results.SuccessfulMigrations, path)
 		}
 
@@ -631,8 +631,8 @@ func (im *InterfaceMigrator) generateJSONReport(results *MigrationResults) (stri
   "failed_migrations": %d,
   "backup_files": %d,
   "duration": "%s"
-}`, results.TotalFiles, results.InterfacesMigrated, 
-		len(results.SuccessfulMigrations), len(results.FailedMigrations), 
+}`, results.TotalFiles, results.InterfacesMigrated,
+		len(results.SuccessfulMigrations), len(results.FailedMigrations),
 		len(results.BackupFiles), results.Duration), nil
 }
 
@@ -644,8 +644,8 @@ successful_migrations: %d
 failed_migrations: %d
 backup_files: %d
 duration: %s
-`, results.TotalFiles, results.InterfacesMigrated, 
-		len(results.SuccessfulMigrations), len(results.FailedMigrations), 
+`, results.TotalFiles, results.InterfacesMigrated,
+		len(results.SuccessfulMigrations), len(results.FailedMigrations),
 		len(results.BackupFiles), results.Duration), nil
 }
 
@@ -660,7 +660,7 @@ func (im *InterfaceMigrator) generateTextReport(results *MigrationResults) (stri
 	report.WriteString(fmt.Sprintf("Failed migrations: %d\n", len(results.FailedMigrations)))
 	report.WriteString(fmt.Sprintf("Backup files created: %d\n", len(results.BackupFiles)))
 	report.WriteString(fmt.Sprintf("Duration: %s\n", results.Duration))
-	
+
 	return report.String(), nil
 }
 

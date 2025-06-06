@@ -1,7 +1,7 @@
 // Manager Toolkit - Interface Analyzer Professional Tests
 // Tests for interface_analyzer_pro.go functionality
 
-package main
+package tools
 
 import (
 	"fmt"

@@ -1,6 +1,6 @@
 // Manager Toolkit - Interface Analysis (Professional Implementation)
 
-package main
+package tools
 
 import (
 	"fmt"

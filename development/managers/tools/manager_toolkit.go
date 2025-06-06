@@ -3,7 +3,7 @@
 // Provides comprehensive analysis, migration, and maintenance utilities
 // for the Email Sender Manager Ecosystem
 
-package main
+package tools
 
 import (
 	"context"
@@ -85,11 +85,16 @@ const (
 	OpHealthCheck Operation = "health-check"
 	OpInitConfig  Operation = "init-config"
 	OpFullSuite   Operation = "full-suite"
+	// Phase 1.1.1 & 1.1.2 - New Analysis Operations
+	OpValidateStructs  Operation = "validate-structs"
+	OpResolveImports   Operation = "resolve-imports"
+	OpAnalyzeDeps      Operation = "analyze-dependencies"
+	OpDetectDuplicates Operation = "detect-duplicates"
 )
 
 func main() {
 	var (
-		operation  = flag.String("op", "", "Operation to perform: analyze|migrate|fix-imports|remove-duplicates|fix-syntax|health-check|init-config|full-suite")
+		operation  = flag.String("op", "", "Operation to perform: analyze|migrate|fix-imports|remove-duplicates|fix-syntax|health-check|init-config|full-suite|validate-structs|resolve-imports|analyze-dependencies|detect-duplicates")
 		baseDir    = flag.String("dir", DefaultBaseDir, "Base directory to work with")
 		configPath = flag.String("config", "", "Path to configuration file")
 		dryRun     = flag.Bool("dry-run", false, "Perform dry run without making changes")
@@ -224,15 +229,249 @@ Examples:
 `, ToolVersion)
 }
 
-// PrintFinalStats prints final statistics
+// PrintFinalStats prints a summary of operations performed
 func (mt *ManagerToolkit) PrintFinalStats() {
-	mt.Logger.Info("=== FINAL STATISTICS ===")
-	mt.Logger.Info("Operations Executed: %d", mt.Stats.OperationsExecuted)
-	mt.Logger.Info("Files Processed: %d", mt.Stats.FilesProcessed)
-	mt.Logger.Info("Files Modified: %d", mt.Stats.FilesModified)
-	mt.Logger.Info("Files Created: %d", mt.Stats.FilesCreated)
-	mt.Logger.Info("Errors Fixed: %d", mt.Stats.ErrorsFixed)
-	mt.Logger.Info("Imports Fixed: %d", mt.Stats.ImportsFixed)
-	mt.Logger.Info("Duplicates Removed: %d", mt.Stats.DuplicatesRemoved)
-	mt.Logger.Info("Total Execution Time: %v", mt.Stats.ExecutionTime)
+	fmt.Printf("\n--- Manager Toolkit v%s Results ---\n", ToolVersion)
+	fmt.Printf("Files processed:     %d\n", mt.Stats.FilesProcessed)
+	fmt.Printf("Files modified:      %d\n", mt.Stats.FilesModified)
+	fmt.Printf("Files created:       %d\n", mt.Stats.FilesCreated)
+	fmt.Printf("Operations executed: %d\n", mt.Stats.OperationsExecuted)
+	fmt.Printf("Execution time:      %v\n", mt.Stats.ExecutionTime)
+}
+
+// ExecuteOperation executes the specified operation
+func (mt *ManagerToolkit) ExecuteOperation(ctx context.Context, op Operation, opts *OperationOptions) error {
+	mt.Logger.Info("Starting operation: %s", string(op))
+	startTime := time.Now()
+
+	var err error
+	switch op {
+	case OpAnalyze:
+		err = mt.RunAnalysis(ctx, opts)
+	case OpMigrate:
+		err = mt.RunMigration(ctx, opts)
+	case OpFixImports:
+		err = mt.FixImports(ctx, opts)
+	case OpRemoveDups:
+		err = mt.RemoveDuplicates(ctx, opts)
+	case OpSyntaxFix:
+		err = mt.FixSyntaxErrors(ctx, opts)
+	case OpHealthCheck:
+		err = mt.RunHealthCheck(ctx, opts)
+	case OpInitConfig:
+		err = mt.InitializeConfig(ctx, opts)
+	case OpFullSuite:
+		err = mt.RunFullSuite(ctx, opts)
+	// Phase 1.1.1 & 1.1.2 - New Analysis Operations
+	case OpValidateStructs:
+		err = mt.RunStructValidation(ctx, opts)
+	case OpResolveImports:
+		err = mt.RunImportConflictResolution(ctx, opts)
+	case OpAnalyzeDeps:
+		err = mt.RunDependencyAnalysis(ctx, opts)
+	case OpDetectDuplicates:
+		err = mt.RunDuplicateTypeDetection(ctx, opts)
+	default:
+		return fmt.Errorf("unknown operation: %s", string(op))
+	}
+
+	duration := time.Since(startTime)
+	mt.Stats.ExecutionTime = duration
+
+	if err != nil {
+		mt.Logger.Error("Operation %s failed after %v: %v", string(op), duration, err)
+		return err
+	}
+
+	mt.Logger.Info("Operation %s completed successfully in %v", string(op), duration)
+	return nil
+}
+
+// RunStructValidation validates struct declarations in the codebase
+func (mt *ManagerToolkit) RunStructValidation(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔍 Starting struct validation on: %s", opts.Target)
+
+	// Create a new struct validator
+	validator, err := NewStructValidator(mt.BaseDir, mt.Logger, mt.Config.EnableDryRun)
+	if err != nil {
+		return fmt.Errorf("failed to create struct validator: %w", err)
+	}
+
+	// Execute the validation
+	if err := validator.Execute(ctx, opts); err != nil {
+		return fmt.Errorf("struct validation failed: %w", err)
+	}
+
+	// Update stats
+	metrics := validator.CollectMetrics()
+	mt.Stats.FilesAnalyzed += metrics["files_analyzed"].(int)
+	mt.Stats.FilesProcessed += metrics["files_analyzed"].(int)
+	mt.Stats.OperationsExecuted++
+
+	return nil
+}
+
+// RunImportConflictResolution resolves import conflicts in Go files
+func (mt *ManagerToolkit) RunImportConflictResolution(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔍 Starting import conflict resolution on: %s", opts.Target)
+
+	// Create a new import conflict resolver
+	resolver := &ImportConflictResolver{
+		BaseDir: mt.BaseDir,
+		FileSet: token.NewFileSet(),
+		Logger:  mt.Logger,
+		Stats:   mt.Stats,
+		DryRun:  mt.Config.EnableDryRun,
+	}
+
+	// Execute the resolution
+	if err := resolver.Execute(ctx, opts); err != nil {
+		return fmt.Errorf("import conflict resolution failed: %w", err)
+	}
+
+	// Update stats
+	metrics := resolver.CollectMetrics()
+	mt.Stats.FilesAnalyzed += metrics["files_analyzed"].(int)
+	mt.Stats.FilesModified += metrics["files_modified"].(int)
+	mt.Stats.ImportsFixed += metrics["imports_fixed"].(int)
+	mt.Stats.FilesProcessed += metrics["files_analyzed"].(int)
+	mt.Stats.OperationsExecuted++
+
+	return nil
+}
+
+// RunDependencyAnalysis analyzes dependencies in the codebase
+func (mt *ManagerToolkit) RunDependencyAnalysis(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔍 Starting dependency analysis on: %s", opts.Target)
+
+	// Create a new dependency analyzer
+	analyzer := &DependencyAnalyzer{
+		BaseDir: mt.BaseDir,
+		Logger:  mt.Logger,
+		Stats:   mt.Stats,
+		DryRun:  mt.Config.EnableDryRun,
+	}
+
+	// Execute the analysis
+	if err := analyzer.Execute(ctx, opts); err != nil {
+		return fmt.Errorf("dependency analysis failed: %w", err)
+	}
+
+	// Update stats
+	metrics := analyzer.CollectMetrics()
+	mt.Stats.FilesAnalyzed += metrics["files_analyzed"].(int)
+	mt.Stats.FilesProcessed += metrics["files_analyzed"].(int)
+	mt.Stats.OperationsExecuted++
+
+	return nil
+}
+
+// RunDuplicateTypeDetection detects duplicate type definitions
+func (mt *ManagerToolkit) RunDuplicateTypeDetection(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔍 Starting duplicate type detection on: %s", opts.Target)
+
+	// Create a new duplicate type detector
+	detector := &DuplicateTypeDetector{
+		BaseDir: mt.BaseDir,
+		FileSet: token.NewFileSet(),
+		Logger:  mt.Logger,
+		Stats:   mt.Stats,
+		DryRun:  mt.Config.EnableDryRun,
+	}
+
+	// Execute the detection
+	if err := detector.Execute(ctx, opts); err != nil {
+		return fmt.Errorf("duplicate type detection failed: %w", err)
+	}
+
+	// Update stats
+	metrics := detector.CollectMetrics()
+	mt.Stats.FilesAnalyzed += metrics["files_analyzed"].(int)
+	mt.Stats.FilesProcessed += metrics["files_analyzed"].(int)
+	mt.Stats.OperationsExecuted++
+
+	return nil
+}
+
+// RunAnalysis performs comprehensive analysis
+func (mt *ManagerToolkit) RunAnalysis(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔍 Running comprehensive analysis on: %s", opts.Target)
+	// Implementation will be added in future phases
+	return nil
+}
+
+// RunMigration performs interface migration
+func (mt *ManagerToolkit) RunMigration(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🚀 Running interface migration on: %s", opts.Target)
+	// Implementation will be added in future phases
+	return nil
+}
+
+// FixImports fixes import statements
+func (mt *ManagerToolkit) FixImports(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔧 Fixing import statements on: %s", opts.Target)
+	// Implementation will be added in future phases
+	return nil
+}
+
+// RemoveDuplicates removes duplicate code
+func (mt *ManagerToolkit) RemoveDuplicates(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔄 Removing duplicate code on: %s", opts.Target)
+	// Implementation will be added in future phases
+	return nil
+}
+
+// FixSyntaxErrors fixes syntax errors
+func (mt *ManagerToolkit) FixSyntaxErrors(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🔧 Fixing syntax errors on: %s", opts.Target)
+	// Implementation will be added in future phases
+	return nil
+}
+
+// RunHealthCheck performs a health check on the codebase
+func (mt *ManagerToolkit) RunHealthCheck(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("💉 Running health check on: %s", opts.Target)
+	// Implementation will be added in future phases
+	return nil
+}
+
+// InitializeConfig initializes the toolkit configuration
+func (mt *ManagerToolkit) InitializeConfig(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("⚙️ Initializing toolkit configuration")
+	// Implementation will be added in future phases
+	return nil
+}
+
+// RunFullSuite runs the full suite of toolkit operations
+func (mt *ManagerToolkit) RunFullSuite(ctx context.Context, opts *OperationOptions) error {
+	mt.Logger.Info("🚀 Running full toolkit suite on: %s", opts.Target)
+
+	operations := []Operation{
+		OpAnalyze,
+		OpValidateStructs,
+		OpResolveImports,
+		OpAnalyzeDeps,
+		OpDetectDuplicates,
+		OpFixImports,
+		OpRemoveDups,
+		OpSyntaxFix,
+		OpMigrate,
+		OpHealthCheck,
+	}
+
+	for _, op := range operations {
+		if err := mt.ExecuteOperation(ctx, op, opts); err != nil {
+			mt.Logger.Error("Full suite operation %s failed: %v", string(op), err)
+			return fmt.Errorf("full suite operation %s failed: %w", string(op), err)
+		}
+	}
+
+	return nil
+}
+
+// Close closes the toolkit and frees resources
+func (mt *ManagerToolkit) Close() {
+	if mt.Logger != nil && mt.Logger.file != nil {
+		mt.Logger.Close()
+	}
 }
