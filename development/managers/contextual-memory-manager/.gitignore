@@ -1,0 +1,36 @@
+# Binaires
+contextual-memory-manager
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Données de test
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Cache
+.cache/
+cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Données sensibles
+.env
+.env.local
+*.key
+*.pem

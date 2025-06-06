@@ -1,0 +1,104 @@
+# Contextual Memory Manager Configuration
+# Local Development Environment
+
+# Database Configuration
+database:
+  postgresql:
+    host: "localhost"
+    port: 5432
+    database: "email_sender_dev"
+    username: "postgres"
+    password: "password"
+    ssl_mode: "disable"
+    max_connections: 25
+    max_idle_connections: 10
+    connection_max_lifetime: "1h"
+
+  sqlite:
+    embedding_cache_path: "./data/contextual_embedding_cache.db"
+    mcp_database_path: "./data/mcp_gateway.db"
+
+# Vector Search Configuration
+indexing:
+  qdrant:
+    url: "http://localhost:6333"
+    collection_name: "contextual_actions"
+    vector_size: 384
+    distance_metric: "cosine"
+
+  embedding:
+    model: "sentence-transformers/all-MiniLM-L6-v2"
+    cache_enabled: true
+    cache_ttl: "24h"
+    batch_size: 32
+
+# Monitoring Configuration
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+    metrics_path: "/metrics"
+
+  logging:
+    level: "info"
+    format: "json"
+    output: "stdout"
+
+  health_check:
+    enabled: true
+    interval: "30s"
+
+# Integration Configuration
+integrations:
+  mcp_gateway:
+    url: "http://localhost:8080"
+    timeout: "30s"
+    retry_attempts: 3
+    retry_delay: "1s"
+
+  n8n:
+    webhook_url: "http://localhost:5678/webhook"
+    default_workflow_id: ""
+    timeout: "30s"
+
+  webhooks:
+    max_retries: 3
+    retry_delay: "2s"
+    timeout: "15s"
+
+# Performance Configuration
+performance:
+  cache:
+    max_size: 10000
+    ttl: "1h"
+    cleanup_interval: "10m"
+
+  search:
+    max_results: 100
+    default_limit: 20
+    similarity_threshold: 0.7
+
+  sessions:
+    max_duration: "8h"
+    cleanup_interval: "1h"
+    max_concurrent: 1000
+
+# Security Configuration
+security:
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 1000
+    burst_size: 100
+
+  cors:
+    enabled: true
+    allowed_origins: ["http://localhost:3000", "http://localhost:8080"]
+    allowed_methods: ["GET", "POST", "PUT", "DELETE"]
+    allowed_headers: ["Content-Type", "Authorization"]
+
+# Development Configuration
+development:
+  debug_mode: true
+  mock_external_services: false
+  log_sql_queries: true
+  enable_profiling: true

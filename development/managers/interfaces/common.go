@@ -25,3 +25,21 @@ type HealthChecker interface {
 type Cleaner interface {
 	Cleanup() error
 }
+
+// ErrorManager interface pour la gestion des erreurs
+type ErrorManager interface {
+	BaseManager
+	LogError(ctx context.Context, component, message string, err error) error
+	ProcessError(ctx context.Context, component, operation string, err error) error
+}
+
+// ConfigManager interface pour la gestion de configuration
+type ConfigManager interface {
+	BaseManager
+	GetString(key string) (string, error)
+	GetInt(key string) (int, error)
+	GetBool(key string) (bool, error)
+	Get(key string) interface{}
+	Set(key string, value interface{}) error
+	GetAll() map[string]interface{}
+}

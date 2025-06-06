@@ -1,0 +1,105 @@
+# Contextual Memory Manager Configuration
+# Production Environment
+
+# Database Configuration
+database:
+  postgresql:
+    host: "${POSTGRES_HOST}"
+    port: 5432
+    database: "${POSTGRES_DATABASE}"
+    username: "${POSTGRES_USERNAME}"
+    password: "${POSTGRES_PASSWORD}"
+    ssl_mode: "require"
+    max_connections: 100
+    max_idle_connections: 25
+    connection_max_lifetime: "30m"
+
+  sqlite:
+    embedding_cache_path: "/data/contextual_embedding_cache.db"
+    mcp_database_path: "/data/mcp_gateway.db"
+
+# Vector Search Configuration
+indexing:
+  qdrant:
+    url: "${QDRANT_URL}"
+    collection_name: "contextual_actions_prod"
+    vector_size: 384
+    distance_metric: "cosine"
+
+  embedding:
+    model: "sentence-transformers/all-MiniLM-L6-v2"
+    cache_enabled: true
+    cache_ttl: "24h"
+    batch_size: 64
+
+# Monitoring Configuration
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+    metrics_path: "/metrics"
+
+  logging:
+    level: "warn"
+    format: "json"
+    output: "file"
+    file_path: "/var/log/contextual-memory-manager.log"
+
+  health_check:
+    enabled: true
+    interval: "30s"
+
+# Integration Configuration
+integrations:
+  mcp_gateway:
+    url: "${MCP_GATEWAY_URL}"
+    timeout: "30s"
+    retry_attempts: 5
+    retry_delay: "2s"
+
+  n8n:
+    webhook_url: "${N8N_WEBHOOK_URL}"
+    default_workflow_id: "${N8N_DEFAULT_WORKFLOW_ID}"
+    timeout: "30s"
+
+  webhooks:
+    max_retries: 5
+    retry_delay: "5s"
+    timeout: "30s"
+
+# Performance Configuration
+performance:
+  cache:
+    max_size: 50000
+    ttl: "2h"
+    cleanup_interval: "15m"
+
+  search:
+    max_results: 500
+    default_limit: 50
+    similarity_threshold: 0.75
+
+  sessions:
+    max_duration: "12h"
+    cleanup_interval: "30m"
+    max_concurrent: 10000
+
+# Security Configuration
+security:
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 5000
+    burst_size: 500
+
+  cors:
+    enabled: true
+    allowed_origins: ["${FRONTEND_URL}"]
+    allowed_methods: ["GET", "POST", "PUT", "DELETE"]
+    allowed_headers: ["Content-Type", "Authorization"]
+
+# Production Configuration
+production:
+  debug_mode: false
+  mock_external_services: false
+  log_sql_queries: false
+  enable_profiling: false
