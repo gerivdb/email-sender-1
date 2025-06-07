@@ -21,9 +21,11 @@ jobs:
         run: |
           git config user.name "Jules Contribution Manager"
           git config user.email "actions@github.com"
-        - name: Redirect Jules Contribution
+      
+      - name: Redirect Jules Contribution
         run: |
           echo "Jules bot activity detected on branch: ${{ github.ref_name }}"
+          echo "Redirecting to appropriate branch manager..."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -31,8 +33,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'google-labs-jules[bot]'
     
-    steps:      - name: Log Jules Activity
+    steps:
+      - name: Log Jules Activity
         run: |
           echo "Jules bot activity detected"
           echo "Repository: ${{ github.repository }}"
           echo "Branch: ${{ github.ref_name }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Timestamp: $(date)"
