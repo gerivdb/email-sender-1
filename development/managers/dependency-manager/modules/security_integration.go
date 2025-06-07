@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/email-sender/development/managers/interfaces" // Added import
 )
 
 // SecurityConfig holds configuration for registry access
@@ -27,41 +29,41 @@ func (m *GoModManager) initializeSecurityIntegration() error {
 		return nil
 	}
 
-	m.Log("Initializing security integration...")
+	m.Log("info", "Initializing security integration...")
 	// In a real implementation, this would use a factory or service locator
 	// to get an instance of the SecurityManager
 	
 	// For now we'll just log this step
-	m.Log("Security integration initialized successfully")
+	m.Log("info", "Security integration initialized successfully")
 	return nil
 }
 
 // loadRegistryCredentials loads and decrypts registry credentials using SecurityManager
 func (m *GoModManager) loadRegistryCredentials() error {
 	if m.securityManager == nil {
-		m.Log("SecurityManager not initialized, skipping credential loading")
+		m.Log("warn", "SecurityManager not initialized, skipping credential loading")
 		return nil
 	}
 
-	m.Log("Loading registry credentials...")
+	m.Log("info", "Loading registry credentials...")
 	
 	// Try to get the registry credentials secret
-	regCredentialsSecret, err := m.securityManager.GetSecret("dependency-manager.registry-credentials")
+	regCredentialsSecret, err := m.securityManager.GetSecret("dependency-manager.registry-credentials") // Assuming GetSecret is part of SecurityManagerInterface
 	if err != nil {
-		m.Log(fmt.Sprintf("Error loading registry credentials: %v", err))
+		m.Log("error", fmt.Sprintf("Error loading registry credentials: %v", err))
 		return err
 	}
 	
 	// Parse credentials
 	var secConfig SecurityConfig
 	if err := json.Unmarshal([]byte(regCredentialsSecret), &secConfig); err != nil {
-		m.Log(fmt.Sprintf("Error parsing registry credentials: %v", err))
+		m.Log("error", fmt.Sprintf("Error parsing registry credentials: %v", err))
 		return err
 	}
 	
 	// Store credentials in memory for use in go operations
 	m.registryCredentials = secConfig.RegistryAuth
-	m.Log(fmt.Sprintf("Loaded credentials for %d registries", len(m.registryCredentials)))
+	m.Log("info", fmt.Sprintf("Loaded credentials for %d registries", len(m.registryCredentials)))
 	
 	return nil
 }
@@ -72,7 +74,7 @@ func (m *GoModManager) configureAuthForPrivateModules() error {
 		return nil // No credentials to configure
 	}
 
-	m.Log("Configuring authentication for private modules...")
+	m.Log("info", "Configuring authentication for private modules...")
 	
 	// Build list of private module patterns for GOPRIVATE
 	var privateModules []string
@@ -84,7 +86,7 @@ func (m *GoModManager) configureAuthForPrivateModules() error {
 	
 	// Configuration would set GOPRIVATE in the real implementation
 	// os.Setenv("GOPRIVATE", strings.Join(privateModules, ","))
-	m.Log(fmt.Sprintf("Configured GOPRIVATE=%s", strings.Join(privateModules, ",")))
+	m.Log("info", fmt.Sprintf("Configured GOPRIVATE=%s", strings.Join(privateModules, ",")))
 
 	// In a real implementation, this would also configure git credentials or NETRC file
 	// for authentication with the private repositories
@@ -93,45 +95,48 @@ func (m *GoModManager) configureAuthForPrivateModules() error {
 }
 
 // scanDependenciesForVulnerabilities scans dependencies using SecurityManager
-func (m *GoModManager) scanDependenciesForVulnerabilities(ctx context.Context, dependencies []Dependency) (*SecurityAuditResult, error) {
+func (m *GoModManager) scanDependenciesForVulnerabilities(ctx context.Context, dependencies []Dependency) (*interfaces.VulnerabilityReport, error) {
 	if m.securityManager == nil {
 		return nil, fmt.Errorf("security manager not initialized")
 	}
 	
-	m.Log(fmt.Sprintf("Scanning %d dependencies for vulnerabilities...", len(dependencies)))
+	m.Log("info", fmt.Sprintf("Scanning %d dependencies for vulnerabilities...", len(dependencies)))
 	
-	return m.securityManager.ScanForVulnerabilities(ctx, dependencies)
+	// This now calls SecurityManagerInterface.ScanDependenciesForVulnerabilities which returns *interfaces.VulnerabilityReport
+	return m.securityManager.ScanDependenciesForVulnerabilities(ctx, dependencies)
 }
 
 // generateVulnerabilityReport creates a formatted vulnerability report
-func (m *GoModManager) generateVulnerabilityReport(report *SecurityAuditResult) string {
+func (m *GoModManager) generateVulnerabilityReport(report *interfaces.VulnerabilityReport) string {
 	if report == nil {
 		return "No vulnerability report available"
 	}
 	
 	var output strings.Builder
+	totalVulnerabilities := report.CriticalCount + report.HighCount + report.MediumCount + report.LowCount
 	
 	output.WriteString("=== Dependency Vulnerability Report ===\n")
 	output.WriteString(fmt.Sprintf("Timestamp: %s\n", report.Timestamp.Format(time.RFC3339)))
 	output.WriteString(fmt.Sprintf("Total dependencies scanned: %d\n", report.TotalScanned))
-	output.WriteString(fmt.Sprintf("Vulnerabilities found: %d\n", report.VulnerabilitiesFound))
-	output.WriteString("\nDetails:\n")
+	output.WriteString(fmt.Sprintf("Total vulnerabilities found: %d (C:%d H:%d M:%d L:%d)\n",
+		totalVulnerabilities, report.CriticalCount, report.HighCount, report.MediumCount, report.LowCount))
 	
-	if report.VulnerabilitiesFound > 0 {
-		for dep, info := range report.Details {
-			output.WriteString(fmt.Sprintf("- %s: \n", dep))
-			output.WriteString(fmt.Sprintf("  Severity: %s\n", info.Severity))
-			output.WriteString(fmt.Sprintf("  Description: %s\n", info.Description))
-			if len(info.CVEIDs) > 0 {
-				output.WriteString(fmt.Sprintf("  CVEs: %s\n", strings.Join(info.CVEIDs, ", ")))
+	if totalVulnerabilities > 0 {
+		output.WriteString("\nDetails:\n")
+		for i, vuln := range report.Vulnerabilities {
+			// Assuming interfaces.Vulnerability has fields like PackageName, Version, Description, Severity, CVEs
+			// This part needs to be adjusted based on actual fields in interfaces.Vulnerability
+			output.WriteString(fmt.Sprintf("%d. Vulnerability:\n", i+1)) // Generic numbering
+			output.WriteString(fmt.Sprintf("   Description: %s\n", vuln.Description))
+			output.WriteString(fmt.Sprintf("   Severity: %s\n", vuln.Severity))
+			if len(vuln.CVEIDs) > 0 {
+				output.WriteString(fmt.Sprintf("   CVEs: %s\n", strings.Join(vuln.CVEIDs, ", ")))
 			}
-			if info.FixVersion != "" {
-				output.WriteString(fmt.Sprintf("  Fix available in version: %s\n", info.FixVersion))
-			}
+			// Add more fields from vuln as needed e.g. PackageName, Version, FixedIn
 			output.WriteString("\n")
 		}
 	} else {
-		output.WriteString("No vulnerabilities found. All dependencies are secure.\n")
+		output.WriteString("\nNo vulnerabilities found. All dependencies are secure.\n")
 	}
 	
 	return output.String()
