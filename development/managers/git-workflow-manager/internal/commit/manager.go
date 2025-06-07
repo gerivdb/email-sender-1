@@ -362,14 +362,22 @@ func (m *Manager) AmendLastCommit(ctx context.Context, newMessage string) (*inte
 		message = fmt.Sprintf("%s\n\nAmended: %s", newMessage, timestamp)
 	}
 	
-	// Create amended commit
+	// Create amended commit	// Get parent hashes
+	var parentHashes []plumbing.Hash
+	parentIter := lastCommit.Parents()
+	defer parentIter.Close()
+	parentIter.ForEach(func(parent *object.Commit) error {
+		parentHashes = append(parentHashes, parent.Hash)
+		return nil
+	})
+
 	commitHash, err := worktree.Commit(message, &git.CommitOptions{
 		Author: &object.Signature{
 			Name:  "GitWorkflowManager",
 			Email: "git-workflow@email-sender.local",
 			When:  time.Now(),
 		},
-		Parents: lastCommit.Parents,
+		Parents: parentHashes,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to amend commit: %w", err)

@@ -7,10 +7,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/email-sender/managers/interfaces"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
-	"github.com/go-git/go-git/v5/plumbing/object"
-	"github.com/email-sender/managers/interfaces"
 )
 
 // Manager handles Git branch operations
@@ -25,23 +24,23 @@ func NewManager(repoPath string, errorManager interfaces.ErrorManager) (*Manager
 	if repoPath == "" {
 		return nil, fmt.Errorf("repository path is required")
 	}
-	
+
 	if errorManager == nil {
 		return nil, fmt.Errorf("error manager is required")
 	}
-	
+
 	// Open the Git repository
 	repo, err := git.PlainOpen(repoPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open repository at %s: %w", repoPath, err)
 	}
-	
+
 	manager := &Manager{
 		repoPath:     repoPath,
 		repo:         repo,
 		errorManager: errorManager,
 	}
-	
+
 	log.Printf("Branch manager initialized for repository: %s", repoPath)
 	return manager, nil
 }
@@ -51,11 +50,11 @@ func (m *Manager) CreateBranch(ctx context.Context, branchName string, sourceBra
 	if branchName == "" {
 		return fmt.Errorf("branch name cannot be empty")
 	}
-	
+
 	// Get the source branch reference
 	var sourceRef *plumbing.Reference
 	var err error
-	
+
 	if sourceBranch == "" {
 		// Use current branch if no source specified
 		sourceRef, err = m.repo.Head()
@@ -68,16 +67,16 @@ func (m *Manager) CreateBranch(ctx context.Context, branchName string, sourceBra
 			return fmt.Errorf("failed to get source branch %s: %w", sourceBranch, err)
 		}
 	}
-	
+
 	// Create new branch reference
 	newBranchRef := plumbing.NewBranchReferenceName(branchName)
 	newRef := plumbing.NewHashReference(newBranchRef, sourceRef.Hash())
-	
+
 	err = m.repo.Storer.SetReference(newRef)
 	if err != nil {
 		return fmt.Errorf("failed to create branch %s: %w", branchName, err)
 	}
-	
+
 	log.Printf("Created branch %s from %s", branchName, sourceBranch)
 	return nil
 }
@@ -87,23 +86,23 @@ func (m *Manager) SwitchBranch(ctx context.Context, branchName string) error {
 	if branchName == "" {
 		return fmt.Errorf("branch name cannot be empty")
 	}
-	
+
 	// Get the working tree
 	worktree, err := m.repo.Worktree()
 	if err != nil {
 		return fmt.Errorf("failed to get working tree: %w", err)
 	}
-	
+
 	// Create checkout options
 	checkoutOptions := &git.CheckoutOptions{
 		Branch: plumbing.NewBranchReferenceName(branchName),
 	}
-	
+
 	err = worktree.Checkout(checkoutOptions)
 	if err != nil {
 		return fmt.Errorf("failed to switch to branch %s: %w", branchName, err)
 	}
-	
+
 	log.Printf("Switched to branch %s", branchName)
 	return nil
 }
@@ -113,24 +112,24 @@ func (m *Manager) DeleteBranch(ctx context.Context, branchName string, force boo
 	if branchName == "" {
 		return fmt.Errorf("branch name cannot be empty")
 	}
-	
+
 	// Check if we're trying to delete the current branch
 	currentBranch, err := m.GetCurrentBranch(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get current branch: %w", err)
 	}
-	
+
 	if currentBranch == branchName {
 		return fmt.Errorf("cannot delete current branch %s", branchName)
 	}
-	
+
 	// Delete the branch reference
 	branchRef := plumbing.NewBranchReferenceName(branchName)
 	err = m.repo.Storer.RemoveReference(branchRef)
 	if err != nil {
 		return fmt.Errorf("failed to delete branch %s: %w", branchName, err)
 	}
-	
+
 	log.Printf("Deleted branch %s", branchName)
 	return nil
 }
@@ -141,7 +140,7 @@ func (m *Manager) ListBranches(ctx context.Context) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to get references: %w", err)
 	}
-	
+
 	var branches []string
 	err = refs.ForEach(func(ref *plumbing.Reference) error {
 		if ref.Name().IsBranch() {
@@ -150,11 +149,11 @@ func (m *Manager) ListBranches(ctx context.Context) ([]string, error) {
 		}
 		return nil
 	})
-	
+
 	if err != nil {
 		return nil, fmt.Errorf("failed to iterate references: %w", err)
 	}
-	
+
 	return branches, nil
 }
 
@@ -164,11 +163,11 @@ func (m *Manager) GetCurrentBranch(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to get HEAD: %w", err)
 	}
-	
+
 	if !head.Name().IsBranch() {
 		return "", fmt.Errorf("HEAD is not pointing to a branch")
 	}
-	
+
 	return head.Name().Short(), nil
 }
 
@@ -177,7 +176,7 @@ func (m *Manager) CreateSubBranch(ctx context.Context, subBranchName string, par
 	if subBranchName == "" {
 		return nil, fmt.Errorf("sub-branch name cannot be empty")
 	}
-	
+
 	if parentBranch == "" {
 		// Use current branch as parent
 		var err error
@@ -186,22 +185,22 @@ func (m *Manager) CreateSubBranch(ctx context.Context, subBranchName string, par
 			return nil, fmt.Errorf("failed to get current branch as parent: %w", err)
 		}
 	}
-	
+
 	// Apply workflow-specific naming conventions
 	fullBranchName := m.formatBranchName(subBranchName, workflowType)
-	
+
 	// Create the branch
 	err := m.CreateBranch(ctx, fullBranchName, parentBranch)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create sub-branch: %w", err)
 	}
-	
+
 	// Get the last commit for the sub-branch info
 	ref, err := m.repo.Reference(plumbing.NewBranchReferenceName(fullBranchName), true)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get branch reference: %w", err)
 	}
-	
+
 	subBranchInfo := &interfaces.SubBranchInfo{
 		Name:         fullBranchName,
 		ParentBranch: parentBranch,
@@ -209,7 +208,7 @@ func (m *Manager) CreateSubBranch(ctx context.Context, subBranchName string, par
 		LastCommit:   ref.Hash().String(),
 		Status:       "active",
 	}
-	
+
 	log.Printf("Created sub-branch %s from parent %s", fullBranchName, parentBranch)
 	return subBranchInfo, nil
 }
@@ -219,35 +218,35 @@ func (m *Manager) MergeSubBranch(ctx context.Context, subBranchName string, targ
 	if subBranchName == "" {
 		return fmt.Errorf("sub-branch name cannot be empty")
 	}
-	
+
 	if targetBranch == "" {
 		return fmt.Errorf("target branch name cannot be empty")
 	}
-	
+
 	// Get the working tree
 	worktree, err := m.repo.Worktree()
 	if err != nil {
 		return fmt.Errorf("failed to get working tree: %w", err)
 	}
-	
+
 	// Switch to target branch first
 	err = m.SwitchBranch(ctx, targetBranch)
 	if err != nil {
 		return fmt.Errorf("failed to switch to target branch %s: %w", targetBranch, err)
 	}
-	
+
 	// Get the sub-branch reference
 	subBranchRef, err := m.repo.Reference(plumbing.NewBranchReferenceName(subBranchName), true)
 	if err != nil {
 		return fmt.Errorf("failed to get sub-branch reference: %w", err)
 	}
-	
+
 	// Get the commit object for the sub-branch
 	subBranchCommit, err := m.repo.CommitObject(subBranchRef.Hash())
 	if err != nil {
 		return fmt.Errorf("failed to get sub-branch commit: %w", err)
 	}
-	
+
 	// Perform the merge (simplified merge, in practice you'd want more sophisticated merge strategies)
 	_, err = worktree.Commit(fmt.Sprintf("Merge branch '%s' into %s", subBranchName, targetBranch), &git.CommitOptions{
 		Parents: []plumbing.Hash{subBranchCommit.Hash},
@@ -255,7 +254,7 @@ func (m *Manager) MergeSubBranch(ctx context.Context, subBranchName string, targ
 	if err != nil {
 		return fmt.Errorf("failed to create merge commit: %w", err)
 	}
-	
+
 	// Delete the sub-branch if requested
 	if deleteAfterMerge {
 		err = m.DeleteBranch(ctx, subBranchName, false)
@@ -263,7 +262,7 @@ func (m *Manager) MergeSubBranch(ctx context.Context, subBranchName string, targ
 			log.Printf("Warning: failed to delete sub-branch %s after merge: %v", subBranchName, err)
 		}
 	}
-	
+
 	log.Printf("Merged sub-branch %s into %s", subBranchName, targetBranch)
 	return nil
 }
@@ -274,9 +273,9 @@ func (m *Manager) ListSubBranches(ctx context.Context, parentBranch string) ([]*
 	if err != nil {
 		return nil, fmt.Errorf("failed to list branches: %w", err)
 	}
-	
+
 	var subBranches []*interfaces.SubBranchInfo
-	
+
 	// Filter branches that appear to be sub-branches of the parent
 	// This is a simplified implementation - in practice you'd want to track this metadata
 	for _, branch := range branches {
@@ -286,7 +285,7 @@ func (m *Manager) ListSubBranches(ctx context.Context, parentBranch string) ([]*
 			if err != nil {
 				continue
 			}
-			
+
 			// Get commit timestamp (simplified)
 			commit, err := m.repo.CommitObject(ref.Hash())
 			var createdAt time.Time
@@ -295,7 +294,7 @@ func (m *Manager) ListSubBranches(ctx context.Context, parentBranch string) ([]*
 			} else {
 				createdAt = time.Now()
 			}
-			
+
 			subBranchInfo := &interfaces.SubBranchInfo{
 				Name:         branch,
 				ParentBranch: parentBranch,
@@ -303,11 +302,11 @@ func (m *Manager) ListSubBranches(ctx context.Context, parentBranch string) ([]*
 				LastCommit:   ref.Hash().String(),
 				Status:       "active",
 			}
-			
+
 			subBranches = append(subBranches, subBranchInfo)
 		}
 	}
-	
+
 	return subBranches, nil
 }
 
@@ -315,9 +314,9 @@ func (m *Manager) ListSubBranches(ctx context.Context, parentBranch string) ([]*
 func (m *Manager) formatBranchName(branchName string, workflowType interfaces.WorkflowType) string {
 	switch workflowType {
 	case interfaces.WorkflowTypeGitFlow:
-		if !strings.HasPrefix(branchName, "feature/") && 
-		   !strings.HasPrefix(branchName, "hotfix/") && 
-		   !strings.HasPrefix(branchName, "release/") {
+		if !strings.HasPrefix(branchName, "feature/") &&
+			!strings.HasPrefix(branchName, "hotfix/") &&
+			!strings.HasPrefix(branchName, "release/") {
 			return "feature/" + branchName
 		}
 		return branchName
@@ -343,16 +342,16 @@ func (m *Manager) isSubBranch(branchName, parentBranch string) bool {
 	if branchName == parentBranch {
 		return false
 	}
-	
+
 	// Check for common sub-branch patterns
 	prefixes := []string{"feature/", "hotfix/", "bugfix/", "chore/"}
-	
+
 	for _, prefix := range prefixes {
 		if strings.HasPrefix(branchName, prefix) {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
@@ -363,7 +362,7 @@ func (m *Manager) Health() error {
 	if err != nil {
 		return fmt.Errorf("repository health check failed: %w", err)
 	}
-	
+
 	return nil
 }
 

@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/email-sender/managers/interfaces"
 	"github.com/google/go-github/v58/github"
 	"golang.org/x/oauth2"
-	"github.com/email-sender/managers/interfaces"
 )
 
 // Manager handles GitHub Pull Request operations
@@ -25,9 +25,9 @@ func NewManager(githubToken string, errorManager interfaces.ErrorManager) (*Mana
 	if errorManager == nil {
 		return nil, fmt.Errorf("error manager is required")
 	}
-	
+
 	var client *github.Client
-	
+
 	if githubToken != "" {
 		// Create authenticated client
 		ctx := context.Background()
@@ -41,13 +41,13 @@ func NewManager(githubToken string, errorManager interfaces.ErrorManager) (*Mana
 		client = github.NewClient(nil)
 		log.Printf("Warning: GitHub token not provided, PR functionality will be limited")
 	}
-	
+
 	manager := &Manager{
 		client:       client,
 		errorManager: errorManager,
 		// owner and repo will be set dynamically or from config
 	}
-	
+
 	log.Printf("Pull Request manager initialized")
 	return manager, nil
 }
@@ -64,30 +64,30 @@ func (m *Manager) CreatePullRequest(ctx context.Context, title, description, sou
 	if m.owner == "" || m.repo == "" {
 		return nil, fmt.Errorf("repository not configured, call SetRepository first")
 	}
-	
+
 	if title == "" {
 		return nil, fmt.Errorf("pull request title cannot be empty")
 	}
-	
+
 	if sourceBranch == "" {
 		return nil, fmt.Errorf("source branch cannot be empty")
 	}
-	
+
 	if targetBranch == "" {
 		targetBranch = "main" // Default to main branch
 	}
-	
+
 	// Validate branches exist
 	_, _, err := m.client.Git.GetRef(ctx, m.owner, m.repo, "heads/"+sourceBranch)
 	if err != nil {
 		return nil, fmt.Errorf("source branch %s does not exist: %w", sourceBranch, err)
 	}
-	
+
 	_, _, err = m.client.Git.GetRef(ctx, m.owner, m.repo, "heads/"+targetBranch)
 	if err != nil {
 		return nil, fmt.Errorf("target branch %s does not exist: %w", targetBranch, err)
 	}
-	
+
 	// Create pull request
 	pr := &github.NewPullRequest{
 		Title:               github.String(title),
@@ -96,23 +96,22 @@ func (m *Manager) CreatePullRequest(ctx context.Context, title, description, sou
 		Body:                github.String(description),
 		MaintainerCanModify: github.Bool(true),
 	}
-	
+
 	createdPR, _, err := m.client.PullRequests.Create(ctx, m.owner, m.repo, pr)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create pull request: %w", err)
 	}
-	
+
 	prInfo := &interfaces.PullRequestInfo{
 		ID:           *createdPR.Number,
 		Title:        *createdPR.Title,
 		Description:  *createdPR.Body,
 		SourceBranch: *createdPR.Head.Ref,
-		TargetBranch: *createdPR.Base.Ref,
-		Status:       strings.ToLower(*createdPR.State),
-		CreatedAt:    *createdPR.CreatedAt,
-		UpdatedAt:    *createdPR.UpdatedAt,
+		TargetBranch: *createdPR.Base.Ref, Status: strings.ToLower(*createdPR.State),
+		CreatedAt: createdPR.CreatedAt.Time,
+		UpdatedAt: createdPR.UpdatedAt.Time,
 	}
-	
+
 	log.Printf("Created pull request #%d: %s", prInfo.ID, prInfo.Title)
 	return prInfo, nil
 }
@@ -122,25 +121,24 @@ func (m *Manager) GetPullRequestStatus(ctx context.Context, prID int) (*interfac
 	if m.owner == "" || m.repo == "" {
 		return nil, fmt.Errorf("repository not configured, call SetRepository first")
 	}
-	
+
 	if prID <= 0 {
 		return nil, fmt.Errorf("invalid pull request ID: %d", prID)
 	}
-	
+
 	pr, _, err := m.client.PullRequests.Get(ctx, m.owner, m.repo, prID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get pull request #%d: %w", prID, err)
 	}
-	
+
 	prInfo := &interfaces.PullRequestInfo{
 		ID:           *pr.Number,
 		Title:        *pr.Title,
 		Description:  *pr.Body,
-		SourceBranch: *pr.Head.Ref,
-		TargetBranch: *pr.Base.Ref,
+		SourceBranch: *pr.Head.Ref,		TargetBranch: *pr.Base.Ref,
 		Status:       strings.ToLower(*pr.State),
-		CreatedAt:    *pr.CreatedAt,
-		UpdatedAt:    *pr.UpdatedAt,
+		CreatedAt:    pr.CreatedAt.Time,
+		UpdatedAt:    pr.UpdatedAt.Time,
 	}
 	
 	return prInfo, nil
@@ -151,27 +149,27 @@ func (m *Manager) ListPullRequests(ctx context.Context, status string) ([]*inter
 	if m.owner == "" || m.repo == "" {
 		return nil, fmt.Errorf("repository not configured, call SetRepository first")
 	}
-	
+
 	// Normalize status
 	if status == "" {
 		status = "open"
 	}
-	
+
 	opts := &github.PullRequestListOptions{
 		State:       status,
 		Sort:        "updated",
 		Direction:   "desc",
 		ListOptions: github.ListOptions{PerPage: 100},
 	}
-	
+
 	var allPRs []*interfaces.PullRequestInfo
-	
+
 	for {
 		prs, resp, err := m.client.PullRequests.List(ctx, m.owner, m.repo, opts)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list pull requests: %w", err)
 		}
-		
+
 		for _, pr := range prs {
 			prInfo := &interfaces.PullRequestInfo{
 				ID:           *pr.Number,
@@ -179,19 +177,18 @@ func (m *Manager) ListPullRequests(ctx context.Context, status string) ([]*inter
 				Description:  *pr.Body,
 				SourceBranch: *pr.Head.Ref,
 				TargetBranch: *pr.Base.Ref,
-				Status:       strings.ToLower(*pr.State),
-				CreatedAt:    *pr.CreatedAt,
-				UpdatedAt:    *pr.UpdatedAt,
+				Status:       strings.ToLower(*pr.State),				CreatedAt:    pr.CreatedAt.Time,
+				UpdatedAt:    pr.UpdatedAt.Time,
 			}
 			allPRs = append(allPRs, prInfo)
 		}
-		
+
 		if resp.NextPage == 0 {
 			break
 		}
 		opts.Page = resp.NextPage
 	}
-	
+
 	log.Printf("Found %d pull requests with status: %s", len(allPRs), status)
 	return allPRs, nil
 }
@@ -201,38 +198,37 @@ func (m *Manager) UpdatePullRequest(ctx context.Context, prID int, title, descri
 	if m.owner == "" || m.repo == "" {
 		return nil, fmt.Errorf("repository not configured, call SetRepository first")
 	}
-	
+
 	if prID <= 0 {
 		return nil, fmt.Errorf("invalid pull request ID: %d", prID)
 	}
-	
+
 	// Prepare update
 	pr := &github.PullRequest{}
-	
+
 	if title != "" {
 		pr.Title = github.String(title)
 	}
-	
+
 	if description != "" {
 		pr.Body = github.String(description)
 	}
-	
+
 	updatedPR, _, err := m.client.PullRequests.Edit(ctx, m.owner, m.repo, prID, pr)
 	if err != nil {
 		return nil, fmt.Errorf("failed to update pull request #%d: %w", prID, err)
 	}
-	
+
 	prInfo := &interfaces.PullRequestInfo{
 		ID:           *updatedPR.Number,
 		Title:        *updatedPR.Title,
 		Description:  *updatedPR.Body,
 		SourceBranch: *updatedPR.Head.Ref,
-		TargetBranch: *updatedPR.Base.Ref,
-		Status:       strings.ToLower(*updatedPR.State),
-		CreatedAt:    *updatedPR.CreatedAt,
-		UpdatedAt:    *updatedPR.UpdatedAt,
+		TargetBranch: *updatedPR.Base.Ref,		Status:       strings.ToLower(*updatedPR.State),
+		CreatedAt:    updatedPR.CreatedAt.Time,
+		UpdatedAt:    updatedPR.UpdatedAt.Time,
 	}
-	
+
 	log.Printf("Updated pull request #%d", prID)
 	return prInfo, nil
 }
@@ -242,20 +238,20 @@ func (m *Manager) ClosePullRequest(ctx context.Context, prID int) error {
 	if m.owner == "" || m.repo == "" {
 		return fmt.Errorf("repository not configured, call SetRepository first")
 	}
-	
+
 	if prID <= 0 {
 		return fmt.Errorf("invalid pull request ID: %d", prID)
 	}
-	
+
 	pr := &github.PullRequest{
 		State: github.String("closed"),
 	}
-	
+
 	_, _, err := m.client.PullRequests.Edit(ctx, m.owner, m.repo, prID, pr)
 	if err != nil {
 		return fmt.Errorf("failed to close pull request #%d: %w", prID, err)
 	}
-	
+
 	log.Printf("Closed pull request #%d", prID)
 	return nil
 }
@@ -265,15 +261,15 @@ func (m *Manager) MergePullRequest(ctx context.Context, prID int, commitMessage 
 	if m.owner == "" || m.repo == "" {
 		return fmt.Errorf("repository not configured, call SetRepository first")
 	}
-	
+
 	if prID <= 0 {
 		return fmt.Errorf("invalid pull request ID: %d", prID)
 	}
-	
+
 	if mergeMethod == "" {
 		mergeMethod = "merge" // Default merge method
 	}
-	
+
 	// Validate merge method
 	validMethods := []string{"merge", "squash", "rebase"}
 	isValid := false
@@ -283,21 +279,15 @@ func (m *Manager) MergePullRequest(ctx context.Context, prID int, commitMessage 
 			break
 		}
 	}
-	
+
 	if !isValid {
 		return fmt.Errorf("invalid merge method: %s. Valid methods: %v", mergeMethod, validMethods)
-	}
-	
-	options := &github.PullRequestMergeOptions{
-		CommitMessage: commitMessage,
-		MergeMethod:   mergeMethod,
-	}
-	
-	_, _, err := m.client.PullRequests.Merge(ctx, m.owner, m.repo, prID, commitMessage, options)
+	}	// Use simple merge without options for now
+	_, _, err := m.client.PullRequests.Merge(ctx, m.owner, m.repo, prID, commitMessage, nil)
 	if err != nil {
 		return fmt.Errorf("failed to merge pull request #%d: %w", prID, err)
 	}
-	
+
 	log.Printf("Merged pull request #%d using method: %s", prID, mergeMethod)
 	return nil
 }
@@ -307,30 +297,30 @@ func (m *Manager) GetPullRequestFiles(ctx context.Context, prID int) ([]string, 
 	if m.owner == "" || m.repo == "" {
 		return nil, fmt.Errorf("repository not configured, call SetRepository first")
 	}
-	
+
 	if prID <= 0 {
 		return nil, fmt.Errorf("invalid pull request ID: %d", prID)
 	}
-	
+
 	opts := &github.ListOptions{PerPage: 100}
 	var allFiles []string
-	
+
 	for {
 		files, resp, err := m.client.PullRequests.ListFiles(ctx, m.owner, m.repo, prID, opts)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get pull request files: %w", err)
 		}
-		
+
 		for _, file := range files {
 			allFiles = append(allFiles, *file.Filename)
 		}
-		
+
 		if resp.NextPage == 0 {
 			break
 		}
 		opts.Page = resp.NextPage
 	}
-	
+
 	return allFiles, nil
 }
 
@@ -339,24 +329,24 @@ func (m *Manager) AddComment(ctx context.Context, prID int, comment string) erro
 	if m.owner == "" || m.repo == "" {
 		return fmt.Errorf("repository not configured, call SetRepository first")
 	}
-	
+
 	if prID <= 0 {
 		return fmt.Errorf("invalid pull request ID: %d", prID)
 	}
-	
+
 	if comment == "" {
 		return fmt.Errorf("comment cannot be empty")
 	}
-	
+
 	prComment := &github.IssueComment{
 		Body: github.String(comment),
 	}
-	
+
 	_, _, err := m.client.Issues.CreateComment(ctx, m.owner, m.repo, prID, prComment)
 	if err != nil {
 		return fmt.Errorf("failed to add comment to pull request #%d: %w", prID, err)
 	}
-	
+
 	log.Printf("Added comment to pull request #%d", prID)
 	return nil
 }
@@ -366,25 +356,25 @@ func (m *Manager) GetPullRequestComments(ctx context.Context, prID int) ([]map[s
 	if m.owner == "" || m.repo == "" {
 		return nil, fmt.Errorf("repository not configured, call SetRepository first")
 	}
-	
+
 	if prID <= 0 {
 		return nil, fmt.Errorf("invalid pull request ID: %d", prID)
 	}
-	
+
 	opts := &github.IssueListCommentsOptions{
 		Sort:        github.String("created"),
 		Direction:   github.String("asc"),
 		ListOptions: github.ListOptions{PerPage: 100},
 	}
-	
+
 	var allComments []map[string]interface{}
-	
+
 	for {
 		comments, resp, err := m.client.Issues.ListComments(ctx, m.owner, m.repo, prID, opts)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get pull request comments: %w", err)
 		}
-		
+
 		for _, comment := range comments {
 			commentInfo := map[string]interface{}{
 				"id":         *comment.ID,
@@ -395,13 +385,13 @@ func (m *Manager) GetPullRequestComments(ctx context.Context, prID int) ([]map[s
 			}
 			allComments = append(allComments, commentInfo)
 		}
-		
+
 		if resp.NextPage == 0 {
 			break
 		}
 		opts.Page = resp.NextPage
 	}
-	
+
 	return allComments, nil
 }
 
@@ -410,12 +400,12 @@ func (m *Manager) Health() error {
 	// Test GitHub API connectivity
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	
+
 	_, _, err := m.client.Users.Get(ctx, "")
 	if err != nil {
 		return fmt.Errorf("GitHub API health check failed: %w", err)
 	}
-	
+
 	return nil
 }
 

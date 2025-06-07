@@ -1,0 +1,7 @@
+--- FAIL: TestGitWorkflowManagerCreation (0.00s)
+    main_test.go:108: Failed to create GitWorkflowManager: failed to create branch manager: failed to open repository at .: repository does not exist
+--- FAIL: TestGitWorkflowManagerBasicOperations (0.00s)
+    main_test.go:135: Failed to create GitWorkflowManager: failed to create branch manager: failed to open repository at .: repository does not exist
+FAIL
+FAIL	github.com/email-sender/git-workflow-manager	3.087s
+FAIL
