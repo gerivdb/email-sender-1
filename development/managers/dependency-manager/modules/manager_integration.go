@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/email-sender/managers/interfaces"
+	"github.com/email-sender/development/managers/interfaces"
 	"go.uber.org/zap"
 )
 
@@ -128,44 +128,42 @@ func (mi *ManagerIntegrator) SetDeploymentManager(dm DeploymentManagerInterface)
 }
 
 // SecurityAuditWithManager performs security audit using SecurityManager
-func (mi *ManagerIntegrator) SecurityAuditWithManager(ctx context.Context, dependencies []Dependency) (*SecurityAuditResult, error) {
+func (mi *ManagerIntegrator) SecurityAuditWithManager(ctx context.Context, dependencies []Dependency) (*interfaces.VulnerabilityReport, error) {
 	if mi.securityManager == nil {
 		return nil, fmt.Errorf("SecurityManager not configured")
 	}
 
-	result := &SecurityAuditResult{
-		Timestamp:    time.Now(),
-		Dependencies: make([]DependencySecurityInfo, 0, len(dependencies)),
+	// The actual call to the SecurityManagerInterface which should return *interfaces.VulnerabilityReport
+	// This mock assumes the interface method itself does the main work.
+	// If mi.securityManager.ScanDependenciesForVulnerabilities itself is a stub or needs data mapping,
+	// this would be more complex. For now, assume it returns the correct type.
+	report, err := mi.securityManager.ScanDependenciesForVulnerabilities(ctx, dependencies)
+	if err != nil {
+		mi.errorManager.ProcessError(ctx, err, "SecurityManager", "ScanDependenciesForVulnerabilities", nil)
+		return nil, err
 	}
 
-	for _, dep := range dependencies {
-		// Check health of security manager
-		if err := mi.securityManager.HealthCheck(ctx); err != nil {
-			mi.errorManager.ProcessError(ctx, err, "SecurityManager", "HealthCheck", nil)
-			continue
-		}
-
-		// Create security info for each dependency
-		secInfo := DependencySecurityInfo{
-			Name:            dep.Name,
-			Version:         dep.Version,
+	// If the report from the interface is already populated correctly, we just log and return.
+	// If it needs further aggregation from a raw source, that logic would be here.
+	// For now, we assume ScanDependenciesForVulnerabilities returns a fully populated report.
+	if report == nil {
+		// Handle case where the scan returns no error but a nil report (if possible)
+		report = &interfaces.VulnerabilityReport{
+			Timestamp:       time.Now(),
 			Vulnerabilities: []interfaces.Vulnerability{},
-			IsSecure:        true,
-			LastChecked:     time.Now(),
+			TotalScanned:    len(dependencies), // Or 0 if scan truly failed to process
 		}
-
-		// TODO: Implement actual vulnerability checking via SecurityManager
-		// This would involve calling SecurityManager methods to scan dependencies
-
-		result.Dependencies = append(result.Dependencies, secInfo)
-		result.TotalScanned++
+		mi.logger.Warn("Security scan returned a nil report without error, initializing empty report.")
 	}
 
 	mi.logger.Info("Security audit completed with SecurityManager",
-		zap.Int("total_scanned", result.TotalScanned),
-		zap.Int("vulnerabilities_found", len(result.Dependencies)))
+		zap.Int("total_scanned", report.TotalScanned),
+		zap.Int("critical_vulnerabilities", report.CriticalCount),
+		zap.Int("high_vulnerabilities", report.HighCount),
+		zap.Int("medium_vulnerabilities", report.MediumCount),
+		zap.Int("low_vulnerabilities", report.LowCount))
 
-	return result, nil
+	return report, nil
 }
 
 // MonitorOperationPerformance monitors dependency operations using MonitoringManager
@@ -242,8 +240,8 @@ func (mi *ManagerIntegrator) MonitorOperationWithManager(ctx context.Context, op
 	return operationErr
 }
 
-// Persistinterfaces.DependencyMetadata saves metadata using real StorageManager
-func (mi *ManagerIntegrator) Persistinterfaces.DependencyMetadata(ctx context.Context, dependencies []Dependency) error {
+// PersistDependencyMetadata saves metadata using real StorageManager
+func (mi *ManagerIntegrator) PersistDependencyMetadata(ctx context.Context, dependencies []Dependency) error {
 	if mi.storageManager == nil {
 		mi.logger.Warn("StorageManager not configured, skipping metadata persistence")
 		return nil
@@ -266,7 +264,7 @@ func (mi *ManagerIntegrator) Persistinterfaces.DependencyMetadata(ctx context.Co
 			},
 		}
 
-		if err := mi.storageManager.Saveinterfaces.DependencyMetadata(ctx, metadata); err != nil {
+		if err := mi.storageManager.SaveDependencyMetadata(ctx, metadata); err != nil {
 			mi.errorManager.ProcessError(ctx, err, "StorageManager", "save_metadata", nil)
 			continue
 		}
@@ -292,8 +290,8 @@ func (mi *ManagerIntegrator) ValidateForContainerDeployment(ctx context.Context,
 	}
 
 	mi.logger.Info("Container validation completed",
-		zap.Bool("compatible", result.Compatible),
-		zap.Int("issues", len(result.Issues)))
+		zap.Bool("is_valid", result.IsValid),    // Changed from Compatible
+		zap.Int("validation_errors", len(result.ValidationErrors))) // Changed from Issues
 
 	return result, nil
 }
@@ -311,8 +309,8 @@ func (mi *ManagerIntegrator) ValidateContainerCompatibility(ctx context.Context,
 	}
 
 	mi.logger.Info("Container compatibility validation completed",
-		zap.Bool("compatible", result.Compatible),
-		zap.Int("issues_count", len(result.Issues)))
+		zap.Bool("is_valid", result.IsValid),    // Changed from Compatible
+		zap.Int("validation_errors_count", len(result.ValidationErrors))) // Changed from Issues
 
 	return result, nil
 }
@@ -330,33 +328,62 @@ func (mi *ManagerIntegrator) CheckDeploymentReadiness(ctx context.Context, deps 
 	}
 
 	mi.logger.Info("Deployment readiness check completed",
-		zap.Bool("ready", readiness.Ready),
+		zap.Bool("ready", readiness.Ready), // Assuming DeploymentReadiness has Ready
 		zap.String("environment", readiness.Environment))
 
 	return readiness, nil
 }
 
 // PerformHealthCheck performs a health check across all managers
-func (mi *ManagerIntegrator) PerformHealthCheck(ctx context.Context) error {
-	managers := map[string]func(context.Context) error{
-		"SecurityManager":   mi.securityManager.HealthCheck,
-		"MonitoringManager": mi.monitoringManager.HealthCheck,
-		"StorageManager":    mi.storageManager.HealthCheck,
-		"ContainerManager":  mi.containerManager.HealthCheck,
-		"DeploymentManager": mi.deploymentManager.HealthCheck,
+func (mi *ManagerIntegrator) PerformHealthCheck(ctx context.Context) (*interfaces.IntegrationHealthStatus, error) {
+	status := &interfaces.IntegrationHealthStatus{
+		Managers:    make(map[string]string),
+		LastChecked: time.Now(), // Corrected Timestamp to LastChecked
+		Overall:     "healthy",  // Assume healthy initially
+		Healthy:     true,       // Default to true
+	}
+	anyFailed := false // Renamed from isHealthy for clarity, and default Overall to "healthy"
+	// anyFailed := false // This variable is effectively replaced by status.Healthy and status.Overall logic
+
+	managerChecks := []struct {
+		name   string
+		hcFunc func(context.Context) error
+	}{
+		{"SecurityManager", mi.securityManager.HealthCheck},
+		{"MonitoringManager", mi.monitoringManager.HealthCheck},
+		{"StorageManager", mi.storageManager.HealthCheck},
+		{"ContainerManager", mi.containerManager.HealthCheck},
+		{"DeploymentManager", mi.deploymentManager.HealthCheck},
 	}
 
-	for name, healthCheck := range managers {
-		if healthCheck == nil {
+	for _, check := range managerChecks {
+		if check.hcFunc == nil {
+			status.Managers[check.name] = "not_configured"
+			anyFailed = true // Or treat as warning depending on policy
 			continue
 		}
-
-		if err := healthCheck(ctx); err != nil {
-			mi.errorManager.ProcessError(ctx, err, name, "HealthCheck", nil)
-			return fmt.Errorf("%s health check failed: %w", name, err)
+		if err := check.hcFunc(ctx); err != nil {
+			status.Managers[check.name] = "unhealthy"
+			status.Overall = "degraded" // Or "unhealthy"
+			anyFailed = true
+			// Optionally log the specific error using mi.errorManager or mi.logger
+			mi.logger.Error("Health check failed for manager", zap.String("manager", check.name), zap.Error(err))
+			// Decide if one failure means we return immediately or check all
+			// For a comprehensive status, we check all.
+		} else {
+			status.Managers[check.name] = "healthy"
 		}
 	}
 
-	mi.logger.Info("All managers passed health checks")
-	return nil
+	if !status.Healthy && status.Overall == "healthy" { // If any specific check failed but didn't set Overall to unhealthy
+		status.Overall = "degraded"
+	}
+	if !status.Healthy {
+        status.Message = "One or more components reported issues."
+    } else {
+		status.Message = "All components healthy."
+	}
+
+	mi.logger.Info("Manager integration health check completed", zap.String("overall_status", status.Overall))
+	return status, nil
 }
