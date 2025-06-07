@@ -1,18 +1,12 @@
-module github.com/email-sender/development/managers/contextual-memory-manager
+module github.com/contextual-memory-manager
 
 go 1.21
 
 require (
-    github.com/email-sender/development/managers/interfaces v0.0.0
-    github.com/email-sender/development/managers/error-manager v0.0.0
-    github.com/email-sender/development/managers/storage-manager v0.0.0
-    github.com/email-sender/development/managers/config-manager v0.0.0
-    github.com/google/uuid v1.3.0
-    github.com/prometheus/client_golang v1.16.0
-    github.com/stretchr/testify v1.8.4
+	github.com/google/uuid v1.3.0
+	github.com/mattn/go-sqlite3 v1.14.28
+	github.com/prometheus/client_golang v1.16.0
+	github.com/spf13/cobra v1.7.0
+	github.com/spf13/viper v1.16.0
+	github.com/stretchr/testify v1.8.4
 )
-
-replace github.com/email-sender/development/managers/interfaces => ../interfaces
-replace github.com/email-sender/development/managers/error-manager => ../error-manager
-replace github.com/email-sender/development/managers/storage-manager => ../storage-manager
-replace github.com/email-sender/development/managers/config-manager => ../config-manager

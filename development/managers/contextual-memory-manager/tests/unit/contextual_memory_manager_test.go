@@ -1,14 +1,7 @@
 package tests
 
 import (
-    "context"
-    "testing"
-    
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/mock"
-    
-    "github.com/email-sender/development/managers/contextual-memory-manager/development"
-    "github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
+	"testing"
 )
 
 func TestContextualMemoryManager_Initialize(t *testing.T) {

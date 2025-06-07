@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"../interfaces"
+	"github.com/contextual-memory-manager/pkg/interfaces"
 )
 
 // MockPerformanceManager provides minimal implementation for performance testing

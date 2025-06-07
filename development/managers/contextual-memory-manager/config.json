@@ -1,0 +1,20 @@
+{
+  "database": {
+    "path": "./contextual_memory.db",
+    "type": "sqlite"
+  },
+  "retrieval": {
+    "provider": "qdrant",
+    "qdrant_url": "http://localhost:6333",
+    "collection_name": "contextual_memory"
+  },
+  "embedding": {
+    "provider": "openai",
+    "api_key": "${OPENAI_API_KEY}",
+    "model": "text-embedding-ada-002"
+  },
+  "webhook": {
+    "enabled": true,
+    "endpoints": []
+  }
+}

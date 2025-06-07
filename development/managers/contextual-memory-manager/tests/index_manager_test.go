@@ -4,9 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
-	"github.com/email-sender/development/managers/contextual-memory-manager/internal/indexing"
-	baseInterfaces "github.com/email-sender/development/managers/interfaces"
+	"github.com/contextual-memory-manager/pkg/interfaces"
+	"github.com/contextual-memory-manager/pkg/manager"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

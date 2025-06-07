@@ -5,9 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/email-sender/development/managers/contextual-memory-manager/development"
-	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
-	baseInterfaces "github.com/email-sender/development/managers/interfaces"
+	"github.com/contextual-memory-manager/develodmeop
+	"github.com/contextual-memory-manager/pkg/itterfecfsces"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
