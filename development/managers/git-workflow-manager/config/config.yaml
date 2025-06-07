@@ -1,0 +1,94 @@
+# GitWorkflowManager Configuration
+
+repository:
+  path: "."
+  remote: "origin"
+  owner: "" # GitHub organization or user
+  name: "" # Repository name
+
+workflow:
+  type: "gitflow" # gitflow, githubflow, feature-branch, custom
+  default_branch: "main"
+  protected_branches:
+    - "main"
+    - "develop"
+  branch_naming:
+    feature: "feature/{name}"
+    hotfix: "hotfix/{name}"
+    release: "release/{version}"
+    bugfix: "bugfix/{name}"
+
+commit_rules:
+  conventional_commits: true
+  required_format: "^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\\(.+\\))?: .{1,50}"
+  max_length: 72
+  min_length: 10
+  allowed_types:
+    - "feat"
+    - "fix"
+    - "docs"
+    - "style"
+    - "refactor"
+    - "test"
+    - "chore"
+    - "perf"
+    - "ci"
+    - "build"
+    - "revert"
+
+github:
+  token: "" # GitHub personal access token
+  organization: ""
+  repository: ""
+  api_endpoint: "https://api.github.com"
+
+webhooks:
+  enabled: false
+  endpoints:
+    []
+    # Example webhook configuration:
+    # - name: "slack-notifications"
+    #   url: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+    #   events: ["push", "pull_request", "branch_created"]
+    #   secret: "your-webhook-secret"
+    #   headers:
+    #     "X-Custom-Header": "value"
+  timeout: 30 # seconds
+  retries: 3
+
+automation:
+  auto_merge:
+    enabled: false
+    required_checks: []
+    required_reviews: 1
+    target_branches:
+      - "main"
+      - "develop"
+
+  branch_cleanup:
+    enabled: false
+    days_after_merge: 7
+    exclude_branches:
+      - "main"
+      - "develop"
+      - "master"
+
+notifications:
+  slack:
+    enabled: false
+    webhook_url: ""
+    channel: "#git-notifications"
+
+  email:
+    enabled: false
+    smtp:
+      host: "smtp.gmail.com"
+      port: 587
+      username: ""
+      password: ""
+    recipients: []
+
+logging:
+  level: "info" # debug, info, warn, error
+  format: "json" # json, text
+  output: "stdout" # stdout, stderr, file path
