@@ -188,9 +188,16 @@ func main() {
 		outputFile = os.Args[3]
 	}
 
+	var resolvedConfigFile string
+	if configFile != "" {
+		resolvedConfigFile = configFile
+	} else {
+		resolvedConfigFile = "Default"
+	}
+
 	fmt.Printf("🏗️ EMAIL_SENDER_1 Progressive Build Starting...\n")
 	fmt.Printf("📁 Project Path: %s\n", projectPath)
-	fmt.Printf("⚙️ Config File: %s\n", if(configFile != "", configFile, "Default"))
+	fmt.Printf("⚙️ Config File: %s\n", resolvedConfigFile)
 	fmt.Printf("📄 Output File: %s\n", outputFile)
 
 	builder := NewProgressiveBuilder(projectPath)
@@ -763,12 +770,4 @@ func (bs *BuildStrategy) DisplaySummary() {
 	}
 	
 	fmt.Printf("\n" + strings.Repeat("=", 70) + "\n")
-}
-
-// if function for conditional string selection
-func if(condition bool, trueVal, falseVal string) string {
-	if condition {
-		return trueVal
-	}
-	return falseVal
 }

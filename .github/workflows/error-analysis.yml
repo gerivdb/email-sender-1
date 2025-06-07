@@ -16,58 +16,89 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       # Suppression de l'étape Set up PowerShell, car PowerShell 7.x est déjà disponible sur windows-latest
       
       - name: Install PSScriptAnalyzer
         shell: pwsh
         run: |
-          Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+          try {
+            Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser -ErrorAction Stop
+            if (-not (Get-Command Invoke-ScriptAnalyzer -ErrorAction SilentlyContinue)) {
+              Write-Error "PSScriptAnalyzer installation failed: Command Invoke-ScriptAnalyzer not found after installation."
+              exit 1
+            }
+            Write-Host "PSScriptAnalyzer installed successfully."
+          } catch {
+            Write-Error "PSScriptAnalyzer installation failed: $_"
+            exit 1
+          }
           
       - name: Run PSScriptAnalyzer
         shell: pwsh
         run: |
-          $results = Invoke-ScriptAnalyzer -Path . -Recurse -ExcludeRule PSAvoidUsingPlainTextForPassword,PSAvoidUsingConvertToSecureStringWithPlainText
-          $results | Format-Table -AutoSize
-          $results | ConvertTo-Json -Depth 5 | Out-File -FilePath pssa-results.json
-          
-          # Vérifier s'il y a des erreurs graves
-          $errorCount = ($results | Where-Object { $_.Severity -eq 'Error' }).Count
-          Write-Host "Nombre d'erreurs détectées: $errorCount"
-          
-          if ($errorCount -gt 0) {
-            Write-Host "::warning::$errorCount erreurs détectées par PSScriptAnalyzer"
+          try {
+            $results = Invoke-ScriptAnalyzer -Path . -Recurse -ExcludeRule PSAvoidUsingPlainTextForPassword,PSAvoidUsingConvertToSecureStringWithPlainText -ErrorAction Stop
+            
+            if ($null -eq $results -or $results.Count -eq 0) {
+              Write-Host "PSScriptAnalyzer found no issues or no files to analyze."
+              # Create an empty JSON array if no results, so downstream steps don't fail on missing file
+              New-Item -Path "pssa-results.json" -ItemType File -Value "[]" -Force
+            } else {
+              $results | Format-Table -AutoSize
+              $results | ConvertTo-Json -Depth 5 | Out-File -FilePath pssa-results.json -Encoding UTF8 -ErrorAction Stop
+            }
+            
+            # Vérifier s'il y a des erreurs graves
+            $errorCount = ($results | Where-Object { $_.Severity -eq 'Error' }).Count
+            Write-Host "Nombre d'erreurs PSScriptAnalyzer détectées: $errorCount"
+            
+            if ($errorCount -gt 0) {
+              Write-Host "::warning::$errorCount erreurs détectées par PSScriptAnalyzer"
+            }
+          } catch {
+            Write-Error "Error running PSScriptAnalyzer: $_"
+            # Attempt to create an empty JSON to prevent downstream failures if appropriate
+            New-Item -Path "pssa-results.json" -ItemType File -Value "[]" -Force
+            exit 1
           }
         
       - name: Run Custom Error Analysis
         shell: pwsh
         run: |
-          # Charger les scripts d'analyse personnalisés
           $scriptPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "ErrorManagement/AnalysisImprovements/EnhancedErrorPatterns.ps1"
           if (Test-Path -Path $scriptPath) {
-            . $scriptPath
-            
-            # Analyser le code
-            $results = Find-ErrorPatternsInDirectory -Path $env:GITHUB_WORKSPACE -Filter "*.ps1" -Recurse
-            
-            # Générer un rapport
-            $reportPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "error-analysis-report.html"
-            New-ErrorAnalysisReport -Results $results -OutputPath $reportPath -Format HTML
-            
-            # Afficher un résumé
-            $errorCount = ($results | Where-Object { $_.Severity -eq 'Error' }).Count
-            $warningCount = ($results | Where-Object { $_.Severity -eq 'Warning' }).Count
-            
-            Write-Host "Analyse personnalisée terminée:"
-            Write-Host "- Erreurs: $errorCount"
-            Write-Host "- Avertissements: $warningCount"
-            
-            if ($errorCount -gt 0) {
-              Write-Host "::warning::$errorCount erreurs détectées par l'analyse personnalisée"
+            try {
+              . $scriptPath # Source the script
+              
+              # Analyser le code
+              $customResults = Find-ErrorPatternsInDirectory -Path $env:GITHUB_WORKSPACE -Filter "*.ps1" -Recurse -ErrorAction Stop
+              
+              # Générer un rapport
+              $reportPath = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "error-analysis-report.html"
+              New-ErrorAnalysisReport -Results $customResults -OutputPath $reportPath -Format HTML -ErrorAction Stop
+              
+              # Afficher un résumé
+              if ($null -ne $customResults) {
+                $errorCount = ($customResults | Where-Object { $_.Severity -eq 'Error' }).Count
+                $warningCount = ($customResults | Where-Object { $_.Severity -eq 'Warning' }).Count
+                Write-Host "Analyse personnalisée terminée:"
+                Write-Host "- Erreurs: $errorCount"
+                Write-Host "- Avertissements: $warningCount"
+                if ($errorCount -gt 0) {
+                  Write-Host "::warning::$errorCount erreurs détectées par l'analyse personnalisée"
+                }
+              } else {
+                Write-Host "Analyse personnalisée n'a retourné aucun résultat."
+              }
+            } catch {
+              Write-Error "Error running Custom Error Analysis script: $_"
+              exit 1
             }
           } else {
-            Write-Host "::warning::Scripts d'analyse personnalisés non trouvés"
+            Write-Error "Custom error analysis script not found at $scriptPath. This is a critical failure."
+            exit 1
           }
       
       - name: Upload Analysis Results
@@ -77,17 +108,43 @@ jobs:
           path: |
             pssa-results.json
             error-analysis-report.html
+          if-no-files-found: error # Fail if expected artifacts are not found
           
       - name: Check for Critical Errors
         shell: pwsh
         run: |
-          $results = Get-Content -Path pssa-results.json | ConvertFrom-Json
-          $criticalErrors = $results | Where-Object { $_.Severity -eq 'Error' -and $_.RuleName -in @('PSAvoidUsingInvokeExpression', 'PSAvoidUsingPositionalParameters', 'PSUseDeclaredVarsMoreThanAssignments') }
+          if (-not (Test-Path -Path "pssa-results.json")) {
+            Write-Error "pssa-results.json not found! Cannot check for critical errors."
+            exit 1
+          }
           
-          if ($criticalErrors.Count -gt 0) {
-            Write-Host "::error::$($criticalErrors.Count) erreurs critiques détectées"
+          $jsonContent = Get-Content -Path "pssa-results.json" -Raw -ErrorAction Stop
+          
+          try {
+            if ([string]::IsNullOrWhiteSpace($jsonContent)) {
+              Write-Warning "pssa-results.json is empty. Skipping critical error check."
+              exit 0 # Or exit 1 if an empty file is an error condition
+            }
+            $analyzerResults = $jsonContent | ConvertFrom-Json -ErrorAction Stop
+          } catch {
+            Write-Error "Failed to parse pssa-results.json: $_"
+            Write-Error "JSON content was: $jsonContent"
+            exit 1
+          }
+          
+          if ($null -eq $analyzerResults) {
+            Write-Warning "Could not parse pssa-results.json or it was empty. Skipping critical PSScriptAnalyzer error check."
+            exit 0 # Or exit 1 depending on desired behavior
+          }
+          
+          $criticalErrors = $analyzerResults | Where-Object { $_.Severity -eq 'Error' -and $_.RuleName -in @('PSAvoidUsingInvokeExpression', 'PSAvoidUsingPositionalParameters', 'PSUseDeclaredVarsMoreThanAssignments') }
+          
+          if ($null -ne $criticalErrors -and $criticalErrors.Count -gt 0) {
+            Write-Host "::error::$($criticalErrors.Count) erreurs critiques PSScriptAnalyzer détectées"
             $criticalErrors | ForEach-Object {
               Write-Host "::error file=$($_.ScriptPath),line=$($_.Line)::$($_.RuleName): $($_.Message)"
             }
             exit 1
+          } else {
+            Write-Host "Aucune erreur critique PSScriptAnalyzer détectée."
           }
