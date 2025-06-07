@@ -319,9 +319,9 @@ function Cleanup-MergedBranches {
 
 # Point d'entrée principal
 param(
-   [string]$Command = "",
-   [string]$Manager = "",
-   [string]$Feature = ""
+   [string]$Command,
+   [string]$Manager,
+   [string]$Feature
 )
 
 switch ($Command.ToLower()) {
