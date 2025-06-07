@@ -3,16 +3,17 @@ package integratedmanager
 
 import (
 	"context"
-	"encoding/json"
+	"context"
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
+	// "encoding/json" // Used by gin's c.JSON and c.ShouldBindJSON
+	// "strconv" // Seems unused
+	// "strings" // Seems unused
+	// "github.com/google/uuid" // Seems unused
 )
 
 // ConformityAPIServer provides REST API endpoints for conformity management
@@ -143,7 +144,7 @@ func (s *ConformityAPIServer) getManagerConformity(c *gin.Context) {
 
 	if !exists {
 		// Try to verify conformity if not exists
-		report, err := s.manager.conformityManager.VerifyManagerConformity(managerName)
+		report, err := s.manager.conformityManager.VerifyManagerConformity(c.Request.Context(), managerName)
 		if err != nil {
 			c.JSON(http.StatusNotFound, gin.H{
 				"error":   "Not Found",
@@ -154,8 +155,8 @@ func (s *ConformityAPIServer) getManagerConformity(c *gin.Context) {
 		}
 
 		status = ConformityStatus{
-			Level:           report.Level,
-			Score:           report.Score,
+			Level:           report.ComplianceLevel,
+			Score:           report.OverallScore,
 			LastCheck:       report.Timestamp,
 			Issues:          report.Issues,
 			Recommendations: report.Recommendations,
@@ -184,7 +185,7 @@ func (s *ConformityAPIServer) verifyManagerConformity(c *gin.Context) {
 	}
 
 	// Perform conformity verification
-	report, err := s.manager.conformityManager.VerifyManagerConformity(managerName)
+	report, err := s.manager.conformityManager.VerifyManagerConformity(c.Request.Context(), managerName)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Internal Server Error",
@@ -195,16 +196,17 @@ func (s *ConformityAPIServer) verifyManagerConformity(c *gin.Context) {
 	}
 
 	// Update status in manager
-	status := ConformityStatus{
-		Level:           report.Level,
-		Score:           report.Score,
+	// Assuming local ConformityStatus struct has a field `Level` of type ComplianceLevel
+	parsedStatus := ConformityStatus{
+		Level:           report.ComplianceLevel,
+		Score:           report.OverallScore,
 		LastCheck:       report.Timestamp,
 		Issues:          report.Issues,
 		Recommendations: report.Recommendations,
 		NextCheck:       time.Now().Add(24 * time.Hour),
 	}
 
-	err = s.manager.conformityManager.UpdateConformityStatus(managerName, status)
+	err = s.manager.conformityManager.UpdateConformityStatus(c.Request.Context(), managerName, parsedStatus.Level)
 	if err != nil {
 		log.Printf("Failed to update conformity status for manager %s: %v", managerName, err)
 	}
@@ -212,7 +214,7 @@ func (s *ConformityAPIServer) verifyManagerConformity(c *gin.Context) {
 	response := gin.H{
 		"manager":    managerName,
 		"report":     report,
-		"status":     status,
+		"status":     parsedStatus,
 		"timestamp":  time.Now(),
 		"verified":   true,
 	}
@@ -221,6 +223,8 @@ func (s *ConformityAPIServer) verifyManagerConformity(c *gin.Context) {
 }
 
 // updateManagerStatus updates the conformity status for a manager
+// Note: The ConformityStatus struct bound from JSON here is local to conformity_api.go
+// It likely has a 'Level' field of type ComplianceLevel.
 func (s *ConformityAPIServer) updateManagerStatus(c *gin.Context) {
 	managerName := c.Param("name")
 	if managerName == "" {
@@ -241,7 +245,8 @@ func (s *ConformityAPIServer) updateManagerStatus(c *gin.Context) {
 		return
 	}
 
-	err := s.manager.conformityManager.UpdateConformityStatus(managerName, status)
+	// The manager's UpdateConformityStatus expects a ComplianceLevel, not the whole status struct.
+	err := s.manager.conformityManager.UpdateConformityStatus(c.Request.Context(), managerName, status.Level)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Internal Server Error",
@@ -254,14 +259,40 @@ func (s *ConformityAPIServer) updateManagerStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message":   "Status updated successfully",
 		"manager":   managerName,
-		"status":    status,
+		"status":    status, // Send back the originally parsed status
 		"timestamp": time.Now(),
 	})
 }
 
+// determineComplianceLevelForApi is a helper to get ComplianceLevel from score
+// This is needed because EcosystemConformityReport doesn't directly store OverallLevel
+func (s *ConformityAPIServer) determineComplianceLevelForAPI(score float64) ComplianceLevel {
+	// Attempt to get thresholds from the manager's config
+	config := s.manager.conformityManager.GetConformityConfig()
+	if config != nil && config.MinimumScores.Platinum > 0 { // Check if config is populated
+		thresholds := config.MinimumScores
+		if score >= thresholds.Platinum {
+			return ComplianceLevelPlatinum
+		} else if score >= thresholds.Gold {
+			return ComplianceLevelGold
+		} else if score >= thresholds.Silver {
+			return ComplianceLevelSilver
+		} else if score >= thresholds.Bronze {
+			return ComplianceLevelBronze
+		}
+		return ComplianceLevelFailed
+	}
+	// Fallback to default thresholds if config not available or not set
+	if score >= 90 { return ComplianceLevelPlatinum }
+	if score >= 80 { return ComplianceLevelGold }
+	if score >= 70 { return ComplianceLevelSilver }
+	if score >= 60 { return ComplianceLevelBronze }
+	return ComplianceLevelFailed
+}
+
 // getEcosystemStatus returns overall ecosystem conformity status
 func (s *ConformityAPIServer) getEcosystemStatus(c *gin.Context) {
-	report, err := s.manager.conformityManager.VerifyEcosystemConformity()
+	report, err := s.manager.conformityManager.VerifyEcosystemConformity(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Internal Server Error",
@@ -272,9 +303,9 @@ func (s *ConformityAPIServer) getEcosystemStatus(c *gin.Context) {
 	}
 
 	response := gin.H{
-		"ecosystem": report,
+		"ecosystem": report, // report itself
 		"timestamp": time.Now(),
-		"health":    s.calculateEcosystemHealth(report),
+		"health":    s.calculateEcosystemHealth(report), // derived health summary
 	}
 
 	c.JSON(http.StatusOK, response)
@@ -282,7 +313,7 @@ func (s *ConformityAPIServer) getEcosystemStatus(c *gin.Context) {
 
 // verifyEcosystemConformity performs a new ecosystem conformity check
 func (s *ConformityAPIServer) verifyEcosystemConformity(c *gin.Context) {
-	report, err := s.manager.conformityManager.VerifyEcosystemConformity()
+	report, err := s.manager.conformityManager.VerifyEcosystemConformity(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Internal Server Error",
@@ -298,10 +329,10 @@ func (s *ConformityAPIServer) verifyEcosystemConformity(c *gin.Context) {
 	s.manager.conformityMu.Unlock()
 
 	response := gin.H{
-		"ecosystem": report,
+		"ecosystem": report, // report itself
 		"timestamp": time.Now(),
 		"verified":  true,
-		"health":    s.calculateEcosystemHealth(report),
+		"health":    s.calculateEcosystemHealth(report), // derived health summary
 	}
 
 	c.JSON(http.StatusOK, response)
@@ -343,7 +374,24 @@ func (s *ConformityAPIServer) generateConformityReport(c *gin.Context) {
 		return
 	}
 
-	reportData, err := s.manager.conformityManager.GenerateConformityReport(request.Format)
+	var targetManagerName string
+	if len(request.Managers) > 0 {
+		targetManagerName = request.Managers[0] // Simplification: use the first manager if multiple are provided
+	} else {
+		// If no specific manager, what should happen?
+		// Option 1: Error - manager name is required by current GenerateConformityReport
+		// Option 2: Generate ecosystem report (would require a different manager method or logic here)
+		// For now, let's assume manager name is required or we use a default/placeholder.
+		// This part of API logic might need refinement based on product requirements.
+		// If an ecosystem report is desired, we'd fetch EcosystemConformityReport and pass it to reporter.GenerateReport.
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Bad Request",
+			"message": "Manager name is required for this report type or use a different endpoint for ecosystem reports.",
+		})
+		return
+	}
+
+	reportData, err := s.manager.conformityManager.GenerateConformityReport(c.Request.Context(), targetManagerName, ReportFormat(request.Format))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Internal Server Error",
@@ -435,7 +483,7 @@ func (s *ConformityAPIServer) generateEcosystemBadge(c *gin.Context) {
 	}
 
 	// Get ecosystem status
-	report, err := s.manager.conformityManager.VerifyEcosystemConformity()
+	report, err := s.manager.conformityManager.VerifyEcosystemConformity(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error":   "Internal Server Error",
@@ -446,9 +494,17 @@ func (s *ConformityAPIServer) generateEcosystemBadge(c *gin.Context) {
 	}
 
 	// Create a status-like structure for badge generation
-	status := ConformityStatus{
-		Level: report.OverallLevel,
-		Score: report.OverallScore,
+	// EcosystemConformityReport does not directly have OverallLevel or OverallScore.
+	// We use GlobalMetrics.AverageConformityScore and derive the level.
+	averageScore := 0.0
+	if report.GlobalMetrics != nil {
+		averageScore = report.GlobalMetrics.AverageConformityScore
+	}
+	derivedLevel := s.determineComplianceLevelForAPI(averageScore)
+
+	status := ConformityStatus{ // This is the local API struct, used for badge generation
+		Level: derivedLevel,
+		Score: averageScore,
 	}
 
 	badge, err := s.generateBadgeContent("ecosystem", badgeType, status)
@@ -611,25 +667,24 @@ func (s *ConformityAPIServer) getAPIDocumentation(c *gin.Context) {
 
 // calculateEcosystemHealth calculates ecosystem health metrics
 func (s *ConformityAPIServer) calculateEcosystemHealth(report *EcosystemConformityReport) gin.H {
-	health := "excellent"
-	if report.OverallScore < 95 {
-		health = "good"
+	// Use GlobalMetrics for score and derive level
+	score := 0.0
+	if report.GlobalMetrics != nil {
+		score = report.GlobalMetrics.AverageConformityScore
 	}
-	if report.OverallScore < 85 {
-		health = "fair"
-	}
-	if report.OverallScore < 75 {
-		health = "poor"
-	}
-	if report.OverallScore < 60 {
-		health = "critical"
-	}
+	level := s.determineComplianceLevelForAPI(score)
+
+	healthStatusText := "excellent"
+	if score < 95 { healthStatusText = "good" }
+	if score < 85 { healthStatusText = "fair" }
+	if score < 75 { healthStatusText = "poor" }
+	if score < 60 { healthStatusText = "critical" }
 
 	return gin.H{
-		"status":      health,
-		"score":       report.OverallScore,
-		"level":       report.OverallLevel,
-		"managers":    report.ManagerCount,
+		"status":      healthStatusText,
+		"score":       score,
+		"level":       level,
+		"managers":    report.TotalManagers, // Corrected from ManagerCount
 		"timestamp":   report.Timestamp,
 	}
 }

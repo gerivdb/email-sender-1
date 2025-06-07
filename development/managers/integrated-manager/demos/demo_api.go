@@ -1,18 +1,18 @@
-package main
+package demos
 
 import (
 	"fmt"
 	"log"
 	"time"
-	integratedmanager "github.com/email-sender/managers/integrated-manager"
+	im "email_sender/development/managers/integration-manager"
 )
 
-func main() {
+func RunDemoAPI() {
 	fmt.Println("=== EMAIL_SENDER_1 - Conformity API Demo ===")
 	
 	// Create IntegratedErrorManager instance
 	fmt.Println("1. Creating IntegratedErrorManager...")
-	manager := integratedmanager.NewIntegratedErrorManager()
+	manager := im.NewIntegratedErrorManager()
 	
 	// Configure API server
 	fmt.Println("2. Configuring API server on port 8082...")

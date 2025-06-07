@@ -7,7 +7,7 @@ import (
 )
 
 // Simulated validation of Phase 2 managers
-func main() {
+func RunPhase2Validation() {
 	fmt.Println("🚀 Phase 2 Managers - Final Validation")
 	fmt.Println("======================================")
 	

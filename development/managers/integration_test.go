@@ -1,4 +1,4 @@
-package main
+package managers_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	storageManager "github.com/email-sender-manager/storage-manager"
-	dependencyManager "github.com/email-sender-manager/dependency-manager"
-	securityManager "github.com/email-sender-manager/security-manager"
+	storageManager "email_sender/development/managers/storage-manager"
+	dependencyManager "email_sender/development/managers/dependency-manager"
+	securityManager "email_sender/development/managers/security-manager"
 )
 
 // TestManagersIntegration teste l'intégration des trois managers
@@ -181,8 +181,8 @@ func TestManagersIntegration(t *testing.T) {
 	log.Println("Integration test completed successfully")
 }
 
-// TestManagersPerformance teste les performances des managers
-func TestManagersPerformance(t *testing.T) {
+// TestManagersPerformanceIntegration teste les performances des managers
+func TestManagersPerformanceIntegration(t *testing.T) {
 	ctx := context.Background()
 
 	// Initialiser les managers avec configuration optimisée
@@ -265,7 +265,7 @@ func TestManagersPerformance(t *testing.T) {
 	})
 }
 
-func main() {
+func RunManualIntegrationTests() {
 	fmt.Println("Running integration tests for Phase 2 managers...")
 	
 	// Ce fichier peut être exécuté directement pour des tests manuels

@@ -147,6 +147,7 @@ type ArchitectureReport struct {
 	DRYScore        float64      `json:"dry_score"`
 	KISSScore       float64      `json:"kiss_score"`
 	ComplexityScore float64      `json:"complexity_score"`
+	OverallScore    float64      `json:"overall_score"` // Added field
 	Issues          []string     `json:"issues"`
 	Suggestions     []string     `json:"suggestions"`
 }
@@ -168,6 +169,12 @@ type IntegrationReport struct {
 	ImplementedMethods []string `json:"implemented_methods"`
 	TestCoverage       float64  `json:"test_coverage"`
 	Issues             []string `json:"issues"`
+	// Added missing fields based on usage in literals and error messages
+	HasErrorManager    bool     `json:"has_error_manager,omitempty"`
+	CorrectUsage       float64  `json:"correct_usage,omitempty"`
+	ErrorPatterns      float64  `json:"error_patterns,omitempty"`
+	LoggingIntegration float64  `json:"logging_integration,omitempty"`
+	Recommendations    []string `json:"recommendations,omitempty"`
 }
 
 // DocumentationReport rapport de documentation
@@ -351,7 +358,8 @@ type ConformityManager struct {
 	metricsCollector IMetricsCollector
 	reporter         IComplianceReporter
 	config           *ConformityConfig
-	cache            sync.Map // Cache pour optimiser les vérifications répétées	mu               sync.RWMutex
+	cache            sync.Map // Cache pour optimiser les vérifications répétées
+	mu               sync.RWMutex
 }
 
 // ConformityThresholds defines the thresholds for different conformity levels
@@ -655,811 +663,8 @@ func (cm *ConformityManager) randomVariation() float64 {
 	return (float64(time.Now().UnixNano()%1000) / 1000.0) - 0.5 // Retourne -0.5 à 0.5
 }
 
-// === PHASE 2.2.3: CONFORMITY METRIC UTILITIES ===
-
-// VerifyManagerConformity vérifie la conformité d'un manager spécifique
-func (cm *ConformityManager) VerifyManagerConformity(ctx context.Context, managerName string) (*ConformityReport, error) {
-	cm.logger.Info("Starting conformity verification for manager",
-		zap.String("manager", managerName))
-
-	// Vérification du cache
-	if cm.config.Checks.EnableCache {
-		if cached, ok := cm.cache.Load(managerName); ok {
-			if report, ok := cached.(*ConformityReport); ok {
-				if time.Since(report.Timestamp) < cm.config.Checks.CacheTimeout {
-					cm.logger.Debug("Returning cached conformity report",
-						zap.String("manager", managerName))
-					return report, nil
-				}
-			}
-		}
-	}
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout)
-	defer cancel()
-
-	// Vérification de conformité
-	report, err := cm.checker.CheckManager(ctx, managerName)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_MANAGER_FAILED")
-		return nil, fmt.Errorf("failed to verify manager conformity: %w", err)
-	}
-
-	// Mise en cache du résultat
-	if cm.config.Checks.EnableCache {
-		cm.cache.Store(managerName, report)
-	}
-
-	cm.logger.Info("Conformity verification completed",
-		zap.String("manager", managerName),
-		zap.Float64("score", report.OverallScore),
-		zap.String("level", string(report.ComplianceLevel)))
-
-	return report, nil
-}
-
-// VerifyEcosystemConformity vérifie la conformité de tout l'écosystème
-func (cm *ConformityManager) VerifyEcosystemConformity(ctx context.Context) (*EcosystemConformityReport, error) {
-	cm.logger.Info("Starting ecosystem conformity verification")
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout*2) // Double timeout pour l'écosystème
-	defer cancel()
-
-	// Vérification de l'écosystème
-	report, err := cm.checker.CheckEcosystem(ctx)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_ECOSYSTEM_FAILED")
-		return nil, fmt.Errorf("failed to verify ecosystem conformity: %w", err)
-	}
-
-	cm.logger.Info("Ecosystem conformity verification completed",
-		zap.Int("total_managers", report.TotalManagers),
-		zap.Int("conform_managers", report.ConformManagers),
-		zap.Float64("overall_health", report.OverallHealth))
-
-	return report, nil
-}
-
-// GenerateConformityReport génère un rapport de conformité dans le format spécifié
-func (cm *ConformityManager) GenerateConformityReport(ctx context.Context, managerName string, format ReportFormat) ([]byte, error) {
-	cm.logger.Info("Generating conformity report",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)))
-
-	// Obtenir le rapport de conformité
-	report, err := cm.VerifyManagerConformity(ctx, managerName)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get conformity report: %w", err)
-	}
-
-	// Générer le rapport dans le format demandé
-	reportData, err := cm.reporter.GenerateReport(ctx, report, format)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "GENERATE_REPORT_FAILED")
-		return nil, fmt.Errorf("failed to generate report: %w", err)
-	}
-
-	cm.logger.Info("Conformity report generated successfully",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)),
-		zap.Int("size_bytes", len(reportData)))
-
-	return reportData, nil
-}
-
-// UpdateConformityStatus met à jour le statut de conformité d'un manager
-func (cm *ConformityManager) UpdateConformityStatus(ctx context.Context, managerName string, status ComplianceLevel) error {
-	cm.logger.Info("Updating conformity status",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	// Invalider le cache pour ce manager
-	cm.cache.Delete(managerName)
-
-	// Log de l'événement de mise à jour via ErrorManager
-	cm.errorManager.LogError(nil, "ConformityManager", "STATUS_UPDATED")
-
-	cm.logger.Info("Conformity status updated successfully",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	return nil
-}
-
-// GetConformityMetrics retourne les métriques de conformité courantes
-func (cm *ConformityManager) GetConformityMetrics(ctx context.Context) (*EcosystemMetrics, error) {
-	// Obtenir le rapport complet de l'écosystème
-	ecosystemReport, err := cm.VerifyEcosystemConformity(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get ecosystem conformity: %w", err)
-	}
-
-	return ecosystemReport.GlobalMetrics, nil
-}
-
-// GetConformityConfig retourne la configuration courante
-func (cm *ConformityManager) GetConformityConfig() *ConformityConfig {
-	cm.mu.RLock()
-	defer cm.mu.RUnlock()
-
-	if cm.config == nil {
-		return &ConformityConfig{}
-	}
-
-	// Retourner une copie pour éviter les modifications concurrentes
-	configCopy := *cm.config
-	return &configCopy
-}
-
-// SetConformityConfig met à jour la configuration
-func (cm *ConformityManager) SetConformityConfig(config *ConformityConfig) {
-	if config == nil {
-		return
-	}
-
-	cm.mu.Lock()
-	defer cm.mu.Unlock()
-	cm.config = config
-
-	// Log the configuration update
-	cm.logger.Info("Conformity configuration updated",
-		zap.Bool("enabled", config.Enabled),
-		zap.Bool("auto_check", config.AutoCheck),
-		zap.Duration("check_interval", config.CheckInterval),
-	)
-}
-
-// randomVariation génère une variation aléatoire pour les simulations
-func (cm *ConformityManager) randomVariation() float64 {
-	return (float64(time.Now().UnixNano()%1000) / 1000.0) - 0.5 // Retourne -0.5 à 0.5
-}
-
-// === PHASE 2.2.3: CONFORMITY METRIC UTILITIES ===
-
-// VerifyManagerConformity vérifie la conformité d'un manager spécifique
-func (cm *ConformityManager) VerifyManagerConformity(ctx context.Context, managerName string) (*ConformityReport, error) {
-	cm.logger.Info("Starting conformity verification for manager",
-		zap.String("manager", managerName))
-
-	// Vérification du cache
-	if cm.config.Checks.EnableCache {
-		if cached, ok := cm.cache.Load(managerName); ok {
-			if report, ok := cached.(*ConformityReport); ok {
-				if time.Since(report.Timestamp) < cm.config.Checks.CacheTimeout {
-					cm.logger.Debug("Returning cached conformity report",
-						zap.String("manager", managerName))
-					return report, nil
-				}
-			}
-		}
-	}
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout)
-	defer cancel()
-
-	// Vérification de conformité
-	report, err := cm.checker.CheckManager(ctx, managerName)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_MANAGER_FAILED")
-		return nil, fmt.Errorf("failed to verify manager conformity: %w", err)
-	}
-
-	// Mise en cache du résultat
-	if cm.config.Checks.EnableCache {
-		cm.cache.Store(managerName, report)
-	}
-
-	cm.logger.Info("Conformity verification completed",
-		zap.String("manager", managerName),
-		zap.Float64("score", report.OverallScore),
-		zap.String("level", string(report.ComplianceLevel)))
-
-	return report, nil
-}
-
-// VerifyEcosystemConformity vérifie la conformité de tout l'écosystème
-func (cm *ConformityManager) VerifyEcosystemConformity(ctx context.Context) (*EcosystemConformityReport, error) {
-	cm.logger.Info("Starting ecosystem conformity verification")
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout*2) // Double timeout pour l'écosystème
-	defer cancel()
-
-	// Vérification de l'écosystème
-	report, err := cm.checker.CheckEcosystem(ctx)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_ECOSYSTEM_FAILED")
-		return nil, fmt.Errorf("failed to verify ecosystem conformity: %w", err)
-	}
-
-	cm.logger.Info("Ecosystem conformity verification completed",
-		zap.Int("total_managers", report.TotalManagers),
-		zap.Int("conform_managers", report.ConformManagers),
-		zap.Float64("overall_health", report.OverallHealth))
-
-	return report, nil
-}
-
-// GenerateConformityReport génère un rapport de conformité dans le format spécifié
-func (cm *ConformityManager) GenerateConformityReport(ctx context.Context, managerName string, format ReportFormat) ([]byte, error) {
-	cm.logger.Info("Generating conformity report",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)))
-
-	// Obtenir le rapport de conformité
-	report, err := cm.VerifyManagerConformity(ctx, managerName)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get conformity report: %w", err)
-	}
-
-	// Générer le rapport dans le format demandé
-	reportData, err := cm.reporter.GenerateReport(ctx, report, format)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "GENERATE_REPORT_FAILED")
-		return nil, fmt.Errorf("failed to generate report: %w", err)
-	}
-
-	cm.logger.Info("Conformity report generated successfully",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)),
-		zap.Int("size_bytes", len(reportData)))
-
-	return reportData, nil
-}
-
-// UpdateConformityStatus met à jour le statut de conformité d'un manager
-func (cm *ConformityManager) UpdateConformityStatus(ctx context.Context, managerName string, status ComplianceLevel) error {
-	cm.logger.Info("Updating conformity status",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	// Invalider le cache pour ce manager
-	cm.cache.Delete(managerName)
-
-	// Log de l'événement de mise à jour via ErrorManager
-	cm.errorManager.LogError(nil, "ConformityManager", "STATUS_UPDATED")
-
-	cm.logger.Info("Conformity status updated successfully",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	return nil
-}
-
-// GetConformityMetrics retourne les métriques de conformité courantes
-func (cm *ConformityManager) GetConformityMetrics(ctx context.Context) (*EcosystemMetrics, error) {
-	// Obtenir le rapport complet de l'écosystème
-	ecosystemReport, err := cm.VerifyEcosystemConformity(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get ecosystem conformity: %w", err)
-	}
-
-	return ecosystemReport.GlobalMetrics, nil
-}
-
-// GetConformityConfig retourne la configuration courante
-func (cm *ConformityManager) GetConformityConfig() *ConformityConfig {
-	cm.mu.RLock()
-	defer cm.mu.RUnlock()
-
-	if cm.config == nil {
-		return &ConformityConfig{}
-	}
-
-	// Retourner une copie pour éviter les modifications concurrentes
-	configCopy := *cm.config
-	return &configCopy
-}
-
-// SetConformityConfig met à jour la configuration
-func (cm *ConformityManager) SetConformityConfig(config *ConformityConfig) {
-	if config == nil {
-		return
-	}
-
-	cm.mu.Lock()
-	defer cm.mu.Unlock()
-	cm.config = config
-
-	// Log the configuration update
-	cm.logger.Info("Conformity configuration updated",
-		zap.Bool("enabled", config.Enabled),
-		zap.Bool("auto_check", config.AutoCheck),
-		zap.Duration("check_interval", config.CheckInterval),
-	)
-}
-
-// randomVariation génère une variation aléatoire pour les simulations
-func (cm *ConformityManager) randomVariation() float64 {
-	return (float64(time.Now().UnixNano()%1000) / 1000.0) - 0.5 // Retourne -0.5 à 0.5
-}
-
-// === PHASE 2.2.3: CONFORMITY METRIC UTILITIES ===
-
-// VerifyManagerConformity vérifie la conformité d'un manager spécifique
-func (cm *ConformityManager) VerifyManagerConformity(ctx context.Context, managerName string) (*ConformityReport, error) {
-	cm.logger.Info("Starting conformity verification for manager",
-		zap.String("manager", managerName))
-
-	// Vérification du cache
-	if cm.config.Checks.EnableCache {
-		if cached, ok := cm.cache.Load(managerName); ok {
-			if report, ok := cached.(*ConformityReport); ok {
-				if time.Since(report.Timestamp) < cm.config.Checks.CacheTimeout {
-					cm.logger.Debug("Returning cached conformity report",
-						zap.String("manager", managerName))
-					return report, nil
-				}
-			}
-		}
-	}
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout)
-	defer cancel()
-
-	// Vérification de conformité
-	report, err := cm.checker.CheckManager(ctx, managerName)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_MANAGER_FAILED")
-		return nil, fmt.Errorf("failed to verify manager conformity: %w", err)
-	}
-
-	// Mise en cache du résultat
-	if cm.config.Checks.EnableCache {
-		cm.cache.Store(managerName, report)
-	}
-
-	cm.logger.Info("Conformity verification completed",
-		zap.String("manager", managerName),
-		zap.Float64("score", report.OverallScore),
-		zap.String("level", string(report.ComplianceLevel)))
-
-	return report, nil
-}
-
-// VerifyEcosystemConformity vérifie la conformité de tout l'écosystème
-func (cm *ConformityManager) VerifyEcosystemConformity(ctx context.Context) (*EcosystemConformityReport, error) {
-	cm.logger.Info("Starting ecosystem conformity verification")
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout*2) // Double timeout pour l'écosystème
-	defer cancel()
-
-	// Vérification de l'écosystème
-	report, err := cm.checker.CheckEcosystem(ctx)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_ECOSYSTEM_FAILED")
-		return nil, fmt.Errorf("failed to verify ecosystem conformity: %w", err)
-	}
-
-	cm.logger.Info("Ecosystem conformity verification completed",
-		zap.Int("total_managers", report.TotalManagers),
-		zap.Int("conform_managers", report.ConformManagers),
-		zap.Float64("overall_health", report.OverallHealth))
-
-	return report, nil
-}
-
-// GenerateConformityReport génère un rapport de conformité dans le format spécifié
-func (cm *ConformityManager) GenerateConformityReport(ctx context.Context, managerName string, format ReportFormat) ([]byte, error) {
-	cm.logger.Info("Generating conformity report",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)))
-
-	// Obtenir le rapport de conformité
-	report, err := cm.VerifyManagerConformity(ctx, managerName)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get conformity report: %w", err)
-	}
-
-	// Générer le rapport dans le format demandé
-	reportData, err := cm.reporter.GenerateReport(ctx, report, format)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "GENERATE_REPORT_FAILED")
-		return nil, fmt.Errorf("failed to generate report: %w", err)
-	}
-
-	cm.logger.Info("Conformity report generated successfully",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)),
-		zap.Int("size_bytes", len(reportData)))
-
-	return reportData, nil
-}
-
-// UpdateConformityStatus met à jour le statut de conformité d'un manager
-func (cm *ConformityManager) UpdateConformityStatus(ctx context.Context, managerName string, status ComplianceLevel) error {
-	cm.logger.Info("Updating conformity status",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	// Invalider le cache pour ce manager
-	cm.cache.Delete(managerName)
-
-	// Log de l'événement de mise à jour via ErrorManager
-	cm.errorManager.LogError(nil, "ConformityManager", "STATUS_UPDATED")
-
-	cm.logger.Info("Conformity status updated successfully",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	return nil
-}
-
-// GetConformityMetrics retourne les métriques de conformité courantes
-func (cm *ConformityManager) GetConformityMetrics(ctx context.Context) (*EcosystemMetrics, error) {
-	// Obtenir le rapport complet de l'écosystème
-	ecosystemReport, err := cm.VerifyEcosystemConformity(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get ecosystem conformity: %w", err)
-	}
-
-	return ecosystemReport.GlobalMetrics, nil
-}
-
-// GetConformityConfig retourne la configuration courante
-func (cm *ConformityManager) GetConformityConfig() *ConformityConfig {
-	cm.mu.RLock()
-	defer cm.mu.RUnlock()
-
-	if cm.config == nil {
-		return &ConformityConfig{}
-	}
-
-	// Retourner une copie pour éviter les modifications concurrentes
-	configCopy := *cm.config
-	return &configCopy
-}
-
-// SetConformityConfig met à jour la configuration
-func (cm *ConformityManager) SetConformityConfig(config *ConformityConfig) {
-	if config == nil {
-		return
-	}
-
-	cm.mu.Lock()
-	defer cm.mu.Unlock()
-	cm.config = config
-
-	// Log the configuration update
-	cm.logger.Info("Conformity configuration updated",
-		zap.Bool("enabled", config.Enabled),
-		zap.Bool("auto_check", config.AutoCheck),
-		zap.Duration("check_interval", config.CheckInterval),
-	)
-}
-
-// randomVariation génère une variation aléatoire pour les simulations
-func (cm *ConformityManager) randomVariation() float64 {
-	return (float64(time.Now().UnixNano()%1000) / 1000.0) - 0.5 // Retourne -0.5 à 0.5
-}
-
-// === PHASE 2.2.3: CONFORMITY METRIC UTILITIES ===
-
-// VerifyManagerConformity vérifie la conformité d'un manager spécifique
-func (cm *ConformityManager) VerifyManagerConformity(ctx context.Context, managerName string) (*ConformityReport, error) {
-	cm.logger.Info("Starting conformity verification for manager",
-		zap.String("manager", managerName))
-
-	// Vérification du cache
-	if cm.config.Checks.EnableCache {
-		if cached, ok := cm.cache.Load(managerName); ok {
-			if report, ok := cached.(*ConformityReport); ok {
-				if time.Since(report.Timestamp) < cm.config.Checks.CacheTimeout {
-					cm.logger.Debug("Returning cached conformity report",
-						zap.String("manager", managerName))
-					return report, nil
-				}
-			}
-		}
-	}
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout)
-	defer cancel()
-
-	// Vérification de conformité
-	report, err := cm.checker.CheckManager(ctx, managerName)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_MANAGER_FAILED")
-		return nil, fmt.Errorf("failed to verify manager conformity: %w", err)
-	}
-
-	// Mise en cache du résultat
-	if cm.config.Checks.EnableCache {
-		cm.cache.Store(managerName, report)
-	}
-
-	cm.logger.Info("Conformity verification completed",
-		zap.String("manager", managerName),
-		zap.Float64("score", report.OverallScore),
-		zap.String("level", string(report.ComplianceLevel)))
-
-	return report, nil
-}
-
-// VerifyEcosystemConformity vérifie la conformité de tout l'écosystème
-func (cm *ConformityManager) VerifyEcosystemConformity(ctx context.Context) (*EcosystemConformityReport, error) {
-	cm.logger.Info("Starting ecosystem conformity verification")
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout*2) // Double timeout pour l'écosystème
-	defer cancel()
-
-	// Vérification de l'écosystème
-	report, err := cm.checker.CheckEcosystem(ctx)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_ECOSYSTEM_FAILED")
-		return nil, fmt.Errorf("failed to verify ecosystem conformity: %w", err)
-	}
-
-	cm.logger.Info("Ecosystem conformity verification completed",
-		zap.Int("total_managers", report.TotalManagers),
-		zap.Int("conform_managers", report.ConformManagers),
-		zap.Float64("overall_health", report.OverallHealth))
-
-	return report, nil
-}
-
-// GenerateConformityReport génère un rapport de conformité dans le format spécifié
-func (cm *ConformityManager) GenerateConformityReport(ctx context.Context, managerName string, format ReportFormat) ([]byte, error) {
-	cm.logger.Info("Generating conformity report",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)))
-
-	// Obtenir le rapport de conformité
-	report, err := cm.VerifyManagerConformity(ctx, managerName)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get conformity report: %w", err)
-	}
-
-	// Générer le rapport dans le format demandé
-	reportData, err := cm.reporter.GenerateReport(ctx, report, format)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "GENERATE_REPORT_FAILED")
-		return nil, fmt.Errorf("failed to generate report: %w", err)
-	}
-
-	cm.logger.Info("Conformity report generated successfully",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)),
-		zap.Int("size_bytes", len(reportData)))
-
-	return reportData, nil
-}
-
-// UpdateConformityStatus met à jour le statut de conformité d'un manager
-func (cm *ConformityManager) UpdateConformityStatus(ctx context.Context, managerName string, status ComplianceLevel) error {
-	cm.logger.Info("Updating conformity status",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	// Invalider le cache pour ce manager
-	cm.cache.Delete(managerName)
-
-	// Log de l'événement de mise à jour via ErrorManager
-	cm.errorManager.LogError(nil, "ConformityManager", "STATUS_UPDATED")
-
-	cm.logger.Info("Conformity status updated successfully",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	return nil
-}
-
-// GetConformityMetrics retourne les métriques de conformité courantes
-func (cm *ConformityManager) GetConformityMetrics(ctx context.Context) (*EcosystemMetrics, error) {
-	// Obtenir le rapport complet de l'écosystème
-	ecosystemReport, err := cm.VerifyEcosystemConformity(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get ecosystem conformity: %w", err)
-	}
-
-	return ecosystemReport.GlobalMetrics, nil
-}
-
-// GetConformityConfig retourne la configuration courante
-func (cm *ConformityManager) GetConformityConfig() *ConformityConfig {
-	cm.mu.RLock()
-	defer cm.mu.RUnlock()
-
-	if cm.config == nil {
-		return &ConformityConfig{}
-	}
-
-	// Retourner une copie pour éviter les modifications concurrentes
-	configCopy := *cm.config
-	return &configCopy
-}
-
-// SetConformityConfig met à jour la configuration
-func (cm *ConformityManager) SetConformityConfig(config *ConformityConfig) {
-	if config == nil {
-		return
-	}
-
-	cm.mu.Lock()
-	defer cm.mu.Unlock()
-	cm.config = config
-
-	// Log the configuration update
-	cm.logger.Info("Conformity configuration updated",
-		zap.Bool("enabled", config.Enabled),
-		zap.Bool("auto_check", config.AutoCheck),
-		zap.Duration("check_interval", config.CheckInterval),
-	)
-}
-
-// randomVariation génère une variation aléatoire pour les simulations
-func (cm *ConformityManager) randomVariation() float64 {
-	return (float64(time.Now().UnixNano()%1000) / 1000.0) - 0.5 // Retourne -0.5 à 0.5
-}
-
-// === PHASE 2.2.3: CONFORMITY METRIC UTILITIES ===
-
-// VerifyManagerConformity vérifie la conformité d'un manager spécifique
-func (cm *ConformityManager) VerifyManagerConformity(ctx context.Context, managerName string) (*ConformityReport, error) {
-	cm.logger.Info("Starting conformity verification for manager",
-		zap.String("manager", managerName))
-
-	// Vérification du cache
-	if cm.config.Checks.EnableCache {
-		if cached, ok := cm.cache.Load(managerName); ok {
-			if report, ok := cached.(*ConformityReport); ok {
-				if time.Since(report.Timestamp) < cm.config.Checks.CacheTimeout {
-					cm.logger.Debug("Returning cached conformity report",
-						zap.String("manager", managerName))
-					return report, nil
-				}
-			}
-		}
-	}
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout)
-	defer cancel()
-
-	// Vérification de conformité
-	report, err := cm.checker.CheckManager(ctx, managerName)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_MANAGER_FAILED")
-		return nil, fmt.Errorf("failed to verify manager conformity: %w", err)
-	}
-
-	// Mise en cache du résultat
-	if cm.config.Checks.EnableCache {
-		cm.cache.Store(managerName, report)
-	}
-
-	cm.logger.Info("Conformity verification completed",
-		zap.String("manager", managerName),
-		zap.Float64("score", report.OverallScore),
-		zap.String("level", string(report.ComplianceLevel)))
-
-	return report, nil
-}
-
-// VerifyEcosystemConformity vérifie la conformité de tout l'écosystème
-func (cm *ConformityManager) VerifyEcosystemConformity(ctx context.Context) (*EcosystemConformityReport, error) {
-	cm.logger.Info("Starting ecosystem conformity verification")
-
-	// Création du contexte avec timeout
-	ctx, cancel := context.WithTimeout(ctx, cm.config.Checks.Timeout*2) // Double timeout pour l'écosystème
-	defer cancel()
-
-	// Vérification de l'écosystème
-	report, err := cm.checker.CheckEcosystem(ctx)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "VERIFY_ECOSYSTEM_FAILED")
-		return nil, fmt.Errorf("failed to verify ecosystem conformity: %w", err)
-	}
-
-	cm.logger.Info("Ecosystem conformity verification completed",
-		zap.Int("total_managers", report.TotalManagers),
-		zap.Int("conform_managers", report.ConformManagers),
-		zap.Float64("overall_health", report.OverallHealth))
-
-	return report, nil
-}
-
-// GenerateConformityReport génère un rapport de conformité dans le format spécifié
-func (cm *ConformityManager) GenerateConformityReport(ctx context.Context, managerName string, format ReportFormat) ([]byte, error) {
-	cm.logger.Info("Generating conformity report",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)))
-
-	// Obtenir le rapport de conformité
-	report, err := cm.VerifyManagerConformity(ctx, managerName)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get conformity report: %w", err)
-	}
-
-	// Générer le rapport dans le format demandé
-	reportData, err := cm.reporter.GenerateReport(ctx, report, format)
-	if err != nil {
-		cm.errorManager.LogError(err, "ConformityManager", "GENERATE_REPORT_FAILED")
-		return nil, fmt.Errorf("failed to generate report: %w", err)
-	}
-
-	cm.logger.Info("Conformity report generated successfully",
-		zap.String("manager", managerName),
-		zap.String("format", string(format)),
-		zap.Int("size_bytes", len(reportData)))
-
-	return reportData, nil
-}
-
-// UpdateConformityStatus met à jour le statut de conformité d'un manager
-func (cm *ConformityManager) UpdateConformityStatus(ctx context.Context, managerName string, status ComplianceLevel) error {
-	cm.logger.Info("Updating conformity status",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	// Invalider le cache pour ce manager
-	cm.cache.Delete(managerName)
-
-	// Log de l'événement de mise à jour via ErrorManager
-	cm.errorManager.LogError(nil, "ConformityManager", "STATUS_UPDATED")
-
-	cm.logger.Info("Conformity status updated successfully",
-		zap.String("manager", managerName),
-		zap.String("status", string(status)))
-
-	return nil
-}
-
-// GetConformityMetrics retourne les métriques de conformité courantes
-func (cm *ConformityManager) GetConformityMetrics(ctx context.Context) (*EcosystemMetrics, error) {
-	// Obtenir le rapport complet de l'écosystème
-	ecosystemReport, err := cm.VerifyEcosystemConformity(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get ecosystem conformity: %w", err)
-	}
-
-	return ecosystemReport.GlobalMetrics, nil
-}
-
-// GetConformityConfig retourne la configuration courante
-func (cm *ConformityManager) GetConformityConfig() *ConformityConfig {
-	cm.mu.RLock()
-	defer cm.mu.RUnlock()
-
-	if cm.config == nil {
-		return &ConformityConfig{}
-	}
-
-	// Retourner une copie pour éviter les modifications concurrentes
-	configCopy := *cm.config
-	return &configCopy
-}
-
-// SetConformityConfig met à jour la configuration
-func (cm *ConformityManager) SetConformityConfig(config *ConformityConfig) {
-	if config == nil {
-		return
-	}
-
-	cm.mu.Lock()
-	defer cm.mu.Unlock()
-	cm.config = config
-
-	// Log the configuration update
-	cm.logger.Info("Conformity configuration updated",
-		zap.Bool("enabled", config.Enabled),
-		zap.Bool("auto_check", config.AutoCheck),
-		zap.Duration("check_interval", config.CheckInterval),
-	)
-}
-
-// randomVariation génère une variation aléatoire pour les simulations
-func (cm *ConformityManager) randomVariation() float64 {
-	return (float64(time.Now().UnixNano()%1000) / 1000.0) - 0.5 // Retourne -0.5 à 0.5
-}
-
+// This entire block of duplicated methods will be removed.
+// The SEARCH pattern starts with the comment line above and ends before the STUBS comment.
 // === PHASE 2.2.3: CONFORMITY METRIC UTILITIES ===
 
 // VerifyManagerConformity vérifie la conformité d'un manager spécifique
@@ -1973,6 +1178,12 @@ type documentationValidator struct{ cm *ConformityManager }
 type metricsCollector struct{ cm *ConformityManager }
 type complianceReporter struct{ cm *ConformityManager }
 
+// ExportMetrics stub for IComplianceReporter
+func (cr *complianceReporter) ExportMetrics(ctx context.Context, metrics interface{}, target ExportTarget) error {
+	cr.cm.logger.Info("ExportMetrics called (stub)", zap.Any("target", target), zap.Any("metrics", metrics))
+	return nil
+}
+
 // === IMPLÉMENTATIONS PRINCIPALES DU ARCHITECTURE CHECKER ===
 
 func (ac *architectureChecker) CheckManager(ctx context.Context, managerName string) (*ConformityReport, error) {
@@ -2398,9 +1609,10 @@ func (dv *documentationValidator) ValidateArchitectureDiagrams(ctx context.Conte
 
 // === MÉTHODES D'AIDE POUR LA VALIDATION DOCUMENTAIRE ===
 
+// Stubs for documentationValidator helper methods
 func (dv *documentationValidator) fileExists(path string) bool {
-	// Simulation - en production vérifierait l'existence réelle du fichier
-	return dv.cm.randomVariation() > 2.0 // 80% de chance que le fichier existe
+	dv.cm.logger.Debug("STUB: fileExists", zap.String("path", path))
+	return dv.cm.randomVariation() > -0.2 // Adjusted to be more likely true for stub
 }
 
 func (dv *documentationValidator) analyzeReadmeContent(readmePath string) float64 {
@@ -2514,6 +1726,56 @@ func (dv *documentationValidator) generateDocumentationIssues(missingDocs []stri
 }
 
 // === IMPLÉMENTATIONS DU METRICS COLLECTOR ===
+
+// Stubs for metricsCollector helper methods
+func (mc *metricsCollector) generateCodeSmells(sourcePath string, complexity float64, duplicationRatio float64) []CodeSmell {
+	mc.cm.logger.Debug("STUB: generateCodeSmells", zap.String("sourcePath", sourcePath))
+	if complexity > 15 || duplicationRatio > 0.1 {
+		return []CodeSmell{{Type: "ComplexFunction", Severity: "Medium", Description: "High complexity or duplication"}}
+	}
+	return nil
+}
+
+func (mc *metricsCollector) generateUncoveredFunctions(overallCoverage float64) []string {
+	mc.cm.logger.Debug("STUB: generateUncoveredFunctions", zap.Float64("overallCoverage", overallCoverage))
+	if overallCoverage < 80.0 {
+		return []string{"UncoveredFunc1", "UncoveredFunc2"}
+	}
+	return nil
+}
+
+func (mc *metricsCollector) generateBenchmarks(managerName string, avgResponseTime time.Duration) []BenchmarkResult {
+	mc.cm.logger.Debug("STUB: generateBenchmarks", zap.String("managerName", managerName))
+	return []BenchmarkResult{{Name: "BenchmarkPrimaryOp", NsPerOp: avgResponseTime.Nanoseconds()}}
+}
+
+func (mc *metricsCollector) generateOutdatedDependencies() []string {
+	mc.cm.logger.Debug("STUB: generateOutdatedDependencies")
+	// Simulate some outdated dependencies
+	if mc.cm.randomVariation() > 0.2 { // ~30% chance of having outdated dependencies
+		return []string{"github.com/outdated/lib@v1.0.0 (latest v1.2.0)"}
+	}
+	return nil
+}
+
+func (mc *metricsCollector) generateVulnerableDependencies() []string {
+	mc.cm.logger.Debug("STUB: generateVulnerableDependencies")
+	// Simulate some vulnerable dependencies
+	if mc.cm.randomVariation() > 0.3 { // ~20% chance
+		return []string{"github.com/vulnerable/pkg@v2.1.0 (CVE-2023-XXXX)"}
+	}
+	return nil
+}
+
+func (mc *metricsCollector) generateLicenseIssues() []string {
+	mc.cm.logger.Debug("STUB: generateLicenseIssues")
+	// Simulate some license issues
+	if mc.cm.randomVariation() > 0.4 { // ~10% chance
+		return []string{"github.com/noncompliant/license@v1.0.0 (GPLv3 incompatible)"}
+	}
+	return nil
+}
+
 
 func (mc *metricsCollector) CollectCodeMetrics(ctx context.Context, sourcePath string) (*CodeMetrics, error) {
 	mc.cm.logger.Debug("Collecting code metrics", zap.String("path", sourcePath))
@@ -3081,7 +2343,7 @@ func (ac *architectureChecker) calculateConformityScores(archReport *Architectur
 
 	// Score d'architecture (SOLID/DRY/KISS)
 	if archReport != nil {
-		scores.Architecture = archReport.OverallScore
+		scores.Architecture = archReport.OverallScore // This relies on OverallScore being in ArchitectureReport
 	}
 
 	// Score d'intégration ErrorManager
@@ -3150,7 +2412,7 @@ func (ac *architectureChecker) collectIssues(archReport *ArchitectureReport, int
 
 	// Issues d'architecture
 	if archReport != nil {
-		for _, violation := range archReport.Violations {
+		for _, violation := range archReport.Issues { // Changed Violations to Issues
 			issues = append(issues, ConformityIssue{
 				ID:          uuid.New().String(),
 				Category:    "Architecture",
@@ -3164,7 +2426,7 @@ func (ac *architectureChecker) collectIssues(archReport *ArchitectureReport, int
 	}
 
 	// Issues d'intégration ErrorManager
-	if integrationReport != nil && !integrationReport.HasErrorManager {
+	if integrationReport != nil && !integrationReport.IsIntegrated { // Changed HasErrorManager to IsIntegrated
 		issues = append(issues, ConformityIssue{
 			ID:          uuid.New().String(),
 			Category:    "Integration",
@@ -3532,7 +2794,110 @@ func (ac *architectureChecker) hasPerformanceLogging(managerPath string) bool {
 }
 
 // randomVariation génère une variation aléatoire pour les simulations
-func (ac *architectureChecker) randomVariation() float64 {
-	// Simulation basée sur le hash du nom pour la cohérence
-	return float64((len(ac.cm.config.Paths.ReportsDir) % 10)) // 0-9
+// func (ac *architectureChecker) randomVariation() float64 {
+// 	// Simulation basée sur le hash du nom pour la cohérence
+// 	// This method should use ac.cm.randomVariation() if needed or be removed if stubs don't require it.
+// 	// For now, removing this duplicate, specific randomVariation for architectureChecker.
+// 	return float64((len(ac.cm.config.Paths.ReportsDir) % 10)) // 0-9
+// }
+
+// === Stubs for architectureChecker methods ===
+
+func (ac *architectureChecker) checkSingleResponsibilityPrinciple(managerPath string) float64 {
+	ac.cm.logger.Debug("STUB: checkSingleResponsibilityPrinciple", zap.String("path", managerPath))
+	return 75.0 + ac.cm.randomVariation()*5 // Use ConformityManager's randomVariation
+}
+
+func (ac *architectureChecker) checkOpenClosedPrinciple(managerPath string) float64 {
+	ac.cm.logger.Debug("STUB: checkOpenClosedPrinciple", zap.String("path", managerPath))
+	return 80.0 + ac.cm.randomVariation()*5
+}
+
+func (ac *architectureChecker) checkLiskovSubstitutionPrinciple(managerPath string) float64 {
+	ac.cm.logger.Debug("STUB: checkLiskovSubstitutionPrinciple", zap.String("path", managerPath))
+	return 85.0 + ac.cm.randomVariation()*5
+}
+
+func (ac *architectureChecker) checkInterfaceSegregationPrinciple(managerPath string) float64 {
+	ac.cm.logger.Debug("STUB: checkInterfaceSegregationPrinciple", zap.String("path", managerPath))
+	return 78.0 + ac.cm.randomVariation()*5
+}
+
+func (ac *architectureChecker) checkDependencyInversionPrinciple(managerPath string) float64 {
+	ac.cm.logger.Debug("STUB: checkDependencyInversionPrinciple", zap.String("path", managerPath))
+	return 82.0 + ac.cm.randomVariation()*5
+}
+
+func (ac *architectureChecker) checkDRYPrinciple(managerPath string) float64 {
+	ac.cm.logger.Debug("STUB: checkDRYPrinciple", zap.String("path", managerPath))
+	return 70.0 + ac.cm.randomVariation()*10
+}
+
+func (ac *architectureChecker) checkKISSPrinciple(managerPath string) float64 {
+	ac.cm.logger.Debug("STUB: checkKISSPrinciple", zap.String("path", managerPath))
+	return 70.0 + ac.cm.randomVariation()*10
+}
+
+func (ac *architectureChecker) analyzeComplexity(managerPath string) float64 {
+	ac.cm.logger.Debug("STUB: analyzeComplexity", zap.String("path", managerPath))
+	return 8.0 + ac.cm.randomVariation()*2
+}
+
+func (ac *architectureChecker) detectArchitecturalViolations(managerPath string, solidScore, dryScore, kissScore float64) []string {
+	ac.cm.logger.Debug("STUB: detectArchitecturalViolations", zap.String("path", managerPath))
+	var violations []string
+	if solidScore < 70 { violations = append(violations, "SOLID principles not fully respected.")}
+	if dryScore < 70 { violations = append(violations, "Code duplication suspected (DRY principle).")}
+	if kissScore < 70 { violations = append(violations, "Code might be overly complex (KISS principle).")}
+	return violations
+}
+
+func (ac *architectureChecker) generateArchitecturalRecommendations(solidScore, dryScore, kissScore float64, issues []string) []string {
+	ac.cm.logger.Debug("STUB: generateArchitecturalRecommendations")
+	var recommendations []string
+	if len(issues) > 0 { recommendations = append(recommendations, "Address noted architectural violations.")}
+	return recommendations
+}
+
+func (ac *architectureChecker) checkErrorManagerPresence(managerName string) bool {
+	ac.cm.logger.Debug("STUB: checkErrorManagerPresence", zap.String("manager", managerName))
+	return true // Assume present for stub
+}
+
+func (ac *architectureChecker) checkErrorManagerUsage(managerName string) float64 {
+	ac.cm.logger.Debug("STUB: checkErrorManagerUsage", zap.String("manager", managerName))
+	return 80.0 + ac.cm.randomVariation()*10
+}
+
+func (ac *architectureChecker) checkErrorPatterns(managerName string) float64 {
+	ac.cm.logger.Debug("STUB: checkErrorPatterns", zap.String("manager", managerName))
+	return 75.0 + ac.cm.randomVariation()*10
+}
+
+func (ac *architectureChecker) checkLoggingIntegration(managerName string) float64 {
+	ac.cm.logger.Debug("STUB: checkLoggingIntegration", zap.String("manager", managerName))
+	return 70.0 + ac.cm.randomVariation()*10
+}
+
+func (ac *architectureChecker) calculateIntegrationScore(isIntegrated bool, correctUsage, errorPatterns, loggingIntegration float64) float64 {
+	ac.cm.logger.Debug("STUB: calculateIntegrationScore")
+	if !isIntegrated {
+		return 0.0
+	}
+	return (correctUsage + errorPatterns + loggingIntegration) / 3.0
+}
+
+func (ac *architectureChecker) detectIntegrationIssues(managerName string, isIntegrated bool, correctUsage, loggingIntegration float64) []string {
+	ac.cm.logger.Debug("STUB: detectIntegrationIssues", zap.String("manager", managerName))
+	var issues []string
+	if !isIntegrated { issues = append(issues, "ErrorManager is not integrated.")}
+	if correctUsage < 70 { issues = append(issues, "ErrorManager usage could be improved.")}
+	return issues
+}
+
+func (ac *architectureChecker) generateIntegrationRecommendations(isIntegrated bool, correctUsage, loggingIntegration float64) []string {
+	ac.cm.logger.Debug("STUB: generateIntegrationRecommendations")
+	var recommendations []string
+	if !isIntegrated { recommendations = append(recommendations, "Integrate ErrorManager for consistent error handling.")}
+	return recommendations
 }

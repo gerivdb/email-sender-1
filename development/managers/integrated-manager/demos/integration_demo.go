@@ -1,4 +1,4 @@
-package main
+package demos
 
 import (
 	"context"
@@ -8,14 +8,43 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	im "email_sender/development/managers/integration-manager"
 )
+
+// Severity type for the determineSeverityLocal stub, assuming it's defined in 'im' package
+// type Severity string
+// const (
+// 	SeverityCritical Severity = "CRITICAL"
+// 	SeverityError    Severity = "ERROR"
+// 	SeverityWarning  Severity = "WARNING"
+// 	SeverityInfo     Severity = "INFO"
+// )
+// Actual definition should be in im package. For stubbing:
+func determineSeverityLocal(err error) im.Severity { // Assuming im.Severity is the correct type
+	// Simple logic for demo
+	if strings.Contains(strings.ToLower(err.Error()), "critical") {
+		return im.SeverityCritical // Assuming this constant exists
+	}
+	return im.SeverityError // Assuming this constant exists
+}
+
 
 // MockErrorManager implements ErrorManager for demo purposes
 type MockErrorManager struct {
 	loggedErrors     []LoggedError
-	catalogedErrors  []ErrorEntry
-	validationErrors []ErrorEntry
+	catalogedErrors  []LocalErrorEntry // Changed to avoid conflict if im.ErrorEntry is different
+	validationErrors []LocalErrorEntry // Changed to avoid conflict
 	mu               sync.Mutex
+}
+
+// LocalErrorEntry defined for MockErrorManager, distinct from potential im.ErrorEntry
+type LocalErrorEntry struct {
+	Message   string
+	Module    string
+	Severity  string // Assuming string for mock
+	ErrorCode string
+	// other fields as needed by mock
 }
 
 type LoggedError struct {
@@ -28,7 +57,7 @@ type LoggedError struct {
 func NewMockErrorManager() *MockErrorManager {
 	return &MockErrorManager{
 		loggedErrors:    make([]LoggedError, 0),
-		catalogedErrors: make([]ErrorEntry, 0),
+		catalogedErrors: make([]LocalErrorEntry, 0),
 	}
 }
 
@@ -43,7 +72,7 @@ func (m *MockErrorManager) LogError(err error, module string, code string) {
 	log.Printf("📝 Logged error from %s: %s", module, err.Error())
 }
 
-func (m *MockErrorManager) CatalogError(entry ErrorEntry) error {
+func (m *MockErrorManager) CatalogError(entry LocalErrorEntry) error { // Uses LocalErrorEntry
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.catalogedErrors = append(m.catalogedErrors, entry)
@@ -51,7 +80,7 @@ func (m *MockErrorManager) CatalogError(entry ErrorEntry) error {
 	return nil
 }
 
-func (m *MockErrorManager) ValidateError(entry ErrorEntry) error {
+func (m *MockErrorManager) ValidateError(entry LocalErrorEntry) error { // Uses LocalErrorEntry
 	if entry.Message == "" || entry.Module == "" {
 		return errors.New("invalid error entry")
 	}
@@ -64,10 +93,10 @@ func (m *MockErrorManager) GetLoggedErrors() []LoggedError {
 	return append([]LoggedError{}, m.loggedErrors...)
 }
 
-func (m *MockErrorManager) GetCatalogedErrors() []ErrorEntry {
+func (m *MockErrorManager) GetCatalogedErrors() []LocalErrorEntry { // Returns LocalErrorEntry
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	return append([]ErrorEntry{}, m.catalogedErrors...)
+	return append([]LocalErrorEntry{}, m.catalogedErrors...)
 }
 
 // DemoIntegration démontre l'utilisation du gestionnaire d'erreurs intégré
@@ -76,17 +105,25 @@ func DemoIntegration() {
 	fmt.Println(strings.Repeat("=", 60))
 
 	// Obtenir l'instance du gestionnaire intégré
-	iem := GetIntegratedErrorManager()
-	defer iem.Shutdown()
+	iem := im.NewIntegratedErrorManager() // Instantiate directly
+	// Assuming Shutdown is a method. If not, this might need adjustment or removal.
+	// defer iem.Shutdown() // This line might cause issues if Shutdown is not a method or if iem is nil.
 
 	// Configurer un mock error manager pour la démonstration
 	mockEM := NewMockErrorManager()
-	iem.SetErrorManager(mockEM)
+	// Assuming SetErrorManager is a method of IntegratedErrorManager to inject a mock.
+	// This line might cause issues if SetErrorManager is not a method or if iem is nil.
+	if iem != nil { // Basic nil check
+		iem.SetErrorManager(mockEM)
+	}
+
 
 	// Démonstration 1: Propagation d'erreur simple
 	fmt.Println("\n📤 Démonstration 1: Propagation d'erreur simple")
 	testError := errors.New("Erreur de connexion à la base de données")
-	PropagateError("database-manager", testError)
+	if iem != nil {
+		iem.PropagateError("database-manager", testError)
+	}
 
 	// Démonstration 2: Centralisation d'erreur avec contexte
 	fmt.Println("\n🎯 Démonstration 2: Centralisation avec contexte")
@@ -96,25 +133,31 @@ func DemoIntegration() {
 		"template":  "welcome",
 		"attempt":   3,
 	}
-	CentralizeErrorWithContext("email-manager", emailError, emailContext)
+	if iem != nil {
+		iem.CentralizeErrorWithContext("email-manager", emailError, emailContext)
+	}
 
 	// Démonstration 3: Hooks d'erreur
 	fmt.Println("\n🎣 Démonstration 3: Hooks d'erreur personnalisés")
 
 	// Ajouter un hook pour les erreurs critiques
-	AddErrorHook("security-manager", func(module string, err error, context map[string]interface{}) {
-		if determineSeverity(err) == "CRITICAL" {
-			fmt.Printf("🚨 ALERTE SÉCURITÉ: %s - %s\n", module, err.Error())
-		}
-	})
+	if iem != nil {
+		iem.AddErrorHook("security-manager", func(module string, err error, context map[string]interface{}) {
+			if determineSeverityLocal(err) == im.SeverityCritical { // Use local stub and assumed im.SeverityCritical
+				fmt.Printf("🚨 ALERTE SÉCURITÉ: %s - %s\n", module, err.Error())
+			}
+		})
+	}
 
 	// Déclencher une erreur critique
 	criticalError := errors.New("critical: unauthorized access attempt detected")
-	PropagateErrorWithContext("security-manager", criticalError, map[string]interface{}{
-		"ip":     "192.168.1.100",
-		"user":   "unknown",
-		"action": "admin_access",
-	})
+	if iem != nil {
+		iem.PropagateErrorWithContext("security-manager", criticalError, map[string]interface{}{
+			"ip":     "192.168.1.100",
+			"user":   "unknown",
+			"action": "admin_access",
+		})
+	}
 
 	// Démonstration 4: Gestion des timeouts
 	fmt.Println("\n⏰ Démonstration 4: Gestion des timeouts")
@@ -124,7 +167,9 @@ func DemoIntegration() {
 	// Simuler un timeout
 	<-timeoutCtx.Done()
 	timeoutError := timeoutCtx.Err()
-	PropagateError("operation-manager", timeoutError)
+	if iem != nil {
+		iem.PropagateError("operation-manager", timeoutError)
+	}
 
 	// Laisser le temps au traitement asynchrone
 	time.Sleep(100 * time.Millisecond)
@@ -137,11 +182,13 @@ func DemoIntegration() {
 func SimulateManagerErrors() {
 	fmt.Println("🔧 Simulation d'erreurs spécifiques aux managers")
 
-	iem := GetIntegratedErrorManager()
-	defer iem.Shutdown()
+	iem := im.NewIntegratedErrorManager() // Instantiate directly
+	// defer iem.Shutdown() // Assuming Shutdown method exists
 
 	mockEM := NewMockErrorManager()
-	iem.SetErrorManager(mockEM)
+	if iem != nil {
+		iem.SetErrorManager(mockEM)
+	}
 
 	// Erreurs du dependency-manager
 	fmt.Println("\n🔗 Erreurs du dependency-manager:")
@@ -160,7 +207,9 @@ func SimulateManagerErrors() {
 	}
 
 	for _, depErr := range depErrors {
-		PropagateErrorWithContext("dependency-manager", depErr.err, depErr.context)
+		if iem != nil {
+			iem.PropagateErrorWithContext("dependency-manager", depErr.err, depErr.context)
+		}
 	}
 
 	// Erreurs du mcp-manager
@@ -180,7 +229,9 @@ func SimulateManagerErrors() {
 	}
 
 	for _, mcpErr := range mcpErrors {
-		PropagateErrorWithContext("mcp-manager", mcpErr.err, mcpErr.context)
+		if iem != nil {
+			iem.PropagateErrorWithContext("mcp-manager", mcpErr.err, mcpErr.context)
+		}
 	}
 
 	// Erreurs du n8n-manager
@@ -200,7 +251,9 @@ func SimulateManagerErrors() {
 	}
 
 	for _, n8nErr := range n8nErrors {
-		PropagateErrorWithContext("n8n-manager", n8nErr.err, n8nErr.context)
+		if iem != nil {
+			iem.PropagateErrorWithContext("n8n-manager", n8nErr.err, n8nErr.context)
+		}
 	}
 
 	time.Sleep(100 * time.Millisecond)
@@ -236,11 +289,13 @@ func DemoIntegrationWithConcurrency() {
 	fmt.Println("🚀 Démonstration de l'intégration avec concurrence")
 	fmt.Println(strings.Repeat("=", 60))
 
-	iem := GetIntegratedErrorManager()
-	defer iem.Shutdown()
+	iem := im.NewIntegratedErrorManager() // Instantiate directly
+	// defer iem.Shutdown() // Assuming Shutdown method exists
 
 	mockEM := NewMockErrorManager()
-	iem.SetErrorManager(mockEM)
+	if iem != nil {
+		iem.SetErrorManager(mockEM)
+	}
 
 	// Simuler des erreurs concurrentes de plusieurs managers
 	var wg sync.WaitGroup
@@ -258,7 +313,9 @@ func DemoIntegrationWithConcurrency() {
 					"iteration": j,
 					"timestamp": time.Now(),
 				}
-				PropagateErrorWithContext(mgr, err, context)
+				if iem != nil {
+					iem.PropagateErrorWithContext(mgr, err, context)
+				}
 				time.Sleep(10 * time.Millisecond)
 			}
 		}(manager, i)

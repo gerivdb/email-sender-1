@@ -1,13 +1,14 @@
-package main
+package demos_test
 
 import (
 	"fmt"
 	"log"
+	"testing"
 
-	integratedmanager "email_sender/development/managers/integrated-manager"
+	integratedmanager "email_sender/development/managers/integration-manager"
 )
 
-func main() {
+func TestPhase223(t *testing.T) {
 	fmt.Println("=== Phase 2.2.3 - API REST for Conformity - Integration Test ===")
 	
 	// Test 1: Create IntegratedErrorManager

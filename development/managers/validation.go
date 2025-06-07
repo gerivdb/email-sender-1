@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/email-sender/managers/dependency-manager"
-	"github.com/email-sender/managers/security-manager"
-	"github.com/email-sender/managers/storage-manager"
+	"email_sender/development/managers/dependency-manager"
+	"email_sender/development/managers/security-manager"
+	"email_sender/development/managers/storage-manager"
 )
 
 func main() {

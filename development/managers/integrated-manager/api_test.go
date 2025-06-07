@@ -1,16 +1,17 @@
-package integratedmanager
+package integratedmanager_test
 
 import (
-	"context"
 	"net/http"
 	"testing"
 	"time"
+
+	im "email_sender/development/managers/integration-manager"
 )
 
 // TestConformityAPIServerStart tests if the API server can start correctly
 func TestConformityAPIServerStart(t *testing.T) {
 	// Create a test integrated error manager
-	manager := NewIntegratedErrorManager()
+	manager := im.NewIntegratedErrorManager()
 	
 	// Configure API server
 	err := manager.SetAPIServerConfig(true, 8081)
@@ -51,7 +52,7 @@ func TestConformityAPIServerStart(t *testing.T) {
 // TestAPIEndpointsExist tests if all expected endpoints are registered
 func TestAPIEndpointsExist(t *testing.T) {
 	// Create a test integrated error manager
-	manager := NewIntegratedErrorManager()
+	manager := im.NewIntegratedErrorManager()
 	
 	// Get the API server instance
 	apiServer := manager.GetAPIServer()

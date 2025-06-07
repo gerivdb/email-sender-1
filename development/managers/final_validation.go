@@ -5,12 +5,12 @@ import (
 	"log"
 	"os"
 
-	storage "github.com/email-sender/development/managers/storage-manager"
-	dependency "github.com/email-sender/development/managers/dependency-manager"
-	security "github.com/email-sender/development/managers/security-manager"
+	storage "email_sender/development/managers/storage-manager"
+	dependency "email_sender/development/managers/dependency-manager"
+	security "email_sender/development/managers/security-manager"
 )
 
-func main() {
+func RunFinalValidation() {
 	fmt.Println("=== Phase 2 Managers Validation ===")
 	
 	// Test Storage Manager
