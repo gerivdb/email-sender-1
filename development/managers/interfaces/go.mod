@@ -1,4 +1,4 @@
-module github.com/email-sender/managers/interfaces
+module github.com/your-org/email-sender/development/managers/interfaces
 
 go 1.22
 
