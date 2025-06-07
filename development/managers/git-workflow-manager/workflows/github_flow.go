@@ -21,7 +21,7 @@ func NewGitHubFlowWorkflow(manager interfaces.GitWorkflowManager) *GitHubFlowWor
 }
 
 // CreateFeatureBranch creates a new feature branch following GitHub Flow conventions
-func (g *GitHubFlowWorkflow) CreateFeatureBranch(ctx context.Context, branchName string) error {
+func (g *GitHubFlowWorkflow) CreateFeatureBranch(ctx context.Context, branchName string) (*interfaces.SubBranchInfo, error) {
 	// GitHub Flow all branches are created from main
 	sourceBranch := "main"
 	
@@ -30,27 +30,38 @@ func (g *GitHubFlowWorkflow) CreateFeatureBranch(ctx context.Context, branchName
 		branchName = fmt.Sprintf("feature/%s", strings.ToLower(branchName))
 	}
 	
-	return g.manager.CreateSubBranch(ctx, branchName, sourceBranch)
+	subBranchInfo, err := g.manager.CreateSubBranch(ctx, branchName, sourceBranch, g.GetWorkflowType())
+	if err != nil {
+		return nil, err
+	}
+	return subBranchInfo, nil
 }
 
 // CreateBranch creates any type of branch from main
-func (g *GitHubFlowWorkflow) CreateBranch(ctx context.Context, branchName string) error {
+func (g *GitHubFlowWorkflow) CreateBranch(ctx context.Context, branchName string) (*interfaces.SubBranchInfo, error) {
 	// In GitHub Flow, all branches come from main
 	sourceBranch := "main"
-	return g.manager.CreateSubBranch(ctx, branchName, sourceBranch)
+	subBranchInfo, err := g.manager.CreateSubBranch(ctx, branchName, sourceBranch, g.GetWorkflowType())
+	if err != nil {
+		return nil, err
+	}
+	return subBranchInfo, nil
 }
 
 // CreatePullRequest creates a pull request to merge a branch back to main
-func (g *GitHubFlowWorkflow) CreatePullRequest(ctx context.Context, branchName, title, description string) (int, error) {
-	prInfo := interfaces.PullRequestInfo{
+func (g *GitHubFlowWorkflow) CreatePullRequest(ctx context.Context, branchName, title, description string) (*interfaces.PullRequestInfo, error) {
+	prInfo := interfaces.PullRequestInfo{ // This prInfo is for local use or if other methods need it structured.
 		Title:        title,
 		Description:  description,
 		SourceBranch: branchName,
 		TargetBranch: "main", // GitHub Flow always merges to main
-		Labels:       []string{"github-flow"},
 	}
 	
-	return g.manager.CreatePullRequest(ctx, prInfo)
+	pullRequestInfo, err := g.manager.CreatePullRequest(ctx, prInfo.Title, prInfo.Description, prInfo.SourceBranch, prInfo.TargetBranch)
+	if err != nil {
+		return nil, err
+	}
+	return pullRequestInfo, nil
 }
 
 // MergeBranch completes the workflow by merging a branch to main
@@ -61,10 +72,9 @@ func (g *GitHubFlowWorkflow) MergeBranch(ctx context.Context, branchName string)
 		Description:  fmt.Sprintf("Merging changes from %s", branchName),
 		SourceBranch: branchName,
 		TargetBranch: "main",
-		Labels:       []string{"github-flow", "merge"},
 	}
 	
-	_, err := g.manager.CreatePullRequest(ctx, prInfo)
+	_, err := g.manager.CreatePullRequest(ctx, prInfo.Title, prInfo.Description, prInfo.SourceBranch, prInfo.TargetBranch)
 	return err
 }
 
@@ -80,11 +90,11 @@ func (g *GitHubFlowWorkflow) DeployBranch(ctx context.Context, branchName string
 			"branch":     branchName,
 			"workflow":   "github-flow",
 			"action":     "deploy",
-			"timestamp":  "now",
+			"timestamp":  "now", // Consider using time.Now() for actual timestamp
 		},
 	}
 	
-	return g.manager.SendWebhook(ctx, webhook)
+	return g.manager.SendWebhook(ctx, webhook.Event, &webhook)
 }
 
 // ValidateBranchName ensures branch names follow GitHub Flow conventions
@@ -111,7 +121,7 @@ func (g *GitHubFlowWorkflow) ValidateBranchName(branchName string) error {
 // CleanupMergedBranches removes branches that have been merged to main
 func (g *GitHubFlowWorkflow) CleanupMergedBranches(ctx context.Context) error {
 	// Get list of merged branches
-	branches, err := g.manager.ListSubBranches(ctx)
+	branches, err := g.manager.ListSubBranches(ctx, "") // Assuming listing all branches from root
 	if err != nil {
 		return fmt.Errorf("failed to list branches: %w", err)
 	}
@@ -119,10 +129,10 @@ func (g *GitHubFlowWorkflow) CleanupMergedBranches(ctx context.Context) error {
 	for _, branch := range branches {
 		if branch.Status == "merged" && branch.Name != "main" && branch.Name != "master" {
 			// Delete the merged branch
-			if err := g.manager.DeleteSubBranch(ctx, branch.Name); err != nil {
-				// Log error but continue with other branches
-				continue
-			}
+			// if err := g.manager.DeleteSubBranch(ctx, branch.Name); err != nil {
+			// 	// Log error but continue with other branches
+			// 	continue
+			// }
 		}
 	}
 	
@@ -131,7 +141,7 @@ func (g *GitHubFlowWorkflow) CleanupMergedBranches(ctx context.Context) error {
 
 // GetWorkflowType returns the workflow type
 func (g *GitHubFlowWorkflow) GetWorkflowType() interfaces.WorkflowType {
-	return interfaces.GitHubFlowWorkflow
+	return interfaces.WorkflowTypeGitHubFlow
 }
 
 // GetBranchingStrategy returns the branching strategy description

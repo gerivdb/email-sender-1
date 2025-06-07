@@ -21,6 +21,7 @@ func (m *MockErrorManager) GetMetadata() map[string]interface{}              { r
 func (m *MockErrorManager) SetMetadata(key string, value interface{}) error  { return nil }
 func (m *MockErrorManager) Health() error                                    { return nil }
 func (m *MockErrorManager) Shutdown(ctx context.Context) error               { return nil }
+func (m *MockErrorManager) Cleanup() error                                   { return nil }
 
 // MockConfigManager implements a mock ConfigManager for testing
 type MockConfigManager struct{}
@@ -34,6 +35,7 @@ func (m *MockConfigManager) GetMetadata() map[string]interface{}              { 
 func (m *MockConfigManager) SetMetadata(key string, value interface{}) error  { return nil }
 func (m *MockConfigManager) Health() error                                    { return nil }
 func (m *MockConfigManager) Shutdown(ctx context.Context) error               { return nil }
+func (m *MockConfigManager) Cleanup() error                                   { return nil }
 
 // MockStorageManager implements a mock StorageManager for testing
 type MockStorageManager struct{}
@@ -49,6 +51,7 @@ func (m *MockStorageManager) GetMetadata() map[string]interface{} {
 func (m *MockStorageManager) SetMetadata(key string, value interface{}) error { return nil }
 func (m *MockStorageManager) Health() error                                   { return nil }
 func (m *MockStorageManager) Shutdown(ctx context.Context) error              { return nil }
+func (m *MockStorageManager) Cleanup() error                                  { return nil }
 
 // TestGitWorkflowManagerCreation tests the creation of GitWorkflowManager
 func TestGitWorkflowManagerCreation(t *testing.T) {

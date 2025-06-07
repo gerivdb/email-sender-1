@@ -21,13 +21,13 @@ func NewWorkflowFactory(manager interfaces.GitWorkflowManager) *WorkflowFactory 
 // CreateWorkflow creates a workflow instance based on the specified type
 func (f *WorkflowFactory) CreateWorkflow(workflowType interfaces.WorkflowType, config map[string]interface{}) (Workflow, error) {
 	switch workflowType {
-	case interfaces.GitFlowWorkflow:
+	case interfaces.WorkflowTypeGitFlow:
 		return NewGitFlowWorkflow(f.manager), nil
 		
-	case interfaces.GitHubFlowWorkflow:
+	case interfaces.WorkflowTypeGitHubFlow:
 		return NewGitHubFlowWorkflow(f.manager), nil
 		
-	case interfaces.FeatureBranchWorkflow:
+	case interfaces.WorkflowTypeFeatureBranch:
 		mainBranch := "main"
 		if mb, ok := config["main_branch"].(string); ok && mb != "" {
 			mainBranch = mb
@@ -45,7 +45,7 @@ func (f *WorkflowFactory) CreateWorkflow(workflowType interfaces.WorkflowType, c
 		
 		return workflow, nil
 		
-	case interfaces.CustomWorkflow:
+	case interfaces.WorkflowTypeCustom:
 		return NewCustomWorkflow(f.manager, config), nil
 		
 	default:
@@ -56,26 +56,26 @@ func (f *WorkflowFactory) CreateWorkflow(workflowType interfaces.WorkflowType, c
 // GetAvailableWorkflows returns a list of available workflow types
 func (f *WorkflowFactory) GetAvailableWorkflows() []interfaces.WorkflowType {
 	return []interfaces.WorkflowType{
-		interfaces.GitFlowWorkflow,
-		interfaces.GitHubFlowWorkflow,
-		interfaces.FeatureBranchWorkflow,
-		interfaces.CustomWorkflow,
+		interfaces.WorkflowTypeGitFlow,
+		interfaces.WorkflowTypeGitHubFlow,
+		interfaces.WorkflowTypeFeatureBranch,
+		interfaces.WorkflowTypeCustom,
 	}
 }
 
 // GetWorkflowDescription returns a description of the specified workflow type
 func (f *WorkflowFactory) GetWorkflowDescription(workflowType interfaces.WorkflowType) string {
 	switch workflowType {
-	case interfaces.GitFlowWorkflow:
+	case interfaces.WorkflowTypeGitFlow:
 		return "GitFlow workflow with feature, release, and hotfix branches from develop and main"
 		
-	case interfaces.GitHubFlowWorkflow:
+	case interfaces.WorkflowTypeGitHubFlow:
 		return "GitHub Flow workflow with simple branching from main and continuous deployment"
 		
-	case interfaces.FeatureBranchWorkflow:
+	case interfaces.WorkflowTypeFeatureBranch:
 		return "Feature branch workflow with flexible branching and automated cleanup"
 		
-	case interfaces.CustomWorkflow:
+	case interfaces.WorkflowTypeCustom:
 		return "Custom workflow with user-defined rules and conventions"
 		
 	default:

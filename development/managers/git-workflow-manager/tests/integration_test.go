@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/email-sender/git-workflow-manager"
+	gitworkflowmanager "github.com/email-sender/git-workflow-manager"
 	"github.com/email-sender/git-workflow-manager/workflows"
 	"github.com/email-sender/managers/interfaces"
 )
@@ -44,12 +44,10 @@ func TestGitWorkflowIntegration(t *testing.T) {
 	}
 
 	// Create GitWorkflowManager
-	manager := main.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
+	manager := gitworkflowmanager.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
 	if manager == nil {
 		t.Fatal("Failed to create GitWorkflowManager")
 	}
-
-	ctx := context.Background()
 
 	// Test health check
 	if err := manager.Health(); err != nil {
@@ -58,12 +56,12 @@ func TestGitWorkflowIntegration(t *testing.T) {
 
 	// Test workflow factory
 	factory := workflows.NewWorkflowFactory(manager)
-	gitflowWorkflow, err := factory.CreateWorkflow(interfaces.GitFlowWorkflow, config)
+	gitflowWorkflow, err := factory.CreateWorkflow(interfaces.WorkflowTypeGitFlow, config)
 	if err != nil {
 		t.Errorf("Failed to create GitFlow workflow: %v", err)
 	}
 
-	if gitflowWorkflow.GetWorkflowType() != interfaces.GitFlowWorkflow {
+	if gitflowWorkflow.GetWorkflowType() != interfaces.WorkflowTypeGitFlow {
 		t.Errorf("Expected GitFlow workflow, got %v", gitflowWorkflow.GetWorkflowType())
 	}
 }
@@ -85,8 +83,7 @@ func TestWorkflowOperations(t *testing.T) {
 	}
 
 	// Create GitWorkflowManager
-	manager := main.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
-	ctx := context.Background()
+	manager := gitworkflowmanager.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
 
 	// Test branch name validation
 	testCases := []struct {
@@ -146,15 +143,15 @@ func TestMultipleWorkflows(t *testing.T) {
 	}
 
 	// Create GitWorkflowManager
-	manager := main.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
+	manager := gitworkflowmanager.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
 	factory := workflows.NewWorkflowFactory(manager)
 
 	// Test different workflow types
 	workflowTypes := []interfaces.WorkflowType{
-		interfaces.GitFlowWorkflow,
-		interfaces.GitHubFlowWorkflow,
-		interfaces.FeatureBranchWorkflow,
-		interfaces.CustomWorkflow,
+		interfaces.WorkflowTypeGitFlow,
+		interfaces.WorkflowTypeGitHubFlow,
+		interfaces.WorkflowTypeFeatureBranch,
+		interfaces.WorkflowTypeCustom,
 	}
 
 	for _, workflowType := range workflowTypes {
@@ -195,7 +192,7 @@ func TestWebhookIntegration(t *testing.T) {
 	}
 
 	// Create GitWorkflowManager
-	manager := main.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
+	manager := gitworkflowmanager.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
 	ctx := context.Background()
 
 	// Test webhook payload
@@ -231,7 +228,7 @@ func TestConfigurationValidation(t *testing.T) {
 		"github_token":    "test-token",
 	}
 
-	manager := main.NewGitWorkflowManager(errorManager, configManager, storageManager, validConfig)
+	manager := gitworkflowmanager.NewGitWorkflowManager(errorManager, configManager, storageManager, validConfig)
 	if manager == nil {
 		t.Error("Failed to create manager with valid configuration")
 	}
@@ -266,7 +263,7 @@ func BenchmarkWorkflowOperations(b *testing.B) {
 		"workflow_type":   "feature-branch",
 	}
 
-	manager := main.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
+	manager := gitworkflowmanager.NewGitWorkflowManager(errorManager, configManager, storageManager, config)
 
 	b.ResetTimer()
 
@@ -285,7 +282,7 @@ func BenchmarkWorkflowOperations(b *testing.B) {
 	b.Run("WorkflowFactory", func(b *testing.B) {
 		factory := workflows.NewWorkflowFactory(manager)
 		for i := 0; i < b.N; i++ {
-			_, _ = factory.CreateWorkflow(interfaces.FeatureBranchWorkflow, config)
+			_, _ = factory.CreateWorkflow(interfaces.WorkflowTypeFeatureBranch, config)
 		}
 	})
 }

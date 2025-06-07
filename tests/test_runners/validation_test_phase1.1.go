@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"time"
 
+	basetools "github.com/email-sender/tools"
 	toolkit "github.com/email-sender/tools/core/toolkit" // Changed alias
 	validation "github.com/email-sender/tools/operations/validation" // Added
-	managerTool "github.com/email-sender/tools/cmd/manager-toolkit" // Added
 )
 
 // Validation de l'implémentation - Phase 1.1 - Plan v49
@@ -71,7 +71,7 @@ func runValidationPhase1_1() {
 	fmt.Printf("--------------------------------------\n")
 
 	// Test 2.1: Création du ManagerToolkit
-	mtk, err := managerTool.NewManagerToolkit(tempDir, "", false) // Changed to managerTool.NewManagerToolkit and var mtk
+	mtk, err := basetools.NewManagerToolkit(tempDir, "", false) // Changed to basetools.NewManagerToolkit
 	if err != nil {
 		fmt.Printf("❌ ERROR: Création de ManagerToolkit a échoué: %v\n", err)
 		os.Exit(1)
@@ -105,7 +105,7 @@ func runValidationPhase1_1() {
 
 	for _, op := range operations {
 		startTime := time.Now()
-		err := mtk.ExecuteOperation(ctx, toolkit.Operation(op), opts) // Changed to mtk.ExecuteOperation, cast op
+		err := mtk.ExecuteOperation(ctx, op, opts) // Changed to mtk.ExecuteOperation, removed cast
 		duration := time.Since(startTime)
 
 		if err != nil {

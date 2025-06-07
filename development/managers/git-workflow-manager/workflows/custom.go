@@ -72,10 +72,10 @@ func (c *CustomWorkflow) loadConfig() {
 }
 
 // CreateBranch creates a branch following custom rules
-func (c *CustomWorkflow) CreateBranch(ctx context.Context, branchName, sourceBranch string) error {
+func (c *CustomWorkflow) CreateBranch(ctx context.Context, branchName, sourceBranch string) (*interfaces.SubBranchInfo, error) {
 	// Validate branch name against custom patterns
 	if err := c.ValidateBranchName(branchName); err != nil {
-		return err
+		return nil, err
 	}
 	
 	// Validate source branch
@@ -83,25 +83,29 @@ func (c *CustomWorkflow) CreateBranch(ctx context.Context, branchName, sourceBra
 		sourceBranch = c.getDefaultSourceBranch(branchName)
 	}
 	
-	return c.manager.CreateSubBranch(ctx, branchName, sourceBranch)
+	subBranchInfo, err := c.manager.CreateSubBranch(ctx, branchName, sourceBranch, c.GetWorkflowType())
+	if err != nil {
+		return nil, err
+	}
+	return subBranchInfo, nil
 }
 
 // CreatePullRequest creates a pull request following custom merge rules
-func (c *CustomWorkflow) CreatePullRequest(ctx context.Context, sourceBranch, targetBranch, title, description string) (int, error) {
+func (c *CustomWorkflow) CreatePullRequest(ctx context.Context, sourceBranch, targetBranch, title, description string) (*interfaces.PullRequestInfo, error) {
 	// Validate merge rules
 	if err := c.validateMergeRule(sourceBranch, targetBranch); err != nil {
-		return 0, err
+		return nil, err
 	}
 	
-	prInfo := interfaces.PullRequestInfo{
-		Title:        title,
-		Description:  description,
-		SourceBranch: sourceBranch,
-		TargetBranch: targetBranch,
-		Labels:       c.getBranchLabels(sourceBranch),
-	}
+	// The manager.CreatePullRequest method now takes individual string arguments
+	// The prInfo struct is not passed directly to the manager method anymore
+	// We still might want to construct it if other local methods use it, but the call to manager changes.
 	
-	return c.manager.CreatePullRequest(ctx, prInfo)
+	pullRequestInfo, err := c.manager.CreatePullRequest(ctx, title, description, sourceBranch, targetBranch)
+	if err != nil {
+		return nil, err
+	}
+	return pullRequestInfo, nil
 }
 
 // ValidateBranchName validates branch name against custom patterns
@@ -132,7 +136,7 @@ func (c *CustomWorkflow) ValidateBranchName(branchName string) error {
 
 // GetWorkflowType returns the workflow type
 func (c *CustomWorkflow) GetWorkflowType() interfaces.WorkflowType {
-	return interfaces.CustomWorkflow
+	return interfaces.WorkflowTypeCustom
 }
 
 // GetBranchingStrategy returns the branching strategy description

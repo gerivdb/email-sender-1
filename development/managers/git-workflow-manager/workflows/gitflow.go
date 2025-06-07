@@ -21,30 +21,42 @@ func NewGitFlowWorkflow(manager interfaces.GitWorkflowManager) *GitFlowWorkflow 
 }
 
 // CreateFeatureBranch creates a new feature branch following GitFlow conventions
-func (g *GitFlowWorkflow) CreateFeatureBranch(ctx context.Context, featureName string) error {
+func (g *GitFlowWorkflow) CreateFeatureBranch(ctx context.Context, featureName string) (*interfaces.SubBranchInfo, error) {
 	// GitFlow feature branches are created from develop
 	sourceBranch := "develop"
 	branchName := fmt.Sprintf("feature/%s", strings.ToLower(featureName))
 	
-	return g.manager.CreateSubBranch(ctx, branchName, sourceBranch)
+	subBranchInfo, err := g.manager.CreateSubBranch(ctx, branchName, sourceBranch, g.GetWorkflowType())
+	if err != nil {
+		return nil, err
+	}
+	return subBranchInfo, nil
 }
 
 // CreateReleaseBranch creates a new release branch following GitFlow conventions
-func (g *GitFlowWorkflow) CreateReleaseBranch(ctx context.Context, version string) error {
+func (g *GitFlowWorkflow) CreateReleaseBranch(ctx context.Context, version string) (*interfaces.SubBranchInfo, error) {
 	// GitFlow release branches are created from develop
 	sourceBranch := "develop"
 	branchName := fmt.Sprintf("release/%s", version)
 	
-	return g.manager.CreateSubBranch(ctx, branchName, sourceBranch)
+	subBranchInfo, err := g.manager.CreateSubBranch(ctx, branchName, sourceBranch, g.GetWorkflowType())
+	if err != nil {
+		return nil, err
+	}
+	return subBranchInfo, nil
 }
 
 // CreateHotfixBranch creates a new hotfix branch following GitFlow conventions
-func (g *GitFlowWorkflow) CreateHotfixBranch(ctx context.Context, hotfixName string) error {
+func (g *GitFlowWorkflow) CreateHotfixBranch(ctx context.Context, hotfixName string) (*interfaces.SubBranchInfo, error) {
 	// GitFlow hotfix branches are created from main/master
 	sourceBranch := "main"
 	branchName := fmt.Sprintf("hotfix/%s", strings.ToLower(hotfixName))
 	
-	return g.manager.CreateSubBranch(ctx, branchName, sourceBranch)
+	subBranchInfo, err := g.manager.CreateSubBranch(ctx, branchName, sourceBranch, g.GetWorkflowType())
+	if err != nil {
+		return nil, err
+	}
+	return subBranchInfo, nil
 }
 
 // FinishFeature completes a feature by merging it back to develop
@@ -58,10 +70,9 @@ func (g *GitFlowWorkflow) FinishFeature(ctx context.Context, featureName string)
 		Description:  fmt.Sprintf("Completing feature branch %s", branchName),
 		SourceBranch: branchName,
 		TargetBranch: targetBranch,
-		Labels:       []string{"feature", "gitflow"},
 	}
 	
-	_, err := g.manager.CreatePullRequest(ctx, prInfo)
+	_, err := g.manager.CreatePullRequest(ctx, prInfo.Title, prInfo.Description, prInfo.SourceBranch, prInfo.TargetBranch)
 	return err
 }
 
@@ -75,10 +86,9 @@ func (g *GitFlowWorkflow) FinishRelease(ctx context.Context, version string) err
 		Description:  fmt.Sprintf("Completing release %s", version),
 		SourceBranch: branchName,
 		TargetBranch: "main",
-		Labels:       []string{"release", "gitflow"},
 	}
 	
-	_, err := g.manager.CreatePullRequest(ctx, prInfoMain)
+	_, err := g.manager.CreatePullRequest(ctx, prInfoMain.Title, prInfoMain.Description, prInfoMain.SourceBranch, prInfoMain.TargetBranch)
 	if err != nil {
 		return fmt.Errorf("failed to create PR to main: %w", err)
 	}
@@ -89,10 +99,9 @@ func (g *GitFlowWorkflow) FinishRelease(ctx context.Context, version string) err
 		Description:  fmt.Sprintf("Merging release %s changes back to develop", version),
 		SourceBranch: branchName,
 		TargetBranch: "develop",
-		Labels:       []string{"release", "gitflow", "backmerge"},
 	}
 	
-	_, err = g.manager.CreatePullRequest(ctx, prInfoDevelop)
+	_, err = g.manager.CreatePullRequest(ctx, prInfoDevelop.Title, prInfoDevelop.Description, prInfoDevelop.SourceBranch, prInfoDevelop.TargetBranch)
 	return err
 }
 
@@ -106,10 +115,9 @@ func (g *GitFlowWorkflow) FinishHotfix(ctx context.Context, hotfixName string) e
 		Description:  fmt.Sprintf("Emergency hotfix: %s", hotfixName),
 		SourceBranch: branchName,
 		TargetBranch: "main",
-		Labels:       []string{"hotfix", "gitflow", "urgent"},
 	}
 	
-	_, err := g.manager.CreatePullRequest(ctx, prInfoMain)
+	_, err := g.manager.CreatePullRequest(ctx, prInfoMain.Title, prInfoMain.Description, prInfoMain.SourceBranch, prInfoMain.TargetBranch)
 	if err != nil {
 		return fmt.Errorf("failed to create hotfix PR to main: %w", err)
 	}
@@ -120,10 +128,9 @@ func (g *GitFlowWorkflow) FinishHotfix(ctx context.Context, hotfixName string) e
 		Description:  fmt.Sprintf("Merging hotfix %s changes to develop", hotfixName),
 		SourceBranch: branchName,
 		TargetBranch: "develop",
-		Labels:       []string{"hotfix", "gitflow", "backmerge"},
 	}
 	
-	_, err = g.manager.CreatePullRequest(ctx, prInfoDevelop)
+	_, err = g.manager.CreatePullRequest(ctx, prInfoDevelop.Title, prInfoDevelop.Description, prInfoDevelop.SourceBranch, prInfoDevelop.TargetBranch)
 	return err
 }
 
@@ -147,7 +154,7 @@ func (g *GitFlowWorkflow) ValidateBranchName(branchName string) error {
 
 // GetWorkflowType returns the workflow type
 func (g *GitFlowWorkflow) GetWorkflowType() interfaces.WorkflowType {
-	return interfaces.GitFlowWorkflow
+	return interfaces.WorkflowTypeGitFlow
 }
 
 // GetBranchingStrategy returns the branching strategy description
