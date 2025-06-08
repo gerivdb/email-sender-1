@@ -1,0 +1,625 @@
+# Enterprise API Gateway
+# Ultra-Advanced 8-Level Branching Framework - API Management & Routing
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-gateway-config
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: api-gateway
+    app.kubernetes.io/component: gateway
+    environment: production
+data:
+  gateway.yaml: |
+    server:
+      host: "0.0.0.0"
+      port: 8080
+      metrics_port: 9090
+      admin_port: 8081
+      
+    gateway:
+      timeout: "30s"
+      keepalive: "60s"
+      max_connections: 10000
+      
+    routing:
+      rules:
+        # Authentication Routes
+        - path: "/auth/*"
+          backend: "auth-service.branching-framework-enterprise.svc.cluster.local:8080"
+          timeout: "10s"
+          retry_attempts: 3
+          circuit_breaker:
+            threshold: 5
+            timeout: "30s"
+          rate_limit:
+            requests_per_minute: 200
+            burst: 50
+          
+        # API Routes - Level 1-4 (Basic Operations)
+        - path: "/api/v1/branches/*"
+          backend: "branching-framework-enterprise.branching-framework-enterprise.svc.cluster.local:8080"
+          timeout: "15s"
+          retry_attempts: 2
+          circuit_breaker:
+            threshold: 10
+            timeout: "60s"
+          rate_limit:
+            requests_per_minute: 1000
+            burst: 200
+          auth_required: true
+          permissions:
+            - "branching:read"
+            - "branching:write"
+            
+        # API Routes - Level 5 (Temporal Operations)
+        - path: "/api/v1/temporal/*"
+          backend: "branching-framework-enterprise.branching-framework-enterprise.svc.cluster.local:8080"
+          timeout: "30s"
+          retry_attempts: 1
+          circuit_breaker:
+            threshold: 5
+            timeout: "120s"
+          rate_limit:
+            requests_per_minute: 500
+            burst: 100
+          auth_required: true
+          permissions:
+            - "branching:temporal"
+            - "branching:admin"
+            
+        # API Routes - Level 6 (Predictive AI)
+        - path: "/api/v1/ai/*"
+          backend: "branching-framework-enterprise.branching-framework-enterprise.svc.cluster.local:8080"
+          timeout: "60s"
+          retry_attempts: 1
+          circuit_breaker:
+            threshold: 3
+            timeout: "180s"
+          rate_limit:
+            requests_per_minute: 100
+            burst: 20
+          auth_required: true
+          permissions:
+            - "branching:ai"
+            - "branching:admin"
+            
+        # API Routes - Level 7 (Branching-as-Code)
+        - path: "/api/v1/bac/*"
+          backend: "branching-framework-enterprise.branching-framework-enterprise.svc.cluster.local:8080"
+          timeout: "45s"
+          retry_attempts: 2
+          circuit_breaker:
+            threshold: 5
+            timeout: "120s"
+          rate_limit:
+            requests_per_minute: 300
+            burst: 60
+          auth_required: true
+          permissions:
+            - "branching:bac"
+            - "branching:write"
+            
+        # API Routes - Level 8 (Quantum Superposition)
+        - path: "/api/v1/quantum/*"
+          backend: "branching-framework-enterprise.branching-framework-enterprise.svc.cluster.local:8080"
+          timeout: "120s"
+          retry_attempts: 1
+          circuit_breaker:
+            threshold: 2
+            timeout: "300s"
+          rate_limit:
+            requests_per_minute: 50
+            burst: 10
+          auth_required: true
+          permissions:
+            - "branching:quantum"
+            - "branching:admin"
+            
+        # Analytics Routes
+        - path: "/api/v1/analytics/*"
+          backend: "branching-framework-enterprise.branching-framework-enterprise.svc.cluster.local:8080"
+          timeout: "30s"
+          retry_attempts: 2
+          circuit_breaker:
+            threshold: 8
+            timeout: "60s"
+          rate_limit:
+            requests_per_minute: 500
+            burst: 100
+          auth_required: true
+          permissions:
+            - "branching:analytics"
+            
+        # WebSocket Routes
+        - path: "/ws/*"
+          backend: "branching-framework-enterprise.branching-framework-enterprise.svc.cluster.local:8080"
+          websocket: true
+          timeout: "300s"
+          auth_required: true
+          
+        # Health and Metrics Routes
+        - path: "/health/*"
+          backend: "branching-framework-enterprise.branching-framework-enterprise.svc.cluster.local:8080"
+          timeout: "5s"
+          auth_required: false
+          
+    security:
+      cors:
+        allowed_origins:
+          - "https://enterprise.branching-framework.enterprise"
+          - "https://api.branching-framework.enterprise"
+          - "https://auth.branching-framework.enterprise"
+        allowed_methods:
+          - "GET"
+          - "POST"
+          - "PUT"
+          - "DELETE"
+          - "PATCH"
+          - "OPTIONS"
+        allowed_headers:
+          - "Authorization"
+          - "Content-Type"
+          - "X-Requested-With"
+          - "X-API-Key"
+          - "X-Tenant-ID"
+        exposed_headers:
+          - "X-RateLimit-Remaining"
+          - "X-RateLimit-Reset"
+        max_age: 86400
+        
+      headers:
+        security:
+          x_frame_options: "DENY"
+          x_content_type_options: "nosniff"
+          x_xss_protection: "1; mode=block"
+          strict_transport_security: "max-age=31536000; includeSubDomains"
+          content_security_policy: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+          referrer_policy: "strict-origin-when-cross-origin"
+          
+        custom:
+          x_api_version: "2.0.0"
+          x_powered_by: "Branching-Framework-Enterprise"
+          
+    monitoring:
+      metrics:
+        enabled: true
+        path: "/metrics"
+        detailed: true
+        
+      tracing:
+        enabled: true
+        jaeger_endpoint: "http://jaeger-collector:14268/api/traces"
+        sampling_rate: 0.1
+        
+      logging:
+        level: "INFO"
+        format: "json"
+        include_request_id: true
+        include_user_id: true
+        
+    caching:
+      enabled: true
+      redis_cluster:
+        - "redis-cluster-0.redis-cluster.branching-framework-enterprise.svc.cluster.local:6379"
+        - "redis-cluster-1.redis-cluster.branching-framework-enterprise.svc.cluster.local:6379"
+        - "redis-cluster-2.redis-cluster.branching-framework-enterprise.svc.cluster.local:6379"
+      default_ttl: "300s"
+      max_size: "1GB"
+      
+    load_balancing:
+      strategy: "round_robin"  # round_robin, least_connections, ip_hash
+      health_check:
+        enabled: true
+        interval: "30s"
+        timeout: "5s"
+        threshold: 3
+        
+    api_versioning:
+      default_version: "v1"
+      header_name: "API-Version"
+      accept_header_versioning: true
+      
+    documentation:
+      openapi:
+        enabled: true
+        path: "/docs"
+        spec_path: "/openapi.json"
+        title: "Branching Framework Enterprise API"
+        version: "2.0.0"
+        description: "Ultra-Advanced 8-Level Branching Framework Enterprise API"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: api-gateway-secrets
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: api-gateway
+    app.kubernetes.io/component: gateway
+    environment: production
+type: Opaque
+stringData:
+  redis-password: "secure-redis-password-enterprise-2024"
+  jwt-secret: "api-gateway-jwt-secret-enterprise-2024"
+  admin-password: "admin-gateway-password-enterprise-2024"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: api-gateway
+    app.kubernetes.io/component: gateway
+    environment: production
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  selector:
+    app.kubernetes.io/name: api-gateway
+    app.kubernetes.io/component: gateway
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+  - name: admin
+    port: 8081
+    targetPort: 8081
+    protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: api-gateway
+    app.kubernetes.io/component: gateway
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+spec:
+  replicas: 8  # High availability for enterprise gateway
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api-gateway
+      app.kubernetes.io/component: gateway
+      environment: production
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: api-gateway
+        app.kubernetes.io/component: gateway
+        app.kubernetes.io/version: "2.0.0"
+        environment: production
+        tier: enterprise
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+        co.elastic.logs/enabled: "true"
+    spec:
+      serviceAccountName: branching-framework-enterprise
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10003
+        runAsGroup: 10003
+        fsGroup: 10003
+        seccompProfile:
+          type: RuntimeDefault
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - api-gateway
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: api-gateway
+        image: branching-framework/api-gateway:2.0.0-enterprise
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+        - name: admin
+          containerPort: 8081
+          protocol: TCP
+        env:
+        - name: CONFIG_FILE
+          value: "/etc/config/gateway.yaml"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: api-gateway-secrets
+              key: redis-password
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: api-gateway-secrets
+              key: jwt-secret
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: api-gateway-secrets
+              key: admin-password
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+            ephemeral-storage: "2Gi"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+            ephemeral-storage: "10Gi"
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /var/cache
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /health/startup
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+      volumes:
+      - name: config
+        configMap:
+          name: api-gateway-config
+      - name: tmp
+        emptyDir:
+          sizeLimit: 1Gi
+      - name: cache
+        emptyDir:
+          sizeLimit: 5Gi
+
+---
+# API Gateway HPA
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-gateway-hpa
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: api-gateway
+    app.kubernetes.io/component: gateway
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-gateway
+  minReplicas: 8
+  maxReplicas: 30
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "1000"
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+
+---
+# API Gateway Network Policy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: api-gateway-network-policy
+  namespace: branching-framework-enterprise
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: api-gateway
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - namespaceSelector:
+        matchLabels:
+          name: istio-system
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 9090
+    - protocol: TCP
+      port: 8081
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: branching-framework
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: authentication
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: redis
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 6379
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+
+---
+# Pod Disruption Budget for API Gateway
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: api-gateway-pdb
+  namespace: branching-framework-enterprise
+spec:
+  minAvailable: 6
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api-gateway
+      app.kubernetes.io/component: gateway
+
+---
+# API Gateway Virtual Service (Istio)
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: api-gateway-vs
+  namespace: branching-framework-enterprise
+spec:
+  hosts:
+  - api.branching-framework.enterprise
+  gateways:
+  - istio-system/enterprise-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/api/"
+    - uri:
+        prefix: "/auth/"
+    - uri:
+        prefix: "/ws/"
+    - uri:
+        prefix: "/health/"
+    - uri:
+        prefix: "/docs/"
+    route:
+    - destination:
+        host: api-gateway.branching-framework-enterprise.svc.cluster.local
+        port:
+          number: 8080
+    fault:
+      delay:
+        percentage:
+          value: 0.1
+        fixedDelay: 5s
+    retries:
+      attempts: 3
+      perTryTimeout: 30s
+      retryOn: gateway-error,connect-failure,refused-stream
+    timeout: 60s
+
+---
+# API Gateway Destination Rule (Istio)
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: api-gateway-dr
+  namespace: branching-framework-enterprise
+spec:
+  host: api-gateway.branching-framework-enterprise.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: LEAST_CONN
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        http1MaxPendingRequests: 50
+        http2MaxRequests: 100
+        maxRequestsPerConnection: 10
+        maxRetries: 3
+    circuitBreaker:
+      consecutiveGatewayErrors: 5
+      consecutiveErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+      minHealthPercent: 30

@@ -1,0 +1,26 @@
+{
+  "components": {
+    "kubernetes": "deployed",
+    "docker_image": "built",
+    "core_framework": "deployed",
+    "tests": "passed"
+  },
+  "environment": "staging",
+  "timestamp": "2025-06-08T20:10:33Z",
+  "status": "completed",
+  "configuration": {
+    "namespace": "branching-staging",
+    "replicas": 2,
+    "resources": {
+      "memory": "1Gi",
+      "cpu": "500m"
+    }
+  },
+  "deployment_id": "ff825e7c-c50e-4b64-a7f5-6d2a71c295ca",
+  "files_created": [
+    "d:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\deployment\\staging\\config.json",
+    "d:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\deployment\\staging\\k8s\\deployment.yaml",
+    "d:\\DO\\WEB\\N8N_tests\\PROJETS\\EMAIL_SENDER_1\\deployment\\staging\\k8s\\namespace.yaml"
+  ],
+  "version": "v1.0.0-20250608-201033"
+}

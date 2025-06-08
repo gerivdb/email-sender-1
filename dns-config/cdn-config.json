@@ -1,0 +1,124 @@
+{
+  "version": "2.0.0",
+  "name": "Ultra-Advanced Framework Global CDN",
+  "domain": "branching-framework.com",
+  "generated": "2025-06-08T21:46:54Z",
+  "cdn_settings": {
+    "cache_ttl": {
+      "static_assets": 31536000,
+      "api_responses": 300,
+      "html_pages": 3600,
+      "images": 604800,
+      "css_js": 2592000
+    },
+    "compression": {
+      "enabled": true,
+      "types": ["text/html", "text/css", "text/javascript", "application/json", "application/xml"],
+      "level": 6
+    },
+    "security": {
+      "ssl_tls": "strict",
+      "hsts_max_age": 31536000,
+      "content_security_policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';",
+      "x_frame_options": "DENY",
+      "x_content_type_options": "nosniff"
+    },
+    "performance": {
+      "http2_enabled": true,
+      "http3_enabled": true,
+      "brotli_compression": true,
+      "image_optimization": true,
+      "minification": {
+        "html": true,
+        "css": true,
+        "javascript": true
+      }
+    }
+  },
+  "edge_locations": [
+    {
+      "region": "us-east",
+      "location": "Virginia",
+      "pop_id": "IAD",
+      "capacity": "100Gbps",
+      "cache_size": "10TB"
+    },
+    {
+      "region": "us-west",
+      "location": "Oregon",
+      "pop_id": "PDX",
+      "capacity": "100Gbps",
+      "cache_size": "10TB"
+    },
+    {
+      "region": "eu-west",
+      "location": "Ireland",
+      "pop_id": "DUB",
+      "capacity": "100Gbps",
+      "cache_size": "10TB"
+    },
+    {
+      "region": "eu-central",
+      "location": "Frankfurt",
+      "pop_id": "FRA",
+      "capacity": "100Gbps",
+      "cache_size": "10TB"
+    },
+    {
+      "region": "ap-southeast",
+      "location": "Singapore",
+      "pop_id": "SIN",
+      "capacity": "100Gbps",
+      "cache_size": "10TB"
+    },
+    {
+      "region": "ap-northeast",
+      "location": "Tokyo",
+      "pop_id": "NRT",
+      "capacity": "100Gbps",
+      "cache_size": "10TB"
+    }
+  ],
+  "cache_rules": [
+    {
+      "path": "/api/*",
+      "ttl": 300,
+      "cache_key": "uri + query_string + headers['authorization']",
+      "bypass_cache_headers": ["cache-control: no-cache", "pragma: no-cache"]
+    },
+    {
+      "path": "/static/*",
+      "ttl": 31536000,
+      "cache_key": "uri",
+      "compression": true
+    },
+    {
+      "path": "*.css",
+      "ttl": 2592000,
+      "cache_key": "uri",
+      "compression": true,
+      "minify": true
+    },
+    {
+      "path": "*.js",
+      "ttl": 2592000,
+      "cache_key": "uri",
+      "compression": true,
+      "minify": true
+    },
+    {
+      "path": "*.png,*.jpg,*.jpeg,*.gif,*.webp,*.svg",
+      "ttl": 604800,
+      "cache_key": "uri",
+      "image_optimization": true
+    }
+  ],
+  "purge_settings": {
+    "api_endpoint": "https://api.cdn-provider.com/v1/purge",
+    "auth_method": "api_key",
+    "automatic_purge": {
+      "enabled": true,
+      "triggers": ["deployment", "certificate_update", "config_change"]
+    }
+  }
+}

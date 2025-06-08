@@ -1,0 +1,1116 @@
+# Edge Computing Infrastructure
+# Ultra-Advanced 8-Level Branching Framework - Global Edge Deployment
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: branching-edge
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: edge-computing
+    app.kubernetes.io/version: "v2.0.0"
+    tier: edge
+    environment: global
+  annotations:
+    description: "Global edge computing infrastructure for ultra-low latency operations"
+    cost-center: "enterprise-edge"
+    compliance: "gdpr,soc2,hipaa"
+
+---
+# Global Edge Load Balancer
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: global-edge-ingress
+  namespace: branching-edge
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    # Edge-specific optimizations
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization"
+    # Global caching for edge performance
+    nginx.ingress.kubernetes.io/proxy-cache-valid: "200 302 10m"
+    nginx.ingress.kubernetes.io/proxy-cache-valid: "404 1m"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      # Edge performance optimizations
+      gzip on;
+      gzip_comp_level 6;
+      gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+      
+      # Cache static content
+      location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+      }
+      
+      # Enable HTTP/2 push for critical resources
+      location = / {
+        http2_push /static/css/main.css;
+        http2_push /static/js/app.js;
+      }
+spec:
+  tls:
+  - hosts:
+    - edge.branching-framework.com
+    - us-east.branching-framework.com
+    - us-west.branching-framework.com
+    - eu-west.branching-framework.com
+    - eu-central.branching-framework.com
+    - ap-southeast.branching-framework.com
+    - ap-northeast.branching-framework.com
+    secretName: global-edge-tls
+  rules:
+  - host: edge.branching-framework.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: edge-router
+            port:
+              number: 80
+  - host: us-east.branching-framework.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: edge-us-east
+            port:
+              number: 80
+  - host: us-west.branching-framework.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: edge-us-west
+            port:
+              number: 80
+  - host: eu-west.branching-framework.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: edge-eu-west
+            port:
+              number: 80
+  - host: eu-central.branching-framework.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: edge-eu-central
+            port:
+              number: 80
+  - host: ap-southeast.branching-framework.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: edge-ap-southeast
+            port:
+              number: 80
+  - host: ap-northeast.branching-framework.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: edge-ap-northeast
+            port:
+              number: 80
+
+---
+# Global Edge Router Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-router
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-router
+    app.kubernetes.io/component: edge-computing
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+spec:
+  type: LoadBalancer
+  selector:
+    app: edge-router
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 8443
+    protocol: TCP
+  - name: grpc
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+
+---
+# Edge Router Deployment - Global Traffic Manager
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-router
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-router
+    app.kubernetes.io/component: edge-computing
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: edge-router
+  template:
+    metadata:
+      labels:
+        app: edge-router
+        version: v2.0.0
+    spec:
+      serviceAccountName: edge-router
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+      - name: edge-router
+        image: branching-framework/edge-router:v2.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 8443
+          name: https
+        - containerPort: 9090
+          name: grpc
+        env:
+        - name: EDGE_ENVIRONMENT
+          value: "global"
+        - name: REDIS_CLUSTER_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: edge-config
+              key: redis.cluster.endpoints
+        - name: POSTGRESQL_URL
+          valueFrom:
+            secretKeyRef:
+              name: edge-secrets
+              key: postgresql.url
+        - name: QDRANT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: edge-config
+              key: qdrant.url
+        - name: LOG_LEVEL
+          value: "INFO"
+        - name: EDGE_REGION
+          value: "global"
+        - name: CDN_ENABLED
+          value: "true"
+        - name: CACHE_TTL
+          value: "300"
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 2Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2
+        volumeMounts:
+        - name: edge-config
+          mountPath: /etc/edge
+          readOnly: true
+        - name: tls-certs
+          mountPath: /etc/ssl/certs
+          readOnly: true
+      volumes:
+      - name: edge-config
+        configMap:
+          name: edge-config
+      - name: tls-certs
+        secret:
+          secretName: global-edge-tls
+
+---
+# Regional Edge Services
+# US East Region
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-us-east
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-us-east
+    app.kubernetes.io/component: edge-computing
+    region: us-east-1
+spec:
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: edge-us-east
+  template:
+    metadata:
+      labels:
+        app: edge-us-east
+        region: us-east-1
+        version: v2.0.0
+    spec:
+      serviceAccountName: edge-regional
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                - us-east-1
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - edge-us-east
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: edge-node
+        image: branching-framework/edge-node:v2.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: grpc
+        env:
+        - name: EDGE_REGION
+          value: "us-east-1"
+        - name: EDGE_ZONE
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: FRAMEWORK_LEVELS_ENABLED
+          value: "1,2,3,4,5,6,7,8"
+        - name: CACHE_ENABLED
+          value: "true"
+        - name: CACHE_SIZE_MB
+          value: "512"
+        - name: REDIS_CLUSTER_ENDPOINTS
+          valueFrom:
+            configMapKeyRef:
+              name: edge-config
+              key: redis.cluster.endpoints
+        - name: POSTGRESQL_URL
+          valueFrom:
+            secretKeyRef:
+              name: edge-secrets
+              key: postgresql.url
+        - name: QDRANT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: edge-config
+              key: qdrant.url
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: edge-cache
+          mountPath: /tmp/cache
+        - name: edge-config
+          mountPath: /etc/edge
+          readOnly: true
+      volumes:
+      - name: edge-cache
+        emptyDir:
+          sizeLimit: 1Gi
+      - name: edge-config
+        configMap:
+          name: edge-config
+
+---
+# US East Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-us-east
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-us-east
+    region: us-east-1
+spec:
+  type: ClusterIP
+  selector:
+    app: edge-us-east
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: grpc
+    port: 9090
+    targetPort: 9090
+
+---
+# US West Region
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-us-west
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-us-west
+    app.kubernetes.io/component: edge-computing
+    region: us-west-2
+spec:
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: edge-us-west
+  template:
+    metadata:
+      labels:
+        app: edge-us-west
+        region: us-west-2
+        version: v2.0.0
+    spec:
+      serviceAccountName: edge-regional
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                - us-west-2
+      containers:
+      - name: edge-node
+        image: branching-framework/edge-node:v2.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: grpc
+        env:
+        - name: EDGE_REGION
+          value: "us-west-2"
+        - name: FRAMEWORK_LEVELS_ENABLED
+          value: "1,2,3,4,5,6,7,8"
+        - name: CACHE_ENABLED
+          value: "true"
+        - name: CACHE_SIZE_MB
+          value: "512"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+# US West Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-us-west
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-us-west
+    region: us-west-2
+spec:
+  type: ClusterIP
+  selector:
+    app: edge-us-west
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: grpc
+    port: 9090
+    targetPort: 9090
+
+---
+# EU West Region
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-eu-west
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-eu-west
+    app.kubernetes.io/component: edge-computing
+    region: eu-west-1
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: edge-eu-west
+  template:
+    metadata:
+      labels:
+        app: edge-eu-west
+        region: eu-west-1
+        version: v2.0.0
+    spec:
+      serviceAccountName: edge-regional
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/region
+                operator: In
+                values:
+                - eu-west-1
+      containers:
+      - name: edge-node
+        image: branching-framework/edge-node:v2.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: grpc
+        env:
+        - name: EDGE_REGION
+          value: "eu-west-1"
+        - name: FRAMEWORK_LEVELS_ENABLED
+          value: "1,2,3,4,5,6,7,8"
+        - name: CACHE_ENABLED
+          value: "true"
+        - name: CACHE_SIZE_MB
+          value: "512"
+        - name: GDPR_COMPLIANCE
+          value: "true"
+        - name: DATA_RESIDENCY
+          value: "eu"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+
+---
+# EU West Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-eu-west
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-eu-west
+    region: eu-west-1
+spec:
+  type: ClusterIP
+  selector:
+    app: edge-eu-west
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: grpc
+    port: 9090
+    targetPort: 9090
+
+---
+# EU Central Region
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-eu-central
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-eu-central
+    app.kubernetes.io/component: edge-computing
+    region: eu-central-1
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: edge-eu-central
+  template:
+    metadata:
+      labels:
+        app: edge-eu-central
+        region: eu-central-1
+        version: v2.0.0
+    spec:
+      serviceAccountName: edge-regional
+      containers:
+      - name: edge-node
+        image: branching-framework/edge-node:v2.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: grpc
+        env:
+        - name: EDGE_REGION
+          value: "eu-central-1"
+        - name: FRAMEWORK_LEVELS_ENABLED
+          value: "1,2,3,4,5,6,7,8"
+        - name: GDPR_COMPLIANCE
+          value: "true"
+        - name: DATA_RESIDENCY
+          value: "eu"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+
+---
+# EU Central Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-eu-central
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-eu-central
+    region: eu-central-1
+spec:
+  type: ClusterIP
+  selector:
+    app: edge-eu-central
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: grpc
+    port: 9090
+    targetPort: 9090
+
+---
+# Asia Pacific Southeast Region
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-ap-southeast
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-ap-southeast
+    app.kubernetes.io/component: edge-computing
+    region: ap-southeast-1
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: edge-ap-southeast
+  template:
+    metadata:
+      labels:
+        app: edge-ap-southeast
+        region: ap-southeast-1
+        version: v2.0.0
+    spec:
+      serviceAccountName: edge-regional
+      containers:
+      - name: edge-node
+        image: branching-framework/edge-node:v2.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: grpc
+        env:
+        - name: EDGE_REGION
+          value: "ap-southeast-1"
+        - name: FRAMEWORK_LEVELS_ENABLED
+          value: "1,2,3,4,5,6,7,8"
+        - name: CACHE_ENABLED
+          value: "true"
+        - name: CACHE_SIZE_MB
+          value: "512"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+
+---
+# AP Southeast Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-ap-southeast
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-ap-southeast
+    region: ap-southeast-1
+spec:
+  type: ClusterIP
+  selector:
+    app: edge-ap-southeast
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: grpc
+    port: 9090
+    targetPort: 9090
+
+---
+# Asia Pacific Northeast Region
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-ap-northeast
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-ap-northeast
+    app.kubernetes.io/component: edge-computing
+    region: ap-northeast-1
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: edge-ap-northeast
+  template:
+    metadata:
+      labels:
+        app: edge-ap-northeast
+        region: ap-northeast-1
+        version: v2.0.0
+    spec:
+      serviceAccountName: edge-regional
+      containers:
+      - name: edge-node
+        image: branching-framework/edge-node:v2.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: grpc
+        env:
+        - name: EDGE_REGION
+          value: "ap-northeast-1"
+        - name: FRAMEWORK_LEVELS_ENABLED
+          value: "1,2,3,4,5,6,7,8"
+        - name: CACHE_ENABLED
+          value: "true"
+        - name: CACHE_SIZE_MB
+          value: "512"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+
+---
+# AP Northeast Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-ap-northeast
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-ap-northeast
+    region: ap-northeast-1
+spec:
+  type: ClusterIP
+  selector:
+    app: edge-ap-northeast
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: grpc
+    port: 9090
+    targetPort: 9090
+
+---
+# Edge Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edge-config
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-config
+    app.kubernetes.io/component: edge-computing
+data:
+  # Global edge configuration
+  edge.global.enabled: "true"
+  edge.cache.enabled: "true"
+  edge.cache.ttl: "300"
+  edge.compression.enabled: "true"
+  edge.compression.level: "6"
+  
+  # CDN Configuration
+  cdn.enabled: "true"
+  cdn.provider: "cloudflare"
+  cdn.cache.static.ttl: "31536000"  # 1 year
+  cdn.cache.dynamic.ttl: "300"      # 5 minutes
+  
+  # Regional configuration
+  regions.us-east-1.enabled: "true"
+  regions.us-west-2.enabled: "true"
+  regions.eu-west-1.enabled: "true"
+  regions.eu-central-1.enabled: "true"
+  regions.ap-southeast-1.enabled: "true"
+  regions.ap-northeast-1.enabled: "true"
+  
+  # Database connections
+  redis.cluster.endpoints: "redis-cluster-0.redis-cluster.branching-enterprise.svc.cluster.local:6379,redis-cluster-1.redis-cluster.branching-enterprise.svc.cluster.local:6379,redis-cluster-2.redis-cluster.branching-enterprise.svc.cluster.local:6379"
+  qdrant.url: "http://qdrant.branching-enterprise.svc.cluster.local:6333"
+  
+  # Performance tuning
+  performance.max.connections: "10000"
+  performance.worker.processes: "auto"
+  performance.worker.connections: "1024"
+  performance.keepalive.timeout: "75"
+  performance.keepalive.requests: "100"
+  
+  # Framework levels configuration
+  framework.levels.1.enabled: "true"  # Micro-Sessions
+  framework.levels.2.enabled: "true"  # Event-Driven
+  framework.levels.3.enabled: "true"  # Multi-Dimensional
+  framework.levels.4.enabled: "true"  # Contextual Memory
+  framework.levels.5.enabled: "true"  # Temporal Operations
+  framework.levels.6.enabled: "true"  # Predictive AI
+  framework.levels.7.enabled: "true"  # Branching-as-Code
+  framework.levels.8.enabled: "true"  # Quantum Superposition
+
+---
+# Edge Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: edge-secrets
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-secrets
+    app.kubernetes.io/component: edge-computing
+type: Opaque
+data:
+  # Database credentials (base64 encoded)
+  postgresql.url: cG9zdGdyZXNxbDovL2JyYW5jaGluZ191c2VyOmJyYW5jaGluZ19wYXNzd29yZEBwb3N0Z3Jlc3FsLWNsdXN0ZXIuYnJhbmNoaW5nLWVudGVycHJpc2Uuc3ZjLmNsdXN0ZXIubG9jYWw6NTQzMi9icmFuY2hpbmdfZGI=
+  redis.password: YnJhbmNoaW5nX3JlZGlzX3Bhc3N3b3Jk
+  qdrant.api.key: YnJhbmNoaW5nX3FkcmFudF9hcGlfa2V5
+  
+  # CDN and edge secrets
+  cdn.api.key: Y2RuX2FwaV9rZXlfZm9yX2dsb2JhbF9lZGdl
+  edge.encryption.key: ZWRnZV9lbmNyeXB0aW9uX2tleV8yNTZfYml0cw==
+  
+  # SSL/TLS certificates
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0t
+
+---
+# Service Accounts
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: edge-router
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-router
+    app.kubernetes.io/component: edge-computing
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/BranchingFrameworkEdgeRole
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: edge-regional
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-regional
+    app.kubernetes.io/component: edge-computing
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/BranchingFrameworkEdgeRegionalRole
+
+---
+# RBAC for Edge Computing
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: edge-cluster-role
+  labels:
+    app.kubernetes.io/name: edge-cluster-role
+    app.kubernetes.io/component: edge-computing
+rules:
+- apiGroups: [""]
+  resources: ["nodes", "pods", "services", "endpoints"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingresses", "networkpolicies"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["nodes", "pods"]
+  verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: edge-cluster-role-binding
+  labels:
+    app.kubernetes.io/name: edge-cluster-role-binding
+    app.kubernetes.io/component: edge-computing
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edge-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: edge-router
+  namespace: branching-edge
+- kind: ServiceAccount
+  name: edge-regional
+  namespace: branching-edge
+
+---
+# Horizontal Pod Autoscaler for Edge Nodes
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: edge-us-east-hpa
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-us-east-hpa
+    app.kubernetes.io/component: edge-computing
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: edge-us-east
+  minReplicas: 5
+  maxReplicas: 50
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "1000"
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+
+---
+# Pod Disruption Budget for Edge Services
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: edge-pdb
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-pdb
+    app.kubernetes.io/component: edge-computing
+spec:
+  minAvailable: 75%
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: edge-computing
+
+---
+# Network Policy for Edge Security
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: edge-network-policy
+  namespace: branching-edge
+  labels:
+    app.kubernetes.io/name: edge-network-policy
+    app.kubernetes.io/component: edge-computing
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: edge-computing
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: branching-enterprise
+    - namespaceSelector:
+        matchLabels:
+          name: istio-system
+    - podSelector: {}
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 9090
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: branching-enterprise
+    ports:
+    - protocol: TCP
+      port: 5432  # PostgreSQL
+    - protocol: TCP
+      port: 6379  # Redis
+    - protocol: TCP
+      port: 6333  # Qdrant
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53   # DNS
+    - protocol: UDP
+      port: 53   # DNS
+    - protocol: TCP
+      port: 443  # HTTPS

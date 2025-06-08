@@ -1,0 +1,381 @@
+# Enterprise Production Deployment Configuration
+# Ultra-Advanced 8-Level Branching Framework - Production Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: branching-framework-enterprise
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: api-server
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+spec:
+  replicas: 12 # High availability for enterprise
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 30%
+      maxUnavailable: 10%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: branching-framework
+      app.kubernetes.io/component: api-server
+      environment: production
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: branching-framework
+        app.kubernetes.io/component: api-server
+        app.kubernetes.io/version: "2.0.0"
+        environment: production
+        tier: enterprise
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+        co.elastic.logs/enabled: "true"
+        security.kubernetes.io/pod-security-standards: "restricted"
+    spec:
+      serviceAccountName: branching-framework-enterprise
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                        - branching-framework
+                topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: node.kubernetes.io/instance-type
+                    operator: In
+                    values:
+                      - c5.4xlarge
+                      - c5.9xlarge
+                      - c6i.4xlarge
+                      - c6i.8xlarge
+      containers:
+        - name: branching-framework
+          image: branching-framework/enterprise:2.0.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: grpc
+              containerPort: 9090
+              protocol: TCP
+            - name: metrics
+              containerPort: 8081
+              protocol: TCP
+            - name: health
+              containerPort: 8082
+              protocol: TCP
+          env:
+            - name: ENVIRONMENT
+              value: "production"
+            - name: LOG_LEVEL
+              value: "info"
+            - name: ENTERPRISE_MODE
+              value: "true"
+            - name: AI_LEVEL_8_ENABLED
+              value: "true"
+            - name: QUANTUM_SUPERPOSITION_ENABLED
+              value: "true"
+            - name: TEMPORAL_OPERATIONS_ENABLED
+              value: "true"
+            - name: PREDICTIVE_AI_ENABLED
+              value: "true"
+            - name: MULTI_DIMENSIONAL_BRANCHING_ENABLED
+              value: "true"
+            - name: EVENT_DRIVEN_AUTOMATION_ENABLED
+              value: "true"
+            - name: MICRO_SESSIONS_ENABLED
+              value: "true"
+            - name: CONTEXTUAL_MEMORY_ENABLED
+              value: "true"
+            - name: BRANCHING_AS_CODE_ENABLED
+              value: "true"
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: port
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: database
+            - name: QDRANT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: qdrant-credentials
+                  key: url
+            - name: QDRANT_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: qdrant-credentials
+                  key: api-key
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: redis-credentials
+                  key: host
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: redis-credentials
+                  key: port
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-credentials
+                  key: password
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-credentials
+                  key: secret
+            - name: OAUTH2_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-credentials
+                  key: client-id
+            - name: OAUTH2_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oauth2-credentials
+                  key: client-secret
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "2000m"
+              ephemeral-storage: "10Gi"
+            limits:
+              memory: "8Gi"
+              cpu: "4000m"
+              ephemeral-storage: "20Gi"
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: health
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: health
+              scheme: HTTP
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+          startupProbe:
+            httpGet:
+              path: /health/startup
+              port: health
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 30
+            successThreshold: 1
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: cache
+              mountPath: /app/cache
+            - name: logs
+              mountPath: /app/logs
+            - name: config
+              mountPath: /app/config
+              readOnly: true
+            - name: tls-certs
+              mountPath: /app/certs
+              readOnly: true
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 1Gi
+        - name: cache
+          emptyDir:
+            sizeLimit: 5Gi
+        - name: logs
+          emptyDir:
+            sizeLimit: 2Gi
+        - name: config
+          configMap:
+            name: branching-framework-config
+            defaultMode: 0444
+        - name: tls-certs
+          secret:
+            secretName: branching-framework-tls
+            defaultMode: 0444
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "branching-framework"
+          effect: "NoSchedule"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: branching-framework
+              app.kubernetes.io/component: api-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: branching-framework-enterprise
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: api-server
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: "http"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: "/health/ready"
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8081"
+    prometheus.io/path: "/metrics"
+spec:
+  type: LoadBalancer
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP
+    - name: https
+      port: 443
+      targetPort: http
+      protocol: TCP
+    - name: grpc
+      port: 9090
+      targetPort: grpc
+      protocol: TCP
+    - name: metrics
+      port: 8081
+      targetPort: metrics
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: api-server
+    environment: production
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: branching-framework-enterprise-hpa
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: api-server
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: branching-framework-enterprise
+  minReplicas: 12
+  maxReplicas: 100
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: "1000"
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 10
+          periodSeconds: 60
+        - type: Pods
+          value: 2
+          periodSeconds: 60
+      selectPolicy: Min
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+        - type: Pods
+          value: 5
+          periodSeconds: 60
+      selectPolicy: Max

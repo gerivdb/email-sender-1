@@ -1,0 +1,558 @@
+# Enterprise Authentication System
+# Ultra-Advanced 8-Level Branching Framework - Authentication & Authorization
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: authentication
+    app.kubernetes.io/component: auth-server
+    environment: production
+data:
+  config.yaml: |
+    server:
+      host: "0.0.0.0"
+      port: 8080
+      metrics_port: 9090
+      tls:
+        enabled: true
+        cert_file: "/etc/ssl/certs/tls.crt"
+        key_file: "/etc/ssl/private/tls.key"
+        min_version: "1.3"
+        cipher_suites:
+          - "TLS_AES_256_GCM_SHA384"
+          - "TLS_AES_128_GCM_SHA256"
+          - "TLS_CHACHA20_POLY1305_SHA256"
+    
+    oauth2:
+      issuer: "https://auth.branching-framework.enterprise"
+      authorization_endpoint: "/oauth2/authorize"
+      token_endpoint: "/oauth2/token"
+      userinfo_endpoint: "/oauth2/userinfo"
+      jwks_endpoint: "/oauth2/jwks"
+      introspection_endpoint: "/oauth2/introspect"
+      revocation_endpoint: "/oauth2/revoke"
+      
+      clients:
+        - client_id: "branching-framework-web"
+          client_secret_env: "WEB_CLIENT_SECRET"
+          redirect_uris:
+            - "https://api.branching-framework.enterprise/auth/callback"
+            - "https://enterprise.branching-framework.enterprise/auth/callback"
+          grant_types:
+            - "authorization_code"
+            - "refresh_token"
+          response_types:
+            - "code"
+          scopes:
+            - "openid"
+            - "profile"
+            - "email"
+            - "branching:read"
+            - "branching:write"
+            - "branching:admin"
+          
+        - client_id: "branching-framework-api"
+          client_secret_env: "API_CLIENT_SECRET"
+          grant_types:
+            - "client_credentials"
+            - "refresh_token"
+          scopes:
+            - "branching:system"
+            - "branching:analytics"
+    
+    oidc:
+      enabled: true
+      discovery_url: "/.well-known/openid_configuration"
+      claims:
+        - "sub"
+        - "name"
+        - "email"
+        - "email_verified"
+        - "groups"
+        - "role"
+        - "tenant_id"
+        - "permissions"
+      
+      id_token:
+        lifetime: "1h"
+        algorithm: "RS256"
+      
+      access_token:
+        lifetime: "2h"
+        algorithm: "RS256"
+      
+      refresh_token:
+        lifetime: "720h"  # 30 days
+        rotation: true
+    
+    saml:
+      enabled: true
+      entity_id: "https://auth.branching-framework.enterprise/saml/metadata"
+      sso_url: "https://auth.branching-framework.enterprise/saml/sso"
+      slo_url: "https://auth.branching-framework.enterprise/saml/slo"
+      
+      identity_providers:
+        - name: "azure_ad"
+          entity_id: "https://sts.windows.net/tenant-id/"
+          sso_url: "https://login.microsoftonline.com/tenant-id/saml2"
+          slo_url: "https://login.microsoftonline.com/tenant-id/saml2"
+          certificate_file: "/etc/saml/azure-ad.crt"
+          
+        - name: "okta"
+          entity_id: "http://www.okta.com/exk-okta-entity-id"
+          sso_url: "https://company.okta.com/app/app-id/sso/saml"
+          certificate_file: "/etc/saml/okta.crt"
+          
+        - name: "google"
+          entity_id: "https://accounts.google.com/o/saml2?idpid=google-idp-id"
+          sso_url: "https://accounts.google.com/o/saml2/idp?idpid=google-idp-id"
+          certificate_file: "/etc/saml/google.crt"
+    
+    jwt:
+      signing_key_file: "/etc/jwt/private.key"
+      public_key_file: "/etc/jwt/public.key"
+      algorithm: "RS256"
+      
+    session:
+      cookie_name: "branching_session"
+      secure: true
+      http_only: true
+      same_site: "strict"
+      lifetime: "8h"
+      
+    security:
+      rate_limiting:
+        enabled: true
+        requests_per_minute: 100
+        burst: 20
+      
+      password_policy:
+        min_length: 12
+        require_uppercase: true
+        require_lowercase: true
+        require_numbers: true
+        require_symbols: true
+        max_age_days: 90
+        
+      mfa:
+        enabled: true
+        totp_enabled: true
+        sms_enabled: true
+        backup_codes: 10
+        
+      audit:
+        enabled: true
+        log_level: "INFO"
+        include_request_body: false
+        
+    database:
+      host: "postgresql-primary.branching-framework-enterprise.svc.cluster.local"
+      port: 5432
+      database: "branching_framework"
+      username: "auth_service"
+      password_env: "DB_PASSWORD"
+      ssl_mode: "require"
+      max_connections: 20
+      connection_timeout: "30s"
+      
+    redis:
+      cluster_endpoints:
+        - "redis-cluster-0.redis-cluster.branching-framework-enterprise.svc.cluster.local:6379"
+        - "redis-cluster-1.redis-cluster.branching-framework-enterprise.svc.cluster.local:6379"
+        - "redis-cluster-2.redis-cluster.branching-framework-enterprise.svc.cluster.local:6379"
+      password_env: "REDIS_PASSWORD"
+      tls: true
+      session_prefix: "auth:session:"
+      token_prefix: "auth:token:"
+      
+    integrations:
+      ldap:
+        enabled: false
+        server: "ldap://ldap.company.com:389"
+        bind_dn: "cn=service,ou=apps,dc=company,dc=com"
+        bind_password_env: "LDAP_PASSWORD"
+        search_base: "ou=users,dc=company,dc=com"
+        user_filter: "(uid=%s)"
+        group_filter: "(memberUid=%s)"
+        
+      active_directory:
+        enabled: false
+        server: "ldaps://ad.company.com:636"
+        domain: "company.com"
+        bind_username: "service@company.com"
+        bind_password_env: "AD_PASSWORD"
+        search_base: "dc=company,dc=com"
+        
+      webhook:
+        enabled: true
+        post_login_url: "https://api.branching-framework.enterprise/webhooks/auth/login"
+        post_logout_url: "https://api.branching-framework.enterprise/webhooks/auth/logout"
+        secret_env: "WEBHOOK_SECRET"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth-secrets
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: authentication
+    app.kubernetes.io/component: auth-server
+    environment: production
+type: Opaque
+stringData:
+  db-password: "secure-auth-db-password-enterprise-2024"
+  redis-password: "secure-redis-password-enterprise-2024"
+  web-client-secret: "web-client-secret-secure-token-enterprise"
+  api-client-secret: "api-client-secret-secure-token-enterprise"
+  webhook-secret: "webhook-secret-secure-token-enterprise"
+  jwt-private-key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEA0vx3aPrXc5s7YFkJcPzz8sRvdG3jKlGmN8vQ1mKjLp0sXnRt
+    [Enterprise JWT Private Key - Replace with actual key]
+    -----END RSA PRIVATE KEY-----
+  jwt-public-key: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0vx3aPrXc5s7YFkJcPzz
+    [Enterprise JWT Public Key - Replace with actual key]
+    -----END PUBLIC KEY-----
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: authentication
+    app.kubernetes.io/component: auth-server
+    environment: production
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  selector:
+    app.kubernetes.io/name: authentication
+    app.kubernetes.io/component: auth-server
+  ports:
+  - name: https
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-server
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: authentication
+    app.kubernetes.io/component: auth-server
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+spec:
+  replicas: 6  # High availability for enterprise auth
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: authentication
+      app.kubernetes.io/component: auth-server
+      environment: production
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: authentication
+        app.kubernetes.io/component: auth-server
+        app.kubernetes.io/version: "2.0.0"
+        environment: production
+        tier: enterprise
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+        co.elastic.logs/enabled: "true"
+    spec:
+      serviceAccountName: branching-framework-enterprise
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10002
+        runAsGroup: 10002
+        fsGroup: 10002
+        seccompProfile:
+          type: RuntimeDefault
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - authentication
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: auth-server
+        image: branching-framework/auth-server:2.0.0-enterprise
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: https
+          containerPort: 8080
+          protocol: TCP
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+        env:
+        - name: CONFIG_FILE
+          value: "/etc/config/config.yaml"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: auth-secrets
+              key: db-password
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: auth-secrets
+              key: redis-password
+        - name: WEB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: auth-secrets
+              key: web-client-secret
+        - name: API_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: auth-secrets
+              key: api-client-secret
+        - name: WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: auth-secrets
+              key: webhook-secret
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+            ephemeral-storage: "1Gi"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+            ephemeral-storage: "5Gi"
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - name: jwt-keys
+          mountPath: /etc/jwt
+          readOnly: true
+        - name: saml-certs
+          mountPath: /etc/saml
+          readOnly: true
+        - name: tls-certs
+          mountPath: /etc/ssl/certs
+          readOnly: true
+        - name: tls-private
+          mountPath: /etc/ssl/private
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 8080
+            scheme: HTTPS
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080
+            scheme: HTTPS
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /health/startup
+            port: 8080
+            scheme: HTTPS
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30
+      volumes:
+      - name: config
+        configMap:
+          name: auth-config
+      - name: jwt-keys
+        secret:
+          secretName: auth-secrets
+          items:
+          - key: jwt-private-key
+            path: private.key
+            mode: 0600
+          - key: jwt-public-key
+            path: public.key
+            mode: 0644
+      - name: saml-certs
+        secret:
+          secretName: saml-certificates
+          optional: true
+      - name: tls-certs
+        secret:
+          secretName: auth-tls-cert
+      - name: tls-private
+        secret:
+          secretName: auth-tls-cert
+          items:
+          - key: tls.key
+            path: tls.key
+            mode: 0600
+      - name: tmp
+        emptyDir:
+          sizeLimit: 1Gi
+
+---
+# Auth Server HPA
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: auth-server-hpa
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: authentication
+    app.kubernetes.io/component: auth-server
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: auth-server
+  minReplicas: 6
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+
+---
+# Auth Network Policy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: auth-network-policy
+  namespace: branching-framework-enterprise
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: authentication
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: branching-framework
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 9090
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: postgresql
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80
+
+---
+# Pod Disruption Budget for Auth Server
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: auth-server-pdb
+  namespace: branching-framework-enterprise
+spec:
+  minAvailable: 4
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: authentication
+      app.kubernetes.io/component: auth-server

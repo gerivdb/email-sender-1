@@ -1,0 +1,285 @@
+# Enterprise Security Configuration
+# Ultra-Advanced 8-Level Branching Framework - Enterprise Security
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: branching-framework-enterprise
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: api-server
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT-ID:role/BranchingFrameworkEnterpriseRole
+    description: "Service Account for Enterprise Branching Framework with IRSA"
+automountServiceAccountToken: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: api-server
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+rules:
+  # Pod and container management
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "pods/status"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "list", "watch"]
+  # Service discovery
+  - apiGroups: [""]
+    resources: ["services", "endpoints"]
+    verbs: ["get", "list", "watch"]
+  # Metrics and monitoring
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["pods", "nodes"]
+    verbs: ["get", "list"]
+  # Custom resource definitions for enterprise features
+  - apiGroups: ["branching.io"]
+    resources: ["branchingpolicies", "tenantconfigs", "aimodels"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Events for auditing
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: api-server
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+subjects:
+  - kind: ServiceAccount
+    name: branching-framework-enterprise
+    namespace: branching-framework-enterprise
+roleRef:
+  kind: ClusterRole
+  name: branching-framework-enterprise
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-credentials
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: database
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+  annotations:
+    reloader.stakater.com/match: "true"
+    description: "PostgreSQL credentials for enterprise deployment"
+type: Opaque
+stringData:
+  host: "postgres-enterprise.branching-framework.internal"
+  port: "5432"
+  username: "branching_framework_enterprise"
+  password: "CHANGE_ME_ENTERPRISE_POSTGRES_PASSWORD"
+  database: "branching_framework_enterprise"
+  ssl_mode: "require"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: qdrant-credentials
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: vector-database
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+  annotations:
+    reloader.stakater.com/match: "true"
+    description: "Qdrant vector database credentials for AI features"
+type: Opaque
+stringData:
+  url: "https://qdrant-enterprise.branching-framework.internal:6333"
+  api-key: "CHANGE_ME_ENTERPRISE_QDRANT_API_KEY"
+  collection: "branching_framework_enterprise"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis-credentials
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: cache
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+  annotations:
+    reloader.stakater.com/match: "true"
+    description: "Redis cluster credentials for caching and sessions"
+type: Opaque
+stringData:
+  host: "redis-enterprise.branching-framework.internal"
+  port: "6379"
+  password: "CHANGE_ME_ENTERPRISE_REDIS_PASSWORD"
+  cluster_mode: "true"
+  tls_enabled: "true"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jwt-credentials
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: authentication
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+  annotations:
+    reloader.stakater.com/match: "true"
+    description: "JWT signing credentials for authentication"
+type: Opaque
+stringData:
+  secret: "CHANGE_ME_ENTERPRISE_JWT_SECRET_256_BIT_KEY"
+  issuer: "https://auth.branching-framework.com"
+  audience: "branching-framework-enterprise"
+  expiry: "24h"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: oauth2-credentials
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: authentication
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+  annotations:
+    reloader.stakater.com/match: "true"
+    description: "OAuth2/OIDC credentials for enterprise SSO"
+type: Opaque
+stringData:
+  client-id: "CHANGE_ME_ENTERPRISE_OAUTH2_CLIENT_ID"
+  client-secret: "CHANGE_ME_ENTERPRISE_OAUTH2_CLIENT_SECRET"
+  issuer-url: "https://idp.enterprise-customer.com"
+  redirect-url: "https://api.branching-framework.com/auth/callback"
+  scopes: "openid,profile,email,groups"
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: branching-framework-enterprise-netpol
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: security
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: branching-framework
+      app.kubernetes.io/component: api-server
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow ingress from load balancer
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 8080
+    # Allow ingress from monitoring
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: branching-framework-monitoring
+      ports:
+        - protocol: TCP
+          port: 8081
+    # Allow ingress from same namespace pods
+    - from:
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: 8080
+        - protocol: TCP
+          port: 9090
+  egress:
+    # Allow egress to PostgreSQL
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: postgres-enterprise
+      ports:
+        - protocol: TCP
+          port: 5432
+    # Allow egress to Qdrant
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: qdrant-enterprise
+      ports:
+        - protocol: TCP
+          port: 6333
+    # Allow egress to Redis
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: redis-enterprise
+      ports:
+        - protocol: TCP
+          port: 6379
+    # Allow egress to DNS
+    - to: []
+      ports:
+        - protocol: UDP
+          port: 53
+    # Allow egress to HTTPS (for external APIs, OAuth, etc.)
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443
+    # Allow egress to Git repositories
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 22
+        - protocol: TCP
+          port: 443
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: branching-framework-enterprise-pdb
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: api-server
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+spec:
+  minAvailable: 8 # Ensure at least 8 pods are always running
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: branching-framework
+      app.kubernetes.io/component: api-server
+      environment: production

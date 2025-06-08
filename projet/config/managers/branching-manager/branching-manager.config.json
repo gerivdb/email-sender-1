@@ -1,0 +1,29 @@
+{
+  "enabled": true,
+  "framework": {
+    "integration_date": "2025-06-08",
+    "levels": 8,
+    "type": "ultra-advanced"
+  },
+  "services": {
+    "qdrant": {
+      "port": 6333,
+      "required": true
+    },
+    "redis": {
+      "port": 6379,
+      "required": true
+    },
+    "web_server": {
+      "port": 8090,
+      "enabled": true
+    }
+  },
+  "paths": {
+    "scripts": "scripts",
+    "demos": "demos",
+    "web": "web",
+    "orchestration": "orchestration"
+  },
+  "version": "2.0.0"
+}
