@@ -5,7 +5,7 @@ import (
 
 	"github.com/email-sender/tools/core/toolkit"
 	"github.com/email-sender/tools/operations/validation"
-	toolkitpkg "github.com/email-sender/tools/pkg/toolkit"
+	toolkitpkg "github.com/email-sender/tools/pkg/manager"
 )
 
 func main() {
