@@ -1,0 +1,168 @@
+# Jules Bot Notification Configuration
+# Configure Slack and Email notifications for the review system
+
+# Slack Configuration
+slack:
+  # Webhook URL for Slack notifications (set as GitHub secret: SLACK_WEBHOOK_URL)
+  enabled: true
+  channels:
+    review_alerts: "jules-bot-reviews"
+    quality_reports: "code-quality"
+    system_status: "dev-alerts"
+
+  # Message templates
+  templates:
+    quality_assessment: |
+      🤖 *Jules Bot Quality Assessment*
+
+      📊 *Score:* {score}/100 ({review_type})
+      🔍 *Files:* {files_count}
+      ⚠️ *Issues:* {issues_count}
+
+      📋 *PR:* {pr_title}
+      🔗 *Link:* {pr_url}
+
+      ⏰ *Next Action:* {next_action}
+
+    approval_needed: |
+      👥 *Manual Review Required*
+
+      🤖 *Jules Bot Contribution*
+      📊 *Quality Score:* {score}/100
+      🎯 *Review Type:* {review_type}
+
+      📋 *PR:* {pr_title}
+      🔗 *Link:* {pr_url}
+
+      🔧 *Commands:*
+      • `/jules approve` - Approve and merge
+      • `/jules decline` - Decline with feedback
+      • `/jules request-changes` - Request modifications
+
+    system_error: |
+      🚨 *Jules Bot System Alert*
+
+      ❌ *Error:* {error_type}
+      📝 *Details:* {error_message}
+
+      🔗 *PR:* {pr_url}
+      ⏰ *Timestamp:* {timestamp}
+
+# Email Configuration
+email:
+  # SMTP configuration (set credentials as GitHub secrets)
+  enabled: true
+  smtp:
+    host: "smtp.gmail.com" # or your SMTP server
+    port: 587
+    use_tls: true
+    # Set as secrets: EMAIL_USER, EMAIL_PASSWORD
+
+  # Recipients
+  recipients:
+    admins:
+      - "admin@example.com"
+    reviewers:
+      - "reviewer1@example.com"
+      - "reviewer2@example.com"
+    notifications:
+      - "team@example.com"
+
+  # Email templates
+  templates:
+    subject_prefix: "[Jules Bot]"
+    quality_assessment:
+      subject: "Quality Assessment - {pr_title}"
+      body: |
+        Jules Bot Quality Assessment Report
+
+        Pull Request: {pr_title}
+        Quality Score: {score}/100
+        Review Type: {review_type}
+        Files Modified: {files_count}
+        Issues Found: {issues_count}
+
+        Link: {pr_url}
+
+        Next Action: {next_action}
+
+        This is an automated notification from the Jules Bot Review System.
+
+    approval_request:
+      subject: "Manual Review Required - {pr_title}"
+      body: |
+        A Jules Bot contribution requires manual review.
+
+        Pull Request: {pr_title}
+        Quality Score: {score}/100
+        Review Type: {review_type}
+
+        Please review at: {pr_url}
+
+        Available commands:
+        - Comment "/jules approve" to approve and merge
+        - Comment "/jules decline" to decline with feedback
+        - Comment "/jules request-changes" for modifications
+
+        This is an automated notification from the Jules Bot Review System.
+
+# Notification Rules
+rules:
+  # When to send notifications
+  triggers:
+    quality_assessment: always
+    high_quality: false # Don't notify for fast-track (80+)
+    standard_quality: true # Notify for standard review (60-79)
+    low_quality: true # Always notify for enhanced review (<60)
+    system_errors: always
+    approval_actions: true
+
+  # Rate limiting
+  rate_limits:
+    max_notifications_per_hour: 10
+    cooldown_minutes: 5 # Wait between similar notifications
+
+  # Business hours (UTC)
+  business_hours:
+    enabled: true
+    start_hour: 8
+    end_hour: 18
+    days: ["monday", "tuesday", "wednesday", "thursday", "friday"]
+    urgent_override: true # Send critical alerts outside hours
+
+# Integration Settings
+integrations:
+  github:
+    # Automatically update PR descriptions with quality scores
+    update_pr_descriptions: true
+
+    # Add quality labels to PRs
+    quality_labels:
+      enabled: true
+      labels:
+        high_quality: "quality:high"
+        standard_quality: "quality:standard"
+        low_quality: "quality:needs-review"
+        security_risk: "security:review-required"
+
+  metrics:
+    # Send periodic quality reports
+    daily_summary: true
+    weekly_report: true
+    quality_trends: true
+
+# Security Settings
+security:
+  # Encrypt sensitive data in notifications
+  encrypt_sensitive_data: true
+
+  # Mask secrets in logs
+  mask_secrets: true
+
+  # Validate webhook signatures
+  validate_webhooks: true
+
+  # Rate limiting for security
+  security_rate_limits:
+    max_failed_attempts: 5
+    lockout_duration_minutes: 15

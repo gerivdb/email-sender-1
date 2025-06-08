@@ -118,9 +118,27 @@ func runValidationPhase1_1() {
 	fmt.Printf("\n3️⃣ TEST: Vérification des métriques ToolkitStats\n")
 	fmt.Printf("---------------------------------------------\n")
 	fmt.Printf("- Operations executed: %d\n", mtk.Stats.OperationsExecuted) // Changed to mtk.Stats
-	fmt.Printf("- Files analyzed: %d\n", mtk.Stats.FilesAnalyzed)           // Changed to mtk.Stats
-	fmt.Printf("- Files processed: %d\n", mtk.Stats.FilesProcessed)         // Changed to mtk.Stats
+	fmt.Printf("- Files analyzed: %d\n", mtk.Stats.FilesAnalyzed)           // Changed to mtk.Stats	fmt.Printf("- Files processed: %d\n", mtk.Stats.FilesProcessed)         // Changed to mtk.Stats
 	fmt.Printf("- Execution time: %v\n", mtk.Stats.ExecutionTime)           // Changed to mtk.Stats
+
+	// Test 4: Test spécifique ResolveImports
+	fmt.Printf("\n4️⃣ TEST: ResolveImports spécifique\n")
+	fmt.Printf("----------------------------------\n")
+	ctx4 := context.Background()
+	opts4 := &toolkit.OperationOptions{
+		Target: tempDir,
+		Output: filepath.Join(tempDir, "resolve_imports.json"),
+		Force:  false,
+	}
+
+	err = mtk.ExecuteOperation(ctx4, toolkit.ResolveImports, opts4)
+	if err != nil {
+		fmt.Printf("❌ ERROR: ResolveImports spécifique a échoué: %v\n", err)
+	} else {
+		fmt.Printf("✅ ResolveImports spécifique réussi\n")
+		totalOps++
+		successOps++
+	}
 
 	// Rapport final
 	fmt.Printf("\n📋 RAPPORT FINAL:\n")
