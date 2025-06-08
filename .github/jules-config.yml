@@ -1,0 +1,275 @@
+# Jules Bot Quality Gates Configuration
+
+# Quality assessment thresholds and weights for automated review process
+# Adjust these values based on project needs and experience
+
+# Overall quality score thresholds (0-100 scale)
+quality_thresholds:
+  fast_track: 80 # High quality, minimal review needed
+  standard: 60 # Good quality, standard review process
+  enhanced: 0 # Lower quality, enhanced review required
+
+# Individual check weights (must sum to 1.0)
+quality_weights:
+  file_count: 0.15 # 15% - Number of files modified
+  file_size: 0.10 # 10% - Large file detection
+  security: 0.25 # 25% - Security and sensitive content
+  commit_quality: 0.20 # 20% - Commit count and message quality
+  configuration: 0.15 # 15% - Configuration file safety
+  documentation: 0.15 # 15% - Documentation completeness
+
+# File analysis parameters
+file_limits:
+  max_files: 10 # Maximum files for full score
+  max_file_size_mb: 1 # Maximum file size in MB
+  max_commits: 5 # Maximum commits for full score
+
+  # File patterns to flag as large/problematic
+  large_file_patterns:
+    - "*.zip"
+    - "*.tar.gz"
+    - "*.exe"
+    - "*.dll"
+    - "*.so"
+    - "*.dylib"
+    - "*.bin"
+    - "*.jar"
+    - "*.war"
+    - "*.mp4"
+    - "*.avi"
+    - "*.mov"
+    - "*.mp3"
+    - "*.wav"
+    - "*.pdf"
+    - "*.doc"
+    - "*.docx"
+
+# Security scanning patterns
+security_patterns:
+  # Sensitive file patterns (immediate flag)
+  sensitive_files:
+    - "*.key"
+    - "*.pem"
+    - "*.p12"
+    - "*.pfx"
+    - "*.jks"
+    - ".env"
+    - ".env.*"
+    - "secrets.*"
+    - "credentials.*"
+    - "password*"
+    - "auth*"
+    - "token*"
+
+  # Sensitive content patterns (content analysis)
+  sensitive_content:
+    - "password\\s*[=:]\\s*['\"]?\\w+"
+    - "api[_-]?key\\s*[=:]\\s*['\"]?\\w+"
+    - "secret\\s*[=:]\\s*['\"]?\\w+"
+    - "token\\s*[=:]\\s*['\"]?\\w+"
+    - "auth[_-]?token\\s*[=:]\\s*['\"]?\\w+"
+    - "private[_-]?key\\s*[=:]"
+    - "-----BEGIN\\s+(RSA\\s+)?PRIVATE\\s+KEY-----"
+    - "ssh-rsa\\s+AAAA[0-9A-Za-z+/]+[=]{0,3}"
+    - "ghp_[a-zA-Z0-9]{36}" # GitHub personal access token
+    - "sk_[a-zA-Z0-9]{32}" # Stripe secret key
+    - "aws_access_key_id"
+    - "aws_secret_access_key"
+
+  # Excluded directories (don't scan these)
+  excluded_directories:
+    - "node_modules"
+    - ".git"
+    - "dist"
+    - "build"
+    - ".next"
+    - "__pycache__"
+    - ".pytest_cache"
+    - "coverage"
+    - "logs"
+
+# Commit quality assessment
+commit_quality:
+  # Minimum commit message length
+  min_message_length: 10
+
+  # Good commit patterns (bonus points)
+  good_patterns:
+    - "^(feat|fix|docs|style|refactor|test|chore):"
+    - "^(add|update|remove|fix|improve)\\s+"
+    - "closes?\\s+#\\d+"
+    - "fixes?\\s+#\\d+"
+
+  # Poor commit patterns (penalty)
+  poor_patterns:
+    - "^wip"
+    - "^temp"
+    - "^test"
+    - "^debug"
+    - "^oops"
+    - "^typo"
+    - "^fix"
+    - "^." # Single character commits
+    - "asdfg|qwerty|12345" # Keyboard mashing
+
+# Configuration file safety
+config_files:
+  # Critical config files (require enhanced review)
+  critical_configs:
+    - "package.json"
+    - "requirements.txt"
+    - "Dockerfile"
+    - "docker-compose.yml"
+    - ".github/workflows/*.yml"
+    - ".github/workflows/*.yaml"
+    - "webpack.config.js"
+    - "babel.config.js"
+    - "tsconfig.json"
+    - "jest.config.js"
+    - "nginx.conf"
+    - "apache.conf"
+    - "supervisord.conf"
+
+  # Dangerous config changes (immediate flag)
+  dangerous_patterns:
+    - "sudo"
+    - "chmod\\s+777"
+    - "rm\\s+-rf"
+    - "DROP\\s+TABLE"
+    - "DELETE\\s+FROM"
+    - "TRUNCATE"
+    - "eval\\("
+    - "exec\\("
+    - "system\\("
+    - "shell_exec"
+
+# Documentation requirements
+documentation:
+  # Required docs for certain changes
+  required_docs:
+    api_changes:
+      patterns: ["src/api/**", "routes/**", "controllers/**"]
+      docs: ["README.md", "docs/api/**"]
+
+    config_changes:
+      patterns: ["*.config.*", ".env*", "docker*"]
+      docs: ["README.md", "docs/setup/**", "docs/deployment/**"]
+
+    db_changes:
+      patterns: ["migrations/**", "models/**", "schema/**"]
+      docs: ["docs/database/**", "docs/schema/**"]
+
+  # Documentation file patterns
+  doc_patterns:
+    - "README.md"
+    - "CHANGELOG.md"
+    - "docs/**/*.md"
+    - "*.md"
+    - "*.rst"
+    - "*.txt"
+
+# Review assignment rules
+reviewer_assignment:
+  # Domain-based assignment
+  domains:
+    frontend:
+      patterns: ["src/components/**", "src/pages/**", "*.vue", "*.jsx", "*.tsx"]
+      reviewers: ["@frontend-lead", "@ui-expert"]
+
+    backend:
+      patterns: ["src/server/**", "api/**", "controllers/**", "models/**"]
+      reviewers: ["@backend-lead", "@api-expert"]
+
+    database:
+      patterns: ["migrations/**", "schema/**", "*.sql"]
+      reviewers: ["@database-admin", "@backend-lead"]
+
+    devops:
+      patterns:
+        [
+          "Dockerfile",
+          "docker-compose*",
+          ".github/workflows/**",
+          "*.yml",
+          "*.yaml",
+        ]
+      reviewers: ["@devops-lead", "@infrastructure-expert"]
+
+    security:
+      patterns: ["auth/**", "security/**", "middleware/**"]
+      reviewers: ["@security-expert", "@backend-lead"]
+
+  # Quality-based assignment
+  quality_based:
+    high_quality: # 80-100 score
+      primary: ["@lead-developer"]
+      secondary: ["@senior-developer"]
+
+    standard: # 60-79 score
+      primary: ["@domain-expert"] # Will be replaced with domain-specific reviewer
+      secondary: ["@code-reviewer"]
+
+    low_quality: # <60 score
+      primary: ["@lead-developer", "@security-expert"]
+      secondary: ["@domain-expert"] # Will be replaced with domain-specific reviewer
+
+# Review timeouts and escalation
+timeouts:
+  # Maximum time before escalation (in hours)
+  fast_track: 4 # High quality contributions
+  standard: 24 # Standard quality contributions
+  enhanced: 48 # Low quality contributions
+
+  # Escalation targets
+  escalation_reviewers:
+    - "@technical-lead"
+    - "@engineering-manager"
+
+  # Emergency contact
+  emergency_contact: "@on-call-engineer"
+
+# Notification settings
+notifications:
+  # Slack webhook for notifications
+  slack_webhook: "${SLACK_WEBHOOK_URL}"
+
+  # Email settings
+  email_enabled: true
+  smtp_server: "${SMTP_SERVER}"
+
+  # Notification triggers
+  triggers:
+    quality_score_low: 40 # Notify if score below this
+    review_timeout: true # Notify on timeout
+    security_flag: true # Notify on security issues
+    config_changes: true # Notify on config changes
+    large_changes: 20 # Notify if more than N files
+
+# Emergency procedures
+emergency:
+  # Keywords that trigger emergency stop
+  emergency_keywords:
+    - "emergency-stop"
+    - "critical-security"
+    - "data-breach"
+    - "production-down"
+
+  # Auto-stop conditions
+  auto_stop_conditions:
+    security_score_threshold: 20 # Stop if security score below this
+    file_count_threshold: 50 # Stop if more than N files
+    critical_file_changes: true # Stop if critical files changed
+
+# Bot learning integration
+learning:
+  # Feedback collection
+  collect_feedback: true
+  feedback_weight: 0.3 # How much approval/rejection affects future scoring
+
+  # Pattern learning
+  learn_patterns: true
+  pattern_confidence_threshold: 0.8
+
+  # Contextual memory integration
+  update_context: true
+  context_retention_days: 90
