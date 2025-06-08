@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"time"
 
-	toolkit "github.com/email-sender/tools/core/toolkit" // Changed alias
-	validation "github.com/email-sender/tools/operations/validation" // Added
-	managerTool "github.com/email-sender/tools/cmd/manager-toolkit" // Added
+	"github.com/email-sender/tools/core/toolkit"
+	"github.com/email-sender/tools/operations/validation"
+	toolkitpkg "github.com/email-sender/tools/pkg/toolkit"
 )
 
 // Validation de l'implémentation - Phase 1.1 - Plan v49
@@ -69,9 +69,8 @@ func runValidationPhase1_1() {
 	// Test 2: Validation de l'intégration avec ManagerToolkit
 	fmt.Printf("\n2️⃣ TEST: Intégration avec ManagerToolkit\n")
 	fmt.Printf("--------------------------------------\n")
-
 	// Test 2.1: Création du ManagerToolkit
-	mtk, err := managerTool.NewManagerToolkit(tempDir, "", false) // Changed to managerTool.NewManagerToolkit and var mtk
+	mtk, err := toolkitpkg.NewManagerToolkit(tempDir, "", false) // Use toolkitpkg.NewManagerToolkit
 	if err != nil {
 		fmt.Printf("❌ ERROR: Création de ManagerToolkit a échoué: %v\n", err)
 		os.Exit(1)
@@ -102,10 +101,9 @@ func runValidationPhase1_1() {
 
 	totalOps := len(operations)
 	successOps := 0
-
 	for _, op := range operations {
 		startTime := time.Now()
-		err := mtk.ExecuteOperation(ctx, toolkit.Operation(op), opts) // Changed to mtk.ExecuteOperation, cast op
+		err := mtk.ExecuteOperation(ctx, op, opts) // Use op directly - no cast needed
 		duration := time.Since(startTime)
 
 		if err != nil {
@@ -120,9 +118,9 @@ func runValidationPhase1_1() {
 	fmt.Printf("\n3️⃣ TEST: Vérification des métriques ToolkitStats\n")
 	fmt.Printf("---------------------------------------------\n")
 	fmt.Printf("- Operations executed: %d\n", mtk.Stats.OperationsExecuted) // Changed to mtk.Stats
-	fmt.Printf("- Files analyzed: %d\n", mtk.Stats.FilesAnalyzed)       // Changed to mtk.Stats
-	fmt.Printf("- Files processed: %d\n", mtk.Stats.FilesProcessed)     // Changed to mtk.Stats
-	fmt.Printf("- Execution time: %v\n", mtk.Stats.ExecutionTime)     // Changed to mtk.Stats
+	fmt.Printf("- Files analyzed: %d\n", mtk.Stats.FilesAnalyzed)           // Changed to mtk.Stats
+	fmt.Printf("- Files processed: %d\n", mtk.Stats.FilesProcessed)         // Changed to mtk.Stats
+	fmt.Printf("- Execution time: %v\n", mtk.Stats.ExecutionTime)           // Changed to mtk.Stats
 
 	// Rapport final
 	fmt.Printf("\n📋 RAPPORT FINAL:\n")

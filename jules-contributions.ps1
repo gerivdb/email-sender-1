@@ -203,7 +203,7 @@ jobs:
    Write-Host "  ✓ Workflow GitHub Actions créé: .github/workflows/jules-contributions.yml" -ForegroundColor Green
 }
 
-function Create-AutoRedirectScript {
+function New-AutoRedirectScript {
    $autoRedirectScript = @'
 # =============================================================================
 # Script automatique de redirection des contributions Jules
@@ -291,7 +291,7 @@ Write-Host "  .\jules-contributions.ps1 monitor      # Surveillance" -Foreground
    Write-Host "  ✓ Script auto-redirect créé: jules-auto-redirect.ps1" -ForegroundColor Green
 }
 
-function Create-SystemConfiguration {
+function New-SystemConfiguration {
    $configDir = "config"
    if (-not (Test-Path $configDir)) {
       New-Item -ItemType Directory -Force -Path $configDir | Out-Null
@@ -539,3 +539,4 @@ Write-Host "Automatisation:" -ForegroundColor Yellow
 Write-Host "  .\jules-auto-redirect.ps1                         # Redirection automatique" -ForegroundColor White
 Write-Host "  .\jules-auto-redirect.ps1 -DryRun                 # Simulation" -ForegroundColor White
 Write-Host "  .\jules-realtime-monitor.ps1                      # Monitoring temps réel" -ForegroundColor White
+
