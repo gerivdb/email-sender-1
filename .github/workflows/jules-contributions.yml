@@ -21,7 +21,7 @@ jobs:
         run: |
           git config user.name "Jules Contribution Manager"
           git config user.email "actions@github.com"
-        - name: Redirect Jules Contribution
+      - name: Redirect Jules Contribution
         run: |
           echo "Jules bot activity detected on branch: ${{ github.ref_name }}"
         env:
@@ -31,7 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'google-labs-jules[bot]'
     
-    steps:      - name: Log Jules Activity
+    steps:
+      - name: Log Jules Activity
         run: |
           echo "Jules bot activity detected"
           echo "Repository: ${{ github.repository }}"
