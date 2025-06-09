@@ -1,0 +1,237 @@
+# Framework de Maintenance et Organisation Ultra-Avancé (FMOUA)
+# Configuration principale
+
+# Paramètres généraux
+repository_path: "."
+max_files_per_folder: 15
+autonomy_level: 1 # 0=AssistedOperations, 1=SemiAutonomous, 2=FullyAutonomous
+
+# Configuration AI
+ai_config:
+  pattern_analysis_enabled: true
+  predictive_maintenance: true
+  intelligent_categorization: true
+  learning_rate: 0.1
+  confidence_threshold: 0.8
+
+# Configuration base de données vectorielle (QDrant)
+vector_db:
+  enabled: true
+  host: "localhost"
+  port: 6333
+  collection_name: "maintenance_files"
+  vector_size: 384
+
+# Intégration avec les managers existants
+manager_integration:
+  error_manager: true
+  storage_manager: true
+  security_manager: true
+  integrated_manager: true
+  documentation_manager: true
+  logging_manager: true
+  monitoring_manager: true
+  performance_manager: true
+  cache_manager: true
+  config_manager: true
+  email_manager: false # Pas nécessaire pour la maintenance
+  notification_manager: true
+  scheduler_manager: false # Remplacé par notre scheduler
+  test_manager: true
+  dependency_manager: true
+  git_manager: true
+  backup_manager: true
+
+# Scripts existants à intégrer
+existing_scripts:
+  - name: "organize-root-files-secure"
+    path: "./organize-root-files-secure.ps1"
+    type: "powershell"
+    purpose: "Organize root files with security focus"
+    integration: true
+    parameters:
+      security_level: "high"
+      backup_before_move: true
+
+  - name: "organize-tests"
+    path: "./organize-tests.ps1"
+    type: "powershell"
+    purpose: "Organize test files and folders"
+    integration: true
+    parameters:
+      test_pattern: "*test*"
+      create_backup: true
+
+  - name: "cleanup-cache"
+    path: "./development/scripts/maintenance/cleanup-cache.ps1"
+    type: "powershell"
+    purpose: "Clean cache and temporary files"
+    integration: true
+    parameters:
+      cache_age_days: 7
+
+  - name: "analyze-dependencies"
+    path: "./development/scripts/maintenance/analyze-dependencies.ps1"
+    type: "powershell"
+    purpose: "Analyze project dependencies"
+    integration: true
+
+# Configuration nettoyage
+cleanup_config:
+  enabled_levels: [1, 2] # Level 3 requires manual approval
+  retention_period_days: 30
+  backup_before_cleanup: true
+  safety_checks: true
+  git_history_preservation: true
+
+# Configuration performance
+performance:
+  max_concurrent_operations: 4
+  operation_timeout: "30m"
+  health_check_interval: "15m"
+  optimization_interval: "4h"
+
+# Règles d'organisation spécifiques
+organization_rules:
+  # Dossiers à ne jamais subdiviser
+  exclude_folders:
+    - ".git"
+    - ".vscode"
+    - "node_modules"
+    - ".env"
+    - "logs"
+
+  # Extensions de fichiers par catégorie
+  file_categories:
+    source_code:
+      - ".go"
+      - ".js"
+      - ".ts"
+      - ".py"
+      - ".java"
+      - ".cpp"
+      - ".c"
+      - ".cs"
+      - ".php"
+      - ".rb"
+      - ".rs"
+      - ".kt"
+
+    configuration:
+      - ".yaml"
+      - ".yml"
+      - ".json"
+      - ".toml"
+      - ".ini"
+      - ".conf"
+      - ".config"
+
+    documentation:
+      - ".md"
+      - ".txt"
+      - ".rst"
+      - ".doc"
+      - ".docx"
+      - ".pdf"
+
+    scripts:
+      - ".ps1"
+      - ".sh"
+      - ".bat"
+      - ".cmd"
+
+    tests:
+      - "_test.go"
+      - ".test.js"
+      - ".spec.js"
+      - ".test.ts"
+      - ".spec.ts"
+      - "_test.py"
+
+    assets:
+      - ".png"
+      - ".jpg"
+      - ".jpeg"
+      - ".gif"
+      - ".svg"
+      - ".ico"
+      - ".css"
+      - ".scss"
+      - ".less"
+
+    temporary:
+      - ".tmp"
+      - ".temp"
+      - ".cache"
+      - ".log"
+      - ".pid"
+      - ".lock"
+
+  # Stratégies de subdivision préférées par type de dossier
+  subdivision_strategies:
+    root:
+      - "by_purpose"
+      - "by_type"
+
+    src:
+      - "by_purpose"
+      - "by_feature"
+
+    tests:
+      - "by_feature"
+      - "by_type"
+
+    docs:
+      - "by_topic"
+      - "by_type"
+
+    config:
+      - "by_environment"
+      - "by_service"
+
+# Configuration sécurité
+security:
+  # Fichiers sensibles à ne jamais déplacer automatiquement
+  protected_files:
+    - "*.key"
+    - "*.pem"
+    - "*.p12"
+    - "*.env*"
+    - "*secret*"
+    - "*password*"
+    - "*credential*"
+
+  # Dossiers protégés
+  protected_folders:
+    - ".ssh"
+    - "secrets"
+    - "certificates"
+    - "keys"
+
+# Configuration de logging spécifique au framework
+logging:
+  level: "info" # debug, info, warn, error
+  file: "./logs/maintenance-framework.log"
+  max_size: "100MB"
+  max_age: "30d"
+  max_backups: 5
+  compress: true
+
+# Configuration monitoring et métriques
+monitoring:
+  enabled: true
+  metrics_endpoint: "http://localhost:8080/metrics"
+  health_endpoint: "http://localhost:8080/health"
+  dashboard_enabled: true
+  alert_thresholds:
+    structure_score_min: 70
+    cleanup_frequency_days: 7
+    optimization_frequency_hours: 24
+
+# Configuration backup
+backup:
+  enabled: true
+  backup_before_organization: true
+  backup_retention_days: 30
+  backup_location: "./backups/maintenance"
+  incremental_backup: true
