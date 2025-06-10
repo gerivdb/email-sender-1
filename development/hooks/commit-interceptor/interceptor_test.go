@@ -399,9 +399,10 @@ func TestCommitAnalyzer_ClassificationAutomatique(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			// Mesure de performance
 			start := time.Now()
-
 			analysis, err := analyzer.AnalyzeCommit(&CommitData{
+				Hash:    "abc123def456", // Hash de test requis
 				Message: tc.commitMessage,
+				Author:  "Test User",         // Auteur requis
 				Files:   []string{"test.go"}, // Fichier minimal pour test
 			})
 
@@ -470,7 +471,9 @@ func TestCommitAnalyzer_DetectionImpact(t *testing.T) {
 	for _, tc := range impactTestCases {
 		t.Run(tc.name, func(t *testing.T) {
 			analysis, err := analyzer.AnalyzeCommit(&CommitData{
+				Hash:    "test123hash", // Hash de test requis
 				Message: tc.message,
+				Author:  "Test User", // Auteur requis
 				Files:   tc.files,
 			})
 
