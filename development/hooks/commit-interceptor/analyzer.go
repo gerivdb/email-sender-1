@@ -3,7 +3,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -126,13 +125,19 @@ func (ca *CommitAnalyzer) analyzeMessage(analysis *CommitAnalysis) {
 	}
 
 	if matchedType == "" {
-		matchedType = "chore" // Default type
+		matchedType = "chore"     // Default type
 		analysis.Confidence = 0.8 // Default confidence for chore
 	} else {
 		// Calculate confidence based on score vs total possible
-		analysis.Confidence = math.Min(0.95, float64(highestScore)/10.0)
-		if analysis.Confidence < 0.8 {
-			analysis.Confidence = 0.8 // Minimum confidence for matched types
+		if highestScore >= 10 {
+			// Perfect match (exact pattern match)
+			analysis.Confidence = 0.95
+		} else if highestScore >= 6 {
+			// Good match (multiple substring matches)
+			analysis.Confidence = 0.85
+		} else {
+			// Partial match
+			analysis.Confidence = 0.8
 		}
 	}
 
@@ -241,12 +246,9 @@ func (ca *CommitAnalyzer) analyzeImpact(analysis *CommitAnalysis) {
 	}
 
 	if hasCriticalFile {
-		if impact == "low" {
-			impact = "medium"
-		} else if impact == "medium" {
+		// Critical files should generally result in high impact
+		if impact == "low" || impact == "medium" {
 			impact = "high"
-		} else if impact == "high" {
-			// Already high, keep it
 		}
 	}
 
