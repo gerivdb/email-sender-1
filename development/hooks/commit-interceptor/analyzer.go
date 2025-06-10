@@ -296,6 +296,11 @@ func (ca *CommitAnalyzer) isCriticalFile(filename string) bool {
 
 // calculateConfidence calculates confidence score for the analysis
 func (ca *CommitAnalyzer) calculateConfidence(analysis *CommitAnalysis) {
+	// If confidence is already set (e.g., by analyzeMessage), don't override it
+	if analysis.Confidence > 0.0 {
+		return
+	}
+
 	confidence := 0.5 // Base confidence
 
 	// Increase confidence for clear commit message patterns
