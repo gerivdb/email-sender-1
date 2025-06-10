@@ -2,6 +2,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 	"regexp"
@@ -22,13 +23,26 @@ type CommitAnalysis struct {
 
 // CommitAnalyzer analyzes commits to determine their type and routing
 type CommitAnalyzer struct {
-	config *Config
+	config              *Config
+	semanticManager     *SemanticEmbeddingManager
+	enableSemanticAnalysis bool
 }
 
 // NewCommitAnalyzer creates a new commit analyzer
 func NewCommitAnalyzer(config *Config) *CommitAnalyzer {
 	return &CommitAnalyzer{
-		config: config,
+		config:              config,
+		semanticManager:     NewSemanticEmbeddingManager(config),
+		enableSemanticAnalysis: true,
+	}
+}
+
+// NewCommitAnalyzerWithSemantic creates a new commit analyzer with semantic capabilities
+func NewCommitAnalyzerWithSemantic(config *Config, semanticManager *SemanticEmbeddingManager) *CommitAnalyzer {
+	return &CommitAnalyzer{
+		config:              config,
+		semanticManager:     semanticManager,
+		enableSemanticAnalysis: true,
 	}
 }
 
@@ -42,8 +56,25 @@ func (ca *CommitAnalyzer) AnalyzeCommit(data *CommitData) (*CommitAnalysis, erro
 		CommitData: data,
 	}
 
-	// Analyze commit message
+	// Create commit context for semantic analysis
+	var commitContext *CommitContext
+	if ca.enableSemanticAnalysis && ca.semanticManager != nil {
+		ctx := context.Background()
+		var err error
+		commitContext, err = ca.semanticManager.CreateCommitContext(ctx, data)
+		if err != nil {
+			// Continue with traditional analysis if semantic analysis fails
+			fmt.Printf("Warning: Semantic analysis failed: %v\n", err)
+		}
+	}
+
+	// Analyze commit message (traditional + semantic)
 	ca.analyzeMessage(analysis)
+	
+	// Enhance with semantic analysis if available
+	if commitContext != nil {
+		ca.enhanceWithSemanticAnalysis(analysis, commitContext)
+	}
 
 	// Analyze file changes
 	ca.analyzeFiles(analysis)
@@ -456,4 +487,41 @@ func (ca *CommitAnalyzer) setPriority(analysis *CommitAnalysis) {
 	default:
 		analysis.Priority = "low"
 	}
+}
+
+// enhanceWithSemanticAnalysis enhances traditional analysis with semantic insights
+func (ca *CommitAnalyzer) enhanceWithSemanticAnalysis(analysis *CommitAnalysis, commitContext *CommitContext) {
+	// Use semantic predictions to refine or confirm traditional analysis
+	if commitContext.PredictedType != "" && commitContext.Confidence > 0.8 {
+		// High confidence semantic prediction can override traditional analysis
+		if commitContext.Confidence > analysis.Confidence {
+			analysis.ChangeType = commitContext.PredictedType
+			analysis.Confidence = commitContext.Confidence
+		}
+		
+		// Add semantic keywords
+		analysis.Keywords = append(analysis.Keywords, commitContext.Keywords...)
+		
+		// Update impact based on semantic score
+		if commitContext.SemanticScore > 0.8 {
+			analysis.Impact = "high"
+		} else if commitContext.SemanticScore > 0.6 {
+			analysis.Impact = "medium"
+		}
+	}
+	
+	// Store related commits for context
+	if len(commitContext.RelatedCommits) > 0 {
+		// Could be used for branch suggestion enhancement
+		// For now, just boost confidence if we have similar commits
+		analysis.Confidence = min(analysis.Confidence + 0.1, 1.0)
+	}
+}
+
+// min helper function for float64
+func min(a, b float64) float64 {
+	if a < b {
+		return a
+	}
+	return b
 }
