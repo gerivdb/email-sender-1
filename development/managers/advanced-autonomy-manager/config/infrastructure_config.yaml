@@ -1,0 +1,55 @@
+# Configuration infrastructure orchestration
+infrastructure_config:
+  auto_start_enabled: true
+  startup_mode: "smart" # smart, fast, minimal
+  environment: "development"
+
+  service_discovery:
+    docker_compose_path: "./docker-compose.yml"
+    container_manager_endpoint: "localhost:8080"
+    health_check_interval: "10s"
+    max_startup_time: "5m"
+
+  dependency_resolution:
+    parallel_start_enabled: true
+    retry_failed_services: true
+    max_retries: 3
+    retry_backoff: "exponential"
+
+  monitoring:
+    real_time_health_checks: true
+    alert_on_failure: true
+    auto_healing_enabled: true
+    performance_metrics: true
+
+# Services and their dependencies
+services:
+  qdrant:
+    requires: []
+    health_check: "http://localhost:6333/health"
+    startup_timeout: "30s"
+
+  redis:
+    requires: []
+    health_check: "redis://localhost:6379"
+    startup_timeout: "15s"
+
+  postgresql:
+    requires: []
+    health_check: "pg://postgres:5432"
+    startup_timeout: "45s"
+
+  prometheus:
+    requires: []
+    health_check: "http://localhost:9091/-/healthy"
+    startup_timeout: "20s"
+
+  grafana:
+    requires: ["prometheus"]
+    health_check: "http://localhost:3000/api/health"
+    startup_timeout: "30s"
+
+  rag-server:
+    requires: ["qdrant", "redis", "prometheus"]
+    health_check: "http://localhost:8080/health"
+    startup_timeout: "60s"

@@ -1,0 +1,72 @@
+# Advanced Autonomy Manager configuration
+version: 1.0
+
+# Manager identification
+manager:
+  name: "AdvancedAutonomyManager"
+  version: "1.0.0"
+  id: "aam-001"
+  description: "Manager for advanced autonomy and orchestration of the ecosystem"
+
+# Discovery service configuration
+discovery:
+  enabled: true
+  scan_interval: "60s"
+  register_self: true
+  discovery_endpoints:
+    - "http://localhost:8090/discovery"
+    - "http://localhost:8091/discovery"
+  excluded_managers: []
+
+# Monitoring configuration
+monitoring:
+  enabled: true
+  metrics_endpoint: "/metrics"
+  health_endpoint: "/health"
+  logging_level: "info"
+  performance_tracking: true
+  alert_threshold: 90
+
+# Auto-healing configuration
+healing:
+  enabled: true
+  max_auto_retries: 3
+  escalation_timeout: "5m"
+  recovery_strategies:
+    - "restart"
+    - "reconfigure"
+    - "delegate"
+  post_recovery_wait: "30s"
+
+# Decision engine configuration
+decision_engine:
+  enabled: true
+  model_path: "./models/decision_model.bin"
+  confidence_threshold: 0.85
+  fallback_strategy: "conservative"
+  decision_cache_size: 100
+  decision_timeout: "2s"
+
+# Coordination configuration
+coordination:
+  leadership_enabled: true
+  consensus_protocol: "raft"
+  quorum_size: 2
+  heartbeat_interval: "5s"
+  election_timeout: "15s"
+  state_persistence_path: "./data/coordination_state.db"
+
+# API configuration
+api:
+  port: 8080
+  cors_enabled: true
+  rate_limit: 100
+  timeout: "30s"
+  tls:
+    enabled: false
+    cert_path: ""
+    key_path: ""
+
+# Include infrastructure configuration
+include:
+  - "infrastructure_config.yaml"
