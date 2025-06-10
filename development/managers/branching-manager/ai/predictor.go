@@ -2,32 +2,33 @@ package ai
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"math"
 	"sort"
 	"time"
 
-	"branching-framework-dev/interfaces"
+	"../../pkg/interfaces"
 )
 
 // BranchingPredictorImpl implements BranchingPredictor interface with real AI/ML capabilities
 type BranchingPredictorImpl struct {
-	model               *PredictionModel
-	patternAnalyzer     *PatternAnalyzerImpl
-	vectorManager       VectorManager
-	historyWindow       time.Duration
+	model            *PredictionModel
+	patternAnalyzer  *PatternAnalyzerImpl
+	vectorManager    VectorManager
+	historyWindow    time.Duration
 	confidenceThreshold float64
 }
 
 // PredictionModel represents the AI model for branching predictions
 type PredictionModel struct {
-	ModelPath      string
-	Version        string
-	Features       []string
-	WeightMatrix   [][]float64
-	BiasVector     []float64
-	ScalingFactors map[string]float64
-	LastTrained    time.Time
+	ModelPath       string
+	Version         string
+	Features        []string
+	WeightMatrix    [][]float64
+	BiasVector      []float64
+	ScalingFactors  map[string]float64
+	LastTrained     time.Time
 }
 
 // PredictionFeatures represents features extracted for prediction
@@ -42,8 +43,8 @@ type PredictionFeatures struct {
 	TeamSize            float64
 	ProjectAge          float64
 	SeasonalFactor      float64
-	DayOfWeek           float64
-	HourOfDay           float64
+	DayOfWeek          float64
+	HourOfDay          float64
 	DeveloperExperience float64
 	RecentActivity      float64
 	BranchDepth         float64
@@ -104,19 +105,19 @@ func (p *BranchingPredictorImpl) PredictOptimalBranch(ctx context.Context, inten
 	recommendations := p.generateRecommendations(features, similarPatterns)
 
 	predictedBranch := &interfaces.PredictedBranch{
-		SuggestedName:      suggestedName,
-		BaseBranch:         p.selectOptimalBaseBranch(intent, similarPatterns),
-		Strategy:           p.selectOptimalStrategy(features, similarPatterns),
-		EstimatedDuration:  p.estimateDuration(features, similarPatterns),
+		SuggestedName:    suggestedName,
+		BaseBranch:       p.selectOptimalBaseBranch(intent, similarPatterns),
+		Strategy:         p.selectOptimalStrategy(features, similarPatterns),
+		EstimatedDuration: p.estimateDuration(features, similarPatterns),
 		SuccessProbability: prediction.SuccessProbability,
-		Confidence:         confidence,
-		Recommendations:    recommendations,
-		Reasoning:          p.generateReasoning(features, similarPatterns, prediction),
+		Confidence:       confidence,
+		Recommendations:  recommendations,
+		Reasoning:        p.generateReasoning(features, similarPatterns, prediction),
 		Metadata: map[string]interface{}{
-			"model_version":    p.model.Version,
-			"features_used":    p.model.Features,
-			"similar_patterns": len(similarPatterns),
-			"prediction_time":  time.Now(),
+			"model_version":     p.model.Version,
+			"features_used":     p.model.Features,
+			"similar_patterns":  len(similarPatterns),
+			"prediction_time":   time.Now(),
 		},
 	}
 
@@ -156,8 +157,8 @@ func (p *BranchingPredictorImpl) OptimizeBranchingStrategy(ctx context.Context, 
 		ImplementationPlan:  p.generateImplementationPlan(optimizations),
 		RiskAssessment:      p.assessOptimizationRisks(optimizations),
 		Metadata: map[string]interface{}{
-			"analysis_date":         time.Now(),
-			"data_points_analyzed":  len(historicalData),
+			"analysis_date":       time.Now(),
+			"data_points_analyzed": len(historicalData),
 			"current_effectiveness": effectiveness,
 		},
 	}
@@ -214,10 +215,10 @@ func (p *BranchingPredictorImpl) predictBranchOutcome(features *PredictionFeatur
 
 	// Convert output to prediction
 	return &interfaces.BranchPrediction{
-		SuccessProbability:  output[0],
+		SuccessProbability: output[0],
 		ConflictProbability: output[1],
-		Duration:            time.Duration(output[2] * float64(time.Hour)),
-		Complexity:          output[3],
+		Duration:          time.Duration(output[2] * float64(time.Hour)),
+		Complexity:        output[3],
 		TestPassProbability: output[4],
 	}
 }
@@ -235,7 +236,7 @@ func (p *BranchingPredictorImpl) findSimilarPatterns(ctx context.Context, featur
 func (p *BranchingPredictorImpl) generateBranchName(intent interfaces.BranchingIntent) string {
 	// Simple rule-based branch name generation
 	prefix := "feature"
-
+	
 	switch intent.BranchType {
 	case "bugfix":
 		prefix = "bugfix"
@@ -252,11 +253,13 @@ func (p *BranchingPredictorImpl) generateBranchName(intent interfaces.BranchingI
 	if len(description) > 50 {
 		description = description[:50]
 	}
+
 	// Replace spaces and special characters
+	description = fmt.Sprintf("%s", description)
 	// In real implementation, use proper string sanitization
 
 	timestamp := time.Now().Format("20060102")
-
+	
 	return fmt.Sprintf("%s/%s-%s", prefix, description, timestamp)
 }
 
@@ -265,13 +268,14 @@ func (p *BranchingPredictorImpl) selectOptimalBaseBranch(intent interfaces.Branc
 	if intent.PreferredBaseBranch != "" {
 		return intent.PreferredBaseBranch
 	}
+
 	// Analyze similar patterns to find most successful base branches
 	baseBranchScores := make(map[string]float64)
-
+	
 	for _, pattern := range patterns {
 		if baseBranch, exists := pattern.Metadata["base_branch"]; exists {
 			if branch, ok := baseBranch.(string); ok {
-				baseBranchScores[branch] += float64(pattern.SuccessRate) * float64(pattern.Frequency)
+				baseBranchScores[branch] += pattern.SuccessRate * float32(pattern.Frequency)
 			}
 		}
 	}
@@ -279,7 +283,7 @@ func (p *BranchingPredictorImpl) selectOptimalBaseBranch(intent interfaces.Branc
 	// Return the highest scoring base branch, default to "main"
 	bestBranch := "main"
 	bestScore := 0.0
-
+	
 	for branch, score := range baseBranchScores {
 		if score > bestScore {
 			bestScore = score
@@ -364,7 +368,7 @@ func (p *BranchingPredictorImpl) calculateConfidence(prediction *interfaces.Bran
 
 	// Combine confidences
 	totalConfidence := modelConfidence + patternBoost
-
+	
 	// Normalize to [0, 1]
 	return math.Min(1.0, math.Max(0.0, totalConfidence))
 }
@@ -409,7 +413,7 @@ func (p *BranchingPredictorImpl) generateRecommendations(features *PredictionFea
 // generateReasoning generates human-readable reasoning
 func (p *BranchingPredictorImpl) generateReasoning(features *PredictionFeatures, patterns []*interfaces.PatternSimilarity, prediction *interfaces.BranchPrediction) string {
 	reasoning := fmt.Sprintf("Based on analysis of %d similar patterns, ", len(patterns))
-
+	
 	if prediction.SuccessProbability > 0.8 {
 		reasoning += "this branch has high success probability due to favorable conditions."
 	} else if prediction.SuccessProbability > 0.6 {
@@ -433,21 +437,21 @@ func (p *BranchingPredictorImpl) generateReasoning(features *PredictionFeatures,
 
 func (p *BranchingPredictorImpl) featuresToVector(features *PredictionFeatures) []float64 {
 	return []float64{
-		features.SessionDuration / 24.0, // Normalize to days
-		features.BranchCount / 10.0,     // Normalize assuming max 10 branches
+		features.SessionDuration / 24.0,     // Normalize to days
+		features.BranchCount / 10.0,         // Normalize assuming max 10 branches
 		features.MergeFrequency,
 		features.ConflictRate,
 		features.CommitFrequency,
 		features.TestPassRate,
 		features.CodeComplexity,
-		features.TeamSize / 10.0,    // Normalize assuming max 10 team members
-		features.ProjectAge / 365.0, // Normalize to years
+		features.TeamSize / 10.0,            // Normalize assuming max 10 team members
+		features.ProjectAge / 365.0,         // Normalize to years
 		features.SeasonalFactor,
 		features.DayOfWeek,
 		features.HourOfDay,
 		features.DeveloperExperience / 10.0, // Normalize assuming max 10 years
 		features.RecentActivity,
-		features.BranchDepth / 5.0, // Normalize assuming max depth 5
+		features.BranchDepth / 5.0,          // Normalize assuming max depth 5
 	}
 }
 
@@ -463,7 +467,7 @@ func (p *BranchingPredictorImpl) featuresToEmbedding(features *PredictionFeature
 func (p *BranchingPredictorImpl) applyNeuralNetwork(input []float64) []float64 {
 	// Simplified neural network implementation
 	// In production, use a proper ML framework like TensorFlow or PyTorch bindings
-
+	
 	// Hidden layer
 	hidden := make([]float64, 10)
 	for i := range hidden {
@@ -517,16 +521,17 @@ func createDefaultModel() *PredictionModel {
 	// Initialize weight matrix (15 inputs -> 10 hidden -> 5 outputs)
 	model.WeightMatrix = make([][]float64, 15) // 10 hidden + 5 output layers
 	for i := range model.WeightMatrix {
-		if i < 10 { // Hidden layer weights
+		if i < 10 {
+			// Hidden layer weights
 			model.WeightMatrix[i] = make([]float64, 15)
 			for j := range model.WeightMatrix[i] {
-				model.WeightMatrix[i][j] = (randomFloat64() - 0.5) * 2.0 // Random between -1 and 1
+				model.WeightMatrix[i][j] = (rand.Float64() - 0.5) * 2.0 // Random between -1 and 1
 			}
 		} else {
 			// Output layer weights
 			model.WeightMatrix[i] = make([]float64, 10)
 			for j := range model.WeightMatrix[i] {
-				model.WeightMatrix[i][j] = (randomFloat64() - 0.5) * 2.0
+				model.WeightMatrix[i][j] = (rand.Float64() - 0.5) * 2.0
 			}
 		}
 	}
@@ -534,15 +539,15 @@ func createDefaultModel() *PredictionModel {
 	// Initialize bias vector
 	model.BiasVector = make([]float64, 15)
 	for i := range model.BiasVector {
-		model.BiasVector[i] = (randomFloat64() - 0.5) * 2.0
+		model.BiasVector[i] = (rand.Float64() - 0.5) * 2.0
 	}
 
 	// Initialize scaling factors
 	model.ScalingFactors = map[string]float64{
-		"duration":   24.0, // Hours to days
-		"team_size":  10.0, // Max team size
-		"complexity": 1.0,  // Already normalized
-		"frequency":  1.0,  // Already normalized
+		"duration":    24.0,  // Hours to days
+		"team_size":   10.0,  // Max team size
+		"complexity":  1.0,   // Already normalized
+		"frequency":   1.0,   // Already normalized
 	}
 
 	return model
@@ -551,7 +556,7 @@ func createDefaultModel() *PredictionModel {
 // Simple random number generator for model initialization
 var randSeed = time.Now().UnixNano()
 
-func randomFloat64() float64 {
+func rand.Float64() float64 {
 	// Simple LCG for deterministic random numbers
 	randSeed = (randSeed*1103515245 + 12345) & 0x7fffffff
 	return float64(randSeed) / float64(0x7fffffff)
@@ -562,10 +567,10 @@ func randomFloat64() float64 {
 func (p *BranchingPredictorImpl) analyzeStrategyEffectiveness(strategy interfaces.BranchingStrategy) map[string]float64 {
 	// Mock effectiveness analysis
 	return map[string]float64{
-		"merge_success_rate":   0.85,
-		"conflict_rate":        0.15,
-		"review_compliance":    0.90,
-		"deployment_frequency": 0.75,
+		"merge_success_rate":    0.85,
+		"conflict_rate":         0.15,
+		"review_compliance":     0.90,
+		"deployment_frequency":  0.75,
 		"lead_time":            0.70,
 	}
 }
@@ -575,18 +580,18 @@ func (p *BranchingPredictorImpl) getHistoricalPerformance(ctx context.Context, p
 	// In production, query from database
 	return []map[string]interface{}{
 		{
-			"date":               time.Now().AddDate(0, -1, 0),
-			"merge_success_rate": 0.82,
-			"conflict_rate":      0.18,
-			"avg_review_time":    2.5,
-			"deployment_success": 0.88,
+			"date":                time.Now().AddDate(0, -1, 0),
+			"merge_success_rate":  0.82,
+			"conflict_rate":       0.18,
+			"avg_review_time":     2.5,
+			"deployment_success":  0.88,
 		},
 		{
-			"date":               time.Now().AddDate(0, -2, 0),
-			"merge_success_rate": 0.79,
-			"conflict_rate":      0.21,
-			"avg_review_time":    3.1,
-			"deployment_success": 0.85,
+			"date":                time.Now().AddDate(0, -2, 0),
+			"merge_success_rate":  0.79,
+			"conflict_rate":       0.21,
+			"avg_review_time":     3.1,
+			"deployment_success":  0.85,
 		},
 	}, nil
 }
@@ -623,11 +628,11 @@ func (p *BranchingPredictorImpl) generateOptimizations(strategy interfaces.Branc
 
 func (p *BranchingPredictorImpl) calculateExpectedImprovement(strategy interfaces.BranchingStrategy, optimizations []interfaces.StrategyOptimization) map[string]float64 {
 	improvement := make(map[string]float64)
-
+	
 	for _, opt := range optimizations {
 		improvement[opt.Area] = opt.ExpectedGain * opt.Confidence
 	}
-
+	
 	return improvement
 }
 
@@ -641,7 +646,7 @@ func (p *BranchingPredictorImpl) generateABTestSuggestions(strategy interfaces.B
 			TestGroup:    opt.Recommended,
 			Metrics:      []string{"merge_success_rate", "conflict_rate", "lead_time"},
 			Duration:     30 * 24 * time.Hour, // 30 days
-			TrafficSplit: 0.5,                 // 50/50 split
+			TrafficSplit: 0.5,                  // 50/50 split
 		}
 		suggestions = append(suggestions, suggestion)
 	}
@@ -659,17 +664,17 @@ func (p *BranchingPredictorImpl) generateImplementationPlan(optimizations []inte
 
 	for i, opt := range optimizations {
 		step := interfaces.ImplementationStep{
-			Phase:         i + 1,
-			Description:   fmt.Sprintf("Implement %s optimization", opt.Area),
-			Duration:      7 * 24 * time.Hour, // 1 week per step
+			Phase:       i + 1,
+			Description: fmt.Sprintf("Implement %s optimization", opt.Area),
+			Duration:    7 * 24 * time.Hour, // 1 week per step
 			Prerequisites: []string{},
-			Risks:         []string{fmt.Sprintf("Potential disruption to %s workflow", opt.Area)},
+			Risks:       []string{fmt.Sprintf("Potential disruption to %s workflow", opt.Area)},
 		}
-
+		
 		if i > 0 {
 			step.Prerequisites = append(step.Prerequisites, fmt.Sprintf("Complete phase %d", i))
 		}
-
+		
 		steps = append(steps, step)
 	}
 
@@ -686,13 +691,13 @@ func (p *BranchingPredictorImpl) assessOptimizationRisks(optimizations []interfa
 			Impact:      "medium",
 			Mitigation:  fmt.Sprintf("Gradual rollout of %s changes", opt.Area),
 		}
-
+		
 		if opt.ExpectedGain > 0.2 {
 			risk.Impact = "high"
 		} else if opt.ExpectedGain < 0.05 {
 			risk.Impact = "low"
 		}
-
+		
 		risks = append(risks, risk)
 	}
 
@@ -702,24 +707,24 @@ func (p *BranchingPredictorImpl) assessOptimizationRisks(optimizations []interfa
 func (p *BranchingPredictorImpl) calculateOptimizationConfidence(effectiveness map[string]float64, historical []map[string]interface{}) float64 {
 	// Calculate confidence based on data quality and consistency
 	baseConfidence := 0.7
-
+	
 	// Boost confidence if we have sufficient historical data
 	if len(historical) > 5 {
 		baseConfidence += 0.1
 	}
-
+	
 	// Boost confidence if current effectiveness is well-measured
 	if len(effectiveness) > 3 {
 		baseConfidence += 0.1
 	}
-
+	
 	return math.Min(1.0, baseConfidence)
 }
 
 // PatternAnalyzerImpl implements pattern analysis for branching patterns
 type PatternAnalyzerImpl struct {
-	vectorManager       VectorManager
-	historicalWindow    time.Duration
+	vectorManager   VectorManager
+	historicalWindow time.Duration
 	confidenceThreshold float64
 }
 
@@ -736,10 +741,10 @@ func NewPatternAnalyzerImpl(vectorManager VectorManager) *PatternAnalyzerImpl {
 func (pa *PatternAnalyzerImpl) AnalyzeBranchingPatterns(ctx context.Context, projectID string) (*interfaces.BranchingAnalysis, error) {
 	// Initialize analysis result
 	analysis := &interfaces.BranchingAnalysis{
-		ProjectID:  projectID,
-		AnalyzedAt: time.Now(),
-		Patterns:   []interfaces.BranchingPattern{},
-		Summary:    interfaces.AnalysisSummary{},
+		ProjectID:   projectID,
+		AnalyzedAt:  time.Now(),
+		Patterns:    []interfaces.BranchingPattern{},
+		Summary:     interfaces.AnalysisSummary{},
 	}
 
 	// Step 1: Collect historical branching data
@@ -781,13 +786,13 @@ func (pa *PatternAnalyzerImpl) AnalyzeBranchingPatterns(ctx context.Context, pro
 	// Populate analysis result
 	analysis.Patterns = patterns
 	analysis.Summary = interfaces.AnalysisSummary{
-		TotalPatterns:     len(patterns),
-		ConfidenceScore:   pa.calculateOverallConfidence(patterns, clusters),
-		TopInsights:       insights,
-		PredictedTrends:   trends,
-		Recommendations:   recommendations,
-		PatternCategories: pa.categorizePatterns(patterns),
-		QualityMetrics:    pa.calculateQualityMetrics(patterns, historicalData),
+		TotalPatterns:       len(patterns),
+		ConfidenceScore:     pa.calculateOverallConfidence(patterns, clusters),
+		TopInsights:         insights,
+		PredictedTrends:     trends,
+		Recommendations:     recommendations,
+		PatternCategories:   pa.categorizePatterns(patterns),
+		QualityMetrics:      pa.calculateQualityMetrics(patterns, historicalData),
 	}
 
 	return analysis, nil
@@ -797,47 +802,49 @@ func (pa *PatternAnalyzerImpl) AnalyzeBranchingPatterns(ctx context.Context, pro
 func (pa *PatternAnalyzerImpl) collectHistoricalData(ctx context.Context, projectID string) (map[string]interface{}, error) {
 	// This would typically query the database for historical branching data
 	// For now, we'll simulate this data structure
-	data := map[string]interface{}{
+	
+	data := map[string]interface{
 		"branches": []map[string]interface{}{
 			{
-				"name":          "feature/user-auth",
-				"created_at":    time.Now().Add(-30 * 24 * time.Hour),
-				"merged_at":     time.Now().Add(-25 * 24 * time.Hour),
-				"commits":       15,
+				"name": "feature/user-auth",
+				"created_at": time.Now().Add(-30 * 24 * time.Hour),
+				"merged_at": time.Now().Add(-25 * 24 * time.Hour),
+				"commits": 15,
 				"files_changed": 8,
-				"lines_added":   245,
+				"lines_added": 245,
 				"lines_removed": 89,
-				"strategy":      "feature",
-				"author":        "dev1",
-				"complexity":    0.6,
+				"strategy": "feature",
+				"author": "dev1",
+				"complexity": 0.6,
 			},
 			{
-				"name":          "fix/critical-bug",
-				"created_at":    time.Now().Add(-20 * 24 * time.Hour),
-				"merged_at":     time.Now().Add(-19 * 24 * time.Hour),
-				"commits":       3,
+				"name": "fix/critical-bug",
+				"created_at": time.Now().Add(-20 * 24 * time.Hour),
+				"merged_at": time.Now().Add(-19 * 24 * time.Hour),
+				"commits": 3,
 				"files_changed": 2,
-				"lines_added":   45,
+				"lines_added": 45,
 				"lines_removed": 12,
-				"strategy":      "hotfix",
-				"author":        "dev2",
-				"complexity":    0.2,
+				"strategy": "hotfix",
+				"author": "dev2",
+				"complexity": 0.2,
 			},
 		},
 		"merges": []map[string]interface{}{
 			{
-				"timestamp":       time.Now().Add(-25 * 24 * time.Hour),
-				"strategy":        "feature",
-				"success":         true,
-				"conflicts":       2,
+				"timestamp": time.Now().Add(-25 * 24 * time.Hour),
+				"strategy": "feature",
+				"success": true,
+				"conflicts": 2,
 				"resolution_time": 15 * time.Minute,
-			}},
+			},
+		},
 		"metrics": map[string]interface{}{
-			"avg_branch_lifetime":     time.Duration(5.2 * 24 * float64(time.Hour)),
-			"merge_success_rate":      0.94,
+			"avg_branch_lifetime": 5.2 * 24 * time.Hour,
+			"merge_success_rate": 0.94,
 			"avg_conflicts_per_merge": 1.3,
-			"code_velocity":           150.5,
-			"team_size":               5,
+			"code_velocity": 150.5,
+			"team_size": 5,
 		},
 	}
 
@@ -856,36 +863,38 @@ func (pa *PatternAnalyzerImpl) extractPatterns(ctx context.Context, data map[str
 		Type:        interfaces.PatternTypeLifecycle,
 		Frequency:   85.5,
 		Context: interfaces.PatternContext{
-			ProjectType:      "web-application",
-			TeamSize:         5,
+			ProjectType:    "web-application",
+			TeamSize:       5,
 			DevelopmentPhase: "active-development",
 			TimeRange: interfaces.TimeRange{
 				Start: time.Now().Add(-pa.historicalWindow),
 				End:   time.Now(),
 			},
-		}, Metrics: interfaces.PatternMetrics{
-			AverageDuration:  time.Duration(5.2 * 24 * float64(time.Hour)),
-			SuccessRate:      94.0,
-			ComplexityScore:  0.65,
-			PerformanceScore: 0.82,
-			QualityScore:     0.89,
+		},
+		Metrics: interfaces.PatternMetrics{
+			AverageDuration:   5.2 * 24 * time.Hour,
+			SuccessRate:       94.0,
+			ComplexityScore:   0.65,
+			PerformanceScore:  0.82,
+			QualityScore:      0.89,
 		},
 		Triggers: []interfaces.PatternTrigger{
 			{
-				Type:       "feature_request",
-				Frequency:  75.0,
-				Conditions: map[string]interface{}{"priority": "high", "team_available": true},
+				Type:        "feature_request",
+				Frequency:   75.0,
+				Conditions:  map[string]interface{}{"priority": "high", "team_available": true},
 			},
 			{
-				Type:       "bug_report",
-				Frequency:  20.0,
-				Conditions: map[string]interface{}{"severity": "critical"},
+				Type:        "bug_report",
+				Frequency:   20.0,
+				Conditions:  map[string]interface{}{"severity": "critical"},
 			},
-		}, Outcomes: []interfaces.PatternOutcome{
+		},
+		Outcomes: []interfaces.PatternOutcome{
 			{
-				Type:          "successful_merge",
-				Probability:   0.94,
-				AverageTime:   time.Duration(115) * time.Hour, // 4.8 * 24 = 115.2 ≈ 115
+				Type:         "successful_merge",
+				Probability:  0.94,
+				AverageTime:  4.8 * 24 * time.Hour,
 				QualityImpact: 0.85,
 			},
 		},
@@ -901,8 +910,8 @@ func (pa *PatternAnalyzerImpl) extractPatterns(ctx context.Context, data map[str
 		Type:        interfaces.PatternTypeMerge,
 		Frequency:   78.3,
 		Context: interfaces.PatternContext{
-			ProjectType:      "web-application",
-			TeamSize:         5,
+			ProjectType:    "web-application",
+			TeamSize:       5,
 			DevelopmentPhase: "active-development",
 			TimeRange: interfaces.TimeRange{
 				Start: time.Now().Add(-pa.historicalWindow),
@@ -910,30 +919,30 @@ func (pa *PatternAnalyzerImpl) extractPatterns(ctx context.Context, data map[str
 			},
 		},
 		Metrics: interfaces.PatternMetrics{
-			AverageDuration:  25 * time.Minute,
-			SuccessRate:      89.0,
-			ComplexityScore:  0.45,
-			PerformanceScore: 0.76,
-			QualityScore:     0.91,
+			AverageDuration:   25 * time.Minute,
+			SuccessRate:       89.0,
+			ComplexityScore:   0.45,
+			PerformanceScore:  0.76,
+			QualityScore:      0.91,
 		},
 		Triggers: []interfaces.PatternTrigger{
 			{
-				Type:       "pull_request",
-				Frequency:  90.0,
-				Conditions: map[string]interface{}{"reviews_approved": 2, "ci_passed": true},
+				Type:        "pull_request",
+				Frequency:   90.0,
+				Conditions:  map[string]interface{}{"reviews_approved": 2, "ci_passed": true},
 			},
 		},
 		Outcomes: []interfaces.PatternOutcome{
 			{
-				Type:          "clean_merge",
-				Probability:   0.75,
-				AverageTime:   15 * time.Minute,
+				Type:         "clean_merge",
+				Probability:  0.75,
+				AverageTime:  15 * time.Minute,
 				QualityImpact: 0.95,
 			},
 			{
-				Type:          "merge_with_conflicts",
-				Probability:   0.25,
-				AverageTime:   45 * time.Minute,
+				Type:         "merge_with_conflicts",
+				Probability:  0.25,
+				AverageTime:  45 * time.Minute,
 				QualityImpact: 0.80,
 			},
 		},
@@ -949,31 +958,33 @@ func (pa *PatternAnalyzerImpl) extractPatterns(ctx context.Context, data map[str
 		Type:        interfaces.PatternTypeCollaboration,
 		Frequency:   82.1,
 		Context: interfaces.PatternContext{
-			ProjectType:      "web-application",
-			TeamSize:         5,
+			ProjectType:    "web-application",
+			TeamSize:       5,
 			DevelopmentPhase: "active-development",
 			TimeRange: interfaces.TimeRange{
 				Start: time.Now().Add(-pa.historicalWindow),
 				End:   time.Now(),
 			},
-		}, Metrics: interfaces.PatternMetrics{
-			AverageDuration:  time.Duration(2.5*24) * time.Hour,
-			SuccessRate:      91.0,
-			ComplexityScore:  0.55,
-			PerformanceScore: 0.88,
-			QualityScore:     0.93,
+		},
+		Metrics: interfaces.PatternMetrics{
+			AverageDuration:   2.5 * 24 * time.Hour,
+			SuccessRate:       91.0,
+			ComplexityScore:   0.55,
+			PerformanceScore:  0.88,
+			QualityScore:      0.93,
 		},
 		Triggers: []interfaces.PatternTrigger{
 			{
-				Type:       "feature_collaboration",
-				Frequency:  65.0,
-				Conditions: map[string]interface{}{"multiple_devs": true, "shared_components": true},
+				Type:        "feature_collaboration",
+				Frequency:   65.0,
+				Conditions:  map[string]interface{}{"multiple_devs": true, "shared_components": true},
 			},
-		}, Outcomes: []interfaces.PatternOutcome{
+		},
+		Outcomes: []interfaces.PatternOutcome{
 			{
-				Type:          "successful_collaboration",
-				Probability:   0.91,
-				AverageTime:   time.Duration(55) * time.Hour, // 2.3 * 24 = 55.2 ≈ 55
+				Type:         "successful_collaboration",
+				Probability:  0.91,
+				AverageTime:  2.3 * 24 * time.Hour,
 				QualityImpact: 0.93,
 			},
 		},
@@ -1002,7 +1013,7 @@ func (pa *PatternAnalyzerImpl) clusterPatterns(ctx context.Context, patterns []i
 			if err != nil {
 				return nil, fmt.Errorf("failed to find similarities in cluster %s: %w", clusterName, err)
 			}
-
+			
 			// Store similarity information (could be used for further analysis)
 			_ = similarities // For now, just compute but don't use
 		}
@@ -1018,26 +1029,26 @@ func (pa *PatternAnalyzerImpl) findSimilarPatternsInCluster(ctx context.Context,
 	for i, pattern1 := range patterns {
 		for j := i + 1; j < len(patterns); j++ {
 			pattern2 := patterns[j]
-
+			
 			// Calculate similarity score
 			score := pa.calculatePatternSimilarity(&pattern1, &pattern2)
-
+			
 			if score > pa.confidenceThreshold {
 				similarity := &interfaces.PatternSimilarity{
 					PatternID:         pattern1.ID,
 					ProjectID:         pattern1.Context.ProjectType, // Using ProjectType as ProjectID for now
-					Score:             float32(score),
+					Score:             score,
 					Pattern:           &pattern1,
 					ContextSimilarity: pa.calculateContextSimilarity(pattern1.Context, pattern2.Context),
 					MetricsSimilarity: pa.calculateMetricsSimilarity(pattern1.Metrics, pattern2.Metrics),
 					TimingSimilarity:  pa.calculateTimingSimilarity(pattern1.Context.TimeRange, pattern2.Context.TimeRange),
-					FoundAt:           time.Now(),
-					DistanceMetrics: map[string]float64{
+					FoundAt:          time.Now(),
+					DistanceMetrics:  map[string]float64{
 						"euclidean": pa.calculateEuclideanDistance(&pattern1, &pattern2),
 						"cosine":    pa.calculateCosineDistance(&pattern1, &pattern2),
 					},
 					Metadata: map[string]interface{}{
-						"compared_with":    pattern2.ID,
+						"compared_with": pattern2.ID,
 						"cluster_analysis": true,
 					},
 				}
@@ -1053,10 +1064,10 @@ func (pa *PatternAnalyzerImpl) findSimilarPatternsInCluster(ctx context.Context,
 func (pa *PatternAnalyzerImpl) calculatePatternSimilarity(p1, p2 *interfaces.BranchingPattern) float64 {
 	// Weight different aspects of similarity
 	weights := map[string]float64{
-		"type":    0.3,
-		"context": 0.25,
-		"metrics": 0.25,
-		"timing":  0.2,
+		"type":     0.3,
+		"context":  0.25,
+		"metrics":  0.25,
+		"timing":   0.2,
 	}
 
 	typeScore := 0.0

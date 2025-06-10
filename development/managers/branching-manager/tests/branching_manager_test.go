@@ -2,28 +2,26 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 
-	"branching-framework-dev/development"
-	"branching-framework-dev/interfaces"
+	"../development"
+	"../../pkg/interfaces"
 )
 
 // setupTestManager creates a branching manager for testing
 func setupTestManager(t *testing.T) *development.BranchingManagerImpl {
 	manager, err := development.NewBranchingManager("../config/branching_config.yaml")
 	require.NoError(t, err)
-
+	
 	// Set up mock dependencies
 	manager.SetStorageManager(development.NewMockStorageManager())
 	manager.SetPredictor(development.NewMockBranchingPredictor())
 	manager.SetAnalyzer(development.NewMockPatternAnalyzer())
-
+	
 	return manager
 }
 
@@ -210,12 +208,12 @@ func TestLevel4_ContextualMemory(t *testing.T) {
 	t.Run("IntegrateContextualMemory", func(t *testing.T) {
 		branchID := "test-branch-123"
 		memoryContext := interfaces.MemoryContext{
-			ContextID: "memory-ctx-456",
-			Type:      interfaces.MemoryTypeProject,
-			Content:   "Test project context for branching",
-			Metadata:  map[string]interface{}{"project": "test"},
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			ContextID:   "memory-ctx-456",
+			Type:        interfaces.MemoryTypeProject,
+			Content:     "Test project context for branching",
+			Metadata:    map[string]interface{}{"project": "test"},
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
 		}
 
 		err := manager.IntegrateContextualMemory(ctx, branchID, memoryContext)
@@ -224,7 +222,7 @@ func TestLevel4_ContextualMemory(t *testing.T) {
 
 	t.Run("GenerateAutoDocumentation", func(t *testing.T) {
 		branchID := "test-branch-doc"
-
+		
 		// Mock branch would need to be stored first in a real scenario
 		// For this test, we'll just verify the method doesn't crash
 		doc, err := manager.GenerateAutoDocumentation(ctx, branchID)
@@ -519,27 +517,27 @@ func TestLevel8_QuantumBranching(t *testing.T) {
 			QuantumBranchID: "test-quantum-123",
 			Results: []interfaces.ApproachResult{
 				{
-					ApproachID:    "approach-1",
-					ApproachName:  "JWT Approach",
-					Success:       true,
+					ApproachID:   "approach-1",
+					ApproachName: "JWT Approach",
+					Success:      true,
 					ExecutionTime: 2 * time.Minute,
 					Metrics: interfaces.ApproachMetrics{
-						LinesOfCode:      500,
-						TestCoverage:     95.0,
-						ComplexityScore:  3.2,
-						PerformanceScore: 88.0,
+						LinesOfCode:       500,
+						TestCoverage:      95.0,
+						ComplexityScore:   3.2,
+						PerformanceScore:  88.0,
 					},
 				},
 				{
-					ApproachID:    "approach-2",
-					ApproachName:  "Session Approach",
-					Success:       true,
+					ApproachID:   "approach-2",
+					ApproachName: "Session Approach",
+					Success:      true,
 					ExecutionTime: 3 * time.Minute,
 					Metrics: interfaces.ApproachMetrics{
-						LinesOfCode:      750,
-						TestCoverage:     87.0,
-						ComplexityScore:  4.1,
-						PerformanceScore: 82.0,
+						LinesOfCode:       750,
+						TestCoverage:      87.0,
+						ComplexityScore:   4.1,
+						PerformanceScore:  82.0,
 					},
 				},
 			},
@@ -604,7 +602,7 @@ func TestIntegration_FullWorkflow(t *testing.T) {
 	require.NoError(t, err)
 
 	// Test full workflow: Session -> Event -> Multi-Dim -> Memory -> Temporal -> Predictive -> Code -> Quantum
-
+	
 	// 1. Create a session
 	sessionConfig := interfaces.SessionConfig{
 		Scope:       "feature/integration-test",
@@ -717,14 +715,6 @@ func BenchmarkLevel8_QuantumBranch(b *testing.B) {
 		}
 	}
 }
-
-// MockStorageManager implements interfaces.StorageManager for testing
-type MockStorageManager struct {
-	mock.Mock
-}
-
-func (m *MockStorageManager) Store(ctx context.Context, collection, key, value string) error {
-	args := m.Called(ctx, collection, key, value)
 	return args.Error(0)
 }
 
@@ -919,8 +909,8 @@ func TestTriggerBranchCreation_Success(t *testing.T) {
 
 	// Test data
 	event := interfaces.BranchingEvent{
-		Type:    interfaces.EventTypeCommit,
-		Trigger: "commit-trigger",
+		Type:        interfaces.EventTypeCommit,
+		Trigger:     "commit-trigger",
 		Context: map[string]interface{}{
 			"commit_hash":    "abc123def456",
 			"commit_message": "fix: critical bug in user authentication",
@@ -1015,10 +1005,10 @@ func TestHandleEventDriven_Success(t *testing.T) {
 
 	// Test data
 	context := map[string]interface{}{
-		"issue_id":    "ISS-123",
-		"issue_title": "Critical bug in payment system",
-		"priority":    "high",
-		"assignee":    "test-user",
+		"issue_id":     "ISS-123",
+		"issue_title":  "Critical bug in payment system",
+		"priority":     "high",
+		"assignee":     "test-user",
 	}
 
 	// Execute
@@ -1107,8 +1097,8 @@ func TestMapHookTypeToEventType(t *testing.T) {
 
 	// Test cases
 	testCases := []struct {
-		hookType string
-		expected interfaces.EventType
+		hookType  string
+		expected  interfaces.EventType
 	}{
 		{"pre-commit", interfaces.EventTypeCommit},
 		{"post-commit", interfaces.EventTypeCommit},
