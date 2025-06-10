@@ -16,6 +16,7 @@ type Config struct {
     NotificationsEnabled bool               `json:"notifications_enabled"`
     Webhooks             WebhookConfig      `json:"webhooks"`
     Logging              LoggingConfig      `json:"logging"`
+    TestMode             bool               `json:"test_mode"` // Nouvelle option pour mode test
 }
 
 // ServerConfig contains server-specific configuration
@@ -148,6 +149,7 @@ func getDefaultConfig() *Config {
             Format:     "json",
             OutputFile: "",
         },
+        TestMode: false, // Mode test désactivé par défaut
     }
 }
 
@@ -224,6 +226,11 @@ func loadConfigFromEnv(config *Config) {
     
     if logFile := os.Getenv("LOG_FILE"); logFile != "" {
         config.Logging.OutputFile = logFile
+    }
+    
+    // Mode test
+    if testMode := os.Getenv("TEST_MODE"); testMode == "true" {
+        config.TestMode = true
     }
 }
 

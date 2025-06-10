@@ -22,6 +22,11 @@ func NewBranchingManager(config *Config) *BranchingManager {
 
 // ExecuteRouting executes the routing decision
 func (bm *BranchingManager) ExecuteRouting(decision *BranchDecision) error {
+    // En mode test, on simule les opérations Git
+    if bm.config.TestMode {
+        return bm.simulateGitOperations(decision)
+    }
+
     // Validate the decision first
     router := NewBranchRouter(bm.config)
     if err := router.ValidateRoutingDecision(decision); err != nil {
@@ -344,5 +349,17 @@ func (bm *BranchingManager) DeleteBranch(branchName string) error {
         return fmt.Errorf("failed to delete branch %s: %w\nOutput: %s", branchName, err, string(output))
     }
 
+    return nil
+}
+
+// simulateGitOperations simule les opérations Git en mode test
+func (bm *BranchingManager) simulateGitOperations(decision *BranchDecision) error {
+    fmt.Printf("MODE TEST: Simulation des opérations Git\n")
+    fmt.Printf("  - Branche cible: %s\n", decision.TargetBranch)
+    fmt.Printf("  - Créer branche: %t\n", decision.CreateBranch)
+    fmt.Printf("  - Stratégie merge: %s\n", decision.MergeStrategy)
+    fmt.Printf("  - Raison: %s\n", decision.Reason)
+    
+    // En mode test, on simule juste le succès
     return nil
 }
