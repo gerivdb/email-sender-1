@@ -26,24 +26,44 @@ type CommitAnalyzer struct {
 	config              *Config
 	semanticManager     *SemanticEmbeddingManager
 	enableSemanticAnalysis bool
+	// 🆕 Phase 2.2 - Classification Intelligente Multi-Critères
+	advancedClassifier  *MultiCriteriaClassifier
+	enableAdvancedClassification bool
 }
 
 // NewCommitAnalyzer creates a new commit analyzer
 func NewCommitAnalyzer(config *Config) *CommitAnalyzer {
-	return &CommitAnalyzer{
+	analyzer := &CommitAnalyzer{
 		config:              config,
 		semanticManager:     NewSemanticEmbeddingManager(config),
 		enableSemanticAnalysis: true,
+		enableAdvancedClassification: false, // Désactivé par défaut pour compatibilité
 	}
+	return analyzer
 }
 
 // NewCommitAnalyzerWithSemantic creates a new commit analyzer with semantic capabilities
 func NewCommitAnalyzerWithSemantic(config *Config, semanticManager *SemanticEmbeddingManager) *CommitAnalyzer {
-	return &CommitAnalyzer{
+	analyzer := &CommitAnalyzer{
 		config:              config,
 		semanticManager:     semanticManager,
 		enableSemanticAnalysis: true,
+		enableAdvancedClassification: false,
 	}
+	return analyzer
+}
+
+// 🆕 NewCommitAnalyzerWithAdvancedClassification - Constructeur avec classification multi-critères
+func NewCommitAnalyzerWithAdvancedClassification(config *Config, semanticManager *SemanticEmbeddingManager) *CommitAnalyzer {
+	analyzer := &CommitAnalyzer{
+		config:              config,
+		semanticManager:     semanticManager,
+		enableSemanticAnalysis: true,
+		enableAdvancedClassification: true,
+	}
+	// Initialiser le classificateur avancé
+	analyzer.advancedClassifier = NewMultiCriteriaClassifier(semanticManager, analyzer)
+	return analyzer
 }
 
 // AnalyzeCommit performs comprehensive analysis of a commit
@@ -52,6 +72,56 @@ func (ca *CommitAnalyzer) AnalyzeCommit(data *CommitData) (*CommitAnalysis, erro
 		return nil, fmt.Errorf("invalid commit data: %w", err)
 	}
 
+	// 🆕 Phase 2.2 - Utiliser la classification avancée si activée
+	if ca.enableAdvancedClassification && ca.advancedClassifier != nil {
+		return ca.analyzeWithAdvancedClassification(data)
+	}
+
+	// Analyse traditionnelle (existing code)
+	return ca.analyzeWithTraditionalMethod(data)
+}
+
+// 🆕 analyzeWithAdvancedClassification - Nouvelle méthode avec classification multi-critères
+func (ca *CommitAnalyzer) analyzeWithAdvancedClassification(data *CommitData) (*CommitAnalysis, error) {
+	ctx := context.Background()
+	
+	// Classification avancée multi-critères
+	classificationResult, err := ca.advancedClassifier.ClassifyCommitAdvanced(ctx, data)
+	if err != nil {
+		// Fallback vers analyse traditionnelle en cas d'erreur
+		fmt.Printf("Warning: Advanced classification failed, using traditional method: %v\n", err)
+		return ca.analyzeWithTraditionalMethod(data)
+	}
+
+	// Conversion vers CommitAnalysis
+	analysis := &CommitAnalysis{
+		CommitData:      data,
+		ChangeType:      classificationResult.PredictedType,
+		Confidence:      classificationResult.Confidence,
+		SuggestedBranch: classificationResult.RecommendedBranch,
+		Priority:        ca.derivePriorityFromConflictPrediction(classificationResult.ConflictPrediction),
+	}
+
+	// Enrichissement avec les insights sémantiques
+	if classificationResult.SemanticInsights != nil {
+		analysis.Keywords = classificationResult.SemanticInsights.TopKeywords
+	}
+
+	// Analyse des fichiers (réutilisation existante)
+	ca.analyzeFiles(analysis)
+	
+	// Détermination de l'impact basée sur la prédiction de conflits
+	if classificationResult.ConflictPrediction != nil {
+		analysis.Impact = ca.deriveImpactFromConflictPrediction(classificationResult.ConflictPrediction)
+	} else {
+		ca.analyzeImpact(analysis)
+	}
+
+	return analysis, nil
+}
+
+// analyzeWithTraditionalMethod - Méthode traditionnelle existante
+func (ca *CommitAnalyzer) analyzeWithTraditionalMethod(data *CommitData) (*CommitAnalysis, error) {
 	analysis := &CommitAnalysis{
 		CommitData: data,
 	}
@@ -387,8 +457,7 @@ func (ca *CommitAnalyzer) calculateConfidence(analysis *CommitAnalysis) {
 
 // filesMatchChangeType checks if file types match the determined change type
 func (ca *CommitAnalyzer) filesMatchChangeType(analysis *CommitAnalysis) bool {
-	switch analysis.ChangeType {
-	case "docs":
+	switch analysis.ChangeType {	case "docs":
 		for _, ext := range analysis.FileTypes {
 			if ext == ".md" || ext == ".txt" || ext == ".rst" {
 				return true
@@ -524,4 +593,70 @@ func min(a, b float64) float64 {
 		return a
 	}
 	return b
+}
+
+// 🆕 Phase 2.2 - Méthodes utilitaires pour l'intégration avec le classificateur avancé
+
+// derivePriorityFromConflictPrediction - Dériver la priorité depuis la prédiction de conflits
+func (ca *CommitAnalyzer) derivePriorityFromConflictPrediction(prediction *ConflictPrediction) string {
+	if prediction == nil {
+		return "medium"
+	}
+
+	switch prediction.SuggestedStrategy {
+	case "manual-review":
+		return "critical"
+	case "careful-merge":
+		return "high"
+	case "auto":
+		if prediction.Probability > 0.5 {
+			return "medium"
+		}
+		return "low"
+	default:
+		return "medium"
+	}
+}
+
+// deriveImpactFromConflictPrediction - Dériver l'impact depuis la prédiction de conflits
+func (ca *CommitAnalyzer) deriveImpactFromConflictPrediction(prediction *ConflictPrediction) string {
+	if prediction == nil {
+		return "medium"
+	}
+
+	if prediction.Probability >= 0.7 {
+		return "high"
+	} else if prediction.Probability >= 0.4 {
+		return "medium"
+	} else {
+		return "low"
+	}
+}
+
+// EnableAdvancedClassification - Activer la classification avancée
+func (ca *CommitAnalyzer) EnableAdvancedClassification() error {
+	if ca.semanticManager == nil {
+		return fmt.Errorf("semantic manager required for advanced classification")
+	}
+	
+	ca.advancedClassifier = NewMultiCriteriaClassifier(ca.semanticManager, ca)
+	ca.enableAdvancedClassification = true
+	
+	return nil
+}
+
+// DisableAdvancedClassification - Désactiver la classification avancée
+func (ca *CommitAnalyzer) DisableAdvancedClassification() {
+	ca.enableAdvancedClassification = false
+	ca.advancedClassifier = nil
+}
+
+// IsAdvancedClassificationEnabled - Vérifier si la classification avancée est activée
+func (ca *CommitAnalyzer) IsAdvancedClassificationEnabled() bool {
+	return ca.enableAdvancedClassification && ca.advancedClassifier != nil
+}
+
+// GetAdvancedClassifier - Obtenir le classificateur avancé (pour les tests)
+func (ca *CommitAnalyzer) GetAdvancedClassifier() *MultiCriteriaClassifier {
+	return ca.advancedClassifier
 }
