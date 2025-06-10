@@ -239,37 +239,48 @@ func (ca *CommitAnalyzer) analyzeImpact(analysis *CommitAnalysis) {
 	case "docs", "style":
 		// Keep as determined by file count, don't force to low
 	}
-
 	// Check for critical files - impact depends on change type
-	hasCriticalFile := false
+	criticalFileCount := 0
 	for _, file := range analysis.CommitData.Files {
 		if ca.isCriticalFile(file) {
-			hasCriticalFile = true
-			break
+			criticalFileCount++
 		}
 	}
 
-	if hasCriticalFile {
-		// For critical files, impact depends on change type
-		switch analysis.ChangeType {
-		case "feature":
-			// Features on critical files: escalate by one level
-			if impact == "low" {
-				impact = "medium"
-			} else if impact == "medium" {
+	// Special case: Force fix detection if message starts with "fix:"
+	messageStartsWithFix := strings.HasPrefix(strings.ToLower(analysis.CommitData.Message), "fix:")
+
+	if criticalFileCount > 0 {
+		// Multiple critical files (especially infrastructure) always high impact
+		if criticalFileCount >= 2 {
+			impact = "high"
+		} else {
+			// Single critical file - impact depends on change type and current impact
+			switch analysis.ChangeType {
+			case "fix", "hotfix":
+				// Fixes on critical files are always high impact
 				impact = "high"
-			}
-			// high stays high
-		case "fix", "hotfix":
-			// Fixes on critical files are always high impact
-			impact = "high"
-		case "refactor":
-			// Refactors on critical files are always high impact
-			impact = "high"
-		default:
-			// Other types: at least medium
-			if impact == "low" {
-				impact = "medium"
+			case "refactor":
+				// Refactors on critical files are always high impact
+				impact = "high"
+			case "feature":
+				// Features on critical files: ensure at least medium, but don't escalate single files to high
+				if impact == "low" {
+					impact = "medium"
+				}
+				// Only escalate to high if we have multiple files (3+) - single critical file features stay medium
+				if fileCount >= 3 && impact == "medium" {
+					impact = "high"
+				}
+			default:
+				// Other types: at least medium, but force high for fix: messages
+				if impact == "low" {
+					impact = "medium"
+				}
+				// Special handling for fix: messages that weren't properly classified
+				if messageStartsWithFix {
+					impact = "high"
+				}
 			}
 		}
 	}
@@ -280,11 +291,24 @@ func (ca *CommitAnalyzer) analyzeImpact(analysis *CommitAnalysis) {
 // isCriticalFile checks if a file is considered critical
 func (ca *CommitAnalyzer) isCriticalFile(filename string) bool {
 	criticalPatterns := []string{
-		"main.go", "main.js", "index.js", "app.js",
-		"Dockerfile", "docker-compose.yml",
-		"go.mod", "package.json", "requirements.txt",
-		"config.yml", "config.yaml", "config.json",
-		".github/workflows/", "Makefile",
+		// Fichiers d'entrée principaux
+		"main.go", "main.js", "index.js", "app.js", "server.js",
+
+		// Fichiers de configuration Docker
+		"Dockerfile", "docker-compose.yml", "docker-compose.yaml",
+
+		// Fichiers de gestion des dépendances
+		"go.mod", "go.sum", "package.json", "package-lock.json",
+		"requirements.txt", "Pipfile",
+
+		// Fichiers de configuration
+		"config.yml", "config.yaml", "config.json", "config.toml", "settings.json",
+
+		// Workflows CI/CD
+		".github/workflows/", ".gitlab-ci.yml",
+
+		// Fichiers de build
+		"Makefile", "makefile", "build.gradle", "pom.xml",
 	}
 
 	filename = strings.ToLower(filename)
