@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { DiagnosticProvider } from './diagnosticProvider';
 import { ErrorPatternExplorer } from './errorPatternExplorer';
 import { QuickFixProvider } from './quickFixProvider';
+import { SelectionGranularizer } from './selectionGranularizer';
 
 // Variable to store the extension context
 let extensionContext: vscode.ExtensionContext;
@@ -17,12 +18,11 @@ export function activate(context: vscode.ExtensionContext): void {
     console.log('Activating Error Pattern Analyzer extension');
 
     // Store the extension context
-    extensionContext = context;
-
-    // Create instances of our providers
+    extensionContext = context;    // Create instances of our providers
     const diagnosticProvider = new DiagnosticProvider(context);
     const errorPatternExplorer = new ErrorPatternExplorer(context);
     const quickFixProvider = new QuickFixProvider(context);
+    const selectionGranularizer = new SelectionGranularizer(context);
 
     // Register commands
     const analyzeCommand = vscode.commands.registerCommand('error-pattern-analyzer.analyzeCurrentFile', () => {
@@ -41,9 +41,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
     const showPatternsCommand = vscode.commands.registerCommand('error-pattern-analyzer.showErrorPatterns', () => {
         errorPatternExplorer.showErrorPatterns();
-    });
-
-    const getEditorSelectionCommand = vscode.commands.registerCommand('error-pattern-analyzer.getEditorSelection', () => {
+    });    const getEditorSelectionCommand = vscode.commands.registerCommand('error-pattern-analyzer.getEditorSelection', () => {
         const editor = vscode.window.activeTextEditor;
         if (editor) {
             const selection = editor.selection;
@@ -59,10 +57,18 @@ export function activate(context: vscode.ExtensionContext): void {
         }
     });
 
-    // Add commands to context
+    const granularizeSelectionCommand = vscode.commands.registerCommand('error-pattern-analyzer.granularizeSelection', async () => {
+        try {
+            const tasks = await selectionGranularizer.granularizeActiveSelection();
+            vscode.window.showInformationMessage(`✅ Granularisation réussie: ${tasks.length} tâches atomiques créées`);
+        } catch (error) {
+            vscode.window.showErrorMessage(`❌ Erreur lors de la granularisation: ${error}`);
+        }
+    });    // Add commands to context
     context.subscriptions.push(analyzeCommand);
     context.subscriptions.push(showPatternsCommand);
     context.subscriptions.push(getEditorSelectionCommand);
+    context.subscriptions.push(granularizeSelectionCommand);
 
     // Register providers
     context.subscriptions.push(diagnosticProvider);

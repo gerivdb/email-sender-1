@@ -64,8 +64,7 @@ export class ErrorPatternAnalyzer implements vscode.Disposable {
                     suggestion: 'Check the array length before accessing elements',
                     codeExample: 'if ($array.Length -gt $index) { ... }',
                     relatedPatterns: []
-                },
-                {
+                },                {
                     id: 'type-conversion',
                     pattern: 'Cannot convert value .* to type',
                     message: 'Type conversion error',
@@ -78,7 +77,6 @@ export class ErrorPatternAnalyzer implements vscode.Disposable {
             ];
             console.log('Using default pattern database');
         }
-    }
 
     /**
      * Analyze a document for error patterns
