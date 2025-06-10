@@ -253,11 +253,8 @@ func (ca *CommitAnalyzer) analyzeImpact(analysis *CommitAnalysis) {
 		// For critical files, impact depends on change type
 		switch analysis.ChangeType {
 		case "feature":
-			// Features on critical files: medium to high escalation
-			if impact == "low" {
-				impact = "medium"
-			}
-			// medium stays medium for features unless other factors
+			// Features on critical files: always high impact
+			impact = "high"
 		case "fix", "hotfix":
 			// Fixes on critical files are always high impact
 			impact = "high"
