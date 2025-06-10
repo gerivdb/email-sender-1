@@ -102,25 +102,29 @@ func (ca *CommitAnalyzer) analyzeMessage(analysis *CommitAnalysis) {
 	var keywords []string
 	var matchedType string
 	highestScore := 0
-	totalPossibleScore := 0
+	var bestMatchedScore int
 
 	for changeType, typePatterns := range patterns {
 		score := 0
+		currentKeywords := []string{}
+
 		for _, pattern := range typePatterns {
-			totalPossibleScore += 10 // Track total possible score
 			matched, _ := regexp.MatchString(pattern, message)
 			if matched {
 				score += 10 // Higher weight for exact pattern matches
-				keywords = append(keywords, pattern)
+				currentKeywords = append(currentKeywords, pattern)
+				break // Stop at first exact match for this type
 			} else if strings.Contains(message, strings.Trim(pattern, `^$(\(.+\))?:`)) {
 				score += 3 // Lower weight for substring matches
-				keywords = append(keywords, strings.Trim(pattern, `^$(\(.+\))?:`))
+				currentKeywords = append(currentKeywords, strings.Trim(pattern, `^$(\(.+\))?:`))
 			}
 		}
 
 		if score > highestScore {
 			highestScore = score
+			bestMatchedScore = score
 			matchedType = changeType
+			keywords = currentKeywords
 		}
 	}
 
@@ -128,11 +132,11 @@ func (ca *CommitAnalyzer) analyzeMessage(analysis *CommitAnalysis) {
 		matchedType = "chore"     // Default type
 		analysis.Confidence = 0.8 // Default confidence for chore
 	} else {
-		// Calculate confidence based on score vs total possible
-		if highestScore >= 10 {
+		// Calculate confidence based on the best score
+		if bestMatchedScore >= 10 {
 			// Perfect match (exact pattern match)
 			analysis.Confidence = 0.95
-		} else if highestScore >= 6 {
+		} else if bestMatchedScore >= 6 {
 			// Good match (multiple substring matches)
 			analysis.Confidence = 0.85
 		} else {
@@ -236,7 +240,7 @@ func (ca *CommitAnalyzer) analyzeImpact(analysis *CommitAnalysis) {
 		// Keep as determined by file count, don't force to low
 	}
 
-	// Check for critical files - this should override other settings
+	// Check for critical files - impact depends on change type
 	hasCriticalFile := false
 	for _, file := range analysis.CommitData.Files {
 		if ca.isCriticalFile(file) {
@@ -246,9 +250,25 @@ func (ca *CommitAnalyzer) analyzeImpact(analysis *CommitAnalysis) {
 	}
 
 	if hasCriticalFile {
-		// Critical files should generally result in high impact
-		if impact == "low" || impact == "medium" {
+		// For critical files, impact depends on change type
+		switch analysis.ChangeType {
+		case "feature":
+			// Features on critical files: medium to high escalation
+			if impact == "low" {
+				impact = "medium"
+			}
+			// medium stays medium for features unless other factors
+		case "fix", "hotfix":
+			// Fixes on critical files are always high impact
 			impact = "high"
+		case "refactor":
+			// Refactors on critical files are always high impact
+			impact = "high"
+		default:
+			// Other types: at least medium
+			if impact == "low" {
+				impact = "medium"
+			}
 		}
 	}
 
