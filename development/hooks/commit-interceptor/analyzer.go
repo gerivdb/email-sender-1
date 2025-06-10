@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -102,10 +103,12 @@ func (ca *CommitAnalyzer) analyzeMessage(analysis *CommitAnalysis) {
 	var keywords []string
 	var matchedType string
 	highestScore := 0
+	totalPossibleScore := 0
 
 	for changeType, typePatterns := range patterns {
 		score := 0
 		for _, pattern := range typePatterns {
+			totalPossibleScore += 10 // Track total possible score
 			matched, _ := regexp.MatchString(pattern, message)
 			if matched {
 				score += 10 // Higher weight for exact pattern matches
@@ -124,6 +127,13 @@ func (ca *CommitAnalyzer) analyzeMessage(analysis *CommitAnalysis) {
 
 	if matchedType == "" {
 		matchedType = "chore" // Default type
+		analysis.Confidence = 0.8 // Default confidence for chore
+	} else {
+		// Calculate confidence based on score vs total possible
+		analysis.Confidence = math.Min(0.95, float64(highestScore)/10.0)
+		if analysis.Confidence < 0.8 {
+			analysis.Confidence = 0.8 // Minimum confidence for matched types
+		}
 	}
 
 	analysis.ChangeType = matchedType
@@ -194,9 +204,9 @@ func (ca *CommitAnalyzer) analyzeImpact(analysis *CommitAnalysis) {
 
 	// Base impact on number of files
 	impact := "low"
-	if fileCount > 10 {
+	if fileCount >= 6 { // Lowered threshold for high impact
 		impact = "high"
-	} else if fileCount > 3 {
+	} else if fileCount > 2 {
 		impact = "medium"
 	}
 
@@ -208,28 +218,35 @@ func (ca *CommitAnalyzer) analyzeImpact(analysis *CommitAnalysis) {
 			impact = "high"
 		}
 	case "feature":
-		if fileCount > 5 {
+		if fileCount >= 4 { // Lowered threshold
 			impact = "high"
-		} else if fileCount > 2 {
+		} else if fileCount > 1 {
 			impact = "medium"
 		}
 	case "refactor":
-		if fileCount > 8 {
+		if fileCount >= 5 { // Lowered threshold
 			impact = "high"
 		}
 	case "docs", "style":
-		impact = "low"
+		// Keep as determined by file count, don't force to low
 	}
 
-	// Check for critical files
+	// Check for critical files - this should override other settings
+	hasCriticalFile := false
 	for _, file := range analysis.CommitData.Files {
 		if ca.isCriticalFile(file) {
-			if impact == "low" {
-				impact = "medium"
-			} else if impact == "medium" {
-				impact = "high"
-			}
+			hasCriticalFile = true
 			break
+		}
+	}
+
+	if hasCriticalFile {
+		if impact == "low" {
+			impact = "medium"
+		} else if impact == "medium" {
+			impact = "high"
+		} else if impact == "high" {
+			// Already high, keep it
 		}
 	}
 
@@ -338,6 +355,11 @@ func (ca *CommitAnalyzer) generateBranchSuffix(analysis *CommitAnalysis) string 
 	message = regexp.MustCompile(`[^a-z0-9\s]`).ReplaceAllString(message, "")
 	message = regexp.MustCompile(`\s+`).ReplaceAllString(message, "-")
 	message = strings.Trim(message, "-")
+
+	// Ensure we have a meaningful message
+	if message == "" || len(message) < 3 {
+		message = "commit-change"
+	}
 
 	if len(message) > 30 {
 		message = message[:30]

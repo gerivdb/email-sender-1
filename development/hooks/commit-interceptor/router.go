@@ -65,7 +65,7 @@ func (br *BranchRouter) applyRoutingRules(analysis *CommitAnalysis, decision *Br
     switch changeType {
     case "feature":
         if br.shouldCreateFeatureBranch(analysis) {
-            decision.TargetBranch = analysis.SuggestedBranch
+            decision.TargetBranch = br.ensureValidBranchName(analysis.SuggestedBranch, "feature")
             decision.CreateBranch = true
             decision.MergeStrategy = "manual"
             decision.Reason = "New feature requires separate branch"
@@ -78,7 +78,7 @@ func (br *BranchRouter) applyRoutingRules(analysis *CommitAnalysis, decision *Br
 
     case "fix":
         if priority == "critical" || impact == "high" {
-            decision.TargetBranch = analysis.SuggestedBranch
+            decision.TargetBranch = br.ensureValidBranchName(analysis.SuggestedBranch, "hotfix")
             decision.CreateBranch = true
             decision.MergeStrategy = "manual"
             decision.ConflictStrategy = "abort"
@@ -91,7 +91,7 @@ func (br *BranchRouter) applyRoutingRules(analysis *CommitAnalysis, decision *Br
         }
 
     case "hotfix":
-        decision.TargetBranch = analysis.SuggestedBranch
+        decision.TargetBranch = br.ensureValidBranchName(analysis.SuggestedBranch, "hotfix")
         decision.CreateBranch = true
         decision.MergeStrategy = "manual"
         decision.ConflictStrategy = "abort"
@@ -99,7 +99,7 @@ func (br *BranchRouter) applyRoutingRules(analysis *CommitAnalysis, decision *Br
 
     case "refactor":
         if impact == "high" {
-            decision.TargetBranch = analysis.SuggestedBranch
+            decision.TargetBranch = br.ensureValidBranchName(analysis.SuggestedBranch, "refactor")
             decision.CreateBranch = true
             decision.MergeStrategy = "manual"
             decision.Reason = "Large refactor needs separate branch for review"
@@ -308,4 +308,15 @@ func (br *BranchRouter) ValidateRoutingDecision(decision *BranchDecision) error 
     }
     
     return nil
+}
+
+// ensureValidBranchName ensures a branch name is valid and non-empty
+func (br *BranchRouter) ensureValidBranchName(suggestedBranch, branchType string) string {
+    if suggestedBranch != "" && strings.TrimSpace(suggestedBranch) != "" {
+        return suggestedBranch
+    }
+    
+    // Generate fallback branch name
+    timestamp := time.Now().Format("20060102-150405")
+    return fmt.Sprintf("%s/auto-generated-%s", branchType, timestamp)
 }
