@@ -43,20 +43,21 @@ catch {
    exit 1
 }
 
-# Test 3: Feature Commit
-Write-Host "`n[TEST 3] Feature Commit..." -ForegroundColor Yellow
+# Test 3: Feature Commit (Security)
+Write-Host "`n[TEST 3] Feature Commit (Authentication)..." -ForegroundColor Yellow
 $featurePayload = @{
    commits    = @(
       @{
-         id        = "feature123"
-         message   = "feat: add user profile management"
-         timestamp = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
+         id        = "feat123"
+         message   = "feat: add user authentication system"
+         timestamp = "2025-06-10T15:00:00Z"
          author    = @{
-            name  = "Dev Team"
-            email = "dev@example.com"
+            name  = "Test User"
+            email = "test@example.com"
          }
-         added     = @("profile.go", "user_manager.go")
-         modified  = @("main.go")
+         added     = @("src/auth.go")
+         removed   = @()
+         modified  = @("src/main.go")
       }
    )
    repository = @{
@@ -64,6 +65,74 @@ $featurePayload = @{
       full_name = "user/test-repo"
    }
    ref        = "refs/heads/main"
+} | ConvertTo-Json -Depth 5
+
+try {
+   $response = Invoke-RestMethod -Uri "$ServerUrl/hooks/pre-commit" -Method POST -ContentType "application/json" -Body $featurePayload
+   if ($response -eq "Commit intercepted and routed successfully") {
+      Write-Host "✅ Feature commit intercepté avec succès" -ForegroundColor Green
+   }
+   else {
+      throw "Feature commit failed: $response"
+   }
+}
+catch {
+   Write-Host "❌ Feature commit échoué: $_" -ForegroundColor Red
+   exit 1
+}
+
+# Test 4: Fix Commit
+Write-Host "`n[TEST 4] Fix Commit..." -ForegroundColor Yellow
+$fixPayload = @{
+   commits    = @(
+      @{
+         id        = "fix456"
+         message   = "fix: resolve null pointer exception in validator"
+         timestamp = "2025-06-10T15:05:00Z"
+         author    = @{
+            name  = "Test User"
+            email = "test@example.com"
+         }
+         added     = @()
+         removed   = @()
+         modified  = @("src/validator.go")
+      }
+   )
+   repository = @{
+      name      = "test-repo"
+      full_name = "user/test-repo"
+   }
+   ref        = "refs/heads/main"
+} | ConvertTo-Json -Depth 5
+
+try {
+   $response = Invoke-RestMethod -Uri "$ServerUrl/hooks/pre-commit" -Method POST -ContentType "application/json" -Body $fixPayload
+   if ($response -eq "Commit intercepted and routed successfully") {
+      Write-Host "✅ Fix commit intercepté avec succès" -ForegroundColor Green
+   }
+   else {
+      throw "Fix commit failed: $response"
+   }
+}
+catch {
+   Write-Host "❌ Fix commit échoué: $_" -ForegroundColor Red
+   exit 1
+}
+message   = "feat: add user profile management"
+timestamp = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
+author    = @{
+   name  = "Dev Team"
+   email = "dev@example.com"
+}
+added     = @("profile.go", "user_manager.go")
+modified  = @("main.go")
+}
+)
+repository = @{
+   name      = "test-repo"
+   full_name = "user/test-repo"
+}
+ref        = "refs/heads/main"
 } | ConvertTo-Json -Depth 5
 
 try {

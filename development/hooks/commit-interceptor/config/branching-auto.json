@@ -85,5 +85,6 @@
     "level": "info",
     "format": "json",
     "output_file": "logs/commit-interceptor.log"
-  }
+  },
+  "test_mode": true
 }
