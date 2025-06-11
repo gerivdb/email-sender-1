@@ -8,21 +8,22 @@ import (
 
 // SyncOrchestrator coordinates the conversion and storage of plans
 type SyncOrchestrator struct {
-	parser     *MarkdownParser
-	qdrant     *QDrantClient
-	sqlStorage *SQLStorage
-	logger     *log.Logger
+	parser       *MarkdownParser
+	synchronizer *PlanSynchronizer
+	qdrant       *QDrantClient
+	sqlStorage   *SQLStorage
+	logger       *log.Logger
 }
 
 // SyncConfig holds configuration for the sync orchestrator
 type SyncConfig struct {
 	QDrantURL      string         `yaml:"qdrant_url"`
 	DatabaseConfig DatabaseConfig `yaml:"database"`
+	OutputDir      string         `yaml:"output_dir"`
 }
 
 // NewSyncOrchestrator creates a new sync orchestrator
-func NewSyncOrchestrator(config SyncConfig) (*SyncOrchestrator, error) {
-	// Initialize components
+func NewSyncOrchestrator(config SyncConfig) (*SyncOrchestrator, error) {	// Initialize components
 	parser := NewMarkdownParser()
 	
 	qdrant := NewQDrantClient(config.QDrantURL)
@@ -31,15 +32,24 @@ func NewSyncOrchestrator(config SyncConfig) (*SyncOrchestrator, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize SQL storage: %w", err)
 	}
-	
-	orchestrator := &SyncOrchestrator{
-		parser:     parser,
-		qdrant:     qdrant,
-		sqlStorage: sqlStorage,
-		logger:     log.Default(),
+		// Initialize synchronizer for reverse sync
+	syncConfig := &MarkdownSyncConfig{
+		OutputDirectory:    config.OutputDir,
+		PreserveFormatting: true,
+		BackupOriginal:     true,
+		OverwriteExisting:  false,
 	}
 	
-	// Initialize QDrant collection
+	synchronizer := NewPlanSynchronizer(sqlStorage, qdrant, syncConfig)
+	
+	orchestrator := &SyncOrchestrator{
+		parser:       parser,
+		synchronizer: synchronizer,
+		qdrant:       qdrant,
+		sqlStorage:   sqlStorage,
+		logger:       log.Default(),
+	}
+		// Initialize QDrant collection
 	if err := qdrant.EnsureCollection(); err != nil {
 		return nil, fmt.Errorf("failed to ensure QDrant collection: %w", err)
 	}
@@ -240,4 +250,43 @@ func ExampleUsage() {
 	}
 	
 	log.Printf("Sync Statistics: %+v", stats)
+}
+
+// SyncToMarkdown synchronizes a specific plan from dynamic system to Markdown
+func (so *SyncOrchestrator) SyncToMarkdown(planID string) error {
+	so.logger.Printf("🔄 Starting reverse synchronization for plan: %s", planID)
+	
+	if so.synchronizer == nil {
+		return fmt.Errorf("synchronizer not initialized")
+	}
+	
+	return so.synchronizer.SyncToMarkdown(planID)
+}
+
+// SyncAllToMarkdown synchronizes all plans from dynamic system to Markdown
+func (so *SyncOrchestrator) SyncAllToMarkdown() error {
+	so.logger.Printf("🔄 Starting bulk reverse synchronization")
+	
+	if so.synchronizer == nil {
+		return fmt.Errorf("synchronizer not initialized")
+	}
+	
+	return so.synchronizer.SyncAllPlans()
+}
+
+// GetSyncToMarkdownStats returns statistics from the markdown synchronizer
+func (so *SyncOrchestrator) GetSyncToMarkdownStats() *SyncStats {
+	if so.synchronizer == nil {
+		return &SyncStats{}
+	}
+	
+	return so.synchronizer.GetStats()
+}
+
+// ResetSyncToMarkdownStats resets the markdown synchronizer statistics
+func (so *SyncOrchestrator) ResetSyncToMarkdownStats() {
+	if so.synchronizer != nil {
+		so.synchronizer.ResetStats()
+		so.logger.Printf("📊 Markdown synchronizer statistics reset")
+	}
 }
