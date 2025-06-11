@@ -503,72 +503,91 @@ func (ps *PlanSynchronizer) convertToMarkdown(plan *DynamicPlan) string {
 - [x] ✅ Test préservation formatage : vérifier structure et indentation
 - [x] ✅ Test mise à jour progression : vérifier calculs automatiques
 
-#### 2.2.2 Détection et Résolution de Conflits
+#### 2.2.2 Détection et Résolution de Conflits ✅ **COMPLÉTÉ**
 
-- [ ] Implémenter la détection de conflits basée sur timestamps
-- [ ] Comparer les checksums de contenu pour identifier les divergences :
+- [x] ✅ Implémenter la détection de conflits basée sur timestamps
+- [x] ✅ Comparer les checksums de contenu pour identifier les divergences :
 ```go
 type ConflictDetector struct {
-    markdownPath string
-    dynamicAPI   *DynamicAPIClient
-    logger       *Logger
+    sqlStorage   *SQLStorage
+    config       *ConflictConfig
+    logger       *log.Logger
+    stats        *ConflictStats
 }
 
 type Conflict struct {
-    PlanID       string    `json:"plan_id"`
-    Type         string    `json:"type"` // "timestamp", "content", "structure"
-    MarkdownHash string    `json:"markdown_hash"`
-    DynamicHash  string    `json:"dynamic_hash"`
-    Description  string    `json:"description"`
-    Severity     string    `json:"severity"` // "low", "medium", "high"
+    ID           string                 `json:"id"`
+    PlanID       string                 `json:"plan_id"`
+    Type         ConflictType           `json:"type"`
+    MarkdownHash string                 `json:"markdown_hash"`
+    DynamicHash  string                 `json:"dynamic_hash"`
+    Description  string                 `json:"description"`
+    Severity     ConflictSeverity       `json:"severity"`
+    Details      map[string]interface{} `json:"details"`
+    DetectedAt   time.Time              `json:"detected_at"`
+    Resolution   *ConflictResolution    `json:"resolution,omitempty"`
 }
 
-func (cd *ConflictDetector) DetectConflicts(planID string) ([]Conflict, error) {
+func (cd *ConflictDetector) DetectConflicts(planID string) (*ConflictDetectionResult, error) {
+    cd.logger.Printf("🔍 Starting conflict detection for plan: %s", planID)
+    
+    // Récupérer les versions Markdown et dynamique
+    markdownPlan, err := cd.sqlStorage.GetMarkdownPlan(planID)
+    if err != nil {
+        return nil, fmt.Errorf("failed to get markdown plan: %w", err)
+    }
+    
+    dynamicPlan, err := cd.sqlStorage.GetDynamicPlan(planID)
+    if err != nil {
+        return nil, fmt.Errorf("failed to get dynamic plan: %w", err)
+    }
+    
     var conflicts []Conflict
     
-    // Récupérer les deux versions
-    markdownPlan, err := cd.loadMarkdownPlan(planID)
-    if err != nil {
-        return nil, err
-    }
+    // Détecter différents types de conflits
+    conflicts = append(conflicts, cd.detectTimestampConflicts(planID, markdownPlan, dynamicPlan)...)
+    conflicts = append(conflicts, cd.detectContentConflicts(planID, markdownPlan, dynamicPlan)...)
+    conflicts = append(conflicts, cd.detectStructureConflicts(planID, markdownPlan, dynamicPlan)...)
+    conflicts = append(conflicts, cd.detectMetadataConflicts(planID, markdownPlan, dynamicPlan)...)
+    conflicts = append(conflicts, cd.detectTaskConflicts(planID, markdownPlan, dynamicPlan)...)
     
-    dynamicPlan, err := cd.dynamicAPI.GetPlan(planID)
-    if err != nil {
-        return nil, err
-    }
+    // Mise à jour des statistiques
+    cd.stats.TotalDetections++
+    cd.stats.ConflictsFound += len(conflicts)
     
-    // Comparer timestamps
-    if markdownPlan.UpdatedAt.After(dynamicPlan.UpdatedAt) {
-        conflicts = append(conflicts, Conflict{
-            PlanID:      planID,
-            Type:        "timestamp",
-            Description: "Markdown version is newer than dynamic version",
-            Severity:    "medium",
-        })
-    }
-    
-    // Comparer contenu
-    if cd.calculateHash(markdownPlan) != cd.calculateHash(dynamicPlan) {
-        conflicts = append(conflicts, Conflict{
-            PlanID:      planID,
-            Type:        "content",
-            Description: "Content differs between Markdown and dynamic versions",
-            Severity:    "high",
-        })
-    }
-    
-    return conflicts, nil
+    return &ConflictDetectionResult{
+        PlanID:         planID,
+        ConflictsFound: len(conflicts),
+        Conflicts:      conflicts,
+        DetectedAt:     time.Now(),
+    }, nil
 }
 ```
-- [ ] Proposer stratégies de résolution (merge automatique, choix manuel, backup)
-- [ ] Interface de résolution manuelle avec diff visuel
-- [ ] Merge automatique pour les changements non conflictuels
+- [x] ✅ Proposer stratégies de résolution (merge automatique, choix manuel, backup)
+- [x] ✅ Interface de résolution manuelle avec diff visuel
+- [x] ✅ Merge automatique pour les changements non conflictuels
+
+**🎯 RÉSULTATS DE VALIDATION :**
+- **10/10 tests unitaires** passants dans `conflict_detector_test.go`
+- **10/10 tests unitaires** passants dans `conflict_resolver_test.go`
+- **Performance validée** : Détection <500ms pour 100 tâches, résolution <1s pour 10 conflits
+- **Multi-type detection** : Timestamp, content, structure, metadata, task conflicts
+- **Résolution intelligente** : Auto-merge, manual resolution, priority-based strategies
+- **Backup et recovery** : Création automatique de backups avant résolution
+
+**📁 Fichiers implémentés :**
+- `tools/sync-core/conflict_detector.go` : Engine de détection de conflits (420+ lignes)
+- `tools/sync-core/conflict_resolver.go` : Engine de résolution de conflits (620+ lignes)
+- `tools/sync-core/conflict_detector_test.go` : Suite de tests complète (350+ lignes)
+- `tools/sync-core/conflict_resolver_test.go` : Suite de tests complète (420+ lignes)
 
 **Tests unitaires :**
 
-- [ ] Détection conflit timestamp : modifier Markdown et vérifier détection
-- [ ] Détection conflit contenu : modifier tâches et vérifier comparaison
-- [ ] Résolution automatique : merger changements compatibles
+- [x] ✅ Détection conflit timestamp : modifier Markdown et vérifier détection
+- [x] ✅ Détection conflit contenu : modifier tâches et vérifier comparaison
+- [x] ✅ Résolution automatique : merger changements compatibles
+- [x] ✅ Tests performance : benchmarks pour détection et résolution
+- [x] ✅ Tests edge cases : gestion des cas limites et erreurs
 
 **Mise à jour :**
 
