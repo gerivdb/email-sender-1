@@ -10,13 +10,20 @@ func newSyncCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "sync",
 		Short: "Synchronize with EMAIL_SENDER_1 ecosystem",
-		Long:  "Sync roadmap data with n8n workflows, RAG engine, and other services",
+		Long: `Sync roadmap data with various components of EMAIL_SENDER_1 ecosystem:
+• n8n workflows integration
+• RAG engine synchronization  
+• Markdown plans bidirectional sync
+• Cross-format consistency validation`,
 		RunE:  runSync,
 	}
 
 	cmd.Flags().Bool("n8n", false, "sync with n8n workflows")
 	cmd.Flags().Bool("rag", false, "sync with RAG engine")
 	cmd.Flags().Bool("force", false, "force sync even if conflicts exist")
+
+	// Add markdown subcommand
+	cmd.AddCommand(markdownSyncCmd)
 
 	return cmd
 }

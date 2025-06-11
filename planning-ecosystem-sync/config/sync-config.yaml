@@ -1,0 +1,36 @@
+ecosystem:
+  markdown_path: "./projet/roadmaps/plans/"
+  dynamic_endpoint: "http://localhost:8080/api/plans"
+  validation_rules: "./config/validation-rules.yaml"
+
+storage:
+  qdrant:
+    url: "http://localhost:6333"
+    collection: "development_plans"
+  sql:
+    driver: "postgres"
+    connection: "postgresql://localhost/plans_db"
+
+synchronization:
+  interval: "5m"
+  conflict_resolution: "manual"
+  backup_enabled: true
+
+monitoring:
+  supabase:
+    url: "${SUPABASE_URL}"
+    key: "${SUPABASE_ANON_KEY}"
+    table: "sync_metrics"
+
+notifications:
+  slack:
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#dev-planning"
+    alert_levels: ["error", "critical"]
+
+logging:
+  level: "info"
+  output: "stdout"
+  file_rotation: true
+  max_size: "100MB"
+  backup_count: 5
