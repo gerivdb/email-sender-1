@@ -1,0 +1,256 @@
+# Roadmap Manager Connector Configuration
+# filepath: d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1\planning-ecosystem-sync\config\roadmap-connector.yaml
+
+connector:
+  # Base URL of the Roadmap Manager instance
+  base_url: "http://localhost:8080"
+
+  # API credentials
+  api_key: "${ROADMAP_MANAGER_API_KEY:-default-dev-key}"
+
+  # Connection settings
+  timeout: "30s"
+  retry_attempts: 3
+  retry_delay: "2s"
+  max_payload_size: 10485760 # 10MB
+
+  # Authentication and security
+  enable_auth: true
+  enable_compression: true
+
+  security:
+    auth_method: "api_key" # "api_key", "jwt", "hmac"
+    encryption_enabled: false
+    tls_enabled: true
+    token_expiration: "24h"
+    max_requests_per_min: 100
+    allowed_ips: [] # Empty means all IPs allowed
+    secret_key: "${ROADMAP_MANAGER_SECRET:-default-secret-key}"
+    certificate_path: ""
+    private_key_path: ""
+    rate_limit_enabled: true
+    audit_logging_enabled: true
+
+# Data mapping configuration
+mapping:
+  # Core field mappings
+  core_fields:
+    id: "id"
+    title: "title"
+    version: "version"
+    description: "description"
+    created_at: "created_at"
+    updated_at: "updated_at"
+
+  # Phase field mappings
+  phase_fields:
+    id: "id"
+    name: "name"
+    description: "description"
+    progress: "progress"
+    status: "status"
+    dependencies: "dependencies"
+    metadata: "metadata"
+
+  # Task field mappings
+  task_fields:
+    id: "id"
+    title: "title"
+    description: "description"
+    status: "status"
+    priority: "priority"
+    assignee: "assignee"
+    due_date: "due_date"
+    tags: "tags"
+    progress: "progress"
+    metadata: "metadata"
+
+  # Status mapping rules
+  status_mapping:
+    todo: "open"
+    in_progress: "in_progress"
+    completed: "closed"
+    blocked: "blocked"
+    cancelled: "cancelled"
+    not_started: "pending"
+
+  # Priority mapping rules
+  priority_mapping:
+    low: "low"
+    medium: "medium"
+    high: "high"
+    critical: "urgent"
+    urgent: "urgent"
+
+  # Transformation rules
+  transformations:
+    - field: "status"
+      transformer: "string_lower"
+      validation: "valid_status"
+      default_value: "open"
+    - field: "priority"
+      transformer: "string_lower"
+      validation: "valid_priority"
+      default_value: "medium"
+    - field: "title"
+      validation: "not_empty"
+      required: true
+    - field: "id"
+      validation: "not_empty"
+      required: true
+
+# Monitoring and logging
+monitoring:
+  # Metrics collection
+  metrics_enabled: true
+  metrics_interval: "60s"
+
+  # Health check settings
+  health_check_enabled: true
+  health_check_interval: "30s"
+  health_check_timeout: "10s"
+
+  # Logging configuration
+  log_level: "info" # "debug", "info", "warn", "error"
+  log_format: "json" # "json", "text"
+  log_file: "logs/roadmap-connector.log"
+
+  # Performance monitoring
+  performance_monitoring:
+    enabled: true
+    slow_request_threshold: "5s"
+    memory_usage_threshold: "100MB"
+    cpu_usage_threshold: 80 # percentage
+
+# Synchronization settings
+sync:
+  # Sync modes
+  mode: "bidirectional" # "push_only", "pull_only", "bidirectional"
+
+  # Batch processing
+  batch_size: 50
+  batch_timeout: "30s"
+
+  # Conflict resolution
+  conflict_resolution: "timestamp_wins" # "manual", "timestamp_wins", "roadmap_wins", "plan_wins"
+
+  # Backup and recovery
+  backup_enabled: true
+  backup_directory: "backups/roadmap-sync"
+  backup_retention_days: 30
+
+  # Validation settings
+  validation:
+    strict_mode: false
+    validate_on_sync: true
+    auto_fix_enabled: true
+    validation_timeout: "10s"
+
+# API endpoint configuration
+api:
+  # Roadmap Manager API endpoints
+  endpoints:
+    sync: "/api/v1/roadmaps/sync"
+    create: "/api/v1/roadmaps"
+    update: "/api/v1/roadmaps/{id}"
+    get: "/api/v1/roadmaps/{id}"
+    list: "/api/v1/roadmaps"
+    delete: "/api/v1/roadmaps/{id}"
+    health: "/health"
+    auth: "/auth/validate"
+
+  # API version and format
+  version: "v1"
+  content_type: "application/json"
+  accept: "application/json"
+
+  # Request headers
+  default_headers:
+    User-Agent: "Planning-Ecosystem-Sync/1.0"
+    Accept-Language: "en-US,en;q=0.9"
+
+# Development and testing
+development:
+  # Mock mode for development
+  mock_mode: false
+  mock_responses:
+    sync_success:
+      success: true
+      message: "Mock sync completed successfully"
+      id: "mock-roadmap-123"
+    sync_error:
+      success: false
+      message: "Mock sync failed"
+      errors: ["Invalid data format", "Missing required fields"]
+
+  # Testing configuration
+  testing:
+    test_timeout: "30s"
+    test_retry_count: 3
+    test_data_path: "testdata/roadmap-connector"
+
+  # Debug settings
+  debug:
+    enabled: false
+    dump_requests: false
+    dump_responses: false
+    verbose_logging: false
+
+# Feature flags
+features:
+  # Experimental features
+  experimental:
+    advanced_mapping: false
+    ai_conflict_resolution: false
+    real_time_sync: false
+
+  # Production features
+  production:
+    async_processing: true
+    caching_enabled: true
+    compression_enabled: true
+    encryption_enabled: false
+
+# Error handling
+error_handling:
+  # Retry strategy
+  retry_strategy: "exponential_backoff" # "fixed_delay", "exponential_backoff"
+  max_retries: 3
+  initial_retry_delay: "1s"
+  max_retry_delay: "30s"
+  retry_multiplier: 2.0
+
+  # Circuit breaker
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 5
+    timeout: "60s"
+    recovery_timeout: "30s"
+
+  # Error notification
+  notifications:
+    enabled: true
+    channels: ["log", "webhook"] # "log", "email", "slack", "webhook"
+    webhook_url: "${ERROR_WEBHOOK_URL:-}"
+    alert_threshold: 3 # Number of errors before alerting
+
+# Performance tuning
+performance:
+  # Connection pooling
+  connection_pool:
+    max_idle_connections: 10
+    max_connections_per_host: 20
+    idle_connection_timeout: "90s"
+
+  # Request optimization
+  request_optimization:
+    enable_keep_alive: true
+    enable_compression: true
+    read_timeout: "30s"
+    write_timeout: "30s"
+
+  # Memory management
+  memory:
+    max_memory_usage: "256MB"
+    gc_percentage: 100
+    enable_memory_profiling: false
