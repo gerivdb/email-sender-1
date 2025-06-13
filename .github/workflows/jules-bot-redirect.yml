@@ -1,0 +1,71 @@
+name: Jules Bot Redirect Handler
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  detect-and-redirect:
+    runs-on: ubuntu-latest
+    if: github.actor == 'google-labs-jules[bot]'
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Configure Git
+        run: |
+          git config --global user.name "Jules Bot Redirect Manager"
+          git config --global user.email "actions@github.com"
+      
+      - name: Check Current Branch
+        id: branch-check
+        run: |
+          CURRENT_BRANCH="${{ github.ref_name }}"
+          echo "current_branch=$CURRENT_BRANCH" >> $GITHUB_OUTPUT
+          echo "Current branch: $CURRENT_BRANCH"
+          
+          # Check if already in jules-google namespace
+          if [[ "$CURRENT_BRANCH" == jules-google/* ]]; then
+            echo "already_redirected=true" >> $GITHUB_OUTPUT
+            echo "Branch already in jules-google namespace"
+          else
+            echo "already_redirected=false" >> $GITHUB_OUTPUT
+            echo "Branch needs redirection"
+          fi
+      
+      - name: Create Redirect Branch
+        if: steps.branch-check.outputs.already_redirected == 'false'
+        run: |
+          CURRENT_BRANCH="${{ steps.branch-check.outputs.current_branch }}"
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          NEW_BRANCH="jules-google/auto-redirect-$TIMESTAMP-$CURRENT_BRANCH"
+          
+          echo "Creating redirect branch: $NEW_BRANCH"
+          
+          # Create and push the redirect branch
+          git checkout -b "$NEW_BRANCH"
+          git push origin "$NEW_BRANCH"
+          
+          echo "✅ Redirect branch created: $NEW_BRANCH"
+          echo "✅ Original content preserved and redirected"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Log Redirect Activity
+        if: steps.branch-check.outputs.already_redirected == 'false'
+        run: |
+          echo "🤖 Jules Bot Redirect Activity Log"
+          echo "================================="
+          echo "Timestamp: $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          echo "Repository: ${{ github.repository }}"
+          echo "Original Branch: ${{ steps.branch-check.outputs.current_branch }}"
+          echo "Event Type: ${{ github.event_name }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Redirect Status: SUCCESS"
+          echo "Protection Level: ACTIVE"

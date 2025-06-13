@@ -25,6 +25,7 @@ jobs:
       - name: Redirect Jules Contribution
         run: |
           echo "Jules bot activity detected on branch: ${{ github.ref_name }}"
+          echo "Redirecting to appropriate branch manager..."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -38,3 +39,6 @@ jobs:
           echo "Jules bot activity detected"
           echo "Repository: ${{ github.repository }}"
           echo "Branch: ${{ github.ref_name }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Timestamp: $(date)"
