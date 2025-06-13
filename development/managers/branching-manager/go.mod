@@ -1,4 +1,4 @@
-module branching-framework-dev
+module github.com/gerivdb/email-sender-1/development/managers/branching-manager
 
 go 1.23.9
 
