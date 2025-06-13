@@ -12,14 +12,14 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     # Configuration de Node.js sans cache pour le moment
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 20
-        cache: 'none'  # Désactive le cache jusqu'à ce que vous ayez un package-lock.json
+        cache: 'npm' # Désactive le cache jusqu'à ce que vous ayez un package-lock.json
       
     # Utilisation de PowerShell 5.1 (déjà installé sur les runners Windows)
     - name: Vérifier la version de PowerShell
