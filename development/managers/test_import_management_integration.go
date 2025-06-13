@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/email-sender/managers/development/managers/interfaces"
+	"./interfaces"
 	"go.uber.org/zap"
 )
 
