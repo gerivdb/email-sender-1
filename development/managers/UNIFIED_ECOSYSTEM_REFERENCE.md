@@ -16,35 +16,45 @@ main
         └── [autres branches de fonctionnalités spécialisées]
 ```
 
-### Managers Disponibles
+### Managers Disponibles (26 au total)
 
-#### 🎯 Managers Core
+#### 🎯 Managers Core (5)
 
 - **dependency-manager** - Gestion centralisée des dépendances et imports
 - **config-manager** - Configuration centralisée
 - **error-manager** - Gestion unifiée des erreurs
 - **storage-manager** - Gestion du stockage et cache
+- **security-manager** - Sécurité et authentification
 
-#### 🚀 Managers Avancés
+#### 🚀 Managers Avancés (6)
 
 - **advanced-autonomy-manager** - Système autonome avancé
 - **ai-template-manager** - Templates IA et génération
 - **branching-manager** - Gestion automatisée des branches Git
 - **git-workflow-manager** - Workflows Git automatisés
-
-#### 🔧 Managers Spécialisés
-
 - **smart-variable-manager** - Variables intelligentes
 - **template-performance-manager** - Optimisation de performance
+
+#### 🔧 Managers Spécialisés (8)
+
 - **maintenance-manager** - Maintenance automatisée
 - **contextual-memory-manager** - Mémoire contextuelle
+- **process-manager** - Gestion des processus
+- **container-manager** - Gestion des conteneurs
+- **deployment-manager** - Déploiement automatisé
+- **integration-manager** - Intégrations système
+- **integrated-manager** - Manager intégré unifié
+- **email-manager** - Gestion des emails
 
-#### 🌐 Managers d'Intégration
+#### 🌐 Managers d'Intégration et Outils (7)
 
 - **n8n-manager** - Intégration N8N
 - **mcp-manager** - Model Context Protocol
 - **notification-manager** - Notifications unifiées
 - **monitoring-manager** - Surveillance système
+- **script-manager** - Gestion des scripts
+- **roadmap-manager** - Gestion des roadmaps
+- **mode-manager** - Gestion des modes opérationnels
 
 ## Nouvelles Fonctionnalités
 
