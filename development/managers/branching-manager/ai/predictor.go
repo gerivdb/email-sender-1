@@ -8,7 +8,7 @@ import (
 	"sort"
 	"time"
 
-	"../../pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // BranchingPredictorImpl implements BranchingPredictor interface with real AI/ML capabilities

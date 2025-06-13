@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"../development"
-	"../../pkg/interfaces"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/development"
+	"github.com/gerivdb/email-sender-1/development/managers/branching-manager/interfaces"
 )
 
 // setupTestManager creates a branching manager for testing

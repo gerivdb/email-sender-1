@@ -1,4 +1,4 @@
-package main
+package development
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -13,32 +14,31 @@ import (
 	"gopkg.in/yaml.v3"
 
 	"../interfaces"
-	"../../pkg/interfaces"
 )
 
 // BranchingManagerImpl implements the BranchingManager interface
 type BranchingManagerImpl struct {
 	interfaces.BaseManager
-	config              *BranchingConfig
-	storageManager      interfaces.StorageManager
-	errorManager        interfaces.ErrorManager
-	contextualMemory    interfaces.ContextualMemoryManager
-	
+	config           *BranchingConfig
+	storageManager   interfaces.StorageManager
+	errorManager     interfaces.ErrorManager
+	contextualMemory interfaces.ContextualMemoryManager
+
 	// Internal state
-	activeSessions      map[string]*interfaces.Session
-	sessionMutex        sync.RWMutex
-	eventQueue          chan interfaces.BranchingEvent
-	eventProcessors     map[interfaces.EventType]EventProcessor
-	temporalSnapshots   map[string][]*interfaces.TemporalSnapshot
-	quantumBranches     map[string]*interfaces.QuantumBranch
-	
+	activeSessions    map[string]*interfaces.Session
+	sessionMutex      sync.RWMutex
+	eventQueue        chan interfaces.BranchingEvent
+	eventProcessors   map[interfaces.EventType]EventProcessor
+	temporalSnapshots map[string][]*interfaces.TemporalSnapshot
+	quantumBranches   map[string]*interfaces.QuantumBranch
+
 	// AI/ML components for predictive branching
-	predictor           BranchingPredictor
-	analyzer            PatternAnalyzer
-	
-	logger              *log.Logger
-	stopChan            chan struct{}
-	wg                  sync.WaitGroup
+	predictor BranchingPredictor
+	analyzer  PatternAnalyzer
+
+	logger   *log.Logger
+	stopChan chan struct{}
+	wg       sync.WaitGroup
 }
 
 // BranchingConfig holds the configuration for the branching manager
@@ -48,50 +48,50 @@ type BranchingConfig struct {
 	MaxSessionDuration     time.Duration `yaml:"max_session_duration"`
 	SessionNamingPattern   string        `yaml:"session_naming_pattern"`
 	AutoArchiveEnabled     bool          `yaml:"auto_archive_enabled"`
-	
+
 	// Level 2: Event-Driven
 	EventQueueSize         int           `yaml:"event_queue_size"`
 	GitHooksEnabled        bool          `yaml:"git_hooks_enabled"`
 	AutoBranchingEnabled   bool          `yaml:"auto_branching_enabled"`
 	EventProcessingTimeout time.Duration `yaml:"event_processing_timeout"`
-	
+
 	// Level 3: Multi-Dimensional
-	MaxDimensions          int           `yaml:"max_dimensions"`
-	TaggingEnabled         bool          `yaml:"tagging_enabled"`
-	DimensionWeightEnabled bool          `yaml:"dimension_weight_enabled"`
-	
+	MaxDimensions          int  `yaml:"max_dimensions"`
+	TaggingEnabled         bool `yaml:"tagging_enabled"`
+	DimensionWeightEnabled bool `yaml:"dimension_weight_enabled"`
+
 	// Level 4: Contextual Memory
-	AutoDocumentationEnabled bool   `yaml:"auto_documentation_enabled"`
-	MemoryIntegrationEnabled bool   `yaml:"memory_integration_enabled"`
-	ContextLinkingEnabled    bool   `yaml:"context_linking_enabled"`
-	
+	AutoDocumentationEnabled bool `yaml:"auto_documentation_enabled"`
+	MemoryIntegrationEnabled bool `yaml:"memory_integration_enabled"`
+	ContextLinkingEnabled    bool `yaml:"context_linking_enabled"`
+
 	// Level 5: Temporal
-	SnapshotInterval       time.Duration `yaml:"snapshot_interval"`
-	MaxSnapshotsPerBranch  int           `yaml:"max_snapshots_per_branch"`
-	TimeTravelEnabled      bool          `yaml:"time_travel_enabled"`
-	
+	SnapshotInterval      time.Duration `yaml:"snapshot_interval"`
+	MaxSnapshotsPerBranch int           `yaml:"max_snapshots_per_branch"`
+	TimeTravelEnabled     bool          `yaml:"time_travel_enabled"`
+
 	// Level 6: Predictive
-	PredictiveEnabled      bool    `yaml:"predictive_enabled"`
-	AIModelPath            string  `yaml:"ai_model_path"`
+	PredictiveEnabled             bool    `yaml:"predictive_enabled"`
+	AIModelPath                   string  `yaml:"ai_model_path"`
 	PredictionConfidenceThreshold float64 `yaml:"prediction_confidence_threshold"`
-	
+
 	// Level 7: Branching as Code
-	CodeExecutionEnabled   bool     `yaml:"code_execution_enabled"`
-	SupportedLanguages     []string `yaml:"supported_languages"`
-	CodeValidationEnabled  bool     `yaml:"code_validation_enabled"`
-	
+	CodeExecutionEnabled  bool     `yaml:"code_execution_enabled"`
+	SupportedLanguages    []string `yaml:"supported_languages"`
+	CodeValidationEnabled bool     `yaml:"code_validation_enabled"`
+
 	// Level 8: Quantum
 	QuantumBranchingEnabled bool `yaml:"quantum_branching_enabled"`
 	MaxParallelApproaches   int  `yaml:"max_parallel_approaches"`
 	ApproachSelectionAI     bool `yaml:"approach_selection_ai"`
-	
+
 	// Database settings
-	DatabaseURL            string `yaml:"database_url"`
-	VectorDatabaseURL      string `yaml:"vector_database_url"`
-	
+	DatabaseURL       string `yaml:"database_url"`
+	VectorDatabaseURL string `yaml:"vector_database_url"`
+
 	// Monitoring
-	MetricsEnabled         bool   `yaml:"metrics_enabled"`
-	LogLevel               string `yaml:"log_level"`
+	MetricsEnabled bool   `yaml:"metrics_enabled"`
+	LogLevel       string `yaml:"log_level"`
 }
 
 // EventProcessor defines the interface for processing different event types
@@ -139,6 +139,25 @@ func NewBranchingManager(configPath string) (*BranchingManagerImpl, error) {
 	return manager, nil
 }
 
+// NewBranchingManagerImpl creates a new instance of the branching manager
+func NewBranchingManagerImpl(config *BranchingConfig) *BranchingManagerImpl {
+	bm := &BranchingManagerImpl{
+		config:            config,
+		activeSessions:    make(map[string]*interfaces.Session),
+		eventQueue:        make(chan interfaces.BranchingEvent, config.EventQueueSize),
+		eventProcessors:   make(map[interfaces.EventType]EventProcessor),
+		temporalSnapshots: make(map[string][]*interfaces.TemporalSnapshot),
+		quantumBranches:   make(map[string]*interfaces.QuantumBranch),
+		logger:            log.New(os.Stdout, "[BranchingManager] ", log.LstdFlags),
+		stopChan:          make(chan struct{}),
+	}
+
+	// Initialize event processors
+	bm.initializeEventProcessors()
+
+	return bm
+}
+
 // loadConfig loads the configuration from YAML file
 func loadConfig(configPath string) (*BranchingConfig, error) {
 	data, err := os.ReadFile(configPath)
@@ -162,9 +181,13 @@ func loadConfig(configPath string) (*BranchingConfig, error) {
 	return &config, nil
 }
 
-// initializeEventProcessors sets up event processors for different event types
+// initializeEventProcessors sets up the event processing system
 func (bm *BranchingManagerImpl) initializeEventProcessors() {
-	bm.eventProcessors[interfaces.EventTypeCommit] = &CommitEventProcessor{manager: bm}
+	bm.eventProcessors[interfaces.EventTypeSessionCreated] = &SessionEventProcessor{}
+	bm.eventProcessors[interfaces.EventTypeSessionEnded] = &SessionEventProcessor{}
+	bm.eventProcessors[interfaces.EventTypeBranchCreated] = &BranchEventProcessor{}
+	bm.eventProcessors[interfaces.EventTypeBranchMerged] = &BranchEventProcessor{}
+	bm.eventProcessors[interfaces.EventTypeCommitMade] = &CommitEventProcessor{}
 	bm.eventProcessors[interfaces.EventTypePush] = &PushEventProcessor{manager: bm}
 	bm.eventProcessors[interfaces.EventTypePullRequest] = &PullRequestEventProcessor{manager: bm}
 	bm.eventProcessors[interfaces.EventTypeTimer] = &TimerEventProcessor{manager: bm}
@@ -195,10 +218,10 @@ func (bm *BranchingManagerImpl) Start(ctx context.Context) error {
 // Stop gracefully stops the branching manager
 func (bm *BranchingManagerImpl) Stop() error {
 	bm.logger.Println("Stopping BranchingManager...")
-	
+
 	close(bm.stopChan)
 	bm.wg.Wait()
-	
+
 	bm.logger.Println("BranchingManager stopped")
 	return nil
 }
@@ -230,13 +253,13 @@ func (bm *BranchingManagerImpl) CreateSession(ctx context.Context, config interf
 
 	// Generate branch name based on pattern
 	branchName := bm.generateBranchName(config.NamingPattern, session)
-	
+
 	// Create Git branch
 	branchID, err := bm.createGitBranch(ctx, branchName, "main")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create git branch: %w", err)
 	}
-	
+
 	session.BranchID = branchID
 
 	// Store session
@@ -318,8 +341,8 @@ func (bm *BranchingManagerImpl) generateBranchName(pattern string, session *inte
 
 	// Simple template replacement
 	branchName := pattern
-	branchName = fmt.Sprintf("session-%s-%s", 
-		session.ID[:8], 
+	branchName = fmt.Sprintf("session-%s-%s",
+		session.ID[:8],
 		session.Timestamp.Format("20060102-1504"))
 
 	return branchName
@@ -368,16 +391,16 @@ func (bm *BranchingManagerImpl) querySessionHistory(ctx context.Context, filters
 // TriggerBranchCreation creates a new branch based on an event trigger
 func (bm *BranchingManagerImpl) TriggerBranchCreation(ctx context.Context, event interfaces.BranchingEvent) (*interfaces.Branch, error) {
 	now := time.Now()
-	
+
 	// Generate branch name based on event
 	branchName := bm.generateEventBranchName(event)
-	
+
 	// Create Git branch
 	branchID, err := bm.createGitBranch(ctx, branchName, "main")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create event-triggered branch: %w", err)
 	}
-	
+
 	// Create branch record
 	branch := &interfaces.Branch{
 		ID:         branchID,
@@ -387,29 +410,29 @@ func (bm *BranchingManagerImpl) TriggerBranchCreation(ctx context.Context, event
 		UpdatedAt:  now,
 		Status:     interfaces.BranchStatusActive,
 		Metadata: map[string]string{
-			"event_type":     string(event.Type),
-			"trigger":        event.Trigger,
-			"auto_created":   fmt.Sprintf("%t", event.AutoCreated),
-			"priority":       fmt.Sprintf("%d", event.Priority),
+			"event_type":   string(event.Type),
+			"trigger":      event.Trigger,
+			"auto_created": fmt.Sprintf("%t", event.AutoCreated),
+			"priority":     fmt.Sprintf("%d", event.Priority),
 		},
 		EventID: fmt.Sprintf("%s-%d", event.Type, now.Unix()),
 		Level:   2, // Level 2: Event-Driven
 	}
-	
+
 	// Add event context to metadata
 	for key, value := range event.Context {
 		if strValue, ok := value.(string); ok {
 			branch.Metadata[fmt.Sprintf("ctx_%s", key)] = strValue
 		}
 	}
-	
+
 	// Store branch in database
 	if bm.storageManager != nil {
 		if err := bm.storeBranch(ctx, branch); err != nil {
 			bm.logger.Printf("Warning: failed to store event-triggered branch: %v", err)
 		}
 	}
-	
+
 	bm.logger.Printf("Created event-triggered branch %s (ID: %s) for event %s", branchName, branchID, event.Type)
 	return branch, nil
 }
@@ -419,9 +442,9 @@ func (bm *BranchingManagerImpl) ProcessGitHook(ctx context.Context, hookType str
 	if !bm.config.GitHooksEnabled {
 		return fmt.Errorf("git hooks are disabled")
 	}
-	
+
 	bm.logger.Printf("Processing Git hook: %s", hookType)
-	
+
 	// Create branching event from Git hook
 	event := interfaces.BranchingEvent{
 		Type:        bm.mapHookTypeToEventType(hookType),
@@ -431,7 +454,7 @@ func (bm *BranchingManagerImpl) ProcessGitHook(ctx context.Context, hookType str
 		Priority:    bm.getHookPriority(hookType),
 		CreatedAt:   time.Now(),
 	}
-	
+
 	// Add to event queue for processing
 	select {
 	case bm.eventQueue <- event:
@@ -439,7 +462,7 @@ func (bm *BranchingManagerImpl) ProcessGitHook(ctx context.Context, hookType str
 	default:
 		return fmt.Errorf("event queue is full, dropping Git hook event")
 	}
-	
+
 	return nil
 }
 
@@ -448,7 +471,7 @@ func (bm *BranchingManagerImpl) HandleEventDriven(ctx context.Context, eventType
 	if !bm.config.AutoBranchingEnabled {
 		return fmt.Errorf("auto-branching is disabled")
 	}
-	
+
 	// Create branching event
 	event := interfaces.BranchingEvent{
 		Type:        interfaces.EventType(eventType),
@@ -458,15 +481,15 @@ func (bm *BranchingManagerImpl) HandleEventDriven(ctx context.Context, eventType
 		Priority:    interfaces.EventPriorityMedium,
 		CreatedAt:   time.Now(),
 	}
-	
+
 	// Add context ID
 	event.Context["event_id"] = uuid.New().String()
-	
+
 	// Process event immediately or queue it
 	if bm.shouldProcessImmediately(event) {
 		return bm.processEventImmediately(ctx, event)
 	}
-	
+
 	// Add to event queue
 	select {
 	case bm.eventQueue <- event:
@@ -481,7 +504,7 @@ func (bm *BranchingManagerImpl) HandleEventDriven(ctx context.Context, eventType
 
 func (bm *BranchingManagerImpl) generateEventBranchName(event interfaces.BranchingEvent) string {
 	timestamp := time.Now().Format("20060102-1504")
-	
+
 	// Extract relevant context for naming
 	var contextSuffix string
 	if issueID, ok := event.Context["issue_id"].(string); ok {
@@ -491,41 +514,41 @@ func (bm *BranchingManagerImpl) generateEventBranchName(event interfaces.Branchi
 	} else {
 		contextSuffix = "auto"
 	}
-	
+
 	return fmt.Sprintf("event-%s-%s-%s", event.Type, contextSuffix, timestamp)
 }
 
 func (bm *BranchingManagerImpl) mapHookTypeToEventType(hookType string) interfaces.EventType {
 	hookMap := map[string]interfaces.EventType{
-		"pre-commit":     interfaces.EventTypeCommit,
-		"post-commit":    interfaces.EventTypeCommit,
-		"pre-push":       interfaces.EventTypePush,
-		"post-receive":   interfaces.EventTypePush,
-		"pre-receive":    interfaces.EventTypePush,
-		"update":         interfaces.EventTypePush,
+		"pre-commit":   interfaces.EventTypeCommit,
+		"post-commit":  interfaces.EventTypeCommit,
+		"pre-push":     interfaces.EventTypePush,
+		"post-receive": interfaces.EventTypePush,
+		"pre-receive":  interfaces.EventTypePush,
+		"update":       interfaces.EventTypePush,
 	}
-	
+
 	if eventType, exists := hookMap[hookType]; exists {
 		return eventType
 	}
-	
+
 	return interfaces.EventTypeSystemTrigger
 }
 
 func (bm *BranchingManagerImpl) getHookPriority(hookType string) interfaces.EventPriority {
 	priorityMap := map[string]interfaces.EventPriority{
-		"pre-commit":     interfaces.EventPriorityMedium,
-		"post-commit":    interfaces.EventPriorityLow,
-		"pre-push":       interfaces.EventPriorityHigh,
-		"post-receive":   interfaces.EventPriorityHigh,
-		"pre-receive":    interfaces.EventPriorityCritical,
-		"update":         interfaces.EventPriorityMedium,
+		"pre-commit":   interfaces.EventPriorityMedium,
+		"post-commit":  interfaces.EventPriorityLow,
+		"pre-push":     interfaces.EventPriorityHigh,
+		"post-receive": interfaces.EventPriorityHigh,
+		"pre-receive":  interfaces.EventPriorityCritical,
+		"update":       interfaces.EventPriorityMedium,
 	}
-	
+
 	if priority, exists := priorityMap[hookType]; exists {
 		return priority
 	}
-	
+
 	return interfaces.EventPriorityLow
 }
 
@@ -538,7 +561,7 @@ func (bm *BranchingManagerImpl) processEventImmediately(ctx context.Context, eve
 	if !exists {
 		return fmt.Errorf("no processor found for event type %s", event.Type)
 	}
-	
+
 	return processor.ProcessEvent(ctx, event)
 }
 
@@ -547,7 +570,7 @@ func (bm *BranchingManagerImpl) storeBranch(ctx context.Context, branch *interfa
 	if err != nil {
 		return err
 	}
-	
+
 	return bm.storageManager.Store(ctx, "branches", branch.ID, string(data))
 }
 
@@ -570,7 +593,7 @@ func (bm *BranchingManagerImpl) CreateMultiDimBranch(ctx context.Context, dimens
 
 	// Generate branch name based on dimensions
 	branchName := bm.generateMultiDimBranchName(dimensions)
-	
+
 	// Create Git branch
 	branchID, err := bm.createGitBranch(ctx, branchName, "main")
 	if err != nil {
@@ -645,7 +668,7 @@ func (bm *BranchingManagerImpl) SearchBranchesByDimensions(ctx context.Context, 
 
 	// Build search criteria
 	searchCriteria := bm.buildSearchCriteria(query)
-	
+
 	// Execute search
 	branches, err := bm.executeSearchQuery(ctx, searchCriteria, query.Limit)
 	if err != nil {
@@ -710,7 +733,7 @@ func (bm *BranchingManagerImpl) GenerateAutoDocumentation(ctx context.Context, b
 
 	// Generate documentation
 	docContent := bm.generateDocumentationContent(branch, content)
-	
+
 	documentation := &interfaces.Documentation{
 		ID:          uuid.New().String(),
 		BranchID:    branchID,
@@ -744,10 +767,10 @@ func (bm *BranchingManagerImpl) LinkBranchToContext(ctx context.Context, branchI
 
 	// Create link record
 	link := map[string]interface{}{
-		"branch_id":   branchID,
-		"context_id":  contextID,
-		"created_at":  time.Now(),
-		"link_type":   "contextual_memory",
+		"branch_id":  branchID,
+		"context_id": contextID,
+		"created_at": time.Now(),
+		"link_type":  "contextual_memory",
 	}
 
 	// Store link
@@ -756,7 +779,7 @@ func (bm *BranchingManagerImpl) LinkBranchToContext(ctx context.Context, branchI
 		if err != nil {
 			return fmt.Errorf("failed to marshal link data: %w", err)
 		}
-		
+
 		linkID := fmt.Sprintf("%s_%s", branchID, contextID)
 		if err := bm.storageManager.Store(ctx, "context_links", linkID, string(linkData)); err != nil {
 			return fmt.Errorf("failed to store context link: %w", err)
@@ -786,11 +809,11 @@ func (bm *BranchingManagerImpl) validateDimensions(dimensions []interfaces.Branc
 
 func (bm *BranchingManagerImpl) generateMultiDimBranchName(dimensions []interfaces.BranchDimension) string {
 	timestamp := time.Now().Format("20060102-1504")
-	
+
 	// Extract primary dimension for naming
 	var primaryType, primaryValue string
 	maxWeight := -1.0
-	
+
 	for _, dim := range dimensions {
 		if dim.Weight > maxWeight {
 			maxWeight = dim.Weight
@@ -798,12 +821,12 @@ func (bm *BranchingManagerImpl) generateMultiDimBranchName(dimensions []interfac
 			primaryValue = dim.Value
 		}
 	}
-	
+
 	if primaryType == "" {
 		primaryType = "multi"
 		primaryValue = "dimensional"
 	}
-	
+
 	return fmt.Sprintf("mdim-%s-%s-%s", primaryType, primaryValue, timestamp)
 }
 
@@ -813,7 +836,7 @@ func (bm *BranchingManagerImpl) storeDimensions(ctx context.Context, branchID st
 		if err != nil {
 			return err
 		}
-		
+
 		dimID := fmt.Sprintf("%s_dim_%d", branchID, i)
 		if err := bm.storageManager.Store(ctx, "dimensions", dimID, string(dimData)); err != nil {
 			return err
@@ -839,14 +862,14 @@ func (bm *BranchingManagerImpl) storeTag(ctx context.Context, branchID string, t
 	if err != nil {
 		return err
 	}
-	
+
 	tagID := fmt.Sprintf("%s_tag_%s", branchID, tag.Key)
 	return bm.storageManager.Store(ctx, "tags", tagID, string(tagData))
 }
 
 func (bm *BranchingManagerImpl) buildSearchCriteria(query interfaces.DimensionQuery) map[string]interface{} {
 	criteria := make(map[string]interface{})
-	
+
 	// Add dimension criteria
 	for i, dim := range query.Dimensions {
 		criteria[fmt.Sprintf("dimension_%d_type", i)] = dim.Type
@@ -855,13 +878,13 @@ func (bm *BranchingManagerImpl) buildSearchCriteria(query interfaces.DimensionQu
 			criteria[fmt.Sprintf("dimension_%d_weight", i)] = dim.Weight
 		}
 	}
-	
+
 	// Add tag criteria
 	for i, tag := range query.Tags {
 		criteria[fmt.Sprintf("tag_%d_key", i)] = tag.Key
 		criteria[fmt.Sprintf("tag_%d_value", i)] = tag.Value
 	}
-	
+
 	criteria["operator"] = query.Operator
 	return criteria
 }
@@ -934,9 +957,9 @@ func (bm *BranchingManagerImpl) CreateTemporalSnapshot(ctx context.Context, bran
 		CommitHash: commitHash,
 		State:      branchState,
 		Metadata: map[string]string{
-			"created_by":     "branching_manager",
-			"snapshot_type":  "automatic",
-			"trigger":        "periodic",
+			"created_by":    "branching_manager",
+			"snapshot_type": "automatic",
+			"trigger":       "periodic",
 		},
 		CreatedAt: now,
 	}
@@ -999,11 +1022,11 @@ func (bm *BranchingManagerImpl) TimeTravelToBranch(ctx context.Context, snapshot
 		UpdatedAt:  time.Now(),
 		Status:     interfaces.BranchStatusActive,
 		Metadata: map[string]string{
-			"time_travel":        "true",
-			"source_snapshot":    snapshotID,
-			"target_time":        targetTime.Format(time.RFC3339),
-			"original_branch":    snapshot.BranchID,
-			"restored_commit":    snapshot.CommitHash,
+			"time_travel":     "true",
+			"source_snapshot": snapshotID,
+			"target_time":     targetTime.Format(time.RFC3339),
+			"original_branch": snapshot.BranchID,
+			"restored_commit": snapshot.CommitHash,
 		},
 		Level: 5, // Level 5: Temporal
 	}
@@ -1015,7 +1038,7 @@ func (bm *BranchingManagerImpl) TimeTravelToBranch(ctx context.Context, snapshot
 		}
 	}
 
-	bm.logger.Printf("Time traveled to %s, created branch %s from snapshot %s", 
+	bm.logger.Printf("Time traveled to %s, created branch %s from snapshot %s",
 		targetTime.Format(time.RFC3339), timeTravelBranchName, snapshotID)
 	return nil
 }
@@ -1035,7 +1058,7 @@ func (bm *BranchingManagerImpl) GetTemporalHistory(ctx context.Context, branchID
 	// Sort by timestamp
 	bm.sortSnapshotsByTimestamp(snapshots)
 
-	bm.logger.Printf("Retrieved %d temporal snapshots for branch %s between %s and %s", 
+	bm.logger.Printf("Retrieved %d temporal snapshots for branch %s between %s and %s",
 		len(snapshots), branchID, timeRange.Start.Format(time.RFC3339), timeRange.End.Format(time.RFC3339))
 	return snapshots, nil
 }
@@ -1060,7 +1083,7 @@ func (bm *BranchingManagerImpl) PredictOptimalBranch(ctx context.Context, intent
 
 	// Validate prediction confidence
 	if prediction.Confidence < bm.config.PredictionConfidenceThreshold {
-		bm.logger.Printf("Warning: prediction confidence %.2f is below threshold %.2f", 
+		bm.logger.Printf("Warning: prediction confidence %.2f is below threshold %.2f",
 			prediction.Confidence, bm.config.PredictionConfidenceThreshold)
 	}
 
@@ -1072,7 +1095,7 @@ func (bm *BranchingManagerImpl) PredictOptimalBranch(ctx context.Context, intent
 		bm.logger.Printf("Warning: failed to store prediction: %v", err)
 	}
 
-	bm.logger.Printf("Predicted optimal branch '%s' with %.2f confidence for goal: %s", 
+	bm.logger.Printf("Predicted optimal branch '%s' with %.2f confidence for goal: %s",
 		prediction.RecommendedName, prediction.Confidence, intent.Goal)
 	return enhancedPrediction, nil
 }
@@ -1126,7 +1149,7 @@ func (bm *BranchingManagerImpl) AnalyzeBranchingPatterns(ctx context.Context, pr
 		bm.logger.Printf("Warning: failed to store analysis: %v", err)
 	}
 
-	bm.logger.Printf("Analyzed %d patterns for project %s, efficiency score: %.2f", 
+	bm.logger.Printf("Analyzed %d patterns for project %s, efficiency score: %.2f",
 		len(patterns), projectID, efficiencyScore)
 	return analysis, nil
 }
@@ -1157,7 +1180,7 @@ func (bm *BranchingManagerImpl) OptimizeBranchingStrategy(ctx context.Context, c
 		bm.logger.Printf("Warning: failed to store optimization: %v", err)
 	}
 
-	bm.logger.Printf("Optimized branching strategy '%s', confidence: %.2f", 
+	bm.logger.Printf("Optimized branching strategy '%s', confidence: %.2f",
 		currentStrategy.Name, optimizedStrategy.ConfidenceScore)
 	return optimizedStrategy, nil
 }
@@ -1176,11 +1199,11 @@ func (bm *BranchingManagerImpl) checkSnapshotLimit(ctx context.Context, branchID
 func (bm *BranchingManagerImpl) getBranchCurrentState(ctx context.Context, branchID string) (map[string]interface{}, error) {
 	// This would capture the current state of the branch
 	state := map[string]interface{}{
-		"files":           []string{"file1.go", "file2.yaml", "config.json"},
-		"commit_count":    42,
-		"last_modified":   time.Now(),
-		"working_tree":    "clean",
-		"staged_changes":  0,
+		"files":            []string{"file1.go", "file2.yaml", "config.json"},
+		"commit_count":     42,
+		"last_modified":    time.Now(),
+		"working_tree":     "clean",
+		"staged_changes":   0,
 		"unstaged_changes": 0,
 	}
 	return state, nil
@@ -1196,7 +1219,7 @@ func (bm *BranchingManagerImpl) storeSnapshot(ctx context.Context, snapshot *int
 	if err != nil {
 		return err
 	}
-	
+
 	return bm.storageManager.Store(ctx, "snapshots", snapshot.ID, string(snapshotData))
 }
 
@@ -1206,7 +1229,7 @@ func (bm *BranchingManagerImpl) cleanupOldSnapshots(ctx context.Context, branchI
 		// Remove oldest snapshots
 		excess := len(snapshots) - bm.config.MaxSnapshotsPerBranch
 		bm.temporalSnapshots[branchID] = snapshots[excess:]
-		
+
 		bm.logger.Printf("Cleaned up %d old snapshots for branch %s", excess, branchID)
 	}
 }
@@ -1215,17 +1238,17 @@ func (bm *BranchingManagerImpl) getSnapshot(ctx context.Context, snapshotID stri
 	if bm.storageManager == nil {
 		return nil, fmt.Errorf("storage manager not available")
 	}
-	
+
 	snapshotData, err := bm.storageManager.Get(ctx, "snapshots", snapshotID)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var snapshot interfaces.TemporalSnapshot
 	if err := json.Unmarshal([]byte(snapshotData), &snapshot); err != nil {
 		return nil, err
 	}
-	
+
 	return &snapshot, nil
 }
 
@@ -1234,19 +1257,19 @@ func (bm *BranchingManagerImpl) validateTimeTravelRequest(snapshot *interfaces.T
 	if targetTime.After(time.Now()) {
 		return fmt.Errorf("cannot time travel to future time")
 	}
-	
+
 	// Validate that the snapshot timestamp is close to the target time
 	timeDiff := targetTime.Sub(snapshot.Timestamp).Abs()
 	if timeDiff > time.Hour {
 		return fmt.Errorf("snapshot is too far from target time (diff: %v)", timeDiff)
 	}
-	
+
 	return nil
 }
 
 func (bm *BranchingManagerImpl) generateTimeTravelBranchName(snapshot *interfaces.TemporalSnapshot, targetTime time.Time) string {
-	return fmt.Sprintf("timetravel-%s-%s", 
-		snapshot.BranchID[:8], 
+	return fmt.Sprintf("timetravel-%s-%s",
+		snapshot.BranchID[:8],
 		targetTime.Format("20060102-1504"))
 }
 
@@ -1259,7 +1282,7 @@ func (bm *BranchingManagerImpl) restoreBranchState(ctx context.Context, branchID
 func (bm *BranchingManagerImpl) querySnapshotsByTimeRange(ctx context.Context, branchID string, timeRange interfaces.TimeRange) ([]*interfaces.TemporalSnapshot, error) {
 	// This would query the database for snapshots within the time range
 	var snapshots []*interfaces.TemporalSnapshot
-	
+
 	// Check in-memory cache first
 	if cached := bm.temporalSnapshots[branchID]; cached != nil {
 		for _, snapshot := range cached {
@@ -1268,7 +1291,7 @@ func (bm *BranchingManagerImpl) querySnapshotsByTimeRange(ctx context.Context, b
 			}
 		}
 	}
-	
+
 	return snapshots, nil
 }
 
@@ -1288,7 +1311,7 @@ func (bm *BranchingManagerImpl) sortSnapshotsByTimestamp(snapshots []*interfaces
 func (bm *BranchingManagerImpl) enhancePrediction(ctx context.Context, prediction *interfaces.PredictedBranch, intent interfaces.BranchingIntent) *interfaces.PredictedBranch {
 	// Add additional insights and recommendations
 	enhanced := *prediction
-	
+
 	// Add context-specific tags
 	if intent.Priority >= interfaces.IntentPriorityHigh {
 		enhanced.SuggestedTags = append(enhanced.SuggestedTags, interfaces.BranchTag{
@@ -1298,12 +1321,12 @@ func (bm *BranchingManagerImpl) enhancePrediction(ctx context.Context, predictio
 			CreatedAt: time.Now(),
 		})
 	}
-	
+
 	// Add risk assessment
 	if enhanced.Confidence < 0.8 {
 		enhanced.Risks = append(enhanced.Risks, "Low confidence prediction - consider manual review")
 	}
-	
+
 	return &enhanced
 }
 
@@ -1313,12 +1336,12 @@ func (bm *BranchingManagerImpl) storePrediction(ctx context.Context, intent inte
 		"prediction": prediction,
 		"timestamp":  time.Now(),
 	}
-	
+
 	predictionData, err := json.Marshal(predictionRecord)
 	if err != nil {
 		return err
 	}
-	
+
 	predictionID := uuid.New().String()
 	return bm.storageManager.Store(ctx, "predictions", predictionID, string(predictionData))
 }
@@ -1333,12 +1356,12 @@ func (bm *BranchingManagerImpl) calculateEfficiencyScore(patterns []interfaces.B
 	if len(patterns) == 0 {
 		return 0.0
 	}
-	
+
 	totalImpact := 0.0
 	for _, pattern := range patterns {
 		totalImpact += pattern.Impact
 	}
-	
+
 	return totalImpact / float64(len(patterns))
 }
 
@@ -1347,7 +1370,7 @@ func (bm *BranchingManagerImpl) storeAnalysis(ctx context.Context, analysis *int
 	if err != nil {
 		return err
 	}
-	
+
 	analysisID := fmt.Sprintf("%s_%s", analysis.ProjectID, analysis.GeneratedAt.Format("20060102"))
 	return bm.storageManager.Store(ctx, "analyses", analysisID, string(analysisData))
 }
@@ -1357,7 +1380,7 @@ func (bm *BranchingManagerImpl) validateOptimization(current, optimized interfac
 	if len(optimized.Rules) == 0 {
 		return fmt.Errorf("optimized strategy has no rules")
 	}
-	
+
 	// Check for rule conflicts
 	for i, rule1 := range optimized.Rules {
 		for j, rule2 := range optimized.Rules {
@@ -1366,7 +1389,7 @@ func (bm *BranchingManagerImpl) validateOptimization(current, optimized interfac
 			}
 		}
 	}
-	
+
 	return nil
 }
 
@@ -1375,7 +1398,7 @@ func (bm *BranchingManagerImpl) storeOptimization(ctx context.Context, optimizat
 	if err != nil {
 		return err
 	}
-	
+
 	optimizationID := uuid.New().String()
 	return bm.storageManager.Store(ctx, "optimizations", optimizationID, string(optimizationData))
 }
@@ -1414,14 +1437,14 @@ func (bm *BranchingManagerImpl) ExecuteBranchingAsCode(ctx context.Context, conf
 
 	// Create result
 	result := &interfaces.BranchingAsCodeResult{
-		ConfigID:      config.ID,
-		Language:      config.Language,
-		ExecutedAt:    time.Now(),
-		Status:        interfaces.ExecutionStatusSuccess,
-		CreatedBranches: executionResult.CreatedBranches,
-		ModifiedBranches: executionResult.ModifiedBranches,
-		DeletedBranches: executionResult.DeletedBranches,
-		ExecutionLog:  executionResult.Log,
+		ConfigID:          config.ID,
+		Language:          config.Language,
+		ExecutedAt:        time.Now(),
+		Status:            interfaces.ExecutionStatusSuccess,
+		CreatedBranches:   executionResult.CreatedBranches,
+		ModifiedBranches:  executionResult.ModifiedBranches,
+		DeletedBranches:   executionResult.DeletedBranches,
+		ExecutionLog:      executionResult.Log,
 		ValidationResults: executionResult.ValidationResults,
 	}
 
@@ -1430,7 +1453,7 @@ func (bm *BranchingManagerImpl) ExecuteBranchingAsCode(ctx context.Context, conf
 		bm.logger.Printf("Warning: failed to store execution result: %v", err)
 	}
 
-	bm.logger.Printf("Executed branching as code config %s (%s), created %d branches", 
+	bm.logger.Printf("Executed branching as code config %s (%s), created %d branches",
 		config.ID, config.Language, len(result.CreatedBranches))
 	return result, nil
 }
@@ -1442,13 +1465,13 @@ func (bm *BranchingManagerImpl) ValidateBranchingCode(ctx context.Context, confi
 	}
 
 	validation := &interfaces.BranchingCodeValidation{
-		ConfigID:     config.ID,
-		Language:     config.Language,
-		ValidatedAt:  time.Now(),
-		IsValid:      true,
-		Errors:       make([]string, 0),
-		Warnings:     make([]string, 0),
-		Suggestions:  make([]string, 0),
+		ConfigID:    config.ID,
+		Language:    config.Language,
+		ValidatedAt: time.Now(),
+		IsValid:     true,
+		Errors:      make([]string, 0),
+		Warnings:    make([]string, 0),
+		Suggestions: make([]string, 0),
 	}
 
 	// Language-specific validation
@@ -1492,7 +1515,7 @@ func (bm *BranchingManagerImpl) ValidateBranchingCode(ctx context.Context, confi
 		bm.logger.Printf("Warning: failed to store validation result: %v", err)
 	}
 
-	bm.logger.Printf("Validated branching code %s (%s), valid: %t, errors: %d, warnings: %d", 
+	bm.logger.Printf("Validated branching code %s (%s), valid: %t, errors: %d, warnings: %d",
 		config.ID, config.Language, validation.IsValid, len(validation.Errors), len(validation.Warnings))
 	return validation, nil
 }
@@ -1513,13 +1536,13 @@ func (bm *BranchingManagerImpl) LoadBranchingTemplate(ctx context.Context, templ
 
 	// Create configuration from template
 	config := &interfaces.BranchingAsCodeConfig{
-		ID:          uuid.New().String(),
-		Name:        fmt.Sprintf("%s_instance", template.Name),
-		Language:    template.Language,
-		Code:        processedCode,
-		Parameters:  params,
-		TemplateID:  templateID,
-		CreatedAt:   time.Now(),
+		ID:         uuid.New().String(),
+		Name:       fmt.Sprintf("%s_instance", template.Name),
+		Language:   template.Language,
+		Code:       processedCode,
+		Parameters: params,
+		TemplateID: templateID,
+		CreatedAt:  time.Now(),
 	}
 
 	bm.logger.Printf("Loaded branching template %s and created config %s", templateID, config.ID)
@@ -1545,14 +1568,14 @@ func (bm *BranchingManagerImpl) CreateQuantumBranch(ctx context.Context, quantum
 
 	// Create quantum branch structure
 	quantumBranch := &interfaces.QuantumBranch{
-		ID:          uuid.New().String(),
-		Name:        quantumConfig.Name,
-		Goal:        quantumConfig.Goal,
-		Approaches:  make([]interfaces.BranchApproach, 0, len(quantumConfig.Approaches)),
-		Status:      interfaces.QuantumStatusActive,
-		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Now(),
-		Metadata:    quantumConfig.Metadata,
+		ID:         uuid.New().String(),
+		Name:       quantumConfig.Name,
+		Goal:       quantumConfig.Goal,
+		Approaches: make([]interfaces.BranchApproach, 0, len(quantumConfig.Approaches)),
+		Status:     interfaces.QuantumStatusActive,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
+		Metadata:   quantumConfig.Metadata,
 	}
 
 	// Create parallel branches for each approach
@@ -1641,7 +1664,7 @@ func (bm *BranchingManagerImpl) ExecuteQuantumApproaches(ctx context.Context, qu
 		bm.logger.Printf("Warning: failed to store quantum execution result: %v", err)
 	}
 
-	bm.logger.Printf("Executed quantum branch %s with %d approaches, %d successes, %d errors", 
+	bm.logger.Printf("Executed quantum branch %s with %d approaches, %d successes, %d errors",
 		quantumBranchID, len(quantumBranch.Approaches), len(results), len(errors))
 	return executionResult, nil
 }
@@ -1663,7 +1686,7 @@ func (bm *BranchingManagerImpl) SelectOptimalApproach(ctx context.Context, execu
 	for _, result := range executionResult.Results {
 		score := bm.calculateApproachScore(result)
 		metrics := bm.extractApproachMetrics(result)
-		
+
 		approachScores[result.ApproachID] = score
 		approachMetrics[result.ApproachID] = metrics
 	}
@@ -1674,14 +1697,14 @@ func (bm *BranchingManagerImpl) SelectOptimalApproach(ctx context.Context, execu
 
 	// Create selection result
 	selection := &interfaces.OptimalApproachSelection{
-		QuantumBranchID:     executionResult.QuantumBranchID,
-		OptimalApproachID:   optimalApproachID,
-		OptimalResult:       optimalResult,
-		Confidence:          bm.calculateSelectionConfidence(approachScores),
-		AlternativeOptions:  bm.getAlternativeOptions(approachScores, optimalApproachID, 3),
-		SelectionReasons:    bm.generateSelectionReasons(optimalResult, approachMetrics[optimalApproachID]),
-		SelectedAt:          time.Now(),
-		Metrics:             approachMetrics,
+		QuantumBranchID:    executionResult.QuantumBranchID,
+		OptimalApproachID:  optimalApproachID,
+		OptimalResult:      optimalResult,
+		Confidence:         bm.calculateSelectionConfidence(approachScores),
+		AlternativeOptions: bm.getAlternativeOptions(approachScores, optimalApproachID, 3),
+		SelectionReasons:   bm.generateSelectionReasons(optimalResult, approachMetrics[optimalApproachID]),
+		SelectedAt:         time.Now(),
+		Metrics:            approachMetrics,
 	}
 
 	// Store selection
@@ -1696,7 +1719,7 @@ func (bm *BranchingManagerImpl) SelectOptimalApproach(ctx context.Context, execu
 		quantumBranch.UpdatedAt = time.Now()
 	}
 
-	bm.logger.Printf("Selected optimal approach %s for quantum branch %s with %.2f confidence", 
+	bm.logger.Printf("Selected optimal approach %s for quantum branch %s with %.2f confidence",
 		optimalApproachID, executionResult.QuantumBranchID, selection.Confidence)
 	return selection, nil
 }
@@ -1713,7 +1736,7 @@ func (bm *BranchingManagerImpl) validateBranchingAsCodeConfig(config interfaces.
 	if config.Code == "" {
 		return fmt.Errorf("config code cannot be empty")
 	}
-	
+
 	// Check if language is supported
 	supportedLanguages := []interfaces.CodeLanguage{
 		interfaces.LanguageYAML,
@@ -1721,7 +1744,7 @@ func (bm *BranchingManagerImpl) validateBranchingAsCodeConfig(config interfaces.
 		interfaces.LanguageGo,
 		interfaces.LanguageLua,
 	}
-	
+
 	supported := false
 	for _, lang := range supportedLanguages {
 		if config.Language == lang {
@@ -1729,11 +1752,11 @@ func (bm *BranchingManagerImpl) validateBranchingAsCodeConfig(config interfaces.
 			break
 		}
 	}
-	
+
 	if !supported {
 		return fmt.Errorf("unsupported language: %s", config.Language)
 	}
-	
+
 	return nil
 }
 
@@ -1800,7 +1823,7 @@ func (bm *BranchingManagerImpl) validateParsedConfig(config *interfaces.ParsedBr
 	if len(config.Operations) == 0 {
 		return fmt.Errorf("no operations defined")
 	}
-	
+
 	for i, op := range config.Operations {
 		if op.Type == "" {
 			return fmt.Errorf("operation %d: type cannot be empty", i)
@@ -1809,19 +1832,19 @@ func (bm *BranchingManagerImpl) validateParsedConfig(config *interfaces.ParsedBr
 			return fmt.Errorf("operation %d: name cannot be empty", i)
 		}
 	}
-	
+
 	return nil
 }
 
 func (bm *BranchingManagerImpl) executeParsedConfig(ctx context.Context, config *interfaces.ParsedBranchingConfig) (*interfaces.ExecutionResult, error) {
 	result := &interfaces.ExecutionResult{
-		CreatedBranches:     make([]string, 0),
-		ModifiedBranches:    make([]string, 0),
-		DeletedBranches:     make([]string, 0),
-		Log:                 make([]string, 0),
-		ValidationResults:   make([]string, 0),
+		CreatedBranches:   make([]string, 0),
+		ModifiedBranches:  make([]string, 0),
+		DeletedBranches:   make([]string, 0),
+		Log:               make([]string, 0),
+		ValidationResults: make([]string, 0),
 	}
-	
+
 	// Execute each operation
 	for _, op := range config.Operations {
 		if err := bm.executeOperation(ctx, op, result); err != nil {
@@ -1830,7 +1853,7 @@ func (bm *BranchingManagerImpl) executeParsedConfig(ctx context.Context, config 
 		}
 		result.Log = append(result.Log, fmt.Sprintf("SUCCESS: Executed operation %s", op.Name))
 	}
-	
+
 	return result, nil
 }
 
@@ -1842,23 +1865,23 @@ func (bm *BranchingManagerImpl) executeOperation(ctx context.Context, op interfa
 			return err
 		}
 		result.CreatedBranches = append(result.CreatedBranches, branchID)
-		
+
 	case interfaces.OpTypeModify:
 		// Modify existing branch
 		result.ModifiedBranches = append(result.ModifiedBranches, op.Name)
-		
+
 	case interfaces.OpTypeDelete:
 		// Delete branch
 		result.DeletedBranches = append(result.DeletedBranches, op.Name)
-		
+
 	case interfaces.OpTypeMerge:
 		// Merge operation
 		result.Log = append(result.Log, fmt.Sprintf("Merged %s", op.Name))
-		
+
 	default:
 		return fmt.Errorf("unsupported operation type: %s", op.Type)
 	}
-	
+
 	return nil
 }
 
@@ -1892,46 +1915,46 @@ func (bm *BranchingManagerImpl) validateLuaConfig(code string) error {
 
 func (bm *BranchingManagerImpl) performSemanticValidation(config interfaces.BranchingAsCodeConfig) []string {
 	var warnings []string
-	
+
 	// Check for common issues
 	if strings.Contains(config.Code, "TODO") {
 		warnings = append(warnings, "Configuration contains TODO comments")
 	}
-	
+
 	if strings.Contains(config.Code, "FIXME") {
 		warnings = append(warnings, "Configuration contains FIXME comments")
 	}
-	
+
 	// Check for potential security issues
 	if strings.Contains(config.Code, "rm -rf") {
 		warnings = append(warnings, "Potentially dangerous command detected")
 	}
-	
+
 	return warnings
 }
 
 func (bm *BranchingManagerImpl) generateCodeSuggestions(config interfaces.BranchingAsCodeConfig) []string {
 	var suggestions []string
-	
+
 	// Generate language-specific suggestions
 	switch config.Language {
 	case interfaces.LanguageYAML:
 		suggestions = append(suggestions, "Consider using consistent indentation (2 or 4 spaces)")
 		suggestions = append(suggestions, "Add comments to explain complex configurations")
-		
+
 	case interfaces.LanguageJSON:
 		suggestions = append(suggestions, "Consider using YAML for better readability")
 		suggestions = append(suggestions, "Validate JSON schema for consistency")
-		
+
 	case interfaces.LanguageGo:
 		suggestions = append(suggestions, "Follow Go naming conventions")
 		suggestions = append(suggestions, "Add error handling for all operations")
-		
+
 	case interfaces.LanguageLua:
 		suggestions = append(suggestions, "Use local variables when possible")
 		suggestions = append(suggestions, "Add function documentation")
 	}
-	
+
 	return suggestions
 }
 
@@ -1939,30 +1962,30 @@ func (bm *BranchingManagerImpl) getBranchingTemplate(ctx context.Context, templa
 	if bm.storageManager == nil {
 		return nil, fmt.Errorf("storage manager not available")
 	}
-	
+
 	templateData, err := bm.storageManager.Get(ctx, "templates", templateID)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var template interfaces.BranchingTemplate
 	if err := json.Unmarshal([]byte(templateData), &template); err != nil {
 		return nil, err
 	}
-	
+
 	return &template, nil
 }
 
 func (bm *BranchingManagerImpl) processTemplate(templateCode string, params map[string]interface{}) (string, error) {
 	// Simple template processing - replace {{.param}} with values
 	processedCode := templateCode
-	
+
 	for key, value := range params {
 		placeholder := fmt.Sprintf("{{.%s}}", key)
 		replacement := fmt.Sprintf("%v", value)
 		processedCode = strings.ReplaceAll(processedCode, placeholder, replacement)
 	}
-	
+
 	return processedCode, nil
 }
 
@@ -1971,7 +1994,7 @@ func (bm *BranchingManagerImpl) storeExecutionResult(ctx context.Context, result
 	if err != nil {
 		return err
 	}
-	
+
 	return bm.storageManager.Store(ctx, "execution_results", result.ConfigID, string(resultData))
 }
 
@@ -1980,7 +2003,7 @@ func (bm *BranchingManagerImpl) storeValidationResult(ctx context.Context, valid
 	if err != nil {
 		return err
 	}
-	
+
 	return bm.storageManager.Store(ctx, "validations", validation.ConfigID, string(validationData))
 }
 
@@ -1990,7 +2013,7 @@ func (bm *BranchingManagerImpl) validateQuantumApproaches(approaches []interface
 	if len(approaches) == 0 {
 		return fmt.Errorf("at least one approach is required")
 	}
-	
+
 	approachNames := make(map[string]bool)
 	for i, approach := range approaches {
 		if approach.Name == "" {
@@ -2004,7 +2027,7 @@ func (bm *BranchingManagerImpl) validateQuantumApproaches(approaches []interface
 		}
 		approachNames[approach.Name] = true
 	}
-	
+
 	return nil
 }
 
@@ -2015,7 +2038,7 @@ func (bm *BranchingManagerImpl) createBranchApproach(ctx context.Context, quantu
 	if err != nil {
 		return nil, fmt.Errorf("failed to create branch for approach: %w", err)
 	}
-	
+
 	approach := &interfaces.BranchApproach{
 		ID:              uuid.New().String(),
 		Name:            config.Name,
@@ -2028,7 +2051,7 @@ func (bm *BranchingManagerImpl) createBranchApproach(ctx context.Context, quantu
 		CreatedAt:       time.Now(),
 		UpdatedAt:       time.Now(),
 	}
-	
+
 	return approach, nil
 }
 
@@ -2037,14 +2060,14 @@ func (bm *BranchingManagerImpl) storeQuantumBranch(ctx context.Context, quantumB
 	if err != nil {
 		return err
 	}
-	
+
 	return bm.storageManager.Store(ctx, "quantum_branches", quantumBranch.ID, string(quantumData))
 }
 
 func (bm *BranchingManagerImpl) monitorQuantumBranch(ctx context.Context, quantumBranchID string) {
 	ticker := time.NewTicker(5 * time.Minute) // Check every 5 minutes
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-ticker.C:
@@ -2062,7 +2085,7 @@ func (bm *BranchingManagerImpl) checkQuantumBranchProgress(ctx context.Context, 
 	if !exists {
 		return fmt.Errorf("quantum branch not found: %s", quantumBranchID)
 	}
-	
+
 	// Check progress of each approach
 	for i, approach := range quantumBranch.Approaches {
 		progress, err := bm.getApproachProgress(ctx, approach.BranchID)
@@ -2070,20 +2093,20 @@ func (bm *BranchingManagerImpl) checkQuantumBranchProgress(ctx context.Context, 
 			bm.logger.Printf("Failed to get progress for approach %s: %v", approach.ID, err)
 			continue
 		}
-		
+
 		// Update approach status based on progress
 		if progress.CompletionPercentage >= 100 {
 			quantumBranch.Approaches[i].Status = interfaces.ApproachStatusCompleted
 		} else if progress.CompletionPercentage > 0 {
 			quantumBranch.Approaches[i].Status = interfaces.ApproachStatusInProgress
 		}
-		
+
 		quantumBranch.Approaches[i].UpdatedAt = time.Now()
 	}
-	
+
 	// Update quantum branch timestamp
 	quantumBranch.UpdatedAt = time.Now()
-	
+
 	bm.logger.Printf("Monitored quantum branch %s progress", quantumBranchID)
 	return nil
 }
@@ -2102,21 +2125,21 @@ func (bm *BranchingManagerImpl) getApproachProgress(ctx context.Context, branchI
 func (bm *BranchingManagerImpl) executeApproach(ctx context.Context, approach interfaces.BranchApproach, resultChan chan interfaces.ApproachResult, errorChan chan error) {
 	// Simulate approach execution
 	time.Sleep(time.Duration(approach.EstimatedEffort) * time.Second)
-	
+
 	// Create mock result
 	result := interfaces.ApproachResult{
-		ApproachID:      approach.ID,
-		ApproachName:    approach.Name,
-		BranchID:        approach.BranchID,
-		Status:          interfaces.ApproachStatusCompleted,
-		ExecutionTime:   time.Duration(approach.EstimatedEffort) * time.Second,
-		Success:         true,
-		CompletedAt:     time.Now(),
+		ApproachID:    approach.ID,
+		ApproachName:  approach.Name,
+		BranchID:      approach.BranchID,
+		Status:        interfaces.ApproachStatusCompleted,
+		ExecutionTime: time.Duration(approach.EstimatedEffort) * time.Second,
+		Success:       true,
+		CompletedAt:   time.Now(),
 		Metrics: interfaces.ApproachMetrics{
-			LinesOfCode:       1250,
-			TestCoverage:      85.5,
-			ComplexityScore:   7.2,
-			PerformanceScore:  92.0,
+			LinesOfCode:      1250,
+			TestCoverage:     85.5,
+			ComplexityScore:  7.2,
+			PerformanceScore: 92.0,
 		},
 		Artifacts: []string{
 			fmt.Sprintf("branch:%s", approach.BranchID),
@@ -2124,7 +2147,7 @@ func (bm *BranchingManagerImpl) executeApproach(ctx context.Context, approach in
 			"test_results.json",
 		},
 	}
-	
+
 	resultChan <- result
 }
 
@@ -2132,11 +2155,11 @@ func (bm *BranchingManagerImpl) analyzeQuantumResults(results []interfaces.Appro
 	if len(results) == 0 {
 		return interfaces.QuantumAnalysis{}
 	}
-	
+
 	var totalExecutionTime time.Duration
 	var successCount, failureCount int
 	var totalLOC, totalComplexity, totalPerformance, totalCoverage float64
-	
+
 	for _, result := range results {
 		totalExecutionTime += result.ExecutionTime
 		if result.Success {
@@ -2144,25 +2167,25 @@ func (bm *BranchingManagerImpl) analyzeQuantumResults(results []interfaces.Appro
 		} else {
 			failureCount++
 		}
-		
+
 		totalLOC += result.Metrics.LinesOfCode
 		totalComplexity += result.Metrics.ComplexityScore
 		totalPerformance += result.Metrics.PerformanceScore
 		totalCoverage += result.Metrics.TestCoverage
 	}
-	
+
 	resultCount := float64(len(results))
-	
+
 	return interfaces.QuantumAnalysis{
 		TotalApproaches:      len(results),
 		SuccessfulApproaches: successCount,
 		FailedApproaches:     failureCount,
 		AverageExecutionTime: totalExecutionTime / time.Duration(len(results)),
 		AverageMetrics: interfaces.ApproachMetrics{
-			LinesOfCode:       totalLOC / resultCount,
-			TestCoverage:      totalCoverage / resultCount,
-			ComplexityScore:   totalComplexity / resultCount,
-			PerformanceScore:  totalPerformance / resultCount,
+			LinesOfCode:      totalLOC / resultCount,
+			TestCoverage:     totalCoverage / resultCount,
+			ComplexityScore:  totalComplexity / resultCount,
+			PerformanceScore: totalPerformance / resultCount,
 		},
 		RecommendedOptimizations: []string{
 			"Consider combining successful approaches",
@@ -2179,20 +2202,20 @@ func (bm *BranchingManagerImpl) determineExecutionStatus(results []interfaces.Ap
 		}
 		return interfaces.QuantumExecutionStatusPartialSuccess
 	}
-	
+
 	successCount := 0
 	for _, result := range results {
 		if result.Success {
 			successCount++
 		}
 	}
-	
+
 	if successCount == len(results) {
 		return interfaces.QuantumExecutionStatusSuccess
 	} else if successCount > 0 {
 		return interfaces.QuantumExecutionStatusPartialSuccess
 	}
-	
+
 	return interfaces.QuantumExecutionStatusFailed
 }
 
@@ -2200,21 +2223,21 @@ func (bm *BranchingManagerImpl) calculateApproachScore(result interfaces.Approac
 	if !result.Success {
 		return 0.0
 	}
-	
+
 	// Weighted scoring based on multiple factors
 	metricsScore := (result.Metrics.PerformanceScore + result.Metrics.TestCoverage) / 2.0
-	complexityPenalty := result.Metrics.ComplexityScore * 2.0 // Lower complexity is better
+	complexityPenalty := result.Metrics.ComplexityScore * 2.0     // Lower complexity is better
 	timePenalty := float64(result.ExecutionTime.Seconds()) / 60.0 // Penalty for longer execution
-	
+
 	score := metricsScore - complexityPenalty - timePenalty
-	
+
 	// Ensure score is between 0 and 100
 	if score < 0 {
 		score = 0
 	} else if score > 100 {
 		score = 100
 	}
-	
+
 	return score
 }
 
@@ -2225,14 +2248,14 @@ func (bm *BranchingManagerImpl) extractApproachMetrics(result interfaces.Approac
 func (bm *BranchingManagerImpl) findOptimalApproach(scores map[string]float64) string {
 	var optimalID string
 	var maxScore float64
-	
+
 	for id, score := range scores {
 		if score > maxScore {
 			maxScore = score
 			optimalID = id
 		}
 	}
-	
+
 	return optimalID
 }
 
@@ -2249,12 +2272,12 @@ func (bm *BranchingManagerImpl) calculateSelectionConfidence(scores map[string]f
 	if len(scores) < 2 {
 		return 1.0
 	}
-	
+
 	var sortedScores []float64
 	for _, score := range scores {
 		sortedScores = append(sortedScores, score)
 	}
-	
+
 	// Simple sort
 	for i := 0; i < len(sortedScores)-1; i++ {
 		for j := 0; j < len(sortedScores)-1-i; j++ {
@@ -2263,7 +2286,7 @@ func (bm *BranchingManagerImpl) calculateSelectionConfidence(scores map[string]f
 			}
 		}
 	}
-	
+
 	// Confidence based on difference between top two scores
 	if len(sortedScores) >= 2 {
 		diff := sortedScores[0] - sortedScores[1]
@@ -2273,13 +2296,13 @@ func (bm *BranchingManagerImpl) calculateSelectionConfidence(scores map[string]f
 		}
 		return confidence
 	}
-	
+
 	return 1.0
 }
 
 func (bm *BranchingManagerImpl) getAlternativeOptions(scores map[string]float64, optimalID string, limit int) []interfaces.AlternativeOption {
 	var alternatives []interfaces.AlternativeOption
-	
+
 	for id, score := range scores {
 		if id != optimalID {
 			alternatives = append(alternatives, interfaces.AlternativeOption{
@@ -2289,7 +2312,7 @@ func (bm *BranchingManagerImpl) getAlternativeOptions(scores map[string]float64,
 			})
 		}
 	}
-	
+
 	// Sort by score (descending)
 	for i := 0; i < len(alternatives)-1; i++ {
 		for j := 0; j < len(alternatives)-1-i; j++ {
@@ -2298,38 +2321,38 @@ func (bm *BranchingManagerImpl) getAlternativeOptions(scores map[string]float64,
 			}
 		}
 	}
-	
+
 	// Return top alternatives up to limit
 	if len(alternatives) > limit {
 		alternatives = alternatives[:limit]
 	}
-	
+
 	return alternatives
 }
 
 func (bm *BranchingManagerImpl) generateSelectionReasons(result *interfaces.ApproachResult, metrics interfaces.ApproachMetrics) []string {
 	var reasons []string
-	
+
 	if metrics.PerformanceScore > 80 {
 		reasons = append(reasons, fmt.Sprintf("High performance score: %.1f", metrics.PerformanceScore))
 	}
-	
+
 	if metrics.TestCoverage > 80 {
 		reasons = append(reasons, fmt.Sprintf("Excellent test coverage: %.1f%%", metrics.TestCoverage))
 	}
-	
+
 	if metrics.ComplexityScore < 5 {
 		reasons = append(reasons, fmt.Sprintf("Low complexity: %.1f", metrics.ComplexityScore))
 	}
-	
+
 	if result.ExecutionTime < 5*time.Minute {
 		reasons = append(reasons, "Fast execution time")
 	}
-	
+
 	if len(reasons) == 0 {
 		reasons = append(reasons, "Best overall score among all approaches")
 	}
-	
+
 	return reasons
 }
 
@@ -2338,7 +2361,7 @@ func (bm *BranchingManagerImpl) storeQuantumExecutionResult(ctx context.Context,
 	if err != nil {
 		return err
 	}
-	
+
 	resultID := fmt.Sprintf("%s_%s", result.QuantumBranchID, result.ExecutedAt.Format("20060102_150405"))
 	return bm.storageManager.Store(ctx, "quantum_executions", resultID, string(resultData))
 }
@@ -2348,7 +2371,7 @@ func (bm *BranchingManagerImpl) storeOptimalSelection(ctx context.Context, selec
 	if err != nil {
 		return err
 	}
-	
+
 	selectionID := fmt.Sprintf("%s_selection", selection.QuantumBranchID)
 	return bm.storageManager.Store(ctx, "optimal_selections", selectionID, string(selectionData))
 }
@@ -2461,20 +2484,20 @@ func (bm *BranchingManagerImpl) createPeriodicSnapshots(ctx context.Context) {
 func (bm *BranchingManagerImpl) createSnapshotsForActiveBranches(ctx context.Context) {
 	// Get active branches
 	activeBranches := bm.getActiveBranchIDs(ctx)
-	
+
 	for _, branchID := range activeBranches {
 		if _, err := bm.CreateTemporalSnapshot(ctx, branchID); err != nil {
 			bm.logger.Printf("Error creating snapshot for branch %s: %v", branchID, err)
 		}
 	}
-	
+
 	bm.logger.Printf("Created snapshots for %d active branches", len(activeBranches))
 }
 
 // getActiveBranchIDs returns IDs of all active branches
 func (bm *BranchingManagerImpl) getActiveBranchIDs(ctx context.Context) []string {
 	var branchIDs []string
-	
+
 	// Get from active sessions
 	bm.sessionMutex.RLock()
 	for _, session := range bm.activeSessions {
@@ -2483,7 +2506,7 @@ func (bm *BranchingManagerImpl) getActiveBranchIDs(ctx context.Context) []string
 		}
 	}
 	bm.sessionMutex.RUnlock()
-	
+
 	// Get from quantum branches
 	for _, quantumBranch := range bm.quantumBranches {
 		if quantumBranch.Status == interfaces.QuantumStatusActive {
@@ -2494,7 +2517,7 @@ func (bm *BranchingManagerImpl) getActiveBranchIDs(ctx context.Context) []string
 			}
 		}
 	}
-	
+
 	return branchIDs
 }
 
@@ -2505,7 +2528,7 @@ func (bm *BranchingManagerImpl) storeMemoryContext(ctx context.Context, branchID
 	if err != nil {
 		return err
 	}
-	
+
 	contextID := fmt.Sprintf("%s_memory", branchID)
 	return bm.storageManager.Store(ctx, "memory_contexts", contextID, string(contextData))
 }
@@ -2516,18 +2539,17 @@ func (bm *BranchingManagerImpl) linkBranchToMemory(ctx context.Context, branchID
 	return bm.LinkBranchToContext(ctx, branchID, contextID)
 }
 
-func (bm *BranchingManagerImpl) updateBranchMemoryMetadata(ctx context.Context, branchID string, memoryContext interfaces.MemoryContext) error {
-	// Update branch metadata with memory context information
+func (bm *BranchingManagerImpl) updateBranchMemoryMetadata(ctx context.Context, branchID string, memoryContext interfaces.MemoryContext) error { // Update branch metadata with memory context information
 	metadata := map[string]string{
-		"memory_context_id":   memoryContext.ContextID,
-		"memory_integration":  "true",
-		"context_type":        string(memoryContext.Type),
-		"memory_updated_at":   time.Now().Format(time.RFC3339),
+		"memory_context_id":  memoryContext.ContextID,
+		"memory_integration": "true",
+		"context_type":       string(memoryContext.Type),
+		"memory_updated_at":  time.Now().Format(time.RFC3339),
 	}
-	
+
 	// This would update the branch record in the database
 	// For now, just log the update
-	bm.logger.Printf("Updated memory metadata for branch %s", branchID)
+	bm.logger.Printf("Updated memory metadata for branch %s with metadata: %+v", branchID, metadata)
 	return nil
 }
 
@@ -2535,17 +2557,17 @@ func (bm *BranchingManagerImpl) getBranch(ctx context.Context, branchID string) 
 	if bm.storageManager == nil {
 		return nil, fmt.Errorf("storage manager not available")
 	}
-	
+
 	branchData, err := bm.storageManager.Get(ctx, "branches", branchID)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var branch interfaces.Branch
 	if err := json.Unmarshal([]byte(branchData), &branch); err != nil {
 		return nil, err
 	}
-	
+
 	return &branch, nil
 }
 
@@ -2553,12 +2575,12 @@ func (bm *BranchingManagerImpl) analyzeBranchContent(ctx context.Context, branch
 	// This would analyze the actual branch content
 	// For now, return mock analysis
 	return map[string]interface{}{
-		"file_count":     42,
-		"line_count":     1250,
-		"language":       "go",
-		"complexity":     "medium",
-		"test_coverage":  85.5,
-		"dependencies":   []string{"yaml", "json", "uuid"},
+		"file_count":    42,
+		"line_count":    1250,
+		"language":      "go",
+		"complexity":    "medium",
+		"test_coverage": 85.5,
+		"dependencies":  []string{"yaml", "json", "uuid"},
 	}, nil
 }
 
@@ -2568,19 +2590,19 @@ func (bm *BranchingManagerImpl) generateDocumentationContent(branch *interfaces.
 	doc += fmt.Sprintf("**Created:** %s\n", branch.CreatedAt.Format(time.RFC3339))
 	doc += fmt.Sprintf("**Base Branch:** %s\n", branch.BaseBranch)
 	doc += fmt.Sprintf("**Status:** %s\n\n", branch.Status)
-	
+
 	doc += "## Analysis\n\n"
 	for key, value := range content {
 		doc += fmt.Sprintf("- **%s:** %v\n", key, value)
 	}
-	
+
 	doc += "\n## Metadata\n\n"
 	for key, value := range branch.Metadata {
 		doc += fmt.Sprintf("- **%s:** %s\n", key, value)
 	}
-	
+
 	doc += "\n---\n*Auto-generated by BranchingManager*\n"
-	
+
 	return doc
 }
 
@@ -2589,7 +2611,7 @@ func (bm *BranchingManagerImpl) storeDocumentation(ctx context.Context, document
 	if err != nil {
 		return err
 	}
-	
+
 	return bm.storageManager.Store(ctx, "documentation", documentation.ID, string(docData))
 }
 
@@ -2608,7 +2630,7 @@ func NewMockStorageManager() *MockStorageManager {
 func (m *MockStorageManager) Store(ctx context.Context, collection, key, value string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	
+
 	if m.data[collection] == nil {
 		m.data[collection] = make(map[string]string)
 	}
@@ -2619,7 +2641,7 @@ func (m *MockStorageManager) Store(ctx context.Context, collection, key, value s
 func (m *MockStorageManager) Get(ctx context.Context, collection, key string) (string, error) {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
-	
+
 	if collectionData, exists := m.data[collection]; exists {
 		if value, exists := collectionData[key]; exists {
 			return value, nil
@@ -2635,7 +2657,7 @@ func (m *MockStorageManager) Update(ctx context.Context, collection, key, value 
 func (m *MockStorageManager) Delete(ctx context.Context, collection, key string) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	
+
 	if collectionData, exists := m.data[collection]; exists {
 		delete(collectionData, key)
 	}
@@ -2645,7 +2667,7 @@ func (m *MockStorageManager) Delete(ctx context.Context, collection, key string)
 func (m *MockStorageManager) List(ctx context.Context, collection string) ([]string, error) {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
-	
+
 	var keys []string
 	if collectionData, exists := m.data[collection]; exists {
 		for key := range collectionData {
@@ -2670,7 +2692,7 @@ func (p *MockBranchingPredictor) PredictOptimalBranch(ctx context.Context, inten
 		SuggestedTags: []interfaces.BranchTag{
 			{Key: "predicted", Value: "true", Category: "system", CreatedAt: time.Now()},
 		},
-		Risks: []string{"Consider testing approach"},
+		Risks:             []string{"Consider testing approach"},
 		EstimatedDuration: 2 * time.Hour,
 	}, nil
 }
@@ -2699,7 +2721,7 @@ func (p *MockBranchingPredictor) AnalyzePatterns(ctx context.Context, projectID 
 func (p *MockBranchingPredictor) OptimizeStrategy(ctx context.Context, strategy interfaces.BranchingStrategy) (*interfaces.OptimizedStrategy, error) {
 	optimized := strategy
 	optimized.Name = fmt.Sprintf("%s_optimized", strategy.Name)
-	
+
 	return &interfaces.OptimizedStrategy{
 		OptimizedStrategy: optimized,
 		Improvements:      []string{"Reduced complexity", "Better naming conventions"},
