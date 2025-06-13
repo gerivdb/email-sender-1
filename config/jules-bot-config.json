@@ -1,0 +1,31 @@
+{
+  "bot": {
+    "detection_patterns": [
+      "google-labs-jules[bot]",
+      "google-labs-jules\\[bot\\]"
+    ],
+    "name": "google-labs-jules[bot]"
+  },
+  "redirection": {
+    "target_prefix": "jules-google/",
+    "auto_redirect": true,
+    "preserve_original": false,
+    "protected_branches": [
+      "main",
+      "dev",
+      "contextual-memory",
+      "jules-google"
+    ]
+  },
+  "system": {
+    "enabled": true,
+    "name": "Jules Google Bot Contributions Manager",
+    "version": "1.0.0"
+  },
+  "monitoring": {
+    "enabled": true,
+    "interval_seconds": 30,
+    "log_to_file": true,
+    "log_file": "logs/jules-bot-activity.log"
+  }
+}

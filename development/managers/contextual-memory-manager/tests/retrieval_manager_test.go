@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/email-sender/development/managers/contextual-memory-manager/interfaces"
-	"github.com/email-sender/development/managers/contextual-memory-manager/internal/retrieval"
+	"github.com/contextual-memory-manager/pkg/interfaces"
+	"github.com/contextual-memory-manager/pkg/manager"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -1,0 +1,2 @@
+# github.com/contextual-memory-manager/pkg/manager
+pkg\manager\sqlite_index_manager.go:225:28: invalid operation: existing.Metadata["version"] (map index expression of type string) is not an interface

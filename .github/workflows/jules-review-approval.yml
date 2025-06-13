@@ -1,0 +1,460 @@
+name: Jules Bot Review & Approval
+
+"on":
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: ['dev']
+  issue_comment:
+    types: [created]
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  quality-assessment:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'jules-google/')
+    outputs:
+      quality_score: ${{ steps.assess.outputs.score }}
+      review_type: ${{ steps.assess.outputs.type }}
+      issues_count: ${{ steps.assess.outputs.issues }}
+      results_path: ${{ steps.assess.outputs.results_path }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml requests
+
+      - name: Run Quality Assessment
+        id: assess
+        run: |
+          echo "Running comprehensive quality assessment..."
+          
+          # Make script executable
+          chmod +x .github/scripts/quality_assessment.py
+          
+          # Run quality assessment
+          python .github/scripts/quality_assessment.py \
+            --config .github/jules-config.yml \
+            --base-ref origin/dev \
+            --output quality_results.json \
+            --github-output >> $GITHUB_OUTPUT
+          
+          # Store results path for later use
+          echo "results_path=quality_results.json" >> $GITHUB_OUTPUT
+
+      - name: Create PR Info
+        id: pr_info
+        run: |
+          cat > pr_info.json << EOF
+          {
+            "repository": "${{ github.repository }}",
+            "number": "${{ github.event.number }}",
+            "title": "${{ github.event.pull_request.title }}",
+            "head_ref": "${{ github.head_ref }}",
+            "author": "${{ github.event.pull_request.user.login }}",
+            "url": "${{ github.event.pull_request.html_url }}"
+          }
+          EOF
+
+      - name: Get Reviewers
+        id: reviewers
+        run: |
+          python << 'EOF'
+          import json
+          import yaml
+          
+          # Load quality results and PR info
+          with open('quality_results.json', 'r') as f:
+              quality_results = json.load(f)
+          with open('pr_info.json', 'r') as f:
+              pr_info = json.load(f)
+          
+          # Load config
+          with open('.github/jules-config.yml', 'r') as f:
+              config = yaml.safe_load(f)
+          
+          # Simple reviewer assignment logic
+          changed_files = quality_results.get('metrics', {}).get('changed_files', [])
+          review_type = quality_results.get('review_type', 'standard')
+          
+          reviewers = []
+          reviewer_config = config.get('reviewer_assignment', {})
+          
+          # Get domain-specific reviewers
+          domains = reviewer_config.get('domains', {})
+          for domain, domain_config in domains.items():
+              patterns = domain_config.get('patterns', [])
+              domain_reviewers = domain_config.get('reviewers', [])
+              
+              # Simple pattern matching
+              for file_path in changed_files:
+                  for pattern in patterns:
+                      if pattern.replace('**/', '').replace('*', '') in file_path:
+                          reviewers.extend(domain_reviewers)
+                          break
+          
+          # Get quality-based reviewers
+          quality_assignment = reviewer_config.get('quality_based', {})
+          if review_type in quality_assignment:
+              primary = quality_assignment[review_type].get('primary', [])
+              reviewers.extend(primary)
+          
+          # Clean up and deduplicate
+          reviewers = list(set([r for r in reviewers if not r.startswith('@domain-expert')]))
+          
+          print(f"reviewers={','.join(reviewers)}")
+          EOF
+
+      - name: Post Detailed Assessment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const score = '${{ steps.assess.outputs.score }}';
+            const type = '${{ steps.assess.outputs.type }}';
+            const issuesCount = '${{ steps.assess.outputs.issues }}';
+            
+            // Load detailed results
+            let detailedResults = {};
+            try {
+              const resultsData = fs.readFileSync('quality_results.json', 'utf8');
+              detailedResults = JSON.parse(resultsData);
+            } catch (e) {
+              console.log('Could not load detailed results:', e.message);
+            }
+            
+            // Format component scores
+            const componentScores = detailedResults.component_scores || {};
+            let scoresTable = '| Component | Score | Status |\n|-----------|--------|--------|\n';
+            
+            for (const [component, score] of Object.entries(componentScores)) {
+              const status = score >= 80 ? '✅' : score >= 60 ? '⚠️' : '❌';
+              const displayName = component.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+              scoresTable += `| ${displayName} | ${Math.round(score)}/100 | ${status} |\n`;
+            }
+            
+            // Format issues
+            let issuesSection = '';
+            const issues = detailedResults.issues || [];
+            if (issues.length > 0) {
+              issuesSection = '\n### ⚠️ Issues Found\n\n';
+              issues.slice(0, 5).forEach(issue => {
+                const severity = issue.severity === 'high' ? '🚨' : issue.severity === 'medium' ? '⚠️' : 'ℹ️';
+                issuesSection += `- ${severity} **${issue.type.replace(/_/g, ' ')}**: ${issue.message}\n`;
+              });
+              if (issues.length > 5) {
+                issuesSection += `- ... and ${issues.length - 5} more issues\n`;
+              }
+            }
+            
+            // Determine emoji and color
+            const emoji = score >= 80 ? '🟢' : score >= 60 ? '🟡' : '🔴';
+            const statusText = type.replace('_', ' ').toUpperCase();
+            
+            const body = `## ${emoji} Jules Bot Quality Assessment
+            
+            **Overall Score:** ${score}/100
+            **Review Type:** ${statusText}
+            **Issues Found:** ${issuesCount}
+            
+            ### 📊 Component Scores
+            ${scoresTable}
+            ${issuesSection}
+            
+            ### 🎯 Next Steps
+            ${type === 'fast_track' ? 
+              '- This contribution meets high quality standards\n- Ready for expedited review' :
+              type === 'standard' ? 
+              '- Standard review process applies\n- Please review the component scores above' :
+              '- Enhanced review required due to quality concerns\n- Please address the issues listed above'
+            }
+            
+            ### 🤖 Review Commands
+            - \`@jules-bot approve\` - Approve and merge to dev
+            - \`@jules-bot request-changes "reason"\` - Request modifications
+            - \`@jules-bot close "reason"\` - Reject contribution
+            - \`@jules-bot reassess\` - Run quality assessment again
+            
+            ---
+            *Automated assessment by Jules Bot • [View Configuration](.github/jules-config.yml)*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+      - name: Assign Reviewers
+        if: steps.reviewers.outputs.reviewers != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const reviewers = '${{ steps.reviewers.outputs.reviewers }}'.split(',')
+              .map(r => r.replace('@', '').trim())
+              .filter(r => r.length > 0);
+            
+            if (reviewers.length > 0) {
+              try {
+                await github.rest.pulls.requestReviewers({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: context.issue.number,
+                  reviewers: reviewers
+                });
+                console.log('Assigned reviewers:', reviewers);
+              } catch (error) {
+                console.log('Could not assign reviewers:', error.message);
+              }
+            }
+
+      - name: Send Notifications
+        if: steps.assess.outputs.score < 60 || steps.assess.outputs.issues > 0
+        run: |
+          chmod +x .github/scripts/notification_system.py
+          python .github/scripts/notification_system.py \
+            --config .github/jules-config.yml \
+            --action review-request \
+            --quality-results quality_results.json \
+            --pr-info pr_info.json
+
+      - name: Upload Assessment Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: quality-assessment-results
+          path: |
+            quality_results.json
+            pr_info.json
+          retention-days: 30
+
+  review-handler:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issue_comment' && contains(github.event.comment.body, '@jules-bot')
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml requests
+
+      - name: Parse Command
+        id: parse
+        run: |
+          comment="${{ github.event.comment.body }}"
+          action="unknown"
+          reason=""
+          
+          if echo "$comment" | grep -q "@jules-bot approve"; then
+            action="approve"
+          elif echo "$comment" | grep -q "@jules-bot request-changes"; then
+            action="request_changes"
+            # Extract reason in quotes
+            reason=$(echo "$comment" | grep -o '"[^"]*"' | tr -d '"' || echo "No reason provided")
+          elif echo "$comment" | grep -q "@jules-bot close"; then
+            action="close"
+            reason=$(echo "$comment" | grep -o '"[^"]*"' | tr -d '"' || echo "No reason provided")
+          elif echo "$comment" | grep -q "@jules-bot reassess"; then
+            action="reassess"
+          fi
+          
+          echo "action=$action" >> $GITHUB_OUTPUT
+          echo "reason=$reason" >> $GITHUB_OUTPUT
+          echo "commenter=${{ github.event.comment.user.login }}" >> $GITHUB_OUTPUT
+          echo "Detected action: $action"
+
+      - name: Validate Permissions
+        id: permissions
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commenter = '${{ steps.parse.outputs.commenter }}';
+            const action = '${{ steps.parse.outputs.action }}';
+            
+            // Check if user has write permissions
+            try {
+              const { data: collaborator } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: commenter
+              });
+              
+              const hasPermission = ['admin', 'write'].includes(collaborator.permission);
+              
+              if (!hasPermission) {
+                await github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: `❌ @${commenter} does not have permission to ${action} this contribution.`
+                });
+                
+                core.setFailed('Insufficient permissions');
+                return;
+              }
+              
+              core.setOutput('has_permission', 'true');
+              
+            } catch (error) {
+              console.log('Permission check failed:', error.message);
+              core.setOutput('has_permission', 'false');
+            }
+
+      - name: Handle Reassess
+        if: steps.parse.outputs.action == 'reassess' && steps.permissions.outputs.has_permission == 'true'
+        run: |
+          echo "Triggering quality reassessment..."
+          # This could trigger the quality-assessment job again
+          # For now, just post a message
+          echo "Reassessment requested by ${{ steps.parse.outputs.commenter }}"
+
+      - name: Handle Approval
+        if: steps.parse.outputs.action == 'approve' && steps.permissions.outputs.has_permission == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commenter = '${{ steps.parse.outputs.commenter }}';
+            
+            // Create approval review
+            try {
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                event: 'APPROVE',
+                body: `✅ Approved by @${commenter} via Jules Bot command`
+              });
+              
+              // Add approval comment
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## ✅ Contribution Approved
+                
+                **Approved by:** @${commenter}
+                **Status:** Ready for merge to \`dev\` branch
+                
+                The contribution will be merged automatically if all checks pass.`
+              });
+              
+              // Auto-merge if enabled (this would need additional configuration)
+              console.log('Approval recorded. Auto-merge could be triggered here.');
+              
+            } catch (error) {
+              console.log('Error handling approval:', error.message);
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `❌ Error processing approval: ${error.message}`
+              });
+            }
+
+      - name: Handle Changes Request
+        if: steps.parse.outputs.action == 'request_changes' && steps.permissions.outputs.has_permission == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commenter = '${{ steps.parse.outputs.commenter }}';
+            const reason = '${{ steps.parse.outputs.reason }}';
+            
+            try {
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                event: 'REQUEST_CHANGES',
+                body: `🔄 Changes requested by @${commenter}\n\n**Reason:** ${reason}`
+              });
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## 🔄 Changes Requested
+                
+                **Requested by:** @${commenter}
+                **Reason:** ${reason}
+                
+                Please address the feedback and update the contribution.`
+              });
+              
+            } catch (error) {
+              console.log('Error requesting changes:', error.message);
+            }
+
+      - name: Handle Rejection
+        if: steps.parse.outputs.action == 'close' && steps.permissions.outputs.has_permission == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commenter = '${{ steps.parse.outputs.commenter }}';
+            const reason = '${{ steps.parse.outputs.reason }}';
+            
+            try {
+              // Close the PR
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                state: 'closed'
+              });
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## ❌ Contribution Rejected
+                
+                **Rejected by:** @${commenter}
+                **Reason:** ${reason}
+                
+                This contribution has been closed and will not be merged.`
+              });
+              
+            } catch (error) {
+              console.log('Error closing PR:', error.message);
+            }
+
+      - name: Handle Unknown Command
+        if: steps.parse.outputs.action == 'unknown'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## ℹ️ Unknown Command
+              
+              Available Jules Bot commands:
+              - \`@jules-bot approve\` - Approve and merge contribution
+              - \`@jules-bot request-changes "reason"\` - Request modifications
+              - \`@jules-bot close "reason"\` - Reject contribution
+              - \`@jules-bot reassess\` - Run quality assessment again
+              
+              Please use one of the supported commands.`
+            });

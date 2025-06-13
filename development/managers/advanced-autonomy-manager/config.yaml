@@ -1,0 +1,115 @@
+# Configuration AdvancedAutonomyManager - 21st Manager in FMOUA Framework
+# Complete autonomy configuration for maintenance and organization across 20 ecosystem managers
+
+# Niveau d'autonomie global (1=basic, 2=medium, 3=advanced, 4=complete)
+autonomy_level: 4
+
+# Paramètres de performance
+max_concurrent_ops: 10
+decision_timeout: "5s"
+health_check_interval: "30s"
+
+# Seuils et limites
+safety_threshold: 0.95
+risk_tolerance: 0.10
+performance_target: 0.90
+
+# Apprentissage et adaptation
+learning_enabled: true
+adaptation_rate: 0.05
+history_retention: "168h"
+
+# Configuration des 5 composants principaux
+decision_config:
+  neural_tree_levels: 8
+  confidence_threshold: 0.85
+  risk_assessment_depth: 5
+  training_data_size: 10000
+  decision_speed_target: "200ms"
+
+predictive_config:
+  prediction_horizon: "24h"
+  analysis_depth: 5
+  ml_model_path: "./models/predictive.model"
+  accuracy_threshold: 0.92
+  update_frequency: "1h"
+
+monitoring_config:
+  dashboard_port: 8080
+  update_interval: "1s"
+  metrics_retention: "168h"
+  websocket_enabled: true
+  alert_thresholds:
+    cpu_usage: 0.80
+    memory_usage: 0.85
+    error_rate: 0.05
+
+healing_config:
+  anomaly_detection_sensitivity: 0.85
+  auto_correction_enabled: true
+  learning_patterns: true
+  healing_timeout: "30s"
+  max_healing_attempts: 3
+
+coordination_config:
+  event_bus_buffer_size: 1000
+  state_sync_interval: "10s"
+  emergency_response_time: "5s"
+  orchestrator_workers: 5
+
+# Configuration de découverte des managers
+discovery_config:
+  enable_filesystem_discovery: true
+  enable_network_discovery: true
+  enable_registry_discovery: false
+  search_paths:
+    - "../"
+    - "../../"
+    - "./development/managers/"
+  network_scan_range: "127.0.0.1/32"
+  discovery_timeout: "30s"
+  manager_ports:
+    - 8080
+    - 8081
+    - 8082
+    - 8083
+    - 8084
+    - 8085
+    - 8086
+    - 8087
+    - 8088
+    - 8089
+    - 8090
+    - 8091
+    - 8092
+    - 8093
+    - 8094
+    - 8095
+    - 8096
+    - 8097
+    - 8098
+    - 8099
+  connection_timeout: "10s"
+  retry_attempts: 3
+  retry_delay: "2s"
+  expected_managers:
+    - "file-manager"
+    - "dependency-manager"
+    - "config-manager"
+    - "security-manager"
+    - "monitoring-manager"
+    - "storage-manager"
+    - "container-manager"
+    - "deployment-manager"
+    - "network-manager"
+    - "backup-manager"
+    - "log-manager"
+    - "cache-manager"
+    - "task-manager"
+    - "notification-manager"
+    - "workflow-manager"
+    - "template-manager"
+    - "error-manager"
+    - "maintenance-manager"
+    - "contextual-memory-manager"
+    - "mcp-manager"

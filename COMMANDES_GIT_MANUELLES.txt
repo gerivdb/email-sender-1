@@ -1,0 +1,25 @@
+# Commandes Git pour push vers GitHub
+# Copiez-collez ces commandes une par une dans une fenêtre CMD
+
+# 1. Aller dans le répertoire du projet
+cd /d "d:\DO\WEB\N8N_tests\PROJETS\EMAIL_SENDER_1"
+
+# 2. Vérifier la branche actuelle (doit montrer manager/powershell-optimization avec *)
+git branch
+
+# 3. Vérifier la configuration du dépôt distant
+git remote -v
+
+# 4. Tentative de push standard
+git push origin manager/powershell-optimization
+
+# 5. Si la commande ci-dessus échoue, utilisez celle-ci
+# REMPLACEZ USERNAME par votre nom d'utilisateur GitHub
+# REMPLACEZ TOKEN par votre token d'accès personnel GitHub
+git push https://USERNAME:TOKEN@github.com/gerivdb/email-sender-1.git manager/powershell-optimization
+
+# 6. Si tout échoue, essayez un force push
+git push -f origin manager/powershell-optimization
+
+# 7. Ou avec le token et force
+git push -f https://USERNAME:TOKEN@github.com/gerivdb/email-sender-1.git manager/powershell-optimization

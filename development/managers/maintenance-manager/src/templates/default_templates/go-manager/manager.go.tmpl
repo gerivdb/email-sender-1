@@ -1,0 +1,371 @@
+package {{.package}}
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
+{{- if .hasStorage}}
+	"database/sql"
+{{- end}}
+{{- if .hasMonitoring}}
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+{{- end}}
+{{- if .hasSecurity}}
+	"crypto/rand"
+	"crypto/aes"
+	"crypto/cipher"
+{{- end}}
+)
+
+// {{.name}}Manager implements the {{.name}} management functionality
+type {{.name}}Manager struct {
+	logger    *logrus.Logger
+	server    *http.Server
+	router    *gin.Engine
+{{- if .hasStorage}}
+	db        *sql.DB
+{{- end}}
+{{- if .hasMonitoring}}
+	metrics   *{{.name}}Metrics
+{{- end}}
+{{- if .hasSecurity}}
+	gcm       cipher.AEAD
+{{- end}}
+	
+	// State
+	initialized bool
+	running     bool
+}
+
+{{- if .hasMonitoring}}
+// {{.name}}Metrics holds Prometheus metrics
+type {{.name}}Metrics struct {
+	requestsTotal    prometheus.Counter
+	requestDuration  prometheus.Histogram
+	activeConnections prometheus.Gauge
+}
+{{- end}}
+
+// New{{.name}}Manager creates a new {{.name}} manager instance
+func New{{.name}}Manager(logger *logrus.Logger) *{{.name}}Manager {
+	manager := &{{.name}}Manager{
+		logger: logger,
+		router: gin.New(),
+	}
+	
+{{- if .hasMonitoring}}
+	manager.metrics = &{{.name}}Metrics{
+		requestsTotal: prometheus.NewCounter(prometheus.CounterOpts{
+			Name: "{{lower .name}}_requests_total",
+			Help: "Total number of requests processed",
+		}),
+		requestDuration: prometheus.NewHistogram(prometheus.HistogramOpts{
+			Name: "{{lower .name}}_request_duration_seconds",
+			Help: "Request duration in seconds",
+		}),
+		activeConnections: prometheus.NewGauge(prometheus.GaugeOpts{
+			Name: "{{lower .name}}_active_connections",
+			Help: "Number of active connections",
+		}),
+	}
+	
+	// Register metrics
+	prometheus.MustRegister(manager.metrics.requestsTotal)
+	prometheus.MustRegister(manager.metrics.requestDuration)
+	prometheus.MustRegister(manager.metrics.activeConnections)
+{{- end}}
+	
+	manager.setupRoutes()
+	return manager
+}
+
+// Initialize initializes the {{.name}} manager
+func (m *{{.name}}Manager) Initialize(ctx context.Context) error {
+	m.logger.Info("Initializing {{.name}}Manager")
+	
+{{- if .hasStorage}}
+	// Initialize database connection
+	if err := m.initializeDatabase(ctx); err != nil {
+		return fmt.Errorf("failed to initialize database: %w", err)
+	}
+{{- end}}
+
+{{- if .hasSecurity}}
+	// Initialize encryption
+	if err := m.initializeEncryption(); err != nil {
+		return fmt.Errorf("failed to initialize encryption: %w", err)
+	}
+{{- end}}
+	
+	// Create HTTP server
+	m.server = &http.Server{
+		Addr:         ":{{.port}}",
+		Handler:      m.router,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
+	
+	m.initialized = true
+	m.logger.Info("{{.name}}Manager initialized successfully")
+	return nil
+}
+
+// Start starts the {{.name}} manager server
+func (m *{{.name}}Manager) Start(ctx context.Context) error {
+	if !m.initialized {
+		return fmt.Errorf("manager not initialized")
+	}
+	
+	m.logger.WithField("port", {{.port}}).Info("Starting {{.name}}Manager server")
+	
+	go func() {
+		if err := m.server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			m.logger.WithError(err).Error("Server failed to start")
+		}
+	}()
+	
+	m.running = true
+	return nil
+}
+
+// Stop stops the {{.name}} manager server
+func (m *{{.name}}Manager) Stop(ctx context.Context) error {
+	if !m.running {
+		return nil
+	}
+	
+	m.logger.Info("Stopping {{.name}}Manager server")
+	
+	if err := m.server.Shutdown(ctx); err != nil {
+		return fmt.Errorf("failed to shutdown server: %w", err)
+	}
+	
+	m.running = false
+	return nil
+}
+
+// HealthCheck performs a health check
+func (m *{{.name}}Manager) HealthCheck(ctx context.Context) error {
+	if !m.initialized {
+		return fmt.Errorf("manager not initialized")
+	}
+	
+{{- if .hasStorage}}
+	// Check database connection
+	if err := m.db.PingContext(ctx); err != nil {
+		return fmt.Errorf("database health check failed: %w", err)
+	}
+{{- end}}
+	
+	return nil
+}
+
+// Cleanup cleans up resources
+func (m *{{.name}}Manager) Cleanup() error {
+	m.logger.Info("Cleaning up {{.name}}Manager")
+	
+{{- if .hasStorage}}
+	if m.db != nil {
+		m.db.Close()
+	}
+{{- end}}
+	
+	return nil
+}
+
+// setupRoutes configures the HTTP routes
+func (m *{{.name}}Manager) setupRoutes() {
+	// Middleware
+	m.router.Use(gin.Recovery())
+	m.router.Use(m.loggingMiddleware())
+{{- if .hasMonitoring}}
+	m.router.Use(m.metricsMiddleware())
+{{- end}}
+	
+	// Health endpoint
+	m.router.GET("/health", m.handleHealth)
+	
+{{- if .hasMonitoring}}
+	// Metrics endpoint
+	m.router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+{{- end}}
+	
+	// API routes
+	api := m.router.Group("/api/v1")
+	{
+		api.GET("/status", m.handleStatus)
+{{- if .hasSecurity}}
+		api.POST("/encrypt", m.handleEncrypt)
+		api.POST("/decrypt", m.handleDecrypt)
+{{- end}}
+	}
+}
+
+// HTTP Handlers
+
+func (m *{{.name}}Manager) handleHealth(c *gin.Context) {
+	ctx := c.Request.Context()
+	
+	if err := m.HealthCheck(ctx); err != nil {
+		c.JSON(http.StatusServiceUnavailable, gin.H{
+			"status": "unhealthy",
+			"error":  err.Error(),
+		})
+		return
+	}
+	
+	c.JSON(http.StatusOK, gin.H{
+		"status":    "healthy",
+		"timestamp": time.Now(),
+		"service":   "{{.name}}Manager",
+	})
+}
+
+func (m *{{.name}}Manager) handleStatus(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"service":     "{{.name}}Manager",
+		"version":     "1.0.0",
+		"initialized": m.initialized,
+		"running":     m.running,
+		"timestamp":   time.Now(),
+	})
+}
+
+{{- if .hasSecurity}}
+func (m *{{.name}}Manager) handleEncrypt(c *gin.Context) {
+	var request struct {
+		Data string `json:"data" binding:"required"`
+	}
+	
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	
+	encrypted, err := m.encryptData([]byte(request.Data))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	
+	c.JSON(http.StatusOK, gin.H{
+		"encrypted": encrypted,
+	})
+}
+
+func (m *{{.name}}Manager) handleDecrypt(c *gin.Context) {
+	var request struct {
+		Data []byte `json:"data" binding:"required"`
+	}
+	
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	
+	decrypted, err := m.decryptData(request.Data)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	
+	c.JSON(http.StatusOK, gin.H{
+		"decrypted": string(decrypted),
+	})
+}
+{{- end}}
+
+// Middleware
+
+func (m *{{.name}}Manager) loggingMiddleware() gin.HandlerFunc {
+	return gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
+		m.logger.WithFields(logrus.Fields{
+			"status":     param.StatusCode,
+			"method":     param.Method,
+			"path":       param.Path,
+			"latency":    param.Latency,
+			"client_ip":  param.ClientIP,
+		}).Info("HTTP Request")
+		return ""
+	})
+}
+
+{{- if .hasMonitoring}}
+func (m *{{.name}}Manager) metricsMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		start := time.Now()
+		m.metrics.activeConnections.Inc()
+		
+		c.Next()
+		
+		m.metrics.activeConnections.Dec()
+		m.metrics.requestsTotal.Inc()
+		m.metrics.requestDuration.Observe(time.Since(start).Seconds())
+	}
+}
+{{- end}}
+
+// Private methods
+
+{{- if .hasStorage}}
+func (m *{{.name}}Manager) initializeDatabase(ctx context.Context) error {
+	// TODO: Implement database initialization
+	// This is a placeholder - implement based on your database requirements
+	m.logger.Info("Database initialization placeholder")
+	return nil
+}
+{{- end}}
+
+{{- if .hasSecurity}}
+func (m *{{.name}}Manager) initializeEncryption() error {
+	// Generate a random key for AES encryption
+	key := make([]byte, 32) // 256-bit key
+	if _, err := rand.Read(key); err != nil {
+		return fmt.Errorf("failed to generate encryption key: %w", err)
+	}
+	
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return fmt.Errorf("failed to create cipher: %w", err)
+	}
+	
+	gcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return fmt.Errorf("failed to create GCM: %w", err)
+	}
+	
+	m.gcm = gcm
+	return nil
+}
+
+func (m *{{.name}}Manager) encryptData(data []byte) ([]byte, error) {
+	nonce := make([]byte, m.gcm.NonceSize())
+	if _, err := rand.Read(nonce); err != nil {
+		return nil, err
+	}
+	
+	ciphertext := m.gcm.Seal(nonce, nonce, data, nil)
+	return ciphertext, nil
+}
+
+func (m *{{.name}}Manager) decryptData(data []byte) ([]byte, error) {
+	nonceSize := m.gcm.NonceSize()
+	if len(data) < nonceSize {
+		return nil, fmt.Errorf("ciphertext too short")
+	}
+	
+	nonce, ciphertext := data[:nonceSize], data[nonceSize:]
+	plaintext, err := m.gcm.Open(nil, nonce, ciphertext, nil)
+	if err != nil {
+		return nil, err
+	}
+	
+	return plaintext, nil
+}
+{{- end}}

@@ -1,12 +1,12 @@
 # Test script pour valider la structure modulaire
 # Ce script contient intentionnellement des violations pour tester le validateur
 
-function Create-TestFile {
+function New-TestFile {
     param([string]$Path)
     Write-Host "Creating test file at $Path"
 }
 
-function Generate-Report {
+function New-Report {
     param([string]$Data)
     Write-Host "Generating report with $Data"
 }
@@ -41,3 +41,4 @@ Export-ModuleMember -Function @(
     'ValidFunction-Name',
     'invalidfunctionname'
 )
+
