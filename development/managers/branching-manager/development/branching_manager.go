@@ -13,17 +13,16 @@ import (
 	"github.com/google/uuid"
 	"gopkg.in/yaml.v3"
 
-	baseInterfaces "../../../interfaces"
 	"../interfaces"
 )
 
 // BranchingManagerImpl implements the BranchingManager interface
 type BranchingManagerImpl struct {
-	baseInterfaces.BaseManager
+	interfaces.BaseManager
 	config           *BranchingConfig
-	storageManager   baseInterfaces.StorageManager
-	errorManager     baseInterfaces.ErrorManager
-	contextualMemory baseInterfaces.ContextualMemoryManager
+	storageManager   interfaces.StorageManager
+	errorManager     interfaces.ErrorManager
+	contextualMemory interfaces.ContextualMemoryManager
 
 	// Internal state
 	activeSessions    map[string]*interfaces.Session
