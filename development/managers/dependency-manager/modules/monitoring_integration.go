@@ -4,39 +4,41 @@ import (
 	"context"
 	"fmt"
 	"time"
-	
+
+	"github.com/email-sender/development/managers/interfaces"
 	"go.uber.org/zap"
 )
 
 // initializeMonitoringIntegration sets up monitoring manager integration
-func (m *DependencyManager) initializeMonitoringIntegration() error {
+func (m *GoModManager) initializeMonitoringIntegration() error {
 	// Check if monitoring manager is already initialized
 	if m.monitoringManager != nil {
 		return nil
 	}
 
-	m.Log("Initializing monitoring integration...")
+	m.Log("info", "Initializing monitoring integration...")
 	// In a real implementation, this would use a factory or service locator
 	// to get an instance of the MonitoringManager
 	
 	// For now we'll just log this step
-	m.Log("Monitoring integration initialized successfully")
+	m.Log("info", "Monitoring integration initialized successfully")
 	return nil
 }
 
 // monitorDependencyOperation monitors the performance of dependency operations
-func (m *DependencyManager) monitorDependencyOperation(ctx context.Context, operation string, fn func() error) error {
+func (m *GoModManager) monitorDependencyOperation(ctx context.Context, operation string, fn func() error) error {
 	if m.monitoringManager == nil {
 		// If no monitoring manager, just execute the function
 		return fn()
 	}
 
-	m.Log(fmt.Sprintf("Monitoring operation: %s", operation))
+	m.Log("info", fmt.Sprintf("Monitoring operation: %s", operation))
 	
 	// Start monitoring the operation
+	// StartOperationMonitoring now returns *interfaces.OperationMetrics
 	metrics, err := m.monitoringManager.StartOperationMonitoring(ctx, operation)
 	if err != nil {
-		m.Log(fmt.Sprintf("Warning: Failed to start monitoring for operation %s: %v", operation, err))
+		m.Log("warn", fmt.Sprintf("Warning: Failed to start monitoring for operation %s: %v", operation, err))
 		// Continue with the operation even if monitoring fails
 		return fn()
 	}
@@ -54,19 +56,19 @@ func (m *DependencyManager) monitorDependencyOperation(ctx context.Context, oper
 	
 	// Stop monitoring
 	if stopErr := m.monitoringManager.StopOperationMonitoring(ctx, metrics); stopErr != nil {
-		m.Log(fmt.Sprintf("Warning: Failed to stop monitoring for operation %s: %v", operation, stopErr))
+		m.Log("warn", fmt.Sprintf("Warning: Failed to stop monitoring for operation %s: %v", operation, stopErr))
 	}
 	
 	return opErr
 }
 
 // configureOperationAlerts configures alerts for dependency operation failures
-func (m *DependencyManager) configureOperationAlerts() error {
+func (m *GoModManager) configureOperationAlerts() error {
 	if m.monitoringManager == nil {
 		return fmt.Errorf("monitoring manager not initialized")
 	}
 	
-	m.Log("Configuring alerts for dependency resolution failures...")
+	m.Log("info", "Configuring alerts for dependency resolution failures...")
 	
 	// Configure alert for dependency resolution failures
 	resolutionAlertConfig := &AlertConfig{
@@ -86,7 +88,7 @@ func (m *DependencyManager) configureOperationAlerts() error {
 	}
 	
 	if err := m.monitoringManager.ConfigureAlerts(context.Background(), resolutionAlertConfig); err != nil {
-		m.Log(fmt.Sprintf("Error configuring resolution failure alerts: %v", err))
+		m.Log("error", fmt.Sprintf("Error configuring resolution failure alerts: %v", err))
 		return err
 	}
 	
@@ -106,7 +108,7 @@ func (m *DependencyManager) configureOperationAlerts() error {
 	}
 	
 	if err := m.monitoringManager.ConfigureAlerts(context.Background(), vulnerabilityAlertConfig); err != nil {
-		m.Log(fmt.Sprintf("Error configuring vulnerability alerts: %v", err))
+		m.Log("error", fmt.Sprintf("Error configuring vulnerability alerts: %v", err))
 		return err
 	}
 	
@@ -129,37 +131,38 @@ func (m *DependencyManager) configureOperationAlerts() error {
 	}
 	
 	if err := m.monitoringManager.ConfigureAlerts(context.Background(), performanceAlertConfig); err != nil {
-		m.Log(fmt.Sprintf("Error configuring performance alerts: %v", err))
+		m.Log("error", fmt.Sprintf("Error configuring performance alerts: %v", err))
 		return err
 	}
 	
-	m.Log("Alerts for dependency operations configured successfully")
+	m.Log("info", "Alerts for dependency operations configured successfully")
 	return nil
 }
 
 // monitorSecurityAudit monitors the security audit process and generates alerts for vulnerabilities
-func (m *DependencyManager) monitorSecurityAudit(ctx context.Context, dependencies []Dependency) (*VulnerabilityReport, error) {
+func (m *GoModManager) monitorSecurityAudit(ctx context.Context, dependencies []Dependency) (*interfaces.VulnerabilityReport, error) {
 	if m.securityManager == nil {
 		return nil, fmt.Errorf("security manager not initialized")
 	}
 	
 	if m.monitoringManager == nil {
 		// If no monitoring manager, just execute the scan
-		return m.securityManager.ScanForVulnerabilities(ctx, dependencies)
+		return m.securityManager.ScanDependenciesForVulnerabilities(ctx, dependencies) // Corrected method name
 	}
 	
-	m.Log("Monitoring security audit operation")
+	m.Log("info", "Monitoring security audit operation")
 	
 	// Start monitoring the security scan
+	// StartOperationMonitoring now returns *interfaces.OperationMetrics
 	metrics, err := m.monitoringManager.StartOperationMonitoring(ctx, "security_audit")
 	if err != nil {
-		m.Log(fmt.Sprintf("Warning: Failed to start monitoring for security audit: %v", err))
+		m.Log("warn", fmt.Sprintf("Warning: Failed to start monitoring for security audit: %v", err))
 		// Continue with the operation even if monitoring fails
-		return m.securityManager.ScanForVulnerabilities(ctx, dependencies)
+		return m.securityManager.ScanDependenciesForVulnerabilities(ctx, dependencies) // Corrected method name
 	}
 	
 	// Execute the security scan
-	report, scanErr := m.securityManager.ScanForVulnerabilities(ctx, dependencies)
+	report, scanErr := m.securityManager.ScanDependenciesForVulnerabilities(ctx, dependencies) // Corrected method name
 	
 	// Update metrics
 	metrics.Success = scanErr == nil
@@ -167,15 +170,18 @@ func (m *DependencyManager) monitorSecurityAudit(ctx context.Context, dependenci
 		metrics.ErrorMessage = scanErr.Error()
 	} else {
 		// Include vulnerability metrics in the monitoring data
-		metrics.Tags = map[string]string{
-			"total_scanned":         fmt.Sprintf("%d", report.TotalScanned),
-			"vulnerabilities_found": fmt.Sprintf("%d", report.VulnerabilitiesFound),
+		if report != nil { // Ensure report is not nil before accessing fields
+			totalVulns := report.CriticalCount + report.HighCount + report.MediumCount + report.LowCount
+			metrics.Tags = map[string]string{
+				"total_scanned":         fmt.Sprintf("%d", report.TotalScanned),
+				"vulnerabilities_found": fmt.Sprintf("%d", totalVulns),
+			}
 		}
 	}
 	
 	// Stop monitoring
 	if stopErr := m.monitoringManager.StopOperationMonitoring(ctx, metrics); stopErr != nil {
-		m.Log(fmt.Sprintf("Warning: Failed to stop monitoring for security audit: %v", stopErr))
+		m.Log("warn", fmt.Sprintf("Warning: Failed to stop monitoring for security audit: %v", stopErr))
 	}
 	
 	return report, scanErr

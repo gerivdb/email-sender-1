@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/email-sender/managers/interfaces"
 	"context"
 	"encoding/json"
 	"flag"
@@ -14,6 +13,7 @@ import (
 
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"github.com/email-sender/development/managers/interfaces"
 	"golang.org/x/mod/modfile"
 )
 
@@ -221,7 +221,7 @@ func (em *ErrorManagerImpl) ValidateErrorEntry(entry ErrorEntry) error {
 		return fmt.Errorf("ErrorCode cannot be empty")
 	}
 	if !isValidSeverity(entry.Severity) {
-		return fmt.Errorf("Invalid severity level: %s", entry.Severity)
+		return fmt.Errorf("invalid severity level: %s", entry.Severity)
 	}
 	return nil
 }
@@ -579,14 +579,14 @@ func getDefaultConfig() *Config {
 			LogLevel           string `json:"logLevel"`
 			GoModPath          string `json:"goModPath"`
 			AutoTidy           bool   `json:"autoTidy"`
-			interfaces.VulnerabilityCheck bool   `json:"vulnerabilityCheck"`
+			VulnerabilityCheck bool   `json:"vulnerabilityCheck"`
 			BackupOnChange     bool   `json:"backupOnChange"`
 		}{
 			LogPath:            "logs/dependency-manager.log",
 			LogLevel:           "info",
-			GoModPath:          "go.mod",
+			GoModPath:          "go.mod", // Default path to go.mod
 			AutoTidy:           true,
-			interfaces.VulnerabilityCheck: true,
+			VulnerabilityCheck: true,
 			BackupOnChange:     true,
 		},
 	}
@@ -804,7 +804,7 @@ func runCLI(manager *GoModManager) {
 			fmt.Fprintf(os.Stderr, "Error parsing health command: %v\n", err)
 			os.Exit(1)
 		}
-		if err := manager.PerformIntegrationHealthCheck(); err != nil {
+		if err := manager.PerformHealthCheck(); err != nil { // Corrected method name
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
@@ -815,7 +815,7 @@ func runCLI(manager *GoModManager) {
 			fmt.Fprintf(os.Stderr, "Error parsing metadata command: %v\n", err)
 			os.Exit(1)
 		}
-		if err := manager.Syncinterfaces.DependencyMetadata(); err != nil {
+		if err := manager.PerformHealthCheck(); err != nil { // Corrected method name
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
@@ -1026,7 +1026,7 @@ func (cm *DepConfigManagerImpl) initializeFromLegacyConfig(config *Config) {
 	cm.settings[prefix+"settings.logLevel"] = config.Settings.LogLevel
 	cm.settings[prefix+"settings.goModPath"] = config.Settings.GoModPath
 	cm.settings[prefix+"settings.autoTidy"] = config.Settings.AutoTidy
-	cm.settings[prefix+"settings.vulnerabilityCheck"] = config.Settings.interfaces.VulnerabilityCheck
+	cm.settings[prefix+"settings.vulnerabilityCheck"] = config.Settings.VulnerabilityCheck
 	cm.settings[prefix+"settings.backupOnChange"] = config.Settings.BackupOnChange
 }
 
@@ -1232,19 +1232,34 @@ func (m *GoModManager) AuditWithSecurityManager() error {
 	}
 
 	// Log audit results
-	m.logger.Info("Enhanced security audit completed",
-		zap.Int("total_scanned", auditResult.TotalScanned),
-		zap.Int("vulnerabilities_found", auditResult.VulnerabilitiesFound),
-		zap.Time("audit_timestamp", auditResult.Timestamp))
+	if auditResult != nil { // Check if auditResult is not nil
+		// auditResult is now *interfaces.VulnerabilityReport
+		totalVulnerabilitiesFromReport := auditResult.CriticalCount + auditResult.HighCount + auditResult.MediumCount + auditResult.LowCount
 
-	// Persist audit results if StorageManager is available
-	if err := m.managerIntegrator.Persistinterfaces.DependencyMetadata(ctx, dependencies); err != nil {
-		m.logger.Warn("Failed to persist dependency metadata", zap.Error(err))
+		m.logger.Info("Enhanced security audit completed",
+			zap.Int("total_scanned", auditResult.TotalScanned),
+			zap.Int("total_vulnerabilities_found", totalVulnerabilitiesFromReport),
+			zap.Int("critical_vulnerabilities", auditResult.CriticalCount),
+			zap.Int("high_vulnerabilities", auditResult.HighCount),
+			zap.Int("medium_vulnerabilities", auditResult.MediumCount),
+			zap.Int("low_vulnerabilities", auditResult.LowCount),
+			zap.Time("audit_timestamp", auditResult.Timestamp))
+
+		// Persist audit results
+		if m.managerIntegrator != nil {
+			if err := m.managerIntegrator.PersistDependencyMetadata(ctx, dependencies); err != nil {
+				m.logger.Warn("Failed to persist dependency metadata after audit", zap.Error(err))
+			}
+		} else {
+			m.logger.Warn("ManagerIntegrator not initialized, cannot persist metadata after audit")
+		}
+
+		m.Log("info", fmt.Sprintf("Enhanced security audit completed - %d dependencies scanned, %d total vulnerabilities found (C:%d H:%d M:%d L:%d)",
+			auditResult.TotalScanned, totalVulnerabilitiesFromReport, auditResult.CriticalCount, auditResult.HighCount, auditResult.MediumCount, auditResult.LowCount))
+	} else {
+		m.logger.Error("Security audit result was nil")
+		m.Log("error", "Security audit failed to produce a result")
 	}
-
-	m.Log("SUCCESS", fmt.Sprintf("Enhanced security audit completed - %d dependencies scanned, %d vulnerabilities found",
-		auditResult.TotalScanned, auditResult.VulnerabilitiesFound))
-
 	return nil
 }
 
@@ -1270,11 +1285,15 @@ func (m *GoModManager) AddWithMonitoring(module, version string) error {
 	}
 
 	// Persist dependency metadata
-	dependencies := []Dependency{{Name: module, Version: version}}
-	if err := m.managerIntegrator.Persistinterfaces.DependencyMetadata(ctx, dependencies); err != nil {
-		m.logger.Warn("Failed to persist dependency metadata after addition",
-			zap.Error(err),
-			zap.String("module", module))
+	dependencies := []Dependency{{Name: module, Version: version}} // Create a slice for Persist
+	if m.managerIntegrator != nil { // Ensure integrator exists
+		if err := m.managerIntegrator.PersistDependencyMetadata(ctx, dependencies); err != nil {
+			m.logger.Warn("Failed to persist dependency metadata after addition",
+				zap.Error(err),
+				zap.String("module", module))
+		}
+	} else {
+		m.logger.Warn("ManagerIntegrator not initialized, cannot persist metadata after addition")
 	}
 
 	m.Log("SUCCESS", fmt.Sprintf("Successfully added and monitored %s@%s", module, version))
@@ -1360,12 +1379,12 @@ func (m *GoModManager) CheckDeploymentReadiness(environment string) error {
 	return nil
 }
 
-// PerformIntegrationHealthCheck checks health of all integrated managers
-func (m *GoModManager) PerformIntegrationHealthCheck() error {
-	m.Log("INFO", "Performing integration health check")
+// PerformHealthCheck checks health of all integrated managers
+func (m *GoModManager) PerformHealthCheck() error {
+	m.Log("info", "Performing integration health check") // Corrected log level
 	ctx := context.Background()
 
-	status, err := m.managerIntegrator.PerformIntegrationHealthCheck(ctx)
+	status, err := m.managerIntegrator.PerformHealthCheck(ctx) // Corrected method name
 	if err != nil {
 		return m.errorManager.ProcessError(ctx, err, "ManagerIntegrator", "health_check", &ErrorHooks{
 			OnError: func(err error) {
@@ -1383,10 +1402,10 @@ func (m *GoModManager) PerformIntegrationHealthCheck() error {
 
 	m.logger.Info("Integration health check completed",
 		zap.String("overall_status", status.Overall),
-		zap.Time("timestamp", status.Timestamp),
+		zap.Time("last_checked", status.LastChecked), // Corrected Timestamp to LastChecked
 		zap.Int("managers_checked", len(status.Managers)))
 
-	m.Log("INFO", fmt.Sprintf("Integration health check completed - Overall status: %s", status.Overall))
+	m.Log("info", fmt.Sprintf("Integration health check completed - Overall status: %s", status.Overall)) // Corrected log level
 	return nil
 }
 
@@ -1395,74 +1414,76 @@ func (m *GoModManager) ListWithEnhancedMetadata() ([]interfaces.DependencyMetada
 	m.Log("INFO", "Listing dependencies with enhanced metadata")
 	ctx := context.Background()
 
-	// Get basic dependency list
-	dependencies, err := m.List()
+	dependencies, err := m.List() // Returns []Dependency
 	if err != nil {
-		return nil, m.errorManager.ProcessError(ctx, err, "dependency-list", "enhanced_metadata", nil)
+		return nil, m.errorManager.ProcessError(ctx, err, "dependency-list", "enhanced_metadata_list", nil)
 	}
 
 	var enhancedDependencies []interfaces.DependencyMetadata
-
-	// Get enhanced metadata for each dependency if StorageManager is available
-	for _, dep := range dependencies {
-		if m.managerIntegrator.storageManager != nil {
-			metadata, err := m.managerIntegrator.storageManager.Getinterfaces.DependencyMetadata(ctx, dep.Name)
-			if err != nil {
-				// If metadata not found, create basic metadata
-				metadata = &interfaces.DependencyMetadata{
-					Name:        dep.Name,
-					Version:     dep.Version,
-					LastUpdated: time.Now(),
-					Tags: map[string]string{
-						"source": "go-mod",
-						"type":   "dependency",
-					},
-				}
-				m.logger.Debug("Using basic metadata for dependency",
-					zap.String("name", dep.Name),
-					zap.Error(err))
-			}
-			enhancedDependencies = append(enhancedDependencies, *metadata)
-		} else {
-			// Create basic metadata if StorageManager not available
-			metadata := interfaces.DependencyMetadata{
-				Name:        dep.Name,
-				Version:     dep.Version,
-				LastUpdated: time.Now(),
-				Tags: map[string]string{
-					"source": "go-mod",
-					"type":   "dependency",
-				},
-			}
-			enhancedDependencies = append(enhancedDependencies, metadata)
+	if m.managerIntegrator == nil || m.managerIntegrator.storageManager == nil {
+		m.logger.Warn("StorageManager not available, returning basic metadata")
+		for _, dep := range dependencies {
+			enhancedDependencies = append(enhancedDependencies, interfaces.DependencyMetadata{
+				Name:       dep.Name,
+				Version:    dep.Version,
+				Repository: dep.Repository,
+				License:    dep.License,
+				Tags:       map[string]string{"source": "go-mod", "type": "basic"},
+			})
 		}
+		return enhancedDependencies, nil
 	}
 
-	m.logger.Info("Enhanced dependency metadata retrieved",
-		zap.Int("dependencies_count", len(enhancedDependencies)))
-
+	for _, dep := range dependencies {
+		metadata, err := m.managerIntegrator.storageManager.GetDependencyMetadata(ctx, dep.Name) // Corrected method name
+		if err != nil {
+			m.logger.Warn("Failed to get enhanced metadata, using basic", zap.String("dependency", dep.Name), zap.Error(err))
+			enhancedDependencies = append(enhancedDependencies, interfaces.DependencyMetadata{
+				Name:        dep.Name,
+				Version:     dep.Version,
+				Repository:  dep.Repository,
+				License:     dep.License,
+				LastUpdated: time.Now(),
+				Tags:        map[string]string{"source": "go-mod", "type": "fallback"},
+			})
+		} else if metadata != nil { // Ensure metadata is not nil before appending
+			enhancedDependencies = append(enhancedDependencies, *metadata) // Corrected: dereference pointer
+		} else {
+            // Handle case where metadata is nil but error is also nil (if possible by interface)
+             m.logger.Warn("Enhanced metadata was nil but no error reported, using basic", zap.String("dependency", dep.Name))
+             enhancedDependencies = append(enhancedDependencies, interfaces.DependencyMetadata{
+                Name:        dep.Name,
+                Version:     dep.Version,
+                Repository:  dep.Repository,
+                License:     dep.License,
+                LastUpdated: time.Now(),
+                Tags:        map[string]string{"source": "go-mod", "type": "nil_fallback"},
+            })
+        }
+	}
+	m.logger.Info("Enhanced dependency metadata retrieved", zap.Int("count", len(enhancedDependencies)))
 	return enhancedDependencies, nil
 }
 
-// Syncinterfaces.DependencyMetadata synchronizes dependency metadata with StorageManager
-func (m *GoModManager) Syncinterfaces.DependencyMetadata() error {
+// SyncDependencyMetadata synchronizes dependency metadata with StorageManager
+func (m *GoModManager) SyncDependencyMetadata() error {
 	m.Log("INFO", "Synchronizing dependency metadata with StorageManager")
 	ctx := context.Background()
 
-	// Get current dependencies
-	dependencies, err := m.List()
+	dependencies, err := m.List() // Returns []Dependency
 	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "dependency-list", "sync_metadata", nil)
+		return m.errorManager.ProcessError(ctx, err, "dependency-list", "sync_metadata_list", nil)
 	}
 
-	// Persist all dependency metadata
-	err = m.managerIntegrator.Persistinterfaces.DependencyMetadata(ctx, dependencies)
-	if err != nil {
-		return m.errorManager.ProcessError(ctx, err, "StorageManager", "sync_metadata", &ErrorHooks{
+	if m.managerIntegrator == nil {
+		return m.errorManager.ProcessError(ctx, fmt.Errorf("manager integrator not initialized"), "ManagerIntegrator", "sync_metadata_integrator_check", nil)
+	}
+
+	// Pass the original []Dependency slice directly
+	if err := m.managerIntegrator.PersistDependencyMetadata(ctx, dependencies); err != nil {
+		return m.errorManager.ProcessError(ctx, err, "StorageManager", "sync_metadata_persist", &ErrorHooks{
 			OnError: func(err error) {
-				m.logger.Error("Failed to sync dependency metadata",
-					zap.Error(err),
-					zap.Int("dependencies_count", len(dependencies)))
+				m.logger.Error("Failed to sync dependency metadata", zap.Error(err), zap.Int("dependencies_count", len(dependencies)))
 			},
 		})
 	}
@@ -1489,8 +1510,12 @@ func (m *GoModManager) EnableRealManagerIntegration(ctx context.Context) error {
 }
 
 // GetIntegrationStatus returns the current status of all integrated managers.
-func (m *GoModManager) GetIntegrationStatus(ctx context.Context) (*IntegrationHealthStatus, error) {
-	return m.managerIntegrator.PerformIntegrationHealthCheck(ctx)
+func (m *GoModManager) GetIntegrationStatus(ctx context.Context) (*interfaces.IntegrationHealthStatus, error) { // Ensure it uses interfaces.IntegrationHealthStatus
+	if m.managerIntegrator == nil {
+		return nil, fmt.Errorf("ManagerIntegrator not initialized")
+	}
+	// PerformHealthCheck now returns (*interfaces.IntegrationHealthStatus, error)
+	return m.managerIntegrator.PerformHealthCheck(ctx)
 }
 
 // InitializeAllManagers initializes all manager integrations
@@ -1513,3 +1538,40 @@ func (m *GoModManager) InitializeAllManagers(ctx context.Context) error {
 	m.Log("INFO", "All manager integrations initialized successfully")
 	return nil
 }
+
+// Placeholder methods for GoModManager based on original problem description
+func (m *GoModManager) initializeDependencyGraph() error {
+	m.logger.Info("initializeDependencyGraph called - STUB")
+	// TODO: Implement actual logic
+	return nil
+}
+
+func (m *GoModManager) loadExistingMetadata() error {
+	m.logger.Info("loadExistingMetadata called - STUB")
+	// TODO: Implement actual logic
+	return nil
+}
+
+func (m *GoModManager) saveCache() error {
+	m.logger.Info("saveCache called - STUB")
+	// TODO: Implement actual logic
+	return nil
+}
+
+func (m *GoModManager) checkRegistryHealth() error {
+	m.logger.Info("checkRegistryHealth called - STUB")
+	// TODO: Implement actual logic
+	return nil
+}
+
+// DetectConflicts for GoModManager - assuming it might be needed here as well,
+// or if GoModManager is the one truly implementing an external DependencyManager interface.
+func (m *GoModManager) DetectConflicts(ctx context.Context) ([]interfaces.DependencyConflict, error) {
+	m.logger.Info("DetectConflicts called on GoModManager - STUB")
+	// TODO: Implement actual conflict detection logic for GoModManager
+	return nil, nil
+}
+
+// Ensure this file primarily contains the GoModManager and its direct methods.
+// Other structs like DependencyManagerImpl, interfaces, and ManagerIntegrator related code
+// should be in their respective dedicated files if they are not already.

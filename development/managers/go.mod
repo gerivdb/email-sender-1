@@ -6,13 +6,12 @@ require (
 	github.com/BurntSushi/toml v1.5.0
 	github.com/email-sender/managers/error-manager v0.0.0-00010101000000-000000000000
 	github.com/gin-gonic/gin v1.10.1
-	github.com/google/uuid v1.3.0
+	github.com/google/uuid v1.6.0
 	github.com/lib/pq v1.10.9
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/zap v1.27.0
-	golang.org/x/mod v0.24.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 

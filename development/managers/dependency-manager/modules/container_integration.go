@@ -13,12 +13,12 @@ func (m *GoModManager) initializeContainerIntegration() error {
 		return nil
 	}
 
-	m.Log("Initializing container integration...")
+	m.Log("info", "Initializing container integration...")
 	// In a real implementation, this would use a factory or service locator
 	// to get an instance of the ContainerManager
 
 	// For now we'll just log this step
-	m.Log("Container integration initialized successfully")
+	m.Log("info", "Container integration initialized successfully")
 	return nil
 }
 
@@ -28,17 +28,17 @@ func (m *GoModManager) validateDependenciesForContainer(ctx context.Context, dep
 		return nil, fmt.Errorf("ContainerManager not initialized")
 	}
 
-	m.Log(fmt.Sprintf("Validating %d dependencies for container compatibility", len(dependencies)))
+	m.Log("info", fmt.Sprintf("Validating %d dependencies for container compatibility", len(dependencies)))
 
 	// Use the container manager to validate dependencies
 	result, err := m.containerManager.ValidateForContainerization(ctx, dependencies)
 	if err != nil {
-		m.Log(fmt.Sprintf("Error validating dependencies for containerization: %v", err))
+		m.Log("error", fmt.Sprintf("Error validating dependencies for containerization: %v", err))
 		return nil, err
 	}
 
 	// Log the validation results
-	m.Log(fmt.Sprintf("Container validation results - Compatible: %v, Issues: %d",
+	m.Log("info", fmt.Sprintf("Container validation results - Compatible: %v, Issues: %d",
 		result.IsValid, len(result.ValidationErrors)))
 
 	return result, nil
@@ -50,17 +50,17 @@ func (m *GoModManager) optimizeDependenciesForContainer(ctx context.Context, dep
 		return nil, fmt.Errorf("ContainerManager not initialized")
 	}
 
-	m.Log(fmt.Sprintf("Optimizing %d dependencies for container environment", len(dependencies)))
+	m.Log("info", fmt.Sprintf("Optimizing %d dependencies for container environment", len(dependencies)))
 
 	// Use the container manager to optimize dependencies
 	optimization, err := m.containerManager.OptimizeForContainer(ctx, dependencies)
 	if err != nil {
-		m.Log(fmt.Sprintf("Error optimizing dependencies for container: %v", err))
+		m.Log("error", fmt.Sprintf("Error optimizing dependencies for container: %v", err))
 		return nil, err
 	}
 
 	// Log the optimization results
-	m.Log(fmt.Sprintf("Container optimization results - Type: %s, Difficulty: %s",
+	m.Log("info", fmt.Sprintf("Container optimization results - Type: %s, Difficulty: %s",
 		optimization.Type, optimization.Difficulty))
 
 	return optimization, nil
@@ -72,12 +72,12 @@ func (m *GoModManager) generateDockerfileFromDependencies(ctx context.Context, d
 		return "", fmt.Errorf("ContainerManager not initialized")
 	}
 
-	m.Log("Generating Dockerfile based on current dependencies")
+	m.Log("info", "Generating Dockerfile based on current dependencies")
 
 	// Optimize dependencies for container environment
 	optimization, err := m.optimizeDependenciesForContainer(ctx, dependencies)
 	if err != nil {
-		m.Log(fmt.Sprintf("Error optimizing dependencies: %v", err))
+		m.Log("error", fmt.Sprintf("Error optimizing dependencies: %v", err))
 		return "", err
 	}
 
@@ -85,7 +85,7 @@ func (m *GoModManager) generateDockerfileFromDependencies(ctx context.Context, d
 	dockerfile := fmt.Sprintf("# Generated Dockerfile based on dependency optimization\n# Optimization type: %s\n# Description: %s\n",
 		optimization.Type, optimization.Description)
 
-	m.Log("Successfully generated Dockerfile from dependencies")
+	m.Log("info", "Successfully generated Dockerfile from dependencies")
 	return dockerfile, nil
 }
 
@@ -94,7 +94,7 @@ func (m *GoModManager) getDependencyContainerStatus(ctx context.Context) (string
 	// Get current dependencies
 	deps, err := m.List()
 	if err != nil {
-		m.Log(fmt.Sprintf("Error listing dependencies: %v", err))
+		m.Log("error", fmt.Sprintf("Error listing dependencies: %v", err))
 		return "", fmt.Errorf("failed to list dependencies: %v", err)
 	}
 
@@ -102,9 +102,9 @@ func (m *GoModManager) getDependencyContainerStatus(ctx context.Context) (string
 	var dependencies []Dependency
 	for _, dep := range deps {
 		dependencies = append(dependencies, Dependency{
-			Name:    dep.Name,
-			Version: dep.Version,
-			Path:    dep.Path,
+			Name:       dep.Name,
+			Version:    dep.Version,
+			Repository: dep.Repository, // Assuming Path meant Repository
 		})
 	}
 

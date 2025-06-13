@@ -75,3 +75,17 @@ development/tools/swe-bench-tools/
 /cmd/analyzer/analyzer*
 *.test
 coverage.out
+
+# Qdrant et bases de données vectorielles
+tools/qdrant/storage/
+tools/qdrant/qdrant.db
+tools/qdrant/wal/
+*.qdrant
+*.vectors
+*.index
+*.embeddings
+
+# Données vectorielles temporaires et caches
+vectors_cache/
+embeddings_cache/
+qdrant_snapshots/

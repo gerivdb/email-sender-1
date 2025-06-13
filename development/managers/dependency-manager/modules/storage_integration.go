@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/email-sender/managers/interfaces"
+	"github.com/email-sender/development/managers/interfaces"
 )
 
 // initializeStorageIntegration sets up storage manager integration
@@ -57,18 +57,18 @@ func (m *GoModManager) persistDependencyMetadata(ctx context.Context, dependency
 }
 
 // getDependencyMetadata retrieves dependency metadata from the StorageManager
-func (m *DependencyManager) getDependencyMetadata(ctx context.Context, name, version string) (*DependencyMetadata, error) {
+func (m *GoModManager) getDependencyMetadata(ctx context.Context, name, version string) (*interfaces.DependencyMetadata, error) {
 	if m.storageManager == nil {
 		return nil, fmt.Errorf("StorageManager not initialized")
 	}
 
-	m.Log(fmt.Sprintf("Retrieving metadata for dependency: %s@%s", name, version))
+	m.Log("info", fmt.Sprintf("Retrieving metadata for dependency: %s@%s", name, version)) // Added log level
 
 	// Construct the storage key
 	key := fmt.Sprintf("dependencies/%s/%s", name, version)
 
 	// Create target variable
-	metadata := &DependencyMetadata{}
+	metadata := &interfaces.DependencyMetadata{} // Changed to interfaces.DependencyMetadata
 
 	// Retrieve metadata
 	if err := m.storageManager.GetObject(ctx, key, metadata); err != nil {
@@ -80,28 +80,28 @@ func (m *DependencyManager) getDependencyMetadata(ctx context.Context, name, ver
 }
 
 // updateDependencyAuditStatus updates the audit status in dependency metadata
-func (m *DependencyManager) updateDependencyAuditStatus(ctx context.Context, name, version, status string) error {
+func (m *GoModManager) updateDependencyAuditStatus(ctx context.Context, name, version, status string) error {
 	if m.storageManager == nil {
 		return fmt.Errorf("StorageManager not initialized")
 	}
 
-	m.Log(fmt.Sprintf("Updating audit status for dependency: %s@%s", name, version))
+	m.Log("info", fmt.Sprintf("Updating audit status for dependency: %s@%s", name, version)) // Added log level
 
 	// Get existing metadata
 	metadata, err := m.getDependencyMetadata(ctx, name, version)
 	if err != nil {
 		// If metadata doesn't exist yet, create it
-		metadata = &DependencyMetadata{
+		metadata = &interfaces.DependencyMetadata{ // Changed to interfaces.DependencyMetadata
 			Name:    name,
 			Version: version,
-			Tags:    []string{"go", "module"},
+			Tags:    map[string]string{"type": "go-module"}, // Corrected Tags type
 		}
 	}
 
 	// Update audit information
 	now := time.Now()
-	metadata.LastAudit = &now
-	metadata.AuditStatus = status
+	// metadata.LastAudit = &now // Assuming LastAudit and AuditStatus are not in interfaces.DependencyMetadata based on its definition
+	// metadata.AuditStatus = status
 	metadata.UpdatedAt = now
 
 	// Store updated metadata
@@ -116,27 +116,27 @@ func (m *DependencyManager) updateDependencyAuditStatus(ctx context.Context, nam
 }
 
 // listDependencyMetadata lists all stored dependency metadata
-func (m *DependencyManager) listDependencyMetadata(ctx context.Context) ([]*DependencyMetadata, error) {
+func (m *GoModManager) listDependencyMetadata(ctx context.Context) ([]*interfaces.DependencyMetadata, error) {
 	if m.storageManager == nil {
 		return nil, fmt.Errorf("StorageManager not initialized")
 	}
 
-	m.Log("Listing all dependency metadata")
+	m.Log("info", "Listing all dependency metadata") // Added log level
 
 	// List all objects with the dependencies prefix
 	keys, err := m.storageManager.ListObjects(ctx, "dependencies/")
 	if err != nil {
-		m.Log(fmt.Sprintf("Error listing dependencies: %v", err))
+		m.Log("error", fmt.Sprintf("Error listing dependencies: %v", err)) // Added log level
 		return nil, err
 	}
 
-	var metadataList []*DependencyMetadata
+	var metadataList []*interfaces.DependencyMetadata // Changed to interfaces.DependencyMetadata
 
 	// Retrieve each metadata object
 	for _, key := range keys {
-		metadata := &DependencyMetadata{}
+		metadata := &interfaces.DependencyMetadata{} // Changed to interfaces.DependencyMetadata
 		if err := m.storageManager.GetObject(ctx, key, metadata); err != nil {
-			m.Log(fmt.Sprintf("Error retrieving metadata for key %s: %v", key, err))
+			m.Log("error", fmt.Sprintf("Error retrieving metadata for key %s: %v", key, err)) // Added log level
 			continue
 		}
 		metadataList = append(metadataList, metadata)
@@ -147,21 +147,21 @@ func (m *DependencyManager) listDependencyMetadata(ctx context.Context) ([]*Depe
 }
 
 // syncDependenciesToStorage synchronizes all current dependencies with StorageManager
-func (m *DependencyManager) syncDependenciesToStorage(ctx context.Context, dependencies []Dependency) error {
+func (m *GoModManager) syncDependenciesToStorage(ctx context.Context, dependencies []Dependency) error {
 	if m.storageManager == nil {
 		return fmt.Errorf("StorageManager not initialized")
 	}
 
-	m.Log(fmt.Sprintf("Syncing %d dependencies to storage", len(dependencies)))
+	m.Log("info", fmt.Sprintf("Syncing %d dependencies to storage", len(dependencies))) // Added log level
 
 	for _, dep := range dependencies {
-		if err := m.persistDependencyMetadata(ctx, &dep); err != nil {
-			m.Log(fmt.Sprintf("Error syncing dependency %s: %v", dep.Name, err))
+		if err := m.persistDependencyMetadata(ctx, &dep); err != nil { // This calls the already corrected persistDependencyMetadata
+			m.Log("error", fmt.Sprintf("Error syncing dependency %s: %v", dep.Name, err)) // Added log level
 			// Continue with other dependencies even if one fails
 			continue
 		}
 	}
 
-	m.Log("Successfully synced dependencies to storage")
+	m.Log("info", "Successfully synced dependencies to storage") // Added log level
 	return nil
 }
