@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: branching-staging
+  labels:
+    environment: staging
+    app: branching-framework
+    version: v1.0.0-20250608-201033

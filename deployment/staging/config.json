@@ -1,0 +1,11 @@
+{
+  "namespace": "branching-staging",
+  "resources": {
+    "memory": "1Gi",
+    "cpu": "500m"
+  },
+  "version": "v1.0.0-20250608-201033",
+  "environment": "staging",
+  "timestamp": "2025-06-08T20:10:33Z",
+  "replicas": 2
+}

@@ -1,0 +1,59 @@
+# Ultra-Advanced 8-Level Framework - Edge Router
+# Multi-stage build for optimal performance and security
+FROM golang:1.21-alpine AS builder
+
+WORKDIR /app
+
+# Install dependencies
+RUN apk add --no-cache git curl build-base
+
+# Copy go mod files
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy source code
+COPY . .
+
+# Build edge router with optimizations
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+   -ldflags="-w -s -X main.version=${VERSION:-dev} -X main.buildTime=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+   -o edge-router \
+   ./cmd/edge-router
+
+# Security scanning stage
+FROM alpine:3.19 AS security
+RUN apk add --no-cache ca-certificates tzdata
+COPY --from=builder /app/edge-router /usr/local/bin/edge-router
+RUN chmod +x /usr/local/bin/edge-router
+
+# Final production image
+FROM scratch
+
+# Copy certificates and timezone data
+COPY --from=security /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=security /usr/share/zoneinfo /usr/share/zoneinfo
+
+# Copy binary
+COPY --from=security /usr/local/bin/edge-router /edge-router
+
+# Non-root user
+USER 65534:65534
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+   CMD ["/edge-router", "health"]
+
+# Expose ports
+EXPOSE 8080 8443 9090
+
+# Metadata
+LABEL maintainer="Ultra-Advanced Framework Team" \
+   version="1.0.0" \
+   description="Global Edge Router for 8-Level Branching Framework" \
+   org.opencontainers.image.title="edge-router" \
+   org.opencontainers.image.description="Ultra-low latency edge computing router" \
+   org.opencontainers.image.version="1.0.0" \
+   org.opencontainers.image.source="https://github.com/ultra-advanced-framework/edge-router"
+
+ENTRYPOINT ["/edge-router"]
+CMD ["--config=/config/edge-router.yaml", "--log-level=info"]

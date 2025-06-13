@@ -1,0 +1,65 @@
+# Ultra-Advanced 8-Level Framework - Load Test Controller
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+   build-essential \
+   gcc \
+   g++ \
+   git \
+   curl \
+   && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements-loadtest.txt .
+RUN pip install --no-cache-dir --user -r requirements-loadtest.txt
+
+# Copy source code
+COPY ./loadtest/ ./
+
+# Production image
+FROM python:3.11-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+   curl \
+   htop \
+   && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN groupadd -r loadtest && useradd -r -g loadtest loadtest
+
+WORKDIR /app
+
+# Copy Python packages from builder
+COPY --from=builder /root/.local /home/loadtest/.local
+COPY --from=builder /app /app
+
+# Set ownership
+RUN chown -R loadtest:loadtest /app /home/loadtest
+
+# Switch to non-root user
+USER loadtest
+
+# Add local bin to PATH
+ENV PATH=/home/loadtest/.local/bin:$PATH
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+   CMD ["python", "-c", "import requests; requests.get('http://localhost:8080/health', timeout=5)"]
+
+# Expose ports
+EXPOSE 8080 9090
+
+# Metadata
+LABEL maintainer="Ultra-Advanced Framework Team" \
+   version="1.0.0" \
+   description="Load Test Controller for 1M+ User Testing" \
+   org.opencontainers.image.title="loadtest-controller" \
+   org.opencontainers.image.description="Enterprise-scale load testing orchestrator" \
+   org.opencontainers.image.version="1.0.0"
+
+ENTRYPOINT ["python", "controller.py"]
+CMD ["--config=/config/loadtest.yaml", "--workers=100"]

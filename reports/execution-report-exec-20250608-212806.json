@@ -1,0 +1,63 @@
+{
+  "EndTime": "2025-06-08T21:28:10.8345082+02:00",
+  "Results": {
+    "Failed": 0,
+    "Warnings": 0,
+    "Success": 5,
+    "Errors": [
+      {
+        "Phase": "Prerequisites",
+        "Message": "Required tool not available",
+        "Tool": "Terraform"
+      },
+      {
+        "Phase": "Prerequisites",
+        "Message": "Required tool not available",
+        "Tool": "Helm"
+      }
+    ]
+  },
+  "Phases": [
+    {
+      "Duration": 1.1188056,
+      "Name": "Prerequisites Check",
+      "Timestamp": "2025-06-08T21:28:07.5242923+02:00",
+      "Status": "Success"
+    },
+    {
+      "Duration": 0.0409721,
+      "Name": "Configuration Validation",
+      "Timestamp": "2025-06-08T21:28:07.5877917+02:00",
+      "Status": "Success"
+    },
+    {
+      "Duration": 0.08937,
+      "Name": "Script Files Check",
+      "Timestamp": "2025-06-08T21:28:07.6994726+02:00",
+      "Status": "Success"
+    },
+    {
+      "Duration": 1.9279584,
+      "Name": "Docker Environment Check",
+      "Timestamp": "2025-06-08T21:28:09.7245892+02:00",
+      "Status": "Success"
+    },
+    {
+      "Duration": 1.087613,
+      "Name": "Kubernetes Context Check",
+      "Timestamp": "2025-06-08T21:28:10.8289453+02:00",
+      "Status": "Success"
+    }
+  ],
+  "Environment": "development",
+  "StartTime": "2025-06-08T21:28:06.3316216+02:00",
+  "TotalDuration": 4.5026715,
+  "Mode": "validation",
+  "Summary": {
+    "SuccessRate": 100.0,
+    "TotalPhases": 5,
+    "SuccessfulPhases": 5,
+    "FailedPhases": 0
+  },
+  "ExecutionId": "exec-20250608-212806"
+}

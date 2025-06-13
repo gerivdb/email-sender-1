@@ -1,0 +1,966 @@
+# Performance Optimization Suite
+# Ultra-Advanced 8-Level Branching Framework - Real-time Performance Optimization
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: branching-optimization
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: performance-optimization
+    app.kubernetes.io/version: "v2.0.0"
+    tier: optimization
+    environment: production
+  annotations:
+    description: "AI-powered performance optimization for enterprise workloads"
+    cost-center: "performance-optimization"
+    optimization-target: "100ms-response-time"
+
+---
+# Performance Optimizer Controller - AI-driven optimization engine
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: performance-optimizer
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: performance-optimizer
+    app.kubernetes.io/component: performance-optimization
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: performance-optimizer
+  template:
+    metadata:
+      labels:
+        app: performance-optimizer
+        version: v2.0.0
+    spec:
+      serviceAccountName: performance-optimizer
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+        - name: optimizer
+          image: branching-framework/performance-optimizer:v2.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 9090
+              name: grpc
+            - containerPort: 8090
+              name: metrics
+          env:
+            - name: OPTIMIZATION_MODE
+              value: "aggressive" # conservative, balanced, aggressive
+            - name: OPTIMIZATION_INTERVAL
+              value: "30s"
+            - name: PREDICTION_HORIZON
+              value: "300s" # 5 minutes
+            - name: AI_MODEL_ENDPOINT
+              value: "http://ai-optimization-model.branching-optimization.svc.cluster.local:8080"
+            - name: KUBERNETES_CLUSTER_NAME
+              value: "branching-production"
+            - name: FRAMEWORK_LEVELS_OPTIMIZE
+              value: "1,2,3,4,5,6,7,8"
+            - name: METRICS_COLLECTION_INTERVAL
+              value: "5s"
+            - name: ALERT_THRESHOLD_RESPONSE_TIME
+              value: "100ms"
+            - name: ALERT_THRESHOLD_ERROR_RATE
+              value: "0.01" # 0.01%
+            - name: ALERT_THRESHOLD_CPU_USAGE
+              value: "80"
+            - name: ALERT_THRESHOLD_MEMORY_USAGE
+              value: "85"
+            - name: PROMETHEUS_URL
+              value: "http://prometheus.branching-enterprise.svc.cluster.local:9090"
+            - name: REDIS_CLUSTER_ENDPOINTS
+              valueFrom:
+                configMapKeyRef:
+                  name: optimization-config
+                  key: redis.cluster.endpoints
+            - name: POSTGRESQL_URL
+              valueFrom:
+                secretKeyRef:
+                  name: optimization-secrets
+                  key: postgresql.url
+            - name: QDRANT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: optimization-config
+                  key: qdrant.url
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 4Gi
+            limits:
+              cpu: 4000m
+              memory: 8Gi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          volumeMounts:
+            - name: optimization-config
+              mountPath: /etc/optimization
+              readOnly: true
+            - name: ai-models
+              mountPath: /opt/models
+              readOnly: true
+      volumes:
+        - name: optimization-config
+          configMap:
+            name: optimization-config
+        - name: ai-models
+          persistentVolumeClaim:
+            claimName: ai-models-pvc
+
+---
+# Performance Optimizer Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: performance-optimizer
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: performance-optimizer
+    app.kubernetes.io/component: performance-optimization
+spec:
+  type: ClusterIP
+  selector:
+    app: performance-optimizer
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+    - name: grpc
+      port: 9090
+      targetPort: 9090
+    - name: metrics
+      port: 8090
+      targetPort: 8090
+
+---
+# AI Optimization Model Server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-optimization-model
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: ai-optimization-model
+    app.kubernetes.io/component: performance-optimization
+spec:
+  replicas: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: ai-optimization-model
+  template:
+    metadata:
+      labels:
+        app: ai-optimization-model
+        version: v2.0.0
+    spec:
+      serviceAccountName: ai-optimization-model
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: node.kubernetes.io/instance-type
+                    operator: In
+                    values:
+                      - "gpu-optimized"
+                      - "compute-optimized"
+      containers:
+        - name: ai-model
+          image: branching-framework/ai-optimization-model:v2.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8090
+              name: metrics
+          env:
+            - name: MODEL_TYPE
+              value: "ensemble" # neural-network, decision-tree, ensemble
+            - name: MODEL_UPDATE_INTERVAL
+              value: "3600s" # 1 hour
+            - name: TRAINING_DATA_WINDOW
+              value: "86400s" # 24 hours
+            - name: PREDICTION_CONFIDENCE_THRESHOLD
+              value: "0.85"
+            - name: GPU_ACCELERATION
+              value: "true"
+            - name: BATCH_SIZE
+              value: "1000"
+            - name: MODEL_CACHE_SIZE
+              value: "10GB"
+            - name: FEATURE_ENGINEERING_ENABLED
+              value: "true"
+            - name: HYPERPARAMETER_TUNING
+              value: "bayesian"
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 8Gi
+              nvidia.com/gpu: 1
+            limits:
+              cpu: 4000m
+              memory: 16Gi
+              nvidia.com/gpu: 2
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          volumeMounts:
+            - name: ai-models
+              mountPath: /opt/models
+            - name: training-data
+              mountPath: /opt/training
+      volumes:
+        - name: ai-models
+          persistentVolumeClaim:
+            claimName: ai-models-pvc
+        - name: training-data
+          persistentVolumeClaim:
+            claimName: training-data-pvc
+
+---
+# AI Model Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-optimization-model
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: ai-optimization-model
+    app.kubernetes.io/component: performance-optimization
+spec:
+  type: ClusterIP
+  selector:
+    app: ai-optimization-model
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+    - name: metrics
+      port: 8090
+      targetPort: 8090
+
+---
+# Real-time Metrics Collector
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: metrics-collector
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: metrics-collector
+    app.kubernetes.io/component: performance-optimization
+spec:
+  selector:
+    matchLabels:
+      app: metrics-collector
+  template:
+    metadata:
+      labels:
+        app: metrics-collector
+        version: v2.0.0
+    spec:
+      serviceAccountName: metrics-collector
+      hostNetwork: true
+      hostPID: true
+      containers:
+        - name: collector
+          image: branching-framework/metrics-collector:v2.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8090
+              name: metrics
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: COLLECTION_INTERVAL
+              value: "1s" # High-frequency collection
+            - name: METRICS_BUFFER_SIZE
+              value: "10000"
+            - name: SYSTEM_METRICS_ENABLED
+              value: "true"
+            - name: APPLICATION_METRICS_ENABLED
+              value: "true"
+            - name: NETWORK_METRICS_ENABLED
+              value: "true"
+            - name: CUSTOM_METRICS_ENABLED
+              value: "true"
+            - name: FRAMEWORK_LEVELS_METRICS
+              value: "1,2,3,4,5,6,7,8"
+            - name: PROMETHEUS_PUSH_GATEWAY
+              value: "http://prometheus-pushgateway.branching-enterprise.svc.cluster.local:9091"
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: proc
+              mountPath: /host/proc
+              readOnly: true
+            - name: sys
+              mountPath: /host/sys
+              readOnly: true
+            - name: root
+              mountPath: /host/root
+              readOnly: true
+      volumes:
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: sys
+          hostPath:
+            path: /sys
+        - name: root
+          hostPath:
+            path: /
+      tolerations:
+        - operator: Exists
+          effect: NoSchedule
+        - operator: Exists
+          effect: NoExecute
+
+---
+# Auto-scaling Controller with AI predictions
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: intelligent-autoscaler
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: intelligent-autoscaler
+    app.kubernetes.io/component: performance-optimization
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: intelligent-autoscaler
+  template:
+    metadata:
+      labels:
+        app: intelligent-autoscaler
+        version: v2.0.0
+    spec:
+      serviceAccountName: intelligent-autoscaler
+      containers:
+        - name: autoscaler
+          image: branching-framework/intelligent-autoscaler:v2.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8090
+              name: metrics
+          env:
+            - name: PREDICTION_BASED_SCALING
+              value: "true"
+            - name: SCALING_AGGRESSIVENESS
+              value: "medium" # low, medium, high
+            - name: SCALING_COOLDOWN
+              value: "60s"
+            - name: SCALE_UP_THRESHOLD
+              value: "70" # CPU %
+            - name: SCALE_DOWN_THRESHOLD
+              value: "30" # CPU %
+            - name: MAX_SCALE_UP_RATE
+              value: "2" # 2x current replicas
+            - name: MAX_SCALE_DOWN_RATE
+              value: "0.5" # 50% of current replicas
+            - name: PREDICTIVE_HORIZON
+              value: "600s" # 10 minutes
+            - name: AI_MODEL_ENDPOINT
+              value: "http://ai-optimization-model.branching-optimization.svc.cluster.local:8080"
+            - name: TARGET_NAMESPACES
+              value: "branching-enterprise,branching-edge"
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+---
+# Resource Optimizer - Memory, CPU, Storage optimization
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-optimizer
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: resource-optimizer
+    app.kubernetes.io/component: performance-optimization
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: resource-optimizer
+  template:
+    metadata:
+      labels:
+        app: resource-optimizer
+        version: v2.0.0
+    spec:
+      serviceAccountName: resource-optimizer
+      containers:
+        - name: optimizer
+          image: branching-framework/resource-optimizer:v2.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8090
+              name: metrics
+          env:
+            - name: OPTIMIZATION_TARGETS
+              value: "cpu,memory,storage,network"
+            - name: CPU_OPTIMIZATION_ENABLED
+              value: "true"
+            - name: MEMORY_OPTIMIZATION_ENABLED
+              value: "true"
+            - name: STORAGE_OPTIMIZATION_ENABLED
+              value: "true"
+            - name: NETWORK_OPTIMIZATION_ENABLED
+              value: "true"
+            - name: JVM_TUNING_ENABLED
+              value: "true"
+            - name: GC_OPTIMIZATION_ENABLED
+              value: "true"
+            - name: CONNECTION_POOL_OPTIMIZATION
+              value: "true"
+            - name: CACHE_OPTIMIZATION_ENABLED
+              value: "true"
+            - name: DATABASE_QUERY_OPTIMIZATION
+              value: "true"
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 2Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+---
+# Database Performance Optimizer
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database-optimizer
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: database-optimizer
+    app.kubernetes.io/component: performance-optimization
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: database-optimizer
+  template:
+    metadata:
+      labels:
+        app: database-optimizer
+        version: v2.0.0
+    spec:
+      serviceAccountName: database-optimizer
+      containers:
+        - name: optimizer
+          image: branching-framework/database-optimizer:v2.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8090
+              name: metrics
+          env:
+            - name: DATABASE_TYPES
+              value: "postgresql,redis,qdrant"
+            - name: QUERY_OPTIMIZATION_ENABLED
+              value: "true"
+            - name: INDEX_OPTIMIZATION_ENABLED
+              value: "true"
+            - name: CONNECTION_POOLING_OPTIMIZATION
+              value: "true"
+            - name: CACHE_STRATEGY_OPTIMIZATION
+              value: "true"
+            - name: VACUUM_OPTIMIZATION_ENABLED
+              value: "true"
+            - name: STATISTICS_UPDATE_ENABLED
+              value: "true"
+            - name: SLOW_QUERY_DETECTION
+              value: "true"
+            - name: SLOW_QUERY_THRESHOLD
+              value: "100ms"
+            - name: POSTGRESQL_URL
+              valueFrom:
+                secretKeyRef:
+                  name: optimization-secrets
+                  key: postgresql.url
+            - name: REDIS_CLUSTER_ENDPOINTS
+              valueFrom:
+                configMapKeyRef:
+                  name: optimization-config
+                  key: redis.cluster.endpoints
+            - name: QDRANT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: optimization-config
+                  key: qdrant.url
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+
+---
+# Persistent Volume Claims for AI Models and Training Data
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ai-models-pvc
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: ai-models-pvc
+    app.kubernetes.io/component: performance-optimization
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: training-data-pvc
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: training-data-pvc
+    app.kubernetes.io/component: performance-optimization
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+  storageClassName: fast-ssd
+
+---
+# Optimization Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: optimization-config
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: optimization-config
+    app.kubernetes.io/component: performance-optimization
+data:
+  # Database connections
+  redis.cluster.endpoints: "redis-cluster-0.redis-cluster.branching-enterprise.svc.cluster.local:6379,redis-cluster-1.redis-cluster.branching-enterprise.svc.cluster.local:6379,redis-cluster-2.redis-cluster.branching-enterprise.svc.cluster.local:6379"
+  qdrant.url: "http://qdrant.branching-enterprise.svc.cluster.local:6333"
+
+  # Optimization parameters
+  optimization.mode: "aggressive"
+  optimization.interval: "30s"
+  prediction.horizon: "300s"
+
+  # Performance thresholds
+  response.time.target: "50ms"
+  response.time.p95.threshold: "100ms"
+  response.time.p99.threshold: "200ms"
+  error.rate.threshold: "0.01" # 0.01%
+  cpu.utilization.target: "70"
+  memory.utilization.target: "75"
+
+  # Framework levels optimization
+  level1.micro.sessions.optimization: "connection-pooling,caching"
+  level2.event.driven.optimization: "async-processing,queue-optimization"
+  level3.multi.dimensional.optimization: "index-optimization,query-caching"
+  level4.contextual.memory.optimization: "memory-pooling,gc-tuning"
+  level5.temporal.operations.optimization: "time-series-optimization,compression"
+  level6.predictive.ai.optimization: "model-quantization,batch-processing"
+  level7.branching.as.code.optimization: "code-caching,compilation-optimization"
+  level8.quantum.superposition.optimization: "state-compression,entanglement-optimization"
+
+  # AI model configuration
+  ai.model.type: "ensemble"
+  ai.model.update.interval: "3600s"
+  ai.training.data.window: "86400s"
+  ai.prediction.confidence.threshold: "0.85"
+  ai.feature.engineering.enabled: "true"
+  ai.hyperparameter.tuning: "bayesian"
+
+  # Caching optimization
+  cache.strategy: "adaptive"
+  cache.ttl.dynamic: "true"
+  cache.eviction.policy: "lru-with-frequency"
+  cache.compression.enabled: "true"
+
+  # Database optimization
+  db.connection.pool.size: "50"
+  db.connection.pool.max: "200"
+  db.query.timeout: "30s"
+  db.slow.query.threshold: "100ms"
+  db.index.optimization.enabled: "true"
+  db.statistics.update.interval: "3600s"
+
+  # JVM optimization (for Java components)
+  jvm.heap.size: "4g"
+  jvm.gc.algorithm: "G1GC"
+  jvm.gc.max.pause: "200ms"
+  jvm.gc.parallel.threads: "auto"
+
+  # Network optimization
+  network.tcp.keepalive: "true"
+  network.tcp.nodelay: "true"
+  network.buffer.size: "64kb"
+  network.connection.timeout: "30s"
+
+---
+# Optimization Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: optimization-secrets
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: optimization-secrets
+    app.kubernetes.io/component: performance-optimization
+type: Opaque
+data:
+  # Database credentials
+  postgresql.url: cG9zdGdyZXNxbDovL29wdGltaXphdGlvbl91c2VyOm9wdGltaXphdGlvbl9wYXNzd29yZEBwb3N0Z3Jlc3FsLWNsdXN0ZXIuYnJhbmNoaW5nLWVudGVycHJpc2Uuc3ZjLmNsdXN0ZXIubG9jYWw6NTQzMi9vcHRpbWl6YXRpb25fZGI=
+
+  # AI model API keys
+  ai.model.api.key: YWlfbW9kZWxfYXBpX2tleV8yNTZfYml0cw==
+
+  # Performance monitoring API keys
+  monitoring.api.key: bW9uaXRvcmluZ19hcGlfa2V5XzI1Nl9iaXRz
+
+---
+# Service Accounts
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: performance-optimizer
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: performance-optimizer
+    app.kubernetes.io/component: performance-optimization
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/BranchingFrameworkOptimizationRole
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ai-optimization-model
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: ai-optimization-model
+    app.kubernetes.io/component: performance-optimization
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: metrics-collector
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: metrics-collector
+    app.kubernetes.io/component: performance-optimization
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: intelligent-autoscaler
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: intelligent-autoscaler
+    app.kubernetes.io/component: performance-optimization
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: resource-optimizer
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: resource-optimizer
+    app.kubernetes.io/component: performance-optimization
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: database-optimizer
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: database-optimizer
+    app.kubernetes.io/component: performance-optimization
+
+---
+# RBAC for Performance Optimization
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: optimization-cluster-role
+  labels:
+    app.kubernetes.io/name: optimization-cluster-role
+    app.kubernetes.io/component: performance-optimization
+rules:
+  - apiGroups: [""]
+    resources:
+      ["nodes", "pods", "services", "endpoints", "configmaps", "secrets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["autoscaling"]
+    resources: ["horizontalpodautoscalers", "verticalpodautoscalers"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses", "networkpolicies"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["nodes", "pods", "services"]
+    verbs: ["get", "list"]
+  - apiGroups: ["custom.metrics.k8s.io"]
+    resources: ["*"]
+    verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: optimization-cluster-role-binding
+  labels:
+    app.kubernetes.io/name: optimization-cluster-role-binding
+    app.kubernetes.io/component: performance-optimization
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: optimization-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: performance-optimizer
+    namespace: branching-optimization
+  - kind: ServiceAccount
+    name: metrics-collector
+    namespace: branching-optimization
+  - kind: ServiceAccount
+    name: intelligent-autoscaler
+    namespace: branching-optimization
+  - kind: ServiceAccount
+    name: resource-optimizer
+    namespace: branching-optimization
+  - kind: ServiceAccount
+    name: database-optimizer
+    namespace: branching-optimization
+
+---
+# Horizontal Pod Autoscaler for Optimization Services
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: performance-optimizer-hpa
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: performance-optimizer-hpa
+    app.kubernetes.io/component: performance-optimization
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: performance-optimizer
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Pods
+      pods:
+        metric:
+          name: optimization_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: "100"
+
+---
+# Pod Disruption Budget
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: optimization-pdb
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: optimization-pdb
+    app.kubernetes.io/component: performance-optimization
+spec:
+  minAvailable: 75%
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: performance-optimization
+
+---
+# Network Policy for Optimization Services
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: optimization-network-policy
+  namespace: branching-optimization
+  labels:
+    app.kubernetes.io/name: optimization-network-policy
+    app.kubernetes.io/component: performance-optimization
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: performance-optimization
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: branching-enterprise
+        - namespaceSelector:
+            matchLabels:
+              name: branching-edge
+        - namespaceSelector:
+            matchLabels:
+              name: branching-loadtest
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: 8080
+        - protocol: TCP
+          port: 8090
+        - protocol: TCP
+          port: 9090
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: branching-enterprise
+      ports:
+        - protocol: TCP
+          port: 5432 # PostgreSQL
+        - protocol: TCP
+          port: 6379 # Redis
+        - protocol: TCP
+          port: 6333 # Qdrant
+        - protocol: TCP
+          port: 9090 # Prometheus
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 53 # DNS
+        - protocol: UDP
+          port: 53 # DNS
+        - protocol: TCP
+          port: 443 # HTTPS

@@ -1,0 +1,104 @@
+# Ultra-Advanced 8-Level Framework - AI Model Server
+FROM nvidia/cuda:12.1-devel-ubuntu22.04 AS builder
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+   python3.11 \
+   python3.11-pip \
+   python3.11-dev \
+   build-essential \
+   git \
+   curl \
+   cmake \
+   && rm -rf /var/lib/apt/lists/*
+
+# Create symbolic links
+RUN ln -s /usr/bin/python3.11 /usr/bin/python
+RUN ln -s /usr/bin/pip3 /usr/bin/pip
+
+# Upgrade pip
+RUN pip install --upgrade pip setuptools wheel
+
+# Install CUDA-enabled packages
+RUN pip install --no-cache-dir \
+   torch==2.1.0+cu121 \
+   torchvision==0.16.0+cu121 \
+   torchaudio==2.1.0+cu121 \
+   --index-url https://download.pytorch.org/whl/cu121
+
+# Install additional AI/ML packages
+RUN pip install --no-cache-dir \
+   transformers \
+   accelerate \
+   bitsandbytes \
+   optimum \
+   vllm \
+   triton \
+   flash-attn \
+   xformers \
+   tensorrt \
+   onnx \
+   onnxruntime-gpu
+
+# Production image
+FROM nvidia/cuda:12.1-runtime-ubuntu22.04
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+   python3.11 \
+   python3.11-distutils \
+   curl \
+   htop \
+   nvidia-ml-py3 \
+   && rm -rf /var/lib/apt/lists/*
+
+# Create symbolic links
+RUN ln -s /usr/bin/python3.11 /usr/bin/python
+
+# Copy Python packages and CUDA libraries
+COPY --from=builder /usr/local/lib/python3.11 /usr/local/lib/python3.11
+COPY --from=builder /usr/local/bin /usr/local/bin
+COPY --from=builder /usr/local/cuda /usr/local/cuda
+
+# Create non-root user
+RUN groupadd -r aimodel && useradd -r -g aimodel aimodel
+
+WORKDIR /app
+
+# Copy application code
+COPY ./ai-model-server/ ./
+COPY ./models/ ./models/
+
+# Set ownership
+RUN chown -R aimodel:aimodel /app
+
+# Switch to non-root user
+USER aimodel
+
+# Health check
+HEALTHCHECK --interval=45s --timeout=20s --start-period=60s --retries=3 \
+   CMD ["python", "-c", "import requests; requests.get('http://localhost:8080/health', timeout=15)"]
+
+# Expose ports
+EXPOSE 8080 8443 9090 6006
+
+# Environment variables
+ENV PYTHONUNBUFFERED=1
+ENV CUDA_VISIBLE_DEVICES=0
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+ENV PATH=/usr/local/cuda/bin:$PATH
+
+# Metadata
+LABEL maintainer="Ultra-Advanced Framework Team" \
+   version="1.0.0" \
+   description="High-Performance AI Model Server with Multi-GPU Support" \
+   org.opencontainers.image.title="ai-model-server" \
+   org.opencontainers.image.description="GPU-accelerated AI inference server with ensemble models" \
+   org.opencontainers.image.version="1.0.0"
+
+ENTRYPOINT ["python", "model_server.py"]
+CMD ["--config=/config/model-server.yaml", "--gpus=auto"]

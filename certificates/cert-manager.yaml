@@ -1,0 +1,63 @@
+# Ultra-Advanced Framework - Cert-Manager Configuration
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+  namespace: cert-manager
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@branching-framework.com
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+    - dns01:
+        cloudflare:
+          email: admin@branching-framework.com
+          apiTokenSecretRef:
+            name: cloudflare-api-token
+            key: api-token
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-certificate
+  namespace: branching-production
+spec:
+  secretName: wildcard-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+  - 'branching-framework.com'
+  - '*.branching-framework.com'
+  - 'api.branching-framework.com'
+  - 'edge.branching-framework.com'
+  - 'admin.branching-framework.com'
+  - 'monitoring.branching-framework.com'
+  - '*.us.branching-framework.com'
+  - '*.eu.branching-framework.com'
+  - '*.ap.branching-framework.com'
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: regional-certificates
+  namespace: branching-edge
+spec:
+  secretName: regional-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  dnsNames:
+  - 'edge-us-east.branching-framework.com'
+  - 'edge-us-west.branching-framework.com'
+  - 'edge-eu-west.branching-framework.com'
+  - 'edge-eu-central.branching-framework.com'
+  - 'edge-ap-southeast.branching-framework.com'
+  - 'edge-ap-northeast.branching-framework.com'

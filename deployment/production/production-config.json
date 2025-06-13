@@ -1,0 +1,51 @@
+{
+  "deployment_id": "c7090499-85be-4037-954d-917470ea346e",
+  "timestamp": "2025-06-08T20:14:28Z",
+  "status": "deploying",
+  "monitoring": {
+    "alerts_enabled": {
+      "IsPresent": true
+    },
+    "metrics_enabled": true,
+    "dashboard_url": "http://localhost:8090"
+  },
+  "environment": "production",
+  "configuration": {
+    "resources": {
+      "storage": "20Gi",
+      "memory": "4Gi",
+      "cpu": "2000m"
+    },
+    "replicas": 5,
+    "namespace": "branching-production",
+    "monitoring": {
+      "enabled": true,
+      "port": 8090,
+      "healthCheck": "/health",
+      "metricsPath": "/metrics"
+    },
+    "autoscaling": {
+      "enabled": true,
+      "minReplicas": 3,
+      "targetCPU": 70,
+      "maxReplicas": 10
+    }
+  },
+  "rollback": {
+    "trigger_conditions": [
+      "error_rate > 5%",
+      "response_time > 1s",
+      "availability < 99%"
+    ],
+    "enabled": {
+      "IsPresent": true
+    }
+  },
+  "version": "v1.0.0-20250608-201359",
+  "health_checks": {
+    "enabled": true,
+    "timeout": "10s",
+    "retries": 3,
+    "interval": "30s"
+  }
+}

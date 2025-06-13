@@ -49,8 +49,7 @@ class NotificationSystem:
             response = requests.post(webhook_url, json=payload, timeout=10)
             response.raise_for_status()
             print("Slack notification sent successfully")
-            return True
-        except Exception as e:
+            return True        except Exception as e:
             print(f"Failed to send Slack notification: {e}")
             return False
 
@@ -64,8 +63,8 @@ class NotificationSystem:
             
         smtp_server = os.environ.get('SMTP_SERVER') or notifications_config.get('smtp_server')
         smtp_port = int(os.environ.get('SMTP_PORT', '587'))
-        smtp_user = os.environ.get('SMTP_USER')
-        smtp_password = os.environ.get('SMTP_PASSWORD')
+        smtp_user = os.environ.get('SMTP_USER') or notifications_config.get('smtp_user')
+        smtp_password = os.environ.get('SMTP_PASSWORD') or notifications_config.get('smtp_password')
         
         if not all([smtp_server, smtp_user, smtp_password]):
             print("Email configuration incomplete")
@@ -86,7 +85,8 @@ class NotificationSystem:
                 html_part = MimeText(html_body, 'html')
                 msg.attach(html_part)
             
-            # Send email
+            # Send email - ensure smtp_user and smtp_password are strings
+            assert smtp_user is not None and smtp_password is not None
             with smtplib.SMTP(smtp_server, smtp_port) as server:
                 server.starttls()
                 server.login(smtp_user, smtp_password)

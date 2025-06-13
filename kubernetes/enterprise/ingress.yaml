@@ -1,0 +1,394 @@
+# Enterprise Ingress and Load Balancer Configuration
+# Ultra-Advanced 8-Level Branching Framework - Global Load Balancing
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: branching-framework-enterprise-ingress
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+  annotations:
+    # NGINX Ingress Controller annotations
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+    # Rate limiting for enterprise
+    nginx.ingress.kubernetes.io/rate-limit: "1000"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    nginx.ingress.kubernetes.io/rate-limit-connections: "100"
+
+    # Load balancing and session affinity
+    nginx.ingress.kubernetes.io/load-balance: "ewma"
+    nginx.ingress.kubernetes.io/session-cookie-name: "branching-framework-session"
+    nginx.ingress.kubernetes.io/session-cookie-expires: "3600"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "3600"
+    nginx.ingress.kubernetes.io/session-cookie-path: "/"
+    nginx.ingress.kubernetes.io/session-cookie-change-on-failure: "true"
+
+    # Security headers
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Frame-Options: DENY";
+      more_set_headers "X-Content-Type-Options: nosniff";
+      more_set_headers "X-XSS-Protection: 1; mode=block";
+      more_set_headers "Strict-Transport-Security: max-age=31536000; includeSubDomains; preload";
+      more_set_headers "Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'";
+      more_set_headers "Referrer-Policy: strict-origin-when-cross-origin";
+      more_set_headers "Permissions-Policy: geolocation=(), microphone=(), camera=()";
+
+    # WAF and DDoS protection
+    nginx.ingress.kubernetes.io/modsecurity-snippet: |
+      Include /etc/nginx/owasp-modsecurity-crs/nginx-modsecurity.conf
+      SecRuleEngine On
+      SecRequestBodyAccess On
+      SecAuditEngine RelevantOnly
+      SecAuditLogParts ABIJDEFHZ
+      SecAuditLog /var/log/modsec_audit.log
+
+    # TLS and SSL configuration
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    nginx.ingress.kubernetes.io/ssl-protocols: "TLSv1.2 TLSv1.3"
+    nginx.ingress.kubernetes.io/ssl-ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256,ECDHE-RSA-AES128-GCM-SHA256,ECDHE-ECDSA-AES256-GCM-SHA384,ECDHE-RSA-AES256-GCM-SHA384"
+    nginx.ingress.kubernetes.io/ssl-prefer-server-ciphers: "on"
+
+    # Caching for performance
+    nginx.ingress.kubernetes.io/proxy-cache-valid: "200 302 10m"
+    nginx.ingress.kubernetes.io/proxy-cache-valid-404: "1m"
+    nginx.ingress.kubernetes.io/proxy-cache-lock: "on"
+    nginx.ingress.kubernetes.io/proxy-cache-use-stale: "error timeout updating http_500 http_502 http_503 http_504"
+
+    # Monitoring and observability
+    nginx.ingress.kubernetes.io/enable-access-log: "true"
+    nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "10254"
+    prometheus.io/path: "/metrics"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.branching-framework.com
+        - enterprise.branching-framework.com
+        - auth.branching-framework.com
+        - ws.branching-framework.com
+      secretName: branching-framework-tls
+  rules:
+    # Main API endpoint
+    - host: api.branching-framework.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+          - path: /v1
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+          - path: /v2
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+    # Enterprise portal
+    - host: enterprise.branching-framework.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+          - path: /dashboard
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+    # Authentication service
+    - host: auth.branching-framework.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+          - path: /oauth2
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+          - path: /saml
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+    # WebSocket endpoint for real-time features
+    - host: ws.branching-framework.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: branching-framework-enterprise
+                port:
+                  number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: branching-framework-grpc
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: grpc
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:region:account:certificate/cert-id"
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8081"
+    prometheus.io/path: "/metrics"
+spec:
+  type: LoadBalancer
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+    - name: grpc
+      port: 9090
+      targetPort: grpc
+      protocol: TCP
+    - name: grpc-tls
+      port: 443
+      targetPort: grpc
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: api-server
+    environment: production
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-custom-config
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+data:
+  # Custom NGINX configuration for enterprise features
+  custom.conf: |
+    # Rate limiting zones
+    limit_req_zone $binary_remote_addr zone=api:10m rate=1000r/m;
+    limit_req_zone $binary_remote_addr zone=auth:10m rate=100r/m;
+    limit_req_zone $binary_remote_addr zone=upload:10m rate=10r/m;
+
+    # Connection limiting
+    limit_conn_zone $binary_remote_addr zone=conn_limit_per_ip:10m;
+
+    # Geo-blocking for enhanced security (example)
+    geo $blocked_country {
+        default 0;
+        # Add countries to block if needed
+        # CN 1;  # China
+        # RU 1;  # Russia
+    }
+
+    # Custom log format for enhanced monitoring
+    log_format enterprise_format 
+        '$remote_addr - $remote_user [$time_local] '
+        '"$request" $status $bytes_sent '
+        '"$http_referer" "$http_user_agent" '
+        '"$http_x_forwarded_for" $request_time '
+        '$upstream_response_time $upstream_connect_time '
+        '$upstream_header_time "$request_id" '
+        '"$http_authorization" "$ssl_protocol" "$ssl_cipher"';
+
+    # Security settings
+    server_tokens off;
+    client_max_body_size 100M;
+    client_body_timeout 60s;
+    client_header_timeout 60s;
+    keepalive_timeout 65s;
+    send_timeout 60s;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_types
+        text/plain
+        text/css
+        text/xml
+        text/javascript
+        application/json
+        application/javascript
+        application/xml+rss
+        application/atom+xml
+        application/x-javascript
+        application/x-font-ttf
+        font/opentype
+        image/svg+xml
+        image/x-icon;
+
+    # Brotli compression (if module available)
+    brotli on;
+    brotli_comp_level 6;
+    brotli_types
+        text/plain
+        text/css
+        application/json
+        application/javascript
+        text/xml
+        application/xml
+        application/xml+rss
+        text/javascript;
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: branching-framework-enterprise-vs
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: service-mesh
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+spec:
+  hosts:
+    - api.branching-framework.com
+    - enterprise.branching-framework.com
+  gateways:
+    - branching-framework-gateway
+  http:
+    # API routes with intelligent traffic splitting
+    - match:
+        - uri:
+            prefix: /api/v2/
+      route:
+        - destination:
+            host: branching-framework-enterprise
+            port:
+              number: 80
+          weight: 100
+      fault:
+        delay:
+          percentage:
+            value: 0.1
+          fixedDelay: 5s
+      retries:
+        attempts: 3
+        perTryTimeout: 10s
+        retryOn: gateway-error,connect-failure,refused-stream
+      timeout: 30s
+    # Enterprise dashboard routes
+    - match:
+        - uri:
+            prefix: /dashboard/
+        - uri:
+            prefix: /admin/
+      route:
+        - destination:
+            host: branching-framework-enterprise
+            port:
+              number: 80
+      headers:
+        request:
+          add:
+            x-enterprise-mode: "true"
+            x-auth-required: "true"
+      timeout: 60s
+    # WebSocket routes for real-time features
+    - match:
+        - uri:
+            prefix: /ws/
+      route:
+        - destination:
+            host: branching-framework-enterprise
+            port:
+              number: 80
+      websocketUpgrade: true
+      timeout: 3600s
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: branching-framework-gateway
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: service-mesh
+    app.kubernetes.io/version: "2.0.0"
+    environment: production
+    tier: enterprise
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - api.branching-framework.com
+        - enterprise.branching-framework.com
+      tls:
+        httpsRedirect: true
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: branching-framework-tls
+      hosts:
+        - api.branching-framework.com
+        - enterprise.branching-framework.com

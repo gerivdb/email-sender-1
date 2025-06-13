@@ -1,0 +1,909 @@
+# Advanced Load Testing Framework
+# Ultra-Advanced 8-Level Branching Framework - Enterprise Load Testing Suite
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: branching-loadtest
+  labels:
+    app.kubernetes.io/name: branching-framework
+    app.kubernetes.io/component: load-testing
+    app.kubernetes.io/version: "v2.0.0"
+    tier: testing
+    environment: performance
+  annotations:
+    description: "Advanced load testing infrastructure for 100,000+ concurrent users"
+    cost-center: "performance-testing"
+    max-users: "1000000"
+
+---
+# Load Testing Controller - Orchestrates massive scale tests
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadtest-controller
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-controller
+    app.kubernetes.io/component: load-testing
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: loadtest-controller
+  template:
+    metadata:
+      labels:
+        app: loadtest-controller
+        version: v2.0.0
+    spec:
+      serviceAccountName: loadtest-controller
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+        - name: controller
+          image: branching-framework/loadtest-controller:v2.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 9090
+              name: grpc
+            - containerPort: 8090
+              name: metrics
+          env:
+            - name: MAX_CONCURRENT_USERS
+              value: "1000000"
+            - name: DEFAULT_TEST_DURATION
+              value: "1800s" # 30 minutes
+            - name: RAMP_UP_DURATION
+              value: "300s" # 5 minutes
+            - name: RAMP_DOWN_DURATION
+              value: "300s" # 5 minutes
+            - name: WORKER_REPLICAS_MAX
+              value: "1000"
+            - name: USERS_PER_WORKER
+              value: "1000"
+            - name: TARGET_ENDPOINTS
+              value: "https://edge.branching-framework.com,https://api.branching-framework.com"
+            - name: FRAMEWORK_LEVELS_TEST
+              value: "1,2,3,4,5,6,7,8"
+            - name: REDIS_CLUSTER_ENDPOINTS
+              valueFrom:
+                configMapKeyRef:
+                  name: loadtest-config
+                  key: redis.cluster.endpoints
+            - name: POSTGRESQL_URL
+              valueFrom:
+                secretKeyRef:
+                  name: loadtest-secrets
+                  key: postgresql.url
+            - name: INFLUXDB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: loadtest-config
+                  key: influxdb.url
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 4Gi
+            limits:
+              cpu: 4000m
+              memory: 8Gi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          volumeMounts:
+            - name: loadtest-config
+              mountPath: /etc/loadtest
+              readOnly: true
+            - name: test-scenarios
+              mountPath: /etc/scenarios
+              readOnly: true
+      volumes:
+        - name: loadtest-config
+          configMap:
+            name: loadtest-config
+        - name: test-scenarios
+          configMap:
+            name: test-scenarios
+
+---
+# Load Testing Controller Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadtest-controller
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-controller
+    app.kubernetes.io/component: load-testing
+spec:
+  type: ClusterIP
+  selector:
+    app: loadtest-controller
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+    - name: grpc
+      port: 9090
+      targetPort: 9090
+    - name: metrics
+      port: 8090
+      targetPort: 8090
+
+---
+# Load Testing Workers - Distributed test execution
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadtest-workers
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-workers
+    app.kubernetes.io/component: load-testing
+spec:
+  replicas: 100 # Start with 100, can scale to 1000+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50
+      maxUnavailable: 10
+  selector:
+    matchLabels:
+      app: loadtest-workers
+  template:
+    metadata:
+      labels:
+        app: loadtest-workers
+        version: v2.0.0
+    spec:
+      serviceAccountName: loadtest-workers
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - loadtest-workers
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: worker
+          image: branching-framework/loadtest-worker:v2.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 8090
+              name: metrics
+          env:
+            - name: WORKER_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: CONTROLLER_URL
+              value: "http://loadtest-controller.branching-loadtest.svc.cluster.local"
+            - name: MAX_USERS_PER_WORKER
+              value: "1000"
+            - name: TEST_THREAD_POOL_SIZE
+              value: "50"
+            - name: CONNECTION_POOL_SIZE
+              value: "100"
+            - name: REQUEST_TIMEOUT
+              value: "30s"
+            - name: METRICS_INTERVAL
+              value: "5s"
+            - name: FRAMEWORK_LEVELS_ENABLED
+              value: "1,2,3,4,5,6,7,8"
+            - name: USER_SIMULATION_PROFILES
+              value: "developer,admin,viewer,power-user,enterprise-user"
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: worker-config
+              mountPath: /etc/worker
+              readOnly: true
+            - name: test-data
+              mountPath: /tmp/testdata
+      volumes:
+        - name: worker-config
+          configMap:
+            name: loadtest-config
+        - name: test-data
+          emptyDir:
+            sizeLimit: 2Gi
+
+---
+# Load Testing Workers Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadtest-workers
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-workers
+    app.kubernetes.io/component: load-testing
+spec:
+  type: ClusterIP
+  clusterIP: None # Headless service for direct pod access
+  selector:
+    app: loadtest-workers
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+    - name: metrics
+      port: 8090
+      targetPort: 8090
+
+---
+# Horizontal Pod Autoscaler for Load Test Workers
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: loadtest-workers-hpa
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-workers-hpa
+    app.kubernetes.io/component: load-testing
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: loadtest-workers
+  minReplicas: 10
+  maxReplicas: 1000
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Pods
+      pods:
+        metric:
+          name: active_users
+        target:
+          type: AverageValue
+          averageValue: "800"
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 30
+        - type: Pods
+          value: 50
+          periodSeconds: 30
+    scaleDown:
+      stabilizationWindowSeconds: 120
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+
+---
+# InfluxDB for Metrics Storage
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: influxdb
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: influxdb
+    app.kubernetes.io/component: load-testing
+spec:
+  serviceName: influxdb
+  replicas: 3
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+        version: v2.0.0
+    spec:
+      serviceAccountName: loadtest-metrics
+      containers:
+        - name: influxdb
+          image: influxdb:2.7-alpine
+          ports:
+            - containerPort: 8086
+              name: http
+          env:
+            - name: INFLUXDB_DB
+              value: "loadtest_metrics"
+            - name: INFLUXDB_ADMIN_USER
+              value: "admin"
+            - name: INFLUXDB_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: loadtest-secrets
+                  key: influxdb.admin.password
+            - name: INFLUXDB_USER
+              value: "loadtest"
+            - name: INFLUXDB_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: loadtest-secrets
+                  key: influxdb.user.password
+            - name: INFLUXDB_HTTP_MAX_BODY_SIZE
+              value: "100000000" # 100MB for high-volume metrics
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 2Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+          volumeMounts:
+            - name: influxdb-data
+              mountPath: /var/lib/influxdb2
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 8086
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8086
+            initialDelaySeconds: 5
+            periodSeconds: 5
+  volumeClaimTemplates:
+    - metadata:
+        name: influxdb-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 100Gi
+        storageClassName: fast-ssd
+
+---
+# InfluxDB Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: influxdb
+    app.kubernetes.io/component: load-testing
+spec:
+  type: ClusterIP
+  selector:
+    app: influxdb
+  ports:
+    - name: http
+      port: 8086
+      targetPort: 8086
+
+---
+# Grafana for Load Test Visualization
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loadtest-grafana
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-grafana
+    app.kubernetes.io/component: load-testing
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: loadtest-grafana
+  template:
+    metadata:
+      labels:
+        app: loadtest-grafana
+        version: v2.0.0
+    spec:
+      serviceAccountName: loadtest-grafana
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        fsGroup: 65534
+      containers:
+        - name: grafana
+          image: grafana/grafana:10.2.0
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              value: "admin"
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: loadtest-secrets
+                  key: grafana.admin.password
+            - name: GF_DATABASE_TYPE
+              value: postgres
+            - name: GF_DATABASE_HOST
+              value: "postgresql-cluster.branching-enterprise.svc.cluster.local:5432"
+            - name: GF_DATABASE_NAME
+              value: "grafana_loadtest"
+            - name: GF_DATABASE_USER
+              value: "grafana_user"
+            - name: GF_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: loadtest-secrets
+                  key: grafana.db.password
+            - name: GF_INSTALL_PLUGINS
+              value: "grafana-influxdb-datasource,grafana-worldmap-panel,grafana-clock-panel"
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          volumeMounts:
+            - name: grafana-dashboards
+              mountPath: /etc/grafana/provisioning/dashboards
+              readOnly: true
+            - name: grafana-datasources
+              mountPath: /etc/grafana/provisioning/datasources
+              readOnly: true
+      volumes:
+        - name: grafana-dashboards
+          configMap:
+            name: loadtest-grafana-dashboards
+        - name: grafana-datasources
+          configMap:
+            name: loadtest-grafana-datasources
+
+---
+# Grafana Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadtest-grafana
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-grafana
+    app.kubernetes.io/component: load-testing
+spec:
+  type: LoadBalancer
+  selector:
+    app: loadtest-grafana
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+
+---
+# Load Test Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loadtest-config
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-config
+    app.kubernetes.io/component: load-testing
+data:
+  # Database connections
+  redis.cluster.endpoints: "redis-cluster-0.redis-cluster.branching-enterprise.svc.cluster.local:6379,redis-cluster-1.redis-cluster.branching-enterprise.svc.cluster.local:6379,redis-cluster-2.redis-cluster.branching-enterprise.svc.cluster.local:6379"
+  influxdb.url: "http://influxdb.branching-loadtest.svc.cluster.local:8086"
+
+  # Load test parameters
+  max.concurrent.users: "1000000"
+  default.test.duration: "1800"
+  ramp.up.duration: "300"
+  ramp.down.duration: "300"
+  think.time.min: "1"
+  think.time.max: "5"
+
+  # Test scenarios configuration
+  scenarios.enabled: "stress,spike,load,volume,endurance,scalability"
+
+  # Framework levels testing
+  level1.micro.sessions.enabled: "true"
+  level1.micro.sessions.users: "100000"
+  level2.event.driven.enabled: "true"
+  level2.event.driven.events.per.second: "50000"
+  level3.multi.dimensional.enabled: "true"
+  level3.multi.dimensional.dimensions: "10"
+  level4.contextual.memory.enabled: "true"
+  level4.contextual.memory.contexts: "1000"
+  level5.temporal.operations.enabled: "true"
+  level5.temporal.operations.time.ranges: "24"
+  level6.predictive.ai.enabled: "true"
+  level6.predictive.ai.predictions.per.second: "10000"
+  level7.branching.as.code.enabled: "true"
+  level7.branching.as.code.branches.per.user: "50"
+  level8.quantum.superposition.enabled: "true"
+  level8.quantum.superposition.states: "1000"
+
+  # Performance thresholds
+  response.time.p95.threshold: "500" # milliseconds
+  response.time.p99.threshold: "1000" # milliseconds
+  error.rate.threshold: "0.1" # 0.1%
+  throughput.min: "50000" # requests per second
+
+  # Target endpoints
+  target.endpoints: |
+    https://edge.branching-framework.com
+    https://api.branching-framework.com
+    https://enterprise.branching-framework.com
+    https://auth.branching-framework.com
+    https://ws.branching-framework.com
+
+  # User profiles for realistic testing
+  user.profiles: |
+    developer: 40%
+    admin: 10%
+    viewer: 30%
+    power-user: 15%
+    enterprise-user: 5%
+
+---
+# Test Scenarios Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-scenarios
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: test-scenarios
+    app.kubernetes.io/component: load-testing
+data:
+  # Stress Test Scenario
+  stress.yaml: |
+    name: "Enterprise Stress Test"
+    description: "Test system under extreme load conditions"
+    duration: "1800s"
+    rampUp: "300s"
+    rampDown: "300s"
+    users: 1000000
+    userProfile: "mixed"
+    scenarios:
+      - name: "Level 1-4 Operations"
+        weight: 60
+        requests:
+          - endpoint: "/api/v1/micro-sessions"
+            method: "POST"
+            weight: 25
+          - endpoint: "/api/v1/events"
+            method: "POST"
+            weight: 25
+          - endpoint: "/api/v1/dimensions"
+            method: "GET"
+            weight: 25
+          - endpoint: "/api/v1/contexts"
+            method: "PUT"
+            weight: 25
+      - name: "Level 5-8 Operations"
+        weight: 40
+        requests:
+          - endpoint: "/api/v1/temporal"
+            method: "POST"
+            weight: 25
+          - endpoint: "/api/v1/predictions"
+            method: "GET"
+            weight: 25
+          - endpoint: "/api/v1/branching-code"
+            method: "POST"
+            weight: 25
+          - endpoint: "/api/v1/quantum"
+            method: "GET"
+            weight: 25
+    thresholds:
+      responseTime: 1000ms
+      errorRate: 1%
+      throughput: 50000
+
+  # Spike Test Scenario
+  spike.yaml: |
+    name: "Traffic Spike Test"
+    description: "Test sudden traffic spikes"
+    duration: "900s"
+    users: 500000
+    spikes:
+      - at: "300s"
+        users: 1000000
+        duration: "60s"
+      - at: "600s"
+        users: 1500000
+        duration: "30s"
+    scenarios:
+      - name: "Core Framework Operations"
+        weight: 100
+        requests:
+          - endpoint: "/api/v1/health"
+            method: "GET"
+            weight: 10
+          - endpoint: "/api/v1/micro-sessions"
+            method: "POST"
+            weight: 20
+          - endpoint: "/api/v1/events"
+            method: "POST"
+            weight: 15
+          - endpoint: "/api/v1/predictions"
+            method: "GET"
+            weight: 20
+          - endpoint: "/api/v1/quantum"
+            method: "GET"
+            weight: 35
+
+  # Endurance Test Scenario
+  endurance.yaml: |
+    name: "24-Hour Endurance Test"
+    description: "Long-term stability test"
+    duration: "86400s"  # 24 hours
+    rampUp: "3600s"     # 1 hour
+    rampDown: "3600s"   # 1 hour
+    users: 100000
+    userProfile: "enterprise"
+    scenarios:
+      - name: "Continuous Operations"
+        weight: 100
+        requests:
+          - endpoint: "/api/v1/micro-sessions"
+            method: "POST"
+            weight: 15
+          - endpoint: "/api/v1/events"
+            method: "POST"
+            weight: 15
+          - endpoint: "/api/v1/dimensions"
+            method: "GET"
+            weight: 15
+          - endpoint: "/api/v1/contexts"
+            method: "PUT"
+            weight: 15
+          - endpoint: "/api/v1/temporal"
+            method: "POST"
+            weight: 10
+          - endpoint: "/api/v1/predictions"
+            method: "GET"
+            weight: 10
+          - endpoint: "/api/v1/branching-code"
+            method: "POST"
+            weight: 10
+          - endpoint: "/api/v1/quantum"
+            method: "GET"
+            weight: 10
+    monitoring:
+      memoryLeaks: true
+      resourceUtilization: true
+      databaseConnections: true
+
+---
+# Load Test Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: loadtest-secrets
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-secrets
+    app.kubernetes.io/component: load-testing
+type: Opaque
+data:
+  # Database credentials
+  postgresql.url: cG9zdGdyZXNxbDovL2xvYWR0ZXN0X3VzZXI6bG9hZHRlc3RfcGFzc3dvcmRAcG9zdGdyZXNxbC1jbHVzdGVyLmJyYW5jaGluZy1lbnRlcnByaXNlLnN2Yy5jbHVzdGVyLmxvY2FsOjU0MzIvbG9hZHRlc3RfZGI=
+
+  # InfluxDB credentials
+  influxdb.admin.password: aW5mbHV4ZGJfYWRtaW5fcGFzc3dvcmQ=
+  influxdb.user.password: aW5mbHV4ZGJfdXNlcl9wYXNzd29yZA==
+
+  # Grafana credentials
+  grafana.admin.password: Z3JhZmFuYV9hZG1pbl9wYXNzd29yZA==
+  grafana.db.password: Z3JhZmFuYV9kYl9wYXNzd29yZA==
+
+  # API keys for external services
+  loadtest.api.key: bG9hZHRlc3RfYXBpX2tleV8yNTZfYml0cw==
+
+---
+# Service Accounts
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: loadtest-controller
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-controller
+    app.kubernetes.io/component: load-testing
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: loadtest-workers
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-workers
+    app.kubernetes.io/component: load-testing
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: loadtest-metrics
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-metrics
+    app.kubernetes.io/component: load-testing
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: loadtest-grafana
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-grafana
+    app.kubernetes.io/component: load-testing
+
+---
+# RBAC for Load Testing
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: loadtest-cluster-role
+  labels:
+    app.kubernetes.io/name: loadtest-cluster-role
+    app.kubernetes.io/component: load-testing
+rules:
+  - apiGroups: [""]
+    resources: ["nodes", "pods", "services", "endpoints"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["autoscaling"]
+    resources: ["horizontalpodautoscalers"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["nodes", "pods"]
+    verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: loadtest-cluster-role-binding
+  labels:
+    app.kubernetes.io/name: loadtest-cluster-role-binding
+    app.kubernetes.io/component: load-testing
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: loadtest-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: loadtest-controller
+    namespace: branching-loadtest
+
+---
+# Pod Disruption Budget
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: loadtest-pdb
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-pdb
+    app.kubernetes.io/component: load-testing
+spec:
+  minAvailable: 80%
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: load-testing
+
+---
+# Network Policy for Load Testing
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: loadtest-network-policy
+  namespace: branching-loadtest
+  labels:
+    app.kubernetes.io/name: loadtest-network-policy
+    app.kubernetes.io/component: load-testing
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: load-testing
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: branching-enterprise
+        - namespaceSelector:
+            matchLabels:
+              name: branching-edge
+        - podSelector: {}
+      ports:
+        - protocol: TCP
+          port: 8080
+        - protocol: TCP
+          port: 8086
+        - protocol: TCP
+          port: 3000
+  egress:
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443 # HTTPS to target systems
+        - protocol: TCP
+          port: 80 # HTTP to target systems
+        - protocol: TCP
+          port: 53 # DNS
+        - protocol: UDP
+          port: 53 # DNS

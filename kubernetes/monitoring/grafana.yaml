@@ -1,0 +1,672 @@
+# Enterprise Grafana Dashboards & Visualization
+# Ultra-Advanced 8-Level Branching Framework - Analytics & Monitoring
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/component: visualization
+    environment: production
+data:
+  grafana.ini: |
+    [server]
+    http_addr = 0.0.0.0
+    http_port = 3000
+    protocol = http
+    domain = grafana.branching-framework.enterprise
+    root_url = https://grafana.branching-framework.enterprise
+    serve_from_sub_path = false
+    router_logging = true
+
+    [database]
+    type = postgres
+    host = postgresql-primary.branching-framework-enterprise.svc.cluster.local:5432
+    name = branching_framework
+    user = grafana_user
+    password = $__env{DB_PASSWORD}
+    ssl_mode = require
+
+    [session]
+    provider = redis
+    provider_config = addr=redis-cluster-0.redis-cluster.branching-framework-enterprise.svc.cluster.local:6379,pool_size=100,prefix=grafana:session:,password=$__env{REDIS_PASSWORD}
+    cookie_secure = true
+    cookie_same_site = strict
+    session_life_time = 86400
+
+    [security]
+    admin_user = admin
+    admin_password = $__env{ADMIN_PASSWORD}
+    secret_key = $__env{SECRET_KEY}
+    disable_gravatar = true
+    cookie_secure = true
+    cookie_samesite = strict
+    content_security_policy = true
+    strict_transport_security = true
+
+    [auth]
+    disable_login_form = false
+    oauth_auto_login = false
+
+    [auth.generic_oauth]
+    name = Enterprise SSO
+    enabled = true
+    client_id = $__env{OAUTH_CLIENT_ID}
+    client_secret = $__env{OAUTH_CLIENT_SECRET}
+    scopes = openid profile email groups
+    auth_url = https://auth.branching-framework.enterprise/oauth2/authorize
+    token_url = https://auth.branching-framework.enterprise/oauth2/token
+    api_url = https://auth.branching-framework.enterprise/oauth2/userinfo
+    role_attribute_path = contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'editor') && 'Editor' || 'Viewer'
+
+    [users]
+    allow_sign_up = false
+    auto_assign_org = true
+    auto_assign_org_id = 1
+    auto_assign_org_role = Viewer
+
+    [log]
+    mode = console
+    level = info
+    format = json
+
+    [metrics]
+    enabled = true
+    interval_seconds = 10
+
+    [alerting]
+    enabled = true
+    execute_alerts = true
+
+    [unified_alerting]
+    enabled = true
+    ha_peers = grafana-0.grafana-headless.branching-framework-enterprise.svc.cluster.local:9094,grafana-1.grafana-headless.branching-framework-enterprise.svc.cluster.local:9094
+    ha_listen_address = 0.0.0.0:9094
+    ha_advertise_address = ${POD_NAME}.grafana-headless.branching-framework-enterprise.svc.cluster.local:9094
+
+    [feature_toggles]
+    enable = ngalert
+
+    [plugins]
+    allow_loading_unsigned_plugins = false
+    plugin_admin_enabled = true
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-8level
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/component: dashboards
+    grafana_dashboard: "true"
+data:
+  8-level-framework-overview.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "8-Level Branching Framework - Enterprise Overview",
+        "tags": ["branching-framework", "enterprise", "8-levels"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "id": 1,
+            "title": "Level 1-4: Core Operations Performance",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "rate(branching_operations_total{level=~\"1|2|3|4\"}[5m])",
+                "legendFormat": "Level {{level}} Operations/sec"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "color": {"mode": "palette-classic"},
+                "unit": "ops",
+                "thresholds": {
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 1000},
+                    {"color": "red", "value": 5000}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Level 5: Temporal Operations Timeline",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "branching_temporal_operations_duration_seconds",
+                "legendFormat": "Temporal Op Duration"
+              },
+              {
+                "expr": "branching_temporal_predictions_accuracy",
+                "legendFormat": "Prediction Accuracy"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "color": {"mode": "palette-classic"},
+                "unit": "s"
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Level 6: AI Model Performance",
+            "type": "bargauge",
+            "targets": [
+              {
+                "expr": "branching_ai_model_accuracy",
+                "legendFormat": "{{model_name}} Accuracy"
+              },
+              {
+                "expr": "branching_ai_inference_latency_seconds",
+                "legendFormat": "{{model_name}} Latency"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "color": {"mode": "continuous-GrYlRd"},
+                "unit": "percent",
+                "min": 0,
+                "max": 100
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "id": 4,
+            "title": "Level 7: Branching-as-Code Metrics",
+            "type": "heatmap",
+            "targets": [
+              {
+                "expr": "rate(branching_code_executions_total[5m])",
+                "legendFormat": "Code Executions"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          },
+          {
+            "id": 5,
+            "title": "Level 8: Quantum Superposition States",
+            "type": "gauge",
+            "targets": [
+              {
+                "expr": "branching_quantum_superposition_states",
+                "legendFormat": "Active Quantum States"
+              },
+              {
+                "expr": "branching_quantum_entanglement_strength",
+                "legendFormat": "Entanglement Strength"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "color": {"mode": "continuous-BlPu"},
+                "unit": "short",
+                "min": 0,
+                "max": 1000
+              }
+            },
+            "gridPos": {"h": 8, "w": 24, "x": 0, "y": 16}
+          }
+        ],
+        "time": {"from": "now-1h", "to": "now"},
+        "refresh": "5s"
+      }
+    }
+
+  enterprise-infrastructure.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Enterprise Infrastructure - Kubernetes & Services",
+        "tags": ["infrastructure", "kubernetes", "enterprise"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "id": 1,
+            "title": "Pod Status Overview",
+            "type": "piechart",
+            "targets": [
+              {
+                "expr": "count by (phase) (kube_pod_status_phase{namespace=\"branching-framework-enterprise\"})",
+                "legendFormat": "{{phase}}"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "API Gateway Requests/sec",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "rate(api_gateway_requests_total[5m])",
+                "legendFormat": "{{method}} {{path}}"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "Database Connections",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "postgresql_connections_active",
+                "legendFormat": "Active Connections"
+              },
+              {
+                "expr": "postgresql_connections_max",
+                "legendFormat": "Max Connections"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 8, "x": 16, "y": 0}
+          },
+          {
+            "id": 4,
+            "title": "Redis Cluster Performance",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "rate(redis_commands_processed_total[5m])",
+                "legendFormat": "Commands/sec"
+              },
+              {
+                "expr": "redis_memory_used_bytes / redis_memory_max_bytes * 100",
+                "legendFormat": "Memory Usage %"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "id": 5,
+            "title": "Qdrant Vector Operations",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "rate(qdrant_operations_total[5m])",
+                "legendFormat": "{{operation}} ops/sec"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          }
+        ],
+        "time": {"from": "now-1h", "to": "now"},
+        "refresh": "10s"
+      }
+    }
+
+  security-compliance.json: |
+    {
+      "dashboard": {
+        "id": null,
+        "title": "Security & Compliance Monitoring",
+        "tags": ["security", "compliance", "audit"],
+        "timezone": "browser",
+        "panels": [
+          {
+            "id": 1,
+            "title": "Authentication Events",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "rate(auth_events_total[5m])",
+                "legendFormat": "{{event_type}}"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+          },
+          {
+            "id": 2,
+            "title": "Failed Login Attempts",
+            "type": "stat",
+            "targets": [
+              {
+                "expr": "increase(auth_login_failures_total[1h])",
+                "legendFormat": "Failed Logins (1h)"
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "color": {"mode": "thresholds"},
+                "thresholds": {
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 10},
+                    {"color": "red", "value": 50}
+                  ]
+                }
+              }
+            },
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+          },
+          {
+            "id": 3,
+            "title": "API Rate Limiting",
+            "type": "timeseries",
+            "targets": [
+              {
+                "expr": "rate(api_gateway_rate_limited_total[5m])",
+                "legendFormat": "Rate Limited Requests"
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+          },
+          {
+            "id": 4,
+            "title": "Security Violations",
+            "type": "logs",
+            "targets": [
+              {
+                "expr": "{namespace=\"branching-framework-enterprise\"} |= \"SECURITY_VIOLATION\"",
+                "legendFormat": ""
+              }
+            ],
+            "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+          }
+        ],
+        "time": {"from": "now-6h", "to": "now"},
+        "refresh": "30s"
+      }
+    }
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-secrets
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/component: visualization
+    environment: production
+type: Opaque
+stringData:
+  admin-password: "grafana-admin-enterprise-secure-2024"
+  db-password: "grafana-db-password-enterprise-2024"
+  redis-password: "secure-redis-password-enterprise-2024"
+  secret-key: "grafana-secret-key-enterprise-ultra-secure-2024"
+  oauth-client-id: "grafana-oauth-client-id-enterprise"
+  oauth-client-secret: "grafana-oauth-client-secret-enterprise-2024"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/component: visualization
+    environment: production
+spec:
+  selector:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/component: visualization
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-headless
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/component: visualization
+    environment: production
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/component: visualization
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+    - name: clustering
+      port: 9094
+      targetPort: 9094
+      protocol: TCP
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: grafana
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/component: visualization
+    app.kubernetes.io/version: "10.2.0"
+    environment: production
+    tier: enterprise
+spec:
+  serviceName: grafana-headless
+  replicas: 2 # High availability
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/component: visualization
+      environment: production
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/component: visualization
+        app.kubernetes.io/version: "10.2.0"
+        environment: production
+        tier: enterprise
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
+        co.elastic.logs/enabled: "true"
+    spec:
+      serviceAccountName: branching-framework-enterprise
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 472
+        runAsGroup: 472
+        fsGroup: 472
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: grafana
+          image: grafana/grafana:10.2.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+            - name: clustering
+              containerPort: 9094
+              protocol: TCP
+          env:
+            - name: GF_PATHS_CONFIG
+              value: "/etc/grafana/grafana.ini"
+            - name: GF_PATHS_DATA
+              value: "/var/lib/grafana"
+            - name: GF_PATHS_LOGS
+              value: "/var/log/grafana"
+            - name: GF_PATHS_PLUGINS
+              value: "/var/lib/grafana/plugins"
+            - name: GF_PATHS_PROVISIONING
+              value: "/etc/grafana/provisioning"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secrets
+                  key: db-password
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secrets
+                  key: redis-password
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secrets
+                  key: admin-password
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secrets
+                  key: secret-key
+            - name: OAUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secrets
+                  key: oauth-client-id
+            - name: OAUTH_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secrets
+                  key: oauth-client-secret
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+              ephemeral-storage: "2Gi"
+            limits:
+              memory: "4Gi"
+              cpu: "2000m"
+              ephemeral-storage: "10Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/grafana
+              readOnly: true
+            - name: storage
+              mountPath: /var/lib/grafana
+            - name: dashboards
+              mountPath: /etc/grafana/provisioning/dashboards
+              readOnly: true
+            - name: datasources
+              mountPath: /etc/grafana/provisioning/datasources
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+      volumes:
+        - name: config
+          configMap:
+            name: grafana-config
+        - name: dashboards
+          configMap:
+            name: grafana-dashboards-8level
+        - name: datasources
+          configMap:
+            name: grafana-datasources
+        - name: tmp
+          emptyDir:
+            sizeLimit: 1Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+        labels:
+          app.kubernetes.io/name: grafana
+          app.kubernetes.io/component: visualization
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi
+        storageClassName: fast-ssd
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: branching-framework-enterprise
+  labels:
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/component: datasources
+data:
+  prometheus.yaml: |
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.branching-framework-enterprise.svc.cluster.local:9090
+      access: proxy
+      isDefault: true
+      editable: false
+      
+    - name: Loki
+      type: loki
+      url: http://loki-gateway.branching-framework-enterprise.svc.cluster.local:80
+      access: proxy
+      editable: false
+      
+    - name: PostgreSQL
+      type: postgres
+      url: postgresql-primary.branching-framework-enterprise.svc.cluster.local:5432
+      database: branching_framework
+      user: grafana_user
+      secureJsonData:
+        password: grafana-db-password-enterprise-2024
+      jsonData:
+        sslmode: require
+        maxOpenConns: 10
+        maxIdleConns: 2
+        connMaxLifetime: 14400
+
+---
+# Pod Disruption Budget for Grafana
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: grafana-pdb
+  namespace: branching-framework-enterprise
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/component: visualization
